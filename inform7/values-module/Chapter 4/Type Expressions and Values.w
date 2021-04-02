@@ -157,7 +157,8 @@ of possessives like "its" to refer to properties.
 
 =
 <if-pronoun-present> internal 0 {
-	if (LocalVariables::is_possessive_form_of_it_enabled()) return TRUE;
+	if (Frames::is_its_enabled(
+		Frames::current_stack_frame())) return TRUE;
 	==> { fail nonterminal };
 }
 

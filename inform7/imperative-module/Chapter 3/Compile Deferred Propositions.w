@@ -183,7 +183,7 @@ specific to particular deferral reasons.
 @<Declare the I6 local variables which will be needed by this deferral routine@> =
 	int j, var_states[26], no_extras;
 	if (multipurpose_routine)
-		reason_s = LocalVariables::add_named_call_as_symbol(I"reason"); /* no cinders exist here */
+		reason_s = LocalVariables::new_other_as_symbol(I"reason"); /* no cinders exist here */
 	else
 		Calculus::Deferrals::Cinders::declare(proposition, pdef);
 
@@ -194,9 +194,10 @@ specific to particular deferral reasons.
 		if (var_states[j] != UNUSED_VST) {
 			TEMPORARY_TEXT(letter_var)
 			PUT_TO(letter_var, pcalc_vars[j]);
-			var_s[j] = LocalVariables::add_internal_local_as_symbol(letter_var);
+			var_s[j] = LocalVariables::new_internal_as_symbol(letter_var);
 			WRITE_TO(letter_var, "_ix");
-			var_ix_s[j] = LocalVariables::add_internal_local_as_symbol_noting(letter_var, &(var_ix_lv[j]));
+			var_ix_lv[j] = LocalVariables::new_internal(letter_var);
+			var_ix_s[j] = LocalVariables::declare(var_ix_lv[j]);
 			DISCARD_TEXT(letter_var)
 		} else {
 			var_s[j] = NULL;
@@ -211,10 +212,10 @@ specific to particular deferral reasons.
 			if (no_extras >= MAX_QC_VARIABLES) break;
 			TEMPORARY_TEXT(q_var)
 			WRITE_TO(q_var, "qcy_%d", no_extras);
-			qcy_s[no_extras] = LocalVariables::add_internal_local_as_symbol(q_var);
+			qcy_s[no_extras] = LocalVariables::new_internal_as_symbol(q_var);
 			Str::clear(q_var);
 			WRITE_TO(q_var, "qcn_%d", no_extras);
-			qcn_s[no_extras] = LocalVariables::add_internal_local_as_symbol(q_var);
+			qcn_s[no_extras] = LocalVariables::new_internal_as_symbol(q_var);
 			DISCARD_TEXT(q_var)
 			no_extras++;
 		}
@@ -878,38 +879,38 @@ In some of the cases, additional local variables are needed within the
 
 @<Declare the I6 locals needed by adaptations to particular deferral cases@> =
 	if (multipurpose_routine) {
-		total_s = LocalVariables::add_internal_local_as_symbol(I"total");
-		counter_s = LocalVariables::add_internal_local_as_symbol(I"counter");
-		selection_s = LocalVariables::add_internal_local_as_symbol(I"selection");
-		best_s = LocalVariables::add_internal_local_as_symbol(I"best");
-		best_with_s = LocalVariables::add_internal_local_as_symbol(I"best_with");
+		total_s = LocalVariables::new_internal_as_symbol(I"total");
+		counter_s = LocalVariables::new_internal_as_symbol(I"counter");
+		selection_s = LocalVariables::new_internal_as_symbol(I"selection");
+		best_s = LocalVariables::new_internal_as_symbol(I"best");
+		best_with_s = LocalVariables::new_internal_as_symbol(I"best_with");
 	} else {
 		switch (pdef->reason) {
 			case NUMBER_OF_DEFER:
-				counter_s = LocalVariables::add_internal_local_as_symbol(I"counter");
+				counter_s = LocalVariables::new_internal_as_symbol(I"counter");
 				break;
 			case RANDOM_OF_DEFER:
-				counter_s = LocalVariables::add_internal_local_as_symbol(I"counter");
-				selection_s = LocalVariables::add_internal_local_as_symbol(I"selection");
+				counter_s = LocalVariables::new_internal_as_symbol(I"counter");
+				selection_s = LocalVariables::new_internal_as_symbol(I"selection");
 				break;
 			case TOTAL_DEFER:
-				total_s = LocalVariables::add_internal_local_as_symbol(I"total");
+				total_s = LocalVariables::new_internal_as_symbol(I"total");
 				break;
 			case LIST_OF_DEFER:
-				counter_s = LocalVariables::add_internal_local_as_symbol(I"counter");
-				total_s = LocalVariables::add_internal_local_as_symbol(I"total");
+				counter_s = LocalVariables::new_internal_as_symbol(I"counter");
+				total_s = LocalVariables::new_internal_as_symbol(I"total");
 				break;
 			case EXTREMAL_DEFER:
-				best_s = LocalVariables::add_internal_local_as_symbol(I"best");
-				best_with_s = LocalVariables::add_internal_local_as_symbol(I"best_with");
+				best_s = LocalVariables::new_internal_as_symbol(I"best");
+				best_with_s = LocalVariables::new_internal_as_symbol(I"best_with");
 				break;
 		}
 	}
 
 @<Declare the I6 call parameters needed by adaptations to particular deferral cases@> =
 	if ((!multipurpose_routine) && (pdef->reason == LIST_OF_DEFER)) {
-		list_s = LocalVariables::add_named_call_as_symbol(I"list");
-		strong_kind_s = LocalVariables::add_named_call_as_symbol(I"strong_kind");
+		list_s = LocalVariables::new_other_as_symbol(I"list");
+		strong_kind_s = LocalVariables::new_other_as_symbol(I"strong_kind");
 	}
 
 @h Adaptation to CONDITION.

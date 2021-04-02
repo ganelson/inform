@@ -172,7 +172,7 @@ int Calculus::Deferrals::Cinders::cind_declare_in(int cinder_number, pcalc_term 
 		if (Node::is(pt->constant, CONSTANT_NT) == FALSE) {
 			TEMPORARY_TEXT(cinder_name)
 			WRITE_TO(cinder_name, "const_%d", cinder_number++);
-			LocalVariables::add_named_call_as_symbol(cinder_name);
+			LocalVariables::new_other_as_symbol(cinder_name);
 			DISCARD_TEXT(cinder_name)
 		}
 	return cinder_number;
@@ -202,8 +202,16 @@ kind *Calculus::Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
 
 @ =
 void Calculus::Deferrals::Cinders::emit(int c) {
-	local_variable *lvar = LocalVariables::find_const_var(c);
+	local_variable *lvar = Calculus::Deferrals::Cinders::find_cinder_var(c);
 	if (lvar == NULL) internal_error("absent calculus variable");
-	inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+}
+
+local_variable *Calculus::Deferrals::Cinders::find_cinder_var(int v) {
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "const_%d", v);
+	local_variable *found = LocalVariables::by_identifier(T);
+	DISCARD_TEXT(T)
+	return found;
 }

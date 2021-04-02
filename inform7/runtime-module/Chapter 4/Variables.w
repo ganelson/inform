@@ -159,26 +159,49 @@ void RTVariables::allocate_storage(void) {
 		}
 }
 
+typedef struct shared_variable_set_compilation_data {
+	struct inter_name *creator_fn_iname;
+} shared_variable_set_compilation_data;
+
+shared_variable_set_compilation_data RTVariables::new_set_data(shared_variable_set *set) {
+	shared_variable_set_compilation_data setcd;
+	setcd.creator_fn_iname = NULL;
+	return setcd;
+}
+
+@ The creator function claims memory to store these variables, and initialises
+them, at runtime. Other parts of Inform creating sets are expected to set this
+function name (and thus specify where in the Inter hierarchy it will go), and
+also to call |RTVariables::compile_frame_creator|.
+
+=
+void RTVariables::set_shared_variables_creator(shared_variable_set *set, inter_name *iname) {
+	set->compilation_data.creator_fn_iname = iname;
+}
+inter_name *RTVariables::get_shared_variables_creator(shared_variable_set *set) {
+	return set->compilation_data.creator_fn_iname;
+}
+
 nonlocal_variable_emission RTVariables::shv_lvalue(shared_variable *shv) {
-	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_offset(shv) == 0))
+	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_index(shv) == 0))
 		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
-		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_offset(shv), FALSE);
+		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_index(shv), FALSE);
 }
 
 nonlocal_variable_emission RTVariables::shv_rvalue(shared_variable *shv) {
-	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_offset(shv) == 0))
+	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_index(shv) == 0))
 		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
-		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_offset(shv), TRUE);
+		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_index(shv), TRUE);
 }
 
 int RTVariables::compile_frame_creator(shared_variable_set *set) {
 	if (set == NULL) return 0;
 
-	packaging_state save = Routines::begin(SharedVariables::frame_creator(set));
-	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
-	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
+	packaging_state save = Routines::begin(RTVariables::get_shared_variables_creator(set));
+	inter_symbol *pos_s = LocalVariables::new_other_as_symbol(I"pos");
+	inter_symbol *state_s = LocalVariables::new_other_as_symbol(I"state");
 
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());

@@ -64,7 +64,7 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 	
 	iname = Hierarchy::find(SHOWONEEXTENSION_HL);
 	save = Routines::begin(iname);
-	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
+	inter_symbol *id_s = LocalVariables::new_other_as_symbol(I"id");
 	LOOP_OVER(E, inform_extension) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());

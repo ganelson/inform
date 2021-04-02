@@ -106,7 +106,7 @@ domains of each meaning have long since been established. But performing a
 
 	if (problem_count == 0) {
 		local_variable *it_lv = LocalVariables::it_variable();
-		inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
+		inter_symbol *it_s = LocalVariables::declare(it_lv);
 		RTAdjectives::list_compile(adj, Frames::current_stack_frame(), K, T, it_s);
 	}
 	Produce::rfalse(Emit::tree());
@@ -147,8 +147,9 @@ wasted allocating memory and copying the block value first.)
 			(AdjectiveMeaningDomains::weak_match(K, am)))
 			add_K = K;
 
-	LocalVariables::add_pronoun(Frames::current_stack_frame(), EMPTY_WORDING, add_K);
-	LocalVariables::enable_possessive_form_of_it();
+	stack_frame *frame = Frames::current_stack_frame();
+	Frames::enable_it(frame, EMPTY_WORDING, add_K);
+	Frames::enable_its(frame);
 
 @ We run through possible meanings of the APH which share the current weak
 domain, and compile code which performs the stronger part of the domain
@@ -196,9 +197,9 @@ void RTAdjectives::agreements(void) {
 		if (Wordings::empty(PW)) continue;
 
 		packaging_state save = Routines::begin(adj->adjective_compilation.aph_iname);
-		inter_symbol *o_s = LocalVariables::add_named_call_as_symbol(I"o");
-		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
-		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
+		inter_symbol *o_s = LocalVariables::new_other_as_symbol(I"o");
+		inter_symbol *force_plural_s = LocalVariables::new_other_as_symbol(I"force_plural");
+		inter_symbol *gna_s = LocalVariables::new_internal_as_symbol(I"gna");
 
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 		Produce::down(Emit::tree());

@@ -1,6 +1,6 @@
 [SharedVariables::] Shared Variables.
 
-Shared variables are held in common by all rules in a given rulebook.
+Shared variables are held in common by all rules working in some goal.
 
 @h Introduction.
 Inform allows some variables to be shared by a number of different rules
@@ -20,15 +20,15 @@ which it can see.
 
 @h Variables.
 As can be seen, a shared variable is really just some additional expectations
-placed on a global variable:
+placed on a nonlocal variable (for which, see //knowledge: Nonlocal Variables//):
 
 =
 typedef struct shared_variable {
 	struct shared_variable_set *owner; /* who owns this */
+	int index_in_owner; /* counting upwards from 0 */
 	struct wording name; /* text of the name */
-	struct parse_node *assigned_at; /* sentence assigning it */
+	struct parse_node *assigned_at; /* sentence creating the variable */
 	struct nonlocal_variable *underlying_var; /* the variable in question */
-	int offset_in_owning_frame; /* word offset of storage (counts from 0) */
 	struct wording match_wording_text; /* matching text (relevant for action variables only) */
 	CLASS_DEFINITION
 } shared_variable;
@@ -41,7 +41,7 @@ shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind 
 	W = Articles::remove_the(W);
 	shv->name = W;
 	shv->owner = set;
-	shv->offset_in_owning_frame = LinkedLists::len(set->variables);
+	shv->index_in_owner = LinkedLists::len(set->variables);
 	shv->assigned_at = current_sentence;
 	shv->match_wording_text = EMPTY_WORDING;
 	nonlocal_variable *nlv = NonlocalVariables::new(W, K, shv);
@@ -59,8 +59,8 @@ int SharedVariables::get_owner_id(shared_variable *shv) {
 	return shv->owner->recognition_id;
 }
 
-int SharedVariables::get_offset(shared_variable *shv) {
-	return shv->offset_in_owning_frame;
+int SharedVariables::get_index(shared_variable *shv) {
+	return shv->index_in_owner;
 }
 
 kind *SharedVariables::get_kind(shared_variable *shv) {
@@ -94,8 +94,8 @@ only be a 16-bit unsigned integer.
 =
 typedef struct shared_variable_set {
 	int recognition_id;
-	struct inter_name *creator_fn_iname;
 	struct linked_list *variables; /* of |shared_variable| */
+	struct shared_variable_set_compilation_data compilation_data;
 	CLASS_DEFINITION
 } shared_variable_set;
 
@@ -103,7 +103,7 @@ shared_variable_set *SharedVariables::new_set(int id) {
 	shared_variable_set *set = CREATE(shared_variable_set);
 	set->recognition_id = id;
 	set->variables = NEW_LINKED_LIST(shared_variable);
-	set->creator_fn_iname = NULL;
+	set->compilation_data = RTVariables::new_set_data(set);
 	return set;
 }
 
@@ -122,19 +122,6 @@ void SharedVariables::add_to_set(shared_variable *shv, shared_variable_set *set)
 
 int SharedVariables::size_of_largest_set(void) {
 	return size_of_largest_set;
-}
-
-@ The creator function claims memory to store these variables, and initialises
-them, at runtime. Other parts of Inform creating sets are expected to set this
-function name (and thus specify where in the Inter hierarchy it will go), and
-also to call |RTVariables::compile_frame_creator|.
-
-=
-void SharedVariables::set_frame_creator(shared_variable_set *set, inter_name *iname) {
-	set->creator_fn_iname = iname;
-}
-inter_name *SharedVariables::frame_creator(shared_variable_set *set) {
-	return set->creator_fn_iname;
 }
 
 @ Returns the first variable in the set whose matching text begins |W|. Note

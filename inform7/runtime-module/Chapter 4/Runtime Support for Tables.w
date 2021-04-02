@@ -21,7 +21,7 @@ kind as a strong kind ID.
 void RTTables::column_introspection_routine(void) {
 	inter_name *iname = Hierarchy::find(TC_KOV_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
+	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, tcv_s);
@@ -333,7 +333,7 @@ void RTTables::compile_print_table_names(void) {
 	table *t;
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *T_s = LocalVariables::add_named_call_as_symbol(I"T");
+	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, T_s);

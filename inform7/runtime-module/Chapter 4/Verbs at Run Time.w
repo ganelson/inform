@@ -143,10 +143,10 @@ void RTVerbs::ConjugateVerb(void) {
 
 @<Compile ConjugateVerb routine@> =
 	packaging_state save = Routines::begin(Conjugation::conj_iname(vc));
-	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
-	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
-	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
-	inter_symbol *modal_to_s = LocalVariables::add_named_call_as_symbol(I"modal_to");
+	inter_symbol *fn_s = LocalVariables::new_other_as_symbol(I"fn");
+	inter_symbol *vp_s = LocalVariables::new_other_as_symbol(I"vp");
+	inter_symbol *t_s = LocalVariables::new_other_as_symbol(I"t");
+	inter_symbol *modal_to_s = LocalVariables::new_other_as_symbol(I"modal_to");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -238,10 +238,10 @@ void RTVerbs::ConjugateVerb(void) {
 @<Compile ConjugateVerbForm routine@> =
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
 	packaging_state save = Routines::begin(RTVerbs::form_iname(vf));
-	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
-	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
-	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
-	inter_symbol *modal_to_s = LocalVariables::add_named_call_as_symbol(I"modal_to");
+	inter_symbol *fn_s = LocalVariables::new_other_as_symbol(I"fn");
+	inter_symbol *vp_s = LocalVariables::new_other_as_symbol(I"vp");
+	inter_symbol *t_s = LocalVariables::new_other_as_symbol(I"t");
+	inter_symbol *modal_to_s = LocalVariables::new_other_as_symbol(I"modal_to");
 
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%A", &(vf->infinitive_reference_text));

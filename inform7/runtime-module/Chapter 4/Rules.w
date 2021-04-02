@@ -206,7 +206,7 @@ failing; so it doesn't terminate the following of its rulebook.
 void RTRules::RulePrintingRule_routine(void) {
 	inter_name *iname = Hierarchy::find(RULEPRINTINGRULE_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
+	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
@@ -347,7 +347,7 @@ which were introduced in December 2010.
 void RTRules::start_list_compilation(void) {
 	inter_name *iname = Hierarchy::find(EMPTY_RULEBOOK_INAME_HL);
 	packaging_state save = Routines::begin(iname);
-	LocalVariables::add_named_call(I"forbid_breaks");
+	LocalVariables::new_other_parameter(I"forbid_breaks");
 	Produce::rfalse(Emit::tree());
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -434,12 +434,13 @@ than once for each rule.
 		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_ti) -2); break;
 		case ROUTINE_RBF: {
 			save_array = Routines::begin(identifier);
-			forbid_breaks_s = LocalVariables::add_named_call_as_symbol(I"forbid_breaks");
-			rv_s = LocalVariables::add_internal_local_c_as_symbol(I"rv", "return value");
+			forbid_breaks_s = LocalVariables::new_other_as_symbol(I"forbid_breaks");
+			rv_s = LocalVariables::new_internal_commented_as_symbol(I"rv", I"return value");
 			if (countup > 1)
-				original_deadflag_s = LocalVariables::add_internal_local_c_as_symbol(I"original_deadflag", "saved state");
+				original_deadflag_s =
+					LocalVariables::new_internal_commented_as_symbol(I"original_deadflag", I"saved state");
 			if (parameter_based)
-				p_s = LocalVariables::add_internal_local_c_as_symbol(I"p", "rulebook parameter");
+				p_s = LocalVariables::new_internal_commented_as_symbol(I"p", I"rulebook parameter");
 
 			if (countup > 1) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -725,7 +726,7 @@ void RTRules::rulebook_var_creators(void) {
 	rulebook *B;
 	LOOP_OVER(B, rulebook)
 		if (SharedVariables::set_empty(B->my_variables) == FALSE) {
-			SharedVariables::set_frame_creator(B->my_variables,
+			RTVariables::set_shared_variables_creator(B->my_variables,
 				RTRules::get_stv_creator_iname(B));
 			RTVariables::compile_frame_creator(B->my_variables);
 		}
@@ -735,7 +736,7 @@ void RTRules::rulebook_var_creators(void) {
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(B, rulebook) {
 			if (SharedVariables::set_empty(B->my_variables)) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(SharedVariables::frame_creator(B->my_variables));
+			else Emit::array_iname_entry(RTVariables::get_shared_variables_creator(B->my_variables));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
@@ -746,7 +747,7 @@ void RTRules::rulebook_var_creators(void) {
 @<Make slow lookup routine@> =
 	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
+	inter_symbol *rb_s = LocalVariables::new_other_as_symbol(I"rb");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -931,7 +932,7 @@ void RTRules::RulebookOutcomePrintingRule(void) {
 
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
 	packaging_state save = Routines::begin(printing_rule_name);
-	inter_symbol *rbnov_s = LocalVariables::add_named_call_as_symbol(I"rbno");
+	inter_symbol *rbnov_s = LocalVariables::new_other_as_symbol(I"rbno");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);

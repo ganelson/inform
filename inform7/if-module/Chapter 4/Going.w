@@ -95,7 +95,7 @@ a special ID number of our choice.
 =
 int GoingPlugin::divert_clause_ID(shared_variable *stv, int *id) {
 	int oid = SharedVariables::get_owner_id(stv);
-	int off = SharedVariables::get_offset(stv);
+	int off = SharedVariables::get_index(stv);
 	if ((going_action) && (oid == GoingPlugin::id())) {
 		switch (off) {
 			case 0: *id = GOING_FROM_AP_CLAUSE; return TRUE;

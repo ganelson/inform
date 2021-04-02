@@ -12,10 +12,11 @@ Chapter 1: Configuration and Control
 
 Chapter 2: Compilation Context
 "Preparing a context at run-time in which code can be executed."
-	Local Variables
-	Shared Variables
-	Phrase Blocks
 	Stack Frames
+	Local Variable Slates
+	Local Variables
+	Local Parking
+	Phrase Blocks
 	Chronology
 
 Chapter 3: Compiling Propositions

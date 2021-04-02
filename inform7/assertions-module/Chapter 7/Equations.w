@@ -545,7 +545,14 @@ be used.
 
 =
 void Equations::declare_local_variables(equation *eqn) {
-	LocalVariables::make_available_to_equation(eqn);
+	stack_frame *frame = Frames::current_stack_frame();
+	if (frame) {
+		local_variable *lvar;
+		LOOP_OVER_LOCALS_IN_FRAME(lvar, frame)
+			if (lvar->allocated)
+				Equations::declare_local(eqn,
+					lvar->current_usage.varname, lvar->current_usage.kind_as_declared);
+	}
 }
 
 /* which calls the following for each current local variable in turn: */

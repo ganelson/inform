@@ -134,14 +134,14 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 	wording C = Descriptions::get_calling(spec);
 	if (Wordings::nonempty(C)) {
 		local_variable *lvar =
-			LocalVariables::ensure_called_local(C,
+			LocalVariables::ensure_calling(C,
 				Specifications::to_kind(spec));
-		LocalVariables::add_calling_to_condition(lvar);
+		RTConditions::add_calling_to_condition(lvar);
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
-				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
 			Produce::up(Emit::tree());
@@ -159,10 +159,10 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			if (Node::no_children(spec) != 2) internal_error("MPE with bad no of args");
 			LocalVariables::add_table_lookup();
 
-			local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
-			inter_symbol *ct_0_s = LocalVariables::declare_this(ct_0_lv, FALSE, 8);
-			local_variable *ct_1_lv = LocalVariables::by_name(I"ct_1");
-			inter_symbol *ct_1_s = LocalVariables::declare_this(ct_1_lv, FALSE, 8);
+			local_variable *ct_0_lv = LocalVariables::find_internal(I"ct_0");
+			inter_symbol *ct_0_s = LocalVariables::declare(ct_0_lv);
+			local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
+			inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, ct_1_s);
@@ -496,7 +496,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 	CPMC_RANGE(3, SET_SELF_TO_ACTOR_CPMC, WHEN_CONDITION_HOLDS_CPMC);
 
 	int range_to_compile = 0;
-	LocalVariables::begin_condition_emit();
+	RTConditions::begin_condition_emit();
 
 	if (ActionNameLists::listwise_negated(ap->action_list)) {
 		if (ranges_count[0] > 0) {
@@ -572,7 +572,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 		(ActionNameLists::listwise_negated(ap->action_list) == FALSE)) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 	}
-	LocalVariables::end_condition_emit();
+	RTConditions::end_condition_emit();
 
 @<Emit CPM range@> =
 	TEMPORARY_TEXT(C)
@@ -722,9 +722,9 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
 			loop_over_scope *los = LoopingOverScope::new(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			wording PC = Descriptions::get_calling(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
-			local_variable *lvar = LocalVariables::ensure_called_local(PC,
+			local_variable *lvar = LocalVariables::ensure_calling(PC,
 				Specifications::to_kind(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE)));
-			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);

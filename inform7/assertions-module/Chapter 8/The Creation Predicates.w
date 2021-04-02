@@ -165,7 +165,7 @@ void CreationPredicates::schema_calling(up_family *self, int task, unary_predica
 	switch(task) {
 		case TEST_ATOM_TASK:
 			Calculus::Schemas::modify(asch->schema, "(%L=(*1), true)",
-				LocalVariables::ensure_called_local(up->calling_name, up->assert_kind));
+				LocalVariables::ensure_calling(up->calling_name, up->assert_kind));
 			break;
 		default:
 			asch->schema = NULL;

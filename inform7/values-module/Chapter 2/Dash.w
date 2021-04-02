@@ -1706,7 +1706,7 @@ And here is where we check that "break" is indeed used only in a loop.
 		if (required) {
 			if (Wide::cmp(required, L"loop") == 0) {
 				LOGIF(MATCHING, "Required to be inside loop body\n");
-				if (Frames::Blocks::inside_a_loop_body() == FALSE) {
+				if (CodeBlocks::inside_a_loop_body() == FALSE) {
 					THIS_IS_AN_INTERESTING_PROBLEM {
 						Problems::quote_source(1, current_sentence);
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantUseOutsideLoop));
@@ -1717,7 +1717,7 @@ And here is where we check that "break" is indeed used only in a loop.
 				}
 			} else {
 				LOGIF(MATCHING, "Required to be inside block '%w'\n", required);
-				wchar_t *actual = Frames::Blocks::name_of_current_block();
+				wchar_t *actual = CodeBlocks::name_of_current_block();
 				if ((actual) && (Wide::cmp(actual, L"unless") == 0)) actual = L"if";
 				if ((actual == NULL) || (Wide::cmp(required, actual) != 0)) {
 					THIS_IS_AN_INTERESTING_PROBLEM {

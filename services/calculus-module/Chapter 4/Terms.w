@@ -209,7 +209,7 @@ void Terms::emit(pcalc_term pt) {
 			LOG("var is %d\n", pt.variable);
 			internal_error("absent calculus variable");
 		}
-		inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+		inter_symbol *lvar_s = LocalVariables::declare(lvar);
 		Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 		return;
 	}

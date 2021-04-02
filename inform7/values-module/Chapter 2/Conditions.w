@@ -274,9 +274,9 @@ type-checker won't allow these specifications to be compiled anywhere else.
 @<Compile a phrase option test@> =
 	Produce::inv_primitive(Emit::tree(), BITWISEAND_BIP);
 	Produce::down(Emit::tree());
-		local_variable *po = LocalVariables::phrase_options();
+		local_variable *po = LocalVariables::options_parameter();
 		if (po == NULL) internal_error("no phrase options exist in this frame");
-		inter_symbol *po_s = LocalVariables::declare_this(po, FALSE, 8);
+		inter_symbol *po_s = LocalVariables::declare(po);
 		Produce::val_symbol(Emit::tree(), K_value, po_s);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 			(inter_ti) Annotations::read_int(spec_found, phrase_option_ANNOT));

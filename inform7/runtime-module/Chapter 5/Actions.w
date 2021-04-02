@@ -95,7 +95,7 @@ void RTActions::compile_action_name_var_creators(void) {
 			(SharedVariables::set_empty(an->action_variables) == FALSE)) {
 			inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL,
 				an->compilation_data.an_package);
-			SharedVariables::set_frame_creator(an->action_variables, iname);
+			RTVariables::set_shared_variables_creator(an->action_variables, iname);
 			RTVariables::compile_frame_creator(an->action_variables);
 		}
 	}
@@ -192,7 +192,7 @@ void RTActions::ActionData(void) {
 		RTKinds::emit_strong_id(ActionSemantics::kind_of_second(an));
 		if ((an->action_variables) &&
 				(SharedVariables::set_empty(an->action_variables) == FALSE))
-			Emit::array_iname_entry(SharedVariables::frame_creator(an->action_variables));
+			Emit::array_iname_entry(RTVariables::get_shared_variables_creator(an->action_variables));
 		else Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry((inter_ti) (20000+an->allocation_id));
 	}
@@ -205,10 +205,10 @@ void RTActions::ActionData(void) {
 
 	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
 	save = Routines::begin(DB_Action_Details_iname);
-	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
-	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
-	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
-	inter_symbol *for_say_s = LocalVariables::add_named_call_as_symbol(I"for_say");
+	inter_symbol *act_s = LocalVariables::new_other_as_symbol(I"act");
+	inter_symbol *n_s = LocalVariables::new_other_as_symbol(I"n");
+	inter_symbol *s_s = LocalVariables::new_other_as_symbol(I"s");
+	inter_symbol *for_say_s = LocalVariables::new_other_as_symbol(I"for_say");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, act_s);

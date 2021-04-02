@@ -103,14 +103,14 @@ made above.
 
 @<Compile the default routine@> =
 	packaging_state save = Routines::begin(rname);
-	LocalVariables::add_named_call(I"a");
-	LocalVariables::add_named_call(I"b");
-	LocalVariables::add_named_call(I"c");
-	LocalVariables::add_named_call(I"d");
-	LocalVariables::add_named_call(I"e");
-	LocalVariables::add_named_call(I"f");
-	LocalVariables::add_named_call(I"g");
-	LocalVariables::add_named_call(I"h");
+	LocalVariables::new_other_parameter(I"a");
+	LocalVariables::new_other_parameter(I"b");
+	LocalVariables::new_other_parameter(I"c");
+	LocalVariables::new_other_parameter(I"d");
+	LocalVariables::new_other_parameter(I"e");
+	LocalVariables::new_other_parameter(I"f");
+	LocalVariables::new_other_parameter(I"g");
+	LocalVariables::new_other_parameter(I"h");
 	kind *result = NULL;
 	Kinds::binary_construction_material(K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {

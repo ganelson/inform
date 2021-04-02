@@ -32,7 +32,7 @@ void RTMeasurements::compile_test_functions(void) {
 	LOOP_OVER(mdef, measurement_definition)
 		if (mdef->compilation_data.property_schema_written) {
 			packaging_state save = Routines::begin(mdef->compilation_data.mdef_iname);
-			local_variable *lv = LocalVariables::add_call_parameter(
+			local_variable *lv = LocalVariables::new_call_parameter(
 				Frames::current_stack_frame(),
 				EMPTY_WORDING,
 				AdjectiveMeaningDomains::get_kind(mdef->headword_as_adjective));

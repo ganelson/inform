@@ -16,7 +16,7 @@ void RTUseOptions::TestUseOption_routine(void) {
 
 @<Compile the TestUseOption routine@> =
 	packaging_state save = Routines::begin(Hierarchy::find(TESTUSEOPTION_HL));
-	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
+	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
@@ -40,7 +40,7 @@ void RTUseOptions::TestUseOption_routine(void) {
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
+	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, UO_s);

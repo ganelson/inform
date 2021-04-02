@@ -1011,7 +1011,7 @@ void CoreSyntax::write_constant_local_variable_ANNOT(text_stream *OUT, parse_nod
 		WRITE(" {local: ");
 		LocalVariables::write(OUT, lvar);
 		WRITE(" ");
-		Kinds::Textual::write(OUT, LocalVariables::unproblematic_kind(lvar));
+		Kinds::Textual::write(OUT, LocalVariables::kind(lvar));
 		WRITE("}");
 	}
 }

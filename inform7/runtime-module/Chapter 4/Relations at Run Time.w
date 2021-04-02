@@ -156,8 +156,8 @@ void RTRelations::compile_relation_records(void) {
 	}
 	inter_name *iname = Hierarchy::find(CREATEDYNAMICRELATIONS_HL);
 	packaging_state save = Routines::begin(iname);
-	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
-	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
+	LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
+	LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
 	LOOP_OVER(bp, binary_predicate) {
 		if ((Relations::Explicit::stored_dynamically(bp)) && (bp->right_way_round)) {
 
@@ -358,16 +358,20 @@ void RTRelations::compile_relation_records(void) {
 
 	handler = RTRelations::handler_iname(bp);
 	packaging_state save = Routines::begin(handler);
-	inter_symbol *rr_s = LocalVariables::add_named_call_as_symbol(I"rr");
-	inter_symbol *task_s = LocalVariables::add_named_call_as_symbol(I"task");
-	local_variable *X_lv = NULL, *Y_lv = NULL;
-	inter_symbol *X_s = LocalVariables::add_named_call_as_symbol_noting(I"X", &X_lv);
-	inter_symbol *Y_s = LocalVariables::add_named_call_as_symbol_noting(I"Y", &Y_lv);
-	local_variable *Z1_lv = NULL, *Z2_lv = NULL, *Z3_lv = NULL, *Z4_lv = NULL;
-	inter_symbol *Z1_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"Z1", "loop counter", &Z1_lv);
-	LocalVariables::add_internal_local_c_as_symbol_noting(I"Z2", "loop counter", &Z2_lv);
-	inter_symbol *Z3_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"Z3", "loop counter", &Z3_lv);
-	LocalVariables::add_internal_local_c_as_symbol_noting(I"Z4", "loop counter", &Z4_lv);
+	inter_symbol *rr_s = LocalVariables::new_other_as_symbol(I"rr");
+	inter_symbol *task_s = LocalVariables::new_other_as_symbol(I"task");
+	local_variable *X_lv = LocalVariables::new_other_parameter(I"X");
+	local_variable *Y_lv = LocalVariables::new_other_parameter(I"Y");
+	inter_symbol *X_s = LocalVariables::declare(X_lv);
+	inter_symbol *Y_s = LocalVariables::declare(Y_lv);
+	local_variable *Z1_lv = LocalVariables::new_internal_commented(I"Z1", I"loop counter");
+	local_variable *Z2_lv = LocalVariables::new_internal_commented(I"Z2", I"loop counter");
+	local_variable *Z3_lv = LocalVariables::new_internal_commented(I"Z3", I"loop counter");
+	local_variable *Z4_lv = LocalVariables::new_internal_commented(I"Z4", I"loop counter");
+	inter_symbol *Z1_s = LocalVariables::declare(Z1_lv);
+	LocalVariables::declare(Z2_lv);
+	inter_symbol *Z3_s = LocalVariables::declare(Z3_lv);
+	LocalVariables::declare(Z4_lv);
 
 	annotated_i6_schema asch; i6_schema *i6s = NULL;
 
@@ -1004,7 +1008,7 @@ void RTRelations::compile_blank_relation(kind *K) {
 void RTRelations::IterateRelations(void) {
 	inter_name *iname = Hierarchy::find(ITERATERELATIONS_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
+	inter_symbol *callback_s = LocalVariables::new_other_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
 		if (bp->imp->record_needed) {
@@ -1483,9 +1487,9 @@ void RTRelations::compile_defined_relations(void) {
 
 @<Compile RProperty routine@> =
 	packaging_state save = Routines::begin(Hierarchy::find(RPROPERTY_HL));
-	inter_symbol *obj_s = LocalVariables::add_named_call_as_symbol(I"obj");
-	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
-	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");
+	inter_symbol *obj_s = LocalVariables::new_other_as_symbol(I"obj");
+	inter_symbol *cl_s = LocalVariables::new_other_as_symbol(I"cl");
+	inter_symbol *pr_s = LocalVariables::new_other_as_symbol(I"pr");
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
@@ -1515,8 +1519,9 @@ void RTRelations::compile_defined_relations(void) {
 @<Compile RGuard f0 routine@> =
 	if (rg->guard_f0_iname) {
 		packaging_state save = Routines::begin(rg->guard_f0_iname);
-		local_variable *X_lv = NULL;
-		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
+		local_variable *X_lv =
+			LocalVariables::new_internal_commented(I"X", I"which is related to at most one object");
+		inter_symbol *X_s = LocalVariables::declare(X_lv);
 		if (rg->f0) {
 			if (rg->check_R) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1553,8 +1558,9 @@ void RTRelations::compile_defined_relations(void) {
 @<Compile RGuard f1 routine@> =
 	if (rg->guard_f1_iname) {
 		packaging_state save = Routines::begin(rg->guard_f1_iname);
-		local_variable *X_lv = NULL;
-		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
+		local_variable *X_lv =
+			LocalVariables::new_internal_commented(I"X", I"which is related to at most one object");
+		inter_symbol *X_s = LocalVariables::declare(X_lv);
 		if (rg->f1) {
 			if (rg->check_L) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1591,9 +1597,10 @@ void RTRelations::compile_defined_relations(void) {
 @<Compile RGuard T routine@> =
 	if (rg->guard_test_iname) {
 		packaging_state save = Routines::begin(rg->guard_test_iname);
-		local_variable *L_lv = NULL, *R_lv = NULL;
-		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
-		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
+		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
+		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
+		inter_symbol *L_s = LocalVariables::declare(L_lv);
+		inter_symbol *R_s = LocalVariables::declare(R_lv);
 		if (rg->inner_test) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
@@ -1636,9 +1643,10 @@ void RTRelations::compile_defined_relations(void) {
 @<Compile RGuard MT routine@> =
 	if (rg->guard_make_true_iname) {
 		packaging_state save = Routines::begin(rg->guard_make_true_iname);
-		local_variable *L_lv = NULL, *R_lv = NULL;
-		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
-		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
+		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
+		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
+		inter_symbol *L_s = LocalVariables::declare(L_lv);
+		inter_symbol *R_s = LocalVariables::declare(R_lv);
 		if (rg->inner_make_true) {
 			int downs = 1;
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
@@ -1691,9 +1699,10 @@ void RTRelations::compile_defined_relations(void) {
 @<Compile RGuard MF routine@> =
 	if (rg->guard_make_false_iname) {
 		packaging_state save = Routines::begin(rg->guard_make_false_iname);
-		local_variable *L_lv = NULL, *R_lv = NULL;
-		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
-		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
+		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
+		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
+		inter_symbol *L_s = LocalVariables::declare(L_lv);
+		inter_symbol *R_s = LocalVariables::declare(R_lv);
 		if (rg->inner_make_false) {
 			int downs = 1;
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
@@ -1753,7 +1762,7 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	RTRelations::add_term_as_call_parameter(phsf, par1);
 	RTRelations::add_term_as_call_parameter(phsf, par2);
 
-	LocalVariables::enable_possessive_form_of_it();
+	Frames::enable_its(phsf);
 
 	parse_node *spec = NULL;
 	if (<s-condition>(W)) spec = <<rp>>;
@@ -1783,8 +1792,8 @@ void RTRelations::add_term_as_call_parameter(stack_frame *phsf,
 	kind *K = BPTerms::kind(&bptd);
 	kind *PK = K;
 	if ((PK == NULL) || (Kinds::Behaviour::is_subkind_of_object(PK))) PK = K_object;
-	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
-		bptd.called_name, PK);
+	local_variable *lv = LocalVariables::new_call_parameter(phsf, bptd.called_name, PK);
+	inter_symbol *lv_s = LocalVariables::declare(lv);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());

@@ -46,12 +46,12 @@ int LoopingOverScope::compilation_coroutine(void) {
 	packaging_state save = Routines::begin(los->los_iname);
 
 	stack_frame *phsf = Frames::current_stack_frame();
-	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
-	inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
+	local_variable *it_lv = Frames::enable_it(phsf, EMPTY_WORDING, K_object);
+	inter_symbol *it_s = LocalVariables::declare(it_lv);
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
-		LocalVariables::begin_condition_emit();
+		RTConditions::begin_condition_emit();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
 			parse_node *lv_sp = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, it_lv);
@@ -59,7 +59,7 @@ int LoopingOverScope::compilation_coroutine(void) {
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-		LocalVariables::end_condition_emit();
+		RTConditions::end_condition_emit();
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);

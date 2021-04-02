@@ -30,7 +30,7 @@ int APClauses::clause_ID_for_action_variable(shared_variable *stv) {
 	int D = -1;
 	PluginCalls::divert_AP_clause_ID(stv, &D); if (D >= 0) return D;
 	int oid = SharedVariables::get_owner_id(stv);
-	int off = SharedVariables::get_offset(stv);
+	int off = SharedVariables::get_index(stv);
 	return 1000*oid + off;
 }
 
@@ -286,8 +286,8 @@ int APClauses::compare_specificity_of_av_clauses(action_pattern *ap1, action_pat
 	ap_clause *apoc1 = APClauses::advance_to_next_av_clause(ap1->ap_clauses),
 		*apoc2 = APClauses::advance_to_next_av_clause(ap2->ap_clauses);
 	while ((apoc1) && (apoc2)) {
-		int off1 = SharedVariables::get_offset(apoc1->stv_to_match);
-		int off2 = SharedVariables::get_offset(apoc2->stv_to_match);
+		int off1 = SharedVariables::get_index(apoc1->stv_to_match);
+		int off2 = SharedVariables::get_index(apoc2->stv_to_match);
 		if (off1 == off2) {
 			int rv = Specifications::compare_specificity(
 				apoc1->clause_spec, apoc2->clause_spec, NULL);

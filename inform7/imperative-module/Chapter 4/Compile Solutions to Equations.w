@@ -214,7 +214,7 @@ void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok
 					Produce::down(Emit::tree());
 				}
 				inter_symbol *tok_s =
-					LocalVariables::declare_this(tok->leaf_symbol->local_map, FALSE, 8);
+					LocalVariables::declare(tok->leaf_symbol->local_map);
 				Produce::val_symbol(Emit::tree(), K_value, tok_s);
 				if (tok->leaf_symbol->promote_local_to_real)
 					Produce::up(Emit::tree());

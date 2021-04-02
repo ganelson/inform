@@ -1051,10 +1051,10 @@ void RTLiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_
 	literal_pattern_name *lpn;
 	literal_pattern *lp;
 	int k;
-	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
-	inter_symbol *which_s = LocalVariables::add_named_call_as_symbol(I"which");
-	inter_symbol *rem_s = LocalVariables::add_internal_local_as_symbol(I"rem");
-	inter_symbol *S_s = LocalVariables::add_internal_local_as_symbol(I"S");
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+	inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
+	inter_symbol *rem_s = LocalVariables::new_internal_as_symbol(I"rem");
+	inter_symbol *S_s = LocalVariables::new_internal_as_symbol(I"S");
 
 	LOOP_OVER(lpn, literal_pattern_name) {
 		if (Wordings::nonempty(lpn->notation_name)) {

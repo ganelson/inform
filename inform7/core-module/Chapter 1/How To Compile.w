@@ -244,7 +244,8 @@ so on. Those absolute basics are made here.
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(RTUseOptions::configure_template)
-	BENCH(RTBibliographicData::IFID_text);
+	BENCH(LocalParking::compile_array)
+	BENCH(RTBibliographicData::IFID_text)
 
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",

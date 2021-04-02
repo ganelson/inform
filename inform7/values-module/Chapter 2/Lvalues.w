@@ -209,7 +209,7 @@ kind *Lvalues::to_kind(parse_node *spec) {
 @<Return the kind of a local variable@> =
 	local_variable *lvar = Node::get_constant_local_variable(spec);
 	if (lvar == NULL) return K_value; /* for "existing" */
-	return LocalVariables::unproblematic_kind(lvar);
+	return LocalVariables::kind(lvar);
 
 @<Return the kind of a non-local variable@> =
 	nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec);
@@ -268,7 +268,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 
 @<Compile a local variable specification@> =
 	local_variable *lvar = Node::get_constant_local_variable(spec_found);
-	inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	if (lvar == NULL) {
 		LOG("Bad: %08x\n", spec_found);
 		internal_error("Compiled never-specified LOCAL VARIABLE SP");
@@ -393,16 +393,16 @@ object as produced the original text containing the substitution.
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
-				LocalVariables::used_stack_selection();
+				LocalVariables::used_ct_locals();
 				LocalVariables::add_table_lookup();
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
-				local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
-				inter_symbol *ct_0_s = LocalVariables::declare_this(ct_0_lv, FALSE, 8);
-				local_variable *ct_1_lv = LocalVariables::by_name(I"ct_1");
-				inter_symbol *ct_1_s = LocalVariables::declare_this(ct_1_lv, FALSE, 8);
+				local_variable *ct_0_lv = LocalVariables::find_internal(I"ct_0");
+				inter_symbol *ct_0_s = LocalVariables::declare(ct_0_lv);
+				local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
+				inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
 				Produce::val_symbol(Emit::tree(), K_value, ct_0_s);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 				Produce::val_symbol(Emit::tree(), K_value, ct_1_s);

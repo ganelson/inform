@@ -144,14 +144,14 @@ essence here.
 @<If the response is via I6, compile the necessary routine for this rule@> =
 	inter_name *responder_iname = RTRules::get_handler_definition(resp->responding_rule);
 	packaging_state save = Routines::begin(responder_iname);
-	inter_symbol *code_s = LocalVariables::add_named_call_as_symbol(I"code");
-	inter_symbol *val_s = LocalVariables::add_named_call_as_symbol(I"val");
-	inter_symbol *val2_s = LocalVariables::add_named_call_as_symbol(I"val2");
-	inter_symbol *s_s = LocalVariables::add_internal_local_as_symbol(I"s");
-	inter_symbol *s2_s = LocalVariables::add_internal_local_as_symbol(I"s2");
-	inter_symbol *s3_s = LocalVariables::add_internal_local_as_symbol(I"s3");
-	inter_symbol *str_s = LocalVariables::add_internal_local_as_symbol(I"str");
-	inter_symbol *f_s = LocalVariables::add_internal_local_as_symbol(I"f");
+	inter_symbol *code_s = LocalVariables::new_other_as_symbol(I"code");
+	inter_symbol *val_s = LocalVariables::new_other_as_symbol(I"val");
+	inter_symbol *val2_s = LocalVariables::new_other_as_symbol(I"val2");
+	inter_symbol *s_s = LocalVariables::new_internal_as_symbol(I"s");
+	inter_symbol *s2_s = LocalVariables::new_internal_as_symbol(I"s2");
+	inter_symbol *s3_s = LocalVariables::new_internal_as_symbol(I"s3");
+	inter_symbol *str_s = LocalVariables::new_internal_as_symbol(I"str");
+	inter_symbol *f_s = LocalVariables::new_internal_as_symbol(I"f");
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
@@ -331,7 +331,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 @<Compile the PrintResponse routine@> =
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_response);
 	packaging_state save = Routines::begin(printing_rule_name);
-	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
+	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
 		inter_name *iname = Strings::response_constant_iname(resp->responding_rule,
@@ -530,7 +530,7 @@ so the penultimate word, if it's there, is the letter.
 	}
 	stack_frame *phsf = Frames::current_stack_frame();
 	if (Holsters::data_acceptable(VH)) {
-		int downs = LocalVariables::emit_storage(phsf);
+		int downs = LocalParking::park(phsf);
 		response_message *resp =
 			Strings::response_cue(VH, rule_being_compiled, code, SW,
 				Frames::boxed_frame(phsf), FALSE);

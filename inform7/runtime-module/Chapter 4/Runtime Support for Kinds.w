@@ -759,7 +759,7 @@ void RTKinds::compile_structures(void) {
 @<Compile the default value finder@> =
 	inter_name *iname = Hierarchy::find(DEFAULTVALUEFINDER_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
 		kind *K = rks->kind_described;
@@ -1151,7 +1151,7 @@ compilation errors.
 
 @<Compile I6 printing routine for a vacant but named kind@> =
 	packaging_state save = Routines::begin(printing_rule_name);
-	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "! weak kind ID: %d\n", RTKinds::weak_id(K));
 	Emit::code_comment(C);
@@ -1172,7 +1172,7 @@ but at present this can't happen.
 			LiteralPatterns::list_of_literal_forms(K));
 	else {
 		packaging_state save = Routines::begin(printing_rule_name);
-		inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
+		inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_symbol(Emit::tree(), K_value, value_s);
@@ -1182,7 +1182,7 @@ but at present this can't happen.
 
 @<Compile I6 printing routine for an enumerated kind@> =
 	packaging_state save = Routines::begin(printing_rule_name);
-	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -1259,10 +1259,12 @@ to |A_T1_colour(v)|.
 	Routines::end(save);
 
 @ There should be a blue historical plaque on the wall here: this was the
-first routine implemented by emitting Inter code, on 12 November 2017.
+first function ever implemented by emitting Inter code, on 12 November 2017.
 
 @<Implement the A routine@> =
-	inter_symbol *x = LocalVariables::create_and_declare(I"x", K);
+	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
+	LocalVariables::set_kind(lv_x, K);
+	inter_symbol *x = LocalVariables::declare(lv_x);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
@@ -1292,7 +1294,9 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 @ And this was the second, a few minutes later.
 
 @<Implement the B routine@> =
-	inter_symbol *x = LocalVariables::create_and_declare(I"x", K);
+	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
+	LocalVariables::set_kind(lv_x, K);
+	inter_symbol *x = LocalVariables::declare(lv_x);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
@@ -1343,8 +1347,8 @@ and |b| inclusive.
 @<Compile random-ranger routine for this kind@> =
 	inter_name *iname_r = Kinds::Behaviour::get_ranger_iname(K);
 	packaging_state save = Routines::begin(iname_r);
-	inter_symbol *a_s = LocalVariables::add_named_call_as_symbol(I"a");
-	inter_symbol *b_s = LocalVariables::add_named_call_as_symbol(I"b");
+	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
+	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
@@ -1460,8 +1464,8 @@ deduced from its value alone, |K| must explicitly be supplied.)
 @<Compile PrintKindValuePair@> =
 	inter_name *pkvp_iname = Hierarchy::find(PRINTKINDVALUEPAIR_HL);
 	packaging_state save = Routines::begin(pkvp_iname);
-	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
-	inter_symbol *v_s = LocalVariables::add_named_call_as_symbol(I"v");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
+	inter_symbol *v_s = LocalVariables::new_other_as_symbol(I"v");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
@@ -1517,9 +1521,9 @@ which have to be given some type-safe value to start out at.
 @<Compile DefaultValueOfKOV@> =
 	inter_name *dvok_iname = Hierarchy::find(DEFAULTVALUEOFKOV_HL);
 	packaging_state save = Routines::begin(dvok_iname);
-	inter_symbol *sk_s = LocalVariables::add_named_call_as_symbol(I"sk");
-	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
+	inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
+	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
+	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
@@ -1588,9 +1592,9 @@ unless the two values are genuinely equal.
 @<Compile KOVComparisonFunction@> =
 	inter_name *kcf_iname = Hierarchy::find(KOVCOMPARISONFUNCTION_HL);
 	packaging_state save = Routines::begin(kcf_iname);
-	LocalVariables::add_named_call(I"k");
-	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
+	LocalVariables::new_other_parameter(I"k");
+	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
+	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
@@ -1645,8 +1649,8 @@ unless the two values are genuinely equal.
 @<Compile KOVDomainSize@> =
 	inter_name *kds_iname = Hierarchy::find(KOVDOMAINSIZE_HL);
 	packaging_state save = Routines::begin(kds_iname);
-	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
+	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
+	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
@@ -1703,7 +1707,7 @@ storing pointers to blocks on the heap.
 @<Compile KOVIsBlockValue@> =
 	inter_name *kibv_iname = Hierarchy::find(KOVISBLOCKVALUE_HL);
 	packaging_state save = Routines::begin(kibv_iname);
-	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
@@ -1745,8 +1749,8 @@ such a function does, see "BlockValues.i6t".
 @<Compile KOVSupportFunction@> =
 	inter_name *ksf_iname = Hierarchy::find(KOVSUPPORTFUNCTION_HL);
 	packaging_state save = Routines::begin(ksf_iname);
-	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
-	inter_symbol *fail_s = LocalVariables::add_named_call_as_symbol(I"fail");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
+	inter_symbol *fail_s = LocalVariables::new_other_as_symbol(I"fail");
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
@@ -1807,7 +1811,7 @@ Z-machine array space.
 void RTKinds::I7_Kind_Name_routine(void) {
 	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {

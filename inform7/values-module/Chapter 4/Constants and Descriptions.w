@@ -523,7 +523,7 @@ except that the noun is optional. The only difference is right at the bottom.
 			wording C = Node::get_text(c);
 			Descriptions::attach_calling(p, C);
 			kind *K = Specifications::to_kind(p);
-			LocalVariables::ensure_called_local(C, K);
+			LocalVariables::ensure_calling(C, K);
 		}
 	}
 	==> { -, p };

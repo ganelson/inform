@@ -7343,7 +7343,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'list the contents of the common holder , as a sentence , inc' {results_from_splitting} {indent: 5}
                                                                     INVOCATION_NT'list the contents of the common holder' {phrase invoked: call} {phrase options invoked: as a sentence , including contents , giving brief inventory information , tersely , not listing concealed items , listing marked items only}
                                                                         RVALUE_CONTEXT_NT'common holder' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'an object'} {required: object}
-                                                                            LOCAL_VARIABLE_NT'common holder' {local: LV<unallocated> object}
+                                                                            LOCAL_VARIABLE_NT'common holder' {local: LV<unallocated> nothing}
                                                             CODE_BLOCK_NT'otherwise' {results_from_splitting} {indent: 4} {control structure: O}
                                                                 CODE_BLOCK_NT'say "[a list of marked for listing things including contents' {control structure: SAY}
                                                                     INVOCATION_LIST_SAY_NT'a list of marked for listing things including contents'
@@ -7636,7 +7636,7 @@ ROOT_NT
                                                             RVALUE_CONTEXT_NT'initial appearance of the item' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                 PROPERTY_VALUE_NT'initial appearance of the item' {record as self}
                                                                     CONSTANT_NT {kind: nothing valued property} {property: 'initial appearance'=text}{meaning: {initial appearance = PROPERTY_MC}}
-                                                                    LOCAL_VARIABLE_NT'the item' {local: LV<unallocated> thing}
+                                                                    LOCAL_VARIABLE_NT'the item' {local: LV<unallocated> nothing}
                                                 CODE_BLOCK_NT'say paragraph break' {control structure: SAY}
                                                     INVOCATION_LIST_SAY_NT'paragraph break'
                                                         INVOCATION_NT'paragraph break' {phrase invoked: call}
@@ -8328,9 +8328,9 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'let the transferred item be the possible item' {results_from_splitting} {indent: 5}
                                                                     INVOCATION_NT'let the transferred item be the possible item' {phrase invoked: call}
                                                                         LVALUE_LOCAL_CONTEXT_NT'transferred item' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                                            LOCAL_VARIABLE_NT'transferred item' {local: LV<unallocated> object}
+                                                                            LOCAL_VARIABLE_NT'transferred item' {local: LV<unallocated> nothing}
                                                                         RVALUE_CONTEXT_NT'possible item' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
-                                                                            LOCAL_VARIABLE_NT'possible item' {local: LV<unallocated> thing}
+                                                                            LOCAL_VARIABLE_NT'possible item' {local: LV<unallocated> nothing}
                                                 CODE_BLOCK_NT {control structure: IF}
                                                     INVOCATION_LIST_NT'if the transferred item is not nothing' {colon_block_command} {indent: 3}
                                                         INVOCATION_NT'if the transferred item is not nothing' {phrase invoked: call}
@@ -8351,7 +8351,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'silently try the actor trying inserting the transferred item' {indent: 4}
                                                             INVOCATION_NT'silently try the actor trying inserting the transferred item' {phrase invoked: call}
                                                                 RVALUE_CONTEXT_NT'actor trying inserting the transferred item into the current' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                                    CONSTANT_NT'actor trying inserting the transferred item into the current' {kind: action} {explicit action: <action-based: inserting it into * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: LOCAL_VARIABLE_NT'the transferred item' {local: LV<unallocated> object} second: LOCAL_VARIABLE_NT'the current working sack' {local: LV"current working sack"-player's holdall player's holdall}>}
+                                                                    CONSTANT_NT'actor trying inserting the transferred item into the current' {kind: action} {explicit action: <action-based: inserting it into * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: LOCAL_VARIABLE_NT'the transferred item' {local: LV<unallocated> nothing} second: LOCAL_VARIABLE_NT'the current working sack' {local: LV"current working sack"-player's holdall player's holdall}>}
                                                         CODE_BLOCK_NT {control structure: IF}
                                                             INVOCATION_LIST_NT'if the transferred item is not in the current working sack' {colon_block_command} {indent: 4}
                                                                 INVOCATION_NT'if the transferred item is not in the current working sack' {phrase invoked: call}
@@ -9522,7 +9522,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'room-or-door direction d from the room gone from'
                                                             INVOCATION_NT'room-or-door direction d from the room gone from' {phrase invoked: call} {resulting: object} {unproven}
                                                                 RVALUE_CONTEXT_NT'direction d' {token check to do: TEST_VALUE_NT'direction'} {token to be parsed against: TEST_VALUE_NT'direction'} {required: direction}
-                                                                    LOCAL_VARIABLE_NT'direction d' {local: LV<unallocated> object}
+                                                                    LOCAL_VARIABLE_NT'direction d' {local: LV<unallocated> nothing}
                                                                 RVALUE_CONTEXT_NT'room gone from' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'room'} {required: room}
                                                                     NONLOCAL_VARIABLE_NT'room gone from' {nonlocal: 'room gone from'(var)room}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
@@ -9707,7 +9707,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'room-or-door direction d from the room gone from'
                                                             INVOCATION_NT'room-or-door direction d from the room gone from' {phrase invoked: call} {resulting: object} {unproven}
                                                                 RVALUE_CONTEXT_NT'direction d' {token check to do: TEST_VALUE_NT'direction'} {token to be parsed against: TEST_VALUE_NT'direction'} {required: direction}
-                                                                    LOCAL_VARIABLE_NT'direction d' {local: LV<unallocated> object}
+                                                                    LOCAL_VARIABLE_NT'direction d' {local: LV<unallocated> nothing}
                                                                 RVALUE_CONTEXT_NT'room gone from' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'room'} {required: room}
                                                                     NONLOCAL_VARIABLE_NT'room gone from' {nonlocal: 'room gone from'(var)room}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
@@ -9928,7 +9928,7 @@ ROOT_NT
                                                                                 INVOCATION_LIST_NT'room back way from the location'
                                                                                     INVOCATION_NT'room back way from the location' {phrase invoked: call} {resulting: room} {unproven}
                                                                                         RVALUE_CONTEXT_NT'back way' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'direction'} {required: direction}
-                                                                                            LOCAL_VARIABLE_NT'back way' {local: LV<unallocated> direction}
+                                                                                            LOCAL_VARIABLE_NT'back way' {local: LV<unallocated> nothing}
                                                                                         RVALUE_CONTEXT_NT'location' {token check to do: TEST_VALUE_NT'room'} {token to be parsed against: TEST_VALUE_NT'room'} {required: room}
                                                                                             NONLOCAL_VARIABLE_NT'location' {nonlocal: 'location'(var)object}{meaning: {location = VARIABLE_MC}}
                                                                 INVOCATION_LIST_NT'let the room normally this way be the room noun from the roo' {indent: 5}
@@ -11313,17 +11313,17 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'let the intermediate position be the visibility-holder of th' {indent: 3}
                                                     INVOCATION_NT'let the intermediate position be the visibility-holder of th' {phrase invoked: call}
                                                         LVALUE_LOCAL_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                         RVALUE_CONTEXT_NT'visibility-holder of the intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                             PHRASE_TO_DECIDE_VALUE_NT'visibility-holder of the intermediate position'
                                                                 INVOCATION_LIST_NT'visibility-holder of the intermediate position'
                                                                     INVOCATION_NT'visibility-holder of the intermediate position' {phrase invoked: call} {resulting: object}
                                                                         RVALUE_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                 INVOCATION_LIST_NT'decrease the ip count by 1' {indent: 3}
                                                     INVOCATION_NT'decrease the ip count by 1' {phrase invoked: call}
                                                         LVALUE_CONTEXT_NT'ip count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'equation'}
-                                                            LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> number}
+                                                            LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> nothing}
                                                         RVALUE_CONTEXT_NT'1' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                             CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}
                                         INVOCATION_LIST_NT'let the top-down ip count be the visibility level count' {indent: 2}
@@ -11341,13 +11341,13 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'let the intermediate position be the actor' {indent: 3}
                                                     INVOCATION_NT'let the intermediate position be the actor' {phrase invoked: call}
                                                         LVALUE_LOCAL_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                         RVALUE_CONTEXT_NT'actor' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                             NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}
                                                 INVOCATION_LIST_NT'let the ip count be 0' {indent: 3}
                                                     INVOCATION_NT'let the ip count be 0' {phrase invoked: call}
                                                         LVALUE_LOCAL_CONTEXT_NT'ip count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                            LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> number}
+                                                            LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> nothing}
                                                         RVALUE_CONTEXT_NT'0' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                             CONSTANT_NT'0' {kind: number} {explicit literal} {number: 0}
                                                 CODE_BLOCK_NT {control structure: WHI}
@@ -11359,27 +11359,27 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'let the intermediate position be the visibility-holder of th' {indent: 4}
                                                             INVOCATION_NT'let the intermediate position be the visibility-holder of th' {phrase invoked: call}
                                                                 LVALUE_LOCAL_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                                    LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                                    LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                                 RVALUE_CONTEXT_NT'visibility-holder of the intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                                     PHRASE_TO_DECIDE_VALUE_NT'visibility-holder of the intermediate position'
                                                                         INVOCATION_LIST_NT'visibility-holder of the intermediate position'
                                                                             INVOCATION_NT'visibility-holder of the intermediate position' {phrase invoked: call} {resulting: object}
                                                                                 RVALUE_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                                                    LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                                                    LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                         INVOCATION_LIST_NT'increase the ip count by 1' {indent: 4}
                                                             INVOCATION_NT'increase the ip count by 1' {phrase invoked: call}
                                                                 LVALUE_CONTEXT_NT'ip count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'equation'}
-                                                                    LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> number}
+                                                                    LOCAL_VARIABLE_NT'ip count' {local: LV<unallocated> nothing}
                                                                 RVALUE_CONTEXT_NT'1' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                                     CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}
                                                 INVOCATION_LIST_NT'describe locale for the intermediate position' {indent: 3}
                                                     INVOCATION_NT'describe locale for the intermediate position' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'intermediate position' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> thing}
+                                                            LOCAL_VARIABLE_NT'intermediate position' {local: LV<unallocated> nothing}
                                                 INVOCATION_LIST_NT'decrease the top-down ip count by 1' {indent: 3}
                                                     INVOCATION_NT'decrease the top-down ip count by 1' {phrase invoked: call}
                                                         LVALUE_CONTEXT_NT'top-down ip count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'equation'}
-                                                            LOCAL_VARIABLE_NT'top-down ip count' {local: LV<unallocated> number}
+                                                            LOCAL_VARIABLE_NT'top-down ip count' {local: LV<unallocated> nothing}
                                                         RVALUE_CONTEXT_NT'1' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                             CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}
                                 INVOCATION_LIST_NT'continue the action' {indent: 1}
@@ -16657,7 +16657,7 @@ ROOT_NT
                             INVOCATION_LIST_NT'try the current actor going the way' {indent: 2}
                                 INVOCATION_NT'try the current actor going the way' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current actor going the way' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current actor going the way' {kind: action} {explicit action: <action-based: going * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the way' {local: LV<unallocated> direction}>}
+                                        CONSTANT_NT'current actor going the way' {kind: action} {explicit action: <action-based: going * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the way' {local: LV<unallocated> nothing}>}
             IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 817}
             DEFN_CONT_NT'a room is air-conditioned' {unit: 4}
                 CODE_BLOCK_NT
@@ -19154,7 +19154,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'index' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {new var: number} {required: value}
                                         UNKNOWN_NT'index'
                                     RVALUE_CONTEXT_NT'count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
-                                        LOCAL_VARIABLE_NT'count' {local: LV<unallocated> object}
+                                        LOCAL_VARIABLE_NT'count' {local: LV<unallocated> nothing}
                             CODE_BLOCK_NT {control structure: RPT}
                                 INVOCATION_LIST_NT'repeat with next room running through adjacent outdoors room' {colon_block_command} {indent: 2}
                                     INVOCATION_NT'repeat with next room running through adjacent outdoors room' {phrase invoked: call} {kind variable declarations: K=room}
@@ -19174,12 +19174,12 @@ ROOT_NT
                                                             RVALUE_CONTEXT_NT'location' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
                                                                 NONLOCAL_VARIABLE_NT'location' {nonlocal: 'location'(var)object}{meaning: {location = VARIABLE_MC}}
                                                             RVALUE_CONTEXT_NT'next room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                                LOCAL_VARIABLE_NT'next room' {local: LV<unallocated> room}
+                                                                LOCAL_VARIABLE_NT'next room' {local: LV<unallocated> nothing}
                                     CODE_BLOCK_NT'say "[way] to [the next room]"' {control structure: SAY}
                                         INVOCATION_LIST_SAY_NT'way'
                                             INVOCATION_NT'way' {phrase invoked: call} {kind variable declarations: K=object}
                                                 RVALUE_CONTEXT_NT'way' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
-                                                    LOCAL_VARIABLE_NT'way' {local: LV<unallocated> object}
+                                                    LOCAL_VARIABLE_NT'way' {local: LV<unallocated> nothing}
                                         INVOCATION_LIST_SAY_NT'" to "'
                                             INVOCATION_NT'" to "' {phrase invoked: call} {kind variable declarations: K=text}
                                                 RVALUE_CONTEXT_NT'" to "' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
@@ -19187,17 +19187,17 @@ ROOT_NT
                                         INVOCATION_LIST_SAY_NT'the next room'
                                             INVOCATION_NT'the next room' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'next room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                    LOCAL_VARIABLE_NT'next room' {local: LV<unallocated> room}
+                                                    LOCAL_VARIABLE_NT'next room' {local: LV<unallocated> nothing}
                                     INVOCATION_LIST_NT'decrement index' {indent: 3}
                                         INVOCATION_NT'decrement index' {phrase invoked: call}
                                             LVALUE_CONTEXT_NT'index' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'equation'}
-                                                LOCAL_VARIABLE_NT'index' {local: LV<unallocated> number}
+                                                LOCAL_VARIABLE_NT'index' {local: LV<unallocated> nothing}
                             INVOCATION_LIST_NT'make delimiter index of count , continuing' {indent: 2}
                                 INVOCATION_NT'make delimiter index of count' {phrase invoked: call} {phrase options invoked: continuing}
                                     RVALUE_CONTEXT_NT'index' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'a number'} {required: number}
-                                        LOCAL_VARIABLE_NT'index' {local: LV<unallocated> number}
+                                        LOCAL_VARIABLE_NT'index' {local: LV<unallocated> nothing}
                                     RVALUE_CONTEXT_NT'count' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'a number'} {required: number}
-                                        LOCAL_VARIABLE_NT'count' {local: LV<unallocated> object}
+                                        LOCAL_VARIABLE_NT'count' {local: LV<unallocated> nothing}
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if a proximate door is not mentioned' {colon_block_command} {indent: 1}
                             INVOCATION_NT'if a proximate door is not mentioned' {phrase invoked: call}
@@ -19300,7 +19300,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'room way from the location'
                                                 INVOCATION_NT'room way from the location' {phrase invoked: call} {resulting: room} {unproven}
                                                     RVALUE_CONTEXT_NT'way' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'direction'} {required: direction}
-                                                        LOCAL_VARIABLE_NT'way' {local: LV<unallocated> direction}
+                                                        LOCAL_VARIABLE_NT'way' {local: LV<unallocated> nothing}
                                                     RVALUE_CONTEXT_NT'location' {token check to do: TEST_VALUE_NT'room'} {token to be parsed against: TEST_VALUE_NT'room'} {required: room}
                                                         NONLOCAL_VARIABLE_NT'location' {nonlocal: 'location'(var)object}{meaning: {location = VARIABLE_MC}}
                             CODE_BLOCK_NT {control structure: IF}
@@ -19312,7 +19312,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'try going way' {results_from_splitting} {indent: 3}
                                         INVOCATION_NT'try going way' {phrase invoked: call}
                                             RVALUE_CONTEXT_NT'going way' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                CONSTANT_NT'going way' {kind: action} {explicit action: <action-based: going * noun: LOCAL_VARIABLE_NT'way' {local: LV<unallocated> direction}>}
+                                                CONSTANT_NT'going way' {kind: action} {explicit action: <action-based: going * noun: LOCAL_VARIABLE_NT'way' {local: LV<unallocated> nothing}>}
                                     CODE_BLOCK_NT {control structure: INS}
             SENTENCE_NT'blank is a room' {unit: 4} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -19707,18 +19707,18 @@ ROOT_NT
                                     RVALUE_CONTEXT_NT'conversation of the speaker' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                         PROPERTY_VALUE_NT'conversation of the speaker'
                                             CONSTANT_NT {kind: nothing valued property} {property: 'conversation'=table name}{meaning: {conversation = PROPERTY_MC}}
-                                            LOCAL_VARIABLE_NT'the speaker' {local: LV<unallocated> person}
+                                            LOCAL_VARIABLE_NT'the speaker' {local: LV<unallocated> nothing}
                             INVOCATION_LIST_NT'sort source in turn stamp order' {indent: 2}
                                 INVOCATION_NT'sort source in turn stamp order' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'source' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'table name'} {required: table name}
-                                        LOCAL_VARIABLE_NT'source' {local: LV<unallocated> table name}
+                                        LOCAL_VARIABLE_NT'source' {local: LV<unallocated> nothing}
                                     RVALUE_CONTEXT_NT'turn stamp' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'table column'} {required: table column}
                                         CONSTANT_NT'turn stamp' {kind: nothing valued table column} {table column: 'turn stamp'}{meaning: {turn stamp = TABLE_COLUMN_MC}}
                             CODE_BLOCK_NT'say "[The speaker] has so far told you: [line break]"' {control structure: SAY}
                                 INVOCATION_LIST_SAY_NT'the speaker'
                                     INVOCATION_NT'the speaker' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'speaker' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                            LOCAL_VARIABLE_NT'speaker' {local: LV<unallocated> person}
+                                            LOCAL_VARIABLE_NT'speaker' {local: LV<unallocated> nothing}
                                 INVOCATION_LIST_SAY_NT'" has so far told you: "' {suppress_newlines}
                                     INVOCATION_NT'" has so far told you: "' {phrase invoked: call} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'" has so far told you: "' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
@@ -19735,7 +19735,7 @@ ROOT_NT
                                 INVOCATION_LIST_NT'repeat through source' {colon_block_command} {indent: 2}
                                     INVOCATION_NT'repeat through source' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'source' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'table name'} {required: table name}
-                                            LOCAL_VARIABLE_NT'source' {local: LV<unallocated> table name}
+                                            LOCAL_VARIABLE_NT'source' {local: LV<unallocated> nothing}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT {control structure: IF}
                                         INVOCATION_LIST_NT'if there is a turn stamp entry and the speaker is character ' {colon_block_command} {indent: 3}
@@ -19754,7 +19754,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'let index be 1' {indent: 4}
                                                 INVOCATION_NT'let index be 1' {phrase invoked: call}
                                                     LVALUE_LOCAL_CONTEXT_NT'index' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                        LOCAL_VARIABLE_NT'index' {local: LV<unallocated> number}
+                                                        LOCAL_VARIABLE_NT'index' {local: LV<unallocated> nothing}
                                                     RVALUE_CONTEXT_NT'1' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                         CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}
                                             CODE_BLOCK_NT'say "  [summary entry][line break]"' {control structure: SAY}
@@ -19940,7 +19940,7 @@ ROOT_NT
                                             RVALUE_CONTEXT_NT'character' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: table column}
                                                 CONSTANT_NT'character' {kind: nothing valued table column} {table column: 'character'}{meaning: {character = TABLE_COLUMN_MC}}
                                             RVALUE_CONTEXT_NT'accomplice' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: value}
-                                                LOCAL_VARIABLE_NT'accomplice' {local: LV<unallocated> thing}
+                                                LOCAL_VARIABLE_NT'accomplice' {local: LV<unallocated> nothing}
                                             RVALUE_CONTEXT_NT'current table' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'table name'} {required: table name}
                                                 LOCAL_VARIABLE_NT'current table' {local: LV"current table"-table name table name}
                                     INVOCATION_LIST_NT'blank out the whole row' {indent: 3}
@@ -20561,7 +20561,7 @@ ROOT_NT
                                         INVOCATION_LIST_SAY_NT'the target'
                                             INVOCATION_NT'the target' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'target' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                    LOCAL_VARIABLE_NT'target' {local: LV<unallocated> room}
+                                                    LOCAL_VARIABLE_NT'target' {local: LV<unallocated> nothing}
                             CODE_BLOCK_NT {control structure: IF}
                                 INVOCATION_LIST_NT'if the total entry is 1 and count is 1 and accomplice carrie' {indent: 2} {colon_block_command}
                                     INVOCATION_NT'if the total entry is 1 and count is 1 and accomplice carrie' {phrase invoked: call}
@@ -20791,22 +20791,22 @@ ROOT_NT
                                                 INVOCATION_LIST_SAY_NT'the patient as pronoun'
                                                     [1/2] INVOCATION_NT'the patient as pronoun' {phrase invoked: call} {unproven}/1
                                                         RVALUE_CONTEXT_NT'patient' {token check to do: TEST_VALUE_NT'a man'} {token to be parsed against: TEST_VALUE_NT'a man'} {required: man}
-                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> person}
+                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> nothing}
                                                     [2/2] INVOCATION_NT'the patient as pronoun' {phrase invoked: call} {unproven}
                                                         RVALUE_CONTEXT_NT'patient' {token check to do: TEST_VALUE_NT'a woman'} {token to be parsed against: TEST_VALUE_NT'a woman'} {required: woman}
-                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> person}
+                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> nothing}
                                         CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 3} {control structure: O}
                                             CODE_BLOCK_NT'say "[The patient]"' {control structure: SAY}
                                                 INVOCATION_LIST_SAY_NT'the patient'
                                                     INVOCATION_NT'the patient' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'patient' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> person}
+                                                            LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> nothing}
                                 CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
                                     CODE_BLOCK_NT'say "[the patient]"' {control structure: SAY}
                                         INVOCATION_LIST_SAY_NT'the patient'
                                             INVOCATION_NT'the patient' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'patient' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
-                                                    LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> person}
+                                                    LOCAL_VARIABLE_NT'patient' {local: LV<unallocated> nothing}
                             CODE_BLOCK_NT'say " [looks as though dipped in for index] [infection color' {control structure: SAY}
                                 INVOCATION_LIST_SAY_NT'" "'
                                     INVOCATION_NT'" "' {phrase invoked: call} {kind variable declarations: K=text}
@@ -20825,7 +20825,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'infection color of the patient' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             PROPERTY_VALUE_NT'infection color of the patient' {record as self}
                                                 CONSTANT_NT {kind: infection colors valued property} {property: 'infection color'=infection color}{meaning: {infection color = PROPERTY_MC}}
-                                                LOCAL_VARIABLE_NT'the patient' {local: LV<unallocated> person}
+                                                LOCAL_VARIABLE_NT'the patient' {local: LV<unallocated> nothing}
                             INVOCATION_LIST_NT'decrement index' {indent: 2}
                                 INVOCATION_NT'decrement index' {phrase invoked: call}
                                     LVALUE_CONTEXT_NT'index' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'equation'}

@@ -85,15 +85,15 @@ checker has already done all of the work to decide what kind it has.)
 	}
 
 @<Create a local at this token@> =
-	local_variable *lvar = LocalVariables::new(Node::get_text(val), K);
+	local_variable *lvar = LocalVariables::new_let_value(Node::get_text(val), K);
 	if (IDTypeData::block_follows(idb) == LOOP_BODY_BLOCK_FOLLOWS)
-		Frames::Blocks::set_scope_to_block_about_to_open(lvar);
+		CodeBlocks::set_scope_to_block_about_to_open(lvar);
 	else
-		Frames::Blocks::set_variable_scope(lvar);
+		CodeBlocks::set_variable_scope(lvar);
 	tokens->args[i] =
 		Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
-		inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+		inter_symbol *lvar_s = LocalVariables::declare(lvar);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
@@ -118,7 +118,7 @@ the |TAIL| stream: that happens when the block closes.)
 @<Open a code block@> =
 	parse_node *val = NULL;
 	if (Invocations::get_no_tokens(inv) > 0) val = tokens->args[0];
-	Frames::Blocks::supply_val_and_stream(val, tail_schema, CSIS);
+	CodeBlocks::supply_val_and_stream(val, tail_schema, CSIS);
 
 @ As we will see (in the discussion of |{-my:...}| below), any variables made
 as scratch values for the invocation are deallocated as soon as we're finished,
@@ -127,7 +127,7 @@ unless a code block is opened: if it is, then they're deallocated when it ends.
 @<Release any variables created inline@> =
 	for (int i=0; i<10; i++)
 		if (my_vars[i])
-			LocalVariables::deallocate(my_vars[i]);
+			LocalVariableSlates::deallocate_I7_local(my_vars[i]);
 
 @ We can now forget about heads and tails, and work on expanding a single
 inline definition into a single stream. Often this just involves copying it,
@@ -895,7 +895,7 @@ the second time it's simply printed.)
 	int n = Str::get_at(sche->operand, 0) - '0';
 	if ((Str::get_at(sche->operand, 1) == 0) && (n >= 0) && (n < 10)) @<A single digit as the name@>
 	else @<An Inform 6 identifier as the name@>;
-	inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	if (prim_cat == REF_PRIM_CAT) Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 	else Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 	return;
@@ -925,11 +925,11 @@ that code block.
 @<A single digit as the name@> =
 	lvar = my_vars[n];
 	if (lvar == NULL) {
-		my_vars[n] = LocalVariables::new(EMPTY_WORDING, K_number);
+		my_vars[n] = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
 		lvar = my_vars[n];
 		@<Set the kind of the my-variable@>;
 		if (IDTypeData::block_follows(idb))
-			Frames::Blocks::set_scope_to_block_about_to_open(lvar);
+			CodeBlocks::set_scope_to_block_about_to_open(lvar);
 	}
 
 @ The second form is simpler. |{-my:1}| and such make locals with names like
@@ -960,7 +960,7 @@ the same name for some quite different purpose, wreaking havoc. This is
 why the numbered scheme above is mostly better.
 
 @<An Inform 6 identifier as the name@> =
-	lvar = LocalVariables::add_internal_local(sche->operand);
+	lvar = LocalVariables::new_internal(sche->operand);
 	@<Set the kind of the my-variable@>;
 
 @ Finally, it's possible to set the I7 kind of a variable created by |{-my:...}|,
@@ -1031,10 +1031,10 @@ default values when created, so they are always typesafe anyway.
 		K = Specifications::to_kind(V);
 
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
-		if (Frames::Blocks::inside_a_loop_body()) {
+		if (CodeBlocks::inside_a_loop_body()) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
 			Produce::down(Emit::tree());
-				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 				RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
 			Produce::up(Emit::tree());
@@ -1043,7 +1043,7 @@ default values when created, so they are always typesafe anyway.
 		int rv = FALSE;
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
-			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 			rv = RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
 		Produce::up(Emit::tree());
@@ -1477,7 +1477,7 @@ has the inline definition:
 
 	else if (sche->inline_subcommand == switch_ISINSC) ;
 
-	else if (sche->inline_subcommand == break_ISINSC) Frames::Blocks::emit_break();
+	else if (sche->inline_subcommand == break_ISINSC) CodeBlocks::emit_break();
 
 	else if (sche->inline_subcommand == verbose_checking_ISINSC) {
 		wchar_t *what = L"";
@@ -1572,7 +1572,7 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 			int tok = LocalVariables::get_parameter_number(lvar);
 			if (tok >= 0) return tokens->args[tok];
 		}
-		lvar = LocalVariables::by_name(operand);
+		lvar = LocalVariables::find_internal(operand);
 	}
 	if (lvar) return Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);
 	return NULL;

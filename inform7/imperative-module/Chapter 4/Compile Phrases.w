@@ -67,7 +67,7 @@ void Routines::Compile::routine(id_body *idb,
 
 	Frames::set_shared_variable_access_list(phsf, legible);
 
-	LocalVariables::deallocate_all(phsf); /* in case any are left from an earlier compile */
+	LocalVariableSlates::deallocate_all(phsf); /* in case any are left from an earlier compile */
 	PreformCache::warn_of_changes(); /* that local variables may have changed */
 
 @<Compile the body of the routine@> =
@@ -146,7 +146,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
 	if (ControlStructures::opens_block(csp)) {
-		Frames::Blocks::beginning_block_phrase(csp);
+		CodeBlocks::beginning_block_phrase(csp);
 		to_compile = p->down;
 	}
 	statement_count++;
@@ -328,16 +328,16 @@ henceforth to be true, so we simply compile empty code in that case.
 
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			Frames::Blocks::open_code_block();
+			CodeBlocks::open_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
 		if (p->down->next->next) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			Frames::Blocks::divide_code_block();
+			CodeBlocks::divide_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next->next, FALSE);
 		}
-			Frames::Blocks::close_code_block();
+			CodeBlocks::close_code_block();
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -345,9 +345,9 @@ henceforth to be true, so we simply compile empty code in that case.
 	current_sentence = to_compile;
 	Routines::Compile::line(to_compile, FALSE, INTER_VOID_VHMODE);
 
-	Frames::Blocks::open_code_block();
+	CodeBlocks::open_code_block();
 
-	parse_node *val = Frames::Blocks::switch_value();
+	parse_node *val = CodeBlocks::switch_value();
 	if (val == NULL) internal_error("no switch value");
 	kind *switch_kind = Specifications::to_kind(val);
 	int pointery = FALSE;
@@ -362,7 +362,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 	if (pointery) {
 		lvar = LocalVariables::add_switch_value(K_value);
-		sw_v = LocalVariables::declare_this(lvar, FALSE, 7);
+		sw_v = LocalVariables::declare(lvar);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, sw_v);
@@ -379,7 +379,7 @@ henceforth to be true, so we simply compile empty code in that case.
 			int c = 0;
 			for (parse_node *ow_node = p->down->next->next; ow_node; ow_node = ow_node->next, c++) {
 				current_sentence = ow_node;
-				Frames::Blocks::divide_code_block();
+				CodeBlocks::divide_code_block();
 
 				if (Node::get_control_structure_used(ow_node) == default_case_CSP) {
 					if (pointery) @<Handle a pointery default@>
@@ -425,10 +425,10 @@ henceforth to be true, so we simply compile empty code in that case.
 
 	if (pointery) {
 		while (downs-- > 0) Produce::up(Emit::tree());
-		Frames::Blocks::close_code_block();
+		CodeBlocks::close_code_block();
 	} else {
 		Produce::up(Emit::tree());
-		Frames::Blocks::close_code_block();
+		CodeBlocks::close_code_block();
 	Produce::up(Emit::tree());
 	}
 
@@ -549,10 +549,10 @@ inline definitions for "say if" and similar.
 	Produce::rtrue(Emit::tree());
 
 @<Compile a loop tail@> =
-	Frames::Blocks::open_code_block();
+	CodeBlocks::open_code_block();
 	statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
 	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
-	Frames::Blocks::close_code_block();
+	CodeBlocks::close_code_block();
 
 @ This routine takes the text of a line from a phrase definition, parses it,
 type-checks it, and finally, all being well, compiles it.

@@ -360,14 +360,14 @@ void Chronology::past_tenses_i6_escape(void) {
 
 	inter_name *iname = Hierarchy::find(TESTSINGLEPASTSTATE_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
-	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
-	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
-	inter_symbol *wanted_s = LocalVariables::add_named_call_as_symbol(I"wanted");
-	inter_symbol *old_s = LocalVariables::add_internal_local_as_symbol(I"old");
-	inter_symbol *new_s = LocalVariables::add_internal_local_as_symbol(I"new");
-	inter_symbol *trips_s = LocalVariables::add_internal_local_as_symbol(I"trips");
-	inter_symbol *consecutives_s = LocalVariables::add_internal_local_as_symbol(I"consecutives");
+	inter_symbol *past_flag_s = LocalVariables::new_other_as_symbol(I"past_flag");
+	inter_symbol *pt_s = LocalVariables::new_other_as_symbol(I"pt");
+	inter_symbol *turn_end_s = LocalVariables::new_other_as_symbol(I"turn_end");
+	inter_symbol *wanted_s = LocalVariables::new_other_as_symbol(I"wanted");
+	inter_symbol *old_s = LocalVariables::new_internal_as_symbol(I"old");
+	inter_symbol *new_s = LocalVariables::new_internal_as_symbol(I"new");
+	inter_symbol *trips_s = LocalVariables::new_internal_as_symbol(I"trips");
+	inter_symbol *consecutives_s = LocalVariables::new_internal_as_symbol(I"consecutives");
 	Frames::determines_the_past();
 
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);

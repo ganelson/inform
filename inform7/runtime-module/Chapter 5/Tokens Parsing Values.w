@@ -68,52 +68,54 @@ gpr_kit UnderstandValueTokens::new_kit(void) {
 }
 
 void UnderstandValueTokens::add_instance_call(gpr_kit *gprk) {
-	gprk->instance_s = LocalVariables::add_named_call_as_symbol(I"instance");
+	gprk->instance_s = LocalVariables::new_other_as_symbol(I"instance");
 }
 
 void UnderstandValueTokens::add_range_calls(gpr_kit *gprk) {
-	gprk->range_from_s = LocalVariables::add_internal_local_c_as_symbol(I"range_from", "call parameter: word number of snippet start");
-	gprk->range_words_s = LocalVariables::add_internal_local_c_as_symbol(I"range_words", "call parameter: snippet length");
+	gprk->range_from_s = LocalVariables::new_internal_commented_as_symbol(I"range_from", I"call parameter: word number of snippet start");
+	gprk->range_words_s = LocalVariables::new_internal_commented_as_symbol(I"range_words", I"call parameter: snippet length");
 }
 
 void UnderstandValueTokens::add_original(gpr_kit *gprk) {
-	gprk->original_wn_s = LocalVariables::add_internal_local_as_symbol(I"original_wn");
+	gprk->original_wn_s = LocalVariables::new_internal_as_symbol(I"original_wn");
 }
 
 void UnderstandValueTokens::add_standard_set(gpr_kit *gprk) {
-	gprk->group_wn_s = LocalVariables::add_internal_local_as_symbol(I"group_wn");
-	gprk->v_s = LocalVariables::add_internal_local_as_symbol(I"v");
-	gprk->w_s = LocalVariables::add_internal_local_as_symbol(I"w");
-	gprk->rv_s = LocalVariables::add_internal_local_as_symbol_noting(I"rv", &(gprk->rv_lv));
+	gprk->group_wn_s = LocalVariables::new_internal_as_symbol(I"group_wn");
+	gprk->v_s = LocalVariables::new_internal_as_symbol(I"v");
+	gprk->w_s = LocalVariables::new_internal_as_symbol(I"w");
+	gprk->rv_lv = LocalVariables::new_internal(I"rv");
+	gprk->rv_s = LocalVariables::declare(gprk->rv_lv);
 }
 
 void UnderstandValueTokens::add_lp_vars(gpr_kit *gprk) {
-	gprk->wpos_s = LocalVariables::add_internal_local_as_symbol(I"wpos");
-	gprk->mid_word_s = LocalVariables::add_internal_local_as_symbol(I"mid_word");
-	gprk->matched_number_s = LocalVariables::add_internal_local_as_symbol(I"matched_number");
-	gprk->cur_word_s = LocalVariables::add_internal_local_as_symbol(I"cur_word");
-	gprk->cur_len_s = LocalVariables::add_internal_local_as_symbol(I"cur_len");
-	gprk->cur_addr_s = LocalVariables::add_internal_local_as_symbol(I"cur_addr");
-	gprk->sgn_s = LocalVariables::add_internal_local_as_symbol(I"sgn");
-	gprk->tot_s = LocalVariables::add_internal_local_as_symbol(I"tot");
-	gprk->f_s = LocalVariables::add_internal_local_as_symbol(I"f");
-	gprk->x_s = LocalVariables::add_internal_local_as_symbol(I"x");
+	gprk->wpos_s = LocalVariables::new_internal_as_symbol(I"wpos");
+	gprk->mid_word_s = LocalVariables::new_internal_as_symbol(I"mid_word");
+	gprk->matched_number_s = LocalVariables::new_internal_as_symbol(I"matched_number");
+	gprk->cur_word_s = LocalVariables::new_internal_as_symbol(I"cur_word");
+	gprk->cur_len_s = LocalVariables::new_internal_as_symbol(I"cur_len");
+	gprk->cur_addr_s = LocalVariables::new_internal_as_symbol(I"cur_addr");
+	gprk->sgn_s = LocalVariables::new_internal_as_symbol(I"sgn");
+	gprk->tot_s = LocalVariables::new_internal_as_symbol(I"tot");
+	gprk->f_s = LocalVariables::new_internal_as_symbol(I"f");
+	gprk->x_s = LocalVariables::new_internal_as_symbol(I"x");
 }
 
 void UnderstandValueTokens::add_parse_name_vars(gpr_kit *gprk) {
-	gprk->original_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"original_wn", "first word of text parsed");
-	gprk->group_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"group_wn", "first word matched against A/B/C/... disjunction");
-	gprk->try_from_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"try_from_wn", "position to try matching from");
-	gprk->n_s = LocalVariables::add_internal_local_c_as_symbol(I"n", "number of words matched");
-	gprk->f_s = LocalVariables::add_internal_local_c_as_symbol(I"f", "flag: sufficiently good match found to justify success");
-	gprk->w_s = LocalVariables::add_internal_local_c_as_symbol(I"w", "for use by individual grammar lines");
-	gprk->rv_s = LocalVariables::add_internal_local_as_symbol_noting(I"rv", &(gprk->rv_lv));
-	gprk->g_s = LocalVariables::add_internal_local_c_as_symbol(I"g", "temporary: success flag for parsing visibles");
-	gprk->ss_s = LocalVariables::add_internal_local_c_as_symbol(I"ss", "temporary: saves 'self' in distinguishing visibles");
-	gprk->spn_s = LocalVariables::add_internal_local_c_as_symbol(I"spn", "temporary: saves 'parsed_number' in parsing visibles");
-	gprk->pass_s = LocalVariables::add_internal_local_c_as_symbol(I"pass", "pass counter (1 to 3)");
-	gprk->pass1_n_s = LocalVariables::add_internal_local_c_as_symbol(I"pass1_n", "value of n recorded during pass 1");
-	gprk->pass2_n_s = LocalVariables::add_internal_local_c_as_symbol(I"pass2_n", "value of n recorded during pass 2");
+	gprk->original_wn_s = LocalVariables::new_internal_commented_as_symbol(I"original_wn", I"first word of text parsed");
+	gprk->group_wn_s = LocalVariables::new_internal_commented_as_symbol(I"group_wn", I"first word matched against A/B/C/... disjunction");
+	gprk->try_from_wn_s = LocalVariables::new_internal_commented_as_symbol(I"try_from_wn", I"position to try matching from");
+	gprk->n_s = LocalVariables::new_internal_commented_as_symbol(I"n", I"number of words matched");
+	gprk->f_s = LocalVariables::new_internal_commented_as_symbol(I"f", I"flag: sufficiently good match found to justify success");
+	gprk->w_s = LocalVariables::new_internal_commented_as_symbol(I"w", I"for use by individual grammar lines");
+	gprk->rv_lv = LocalVariables::new_internal(I"rv");
+	gprk->rv_s = LocalVariables::declare(gprk->rv_lv);
+	gprk->g_s = LocalVariables::new_internal_commented_as_symbol(I"g", I"temporary: success flag for parsing visibles");
+	gprk->ss_s = LocalVariables::new_internal_commented_as_symbol(I"ss", I"temporary: saves 'self' in distinguishing visibles");
+	gprk->spn_s = LocalVariables::new_internal_commented_as_symbol(I"spn", I"temporary: saves 'parsed_number' in parsing visibles");
+	gprk->pass_s = LocalVariables::new_internal_commented_as_symbol(I"pass", I"pass counter (1 to 3)");
+	gprk->pass1_n_s = LocalVariables::new_internal_commented_as_symbol(I"pass1_n", I"value of n recorded during pass 1");
+	gprk->pass2_n_s = LocalVariables::new_internal_commented_as_symbol(I"pass2_n", I"value of n recorded during pass 2");
 }
 
 void UnderstandValueTokens::number(void) {

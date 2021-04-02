@@ -69,6 +69,7 @@ a way to organise lists of them."
 	Rulebooks
 	Focus and Outcome
 	Activities
+	Shared Variables
 
 Chapter 7: Other Gadgets
 "Tables and equations do not look like sentences, but are also top-level."

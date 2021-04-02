@@ -8440,14 +8440,16 @@
         female 
           (hits 1/2) (matched: 'female') constraint CS = {18} extremes [1, 1]
 
-<new-called-name> hits 209/418 nti 8 constraint (none) extremes [1, infinity)
+<existing-local-name> internal hits 136/418 nti 8 constraint (none) extremes [1, infinity)
+
+<new-calling> hits 209/418 nti 9 constraint (none) extremes [1, infinity)
     English:
-        <definite-article> <new-called-name-unarticled> 
+        <definite-article> <new-calling-unarticled> 
           (hits 14/74) (matched: 'the current working sack') constraint (none) extremes [2, infinity)
-        <new-called-name-unarticled> 
+        <new-calling-unarticled> 
           (hits 195/195) (matched: 'item being printed') constraint (none) extremes [1, infinity)
 
-<new-called-name-unarticled> hits 209/418 nti 19 constraint (none) extremes [1, infinity)
+<new-calling-unarticled> hits 209/418 nti 19 constraint (none) extremes [1, infinity)
     English:
         {***} - {***} 
           constraint DS = {19} extremes [1, infinity)
@@ -8457,8 +8459,6 @@
           (hits 0/73) constraint (none) extremes [1, infinity)
         {...} 
           (hits 73/73) (matched: 'item being printed') constraint (none) extremes [1, infinity)
-
-<existing-local-name> internal hits 136/418 nti 9 constraint (none) extremes [1, infinity)
 
 <end-phrase-construction> nti 20 constraint DS = {20} extremes [2, infinity)
     English:

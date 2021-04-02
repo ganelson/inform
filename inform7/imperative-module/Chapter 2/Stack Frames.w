@@ -83,8 +83,8 @@ stack_frame *Frames::boxed_frame(stack_frame *old_frame) {
 	stack_frame_box *box = CREATE(stack_frame_box);
 	stack_frame *new_frame = &(box->boxed_phsf);
 	*new_frame = *old_frame;
-	LocalVariables::deep_copy_locals_slate(&(new_frame->local_value_variables),
-		&(old_frame->local_value_variables));
+	LocalVariableSlates::deep_copy(&(new_frame->local_variables),
+		&(old_frame->local_variables));
 	return new_frame;
 }
 
@@ -92,7 +92,7 @@ stack_frame *Frames::boxed_frame(stack_frame *old_frame) {
 
 =
 typedef struct stack_frame {
-	struct locals_slate local_value_variables; /* those in scope here */
+	struct locals_slate local_variables; /* those in scope here */
 	struct shared_variable_access_list *shared_variables; /* those in scope here */
 	struct linked_list *local_block_values; /* of |local_block_value| */
 	int no_formal_parameters_needed; /* usually 0, unless there are ambiguities */
@@ -105,7 +105,7 @@ typedef struct stack_frame {
 
 stack_frame Frames::new(void) {
 	stack_frame frame;
-	frame.local_value_variables = LocalVariables::blank_slate();
+	frame.local_variables = LocalVariableSlates::new();
 	frame.local_kind_variables = NULL;
 	frame.shared_variables = NULL;
 	frame.determines_past_conditions = FALSE;
@@ -153,8 +153,30 @@ kind **Frames::temporarily_set_kvs(kind **vars) {
 	return prev;
 }
 
+@ The "deduced kind" is what the kind of the code in this stack frame would
+be, if it were seen as a function from its parameter variables to its return value.
+
+=
+kind *Frames::deduced_function_kind(stack_frame *frame) {
+	int pc = 0;
+	local_variable *lvar;
+	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame)
+		if (LocalVariables::is_parameter(lvar))
+			pc++;
+	kind *K_array[128];
+	pc = 0;
+	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame)
+		if (LocalVariables::is_parameter(lvar))
+			if (pc < 128) {
+				kind *OK = lvar->current_usage.kind_as_declared;
+				if ((OK == NULL) || (OK == K_nil)) OK = K_number;
+				K_array[pc++] = OK;
+			}
+	return Kinds::function_kind(pc, K_array, frame->kind_returned);
+}
+
 @h Shared variables.
-See //Shared Variables// for more on this.
+See //assertions: Shared Variables// for more on this.
 
 =
 void Frames::set_shared_variable_access_list(stack_frame *frame,
@@ -199,6 +221,41 @@ void Frames::need_at_least_this_many_formals(int N) {
 		internal_error("requested formal parameters outside all stack frames");
 	if (N > frame->no_formal_parameters_needed)
 		frame->no_formal_parameters_needed = N;
+}
+
+@h It.
+In some stack frames, the pronoun "it" (perhaps inflected) is allowed to stand
+for the first call parameter to the function being compiled; and in others not.
+
+=
+local_variable *Frames::enable_it(stack_frame *frame, wording W, kind *K) {
+	if (frame == NULL) internal_error("no stack frame exists");
+	frame->local_variables.it_variable_exists = TRUE;
+	return LocalVariables::new_call_parameter(frame, W, K);
+}
+
+@ If so, sometimes "its", "his", "her" or "their" are allowed too, but sometimes
+not. 
+
+=
+int Frames::is_its_enabled(stack_frame *frame) {
+	if (frame) return frame->local_variables.its_form_allowed;
+	return FALSE;
+}
+
+void Frames::enable_its(stack_frame *frame) {
+	if (frame == NULL) internal_error("no stack frame exists");
+	frame->local_variables.its_form_allowed = TRUE;
+}
+
+@ In addition, a special name can optionally be given to the "it". This is only
+likely to be useful if the first call parameter is nameless -- but that does
+sometimes happen.
+
+=
+void Frames::alias_it(stack_frame *frame, wording W) {
+	if (frame == NULL) internal_error("no stack frame exists");
+	frame->local_variables.it_pseudonym = W;
 }
 
 @h Local block values.
@@ -357,10 +414,10 @@ void Frames::log(stack_frame *frame) {
 	if (frame == NULL) { LOG("<null stack frame>\n"); return; }
 	LOG("Stack frame at %08x: it:%s, dpc:%s\n",
 		frame,
-		(frame->local_value_variables.it_variable_exists)?"yes":"no",
+		(frame->local_variables.it_variable_exists)?"yes":"no",
 		(frame->determines_past_conditions)?"yes":"no");
 	local_variable *lvar;
-	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, frame) {
+	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
 		switch (lvar->lv_purpose) {
 			case LET_VALUE_LV: LOG("Let/loop value: "); break;
 			case TOKEN_CALL_PARAMETER_LV: LOG("Call value: "); break;

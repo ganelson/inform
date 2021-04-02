@@ -68,7 +68,7 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	} else {
 		stack_frame new_frame = Frames::new();
 		ts->parked_stack_frame = Frames::boxed_frame(&new_frame);
-		if (phsf) LocalVariables::copy(ts->parked_stack_frame, phsf);
+		if (phsf) LocalVariableSlates::append(ts->parked_stack_frame, phsf);
 	}
 	ts->responding_to_rule = R;
 	ts->responding_to_marker = marker;
@@ -76,7 +76,7 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	ts->tr_done_already = FALSE;
 	ts->ts_sb_needed = FALSE;
 	if ((id_body_being_compiled) &&
-		(LocalVariables::count(Frames::current_stack_frame()) > 0))
+		(LocalVariableSlates::size(Frames::current_stack_frame()) > 0))
 		ts->local_names_existed_at_usage_time = TRUE;
 	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);
 	ts->ts_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_HL, PR);
@@ -132,7 +132,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 			int downs = 0;
 			if (TEST_COMPILATION_MODE(PERMIT_LOCALS_IN_TEXT_CMODE)) {
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
-				downs = LocalVariables::emit_storage(phsf);
+				downs = LocalParking::park(phsf);
 				phsf = Frames::boxed_frame(phsf);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
 				Produce::down(Emit::tree());
@@ -268,7 +268,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 			ts->responding_to_rule, ts->responding_to_marker);
 		if (resp) phsf = Strings::frame_for_response(resp);
 	}
-	if (phsf) LocalVariables::copy(Frames::current_stack_frame(), phsf);
+	if (phsf) LocalVariableSlates::append(Frames::current_stack_frame(), phsf);
 	LocalVariables::monitor_local_parsing(Frames::current_stack_frame());
 
 	@<Compile a say-phrase@>;
@@ -277,7 +277,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 		LocalVariables::local_parsed_recently(Frames::current_stack_frame());
 	if (makes_local_references) {
 		Produce::push_code_position(Emit::tree(), Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Packaging::at(Emit::tree())));
-		LocalVariables::compile_retrieval(phsf);
+		LocalParking::retrieve(phsf);
 		Produce::pop_code_position(Emit::tree());
 	}
 	Routines::end(save);

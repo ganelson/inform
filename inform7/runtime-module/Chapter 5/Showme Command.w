@@ -34,8 +34,8 @@ properties.
 void RTShowmeCommand::compile_SHOWME_details(void) {
 	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
 	packaging_state save = Routines::begin(iname);
-	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
-	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
+	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
+	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());

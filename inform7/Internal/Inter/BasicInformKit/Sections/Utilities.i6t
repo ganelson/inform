@@ -50,8 +50,6 @@ Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
 
 Global standard_interpreter = 0;
 
-Array LocalParking --> 64;
-
 @h Language of Play.
 The equivalent of I6's language definition file, though here the idea is
 that a translation should have an inclusion to replace the "Language.i6t"

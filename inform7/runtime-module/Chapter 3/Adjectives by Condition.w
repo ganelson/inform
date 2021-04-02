@@ -42,7 +42,7 @@ int Phrases::Condition::generate_in_support_function(adjective_meaning_family *f
 	switch (T) {
 		case TEST_ATOM_TASK:
 			if (emit_flag) {
-				LocalVariables::alias_pronoun(phsf, def->domain_calling);
+				Frames::alias_it(phsf, def->domain_calling);
 
 				if (Wordings::nonempty(def->condition_to_match)) {
 					current_sentence = def->node;
@@ -69,7 +69,7 @@ int Phrases::Condition::generate_in_support_function(adjective_meaning_family *f
 					}
 				}
 
-				LocalVariables::alias_pronoun(phsf, EMPTY_WORDING);
+				Frames::alias_it(phsf, EMPTY_WORDING);
 			}
 			return TRUE;
 	}

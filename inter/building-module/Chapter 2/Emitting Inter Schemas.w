@@ -419,9 +419,9 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 					Produce::lab(I, Produce::reserve_label(I, t->material));
 				else {
 					#ifdef CORE_MODULE
-					local_variable *lvar = LocalVariables::by_name_any(t->material);
+					local_variable *lvar = LocalVariables::by_identifier(t->material);
 					if (lvar) {
-						inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
+						inter_symbol *lvar_s = LocalVariables::declare(lvar);
 						Produce::val_symbol(I, K_value, lvar_s);
 					} else {
 						Produce::val_symbol(I, K_value, EmitInterSchemas::find_identifier(I, t, first_call, second_call));

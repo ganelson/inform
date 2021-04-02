@@ -110,7 +110,7 @@ void IDCompilation::initialise_stack_frame_from_type_data(stack_frame *phsf,
 		if (Kinds::get_construct(args) != CON_TUPLE_ENTRY) internal_error("bad tupling");
 		Kinds::binary_construction_material(args, &K, &args);
 		if (first) {
-			LocalVariables::add_call_parameter(phsf, idtd->token_sequence[i].token_name, K);
+			LocalVariables::new_call_parameter(phsf, idtd->token_sequence[i].token_name, K);
 		} else {
 			local_variable *lvar = LocalVariables::get_ith_parameter(i);
 			if (lvar) LocalVariables::set_kind(lvar, K);

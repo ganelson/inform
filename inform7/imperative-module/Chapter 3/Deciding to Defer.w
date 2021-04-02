@@ -141,7 +141,7 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
 
 @<Defer test of proposition instead@> =
 	pcalc_prop_deferral *pdef;
-	LocalVariables::begin_condition_emit();
+	RTConditions::begin_condition_emit();
 	int go_up = FALSE;
 	@<If the proposition is a negation, take care of that now@>;
 	int NC = Calculus::Deferrals::count_callings_in_condition(prop);
@@ -154,7 +154,7 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
 	if (NC > 0) Calculus::Deferrals::emit_retrieve_callings_in_condition(prop, NC);
 	if (NC > 0) Produce::up(Emit::tree());
 	if (go_up) Produce::up(Emit::tree());
-	LocalVariables::end_condition_emit();
+	RTConditions::end_condition_emit();
 
 @ This is done purely for the sake of compiling tidier code: if $\phi = \lnot(\psi)$
 then we defer $\psi$ instead, negating the result of testing it.
@@ -297,7 +297,7 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 				if (calling_count < NC) { Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); Produce::down(Emit::tree()); downs++; }
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
-					inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
+					inter_symbol *local_s = LocalVariables::declare(local);
 					Produce::ref_symbol(Emit::tree(), K_value, local_s);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
@@ -305,7 +305,7 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (calling_count - 1));
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
-				LocalVariables::add_calling_to_condition(local);
+				RTConditions::add_calling_to_condition(local);
 			}
 		}
 		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
@@ -325,7 +325,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
-					inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
+					inter_symbol *local_s = LocalVariables::declare(local);
 					Produce::ref_symbol(Emit::tree(), K_value, local_s);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
@@ -367,12 +367,12 @@ int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int
 	return FALSE;
 }
 
-@ |LocalVariables::ensure_called_local| is so called because it ensures that a local of the
+@ |LocalVariables::ensure_calling| is so called because it ensures that a local of the
 right name and kind of value exists in |R|.
 
 @<Find which local variable in R needs the value, creating it if necessary@> =
 	wording W = CreationPredicates::get_calling_name(pl);
-	local = LocalVariables::ensure_called_local(W, CreationPredicates::what_kind_of_calling(pl));
+	local = LocalVariables::ensure_calling(W, CreationPredicates::what_kind_of_calling(pl));
 
 @ The following wrapper contributes almost nothing, but it checks some
 consistency assertions and writes to the debugging log.
@@ -873,13 +873,13 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 		internal_error("repeat through non-description");
 	kind *K = Kinds::unary_construction_material(DK);
 
-	local_variable *v2 = LocalVariables::new(EMPTY_WORDING, K);
+	local_variable *v2 = LocalVariables::new_let_value(EMPTY_WORDING, K);
 
-	Frames::Blocks::set_scope_to_block_about_to_open(v1);
-	Frames::Blocks::set_scope_to_block_about_to_open(v2);
+	CodeBlocks::set_scope_to_block_about_to_open(v1);
+	CodeBlocks::set_scope_to_block_about_to_open(v2);
 
-	inter_symbol *val_var_s = LocalVariables::declare_this(v1, FALSE, 8);
-	inter_symbol *aux_var_s = LocalVariables::declare_this(v2, FALSE, 8);
+	inter_symbol *val_var_s = LocalVariables::declare(v1);
+	inter_symbol *aux_var_s = LocalVariables::declare(v2);
 
 	if (Kinds::Behaviour::is_object(K)) {
 		pcalc_prop *domain_prop = NULL; int use_as_is = FALSE;
@@ -1040,7 +1040,7 @@ void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fro
 		Specifications::Compiler::emit_as_val(K_value, spec);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) LOOP_DOMAIN_DUSAGE);
 		if (fromv) {
-			inter_symbol *fromv_s = LocalVariables::declare_this(fromv, FALSE, 8);
+			inter_symbol *fromv_s = LocalVariables::declare(fromv);
 			Produce::val_symbol(Emit::tree(), K_value, fromv_s);
 		} else {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
@@ -1068,7 +1068,7 @@ void Calculus::Deferrals::emit_repeat_domain(pcalc_prop *prop, local_variable *f
 		Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 		if (fromv) {
-			inter_symbol *fromv_s = LocalVariables::declare_this(fromv, FALSE, 8);
+			inter_symbol *fromv_s = LocalVariables::declare(fromv);
 			Produce::val_symbol(Emit::tree(), K_value, fromv_s);
 		} else {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
@@ -1080,24 +1080,24 @@ void Calculus::Deferrals::emit_repeat_domain(pcalc_prop *prop, local_variable *f
 
 =
 void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable *val_var) {
-	local_variable *index_var = LocalVariables::new(EMPTY_WORDING, K_number);
-	local_variable *copy_var = LocalVariables::new(EMPTY_WORDING, K_number);
+	local_variable *index_var = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
+	local_variable *copy_var = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
 	kind *K = Specifications::to_kind(spec);
 	kind *CK = Kinds::unary_construction_material(K);
 
 	int pointery = FALSE;
 	if (Kinds::Behaviour::uses_pointer_values(CK)) {
 		pointery = TRUE;
-		LocalVariables::mark_to_free_at_end_of_scope(val_var);
+		LocalVariableSlates::free_at_end_of_scope(val_var);
 	}
 
-	Frames::Blocks::set_scope_to_block_about_to_open(val_var);
+	CodeBlocks::set_scope_to_block_about_to_open(val_var);
 	LocalVariables::set_kind(val_var, CK);
-	Frames::Blocks::set_scope_to_block_about_to_open(index_var);
+	CodeBlocks::set_scope_to_block_about_to_open(index_var);
 
-	inter_symbol *val_var_s = LocalVariables::declare_this(val_var, FALSE, 8);
-	inter_symbol *index_var_s = LocalVariables::declare_this(index_var, FALSE, 8);
-	inter_symbol *copy_var_s = LocalVariables::declare_this(copy_var, FALSE, 8);
+	inter_symbol *val_var_s = LocalVariables::declare(val_var);
+	inter_symbol *index_var_s = LocalVariables::declare(index_var);
+	inter_symbol *copy_var_s = LocalVariables::declare(copy_var);
 
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);

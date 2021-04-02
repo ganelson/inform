@@ -265,7 +265,8 @@ of possessives like "its" to refer to properties.
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;if-pronoun-present&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">LocalVariables::is_possessive_form_of_it_enabled</span><span class="Preform-plain-syntax">()) </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">Frames::is_its_enabled</span><span class="Preform-plain-syntax">(</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">Frames::current_stack_frame</span><span class="Preform-plain-syntax">())) </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    ==&gt; { </span><span class="Preform-identifier-syntax">fail</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">nonterminal</span><span class="Preform-plain-syntax"> };</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>

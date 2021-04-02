@@ -50,9 +50,9 @@ void RTScenes::DetectSceneChange_routine(void) {
 	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *chs_s =
-		LocalVariables::add_internal_local_c_as_symbol(I"chs", "count of changes made");
+		LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
 	inter_symbol *ch_s =
-		LocalVariables::add_internal_local_c_as_symbol(I"ch", "flag: change made");
+		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
 	inter_symbol *CScene_l = Produce::reserve_label(Emit::tree(), I".CScene");
 
 	scene *sc;

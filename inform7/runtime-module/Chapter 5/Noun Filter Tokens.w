@@ -55,8 +55,8 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 
 	packaging_state save = Routines::begin(nft->nft_iname);
 	if (nft->parse_using_gpr) {
-		inter_symbol *v_s = LocalVariables::add_internal_local_c_as_symbol(I"v", "value parsed");
-		inter_symbol *n_s = LocalVariables::add_internal_local_c_as_symbol(I"n", "saved value of noun");
+		inter_symbol *v_s = LocalVariables::new_internal_commented_as_symbol(I"v", I"value parsed");
+		inter_symbol *n_s = LocalVariables::new_internal_commented_as_symbol(I"n", I"saved value of noun");
 
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
@@ -115,8 +115,8 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 			Produce::val_symbol(Emit::tree(), K_value, v_s);
 		Produce::up(Emit::tree());
 	} else if (nft->global_scope_flag) {
-		inter_symbol *obj_s = LocalVariables::add_internal_local_c_as_symbol(I"obj", "object loop variable");
-		inter_symbol *o2_s = LocalVariables::add_internal_local_c_as_symbol(I"o2", "saved value of noun");
+		inter_symbol *obj_s = LocalVariables::new_internal_commented_as_symbol(I"obj", I"object loop variable");
+		inter_symbol *o2_s = LocalVariables::new_internal_commented_as_symbol(I"o2", I"saved value of noun");
 
 		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 		Produce::down(Emit::tree());
@@ -215,7 +215,7 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
-		inter_symbol *x_s = LocalVariables::add_internal_local_c_as_symbol(I"x", "saved value of noun");
+		inter_symbol *x_s = LocalVariables::new_internal_commented_as_symbol(I"x", I"saved value of noun");
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, x_s);

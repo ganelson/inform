@@ -59,6 +59,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e MEMORY_HEAP_SIZE_HL
 @e TEMPLATE_CONFIGURATION_BITMAP_HL
 @e TEMPLATE_CONFIGURATION_LOOKMODE_HL
+@e LOCALPARKING_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -84,6 +85,7 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, TEMPLATE_CONFIGURATION_BITMAP_HL, I"TEMPLATE_CONFIGURATION_BITMAP", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, TEMPLATE_CONFIGURATION_LOOKMODE_HL, I"TEMPLATE_CONFIGURATION_LOOKMODE", Translation::same(), generic_basics);
+	HierarchyLocations::con(I, LOCALPARKING_HL, I"LocalParking", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(I, basics);
 	HierarchyLocations::con(I, CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -915,8 +917,8 @@ void Hierarchy::establish(inter_tree *I) {
 @<Establish variables@> =
 	submodule_identity *variables = Packaging::register_submodule(I"variables");
 
-	location_requirement local_variables = HierarchyLocations::local_submodule(variables);
-	HierarchyLocations::ap(I, VARIABLES_HAP, local_variables, I"variable", I"_variable");
+	location_requirement vars = HierarchyLocations::local_submodule(variables);
+	HierarchyLocations::ap(I, VARIABLES_HAP, vars, I"variable", I"_variable");
 		location_requirement in_variable = HierarchyLocations::any_package_of_type(I"_variable");
 		HierarchyLocations::metadata(I, VARIABLE_NAME_HMD, in_variable, I"`name");
 		HierarchyLocations::con(I, VARIABLE_HL, NULL, Translation::generate(I"V"), in_variable);
@@ -1149,7 +1151,6 @@ void Hierarchy::establish(inter_tree *I) {
 @e LIST_OF_TY_SAY_HL
 @e LIST_OF_TY_SETLENGTH_HL
 @e LITTLE_USED_DO_NOTHING_R_HL
-@e LOCALPARKING_HL
 @e LOCATION_HL
 @e LOCATIONOF_HL
 @e LOOPOVERSCOPE_HL
@@ -1391,7 +1392,6 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, LIST_OF_TY_SAY_HL, I"LIST_OF_TY_Say", Translation::same(), template);
 	HierarchyLocations::con(I, LIST_OF_TY_SETLENGTH_HL, I"LIST_OF_TY_SetLength", Translation::same(), template);
 	HierarchyLocations::con(I, LITTLE_USED_DO_NOTHING_R_HL, I"LITTLE_USED_DO_NOTHING_R", Translation::same(), template);
-	HierarchyLocations::con(I, LOCALPARKING_HL, I"LocalParking", Translation::same(), template);
 	HierarchyLocations::con(I, LOCATION_HL, I"location", Translation::same(), template);
 	HierarchyLocations::con(I, LOCATIONOF_HL, I"LocationOf", Translation::same(), template);
 	HierarchyLocations::con(I, LOOPOVERSCOPE_HL, I"LoopOverScope", Translation::same(), template);

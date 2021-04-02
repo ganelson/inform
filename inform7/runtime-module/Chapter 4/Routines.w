@@ -39,11 +39,11 @@ packaging_state Routines::begin_framed(inter_name *iname, stack_frame *phsf) {
 
 	@<Prepare a suitable stack frame@>;
 
-	Frames::Blocks::begin_code_blocks();
+	CodeBlocks::begin_code_blocks();
 
 	packaging_state save = Emit::unused_packaging_state();
 	currently_compiling_inter_block = Produce::block(Emit::tree(), &save, iname);
-	LocalVariables::declare(phsf, FALSE);
+	LocalVariableSlates::declare_all(phsf);
 	return save;
 }
 
@@ -68,19 +68,19 @@ did not.
 
 =
 void Routines::end(packaging_state save) {
-	kind *R_kind = LocalVariables::deduced_function_kind(currently_compiling_in_frame);
+	kind *R_kind = Frames::deduced_function_kind(currently_compiling_in_frame);
 
 	inter_name *kernel_name = NULL, *public_name = currently_compiling_iname;
 	if ((Frames::uses_local_block_values(currently_compiling_in_frame)) ||
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0))
 		kernel_name = Produce::kernel(Emit::tree(), public_name);
 
-	int needed = LocalVariables::count(currently_compiling_in_frame);
+	int needed = LocalVariableSlates::size(currently_compiling_in_frame);
 	if (kernel_name) needed++;
 	if (TargetVMs::allow_this_many_locals(Task::vm(), needed) == FALSE)
 		@<Issue a problem for too many locals@>;
 
-	LocalVariables::declare(currently_compiling_in_frame, FALSE);
+	LocalVariableSlates::declare_all(currently_compiling_in_frame);
 	Produce::end_block(Emit::tree());
 
 	Emit::routine(kernel_name?kernel_name:public_name,
@@ -88,7 +88,7 @@ void Routines::end(packaging_state save) {
 
 	if (kernel_name) @<Compile an outer shell routine with the public-facing name@>;
 
-	Frames::Blocks::end_code_blocks();
+	CodeBlocks::end_code_blocks();
 	if (currently_compiling_nnp) Frames::remove_nonphrase_stack_frame();
 	Frames::remove_current();
 	Produce::end_main_block(Emit::tree(), save);
@@ -117,7 +117,7 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile I6 locals for the outer shell@> =
 	if (returns_block_value) I7RBLK_symbol = Emit::local(K_number, I"I7RBLK", 0, I"pointer to return value");
-	LocalVariables::declare(currently_compiling_in_frame, TRUE);
+	LocalVariableSlates::declare_all_parameters(currently_compiling_in_frame);
 	if (!returns_block_value) I7RBLK_symbol = Emit::local(K_number, I"I7RBLK", 0, I"pointer to stack frame");
 
 @ We allocate memory for each pointer value used in the stack frame:
@@ -143,7 +143,7 @@ after the call parameters, and is used only as a scratch variable.
 
 	Produce::inv_call_iname(Emit::tree(), kernel_name);
 	Produce::down(Emit::tree());
-	LocalVariables::emit_parameter_list(currently_compiling_in_frame);
+	LocalVariableSlates::emit_all_parameters(currently_compiling_in_frame);
 	Produce::up(Emit::tree());
 
 	if (returns_block_value) {

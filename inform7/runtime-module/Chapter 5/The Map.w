@@ -140,8 +140,8 @@ void RTMap::write_door_dir_routines(void) {
 	door_dir_notice *notice;
 	LOOP_OVER(notice, door_dir_notice) {
 		packaging_state save = Routines::begin(notice->ddn_iname);
-		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
-		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
+		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
+		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
@@ -196,8 +196,8 @@ void RTMap::write_door_to_routines(void) {
 	door_to_notice *notice;
 	LOOP_OVER(notice, door_to_notice) {
 		packaging_state save = Routines::begin(notice->dtn_iname);
-		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
-		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
+		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
+		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
