@@ -741,7 +741,7 @@ void RTKinds::compile_structures(void) {
 	inter_name *identifier = rks->rks_dv_iname;
 	current_sentence = rks->default_requested_here;
 	if (Kinds::get_construct(K) == CON_phrase) {
-		Phrases::Constants::compile_default_closure(identifier, K);
+		Closures::compile_default_closure(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_relation) {
 		RTRelations::compile_default_relation(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {

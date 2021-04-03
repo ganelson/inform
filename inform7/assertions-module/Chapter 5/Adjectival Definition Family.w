@@ -94,6 +94,6 @@ void AdjectivalDefinitionFamily::compile(imperative_defn_family *self,
 	LOOP_OVER(id, imperative_defn)
 		if (id->family == adjectival_idf)
 			IDCompilation::compile(id->body_of_defn, total_phrases_compiled,
-				total_phrases_to_compile, NULL, NULL, NULL);
+				total_phrases_to_compile, NULL, NULL);
 	RTAdjectives::compile_support_code();
 }

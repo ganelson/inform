@@ -670,7 +670,7 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_phrase) {
 		constant_phrase *cphr = Rvalues::to_constant_phrase(spec_found);
-		inter_name *N = Phrases::Constants::compile(cphr);
+		inter_name *N = Closures::iname(cphr);
 		if (N) Emit::holster(VH, N);
 		return;
 	}
@@ -688,7 +688,7 @@ kinds of value:
 				inter_name *N = RTInstances::emitted_iname(I);
 				if (N) Emit::holster(VH, N);
 			}
-			parse_node *NB = Routines::Compile::line_being_compiled();
+			parse_node *NB = CompileImperativeDefn::line_being_compiled();
 			if (NB) IXInstances::note_usage(I, NB);
 		}
 		return;

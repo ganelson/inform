@@ -65,7 +65,7 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->original_stack_frame = Frames::boxed_frame(phsf);
 	resp->responding_rule = owner;
 	resp->response_marker = marker;
-	resp->original_text = Strings::TextSubstitutions::new_text_substitution(W, phsf, owner, marker, RTRules::package(owner));
+	resp->original_text = TextSubstitutions::new_text_substitution(W, phsf, owner, marker, RTRules::package(owner));
 	resp->launcher_compiled = FALSE;
 	resp->via_I6 = via_I6;
 	resp->via_I6_routine_compiled = FALSE;
@@ -296,7 +296,7 @@ void Strings::compile_responses(void) {
 	@<Compile the array holding the current text of each response@>;
 	@<Compile the PrintResponse routine@>;
 	@<Compile the Response Divisions array@>;
-	Strings::TextSubstitutions::compile_text_routines_in_response_mode();
+	TextSubstitutions::compile_text_routines_in_response_mode();
 }
 
 @ Note that each rule is allowed to tell us that it already has a better
@@ -313,11 +313,11 @@ text for the response than the one we first created.
 				wording W = Rules::get_response_content(R, marker);
 				if (Wordings::nonempty(W)) { /* i.e., if the rule gives us a better text */
 					current_sentence = Rules::get_response_sentence(R, marker);
-					ts = Strings::TextSubstitutions::new_text_substitution(W,
+					ts = TextSubstitutions::new_text_substitution(W,
 						NULL, R, marker, RTRules::package(R));
 					resp->original_text->dont_need_after_all = TRUE;
 				}
-				inter_name *ts_iname = Strings::TextSubstitutions::text_substitution_iname(ts);
+				inter_name *ts_iname = TextSubstitutions::text_substitution_iname(ts);
 				inter_name *rc_iname = Strings::response_constant_iname(R, marker);
 				Emit::response(rc_iname, R, marker, ts_iname);
 			}
@@ -543,7 +543,7 @@ so the penultimate word, if it's there, is the letter.
 		literal_text *lt = TextLiterals::compile_literal_sb(VH, SW);
 		TextLiterals::mark_as_unescaped(lt);
 	} else if (Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC)) {
-		Strings::TextSubstitutions::text_substitution_cue(VH, SW);
+		TextSubstitutions::text_substitution_cue(VH, SW);
 	} else {
 		TextLiterals::compile_literal_sb(VH, SW);
 	}

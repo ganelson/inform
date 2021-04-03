@@ -191,7 +191,7 @@ imperative_defn *first_in_logical_order = NULL;
 
 void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	id_body *body = id->body_of_defn;
-	PhraseRequests::prepare_for_requests(body);
+	IDCompilation::prepare_for_requests(body);
 
 	ParsingIDTypeData::parse(&(id->body_of_defn->type_data),
 		ToPhraseFamily::get_prototype_text(id));
@@ -308,7 +308,7 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 		kind *K = IDTypeData::kind(&(idb->type_data));
 		if (Kinds::Behaviour::definite(K))
 			if (idb->compilation_data.at_least_one_compiled_form_needed)
-				PhraseRequests::make_request(idb, K, NULL, EMPTY_WORDING);
+				PhraseRequests::simple_request(idb, K);
 	}
 
 @<Throw problems for phrases with return kinds too vaguely defined@> =

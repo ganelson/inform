@@ -215,7 +215,7 @@ void Task::make_built_in_kind_constructors(void) {
 	Projects::load_built_in_kind_constructors(inform7_task->project);
 }
 
-int Task::begin_execution_af_to_begin(void) {
+int Task::begin_execution_at_to_begin(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (Projects::Main_defined(inform7_task->project)) return FALSE;
 	return TRUE;

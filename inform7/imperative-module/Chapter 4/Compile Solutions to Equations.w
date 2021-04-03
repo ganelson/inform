@@ -220,10 +220,9 @@ void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok
 					Produce::up(Emit::tree());
 			}
 			else if (tok->leaf_symbol->function_notated) {
-				inter_name *RS = PhraseRequests::make_iname(
+				inter_name *RS = PhraseRequests::simple_request(
 					tok->leaf_symbol->function_notated,
-					IDTypeData::kind(
-						&(tok->leaf_symbol->function_notated->type_data)));
+					IDTypeData::kind(&(tok->leaf_symbol->function_notated->type_data)));
 				Produce::val_iname(Emit::tree(), K_value, RS);
 			} else internal_error("uncompilable equation node");
 			break;

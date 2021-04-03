@@ -215,13 +215,14 @@ so on. Those absolute basics are made here.
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(PhraseRequests::invoke_to_begin)
-	BENCH(PhraseRequests::compile_as_needed)
+	BENCH(Closures::compile_closures)
+	BENCH(Sequence::compile_function_resources)
 	BENCH(Strings::compile_responses)
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(RTRelations::compile_defined_relations)
-	BENCH(PhraseRequests::compile_as_needed)
-	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
+	BENCH(Sequence::compile_function_resources)
+	BENCH(TextSubstitutions::allow_no_further_text_subs)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
@@ -233,14 +234,13 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
-	BENCH(Propositions::Deferred::compile_remaining_deferred)
+	BENCH(DeferredPropositions::compile_remaining_deferred)
 	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)
 	BENCH(JumpLabels::compile_necessary_storage)
 	BENCH(RTKinds::compile_heap_allocator)
-	BENCH(Phrases::Constants::compile_closures)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(RTUseOptions::configure_template)
@@ -251,3 +251,73 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
 		-1, debugging, sequence_timer);
 	BENCH(I6T::produce_index);
+
+@ We will define just one of the above steps here, because it works in a way
+which breaks the pattern of doing everything just once. For one thing, it's
+actually called twice in the above sequence.
+
+The issue here is that each time an imperative definition is compiled to a
+function, that can require other resources to be compiled in turn. The
+code compiled into the function body can involve calls to functions derived
+from other imperative definitions, or even the same one reinterpreted:
+= (text as Inform 7)
+To expose (X - a value):
+	say "You admire [X]."
+
+To advertise (T - text):
+	expose T;
+	let the price be "the price tag of [a random number between 5 and 10] pounds";
+	expose the price.
+
+Every turn:
+    advertise "a valuable antique silver coffee pot".
+=
+Phrases are compiled on demand, but rules are always demanded, so the "every
+turn" rule here is compiled; that requires "advertise" to be compiled; which
+in turn requires a form of "expose X" to be compiled for X a text. But
+"advertise" also needs the text substitution "the price tag of [a random number
+between 5 and 10] pounds" to be compiled, and that in turn creates a further
+function compilation in order to provide a context for execution of the phrase
+"a random number between 5 and 10", which in turn... and so on.
+
+The only way to be sure of handling all needs here is to keep on compiling
+until the process exhausts itself, and this we do. The process is structured
+as a set of coroutines[1] which each carry out as much as they can of the work
+which has arisen since they were last called, then return how much they did.
+Each may indirectly create work for the others, so we repeat until they are
+all happy.
+
+The result terminates since eventually every "To..." phrase definition will
+have been compiled with every possible interpretation of its kinds. After that,
+everything fizzles out quickly, because none of the other resources here are
+able to create new work for each other. The safety cutout in this function is
+just defensive programming, and has never been activated. Typically only
+one or two iterations are needed in practical cases.
+
+[1] C does not support coroutines, though that hasn't stopped hackers from using
+assembly language to manipulate return addresses on the C call stack, and/or use
+//Duff's device -> https://en.wikipedia.org/wiki/Duff%27s_device//. We avoid
+all that by using regular C functions which merely imitate coroutines by
+cooperatively giving way to each other. They |return| to the central organising
+function //Sequence::compile_function_resources//, not directly into each
+other's bodies. But I think the term "coroutine" is reasonable just the same.
+
+=
+void Sequence::compile_function_resources(void) {
+	int repeat = TRUE, iterations = 0;
+	while (repeat) {
+		repeat = FALSE; iterations++;
+
+		if (PhraseRequests::compilation_coroutine() > 0)       repeat = TRUE;
+		if (ListTogether::compilation_coroutine() > 0)         repeat = TRUE;
+		if (LoopingOverScope::compilation_coroutine() > 0)     repeat = TRUE;
+		if (TextSubstitutions::compilation_coroutine() > 0)    repeat = TRUE;
+		if (DeferredPropositions::compilation_coroutine() > 0) repeat = TRUE;
+
+		if ((problem_count > 0) && (iterations > 10)) repeat = FALSE;
+	}
+	iterations--; /* since the final round is one where everyone does nothing */
+	if (iterations > 0)
+		LOG(".... Sequence::compile_function_resources completed in %d iteration%s\n",
+			iterations, (iterations == 1)?"":"s");
+}

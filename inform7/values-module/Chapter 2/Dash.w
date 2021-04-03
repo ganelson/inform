@@ -271,9 +271,9 @@ then it will be the "random ..." phrase which is backtraced, and not the
 	if (problem_count > backtraced_problem_count) {
 		if ((p) && (p->down) &&
 			(Node::get_type(p) == INVOCATION_LIST_NT)) {
-			Strings::TextSubstitutions::it_is_not_worth_adding();
+			TextSubstitutions::it_is_not_worth_adding();
 			@<Backtrace what phrase definitions the type-checker was looking at@>;
-			Strings::TextSubstitutions::it_is_worth_adding();
+			TextSubstitutions::it_is_worth_adding();
 			backtraced_problem_count = problem_count;
 		}
 	}
@@ -1214,7 +1214,7 @@ instance, if |inv| is an invocation of this phrase:
 		}
 		kind_checker_mode = save_kcm;
 		if (create) {
-			if ((Routines::Compile::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
+			if ((CompileImperativeDefn::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
 				THIS_IS_AN_INTERESTING_PROBLEM {
 					Problems::quote_source(1, current_sentence);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));

@@ -270,6 +270,14 @@ typedef struct kind_variable_declaration {
 	CLASS_DEFINITION
 } kind_variable_declaration;
 
+@ And this little function unpacks a list of KVDs into an array of values:
+
+=
+void Latticework::unpack_kvd(kind **vals, kind_variable_declaration *kvd) {
+	for (int i=0; i<27; i++) vals[i] = NULL;
+	for (; kvd; kvd=kvd->next) vals[kvd->kv_number] = kvd->kv_value;
+}
+
 @h Common code.
 So the following routine tests conformance if |comp| is |FALSE|, returning
 |ALWAYS_MATCH| if and only if |from| $\leq$ |to| holds; and otherwise it tests

@@ -99,7 +99,7 @@ void RTRules::compile_definition(rule *R, int *i, int max_i) {
 		rule_being_compiled = R;
 		if (R->defn_as_I7_source)
 			IDCompilation::compile(R->defn_as_I7_source->body_of_defn, i, max_i,
-				R->variables_visible_in_definition, NULL, R);
+				R->variables_visible_in_definition, R);
 		if ((R->compilation_data.rule_extern_iname) &&
 			(LinkedLists::len(R->applicability_constraints) > 0))
 			@<Compile a shell routine to apply conditions to an I6 rule@>;

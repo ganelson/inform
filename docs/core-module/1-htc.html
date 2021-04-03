@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -333,13 +338,14 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Lists::check</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ConstantLists::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">PhraseRequests::invoke_to_begin</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">PhraseRequests::compile_as_needed</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Closures::compile_closures</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="1-htc.html#SP3" class="function-link"><span class="function-syntax">Sequence::compile_function_resources</span></a><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Strings::compile_responses</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Lists::check</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ConstantLists::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRelations::compile_defined_relations</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">PhraseRequests::compile_as_needed</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Strings::TextSubstitutions::allow_no_further_text_subs</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="1-htc.html#SP3" class="function-link"><span class="function-syntax">Sequence::compile_function_resources</span></a><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">TextSubstitutions::allow_no_further_text_subs</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_12" class="paragraph-anchor"></a><b>&#167;2.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate inter, part 4</span><span class="named-paragraph-number">2.12</span></span><span class="comment-syntax"> =</span>
@@ -359,14 +365,13 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::advance_stage_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INTER5_CSEQ</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Generating inter (5)"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        -1, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTMeasurements::compile_test_functions</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Propositions::Deferred::compile_remaining_deferred</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DeferredPropositions::compile_remaining_deferred</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Calculus::Deferrals::allow_no_further_deferrals</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Lists::check</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ConstantLists::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">TextLiterals::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">JumpLabels::compile_necessary_storage</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_heap_allocator</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Phrases::Constants::compile_closures</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_structures</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Rules::check_response_usages</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTUseOptions::configure_template</span><span class="plain-syntax">)</span>
@@ -383,6 +388,82 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">I6T::produce_index</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We will define just one of the above steps here, because it works in a way
+which breaks the pattern of doing everything just once. For one thing, it's
+actually called twice in the above sequence.
+</p>
+
+<p class="commentary">The issue here is that each time an imperative definition is compiled to a
+function, that can require other resources to be compiled in turn. The
+code compiled into the function body can involve calls to functions derived
+from other imperative definitions, or even the same one reinterpreted:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">expose</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">):</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"You admire [X]."</span>
+
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">advertise</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax">):</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">expose</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">price</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="string-syntax">"the price tag of [a random number between 5 and 10] pounds"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">expose</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">price</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">Every</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">advertise</span><span class="plain-syntax"> </span><span class="string-syntax">"a valuable antique silver coffee pot"</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary">Phrases are compiled on demand, but rules are always demanded, so the "every
+turn" rule here is compiled; that requires "advertise" to be compiled; which
+in turn requires a form of "expose X" to be compiled for X a text. But
+"advertise" also needs the text substitution "the price tag of [a random number
+between 5 and 10] pounds" to be compiled, and that in turn creates a further
+function compilation in order to provide a context for execution of the phrase
+"a random number between 5 and 10", which in turn... and so on.
+</p>
+
+<p class="commentary">The only way to be sure of handling all needs here is to keep on compiling
+until the process exhausts itself, and this we do. The process is structured
+as a set of coroutines<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> which each carry out as much as they can of the work
+which has arisen since they were last called, then return how much they did.
+Each may indirectly create work for the others, so we repeat until they are
+all happy.
+</p>
+
+<p class="commentary">The result terminates since eventually every "To..." phrase definition will
+have been compiled with every possible interpretation of its kinds. After that,
+everything fizzles out quickly, because none of the other resources here are
+able to create new work for each other. The safety cutout in this function is
+just defensive programming, and has never been activated. Typically only
+one or two iterations are needed in practical cases.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> C does not support coroutines, though that hasn't stopped hackers from using
+assembly language to manipulate return addresses on the C call stack, and/or use
+<a href="https://en.wikipedia.org/wiki/Duff%27s_device" class="external">Duff's device</a>. We avoid
+all that by using regular C functions which merely imitate coroutines by
+cooperatively giving way to each other. They <span class="extract"><span class="extract-syntax">return</span></span> to the central organising
+function <a href="1-htc.html#SP3" class="internal">Sequence::compile_function_resources</a>, not directly into each
+other's bodies. But I think the term "coroutine" is reasonable just the same.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Sequence::compile_function_resources</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Sequence::compile_function_resources</span></span>:<br/><a href="1-htc.html#SP2_11">&#167;2.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">iterations</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">repeat</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">iterations</span><span class="plain-syntax">++;</span>
+
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PhraseRequests::compilation_coroutine</span><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)       </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ListTogether::compilation_coroutine</span><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)         </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LoopingOverScope::compilation_coroutine</span><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)     </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TextSubstitutions::compilation_coroutine</span><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DeferredPropositions::compilation_coroutine</span><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">iterations</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">10</span><span class="plain-syntax">)) </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">iterations</span><span class="plain-syntax">--; </span><span class="comment-syntax"> since the final round is one where everyone does nothing</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">iterations</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">".... Sequence::compile_function_resources completed in %d iteration%s\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">iterations</span><span class="plain-syntax">, (</span><span class="identifier-syntax">iterations</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">)?</span><span class="string-syntax">""</span><span class="plain-syntax">:</span><span class="string-syntax">"s"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-wtc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresssection"><a href="1-cm.html">cm</a></li><li class="progresssection"><a href="1-cp.html">cp</a></li><li class="progresssection"><a href="1-wtc.html">wtc</a></li><li class="progresscurrent">htc</li><li class="progresssection"><a href="1-cp2.html">cp2</a></li><li class="progresssection"><a href="1-pp.html">pp</a></li><li class="progresssection"><a href="1-cs.html">cs</a></li><li class="progresssection"><a href="1-inaa.html">inaa</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-pm.html">3</a></li><li class="progressnext"><a href="1-cp2.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

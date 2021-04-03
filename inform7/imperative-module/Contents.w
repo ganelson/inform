@@ -16,8 +16,10 @@ Chapter 2: Compilation Context
 	Local Variable Slates
 	Local Variables
 	Local Parking
-	Phrase Blocks
+	Code Blocks
 	Functions
+	Phrase Requests
+	Closures
 
 Chapter 3: Compiling Propositions
 "Generating code to test or assert propositions from predicate calculus."
@@ -35,6 +37,6 @@ Chapter 4: Compiling Invocations
 	Compile Invocations
 	Compile Invocations As Calls
 	Compile Invocations Inline
-	Compile Phrases
+	Compile Imperative Definitions
 	Compile Arithmetic
 	Compile Solutions to Equations

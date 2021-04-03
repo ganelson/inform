@@ -60,8 +60,6 @@ Chapter 4: Compilation Utilities
 	Literal Patterns at Run Time
 	Runtime Support for Tables
 	Imperative Compilation Data
-	Phrase Requests
-	Closures
 	Chronology
 
 Chapter 5: Plugin Support

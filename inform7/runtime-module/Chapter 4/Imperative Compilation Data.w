@@ -55,6 +55,16 @@ void IDCompilation::make_inline(id_body *idb, int inline_wn, int mor) {
 	idb->compilation_data.at_least_one_compiled_form_needed = FALSE;
 }
 
+@ To... phrases live here:
+
+=
+void IDCompilation::prepare_for_requests(id_body *idb) {
+	idb->compilation_data.requests_package = Hierarchy::package(idb->compilation_data.owning_module, PHRASES_HAP);
+}
+package_request *IDCompilation::package_for_requests(id_body *idb) {
+	return idb->compilation_data.requests_package;
+}
+
 @
 
 =
@@ -171,14 +181,18 @@ response to "requests". All other phrases are compiled just once.
 
 =
 void IDCompilation::compile(id_body *idb, int *i, int max_i,
-	shared_variable_access_list *legible, to_phrase_request *req, rule *R) {
-	if ((req) || (idb->compilation_data.at_least_one_compiled_form_needed)) {
-		Routines::Compile::routine(idb, legible, req, R);
-		if (idb->compilation_data.at_least_one_compiled_form_needed) {
-			idb->compilation_data.at_least_one_compiled_form_needed = FALSE;
-			(*i)++;
-			ProgressBar::update(4, ((float) (*i))/((float) max_i));
-		}
+	shared_variable_access_list *legible, rule *R) {
+	if (idb->compilation_data.at_least_one_compiled_form_needed) {
+		CompileImperativeDefn::go(idb, legible, NULL, R);
+		IDCompilation::advance_progress_bar(idb, i, max_i);
+		idb->compilation_data.at_least_one_compiled_form_needed = FALSE;
+	}
+}
+
+void IDCompilation::advance_progress_bar(id_body *idb, int *i, int max_i) {
+	if (idb->compilation_data.at_least_one_compiled_form_needed) {
+		(*i)++;
+		ProgressBar::update(4, ((float) (*i))/((float) max_i));
 	}
 }
 

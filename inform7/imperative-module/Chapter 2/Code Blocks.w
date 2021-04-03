@@ -1,4 +1,4 @@
-[CodeBlocks::] Phrase Blocks.
+[CodeBlocks::] Code Blocks.
 
 Blocks of code are used to give conditionals and loops greater
 scope, as in more traditional programming languages.

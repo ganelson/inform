@@ -1119,7 +1119,7 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 @ And the more specialised:
 
 @<Issue problem message for comma in a substitution@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithComma),
 		"a substitution contains a comma ','",
 		"which is against the rules, because 'say' is a special phrase in which the comma "
@@ -1129,11 +1129,11 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 		"option - say 'the best route from A to B, using even locked doors' - "
 		"you'll need to put this in a 'let' variable first and then say that, "
 		"or else define a better text substitution to do the job for you.)");
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 	return;
 
 @<Issue problem message for nested substitution@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	if ((p[k+1] == 'u') && (p[k+2] == 'n') && (p[k+3] == 'i') && (p[k+4] == 'c') &&
 		(p[k+5] == 'o') && (p[k+6] == 'd') && (p[k+7] == 'e') && (p[k+8] == ' ')) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NestedUSubstitution),
@@ -1148,27 +1148,27 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 			"which is not allowed. (If you just wanted a literal open and closed square "
 			"bracket, use '[bracket]' and '[close bracket]'.)");
 	}
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 	return;
 
 @<Issue problem message for unclosed substitution@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnclosedSubstitution),
 		"the text here uses an open square bracket '[', which opens a substitution "
 		"in the text, but doesn't close it again",
 		"so that the result is malformed. (If you just wanted a literal open square "
 		"bracket, use '[bracket]'.)");
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 	return;
 
 @<Issue problem message for unopened substitution@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnopenedSubstitution),
 		"the text here uses a close square bracket ']', which closes a substitution in the "
 		"text, but never actually opened it",
 		"with a matching '['. (If you just wanted a literal close square bracket, use "
 		"'[close bracket]'.)");
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 	return;
 
 @ Something devious happens when text following a "say" is found. Double-quoted text
@@ -1196,20 +1196,20 @@ to <s-say-phrase> to parse the list.
 @ So now just the problem messages:
 
 @<Issue PM_TSWithPunctuation problem@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithPunctuation),
 		"a substitution contains a '.', ':' or ';'",
 		"which suggests that a close square bracket ']' may have gone astray.");
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 
 @ And:
 
 @<Issue PM_EmptySubstitution problem@> =
-	Strings::TextSubstitutions::it_is_not_worth_adding();
+	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EmptySubstitution),
 		"the text here contains an empty substitution '[]'",
 		"which is not allowed. To say nothing - well, say nothing.");
-	Strings::TextSubstitutions::it_is_worth_adding();
+	TextSubstitutions::it_is_worth_adding();
 
 @ The following manufactures end nodes to match a given begin node.
 

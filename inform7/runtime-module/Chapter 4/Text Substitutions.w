@@ -1,4 +1,4 @@
-[Strings::TextSubstitutions::] Text Substitutions.
+[TextSubstitutions::] Text Substitutions.
 
 In this section we compile text with substitutions.
 
@@ -56,7 +56,7 @@ stack frame; and we mustn't optimise by compiling identical text substitutions
 to the same routines to print them.
 
 =
-text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
+text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	stack_frame *phsf, rule *R, int marker, package_request *P) {
 	text_substitution *ts = CREATE(text_substitution);
 	if (no_further_text_subs) @<Panic, because it is really too late@>;
@@ -98,7 +98,7 @@ to do but panic.
 @ The template layer calls the following when that midnight hour chimes:
 
 =
-void Strings::TextSubstitutions::allow_no_further_text_subs(void) {
+void TextSubstitutions::allow_no_further_text_subs(void) {
 	no_further_text_subs = TRUE;
 }
 
@@ -106,7 +106,7 @@ void Strings::TextSubstitutions::allow_no_further_text_subs(void) {
 |text_routine_1| and so on, but no longer:
 
 =
-inter_name *Strings::TextSubstitutions::text_substitution_iname(text_substitution *ts) {
+inter_name *TextSubstitutions::text_substitution_iname(text_substitution *ts) {
 	ts->ts_sb_needed = TRUE;
 	return ts->ts_iname;
 }
@@ -120,7 +120,7 @@ we'll compile a call to a routine like |TS_1()|, and make a note to compile
 that routine later. This appearance of the routine name is called the "cue".
 
 =
-void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
+void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 	if (adopted_rule_for_compilation) {
 		Rules::log(adopted_rule_for_compilation);
 	}
@@ -138,9 +138,9 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				Produce::down(Emit::tree());
 					Frames::emit_new_local_value(K_text);
 			}
-			text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
+			text_substitution *ts = TextSubstitutions::new_text_substitution(W, phsf,
 				adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
-			inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
+			inter_name *tin = TextSubstitutions::text_substitution_iname(ts);
 			if (VH->vhmode_wanted == INTER_DATA_VHMODE)
 				Emit::holster(VH, tin);
 			else
@@ -154,7 +154,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 }
 
 @<Write the actual cue@> =
-	text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
+	text_substitution *ts = TextSubstitutions::new_text_substitution(W, phsf,
 		adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
 		inter_name *N = RTKinds::new_block_constant_iname();
@@ -164,7 +164,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 		Emit::array_end(save);
 		if (N) Emit::holster(VH, N);
 	} else {
-		inter_name *tin = Strings::TextSubstitutions::text_substitution_iname(ts);
+		inter_name *tin = TextSubstitutions::text_substitution_iname(ts);
 		if (Holsters::data_acceptable(VH)) {
 			if (tin) Emit::holster(VH, tin);
 		}
@@ -177,22 +177,22 @@ since it often confuses newcomers:
 text_substitution *current_ts_being_compiled = NULL;
 int it_is_not_worth_adding = FALSE; /* To suppress the "It may be worth adding..." */
 
-int Strings::TextSubstitutions::is_it_worth_adding(void) {
+int TextSubstitutions::is_it_worth_adding(void) {
 	return it_is_not_worth_adding;
 }
-void Strings::TextSubstitutions::it_is_worth_adding(void) {
+void TextSubstitutions::it_is_worth_adding(void) {
 	it_is_not_worth_adding = FALSE;
 }
-void Strings::TextSubstitutions::it_is_not_worth_adding(void) {
+void TextSubstitutions::it_is_not_worth_adding(void) {
 	it_is_not_worth_adding = TRUE;
 }
 
 @
 
-@d ENDING_MESSAGE_PROBLEMS_CALLBACK Strings::TextSubstitutions::append_text_substitution_proviso
+@d ENDING_MESSAGE_PROBLEMS_CALLBACK TextSubstitutions::append_text_substitution_proviso
 
 =
-void Strings::TextSubstitutions::append_text_substitution_proviso(void) {
+void TextSubstitutions::append_text_substitution_proviso(void) {
 	if (it_is_not_worth_adding) return;
 	if (compiling_text_routines_mode == FALSE) return;
 	if ((current_ts_being_compiled) &&
@@ -225,8 +225,12 @@ Basically, we compile as many text substitutions as we can out of those not
 yet done, returning the number we compile.
 
 =
+int TextSubstitutions::compilation_coroutine(void) {
+	return TextSubstitutions::compile_as_needed(FALSE);
+}
+
 text_substitution *latest_ts_compiled = NULL;
-int Strings::TextSubstitutions::compilation_coroutine(int in_response_mode) {
+int TextSubstitutions::compile_as_needed(int in_response_mode) {
 	Strings::compile_response_launchers();
 	int N = 0;
 	compiling_text_routines_mode = TRUE;
@@ -240,7 +244,7 @@ int Strings::TextSubstitutions::compilation_coroutine(int in_response_mode) {
 		if (ts->responding_to_rule) responding = TRUE;
 		if ((ts->dont_need_after_all == FALSE) && (responding == in_response_mode) &&
 			(ts->tr_done_already == FALSE)) {
-			Strings::TextSubstitutions::compile_single_substitution(ts);
+			TextSubstitutions::compile_single_substitution(ts);
 		}
 		N++;
 	}
@@ -255,7 +259,7 @@ from the stack frame creating this text substitution to the stack frame
 compiling it.
 
 =
-void Strings::TextSubstitutions::compile_single_substitution(text_substitution *ts) {
+void TextSubstitutions::compile_single_substitution(text_substitution *ts) {
 	LOGIF(TEXT_SUBSTITUTIONS, "Compiling text routine %d %08x %W\n",
 		ts->allocation_id, (int) (ts->parked_stack_frame), ts->unsubstituted_text);
 
@@ -335,7 +339,7 @@ a request for a new text substitution to be compiled later...
 	Annotations::write_int(ts_code_block->next, from_text_substitution_ANNOT, TRUE);
 	ImperativeSubtrees::accept(ts_code_block);
 
-	Routines::Compile::code_block_outer(0, ts_code_block->down);
+	CompileImperativeDefn::code_block_outer(0, ts_code_block->down);
 
 	Produce::rtrue(Emit::tree());
 
@@ -348,8 +352,8 @@ start again -- which would be very inefficient except that in this mode
 we aren't doing very much; most TSs will be passed quickly over.
 
 =
-void Strings::TextSubstitutions::compile_text_routines_in_response_mode(void) {
+void TextSubstitutions::compile_text_routines_in_response_mode(void) {
 	latest_ts_compiled = NULL;
-	Strings::TextSubstitutions::compilation_coroutine(TRUE);
+	TextSubstitutions::compile_as_needed(TRUE);
 	latest_ts_compiled = NULL;
 }
