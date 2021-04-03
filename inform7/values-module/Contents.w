@@ -36,3 +36,5 @@ Chapter 4: The S-Parser
 	Type Expressions and Values
 	Verbal and Relative Clauses
 	Conditions and Phrases
+	Invocations
+	Parse Invocations

@@ -11,7 +11,7 @@ Chapter 1: Configuration and Control
 	Imperative Module
 
 Chapter 2: Compilation Context
-"Preparing a context at run-time in which code can be executed."
+"Managing the compilation of Inter functions."
 	Stack Frames
 	Local Variable Slates
 	Local Variables
@@ -32,8 +32,6 @@ Chapter 3: Compiling Propositions
 
 Chapter 4: Compiling Invocations
 "Generating code to perform individual phrases."
-	Invocations
-	Parse Invocations
 	Compile Invocations
 	Compile Invocations As Calls
 	Compile Invocations Inline
