@@ -1,18 +1,28 @@
 [Invocations::] Invocations.
 
-Specifications which ask to use a phrase (which are "phrasal")
-indicate which phrase they intend by means of a list of "invocations".
-This list goes on to record the outcome of type-checking and provides
-instructions for code generation, as we see here.
+Invocations are to phrases what function calls are to functions, though they
+do not always compile that way.
 
-@ An invocation is a request to perform a particular phrase with a
-particular set of parameters. For instance, to perform "award (N - a number)
-points" with $N$ set to 100.
+@ See //Invocation Lists// for some context for the following.
 
-Phrasal specifications, the ones which request the use of phrases, are
-built up by parsing the source text. This is often so ambiguous that it is
-impossible, at first, to narrow down the meaning to a single invocation,
-and so a phrasal specification builds up a list of possibilities.
+Every invocation node is produced by the following function. As can be seen,
+these nodes are heavily annotated.
+
+=
+parse_node *Invocations::new(void) {
+	parse_node *inv = Node::new(INVOCATION_NT);
+	Node::set_phrase_invoked(inv, NULL);
+	Node::set_say_verb(inv, NULL);
+	Node::set_modal_verb(inv, NULL);
+	Node::set_say_adjective(inv, NULL);
+	Node::set_kind_resulting(inv, NULL);
+	Node::set_phrase_options_invoked(inv, NULL);
+	Node::set_kind_variable_declarations(inv, NULL);
+	Annotations::write_int(inv, ssp_closing_segment_wn_ANNOT, -1);
+	return inv;
+}
+
+@
 
 The process of type-checking then strikes out definitely incorrect
 invocations, reducing the size of the list. If it becomes empty, the
@@ -122,28 +132,10 @@ for different invocations of, say, "+".
 
 @d MAX_INVOCATIONS_PER_PHRASE 4096
 
-@ =
-typedef struct invocation_sort_block {
-	struct parse_node *inv_data;
-	int unsorted_position;
-} invocation_sort_block;
-
 @h Invocations themselves.
 Are created thus:
 
 =
-parse_node *Invocations::new(void) {
-	parse_node *inv = Node::new(INVOCATION_NT);
-	Node::set_phrase_invoked(inv, NULL);
-	Node::set_say_verb(inv, NULL);
-	Node::set_modal_verb(inv, NULL);
-	Node::set_say_adjective(inv, NULL);
-	Node::set_kind_resulting(inv, NULL);
-	Node::set_phrase_options_invoked(inv, NULL);
-	Node::set_kind_variable_declarations(inv, NULL);
-	Annotations::write_int(inv, ssp_closing_segment_wn_ANNOT, -1);
-	return inv;
-}
 
 @ And logging thus:
 
@@ -417,115 +409,6 @@ int Invocations::implies_newline(parse_node *inv) {
 	return TRUE;
 }
 
-@h Invocation lists.
-An invocation list is a chain of alternatives in the parse tree.
-
-=
-parse_node *Invocations::add_to_list(parse_node *invl, parse_node *inv) {
-	if (invl == NULL) return inv;
-	parse_node *p = invl;
-	while (p->next_alternative) p = p->next_alternative;
-	p->next_alternative = inv;
-	return invl;
-}
-
-@ That completes the construction routines. Now, reading the length and first item:
-
-=
-int Invocations::length_of_list(parse_node *invl) {
-	int L = 0;
-	for (parse_node *p = invl; p; p = p->next_alternative) L++;
-	return L;
-}
-
-@ That completes the construction routines. Now, reading the length and first item:
-
-=
-parse_node *Invocations::first_in_list(parse_node *invl) {
-	return invl;
-}
-
-@ Sorting the invocations in a list is much more important than it may
-at first appear, since the sorted order is a precedence order for parsing
-purposes: that is, the earliest type-checked match is the one accepted,
-so that being sorted up front gives a possible interpretation of a phrase
-priority over those sorted to the back.
-
-=
-invocation_sort_block *pigeon_holes = NULL;
-int number_of_pigeon_holes = 0;
-
-parse_node *Invocations::sort_list(parse_node *invl) {
-	int L = Invocations::length_of_list(invl);
-	if (L > 0) {
-		@<Make sure there are at least L pigeonholes available for sorting into@>;
-
-		parse_node *ent=invl;
-		for (int i=0; (i<L) && (ent); i++, ent=ent->next_alternative) {
-			pigeon_holes[i].inv_data = ent;
-			pigeon_holes[i].unsorted_position = i;
-		}
-
-		qsort(pigeon_holes, (size_t) L, sizeof(invocation_sort_block), Invocations::comparison);
-
-		parse_node *tail = NULL; invl = NULL;
-		for (int i=0; i<L; i++) {
-			parse_node *i_n = pigeon_holes[i].inv_data; i_n->next_alternative = NULL;
-			if (tail) tail->next_alternative = i_n; else invl = i_n;
-			tail = i_n;
-		}
-	}
-	return invl;
-}
-
-@ We allocate 1000 pigeonholes in the first instance, then double each time
-we run out. (We will quite likely never run out, as 1000 is plenty. But we
-want to avoid all possible arbitrary limits.)
-
-@<Make sure there are at least L pigeonholes available for sorting into@> =
-	if (L > number_of_pigeon_holes) {
-		number_of_pigeon_holes = 2*L;
-		if (number_of_pigeon_holes < 1000)
-			number_of_pigeon_holes = 1000;
-		pigeon_holes =
-			Memory::calloc(number_of_pigeon_holes, sizeof(invocation_sort_block), INV_LIST_MREASON);
-	}
-
-@ So much for the mechanism. The sorting order is specified by the following.
-
-(a) We first sort by logical priority. This is quite an expensive test, and
-therefore we effectively cache it by referring to the "sequence count" of the
-phrases instead: that is, to the numbered position in the logical priority
-ordering of the phrases. It's very important that each phrase has a unique
-sequence count value, because the C library sorting function |qsort| is
-unstable, so that it might arbitrarily rearrange invocations which happened to
-have equal sequence counts -- a problem because Inform's behaviour in terms of
-logical priority must be predictable.
-
-(b) Our final sorting is on the original parsing sequence order, which we
-preserve in cases where two different invocations both invoke the same phrase
-(as for instance where "two minutes before two minutes before midnight" can be
-invoked either as "two minutes before (two minutes before midnight)" or "(two
-minutes before two minutes) before midnight"). The result is that the comparison
-function can return 0 only when the invocations are actually equal, so that the
-instability of the sorting algorithm does not produce any ambiguity in how
-Inform prioritises phrases.
-
-=
-int Invocations::comparison(const void *i1, const void *i2) {
-	invocation_sort_block *inv1 = (invocation_sort_block *) i1;
-	invocation_sort_block *inv2 = (invocation_sort_block *) i2;
-
-	/* (a) sort by logical priority */
-	int delta =
-		ToPhraseFamily::sequence_count(Node::get_phrase_invoked(inv1->inv_data)) -
-		ToPhraseFamily::sequence_count(Node::get_phrase_invoked(inv2->inv_data));
-	if (delta != 0) return delta;
-
-	/* (b) sort by creation sequence */
-	return inv1->unsorted_position - inv2->unsorted_position;
-}
-
 @ By contrast, this compares two invocations by their contents:
 
 =
@@ -551,42 +434,17 @@ int Invocations::eq(parse_node *inv1, parse_node *inv2) {
 	return TRUE;
 }
 
-@ The following macro abstracts the process of looping through the invocations
-in a list:
-
-@d LOOP_THROUGH_INVOCATION_LIST(inv, invl)
-	LOOP_THROUGH_ALTERNATIVES(inv, invl)
-
-@ The log routines demonstrate its use:
+@
 
 =
-void Invocations::log_list(parse_node *invl) {
-	parse_node *inv;
-	LOG("Invocation list (%d):\n", Invocations::length_of_list(invl));
-	int n = 0;
-	LOOP_THROUGH_INVOCATION_LIST(inv, invl)
-		LOG("P%d: $e\n", n++, inv);
-}
-
-@ A more detailed version, which hierarchically shows the lists inside the
-invocations listed:
-
-=
-void Invocations::log_list_in_detail(parse_node *invl) {
-	parse_node *inv;
-	LOG("Invocation list in detail (%d):\n", Invocations::length_of_list(invl));
-	int n = 0;
-	LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
-		int j;
-		LOG("P%d: $e\n", n++, inv);
-		for (j=0; j<Invocations::get_no_tokens(inv); j++) {
-			parse_node *tok = Invocations::get_token_as_parsed(inv, j);
-			LOG("  %d: $P\n", j, tok);
-			if (Node::is(tok->down, INVOCATION_LIST_NT)) {
-				LOG_INDENT;
-				Invocations::log_list_in_detail(tok->down->down);
-				LOG_OUTDENT;
-			}
+void Invocations::log_tokens(parse_node *inv) {
+	for (int j=0; j<Invocations::get_no_tokens(inv); j++) {
+		parse_node *tok = Invocations::get_token_as_parsed(inv, j);
+		LOG("  %d: $P\n", j, tok);
+		if (Node::is(tok->down, INVOCATION_LIST_NT)) {
+			LOG_INDENT;
+			InvocationLists::log_in_detail(tok->down->down);
+			LOG_OUTDENT;
 		}
 	}
 }

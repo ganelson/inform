@@ -1,139 +1,18 @@
-[CompileImperativeDefn::] Compile Imperative Definitions.
+[CompileBlocksAndLines::] Compile Blocks and Lines.
 
-Compiling an Inter function to fill a request for a phrase.
-
-@ The nature of the phrase currently being compiled provides a sort of
-context for how we read the definition -- for example, that it makes no
-sense to write "end the action" in a phrase which isn't an action-based
-rule. So we keep track of this. Note that one phrase definition cannot
-contain another, so there is never any need to recursively compile phrases.
-
-= (early code)
-id_body *id_body_being_compiled = NULL; /* phrase whose definition is being compiled */
-
-@ This routine sits at the summit of a mountain of code: it compiles a
-non-line phrase definition into a routine. Note once again that a single
-phrase can be compiled multiple times, with different kinds. For example,
-
->> To grasp (V - a value): say "I see, [V]."
-
-might be compiled once in a form where V was a text, and another time where
-it was a number. The form needed is included in the request |req|, which
-should always be supplied for "To..." phrases, but left null for rules.
-
-=
-void CompileImperativeDefn::go(id_body *idb,
-	shared_variable_access_list *legible, to_phrase_request *req,
-	rule *R) {
-	parse_node *code_at = ImperativeDefinitions::body_at(idb);
-	if (Node::is(code_at->next, DEFN_CONT_NT)) code_at = code_at->next;
-	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", code_at);
-
-	CompilationUnits::set_current(code_at);
-	id_body_being_compiled = idb;
-	@<Set up the stack frame for this compilation request@>;
-
-	@<Compile some commentary about the routine to follow@>;
-
-	packaging_state save = Functions::begin_framed(CompileImperativeDefn::iname(idb, req), &(idb->compilation_data.id_stack_frame));
-
-	@<Compile the body of the routine@>;
-
-	Functions::end(save);
-
-	id_body_being_compiled = NULL;
-	current_sentence = NULL;
-	CompilationUnits::set_current(NULL);
-}
-
-@<Compile some commentary about the routine to follow@> =
-	if (req == NULL) {
-		Produce::comment(Emit::tree(), I"No specific request");
-	} else {
-		TEMPORARY_TEXT(C)
-		WRITE_TO(C, "Request %d: ", req->allocation_id);
-		Kinds::Textual::write(C, PhraseRequests::kind_of_request(req));
-		Produce::comment(Emit::tree(), C);
-		DISCARD_TEXT(C)
-	}
-	ImperativeDefinitions::write_comment_describing(idb->head_of_defn);
-
-@<Set up the stack frame for this compilation request@> =
-	stack_frame *phsf = &(idb->compilation_data.id_stack_frame);
-	id_type_data *idtd = &(idb->type_data);
-	Frames::make_current(phsf);
-
-	kind *version_kind = NULL;
-	if (req) version_kind = PhraseRequests::kind_of_request(req);
-	else version_kind = IDTypeData::kind(idtd);
-	IDCompilation::initialise_stack_frame_from_type_data(phsf, idtd, version_kind, FALSE);
-
-	if (req) Frames::set_kind_variables(phsf,
-		PhraseRequests::kind_variables_for_request(req));
-	else Frames::set_kind_variables(phsf, NULL);
-
-	Frames::set_shared_variable_access_list(phsf, legible);
-
-	LocalVariableSlates::deallocate_all(phsf); /* in case any are left from an earlier compile */
-	PreformCache::warn_of_changes(); /* that local variables may have changed */
-
-@<Compile the body of the routine@> =
-	current_sentence = code_at;
-	if (RTRules::compile_test_head(idb, R) == FALSE) {
-		if (code_at) {
-			VerifyTree::verify_structure_from(code_at);
-			CompileImperativeDefn::code_block_outer(1, code_at->down);
-			VerifyTree::verify_structure_from(code_at);
-		}
-		current_sentence = code_at;
-		RTRules::compile_test_tail(idb, R);
-
-		@<Compile a terminal return statement@>;
-	}
-
-@ In I6, all routines return a value, and if execution runs into the |]| end
-marker without any return being made then the routine returns |false| if the
-routine is a property value, |true| otherwise. That convention is unhelpful
-to us, so we end our routine with code which certainly performs a return.
-
-@<Compile a terminal return statement@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
-	kind *K = Frames::get_kind_returned();
-	if (K) {
-		if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
-			"value decided by this phrase") != TRUE) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultDecideFails),
-				"it's not possible to decide such a value",
-				"so this can't be allowed.");
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		}
-	} else {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0); /* that is, return "false" */
-	}
-	Produce::up(Emit::tree());
-
-@ The name of our I6 routine depends not only on the phrase but also on the
-request made for its compilation -- this enables the text version of a
-phrase to be different from the number version, and so on.
-
-=
-inter_name *CompileImperativeDefn::iname(id_body *idb, to_phrase_request *req) {
-	if (req) return req->req_iname;
-	return IDCompilation::iname(idb);
-}
+Compiling a code block of lines from an imperative definition.
 
 @ =
 int disallow_let_assignments = FALSE;
-int CompileImperativeDefn::disallow_let(void) {
+int CompileBlocksAndLines::disallow_let(void) {
 	return disallow_let_assignments;
 }
 
-void CompileImperativeDefn::code_block_outer(int statement_count, parse_node *pn) {
-	CompileImperativeDefn::code_block(statement_count, pn, TRUE);
+void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *pn) {
+	CompileBlocksAndLines::code_block(statement_count, pn, TRUE);
 }
 
-int CompileImperativeDefn::code_block(int statement_count, parse_node *pn, int top_level) {
+int CompileBlocksAndLines::code_block(int statement_count, parse_node *pn, int top_level) {
 	if (pn) {
 		int m = <s-value-uncached>->multiplicitous;
 		<s-value-uncached>->multiplicitous = TRUE;
@@ -141,7 +20,7 @@ int CompileImperativeDefn::code_block(int statement_count, parse_node *pn, int t
 		if ((top_level == FALSE) && (pn->down) && (pn->down->next == NULL) && (pn->down->down == NULL))
 			disallow_let_assignments = TRUE;
 		for (parse_node *p = pn->down; p; p = p->next) {
-			statement_count = CompileImperativeDefn::code_line(statement_count, p);
+			statement_count = CompileBlocksAndLines::code_line(statement_count, p);
 		}
 		disallow_let_assignments = FALSE;
 		<s-value-uncached>->multiplicitous = m;
@@ -149,7 +28,7 @@ int CompileImperativeDefn::code_block(int statement_count, parse_node *pn, int t
 	return statement_count;
 }
 
-int CompileImperativeDefn::code_line(int statement_count, parse_node *p) {
+int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
 	if (ControlStructures::opens_block(csp)) {
@@ -184,7 +63,7 @@ int CompileImperativeDefn::code_line(int statement_count, parse_node *p) {
 @<Compile a say head@> =
 	for (parse_node *say_node = p->down, *prev_sn = NULL; say_node; prev_sn = say_node, say_node = say_node->next) {
 		SParser::parse_say_term(say_node);
-		parse_node *inv = Invocations::first_in_list(say_node->down);
+		parse_node *inv = InvocationLists::first_reading(say_node->down);
 		if (inv) {
 			if (prev_sn) {
 				if ((Node::get_say_verb(inv)) ||
@@ -200,7 +79,7 @@ int CompileImperativeDefn::code_line(int statement_count, parse_node *p) {
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 	Produce::up(Emit::tree());
-	CompileImperativeDefn::verify_say_node_list(p->down);
+	CompileBlocksAndLines::verify_say_node_list(p->down);
 
 @<Compile the midriff@> =
 	if (Node::get_type(to_compile) == INVOCATION_LIST_SAY_NT) @<Compile a say term midriff@>
@@ -217,7 +96,7 @@ int CompileImperativeDefn::code_line(int statement_count, parse_node *p) {
 	BEGIN_COMPILATION_MODE;
 	if (Annotations::read_int(to_compile, suppress_newlines_ANNOT))
 		COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
-	CompileImperativeDefn::line(to_compile, TRUE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::invocation(to_compile, TRUE, INTER_VOID_VHMODE);
 	END_COMPILATION_MODE;
 
 @ In fact, "now" propositions are never empty, but there's nothing in
@@ -298,8 +177,9 @@ henceforth to be true, so we simply compile empty code in that case.
 @<Compile a named rulebook outline midriff@> =
 	current_sentence = to_compile;
 	named_rulebook_outcome *nrbo = <<rp>>;
-	if (id_body_being_compiled) {
-		if (ImperativeDefinitionFamilies::goes_in_rulebooks(id_body_being_compiled->head_of_defn) == FALSE) {
+	id_body *being_compiled = Functions::defn_being_compiled();
+	if (being_compiled) {
+		if (ImperativeDefinitionFamilies::goes_in_rulebooks(being_compiled->head_of_defn) == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
@@ -312,7 +192,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	}
 	rulebook *rb = NULL;
 	if (IDCompilation::outcome_restrictions_waived() == FALSE)
-		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, id_body_being_compiled);
+		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, Functions::defn_being_compiled());
 	if (rb) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(to_compile));
@@ -331,18 +211,18 @@ henceforth to be true, so we simply compile empty code in that case.
 	else Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		current_sentence = to_compile;
-		CompileImperativeDefn::line(to_compile, FALSE, INTER_VAL_VHMODE);
+		CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VAL_VHMODE);
 
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::open_code_block();
-			statement_count = CompileImperativeDefn::code_block(statement_count, p->down->next, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next, FALSE);
 		if (p->down->next->next) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::divide_code_block();
-			statement_count = CompileImperativeDefn::code_block(statement_count, p->down->next->next, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next->next, FALSE);
 		}
 			CodeBlocks::close_code_block();
 		Produce::up(Emit::tree());
@@ -350,7 +230,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 @<Compile a switch midriff@> =
 	current_sentence = to_compile;
-	CompileImperativeDefn::line(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VOID_VHMODE);
 
 	CodeBlocks::open_code_block();
 
@@ -463,7 +343,7 @@ henceforth to be true, so we simply compile empty code in that case.
 		Specifications::Compiler::emit_as_val(switch_kind, case_spec);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileImperativeDefn::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -472,7 +352,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileImperativeDefn::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -491,7 +371,7 @@ henceforth to be true, so we simply compile empty code in that case.
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileImperativeDefn::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
 		if (final_flag == FALSE) {
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -500,11 +380,11 @@ henceforth to be true, so we simply compile empty code in that case.
 	downs += 2;
 
 @<Handle a pointery default@> =
-	statement_count = CompileImperativeDefn::code_block(statement_count, ow_node, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
 
 @<Compile a standard midriff@> =
 	current_sentence = to_compile;
-	CompileImperativeDefn::line(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VOID_VHMODE);
 
 @<Compile the tail@> =
 	if (csp == if_CSP) @<Compile an if tail@>
@@ -534,7 +414,7 @@ the ceaseless repetition of the keyword "case". Thus, |15:| does what
 inline definitions for "say if" and similar.
 
 @<Compile a say tail@> =
-	statement_count = CompileImperativeDefn::code_block(statement_count, p, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, p, FALSE);
 
 	TEMPORARY_TEXT(SAYL)
 	WRITE_TO(SAYL, ".");
@@ -557,7 +437,7 @@ inline definitions for "say if" and similar.
 
 @<Compile a loop tail@> =
 	CodeBlocks::open_code_block();
-	statement_count = CompileImperativeDefn::code_block(statement_count, p->down->next, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next, FALSE);
 	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
 	CodeBlocks::close_code_block();
 
@@ -567,14 +447,14 @@ type-checks it, and finally, all being well, compiles it.
 =
 parse_node *void_phrase_please = NULL; /* instructions for the typechecker */
 
-void CompileImperativeDefn::line(parse_node *p, int already_parsed, int vhm) {
+void CompileBlocksAndLines::invocation(parse_node *p, int already_parsed, int vhm) {
 	int initial_problem_count = problem_count;
 
 	LOGIF(EXPRESSIONS, "\n-- -- Evaluating <%W> -- --\n", Node::get_text(p));
 
 	LOGIF(EXPRESSIONS, "(a) Parsing:\n");
 	if (already_parsed) {
-		parse_node *inv = Invocations::first_in_list(p->down);
+		parse_node *inv = InvocationLists::first_reading(p->down);
 		if ((inv) &&
 			(Node::get_phrase_invoked(inv)) &&
 			(IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
@@ -607,8 +487,8 @@ void CompileImperativeDefn::line(parse_node *p, int already_parsed, int vhm) {
 @ And this is where we are:
 
 =
-parse_node *CompileImperativeDefn::line_being_compiled(void) {
-	if (id_body_being_compiled) return current_sentence;
+parse_node *CompileBlocksAndLines::line_being_compiled(void) {
+	if (Functions::defn_being_compiled()) return current_sentence;
 	return NULL;
 }
 
@@ -642,7 +522,7 @@ and lastly "[at random]" (an end). SSPs can even be nested, within limits:
 @d MAX_COMPLEX_SAY_DEPTH 32 /* and it would be terrible coding style to approach this */
 
 =
-int CompileImperativeDefn::verify_say_node_list(parse_node *say_node_list) {
+int CompileBlocksAndLines::verify_say_node_list(parse_node *say_node_list) {
 	int problem_issued = FALSE;
 	int say_invocations_found = 0;
 	@<Check that say control structures have been used in a correct sequence@>;
@@ -770,7 +650,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"middle part of its construction, but it appears to be on its own.");
-		CompileImperativeDefn::add_say_construction_to_error(ssp_tok);
+		CompileBlocksAndLines::add_say_construction_to_error(ssp_tok);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
 	}
@@ -783,7 +663,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"ending part of its construction, but it appears to be on its own.");
-		CompileImperativeDefn::add_say_construction_to_error(ssp_tok);
+		CompileBlocksAndLines::add_say_construction_to_error(ssp_tok);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
 	}
@@ -829,7 +709,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 			"In the text at %1, the '[%2]' ought to occur inside an [if ...], but "
 			"is cut off because it has been interleaved with a complicated say "
 			"construction.");
-		CompileImperativeDefn::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
+		CompileBlocksAndLines::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
 	}
@@ -860,7 +740,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		Problems::issue_problem_segment(
 			"In the text at %1, the '[%2]' is cut off from its [if ...], because "
 			"it has been interleaved with a complicated say construction.");
-		CompileImperativeDefn::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
+		CompileBlocksAndLines::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
 	}
@@ -881,7 +761,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 			Problems::issue_problem_segment(
 				"In the text at %1, the text substitution '[%2]' seems to start a "
 				"complicated say construction, but it doesn't have a matching end.");
-			if (ssp_tok >= 0) CompileImperativeDefn::add_say_construction_to_error(ssp_tok);
+			if (ssp_tok >= 0) CompileBlocksAndLines::add_say_construction_to_error(ssp_tok);
 			Problems::issue_problem_end();
 			problem_issued = TRUE;
 		}
@@ -890,17 +770,17 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @h Problem messages for complex say constructions.
 
 =
-void CompileImperativeDefn::add_say_construction_to_error(int ssp_tok) {
+void CompileBlocksAndLines::add_say_construction_to_error(int ssp_tok) {
 	Problems::issue_problem_segment(" %P(The construction I'm thinking of is '");
-	CompileImperativeDefn::add_scte_list(ssp_tok, SSP_START);
+	CompileBlocksAndLines::add_scte_list(ssp_tok, SSP_START);
 	Problems::issue_problem_segment(" ... ");
-	CompileImperativeDefn::add_scte_list(ssp_tok, SSP_MIDDLE);
+	CompileBlocksAndLines::add_scte_list(ssp_tok, SSP_MIDDLE);
 	Problems::issue_problem_segment(" ... ");
-	CompileImperativeDefn::add_scte_list(ssp_tok, SSP_END);
+	CompileBlocksAndLines::add_scte_list(ssp_tok, SSP_END);
 	Problems::issue_problem_segment("'.)");
 }
 
-void CompileImperativeDefn::add_scte_list(int ssp_tok, int list_pos) {
+void CompileBlocksAndLines::add_scte_list(int ssp_tok, int list_pos) {
 	id_body *idb; int ct = 0;
 	LOOP_OVER(idb, id_body) {
 		wording W;

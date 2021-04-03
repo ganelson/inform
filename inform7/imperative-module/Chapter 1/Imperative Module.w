@@ -20,7 +20,7 @@ which use this module:
 @e PHRASE_REGISTRATION_DA
 
 =
-COMPILE_WRITER(parse_node *, Invocations::log_list)
+COMPILE_WRITER(parse_node *, InvocationLists::log)
 COMPILE_WRITER(parse_node *, Invocations::log)
 COMPILE_WRITER(id_type_data *, IDTypeData::log)
 COMPILE_WRITER(local_variable *, LocalVariables::log)
@@ -28,7 +28,7 @@ COMPILE_WRITER(id_body *, ImperativeDefinitions::log_body)
 
 void ImperativeModule::start(void) {
 	Writers::register_writer('L', &LocalVariables::writer);
-	REGISTER_WRITER('E', Invocations::log_list);
+	REGISTER_WRITER('E', InvocationLists::log);
 	REGISTER_WRITER('e', Invocations::log);
 	REGISTER_WRITER('h', IDTypeData::log);
 	REGISTER_WRITER('k', LocalVariables::log);

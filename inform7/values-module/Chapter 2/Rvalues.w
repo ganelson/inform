@@ -688,7 +688,7 @@ kinds of value:
 				inter_name *N = RTInstances::emitted_iname(I);
 				if (N) Emit::holster(VH, N);
 			}
-			parse_node *NB = CompileImperativeDefn::line_being_compiled();
+			parse_node *NB = CompileBlocksAndLines::line_being_compiled();
 			if (NB) IXInstances::note_usage(I, NB);
 		}
 		return;

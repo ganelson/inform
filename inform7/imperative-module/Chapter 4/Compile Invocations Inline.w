@@ -714,8 +714,8 @@ the problem messages are phrased differently if something goes wrong.
 	if (returning_from_rule) kind_needed = Rulebooks::kind_from_context();
 	else kind_needed = Frames::get_kind_returned();
 	kind *kind_supplied = Specifications::to_kind(supplied);
-
-	int mor = IDTypeData::get_mor(&(id_body_being_compiled->type_data));
+	id_body *current_idb = Functions::defn_being_compiled();
+	int mor = IDTypeData::get_mor(&(current_idb->type_data));
 
 	int allow_me = ALWAYS_MATCH;
 	if ((kind_needed) && (Kinds::eq(kind_needed, K_nil) == FALSE) &&

@@ -34,23 +34,23 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	else VH->vhmode_provided = INTER_VOID_VHMODE;
 
 	int wn = Wordings::first_wn(W);
-	if (Invocations::length_of_list(invl) > 0) {
-		LOGIF(MATCHING, "Compiling from %d invocations\n", Invocations::length_of_list(invl));
+	if (InvocationLists::length(invl) > 0) {
+		LOGIF(MATCHING, "Compiling from %d invocations\n", InvocationLists::length(invl));
 		source_location sl = Lexer::word_location(wn);
 
-		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
+		if (Invocations::is_marked_to_save_self(InvocationLists::first_reading(invl))) {
 			Produce::inv_primitive(Emit::tree(), PUSH_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 			Produce::up(Emit::tree());
 		}
-		if (Invocations::is_marked_unproven(Invocations::first_in_list(invl))) {
+		if (Invocations::is_marked_unproven(InvocationLists::first_reading(invl))) {
 			@<Compile using run-time resolution to choose between invocations@>;
 		} else {
 			@<Compile as a series of invocations all of which run@>;
 		}
 
-		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
+		if (Invocations::is_marked_to_save_self(InvocationLists::first_reading(invl))) {
 			Produce::inv_primitive(Emit::tree(), PULL_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
@@ -84,7 +84,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	int returned_in_manner =
 		Invocations::Compiler::compile_single_invocation(&VH2, inv, &sl, &tokens);
 
-	if ((id_body_being_compiled) && (returned_in_manner != DONT_KNOW_MOR))
+	if ((Functions::defn_being_compiled()) && (returned_in_manner != DONT_KNOW_MOR))
 		@<If the invocation compiled to a return from a function, check this is allowed@>;
 
 @<First construct an arguments packet@> =
@@ -103,7 +103,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		else
 			tokens.args[i] = val;
 	}
-	kind *return_kind = Node::get_kind_resulting(Invocations::first_in_list(invl));
+	kind *return_kind = Node::get_kind_resulting(InvocationLists::first_reading(invl));
 	if ((return_kind == NULL) && (idb)) return_kind = idb->type_data.return_kind;
 	tokens.as_requested =
 		Kinds::function_kind(tokens.tokens_count, tokens.kind_required, return_kind);
@@ -115,7 +115,8 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 since it isn't a phrase to decide anything. This is where that's checked:
 
 @<If the invocation compiled to a return from a function, check this is allowed@> =
-	int manner_expected = id_body_being_compiled->type_data.manner_of_return;
+	id_body *current_idb = Functions::defn_being_compiled();
+	int manner_expected = current_idb->type_data.manner_of_return;
 	if ((returned_in_manner != manner_expected) &&
 		(manner_expected != DECIDES_NOTHING_AND_RETURNS_MOR)) {
 		LOG("C%d: $e: returned in manner %d\n", pos, inv, returned_in_manner);
@@ -126,7 +127,7 @@ since it isn't a phrase to decide anything. This is where that's checked:
 		kind *K = NULL;
 		Problems::quote_text(3,
 			IDTypeData::describe_manner_of_return(manner_expected,
-				&(id_body_being_compiled->type_data), &K));
+				&(current_idb->type_data), &K));
 		if (K) Problems::quote_kind(4, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WrongEndToPhrase));
 		if (K)
@@ -152,9 +153,9 @@ be Inform 6 statements in a void context, and "value mode", where the phrases
 will be expressions being evaluated.
 
 @<Compile using run-time resolution to choose between invocations@> =
-	id_body *idb = Node::get_phrase_invoked(Invocations::first_in_list(invl));
+	id_body *idb = Node::get_phrase_invoked(InvocationLists::first_reading(invl));
 
-	int N = Invocations::get_no_tokens(Invocations::first_in_list(invl));
+	int N = Invocations::get_no_tokens(InvocationLists::first_reading(invl));
 	Frames::need_at_least_this_many_formals(N);
 
 	int void_mode = FALSE;
@@ -292,7 +293,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
 			parse_node *value =
-				Invocations::get_token_as_parsed(Invocations::first_in_list(invl), i);
+				Invocations::get_token_as_parsed(InvocationLists::first_reading(invl), i);
 			kind *to_be_used_as = Specifications::to_kind(
 				idb->type_data.token_sequence[i].to_match);
 			Specifications::Compiler::emit_to_kind(value, to_be_used_as);

@@ -17,45 +17,57 @@ However it happens, every function is compiled using code like so:
 =
 This will create a new stack frame for the function, which is usually what is
 wanted. If we want to compile it using an existing frame |frame|, then instead
-= (text as InC)
-	inter_name *iname = /* work something out here */;
-	packaging_state save = Functions::begin_framed(iname, frame);
-	/* declare some call parameters */
-	/* now compile the code in the function */
-	Functions::end(save);
-=
-There are around 90 examples of this simple API being used in //runtime//, so
+call |Functions::begin_framed(iname, frame)|, not |Functions::begin(iname)|;
+and a third version, |Functions::begin_from_idb(iname, frame, idb)| exists
+if we are compiling from an imperative definition |idb|.
+
+There are nearly 100 examples of this simple API being used in Inform, so
 it's not hard to find code to imitate if you want to compile a new function.
 
 Note that only one function can be compiled at a time: //Functions::end//
-must be called before //Functions::begin// or //Functions::begin_framed// can
-safely be called again.
+must be called before //Functions::begin// (or similar) can be called again.
 
-@ There aren't really two different methods, because:
+@ There aren't really three different methods, because:
 
 =
-packaging_state Functions::begin(inter_name *name) {
-	return Functions::begin_framed(name, NULL);
+packaging_state Functions::begin(inter_name *iname) {
+	return Functions::begin_from_idb(iname, NULL, NULL);
+}
+packaging_state Functions::begin_framed(inter_name *iname, stack_frame *frame) {
+	return Functions::begin_from_idb(iname, frame, NULL);
 }
 
 @ Between the beginning and the end, we need to keep track of:
 
 =
 typedef struct function_under_compilation {
+	struct id_body *from_idb; /* if any -- many functions do not arise this way */
 	struct stack_frame *function_stack_frame; /* the stack frame for this function */
 	int currently_compiling_nnp; /* is this a nonphrasal stack frame we made ourselves? */
 	struct inter_package *into_package; /* where Inter is being emitted to */
 	struct inter_name *currently_compiling_iname; /* function we end up with */
 } function_under_compilation;
 
+int function_compilation_is_happening_now = FALSE;
 function_under_compilation current_function;
+
+@ =
+id_body *Functions::defn_being_compiled(void) {
+	if (function_compilation_is_happening_now)
+		return current_function.from_idb;
+	return NULL;
+}
 
 @ If the |frame| argument is set, then we'll use that; otherwise we will
 create a new nonphrasal stack frame.
 
 =
-packaging_state Functions::begin_framed(inter_name *iname, stack_frame *frame) {
+packaging_state Functions::begin_from_idb(inter_name *iname, stack_frame *frame,
+	id_body *idb) {
 	if (iname == NULL) internal_error("no iname for function");
+	if (function_compilation_is_happening_now)
+		internal_error("functions cannot be compiled simultaneously");
+	function_compilation_is_happening_now = TRUE;
 
 	if (frame == NULL) {
 		frame = Frames::new_nonphrasal();
@@ -67,6 +79,7 @@ packaging_state Functions::begin_framed(inter_name *iname, stack_frame *frame) {
 	packaging_state save = Emit::unused_packaging_state();
 	current_function.into_package = Produce::block(Emit::tree(), &save, iname);
 	current_function.currently_compiling_iname = iname;
+	current_function.from_idb = idb;
 
 	Frames::make_current(frame);
 	CodeBlocks::begin_code_blocks();
@@ -124,6 +137,9 @@ generate it.
 
 =
 void Functions::end(packaging_state save) {
+	if (function_compilation_is_happening_now == FALSE)
+		internal_error("function compilation has not started, so cannot end");
+
 	stack_frame *frame = current_function.function_stack_frame;
 	inter_name *kernel_name = NULL;
 	inter_name *public_name = current_function.currently_compiling_iname;
@@ -149,6 +165,13 @@ void Functions::end(packaging_state save) {
 	if (current_function.currently_compiling_nnp) Frames::remove_nonphrase_stack_frame();
 	Frames::remove_current();
 	Produce::end_main_block(Emit::tree(), save);
+
+	function_compilation_is_happening_now = FALSE;
+	current_function.currently_compiling_nnp = FALSE;
+	current_function.function_stack_frame = NULL;
+	current_function.into_package = NULL;
+	current_function.currently_compiling_iname = NULL;
+	current_function.from_idb = NULL;
 }
 
 @<Compile an outer shell function with the public-facing name@> =

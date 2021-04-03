@@ -43,7 +43,7 @@ void ImperativeSubtrees::accept_inner(parse_node *p, int accept_header) {
 			p->next = end_def->next;
 			end_def->next = NULL;
 			for (parse_node *inv_p = p->down; inv_p; inv_p = inv_p->next)
-				Node::set_type(inv_p, INVOCATION_LIST_NT);
+				InvocationLists::make_into_list_node(inv_p);
 			@<Parse the structure of the code block@>;
 		}
 		/* worry about the preamble in the node p */
@@ -277,11 +277,10 @@ to break this up.
 	Node::set_text(p, BCW);
 
 	/* Now make a new node for the "then" part, indenting it one step inward */
-	parse_node *then_node = Node::new(INVOCATION_LIST_NT);
+	parse_node *then_node = InvocationLists::new(ACW);
 	Annotations::write_int(then_node, results_from_splitting_ANNOT, TRUE);
 	Annotations::write_int(then_node, indentation_level_ANNOT,
 		Annotations::read_int(p, indentation_level_ANNOT) + 1);
-	Node::set_text(then_node, ACW);
 
 	parse_node *last_node_of_if_construction = then_node, *rest_of_defn = p->next;
 
@@ -933,7 +932,7 @@ void ImperativeSubtrees::purge_otherwise_if(parse_node *block) {
 
 			/* move p to below the otherwise node */
 			otherwise_node->down = p;
-			Node::set_type(p, INVOCATION_LIST_NT);
+			InvocationLists::make_into_list_node(p);
 			Node::set_control_structure_used(p, if_CSP);
 			p->next = NULL;
 			Node::set_text(p, Wordings::trim_first_word(Node::get_text(p)));
@@ -1215,7 +1214,7 @@ to <s-say-phrase> to parse the list.
 
 =
 parse_node *ImperativeSubtrees::end_node(parse_node *opening) {
-	parse_node *implicit_end = Node::new(INVOCATION_LIST_NT);
+	parse_node *implicit_end = InvocationLists::new(EMPTY_WORDING);
 	Node::set_end_control_structure_used(implicit_end,
 		Node::get_control_structure_used(opening));
 	Annotations::write_int(implicit_end, indentation_level_ANNOT,

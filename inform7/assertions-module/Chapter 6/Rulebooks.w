@@ -158,10 +158,11 @@ the need for this.
 
 =
 kind *Rulebooks::kind_from_context(void) {
+	id_body *idb = Functions::defn_being_compiled();
 	rulebook *B;
-	if (id_body_being_compiled)
+	if (idb)
 		LOOP_OVER(B, rulebook)
-			if (BookingLists::contains_ph(B->contents, id_body_being_compiled))
+			if (BookingLists::contains_ph(B->contents, idb))
 				return Rulebooks::get_outcome_kind(B);
 	return NULL;
 }

@@ -106,7 +106,7 @@ arguments, "number" and then "list of numbers", and creates local
 variables "new entry" and "L" with those kinds.
 
 =
-void IDCompilation::initialise_stack_frame_from_type_data(stack_frame *phsf,
+void IDCompilation::initialise_stack_frame_from_type_data(stack_frame *frame,
 	id_type_data *idtd, kind *kind_in_this_compilation, int first) {
 	if (Kinds::get_construct(kind_in_this_compilation) != CON_phrase)
 		internal_error("no function kind");
@@ -120,15 +120,15 @@ void IDCompilation::initialise_stack_frame_from_type_data(stack_frame *phsf,
 		if (Kinds::get_construct(args) != CON_TUPLE_ENTRY) internal_error("bad tupling");
 		Kinds::binary_construction_material(args, &K, &args);
 		if (first) {
-			LocalVariables::new_call_parameter(phsf, idtd->token_sequence[i].token_name, K);
+			LocalVariables::new_call_parameter(frame, idtd->token_sequence[i].token_name, K);
 		} else {
-			local_variable *lvar = LocalVariables::get_ith_parameter(i);
+			local_variable *lvar = LocalVariables::get_ith_parameter(frame, i);
 			if (lvar) LocalVariables::set_kind(lvar, K);
 		}
 	}
 
-	if (Kinds::eq(ret, K_nil)) Frames::set_kind_returned(phsf, NULL);
-	else Frames::set_kind_returned(phsf, ret);
+	if (Kinds::eq(ret, K_nil)) Frames::set_kind_returned(frame, NULL);
+	else Frames::set_kind_returned(frame, ret);
 }
 
 @ Some access functions:
@@ -201,8 +201,8 @@ normally limited to the use of rules in particular rulebooks.
 
 =
 int IDCompilation::outcome_restrictions_waived(void) {
-	if ((id_body_being_compiled) &&
-		(id_body_being_compiled->compilation_data.permit_all_outcomes))
+	id_body *idb = Functions::defn_being_compiled();
+	if ((idb) && (idb->compilation_data.permit_all_outcomes))
 		return TRUE;
 	return FALSE;
 }

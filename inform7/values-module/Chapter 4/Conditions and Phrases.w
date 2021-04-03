@@ -146,8 +146,9 @@ being compiled; all others are out of scope.
 
 =
 <s-phrase-option-in-use> internal {
-	if (id_body_being_compiled) {
-		int i = PhraseOptions::parse(id_body_being_compiled, W);
+	id_body *idb = Functions::defn_being_compiled();
+	if (idb) {
+		int i = PhraseOptions::parse(idb, W);
 		if (i >= 0) {
 			==> { -, Conditions::new_TEST_PHRASE_OPTION(i) };
 			return TRUE;
@@ -242,8 +243,7 @@ parse_node *SPCond::say_adjective(adjective *aph, wording W) {
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
 	Invocations::set_adjective(inv, aph);
-	spec->down = Node::new(INVOCATION_LIST_NT);
-	spec->down->down = Invocations::add_to_list(spec->down->down, inv);
+	spec->down = InvocationLists::new_singleton(W, inv);
 	return spec;
 }
 
@@ -256,8 +256,7 @@ parse_node *SPCond::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mv
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
 	Invocations::set_verb_conjugation(inv, vc, mvc, neg);
-	spec->down = Node::new(INVOCATION_LIST_NT);
-	spec->down->down = Invocations::add_to_list(spec->down->down, inv);
+	spec->down = InvocationLists::new_singleton(W, inv);
 	return spec;
 }
 
@@ -277,11 +276,11 @@ possibilities will all be invoked.
 void SPCond::add_ilist(parse_node *spec, parse_node *p) {
 	@<Build the invocation list@>;
 
-	int len = Invocations::length_of_list(spec->down->down);
+	int len = InvocationLists::length(spec->down->down);
 	if (len >= MAX_INVOCATIONS_PER_PHRASE)
 		@<Issue overcomplicated phrase problem message@>
 	else if (len > 0)
-		spec->down->down = Invocations::sort_list(spec->down->down);
+		spec->down->down = InvocationLists::sort(spec->down->down);
 }
 
 @ There are multiple invocations, each produced from another node in the
@@ -296,11 +295,9 @@ S-tree as we run sideways through the alternative readings.
 			(Rvalues::is_CONSTANT_of_kind(
 				Invocations::get_token_as_parsed(inv, 0), K_text)))
 			continue;
-		if (spec->down == NULL) {
-			spec->down = Node::new(INVOCATION_LIST_NT);
-			Node::set_text(spec->down, Node::get_text(spec));
-		}
-		spec->down->down = Invocations::add_to_list(spec->down->down, inv);
+		if (spec->down == NULL)
+			spec->down = InvocationLists::new(Node::get_text(spec));
+		spec->down->down = InvocationLists::add_alternative(spec->down->down, inv);
 	}
 
 @ This problem used to be experienced for long say phrases in a situation

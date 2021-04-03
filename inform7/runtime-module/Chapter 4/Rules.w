@@ -334,9 +334,8 @@ void RTRules::compile_comment(rule *R, int index, int from) {
 	}
 	Produce::comment(Emit::tree(), C);
 	DISCARD_TEXT(C)
-	if (R->defn_as_I7_source) {
+	if (R->defn_as_I7_source)
 		ImperativeDefinitions::write_comment_describing(R->defn_as_I7_source);
-	}
 }
 
 @h Compilation of I6-format rulebook.
@@ -878,7 +877,8 @@ void RTRules::compile_default_outcome(outcomes *outs) {
 }
 
 void RTRules::compile_outcome(named_rulebook_outcome *rbno) {
-	rulebook_outcome *rbo = FocusAndOutcome::rbo_from_context(rbno, id_body_being_compiled);
+	id_body *idb = Functions::defn_being_compiled();
+	rulebook_outcome *rbo = FocusAndOutcome::rbo_from_context(rbno, idb);
 	if (rbo == NULL) {
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook) {

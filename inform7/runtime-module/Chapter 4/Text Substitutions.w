@@ -75,7 +75,7 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	ts->dont_need_after_all = FALSE;
 	ts->tr_done_already = FALSE;
 	ts->ts_sb_needed = FALSE;
-	if ((id_body_being_compiled) &&
+	if ((Functions::defn_being_compiled()) &&
 		(LocalVariableSlates::size(Frames::current_stack_frame()) > 0))
 		ts->local_names_existed_at_usage_time = TRUE;
 	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);
@@ -339,7 +339,7 @@ a request for a new text substitution to be compiled later...
 	Annotations::write_int(ts_code_block->next, from_text_substitution_ANNOT, TRUE);
 	ImperativeSubtrees::accept(ts_code_block);
 
-	CompileImperativeDefn::code_block_outer(0, ts_code_block->down);
+	CompileBlocksAndLines::full_definition_body(0, ts_code_block->down);
 
 	Produce::rtrue(Emit::tree());
 

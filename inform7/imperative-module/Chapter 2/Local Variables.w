@@ -242,9 +242,7 @@ the ith call parameter on the current slate (counting from 0), or |NULL| if
 there isn't one.
 
 =
-local_variable *LocalVariables::get_ith_parameter(int i) {
-	stack_frame *frame = Frames::current_stack_frame();
-	if (frame == NULL) internal_error("no stack frame exists");
+local_variable *LocalVariables::get_ith_parameter(stack_frame *frame, int i) {
 	local_variable *lvar;
 	int c = 0;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame)
@@ -262,7 +260,7 @@ is to be judged goes in to the first call parameter.
 local_variable *LocalVariables::it_variable(void) {
 	stack_frame *frame = Frames::current_stack_frame();
 	if ((frame) && (frame->local_variables.it_variable_exists))
-		return LocalVariables::get_ith_parameter(0);
+		return LocalVariables::get_ith_parameter(frame, 0);
 	return NULL;
 }
 

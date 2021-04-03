@@ -818,11 +818,11 @@ later rules can override earlier ones but still make use of them.
 	parse_node *alt;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
 		if ((Node::is(alt, INVOCATION_NT)) &&
-			(Node::get_phrase_invoked(alt) != id_body_being_compiled))
+			(Node::get_phrase_invoked(alt) != Functions::defn_being_compiled()))
 			@<Add this reading to the list of test cases@>;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
 		if (!((Node::is(alt, INVOCATION_NT)) &&
-			(Node::get_phrase_invoked(alt) != id_body_being_compiled)))
+			(Node::get_phrase_invoked(alt) != Functions::defn_being_compiled())))
 			@<Add this reading to the list of test cases@>;
 	LOGIF(MATCHING, "Resolving %d possible readings:\n", no_of_possible_readings);
 	for (int i=0; i<no_of_possible_readings; i++)
@@ -988,7 +988,7 @@ for the surviving nodes.
 @<Step (4A.d) Give up with no readings possible@> =
 	LOG_DASH("(4A.d)");
 	THIS_IS_AN_ORDINARY_PROBLEM;
-	if (Invocations::length_of_list(p) == 0) return NEVER_MATCH;
+	if (InvocationLists::length(p) == 0) return NEVER_MATCH;
 
 	LOGIF(MATCHING, "All possibilities failed: issuing problem\n");
 	return Dash::failed(list_of_possible_readings, no_of_possible_readings,
@@ -1214,7 +1214,7 @@ instance, if |inv| is an invocation of this phrase:
 		}
 		kind_checker_mode = save_kcm;
 		if (create) {
-			if ((CompileImperativeDefn::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
+			if ((CompileBlocksAndLines::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
 				THIS_IS_AN_INTERESTING_PROBLEM {
 					Problems::quote_source(1, current_sentence);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));
