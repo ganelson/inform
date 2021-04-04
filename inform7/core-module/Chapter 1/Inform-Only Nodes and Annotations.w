@@ -771,13 +771,16 @@ void CoreSyntax::write_suppress_newlines_ANNOT(text_stream *OUT, parse_node *p) 
 		WRITE(" {suppress_newlines}");
 }
 void CoreSyntax::write_token_as_parsed_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token as parsed: $P}", Node::get_token_as_parsed(p));
+	if (Node::get_token_as_parsed(p))
+		WRITE(" {token as parsed: $P}", Node::get_token_as_parsed(p));
 }
 void CoreSyntax::write_token_check_to_do_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token check to do: $P}", Node::get_token_check_to_do(p));
+	if (Node::get_token_check_to_do(p))
+		WRITE(" {token check to do: $P}", Node::get_token_check_to_do(p));
 }
 void CoreSyntax::write_token_to_be_parsed_against_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token to be parsed against: $P}", Node::get_token_to_be_parsed_against(p));
+	if (Node::get_token_to_be_parsed_against(p))
+		WRITE(" {token to be parsed against: $P}", Node::get_token_to_be_parsed_against(p));
 }
 void CoreSyntax::write_unproven_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, unproven_ANNOT) > 0)

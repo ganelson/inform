@@ -58,6 +58,12 @@ id_body *Functions::defn_being_compiled(void) {
 	return NULL;
 }
 
+parse_node *Functions::line_being_compiled(void) {
+	if (function_compilation_is_happening_now)
+		return current_sentence;
+	return NULL;
+}
+
 @ If the |frame| argument is set, then we'll use that; otherwise we will
 create a new nonphrasal stack frame.
 

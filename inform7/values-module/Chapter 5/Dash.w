@@ -1214,7 +1214,8 @@ instance, if |inv| is an invocation of this phrase:
 		}
 		kind_checker_mode = save_kcm;
 		if (create) {
-			if ((CompileBlocksAndLines::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
+			if ((CompileBlocksAndLines::compiling_single_line_block()) &&
+				(IDTypeData::is_a_let_assignment(idb))) {
 				THIS_IS_AN_INTERESTING_PROBLEM {
 					Problems::quote_source(1, current_sentence);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));

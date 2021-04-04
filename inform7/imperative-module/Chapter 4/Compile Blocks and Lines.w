@@ -2,33 +2,98 @@
 
 Compiling a code block of lines from an imperative definition.
 
-@ =
-int disallow_let_assignments = FALSE;
-int CompileBlocksAndLines::disallow_let(void) {
-	return disallow_let_assignments;
+@h Blocks of code.
+As this section of code opens, we are looking at the parse tree for the body
+of a rule or phrase definition. A request has been made to compile (a version of)
+this into an Inter function; the stack frame for that has been sorted out, and
+the function begun. Now we must compile the actual code to go into the function.
+
+Here is a typical example rule, taken from the Standard Rules:
+= (text as Inform 7)
+Report an actor waiting (this is the standard report waiting rule):
+	if the actor is the player:
+		if the action is not silent:
+			now the prior named object is nothing;
+			say "Time [pass]." (A);
+	otherwise:
+		say "[The actor] [wait]." (B).
+=
+In the parse tree, this now looks like so:
+= (text)
+IMPERATIVE_NT'report an actor waiting ( this is the standard report waitin'
+	CODE_BLOCK_NT
+		CODE_BLOCK_NT
+			INVOCATION_LIST_NT'if the actor is the player'
+			CODE_BLOCK_NT
+				CODE_BLOCK_NT
+					INVOCATION_LIST_NT'if the action is not silent'
+					CODE_BLOCK_NT
+						INVOCATION_LIST_NT'now the prior named object is nothing'
+						CODE_BLOCK_NT'say "Time [pass]." ( a )'
+							INVOCATION_LIST_SAY_NT'"Time [pass]." ( a )'
+			CODE_BLOCK_NT'otherwise'
+				CODE_BLOCK_NT'say "[The actor] [wait]." ( b )'
+					INVOCATION_LIST_SAY_NT'"[The actor] [wait]." ( b )'
+=
+This diagram has been simplified to remove the child nodes of the |INVOCATION_LIST_NT|
+and |INVOCATION_LIST_SAY_NT| nodes; the point is to show the structure of the code
+blocks here.
+
+We work recursively down through these blocks. Note that the entire definition
+always hangs from a single top-level |CODE_BLOCK_NT|.
+
+=
+void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body) {
+	CompileBlocksAndLines::code_block(statement_count, body, TRUE);
 }
 
-void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *pn) {
-	CompileBlocksAndLines::code_block(statement_count, pn, TRUE);
-}
+@ See //words: Nonterminals// for an explanation of what it means for a nonterminal
+such as <s-value-uncached> to be "multiplicitous": briefly, though, it causes
+<s-value-uncached> to return all possible interpretations of the text as a list
+of nodes joined by |->next_alternative|, rather than returning just the single
+most "likely" interpretation.
 
-int CompileBlocksAndLines::code_block(int statement_count, parse_node *pn, int top_level) {
-	if (pn) {
-		int m = <s-value-uncached>->multiplicitous;
+=
+int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, int top_level) {
+	if (block) {
+		if (Node::get_type(block) != CODE_BLOCK_NT) internal_error("not a code block");
+		int saved_mult = <s-value-uncached>->multiplicitous;
 		<s-value-uncached>->multiplicitous = TRUE;
-		if (Node::get_type(pn) != CODE_BLOCK_NT) internal_error("not a code block");
-		if ((top_level == FALSE) && (pn->down) && (pn->down->next == NULL) && (pn->down->down == NULL))
-			disallow_let_assignments = TRUE;
-		for (parse_node *p = pn->down; p; p = p->next) {
-			statement_count = CompileBlocksAndLines::code_line(statement_count, p);
-		}
-		disallow_let_assignments = FALSE;
-		<s-value-uncached>->multiplicitous = m;
+		int block_size = 0, singleton = FALSE;
+		for (parse_node *p = block->down; p; p = p->next) block_size++;
+		if ((top_level == FALSE) && (block_size == 1)) singleton = TRUE;
+		for (parse_node *p = block->down; p; p = p->next)
+			statement_count =
+				CompileBlocksAndLines::code_line(statement_count, p, singleton);
+		<s-value-uncached>->multiplicitous = saved_mult;
 	}
 	return statement_count;
 }
 
-int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
+@ There's nothing special about singleton blocks except that we want to issue
+problem messages for something like this:
+= (text as Inform 7)
+	if the player is in the Hall of Mirrors:
+		let the court favourite be Moliere;
+	if Louis is happy:
+		...
+=
+...where the "let" phrase can have no meaningful effect, since "court favourite"
+is destroyed immediately after its creation. So in order to check for that, we
+keep the following state variable:
+
+=
+int compiling_single_line_block = FALSE;
+int CompileBlocksAndLines::compiling_single_line_block(void) {
+	return compiling_single_line_block;
+}
+
+@h Individual lines of code.
+So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
+
+=
+int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton) {
+	compiling_single_line_block = as_singleton;
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
 	if (ControlStructures::opens_block(csp)) {
@@ -41,6 +106,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
 	@<Compile the head@>;
 	@<Compile the midriff@>;
 	@<Compile the tail@>;
+	compiling_single_line_block = FALSE;
 	return statement_count;
 }
 
@@ -54,14 +120,27 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
 		DISCARD_TEXT(C)
 	}
 
+@h Head code for lines.
+We divide the work of compiling the line into "head" code, "midriff" code
+and then "tail" code. For the head, there's usually nothing to do, except
+for "say" phrases:
+
 @<Compile the head@> =
 	if (csp == say_CSP) {
 		current_sentence = to_compile;
 		@<Compile a say head@>;
 	}
 
+@ "Say" phrases are different, since their invocation lists can contain multiple
+things to do (rather than multiple alternatives for one thing to do). We also
+need to treat the last of those things differently to the others: if it means
+printing literal text ending in sentence-ending punctuation, we need to infer
+a newline.
+
 @<Compile a say head@> =
-	for (parse_node *say_node = p->down, *prev_sn = NULL; say_node; prev_sn = say_node, say_node = say_node->next) {
+	for (parse_node *say_node = p->down, *prev_sn = NULL;
+		say_node;
+		prev_sn = say_node, say_node = say_node->next) {
 		SParser::parse_say_term(say_node);
 		parse_node *inv = InvocationLists::first_reading(say_node->down);
 		if (inv) {
@@ -74,12 +153,17 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
 			}
 		}
 	}
-	Produce::inv_primitive(Emit::tree(), STORE_BIP); /* warn the paragraph breaker: this will print */
+	/* warn the paragraph breaker by setting the say__p flag that this will print */
+	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 	Produce::up(Emit::tree());
 	CompileBlocksAndLines::verify_say_node_list(p->down);
+
+@h Midriff code for lines.
+The midriff is more work, because several of the control structure phrases
+need bespoke handling:
 
 @<Compile the midriff@> =
 	if (Node::get_type(to_compile) == INVOCATION_LIST_SAY_NT) @<Compile a say term midriff@>
@@ -96,12 +180,8 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p) {
 	BEGIN_COMPILATION_MODE;
 	if (Annotations::read_int(to_compile, suppress_newlines_ANNOT))
 		COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
-	CompileBlocksAndLines::invocation(to_compile, TRUE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::evaluate_invocation(to_compile, TRUE, INTER_VOID_VHMODE);
 	END_COMPILATION_MODE;
-
-@ In fact, "now" propositions are never empty, but there's nothing in
-principle wrong with asserting that the universally true proposition is
-henceforth to be true, so we simply compile empty code in that case.
 
 @<Compile a now midriff@> =
 	current_sentence = to_compile;
@@ -126,33 +206,30 @@ henceforth to be true, so we simply compile empty code in that case.
 		@<Issue a problem message for the wrong sort of condition in a "now"@>
 	else if (rv != NEVER_MATCH) @<Issue a problem message for an unrecognised condition@>;
 
-@ A deluxe problem message.
-
 @<Issue a problem message for the wrong sort of condition in a "now"@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
 	if (Node::is(cs, TEST_VALUE_NT)) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
 		Problems::issue_problem_segment(
-			"You wrote %1, but although '%2' is a condition which it is legal "
-			"to test with 'if', 'when', and so forth, it is not something I "
-			"can arrange to happen on request. Whether it is true or not "
-			"depends on current circumstances: so to make it true, you will "
-			"need to adjust those circumstances.");
+			"You wrote %1, but although '%2' is a condition which it is legal to test "
+			"with 'if', 'when', and so forth, it is not something I can arrange to happen "
+			"on request. Whether it is true or not depends on current circumstances: so "
+			"to make it true, you will need to adjust those circumstances.");
 		Problems::issue_problem_end();
 	} else if (Node::is(cs, LOGICAL_AND_NT)) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
 		Problems::issue_problem_segment(
-			"You wrote %1, but 'now' does not work with the condition '%2' "
-			"because it can only make one wish come true at a time: so it "
-			"doesn't like the 'and'. Try rewriting as two 'now's in a row?");
+			"You wrote %1, but 'now' does not work with the condition '%2' because it can "
+			"only make one wish come true at a time: so it doesn't like the 'and'. Try "
+			"rewriting as two 'now's in a row?");
 		Problems::issue_problem_end();
 	} else {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow3));
 		Problems::issue_problem_segment(
-			"You wrote %1, but '%2'	isn't the sort of condition which can be "
-			"made to be true, in the way that 'the ball is on the table' can be "
-			"made true with a straightforward movement of one object (the ball).");
+			"You wrote %1, but '%2'	isn't the sort of condition which can be made to be "
+			"true, in the way that 'the ball is on the table' can be made true with a "
+			"straightforward movement of one object (the ball).");
 		Problems::issue_problem_end();
 	}
 
@@ -162,8 +239,8 @@ henceforth to be true, so we simply compile empty code in that case.
 	Problems::quote_wording(2, Node::get_text(cs));
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
-		"You wrote %1, but '%2'	isn't a condition, so I can't see how to "
-		"make it true from here on.");
+		"You wrote %1, but '%2'	isn't a condition, so I can't see how to make it true "
+		"from here on.");
 	Problems::issue_problem_end();
 
 @<Issue a problem message for an unrecognised action@> =
@@ -179,14 +256,16 @@ henceforth to be true, so we simply compile empty code in that case.
 	named_rulebook_outcome *nrbo = <<rp>>;
 	id_body *being_compiled = Functions::defn_being_compiled();
 	if (being_compiled) {
-		if (ImperativeDefinitionFamilies::goes_in_rulebooks(being_compiled->head_of_defn) == FALSE) {
+		if (ImperativeDefinitionFamilies::goes_in_rulebooks(being_compiled->head_of_defn)
+			== FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_MisplacedRulebookOutcome2));
 			Problems::issue_problem_segment(
-				"You wrote %1, but this is a rulebook outcome which can only be used "
-				"within rulebooks which recognise it. You've used it in a definition "
-				"which isn't for use in rulebooks at all, so it must be wrong here.");
+				"You wrote %1, but this is a rulebook outcome which can only be used within "
+				"rulebooks which recognise it. You've used it in a definition which isn't "
+				"for use in rulebooks at all, so it must be wrong here.");
 			Problems::issue_problem_end();
 		}
 	}
@@ -197,145 +276,227 @@ henceforth to be true, so we simply compile empty code in that case.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(to_compile));
 		Problems::quote_wording(3, rb->primary_name);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_MisplacedRulebookOutcome));
 		Problems::issue_problem_segment(
-			"You wrote %1, but this is a rulebook outcome which can only be used "
-			"within rulebooks which recognise it. You've used it in a rule which "
-			"has to be listed in the '%3' rulebook, where '%2' doesn't have a meaning.");
+			"You wrote %1, but this is a rulebook outcome which can only be used within "
+			"rulebooks which recognise it. You've used it in a rule which has to be listed "
+			"in the '%3' rulebook, where '%2' doesn't have a meaning.");
 		Problems::issue_problem_end();
 	}
 	RTRules::compile_outcome(nrbo);
+
+@ When an "if" node has two children, they are the condition to test and then
+the code block of what to execute if the condition is true:
+= (text)
+		CODE_BLOCK_NT {control structure: IF}
+			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
+			CODE_BLOCK_NT
+				...
+=
+When it has three children, the extra block is what to execute if the condition
+is false:
+= (text)
+		CODE_BLOCK_NT {control structure: IF}
+			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
+			CODE_BLOCK_NT
+				...
+			CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
+				...
+=
 
 @<Compile an if midriff@> =
 	if (p->down->next->next) Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	else Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		current_sentence = to_compile;
-		CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VAL_VHMODE);
+		CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VAL_VHMODE);
 
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::open_code_block();
-			statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count,
+				p->down->next, FALSE);
 		if (p->down->next->next) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::divide_code_block();
-			statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next->next, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count,
+				p->down->next->next, FALSE);
 		}
 			CodeBlocks::close_code_block();
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
+@ Switches, like |switch| in C, offer code to execute in different cases
+depending on the "switch value". How efficiently this can be done depends
+on the kind of that value.
+
+The Inter VM offers an efficient way to provide switches for single-word
+values, using |SWITCH_BIP|. But that only works if equality between two
+values |V1| and |V2| can be tested by |V1 == V2|. For word-valued kinds
+like |K_number|, that's fine, but not for kinds whose values are stored
+in allocated blocks of memory, like |K_text|: |V1| and |V2| may be
+pointers to different blocks of data, so that |V1 != V2|, even though
+both blocks might hold the word "doubloon" so that the values are in fact
+equal.
+
+So we have to provide two completely different implementations. The harder
+case, involving pointers to block values, is called "pointery"; the other
+one is the "non-pointery" case.
+
 @<Compile a switch midriff@> =
 	current_sentence = to_compile;
-	CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE);
 
 	CodeBlocks::open_code_block();
 
-	parse_node *val = CodeBlocks::switch_value();
-	if (val == NULL) internal_error("no switch value");
-	kind *switch_kind = Specifications::to_kind(val);
-	int pointery = FALSE;
-	inter_symbol *sw_v = NULL;
+	parse_node *switch_val = CodeBlocks::switch_value();
+	kind *switch_kind = Specifications::to_kind(switch_val);
+	if (switch_val == NULL) internal_error("no switch value");
 
+	int downs = 0;
+	local_variable *sw_lv = NULL;
+	inter_symbol *sw_v = NULL;
+	int pointery = FALSE;
 	if (Kinds::Behaviour::uses_pointer_values(switch_kind)) pointery = TRUE;
 
-	LOG("Switch val is $T for kind %u pointery %d\n", val, switch_kind, pointery);
+	LOG("Switch val is $T for kind %u pointery %d\n", switch_val, switch_kind, pointery);
 
-	local_variable *lvar = NULL;
-	int downs = 0;
+	if (pointery) @<Begin a pointery switch@>
+	else @<Begin a non-pointery switch@>;
 
-	if (pointery) {
-		lvar = LocalVariables::add_switch_value(K_value);
-		sw_v = LocalVariables::declare(lvar);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, sw_v);
-			Specifications::Compiler::emit_as_val(switch_kind, val);
-		Produce::up(Emit::tree());
-	} else {
-		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(switch_kind, val);
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-	}
+	int c = 0;
+	for (parse_node *ow_node = p->down->next->next; ow_node; ow_node = ow_node->next, c++) {
+		current_sentence = ow_node;
+		CodeBlocks::divide_code_block();
 
-			int c = 0;
-			for (parse_node *ow_node = p->down->next->next; ow_node; ow_node = ow_node->next, c++) {
-				current_sentence = ow_node;
-				CodeBlocks::divide_code_block();
-
-				if (Node::get_control_structure_used(ow_node) == default_case_CSP) {
-					if (pointery) @<Handle a pointery default@>
-					else @<Handle a non-pointery default@>;
-				} else {
-					if (<s-type-expression-or-value>(Node::get_text(ow_node))) {
-						parse_node *case_spec = <<rp>>;
-						case_spec = NonlocalVariables::substitute_constants(case_spec);
-						Node::set_evaluation(ow_node, case_spec);
-						if (Dash::check_value(case_spec, NULL) != NEVER_MATCH) {
-							kind *case_kind = Specifications::to_kind(case_spec);
-							instance *I = Rvalues::to_object_instance(case_spec);
-							if (I) case_kind = Instances::to_kind(I);
-							LOGIF(MATCHING, "(h.3) switch kind is %u, case kind is %u\n", switch_kind, case_kind);
-							if ((Node::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
-								Problems::quote_source(1, current_sentence);
-								Problems::quote_kind(2, switch_kind);
-								StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueNonConstant));
-								Problems::issue_problem_segment(
-									"The case %1 is required to be a constant value, rather than "
-									"something which has different values at different times: "
-									"specifically, it has to be %2.");
-								Problems::issue_problem_end();
-								case_spec = Rvalues::new_nothing_object_constant();
-							} else if (Kinds::compatible(case_kind, switch_kind) != ALWAYS_MATCH) {
-								Problems::quote_source(1, current_sentence);
-								Problems::quote_kind(2, case_kind);
-								Problems::quote_kind(3, switch_kind);
-								StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueMismatch));
-								Problems::issue_problem_segment(
-									"The case %1 has the wrong kind of value for the possibilities "
-									"being chosen from: %2 instead of %3.");
-								Problems::issue_problem_end();
-								case_spec = Rvalues::new_nothing_object_constant();
-							} else {
-								if (pointery) @<Handle a pointery case@>
-								else @<Handle a non-pointery case@>;
-							}
-						} else @<Issue problem message for unknown case value@>
-					} else @<Issue problem message for unknown case value@>;
-				}
-			}
-
-	if (pointery) {
-		while (downs-- > 0) Produce::up(Emit::tree());
-		CodeBlocks::close_code_block();
-	} else {
-		Produce::up(Emit::tree());
-		CodeBlocks::close_code_block();
-	Produce::up(Emit::tree());
-	}
-
-	if (problem_count == 0)
-		for (parse_node *A = p->down->next->next; A; A = A->next) {
-			int dup = FALSE;
-			for (parse_node *B = A->next; B; B = B->next)
-				if (Rvalues::compare_CONSTANT(
-					Node::get_evaluation(A), Node::get_evaluation(B)))
-						dup = TRUE;
-			if (dup) {
-				current_sentence = A;
-				Problems::quote_source(1, A);
-				Problems::quote_spec(2, Node::get_evaluation(A));
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueDuplicated));
-				Problems::issue_problem_segment(
-					"The case %1 occurs more than once in this 'if' switch.");
-				Problems::issue_problem_end();
+		if (Node::get_control_structure_used(ow_node) == default_case_CSP) {
+			if (pointery) @<Handle a pointery default@>
+			else @<Handle a non-pointery default@>;
+		} else {
+			if (<s-type-expression-or-value>(Node::get_text(ow_node))) {
+				parse_node *case_spec = <<rp>>;
+				case_spec = NonlocalVariables::substitute_constants(case_spec);
+				Node::set_evaluation(ow_node, case_spec);
+				if (Dash::check_value(case_spec, NULL) != NEVER_MATCH)
+					@<Handle a general case@>
+				else
+					@<Issue problem message for unknown case value@>;
+			} else {
+				@<Issue problem message for unknown case value@>;
 			}
 		}
+	}
+
+	if (pointery) @<End a pointery switch@>
+	else @<End a non-pointery switch@>;
+
+	if (problem_count == 0) @<Test for duplicate cases@>;
+
+@<Handle a general case@> =
+	kind *case_kind = Specifications::to_kind(case_spec);
+	instance *I = Rvalues::to_object_instance(case_spec);
+	if (I) case_kind = Instances::to_kind(I);
+	LOGIF(MATCHING, "(h.3) switch kind is %u, case kind is %u\n", switch_kind, case_kind);
+	if ((Node::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_kind(2, switch_kind);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueNonConstant));
+		Problems::issue_problem_segment(
+			"The case %1 is required to be a constant value, rather than "
+			"something which has different values at different times: "
+			"specifically, it has to be %2.");
+		Problems::issue_problem_end();
+		case_spec = Rvalues::new_nothing_object_constant();
+	} else if (Kinds::compatible(case_kind, switch_kind) != ALWAYS_MATCH) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_kind(2, case_kind);
+		Problems::quote_kind(3, switch_kind);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueMismatch));
+		Problems::issue_problem_segment(
+			"The case %1 has the wrong kind of value for the possibilities "
+			"being chosen from: %2 instead of %3.");
+		Problems::issue_problem_end();
+		case_spec = Rvalues::new_nothing_object_constant();
+	} else {
+		if (pointery) @<Handle a pointery case@>
+		else @<Handle a non-pointery case@>;
+	}
+
+@ Okay, so here's the code for a pointery switch. We generate something like this:
+= (text)
+	sw_v = ... switch value ...
+	if (Equals(sw_v, v1)) {
+		... case for v1 ...
+	} else {
+		if (Equals(sw_v, v2)) {
+			... case for v2 ...
+		} else {
+			... default case ...
+		}
+	}
+=	
+We begin by ensuring that the function has a scratch local variable called |sw_v|,
+and store the switch value in it. We need not use |BlkValueCopy| to make an
+independent copy, since |sw_v| will be read-only: we can just copy the address of
+the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster.
+
+@<Begin a pointery switch@> =
+	sw_lv = LocalVariables::add_switch_value(K_value);
+	sw_v = LocalVariables::declare(sw_lv);
+	Produce::inv_primitive(Emit::tree(), STORE_BIP);
+	Produce::down(Emit::tree());
+		Produce::ref_symbol(Emit::tree(), K_value, sw_v);
+		Specifications::Compiler::emit_as_val(switch_kind, switch_val);
+	Produce::up(Emit::tree());
+
+@ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
+of |downs| is how many times we have called |Produce::down|.
+
+@<Handle a pointery case@> =
+	int final_flag = FALSE;
+	if (ow_node->next == NULL) final_flag = TRUE;
+
+	if (final_flag) Produce::inv_primitive(Emit::tree(), IF_BIP);
+	else Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
+		LocalVariables::set_kind(sw_lv, switch_kind);
+		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, sw_lv);
+		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
+			R_equality, NULL, sw_v, NULL, case_spec);
+		Propositions::Checker::type_check(prop,
+			Propositions::Checker::tc_no_problem_reporting());
+		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+		if (final_flag == FALSE) {
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+		}
+	downs += 2;
+
+@ There need not be a default switch case, but if there is, then:
+
+@<Handle a pointery default@> =
+	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+
+@<End a pointery switch@> =
+	while (downs-- > 0) Produce::up(Emit::tree());
+	CodeBlocks::close_code_block();
+
+@ And now the more efficient case, using Inter's |SWITCH_BIP|, |CASE_BIP| and
+|DEFAULT_BIP| instructions.
+
+@<Begin a non-pointery switch@> =
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Specifications::Compiler::emit_as_val(switch_kind, switch_val);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 @<Handle a non-pointery case@> =
 	Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -356,35 +517,37 @@ henceforth to be true, so we simply compile empty code in that case.
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-@<Handle a pointery case@> =
-	int final_flag = FALSE;
-	if (ow_node->next == NULL) final_flag = TRUE;
+@<End a non-pointery switch@> =
+	Produce::up(Emit::tree());
+	CodeBlocks::close_code_block();
+	Produce::up(Emit::tree());
 
-	if (final_flag) Produce::inv_primitive(Emit::tree(), IF_BIP);
-	else Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
-		LocalVariables::set_kind(lvar, switch_kind);
-		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);
-		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
-			R_equality, NULL, sw_v, NULL, case_spec);
-		Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
-		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
-		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
-			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
-		if (final_flag == FALSE) {
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+@ In either implementation, we perform this check:
+
+@<Test for duplicate cases@> =
+	for (parse_node *A = p->down->next->next; A; A = A->next) {
+		int dup = FALSE;
+		for (parse_node *B = A->next; B; B = B->next)
+			if (Rvalues::compare_CONSTANT(
+				Node::get_evaluation(A), Node::get_evaluation(B)))
+					dup = TRUE;
+		if (dup) {
+			current_sentence = A;
+			Problems::quote_source(1, A);
+			Problems::quote_spec(2, Node::get_evaluation(A));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_CaseValueDuplicated));
+			Problems::issue_problem_segment(
+				"The case %1 occurs more than once in this 'if' switch.");
+			Problems::issue_problem_end();
 		}
-	downs += 2;
-
-@<Handle a pointery default@> =
-	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+	}
 
 @<Compile a standard midriff@> =
 	current_sentence = to_compile;
-	CompileBlocksAndLines::invocation(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE);
+
+@h Tail code for lines.
 
 @<Compile the tail@> =
 	if (csp == if_CSP) @<Compile an if tail@>
@@ -396,10 +559,6 @@ henceforth to be true, so we simply compile empty code in that case.
 @<Compile an if tail@> =
 	;
 
-@ Switch statements in I6 look much like those in C, but are written without
-the ceaseless repetition of the keyword "case". Thus, |15:| does what
-|case 15:| would do in C. But |default:| is the same in both.
-
 @<Compile a switch tail@> =
 	;
 
@@ -407,8 +566,6 @@ the ceaseless repetition of the keyword "case". Thus, |15:| does what
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CaseValueUnknown),
 		"I don't recognise this case value",
 		"that is, the value written after the '--'.");
-
-@<If this is a say group, but not a say control structure, notify the paragraphing code@> =
 
 @ As will be seen, two sets of labels and counters are kept here: see the
 inline definitions for "say if" and similar.
@@ -441,13 +598,12 @@ inline definitions for "say if" and similar.
 	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
 	CodeBlocks::close_code_block();
 
-@ This routine takes the text of a line from a phrase definition, parses it,
+@h The evaluator.
+This function takes the text of a line from a phrase definition, parses it,
 type-checks it, and finally, all being well, compiles it.
 
 =
-parse_node *void_phrase_please = NULL; /* instructions for the typechecker */
-
-void CompileBlocksAndLines::invocation(parse_node *p, int already_parsed, int vhm) {
+void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parsed, int vhm) {
 	int initial_problem_count = problem_count;
 
 	LOGIF(EXPRESSIONS, "\n-- -- Evaluating <%W> -- --\n", Node::get_text(p));
@@ -473,8 +629,7 @@ void CompileBlocksAndLines::invocation(parse_node *p, int already_parsed, int vh
 	if (initial_problem_count == problem_count) {
 		LOGIF(EXPRESSIONS, "(c) Compilation:\n$E", p->down);
 		value_holster VH = Holsters::new(vhm);
-		Invocations::Compiler::compile_invocation_list(&VH,
-			p->down, Node::get_text(p));
+		Invocations::Compiler::compile_invocation_list(&VH, p->down, Node::get_text(p));
 	}
 
 	if (initial_problem_count == problem_count) {
@@ -484,62 +639,31 @@ void CompileBlocksAndLines::invocation(parse_node *p, int already_parsed, int vh
 	}
 }
 
-@ And this is where we are:
-
+@h Validating sequences of say invocations.
+Test substitutions result in "say" invocations with multiple things to do:
+here are examples, increasing in difficulty --
+= (text as Inform 7)
+"Estates are worth at least [N]."
+"Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."
+"The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."
 =
-parse_node *CompileBlocksAndLines::line_being_compiled(void) {
-	if (Functions::defn_being_compiled()) return current_sentence;
-	return NULL;
-}
+These imply 3, 5 and 9 individual invocations, respectively. The second and
+third examples involve "say control structures", which means that those
+invocations have to connect properly with each other: thus "[if...]" can be
+followed by "[otherwise]", but "[otherwise]" must not occur on its own, and
+so on. The final example is a so-called "segmented say phrase", or SSP.
 
-@h Validation of invocations.
-Recall that a complex text such as:
-
->> "Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."
-
-is complied into a specification holding a list of invocations; in this case
-there are five, invoking the phrases --
-
-(1) "say [text]"
-(2) "say if ..."
-(3) "say [text]"
-(4) "say otherwise"
-(5) "say [text]"
-
-In the following routine we check this list to see that two sorts of control
-structure are correctly used. The first is "say if"; here, for instance, it
-would be an error to use "say otherwise" without "say if", or to have them
-the wrong way round.
-
-The other is the SSP, the "segmented say phrase". For example:
-
->> "The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."
-
-Here there are nine invocations, and the interesting ones have to come in
-the sequence "[one of]" (a start), then any number of "[or]" segments (middles),
-and lastly "[at random]" (an end). SSPs can even be nested, within limits:
+These say control structures can even be nested, within limits:
 
 @d MAX_COMPLEX_SAY_DEPTH 32 /* and it would be terrible coding style to approach this */
 
+@ The following function throws problem messages for each of the many ways these
+say control structures can be abused. On correct code, it also annotates nodes
+for SSP clauses in a way which will later help //Compile Invocations Inline//.
+
 =
-int CompileBlocksAndLines::verify_say_node_list(parse_node *say_node_list) {
+void CompileBlocksAndLines::verify_say_node_list(parse_node *say_node_list) {
 	int problem_issued = FALSE;
-	int say_invocations_found = 0;
-	@<Check that say control structures have been used in a correct sequence@>;
-	return say_invocations_found;
-}
-
-@ Given correct code, the following does very little. It checks that structural
-say phrases (SSPs), such as the substitutions here:
-
->> "Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."
-
-...are used correctly; for instance, that there isn't an "[otherwise]" before
-the "[if...]".
-
-It doesn't quite do nothing, though, because it also counts the say phrases found.
-
-@<Check that say control structures have been used in a correct sequence@> =
 	int it_was_not_worth_adding = TextSubstitutions::is_it_worth_adding();
 	TextSubstitutions::it_is_not_worth_adding();
 
@@ -556,22 +680,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 			LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
 				id_body *idb = Node::get_phrase_invoked(inv);
 				if ((Node::get_phrase_invoked(inv)) &&
-					(IDTypeData::is_a_say_phrase(idb))) {
-					int say_cs, ssp_tok, ssp_ctok, ssp_pos;
-					IDTypeData::get_say_data(&(idb->type_data.as_say),
-						&say_cs, &ssp_tok, &ssp_ctok, &ssp_pos);
-
-					if (ssp_pos == SSP_START) @<This starts a complex SSP@>;
-					if (ssp_pos == SSP_MIDDLE) @<This is a middle term in a complex SSP@>;
-					if (ssp_pos == SSP_END) @<This ends a complex SSP@>;
-
-					if (say_cs == IF_SAY_CS) @<This is a say if@>;
-					if ((say_cs == OTHERWISE_SAY_CS) || (say_cs == OTHERWISE_IF_SAY_CS))
-						@<This is a say otherwise@>;
-					if (say_cs == END_IF_SAY_CS) @<This is a say end if@>;
-
-					say_invocations_found++;
-				}
+					(IDTypeData::is_a_say_phrase(idb)))
+					@<This is a say invocation@>;
 			}
 		}
 	}
@@ -584,6 +694,20 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	}
 	if (it_was_not_worth_adding) TextSubstitutions::it_is_not_worth_adding();
 	else TextSubstitutions::it_is_worth_adding();
+}
+
+@<This is a say invocation@> =
+	int say_cs, ssp_tok, ssp_ctok, ssp_pos;
+	IDTypeData::get_say_data(&(idb->type_data.as_say), &say_cs, &ssp_tok, &ssp_ctok, &ssp_pos);
+
+	if (ssp_pos == SSP_START) @<This starts a complex SSP@>;
+	if (ssp_pos == SSP_MIDDLE) @<This is a middle term in a complex SSP@>;
+	if (ssp_pos == SSP_END) @<This ends a complex SSP@>;
+
+	if (say_cs == IF_SAY_CS) @<This is a say if@>;
+	if ((say_cs == OTHERWISE_SAY_CS) || (say_cs == OTHERWISE_IF_SAY_CS))
+		@<This is a say otherwise@>;
+	if (say_cs == END_IF_SAY_CS) @<This is a say end if@>;
 
 @<This starts a complex SSP@> =
 	if (SSP_sp >= MAX_COMPLEX_SAY_DEPTH) {
@@ -634,7 +758,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	}
 
 @<This is a say end if@> =
-	if (say_if_nesting == 0) @<Issue a problem message for say end if without say if@>
+	if (say_if_nesting == 0)
+		@<Issue a problem message for say end if without say if@>
 	else if ((SSP_sp > 0) && (SSP_stack[SSP_sp-1] != -1))
 		@<Issue a problem message for say end if interleaved with another construction@>
 	else {
@@ -646,7 +771,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ComplicatedSayStructure));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"middle part of its construction, but it appears to be on its own.");
@@ -659,7 +785,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure2));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ComplicatedSayStructure2));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"ending part of its construction, but it appears to be on its own.");
@@ -670,7 +797,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for nested say if@> =
 	if (problem_issued == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayIfNested),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_SayIfNested),
 			"a second '[if ...]' text substitution occurs inside an existing one",
 			"which makes this text too complicated. While a single text can contain "
 			"more than one '[if ...]', this can only happen if the old if is finished "
@@ -683,17 +811,19 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for an overcomplex SSP@> =
 	if (problem_issued == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayOverComplex),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_SayOverComplex),
 			"this is too complex a text substitution",
-			"and needs to be simplified. You might find it helful to define "
-			"a new text substitution of your own ('To say fiddly details: "
-			"...') and then use it in this text by including the '[fiddly details]'.");
+			"and needs to be simplified. You might find it helful to define a new text "
+			"substitution of your own ('To say fiddly details: ...') and then use it "
+			"in this text by including the '[fiddly details]'.");
 		problem_issued = TRUE;
 	}
 
 @<Issue a problem message for say otherwise without say if@> =
 	if (problem_issued == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayOtherwiseWithoutIf),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_SayOtherwiseWithoutIf),
 			"an '[otherwise]' text substitution occurs where there appears to be no "
 			"[if ...]",
 			"which doesn't make sense - there is nothing for it to be otherwise to.");
@@ -704,11 +834,11 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure5));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ComplicatedSayStructure5));
 		Problems::issue_problem_segment(
-			"In the text at %1, the '[%2]' ought to occur inside an [if ...], but "
-			"is cut off because it has been interleaved with a complicated say "
-			"construction.");
+			"In the text at %1, the '[%2]' ought to occur inside an [if ...], but is cut "
+			"off because it has been interleaved with a complicated say construction.");
 		CompileBlocksAndLines::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
@@ -716,16 +846,18 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for two say otherwises@> =
 	if (problem_issued == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoSayOtherwises),
-			"there's already an (unconditional) \"[otherwise]\" or \"[else]\" "
-			"in this text substitution",
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TwoSayOtherwises),
+			"there's already an (unconditional) \"[otherwise]\" or \"[else]\" in this "
+			"text substitution",
 			"so it doesn't make sense to follow that with a further one.");
 		problem_issued = TRUE;
 	}
 
 @<Issue a problem message for say end if without say if@> =
 	if (problem_issued == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayEndIfWithoutSayIf),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_SayEndIfWithoutSayIf),
 			"an '[end if]' text substitution occurs where there appears to be no "
 			"[if ...]",
 			"which doesn't make sense - there is nothing for it to end.");
@@ -736,10 +868,11 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure4));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ComplicatedSayStructure4));
 		Problems::issue_problem_segment(
-			"In the text at %1, the '[%2]' is cut off from its [if ...], because "
-			"it has been interleaved with a complicated say construction.");
+			"In the text at %1, the '[%2]' is cut off from its [if ...], because it "
+			"has been interleaved with a complicated say construction.");
 		CompileBlocksAndLines::add_say_construction_to_error(SSP_stack[SSP_sp-1]);
 		Problems::issue_problem_end();
 		problem_issued = TRUE;
@@ -757,7 +890,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		if (stinv) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(stinv));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure3));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_ComplicatedSayStructure3));
 			Problems::issue_problem_segment(
 				"In the text at %1, the text substitution '[%2]' seems to start a "
 				"complicated say construction, but it doesn't have a matching end.");
@@ -767,7 +901,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		}
 	}
 
-@h Problem messages for complex say constructions.
+@ These just help to construct problem messages for complex say constructions:
 
 =
 void CompileBlocksAndLines::add_say_construction_to_error(int ssp_tok) {
