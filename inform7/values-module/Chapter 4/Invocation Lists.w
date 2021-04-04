@@ -4,7 +4,7 @@ Invocation lists are lists of alternate readings of the same wording
 to invoke a phrase.
 
 @h Introduction.
-Here is a "To..." phrase definition, and then two invocations of it:
+Here is a "To..." phrase definition, and then a rule making two invocations of it:
 = (text as Inform 7)
 To advance (the piece - a chess piece) by (N - a number):
 	...
@@ -114,6 +114,11 @@ parse_node *InvocationLists::add_alternative(parse_node *first_inv, parse_node *
 	return first_inv;
 }
 
+@ For convenience, there is a cap on the length of invocation lists, though
+at least it is preposterously high:
+
+@d MAX_INVOCATIONS_PER_PHRASE 4096
+
 @ The following macro abstracts the process of looping through the invocations
 in such a list:
 
@@ -144,11 +149,18 @@ void InvocationLists::log(parse_node *first_inv) {
 
 void InvocationLists::log_in_detail(parse_node *first_inv) {
 	parse_node *inv;
-	LOG("Invocation list in detail (%d):\n", InvocationLists::length(first_inv));
-	int n = 0;
+	int n = 1, L = InvocationLists::length(first_inv);
 	LOOP_THROUGH_INVOCATION_LIST(inv, first_inv) {
-		LOG("P%d: $e\n", n++, inv);
-		Invocations::log_tokens(inv);
+		LOG("P%d/%d: $e\n", n++, L, inv);
+		for (int j=0; j<Invocations::get_no_tokens(inv); j++) {
+			parse_node *tok = Invocations::get_token_as_parsed(inv, j);
+			LOG("  %d: $P\n", j, tok);
+			if (Node::is(tok->down, INVOCATION_LIST_NT)) {
+				LOG_INDENT;
+				InvocationLists::log_in_detail(tok->down->down);
+				LOG_OUTDENT;
+			}
+		}
 	}
 }
 

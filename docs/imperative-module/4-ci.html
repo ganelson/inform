@@ -813,14 +813,20 @@ control structures.
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ci.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>This is where we implement the convention that saying text ending with a full
-stop automatically generates a newline:
+stop automatically generates a newline. For example, in the final invocation
+of this say phrase:
 </p>
+
+<blockquote>
+    <p>say "The time is ", time of day in words, " and you yawn."</p>
+</blockquote>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a newline if the phrase implicitly requires one</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Invocations::implies_newline</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">IDTypeData::is_a_say_phrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">))) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">TEST_COMPILATION_MODE</span><span class="plain-syntax">(</span><span class="constant-syntax">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Rvalues::is_CONSTANT_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">args</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">K_text</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Word::text_ending_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">args</span><span class="plain-syntax">[0]))))) {</span>

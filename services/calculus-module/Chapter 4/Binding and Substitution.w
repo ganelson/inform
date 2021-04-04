@@ -446,10 +446,12 @@ int Binding::detect_local_in_spec(parse_node *spec, int locals_count, parse_node
 	if (Specifications::is_phrasal(spec)) {
 		parse_node *inv;
 		LOOP_THROUGH_INVOCATION_LIST(inv, spec->down->down) {
-			parse_node *param;
-			LOOP_THROUGH_TOKENS_PARSED_IN_INV(inv, param)
+			int tc = Invocations::get_no_tokens(inv);
+			for (int i=0; i<tc; i++) {
+				parse_node *param = Invocations::get_token_as_parsed(inv, i);
 				locals_count +=
 					Binding::detect_local_in_spec(param, locals_count, example);
+			}
 		}
 	}
 	for (parse_node *p = spec->down; p; p = p->next)

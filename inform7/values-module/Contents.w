@@ -18,7 +18,6 @@ Chapter 2: Specifications
 	Lvalues
 	Conditions
 	Descriptions
-	Dash
 
 Chapter 3: Literals
 "Notations for explicit values such as 10:03 AM, six, 34 kg, and so on."
@@ -39,3 +38,7 @@ Chapter 4: The S-Parser
 	Invocation Lists
 	Invocations
 	Parse Invocations
+
+Chapter 5: Type Checking
+"The Dash typechecker decides whether text matches a given description."
+	Dash

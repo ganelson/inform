@@ -1384,7 +1384,7 @@ very special circumstances.
 	return;
 
 @<Inline command "final-segment-marker"@> =
-	if (Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT) == -1) {
+	if (Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT) == 0) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NULL_HL));
 	} else {
 		TEMPORARY_TEXT(T)

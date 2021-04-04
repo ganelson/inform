@@ -607,10 +607,14 @@ control structures.
 		Invocations::AsCalls::csi_by_call(VH, inv, where_from, tokens);
 
 @ This is where we implement the convention that saying text ending with a full
-stop automatically generates a newline:
+stop automatically generates a newline. For example, in the final invocation
+of this say phrase:
+
+>> say "The time is ", time of day in words, " and you yawn."
 
 @<Compile a newline if the phrase implicitly requires one@> =
-	if ((Invocations::implies_newline(inv)) &&
+	if ((IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
+		(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE)) &&
 		(tokens->tokens_count > 0) &&
 		(Rvalues::is_CONSTANT_of_kind(tokens->args[0], K_text)) &&
 		(Word::text_ending_sentence(Wordings::first_wn(Node::get_text(tokens->args[0]))))) {

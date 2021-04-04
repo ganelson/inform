@@ -285,7 +285,7 @@ void ToPhraseFamily::register(imperative_defn_family *self) {
 	int c = 0;
 	for (imperative_defn *id = first_in_logical_order; id; id = ToPhraseFamily::get_next(id)) {
 		current_sentence = id->at;
-		Phrases::Parser::register_excerpt(id->body_of_defn);
+		ParseInvocations::register_excerpt(id->body_of_defn);
 		to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 		tfd->sequence_count = c++;
 	}

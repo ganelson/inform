@@ -240,9 +240,8 @@ singulars.
 =
 parse_node *SPCond::say_adjective(adjective *aph, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-	parse_node *inv = Invocations::new();
-	Invocations::set_word_range(inv, W);
-	Invocations::set_adjective(inv, aph);
+	parse_node *inv = Invocations::new(W);
+	Invocations::invoke_adaptive_adjective(inv, aph);
 	spec->down = InvocationLists::new_singleton(W, inv);
 	return spec;
 }
@@ -253,9 +252,8 @@ person plurals.
 =
 parse_node *SPCond::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-	parse_node *inv = Invocations::new();
-	Invocations::set_word_range(inv, W);
-	Invocations::set_verb_conjugation(inv, vc, mvc, neg);
+	parse_node *inv = Invocations::new(W);
+	Invocations::invoke_adaptive_verb(inv, vc, mvc, neg);
 	spec->down = InvocationLists::new_singleton(W, inv);
 	return spec;
 }
@@ -290,7 +288,7 @@ S-tree as we run sideways through the alternative readings.
 	for (; p; p = p->next_alternative) {
 		id_body *idb = RETRIEVE_POINTER_id_body(
 			Lexicon::get_data(Node::get_meaning(p)));
-		parse_node *inv = Phrases::Parser::parse_against(idb, p);
+		parse_node *inv = ParseInvocations::results_as_invocation(idb, p);
 		if ((IDTypeData::is_the_primordial_say(&(idb->type_data)) == FALSE) &&
 			(Rvalues::is_CONSTANT_of_kind(
 				Invocations::get_token_as_parsed(inv, 0), K_text)))

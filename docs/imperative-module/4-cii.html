@@ -1920,7 +1920,7 @@ very special circumstances.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">ssp_closing_segment_wn_ANNOT</span><span class="plain-syntax">) == -1) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">ssp_closing_segment_wn_ANNOT</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL_HL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>

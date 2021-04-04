@@ -89,7 +89,7 @@ ROOT_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if it is outdoors' {colon_block_command}
                             INVOCATION_NT'if it is outdoors' {phrase invoked: call}
-                                CONDITION_CONTEXT_NT'it is outdoors' {token check to do: <null-parse-node>} {token to be parsed against: <null-parse-node>}
+                                CONDITION_CONTEXT_NT'it is outdoors' {token to be parsed against: <null-parse-node>} {token check to do: <null-parse-node>}
                                     TEST_PROPOSITION_NT'it is outdoors' {proposition: << outdoors('it') >>} {term: 'it'}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'no' {results_from_splitting} {indent: 1}
@@ -97,7 +97,7 @@ ROOT_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if it is the pool hall and the air conditioner is switched o' {colon_block_command}
                             INVOCATION_NT'if it is the pool hall and the air conditioner is switched o' {phrase invoked: call}
-                                CONDITION_CONTEXT_NT'it is the pool hall and the air conditioner is switched off' {token check to do: <null-parse-node>} {token to be parsed against: <null-parse-node>}
+                                CONDITION_CONTEXT_NT'it is the pool hall and the air conditioner is switched off' {token to be parsed against: <null-parse-node>} {token check to do: <null-parse-node>}
                                     LOGICAL_AND_NT'it is the pool hall and the air conditioner is switched off'
                                         TEST_PROPOSITION_NT'it is the pool hall' {proposition: << ('it' == 'the pool hall') >>} {term: 'it'}
                                         TEST_PROPOSITION_NT'the air conditioner is switched off' {proposition: << switched off('the air conditioner') >>} {term: 'the air conditioner'}
@@ -107,7 +107,7 @@ ROOT_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if it is protected by a door' {colon_block_command}
                             INVOCATION_NT'if it is protected by a door' {phrase invoked: call}
-                                CONDITION_CONTEXT_NT'it is protected by a door' {token check to do: <null-parse-node>} {token to be parsed against: <null-parse-node>}
+                                CONDITION_CONTEXT_NT'it is protected by a door' {token to be parsed against: <null-parse-node>} {token check to do: <null-parse-node>}
                                     TEST_PROPOSITION_NT'it is protected by a door' {proposition: << Exists x : kind=door(x) ^ protection(x, 'it') >>} {term: 'it'}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}
@@ -750,7 +750,7 @@ ROOT_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the front side of it is the location' {colon_block_command}
                             INVOCATION_NT'if the front side of it is the location' {phrase invoked: call}
-                                CONDITION_CONTEXT_NT'front side of it is the location' {token check to do: <null-parse-node>} {token to be parsed against: <null-parse-node>}
+                                CONDITION_CONTEXT_NT'front side of it is the location' {token to be parsed against: <null-parse-node>} {token check to do: <null-parse-node>}
                                     TEST_PROPOSITION_NT'front side of it is the location' {proposition: << ('front side of it' == 'the location') >>} {term: 'front side of it'}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}
@@ -758,7 +758,7 @@ ROOT_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the back side of it is the location' {colon_block_command}
                             INVOCATION_NT'if the back side of it is the location' {phrase invoked: call}
-                                CONDITION_CONTEXT_NT'back side of it is the location' {token check to do: <null-parse-node>} {token to be parsed against: <null-parse-node>}
+                                CONDITION_CONTEXT_NT'back side of it is the location' {token to be parsed against: <null-parse-node>} {token check to do: <null-parse-node>}
                                     TEST_PROPOSITION_NT'back side of it is the location' {proposition: << ('back side of it' == 'the location') >>} {term: 'back side of it'}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}

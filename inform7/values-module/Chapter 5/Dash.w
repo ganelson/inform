@@ -1010,7 +1010,7 @@ the problem.
 	int no_interesting_problems_thrown_before = no_interesting_problems_thrown;
 	int qualified = FALSE;
 	parse_node *inv = p;
-	Phrases::Parser::parse_within_inv(inv);
+	ParseInvocations::parse_within_inv(inv);
 	Dash::set_flag(inv, TESTED_DASHFLAG);
 	id_body *idb = Node::get_phrase_invoked(inv);
 	if (idb) {
@@ -3374,12 +3374,6 @@ int Dash::get_validation_case(parse_node **spec, kind **set_K,
 	return TRUE;
 }
 
-int ap_validation_suspended = FALSE;
-
-void Dash::suspend_validation(int state) {
-	ap_validation_suspended = state;
-}
-
 int Dash::validate_parameter(parse_node *spec, kind *K) {
 	parse_node *vts;
 	kind *kind_found = NULL;
@@ -3391,7 +3385,6 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 		if ((prop) && (Binding::number_free(prop) != 1)) return FALSE;
 	}
 
-	if (ap_validation_suspended) return TRUE;
 	if (Specifications::is_description(spec)) Dash::check_condition(spec);
 	else Dash::check_value(spec, NULL); /* to force a generic return kind to be evaluated */
 	kind_found = Specifications::to_kind(spec);
@@ -3543,11 +3536,10 @@ void Dash::add_pr_inv(parse_node *E, parse_node *reading) {
 
 void Dash::add_single_pr_inv(parse_node *E, parse_node *N) {
 	E = E->down->down;
-	if (Invocations::eq(E, N)) return;
+	if (Invocations::same_phrase_and_tokens(E, N)) return;
 	while ((E) && (E->next_alternative)) {
 		E = E->next_alternative;
-		if (Invocations::eq(E, N)) return;
+		if (Invocations::same_phrase_and_tokens(E, N)) return;
 	}
-PRINT("Dash::add_single_pr_inv\n");
 	E->next_alternative = N; N->next_alternative = NULL;
 }
