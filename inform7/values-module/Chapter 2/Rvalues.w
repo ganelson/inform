@@ -582,7 +582,7 @@ some problem message.
 void Rvalues::compile(value_holster *VH, parse_node *spec_found) {
 	switch(Node::get_type(spec_found)) {
 		case PHRASE_TO_DECIDE_VALUE_NT:
-			Invocations::Compiler::compile_invocation_list(VH,
+			CompileInvocations::list(VH,
 				spec_found->down->down, Node::get_text(spec_found));
 			break;
 		case CONSTANT_NT: {

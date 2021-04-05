@@ -79,7 +79,7 @@ checker has already done all of the work to decide what kind it has.)
 
 @<Create any new local variables explicitly called for@> =
 	for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
-		parse_node *val = tokens->args[i];
+		parse_node *val = tokens->token_vals[i];
 		kind *K = Invocations::get_token_variable_kind(inv, i);
 		if (K) @<Create a local at this token@>;
 	}
@@ -90,7 +90,7 @@ checker has already done all of the work to decide what kind it has.)
 		CodeBlocks::set_scope_to_block_about_to_open(lvar);
 	else
 		CodeBlocks::set_variable_scope(lvar);
-	tokens->args[i] =
+	tokens->token_vals[i] =
 		Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		inter_symbol *lvar_s = LocalVariables::declare(lvar);
@@ -117,7 +117,7 @@ the |TAIL| stream: that happens when the block closes.)
 
 @<Open a code block@> =
 	parse_node *val = NULL;
-	if (Invocations::get_no_tokens(inv) > 0) val = tokens->args[0];
+	if (Invocations::get_no_tokens(inv) > 0) val = tokens->token_vals[0];
 	CodeBlocks::supply_val_and_stream(val, tail_schema, CSIS);
 
 @ As we will see (in the discussion of |{-my:...}| below), any variables made
@@ -255,7 +255,7 @@ we compile the value of that argument as drawn from the tokens packet, but
 the presence of annotations can change what we do.
 
 @<Expand a bracing containing a token name@> =
-	parse_node *supplied = tokens->args[tok];
+	parse_node *supplied = tokens->token_vals[tok];
 
 	int by_value_not_reference = TRUE;
 	int blank_out = FALSE;
@@ -396,7 +396,7 @@ proposition.
 
 @<Inline command "new-list-of"@> =
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
-	Calculus::Deferrals::emit_list_of_S(tokens->args[0], K);
+	Calculus::Deferrals::emit_list_of_S(tokens->token_vals[0], K);
 	return;
 
 @<Inline command "next-routine"@> =
@@ -1437,31 +1437,31 @@ has the inline definition:
 
 @<Expand an entirely internal-made definition@> =
 	if (sche->inline_subcommand == repeat_through_ISINSC) {
-			Calculus::Deferrals::emit_repeat_through_domain_S(tokens->args[1],
-				Lvalues::get_local_variable_if_any(tokens->args[0]));
+			Calculus::Deferrals::emit_repeat_through_domain_S(tokens->token_vals[1],
+				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 	}
 
 	else if (sche->inline_subcommand == repeat_through_list_ISINSC) {
-		Calculus::Deferrals::emit_loop_over_list_S(tokens->args[1],
-			Lvalues::get_local_variable_if_any(tokens->args[0]));
+		Calculus::Deferrals::emit_loop_over_list_S(tokens->token_vals[1],
+			Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 	}
 
 	else if (sche->inline_subcommand == number_of_ISINSC) {
-		Calculus::Deferrals::emit_number_of_S(tokens->args[0]);
+		Calculus::Deferrals::emit_number_of_S(tokens->token_vals[0]);
 	}
 
 	else if (sche->inline_subcommand == random_of_ISINSC) {
-		Calculus::Deferrals::emit_random_of_S(tokens->args[0]);
+		Calculus::Deferrals::emit_random_of_S(tokens->token_vals[0]);
 	}
 
 	else if (sche->inline_subcommand == total_of_ISINSC) {
 		Calculus::Deferrals::emit_total_of_S(
-			Rvalues::to_property(tokens->args[0]), tokens->args[1]);
+			Rvalues::to_property(tokens->token_vals[0]), tokens->token_vals[1]);
 	}
 
 	else if (sche->inline_subcommand == extremal_ISINSC) {
 		if ((sche->extremal_property_sign != MEASURE_T_EXACTLY) && (sche->extremal_property)) {
-			Calculus::Deferrals::emit_extremal_of_S(tokens->args[0],
+			Calculus::Deferrals::emit_extremal_of_S(tokens->token_vals[0],
 				sche->extremal_property, sche->extremal_property_sign);
 		} else
 			StandardProblems::inline_problem(_p_(PM_InlineExtremal),
@@ -1482,7 +1482,7 @@ has the inline definition:
 	else if (sche->inline_subcommand == verbose_checking_ISINSC) {
 		wchar_t *what = L"";
 		if (tokens->tokens_count > 0) {
-			parse_node *aspect = tokens->args[0];
+			parse_node *aspect = tokens->token_vals[0];
 			if (Wordings::nonempty(Node::get_text(aspect))) {
 				int aw1 = Wordings::first_wn(Node::get_text(aspect));
 				Word::dequote(aw1);
@@ -1499,7 +1499,7 @@ has the inline definition:
 	return;
 
 @<Primitive "function-application"@> =
-	parse_node *fn = tokens->args[0];
+	parse_node *fn = tokens->token_vals[0];
 	kind *fn_kind = Specifications::to_kind(fn);
 	kind *X = NULL, *Y = NULL;
 	if (Kinds::get_construct(fn_kind) != CON_phrase) {
@@ -1512,29 +1512,29 @@ has the inline definition:
 	}
 	Kinds::binary_construction_material(fn_kind, &X, &Y);
 	for (int i=1; i<tokens->tokens_count; i++) {
-		tokens->args[i-1] = tokens->args[i];
+		tokens->token_vals[i-1] = tokens->token_vals[i];
 		kind *head = NULL, *tail = NULL;
 		Kinds::binary_construction_material(X, &head, &tail);
 		X = tail;
-		tokens->kind_required[i-1] = NULL;
+		tokens->token_kinds[i-1] = NULL;
 		if ((Kinds::Behaviour::uses_pointer_values(head)) && (Kinds::Behaviour::definite(head)))
-			tokens->kind_required[i-1] = head;
+			tokens->token_kinds[i-1] = head;
 	}
 	tokens->tokens_count--;
 
 	Invocations::AsCalls::emit_function_call(tokens, NULL, -1, fn, TRUE);
 
 @<Primitive "description-application"@> =
-	parse_node *fn = tokens->args[1];
-	tokens->args[1] = tokens->args[0];
-	tokens->args[0] = Rvalues::from_int(-1, EMPTY_WORDING);
+	parse_node *fn = tokens->token_vals[1];
+	tokens->token_vals[1] = tokens->token_vals[0];
+	tokens->token_vals[0] = Rvalues::from_int(-1, EMPTY_WORDING);
 	tokens->tokens_count = 2;
 	Invocations::AsCalls::emit_function_call(tokens, NULL, -1, fn, FALSE);
 
 @<Primitive "solve-equation"@> =
-	if (Rvalues::is_CONSTANT_of_kind(tokens->args[1], K_equation)) {
-		EquationSolver::emit_solution(Node::get_text(tokens->args[0]),
-			Rvalues::to_equation(tokens->args[1]));
+	if (Rvalues::is_CONSTANT_of_kind(tokens->token_vals[1], K_equation)) {
+		EquationSolver::emit_solution(Node::get_text(tokens->token_vals[0]),
+			Rvalues::to_equation(tokens->token_vals[1]));
 	} else {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SolvedNameless),
 			"only specific named equations can be solved",
@@ -1570,7 +1570,7 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 		lvar = LocalVariables::parse(&(idb->compilation_data.id_stack_frame), LW);
 		if (lvar) {
 			int tok = LocalVariables::get_parameter_number(lvar);
-			if (tok >= 0) return tokens->args[tok];
+			if (tok >= 0) return tokens->token_vals[tok];
 		}
 		lvar = LocalVariables::find_internal(operand);
 	}

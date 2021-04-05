@@ -10,10 +10,10 @@ void Invocations::AsCalls::csi_by_call(value_holster *VH, parse_node *inv,
 	source_location *where_from, tokens_packet *tokens) {
 	id_body *idb = Node::get_phrase_invoked(inv);
 
-	inter_name *IS = PhraseRequests::complex_request(idb, tokens->as_requested,
+	inter_name *IS = PhraseRequests::complex_request(idb, tokens->fn_kind,
 		Node::get_kind_variable_declarations(inv), Node::get_text(inv));
 	LOGIF(MATCHING, "Calling routine %n with kind %u from $e\n", IS,
-		tokens->as_requested, inv);
+		tokens->fn_kind, inv);
 
 	int options_supplied = Invocations::get_phrase_options_bitmap(inv);
 	if (Node::get_phrase_options_invoked(inv) == NULL) options_supplied = -1;
@@ -78,12 +78,12 @@ then follow, and finally the optional bitmap of phrase options.
 	if (Kinds::Behaviour::uses_pointer_values(return_kind))
 		Frames::emit_new_local_value(return_kind);
 	for (int k=0; k<tokens->tokens_count; k++)
-		Specifications::Compiler::emit_to_kind(tokens->args[k], tokens->kind_required[k]);
+		Specifications::Compiler::emit_to_kind(tokens->token_vals[k], tokens->token_kinds[k]);
 	if (phrase_options != -1)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
 
 @<Compute the return kind of the phrase@> =
-	kind *K = tokens->as_requested;
+	kind *K = tokens->fn_kind;
 	kind *args = NULL;
 	if (Kinds::get_construct(K) != CON_phrase) internal_error("no function kind");
 	Kinds::binary_construction_material(K, &args, &return_kind);

@@ -6,7 +6,8 @@ Compiling a code block of lines from an imperative definition.
 As this section of code opens, we are looking at the parse tree for the body
 of a rule or phrase definition. A request has been made to compile (a version of)
 this into an Inter function; the stack frame for that has been sorted out, and
-the function begun. Now we must compile the actual code to go into the function.
+the function begun. Now we must compile the actual code to go into the function;
+the test grpup |:invocations| exercises all of this.
 
 Here is a typical example rule, taken from the Standard Rules:
 = (text as Inform 7)
@@ -237,7 +238,7 @@ need bespoke handling:
 	LOG("$T\n", current_sentence);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't a condition, so I can't see how to make it true "
 		"from here on.");
@@ -246,7 +247,7 @@ need bespoke handling:
 @<Issue a problem message for an unrecognised action@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't an action, so I can't see how to try it.");
 	Problems::issue_problem_end();
@@ -629,7 +630,7 @@ void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parse
 	if (initial_problem_count == problem_count) {
 		LOGIF(EXPRESSIONS, "(c) Compilation:\n$E", p->down);
 		value_holster VH = Holsters::new(vhm);
-		Invocations::Compiler::compile_invocation_list(&VH, p->down, Node::get_text(p));
+		CompileInvocations::list(&VH, p->down, Node::get_text(p));
 	}
 
 	if (initial_problem_count == problem_count) {
