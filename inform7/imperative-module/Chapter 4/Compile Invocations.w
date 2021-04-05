@@ -509,9 +509,9 @@ control structures.
 	id_body *idb = Node::get_phrase_invoked(inv);
 	if (IDTypeData::invoked_inline(idb))
 		manner_of_return =
-			Invocations::Inline::csi_inline_outer(VH, inv, where_from, tokens);
+			CSIInline::csi_inline(VH, inv, where_from, tokens);
 	else
-		Invocations::AsCalls::csi_by_call(VH, inv, where_from, tokens);
+		CallingFunctions::csi_by_call(VH, inv, where_from, tokens);
 
 @ This is where we implement the convention that saying text ending with a full
 stop automatically generates a newline:

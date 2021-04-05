@@ -228,7 +228,7 @@ which can trigger an unwanted |(+|.
 			Str::delete_last_character(i7_exp); break; }
 		PUT_TO(i7_exp, cr);
 	}
-	Invocations::Inline::compile_I7_expression_from_text(NULL, OUT, i7_exp);
+	CSIInline::from_source_text(NULL, OUT, i7_exp);
 	DISCARD_TEXT(i7_exp)
 
 @h Acting on I6T commands.

@@ -73,10 +73,10 @@ void EmitSchemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, int co
 	if (sch->compiled->dereference_mode)
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 
-	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	int val_mode = FALSE;
-	if (code_mode == FALSE) val_mode = TRUE;
-	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, ems, code_mode, val_mode, NULL, NULL,
+	value_holster VH;
+	if (code_mode) VH = Holsters::new(INTER_VOID_VHMODE);
+	else VH = Holsters::new(INTER_VAL_VHMODE);
+	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, ems, NULL, NULL,
 		&EmitSchemas::sch_inline, NULL);
 
 	END_COMPILATION_MODE;

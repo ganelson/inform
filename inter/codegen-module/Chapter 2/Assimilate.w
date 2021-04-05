@@ -806,7 +806,7 @@ void CodeGen::Assimilate::function_bodies(inter_tree *I) {
 			inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
 			inter_package *template_package = Site::assimilation_package(I);
 			inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
-			EmitInterSchemas::emit(I, &VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
+			EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
 			Produce::pop_code_position(I);
 			Site::set_cir(I, NULL);
 		}

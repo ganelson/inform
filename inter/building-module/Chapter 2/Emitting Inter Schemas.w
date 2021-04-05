@@ -4,12 +4,18 @@
 
 =
 void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch, void *opaque_state,
-	int to_code, int to_val, inter_symbols_table *first_call, inter_symbols_table *second_call,
+	inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
+	
+	int prim_cat = CODE_PRIM_CAT;
+	if (VH->vhmode_wanted == INTER_VAL_VHMODE) {
+		prim_cat = VAL_PRIM_CAT;
+	} else if (VH->vhmode_wanted != INTER_VOID_VHMODE) {
+		internal_error("can only emit schemas in INTER_VAL_VHMODE or INTER_VOID_VHMODE");
+	}
+	
 	if (sch->mid_case) { Produce::to_last_level(I, 4); }
-	int prim_cat = VAL_PRIM_CAT;
-	if (to_code) prim_cat = CODE_PRIM_CAT;
 	int again = TRUE;
 	while (again) {
 		again = FALSE;
@@ -18,11 +24,13 @@ void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 				again = TRUE;
 	}
 	for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
-		EmitInterSchemas::emit_inner(I, isn, VH, sch, opaque_state, prim_cat, first_call, second_call, inline_command_handler, i7_source_handler);
+		EmitInterSchemas::emit_inner(I, isn, VH, sch, opaque_state, prim_cat,
+			first_call, second_call, inline_command_handler, i7_source_handler);
 }
 
 @ =
-int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn,
+	inter_symbols_table *first_call, inter_symbols_table *second_call) {
 	if (isn == NULL) return FALSE;
 	if (isn->blocked_by_conditional) return FALSE;
 	if (isn->isn_type == DIRECTIVE_ISNT) @<Directive@>;

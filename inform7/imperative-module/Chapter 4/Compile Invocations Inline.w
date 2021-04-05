@@ -1,164 +1,202 @@
-[Invocations::Inline::] Compile Invocations Inline.
+[CSIInline::] Compile Invocations Inline.
 
 Here we generate Inform 6 code to execute the phrase(s) called
 for by an invocation list.
 
-@h CSI: Inline.
-The new criminal forensics show. Jack "The Invoker" Flathead, lonely but
-brilliant scene of crime officer, tells it like it is, and as serial killers
-stalk the troubled streets of Inline, Missouri, ... Oh, very well: this is
-the code which turns an inline phrase definition into I6 code. For example:
+@h Introduction.
+In "CSI: Inline", which premieres Thursday at 9, Jack "The Invoker" Flathead,
+lonely but brilliant scene of crime officer, tells it like it is, and as serial
+killers stalk the troubled streets of Inline, Missouri, ... Well, no: CSI
+stands here for "compile single invocation", and this is the harder case where
+the phrase being invoked has an inline definition.
 
->> To adjust (N - a number): (- AdjustThis({N}, 1); -).
-
-That sounds like an elementary matter of copying it out, but we need to
-expand material in curly braces, according to what amounts to a
-mini-language. So:
-
->> adjust 16;
-
-would expand to
+Inline definitions vary considerably in both simplicity and their legibility
+to human eyes. Here is the text substitution "[bold type]":
 = (text)
-	AdjustThis(16, 1);
+To say bold type -- running on:
+	(- style bold; -).
 =
-The exact definition of this mini-language has been the subject of some
-speculation ever since the early days of the I7 Public Beta: but the exotic
-features it contains were never meant to be used anywhere except by the
-Standard Rules. They may change without warning.
+On the other hand, here is how to repeat through a table:
+= (text)
+To repeat through (T - table name) in (TC - table column) order begin -- end loop
+	(-
+		@push {-my:ct_0}; @push {-my:ct_1};
+		for ({-my:1}={T}, {-my:2}=TableNextRow({-my:1}, {TC}, 0, 1), ct_0={-my:1}, ct_1={-my:2}:
+			{-my:2}~=0:
+			{-my:2}=TableNextRow({-my:1}, {TC}, {-my:2}, 1), ct_0={-my:1}, ct_1={-my:2})
+				{-block}
+		@pull {-my:ct_1}; @pull {-my:ct_0};
+	-).
+=
+Inline definitions are written in a highly annotated and marked-up version of
+Inform 6 notation, but are not actually I6 code.
+
+That second example is a case where the definition has a "back" as well as a
+"front". All definitions have a front; only if the text contains a |{-block}|
+marker is there a back as well. The front is the material up to the marker, the
+back is the material after it. The idea, of course, is that for inline
+definitions of control structures involving blocks of code, we compile the
+front material before compiling the block, and the back material afterwards.
+
+@ The process of compiling from an inline definition is a little like
+interpreting a program, and a //csi_state// object represents the state of
+tbe (imaginary) computer doing that.
 
 =
 typedef struct csi_state {
 	struct source_location *where_from;
+	struct value_holster VH;
 	struct id_body *idb;
 	struct parse_node *inv;
 	struct tokens_packet *tokens;
-	struct local_variable **my_vars;
+	struct local_variable *my_vars[10]; /* the "my" variables 0 to 9 */
 } csi_state;
 
-int Invocations::Inline::csi_inline_outer(value_holster *VH,
-	parse_node *inv, source_location *where_from, tokens_packet *tokens) {
+@h Front and back.
+The function //CSIInline::csi_inline// compiles from the front of the definition, but not
+the back (if it has one). The back won't appear until much later on, when the
+new code block finishes. We won't live to see it; in this function, all we do
+is pass the tailpiece to the code block handler, to be spliced in later on.
 
-	id_body *idb = Node::get_phrase_invoked(inv);
+Note that if there is a code block, then any "my" variables created in this
+invocation are preserved -- the back part of the definition may want to use
+them. They will disappear anyway in that event, because their scope is set to
+the code block in question.
 
-	local_variable *my_vars[10]; /* the "my" variables 0 to 9 */
-	@<Start with all of the implicit my-variables unused@>;
-	@<Create any new local variables explicitly called for@>;
-
+=
+int CSIInline::csi_inline(value_holster *VH, parse_node *inv, source_location *where_from,
+	tokens_packet *tokens) {
+	if (VH->vhmode_wanted == INTER_VAL_VHMODE) VH->vhmode_provided = INTER_VAL_VHMODE;
+	else VH->vhmode_provided = INTER_VOID_VHMODE;
 	csi_state CSIS;
-	CSIS.where_from = where_from;
-	CSIS.idb = idb;
-	CSIS.inv = inv;
-	CSIS.tokens = tokens;
-	CSIS.my_vars = my_vars;
-
-	inter_schema *tail_schema = NULL;
-
-	@<Expand those into streams@>;
-
-	if (IDTypeData::block_follows(idb)) @<Open a code block@>
-	else @<Release any variables created inline@>;
-
+	id_body *idb = Node::get_phrase_invoked(inv);
+	@<Initialise the CSI state@>;
+	@<Create any new local variables explicitly called for@>;
+	CSIInline::from_schema(IDCompilation::get_inter_front(idb), &CSIS);
+	if (IDTypeData::block_follows(idb))
+		CodeBlocks::attach_back_schema(IDCompilation::get_inter_back(idb), CSIS);
+	else
+		@<Release any my-variables created inline@>;
 	return idb->compilation_data.inline_mor;
 }
 
-@ Inline invocations, unlike invocations by function call, are allowed to
-create new local variables. There are two ways they can do this: implicitly,
-that is, from |{-my:...}| bracings in the definition, in which case the
-user never knows about these hidden locals:
+@ The 10 variable registers hold the identities of local variables created inside
+the inline definition using |{-my:0}| to |{-my:9}|: they're |NULL| until used, and
+are mostly not used. The "repeat" example above uses |{-my:1}|, |{-my:2}|, and
+|{-my:3}|, but leaves the others null. Most definitions use none of them.
 
-@<Start with all of the implicit my-variables unused@> =
-	for (int i=0; i<10; i++) my_vars[i] = NULL;
+@<Initialise the CSI state@> =
+	CSIS.where_from = where_from;
+	CSIS.VH = *VH; /* copied because it might be on the C call stack */
+	CSIS.idb = idb;
+	CSIS.inv = inv;
+	CSIS.tokens = tokens;
+	for (int i=0; i<10; i++) CSIS.my_vars[i] = NULL;
 
-@ ...And explicitly, where the phrase typed by the user actually names the
-variable(s) to be created, as here:
+@ But phrases can create local variables through notation in the prototype as
+well as in the definition. Consider the prototype:
+= (text)
+To repeat with (loopvar - nonexisting object variable)
+	running through (L - list of values) begin -- end loop:
+	...
+=
+Here, token 0, "nonexisting object variable", calls for us to create a new
+local variable of kind "object" each time the phrase is invoked. This variable
+may have a short lifetime, since its scope will be tied to the block of code
+about to open.
 
->> repeat with the item count running from 1 to 4:
-
-where "item count" needs to be created as a number variable. (The type
-checker has already done all of the work to decide what kind it has.)
+Note that we do not initialise the variable -- that would be inefficient, in that
+such stores would be unnecessary in some cases. So the responsibility of ensuring
+that the variable contains a typesafe value is placed on the inline definition.
+If it abuses that responsibility, type safety is simply lost. Consider:
+= (text)
+To conjure (bus - nonexisting object variable):
+	(- {bus} = 26201; -).
+When play begins:
+	conjure the magic bus;
+	showme the magic bus.
+=
+This will end horribly unless 26201 happens to be a valid object number, and it
+almost certainly is not. But the Inform compiler throws no problem message, because
+the code is legal. This is one of many reasons why end users of Inform should not
+write inline definitions if they can possibly avoid it.
 
 @<Create any new local variables explicitly called for@> =
 	for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
 		parse_node *val = tokens->token_vals[i];
 		kind *K = Invocations::get_token_variable_kind(inv, i);
-		if (K) @<Create a local at this token@>;
+		if (K) {
+			local_variable *lvar = LocalVariables::new_let_value(Node::get_text(val), K);
+			if (IDTypeData::block_follows(idb) == LOOP_BODY_BLOCK_FOLLOWS)
+				CodeBlocks::set_scope_to_block_about_to_open(lvar);
+			else
+				CodeBlocks::set_scope_to_current_block(lvar);
+			tokens->token_vals[i] =
+				Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
+			if (Kinds::Behaviour::uses_pointer_values(K)) {
+				inter_symbol *lvar_s = LocalVariables::declare(lvar);
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
+					Frames::emit_new_local_value(K);
+				Produce::up(Emit::tree());
+			}
+		}
 	}
-
-@<Create a local at this token@> =
-	local_variable *lvar = LocalVariables::new_let_value(Node::get_text(val), K);
-	if (IDTypeData::block_follows(idb) == LOOP_BODY_BLOCK_FOLLOWS)
-		CodeBlocks::set_scope_to_block_about_to_open(lvar);
-	else
-		CodeBlocks::set_variable_scope(lvar);
-	tokens->token_vals[i] =
-		Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
-	if (Kinds::Behaviour::uses_pointer_values(K)) {
-		inter_symbol *lvar_s = LocalVariables::declare(lvar);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-			Frames::emit_new_local_value(K);
-		Produce::up(Emit::tree());
-	}
-
-@ Most phrases don't have tail definitions, so we only open such a stream
-if we have to. All phrases have heads, but no opening is needed, since the
-head goes to |OUT|.
-
-@<Expand those into streams@> =
-	Invocations::Inline::csi_inline_inner(VH, IDCompilation::get_inter_front(idb), &CSIS);
-	if (IDCompilation::get_inter_back(idb)) tail_schema = IDCompilation::get_inter_back(idb);
-
-@ Suppose there's a phrase with both head and tail. Then the tail won't appear
-until much later on, when the new code block finishes. We won't live to see it;
-in this routine, all we do is write the head. So we pass the tailpiece to
-the code block handler, to be spliced in later on. (This is why we never close
-the |TAIL| stream: that happens when the block closes.)
-
-@<Open a code block@> =
-	parse_node *val = NULL;
-	if (Invocations::get_no_tokens(inv) > 0) val = tokens->token_vals[0];
-	CodeBlocks::supply_val_and_stream(val, tail_schema, CSIS);
 
 @ As we will see (in the discussion of |{-my:...}| below), any variables made
 as scratch values for the invocation are deallocated as soon as we're finished,
 unless a code block is opened: if it is, then they're deallocated when it ends.
 
-@<Release any variables created inline@> =
+@<Release any my-variables created inline@> =
 	for (int i=0; i<10; i++)
-		if (my_vars[i])
-			LocalVariableSlates::deallocate_I7_local(my_vars[i]);
+		if (CSIS.my_vars[i])
+			LocalVariableSlates::deallocate_I7_local(CSIS.my_vars[i]);
 
-@ We can now forget about heads and tails, and work on expanding a single
-inline definition into a single stream. Often this just involves copying it,
-but there are two ways to escape from that transcription: with a "bracing",
-or with a fragment of Inform 7 source text inside |(+| and |+)|.
+@ And tbis is what happens when the back part of the definition is finally
+compiled.
 
 =
-void Invocations::Inline::csi_inline_inner(value_holster *VH, inter_schema *sch, csi_state *CSIS) {
-	if (VH->vhmode_wanted == INTER_VAL_VHMODE) VH->vhmode_provided = INTER_VAL_VHMODE;
-	else VH->vhmode_provided = INTER_VOID_VHMODE;
-
-	int to_code = TRUE;
-	int to_val = FALSE;
-	if (VH->vhmode_wanted == INTER_VAL_VHMODE) { to_val = TRUE; to_code = FALSE; }
-
-	EmitInterSchemas::emit(Emit::tree(), VH, sch, CSIS, to_code, to_val, NULL, NULL,
-		&Invocations::Inline::csi_inline_inner_inner, &Invocations::Inline::compile_I7_expression_from_text);
+void CSIInline::csi_inline_back(inter_schema *back, csi_state *CSIS) {
+	if (back) CSIInline::from_schema(back, CSIS);
 }
 
-@ =
-void Invocations::Inline::csi_inline_inner_inner(value_holster *VH,
-	inter_schema_token *sche, void *CSIS_s, int prim_cat) {
+@h Single schemas.
+We can now forget about fronts and backs, and work on expanding a single
+inline definition into a single stream.
 
-	csi_state *CSIS = (csi_state *) CSIS_s;
+We do this by calling the very powerful |EmitInterSchemas::emit| function,
+which parses the schema and calls us back to do something at each point in it.
+In particular, it calls //CSIInline::from_schema_token// on each "token" of
+the schema, and calls //CSIInline::from_source_text// on any material enclosed
+in |(+ ... +)| notation.
+
+|CSIS| is passed to this function as our "opaque state" -- meaning that it is
+passed through unchanged to our callbach functions, and means that the code
+below can share some private state variables.
+
+=
+void CSIInline::from_schema(inter_schema *sch, csi_state *CSIS) {
+	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch, CSIS, NULL, NULL,
+		&CSIInline::from_schema_token, &CSIInline::from_source_text);
+}
+
+@ So we now have to write the function compiling code to implement |ist|.
+See //building: Inter Schemas// for a specification of Inter schema tokens,
+but roughly speaking each is either a command or a "bracing".
+
+=
+void CSIInline::from_schema_token(value_holster *VH,
+	inter_schema_token *ist, void *CSIS_s, int prim_cat) {
+	csi_state *CSIS = (csi_state *) CSIS_s; /* recover the "opaque state" */
+
 	id_body *idb = CSIS->idb;
 	parse_node *inv = CSIS->inv;
 	tokens_packet *tokens = CSIS->tokens;
 	local_variable **my_vars = CSIS->my_vars;
 
-	if (sche->inline_command != no_ISINC) {
-		if (sche->inline_command == primitive_definition_ISINC)
+	if (ist->inline_command != no_ISINC) {
+		if (ist->inline_command == primitive_definition_ISINC)
 			@<Expand an entirely internal-made definition@>;
 		@<Expand a bracing containing a kind command@>;
 		@<Expand a bracing containing a typographic command@>;
@@ -167,19 +205,15 @@ void Invocations::Inline::csi_inline_inner_inner(value_holster *VH,
 		@<Expand a bracing containing a miscellaneous command@>;
 	}
 
-	wording BRW = Feeds::feed_text(sche->bracing);
+	wording BRW = Feeds::feed_text(ist->bracing);
 	@<Expand a bracing containing natural language text@>;
 }
 
-@ We'll take the easier, outward-facing syntax first: the bracings which
-are part of the public Inform language. There are four ways this can go:
+@h Bracings which include natural language.
+We'll take the easier, more outward-facing syntax first: the bracings which
+are written in natural language source text, perhaps with a modifying command.
 
-@d OPTS_INSUB 1		/* the text "phrase options" */
-@d OPT_INSUB 2		/* the name of a specific phrase option */
-@d LOCAL_INSUB 3	/* the name of a token */
-@d PROBLEM_INSUB 4	/* the syntax was wrong, so do nothing */
-
-@ Suppose we are invoking the following inline phrase definition:
+Suppose we are invoking the following inline phrase definition:
 
 >> To print (something - text) : (- print (PrintI6Text) {something}; -).
 
@@ -190,18 +224,22 @@ The name of any individual phrase option (valid in the phrase now being
 invoked) expands to true or false according to whether it has been used;
 the fixed text "phrase options" expands to the whole bitmap.
 
+@d OPTS_INSUB -1
+@d LOCAL_INSUB -2
+
 =
-<inline-substitution> ::=
+<inline-bracing> ::=
 	phrase options |                      ==> { OPTS_INSUB, - }
-	<phrase-option>	|                     ==> { OPT_INSUB, -, <<opt>> = R[1] }
-	<name-local-to-inline-stack-frame> |  ==> { LOCAL_INSUB, -, <<local_variable:var>> = RP[1] }
+	<phrase-option>	|                     ==> { R[1], - }
+	<name-local-to-inline-stack-frame> |  ==> { LOCAL_INSUB, RP[1] }
 	...                                   ==> @<Issue PM_BadInlineExpansion problem@>
 
 @ This matches one of the token names in the preamble to the inline definition.
 
 =
 <name-local-to-inline-stack-frame> internal {
-	local_variable *lvar = LocalVariables::parse(&(idb_being_parsed->compilation_data.id_stack_frame), W);
+	local_variable *lvar =
+		LocalVariables::parse(&(idb_being_parsed->compilation_data.id_stack_frame), W);
 	if (lvar) {
 		==> { -, lvar };
 		return TRUE;
@@ -209,7 +247,7 @@ the fixed text "phrase options" expands to the whole bitmap.
 	==> { fail nonterminal };
 }
 
-@ In my first draft of Inform, this paragraph made reference to "meddling
+@ In my first draft of Inform, this problem message made reference to "meddling
 charlatans" and what they "deserve". I'm a better person now.
 
 @<Issue PM_BadInlineExpansion problem@> =
@@ -226,27 +264,35 @@ charlatans" and what they "deserve". I'm a better person now.
 		"extensions. A good rule of thumb is: if you can define a phrase without "
 		"using I6 insertions, do.");
 	Problems::issue_problem_end();
-	==> { PROBLEM_INSUB, - };
+	==> { fail nonterminal };
 
 @ Acting on that:
 
 @<Expand a bracing containing natural language text@> =
 	phod_being_parsed = &(idb->type_data.options_data);
 	idb_being_parsed = idb;
-	<inline-substitution>(BRW);
-	int current_opts = Invocations::get_phrase_options_bitmap(inv);
-	switch (<<r>>) {
-		case OPTS_INSUB:
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) current_opts);
-			break;
-		case OPT_INSUB:
-			if (current_opts & <<opt>>) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			break;
-		case LOCAL_INSUB: {
-			local_variable *lvar = <<local_variable:var>>;
-			int tok = LocalVariables::get_parameter_number(lvar);
-			if (tok >= 0) @<Expand a bracing containing a token name@>;
-			break;
+	if (<inline-bracing>(BRW)) {
+		switch (<<r>>) {
+			case OPTS_INSUB: {
+				int current_opts = Invocations::get_phrase_options_bitmap(inv);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) current_opts);
+				break;
+			}
+			case LOCAL_INSUB: {
+				local_variable *lvar = <<rp>>;
+				int tok = LocalVariables::get_parameter_number(lvar);
+				if (tok >= 0) @<Expand a bracing containing a token name@>;
+				break;
+			}
+			default: {
+				int this_opt = -<<r>>;
+				int current_opts = Invocations::get_phrase_options_bitmap(inv);
+				if (current_opts & this_opt)
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+				else
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				break;
+			}
 		}
 	}
 
@@ -352,15 +398,15 @@ We'll start with a suite of details about kinds:
 =
 
 @<Expand a bracing containing a kind command@> =
-	Problems::quote_stream(4, sche->operand);
-	if (sche->inline_command == new_ISINC) @<Inline command "new"@>;
-	if (sche->inline_command == new_list_of_ISINC) @<Inline command "new-list-of"@>;
-	if (sche->inline_command == printing_routine_ISINC) @<Inline command "printing-routine"@>;
-	if (sche->inline_command == ranger_routine_ISINC) @<Inline command "ranger-routine"@>;
-	if (sche->inline_command == next_routine_ISINC) @<Inline command "next-routine"@>;
-	if (sche->inline_command == previous_routine_ISINC) @<Inline command "previous-routine"@>;
-	if (sche->inline_command == strong_kind_ISINC) @<Inline command "strong-kind"@>;
-	if (sche->inline_command == weak_kind_ISINC) @<Inline command "weak-kind"@>;
+	Problems::quote_stream(4, ist->operand);
+	if (ist->inline_command == new_ISINC) @<Inline command "new"@>;
+	if (ist->inline_command == new_list_of_ISINC) @<Inline command "new-list-of"@>;
+	if (ist->inline_command == printing_routine_ISINC) @<Inline command "printing-routine"@>;
+	if (ist->inline_command == ranger_routine_ISINC) @<Inline command "ranger-routine"@>;
+	if (ist->inline_command == next_routine_ISINC) @<Inline command "next-routine"@>;
+	if (ist->inline_command == previous_routine_ISINC) @<Inline command "previous-routine"@>;
+	if (ist->inline_command == strong_kind_ISINC) @<Inline command "strong-kind"@>;
+	if (ist->inline_command == weak_kind_ISINC) @<Inline command "weak-kind"@>;
 
 @ The following produces a new value of the given kind. If it's stored as a
 word value, this will just be the default value, so |{-new:time}| will output
@@ -369,7 +415,7 @@ we compile code which creates a new value stored on the heap. This comes into
 its own when kind variables are in play.
 
 @<Inline command "new"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_new_local_value(K);
 	else if (K == NULL) @<Issue an inline no-such-kind problem@>
 	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
@@ -395,30 +441,30 @@ local variables (as it well may); instead we must construe D as a deferred
 proposition.
 
 @<Inline command "new-list-of"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	Calculus::Deferrals::emit_list_of_S(tokens->token_vals[0], K);
 	return;
 
 @<Inline command "next-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_inc_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "previous-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_dec_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "printing-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "ranger-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if ((Kinds::eq(K, K_number)) ||
 		(Kinds::eq(K, K_time)))
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
@@ -427,19 +473,19 @@ proposition.
 	return;
 
 @<Inline command "strong-kind"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (K) RTKinds::emit_strong_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "weak-kind"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
 	if (K) RTKinds::emit_weak_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Issue an inline no-such-kind problem@> =
-	StandardProblems::inline_problem(_p_(PM_InlineNew), idb, sche->owner->parent_schema->converted_from,
+	StandardProblems::inline_problem(_p_(PM_InlineNew), idb, ist->owner->parent_schema->converted_from,
 		"I don't know any kind called '%4'.");
 
 @h Typographic commands.
@@ -447,10 +493,10 @@ These rather crude commands work on a character-by-character level in the
 code we're generating.
 
 @<Expand a bracing containing a typographic command@> =
-	if (sche->inline_command == backspace_ISINC) @<Inline command "backspace"@>;
-	if (sche->inline_command == erase_ISINC) return;
-	if (sche->inline_command == open_brace_ISINC) @<Inline command "open-brace"@>;
-	if (sche->inline_command == close_brace_ISINC) @<Inline command "close-brace"@>;
+	if (ist->inline_command == backspace_ISINC) @<Inline command "backspace"@>;
+	if (ist->inline_command == erase_ISINC) return;
+	if (ist->inline_command == open_brace_ISINC) @<Inline command "open-brace"@>;
+	if (ist->inline_command == close_brace_ISINC) @<Inline command "close-brace"@>;
 
 @ The first two commands control the stream of text produced in inline
 definition expansion, allowing us to back up along it. First, a single
@@ -480,12 +526,12 @@ lint if they did.
 Here we want to generate unique numbers, or uniquely named labels, on demand.
 
 @<Expand a bracing containing a label or counter command@> =
-	if (sche->inline_command == label_ISINC) @<Inline command "label"@>;
-	if (sche->inline_command == counter_ISINC) @<Inline command "counter"@>;
-	if (sche->inline_command == counter_storage_ISINC) @<Inline command "counter-storage"@>;
-	if (sche->inline_command == counter_up_ISINC) @<Inline command "counter-up"@>;
-	if (sche->inline_command == counter_down_ISINC) @<Inline command "counter-down"@>;
-	if (sche->inline_command == counter_makes_array_ISINC) @<Inline command "counter-makes-array"@>;
+	if (ist->inline_command == label_ISINC) @<Inline command "label"@>;
+	if (ist->inline_command == counter_ISINC) @<Inline command "counter"@>;
+	if (ist->inline_command == counter_storage_ISINC) @<Inline command "counter-storage"@>;
+	if (ist->inline_command == counter_up_ISINC) @<Inline command "counter-up"@>;
+	if (ist->inline_command == counter_down_ISINC) @<Inline command "counter-down"@>;
+	if (ist->inline_command == counter_makes_array_ISINC) @<Inline command "counter-makes-array"@>;
 
 @ We can have any number of sets of labels, each with its own base name,
 which should be supplied as the argument. For example:
@@ -514,7 +560,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 @<Inline command "label"@> =
 	TEMPORARY_TEXT(L)
 	WRITE_TO(L, ".");
-	JumpLabels::write(L, sche->operand);
+	JumpLabels::write(L, ist->operand);
 	Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), L));
 	DISCARD_TEXT(L)
 	return;
@@ -522,26 +568,26 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 @ We can also output just the numerical counter:
 
 @<Inline command "counter"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) JumpLabels::read_counter(sche->operand, NOT_APPLICABLE));
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) JumpLabels::read_counter(ist->operand, NOT_APPLICABLE));
 	return;
 
 @ We can also output just the storage array:
 
 @<Inline command "counter-storage"@> =
-	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage(sche->operand));
+	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage(ist->operand));
 	return;
 
 @ Or increment it, printing nothing:
 
 @<Inline command "counter-up"@> =
-	JumpLabels::read_counter(sche->operand, TRUE);
+	JumpLabels::read_counter(ist->operand, TRUE);
 	return;
 
 @ Or decrement it. (Careful, though: if it decrements below zero, an enigmatic
 internal error will halt Inform.)
 
 @<Inline command "counter-down"@> =
-	JumpLabels::read_counter(sche->operand, FALSE);
+	JumpLabels::read_counter(ist->operand, FALSE);
 	return;
 
 @ We can use counters for anything, not just to generate labels, and one
@@ -572,8 +618,8 @@ made with different numbers here, the maximum is taken.)
 
 @<Inline command "counter-makes-array"@> =
 	int words_per_count = 1;
-	if (Str::len(sche->operand2) > 0) words_per_count = Str::atoi(sche->operand2, 0);
-	JumpLabels::allocate_counter(sche->operand, words_per_count);
+	if (Str::len(ist->operand2) > 0) words_per_count = Str::atoi(ist->operand2, 0);
+	JumpLabels::allocate_counter(ist->operand, words_per_count);
 	return;
 
 @h Token annotations.
@@ -583,26 +629,26 @@ using the same machinery as if the annotation hadn't been there.
 
 @<Take account of any annotation to the inline token@> =
 	int valid_annotation = FALSE;
-	if (sche->inline_command == by_reference_ISINC) @<Inline annotation "by-reference"@>;
-	if (sche->inline_command == by_reference_blank_out_ISINC) @<Inline annotation "by-reference-blank-out"@>;
-	if (sche->inline_command == reference_exists_ISINC) @<Inline annotation "reference-exists"@>;
-	if (sche->inline_command == lvalue_by_reference_ISINC) @<Inline annotation "lvalue-by-reference"@>;
-	if (sche->inline_command == by_value_ISINC) @<Inline annotation "by-value"@>;
+	if (ist->inline_command == by_reference_ISINC) @<Inline annotation "by-reference"@>;
+	if (ist->inline_command == by_reference_blank_out_ISINC) @<Inline annotation "by-reference-blank-out"@>;
+	if (ist->inline_command == reference_exists_ISINC) @<Inline annotation "reference-exists"@>;
+	if (ist->inline_command == lvalue_by_reference_ISINC) @<Inline annotation "lvalue-by-reference"@>;
+	if (ist->inline_command == by_value_ISINC) @<Inline annotation "by-value"@>;
 
-	if (sche->inline_command == box_quotation_text_ISINC) @<Inline annotation "box-quotation-text"@>;
+	if (ist->inline_command == box_quotation_text_ISINC) @<Inline annotation "box-quotation-text"@>;
 
 	#ifdef IF_MODULE
-	if (sche->inline_command == try_action_ISINC) @<Inline annotation "try-action"@>;
-	if (sche->inline_command == try_action_silently_ISINC) @<Inline annotation "try-action-silently"@>;
+	if (ist->inline_command == try_action_ISINC) @<Inline annotation "try-action"@>;
+	if (ist->inline_command == try_action_silently_ISINC) @<Inline annotation "try-action-silently"@>;
 	#endif
 
-	if (sche->inline_command == return_value_ISINC) @<Inline annotation "return-value"@>;
-	if (sche->inline_command == return_value_from_rule_ISINC) @<Inline annotation "return-value-from-rule"@>;
+	if (ist->inline_command == return_value_ISINC) @<Inline annotation "return-value"@>;
+	if (ist->inline_command == return_value_from_rule_ISINC) @<Inline annotation "return-value-from-rule"@>;
 
-	if (sche->inline_command == property_holds_block_value_ISINC) @<Inline annotation "property-holds-block-value"@>;
-	if (sche->inline_command == mark_event_used_ISINC) @<Inline annotation "mark-event-used"@>;
+	if (ist->inline_command == property_holds_block_value_ISINC) @<Inline annotation "property-holds-block-value"@>;
+	if (ist->inline_command == mark_event_used_ISINC) @<Inline annotation "mark-event-used"@>;
 
-	if ((sche->inline_command != no_ISINC) && (valid_annotation == FALSE))
+	if ((ist->inline_command != no_ISINC) && (valid_annotation == FALSE))
 		@<Throw a problem message for an invalid inline annotation@>;
 
 @ This affects only block values. When it's used, the token accepts the pointer
@@ -856,12 +902,12 @@ token, because that would be "property name". Instead:
 @ This little annotation is used in //if: Timed Rules//.
 
 @<Inline annotation "mark-event-used"@> =
-	PluginCalls::nonstandard_inline_annotation(sche->inline_command, supplied);
+	PluginCalls::nonstandard_inline_annotation(ist->inline_command, supplied);
 	valid_annotation = TRUE;
 
 @<Throw a problem message for an invalid inline annotation@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_stream(2, sche->command);
+	Problems::quote_stream(2, ist->command);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadInlineTag));
 	Problems::issue_problem_segment(
 		"I attempted to compile %1 using its inline definition, "
@@ -876,15 +922,15 @@ also |{-block}| above, though that is syntactically a divider rather than
 a command, which is why it isn't here.)
 
 @<Expand a bracing containing a high-level command@> =
-	if (sche->inline_command == my_ISINC) @<Inline command "my"@>;
-	if (sche->inline_command == unprotect_ISINC) @<Inline command "unprotect"@>;
-	if (sche->inline_command == copy_ISINC) @<Inline command "copy"@>;
-	if (sche->inline_command == initialise_ISINC) @<Inline command "initialise"@>;
-	if (sche->inline_command == matches_description_ISINC) @<Inline command "matches-description"@>;
-	if (sche->inline_command == now_matches_description_ISINC) @<Inline command "now-matches-description"@>;
-	if (sche->inline_command == arithmetic_operation_ISINC) @<Inline command "arithmetic-operation"@>;
-	if (sche->inline_command == say_ISINC) @<Inline command "say"@>;
-	if (sche->inline_command == show_me_ISINC) @<Inline command "show-me"@>;
+	if (ist->inline_command == my_ISINC) @<Inline command "my"@>;
+	if (ist->inline_command == unprotect_ISINC) @<Inline command "unprotect"@>;
+	if (ist->inline_command == copy_ISINC) @<Inline command "copy"@>;
+	if (ist->inline_command == initialise_ISINC) @<Inline command "initialise"@>;
+	if (ist->inline_command == matches_description_ISINC) @<Inline command "matches-description"@>;
+	if (ist->inline_command == now_matches_description_ISINC) @<Inline command "now-matches-description"@>;
+	if (ist->inline_command == arithmetic_operation_ISINC) @<Inline command "arithmetic-operation"@>;
+	if (ist->inline_command == say_ISINC) @<Inline command "say"@>;
+	if (ist->inline_command == show_me_ISINC) @<Inline command "show-me"@>;
 
 @ The |{-my:name}| command creates a local variable for use in the invocation,
 and then prints the variable's name. (If the same variable is created twice,
@@ -892,8 +938,8 @@ the second time it's simply printed.)
 
 @<Inline command "my"@> =
 	local_variable *lvar = NULL;
-	int n = Str::get_at(sche->operand, 0) - '0';
-	if ((Str::get_at(sche->operand, 1) == 0) && (n >= 0) && (n < 10)) @<A single digit as the name@>
+	int n = Str::get_at(ist->operand, 0) - '0';
+	if ((Str::get_at(ist->operand, 1) == 0) && (n >= 0) && (n < 10)) @<A single digit as the name@>
 	else @<An Inform 6 identifier as the name@>;
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	if (prim_cat == REF_PRIM_CAT) Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
@@ -960,7 +1006,7 @@ the same name for some quite different purpose, wreaking havoc. This is
 why the numbered scheme above is mostly better.
 
 @<An Inform 6 identifier as the name@> =
-	lvar = LocalVariables::new_internal(sche->operand);
+	lvar = LocalVariables::new_internal(ist->operand);
 	@<Set the kind of the my-variable@>;
 
 @ Finally, it's possible to set the I7 kind of a variable created by |{-my:...}|,
@@ -974,8 +1020,8 @@ or when a block value is needed, or where we need to match against descriptions
 
 @<Set the kind of the my-variable@> =
 	kind *K = NULL;
-	if (Str::len(sche->operand2) > 0)
-		K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2,
+	if (Str::len(ist->operand2) > 0)
+		K = CSIInline::parse_bracing_operand_as_kind(ist->operand2,
 			Node::get_kind_variable_declarations(inv));
 	if (K == NULL) K = K_object;
 	LocalVariables::set_kind(lvar, K);
@@ -998,7 +1044,7 @@ lifts the protection on the variable named:
 
 @<Inline command "unprotect"@> =
 	parse_node *v =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	local_variable *lvar = Lvalues::get_local_variable_if_any(v);
 
 	if (lvar) LocalVariables::unprotect(lvar);
@@ -1022,11 +1068,11 @@ but the point is that locals of that kind are automatically set to their
 default values when created, so they are always typesafe anyway.
 
 @<Inline command "initialise"@> =
-	parse_node *V = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+	parse_node *V = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	local_variable *lvar = Lvalues::get_local_variable_if_any(V);
 	kind *K = NULL;
-	if (Str::len(sche->operand2) > 0)
-		K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2, Node::get_kind_variable_declarations(inv));
+	if (Str::len(ist->operand2) > 0)
+		K = CSIInline::parse_bracing_operand_as_kind(ist->operand2, Node::get_kind_variable_declarations(inv));
 	else
 		K = Specifications::to_kind(V);
 
@@ -1125,22 +1171,22 @@ of the variable {-my:1} to S.
 @<Find what we are copying from, to and how@> =
 	TEMPORARY_TEXT(from_p)
 
-	int c = Str::get_first_char(sche->operand2);
-	if (c == '+') { copy_form = 1; Str::copy_tail(from_p, sche->operand2, 1); }
-	else if (c == '-') { copy_form = -1; Str::copy_tail(from_p, sche->operand2, 1); }
-	else Str::copy(from_p, sche->operand2);
+	int c = Str::get_first_char(ist->operand2);
+	if (c == '+') { copy_form = 1; Str::copy_tail(from_p, ist->operand2, 1); }
+	else if (c == '-') { copy_form = -1; Str::copy_tail(from_p, ist->operand2, 1); }
+	else Str::copy(from_p, ist->operand2);
 
 	if ((Str::len(from_p) == 0) && (copy_form != 0))
 		from = Rvalues::from_int(1, EMPTY_WORDING);
 	else if (Str::len(from_p) > 0)
-		from = Invocations::Inline::parse_bracing_operand_as_identifier(from_p, idb, tokens, my_vars);
+		from = CSIInline::parse_bracing_operand_as_identifier(from_p, idb, tokens, my_vars);
 
-	to = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+	to = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 
 	if ((to == NULL) || (from == NULL)) {
-		Problems::quote_stream(4, sche->operand);
-		Problems::quote_stream(5, sche->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineCopy), idb, sche->owner->parent_schema->converted_from,
+		Problems::quote_stream(4, ist->operand);
+		Problems::quote_stream(5, ist->operand2);
+		StandardProblems::inline_problem(_p_(PM_InlineCopy), idb, ist->owner->parent_schema->converted_from,
 			"The command to {-copy:...}, which asks to copy '%5' into '%4', has "
 			"gone wrong: I couldn't work those out.");
 		return;
@@ -1197,13 +1243,13 @@ variable.)
 
 @<Inline command "matches-description"@> =
 	parse_node *to_match =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
 	parse_node *to_test =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	if ((to_test == NULL) || (to_match == NULL)) {
-		Problems::quote_stream(4, sche->operand);
-		Problems::quote_stream(5, sche->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), idb, sche->owner->parent_schema->converted_from,
+		Problems::quote_stream(4, ist->operand);
+		Problems::quote_stream(5, ist->operand2);
+		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), idb, ist->owner->parent_schema->converted_from,
 			"The command {-matches-description:...}, which asks to test whether "
 			"'%5' is a valid description for '%4', has gone wrong: I couldn't "
 			"work those out.");
@@ -1217,14 +1263,14 @@ variable matches the given description.
 
 @<Inline command "now-matches-description"@> =
 	parse_node *to_test =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	parse_node *to_match =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
 	if ((to_test == NULL) || (to_match == NULL)) {
-		Problems::quote_stream(4, sche->operand);
-		Problems::quote_stream(5, sche->operand2);
+		Problems::quote_stream(4, ist->operand);
+		Problems::quote_stream(5, ist->operand2);
 		StandardProblems::inline_problem(_p_(PM_InlineNowMatchesDescription),
-			idb, sche->owner->parent_schema->converted_from,
+			idb, ist->owner->parent_schema->converted_from,
 			"The command {-now-matches-description:...}, which asks to change "
 			"'%4' so that '%5' becomes a valid description of it, has gone "
 			"wrong: I couldn't work those out.");
@@ -1244,10 +1290,10 @@ variable matches the given description.
 	return;
 
 @<Read the operands and their kinds@> =
-	X = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+	X = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	KX = Specifications::to_kind(X);
 	if (binary) {
-		Y = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
+		Y = CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
 		KY = Specifications::to_kind(Y);
 	}
 
@@ -1259,12 +1305,12 @@ result would be the same without the optimisation.
 
 @<Inline command "say"@> =
 	parse_node *to_say =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	if (to_say == NULL) {
 		@<Issue a no-such-local problem message@>;
 		return;
 	}
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2,
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand2,
 		Node::get_kind_variable_declarations(inv));
 
 	if (Kinds::eq(K, K_text)) @<Inline say text@>;
@@ -1349,7 +1395,7 @@ phrase applied to the named variable.
 
 @<Inline command "show-me"@> =
 	parse_node *to_show =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
 	if (to_show == NULL) {
 		@<Issue a no-such-local problem message@>;
 		return;
@@ -1371,10 +1417,10 @@ These really have nothing in common, except that each can be used only in
 very special circumstances.
 
 @<Expand a bracing containing a miscellaneous command@> =
-	if (sche->inline_command == segment_count_ISINC) @<Inline command "segment-count"@>;
-	if (sche->inline_command == final_segment_marker_ISINC) @<Inline command "final-segment-marker"@>;
-	if (sche->inline_command == list_together_ISINC) @<Inline command "list-together"@>;
-	if (sche->inline_command == rescale_ISINC) @<Inline command "rescale"@>;
+	if (ist->inline_command == segment_count_ISINC) @<Inline command "segment-count"@>;
+	if (ist->inline_command == final_segment_marker_ISINC) @<Inline command "final-segment-marker"@>;
+	if (ist->inline_command == list_together_ISINC) @<Inline command "list-together"@>;
+	if (ist->inline_command == rescale_ISINC) @<Inline command "rescale"@>;
 
 @ These two are publicly documented, and have to do with multiple-segment
 "say" phrases.
@@ -1399,14 +1445,14 @@ very special circumstances.
 the "group... together" phrases.
 
 @<Inline command "list-together"@> =
-	if (sche->inline_subcommand == unarticled_ISINSC) {
+	if (ist->inline_subcommand == unarticled_ISINSC) {
 		inter_name *iname = ListTogether::new(FALSE);
 		Produce::val_iname(Emit::tree(), K_value, iname);
-	} else if (sche->inline_subcommand == articled_ISINSC) {
+	} else if (ist->inline_subcommand == articled_ISINSC) {
 		inter_name *iname = ListTogether::new(TRUE);
 		Produce::val_iname(Emit::tree(), K_value, iname);
 	} else StandardProblems::inline_problem(_p_(PM_InlineListTogether),
-		idb, sche->owner->parent_schema->converted_from,
+		idb, ist->owner->parent_schema->converted_from,
 		"The only legal forms here are {-list-together:articled} and "
 		"{-list-together:unarticled}.");
 	return;
@@ -1436,50 +1482,50 @@ has the inline definition:
 =
 
 @<Expand an entirely internal-made definition@> =
-	if (sche->inline_subcommand == repeat_through_ISINSC) {
+	if (ist->inline_subcommand == repeat_through_ISINSC) {
 			Calculus::Deferrals::emit_repeat_through_domain_S(tokens->token_vals[1],
 				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 	}
 
-	else if (sche->inline_subcommand == repeat_through_list_ISINSC) {
+	else if (ist->inline_subcommand == repeat_through_list_ISINSC) {
 		Calculus::Deferrals::emit_loop_over_list_S(tokens->token_vals[1],
 			Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 	}
 
-	else if (sche->inline_subcommand == number_of_ISINSC) {
+	else if (ist->inline_subcommand == number_of_ISINSC) {
 		Calculus::Deferrals::emit_number_of_S(tokens->token_vals[0]);
 	}
 
-	else if (sche->inline_subcommand == random_of_ISINSC) {
+	else if (ist->inline_subcommand == random_of_ISINSC) {
 		Calculus::Deferrals::emit_random_of_S(tokens->token_vals[0]);
 	}
 
-	else if (sche->inline_subcommand == total_of_ISINSC) {
+	else if (ist->inline_subcommand == total_of_ISINSC) {
 		Calculus::Deferrals::emit_total_of_S(
 			Rvalues::to_property(tokens->token_vals[0]), tokens->token_vals[1]);
 	}
 
-	else if (sche->inline_subcommand == extremal_ISINSC) {
-		if ((sche->extremal_property_sign != MEASURE_T_EXACTLY) && (sche->extremal_property)) {
+	else if (ist->inline_subcommand == extremal_ISINSC) {
+		if ((ist->extremal_property_sign != MEASURE_T_EXACTLY) && (ist->extremal_property)) {
 			Calculus::Deferrals::emit_extremal_of_S(tokens->token_vals[0],
-				sche->extremal_property, sche->extremal_property_sign);
+				ist->extremal_property, ist->extremal_property_sign);
 		} else
 			StandardProblems::inline_problem(_p_(PM_InlineExtremal),
-				idb, sche->owner->parent_schema->converted_from,
+				idb, ist->owner->parent_schema->converted_from,
 				"In the '{-primitive-definition:extremal...}' command, there "
 				"should be a '<' or '>' sign then the name of a property.");
 	}
 
-	else if (sche->inline_subcommand == function_application_ISINSC) 	@<Primitive "function-application"@>
-	else if (sche->inline_subcommand == description_application_ISINSC) @<Primitive "description-application"@>
+	else if (ist->inline_subcommand == function_application_ISINSC) 	@<Primitive "function-application"@>
+	else if (ist->inline_subcommand == description_application_ISINSC) @<Primitive "description-application"@>
 
-	else if (sche->inline_subcommand == solve_equation_ISINSC) 		@<Primitive "solve-equation"@>
+	else if (ist->inline_subcommand == solve_equation_ISINSC) 		@<Primitive "solve-equation"@>
 
-	else if (sche->inline_subcommand == switch_ISINSC) ;
+	else if (ist->inline_subcommand == switch_ISINSC) ;
 
-	else if (sche->inline_subcommand == break_ISINSC) CodeBlocks::emit_break();
+	else if (ist->inline_subcommand == break_ISINSC) CodeBlocks::emit_break();
 
-	else if (sche->inline_subcommand == verbose_checking_ISINSC) {
+	else if (ist->inline_subcommand == verbose_checking_ISINSC) {
 		wchar_t *what = L"";
 		if (tokens->tokens_count > 0) {
 			parse_node *aspect = tokens->token_vals[0];
@@ -1492,8 +1538,8 @@ has the inline definition:
 		Dash::tracing_phrases(what);
 	}
 	else {
-		Problems::quote_stream(4, sche->operand);
-		StandardProblems::inline_problem(_p_(PM_InlinePrimitive), idb, sche->owner->parent_schema->converted_from,
+		Problems::quote_stream(4, ist->operand);
+		StandardProblems::inline_problem(_p_(PM_InlinePrimitive), idb, ist->owner->parent_schema->converted_from,
 			"I don't know any primitive definition called '%4'.");
 	}
 	return;
@@ -1505,7 +1551,7 @@ has the inline definition:
 	if (Kinds::get_construct(fn_kind) != CON_phrase) {
 		Problems::quote_spec(4, fn);
 		StandardProblems::inline_problem(_p_(PM_InlineFunctionApplication),
-			idb, sche->owner->parent_schema->converted_from,
+			idb, ist->owner->parent_schema->converted_from,
 			"A function application only makes sense if the first token, "
 			"'%4', is a phrase: here it isn't.");
 		return;
@@ -1522,14 +1568,14 @@ has the inline definition:
 	}
 	tokens->tokens_count--;
 
-	Invocations::AsCalls::emit_function_call(tokens, NULL, -1, fn, TRUE);
+	CallingFunctions::indirect_function_call(tokens, fn, TRUE);
 
 @<Primitive "description-application"@> =
 	parse_node *fn = tokens->token_vals[1];
 	tokens->token_vals[1] = tokens->token_vals[0];
 	tokens->token_vals[0] = Rvalues::from_int(-1, EMPTY_WORDING);
 	tokens->tokens_count = 2;
-	Invocations::AsCalls::emit_function_call(tokens, NULL, -1, fn, FALSE);
+	CallingFunctions::indirect_function_call(tokens, fn, FALSE);
 
 @<Primitive "solve-equation"@> =
 	if (Rvalues::is_CONSTANT_of_kind(tokens->token_vals[1], K_equation)) {
@@ -1544,8 +1590,8 @@ has the inline definition:
 	}
 
 @<Issue a no-such-local problem message@> =
-	Problems::quote_stream(4, sche->operand);
-	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), idb, sche->owner->parent_schema->converted_from,
+	Problems::quote_stream(4, ist->operand);
+	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), idb, ist->owner->parent_schema->converted_from,
 		"I don't know any local variable called '%4'.");
 
 @h Parsing the invocation operands.
@@ -1560,7 +1606,7 @@ then the operand refers to its value in the current invocation;
 (c) and failing that we have the name of a local I6 variable.
 
 =
-parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream *operand, id_body *idb,
+parse_node *CSIInline::parse_bracing_operand_as_identifier(text_stream *operand, id_body *idb,
 	tokens_packet *tokens, local_variable **my_vars) {
 	local_variable *lvar = NULL;
 	if ((Str::get_at(operand, 1) == 0) && (Str::get_at(operand, 0) >= '0') && (Str::get_at(operand, 0) <= '9'))
@@ -1596,7 +1642,7 @@ which would safely abandon any attempt to define a value like this:
 >> To give up deciding: (- return {-new:return-kind}; -).
 
 =
-kind *Invocations::Inline::parse_bracing_operand_as_kind(text_stream *operand, kind_variable_declaration *kvd) {
+kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand, kind_variable_declaration *kvd) {
 	if (Str::eq_wide_string(operand, L"return-kind")) return Frames::get_kind_returned();
 	if (Str::eq_wide_string(operand, L"rule-return-kind")) return Rulebooks::kind_from_context();
 	kind *kind_vars_inline[27];
@@ -1620,20 +1666,20 @@ relevant class or property, rather than as code to test the predicate
 of defined adjectives. So:
 
 =
-void Invocations::Inline::compile_I7_expression_from_text(value_holster *VH, text_stream *OUT, text_stream *p) {
+void CSIInline::from_source_text(value_holster *VH, text_stream *OUT, text_stream *p) {
 	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
 		Produce::evaluation(Emit::tree());
 		Produce::down(Emit::tree());
 	}
 
-	Invocations::Inline::compile_I7_expression_from_text_inner(VH, OUT, p);
+	CSIInline::compile_I7_expression_from_text_inner(VH, OUT, p);
 
 	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
 		Produce::up(Emit::tree());
 	}
 }
 
-void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
+void CSIInline::compile_I7_expression_from_text_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
 	wording LW = Feeds::feed_text(p);
 
 	if (<property-name>(LW)) {

@@ -153,8 +153,10 @@ the loop begins, and pull them again when it finishes.
 @ Slightly later on, we know these:
 
 =
-void CodeBlocks::supply_val_and_stream(parse_node *val, inter_schema *I, csi_state CSIS) {
-	block_being_opened->switch_val = val;
+void CodeBlocks::attach_back_schema(inter_schema *I, csi_state CSIS) {
+	block_being_opened->switch_val = NULL;
+	if (Invocations::get_no_tokens(CSIS.inv) > 0)
+		block_being_opened->switch_val = CSIS.tokens->token_vals[0];
 	block_being_opened->tail_schema = I;
 	block_being_opened->compilation_state = CSIS;
 }
@@ -193,12 +195,8 @@ void CodeBlocks::close_code_block(void) {
 
 	LOGIF(LOCAL_VARIABLES, "End of block level %d\n", current_block_stack.pb_sp);
 	LocalVariableSlates::end_scope(current_block_stack.pb_sp);
-
-	if (block_being_compiled->tail_schema) {
-		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-		Invocations::Inline::csi_inline_inner(&VH,
-			block_being_compiled->tail_schema, &(block_being_compiled->compilation_state));
-	}
+	CSIInline::csi_inline_back(block_being_compiled->tail_schema,
+		&(block_being_compiled->compilation_state));
 	CodeBlocks::pop_stack();
 }
 
@@ -268,7 +266,7 @@ void CodeBlocks::emit_break(void) {
 When "let" creates something, this is called:
 
 =
-void CodeBlocks::set_variable_scope(local_variable *lvar) {
+void CodeBlocks::set_scope_to_current_block(local_variable *lvar) {
 	if (Frames::current_stack_frame())
 		LocalVariableSlates::set_scope_to(lvar,
 			current_block_stack.pb_sp);

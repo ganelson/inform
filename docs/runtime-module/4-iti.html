@@ -326,7 +326,7 @@ I6 code like so:
 <span class="plain-syntax">            </span><span class="identifier-syntax">Str::delete_last_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">, </span><span class="identifier-syntax">cr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Invocations::Inline::compile_I7_expression_from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CSIInline::from_source_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-iti.html#SP2">&#167;2</a>.</li></ul>
