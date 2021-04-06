@@ -72,9 +72,23 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">imperative</a></li><li><a href="index.html#4">Chapter 4: Invocations</a></li><li><b>Compile Arithmetic</b></li></ul></div>
 <p class="purpose">To compile code performing an arithmetic operation.</p>
 
-<ul class="toc"><li><a href="4-ca.html#SP1">&#167;1. Compiling arithmetic</a></li></ul><hr class="tocbar">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This section provides a single function to compile Inter code to perform
+an arithmetic operation. It implements the <span class="extract"><span class="extract-syntax">{-arithmetic-operation:X:Y}</span></span>
+bracing when used in inline invocations, and is also needed for equation
+solving; see <a href="4-cste.html" class="internal">Compile Solutions to Equations</a>. Because of that, the function
+is called either with <span class="extract"><span class="extract-syntax">X</span></span> and <span class="extract"><span class="extract-syntax">Y</span></span> set to values, or with <span class="extract"><span class="extract-syntax">EX</span></span> and <span class="extract"><span class="extract-syntax">EY</span></span> set to
+equation nodes, but not both. <span class="extract"><span class="extract-syntax">eqn</span></span> is set only for the equations case; but
+in both cases <span class="extract"><span class="extract-syntax">KX</span></span> and <span class="extract"><span class="extract-syntax">KY</span></span> are the kinds of the arithmetic operands, and <span class="extract"><span class="extract-syntax">op</span></span>
+is the operation number.
+</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Compiling arithmetic. </b></p>
+<p class="commentary">For unary operations, <span class="extract"><span class="extract-syntax">Y</span></span>, <span class="extract"><span class="extract-syntax">EY</span></span> and <span class="extract"><span class="extract-syntax">KY</span></span> will all be <span class="extract"><span class="extract-syntax">NULL</span></span>.
+</p>
+
+<p class="commentary">What happens is straightforward enough, but we provide a fair range of different
+operations, and we have to manage scaling factors and whether the underlying
+arithmetic is integer or floating-point.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Compile::perform_arithmetic_emit</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::Compile::perform_arithmetic_emit</span></span>:<br/>Compile Invocations Inline - <a href="4-cii.html#SP6_5_7">&#167;6.5.7</a><br/>Compile Solutions to Equations - <a href="4-cste.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">op</span><span class="plain-syntax">, </span><span class="identifier-syntax">equation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">,</span>
@@ -108,7 +122,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CUBEROOT_OPERATION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ca.html#SP1_9" class="named-paragraph-link"><span class="named-paragraph">Emit cube root</span><span class="named-paragraph-number">1.9</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">POWER_OPERATION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ca.html#SP1_12" class="named-paragraph-link"><span class="named-paragraph">Emit a power of the left operand</span><span class="named-paragraph-number">1.12</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNARY_MINUS_OPERATION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ca.html#SP1_11" class="named-paragraph-link"><span class="named-paragraph">Emit unary minus</span><span class="named-paragraph-number">1.11</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMPLICIT_APPLICATION_OPERATION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ca.html#SP1_13" class="named-paragraph-link"><span class="named-paragraph">Emit function application</span><span class="named-paragraph-number">1.13</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMPLICIT_APPLICATION_OPERATION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ca.html#SP1_13" class="named-paragraph-link"><span class="named-paragraph">Emit implicit application</span><span class="named-paragraph-number">1.13</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">default:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">BelievedImpossible</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"this doesn't seem to be an arithmetic operation"</span><span class="plain-syntax">,</span>
@@ -118,15 +132,12 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">reduce_modulo_1440</span><span class="plain-syntax">) </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>The four cases for a binary operation correspond to:
-</p>
-
-<blockquote>
-    <p>pi plus pi, pi plus 3, 3 plus pi, 3 plus 3</p>
-</blockquote>
-
-<p class="commentary">respectively. If either operand is real, floating-point arithmetic is used,
-and the other operand is promoted from integer to real if necessary.
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>For a binary operation, note that "pi plus pi", "pi plus 3", and "3 plus pi"
+must all use floating-point, whereas "3 plus 3" uses integer arithmetic: in
+other words, if either operand is real, then real arithmetic must be used.
+"Promotion" means converting an integer to a real number (I'm not quite sure
+why that is traditionally thought of as being better) &mdash; in "pi plus 3", the
+integer 3 is promoted to real.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Choose which form of arithmetic and promotion</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
@@ -369,9 +380,9 @@ and the other operand is promoted from integer to real if necessary.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ca.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_12" class="paragraph-anchor"></a><b>&#167;1.12.  </b>We accomplish powers by repeated multiplication. This is partly because I6
-has no "to the power of" function, partly because the powers involved will
-always be small, partly because of the need for scaling to come out right.
+<p class="commentary firstcommentary"><a id="SP1_12" class="paragraph-anchor"></a><b>&#167;1.12.  </b>We accomplish integer powers by repeated multiplication. This is partly
+because Inter has no "to the power of" opcode, partly because the powers involved
+will always be small, partly because of the need for scaling to come out right.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit a power of the left operand</span><span class="named-paragraph-number">1.12</span></span><span class="comment-syntax"> =</span>
@@ -392,7 +403,7 @@ always be small, partly because of the need for scaling to come out right.
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Y</span><span class="plain-syntax">) </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">EY</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">leaf_constant</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="4-cste.html#SP5" class="function-link"><span class="function-syntax">EquationSolver::enode_compilation_error</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="4-cste.html#SP5" class="function-link"><span class="function-syntax">EquationSolver::issue_problem_on_root</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EY</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Kinds::Scalings::rescale_multiplication_emit_op</span><span class="plain-syntax">(</span><span class="identifier-syntax">KX</span><span class="plain-syntax">, </span><span class="identifier-syntax">KX</span><span class="plain-syntax">);</span>
@@ -409,7 +420,12 @@ always be small, partly because of the need for scaling to come out right.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ca.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_13" class="paragraph-anchor"></a><b>&#167;1.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit function application</span><span class="named-paragraph-number">1.13</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_13" class="paragraph-anchor"></a><b>&#167;1.13.  </b>This is used in equation solving only; here we are evaluating a mathematical
+function like <span class="extract"><span class="extract-syntax">log pi</span></span>, where <span class="extract"><span class="extract-syntax">X</span></span> is the function (in this case <span class="extract"><span class="extract-syntax">log</span></span>) and
+<span class="extract"><span class="extract-syntax">Y</span></span> the value (in this case <span class="extract"><span class="extract-syntax">pi</span></span>). Clearly a function cannot be promoted.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit implicit application</span><span class="named-paragraph-number">1.13</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -434,18 +450,20 @@ always be small, partly because of the need for scaling to come out right.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax">) </span><a href="3-cfs.html#SP7" class="function-link"><span class="function-syntax">Specifications::Compiler::emit_to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">KX</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="4-cste.html#SP4" class="function-link"><span class="function-syntax">EquationSolver::enode_compile_by_emission</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EX</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax">) </span><a href="3-cfs.html#SP7" class="function-link"><span class="function-syntax">Specifications::Compiler::emit_to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">KX</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="4-cste.html#SP4" class="function-link"><span class="function-syntax">EquationSolver::compile_enode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EX</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ca.html#SP1_2">&#167;1.2</a> (twice), <a href="4-ca.html#SP1_3">&#167;1.3</a> (twice), <a href="4-ca.html#SP1_4">&#167;1.4</a> (twice), <a href="4-ca.html#SP1_5">&#167;1.5</a> (twice), <a href="4-ca.html#SP1_6">&#167;1.6</a> (twice), <a href="4-ca.html#SP1_7">&#167;1.7</a> (twice), <a href="4-ca.html#SP1_8">&#167;1.8</a> (twice), <a href="4-ca.html#SP1_9">&#167;1.9</a> (twice), <a href="4-ca.html#SP1_10">&#167;1.10</a>, <a href="4-ca.html#SP1_11">&#167;1.11</a> (twice), <a href="4-ca.html#SP1_12">&#167;1.12</a> (three times), <a href="4-ca.html#SP1_13">&#167;1.13</a> (twice).</li></ul>
 <p class="commentary firstcommentary"><a id="SP1_2_2" class="paragraph-anchor"></a><b>&#167;1.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit the Y-operand</span><span class="named-paragraph-number">1.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Y</span><span class="plain-syntax">) </span><a href="3-cfs.html#SP7" class="function-link"><span class="function-syntax">Specifications::Compiler::emit_to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="identifier-syntax">KY</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="4-cste.html#SP4" class="function-link"><span class="function-syntax">EquationSolver::enode_compile_by_emission</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Y</span><span class="plain-syntax">) </span><a href="3-cfs.html#SP7" class="function-link"><span class="function-syntax">Specifications::Compiler::emit_to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="identifier-syntax">KY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="4-cste.html#SP4" class="function-link"><span class="function-syntax">EquationSolver::compile_enode</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">, </span><span class="identifier-syntax">EY</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ca.html#SP1_2">&#167;1.2</a> (twice), <a href="4-ca.html#SP1_3">&#167;1.3</a> (twice), <a href="4-ca.html#SP1_4">&#167;1.4</a> (twice), <a href="4-ca.html#SP1_5">&#167;1.5</a> (twice), <a href="4-ca.html#SP1_6">&#167;1.6</a> (twice), <a href="4-ca.html#SP1_7">&#167;1.7</a> (twice), <a href="4-ca.html#SP1_10">&#167;1.10</a>, <a href="4-ca.html#SP1_12">&#167;1.12</a>, <a href="4-ca.html#SP1_13">&#167;1.13</a> (twice).</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-cii.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-sf.html">2</a></li><li class="progresschapter"><a href="3-cfs.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-cbal.html">cbal</a></li><li class="progresssection"><a href="4-ci.html">ci</a></li><li class="progresssection"><a href="4-ciac.html">ciac</a></li><li class="progresssection"><a href="4-cii.html">cii</a></li><li class="progresscurrent">ca</li><li class="progresssection"><a href="4-cste.html">cste</a></li><li class="progressnext"><a href="4-cste.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-cste.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-sf.html">2</a></li><li class="progresschapter"><a href="3-cfs.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-cbal.html">cbal</a></li><li class="progresssection"><a href="4-ci.html">ci</a></li><li class="progresssection"><a href="4-ciac.html">ciac</a></li><li class="progresssection"><a href="4-cii.html">cii</a></li><li class="progresssection"><a href="4-cste.html">cste</a></li><li class="progresscurrent">ca</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

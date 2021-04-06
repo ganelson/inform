@@ -1,6 +1,6 @@
 [DeferredPropositions::] Compile Deferred Propositions.
 
-To compile the I6 routines needed to perform the tests or tasks
+To compile the Inter functions needed to perform the tests or tasks
 deferred as being too difficult in their original contexts.
 
 @h Comment.

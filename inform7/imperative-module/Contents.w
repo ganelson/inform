@@ -37,5 +37,5 @@ Chapter 4: Invocations
 	Compile Invocations
 	Compile Invocations As Calls
 	Compile Invocations Inline
-	Compile Arithmetic
 	Compile Solutions to Equations
+	Compile Arithmetic

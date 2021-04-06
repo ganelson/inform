@@ -228,7 +228,8 @@ which can trigger an unwanted |(+|.
 			Str::delete_last_character(i7_exp); break; }
 		PUT_TO(i7_exp, cr);
 	}
-	CSIInline::from_source_text(NULL, OUT, i7_exp);
+	wording W = Feeds::feed_text(i7_exp);
+	CSIInline::eval_bracket_plus_to_text(OUT, W);
 	DISCARD_TEXT(i7_exp)
 
 @h Acting on I6T commands.

@@ -163,7 +163,10 @@ code instructions; we remember what's needed ourselves:
 		"instance, 'before \"Parser.i6t\".' or 'after \"Pronouns\" in "
 		"\"Language.i6t\".'");
 
-@ =
+@ Is it possible to handle this better with |EmitInterSchemas::emit|? If so,
+we could remove the vile |CSIInline::eval_bracket_plus_to_text|.
+
+=
 void Config::Inclusions::new_intervention(int stage, text_stream *segment, text_stream *part, wchar_t *i6, text_stream *seg) {
 	text_stream *T = NULL;
 	if (i6) {

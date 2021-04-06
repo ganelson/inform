@@ -1,0 +1,62 @@
+Laboratory is a room. The bench is here. The isotope is on the bench.
+The sack of pitchblende is here.
+
+Definition: a thing is radioactive if it is the isotope.
+
+The Geiger counter is a number that varies.
+
+To say the Lab name:
+	(- DefArt( (+ Laboratory +) ); -).
+
+To tick:
+	(- (+ Geiger counter +) ++; -).
+
+To watch the dial:
+	(- print (+ Geiger counter +), "^"; -).
+
+To say the survey of things:
+	(- objectloop ({-my:1} ofclass (+ thing +)) DefArt({-my:1}); -).
+
+To decide if (T - a thing) radiates:
+	(- ( (+ radioactive +)({T}) ) -).
+
+To decide if (T - a thing) helps:
+	(- ( {T} has (+ supporter +) ) -).
+
+To decide if (T - a thing) helps:
+	(- ( {T} has (+ supporter +) ) -).
+
+To decide if (T - a thing) sacks:
+	(- ( {T} == (+ sack of pitchblende +) ) -).
+
+To demonstrate vals:
+	(- print (+ 253 +), " and ",
+		(PrintTimeOfDay) (+ 11:32 PM +), " and ",
+		(TEXT_TY_Say) (+ "some text about it being [time of day] right now" +), "^";
+	-).
+
+When play begins:
+	say "Should be in [the Lab name].";
+	showme the Geiger counter;
+	tick;
+	tick;
+	tick;
+	showme the Geiger counter;
+	watch the dial;
+	say "All smooshed together are [the survey of things].";
+	repeat with T running through things:
+		if T radiates:
+			say "[T] radiates!";
+		otherwise:
+			say "[T] is safe.";
+	repeat with T running through things:
+		if T helps:
+			say "[T] helps!";
+		otherwise:
+			say "[T] is no help.";
+	repeat with T running through things:
+		if T sacks:
+			say "[T] is a sack!";
+		otherwise:
+			say "[T] is not a sack.";
+	demonstrate vals.

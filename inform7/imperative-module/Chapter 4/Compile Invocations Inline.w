@@ -1,7 +1,6 @@
 [CSIInline::] Compile Invocations Inline.
 
-Here we generate Inform 6 code to execute the phrase(s) called
-for by an invocation list.
+Here we generate Inter code to invoke a phrase from its inline definition.
 
 @h Introduction.
 In "CSI: Inline", which premieres Thursday at 9, Jack "The Invoker" Flathead,
@@ -118,8 +117,8 @@ When play begins:
 =
 This will end horribly unless 26201 happens to be a valid object number, and it
 almost certainly is not. But the Inform compiler throws no problem message, because
-the code is legal. This is one of many reasons why end users of Inform should not
-write inline definitions if they can possibly avoid it.
+the code is legal. See the discussion of |{-initialise:...}| for how to deal with
+this issue.
 
 @<Create any new local variables explicitly called for@> =
 	for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
@@ -195,9 +194,9 @@ void CSIInline::from_schema_token(value_holster *VH,
 	tokens_packet *tokens = CSIS->tokens;
 	local_variable **my_vars = CSIS->my_vars;
 
-	if (ist->inline_command != no_ISINC) {
-		if (ist->inline_command == primitive_definition_ISINC)
-			@<Expand an entirely internal-made definition@>;
+	int C = ist->inline_command;
+	if (C != no_ISINC) {
+		if (C == primitive_definition_ISINC) @<Expand an entirely internal-made definition@>;
 		@<Expand a bracing containing a kind command@>;
 		@<Expand a bracing containing a typographic command@>;
 		@<Expand a bracing containing a label or counter command@>;
@@ -206,29 +205,27 @@ void CSIInline::from_schema_token(value_holster *VH,
 	}
 
 	wording BRW = Feeds::feed_text(ist->bracing);
-	@<Expand a bracing containing natural language text@>;
+	@<Expand a bracing for a token or phrase option@>;
 }
 
-@h Bracings which include natural language.
-We'll take the easier, more outward-facing syntax first: the bracings which
-are written in natural language source text, perhaps with a modifying command.
+@h Bracings for tokens.
+For example, if the phrase prototype is |print (something to say - text)|, then the
+bracing |{something to say}| refers to the token value at that point.
 
-Suppose we are invoking the following inline phrase definition:
+Such tokens can also be "annotated" with commands. |{-by-reference:something to say}|
+means the same but indicates that it should be compiled without copying.
 
->> To print (something - text) : (- print (PrintI6Text) {something}; -).
+Lastly, though this is much less common, the bracing can compile to the bitmap value
+for a phrase option or for the current bitmap of options specified by the invocation.
+Those have no annotations.
 
-Here the inline definition is |"print (PrintI6Text) {something};"| and the
-bracing, |{something}|, stands for something to be substituted in. This is
-usually the name of one of the tokens in the phrase preamble, as it is here.
-The name of any individual phrase option (valid in the phrase now being
-invoked) expands to true or false according to whether it has been used;
-the fixed text "phrase options" expands to the whole bitmap.
+The natural language part must match this:
 
 @d OPTS_INSUB -1
 @d LOCAL_INSUB -2
 
 =
-<inline-bracing> ::=
+<inline-bracing-source-text> ::=
 	phrase options |                      ==> { OPTS_INSUB, - }
 	<phrase-option>	|                     ==> { R[1], - }
 	<name-local-to-inline-stack-frame> |  ==> { LOCAL_INSUB, RP[1] }
@@ -268,10 +265,10 @@ charlatans" and what they "deserve". I'm a better person now.
 
 @ Acting on that:
 
-@<Expand a bracing containing natural language text@> =
+@<Expand a bracing for a token or phrase option@> =
 	phod_being_parsed = &(idb->type_data.options_data);
 	idb_being_parsed = idb;
-	if (<inline-bracing>(BRW)) {
+	if (<inline-bracing-source-text>(BRW)) {
 		switch (<<r>>) {
 			case OPTS_INSUB: {
 				int current_opts = Invocations::get_phrase_options_bitmap(inv);
@@ -304,11 +301,11 @@ the presence of annotations can change what we do.
 	parse_node *supplied = tokens->token_vals[tok];
 
 	int by_value_not_reference = TRUE;
+	int text_as_quotation = FALSE;
 	int blank_out = FALSE;
 	int reference_exists = FALSE;
 	int require_to_be_lvalue = FALSE;
 
-	BEGIN_COMPILATION_MODE;
 	@<Take account of any annotation to the inline token@>;
 	kind *kind_vars_inline[27];
 	@<Work out values for the kind variables in this context@>;
@@ -320,7 +317,6 @@ the presence of annotations can change what we do.
 	@<If the token has to be an lvalue, reject it if it isn't@>;
 	@<Compile the token value@>;
 	Frames::temporarily_set_kvs(saved);
-	END_COMPILATION_MODE;
 
 @<Work out values for the kind variables in this context@> =
 	kind_vars_inline[0] = NULL;
@@ -338,18 +334,18 @@ the presence of annotations can change what we do.
 			else Problems::quote_spec(2, supplied);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotAnLvalue));
 			Problems::issue_problem_segment(
-				"You wrote %1, but that seems to mean changing '%2', which "
-				"is a constant and can't be altered.");
+				"You wrote %1, but that seems to mean changing '%2', which is a constant "
+				"and can't be altered.");
 			Problems::issue_problem_end();
 		}
 	}
 
 @ The noteworthy thing here is the switch of compilation mode on text tokens.
 It allows this:
-
->> let X be 17; write "remember [X]" to the file of Memos;
-
-to work, the tricky part being that the definition being invoked is:
+= (text as Inform 7)
+let X be 17; write "remember [X]" to the file of Memos;
+=
+to work, the tricky part being that the inline definition of the "write ... to..." is:
 = (text)
 	FileIO_PutContents({FN}, {T}, false);
 =
@@ -359,304 +355,81 @@ the current values of any local variables mentioned in it (bearing in mind
 that text includes text substitutions). This seems so obviously a good thing
 that it's hard to see why it isn't on by default. Well, it would be, except
 that then response text changes using "now" would go wrong:
-
->> now can't exit closed containers rule response (A) is "Pesky [cage].";
-
+= (text as Inform 7)
+now can't exit closed containers rule response (A) is "Pesky [cage].";
+=
 The reference to "cage" in that text is to a local variable on the stack
 frame for the can't exit closed containers rule, not to the local stack frame.
+If response texts were closures able to capture variables that might be
+possible, but it would also need garbage collection at runtime, which we
+do not want.
 
 @<Compile the token value@> =
-	if (Kinds::eq(kind_required, K_text))
-		COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
-	if (by_value_not_reference == TRUE)
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
+	if (by_value_not_reference) {
 		COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
-	if (by_value_not_reference == FALSE)
+	} else {
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	if (blank_out == TRUE)
-		COMPILATION_MODE_ENTER(BLANK_OUT_CMODE);
-	if (blank_out == FALSE)
-		COMPILATION_MODE_EXIT(BLANK_OUT_CMODE);
-	if (reference_exists == TRUE) {
-		COMPILATION_MODE_ENTER(TABLE_EXISTENCE_CMODE_ISSBM);
 	}
-	if (reference_exists == FALSE)
-		COMPILATION_MODE_EXIT(TABLE_EXISTENCE_CMODE_ISSBM);
+	if (blank_out) {
+		COMPILATION_MODE_ENTER(BLANK_OUT_CMODE);
+	} else {
+		COMPILATION_MODE_EXIT(BLANK_OUT_CMODE);
+	}
+	if (reference_exists) {
+		COMPILATION_MODE_ENTER(TABLE_EXISTENCE_CMODE);
+	} else {
+		COMPILATION_MODE_EXIT(TABLE_EXISTENCE_CMODE);
+	}
+	if (text_as_quotation) {
+		COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_QUOT_CMODE);
+	} else {
+		COMPILATION_MODE_EXIT(COMPILE_TEXT_TO_QUOT_CMODE);
+	}
+
 	LOGIF(MATCHING, "Expanding $P into '%W' with %d, %u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
 		by_value_not_reference?" (by value)":" (by reference)");
 	Specifications::Compiler::emit_to_kind(supplied, kind_required);
+	END_COMPILATION_MODE;
 
-@h Commands about kinds.
-And that's it for the general machinery, but in another sense we're only just
-getting started. We now go through all of the special syntaxes which make
-invocation-language so baroque.
-
-We'll start with a suite of details about kinds:
-= (text)
-	{-command:kind name}
-=
-
-@<Expand a bracing containing a kind command@> =
-	Problems::quote_stream(4, ist->operand);
-	if (ist->inline_command == new_ISINC) @<Inline command "new"@>;
-	if (ist->inline_command == new_list_of_ISINC) @<Inline command "new-list-of"@>;
-	if (ist->inline_command == printing_routine_ISINC) @<Inline command "printing-routine"@>;
-	if (ist->inline_command == ranger_routine_ISINC) @<Inline command "ranger-routine"@>;
-	if (ist->inline_command == next_routine_ISINC) @<Inline command "next-routine"@>;
-	if (ist->inline_command == previous_routine_ISINC) @<Inline command "previous-routine"@>;
-	if (ist->inline_command == strong_kind_ISINC) @<Inline command "strong-kind"@>;
-	if (ist->inline_command == weak_kind_ISINC) @<Inline command "weak-kind"@>;
-
-@ The following produces a new value of the given kind. If it's stored as a
-word value, this will just be the default value, so |{-new:time}| will output
-540, that being the Inform 6 representation of 9:00 AM. If it's a block value,
-we compile code which creates a new value stored on the heap. This comes into
-its own when kind variables are in play.
-
-@<Inline command "new"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_new_local_value(K);
-	else if (K == NULL) @<Issue an inline no-such-kind problem@>
-	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
-		@<Issue problem for no natural choice@>;
-	return;
-
-@<Issue problem for no natural choice@> =
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_kind(2, K);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoNaturalDefault2));
-	Problems::issue_problem_segment(
-		"To achieve %1, we'd need to be able to store a default value of "
-		"the kind '%2', but there's no natural choice for this.");
-	Problems::issue_problem_end();
-
-@ The following complication makes lists of a given description. The inline
-definition:
-= (text)
-	LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})
-=
-is not good enough, because it fails if the description D makes reference to
-local variables (as it well may); instead we must construe D as a deferred
-proposition.
-
-@<Inline command "new-list-of"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	Calculus::Deferrals::emit_list_of_S(tokens->token_vals[0], K);
-	return;
-
-@<Inline command "next-routine"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_inc_iname(K));
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Inline command "previous-routine"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_dec_iname(K));
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Inline command "printing-routine"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Inline command "ranger-routine"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if ((Kinds::eq(K, K_number)) ||
-		(Kinds::eq(K, K_time)))
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
-	else if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Inline command "strong-kind"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (K) RTKinds::emit_strong_id_as_val(K);
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Inline command "weak-kind"@> =
-	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand, Node::get_kind_variable_declarations(inv));
-	if (K) RTKinds::emit_weak_id_as_val(K);
-	else @<Issue an inline no-such-kind problem@>;
-	return;
-
-@<Issue an inline no-such-kind problem@> =
-	StandardProblems::inline_problem(_p_(PM_InlineNew), idb, ist->owner->parent_schema->converted_from,
-		"I don't know any kind called '%4'.");
-
-@h Typographic commands.
-These rather crude commands work on a character-by-character level in the
-code we're generating.
-
-@<Expand a bracing containing a typographic command@> =
-	if (ist->inline_command == backspace_ISINC) @<Inline command "backspace"@>;
-	if (ist->inline_command == erase_ISINC) return;
-	if (ist->inline_command == open_brace_ISINC) @<Inline command "open-brace"@>;
-	if (ist->inline_command == close_brace_ISINC) @<Inline command "close-brace"@>;
-
-@ The first two commands control the stream of text produced in inline
-definition expansion, allowing us to back up along it. First, a single
-character:
-
-@<Inline command "backspace"@> =
-	Problems::quote_source(1, current_sentence);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BackspaceWithdrawn));
-	Problems::issue_problem_segment(
-		"I attempted to compile %1 using its inline definition, "
-		"but this contained the invalid annotation '{backspace}', "
-		"which has been withdrawn. (Inline annotations are no longer "
-		"allowed to amend the compilation stream to their left.)");
-	Problems::issue_problem_end();
-	return;
-
-@ These should never occur in well-formed inter schemas; a schema would fail
-lint if they did.
-
-@<Inline command "open-brace"@> =
-	return;
-
-@<Inline command "close-brace"@> =
-	return;
-
-@h Label or counter commands.
-Here we want to generate unique numbers, or uniquely named labels, on demand.
-
-@<Expand a bracing containing a label or counter command@> =
-	if (ist->inline_command == label_ISINC) @<Inline command "label"@>;
-	if (ist->inline_command == counter_ISINC) @<Inline command "counter"@>;
-	if (ist->inline_command == counter_storage_ISINC) @<Inline command "counter-storage"@>;
-	if (ist->inline_command == counter_up_ISINC) @<Inline command "counter-up"@>;
-	if (ist->inline_command == counter_down_ISINC) @<Inline command "counter-down"@>;
-	if (ist->inline_command == counter_makes_array_ISINC) @<Inline command "counter-makes-array"@>;
-
-@ We can have any number of sets of labels, each with its own base name,
-which should be supplied as the argument. For example:
-= (text)
-	{-label:pineapple}
-=
-generates the current label in the "pineapple" set. (Sets don't need to be
-declared: they can be mentioned the first time they are used.) These label
-names take the form |L_pineapple_0|, |L_pineapple_1|, and so on; each named
-set has its own counter (0, 1, 2, ...). So this inline definition works
-safely:
-= (text)
-	jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};
-=
-if a little pointlessly, generating first
-= (text)
-	jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;
-=
-and then
-= (text)
-	jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;
-=
-and so on. The point of this is that it guarantees we won't define two labels
-with identical names in the same Inform 6 routine, which would fail to compile.
-
-@<Inline command "label"@> =
-	TEMPORARY_TEXT(L)
-	WRITE_TO(L, ".");
-	JumpLabels::write(L, ist->operand);
-	Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), L));
-	DISCARD_TEXT(L)
-	return;
-
-@ We can also output just the numerical counter:
-
-@<Inline command "counter"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) JumpLabels::read_counter(ist->operand, NOT_APPLICABLE));
-	return;
-
-@ We can also output just the storage array:
-
-@<Inline command "counter-storage"@> =
-	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage(ist->operand));
-	return;
-
-@ Or increment it, printing nothing:
-
-@<Inline command "counter-up"@> =
-	JumpLabels::read_counter(ist->operand, TRUE);
-	return;
-
-@ Or decrement it. (Careful, though: if it decrements below zero, an enigmatic
-internal error will halt Inform.)
-
-@<Inline command "counter-down"@> =
-	JumpLabels::read_counter(ist->operand, FALSE);
-	return;
-
-@ We can use counters for anything, not just to generate labels, and one
-useful trick is to allocate storage at run-time. Invoking
-= (text)
-	{-counter-makes-array:pineapple}
-=
-at any time during compilation (once or many times over, it makes no
-difference) causes Inform to generate an array called |I7_ST_pineapple|
-guaranteed to contain one entry for each counter value reached. Thus:
-
->> To remember (N - a number) for later: ...
-
-might be defined inline as
-= (text)
-	{-counter-makes-array:pineapple}I7_ST_pineapple-->{-counter:pineapple} = {N};
-=
-and the effect will be to accumulate an array of numbers during compilation.
-Note that the value of a counter can also be read in template language,
-so with a little care we can get the final extent of the array, too. If more
-than one word of storage per count is needed, try:
-= (text)
-	{-counter-makes-array:pineapple:3}
-=
-or similar -- this ensures that the array contains not fewer than three times
-as many cells as the final value of the count. (If multiple invocations are
-made with different numbers here, the maximum is taken.)
-
-@<Inline command "counter-makes-array"@> =
-	int words_per_count = 1;
-	if (Str::len(ist->operand2) > 0) words_per_count = Str::atoi(ist->operand2, 0);
-	JumpLabels::allocate_counter(ist->operand, words_per_count);
-	return;
-
-@h Token annotations.
-The next category of invocation commands takes the form of an "annotation"
-slightly changing the way a token would normally be compiled, but basically
-using the same machinery as if the annotation hadn't been there.
+@h Annotation commands for bracings with natural language.
+These all modify the way a token is compiled.
 
 @<Take account of any annotation to the inline token@> =
 	int valid_annotation = FALSE;
-	if (ist->inline_command == by_reference_ISINC) @<Inline annotation "by-reference"@>;
-	if (ist->inline_command == by_reference_blank_out_ISINC) @<Inline annotation "by-reference-blank-out"@>;
-	if (ist->inline_command == reference_exists_ISINC) @<Inline annotation "reference-exists"@>;
-	if (ist->inline_command == lvalue_by_reference_ISINC) @<Inline annotation "lvalue-by-reference"@>;
-	if (ist->inline_command == by_value_ISINC) @<Inline annotation "by-value"@>;
+	int C = ist->inline_command;
+	if (C == by_reference_ISINC)           @<Inline annotation "by-reference"@>;
+	if (C == by_reference_blank_out_ISINC) @<Inline annotation "by-reference-blank-out"@>;
+	if (C == reference_exists_ISINC)       @<Inline annotation "reference-exists"@>;
+	if (C == lvalue_by_reference_ISINC)    @<Inline annotation "lvalue-by-reference"@>;
+	if (C == by_value_ISINC)               @<Inline annotation "by-value"@>;
 
-	if (ist->inline_command == box_quotation_text_ISINC) @<Inline annotation "box-quotation-text"@>;
+	if (C == box_quotation_text_ISINC)     @<Inline annotation "box-quotation-text"@>;
 
 	#ifdef IF_MODULE
-	if (ist->inline_command == try_action_ISINC) @<Inline annotation "try-action"@>;
-	if (ist->inline_command == try_action_silently_ISINC) @<Inline annotation "try-action-silently"@>;
+	if (C == try_action_ISINC)             @<Inline annotation "try-action"@>;
+	if (C == try_action_silently_ISINC)    @<Inline annotation "try-action-silently"@>;
 	#endif
 
-	if (ist->inline_command == return_value_ISINC) @<Inline annotation "return-value"@>;
-	if (ist->inline_command == return_value_from_rule_ISINC) @<Inline annotation "return-value-from-rule"@>;
+	if (C == return_value_ISINC)           @<Inline annotation "return-value"@>;
+	if (C == return_value_from_rule_ISINC) @<Inline annotation "return-value-from-rule"@>;
 
-	if (ist->inline_command == property_holds_block_value_ISINC) @<Inline annotation "property-holds-block-value"@>;
-	if (ist->inline_command == mark_event_used_ISINC) @<Inline annotation "mark-event-used"@>;
+	if (C == property_holds_block_value_ISINC) @<Inline annotation "property-holds-block-value"@>;
+	if (C == mark_event_used_ISINC)        @<Inline annotation "mark-event-used"@>;
 
-	if ((ist->inline_command != no_ISINC) && (valid_annotation == FALSE))
+	if ((C != no_ISINC) && (valid_annotation == FALSE))
 		@<Throw a problem message for an invalid inline annotation@>;
 
 @ This affects only block values. When it's used, the token accepts the pointer
 to the block value directly, that is, not copying the data over to a fresh
 copy and using that instead. This means a definition like:
-
->> To zap (L - a list of numbers): (- Zap({-by-reference:L}, 10); -).
-
+= (text as Inform 7)
+To zap (L - a list of numbers):
+	(- Zap({-by-reference:L}, 10); -).
+=
 will call |Zap| on the actual list supplied to it. If |Zap| chooses to change
 this list, the original will change.
 
@@ -678,13 +451,10 @@ this list, the original will change.
 	valid_annotation = TRUE;
 	reference_exists = TRUE;
 
-@ This is a variant which checks that the reference is to an lvalue, that
-is, to something which can be changed. If this weren't done, then
-
->> remove 2 from {1, 2, 3}
-
-would compile without problem messages, though it would behave pretty oddly
-at run-time.
+@ This is a variant which checks that the reference is to an lvalue, that is,
+to something which can be changed. If this weren't done, then
+|remove 2 from {1, 2, 3}| would compile without problem messages, though it
+would behave pretty oddly at run-time.
 
 @<Inline annotation "lvalue-by-reference"@> =
 	by_value_not_reference = FALSE;
@@ -697,10 +467,10 @@ at run-time.
 	by_value_not_reference = TRUE;
 	valid_annotation = TRUE;
 
-@ This is used only for the box statement in I6, which has slightly different
-textual requirements than regular I6 text. We could get rid of this by making
-a kind for box-quotation-text, and casting regular text to it, but honestly
-having this annotation seems the smaller of the two warts.
+@ This is used only for compiling down to the |box| statement in I6, which has
+slightly different textual requirements than regular text. We could get rid of
+this by making a kind for box-quotation-text, and casting regular text to it,
+but honestly having this annotation seems the smaller of the two warts.
 
 @<Inline annotation "box-quotation-text"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_text) == FALSE) {
@@ -708,46 +478,37 @@ having this annotation seems the smaller of the two warts.
 		Problems::quote_spec(2, supplied);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_Misboxed));
 		Problems::issue_problem_segment(
-			"I attempted to compile %1, but the text '%2' supplied to be a "
-			"boxed quotation wasn't a constant piece of text in double-quotes. "
-			"I'm afraid that's the only sort of text allowed here.");
+			"I attempted to compile %1, but the text '%2' supplied to be a boxed "
+			"quotation wasn't a constant piece of text in double-quotes. I'm afraid "
+			"that's the only sort of text allowed here.");
 		Problems::issue_problem_end();
 		return;
 	} else {
-		COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_QUOT_CMODE);
+		text_as_quotation = TRUE;
 		by_value_not_reference = FALSE;
 		valid_annotation = TRUE;
 	}
 
-@ Suppose we are invoking:
-
->> decide on 102;
-
-from the Standard Rules definition:
+@ Suppose we are invoking "decide on 102" from the Basic Inform inline definition
+of "decide on ...", which is:
 = (text)
-	return {-return-value:something};
+	(- return {-return-value:something}; -)
 =
-We clearly need to police this: if the phrase is deciding a number, we need
-to object to:
+We clearly need to police this: if the phrase is deciding a number, we need to
+object to |decide on "fish fingers"|.
 
->> decide on "fish fingers";
-
-That's one purpose of this annotation: it checks the value to see if it's
-suitable to be returned. But we also might have to cast the value, or
-check that it's valid at run-time. For instance, in a phrase to decide a
-container, given
-
->> decide on the item;
-
-we may need to check "item" at run-time: at compile-time we know it's an
-object, but not necessarily that it's a container.
+That's one purpose of this annotation: it checks the value to see if it's suitable
+to be returned. But we also might have to cast the value, or check that it's valid
+at run-time. For instance, in a phrase to decide a container, given |decide on the item|
+we may need to check "item" at run-time: at compile-time we know it's an object,
+but not necessarily that it's a container.
 
 @<Inline annotation "return-value"@> =
 	int returning_from_rule = FALSE;
 	@<Handle an inline return@>;
 
-@ Exactly the same mechanism is needed for rules which produce a value, but
-the problem messages are phrased differently if something goes wrong.
+@ Exactly the same mechanism is needed for rules which produce a value, but the
+problem messages are phrased differently if something goes wrong.
 
 @<Inline annotation "return-value-from-rule"@> =
 	int returning_from_rule = TRUE;
@@ -881,9 +642,9 @@ the problem messages are phrased differently if something goes wrong.
 	valid_annotation = TRUE;
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
-@ Suppose we have a token which is a property name, and we want to know about
-the kind of value the property holds. We can't simply take the kind of the
-token, because that would be "property name". Instead:
+@ Suppose we have a token which is a property name, and we want to know about the
+kind of value the property holds. We can't simply take the kind of the token, because
+that would be "property name". Instead:
 
 @<Inline annotation "property-holds-block-value"@> =
 	property *prn = Rvalues::to_property(supplied);
@@ -910,9 +671,251 @@ token, because that would be "property name". Instead:
 	Problems::quote_stream(2, ist->command);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadInlineTag));
 	Problems::issue_problem_segment(
-		"I attempted to compile %1 using its inline definition, "
-		"but this contained the invalid annotation '%2'.");
+		"I attempted to compile %1 using its inline definition, but this contained the "
+		"invalid annotation '%2'.");
 	Problems::issue_problem_end();
+	return;
+
+@h Commands about kinds.
+And that's it for the general machinery, but in another sense we're only just
+getting started. We now go through all of the special syntaxes which make
+invocation-language so baroque.
+
+We'll start with a suite of details about kinds:
+= (text)
+	{-command:kind name}
+=
+
+@<Expand a bracing containing a kind command@> =
+	Problems::quote_stream(4, ist->operand);
+	if (C == new_ISINC)              @<Inline command "new"@>;
+	if (C == new_list_of_ISINC)      @<Inline command "new-list-of"@>;
+	if (C == printing_routine_ISINC) @<Inline command "printing-routine"@>;
+	if (C == ranger_routine_ISINC)   @<Inline command "ranger-routine"@>;
+	if (C == next_routine_ISINC)     @<Inline command "next-routine"@>;
+	if (C == previous_routine_ISINC) @<Inline command "previous-routine"@>;
+	if (C == strong_kind_ISINC)      @<Inline command "strong-kind"@>;
+	if (C == weak_kind_ISINC)        @<Inline command "weak-kind"@>;
+
+@ The following produces a new value of the given kind. If it's stored as a
+word value, this will just be the default value, so |{-new:time}| will output
+540, that being the Inform 6 representation of 9:00 AM. If it's a block value,
+we compile code which creates a new value stored on the heap. This comes into
+its own when kind variables are in play.
+
+@<Inline command "new"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_new_local_value(K);
+	else if (K == NULL) @<Issue an inline no-such-kind problem@>
+	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
+		@<Issue problem for no natural choice@>;
+	return;
+
+@<Issue problem for no natural choice@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_kind(2, K);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoNaturalDefault2));
+	Problems::issue_problem_segment(
+		"To achieve %1, we'd need to be able to store a default value of the kind '%2', "
+		"but there's no natural choice for this.");
+	Problems::issue_problem_end();
+
+@ The following complication makes lists of a given description. The inline
+definition:
+= (text)
+	LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})
+=
+is not good enough, because it fails if the description D makes reference to
+local variables (as it well may); instead we must construe D as a deferred
+proposition.
+
+@<Inline command "new-list-of"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	Calculus::Deferrals::emit_list_of_S(tokens->token_vals[0], K);
+	return;
+
+@<Inline command "next-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_inc_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "previous-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_dec_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "printing-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "ranger-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if ((Kinds::eq(K, K_number)) ||
+		(Kinds::eq(K, K_time)))
+		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
+	else if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "strong-kind"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) RTKinds::emit_strong_id_as_val(K);
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "weak-kind"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) RTKinds::emit_weak_id_as_val(K);
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Issue an inline no-such-kind problem@> =
+	StandardProblems::inline_problem(_p_(PM_InlineNew), idb,
+		ist->owner->parent_schema->converted_from,
+		"I don't know any kind called '%4'.");
+
+@h Typographic commands.
+These rather clumsy commands are a residue from earlier forms of the markup
+language, really. |{-open-brace}| and |{-close-brace}| are handled for us
+elsewhere, so we need do nothing. The other two have actually been withdrawn.
+
+@<Expand a bracing containing a typographic command@> =
+	if (C == backspace_ISINC)   @<Inline command "backspace"@>;
+	if (C == erase_ISINC)       @<Inline command "erase"@>;
+	if (C == open_brace_ISINC)  return;
+	if (C == close_brace_ISINC) return;
+
+@<Inline command "backspace"@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BackspaceWithdrawn));
+	Problems::issue_problem_segment(
+		"I attempted to compile %1 using its inline definition, but this contained the "
+		"invalid annotation '{backspace}', which has been withdrawn. (Inline annotations "
+		"are no longer allowed to amend the compilation stream to their left.)");
+	Problems::issue_problem_end();
+	return;
+
+@<Inline command "erase"@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EraseWithdrawn));
+	Problems::issue_problem_segment(
+		"I attempted to compile %1 using its inline definition, but this contained the "
+		"invalid annotation '{erase}', which has been withdrawn. (Inline annotations "
+		"are no longer allowed to blank out the compilation stream.)");
+	Problems::issue_problem_end();
+	return;
+
+@h Label or counter commands.
+Here we want to generate unique numbers, or uniquely named labels, on demand.
+
+@<Expand a bracing containing a label or counter command@> =
+	if (C == label_ISINC)               @<Inline command "label"@>;
+	if (C == counter_ISINC)             @<Inline command "counter"@>;
+	if (C == counter_storage_ISINC)     @<Inline command "counter-storage"@>;
+	if (C == counter_up_ISINC)          @<Inline command "counter-up"@>;
+	if (C == counter_down_ISINC)        @<Inline command "counter-down"@>;
+	if (C == counter_makes_array_ISINC) @<Inline command "counter-makes-array"@>;
+
+@ We can have any number of sets of labels, each with its own base name,
+which should be supplied as the argument. For example:
+= (text)
+	{-label:pineapple}
+=
+generates the current label in the "pineapple" set. (Sets don't need to be
+declared: they can be mentioned the first time they are used.) These label
+names take the form |L_pineapple_0|, |L_pineapple_1|, and so on; each named
+set has its own counter (0, 1, 2, ...). So this inline definition works
+safely:
+= (text)
+	jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};
+=
+if a little pointlessly, generating first
+= (text)
+	jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;
+=
+and then
+= (text)
+	jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;
+=
+and so on. The point of this is that it guarantees we won't define two labels
+with identical names in the same Inform 6 routine, which would fail to compile.
+
+@<Inline command "label"@> =
+	TEMPORARY_TEXT(L)
+	WRITE_TO(L, ".");
+	JumpLabels::write(L, ist->operand);
+	Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), L));
+	DISCARD_TEXT(L)
+	return;
+
+@ We can also output just the numerical counter:
+
+@<Inline command "counter"@> =
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+		(inter_ti) JumpLabels::read_counter(ist->operand, NOT_APPLICABLE));
+	return;
+
+@ We can also output just the storage array:
+
+@<Inline command "counter-storage"@> =
+	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage(ist->operand));
+	return;
+
+@ Or increment it, printing nothing:
+
+@<Inline command "counter-up"@> =
+	JumpLabels::read_counter(ist->operand, TRUE);
+	return;
+
+@ Or decrement it. (Careful, though: if it decrements below zero, an enigmatic
+internal error will halt Inform.)
+
+@<Inline command "counter-down"@> =
+	JumpLabels::read_counter(ist->operand, FALSE);
+	return;
+
+@ We can use counters for anything, not just to generate labels, and one
+useful trick is to allocate storage at run-time. Invoking
+= (text)
+	{-counter-makes-array:pineapple}
+=
+at any time during compilation (once or many times over, it makes no
+difference) causes Inform to generate an array called |I7_ST_pineapple|
+guaranteed to contain one entry for each counter value reached. Thus:
+= (text as Inform 7)
+To remember (N - a number) for later: ...
+=
+might be defined inline as
+= (text)
+	{-counter-makes-array:pineapple}I7_ST_pineapple-->{-counter:pineapple} = {N};
+=
+and the effect will be to accumulate an array of numbers during compilation.
+Note that the value of a counter can also be read in template language,
+so with a little care we can get the final extent of the array, too. If more
+than one word of storage per count is needed, try:
+= (text)
+	{-counter-makes-array:pineapple:3}
+=
+or similar -- this ensures that the array contains not fewer than three times
+as many cells as the final value of the count. (If multiple invocations are
+made with different numbers here, the maximum is taken.)
+
+@<Inline command "counter-makes-array"@> =
+	int words_per_count = 1;
+	if (Str::len(ist->operand2) > 0) words_per_count = Str::atoi(ist->operand2, 0);
+	JumpLabels::allocate_counter(ist->operand, words_per_count);
 	return;
 
 @h High-level commands.
@@ -922,15 +925,15 @@ also |{-block}| above, though that is syntactically a divider rather than
 a command, which is why it isn't here.)
 
 @<Expand a bracing containing a high-level command@> =
-	if (ist->inline_command == my_ISINC) @<Inline command "my"@>;
-	if (ist->inline_command == unprotect_ISINC) @<Inline command "unprotect"@>;
-	if (ist->inline_command == copy_ISINC) @<Inline command "copy"@>;
-	if (ist->inline_command == initialise_ISINC) @<Inline command "initialise"@>;
-	if (ist->inline_command == matches_description_ISINC) @<Inline command "matches-description"@>;
-	if (ist->inline_command == now_matches_description_ISINC) @<Inline command "now-matches-description"@>;
-	if (ist->inline_command == arithmetic_operation_ISINC) @<Inline command "arithmetic-operation"@>;
-	if (ist->inline_command == say_ISINC) @<Inline command "say"@>;
-	if (ist->inline_command == show_me_ISINC) @<Inline command "show-me"@>;
+	if (C == my_ISINC)                      @<Inline command "my"@>;
+	if (C == unprotect_ISINC)               @<Inline command "unprotect"@>;
+	if (C == copy_ISINC)                    @<Inline command "copy"@>;
+	if (C == initialise_ISINC)              @<Inline command "initialise"@>;
+	if (C == matches_description_ISINC)     @<Inline command "matches-description"@>;
+	if (C == now_matches_description_ISINC) @<Inline command "now-matches-description"@>;
+	if (C == arithmetic_operation_ISINC)    @<Inline command "arithmetic-operation"@>;
+	if (C == say_ISINC)                     @<Inline command "say"@>;
+	if (C == show_me_ISINC)                 @<Inline command "show-me"@>;
 
 @ The |{-my:name}| command creates a local variable for use in the invocation,
 and then prints the variable's name. (If the same variable is created twice,
@@ -939,8 +942,10 @@ the second time it's simply printed.)
 @<Inline command "my"@> =
 	local_variable *lvar = NULL;
 	int n = Str::get_at(ist->operand, 0) - '0';
-	if ((Str::get_at(ist->operand, 1) == 0) && (n >= 0) && (n < 10)) @<A single digit as the name@>
-	else @<An Inform 6 identifier as the name@>;
+	if ((Str::get_at(ist->operand, 1) == 0) && (n >= 0) && (n < 10))
+		@<A single digit as the name@>
+	else
+		@<An Inter identifier as the name@>;
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	if (prim_cat == REF_PRIM_CAT) Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 	else Produce::val_symbol(Emit::tree(), K_value, lvar_s);
@@ -949,31 +954,14 @@ the second time it's simply printed.)
 @ In the first form, we don't give an explicit name, but simply a digit from
 0 to 9. We're therefore allowed to create up to 10 variables this way, and
 the ones we create will be different from those made by any other invocation
-(including other invocations of the same phrase). For example:
-
->> To Throne Room (P - phrase):
-
-which is a phrase to repeat a single phrase P twice, could be defined thus:
-= (text)
-	(- for ({-my:1}=1; {-my:1}<=2; {-my:1}++) {P} -)
-=
-The variable lasts only until the end of the invocation. In general, given
-this:
-
->> Throne Room say "Village.";
->> Throne Room say "Goons.";
-
-...Inform will reallocate the same Inform 6 local as |{-my:1}| in each
-invocation, because it safely can. But if the phrase starts a code block,
-as in a more elaborate loop, then the variable lasts for the lifetime of
-that code block.
+(including other invocations of the same phrase). See above.
 
 @<A single digit as the name@> =
 	lvar = my_vars[n];
 	if (lvar == NULL) {
 		my_vars[n] = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
 		lvar = my_vars[n];
-		@<Set the kind of the my-variable@>;
+		@<Set the kind of the new variable@>;
 		if (IDTypeData::block_follows(idb))
 			CodeBlocks::set_scope_to_block_about_to_open(lvar);
 	}
@@ -981,44 +969,34 @@ that code block.
 @ The second form is simpler. |{-my:1}| and such make locals with names like
 |tmp_3|, which we have no control over. Here we get to make a local with
 exactly the name we want. This can't be reallocated, of course; it's there
-throughout the routine, so there's no question of setting its scope.
-For example:
-
->> To be warned: ...
-
-could be defined as:
-= (text)
-	(- {-my:warn} = true; -)
+throughout the routine, so there's no question of setting its scope. For example:
+= (text as Inform 7)
+To be warned:
+	(- {-my:warn} = true; -).
+To decide if we have been warned:
+	(- ({-my:warn}) -).
 =
-and then
-
->> To decide if we have been warned: ...
-
-as
-= (text)
-	({-my:warn})
-=
-the net result being that if either phrase is used, then |warn| becomes a
+The net result here is that if either phrase is used, then |warn| becomes a
 local variable. The second phrase tests if the first has been used.
 
 Nothing, of course, stops some other invocation from using a variable of
 the same name for some quite different purpose, wreaking havoc. This is
 why the numbered scheme above is mostly better.
 
-@<An Inform 6 identifier as the name@> =
+@<An Inter identifier as the name@> =
 	lvar = LocalVariables::new_internal(ist->operand);
-	@<Set the kind of the my-variable@>;
+	@<Set the kind of the new variable@>;
 
 @ Finally, it's possible to set the I7 kind of a variable created by |{-my:...}|,
-though there are hardly any circumstances where this is necessary, since I6
-is typeless. But in a few cases where I7 is embedded inside I6 inside I7,
+though there are hardly any circumstances where this is necessary, since Inter
+is typeless. But in a few cases where I7 is embedded inside Inter inside I7,
 or when a block value is needed, or where we need to match against descriptions
 (see below) where kind-checking comes into play, it could arise. For example:
 = (text)
 	{-my:1:list of numbers}
 =
 
-@<Set the kind of the my-variable@> =
+@<Set the kind of the new variable@> =
 	kind *K = NULL;
 	if (Str::len(ist->operand2) > 0)
 		K = CSIInline::parse_bracing_operand_as_kind(ist->operand2,
@@ -1055,10 +1033,9 @@ lifts the protection on the variable named:
 or indeed a variable created explicitly by the phrase, may not begin with
 contents which are typesafe for the kind you intend it to hold. Usually this
 doesn't matter because it is immediately written with some value which is
-indeed typesafe, and there's no problem. But if not, try using this:
-|{-initialise:var:kind}| takes the named local variable and gives it the
-default value for that kind. If the kind is omitted, the default is to use
-the kind of the variable. For example,
+indeed typesafe, and there's no problem. But if not, |{-initialise:var:kind}|
+takes the named local variable and gives it the default value for that kind.
+If the kind is omitted, the default is to use the kind of the variable. For example,
 = (text)
 	{-my:1:time}{-initialise:1}
 =
@@ -1068,11 +1045,13 @@ but the point is that locals of that kind are automatically set to their
 default values when created, so they are always typesafe anyway.
 
 @<Inline command "initialise"@> =
-	parse_node *V = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
+	parse_node *V = CSIInline::parse_bracing_operand_as_identifier(ist->operand,
+		idb, tokens, my_vars);
 	local_variable *lvar = Lvalues::get_local_variable_if_any(V);
 	kind *K = NULL;
 	if (Str::len(ist->operand2) > 0)
-		K = CSIInline::parse_bracing_operand_as_kind(ist->operand2, Node::get_kind_variable_declarations(inv));
+		K = CSIInline::parse_bracing_operand_as_kind(ist->operand2,
+			Node::get_kind_variable_declarations(inv));
 	else
 		K = Specifications::to_kind(V);
 
@@ -1106,35 +1085,22 @@ default values when created, so they are always typesafe anyway.
 	}
 	return;
 
-@ The |{-copy:...}| command allows us to copy the content in a token or
-variable into any storage item (a local variable, a global, a table entry,
-a list entry), regardless of its kind of value. For example:
-
->> To let (t - nonexisting variable) be (u - value) (assignment operation): ...
-
-is defined inline as:
-= (text)
-	{-unprotect:t}{-copy:t:u}
+@ The |{-copy:...}| command allows us to copy the content in a token or variable
+into any storage item (a local variable, a global, a table entry, a list entry),
+regardless of its kind of value. For example:
+= (text as Inform 7)
+To let (t - nonexisting variable) be (u - value) (assignment operation):
+	(- {-unprotect:t}{-copy:t:u} -).
 =
-This may look superfluous: for example, in response to
-
->> let X be 10;
-
-it generates only something like:
+This may look superfluous: for example, in response to "let X be 10" it generates
+code equivalent to |tmp_0 = 10;|, which could have been achieved equally well with:
 = (text)
-	tmp_0 = 10;
+	(- {-unprotect:t}{t} = {u}; -)
 =
-which could have been achieved equally well with:
-= (text)
-	{-unprotect:t}{t} = {u};
-=
-But it makes something much more elaborate in response to, say:
-
->> let Y be the list of people in dark rooms;
-
-where it's important to keep track of the allocation and deallocation of
-dynamic lists, since Y is a block value not a word value. The point of the
-|{-copy:to:from}| command is to hide all that complexity from the definer.
+But it makes something much more elaborate in response to, say, "let Y be the
+list of people in dark rooms", where it's important to keep track of the allocation
+and deallocation of dynamic lists, since Y is a block value. The point of the
+|{-copy:to:from}| command is to hide all that complexity from the definition.
 
 @<Inline command "copy"@> =
 	int copy_form = 0;
@@ -1160,13 +1126,13 @@ dynamic lists, since Y is a block value not a word value. The point of the
 @ If the |from| part is prefaced with a plus sign |+|, the new value is added
 to the current value rather than replacing it; if |-|, it's subtracted. For
 example,
-
->> To increase (S - storage) by (w - value) (assignment operation): ...
-
-has the inline definition |{-copy:S:+w}|. Lastly, it's also legal to write
-just a |+| or |-| sign alone, which increments or decrements. Be wary here,
-because |{-copy:S:+}| adds 1 to S, whereas |{-copy:S:+1}| adds the value
-of the variable {-my:1} to S.
+= (text as Inform 7)
+To increase (S - storage) by (w - value) (assignment operation):
+	(- {-copy:S:+w} -).
+=
+Lastly, it's also legal to write just a |+| or |-| sign alone, which increments
+or decrements. But be wary here, because |{-copy:S:+}| adds 1 to S, whereas
+|{-copy:S:+1}| adds the value of the variable {-my:1} to S.
 
 @<Find what we are copying from, to and how@> =
 	TEMPORARY_TEXT(from_p)
@@ -1186,7 +1152,8 @@ of the variable {-my:1} to S.
 	if ((to == NULL) || (from == NULL)) {
 		Problems::quote_stream(4, ist->operand);
 		Problems::quote_stream(5, ist->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineCopy), idb, ist->owner->parent_schema->converted_from,
+		StandardProblems::inline_problem(_p_(PM_InlineCopy), idb,
+			ist->owner->parent_schema->converted_from,
 			"The command to {-copy:...}, which asks to copy '%5' into '%4', has "
 			"gone wrong: I couldn't work those out.");
 		return;
@@ -1213,33 +1180,17 @@ story title).
 		Problems::quote_kind(2, K1);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantIncrementKind));
 		Problems::issue_problem_segment(
-			"To achieve %1, we'd need to be able to add or subtract 1 from "
-			"a value of the kind '%2', but there's no good way to do this.");
+			"To achieve %1, we'd need to be able to add or subtract 1 from a value of "
+			"the kind '%2', but there's no good way to do this.");
 		Problems::issue_problem_end();
 		return;
 	}
 
 @ The next command generates code able to test if a token in the invocation,
-or an I6 variable, matches a given description -- which need not be constant.
-For example,
-
->> To say a list of (OS - description of objects): ...
-
-is defined in the Standard Rules thus:
-= (text)
-	objectloop({-my:itm} ofclass Object)
-	    if ({-matches-description:itm:OS})
-	        give itm workflag2;
-	    else
-	        give itm ~workflag2;
-	WriteListOfMarkedObjects(ENGLISH_BIT);
-=
-The whole "workflag" nonsense is Inform 6 convention from the stone age, but
-the basic point here is that the loop does one thing if an object matches
-the description and another if it doesn't. (In this example |itm| was a
-local I6 variable and |OS| a token from the invocation, but these can be
-mixed freely. Or we could use a single digit to refer to a numbered "my"
-variable.)
+or an Inter variable, matches a given description -- which need not be constant.
+For example, if the phrase prototype includes the token |(OS - description of objects)|
+then the bracing |{-matches-description:1:OS}| compiles a condition testing whether
+the object in variable |{-my:1}| matches the description or not.
 
 @<Inline command "matches-description"@> =
 	parse_node *to_match =
@@ -1249,7 +1200,8 @@ variable.)
 	if ((to_test == NULL) || (to_match == NULL)) {
 		Problems::quote_stream(4, ist->operand);
 		Problems::quote_stream(5, ist->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), idb, ist->owner->parent_schema->converted_from,
+		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), idb,
+			ist->owner->parent_schema->converted_from,
 			"The command {-matches-description:...}, which asks to test whether "
 			"'%5' is a valid description for '%4', has gone wrong: I couldn't "
 			"work those out.");
@@ -1271,9 +1223,9 @@ variable matches the given description.
 		Problems::quote_stream(5, ist->operand2);
 		StandardProblems::inline_problem(_p_(PM_InlineNowMatchesDescription),
 			idb, ist->owner->parent_schema->converted_from,
-			"The command {-now-matches-description:...}, which asks to change "
-			"'%4' so that '%5' becomes a valid description of it, has gone "
-			"wrong: I couldn't work those out.");
+			"The command {-now-matches-description:...}, which asks to change '%4' so "
+			"that '%5' becomes a valid description of it, has gone wrong: I couldn't "
+			"work those out.");
 	} else {
 		Calculus::Deferrals::emit_substitution_now(to_test, to_match);
 	}
@@ -1290,10 +1242,12 @@ variable matches the given description.
 	return;
 
 @<Read the operands and their kinds@> =
-	X = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
+	X = CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb,
+		tokens, my_vars);
 	KX = Specifications::to_kind(X);
 	if (binary) {
-		Y = CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb, tokens, my_vars);
+		Y = CSIInline::parse_bracing_operand_as_identifier(ist->operand2, idb,
+			tokens, my_vars);
 		KY = Specifications::to_kind(Y);
 	}
 
@@ -1305,7 +1259,8 @@ result would be the same without the optimisation.
 
 @<Inline command "say"@> =
 	parse_node *to_say =
-		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb, tokens, my_vars);
+		CSIInline::parse_bracing_operand_as_identifier(ist->operand, idb,
+			tokens, my_vars);
 	if (to_say == NULL) {
 		@<Issue a no-such-local problem message@>;
 		return;
@@ -1335,7 +1290,8 @@ result would be the same without the optimisation.
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			TEMPORARY_TEXT(T)
-			CompiledText::from_wide_string_for_emission(T, Lexer::word_text(Wordings::first_wn(SW)));
+			CompiledText::from_wide_string_for_emission(T,
+				Lexer::word_text(Wordings::first_wn(SW)));
 			Produce::val_text(Emit::tree(), T);
 			DISCARD_TEXT(T)
 		Produce::up(Emit::tree());
@@ -1367,9 +1323,8 @@ result would be the same without the optimisation.
 @ And similarly for Unicode characters. It would be tidier to abstract this
 with a function call, but it would cost a function call.
 
-Note that emitting a Unicode character requires different code on the Z-machine
-to Glulx; we have to handle this within I6 conditional compilation blocks
-because neither syntax will compile when I6 is compiling for the other VM.
+Note that emitting a Unicode character is currently done with direct assembly
+language.
 
 @<Inline say unicode character@> =
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -1417,16 +1372,17 @@ These really have nothing in common, except that each can be used only in
 very special circumstances.
 
 @<Expand a bracing containing a miscellaneous command@> =
-	if (ist->inline_command == segment_count_ISINC) @<Inline command "segment-count"@>;
-	if (ist->inline_command == final_segment_marker_ISINC) @<Inline command "final-segment-marker"@>;
-	if (ist->inline_command == list_together_ISINC) @<Inline command "list-together"@>;
-	if (ist->inline_command == rescale_ISINC) @<Inline command "rescale"@>;
+	if (C == segment_count_ISINC)        @<Inline command "segment-count"@>;
+	if (C == final_segment_marker_ISINC) @<Inline command "final-segment-marker"@>;
+	if (C == list_together_ISINC)        @<Inline command "list-together"@>;
+	if (C == rescale_ISINC)              @<Inline command "rescale"@>;
 
 @ These two are publicly documented, and have to do with multiple-segment
 "say" phrases.
 
 @<Inline command "segment-count"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Annotations::read_int(inv, ssp_segment_count_ANNOT));
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+		(inter_ti) Annotations::read_int(inv, ssp_segment_count_ANNOT));
 	return;
 
 @<Inline command "final-segment-marker"@> =
@@ -1434,7 +1390,8 @@ very special circumstances.
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NULL_HL));
 	} else {
 		TEMPORARY_TEXT(T)
-		WRITE_TO(T, "%~W", Wordings::one_word(Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
+		WRITE_TO(T, "%~W", Wordings::one_word(
+			Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
 		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(Emit::tree(), T, NULL, NULL);
 		Produce::val_symbol(Emit::tree(), K_value, T_s);
 		DISCARD_TEXT(T)
@@ -1472,75 +1429,72 @@ mathematical definitions in the Standard Rules.
 
 @h Primitive definitions.
 Some phrases are just too complicated to express in invocation language,
-especially those involving complicated linguistic propositions. For example:
-
->> To decide which arithmetic value is total (p - arithmetic value valued property) of (S - description of values): ...
-
-has the inline definition:
-= (text)
-	(- {-primitive-definition:total-of} -).
-=
+especially those involving complicated linguistic propositions.
 
 @<Expand an entirely internal-made definition@> =
-	if (ist->inline_subcommand == repeat_through_ISINSC) {
+	switch (ist->inline_subcommand) {
+		case repeat_through_ISINSC:
 			Calculus::Deferrals::emit_repeat_through_domain_S(tokens->token_vals[1],
 				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
-	}
-
-	else if (ist->inline_subcommand == repeat_through_list_ISINSC) {
-		Calculus::Deferrals::emit_loop_over_list_S(tokens->token_vals[1],
-			Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
-	}
-
-	else if (ist->inline_subcommand == number_of_ISINSC) {
-		Calculus::Deferrals::emit_number_of_S(tokens->token_vals[0]);
-	}
-
-	else if (ist->inline_subcommand == random_of_ISINSC) {
-		Calculus::Deferrals::emit_random_of_S(tokens->token_vals[0]);
-	}
-
-	else if (ist->inline_subcommand == total_of_ISINSC) {
-		Calculus::Deferrals::emit_total_of_S(
-			Rvalues::to_property(tokens->token_vals[0]), tokens->token_vals[1]);
-	}
-
-	else if (ist->inline_subcommand == extremal_ISINSC) {
-		if ((ist->extremal_property_sign != MEASURE_T_EXACTLY) && (ist->extremal_property)) {
-			Calculus::Deferrals::emit_extremal_of_S(tokens->token_vals[0],
-				ist->extremal_property, ist->extremal_property_sign);
-		} else
-			StandardProblems::inline_problem(_p_(PM_InlineExtremal),
+			break;
+		case repeat_through_list_ISINSC:
+			Calculus::Deferrals::emit_loop_over_list_S(tokens->token_vals[1],
+				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
+			break;
+		case number_of_ISINSC:
+			Calculus::Deferrals::emit_number_of_S(tokens->token_vals[0]);	
+			break;
+		case random_of_ISINSC:
+			Calculus::Deferrals::emit_random_of_S(tokens->token_vals[0]);
+			break;
+		case total_of_ISINSC:
+			Calculus::Deferrals::emit_total_of_S(
+				Rvalues::to_property(tokens->token_vals[0]), tokens->token_vals[1]);
+			break;
+		case extremal_ISINSC:
+			if ((ist->extremal_property_sign != MEASURE_T_EXACTLY) && (ist->extremal_property)) {
+				Calculus::Deferrals::emit_extremal_of_S(tokens->token_vals[0],
+					ist->extremal_property, ist->extremal_property_sign);
+			} else {
+				StandardProblems::inline_problem(_p_(PM_InlineExtremal),
 				idb, ist->owner->parent_schema->converted_from,
-				"In the '{-primitive-definition:extremal...}' command, there "
-				"should be a '<' or '>' sign then the name of a property.");
-	}
-
-	else if (ist->inline_subcommand == function_application_ISINSC) 	@<Primitive "function-application"@>
-	else if (ist->inline_subcommand == description_application_ISINSC) @<Primitive "description-application"@>
-
-	else if (ist->inline_subcommand == solve_equation_ISINSC) 		@<Primitive "solve-equation"@>
-
-	else if (ist->inline_subcommand == switch_ISINSC) ;
-
-	else if (ist->inline_subcommand == break_ISINSC) CodeBlocks::emit_break();
-
-	else if (ist->inline_subcommand == verbose_checking_ISINSC) {
-		wchar_t *what = L"";
-		if (tokens->tokens_count > 0) {
-			parse_node *aspect = tokens->token_vals[0];
-			if (Wordings::nonempty(Node::get_text(aspect))) {
-				int aw1 = Wordings::first_wn(Node::get_text(aspect));
-				Word::dequote(aw1);
-				what = Lexer::word_text(aw1);
+				"In the '{-primitive-definition:extremal...}' command, there should "
+				"be a '<' or '>' sign then the name of a property.");
 			}
+			break;
+		case function_application_ISINSC:
+			@<Primitive "function-application"@>
+			break;
+		case description_application_ISINSC:
+			@<Primitive "description-application"@>
+			break;
+		case solve_equation_ISINSC:
+			@<Primitive "solve-equation"@>
+			break;
+		case switch_ISINSC:
+			break;
+		case break_ISINSC:
+			CodeBlocks::emit_break();
+			break;
+		case verbose_checking_ISINSC: {
+			wchar_t *what = L"";
+			if (tokens->tokens_count > 0) {
+				parse_node *aspect = tokens->token_vals[0];
+				if (Wordings::nonempty(Node::get_text(aspect))) {
+					int aw1 = Wordings::first_wn(Node::get_text(aspect));
+					Word::dequote(aw1);
+					what = Lexer::word_text(aw1);
+				}
+			}
+			Dash::tracing_phrases(what);
+			break;
 		}
-		Dash::tracing_phrases(what);
-	}
-	else {
-		Problems::quote_stream(4, ist->operand);
-		StandardProblems::inline_problem(_p_(PM_InlinePrimitive), idb, ist->owner->parent_schema->converted_from,
-			"I don't know any primitive definition called '%4'.");
+		default:
+			Problems::quote_stream(4, ist->operand);
+			StandardProblems::inline_problem(_p_(PM_InlinePrimitive), idb,
+				ist->owner->parent_schema->converted_from,
+				"I don't know any primitive definition called '%4'.");
+			break;
 	}
 	return;
 
@@ -1563,7 +1517,8 @@ has the inline definition:
 		Kinds::binary_construction_material(X, &head, &tail);
 		X = tail;
 		tokens->token_kinds[i-1] = NULL;
-		if ((Kinds::Behaviour::uses_pointer_values(head)) && (Kinds::Behaviour::definite(head)))
+		if ((Kinds::Behaviour::uses_pointer_values(head)) &&
+			(Kinds::Behaviour::definite(head)))
 			tokens->token_kinds[i-1] = head;
 	}
 	tokens->tokens_count--;
@@ -1579,7 +1534,7 @@ has the inline definition:
 
 @<Primitive "solve-equation"@> =
 	if (Rvalues::is_CONSTANT_of_kind(tokens->token_vals[1], K_equation)) {
-		EquationSolver::emit_solution(Node::get_text(tokens->token_vals[0]),
+		EquationSolver::compile_solution(Node::get_text(tokens->token_vals[0]),
 			Rvalues::to_equation(tokens->token_vals[1]));
 	} else {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SolvedNameless),
@@ -1591,11 +1546,12 @@ has the inline definition:
 
 @<Issue a no-such-local problem message@> =
 	Problems::quote_stream(4, ist->operand);
-	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), idb, ist->owner->parent_schema->converted_from,
+	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), idb,
+		ist->owner->parent_schema->converted_from,
 		"I don't know any local variable called '%4'.");
 
 @h Parsing the invocation operands.
-Two ways. First, as an identifier name, which stands for a local I6 variable
+Two ways. First, as an identifier name, which stands for a local Inter variable
 or for a token in the phrase being invoked. There are three ways we can
 write this:
 
@@ -1603,13 +1559,14 @@ write this:
 with those numbers, if they exist;
 (b) otherwise if we have the name of a token in the phrase being invoked,
 then the operand refers to its value in the current invocation;
-(c) and failing that we have the name of a local I6 variable.
+(c) and failing that we have the name of a local Inter variable.
 
 =
 parse_node *CSIInline::parse_bracing_operand_as_identifier(text_stream *operand, id_body *idb,
 	tokens_packet *tokens, local_variable **my_vars) {
 	local_variable *lvar = NULL;
-	if ((Str::get_at(operand, 1) == 0) && (Str::get_at(operand, 0) >= '0') && (Str::get_at(operand, 0) <= '9'))
+	if ((Str::get_at(operand, 1) == 0) &&
+		(Str::get_at(operand, 0) >= '0') && (Str::get_at(operand, 0) <= '9'))
 		lvar = my_vars[Str::get_at(operand, 0) - '0'];
 	else {
 		wording LW = Feeds::feed_text(operand);
@@ -1638,13 +1595,18 @@ The former being the return kind from the phrase we are being invoked in
 which this rule should produce (if it's a rule, and if it's in a rulebook
 which wants to produce a value). For example, you could define a phrase
 which would safely abandon any attempt to define a value like this:
-
->> To give up deciding: (- return {-new:return-kind}; -).
+= (text as Inform 7)
+To give up deciding:
+	(- return {-new:return-kind}; -).
+=
 
 =
-kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand, kind_variable_declaration *kvd) {
-	if (Str::eq_wide_string(operand, L"return-kind")) return Frames::get_kind_returned();
-	if (Str::eq_wide_string(operand, L"rule-return-kind")) return Rulebooks::kind_from_context();
+kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand,
+	kind_variable_declaration *kvd) {
+	if (Str::eq_wide_string(operand, L"return-kind"))
+		return Frames::get_kind_returned();
+	if (Str::eq_wide_string(operand, L"rule-return-kind"))
+		return Rulebooks::kind_from_context();
 	kind *kind_vars_inline[27];
 	for (int i=0; i<27; i++) kind_vars_inline[i] = NULL;
 	for (; kvd; kvd=kvd->next) kind_vars_inline[kvd->kv_number] = kvd->kv_value;
@@ -1658,106 +1620,170 @@ kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand, kind_variab
 	return K;
 }
 
-@h I7 expression evaluation.
-This is not quite like regular expression evaluation, because we want
-"room" and "lighted" to be evaluated as the I6 translation of the
-relevant class or property, rather than as code to test the predicate
-"X is a room" or "X is lighted", and similarly for bare names
-of defined adjectives. So:
+@h Bracket-plus notation.
+An early compromise measure in the design of Inform 7, when the language was not
+as expressive as it is today, was that "template files" of Inform 6 code, and
+inline phrase definitions, could use the notation |(+ ... +)| to reinsert
+high-level Inform 7 source text inside lower-level Inform 6 notation. Thus, for
+example,
+= (text)
+	(- print (+ time of day +); -)
+=
+is a valid inline definition.
+
+This is not (yet) deprecated, but is inelegant, and is used very little in Inform's
+standard distribution. Requests to extend its abilities are very unlikely to be
+heeded: it is more likely that we will curtail or abolish it.
+
+The source text inside the |(+| and |+)| markers is evaluated as an expression,
+rather than in void context, except that property names evaluate as nouns
+referring to the property in the abstract rather than as conditions testing
+those properties. Names of kinds of object (only) evaluate to Inter class
+references for them. (Other kinds do not have Inter class references.)
 
 =
-void CSIInline::from_source_text(value_holster *VH, text_stream *OUT, text_stream *p) {
-	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
+void CSIInline::from_source_text(value_holster *VH, text_stream *p, void *opaque_state,
+	int prim_cat) {
+	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
 		Produce::evaluation(Emit::tree());
 		Produce::down(Emit::tree());
 	}
-
-	CSIInline::compile_I7_expression_from_text_inner(VH, OUT, p);
-
-	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
+	CSIInline::eval_bracket_plus(VH, Feeds::feed_text(p), prim_cat);
+	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
 		Produce::up(Emit::tree());
 	}
 }
 
-void CSIInline::compile_I7_expression_from_text_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
-	wording LW = Feeds::feed_text(p);
+@ This case, where orthodox compilation is happening, is more tolerable. Run the
+test case |BracketPlus| to exercise every part of this function.
 
+=
+void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	if (<property-name>(LW)) {
-		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(<<rp>>));
-		else
-			WRITE_TO(OUT, "%n", RTProperties::iname(<<rp>>));
+		CSIInline::eval_to_iname(RTProperties::iname(<<rp>>), prim_cat);
 		return;
 	}
-
 	if (<k-kind>(LW)) {
 		kind *K = <<rp>>;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			if (VH)
-				Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-			else
-				WRITE_TO(OUT, "%n", RTKinds::I6_classname(K));
+			CSIInline::eval_to_iname(RTKinds::I6_classname(K), prim_cat);
 			return;
 		}
 	}
-
 	if (<instance-of-object>(LW)) {
 		instance *I = <<rp>>;
-		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(I));
-		else
-			WRITE_TO(OUT, "%~I", I);
+		CSIInline::eval_to_iname(RTInstances::iname(I), prim_cat);
 		return;
 	}
-
 	adjective *adj = Adjectives::parse(LW);
 	if (adj) {
-		if (RTAdjectives::write_adjective_test_routine(VH, adj)) return;
-		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"You tried to use '(+' and '+)' to expand to the Inform 6 routine "
-			"address of an adjective, but it was an adjective with no meaning.");
+		inter_name *iname = RTAdjectives::iname_of_adjective_test_function(adj);
+		if (iname)
+			CSIInline::eval_to_iname(iname, prim_cat);
+		else
+			StandardProblems::unlocated_problem(Task::syntax_tree(),
+				_p_(BelievedImpossible),
+				"You tried to use '(+' and '+)' to expand to the Inter function "
+				"defining an adjective, but it was an adjective with no definition.");
+		return;
+	}
+	nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
+	if (nlv) {
+		CSIInline::eval_to_iname(RTVariables::iname(nlv), prim_cat);
+		return;
+	}
+	if (prim_cat == REF_PRIM_CAT) {
+		StandardProblems::unlocated_problem(Task::syntax_tree(),
+			_p_(BelievedImpossible),
+			"You tried to use '(+' and '+)' to store or modify something which "
+			"I'm unable to alter using code written this way.");
 		return;
 	}
 
-	#ifdef IF_MODULE
-	int initial_problem_count = problem_count;
-	#endif
 	parse_node *spec = NULL;
+	@<Evaluate the text as a value@>;
+
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	Specifications::Compiler::emit_as_val(K_value, spec);
+	END_COMPILATION_MODE;
+}
+
+void CSIInline::eval_to_iname(inter_name *iname, int prim_cat) {
+	if (prim_cat == REF_PRIM_CAT)
+		Produce::ref_iname(Emit::tree(), K_value, iname);
+	else 
+		Produce::val_iname(Emit::tree(), K_value, iname);
+}
+
+@ The really bad case is this one, where we compile a sort of faux textual
+representation. This is the functionality I would most like to remove from Inform.
+
+=
+void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
+	if (<property-name>(LW)) {
+		WRITE("%n", RTProperties::iname(<<rp>>));
+		return;
+	}
+	if (<k-kind>(LW)) {
+		kind *K = <<rp>>;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			WRITE("%n", RTKinds::I6_classname(K));
+			return;
+		}
+	}
+	if (<instance-of-object>(LW)) {
+		instance *I = <<rp>>;
+		WRITE("%~I", I);
+		return;
+	}
+	adjective *adj = Adjectives::parse(LW);
+	if (adj) {
+		inter_name *iname = RTAdjectives::iname_of_adjective_test_function(adj);
+		if (iname) {
+			WRITE("%n", iname);
+		} else {
+			StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+				"You tried to use '(+' and '+)' to expand to the Inter function "
+				"defining an adjective, but it was an adjective with no definition.");
+		}
+		return;
+	}
+	nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
+	if (nlv) {
+		PUT(URL_SYMBOL_CHAR);
+		Inter::SymbolsTables::symbol_to_url_name(OUT,
+			InterNames::to_symbol(RTVariables::iname(nlv)));
+		PUT(URL_SYMBOL_CHAR);
+		return;
+	}
+
+	parse_node *spec = NULL;
+	@<Evaluate the text as a value@>;
+
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
+	Specifications::Compiler::compile_inner(&VH2, spec);
+	inter_ti v1 = 0, v2 = 0;
+	Holsters::unholster_pair(&VH2, &v1, &v2);
+	if (v1 == ALIAS_IVAL) {
+		PUT(URL_SYMBOL_CHAR);
+		inter_symbols_table *T =
+			Inter::Packages::scope(Emit::current_enclosure()->actual_package);
+		inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
+		Inter::SymbolsTables::symbol_to_url_name(OUT, S);
+		PUT(URL_SYMBOL_CHAR);
+	} else {
+		CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
+	}
+	END_COMPILATION_MODE;
+}
+
+@<Evaluate the text as a value@> =
+	int initial_problem_count = problem_count;
 	if (<s-value>(LW)) spec = <<rp>>;
 	else spec = Specifications::new_UNKNOWN(LW);
-	#ifndef IF_MODULE
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	#endif
-	#ifdef IF_MODULE
 	if (initial_problem_count < problem_count) return;
 	Dash::check_value(spec, NULL);
 	if (initial_problem_count < problem_count) return;
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	if (VH)
-		Specifications::Compiler::emit_as_val(K_value, spec);
-	else {
-		nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
-		if (nlv) {
-			PUT(URL_SYMBOL_CHAR);
-			Inter::SymbolsTables::symbol_to_url_name(OUT, InterNames::to_symbol(RTVariables::iname(nlv)));
-			PUT(URL_SYMBOL_CHAR);
-		} else {
-			value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
-			Specifications::Compiler::compile_inner(&VH2, spec);
-			inter_ti v1 = 0, v2 = 0;
-			Holsters::unholster_pair(&VH2, &v1, &v2);
-			if (v1 == ALIAS_IVAL) {
-				PUT(URL_SYMBOL_CHAR);
-				inter_symbols_table *T = Inter::Packages::scope(Emit::current_enclosure()->actual_package);
-				inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
-				Inter::SymbolsTables::symbol_to_url_name(OUT, S);
-				PUT(URL_SYMBOL_CHAR);
-			} else {
-				CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
-			}
-		}
-	}
-	END_COMPILATION_MODE;
-	#endif
-}

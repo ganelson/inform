@@ -2,7 +2,20 @@
 
 To compile code performing an arithmetic operation.
 
-@h Compiling arithmetic.
+@ This section provides a single function to compile Inter code to perform
+an arithmetic operation. It implements the |{-arithmetic-operation:X:Y}|
+bracing when used in inline invocations, and is also needed for equation
+solving; see //Compile Solutions to Equations//. Because of that, the function
+is called either with |X| and |Y| set to values, or with |EX| and |EY| set to
+equation nodes, but not both. |eqn| is set only for the equations case; but
+in both cases |KX| and |KY| are the kinds of the arithmetic operands, and |op|
+is the operation number.
+
+For unary operations, |Y|, |EY| and |KY| will all be |NULL|.
+
+What happens is straightforward enough, but we provide a fair range of different
+operations, and we have to manage scaling factors and whether the underlying
+arithmetic is integer or floating-point.
 
 =
 void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
@@ -36,7 +49,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 		case CUBEROOT_OPERATION: @<Emit cube root@>; break;
 		case POWER_OPERATION: @<Emit a power of the left operand@>; break;
 		case UNARY_MINUS_OPERATION: @<Emit unary minus@>; break;
-		case IMPLICIT_APPLICATION_OPERATION: @<Emit function application@>; break;
+		case IMPLICIT_APPLICATION_OPERATION: @<Emit implicit application@>; break;
 		default:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"this doesn't seem to be an arithmetic operation",
@@ -46,12 +59,12 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 	if (reduce_modulo_1440) Produce::up(Emit::tree());
 }
 
-@ The four cases for a binary operation correspond to:
-
->> pi plus pi, pi plus 3, 3 plus pi, 3 plus 3
-
-respectively. If either operand is real, floating-point arithmetic is used,
-and the other operand is promoted from integer to real if necessary.
+@ For a binary operation, note that "pi plus pi", "pi plus 3", and "3 plus pi"
+must all use floating-point, whereas "3 plus 3" uses integer arithmetic: in
+other words, if either operand is real, then real arithmetic must be used.
+"Promotion" means converting an integer to a real number (I'm not quite sure
+why that is traditionally thought of as being better) -- in "pi plus 3", the
+integer 3 is promoted to real.
 
 @<Choose which form of arithmetic and promotion@> =
 	if (binary) {
@@ -249,9 +262,9 @@ and the other operand is promoted from integer to real if necessary.
 		Produce::up(Emit::tree());
 	}
 
-@ We accomplish powers by repeated multiplication. This is partly because I6
-has no "to the power of" function, partly because the powers involved will
-always be small, partly because of the need for scaling to come out right.
+@ We accomplish integer powers by repeated multiplication. This is partly
+because Inter has no "to the power of" opcode, partly because the powers involved
+will always be small, partly because of the need for scaling to come out right.
 
 @<Emit a power of the left operand@> =
 	if (use_fp) {
@@ -268,7 +281,7 @@ always be small, partly because of the need for scaling to come out right.
 		int p = 0;
 		if (Y) p = Rvalues::to_int(Y);
 		else p = Rvalues::to_int(EY->leaf_constant);
-		if (p <= 0) EquationSolver::enode_compilation_error(eqn, EY);
+		if (p <= 0) EquationSolver::issue_problem_on_root(eqn, EY);
 		else {
 			for (int i=1; i<p; i++) {
 				Kinds::Scalings::rescale_multiplication_emit_op(KX, KX);
@@ -284,7 +297,11 @@ always be small, partly because of the need for scaling to come out right.
 		}
 	}
 
-@<Emit function application@> =
+@ This is used in equation solving only; here we are evaluating a mathematical
+function like |log pi|, where |X| is the function (in this case |log|) and
+|Y| the value (in this case |pi|). Clearly a function cannot be promoted.
+
+@<Emit implicit application@> =
 	if (use_fp) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
@@ -302,8 +319,9 @@ always be small, partly because of the need for scaling to come out right.
 	}
 
 @<Emit the X-operand@> =
-	if (X) Specifications::Compiler::emit_to_kind(X, KX); else EquationSolver::enode_compile_by_emission(eqn, EX);
+	if (X) Specifications::Compiler::emit_to_kind(X, KX);
+	else EquationSolver::compile_enode(eqn, EX);
 
 @<Emit the Y-operand@> =
-	if (Y) Specifications::Compiler::emit_to_kind(Y, KY); else EquationSolver::enode_compile_by_emission(eqn, EY);
-
+	if (Y) Specifications::Compiler::emit_to_kind(Y, KY);
+	else EquationSolver::compile_enode(eqn, EY);

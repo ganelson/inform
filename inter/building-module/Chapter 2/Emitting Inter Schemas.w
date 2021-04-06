@@ -6,7 +6,7 @@
 void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch, void *opaque_state,
 	inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
-	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
+	void (*i7_source_handler)(value_holster *VH, text_stream *S, void *opaque_state, int prim_cat)) {
 	
 	int prim_cat = CODE_PRIM_CAT;
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) {
@@ -141,7 +141,7 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn
 void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_holster *VH,
 	inter_schema *sch, void *opaque_state, int prim_cat, inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
-	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
+	void (*i7_source_handler)(value_holster *VH, text_stream *S, void *opaque_state, int prim_cat)) {
 	if (isn == NULL) return;
 	if (isn->blocked_by_conditional) return;
 	switch (isn->isn_type) {
@@ -495,7 +495,8 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				}
 				break;
 			case I7_ISTT:
-				(*i7_source_handler)(VH, NULL, t->material);
+				if (i7_source_handler)
+					(*i7_source_handler)(VH, t->material, opaque_state, prim_cat);
 				break;
 			case INLINE_ISTT:
 				if (inline_command_handler)

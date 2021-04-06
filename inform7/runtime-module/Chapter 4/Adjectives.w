@@ -335,18 +335,16 @@ don't know which routine to expand out. The convention is: a meaning for
 objects, if there is one; otherwise the first-declared meaning.
 
 =
-int RTAdjectives::write_adjective_test_routine(value_holster *VH, adjective *adj) {
+inter_name *RTAdjectives::iname_of_adjective_test_function(adjective *adj) {
 	i6_schema *sch;
 	int weak_id = RTKinds::weak_id(K_object);
 	sch = AdjectiveAmbiguity::schema_for_task(adj, NULL, TEST_ATOM_TASK);
 	if (sch == NULL) {
 		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
-		if (am == NULL) return FALSE;
+		if (am == NULL) return NULL;
 		kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
-		if (am_kind == NULL) return FALSE;
+		if (am_kind == NULL) return NULL;
 		weak_id = RTKinds::weak_id(am_kind);
 	}
-	Produce::val_iname(Emit::tree(), K_value,
-		RTAdjectives::iname(adj, TEST_ATOM_TASK, weak_id));
-	return TRUE;
+	return RTAdjectives::iname(adj, TEST_ATOM_TASK, weak_id);
 }

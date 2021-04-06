@@ -383,7 +383,7 @@ object as produced the original text containing the substitution.
 @<Compile a table entry specification@> =
 	inter_name *lookup = Hierarchy::find(TABLELOOKUPENTRY_HL);
 	inter_name *lookup_corr = Hierarchy::find(TABLELOOKUPCORR_HL);
-	if (TEST_COMPILATION_MODE(TABLE_EXISTENCE_CMODE_ISSBM)) {
+	if (TEST_COMPILATION_MODE(TABLE_EXISTENCE_CMODE)) {
 		lookup = Hierarchy::find(EXISTSTABLELOOKUPENTRY_HL);
 		lookup_corr = Hierarchy::find(EXISTSTABLELOOKUPCORR_HL);
 	}

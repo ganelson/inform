@@ -1,6 +1,6 @@
 [Atoms::Compile::] Compile Atoms.
 
-In this section, given an atom of a proposition we compile I6 code
+In this section, given an atom of a proposition we compile Inter code
 as required for any of three possible outcomes: (i) to test whether it is
 true, (ii) to make it henceforth true, or (iii) to make it henceforth false.
 

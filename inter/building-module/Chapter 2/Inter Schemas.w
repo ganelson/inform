@@ -1017,7 +1017,6 @@ text expansion in it. The full syntax follows:
 @d PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM	64
 @d TREAT_AS_LVALUE_CMODE_ISSBM			128
 @d JUST_ROUTINE_CMODE_ISSBM				256
-@d TABLE_EXISTENCE_CMODE_ISSBM			512
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;

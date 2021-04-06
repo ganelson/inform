@@ -1,0 +1,29 @@
+   Laboratory
+  Should be in Laboratory.
+  "Geiger counter" = number: 0
+  "Geiger counter" = number: 3
+  3
+  All smooshed together are yourselfthe benchthe isotopethe sack of pitchblende.
+  yourself is safe.
+  bench is safe.
+  isotope radiates!
+  sack of pitchblende is safe.
+  yourself is no help.
+  bench helps!
+  isotope is no help.
+  sack of pitchblende is no help.
+  yourself is not a sack.
+  bench is not a sack.
+  isotope is not a sack.
+  sack of pitchblende is a sack!
+  253 and 11:32 pm and some text about it being 9:00 am right now
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  
+  Laboratory
+  You can see a bench (on which is an isotope) and a sack of pitchblende here.
+  
+> >   Laboratory
+> Are you sure you want to quit? 

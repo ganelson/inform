@@ -1,0 +1,9 @@
+Home is a room.
+
+To spong:
+	(-
+		print {-erase} "Hello.";
+	-).
+
+When play begins:
+	spong.

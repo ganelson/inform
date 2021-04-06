@@ -1,7 +1,6 @@
 [Specifications::Compiler::] Compiling from Specifications.
 
-To compile specifications into Inform 6 values, conditions or void
-expressions.
+To compile specifications into Inter values, conditions or void expressions.
 
 @ In a more traditional compiler, the code-generator would be something of a
 landmark -- one of the three or four most important stations. Here it's
@@ -51,6 +50,7 @@ enter or exit macros to switch a particular mode on or off.
 @d BLANK_OUT_CMODE		 		  0x00008000 /* blank out table references */
 @d TREAT_AS_LVALUE_CMODE		  0x00010000 /* similarly affects table references */
 @d JUST_ROUTINE_CMODE			  0x00020000 /* similarly affects table references */
+@d TABLE_EXISTENCE_CMODE          0x00040000 /* test table references for existence */
 
 = (early code)
 int compilation_mode = DEREFERENCE_POINTERS_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */

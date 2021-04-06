@@ -2,10 +2,22 @@
 
 To compile code to solve an equation involving numerical quantities.
 
-@ We can finally turn to putting equations to use. Firstly, when a named
-equation is used, a "where..." clause is sometimes given to make temporary
-assignments (see above); what happens is that the S-parser temporarily sets
-the usage words of the equation to the relevant text...
+@ This section implements the |{-primitive-definition:solve-equation}|
+bracing for an inline invocation.
+
+Nothing here will entirely make sense without first having read
+//assertions: Equations//, but briefly: equations written in the source
+text have been turned into |equation| structures, and we are asked to solve
+the one held in |eqn|. It involves symbols (consider "F", "m" and "a" in the
+equation "F = ma"), each of which is an |equation_symbol|. And the structure
+of the equation has been turned into a tree where each node is an |equation_node|.
+The leaves in this tree are symbols or values; the other nodes represent
+operations to perform.
+
+Before getting under way, a detail. When a named equation is used, a
+"where..." clause is sometimes given to make temporary assignments; what
+happens is that the S-parser temporarily sets the usage words of the equation
+to the relevant text...
 
 =
 void EquationSolver::set_usage_notes(equation *eqn, wording W) {
@@ -17,20 +29,20 @@ invocation compiler), we know where to find these temporary assignments.
 They are wiped out once this compilation is over.
 
 =
-void EquationSolver::emit_solution(wording W, equation *eqn) {
+void EquationSolver::compile_solution(wording W, equation *eqn) {
 	if (Wordings::nonempty(eqn->usage_text))
 		Equations::eqn_declare_variables_inner(eqn, eqn->usage_text, TRUE);
-	EquationSolver::emit_solution_inner(W, eqn);
+	EquationSolver::compile_solution_inner(W, eqn);
 	Equations::eqn_remove_temp_variables(eqn);
 	eqn->usage_text = EMPTY_WORDING;
 }
 
 @ With that dance out of the way, we can concentrate on the actual task.
 We have to compile code which assigns the correct value to the symbol
-specified by $(w_1, w_2)$, according to the equation |eqn|.
+specified by |W|, according to the equation |eqn|.
 
 =
-void EquationSolver::emit_solution_inner(wording W, equation *eqn) {
+void EquationSolver::compile_solution_inner(wording W, equation *eqn) {
 	equation_symbol *to_solve = NULL;
 
 	@<Identify which symbol in the equation we are solving for@>;
@@ -41,7 +53,7 @@ void EquationSolver::emit_solution_inner(wording W, equation *eqn) {
 	WRITE_TO(C, "Solving %n for '$w'", eqn->eqn_iname, to_solve->name);
 	Emit::code_comment(C);
 	DISCARD_TEXT(C)
-	EquationSolver::enode_compile_by_emission(eqn, eqn->parsed_equation);
+	EquationSolver::compile_enode(eqn, eqn->parsed_equation);
 }
 
 @ Note the case sensitivity here.
@@ -59,8 +71,8 @@ void EquationSolver::emit_solution_inner(wording W, equation *eqn) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), 
 			_p_(PM_EquationBadTarget));
 		Problems::issue_problem_segment(
-			"In %1, you asked to let %2 be given by the equation '%3', "
-			"but '%2' isn't a symbol in that equation.");
+			"In %1, you asked to let %2 be given by the equation '%3', but '%2' isn't "
+			"a symbol in that equation.");
 		Problems::issue_problem_end();
 		return;
 	}
@@ -73,9 +85,8 @@ void EquationSolver::emit_solution_inner(wording W, equation *eqn) {
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_EquationConstantTarget));
 		Problems::issue_problem_segment(
-			"In %1, you asked to let %2 be given by the equation '%3', "
-			"but '%2' isn't something which can vary freely in that equation - "
-			"it's been set equal to %4.");
+			"In %1, you asked to let %2 be given by the equation '%3', but '%2' isn't "
+			"something which can vary freely in that equation - it's been set equal to %4.");
 		Problems::issue_problem_end();
 		return;
 	}
@@ -99,11 +110,10 @@ incorrect. Re-typechecking will recalculate these.
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_EquationInsoluble));
 		Problems::issue_problem_segment(
-			"In %1, you asked to let %2 be given by the equation '%3', "
-			"but I am unable to rearrange the equation in any simple way "
-			"so that it sets '%2' equal to something else. Maybe you could "
-			"write a more explicit equation? (You're certainly better at "
-			"maths than I am; I can only make easy deductions.)");
+			"In %1, you asked to let %2 be given by the equation '%3', but I am unable "
+			"to rearrange the equation in any simple way so that it sets '%2' equal to "
+			"something else. Maybe you could write a more explicit equation? (You're "
+			"certainly better at maths than I am; I can only make easy deductions.)");
 		Problems::issue_problem_end();
 		return;
 	}
@@ -144,10 +154,9 @@ need to exist as local variables in the current stack frame.
 	Problems::quote_wording(4, ev->name);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMissing));
 	Problems::issue_problem_segment(
-		"In %1, you asked to let %2 be given by the equation '%3', "
-		"but I can't see what to use for '%4'. The usual idea is "
-		"to set the other variables in the equation using 'let': "
-		"so adding 'let %4 be ...' before trying to find '%2' "
+		"In %1, you asked to let %2 be given by the equation '%3', but I can't see "
+		"what to use for '%4'. The usual idea is to set the other variables in the "
+		"equation using 'let': so adding 'let %4 be ...' before trying to find '%2' "
 		"should work.");
 	Problems::issue_problem_end();
 	return;
@@ -182,10 +191,10 @@ casting between quasinumerical kinds, we'll have to return to this.)
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_EquationSymbolWrongKOV));
 		Problems::issue_problem_segment(
-			"In %1, you asked to let %2 be given by the equation '%3', "
-			"but in that equation '%4' is supposedly %6 - whereas right "
-			"here, it seems to be %5. Perhaps two different quantities have "
-			"ended up with the same symbol in the source text?");
+			"In %1, you asked to let %2 be given by the equation '%3', but in that "
+			"equation '%4' is supposedly %6 - whereas right here, it seems to be %5. "
+			"Perhaps two different quantities have ended up with the same symbol in "
+			"the source text?");
 		Problems::issue_problem_end();
 		return;
 	}
@@ -193,7 +202,7 @@ casting between quasinumerical kinds, we'll have to return to this.)
 @ Actual compilation is simple, since the tree is set up for it.
 
 =
-void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok) {
+void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 	int a = 0;
 	if (Kinds::FloatingPoint::is_real(tok->gK_before)) a = 1;
 	int b = 0;
@@ -253,7 +262,7 @@ void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok
 		NULL, X, KX, NULL, Y, KY);
 
 @ =
-void EquationSolver::enode_compilation_error(equation *eqn, equation_node *tok) {
+void EquationSolver::issue_problem_on_root(equation *eqn, equation_node *tok) {
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HardIntegerRoot));
