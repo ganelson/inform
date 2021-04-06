@@ -169,7 +169,7 @@ int RTRules::compile_constraint(rule *R) {
 		if (<s-condition>(acl->text_of_condition)) {
 			parse_node *spec = <<rp>>;
 			Dash::check_condition(spec);
-			Specifications::Compiler::emit_as_val(K_truth_state, spec);
+			CompileSpecifications::to_code_val(K_truth_state, spec);
 		} else {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, acl->text_of_condition);
@@ -492,7 +492,7 @@ than once for each rule.
 	switch (format) {
 		case ARRAY_RBF:
 		case GROUPED_ARRAY_RBF:
-			Specifications::Compiler::emit(spec);
+			CompileSpecifications::to_array_entry(spec);
 			break;
 		case ROUTINE_RBF:
 			if (entry_count > 0) {
@@ -525,7 +525,7 @@ than once for each rule.
 				Produce::ref_symbol(Emit::tree(), K_value, rv_s);
 				Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
 				Produce::down(Emit::tree());
-					Specifications::Compiler::emit_as_val(K_value, spec);
+					CompileSpecifications::to_code_val(K_value, spec);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 
@@ -552,7 +552,7 @@ than once for each rule.
 
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 					Produce::down(Emit::tree());
-						Specifications::Compiler::emit_as_val(K_value, spec);
+						CompileSpecifications::to_code_val(K_value, spec);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());

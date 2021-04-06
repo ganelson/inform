@@ -495,9 +495,7 @@ void Strings::compile_general(value_holster *VH, parse_node *str) {
 		}
 	} else {
 		if (Wordings::empty(SW)) internal_error("Text no longer available for CONSTANT/TEXT");
-		if (TEST_COMPILATION_MODE(COMPILE_TEXT_TO_QUOT_CMODE)) {
-			TextLiterals::compile_quotation(VH, SW);
-		} else @<This is going to make a valid I7 text value@>;
+		@<This is going to make a valid I7 text value@>;
 	}
 }
 

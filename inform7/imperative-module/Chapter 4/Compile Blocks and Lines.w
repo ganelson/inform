@@ -450,7 +450,7 @@ the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, sw_v);
-		Specifications::Compiler::emit_as_val(switch_kind, switch_val);
+		CompileSpecifications::to_code_val(switch_kind, switch_val);
 	Produce::up(Emit::tree());
 
 @ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
@@ -495,14 +495,14 @@ of |downs| is how many times we have called |Produce::down|.
 @<Begin a non-pointery switch@> =
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
-		Specifications::Compiler::emit_as_val(switch_kind, switch_val);
+		CompileSpecifications::to_code_val(switch_kind, switch_val);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
 @<Handle a non-pointery case@> =
 	Produce::inv_primitive(Emit::tree(), CASE_BIP);
 	Produce::down(Emit::tree());
-		Specifications::Compiler::emit_as_val(switch_kind, case_spec);
+		CompileSpecifications::to_code_val(switch_kind, case_spec);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);

@@ -319,9 +319,9 @@ function like |log pi|, where |X| is the function (in this case |log|) and
 	}
 
 @<Emit the X-operand@> =
-	if (X) Specifications::Compiler::emit_to_kind(X, KX);
+	if (X) CompileSpecifications::to_code_val_promoting(X, KX);
 	else EquationSolver::compile_enode(eqn, EX);
 
 @<Emit the Y-operand@> =
-	if (Y) Specifications::Compiler::emit_to_kind(Y, KY);
+	if (Y) CompileSpecifications::to_code_val_promoting(Y, KY);
 	else EquationSolver::compile_enode(eqn, EY);

@@ -219,7 +219,7 @@ void Terms::emit(pcalc_term pt) {
 		} else {
 			if (Specifications::is_phrasal(pt.constant))
 				Dash::check_value(pt.constant, NULL);
-			Specifications::Compiler::emit_as_val(K_value, pt.constant);
+			CompileSpecifications::to_code_val(K_value, pt.constant);
 		}
 		return;
 	}

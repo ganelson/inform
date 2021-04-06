@@ -57,7 +57,7 @@ to the tokens then follow, and finally the optional bitmap of phrase options.
 	if (Kinds::Behaviour::uses_pointer_values(return_kind))
 		Frames::emit_new_local_value(return_kind);
 	for (int k=0; k<tokens->tokens_count; k++)
-		Specifications::Compiler::emit_to_kind(tokens->token_vals[k], tokens->token_kinds[k]);
+		CompileSpecifications::to_code_val_promoting(tokens->token_vals[k], tokens->token_kinds[k]);
 	if (phrase_options != -1)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
 
@@ -88,11 +88,11 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 	if (lookup_flag) {
 		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_value, indirect_spec);
+			CompileSpecifications::to_code_val(K_value, indirect_spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	} else {
-		Specifications::Compiler::emit_as_val(K_value, indirect_spec);
+		CompileSpecifications::to_code_val(K_value, indirect_spec);
 	}
 	int phrase_options = -1;
 	@<Emit the comma-separated list of arguments@>;

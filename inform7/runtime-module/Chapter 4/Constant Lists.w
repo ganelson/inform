@@ -67,7 +67,7 @@ the list!);
 
 	Emit::array_numeric_entry((inter_ti) n);
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
-		Specifications::Compiler::emit_constant_to_kind(
+		CompileSpecifications::to_array_entry_promoting(
 			lle->llist_entry_value, ll->entry_kind);
 	Emit::array_end(save);
 

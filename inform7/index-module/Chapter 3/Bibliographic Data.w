@@ -80,14 +80,11 @@ void IXBibliographicData::contents_heading(OUTPUT_STREAM) {
 =
 void IXBibliographicData::index_variable(OUTPUT_STREAM,
 	nonlocal_variable *nlv, text_stream *t) {
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		wording W = NonlocalVariables::initial_value_as_plain_text(nlv);
 		BibliographicData::compile_bibliographic_text(OUT,
-			Lexer::word_text(Wordings::first_wn(W)));
+			Lexer::word_text(Wordings::first_wn(W)), XML_BIBTEXT_MODE);
 	} else {
 		WRITE("%S", t);
 	}
-	END_COMPILATION_MODE;
 }

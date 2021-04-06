@@ -87,7 +87,7 @@ int RTKinds::emit_default_value(kind *K, wording W, char *storage_name) {
 int RTKinds::emit_default_value_as_val(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	int rv = RTKinds::compile_default_value_vh(&VH, K, W, storage_name);
-	Holsters::to_val_mode(Emit::tree(), &VH);
+	Holsters::unholster_to_code_val(Emit::tree(), &VH);
 	return rv;
 }
 int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,

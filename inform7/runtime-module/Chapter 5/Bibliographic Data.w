@@ -10,16 +10,11 @@ constants.
 =
 void RTBibliographicData::compile_constants(void) {
 	encode_constant_text_bibliographically = TRUE;
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_I6_CMODE);
-
 	if (story_title_VAR) @<Compile the I6 Story constant@>;
 	if (story_headline_VAR) @<Compile the I6 Headline constant@>;
 	if (story_author_VAR) @<Compile the I6 Story Author constant@>;
 	if (story_release_number_VAR) @<Compile the I6 Release directive@>;
 	@<Compile the I6 serial number, based on the date@>;
-
-	END_COMPILATION_MODE;
 	encode_constant_text_bibliographically = FALSE;
 }
 

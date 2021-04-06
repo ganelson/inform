@@ -364,10 +364,7 @@ void ReleaseInstructions::write_ifiction_and_blurb(void) {
 	filename *F = Task::ifiction_record_file();
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
 		Problems::fatal_on_file("Can't open metadata file", F);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 	iFiction::write_ifiction_record(xf, rel);
-	END_COMPILATION_MODE;
 	STREAM_CLOSE(xf);
 
 @<Write release blurb@> =

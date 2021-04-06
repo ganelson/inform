@@ -232,7 +232,7 @@ used to define new kinds; in this case it doesn't matter what we write, but
 			parse_node *val = Node::get_evaluation(cell);
 			if (Specifications::is_kind_like(val)) Emit::array_numeric_entry(0);
 			else if (val == NULL) internal_error("Valueless cell");
-			else Specifications::Compiler::emit_constant_to_kind(val, K);
+			else CompileSpecifications::to_array_entry_promoting(val, K);
 		#ifdef IF_MODULE
 		}
 		#endif

@@ -193,7 +193,7 @@ The value of |cinder_count| would then be 2.
 	Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
 	Produce::down(Emit::tree());
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
-		if (substitution) Specifications::Compiler::emit_as_val(K_value, substitution);
+		if (substitution) CompileSpecifications::to_code_val(K_value, substitution);
 	Produce::up(Emit::tree());
 
 @ =
@@ -598,7 +598,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_value, spec);
+			CompileSpecifications::to_code_val(K_value, spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
@@ -662,7 +662,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_DESC_HL));
 		Produce::down(Emit::tree());
 			Frames::emit_new_local_value(K);
-			Specifications::Compiler::emit_as_val(K_value, spec);
+			CompileSpecifications::to_code_val(K_value, spec);
 			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());
 	} else {
@@ -694,7 +694,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_value, spec);
+			CompileSpecifications::to_code_val(K_value, spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
@@ -745,7 +745,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 			Produce::down(Emit::tree());
-				Specifications::Compiler::emit_as_val(K_value, spec);
+				CompileSpecifications::to_code_val(K_value, spec);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TOTAL_DUSAGE);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -767,9 +767,9 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_value, spec);
+			CompileSpecifications::to_code_val(K_value, spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-			Specifications::Compiler::emit_as_val(K_value, in);
+			CompileSpecifications::to_code_val(K_value, in);
 		Produce::up(Emit::tree());
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(
@@ -820,7 +820,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 				Produce::down(Emit::tree());
-					Specifications::Compiler::emit_as_val(K_value, spec);
+					CompileSpecifications::to_code_val(K_value, spec);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) EXTREMAL_DUSAGE);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -948,9 +948,9 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 					Produce::down(Emit::tree());
-						Specifications::Compiler::emit_as_val(K_value, spec);
+						CompileSpecifications::to_code_val(K_value, spec);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-						Specifications::Compiler::emit_as_val(K_value,
+						CompileSpecifications::to_code_val(K_value,
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
@@ -1037,7 +1037,7 @@ deferred description routine, and we simply call that routine with the
 void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fromv) {
 	Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 	Produce::down(Emit::tree());
-		Specifications::Compiler::emit_as_val(K_value, spec);
+		CompileSpecifications::to_code_val(K_value, spec);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) LOOP_DOMAIN_DUSAGE);
 		if (fromv) {
 			inter_symbol *fromv_s = LocalVariables::declare(fromv);
@@ -1108,7 +1108,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, copy_var_s);
-				Specifications::Compiler::emit_as_val(K_value, spec);
+				CompileSpecifications::to_code_val(K_value, spec);
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());

@@ -36,7 +36,7 @@ int Holsters::data_acceptable(value_holster *vh) {
 	return FALSE;
 }
 
-void Holsters::to_val_mode(inter_tree *I, value_holster *vh) {
+void Holsters::unholster_to_code_val(inter_tree *I, value_holster *vh) {
 	if (vh == NULL) internal_error("no VH");
 	switch (vh->vhmode_provided) {
 		case INTER_DATA_VHMODE:

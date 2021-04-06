@@ -164,8 +164,8 @@ void EmitSchemas::sch_inline(value_holster *VH,
 				req_A = NULL;
 			if (!((Kinds::Behaviour::uses_pointer_values(req_B)) && (Kinds::Behaviour::definite(req_B))))
 				req_B = NULL;
-			Specifications::Compiler::emit_to_kind(spec_A, req_A);
-			Specifications::Compiler::emit_to_kind(spec_B, req_B);
+			CompileSpecifications::to_code_val_promoting(spec_A, req_A);
+			CompileSpecifications::to_code_val_promoting(spec_B, req_B);
 			epar = FALSE;
 		}
 	}

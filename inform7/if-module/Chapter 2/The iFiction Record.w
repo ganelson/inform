@@ -224,14 +224,14 @@ int iFiction::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv) {
 		} else {
 			if (Kinds::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
+				CompileSpecifications::holster_constant(&VH, val, K);
 				inter_ti v1 = 0, v2 = 0;
 				Holsters::unholster_pair(&VH, &v1, &v2);
 				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);
-				BibliographicData::compile_bibliographic_text(OUT, Lexer::word_text(w1));
+				BibliographicData::compile_bibliographic_text(OUT, Lexer::word_text(w1), XML_BIBTEXT_MODE);
 			}
 		}
 		return TRUE;

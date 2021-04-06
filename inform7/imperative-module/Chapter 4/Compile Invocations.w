@@ -254,7 +254,7 @@ at runtime; we assign 0 to it for the sake of tidiness.
 				Invocations::get_token_as_parsed(first_inv, i);
 			kind *to_be_used_as = Specifications::to_kind(
 				idb->type_data.token_sequence[i].to_match);
-			Specifications::Compiler::emit_to_kind(value, to_be_used_as);
+			CompileSpecifications::to_code_val_promoting(value, to_be_used_as);
 			END_COMPILATION_MODE;
 		}
 	Produce::up(Emit::tree());
@@ -517,16 +517,18 @@ control structures.
 stop automatically generates a newline:
 
 @<Compile a newline if the phrase implicitly requires one@> =
-	if ((IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
-		(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE)) &&
-		(tokens->tokens_count > 0) &&
-		(Rvalues::is_CONSTANT_of_kind(tokens->token_vals[0], K_text)) &&
-		(Word::text_ending_sentence(
-			Wordings::first_wn(Node::get_text(tokens->token_vals[0]))))) {
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_text(Emit::tree(), I"\n");
-		Produce::up(Emit::tree());
+	if (IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) {
+		if ((Node::get_phrase_invoked(inv)->type_data.as_say.say_phrase_running_on == FALSE) &&
+			(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE)) &&
+			(tokens->tokens_count > 0) &&
+			(Rvalues::is_CONSTANT_of_kind(tokens->token_vals[0], K_text)) &&
+			(Word::text_ending_sentence(
+				Wordings::first_wn(Node::get_text(tokens->token_vals[0]))))) {
+			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_text(Emit::tree(), I"\n");
+			Produce::up(Emit::tree());
+		}
 	}
 
 @h Tokens packets.

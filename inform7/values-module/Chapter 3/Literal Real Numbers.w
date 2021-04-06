@@ -34,7 +34,7 @@ misses out.
 		@<Parse a decimal expansion@>;
 		if (intcount + fraccount > 0) {
 			if ((Wordings::length(W) > 1) || (p[i])) @<Parse an exponent@>;
-			if ((distinctive) || (TEST_COMPILATION_MODE(CONSTANT_CMODE))) {
+			if ((distinctive) || (LiteralReals::promote())) {
 				==> { LiteralReals::construct_float(signbit, intv, fracv, expo), - };
 				return TRUE;
 			}
@@ -222,4 +222,28 @@ void LiteralReals::wrong_notation(wording W) {
 			"or you can use a multiplication sign instead of the 'x'.");
 		Problems::issue_problem_end();
 	}
+}
+
+@ This upgrades a literal |K_number| to a literal |K_real_number| if necessary,
+as it can be when performing arithmetic. Note that we do this not by running
+an integer-to-real conversion inside Inform, but just by re-parsing it in a
+real context: the result is therefore identical to what would have been parsed
+had the literal in question been expected to be real all along.
+
+=
+int promoting_reals = FALSE;
+int LiteralReals::promote(void) {
+	return promoting_reals;
+}
+parse_node *LiteralReals::promote_number_if_necessary(parse_node *value, kind *to) {
+	int s = promoting_reals;
+	promoting_reals = TRUE;
+	kind *from = Specifications::to_kind(value);
+	if ((Kinds::eq(from, K_number)) && (Kinds::eq(to, K_real_number))) {
+		wording W = Node::get_text(value);
+		if (<s-literal-real-number>(W)) value = <<rp>>;
+		else internal_error("can't parse integer as real");
+	}
+	promoting_reals = s;
+	return value;
 }

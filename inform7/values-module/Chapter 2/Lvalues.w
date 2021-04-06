@@ -302,7 +302,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
-		Specifications::Compiler::emit_as_val(K_value, prop_spec);
+		CompileSpecifications::to_code_val(K_value, prop_spec);
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
 			Produce::up(Emit::tree());
 		}
@@ -347,10 +347,10 @@ object as produced the original text containing the substitution.
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-			Specifications::Compiler::emit_as_val(K_value, owner);
+			CompileSpecifications::to_code_val(K_value, owner);
 		Produce::up(Emit::tree());
 	} else {
-		Specifications::Compiler::emit_as_val(K_value, owner);
+		CompileSpecifications::to_code_val(K_value, owner);
 	}
 
 @ List entries are blessedly simpler.
@@ -369,9 +369,9 @@ object as produced the original text containing the substitution.
 		}
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Specifications::Compiler::emit_as_val(K_value, spec_found->down);
+		CompileSpecifications::to_code_val(K_value, spec_found->down);
 		END_COMPILATION_MODE;
-		Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
+		CompileSpecifications::to_code_val(K_value, spec_found->down->next);
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
 			Produce::up(Emit::tree());
 		}
@@ -381,9 +381,15 @@ object as produced the original text containing the substitution.
 @ Table entries are simple too, but come in four variant forms:
 
 @<Compile a table entry specification@> =
+	Lvalues::compile_table_reference(VH, spec_found, FALSE, FALSE);
+	return;
+
+@ =
+void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
+	int exists, int blank_out) {
 	inter_name *lookup = Hierarchy::find(TABLELOOKUPENTRY_HL);
 	inter_name *lookup_corr = Hierarchy::find(TABLELOOKUPCORR_HL);
-	if (TEST_COMPILATION_MODE(TABLE_EXISTENCE_CMODE)) {
+	if (exists) {
 		lookup = Hierarchy::find(EXISTSTABLELOOKUPENTRY_HL);
 		lookup_corr = Hierarchy::find(EXISTSTABLELOOKUPCORR_HL);
 	}
@@ -404,9 +410,9 @@ object as produced the original text containing the substitution.
 				local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
 				inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
 				Produce::val_symbol(Emit::tree(), K_value, ct_0_s);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
+				CompileSpecifications::to_code_val(K_value, spec_found->down);
 				Produce::val_symbol(Emit::tree(), K_value, ct_1_s);
-				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
+				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
@@ -425,10 +431,10 @@ object as produced the original text containing the substitution.
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
-				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
+				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next);
+				CompileSpecifications::to_code_val(K_value, spec_found->down);
+				CompileSpecifications::to_code_val(K_value, spec_found->down->next);
+				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
@@ -444,11 +450,11 @@ object as produced the original text containing the substitution.
 					Produce::inv_call_iname(Emit::tree(), lookup_corr);
 					Produce::down(Emit::tree());
 				}
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next->next);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
-				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
-				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
+				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next->next);
+				CompileSpecifications::to_code_val(K_value, spec_found->down);
+				CompileSpecifications::to_code_val(K_value, spec_found->down->next);
+				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next);
+				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
@@ -458,7 +464,7 @@ object as produced the original text containing the substitution.
 			break;
 		default: internal_error("TABLE REFERENCE with bad number of args");
 	}
-	return;
+}
 
 @h Lvalue compilation.
 To recap, if an assignment takes the form "now X is Y" then X is the lvalue,

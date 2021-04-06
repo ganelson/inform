@@ -301,9 +301,6 @@ the presence of annotations can change what we do.
 	parse_node *supplied = tokens->token_vals[tok];
 
 	int by_value_not_reference = TRUE;
-	int text_as_quotation = FALSE;
-	int blank_out = FALSE;
-	int reference_exists = FALSE;
 	int require_to_be_lvalue = FALSE;
 
 	@<Take account of any annotation to the inline token@>;
@@ -372,27 +369,12 @@ do not want.
 	} else {
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	}
-	if (blank_out) {
-		COMPILATION_MODE_ENTER(BLANK_OUT_CMODE);
-	} else {
-		COMPILATION_MODE_EXIT(BLANK_OUT_CMODE);
-	}
-	if (reference_exists) {
-		COMPILATION_MODE_ENTER(TABLE_EXISTENCE_CMODE);
-	} else {
-		COMPILATION_MODE_EXIT(TABLE_EXISTENCE_CMODE);
-	}
-	if (text_as_quotation) {
-		COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_QUOT_CMODE);
-	} else {
-		COMPILATION_MODE_EXIT(COMPILE_TEXT_TO_QUOT_CMODE);
-	}
 
 	LOGIF(MATCHING, "Expanding $P into '%W' with %d, %u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
 		by_value_not_reference?" (by value)":" (by reference)");
-	Specifications::Compiler::emit_to_kind(supplied, kind_required);
+	CompileSpecifications::to_code_val_promoting(supplied, kind_required);
 	END_COMPILATION_MODE;
 
 @h Annotation commands for bracings with natural language.
@@ -440,16 +422,14 @@ this list, the original will change.
 @ And, variedly:
 
 @<Inline annotation "by-reference-blank-out"@> =
-	by_value_not_reference = FALSE;
-	valid_annotation = TRUE;
-	blank_out = TRUE;
+	Lvalues::compile_table_reference(VH, supplied, FALSE, TRUE);
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ And, variedly:
 
 @<Inline annotation "reference-exists"@> =
-	by_value_not_reference = FALSE;
-	valid_annotation = TRUE;
-	reference_exists = TRUE;
+	Lvalues::compile_table_reference(VH, supplied, TRUE, FALSE);
+	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ This is a variant which checks that the reference is to an lvalue, that is,
 to something which can be changed. If this weren't done, then
@@ -484,9 +464,10 @@ but honestly having this annotation seems the smaller of the two warts.
 		Problems::issue_problem_end();
 		return;
 	} else {
-		text_as_quotation = TRUE;
-		by_value_not_reference = FALSE;
-		valid_annotation = TRUE;
+		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+		TextLiterals::compile_quotation(&VH, Node::get_text(supplied));
+		Holsters::unholster_to_code_val(Emit::tree(), &VH);
+		return; /* that is, don't use the regular token compiler: we've done it ourselves */
 	}
 
 @ Suppose we are invoking "decide on 102" from the Basic Inform inline definition
@@ -533,11 +514,11 @@ problem messages are phrased differently if something goes wrong.
 	else @<Issue a problem for returning a value when none was asked@>;
 
 	if (allow_me == ALWAYS_MATCH) {
-		Specifications::Compiler::emit_to_kind(supplied, kind_needed);
+		CompileSpecifications::to_code_val_promoting(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Behaviour::is_object(kind_needed))) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_to_kind(supplied, kind_needed);
+			CompileSpecifications::to_code_val_promoting(supplied, kind_needed);
 			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(kind_needed));
 		Produce::up(Emit::tree());
 	} else @<Issue a problem for returning a value of the wrong kind@>;
@@ -587,7 +568,7 @@ problem messages are phrased differently if something goes wrong.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
+			CompileSpecifications::to_code_val(K_stored_action, supplied);
 		Produce::up(Emit::tree());
 	}
 	valid_annotation = TRUE;
@@ -635,7 +616,7 @@ problem messages are phrased differently if something goes wrong.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_stored_action, supplied);
+			CompileSpecifications::to_code_val(K_stored_action, supplied);
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	}
@@ -1276,7 +1257,7 @@ result would be the same without the optimisation.
 		Produce::down(Emit::tree());
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-			Specifications::Compiler::emit_to_kind(to_say, K);
+			CompileSpecifications::to_code_val_promoting(to_say, K);
 			END_COMPILATION_MODE;
 		Produce::up(Emit::tree());
 	} else @<Issue an inline no-such-kind problem@>;
@@ -1301,7 +1282,7 @@ result would be the same without the optimisation.
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_to_kind(to_say, K);
+			CompileSpecifications::to_code_val_promoting(to_say, K);
 		Produce::up(Emit::tree());
 		END_COMPILATION_MODE;
 	}
@@ -1315,7 +1296,7 @@ result would be the same without the optimisation.
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__N_HL));
-			Specifications::Compiler::emit_to_kind(to_say, K);
+			CompileSpecifications::to_code_val_promoting(to_say, K);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	return;
@@ -1330,7 +1311,7 @@ language.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		Specifications::Compiler::emit_to_kind(to_say, K);
+		CompileSpecifications::to_code_val_promoting(to_say, K);
 	Produce::up(Emit::tree());
 	if (TargetVMs::is_16_bit(Task::vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
@@ -1705,7 +1686,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	Specifications::Compiler::emit_as_val(K_value, spec);
+	CompileSpecifications::to_code_val(K_value, spec);
 	END_COMPILATION_MODE;
 }
 
@@ -1761,12 +1742,8 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	parse_node *spec = NULL;
 	@<Evaluate the text as a value@>;
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
-	Specifications::Compiler::compile_inner(&VH2, spec);
 	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_pair(&VH2, &v1, &v2);
+	CompileSpecifications::to_pair(&v1, &v2, spec);
 	if (v1 == ALIAS_IVAL) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =
@@ -1777,7 +1754,6 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	} else {
 		CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
 	}
-	END_COMPILATION_MODE;
 }
 
 @<Evaluate the text as a value@> =

@@ -1,6 +1,9 @@
-[Specifications::Compiler::] Compiling from Specifications.
+[CompileSpecifications::] Compiling from Specifications.
 
 To compile specifications into Inter values, conditions or void expressions.
+
+@ Specifications unite values, conditions and descriptions: see //values: Specifications//.
+They are stored as |parse_node| pointers. Here, we compile them to a 
 
 @ In a more traditional compiler, the code-generator would be something of a
 landmark -- one of the three or four most important stations. Here it's
@@ -41,16 +44,10 @@ enter or exit macros to switch a particular mode on or off.
 @d DEREFERENCE_POINTERS_CMODE     0x00000001 /* make an independent copy of the result if on the heap */
 @d IMPLY_NEWLINES_IN_SAY_CMODE    0x00000010 /* at the end, that is */
 @d PERMIT_LOCALS_IN_TEXT_CMODE    0x00000020 /* unless casting to text */
-@d COMPILE_TEXT_TO_QUOT_CMODE     0x00000080 /* for the idiosyncratic I6 |box| statement */
-@d COMPILE_TEXT_TO_XML_CMODE      0x00000100 /* use XML escapes and UTF-8 encoding */
-@d TRUNCATE_TEXT_CMODE            0x00000200 /* into a plausible filename length */
-@d COMPILE_TEXT_TO_I6_CMODE       0x00001000 /* for bibliographic text to I6 constants */
 @d CONSTANT_CMODE 			      0x00002000 /* compiling values in a constant context */
-@d SPECIFICATIONS_CMODE 		  0x00004000 /* compiling specifications at all */
-@d BLANK_OUT_CMODE		 		  0x00008000 /* blank out table references */
-@d TREAT_AS_LVALUE_CMODE		  0x00010000 /* similarly affects table references */
-@d JUST_ROUTINE_CMODE			  0x00020000 /* similarly affects table references */
-@d TABLE_EXISTENCE_CMODE          0x00040000 /* test table references for existence */
+
+@d TREAT_AS_LVALUE_CMODE		  0x00010000 /* compile storage as lvalue not rvalue */
+@d JUST_ROUTINE_CMODE			  0x00020000 /* compile storage to Inter function handling it */
 
 = (early code)
 int compilation_mode = DEREFERENCE_POINTERS_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */
@@ -73,30 +70,83 @@ code to handle dereferencing is invalid as an Inform 6 constant. The mode
 therefore exists as a way of temporarily turning off dereferencing -- by
 default, it is always on.
 
-@ The outer shell here has two purposes. One is to copy the specification
-onto the local stack frame and then compile that copy -- useful since
-compilation may alter its contents. The other purpose, and this is not to
-be dismissed lightly, is to ensure correct indentation in the log when
-we exit unexpectedly, for instance due to a problem.
+@ And the same in a constant context:
 
-@ =
-void Specifications::Compiler::compile_inner(value_holster *VH, parse_node *spec) {
-	LOGIF(EXPRESSIONS, "Compiling: $P\n", spec);
-	spec = NonlocalVariables::substitute_constants(spec);
+=
+void CompileSpecifications::to_array_entry(parse_node *spec) {
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, TRUE);
+	inter_ti v1 = 0, v2 = 0;
+	Holsters::unholster_pair(&VH, &v1, &v2);
+	Emit::array_generic_entry(v1, v2);
+}
 
+void CompileSpecifications::to_array_entry_promoting(parse_node *value, kind *K_wanted) {
+	CompileSpecifications::to_array_entry(
+		CompileSpecifications::cast(value, K_wanted));
+}
+
+void CompileSpecifications::to_code_val(kind *K, parse_node *spec) {
+	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, FALSE);
+}
+
+@ A variation on this is to compile a specification which represents
+a value in a context where a particular kind of value is expected:
+
+=
+void CompileSpecifications::to_code_val_promoting(parse_node *value, kind *K_wanted) {
+	RTKinds::notify_of_use(K_wanted);
+	kind *K_found = Specifications::to_kind(value);
+	RTKinds::notify_of_use(K_found);
+
+	if ((K_understanding) && (Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
+		Node::set_kind_of_value(value, K_understanding);
+		K_found = K_understanding;
+	}
+
+	int down = FALSE;
+	RTKinds::emit_cast_call(K_found, K_wanted, &down);
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(SPECIFICATIONS_CMODE);
-	LOG_INDENT;
-	parse_node breakable_copy = *spec;
-	Specifications::Compiler::spec_compile_primitive(VH, &breakable_copy);
-	LOG_OUTDENT;
+	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
+	CompileSpecifications::to_code_val(K_value, value);
+	END_COMPILATION_MODE;
+	if (down) Produce::up(Emit::tree());
+}
+
+
+
+
+void CompileSpecifications::holster_constant(value_holster *VH, parse_node *value, kind *K_wanted) {
+	CompileSpecifications::to_holster(VH,
+		CompileSpecifications::cast(value, K_wanted), TRUE);
+}
+
+parse_node *CompileSpecifications::cast(parse_node *value, kind *K_wanted) {
+	RTKinds::notify_of_use(K_wanted);
+	value = LiteralReals::promote_number_if_necessary(value, K_wanted);
+	return value;
+}
+
+void CompileSpecifications::to_pair(inter_ti *v1, inter_ti *v2, parse_node *spec) {
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, FALSE);
+	Holsters::unholster_pair(&VH, v1, v2);
 	END_COMPILATION_MODE;
 }
 
-@ So this is where the compilation is done, or rather, delegated:
+void CompileSpecifications::to_holster(value_holster *VH, parse_node *spec, int c) {
+	LOGIF(EXPRESSIONS, "Compiling: $P\n", spec);
+	BEGIN_COMPILATION_MODE;
+	if (c) {
+		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_ENTER(CONSTANT_CMODE);
+	}	
+	spec = NonlocalVariables::substitute_constants(spec);
 
-=
-void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_node *spec) {
+	LOG_INDENT;
 	kind *K_found = Specifications::to_kind(spec);
 	RTKinds::notify_of_use(K_found);
 
@@ -114,8 +164,9 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 		Lvalues::compile(VH, spec);
 	} else if (Rvalues::is_rvalue(spec)) {
 		Rvalues::compile(VH, spec);
-		if ((VH->vhmode_provided == INTER_DATA_VHMODE) && (VH->vhmode_wanted == INTER_VAL_VHMODE)) {
-			Holsters::to_val_mode(Emit::tree(), VH);
+		if ((VH->vhmode_provided == INTER_DATA_VHMODE) &&
+			(VH->vhmode_wanted == INTER_VAL_VHMODE)) {
+			Holsters::unholster_to_code_val(Emit::tree(), VH);
 		}
 	} else if (Specifications::is_condition(spec)) {
 		Conditions::compile(VH, spec);
@@ -123,88 +174,6 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 	if (dereffed) {
 		Produce::up(Emit::tree());
 	}
-}
-
-@ A variation on this is to compile a specification which represents
-a value in a context where a particular kind of value is expected:
-
-=
-void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	kind *K_found = Specifications::to_kind(value);
-	RTKinds::notify_of_use(K_found);
-
-	if ((K_understanding) && (Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
-		Node::set_kind_of_value(value, K_understanding);
-		K_found = K_understanding;
-	}
-
-	int down = FALSE;
-	RTKinds::emit_cast_call(K_found, K_wanted, &down);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
-	Specifications::Compiler::emit_as_val(K_value, value);
+	LOG_OUTDENT;
 	END_COMPILATION_MODE;
-	if (down) Produce::up(Emit::tree());
-}
-
-@ And the same in a constant context:
-
-=
-void Specifications::Compiler::compile_constant_to_kind_vh(value_holster *VH, parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	Specifications::Compiler::compile_inner(VH, Specifications::Compiler::cast_constant(value, K_wanted));
-	END_COMPILATION_MODE;
-}
-
-void Specifications::Compiler::emit_constant_to_kind(parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	parse_node *casted = Specifications::Compiler::cast_constant(value, K_wanted);
-	END_COMPILATION_MODE;
-	Specifications::Compiler::emit(casted);
-}
-
-void Specifications::Compiler::emit_constant_to_kind_as_val(parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	parse_node *casted = Specifications::Compiler::cast_constant(value, K_wanted);
-	END_COMPILATION_MODE;
-	Specifications::Compiler::emit_as_val(K_value, casted);
-}
-
-parse_node *Specifications::Compiler::cast_constant(parse_node *value, kind *to) {
-	kind *from = Specifications::to_kind(value);
-	if ((Kinds::eq(from, K_number)) && (Kinds::eq(to, K_real_number))) {
-		wording W = Node::get_text(value);
-		if (<s-literal-real-number>(W)) value = <<rp>>;
-		else internal_error("can't parse integer as real");
-	}
-	return value;
-}
-
-void Specifications::Compiler::emit(parse_node *spec) {
-	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	Specifications::Compiler::compile_inner(&VH, spec);
-	END_COMPILATION_MODE;
-
-	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_pair(&VH, &v1, &v2);
-	Emit::array_generic_entry(v1, v2);
-}
-
-void Specifications::Compiler::emit_as_val(kind *K, parse_node *spec) {
-	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	Specifications::Compiler::compile_inner(&VH, spec);
 }

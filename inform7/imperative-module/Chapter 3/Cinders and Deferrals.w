@@ -93,7 +93,7 @@ int Calculus::Deferrals::Cinders::cind_find_in_term_emit(pcalc_term *pt, int cin
 	if (pt->constant) {
 		if (Calculus::Deferrals::Cinders::spec_needs_to_be_cindered(pt->constant)) {
 			pt->cinder = cinder_number++;
-			Specifications::Compiler::emit_as_val(K_value, pt->constant);
+			CompileSpecifications::to_code_val(K_value, pt->constant);
 			current_pdef->cinder_kinds[pt->cinder] =
 				Specifications::to_kind(pt->constant);
 			*started = TRUE;

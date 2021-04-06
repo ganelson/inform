@@ -213,7 +213,7 @@ int BibliographicData::story_author_is(text_stream *p) {
 		TEMPORARY_TEXT(TEMP)
 		wording W = Node::get_text(spec);
 		int w1 = Wordings::first_wn(W);
-		BibliographicData::compile_bibliographic_text(TEMP, Lexer::word_text(w1));
+		BibliographicData::compile_bibliographic_text(TEMP, Lexer::word_text(w1), HTML_BIBTEXT_MODE);
 		if (Str::eq(TEMP, p)) result = TRUE;
 		DISCARD_TEXT(TEMP)
 		return result;
@@ -259,14 +259,19 @@ on global variables, which allow the bibliographic text writing code to
 configure Inform for its current purposes. On non-empty strings this routine
 therefore splits into one of three independent methods.
 
+@d XML_BIBTEXT_MODE 1
+@d TRUNCATE_BIBTEXT_MODE 2
+@d I6_BIBTEXT_MODE 3
+@d HTML_BIBTEXT_MODE 4
+
 =
-void BibliographicData::compile_bibliographic_text(OUTPUT_STREAM, wchar_t *p) {
+void BibliographicData::compile_bibliographic_text(OUTPUT_STREAM, wchar_t *p, int mode) {
 	if (p == NULL) return;
-	if (TEST_COMPILATION_MODE(COMPILE_TEXT_TO_XML_CMODE))
+	if (mode == XML_BIBTEXT_MODE)
 		@<Compile bibliographic text as XML respecting Treaty of Babel rules@>;
-	if (TEST_COMPILATION_MODE(TRUNCATE_TEXT_CMODE))
+	if (mode == TRUNCATE_BIBTEXT_MODE)
 		@<Compile bibliographic text as a truncated filename@>;
-	if (TEST_COMPILATION_MODE(COMPILE_TEXT_TO_I6_CMODE))
+	if ((encode_constant_text_bibliographically) || (mode == I6_BIBTEXT_MODE))
 		@<Compile bibliographic text as an I6 string@>
 	@<Compile bibliographic text as HTML@>;
 }
@@ -382,7 +387,7 @@ otherwise it's much the same.
 @ This code is used to work out a good filename for something given a name
 inside Inform. For instance, if a project is called
 
->> "St. Bartholemew's Fair: \'Etude for a Push-Me/Pull-You Machine"
+>> "St. Bartholemew's Fair: Etude for a Push-Me/Pull-You Machine"
 
 then what would be a good filename for its released story file?
 

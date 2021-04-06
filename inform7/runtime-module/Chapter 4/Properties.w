@@ -321,13 +321,7 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 
 void RTProperties::compile_vp_value(value_holster *VH, property *prn, parse_node *val) {
 	kind *K = ValueProperties::kind(prn);
-	if (K) Specifications::Compiler::compile_constant_to_kind_vh(VH, val, K);
-	else {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Specifications::Compiler::compile_inner(VH, val);
-		END_COMPILATION_MODE;
-	}
+	CompileSpecifications::holster_constant(VH, val, K);
 }
 
 void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {

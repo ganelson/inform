@@ -62,7 +62,7 @@ void RTActionPatterns::emit_try_action_parameter(parse_node *spec, kind *require
 	if (Dash::check_value(spec, required_kind)) {
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Specifications::Compiler::emit_as_val(K_object, spec);
+		CompileSpecifications::to_code_val(K_object, spec);
 		END_COMPILATION_MODE;
 	}
 }
@@ -143,7 +143,7 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			Produce::down(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
+				CompileSpecifications::to_code_val(K_value, I6_var_TS);
 			Produce::up(Emit::tree());
 	}
 
@@ -171,10 +171,10 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
 					Produce::down(Emit::tree());
 						Produce::ref_symbol(Emit::tree(), K_value, ct_0_s);
-						Specifications::Compiler::emit_as_val(K_value, spec->down->next);
+						CompileSpecifications::to_code_val(K_value, spec->down->next);
 					Produce::up(Emit::tree());
-					Specifications::Compiler::emit_as_val(K_value, spec->down);
-					Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
+					CompileSpecifications::to_code_val(K_value, spec->down);
+					CompileSpecifications::to_code_val(K_value, I6_var_TS);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			force_proposition = FALSE;
@@ -194,7 +194,7 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 					Produce::down(Emit::tree());
-						Specifications::Compiler::emit_as_val(K_value, spec);
+						CompileSpecifications::to_code_val(K_value, spec);
 						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_FROM_HL));
 						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_WORDS_HL));
 					Produce::up(Emit::tree());
@@ -212,8 +212,8 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 				if (adapt_region) {
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Produce::down(Emit::tree());
-						Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
-						Specifications::Compiler::emit_as_val(K_value, spec);
+						CompileSpecifications::to_code_val(K_value, I6_var_TS);
+						CompileSpecifications::to_code_val(K_value, spec);
 					Produce::up(Emit::tree());
 					force_proposition = FALSE;
 				}
@@ -227,8 +227,8 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			(Instances::of_kind(Descriptions::to_instance(spec), K_region)))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 			Produce::down(Emit::tree());
-				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
-				Specifications::Compiler::emit_as_val(K_value, spec);
+				CompileSpecifications::to_code_val(K_value, I6_var_TS);
+				CompileSpecifications::to_code_val(K_value, spec);
 			Produce::up(Emit::tree());
 		}
 		force_proposition = FALSE;
@@ -283,7 +283,7 @@ void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) 
 			literal_text *lt = TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ea->first_noun));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 			DISCARD_TEXT(BC)
-		} else Specifications::Compiler::emit(ea->first_noun);
+		} else CompileSpecifications::to_array_entry(ea->first_noun);
 	} else {
 		Emit::array_numeric_entry(0);
 	}
@@ -292,12 +292,12 @@ void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) 
 			request_bits = request_bits | 32;
 			literal_text *lt = TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ea->second_noun));
 			Emit::array_iname_entry(lt->lt_sba_iname);
-		} else Specifications::Compiler::emit(ea->second_noun);
+		} else CompileSpecifications::to_array_entry(ea->second_noun);
 	} else {
 		Emit::array_numeric_entry(0);
 	}
 	if (ea->actor) {
-		Specifications::Compiler::emit(ea->actor);
+		CompileSpecifications::to_array_entry(ea->actor);
 	} else
 		Emit::array_iname_entry(RTInstances::iname(I_yourself));
 	Emit::array_numeric_entry((inter_ti) request_bits);
@@ -781,7 +781,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			Produce::up(Emit::tree());
 			break;
 		case WHEN_CONDITION_HOLDS_CPMC:
-			Specifications::Compiler::emit_as_val(K_value, APClauses::spec(ap, WHEN_AP_CLAUSE));
+			CompileSpecifications::to_code_val(K_value, APClauses::spec(ap, WHEN_AP_CLAUSE));
 			break;
 	}
 
@@ -793,7 +793,7 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	if (APClauses::spec(ap, NOUN_AP_CLAUSE) == NULL)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
-		Specifications::Compiler::emit_as_val(K_value, APClauses::spec(ap, NOUN_AP_CLAUSE));
+		CompileSpecifications::to_code_val(K_value, APClauses::spec(ap, NOUN_AP_CLAUSE));
 	int L = ActionNameLists::length(ap->action_list);
 	if (L == 0)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);

@@ -44,10 +44,7 @@ the Blorb-file's filename won't be too long for the file system.
 @<Compose the blorbed story filename into the TEMP stream@> =
 	if ((story_title_VAR != NULL) &&
 		(VariableSubjects::has_initial_value_set(story_title_VAR))) {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_ENTER(TRUNCATE_TEXT_CMODE);
-		BlurbFile::write_var_to_text(TEMP, story_title_VAR);
-		END_COMPILATION_MODE;
+		BlurbFile::write_var_to_text(TEMP, story_title_VAR, TRUNCATE_BIBTEXT_MODE);
 	} else WRITE_TO(TEMP, "story");
 	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Task::vm()));
 
@@ -122,41 +119,36 @@ brackets [THUS].
 
 	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		WRITE("placeholder [RELEASE] = \"");
-		BlurbFile::write_var_to_text(OUT, story_release_number_VAR);
+		BlurbFile::write_var_to_text(OUT, story_release_number_VAR, XML_BIBTEXT_MODE);
 		WRITE("\"\n");
 	} else WRITE("placeholder [RELEASE] = \"1\"\n");
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
-
 	if (VariableSubjects::has_initial_value_set(story_creation_year_VAR)) {
 		WRITE("placeholder [YEAR] = \"");
-		BlurbFile::write_var_to_text(OUT, story_creation_year_VAR);
+		BlurbFile::write_var_to_text(OUT, story_creation_year_VAR, XML_BIBTEXT_MODE);
 		WRITE("\"\n");
 	} else WRITE("placeholder [YEAR] = \"%d\"\n", (the_present->tm_year)+1900);
 
 	if (VariableSubjects::has_initial_value_set(story_title_VAR)) {
 		NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
 		WRITE("placeholder [TITLE] = \"");
-		BlurbFile::write_var_to_text(OUT, story_title_VAR);
+		BlurbFile::write_var_to_text(OUT, story_title_VAR, XML_BIBTEXT_MODE);
 		WRITE("\"\n");
 	} else WRITE("placeholder [TITLE] = \"Untitled\"\n");
 
 	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
 		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
 		WRITE("placeholder [AUTHOR] = \"");
-		BlurbFile::write_var_to_text(OUT, story_author_VAR);
+		BlurbFile::write_var_to_text(OUT, story_author_VAR, XML_BIBTEXT_MODE);
 		WRITE("\"\n");
 	} else WRITE("placeholder [AUTHOR] = \"Anonymous\"\n");
 
 	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
 		NonlocalVariables::initial_value_as_plain_text(story_description_VAR);
 		WRITE("placeholder [BLURB] = \"");
-		BlurbFile::write_var_to_text(OUT, story_description_VAR);
+		BlurbFile::write_var_to_text(OUT, story_description_VAR, XML_BIBTEXT_MODE);
 		WRITE("\"\n");
 	} else WRITE("placeholder [BLURB] = \"A work of interactive fiction.\"\n");
-
-	END_COMPILATION_MODE;
 
 @<Give instructions about source text, solution and library card@> =
 	if (rel->release_source) {
@@ -328,7 +320,7 @@ void BlurbFile::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
 }
 
 @ =
-int BlurbFile::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv) {
+int BlurbFile::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv, int mode) {
 	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		parse_node *val =
 			NonlocalVariables::substitute_constants(
@@ -340,14 +332,14 @@ int BlurbFile::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv) {
 		} else {
 			if (Kinds::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
+				CompileSpecifications::holster_constant(&VH, val, K);
 				inter_ti v1 = 0, v2 = 0;
 				Holsters::unholster_pair(&VH, &v1, &v2);
 				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);
-				BibliographicData::compile_bibliographic_text(OUT, Lexer::word_text(w1));
+				BibliographicData::compile_bibliographic_text(OUT, Lexer::word_text(w1), mode);
 			}
 		}
 		return TRUE;

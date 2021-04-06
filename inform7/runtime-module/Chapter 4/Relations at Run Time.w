@@ -1774,7 +1774,7 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	} else {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
-			Specifications::Compiler::emit_as_val(K_value, spec);
+			CompileSpecifications::to_code_val(K_value, spec);
 		Produce::up(Emit::tree());
 	}
 
@@ -1884,8 +1884,8 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
-					Specifications::Compiler::emit_as_val(K_value, spec0);
-					Specifications::Compiler::emit_as_val(K_value, spec1);
+					CompileSpecifications::to_code_val(K_value, spec0);
+					CompileSpecifications::to_code_val(K_value, spec1);
 				Produce::up(Emit::tree());
 			}
 			Functions::end(save);

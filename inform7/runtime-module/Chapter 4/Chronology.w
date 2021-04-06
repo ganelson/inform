@@ -662,7 +662,7 @@ a file stream, thus allowing rewinding:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, new_s);
-				Specifications::Compiler::emit_as_val(K_value, spec);
+				CompileSpecifications::to_code_val(K_value, spec);
 			Produce::up(Emit::tree());
 		}
 	} else {

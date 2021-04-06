@@ -410,7 +410,7 @@ void RTVariables::emit_initial_value(nonlocal_variable *nlv) {
 void RTVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	RTVariables::compile_initial_value_vh(&VH, nlv);
-	Holsters::to_val_mode(Emit::tree(), &VH);
+	Holsters::unholster_to_code_val(Emit::tree(), &VH);
 }
 
 void RTVariables::seek_initial_value(inter_name *iname, inter_ti *v1,
@@ -432,7 +432,7 @@ void RTVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable 
 		current_sentence = VariableSubjects::origin_of_initial_value(nlv);
 		if (Lvalues::get_storage_form(val) == NONLOCAL_VARIABLE_NT)
 			@<Issue a problem for one variable set equal to another@>
-		else Specifications::Compiler::compile_constant_to_kind_vh(VH, val, nlv->nlv_kind);
+		else CompileSpecifications::holster_constant(VH, val, nlv->nlv_kind);
 	}
 }
 

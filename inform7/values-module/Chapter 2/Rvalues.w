@@ -647,7 +647,7 @@ kinds of value:
 				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 				Produce::down(Emit::tree()); downs++;
 			}
-			Specifications::Compiler::emit_as_val(K_value, term);
+			CompileSpecifications::to_code_val(K_value, term);
 		}
 		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 		return;

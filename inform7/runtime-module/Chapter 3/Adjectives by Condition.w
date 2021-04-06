@@ -62,7 +62,7 @@ int Phrases::Condition::generate_in_support_function(adjective_meaning_family *f
 							Produce::inv_primitive(Emit::tree(), NOT_BIP);
 							Produce::down(Emit::tree());
 						}
-						Specifications::Compiler::emit_as_val(K_number, spec);
+						CompileSpecifications::to_code_val(K_number, spec);
 						if (def->format == -1) {
 							Produce::up(Emit::tree());
 						}

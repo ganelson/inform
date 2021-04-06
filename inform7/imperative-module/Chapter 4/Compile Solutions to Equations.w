@@ -215,7 +215,7 @@ void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 	switch (tok->eqn_type) {
 		case SYMBOL_EQN:
 			if (tok->leaf_symbol->var_const)
-				Specifications::Compiler::emit_as_val(K_value, tok->leaf_symbol->var_const);
+				CompileSpecifications::to_code_val(K_value, tok->leaf_symbol->var_const);
 			else if (tok->leaf_symbol->local_map) {
 				if (tok->leaf_symbol->promote_local_to_real) {
 					Produce::inv_call_iname(Emit::tree(),
@@ -236,7 +236,7 @@ void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 			} else internal_error("uncompilable equation node");
 			break;
 		case CONSTANT_EQN:
-			Specifications::Compiler::emit_as_val(K_value, tok->leaf_constant);
+			CompileSpecifications::to_code_val(K_value, tok->leaf_constant);
 			break;
 		case OPERATION_EQN: @<Emit a single operation@>; break;
 		default: internal_error("forbidden enode found in parsed equation");
