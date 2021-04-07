@@ -91,12 +91,13 @@ void EmitSchemas::sch_inline(value_holster *VH,
 
 	int give_kind_id = FALSE, give_comparison_routine = FALSE,
 		dereference_property = FALSE, adopt_local_stack_frame = FALSE,
-		cast_to_kind_of_other_term = FALSE, by_reference = FALSE;
+		cast_to_kind_of_other_term = FALSE, by_reference = FALSE,
+		storage_mode = COMPILE_LVALUE_NORMALLY;
 
-	if (t->inline_modifiers & STORAGE_AS_LVALUE_CMODE_ISSBM)
-		COMPILATION_MODE_ENTER(STORAGE_AS_LVALUE_CMODE);
+	if (t->inline_modifiers & LVALUE_CONTEXT_ISSBM)
+		storage_mode = COMPILE_LVALUE_AS_LVALUE;
 	if (t->inline_modifiers & STORAGE_AS_FUNCTION_CMODE_ISSBM)
-		COMPILATION_MODE_ENTER(STORAGE_AS_FUNCTION_CMODE);
+		storage_mode = COMPILE_LVALUE_AS_FUNCTION;
 	if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) give_kind_id = TRUE;
 	if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) give_comparison_routine = TRUE;
 	if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) dereference_property = TRUE;
@@ -117,7 +118,8 @@ void EmitSchemas::sch_inline(value_holster *VH,
 			kind *K = NULL;
 			if (cast_to_kind_of_other_term) K = ems->ops_termwise[1]->term_checked_as_kind;
 			EmitSchemas::sch_emit_parameter(ems->ops_termwise[0], give_kind_id,
-				give_comparison_routine, dereference_property, K, by_reference);
+				give_comparison_routine, dereference_property, K, by_reference,
+				storage_mode);
 			break;
 		}
 		case 1: {
@@ -133,7 +135,8 @@ void EmitSchemas::sch_inline(value_holster *VH,
 			kind *K = NULL;
 			if (cast_to_kind_of_other_term) K = ems->ops_termwise[0]->term_checked_as_kind;
 			EmitSchemas::sch_emit_parameter(ems->ops_termwise[1],
-				give_kind_id, give_comparison_routine, dereference_property, K, by_reference);
+				give_kind_id, give_comparison_routine, dereference_property, K, by_reference,
+				storage_mode);
 			adopted_rule_for_compilation = R;
 			adopted_marker_for_compilation = M;
 			break;
@@ -165,14 +168,15 @@ void EmitSchemas::sch_inline(value_holster *VH,
 	}
 	if (epar) {
 		EmitSchemas::sch_emit_parameter(ems->ops_termwise[1],
-			give_kind_id, give_comparison_routine, dereference_property, NULL, FALSE);
+			give_kind_id, give_comparison_routine, dereference_property, NULL, FALSE,
+			storage_mode);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	}
 
 @ =
 void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 	int give_kind_id, int give_comparison_routine,
-	int dereference_property, kind *cast_to, int by_reference) {
+	int dereference_property, kind *cast_to, int by_reference, int storage_mode) {
 	if (give_kind_id) {
 		if (pt) RTKinds::emit_weak_id_as_val(pt->term_checked_as_kind);
 	} else if (give_comparison_routine) {
@@ -188,11 +192,9 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 			pcalc_term cpt = *pt;
-			Terms::emit(cpt);
+			Terms::emit(cpt, cast_to);
 			END_COMPILATION_MODE;
 		} else {
-			int down = FALSE;
-			RTKinds::emit_cast_call(pt->term_checked_as_kind, cast_to, &down);
 			pcalc_term cpt = *pt;
 			if ((dereference_property) &&
 				(Node::is(cpt.constant, CONSTANT_NT))) {
@@ -203,8 +205,17 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 							Node::duplicate(cpt.constant),
 							Rvalues::new_self_object_constant()));
 			}
-			Terms::emit(cpt);
-			if (down) Produce::up(Emit::tree());
+LOGIF(MATCHING, "\n\n*** Heya $P\n\n", cpt.constant);
+	if (storage_mode != COMPILE_LVALUE_NORMALLY) {
+		if ((cpt.constant) && (Lvalues::is_lvalue(cpt.constant))) {
+			value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+			Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
+			return;
+		} else {
+			LOG("*** Term is $0, $P, mode is %d\n", pt, cpt.constant, storage_mode);
+		}
+	}
+			Terms::emit(cpt, cast_to);
 		}
 	}
 }

@@ -674,7 +674,6 @@
   << ('peter' == '20') >>
   Failed: proposition would not type-check
   Unable to compare thing with number
-  0 = thing. 1 = number
   Unable to compare thing with number
   BP ('peter' == '20') cannot be applied
   
@@ -712,8 +711,8 @@
   BP heaviness('the player', '6 feet 2 inches') cannot be applied
   
   23. Entire Game is a density listed in the Table of Solid Stuff
-   Laboratory
   << number('entire game') & listed_in('entire game', 'the table of solid stuff') >>
+   Laboratory
   Failed: proposition would not type-check
   Term 'entire game' is scene not number
   UP number('entire game') cannot be applied

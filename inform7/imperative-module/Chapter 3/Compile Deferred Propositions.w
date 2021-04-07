@@ -845,7 +845,7 @@ quantifier.
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
-		Terms::emit(C_stack_term[C_sp]);
+		Terms::emit(C_stack_term[C_sp], K_value);
 	Produce::up(Emit::tree());
 
 @ That just leaves the blocking, which follows the One True Brace Style. Thus:

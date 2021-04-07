@@ -11,8 +11,11 @@ We abstract this using //building: Value Holsters//, holders into which
 compiled values are placed.
 (*) How we compile sometimes depends on context: for a variable, for example,
 it may matter whether we are compiling it as lvalue (to be assigned to) or
-rvalue (to be read from). So there are a number of compilation "modes" which,
+rvalue (to be read from). So there are a number of compilation "modes"[1] which,
 in combination, express the current context.
+
+[1] At one time there were as many as 12, but there really should be as few
+as possible.
 
 @h The modes.
 |CONSTANT_CMODE| in on when we are compiling in a constant context: for example,
@@ -20,6 +23,9 @@ to compile an array entry, or the initial value of a property or variable. It
 affects, for exanple, how text substitutions and action patterns are compiled
 into values. The API below automatically manages when we are in |CONSTANT_CMODE|,
 so the rest of Inform need not worry about it.
+
+This is recursive so that if, for example, |{ X, Y, Z }| is compiled in constant
+mode then so are |X|, |Y| and |Z|.
 
 @ |BY_VALUE_CMODE| is on when we want the value compiled to be a new, independent
 copy of the data in question. Consider:
@@ -44,29 +50,11 @@ contexts in which newlines are not implied:
 =
 But this mode is on by default.
 
-@ |STORAGE_AS_LVALUE_CMODE| is a contrivance used only when compiling references
-to storage (variables, properties and such): when this mode is on, we are compiling
-in the context of an lvalue -- i.e., the storage is to be assigned to -- not an
-rvalue -- when it is just being read. Thus:
-= (text as Inform 7)
-	let R be a number;
-	now R is 76;
-	showme R plus 1;
-=
-In line 2 here, |R| is compiled in |STORAGE_AS_LVALUE_CMODE| mode; in line 3,
-it is not.
-
-@ |STORAGE_AS_FUNCTION_CMODE| is similarly limited in scope and the details are
-not important here: it's a way to access the Inter function managing the storage
-at runtime.
-
 @ So, then, the current state is a single global variable which is a bitmap of these:
 
 @d CONSTANT_CMODE               0x00000001 /* compiling values in a constant context */
 @d BY_VALUE_CMODE               0x00000002 /* rather than by reference */
 @d IMPLY_NEWLINES_IN_SAY_CMODE  0x00000004 /* at the end, that is */
-@d STORAGE_AS_LVALUE_CMODE      0x00000008 /* compile storage as lvalue not rvalue */
-@d STORAGE_AS_FUNCTION_CMODE    0x00000010 /* compile storage to Inter function handling it */
 
 = (early code)
 int compilation_mode = BY_VALUE_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */
@@ -225,25 +213,27 @@ values, a process called "promotion".
 
 =
 parse_node *CompileSpecifications::cast_constant(parse_node *value, kind *K_wanted) {
+	value = NonlocalVariables::substitute_constants(value);
 	RTKinds::notify_of_use(K_wanted);
 	value = LiteralReals::promote_number_if_necessary(value, K_wanted);
-	return value;
-}
-
-@ In a value context we instead compile code to perform the conversion at
-runtime, and this is more powerful.
-
-=
-parse_node *CompileSpecifications::cast_in_val_mode(parse_node *value, kind *K_wanted,
-	int *down) {
-	RTKinds::notify_of_use(K_wanted);
 	kind *K_found = Specifications::to_kind(value);
-	RTKinds::notify_of_use(K_found);
 	if ((K_understanding) &&
 		(Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
 		Node::set_kind_of_value(value, K_understanding);
 		K_found = K_understanding;
 	}
+	return value;
+}
+
+@ In a value context we can additionally compile code to perform the conversion
+at runtime, which extends the range of promotions we can make.
+
+=
+parse_node *CompileSpecifications::cast_in_val_mode(parse_node *value, kind *K_wanted,
+	int *down) {
+	value = CompileSpecifications::cast_constant(value, K_wanted);
+	kind *K_found = Specifications::to_kind(value);
+	RTKinds::notify_of_use(K_found);
 	RTKinds::emit_cast_call(K_found, K_wanted, down);
 	return value;
 }

@@ -358,7 +358,6 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 	int result = BinaryPredicateFamilies::typecheck(bp, kinds_of_terms, kinds_required, tck);
 	if (result == NEVER_MATCH_SAYING_WHY_NOT) {
 		kind *kinds_dereferencing_properties[2];
-		LOG("0 = %u. 1 = %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		kinds_dereferencing_properties[0] = Kinds::dereference_properties(kinds_of_terms[0]);
 		kinds_dereferencing_properties[1] = kinds_of_terms[1];
 		int r2 = BinaryPredicateFamilies::typecheck(bp, kinds_dereferencing_properties, kinds_required, tck);

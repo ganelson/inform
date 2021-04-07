@@ -32,6 +32,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 		#endif
 	}
 	@<Choose which form of arithmetic and promotion@>;
+	@<Optimise promotions from number to real number@>;
 	if (reduce_modulo_1440) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL));
 		Produce::down(Emit::tree());
@@ -88,6 +89,19 @@ integer 3 is promoted to real.
 			use_fp = FALSE; promote_X = FALSE; promote_Y = FALSE;
 		}
 	}
+
+@ Making this optimisation ensures that if X or Y are literal |K_number| values
+then they will be converted to literal |K_real_number| values at compile time
+rather than at runtime, saving a function call in cases like
+= (text as Inform 7)
+	let the magic value be 4 + pi;
+=
+where there is no need to convert 4 to 4.0 at runtime; we can simply reinterpret
+it as a real.
+
+@<Optimise promotions from number to real number@> =
+	if ((promote_X) && (Kinds::eq(KX, K_number))) { promote_X = FALSE; KX = K_real_number; }
+	if ((promote_Y) && (Kinds::eq(KY, K_number))) { promote_Y = FALSE; KY = K_real_number; }
 
 @<Emit plus@> =
 	if (use_fp) {

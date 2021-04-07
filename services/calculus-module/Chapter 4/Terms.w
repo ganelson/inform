@@ -202,7 +202,7 @@ value, because this might not yet have been checked otherwise.
 
 =
 #ifdef CORE_MODULE
-void Terms::emit(pcalc_term pt) {
+void Terms::emit(pcalc_term pt, kind *K) {
 	if (pt.variable >= 0) {
 		local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);
 		if (lvar == NULL) {
@@ -219,7 +219,7 @@ void Terms::emit(pcalc_term pt) {
 		} else {
 			if (Specifications::is_phrasal(pt.constant))
 				Dash::check_value(pt.constant, NULL);
-			CompileSpecifications::to_code_val(K_value, pt.constant);
+			CompileSpecifications::to_code_val_of_kind(pt.constant, K);
 		}
 		return;
 	}

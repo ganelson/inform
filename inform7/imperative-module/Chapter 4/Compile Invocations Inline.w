@@ -395,13 +395,13 @@ this list, the original will change.
 @ And, variedly:
 
 @<Inline annotation "by-reference-blank-out"@> =
-	Lvalues::compile_table_reference(VH, supplied, FALSE, TRUE);
+	Lvalues::compile_table_reference(VH, supplied, FALSE, TRUE, 0);
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ And, variedly:
 
 @<Inline annotation "reference-exists"@> =
-	Lvalues::compile_table_reference(VH, supplied, TRUE, FALSE);
+	Lvalues::compile_table_reference(VH, supplied, TRUE, FALSE, 0);
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ This is a variant which checks that the reference is to an lvalue, that is,

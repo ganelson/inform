@@ -253,8 +253,29 @@ local_variable *Lvalues::get_local_variable_if_any(parse_node *spec) {
 We finally reach the compilation routine which produces an I6 expression
 evaluating to the contents of the storage item specified.
 
+|COMPILE_LVALUE_AS_LVALUE| is a mode used only when the lvalue really is being
+compiled as the recipient of an assignment, rather than being read. Thus:
+= (text as Inform 7)
+	let R be a number;
+	now R is 76;
+	showme R plus 1;
+=
+In line 2 here, |R| must be compiled in |COMPILE_LVALUE_AS_LVALUE| mode; in line 3,
+it must not be.
+
+|COMPILE_LVALUE_AS_FUNCTION| is a way to access the Inter function managing the
+storage at runtime. (This can be accessed from an I6 schema.)
+
+@d COMPILE_LVALUE_NORMALLY 0
+@d COMPILE_LVALUE_AS_LVALUE 1
+@d COMPILE_LVALUE_AS_FUNCTION 2
+
 =
 void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
+	Lvalues::compile_in_mode(VH, spec_found, COMPILE_LVALUE_NORMALLY);
+}
+
+void Lvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, int storage_mode) {
 	switch (Node::get_type(spec_found)) {
 		case LOCAL_VARIABLE_NT: @<Compile a local variable specification@>;
 		case NONLOCAL_VARIABLE_NT: @<Compile a non-local variable specification@>;
@@ -293,17 +314,17 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
-	if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
+	if (storage_mode == 2) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
-		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+		if (storage_mode != 1) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
 			Produce::down(Emit::tree());
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		CompileSpecifications::to_code_val(K_value, prop_spec);
-		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+		if (storage_mode != 1) {
 			Produce::up(Emit::tree());
 		}
 	}
@@ -360,16 +381,16 @@ object as produced the original text containing the substitution.
 	if (spec_found->down == NULL) internal_error("LIST_OF with null arg 0");
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
-	if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
+	if (storage_mode == 2) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
-		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+		if (storage_mode != 1) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 			Produce::down(Emit::tree());
 		}
 		CompileSpecifications::to_code_val_by_reference(K_value, spec_found->down);
 		CompileSpecifications::to_code_val(K_value, spec_found->down->next);
-		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+		if (storage_mode != 1) {
 			Produce::up(Emit::tree());
 		}
 	}
@@ -378,12 +399,12 @@ object as produced the original text containing the substitution.
 @ Table entries are simple too, but come in four variant forms:
 
 @<Compile a table entry specification@> =
-	Lvalues::compile_table_reference(VH, spec_found, FALSE, FALSE);
+	Lvalues::compile_table_reference(VH, spec_found, FALSE, FALSE, storage_mode);
 	return;
 
 @ =
 void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
-	int exists, int blank_out) {
+	int exists, int blank_out, int storage_mode) {
 	inter_name *lookup = Hierarchy::find(TABLELOOKUPENTRY_HL);
 	inter_name *lookup_corr = Hierarchy::find(TABLELOOKUPCORR_HL);
 	if (exists) {
@@ -393,12 +414,12 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 
 	switch(Node::no_children(spec_found)) {
 		case 1:
-			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
+			if (storage_mode == 2) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
 				LocalVariables::used_ct_locals();
 				LocalVariables::add_table_lookup();
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
@@ -412,7 +433,7 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::up(Emit::tree());
 				}
 			}
@@ -421,10 +442,10 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			break;
 		case 3:
-			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
+			if (storage_mode == 2) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
@@ -434,16 +455,16 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::up(Emit::tree());
 				}
 			}
 			break;
-		case 4:
-			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
+		case 4:	
+			if (storage_mode == 2) {
 				Produce::val_iname(Emit::tree(), K_value, lookup_corr);
 			} else {
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup_corr);
 					Produce::down(Emit::tree());
 				}
@@ -454,7 +475,7 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
+				if (storage_mode != 1) {
 					Produce::up(Emit::tree());
 				}
 			}
