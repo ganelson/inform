@@ -119,6 +119,25 @@ substitution; for instance, when compiling
 we'll compile a call to a routine like |TS_1()|, and make a note to compile
 that routine later. This appearance of the routine name is called the "cue".
 
+In a value context, though, things may differ if we are dealing with a text
+substitution referring to local variables. Consider for example:
+= (text as Inform 7)
+	let X be 17;
+	write "remember [X]" to the file of Memos;
+=
+This is a context where it's clear what it means to refer to the local variable
+|X| in the text. But this is less clear:
+= (text as Inform 7)
+	let the cage be a random container in the Discount Cage Warehouse;
+	now can't exit closed containers rule response (A) is "As bad as [a cage].";
+=
+The trouble is that the response text will be needed in stack frames other
+than this one, i.e., when the local variable |cage| has long since
+disappeared. The value of |cage| must be "captured", and we need the response
+text to be some kind of closure. In fact what we do is simpler -- we expand
+the text and stored it as what it expands to now, not a method for expanding
+it later. (This avoids issues of garbage collection on the captured values.)
+
 =
 void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 	if (adopted_rule_for_compilation) {
@@ -129,14 +148,15 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 		@<Write the actual cue@>;
 	} else {
 		if (Holsters::data_acceptable(VH)) {
-			int downs = 0;
-			if (TEST_COMPILATION_MODE(PERMIT_LOCALS_IN_TEXT_CMODE)) {
+			int downs = 0, captured = FALSE;
+			if (VH->vhmode_wanted == INTER_VAL_VHMODE) {
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
 				downs = LocalParking::park(phsf);
 				phsf = Frames::boxed_frame(phsf);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
 				Produce::down(Emit::tree());
 					Frames::emit_new_local_value(K_text);
+				captured = TRUE;
 			}
 			text_substitution *ts = TextSubstitutions::new_text_substitution(W, phsf,
 				adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
@@ -145,7 +165,7 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 				Emit::holster(VH, tin);
 			else
 				Produce::val_iname(Emit::tree(), K_value, tin);
-			if (TEST_COMPILATION_MODE(PERMIT_LOCALS_IN_TEXT_CMODE)) {
+			if (captured) {
 				Produce::up(Emit::tree());
 				while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 			}

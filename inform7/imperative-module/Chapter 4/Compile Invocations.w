@@ -221,7 +221,7 @@ a specific value, such as "10".
 
 @<Compile a check that this formal variable matches the token@> =
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 	parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	if (Specifications::is_description(check_against)) {
@@ -249,12 +249,12 @@ at runtime; we assign 0 to it for the sake of tidiness.
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		} else {
 			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
+			COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 			parse_node *value =
 				Invocations::get_token_as_parsed(first_inv, i);
 			kind *to_be_used_as = Specifications::to_kind(
 				idb->type_data.token_sequence[i].to_match);
-			CompileSpecifications::to_code_val_promoting(value, to_be_used_as);
+			CompileSpecifications::to_code_val_of_kind(value, to_be_used_as);
 			END_COMPILATION_MODE;
 		}
 	Produce::up(Emit::tree());

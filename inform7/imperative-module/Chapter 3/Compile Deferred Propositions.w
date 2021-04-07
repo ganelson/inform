@@ -104,7 +104,7 @@ quantifiers, either.
 	packaging_state save = Functions::begin(pdef->ppd_iname);
 
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	@<Declare the I6 local variables which will be needed by this deferral routine@>;
 	@<Compile the code inside this deferral routine@>;
 	@<Issue a problem message if the table-lookup locals were needed@>;

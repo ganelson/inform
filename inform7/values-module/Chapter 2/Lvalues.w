@@ -293,17 +293,17 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
-	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
+	if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
-		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
 			Produce::down(Emit::tree());
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		CompileSpecifications::to_code_val(K_value, prop_spec);
-		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 			Produce::up(Emit::tree());
 		}
 	}
@@ -360,19 +360,16 @@ object as produced the original text containing the substitution.
 	if (spec_found->down == NULL) internal_error("LIST_OF with null arg 0");
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
-	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
+	if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
-		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 			Produce::down(Emit::tree());
 		}
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		CompileSpecifications::to_code_val(K_value, spec_found->down);
-		END_COMPILATION_MODE;
+		CompileSpecifications::to_code_val_by_reference(K_value, spec_found->down);
 		CompileSpecifications::to_code_val(K_value, spec_found->down->next);
-		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+		if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 			Produce::up(Emit::tree());
 		}
 	}
@@ -396,12 +393,12 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 
 	switch(Node::no_children(spec_found)) {
 		case 1:
-			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
+			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
 				LocalVariables::used_ct_locals();
 				LocalVariables::add_table_lookup();
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
@@ -415,7 +412,7 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::up(Emit::tree());
 				}
 			}
@@ -424,10 +421,10 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			break;
 		case 3:
-			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
+			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
@@ -437,16 +434,16 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::up(Emit::tree());
 				}
 			}
 			break;
 		case 4:
-			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
+			if (TEST_COMPILATION_MODE(STORAGE_AS_FUNCTION_CMODE)) {
 				Produce::val_iname(Emit::tree(), K_value, lookup_corr);
 			} else {
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::inv_call_iname(Emit::tree(), lookup_corr);
 					Produce::down(Emit::tree());
 				}
@@ -457,7 +454,7 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
-				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
+				if (!(TEST_COMPILATION_MODE(STORAGE_AS_LVALUE_CMODE))) {
 					Produce::up(Emit::tree());
 				}
 			}
@@ -507,11 +504,11 @@ char *Lvalues::storage_class_schema(node_type_t storage_class, int kind_of_store
 			return "";
 		case STORE_WORD_TO_POINTER:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *!2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *!2)";
-				case TABLE_ENTRY_NT: return "*=-BlkValueCast(*$1(*%1, 5), *#2, *!2)";
-				case PROPERTY_VALUE_NT: return "*=-BlkValueCast(*+1, *#2, *!2)";
-				case LIST_ENTRY_NT: return "*=-BlkValueCast(*1, *#2, *!2)";
+				case LOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
+				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
+				case TABLE_ENTRY_NT: return "*=-BlkValueCast(*$1(*%1, 5), *#2, *2)";
+				case PROPERTY_VALUE_NT: return "*=-BlkValueCast(*+1, *#2, *2)";
+				case LIST_ENTRY_NT: return "*=-BlkValueCast(*1, *#2, *2)";
 			}
 			return "";
 		case STORE_POINTER_TO_POINTER:

@@ -71,7 +71,7 @@ void EmitSchemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, int co
 
 	BEGIN_COMPILATION_MODE;
 	if (sch->compiled->dereference_mode)
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 
 	value_holster VH;
 	if (code_mode) VH = Holsters::new(INTER_VOID_VHMODE);
@@ -93,12 +93,10 @@ void EmitSchemas::sch_inline(value_holster *VH,
 		dereference_property = FALSE, adopt_local_stack_frame = FALSE,
 		cast_to_kind_of_other_term = FALSE, by_reference = FALSE;
 
-	if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM)
-		COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
-	if (t->inline_modifiers & TREAT_AS_LVALUE_CMODE_ISSBM)
-		COMPILATION_MODE_ENTER(TREAT_AS_LVALUE_CMODE);
-	if (t->inline_modifiers & JUST_ROUTINE_CMODE_ISSBM)
-		COMPILATION_MODE_ENTER(JUST_ROUTINE_CMODE);
+	if (t->inline_modifiers & STORAGE_AS_LVALUE_CMODE_ISSBM)
+		COMPILATION_MODE_ENTER(STORAGE_AS_LVALUE_CMODE);
+	if (t->inline_modifiers & STORAGE_AS_FUNCTION_CMODE_ISSBM)
+		COMPILATION_MODE_ENTER(STORAGE_AS_FUNCTION_CMODE);
 	if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) give_kind_id = TRUE;
 	if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) give_comparison_routine = TRUE;
 	if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) dereference_property = TRUE;
@@ -107,7 +105,6 @@ void EmitSchemas::sch_inline(value_holster *VH,
 	if (t->inline_modifiers & BY_REFERENCE_ISSBM) by_reference = TRUE;
 
 	if (t->inline_command == substitute_ISINC) @<Perform substitution@>
-	else if (t->inline_command == current_sentence_ISINC) @<Perform current sentence@>
 	else if (t->inline_command == combine_ISINC) @<Perform combine@>
 	else internal_error("unimplemented command in schema");
 
@@ -145,9 +142,6 @@ void EmitSchemas::sch_inline(value_holster *VH,
 			internal_error("schemas are currently limited to *1 and *2");
 	}
 
-@<Perform current sentence@> =
-	internal_error("Seems possible after all");
-
 @<Perform combine@> =
 	int epar = TRUE;
 	if ((ems->ops_termwise[0]) && (ems->ops_termwise[1])) {
@@ -164,8 +158,8 @@ void EmitSchemas::sch_inline(value_holster *VH,
 				req_A = NULL;
 			if (!((Kinds::Behaviour::uses_pointer_values(req_B)) && (Kinds::Behaviour::definite(req_B))))
 				req_B = NULL;
-			CompileSpecifications::to_code_val_promoting(spec_A, req_A);
-			CompileSpecifications::to_code_val_promoting(spec_B, req_B);
+			CompileSpecifications::to_code_val_of_kind(spec_A, req_A);
+			CompileSpecifications::to_code_val_of_kind(spec_B, req_B);
 			epar = FALSE;
 		}
 	}
@@ -192,7 +186,7 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 	} else {
 		if (by_reference) {
 			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 			pcalc_term cpt = *pt;
 			Terms::emit(cpt);
 			END_COMPILATION_MODE;

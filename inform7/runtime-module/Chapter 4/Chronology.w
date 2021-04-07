@@ -531,7 +531,7 @@ void Chronology::past_tenses_i6_escape(void) {
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						BEGIN_COMPILATION_MODE;
-						COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+						COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 						@<Compile code to set the new state of the condition, as measured in the present@>;
 						END_COMPILATION_MODE;
 						if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {

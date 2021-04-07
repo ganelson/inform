@@ -929,7 +929,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 			Produce::down(Emit::tree());
 	} else {
 		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			EmitSchemas::emit_expand_from_locals(&loop_schema, v1, v2, TRUE);
@@ -1100,7 +1100,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 	inter_symbol *copy_var_s = LocalVariables::declare(copy_var);
 
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	Produce::inv_primitive(Emit::tree(), FOR_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);

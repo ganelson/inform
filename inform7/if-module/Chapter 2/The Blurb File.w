@@ -331,10 +331,8 @@ int BlurbFile::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv, int mode
 			if (Kinds::eq(K, K_number)) WRITE("0");
 		} else {
 			if (Kinds::eq(K, K_number)) {
-				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-				CompileSpecifications::holster_constant(&VH, val, K);
 				inter_ti v1 = 0, v2 = 0;
-				Holsters::unholster_pair(&VH, &v1, &v2);
+				CompileSpecifications::constant_to_pair(&v1, &v2, val, K);
 				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);

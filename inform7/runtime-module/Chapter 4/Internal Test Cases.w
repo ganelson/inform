@@ -284,13 +284,10 @@ void InternalTests::emit_showme(parse_node *spec) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	} else {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileSpecifications::to_code_val_by_reference(K_value, spec);
 		Produce::up(Emit::tree());
-		END_COMPILATION_MODE;
 	}
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());

@@ -34,7 +34,7 @@ void CallingFunctions::direct_function_call(tokens_packet *tokens, inter_name *i
 	@<Compute the return kind of the phrase@>;
 
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 
 	Produce::inv_call_iname(Emit::tree(), identifier);
 	Produce::down(Emit::tree());
@@ -57,7 +57,7 @@ to the tokens then follow, and finally the optional bitmap of phrase options.
 	if (Kinds::Behaviour::uses_pointer_values(return_kind))
 		Frames::emit_new_local_value(return_kind);
 	for (int k=0; k<tokens->tokens_count; k++)
-		CompileSpecifications::to_code_val_promoting(tokens->token_vals[k], tokens->token_kinds[k]);
+		CompileSpecifications::to_code_val_of_kind(tokens->token_vals[k], tokens->token_kinds[k]);
 	if (phrase_options != -1)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
 
@@ -72,7 +72,7 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 	@<Compute the return kind of the phrase@>;
 
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 
 	int arity = tokens->tokens_count;
 	if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;

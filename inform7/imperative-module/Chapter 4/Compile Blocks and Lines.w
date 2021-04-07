@@ -196,12 +196,7 @@ need bespoke handling:
 	if (Node::is(cs, TEST_PROPOSITION_NT)) {
 		if (rv != NEVER_MATCH) {
 			pcalc_prop *prop = Specifications::to_proposition(cs);
-			if (prop) {
-				BEGIN_COMPILATION_MODE;
-				COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
-				Calculus::Deferrals::emit_now_proposition(prop);
-				END_COMPILATION_MODE;
-			}
+			if (prop) Calculus::Deferrals::emit_now_proposition(prop);
 		}
 	} else if (Specifications::is_condition(cs))
 		@<Issue a problem message for the wrong sort of condition in a "now"@>

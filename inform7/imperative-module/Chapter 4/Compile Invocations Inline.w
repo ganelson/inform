@@ -337,45 +337,18 @@ the presence of annotations can change what we do.
 		}
 	}
 
-@ The noteworthy thing here is the switch of compilation mode on text tokens.
-It allows this:
-= (text as Inform 7)
-let X be 17; write "remember [X]" to the file of Memos;
-=
-to work, the tricky part being that the inline definition of the "write ... to..." is:
-= (text)
-	FileIO_PutContents({FN}, {T}, false);
-=
-The |{T}| bracing is the text one which triggers the mode change. The effect
-is to ensure that the token is compiled along with recordings being made of
-the current values of any local variables mentioned in it (bearing in mind
-that text includes text substitutions). This seems so obviously a good thing
-that it's hard to see why it isn't on by default. Well, it would be, except
-that then response text changes using "now" would go wrong:
-= (text as Inform 7)
-now can't exit closed containers rule response (A) is "Pesky [cage].";
-=
-The reference to "cage" in that text is to a local variable on the stack
-frame for the can't exit closed containers rule, not to the local stack frame.
-If response texts were closures able to capture variables that might be
-possible, but it would also need garbage collection at runtime, which we
-do not want.
-
 @<Compile the token value@> =
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
 	if (by_value_not_reference) {
-		COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 	} else {
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	}
 
 	LOGIF(MATCHING, "Expanding $P into '%W' with %d, %u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
 		by_value_not_reference?" (by value)":" (by reference)");
-	CompileSpecifications::to_code_val_promoting(supplied, kind_required);
-	END_COMPILATION_MODE;
+	CompileSpecifications::to_code_val_of_kind(supplied, kind_required);
 
 @h Annotation commands for bracings with natural language.
 These all modify the way a token is compiled.
@@ -514,11 +487,11 @@ problem messages are phrased differently if something goes wrong.
 	else @<Issue a problem for returning a value when none was asked@>;
 
 	if (allow_me == ALWAYS_MATCH) {
-		CompileSpecifications::to_code_val_promoting(supplied, kind_needed);
+		CompileSpecifications::to_code_val_of_kind(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Behaviour::is_object(kind_needed))) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val_promoting(supplied, kind_needed);
+			CompileSpecifications::to_code_val_of_kind(supplied, kind_needed);
 			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(kind_needed));
 		Produce::up(Emit::tree());
 	} else @<Issue a problem for returning a value of the wrong kind@>;
@@ -1098,10 +1071,7 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 	char *prototype = Lvalues::interpret_store(storage_class, K1, K2, copy_form);
 	i6_schema *sch = Calculus::Schemas::new("%s;", prototype);
 	LOGIF(KIND_CHECKING, "Inline copy: %s\n", prototype);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
 	EmitSchemas::emit_expand_from_terms(sch, &pt1, &pt2, FALSE);
-	END_COMPILATION_MODE;
 	return;
 
 @ If the |from| part is prefaced with a plus sign |+|, the new value is added
@@ -1256,8 +1226,8 @@ result would be the same without the optimisation.
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
 			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-			CompileSpecifications::to_code_val_promoting(to_say, K);
+			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
+			CompileSpecifications::to_code_val_of_kind(to_say, K);
 			END_COMPILATION_MODE;
 		Produce::up(Emit::tree());
 	} else @<Issue an inline no-such-kind problem@>;
@@ -1279,10 +1249,10 @@ result would be the same without the optimisation.
 	} else {
 		kind *K = Specifications::to_kind(to_say);
 		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val_promoting(to_say, K);
+			CompileSpecifications::to_code_val_of_kind(to_say, K);
 		Produce::up(Emit::tree());
 		END_COMPILATION_MODE;
 	}
@@ -1296,7 +1266,7 @@ result would be the same without the optimisation.
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__N_HL));
-			CompileSpecifications::to_code_val_promoting(to_say, K);
+			CompileSpecifications::to_code_val_of_kind(to_say, K);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	return;
@@ -1311,7 +1281,7 @@ language.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		CompileSpecifications::to_code_val_promoting(to_say, K);
+		CompileSpecifications::to_code_val_of_kind(to_say, K);
 	Produce::up(Emit::tree());
 	if (TargetVMs::is_16_bit(Task::vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
@@ -1337,7 +1307,7 @@ phrase applied to the named variable.
 		return;
 	}
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
@@ -1685,7 +1655,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	@<Evaluate the text as a value@>;
 
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	CompileSpecifications::to_code_val(K_value, spec);
 	END_COMPILATION_MODE;
 }

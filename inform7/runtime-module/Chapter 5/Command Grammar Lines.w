@@ -128,7 +128,7 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 						Produce::down(Emit::tree());
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
 							Produce::down(Emit::tree());
-								CompileSpecifications::to_code_val_promoting(spec, K_text);
+								CompileSpecifications::to_code_val_of_kind(spec, K_text);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());

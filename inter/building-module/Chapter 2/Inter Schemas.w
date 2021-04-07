@@ -368,7 +368,6 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 @e unknown_ISINC
 
 @e substitute_ISINC
-@e current_sentence_ISINC
 @e combine_ISINC
 
 @ The value of |inline_subcommand|, in an |INLINE_ISTT| node, must be one of:
@@ -538,7 +537,6 @@ void InterSchemas::log_ist(inter_schema_token *t) {
 	if (t->inline_modifiers & ADOPT_LOCAL_STACK_FRAME_ISSBM) LOG(" ADOPT_LOCAL_STACK_FRAME");
 	if (t->inline_modifiers & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) LOG(" CAST_TO_KIND_OF_OTHER_TERM");
 	if (t->inline_modifiers & BY_REFERENCE_ISSBM) LOG(" BY_REFERENCE");
-	if (t->inline_modifiers & PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM) LOG(" PERMIT_LOCALS_IN_TEXT_CMODE");
 }
 
 @h Lint.
@@ -1003,10 +1001,8 @@ optional, operand in |operand2|.
 	}
 	DISCARD_TEXT(pname)
 
-@ In abbreviated prototypes, |*1| and |*2| are placeholders, but a variety
-of modifiers are allowed: for example |*!1| changes the compilation mode in
-which |*1| will be compiled so that local variables will be allowed in any
-text expansion in it. The full syntax follows:
+@ In abbreviated prototypes, |*1| and |*2| are placeholders, but a number
+of modifiers are allowed. The full syntax follows:
 
 @d GIVE_KIND_ID_ISSBM					1
 @d GIVE_COMPARISON_ROUTINE_ISSBM		2
@@ -1014,22 +1010,21 @@ text expansion in it. The full syntax follows:
 @d ADOPT_LOCAL_STACK_FRAME_ISSBM		8
 @d CAST_TO_KIND_OF_OTHER_TERM_ISSBM		16
 @d BY_REFERENCE_ISSBM					32
-@d PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM	64
-@d TREAT_AS_LVALUE_CMODE_ISSBM			128
-@d JUST_ROUTINE_CMODE_ISSBM				256
+@d STORAGE_AS_LVALUE_CMODE_ISSBM	    64
+@d STORAGE_AS_FUNCTION_CMODE_ISSBM      128
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;
 	wchar_t c = Str::get_at(from, ++at);
 	int iss_bitmap = 0;
 	switch (c) {
-		case '!': iss_bitmap = iss_bitmap | PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
-		case '%': iss_bitmap = iss_bitmap | TREAT_AS_LVALUE_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
-		case '$': iss_bitmap = iss_bitmap | JUST_ROUTINE_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
+		case '!': internal_error("the '*!' schema notation has been abolished"); break;
+		case '%': iss_bitmap = iss_bitmap | STORAGE_AS_LVALUE_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
+		case '$': iss_bitmap = iss_bitmap | STORAGE_AS_FUNCTION_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
 		case '#': iss_bitmap = iss_bitmap | GIVE_KIND_ID_ISSBM; c = Str::get_at(from, ++at); break;
 		case '_': iss_bitmap = iss_bitmap | GIVE_COMPARISON_ROUTINE_ISSBM; c = Str::get_at(from, ++at); break;
 		case '+': iss_bitmap = iss_bitmap | DEREFERENCE_PROPERTY_ISSBM; c = Str::get_at(from, ++at); break;
-		case '|': iss_bitmap = iss_bitmap | (DEREFERENCE_PROPERTY_ISSBM + TREAT_AS_LVALUE_CMODE_ISSBM); c = Str::get_at(from, ++at); break;
+		case '|': iss_bitmap = iss_bitmap | (DEREFERENCE_PROPERTY_ISSBM + STORAGE_AS_LVALUE_CMODE_ISSBM); c = Str::get_at(from, ++at); break;
 		case '?': iss_bitmap = iss_bitmap | ADOPT_LOCAL_STACK_FRAME_ISSBM; c = Str::get_at(from, ++at); break;
 		case '<': iss_bitmap = iss_bitmap | CAST_TO_KIND_OF_OTHER_TERM_ISSBM; c = Str::get_at(from, ++at); break;
 		case '^': iss_bitmap = iss_bitmap | (ADOPT_LOCAL_STACK_FRAME_ISSBM + BY_REFERENCE_ISSBM); c = Str::get_at(from, ++at); break;
@@ -1047,14 +1042,6 @@ text expansion in it. The full syntax follows:
 		InterSchemas::add_token(sch, t);
 		preceding_token = t;
 		DISCARD_TEXT(T)
-		pos = at;
-	} else if (c == '?') {
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*?", 0, 0, -1);
-		t->bracing = I"*?";
-		t->inline_command = current_sentence_ISINC;
-		t->inline_modifiers = iss_bitmap;
-		InterSchemas::add_token(sch, t);
-		preceding_token = t;
 		pos = at;
 	} else if (c == '&') {
 		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*&", 0, 0, -1);

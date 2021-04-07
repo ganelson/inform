@@ -2,29 +2,81 @@
 
 To compile specifications into Inter values, conditions or void expressions.
 
-@ Specifications unite values, conditions and descriptions: see //values: Specifications//.
-They are stored as |parse_node| pointers. Here, we compile them to a 
+@h Introduction.
+Specifications unite values, conditions and descriptions: see //values: Specifications//.
+They are stored as |parse_node| pointers. In this chapter we will compile them,
+making our best effort to have a single unified process for that even though:
+(*) We may need to compile either an array entry or an Inter |val| opcode.
+We abstract this using //building: Value Holsters//, holders into which
+compiled values are placed.
+(*) How we compile sometimes depends on context: for a variable, for example,
+it may matter whether we are compiling it as lvalue (to be assigned to) or
+rvalue (to be read from). So there are a number of compilation "modes" which,
+in combination, express the current context.
 
-@ In a more traditional compiler, the code-generator would be something of a
-landmark -- one of the three or four most important stations. Here it's
-something of an anticlimax, partly because traditional "code" -- values
-and statements -- are only a small part of the I6 we have to generate,
-which also includes object and class definitions, grammar, and so on.
+@h The modes.
+|CONSTANT_CMODE| in on when we are compiling in a constant context: for example,
+to compile an array entry, or the initial value of a property or variable. It
+affects, for exanple, how text substitutions and action patterns are compiled
+into values. The API below automatically manages when we are in |CONSTANT_CMODE|,
+so the rest of Inform need not worry about it.
 
-Still, this is the key point where the actual rather than generic
-specifications -- phrases to do something, or to decide things; constants;
-variables; conditions -- finally convert into I6 code.
+@ |BY_VALUE_CMODE| is on when we want the value compiled to be a new, independent
+copy of the data in question. Consider:
+= (text as Inform 7)
+	let T be { 2, 3, 5, 7 };
+	let U be T;
+	add 11 to T;
+=
+Clearly |U| must be set to a new copy of the data in |T|, not a reference to the
+same data. So the |T| in |let U be T| is compiled by value. (This is in fact the
+default: the alternative, compilation by reference, is less often used.)
 
-@ For the most part this is "modeless" -- that is, the I6 code generated
-by a specification does not depend on any context. But not entirely so, and
-we have a small set of "C-modes", each of which slightly alters the result
-to fit some particular need.
+@ |IMPLY_NEWLINES_IN_SAY_CMODE| is on when we understand the final part of a
+text literal to be allowed to print an implied newline. For example, here it's on:
+= (text as Inform 7)
+	say "At [time of day], I like to serve afternoon tea. Indian or Chinese?";
+=
+Here the question mark has an implied newline after it. But there are other
+contexts in which newlines are not implied:
+= (text as Inform 7)
+	let the warning rubric be "Snakes!";
+=
+But this mode is on by default.
 
-The rule is that any part of Inform needing to do something in a specific
-mode should place that operation within a pair of |BEGIN_COMPILATION_MODE|
-and |END_COMPILATION_MODE| macros, in such a way that execution always
-passes from one to the other. Within those bookends, it can use either the
-enter or exit macros to switch a particular mode on or off.
+@ |STORAGE_AS_LVALUE_CMODE| is a contrivance used only when compiling references
+to storage (variables, properties and such): when this mode is on, we are compiling
+in the context of an lvalue -- i.e., the storage is to be assigned to -- not an
+rvalue -- when it is just being read. Thus:
+= (text as Inform 7)
+	let R be a number;
+	now R is 76;
+	showme R plus 1;
+=
+In line 2 here, |R| is compiled in |STORAGE_AS_LVALUE_CMODE| mode; in line 3,
+it is not.
+
+@ |STORAGE_AS_FUNCTION_CMODE| is similarly limited in scope and the details are
+not important here: it's a way to access the Inter function managing the storage
+at runtime.
+
+@ So, then, the current state is a single global variable which is a bitmap of these:
+
+@d CONSTANT_CMODE               0x00000001 /* compiling values in a constant context */
+@d BY_VALUE_CMODE               0x00000002 /* rather than by reference */
+@d IMPLY_NEWLINES_IN_SAY_CMODE  0x00000004 /* at the end, that is */
+@d STORAGE_AS_LVALUE_CMODE      0x00000008 /* compile storage as lvalue not rvalue */
+@d STORAGE_AS_FUNCTION_CMODE    0x00000010 /* compile storage to Inter function handling it */
+
+= (early code)
+int compilation_mode = BY_VALUE_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */
+
+@ The model for mode switches is that Inform will temporarily enter, or temporarily
+exit, a mode when it has particular compilation needs. It should place such
+operations within a pair of |BEGIN_COMPILATION_MODE| and |END_COMPILATION_MODE|
+macros, in such a way that execution always passes from one to the other. Within
+those bookends, it can use either the enter or exit macros to switch a particular
+mode on or off.
 
 @d BEGIN_COMPILATION_MODE
 	int status_quo_ante = compilation_mode;
@@ -41,125 +93,118 @@ enter or exit macros to switch a particular mode on or off.
 @d TEST_COMPILATION_MODE(mode)
 	(compilation_mode & mode)
 
-@d DEREFERENCE_POINTERS_CMODE     0x00000001 /* make an independent copy of the result if on the heap */
-@d IMPLY_NEWLINES_IN_SAY_CMODE    0x00000010 /* at the end, that is */
-@d PERMIT_LOCALS_IN_TEXT_CMODE    0x00000020 /* unless casting to text */
-@d CONSTANT_CMODE 			      0x00002000 /* compiling values in a constant context */
+@h An API for compiling specifications.
+When the rest of Inform wants to compile a specification, it should call one
+of the following functions.
 
-@d TREAT_AS_LVALUE_CMODE		  0x00010000 /* compile storage as lvalue not rvalue */
-@d JUST_ROUTINE_CMODE			  0x00020000 /* compile storage to Inter function handling it */
-
-= (early code)
-int compilation_mode = DEREFERENCE_POINTERS_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */
-
-@ These modes are all explained where they are used. The one used right here
-is |DEREFERENCE_POINTERS_CMODE|. This applies only when compiling a specification
-which generates a pointer value -- an I6 value which is a pointer to a larger
-block of data on the heap, such as a list or text.
-
-Inform presents such values to the end user exactly as if they are non-pointer
-values. It must always be careful to ensure that there are never two different
-I7 values each holding pointers to the same block of data, because then
-changing one would also change the other. So we ordinarily need
-to make a copy of any block of data produced as a value; this is called
-"dereferencing".
-
-But there are some circumstances -- initialising entries in an Inform 6 array,
-for instance -- where we don't want to do this, and indeed can't, because the
-code to handle dereferencing is invalid as an Inform 6 constant. The mode
-therefore exists as a way of temporarily turning off dereferencing -- by
-default, it is always on.
-
-@ And the same in a constant context:
+To begin with, compiling to array entries:
 
 =
+void CompileSpecifications::to_array_entry_of_kind(parse_node *value, kind *K_wanted) {
+	CompileSpecifications::to_array_entry(
+		CompileSpecifications::cast_constant(value, K_wanted));
+}
+
 void CompileSpecifications::to_array_entry(parse_node *spec) {
-	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	CompileSpecifications::to_holster(&VH, spec, TRUE);
 	inter_ti v1 = 0, v2 = 0;
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, TRUE, TRUE);
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	Emit::array_generic_entry(v1, v2);
 }
 
-void CompileSpecifications::to_array_entry_promoting(parse_node *value, kind *K_wanted) {
-	CompileSpecifications::to_array_entry(
-		CompileSpecifications::cast(value, K_wanted));
-}
-
-void CompileSpecifications::to_code_val(kind *K, parse_node *spec) {
-	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	CompileSpecifications::to_holster(&VH, spec, FALSE);
-}
-
-@ A variation on this is to compile a specification which represents
-a value in a context where a particular kind of value is expected:
+@ Now constants, which can be compiled either to a holster or to a pair of |inter_t|
+numbers. Use the latter as little as possible.
 
 =
-void CompileSpecifications::to_code_val_promoting(parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	kind *K_found = Specifications::to_kind(value);
-	RTKinds::notify_of_use(K_found);
+void CompileSpecifications::constant_to_holster(value_holster *VH, parse_node *value,
+	kind *K_wanted) {
+	CompileSpecifications::to_holster(VH,
+		CompileSpecifications::cast_constant(value, K_wanted), TRUE, TRUE);
+}
 
-	if ((K_understanding) && (Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
-		Node::set_kind_of_value(value, K_understanding);
-		K_found = K_understanding;
-	}
+void CompileSpecifications::constant_to_pair(inter_ti *v1, inter_ti *v2,
+	parse_node *value, kind *K_wanted) {
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	CompileSpecifications::constant_to_holster(&VH, value, K_wanted);
+	Holsters::unholster_pair(&VH, v1, v2);
+}
 
+@ A general method (i.e., not restricted to constant context) for compiling to a
+pair of |inter_t| numbers. Use this as little as possible.
+
+=
+void CompileSpecifications::to_pair(inter_ti *v1, inter_ti *v2, parse_node *spec) {
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, FALSE, TRUE);
+	Holsters::unholster_pair(&VH, v1, v2);
+}
+
+@ Finally, for compiling to Inter opcodes in a |val| context -- in other words,
+for values as they appear in imperative code rather than in data structures
+such as arrays.
+
+=
+void CompileSpecifications::to_code_val(kind *K, parse_node *spec) {
+	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, FALSE, FALSE);
+}
+
+void CompileSpecifications::to_code_val_by_reference(kind *K, parse_node *spec) {
+	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+	CompileSpecifications::to_holster(&VH, spec, FALSE, TRUE);
+}
+
+void CompileSpecifications::to_code_val_of_kind(parse_node *value, kind *K_wanted) {
 	int down = FALSE;
-	RTKinds::emit_cast_call(K_found, K_wanted, &down);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
+	value = CompileSpecifications::cast_in_val_mode(value, K_wanted, &down);
 	CompileSpecifications::to_code_val(K_value, value);
-	END_COMPILATION_MODE;
 	if (down) Produce::up(Emit::tree());
 }
 
+@ All of the functions in the above API make use of this private one:
 
-
-
-void CompileSpecifications::holster_constant(value_holster *VH, parse_node *value, kind *K_wanted) {
-	CompileSpecifications::to_holster(VH,
-		CompileSpecifications::cast(value, K_wanted), TRUE);
-}
-
-parse_node *CompileSpecifications::cast(parse_node *value, kind *K_wanted) {
-	RTKinds::notify_of_use(K_wanted);
-	value = LiteralReals::promote_number_if_necessary(value, K_wanted);
-	return value;
-}
-
-void CompileSpecifications::to_pair(inter_ti *v1, inter_ti *v2, parse_node *spec) {
+=
+void CompileSpecifications::to_holster(value_holster *VH, parse_node *spec,
+	int as_const, int by_ref) {
+	LOGIF(EXPRESSIONS, "Compiling: $P\n", spec);
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	CompileSpecifications::to_holster(&VH, spec, FALSE);
-	Holsters::unholster_pair(&VH, v1, v2);
+	if (as_const) COMPILATION_MODE_ENTER(CONSTANT_CMODE);
+	if (by_ref) COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
+	LOG_INDENT;
+	@<Compile this either by value or reference@>;
+	LOG_OUTDENT;
 	END_COMPILATION_MODE;
 }
 
-void CompileSpecifications::to_holster(value_holster *VH, parse_node *spec, int c) {
-	LOGIF(EXPRESSIONS, "Compiling: $P\n", spec);
-	BEGIN_COMPILATION_MODE;
-	if (c) {
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	}	
-	spec = NonlocalVariables::substitute_constants(spec);
+@ This implements |BY_VALUE_CMODE|. For regular values like numbers there's no
+difference, but if our value is a block value such as a list then we evaluate to
+a copy of it, not to the original. Making that copy means calling |BlkValueCopy|
+at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
+|INTER_DATA_VHMODE| holster).
 
-	LOG_INDENT;
+@<Compile this either by value or reference@> =	
+	spec = NonlocalVariables::substitute_constants(spec);
 	kind *K_found = Specifications::to_kind(spec);
 	RTKinds::notify_of_use(K_found);
-
-	int dereffed = FALSE;
-	if (TEST_COMPILATION_MODE(DEREFERENCE_POINTERS_CMODE)) {
+	int copied_a_block_value = FALSE;
+	if (TEST_COMPILATION_MODE(BY_VALUE_CMODE)) {
+		if (VH->vhmode_wanted == INTER_DATA_VHMODE)
+			internal_error("must compile by reference in INTER_DATA_VHMODE"); 
 		kind *K = Specifications::to_kind(spec);
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
 			Produce::down(Emit::tree());
 				Frames::emit_new_local_value(K);
-			dereffed = TRUE;
+			copied_a_block_value = TRUE;
 		}
 	}
+	@<Compile this@>;
+	if (copied_a_block_value) {
+		Produce::up(Emit::tree());
+	}
+
+@<Compile this@> =
 	if (Lvalues::is_lvalue(spec)) {
 		Lvalues::compile(VH, spec);
 	} else if (Rvalues::is_rvalue(spec)) {
@@ -171,9 +216,34 @@ void CompileSpecifications::to_holster(value_holster *VH, parse_node *spec, int 
 	} else if (Specifications::is_condition(spec)) {
 		Conditions::compile(VH, spec);
 	}
-	if (dereffed) {
-		Produce::up(Emit::tree());
+
+@h Casting.
+"Casting" is converting a value of one kind to a value of another but which has
+the same meaning, give or take. In a constant context, all we can cast is from
+literal |K_number| values like |31| to turn them into literal |K_real_number|
+values, a process called "promotion".
+
+=
+parse_node *CompileSpecifications::cast_constant(parse_node *value, kind *K_wanted) {
+	RTKinds::notify_of_use(K_wanted);
+	value = LiteralReals::promote_number_if_necessary(value, K_wanted);
+	return value;
+}
+
+@ In a value context we instead compile code to perform the conversion at
+runtime, and this is more powerful.
+
+=
+parse_node *CompileSpecifications::cast_in_val_mode(parse_node *value, kind *K_wanted,
+	int *down) {
+	RTKinds::notify_of_use(K_wanted);
+	kind *K_found = Specifications::to_kind(value);
+	RTKinds::notify_of_use(K_found);
+	if ((K_understanding) &&
+		(Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
+		Node::set_kind_of_value(value, K_understanding);
+		K_found = K_understanding;
 	}
-	LOG_OUTDENT;
-	END_COMPILATION_MODE;
+	RTKinds::emit_cast_call(K_found, K_wanted, down);
+	return value;
 }

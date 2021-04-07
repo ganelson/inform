@@ -321,7 +321,7 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 
 void RTProperties::compile_vp_value(value_holster *VH, property *prn, parse_node *val) {
 	kind *K = ValueProperties::kind(prn);
-	CompileSpecifications::holster_constant(VH, val, K);
+	CompileSpecifications::constant_to_holster(VH, val, K);
 }
 
 void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {

@@ -86,7 +86,7 @@ void RTTables::compile(void) {
 
 @<Compile the data structures for entry storage@> =
 	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	int blanks_array_hwm = 0; /* the high water mark of storage used in the blanks array */
 	table *t;
 	LOOP_OVER(t, table)
@@ -232,7 +232,7 @@ used to define new kinds; in this case it doesn't matter what we write, but
 			parse_node *val = Node::get_evaluation(cell);
 			if (Specifications::is_kind_like(val)) Emit::array_numeric_entry(0);
 			else if (val == NULL) internal_error("Valueless cell");
-			else CompileSpecifications::to_array_entry_promoting(val, K);
+			else CompileSpecifications::to_array_entry_of_kind(val, K);
 		#ifdef IF_MODULE
 		}
 		#endif

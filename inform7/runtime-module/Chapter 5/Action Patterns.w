@@ -59,12 +59,8 @@ void RTActionPatterns::emit_try_action_parameter(parse_node *spec, kind *require
 		}
 	}
 
-	if (Dash::check_value(spec, required_kind)) {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		CompileSpecifications::to_code_val(K_object, spec);
-		END_COMPILATION_MODE;
-	}
+	if (Dash::check_value(spec, required_kind))
+		CompileSpecifications::to_code_val_by_reference(K_object, spec);
 }
 
 @h Compiling action patterns.
