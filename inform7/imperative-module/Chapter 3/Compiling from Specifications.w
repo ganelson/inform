@@ -38,26 +38,13 @@ Clearly |U| must be set to a new copy of the data in |T|, not a reference to the
 same data. So the |T| in |let U be T| is compiled by value. (This is in fact the
 default: the alternative, compilation by reference, is less often used.)
 
-@ |IMPLY_NEWLINES_IN_SAY_CMODE| is on when we understand the final part of a
-text literal to be allowed to print an implied newline. For example, here it's on:
-= (text as Inform 7)
-	say "At [time of day], I like to serve afternoon tea. Indian or Chinese?";
-=
-Here the question mark has an implied newline after it. But there are other
-contexts in which newlines are not implied:
-= (text as Inform 7)
-	let the warning rubric be "Snakes!";
-=
-But this mode is on by default.
-
 @ So, then, the current state is a single global variable which is a bitmap of these:
 
 @d CONSTANT_CMODE               0x00000001 /* compiling values in a constant context */
 @d BY_VALUE_CMODE               0x00000002 /* rather than by reference */
-@d IMPLY_NEWLINES_IN_SAY_CMODE  0x00000004 /* at the end, that is */
 
 = (early code)
-int compilation_mode = BY_VALUE_CMODE + IMPLY_NEWLINES_IN_SAY_CMODE; /* default */
+int compilation_mode = BY_VALUE_CMODE; /* default */
 
 @ The model for mode switches is that Inform will temporarily enter, or temporarily
 exit, a mode when it has particular compilation needs. It should place such

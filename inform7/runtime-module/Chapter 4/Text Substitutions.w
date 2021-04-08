@@ -323,9 +323,6 @@ the whole thing would be circular, because that would once again generate
 a request for a new text substitution to be compiled later...
 
 @<Compile a say-phrase@> =
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
-
 	if (TargetVMs::debug_enabled(Task::vm())) {
 		Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 		Produce::down(Emit::tree());
@@ -359,11 +356,9 @@ a request for a new text substitution to be compiled later...
 	Annotations::write_int(ts_code_block->next, from_text_substitution_ANNOT, TRUE);
 	ImperativeSubtrees::accept(ts_code_block);
 
-	CompileBlocksAndLines::full_definition_body(0, ts_code_block->down);
+	CompileBlocksAndLines::full_definition_body(0, ts_code_block->down, FALSE);
 
 	Produce::rtrue(Emit::tree());
-
-	END_COMPILATION_MODE;
 	CompilationUnits::set_current_to(cm);
 
 @ See the "Responses" section for why, but we sometimes want to force

@@ -64,7 +64,7 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	if (RTRules::compile_test_head(idb, R) == FALSE) {
 		if (code_at) {
 			VerifyTree::verify_structure_from(code_at);
-			CompileBlocksAndLines::full_definition_body(1, code_at->down);
+			CompileBlocksAndLines::full_definition_body(1, code_at->down, TRUE);
 			VerifyTree::verify_structure_from(code_at);
 		}
 		current_sentence = code_at;

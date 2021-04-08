@@ -205,17 +205,14 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 							Node::duplicate(cpt.constant),
 							Rvalues::new_self_object_constant()));
 			}
-LOGIF(MATCHING, "\n\n*** Heya $P\n\n", cpt.constant);
-	if (storage_mode != COMPILE_LVALUE_NORMALLY) {
-		if ((cpt.constant) && (Lvalues::is_lvalue(cpt.constant))) {
-			value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-			Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
-			return;
-		} else {
-			LOG("*** Term is $0, $P, mode is %d\n", pt, cpt.constant, storage_mode);
-		}
-	}
-			Terms::emit(cpt, cast_to);
+			if ((storage_mode != COMPILE_LVALUE_NORMALLY) &&
+				((cpt.constant) && (Lvalues::is_lvalue(cpt.constant)))) {
+				value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+				Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
+				return;
+			} else {
+				Terms::emit(cpt, cast_to);
+			}
 		}
 	}
 }

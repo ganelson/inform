@@ -583,7 +583,7 @@ void Rvalues::compile(value_holster *VH, parse_node *spec_found) {
 	switch(Node::get_type(spec_found)) {
 		case PHRASE_TO_DECIDE_VALUE_NT:
 			CompileInvocations::list(VH,
-				spec_found->down->down, Node::get_text(spec_found));
+				spec_found->down->down, Node::get_text(spec_found), FALSE);
 			break;
 		case CONSTANT_NT: {
 			kind *kind_of_constant = Node::get_kind_of_value(spec_found);

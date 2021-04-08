@@ -431,9 +431,6 @@ a request for a new text substitution to be compiled later...
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">BEGIN_COMPILATION_MODE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">COMPILATION_MODE_EXIT</span><span class="plain-syntax">(</span><span class="identifier-syntax">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain-syntax">);</span>
-
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TargetVMs::debug_enabled</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::vm</span><span class="plain-syntax">())) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><a href="2-emt.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">IFDEBUG_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><a href="2-emt.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
@@ -467,11 +464,9 @@ a request for a new text substitution to be compiled later...
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_text_substitution_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ImperativeSubtrees::accept</span><span class="plain-syntax">(</span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">CompileBlocksAndLines::full_definition_body</span><span class="plain-syntax">(0, </span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CompileBlocksAndLines::full_definition_body</span><span class="plain-syntax">(0, </span><span class="identifier-syntax">ts_code_block</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::rtrue</span><span class="plain-syntax">(</span><a href="2-emt.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-cu.html#SP6" class="function-link"><span class="function-syntax">CompilationUnits::set_current_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cm</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ts.html#SP11">&#167;11</a>.</li></ul>

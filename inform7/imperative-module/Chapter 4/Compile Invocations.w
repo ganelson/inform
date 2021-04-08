@@ -8,7 +8,8 @@ to carry it out. The code in this section does some complicated things; the
 test grpup |:invocations| may be helpful when maintaining it.
 
 =
-void CompileInvocations::list(value_holster *VH, parse_node *invl, wording W) {
+void CompileInvocations::list(value_holster *VH, parse_node *invl, wording W,
+		int allow_implied_newlines) {
 	@<Check that the list is in canonical form@>;
 	@<Tell the holster we intend to generate Inter code@>;
 
@@ -68,7 +69,7 @@ is the only one, and therefore no runtime resolution will be needed.
 		@<Compile using runtime resolution to choose between invocations@>;
 	} else {
 		tokens_packet tokens = CompileInvocations::new_tokens_packet(first_inv);
-		CompileInvocations::single(VH, first_inv, &sl, &tokens);
+		CompileInvocations::single(VH, first_inv, &sl, &tokens, allow_implied_newlines);
 	}
 
 @ We get to here if the first invocation is unproven, meaning that at compile
@@ -179,7 +180,7 @@ works in all cases, and is what we do.
 			Produce::down(Emit::tree());
 			if_depth++;
 		}
-		CompileInvocations::single(VH, inv, &sl, &tokens);
+		CompileInvocations::single(VH, inv, &sl, &tokens, allow_implied_newlines);
 	}
 	if (Invocations::is_marked_unproven(last_inv)) {
 		Produce::up(Emit::tree());
@@ -395,7 +396,7 @@ Matters are a little simpler if the final invocation is proven:
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(FORMAL_RV_HL));
-			CompileInvocations::single(VH, inv, &sl, &tokens);
+			CompileInvocations::single(VH, inv, &sl, &tokens, allow_implied_newlines);
 		Produce::up(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 	Produce::up(Emit::tree());
@@ -421,7 +422,7 @@ Matters are a little simpler if the final invocation is proven:
 
 =
 void CompileInvocations::single(value_holster *VH, parse_node *inv,
-	source_location *where_from, tokens_packet *tokens) {
+	source_location *where_from, tokens_packet *tokens, int allow_implied_newlines) {
 	LOGIF(MATCHING, "Compiling single invocation: $e\n", inv);
 	if (Node::get_say_verb(inv)) {
 		RTVerbs::ConjugateVerb_invoke_emit(
@@ -513,13 +514,21 @@ control structures.
 	else
 		CallingFunctions::csi_by_call(VH, inv, where_from, tokens);
 
-@ This is where we implement the convention that saying text ending with a full
-stop automatically generates a newline:
+@ If |allow_implied_newlines| is set, we understand the final part of a
+text literal to be allowed to print an implied newline. For example, here it's on:
+= (text as Inform 7)
+	say "At [time of day], I like to serve afternoon tea. Indian or Chinese?";
+=
+Here the question mark has an implied newline after it. But there are other
+contexts in which newlines are not implied:
+= (text as Inform 7)
+	let the warning rubric be "Snakes!";
+=
 
 @<Compile a newline if the phrase implicitly requires one@> =
 	if (IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) {
 		if ((Node::get_phrase_invoked(inv)->type_data.as_say.say_phrase_running_on == FALSE) &&
-			(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE)) &&
+			(allow_implied_newlines) &&
 			(tokens->tokens_count > 0) &&
 			(Rvalues::is_CONSTANT_of_kind(tokens->token_vals[0], K_text)) &&
 			(Word::text_ending_sentence(

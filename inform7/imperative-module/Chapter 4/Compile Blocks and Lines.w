@@ -44,8 +44,9 @@ We work recursively down through these blocks. Note that the entire definition
 always hangs from a single top-level |CODE_BLOCK_NT|.
 
 =
-void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body) {
-	CompileBlocksAndLines::code_block(statement_count, body, TRUE);
+void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body,
+	int allow_implied_newlines) {
+	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines);
 }
 
 @ See //words: Nonterminals// for an explanation of what it means for a nonterminal
@@ -55,7 +56,8 @@ of nodes joined by |->next_alternative|, rather than returning just the single
 most "likely" interpretation.
 
 =
-int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, int top_level) {
+int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, int top_level,
+	int allow_implied_newlines) {
 	if (block) {
 		if (Node::get_type(block) != CODE_BLOCK_NT) internal_error("not a code block");
 		int saved_mult = <s-value-uncached>->multiplicitous;
@@ -65,7 +67,8 @@ int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, in
 		if ((top_level == FALSE) && (block_size == 1)) singleton = TRUE;
 		for (parse_node *p = block->down; p; p = p->next)
 			statement_count =
-				CompileBlocksAndLines::code_line(statement_count, p, singleton);
+				CompileBlocksAndLines::code_line(statement_count, p, singleton,
+					allow_implied_newlines);
 		<s-value-uncached>->multiplicitous = saved_mult;
 	}
 	return statement_count;
@@ -93,7 +96,8 @@ int CompileBlocksAndLines::compiling_single_line_block(void) {
 So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
 
 =
-int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton) {
+int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton,
+	int allow_implied_newlines) {
 	compiling_single_line_block = as_singleton;
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
@@ -178,11 +182,12 @@ need bespoke handling:
 	}
 
 @<Compile a say term midriff@> =
-	BEGIN_COMPILATION_MODE;
+	int s = allow_implied_newlines;
 	if (Annotations::read_int(to_compile, suppress_newlines_ANNOT))
-		COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
-	CompileBlocksAndLines::evaluate_invocation(to_compile, TRUE, INTER_VOID_VHMODE);
-	END_COMPILATION_MODE;
+		allow_implied_newlines = FALSE;
+	CompileBlocksAndLines::evaluate_invocation(to_compile, TRUE, INTER_VOID_VHMODE,
+		allow_implied_newlines);
+	allow_implied_newlines = s;
 
 @<Compile a now midriff@> =
 	current_sentence = to_compile;
@@ -306,20 +311,21 @@ is false:
 	else Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		current_sentence = to_compile;
-		CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VAL_VHMODE);
+		CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VAL_VHMODE,
+			allow_implied_newlines);
 
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::open_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				p->down->next, FALSE);
+				p->down->next, FALSE, allow_implied_newlines);
 		if (p->down->next->next) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			CodeBlocks::divide_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				p->down->next->next, FALSE);
+				p->down->next->next, FALSE, allow_implied_newlines);
 		}
 			CodeBlocks::close_code_block();
 		Produce::up(Emit::tree());
@@ -344,7 +350,8 @@ one is the "non-pointery" case.
 
 @<Compile a switch midriff@> =
 	current_sentence = to_compile;
-	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE,
+		allow_implied_newlines);
 
 	CodeBlocks::open_code_block();
 
@@ -467,7 +474,8 @@ of |downs| is how many times we have called |Produce::down|.
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count,
+				ow_node, FALSE, allow_implied_newlines);
 		if (final_flag == FALSE) {
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -478,7 +486,8 @@ of |downs| is how many times we have called |Produce::down|.
 @ There need not be a default switch case, but if there is, then:
 
 @<Handle a pointery default@> =
-	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node,
+		FALSE, allow_implied_newlines);
 
 @<End a pointery switch@> =
 	while (downs-- > 0) Produce::up(Emit::tree());
@@ -500,7 +509,8 @@ of |downs| is how many times we have called |Produce::down|.
 		CompileSpecifications::to_code_val(switch_kind, case_spec);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count,
+				ow_node, FALSE, allow_implied_newlines);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -509,7 +519,8 @@ of |downs| is how many times we have called |Produce::down|.
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node, FALSE);
+			statement_count = CompileBlocksAndLines::code_block(statement_count,
+				ow_node, FALSE, allow_implied_newlines);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -541,7 +552,8 @@ of |downs| is how many times we have called |Produce::down|.
 
 @<Compile a standard midriff@> =
 	current_sentence = to_compile;
-	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE);
+	CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VOID_VHMODE,
+		allow_implied_newlines);
 
 @h Tail code for lines.
 
@@ -567,7 +579,8 @@ of |downs| is how many times we have called |Produce::down|.
 inline definitions for "say if" and similar.
 
 @<Compile a say tail@> =
-	statement_count = CompileBlocksAndLines::code_block(statement_count, p, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, p,
+		FALSE, allow_implied_newlines);
 
 	TEMPORARY_TEXT(SAYL)
 	WRITE_TO(SAYL, ".");
@@ -590,7 +603,8 @@ inline definitions for "say if" and similar.
 
 @<Compile a loop tail@> =
 	CodeBlocks::open_code_block();
-	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next, FALSE);
+	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next,
+		FALSE, allow_implied_newlines);
 	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
 	CodeBlocks::close_code_block();
 
@@ -599,7 +613,8 @@ This function takes the text of a line from a phrase definition, parses it,
 type-checks it, and finally, all being well, compiles it.
 
 =
-void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parsed, int vhm) {
+void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parsed,
+	int vhm, int allow_implied_newlines) {
 	int initial_problem_count = problem_count;
 
 	LOGIF(EXPRESSIONS, "\n-- -- Evaluating <%W> -- --\n", Node::get_text(p));
@@ -625,7 +640,7 @@ void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parse
 	if (initial_problem_count == problem_count) {
 		LOGIF(EXPRESSIONS, "(c) Compilation:\n$E", p->down);
 		value_holster VH = Holsters::new(vhm);
-		CompileInvocations::list(&VH, p->down, Node::get_text(p));
+		CompileInvocations::list(&VH, p->down, Node::get_text(p), allow_implied_newlines);
 	}
 
 	if (initial_problem_count == problem_count) {
