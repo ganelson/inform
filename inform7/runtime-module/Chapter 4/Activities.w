@@ -61,13 +61,13 @@ void RTActivities::emit_activity_list(activity_list *al) {
 							Calculus::Deferrals::compile_deferred_description_test(al->acting_on));
 					} else {
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-						CompileSpecifications::to_code_val(K_value, al->acting_on);
+						CompileValues::to_code_val(al->acting_on);
 					}
 				}
 			Produce::up(Emit::tree());
 		}
 		else {
-			CompileSpecifications::to_code_val(K_value, al->only_when);
+			CompileValues::to_code_val(al->only_when);
 		}
 		al = al->next;
 	}

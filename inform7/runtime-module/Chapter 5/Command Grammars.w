@@ -369,5 +369,5 @@ void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
 }
 
 void RTCommandGrammars::emit_determination_type(determination_type *gty) {
-	CompileSpecifications::to_code_val(K_value, gty->term[0].what);
+	CompileValues::to_code_val(gty->term[0].what);
 }

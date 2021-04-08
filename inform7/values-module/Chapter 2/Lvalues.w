@@ -323,7 +323,7 @@ void Lvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, int sto
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
-		CompileSpecifications::to_code_val(K_value, prop_spec);
+		CompileValues::to_code_val(prop_spec);
 		if (storage_mode != 1) {
 			Produce::up(Emit::tree());
 		}
@@ -368,10 +368,10 @@ object as produced the original text containing the substitution.
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-			CompileSpecifications::to_code_val(K_value, owner);
+			CompileValues::to_code_val(owner);
 		Produce::up(Emit::tree());
 	} else {
-		CompileSpecifications::to_code_val(K_value, owner);
+		CompileValues::to_code_val(owner);
 	}
 
 @ List entries are blessedly simpler.
@@ -388,8 +388,8 @@ object as produced the original text containing the substitution.
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 			Produce::down(Emit::tree());
 		}
-		CompileSpecifications::to_code_val_by_reference(K_value, spec_found->down);
-		CompileSpecifications::to_code_val(K_value, spec_found->down->next);
+		CompileValues::to_code_val(spec_found->down);
+		CompileValues::to_code_val(spec_found->down->next);
 		if (storage_mode != 1) {
 			Produce::up(Emit::tree());
 		}
@@ -428,7 +428,7 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 				local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
 				inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
 				Produce::val_symbol(Emit::tree(), K_value, ct_0_s);
-				CompileSpecifications::to_code_val(K_value, spec_found->down);
+				CompileValues::to_code_val(spec_found->down);
 				Produce::val_symbol(Emit::tree(), K_value, ct_1_s);
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
@@ -449,9 +449,9 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 					Produce::inv_call_iname(Emit::tree(), lookup);
 					Produce::down(Emit::tree());
 				}
-				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next);
-				CompileSpecifications::to_code_val(K_value, spec_found->down);
-				CompileSpecifications::to_code_val(K_value, spec_found->down->next);
+				CompileValues::to_code_val(spec_found->down->next->next);
+				CompileValues::to_code_val(spec_found->down);
+				CompileValues::to_code_val(spec_found->down->next);
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
@@ -468,10 +468,10 @@ void Lvalues::compile_table_reference(value_holster *VH, parse_node *spec_found,
 					Produce::inv_call_iname(Emit::tree(), lookup_corr);
 					Produce::down(Emit::tree());
 				}
-				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next->next);
-				CompileSpecifications::to_code_val(K_value, spec_found->down);
-				CompileSpecifications::to_code_val(K_value, spec_found->down->next);
-				CompileSpecifications::to_code_val(K_value, spec_found->down->next->next);
+				CompileValues::to_code_val(spec_found->down->next->next->next);
+				CompileValues::to_code_val(spec_found->down);
+				CompileValues::to_code_val(spec_found->down->next);
+				CompileValues::to_code_val(spec_found->down->next->next);
 				if (blank_out) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}

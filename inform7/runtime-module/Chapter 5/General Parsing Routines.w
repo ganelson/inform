@@ -808,7 +808,7 @@ void UnderstandGeneralTokens::test_distinguish_visible_property(gpr_kit *gprk, p
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
-		CompileSpecifications::to_code_val(K_truth_state, spec);
+		CompileValues::to_code_val_of_kind(spec, K_truth_state);
 	Produce::up(Emit::tree());
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -819,7 +819,7 @@ void UnderstandGeneralTokens::test_distinguish_visible_property(gpr_kit *gprk, p
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
-		CompileSpecifications::to_code_val(K_truth_state, spec);
+		CompileValues::to_code_val_of_kind(spec, K_truth_state);
 	Produce::up(Emit::tree());
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -976,7 +976,7 @@ void UnderstandGeneralTokens::begin_parsing_visible_properties(gpr_kit *gprk) {
 void UnderstandGeneralTokens::test_parse_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
-		CompileSpecifications::to_code_val(K_truth_state, spec);
+		CompileValues::to_code_val_of_kind(spec, K_truth_state);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 }

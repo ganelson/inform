@@ -305,7 +305,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 @ =
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
-	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
+	if (CompileValues::compiling_in_constant_mode()) {
 		inter_name *N = RTKinds::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);

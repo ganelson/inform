@@ -231,7 +231,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 				/* purely for problem recovery: */
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); 
 			} else {
-				CompileSpecifications::to_code_val(K_value, spec_found->down);
+				CompileValues::to_code_val(spec_found->down);
 			}
 			break;
 		case TEST_PHRASE_OPTION_NT: @<Compile a phrase option test@>; break;
@@ -245,7 +245,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 		internal_error("Compiled malformed LOGICAL_NOT_NT");
 	Produce::inv_primitive(Emit::tree(), NOT_BIP);
 	Produce::down(Emit::tree());
-		CompileSpecifications::to_code_val(K_value, spec_found->down);
+		CompileValues::to_code_val(spec_found->down);
 	Produce::up(Emit::tree());
 
 @ An easy case, running straight out to I6 operators:
@@ -261,8 +261,8 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 	if (Node::is(spec_found, LOGICAL_AND_NT)) Produce::inv_primitive(Emit::tree(), AND_BIP);
 	if (Node::is(spec_found, LOGICAL_OR_NT)) Produce::inv_primitive(Emit::tree(), OR_BIP);
 	Produce::down(Emit::tree());
-		CompileSpecifications::to_code_val(K_value, left_operand);
-		CompileSpecifications::to_code_val(K_value, right_operand);
+		CompileValues::to_code_val(left_operand);
+		CompileValues::to_code_val(right_operand);
 	Produce::up(Emit::tree());
 
 @ Phrase options are stored as bits in a 16-bit map, so that each individual

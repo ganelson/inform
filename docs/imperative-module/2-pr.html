@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -73,7 +78,8 @@ function togglePopup(material_id) {
 <p class="purpose">To store and later fill requests to compile To... phrases.</p>
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"To..." phrases are compiled only when needed, and they can be compiled in
-variant forms depending on the kinds of their arguments. For example, given the
+variant forms depending on the kinds of their arguments. Each of those forms
+is compiled as a different function at runtime.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> For example, given the
 definition:
 </p>
 
@@ -101,6 +107,9 @@ following twp functions. It returns the iname of the function we should
 call, and makes a note for later that it will need to compile that function.
 </p>
 
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> I believe this practice is called monomorphisation, and is also how Rust
+and most C++ compilers handle the same issue.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">PhraseRequests::simple_request</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PhraseRequests::simple_request</span></span>:<br/><a href="2-pr.html#SP5">&#167;5</a><br/>Closures - <a href="2-cls.html#SP3_1">&#167;3.1</a><br/>Compile Solutions to Equations - <a href="4-cste.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req_kind</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-pr.html#SP1" class="function-link"><span class="function-syntax">PhraseRequests::complex_request</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">req_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">);</span>
@@ -312,7 +321,7 @@ that phrase. This provides a neat example of how to make a phrase request:
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-fnc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-sf.html">sf</a></li><li class="progresssection"><a href="2-lvs.html">lvs</a></li><li class="progresssection"><a href="2-lv.html">lv</a></li><li class="progresssection"><a href="2-lp.html">lp</a></li><li class="progresssection"><a href="2-cb.html">cb</a></li><li class="progresssection"><a href="2-fnc.html">fnc</a></li><li class="progresscurrent">pr</li><li class="progresssection"><a href="2-cls.html">cls</a></li><li class="progresssection"><a href="2-cid.html">cid</a></li><li class="progresschapter"><a href="3-cfs.html">3</a></li><li class="progresschapter"><a href="4-cbal.html">4</a></li><li class="progressnext"><a href="2-cls.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-fnc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-sf.html">sf</a></li><li class="progresssection"><a href="2-lvs.html">lvs</a></li><li class="progresssection"><a href="2-lv.html">lv</a></li><li class="progresssection"><a href="2-lp.html">lp</a></li><li class="progresssection"><a href="2-cb.html">cb</a></li><li class="progresssection"><a href="2-fnc.html">fnc</a></li><li class="progresscurrent">pr</li><li class="progresssection"><a href="2-cls.html">cls</a></li><li class="progresssection"><a href="2-cid.html">cid</a></li><li class="progresschapter"><a href="3-cv.html">3</a></li><li class="progresschapter"><a href="4-cbal.html">4</a></li><li class="progressnext"><a href="2-cls.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

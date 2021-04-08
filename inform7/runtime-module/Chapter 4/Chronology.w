@@ -530,10 +530,7 @@ void Chronology::past_tenses_i6_escape(void) {
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (ptc->allocation_id));
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
-						BEGIN_COMPILATION_MODE;
-						COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 						@<Compile code to set the new state of the condition, as measured in the present@>;
-						END_COMPILATION_MODE;
 						if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {
 							once_only = FALSE;
 							StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableEntries),
@@ -662,7 +659,7 @@ a file stream, thus allowing rewinding:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, new_s);
-				CompileSpecifications::to_code_val(K_value, spec);
+				CompileValues::to_code_val(spec);
 			Produce::up(Emit::tree());
 		}
 	} else {

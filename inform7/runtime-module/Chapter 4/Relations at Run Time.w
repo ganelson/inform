@@ -541,7 +541,7 @@ void RTRelations::compile_relation_records(void) {
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_TRUE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
-		EmitSchemas::emit_expand_from_locals(i6s, X_lv, Y_lv, TRUE);
+		EmitSchemas::emit_expand_from_locals(i6s, X_lv, Y_lv);
 		Produce::rtrue(Emit::tree());
 	}
 
@@ -550,7 +550,7 @@ void RTRelations::compile_relation_records(void) {
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_FALSE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
-		EmitSchemas::emit_expand_from_locals(i6s, X_lv, Y_lv, TRUE);
+		EmitSchemas::emit_expand_from_locals(i6s, X_lv, Y_lv);
 		Produce::rtrue(Emit::tree());
 	}
 
@@ -775,7 +775,7 @@ void RTRelations::compile_relation_records(void) {
 	if (Calculus::Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
-			EmitSchemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
+			EmitSchemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv);
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
@@ -875,7 +875,7 @@ void RTRelations::compile_relation_records(void) {
 	if (Calculus::Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
-			EmitSchemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
+			EmitSchemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv);
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
@@ -916,8 +916,8 @@ void RTRelations::compile_relation_records(void) {
 		i6_schema loop_schema_L, loop_schema_R;
 		if ((Calculus::Deferrals::write_loop_schema(&loop_schema_L, KL)) &&
 			(Calculus::Deferrals::write_loop_schema(&loop_schema_R, KR))) {
-			EmitSchemas::emit_expand_from_locals(&loop_schema_L, Z1_lv, Z2_lv, TRUE);
-					EmitSchemas::emit_expand_from_locals(&loop_schema_R, Z3_lv, Z4_lv, TRUE);
+			EmitSchemas::emit_expand_from_locals(&loop_schema_L, Z1_lv, Z2_lv);
+					EmitSchemas::emit_expand_from_locals(&loop_schema_R, Z3_lv, Z4_lv);
 
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
 							Produce::down(Emit::tree());
@@ -1680,7 +1680,7 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::down(Emit::tree());
 			}
 
-			EmitSchemas::emit_expand_from_locals(rg->inner_make_true, L_lv, R_lv, TRUE);
+			EmitSchemas::emit_expand_from_locals(rg->inner_make_true, L_lv, R_lv);
 			Produce::rtrue(Emit::tree());
 
 			if (downs > 0) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
@@ -1736,7 +1736,7 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::down(Emit::tree());
 			}
 
-			EmitSchemas::emit_expand_from_locals(rg->inner_make_false, L_lv, R_lv, TRUE);
+			EmitSchemas::emit_expand_from_locals(rg->inner_make_false, L_lv, R_lv);
 			Produce::rtrue(Emit::tree());
 
 			if (downs > 0) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
@@ -1774,7 +1774,7 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	} else {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 		Produce::up(Emit::tree());
 	}
 
@@ -1884,8 +1884,8 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
-					CompileSpecifications::to_code_val(K_value, spec0);
-					CompileSpecifications::to_code_val(K_value, spec1);
+					CompileValues::to_code_val(spec0);
+					CompileValues::to_code_val(spec1);
 				Produce::up(Emit::tree());
 			}
 			Functions::end(save);

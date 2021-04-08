@@ -193,7 +193,7 @@ The value of |cinder_count| would then be 2.
 	Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
 	Produce::down(Emit::tree());
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
-		if (substitution) CompileSpecifications::to_code_val(K_value, substitution);
+		if (substitution) CompileValues::to_code_val(substitution);
 	Produce::up(Emit::tree());
 
 @ =
@@ -598,7 +598,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
@@ -662,7 +662,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_DESC_HL));
 		Produce::down(Emit::tree());
 			Frames::emit_new_local_value(K);
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());
 	} else {
@@ -694,7 +694,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
@@ -745,7 +745,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 			Produce::down(Emit::tree());
-				CompileSpecifications::to_code_val(K_value, spec);
+				CompileValues::to_code_val(spec);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TOTAL_DUSAGE);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -767,9 +767,9 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-			CompileSpecifications::to_code_val(K_value, in);
+			CompileValues::to_code_val(in);
 		Produce::up(Emit::tree());
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(
@@ -820,7 +820,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 				Produce::down(Emit::tree());
-					CompileSpecifications::to_code_val(K_value, spec);
+					CompileValues::to_code_val(spec);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) EXTREMAL_DUSAGE);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -928,11 +928,9 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
 	} else {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
-			EmitSchemas::emit_expand_from_locals(&loop_schema, v1, v2, TRUE);
+			EmitSchemas::emit_expand_from_locals(&loop_schema, v1, v2);
 			if (Lvalues::is_lvalue(spec) == FALSE) {
 				if (Specifications::to_proposition(spec)) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -948,16 +946,15 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 					Produce::down(Emit::tree());
-						CompileSpecifications::to_code_val(K_value, spec);
+						CompileValues::to_code_val(spec);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-						CompileSpecifications::to_code_val(K_value,
+						CompileValues::to_code_val(
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 			}
 		} else @<Issue bad repeat domain problem@>;
-		END_COMPILATION_MODE;
 	}
 }
 
@@ -1037,7 +1034,7 @@ deferred description routine, and we simply call that routine with the
 void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fromv) {
 	Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 	Produce::down(Emit::tree());
-		CompileSpecifications::to_code_val(K_value, spec);
+		CompileValues::to_code_val(spec);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) LOOP_DOMAIN_DUSAGE);
 		if (fromv) {
 			inter_symbol *fromv_s = LocalVariables::declare(fromv);
@@ -1099,8 +1096,6 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 	inter_symbol *index_var_s = LocalVariables::declare(index_var);
 	inter_symbol *copy_var_s = LocalVariables::declare(copy_var);
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	Produce::inv_primitive(Emit::tree(), FOR_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
@@ -1108,7 +1103,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, copy_var_s);
-				CompileSpecifications::to_code_val(K_value, spec);
+				CompileValues::to_code_val(spec);
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
@@ -1196,8 +1191,6 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 
 		Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
-
-	END_COMPILATION_MODE;
 }
 
 @h Checking the validity of a description.

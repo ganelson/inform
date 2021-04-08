@@ -140,7 +140,7 @@ void InternalTests::InternalTestCases_routine(void) {
 				Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
-					CompileSpecifications::to_code_val(K_value, spec);
+					CompileValues::to_code_val(spec);
 				Produce::up(Emit::tree());
 
 				Str::clear(OUT);
@@ -280,13 +280,13 @@ void InternalTests::emit_showme(parse_node *spec) {
 	if (Kinds::get_construct(K) == CON_list_of) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SAY_HL));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, spec);
+			CompileValues::to_code_val(spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val_by_reference(K_value, spec);
+			CompileValues::to_code_val(spec);
 		Produce::up(Emit::tree());
 	}
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);

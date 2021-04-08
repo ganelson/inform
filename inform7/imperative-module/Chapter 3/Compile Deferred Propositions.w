@@ -103,13 +103,10 @@ quantifiers, either.
 
 	packaging_state save = Functions::begin(pdef->ppd_iname);
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	@<Declare the I6 local variables which will be needed by this deferral routine@>;
 	@<Compile the code inside this deferral routine@>;
 	@<Issue a problem message if the table-lookup locals were needed@>;
 	@<Issue a problem message if a negated quantifier was needed@>;
-	END_COMPILATION_MODE;
 
 	Functions::end(save);
 
@@ -845,7 +842,7 @@ quantifier.
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
-		Terms::emit(C_stack_term[C_sp], K_value);
+		Terms::emit(C_stack_term[C_sp], K_value, TRUE);
 	Produce::up(Emit::tree());
 
 @ That just leaves the blocking, which follows the One True Brace Style. Thus:

@@ -224,7 +224,7 @@ int iFiction::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv) {
 		} else {
 			if (Kinds::eq(K, K_number)) {
 				inter_ti v1 = 0, v2 = 0;
-				CompileSpecifications::constant_to_pair(&v1, &v2, val, K);
+				CompileValues::constant_to_pair(&v1, &v2, val, K);
 				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);

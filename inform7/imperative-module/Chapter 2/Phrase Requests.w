@@ -3,7 +3,8 @@
 To store and later fill requests to compile To... phrases.
 
 @ "To..." phrases are compiled only when needed, and they can be compiled in
-variant forms depending on the kinds of their arguments. For example, given the
+variant forms depending on the kinds of their arguments. Each of those forms
+is compiled as a different function at runtime.[1] For example, given the
 definition:
 
 >> To judge (V - a value) against (W - a value): ...
@@ -21,6 +22,9 @@ values in force, so that there is no possible ambiguity in how we read K.
 When we want to invoke "to judge... against...", then, we call one of the
 following twp functions. It returns the iname of the function we should
 call, and makes a note for later that it will need to compile that function.
+
+[1] I believe this practice is called monomorphisation, and is also how Rust
+and most C++ compilers handle the same issue.
 
 =
 inter_name *PhraseRequests::simple_request(id_body *idb, kind *req_kind) {

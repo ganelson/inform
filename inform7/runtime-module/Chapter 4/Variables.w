@@ -352,15 +352,10 @@ int RTVariables::emit_all(inference_subject_family *f, int ignored) {
 		if ((nlv->constant_at_run_time == FALSE) ||
 			(nlv->compilation_data.housed_in_variables_array)) {
 
-			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-
 			inter_name *iname = RTVariables::iname(nlv);
 			inter_ti v1 = 0, v2 = 0;
 
 			RTVariables::seek_initial_value(iname, &v1, &v2, nlv);
-
-			END_COMPILATION_MODE;
 
 			text_stream *rvalue = NULL;
 			if (nlv->compilation_data.housed_in_variables_array == FALSE)
@@ -432,7 +427,7 @@ void RTVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable 
 		current_sentence = VariableSubjects::origin_of_initial_value(nlv);
 		if (Lvalues::get_storage_form(val) == NONLOCAL_VARIABLE_NT)
 			@<Issue a problem for one variable set equal to another@>
-		else CompileSpecifications::constant_to_holster(VH, val, nlv->nlv_kind);
+		else CompileValues::constant_to_holster(VH, val, nlv->nlv_kind);
 	}
 }
 

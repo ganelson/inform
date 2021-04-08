@@ -221,8 +221,6 @@ a list divided by logical-and |&&| operators.
 a specific value, such as "10".
 
 @<Compile a check that this formal variable matches the token@> =
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 	parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	if (Specifications::is_description(check_against)) {
@@ -235,7 +233,6 @@ a specific value, such as "10".
 		LOG("Error on: $T", check_against);
 		internal_error("bad check-against in runtime type check");
 	}
-	END_COMPILATION_MODE;
 
 @ A parameter corresponding to the name of a kind has no meaningful value
 at runtime; we assign 0 to it for the sake of tidiness.
@@ -249,14 +246,11 @@ at runtime; we assign 0 to it for the sake of tidiness.
 		if (idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		} else {
-			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 			parse_node *value =
 				Invocations::get_token_as_parsed(first_inv, i);
 			kind *to_be_used_as = Specifications::to_kind(
 				idb->type_data.token_sequence[i].to_match);
-			CompileSpecifications::to_code_val_of_kind(value, to_be_used_as);
-			END_COMPILATION_MODE;
+			CompileValues::to_fresh_code_val_of_kind(value, to_be_used_as);
 		}
 	Produce::up(Emit::tree());
 
@@ -452,10 +446,8 @@ errors, since |self| would be pushed but not pulled.
 		Produce::up(Emit::tree());
 	}
 
-	BEGIN_COMPILATION_MODE;
 	@<The art of invocation is delegation@>;
 	@<Compile a newline if the phrase implicitly requires one@>;
-	END_COMPILATION_MODE;
 
 	if (save_self) {
 		Produce::inv_primitive(Emit::tree(), PULL_BIP);

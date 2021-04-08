@@ -338,17 +338,15 @@ the presence of annotations can change what we do.
 	}
 
 @<Compile the token value@> =
-	if (by_value_not_reference) {
-		COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
-	} else {
-		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-	}
-
 	LOGIF(MATCHING, "Expanding $P into '%W' with %d, %u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
 		by_value_not_reference?" (by value)":" (by reference)");
-	CompileSpecifications::to_code_val_of_kind(supplied, kind_required);
+	if (by_value_not_reference) {
+		CompileValues::to_fresh_code_val_of_kind(supplied, kind_required);
+	} else {
+		CompileValues::to_code_val_of_kind(supplied, kind_required);
+	}
 
 @h Annotation commands for bracings with natural language.
 These all modify the way a token is compiled.
@@ -487,11 +485,11 @@ problem messages are phrased differently if something goes wrong.
 	else @<Issue a problem for returning a value when none was asked@>;
 
 	if (allow_me == ALWAYS_MATCH) {
-		CompileSpecifications::to_code_val_of_kind(supplied, kind_needed);
+		CompileValues::to_fresh_code_val_of_kind(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Behaviour::is_object(kind_needed))) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val_of_kind(supplied, kind_needed);
+			CompileValues::to_fresh_code_val_of_kind(supplied, kind_needed);
 			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(kind_needed));
 		Produce::up(Emit::tree());
 	} else @<Issue a problem for returning a value of the wrong kind@>;
@@ -541,7 +539,7 @@ problem messages are phrased differently if something goes wrong.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_stored_action, supplied);
+			CompileValues::to_code_val_of_kind(supplied, K_stored_action);
 		Produce::up(Emit::tree());
 	}
 	valid_annotation = TRUE;
@@ -589,7 +587,7 @@ problem messages are phrased differently if something goes wrong.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_stored_action, supplied);
+			CompileValues::to_code_val_of_kind(supplied, K_stored_action);
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	}
@@ -1225,10 +1223,7 @@ result would be the same without the optimisation.
 	if (K) {
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-			CompileSpecifications::to_code_val_of_kind(to_say, K);
-			END_COMPILATION_MODE;
+			CompileValues::to_code_val_of_kind(to_say, K);
 		Produce::up(Emit::tree());
 	} else @<Issue an inline no-such-kind problem@>;
 	return;
@@ -1248,13 +1243,10 @@ result would be the same without the optimisation.
 		Produce::up(Emit::tree());
 	} else {
 		kind *K = Specifications::to_kind(to_say);
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val_of_kind(to_say, K);
+			CompileValues::to_code_val_of_kind(to_say, K);
 		Produce::up(Emit::tree());
-		END_COMPILATION_MODE;
 	}
 	return;
 
@@ -1266,7 +1258,7 @@ result would be the same without the optimisation.
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__N_HL));
-			CompileSpecifications::to_code_val_of_kind(to_say, K);
+			CompileValues::to_code_val_of_kind(to_say, K);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	return;
@@ -1281,7 +1273,7 @@ language.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		CompileSpecifications::to_code_val_of_kind(to_say, K);
+		CompileValues::to_code_val_of_kind(to_say, K);
 	Produce::up(Emit::tree());
 	if (TargetVMs::is_16_bit(Task::vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
@@ -1306,8 +1298,6 @@ phrase applied to the named variable.
 		@<Issue a no-such-local problem message@>;
 		return;
 	}
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
@@ -1315,7 +1305,6 @@ phrase applied to the named variable.
 			InternalTests::emit_showme(to_show);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	END_COMPILATION_MODE;
 	return;
 
 @h Miscellaneous commands.
@@ -1654,10 +1643,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	parse_node *spec = NULL;
 	@<Evaluate the text as a value@>;
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-	CompileSpecifications::to_code_val(K_value, spec);
-	END_COMPILATION_MODE;
+	CompileValues::to_code_val(spec);
 }
 
 void CSIInline::eval_to_iname(inter_name *iname, int prim_cat) {
@@ -1713,7 +1699,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	@<Evaluate the text as a value@>;
 
 	inter_ti v1 = 0, v2 = 0;
-	CompileSpecifications::to_pair(&v1, &v2, spec);
+	CompileValues::to_pair(&v1, &v2, spec);
 	if (v1 == ALIAS_IVAL) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =

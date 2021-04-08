@@ -15,19 +15,17 @@ in several different ways.
 
 =
 void EmitSchemas::emit_expand_from_terms(i6_schema *sch,
-	pcalc_term *pt1, pcalc_term *pt2, int semicolon) {
-	i6s_emission_state ems = EmitSchemas::state(pt1, pt2, NULL, NULL);
-
-	EmitSchemas::sch_emit_inner(sch, &ems, semicolon);
+	pcalc_term *pt1, pcalc_term *pt2, int code_mode) {
+	EmitSchemas::sch_emit_inner(sch, pt1, pt2, code_mode);
 }
 
 void EmitSchemas::emit_expand_from_locals(i6_schema *sch,
-	local_variable *v1, local_variable *v2, int semicolon) {
+	local_variable *v1, local_variable *v2) {
 	pcalc_term pt1 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
 	pcalc_term pt2 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v2));
-	EmitSchemas::emit_expand_from_terms(sch, &pt1, &pt2, semicolon);
+	EmitSchemas::emit_expand_from_terms(sch, &pt1, &pt2, TRUE);
 }
 
 void EmitSchemas::emit_val_expand_from_locals(i6_schema *sch,
@@ -41,45 +39,27 @@ void EmitSchemas::emit_val_expand_from_locals(i6_schema *sch,
 
 void EmitSchemas::emit_val_expand_from_terms(i6_schema *sch,
 	pcalc_term *pt1, pcalc_term *pt2) {
-	i6s_emission_state ems = EmitSchemas::state(pt1, pt2, NULL, NULL);
-
-	EmitSchemas::sch_emit_inner(sch, &ems, FALSE);
+	EmitSchemas::sch_emit_inner(sch, pt1, pt2, FALSE);
 }
 
 typedef struct i6s_emission_state {
-	struct text_stream *ops_textual[2];
 	struct pcalc_term *ops_termwise[2];
+	int by_ref;
 } i6s_emission_state;
 
-i6s_emission_state EmitSchemas::state(pcalc_term *pt1, pcalc_term *pt2,
-	text_stream *str1, text_stream *str2) {
+@ =
+void EmitSchemas::sch_emit_inner(i6_schema *sch, pcalc_term *pt1, pcalc_term *pt2, int code_mode) {
 	i6s_emission_state ems;
-	ems.ops_textual[0] = str1;
-	ems.ops_textual[1] = str2;
 	ems.ops_termwise[0] = pt1;
 	ems.ops_termwise[1] = pt2;
-	return ems;
-}
+	ems.by_ref = FALSE;
+	if (sch->compiled->dereference_mode) ems.by_ref = TRUE;
+	EmitSchemas::sch_type_parameter(ems.ops_termwise[0]);
+	EmitSchemas::sch_type_parameter(ems.ops_termwise[1]);
 
-@ =
-void EmitSchemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, int code_mode) {
-
-	if ((ems->ops_textual[0]) || (ems->ops_textual[1])) internal_error("Zap");
-
-	EmitSchemas::sch_type_parameter(ems->ops_termwise[0]);
-	EmitSchemas::sch_type_parameter(ems->ops_termwise[1]);
-
-	BEGIN_COMPILATION_MODE;
-	if (sch->compiled->dereference_mode)
-		COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-
-	value_holster VH;
-	if (code_mode) VH = Holsters::new(INTER_VOID_VHMODE);
-	else VH = Holsters::new(INTER_VAL_VHMODE);
-	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, ems, NULL, NULL,
+	value_holster VH = Holsters::new(code_mode?INTER_VOID_VHMODE:INTER_VAL_VHMODE);
+	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, &ems, NULL, NULL,
 		&EmitSchemas::sch_inline, NULL);
-
-	END_COMPILATION_MODE;
 }
 
 void EmitSchemas::sch_inline(value_holster *VH,
@@ -87,17 +67,13 @@ void EmitSchemas::sch_inline(value_holster *VH,
 
 	i6s_emission_state *ems = (i6s_emission_state *) ems_s;
 
-	BEGIN_COMPILATION_MODE;
-
 	int give_kind_id = FALSE, give_comparison_routine = FALSE,
 		dereference_property = FALSE, adopt_local_stack_frame = FALSE,
-		cast_to_kind_of_other_term = FALSE, by_reference = FALSE,
+		cast_to_kind_of_other_term = FALSE, by_reference = ems->by_ref, /* FALSE, */
 		storage_mode = COMPILE_LVALUE_NORMALLY;
 
-	if (t->inline_modifiers & LVALUE_CONTEXT_ISSBM)
-		storage_mode = COMPILE_LVALUE_AS_LVALUE;
-	if (t->inline_modifiers & STORAGE_AS_FUNCTION_CMODE_ISSBM)
-		storage_mode = COMPILE_LVALUE_AS_FUNCTION;
+	if (t->inline_modifiers & LVALUE_CONTEXT_ISSBM) storage_mode = COMPILE_LVALUE_AS_LVALUE;
+	if (t->inline_modifiers & STORAGE_AS_FUNCTION_CMODE_ISSBM) storage_mode = COMPILE_LVALUE_AS_FUNCTION;
 	if (t->inline_modifiers & GIVE_KIND_ID_ISSBM) give_kind_id = TRUE;
 	if (t->inline_modifiers & GIVE_COMPARISON_ROUTINE_ISSBM) give_comparison_routine = TRUE;
 	if (t->inline_modifiers & DEREFERENCE_PROPERTY_ISSBM) dereference_property = TRUE;
@@ -108,8 +84,6 @@ void EmitSchemas::sch_inline(value_holster *VH,
 	if (t->inline_command == substitute_ISINC) @<Perform substitution@>
 	else if (t->inline_command == combine_ISINC) @<Perform combine@>
 	else internal_error("unimplemented command in schema");
-
-	END_COMPILATION_MODE;
 }
 
 @<Perform substitution@> =
@@ -161,8 +135,14 @@ void EmitSchemas::sch_inline(value_holster *VH,
 				req_A = NULL;
 			if (!((Kinds::Behaviour::uses_pointer_values(req_B)) && (Kinds::Behaviour::definite(req_B))))
 				req_B = NULL;
-			CompileSpecifications::to_code_val_of_kind(spec_A, req_A);
-			CompileSpecifications::to_code_val_of_kind(spec_B, req_B);
+			if (ems->by_ref)
+				CompileValues::to_code_val_of_kind(spec_A, req_A);
+			else
+				CompileValues::to_fresh_code_val_of_kind(spec_A, req_A);
+			if (ems->by_ref)
+				CompileValues::to_code_val_of_kind(spec_B, req_B);
+			else
+				CompileValues::to_fresh_code_val_of_kind(spec_B, req_B);
 			epar = FALSE;
 		}
 	}
@@ -188,31 +168,23 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 		}
 		Produce::val_iname(Emit::tree(), K_value, cr);
 	} else {
-		if (by_reference) {
-			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(BY_VALUE_CMODE);
-			pcalc_term cpt = *pt;
-			Terms::emit(cpt, cast_to);
-			END_COMPILATION_MODE;
+		pcalc_term cpt = *pt;
+		if ((dereference_property) &&
+			(Node::is(cpt.constant, CONSTANT_NT))) {
+			kind *K = Specifications::to_kind(cpt.constant);
+			if (Kinds::get_construct(K) == CON_property)
+				cpt = Terms::new_constant(
+					Lvalues::new_PROPERTY_VALUE(
+						Node::duplicate(cpt.constant),
+						Rvalues::new_self_object_constant()));
+		}
+		if ((storage_mode != COMPILE_LVALUE_NORMALLY) &&
+			((cpt.constant) && (Lvalues::is_lvalue(cpt.constant)))) {
+			value_holster VH = Holsters::new(INTER_VAL_VHMODE);
+			Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
+			return;
 		} else {
-			pcalc_term cpt = *pt;
-			if ((dereference_property) &&
-				(Node::is(cpt.constant, CONSTANT_NT))) {
-				kind *K = Specifications::to_kind(cpt.constant);
-				if (Kinds::get_construct(K) == CON_property)
-					cpt = Terms::new_constant(
-						Lvalues::new_PROPERTY_VALUE(
-							Node::duplicate(cpt.constant),
-							Rvalues::new_self_object_constant()));
-			}
-			if ((storage_mode != COMPILE_LVALUE_NORMALLY) &&
-				((cpt.constant) && (Lvalues::is_lvalue(cpt.constant)))) {
-				value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-				Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
-				return;
-			} else {
-				Terms::emit(cpt, cast_to);
-			}
+			Terms::emit(cpt, cast_to, by_reference);
 		}
 	}
 }

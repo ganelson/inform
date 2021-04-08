@@ -366,7 +366,7 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 	}
 	if (Kinds::eq(K, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(spec);
-		if (TEST_COMPILATION_MODE(CONSTANT_CMODE))
+		if (CompileValues::compiling_in_constant_mode())
 			RTActionPatterns::as_stored_action(VH, ea);
 		else {
 			RTActionPatterns::emit_try(ea, TRUE);

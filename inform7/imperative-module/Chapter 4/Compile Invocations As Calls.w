@@ -33,15 +33,10 @@ void CallingFunctions::direct_function_call(tokens_packet *tokens, inter_name *i
 	kind *return_kind = NULL;
 	@<Compute the return kind of the phrase@>;
 
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
-
 	Produce::inv_call_iname(Emit::tree(), identifier);
 	Produce::down(Emit::tree());
 		@<Emit the comma-separated list of arguments@>;
 	Produce::up(Emit::tree());
-
-	END_COMPILATION_MODE;
 }
 
 @<Compute the return kind of the phrase@> =
@@ -57,7 +52,7 @@ to the tokens then follow, and finally the optional bitmap of phrase options.
 	if (Kinds::Behaviour::uses_pointer_values(return_kind))
 		Frames::emit_new_local_value(return_kind);
 	for (int k=0; k<tokens->tokens_count; k++)
-		CompileSpecifications::to_code_val_of_kind(tokens->token_vals[k], tokens->token_kinds[k]);
+		CompileValues::to_fresh_code_val_of_kind(tokens->token_vals[k], tokens->token_kinds[k]);
 	if (phrase_options != -1)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
 
@@ -70,9 +65,6 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 	parse_node *indirect_spec, int lookup_flag) {
 	kind *return_kind = NULL;
 	@<Compute the return kind of the phrase@>;
-
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(BY_VALUE_CMODE);
 
 	int arity = tokens->tokens_count;
 	if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;
@@ -88,15 +80,13 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 	if (lookup_flag) {
 		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 		Produce::down(Emit::tree());
-			CompileSpecifications::to_code_val(K_value, indirect_spec);
+			CompileValues::to_code_val(indirect_spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
 	} else {
-		CompileSpecifications::to_code_val(K_value, indirect_spec);
+		CompileValues::to_code_val(indirect_spec);
 	}
 	int phrase_options = -1;
 	@<Emit the comma-separated list of arguments@>;
 	Produce::up(Emit::tree());
-
-	END_COMPILATION_MODE;
 }

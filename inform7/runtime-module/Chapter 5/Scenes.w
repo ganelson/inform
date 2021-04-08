@@ -209,7 +209,7 @@ instruction because we're not compiling a loop.)
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		current_sentence = sc->ends[end].anchor_condition_set;
-		CompileSpecifications::to_code_val(K_truth_state, S);
+		CompileValues::to_code_val_of_kind(S, K_truth_state);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -623,7 +623,7 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 			if (desc) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DURINGSCENEMATCHING_HL));
 				Produce::down(Emit::tree());
-					CompileSpecifications::to_code_val(K_value, desc);
+					CompileValues::to_code_val(desc);
 				Produce::up(Emit::tree());
 				stuck = FALSE;
 			}
