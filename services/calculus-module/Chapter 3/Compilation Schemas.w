@@ -59,6 +59,19 @@ typedef struct annotated_i6_schema {
 	int involves_action_variables;
 } annotated_i6_schema;
 
+@ And here it is, before being annotated...
+
+=
+annotated_i6_schema Calculus::Schemas::blank_asch(void) {
+	annotated_i6_schema asch;
+	asch.schema = Calculus::Schemas::new(" ");
+	asch.negate_schema = FALSE;
+	asch.pt0 = Terms::new_variable(0);
+	asch.pt1 = Terms::new_variable(0);
+	asch.involves_action_variables = FALSE;
+	return asch;
+}
+
 @h Building schemas.
 When schemas are generated inside Inform, they often look as if they have an
 even more elaborate syntax, with escapes like |%s| in them. But this is because

@@ -1069,7 +1069,7 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 	char *prototype = Lvalues::interpret_store(storage_class, K1, K2, copy_form);
 	i6_schema *sch = Calculus::Schemas::new("%s;", prototype);
 	LOGIF(KIND_CHECKING, "Inline copy: %s\n", prototype);
-	EmitSchemas::emit_expand_from_terms(sch, &pt1, &pt2, FALSE);
+	CompileSchemas::from_terms_in_val_context(sch, &pt1, &pt2);
 	return;
 
 @ If the |from| part is prefaced with a plus sign |+|, the new value is added

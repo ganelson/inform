@@ -240,7 +240,7 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 				case NEGATION_CLOSE_ATOM: internal_error("blundered");
 					break;
 				default:
-					Atoms::Compile::compile(VH, TEST_ATOM_TASK, pl, TRUE);
+					CompileAtoms::code_to_perform(TEST_ATOM_TASK, pl);
 					break;
 			}
 		}
@@ -444,8 +444,8 @@ void Calculus::Deferrals::emit_now_proposition(pcalc_prop *prop) {
 					parity = (parity)?FALSE:TRUE;
 					break;
 				default:
-					Atoms::Compile::emit(
-						(parity)?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl, TRUE);
+					CompileAtoms::code_to_perform(
+						(parity)?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl);
 					break;
 			}
 		}
@@ -930,7 +930,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 	} else {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
-			EmitSchemas::emit_expand_from_locals(&loop_schema, v1, v2);
+			CompileSchemas::from_local_variables_in_void_context(&loop_schema, v1, v2);
 			if (Lvalues::is_lvalue(spec) == FALSE) {
 				if (Specifications::to_proposition(spec)) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);

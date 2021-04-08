@@ -35,9 +35,9 @@ int CompileValues::compiling_in_constant_mode(void) {
 	return compile_spec_in_constant_mode;
 }
 
-@h An API for compiling specifications.
-When the rest of Inform wants to compile a specification, it should call one
-of the following functions.
+@h An API for compiling values.
+When the rest of Inform wants to compile a value, it should call one of the
+following functions.
 
 To begin with, compiling to array entries:
 
@@ -123,9 +123,12 @@ All of the functions in the above API make use of these private ones:
 =
 void CompileValues::to_holster(value_holster *VH, parse_node *value, int how) {
 	switch (how) {
-		case COMPILE_SPEC_AS_CONSTANT:    LOGIF(EXPRESSIONS, "Compiling (const): $P\n", value); break;
-		case COMPILE_SPEC_AS_VALUE:       LOGIF(EXPRESSIONS, "Compiling (value): $P\n", value); break;
-		case COMPILE_SPEC_AS_FRESH_VALUE: LOGIF(EXPRESSIONS, "Compiling (fresh): $P\n", value); break;
+		case COMPILE_SPEC_AS_CONSTANT:
+			LOGIF(EXPRESSIONS, "Compiling (const): $P\n", value); break;
+		case COMPILE_SPEC_AS_VALUE:
+			LOGIF(EXPRESSIONS, "Compiling (value): $P\n", value); break;
+		case COMPILE_SPEC_AS_FRESH_VALUE:
+			LOGIF(EXPRESSIONS, "Compiling (fresh): $P\n", value); break;
 	}
 	int s = compile_spec_in_constant_mode;
 	if (how == COMPILE_SPEC_AS_CONSTANT) compile_spec_in_constant_mode = TRUE;

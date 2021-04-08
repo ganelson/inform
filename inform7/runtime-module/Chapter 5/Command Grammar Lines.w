@@ -1065,9 +1065,9 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 									pcalc_term self_term = Terms::new_constant(
 										Rvalues::new_self_object_constant());
 									if (reverse)
-										EmitSchemas::emit_val_expand_from_terms(i6s, &rv_term, &self_term);
+										CompileSchemas::from_terms_in_val_context(i6s, &rv_term, &self_term);
 									else
-										EmitSchemas::emit_val_expand_from_terms(i6s, &self_term, &rv_term);
+										CompileSchemas::from_terms_in_val_context(i6s, &self_term, &rv_term);
 					continue_loop_on_fail = TRUE;
 				} else {
 					Problems::quote_source(1, current_sentence);

@@ -383,7 +383,7 @@ the task on. |*2| is unset.
 			parse_node *it_var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 				LocalVariables::it_variable());
 			pcalc_term it_term = Terms::new_constant(it_var);
-			EmitSchemas::emit_expand_from_terms(sch, &it_term, NULL, FALSE);
+			CompileSchemas::from_terms_in_val_context(sch, &it_term, NULL);
 		}
 		return TRUE;
 	}

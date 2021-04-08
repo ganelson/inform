@@ -25,7 +25,7 @@ Chapter 2: Functions
 Chapter 3: Propositions
 "Generating code to test or assert propositions from predicate calculus."
 	Compile Values
-	Emitting from Schemas
+	Compile Schemas
 	Compile Atoms
 	Deciding to Defer
 	Cinders and Deferrals

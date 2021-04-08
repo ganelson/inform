@@ -183,60 +183,6 @@ unary_predicate *Terms::noun_to_adj_conversion(pcalc_term pt) {
 	return NULL;
 }
 
-@h Compiling terms.
-We are now ready to compile a general predicate-calculus term, which
-may be a constant (perhaps with a cinder marking), a variable or a function
-of another term.
-
-Variables are compiled to I6 locals |x|, |y|, |z|, ...; cindered constants to
-|const_0|, |const_1|, ... These will only be valid inside a deferred routine
-like |Prop_19|, but that is fine because they cannot arise anywhere else.
-If we are compiling an undeferred proposition then all constants are uncindered
-and there are no variables (if there were, it would have been deferred).
-
-Functions $f_R(t)$ are compiled by expanding an I6 schema for $f_R$ with $t$
-as parameter.
-
-One small wrinkle is that we type-check any use of a phrase to decide a
-value, because this might not yet have been checked otherwise.
-
-=
-#ifdef CORE_MODULE
-void Terms::emit(pcalc_term pt, kind *K, int by_reference) {
-	if (pt.variable >= 0) {
-		local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);
-		if (lvar == NULL) {
-			LOG("var is %d\n", pt.variable);
-			internal_error("absent calculus variable");
-		}
-		inter_symbol *lvar_s = LocalVariables::declare(lvar);
-		Produce::val_symbol(Emit::tree(), K_value, lvar_s);
-		return;
-	}
-	if (pt.constant) {
-		if (pt.cinder >= 0) {
-			Calculus::Deferrals::Cinders::emit(pt.cinder);
-		} else {
-			if (Specifications::is_phrasal(pt.constant))
-				Dash::check_value(pt.constant, NULL);
-			if (by_reference)
-				CompileValues::to_code_val_of_kind(pt.constant, K);
-			else
-				CompileValues::to_fresh_code_val_of_kind(pt.constant, K);
-		}
-		return;
-	}
-	if (pt.function) {
-		binary_predicate *bp = (pt.function)->bp;
-		i6_schema *fn = BinaryPredicates::get_term_as_fn_of_other(bp, 1-pt.function->from_term);
-		if (fn == NULL) internal_error("function of non-functional predicate");
-		EmitSchemas::emit_expand_from_terms(fn, &(pt.function->fn_of), NULL, FALSE);
-		return;
-	}
-	internal_error("Broken pcalc term");
-}
-#endif
-
 @h Writing to text.
 The art of this is to be unobtrusive; when a proposition is being logged,
 we don't much care about the constant terms, and want to display them

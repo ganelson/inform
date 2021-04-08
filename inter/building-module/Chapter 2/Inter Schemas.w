@@ -1011,7 +1011,7 @@ of modifiers are allowed. The full syntax follows:
 @d CAST_TO_KIND_OF_OTHER_TERM_ISSBM		16
 @d BY_REFERENCE_ISSBM					32
 @d LVALUE_CONTEXT_ISSBM	                64
-@d STORAGE_AS_FUNCTION_CMODE_ISSBM      128
+@d STORAGE_AS_FUNCTION_ISSBM            128
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;
@@ -1020,7 +1020,7 @@ of modifiers are allowed. The full syntax follows:
 	switch (c) {
 		case '!': internal_error("the '*!' schema notation has been abolished"); break;
 		case '%': iss_bitmap = iss_bitmap | LVALUE_CONTEXT_ISSBM; c = Str::get_at(from, ++at); break;
-		case '$': iss_bitmap = iss_bitmap | STORAGE_AS_FUNCTION_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
+		case '$': iss_bitmap = iss_bitmap | STORAGE_AS_FUNCTION_ISSBM; c = Str::get_at(from, ++at); break;
 		case '#': iss_bitmap = iss_bitmap | GIVE_KIND_ID_ISSBM; c = Str::get_at(from, ++at); break;
 		case '_': iss_bitmap = iss_bitmap | GIVE_COMPARISON_ROUTINE_ISSBM; c = Str::get_at(from, ++at); break;
 		case '+': iss_bitmap = iss_bitmap | DEREFERENCE_PROPERTY_ISSBM; c = Str::get_at(from, ++at); break;

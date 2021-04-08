@@ -404,7 +404,7 @@ following, without having to worry about how any of this works:
 =
 void Frames::emit_new_local_value(kind *K) {
 	local_block_value *bv = Frames::allocate_local_block_value(K);
-	EmitSchemas::emit_expand_from_terms(bv->to_refer, NULL, NULL, FALSE);
+	CompileSchemas::from_terms_in_val_context(bv->to_refer, NULL, NULL);
 }
 
 @h Logging.

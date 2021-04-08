@@ -610,7 +610,7 @@ statement properly:
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
 		Produce::down(Emit::tree());
 	}
-	Atoms::Compile::emit(TEST_ATOM_TASK, pl, TRUE);
+	CompileAtoms::code_to_perform(TEST_ATOM_TASK, pl);
 
 @<End a run of predicate-like conditions, if one is under way@> =
 	if (run_of_conditions > 0) {
@@ -623,7 +623,7 @@ statement properly:
 @ The |NOW_ASSERTION_DEFER| reason is different from all of the others,
 because rather than searching for a given situation it tries force it to
 happen (or not to). Forcing rather than testing is easy here: we just supply
-a different task when calling |Atoms::Compile::compile|.
+a different task when calling |CompileAtoms::code_to_perform|.
 
 In the negated case, we again cheat de Morgan, by falsifying $\phi$ more
 aggressively than we need: we force $\lnot(X)\land\lnot(Y)\land\lnot(Z)$ to
@@ -635,7 +635,7 @@ We don't need to consider runs of predicates for that; we can take the atoms
 one at a time.
 
 @<Compile code to force the atom@> =
-	Atoms::Compile::emit((R_stack_parity[R_sp-1])?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl, TRUE);
+	CompileAtoms::code_to_perform((R_stack_parity[R_sp-1])?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl);
 
 @h Quantifiers and the Q-stack.
 It remains to deal with quantifiers, and to show that the Invariant is
@@ -842,7 +842,7 @@ quantifier.
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
-		Terms::emit(C_stack_term[C_sp], K_value, TRUE);
+		CompileSchemas::compile_term(C_stack_term[C_sp], K_value, TRUE);
 	Produce::up(Emit::tree());
 
 @ That just leaves the blocking, which follows the One True Brace Style. Thus:
@@ -1597,7 +1597,7 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 		proposition = Propositions::delete_atom(proposition, kind_position);
 	}
 
-	EmitSchemas::emit_expand_from_terms(&loop_schema, &var_term, &second_term, TRUE);
+	CompileSchemas::from_terms_in_void_context(&loop_schema, &var_term, &second_term);
 
 	return proposition;
 }

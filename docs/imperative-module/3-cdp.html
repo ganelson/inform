@@ -791,7 +791,7 @@ statement properly:
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">AND_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="3-ca.html#SP3" class="function-link"><span class="function-syntax">Atoms::Compile::emit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEST_ATOM_TASK</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-ca.html#SP1" class="function-link"><span class="function-syntax">CompileAtoms::code_to_perform</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEST_ATOM_TASK</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cdp.html#SP2_1_6_1_2_3">&#167;2.1.6.1.2.3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_1_6_1_2_3_3" class="paragraph-anchor"></a><b>&#167;2.1.6.1.2.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a run of predicate-like conditions, if one is under way</span><span class="named-paragraph-number">2.1.6.1.2.3.3</span></span><span class="comment-syntax"> =</span>
@@ -809,7 +809,7 @@ statement properly:
 <p class="commentary firstcommentary"><a id="SP2_1_6_1_2_3_4" class="paragraph-anchor"></a><b>&#167;2.1.6.1.2.3.4.  </b>The <span class="extract"><span class="extract-syntax">NOW_ASSERTION_DEFER</span></span> reason is different from all of the others,
 because rather than searching for a given situation it tries force it to
 happen (or not to). Forcing rather than testing is easy here: we just supply
-a different task when calling <span class="extract"><span class="extract-syntax">Atoms::Compile::compile</span></span>.
+a different task when calling <span class="extract"><span class="extract-syntax">CompileAtoms::code_to_perform</span></span>.
 </p>
 
 <p class="commentary">In the negated case, we again cheat de Morgan, by falsifying \(\phi\) more
@@ -827,7 +827,7 @@ one at a time.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="3-ca.html#SP3" class="function-link"><span class="function-syntax">Atoms::Compile::emit</span></a><span class="plain-syntax">((</span><span class="identifier-syntax">R_stack_parity</span><span class="plain-syntax">[</span><span class="identifier-syntax">R_sp</span><span class="plain-syntax">-1])?</span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-ca.html#SP1" class="function-link"><span class="function-syntax">CompileAtoms::code_to_perform</span></a><span class="plain-syntax">((</span><span class="identifier-syntax">R_stack_parity</span><span class="plain-syntax">[</span><span class="identifier-syntax">R_sp</span><span class="plain-syntax">-1])?</span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cdp.html#SP2_1_6_1_2_3">&#167;2.1.6.1.2.3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_1_6_1_2_3_5" class="paragraph-anchor"></a><b>&#167;2.1.6.1.2.3.5. Quantifiers and the Q-stack. </b>It remains to deal with quantifiers, and to show that the Invariant is
@@ -1087,7 +1087,7 @@ quantifier.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">DEFERRED_CALLING_LIST_HL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">C_stack_index</span><span class="plain-syntax">[</span><span class="identifier-syntax">C_sp</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Terms::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">C_stack_term</span><span class="plain-syntax">[</span><span class="identifier-syntax">C_sp</span><span class="plain-syntax">], </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-cs.html#SP5" class="function-link"><span class="function-syntax">CompileSchemas::compile_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C_stack_term</span><span class="plain-syntax">[</span><span class="identifier-syntax">C_sp</span><span class="plain-syntax">], </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cdp.html#SP2_1_6_1_2">&#167;2.1.6.1.2</a>, <a href="3-cdp.html#SP2_1_6_1_2_4">&#167;2.1.6.1.2.4</a>.</li></ul>
@@ -1998,7 +1998,7 @@ then expand it into the output.
 <span class="plain-syntax">        </span><span class="identifier-syntax">proposition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Propositions::delete_atom</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_position</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><a href="3-efs.html#SP1" class="function-link"><span class="function-syntax">EmitSchemas::emit_expand_from_terms</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">loop_schema</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">var_term</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">second_term</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">CompileSchemas::from_terms_in_void_context</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">loop_schema</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">var_term</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">second_term</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">proposition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -2108,7 +2108,7 @@ simplifications. We set <span class="extract"><span class="extract-syntax">optim
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-cad.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-sf.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-cv.html">cv</a></li><li class="progresssection"><a href="3-efs.html">efs</a></li><li class="progresssection"><a href="3-ca.html">ca</a></li><li class="progresssection"><a href="3-dtd.html">dtd</a></li><li class="progresssection"><a href="3-cad.html">cad</a></li><li class="progresscurrent">cdp</li><li class="progresschapter"><a href="4-cbal.html">4</a></li><li class="progressnext"><a href="4-cbal.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-cad.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-sf.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-cv.html">cv</a></li><li class="progresssection"><a href="3-cs.html">cs</a></li><li class="progresssection"><a href="3-ca.html">ca</a></li><li class="progresssection"><a href="3-dtd.html">dtd</a></li><li class="progresssection"><a href="3-cad.html">cad</a></li><li class="progresscurrent">cdp</li><li class="progresschapter"><a href="4-cbal.html">4</a></li><li class="progressnext"><a href="4-cbal.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
