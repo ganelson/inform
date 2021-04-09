@@ -5,12 +5,10 @@ body of the current function, or whether it must be deferred to a function of
 its own, which is merely called from the current function.
 
 @h Reasons for deferral.
-So far in this chapter, we have written code which suggests that there
-are basically only three reasons to compile a proposition: as a test
-("if the tree is blossoming"), as code forcing it to be true ("now
-the tree is blossoming") or as code forcing it to be false ("now the
-tree is not blossoming"). That's not quite true, and so deferral can happen
-for a number of different reasons, enumerated as follows:
+There are a number of possible reasons to defer a proposition, depending on
+how it is to be used; we may even want to convert a proposition to a
+"multipurpose" deferral function, capable of doing any of these on demand
+at runtime.
 
 @d CONDITION_DEFER 1       /* "if S", where S is a sentence */
 @d NOW_ASSERTION_DEFER 2   /* "now S" */
@@ -25,8 +23,8 @@ for a number of different reasons, enumerated as follows:
 
 =
 typedef struct pcalc_prop_deferral {
-	int reason; /* what we intend to do with it: one of the reasons above */
-	struct pcalc_prop *proposition_to_defer; /* the proposition */
+	int reason; /* what we intend to do with it: one of the |*_DEFER| values above */
+	struct pcalc_prop *proposition_to_defer;
 	struct parse_node *deferred_from; /* remember where it came from, for Problem reports */
 	struct general_pointer defn_ref; /* sometimes we must remember other things too */
 	struct kind *cinder_kinds[16]; /* the kinds of value being cindered (see below) */
@@ -62,9 +60,9 @@ pcalc_prop_deferral *Deferrals::new(pcalc_prop *prop, int reason) {
 	return pdef;
 }
 
-@ It's worth cacheing deferral requests in the case of loop domains,
-because they are typically needed in the case of repeat-through loops where
-the same proposition is used three times in a row.
+@ We cache deferral requests in the case of loop domains, because they are typically
+needed in the case of repeat-through loops where the same proposition is used three
+times in a row.
 
 =
 pcalc_prop *cache_loop_proposition = NULL;
@@ -79,15 +77,231 @@ pcalc_prop_deferral *Deferrals::defer_loop_domain(pcalc_prop *prop) {
 	return pdef;
 }
 
-@ The following convenience function takes a description, converts it to a
-proposition $\phi(x)$, then defers this and returns the iname of the function
-which will implement it.
+@h Testing, or deferring a test.
+This is the first of several functions serving //Compile Propositions//. In
+each case we decide whether or not to defer: if so we return |TRUE| and compile
+the necessary code to call the deferred function; and if not return |FALSE| and
+do nothing. (If we issue a problem message, we should then return |TRUE|.)
+
+We defer the proposition to a test function of its own if and only if it contains
+quantification. The test function returns the verdict |true| or |false|, so to
+evaluate the condition we just need to call it.
 
 =
-inter_name *Deferrals::compile_deferred_description_test(parse_node *spec) {
+int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *prop) {
+	if (Propositions::contains_quantifier(prop)) {
+		pcalc_prop_deferral *pdef;
+		RTConditions::begin_condition_emit();
+		int go_up = FALSE;
+		@<If the proposition is a negation, take care of that now@>;
+		int NC = Deferrals::count_callings_in_condition(prop);
+		if (NC > 0) {
+			Produce::inv_primitive(Emit::tree(), AND_BIP);
+			Produce::down(Emit::tree());
+		}
+		pdef = Deferrals::new(prop, CONDITION_DEFER);
+		@<Compile the call to the deferred function@>;
+		if (NC > 0) {
+			Deferrals::prepare_to_retrieve_callings_in_test_context(prop);
+			Deferrals::retrieve_callings_in_test_context(prop, NC);
+		}
+		if (NC > 0) Produce::up(Emit::tree());
+		if (go_up) Produce::up(Emit::tree());
+		RTConditions::end_condition_emit();
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@ This is done purely for the sake of compiling tidier code: if $\phi = \lnot(\psi)$
+then we defer $\psi$ instead, negating the result of testing it.
+
+@<If the proposition is a negation, take care of that now@> =
+	if (Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
+		prop = Propositions::remove_topmost_group(prop);
+		Produce::inv_primitive(Emit::tree(), NOT_BIP);
+		Produce::down(Emit::tree());
+		go_up = TRUE;
+	}
+
+@ The first practical problem with deferrals is that the proposition is now
+being tested in a different function, with its own stack frame, and that means
+that it has no access to the local variables we can see here. Moreover, it
+may not even be able to evaluate the term which the proposition is being
+applied to. We are therefore going to need to call it as:
+= (text)
+	f(c_1, ..., c_n, t)
+=
+where |t| is the term, and |c_1| to |c_n| are any local variables which the
+proposition mentions. (We want to avoid the misery of //Local Parking//.)
+Those passed values |c_1|, ..., |c_n| are called "cinders", and are covered
+more fully in //Cinders and Deferrals//. It is possible, of course, that |n| is
+zero, in which case there are no cinders at all.
+
+Note that the term value |t| -- it it exists -- becomes the initial value of
+the local variable |x| in the deferred function |f|. This is correct, because
+|x| is the free variable in the proposition, so calling the function with |t|
+in the |x| argument neatly effects a substitution of $x = t$.
+
+@<Compile the call to the deferred function@> =
+	Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
+	Produce::down(Emit::tree());
+		Cinders::compile_cindered_values(prop, pdef);
+		if (substitution) CompileValues::to_code_val(substitution);
+	Produce::up(Emit::tree());
+
+@ The second practical problem concerns callings. If we compile:
+= (text as Inform 7)
+	if a woman (called the moll) has a weapon (called the gun), ...
+=
+then we will need to defer the proposition, since it involves quantification
+and therefore an implicit search loop. But it is supposed to set two local
+variables, "moll" and "gun", with its findings; and they have to end up in
+the caller's stack frame, not in the deferred function. Somehow, they need
+to be return values of a sort from |f|, but Inter's lack of memory access to
+the call stack means that it is impossible for an Inter function to return
+multiple values. What to do?
+
+The answer is that |f| copies these values onto a special array called the
+"stash of callings". The very last thing that |f| does before it returns
+is to fill in this list; the very first thing we do on receiving that return
+is to extract what we want from it. Because no other activity takes place in
+between, there is no risk that some recursive use of propositions will
+overwrite the list.
+
+For example, our call might then become
+= (text)
+	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
+=
+which safely transfers the values to locals |t_2| and |t_3| of |R|. Note that
+Inter evaluates conditions joined by |&&| from left to right, so we can be
+certain that |f| has been called and has returned |true| before we get to the
+setting of |t_2| and |t_3|.
+
+@ Here we find out what size of deferred list we will need:
+
+=
+int Deferrals::count_callings_in_condition(pcalc_prop *prop) {
+	int calling_count = 0;
+	TRAVERSE_VARIABLE(atom);
+	TRAVERSE_PROPOSITION(atom, prop)
+		if (CreationPredicates::is_calling_up_atom(atom))
+			calling_count++;
+	return calling_count;
+}
+
+@ In both cases (a test, or something other), we will compile an expression
+whose side-effects of evaluation will set the necessary calling locals. But
+the details differ. Here |f| is a test; |g| is some other function returning
+a value.
+= (text)
+	(f(c_1, ..., c_n, t) && (t_2=stash-->0, t_3=stash-->1, true))
+	(stash-->26 = g(c_1, ..., c_n, t), t_2=stash-->0, t_3=stash-->1, stash-->26)
+=
+The return value of |g|, which must emerge unscathed from this expression, is
+stored temporarily in |stash-->26|.
+
+The retrieval must be done in two stages. First, call this; then, in the
+case which isn't |as_test|, compile the return value of |g|.
+
+=
+void Deferrals::prepare_to_retrieve_callings_in_test_context(pcalc_prop *prop) {
+	Deferrals::prepare_to_retrieve_callings(prop, TRUE);
+}
+void Deferrals::prepare_to_retrieve_callings_in_other_context(pcalc_prop *prop) {
+	Deferrals::prepare_to_retrieve_callings(prop, FALSE);
+}
+void Deferrals::prepare_to_retrieve_callings(pcalc_prop *prop, int as_test) {
+	inter_name *stash = LocalParking::callings();
+	if (CreationPredicates::contains_callings(prop)) {
+		if (as_test) {
+			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (1) */
+			Produce::down(Emit::tree());
+		} else {
+			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (2) */
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), STORE_BIP); /* (3) */
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, stash);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
+					Produce::up(Emit::tree());
+		}
+	}
+}
+
+@ Second, call one of the following functions:
+
+=
+void Deferrals::retrieve_callings_in_test_context(pcalc_prop *prop, int NC) {
+	if (NC > 0) Deferrals::retrieve_callings_inner(prop, NC, TRUE);
+}
+void Deferrals::retrieve_callings_in_other_context(pcalc_prop *prop) {
+	int NC = Deferrals::count_callings_in_condition(prop);
+	if (NC > 0) Deferrals::retrieve_callings_inner(prop, NC, FALSE);
+}
+
+void Deferrals::retrieve_callings_inner(pcalc_prop *prop, int NC, int as_test) {
+	if (as_test == FALSE) {
+		Produce::up(Emit::tree()); /* closes (3) */
+		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (4) */
+		Produce::down(Emit::tree());
+	}
+	inter_name *stash = LocalParking::callings();
+	int calling_count = 0, downs = 0;
+	TRAVERSE_VARIABLE(atom);
+	TRAVERSE_PROPOSITION(atom, prop)
+		if (CreationPredicates::is_calling_up_atom(atom))
+			@<Retrieve this calling@>;
+	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+	if (as_test) {
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+		Produce::up(Emit::tree()); /* closes (1) */
+	} else {
+		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_value, stash);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
+		Produce::up(Emit::tree());
+		Produce::up(Emit::tree()); /* closes (4) */
+		Produce::up(Emit::tree()); /* closes (2) */
+	}
+}
+
+@<Retrieve this calling@> =
+	wording W = CreationPredicates::get_calling_name(atom);
+	local_variable *local =
+		LocalVariables::ensure_calling(W, CreationPredicates::what_kind_of_calling(atom));
+	calling_count++;
+	if (calling_count < NC) {
+		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+		Produce::down(Emit::tree());
+		downs++;
+	}
+	Produce::inv_primitive(Emit::tree(), STORE_BIP);
+	Produce::down(Emit::tree());
+		inter_symbol *local_s = LocalVariables::declare(local);
+		Produce::ref_symbol(Emit::tree(), K_value, local_s);
+		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_value, stash);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+				(inter_ti) (calling_count - 1));
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+	if (as_test) RTConditions::add_calling_to_condition(local);
+
+@ The following function can be used when:
+(*) we want to force deferral in all cases, regardless of the proposition, and
+(*) we want to disallow all callings.
+
+=
+inter_name *Deferrals::function_to_test_description(parse_node *spec) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
 	if (CreationPredicates::contains_callings(prop)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallDeferredDescs),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CantCallDeferredDescs),
 			"'called' can't be used when testing a description",
 			"since it would make a name for something which existed only so temporarily "
 			"that it couldn't be used anywhere else.");
@@ -98,277 +312,63 @@ inter_name *Deferrals::compile_deferred_description_test(parse_node *spec) {
 	}
 }
 
-@h Testing, or deferring a test.
-We defer the proposition to a test function of its own if and only if it contains
-quantification.
-
-=
-int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *prop) {
-	if (Propositions::contains_quantifier(prop)) {
-		@<Defer test of proposition instead@>;
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@ Since this is the first of our deferrals, let's take it slowly. We are
-compiling code in some outer routine -- let's call it |R| -- and the idea
-is to compile a function call |Prop_19(...)| into |R| where the test should
-be; this function will return either |true| or |false|, and its job is to
-test the proposition for us. (Deferred propositions are numbered in order
-of deferral; for the sake of example, we'll suppose ours in number 19.)
-
-@<Defer test of proposition instead@> =
-	pcalc_prop_deferral *pdef;
-	RTConditions::begin_condition_emit();
-	int go_up = FALSE;
-	@<If the proposition is a negation, take care of that now@>;
-	int NC = Deferrals::count_callings_in_condition(prop);
-	if (NC > 0) {
-		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Produce::down(Emit::tree());
-	}
-	pdef = Deferrals::new(prop, CONDITION_DEFER);
-	@<Compile the call to the test-proposition routine@>;
-	if (NC > 0) Deferrals::emit_retrieve_callings_in_condition(prop, NC);
-	if (NC > 0) Produce::up(Emit::tree());
-	if (go_up) Produce::up(Emit::tree());
-	RTConditions::end_condition_emit();
-
-@ This is done purely for the sake of compiling tidier code: if $\phi = \lnot(\psi)$
-then we defer $\psi$ instead, negating the result of testing it.
-
-@<If the proposition is a negation, take care of that now@> =
-	if (Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
-		prop = Propositions::remove_topmost_group(prop);
-		Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); go_up = TRUE;
-	}
-
-@ All of the subtlety here is to do with the fact that |R| and |Prop_19|
-have access to different values -- in particular, they have different sets
-of local variables.
-
-Because code in |Prop_19| cannot see the local variables of |R|, any such
-values needed must be passed from |R| to |Prop_19| as call parameters.
-These passed values are called "cinders".
-
-In addition, |R| might not be able to evaluate the substitution value $v$
-for itself, so that must also be a call parameter. It will then become the
-initial value of the local variable |x| in |Prop_19|, and since $x$ is free
-in the proposition, |x| never changes in |Prop_19|: thus we effect a
-substitution of $x=v$.
-
-For example, |R| might contain the function call:
-= (text as Inform 6)
-	Prop_19(t_6, t_2, O13_sphinx)
-=
-and the function header of |Prop_19| might then look like so:
-= (text as Inform 6)
-	[ Prop_19 const_0 const_1 x;
-=
-The value of |cinder_count| would then be 2.
-
-@<Compile the call to the test-proposition routine@> =
-	Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
-	Produce::down(Emit::tree());
-		Deferrals::Cinders::find_emit(prop, pdef);
-		if (substitution) CompileValues::to_code_val(substitution);
-	Produce::up(Emit::tree());
-
-@ When we defer a test, we make "called" more tricky to achieve. Suppose
-we are compiling a condition for
-
->> if a woman (called the moll) has a weapon (called the gun), ...
-
-This needs to set two local variables, "moll" and "gun", but those
-have to be locals in |R| -- they are inaccessible to |Prop_19|. Somehow,
-they need to be return values, but I6 supports only a single return value
-from a routine, and that needs to be either |true| or |false|. What to do?
-
-The answer is that |Prop_19| copies these values onto a special I6 array
-called the "deferred calling list". The very last thing that |Prop_19|
-does before it returns is to fill in this list; the very first thing we
-do on receiving that return is to extract what we want from it. (Because
-no other activity takes place in between, there is no risk that some
-recursive use of propositions will overwrite the list.)
-
-For example, |R| might this time contain a call like so:
-= (text as Inform 6)
-	(Prop_19() && (t_2=deferred_calling_list-->0, t_3=deferred_calling_list-->1, true))
-=
-which safely transfers the values to locals |t_2| and |t_3| of |R|. Note
-that I6 evaluates conditions joined by |&&| from left to right, so we
-can be certain that |Prop_19| has been called and has returned before we
-get to the setting of |t_2| and |t_3|.
-
-=
-int Deferrals::count_callings_in_condition(pcalc_prop *prop) {
-	int calling_count = 0;
-	TRAVERSE_VARIABLE(pl);
-	TRAVERSE_PROPOSITION(pl, prop)
-		if (CreationPredicates::is_calling_up_atom(pl))
-			calling_count++;
-	return calling_count;
-}
-
-void Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, int NC) {
-	Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-	Produce::down(Emit::tree());
-		int calling_count = 0, downs = 0;
-		TRAVERSE_VARIABLE(pl);
-		TRAVERSE_PROPOSITION(pl, prop) {
-			if (CreationPredicates::is_calling_up_atom(pl)) {
-				local_variable *local;
-				@<Find which local variable in R needs the value, creating it if necessary@>;
-				calling_count++;
-				if (calling_count < NC) { Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); Produce::down(Emit::tree()); downs++; }
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					inter_symbol *local_s = LocalVariables::declare(local);
-					Produce::ref_symbol(Emit::tree(), K_value, local_s);
-					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (calling_count - 1));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-				RTConditions::add_calling_to_condition(local);
-			}
-		}
-		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
-		if (calling_count == 0) internal_error("called improperly");
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
-}
-
-void Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
-	int calling_count=0;
-	TRAVERSE_VARIABLE(pl);
-	TRAVERSE_PROPOSITION(pl, prop) {
-		if (CreationPredicates::is_calling_up_atom(pl)) {
-			local_variable *local;
-			@<Find which local variable in R needs the value, creating it if necessary@>;
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					inter_symbol *local_s = LocalVariables::declare(local);
-					Produce::ref_symbol(Emit::tree(), K_value, local_s);
-					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) calling_count++);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-		}
-	}
-	if (calling_count > 0) {
-		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
-		Produce::up(Emit::tree());
-	}
-}
-
-@ And for value context:
-
-=
-void Deferrals::prepare_to_retrieve_callings(OUTPUT_STREAM, pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (CreationPredicates::contains_callings(prop))) {
-		WRITE("deferred_calling_list-->26 = ");
-	}
-}
-
-int Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (CreationPredicates::contains_callings(prop))) {
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
-			Produce::up(Emit::tree());
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@ |LocalVariables::ensure_calling| is so called because it ensures that a local of the
-right name and kind of value exists in |R|.
-
-@<Find which local variable in R needs the value, creating it if necessary@> =
-	wording W = CreationPredicates::get_calling_name(pl);
-	local = LocalVariables::ensure_calling(W, CreationPredicates::what_kind_of_calling(pl));
-
 @h Forcing with now, or deferring the force.
-Again, we defer this if and only if there is quantification.
+Again, we defer this if and only if there is quantification. But everything
+is much easier here: we're in a void context, and we don't have callings.
 
 =
 int Deferrals::defer_now_proposition(pcalc_prop *prop) {
-	int quantifier_count = 0;
-	@<Count quantifiers in, and generally vet, the proposition to be forced@>;
-	if (quantifier_count > 0) {
+	if (Propositions::contains_quantifier(prop)) {
 		pcalc_prop_deferral *pdef = Deferrals::new(prop, NOW_ASSERTION_DEFER);
 		Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
 		Produce::down(Emit::tree());
-		Deferrals::Cinders::find_emit(prop, pdef);
+		Cinders::compile_cindered_values(prop, pdef);
 		Produce::up(Emit::tree());
 		return TRUE;
 	}
 	return FALSE;
 }
 
-@ We reject multiple quantifiers as too much work, and $\exists x$ because
-it would either require us to judge the $x$ most likely to be meant -- tricky --
-or to create an $x$ out of nothing, which it's too late for, since Inform
-does not have run-time object or value creation.
+@h Other uses.
+Unlike "now" and testing, the other ways to use propositions -- for example,
+counting matches with "the number of ..." -- can take a description which
+might not be a constant. The following gives a general way to call a deferred
+function for one of those other purposes, allowing for callings.
 
-@<Count quantifiers in, and generally vet, the proposition to be forced@> =
-	TRAVERSE_VARIABLE(pl);
-	TRAVERSE_PROPOSITION(pl, prop) {
-		switch(pl->element) {
-			case QUANTIFIER_ATOM:
-				if (Atoms::is_existence_quantifier(pl)) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceExistence),
-						"this is not explicit enough",
-						"and should set out definite relationships between specific "
-						"things, like 'now the cat is in the bag', not something "
-						"more elusive like 'now the cat is carried by a woman.' "
-						"(Which woman? That's the trouble.)");
-					return TRUE;
-				}
-				if (Atoms::is_now_assertable_quantifier(pl) == FALSE) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceGeneralised),
-						"this can't be made true with 'now'",
-						"because it is too vague about what it applies to. It's fine "
-						"to say 'now all the doors are open' or 'now none of the doors "
-						"is open', because that clearly tells me which doors are "
-						"affected; but if you write 'now six of the doors are open' "
-						"or 'now almost all the doors are open', what am I to do?");
-					return TRUE;
-				}
-				quantifier_count++;
-				break;
-		}
-		if (CreationPredicates::is_calling_up_atom(pl)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
-				"a 'now' is not allowed to call names",
-				"and it wouldn't really make sense to do so anyway. 'if "
-				"a person (called the victim) is in the Trap Room' makes "
-				"sense, because it gives a name - 'victim' - to someone "
-				"whose identity we don't know. But 'now a person (called "
-				"the victim) is in the Trap Room' won't be allowed, "
-				"because 'now' can only talk about people or things whose "
-				"identities we do know.");
-			return TRUE;
-		}
+Callings can indeed occur, as in the example "a random person in a room (called
+the haven)". |RandomCalling| is a useful test case for this function.
+
+=
+void Deferrals::call_deferred_fn(pcalc_prop *prop,
+	int reason, general_pointer data, kind *K) {
+	pcalc_prop_deferral *pdef = Deferrals::new(prop, reason);
+	pdef->defn_ref = data;
+	Deferrals::prepare_to_retrieve_callings_in_other_context(prop);
+	int arity = Cinders::count(prop, pdef);
+	if (K) arity = arity + 2;
+	switch (arity) {
+		case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
+		case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
+		case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
+		case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
+		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
+		default: internal_error("indirect function call with too many arguments");
 	}
+	Produce::down(Emit::tree());
+	Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
+	Cinders::compile_cindered_values(prop, pdef);
+	if (K) {
+		Frames::emit_new_local_value(K);
+		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
+	}
+	Produce::up(Emit::tree());
+	Deferrals::retrieve_callings_in_other_context(prop);
+}
 
 @h Multipurpose descriptions.
 Descriptions in the form $\phi(x)$, where $x$ is free, are also sometimes
 converted into values -- this is the kind of value "description". The
-I6 representation is (the address of) a routine |D| which, in general,
+Inter representation is (the address of) a function |D| which, in general,
 performs task $u$ on value $v$ when called as |D(u, v)|, where $u$ is
 expected to be one of the following values. (Note that $v$ is only needed
 in the first two cases.)
@@ -377,17 +377,18 @@ These numbers must be negative, since they need to be different from
 every valid member of a quantifiable domain (objects, enumerated kinds, truth
 states, times of day, and so on).
 
-@d CONDITION_DUSAGE -1 /* return |true| iff $\phi(v)$ */
+@d CONDITION_DUSAGE -1   /* return |true| iff $\phi(v)$ */
 @d LOOP_DOMAIN_DUSAGE -2 /* return the next $x$ after $v$ such that $\phi(x)$ */
-@d NUMBER_OF_DUSAGE -3 /* return the number of $w$ such that $\phi(w)$ */
-@d RANDOM_OF_DUSAGE -4 /* return a random $w$ such that $\phi(w)$, or 0 if none exists */
-@d TOTAL_DUSAGE -5 /* return the total value of a property among $w$ such that $\phi(w)$ */
-@d EXTREMAL_DUSAGE -6 /* return the maximal property value among such $w$ */
-@d LIST_OF_DUSAGE -7 /* return the list of $w$ such that $\phi(w)$ */
+@d NUMBER_OF_DUSAGE -3   /* return the number of $w$ such that $\phi(w)$ */
+@d RANDOM_OF_DUSAGE -4   /* return a random $w$ such that $\phi(w)$, or 0 if none exists */
+@d TOTAL_DUSAGE -5       /* return the total value of a property among $w$ such that $\phi(w)$ */
+@d EXTREMAL_DUSAGE -6    /* return the maximal property value among such $w$ */
+@d LIST_OF_DUSAGE -7     /* return the list of $w$ such that $\phi(w)$ */
 
 @ Multi-purpose description routines are pretty dandy, then, but they have
 one big drawback: they can't be passed cinders, because they might be called
-from absolutely anywhere. Hence the following:
+from absolutely anywhere. (And, once again, we are trying to avoid having to
+capture local values as closures.) Hence the following:
 
 =
 void Deferrals::compile_multiple_use_proposition(value_holster *VH,
@@ -399,7 +400,8 @@ void Deferrals::compile_multiple_use_proposition(value_holster *VH,
 	else if ((q) && (q != for_all_quantifier)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_spec(2, spec);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(),	
+			_p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"In %1 you wrote the description '%2' in the context of a value, "
 			"but descriptions used that way are not allowed to talk about "
@@ -421,7 +423,8 @@ void Deferrals::compile_multiple_use_proposition(value_holster *VH,
 		LOG("Offending proposition: $D\n", prop);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(example));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LocalInDescription));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_LocalInDescription));
 		Problems::issue_problem_segment(
 			"You wrote %1, but descriptions used as values are not allowed to "
 			"contain references to temporary values (defined by 'let', or by loops, "
@@ -436,32 +439,29 @@ void Deferrals::compile_multiple_use_proposition(value_holster *VH,
 	}
 }
 
-@ Because multipurpose descriptions have this big drawback, we want to avoid
-them if we possibly can. Fortunately something much simpler will often do.
-For example, consider:
-
->> (1) the number of members of S
->> (2) the number of closed doors
-
+@ Because multipurpose descriptions have this big drawback, we want to avoid them
+if we possibly can. Fortunately something much simpler will often do. For example,
+consider:
+= (text)
+(1) the number of members of S
+(2) the number of closed doors
+=
 where S, in (1), is a description which appears as a parameter in a phrase.
 In (1) we have no way of knowing what S might be, but we can safely assume
-that it has been compiled as a multi-purpose description routine, and
+that it has been compiled as a multi-purpose description function |D|, and
 therefore compile the function call:
 = (text as Inform 6)
 	D(NUMBER_OF_DUSAGE)
 =
 But in case (2) it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
-defer it to a proposition with reason |NUMBER_OF_DEFER|, and then compile just
-= (text as Inform 6)
-	Prop_19()
-=
+defer it to function |f| with reason |NUMBER_OF_DEFER|, and then compile just |f()|
 to perform the calculation. We never need a multi-purpose description routine for
 $\phi(x)$ because it only occurs in this one context.
 
 @ We now perform this trick for "number of":
 
 =
-void Deferrals::emit_number_of_S(parse_node *spec) {
+int Deferrals::defer_number_of_matches(parse_node *spec) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
@@ -470,12 +470,14 @@ void Deferrals::emit_number_of_S(parse_node *spec) {
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
-		CompilePropositions::verify_descriptive(prop, "a number of things matching a description", spec);
-		Deferrals::emit_call_to_deferred_desc(prop, NUMBER_OF_DEFER, NULL_GENERAL_POINTER, NULL);
+		CompilePropositions::verify_descriptive(prop,
+			"a number of things matching a description", spec);
+		Deferrals::call_deferred_fn(prop, NUMBER_OF_DEFER, NULL_GENERAL_POINTER, NULL);
 	}
+	return TRUE;
 }
 
-@ Where we employ:
+@ By "variable", we actually mean any stored value:
 
 =
 int Deferrals::spec_is_variable_of_kind_description(parse_node *spec) {
@@ -485,46 +487,10 @@ int Deferrals::spec_is_variable_of_kind_description(parse_node *spec) {
 	return FALSE;
 }
 
-void Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
-	int reason, general_pointer data, kind *K) {
-	pcalc_prop_deferral *pdef = Deferrals::new(prop, reason);
-	pdef->defn_ref = data;
-	int with_callings = CreationPredicates::contains_callings(prop);
-	if (with_callings) {
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
-	}
-	int L = Produce::level(Emit::tree());
-	Deferrals::emit_prepare_to_retrieve_callings(prop, FALSE);
-
-	int arity = Deferrals::Cinders::find_count(prop, pdef);
-	if (K) arity = arity + 2;
-	switch (arity) {
-		case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
-		case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
-		case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
-		case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
-		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
-		default: internal_error("indirect function call with too many arguments");
-	}
-	Produce::down(Emit::tree());
-	Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
-	Deferrals::Cinders::find_emit(prop, pdef);
-	if (K) {
-		Frames::emit_new_local_value(K);
-		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
-	}
-	Produce::up(Emit::tree());
-	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
-	Deferrals::emit_retrieve_callings(prop);
-	if (with_callings) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
-
-}
-
-@ And for "list of":
+@ And now for "list of":
 
 =
-void Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
+int Deferrals::defer_list_of_matches(parse_node *spec, kind *K) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_DESC_HL));
 		Produce::down(Emit::tree());
@@ -534,54 +500,44 @@ void Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
-		CompilePropositions::verify_descriptive(prop, "a list of things matching a description", spec);
-		Deferrals::emit_call_to_deferred_desc(prop, LIST_OF_DEFER, NULL_GENERAL_POINTER, K);
+		CompilePropositions::verify_descriptive(prop,
+			"a list of things matching a description", spec);
+		Deferrals::call_deferred_fn(prop, LIST_OF_DEFER, NULL_GENERAL_POINTER, K);
 	}
+	return TRUE;
 }
 
-@ The pattern is repeated for "a random ...":
+@ And similarly for "a random ...":
 
 =
-void Deferrals::emit_random_of_S(parse_node *spec) {
-	if (Rvalues::is_CONSTANT_construction(spec, CON_description)) {
-		kind *K = Node::get_kind_of_value(spec);
-		K = Kinds::unary_construction_material(K);
-		if ((K) && (Kinds::Behaviour::is_an_enumeration(K)) &&
-			(Specifications::to_proposition(spec) == NULL) &&
-			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE) &&
-			(Descriptions::to_instance(spec) == NULL) &&
-			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
-			Produce::up(Emit::tree());
-			return;
-		}
-	}
+int Deferrals::defer_random_match(parse_node *spec) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
 			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+				(inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
-		CompilePropositions::verify_descriptive(prop, "a random thing matching a description", spec);
+		CompilePropositions::verify_descriptive(prop,
+			"a random thing matching a description", spec);
 		kind *K = Propositions::describes_kind(prop);
 		if ((K) && (Deferrals::has_finite_domain(K) == FALSE))
-			@<Issue random impossible problem@>
-		else
-			Deferrals::emit_call_to_deferred_desc(prop, RANDOM_OF_DEFER, NULL_GENERAL_POINTER, NULL);
+			@<Issue random impossible problem@>;
+		Deferrals::call_deferred_fn(prop, RANDOM_OF_DEFER, NULL_GENERAL_POINTER, NULL);
 	}
+	return TRUE;
 }
 
 @<Issue random impossible problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RandomImpossible),
-		"this asks to find a random choice from a range which is too "
-		"large or impractical",
-		"so can't be done. For instance, 'a random person' is fine - "
-		"it's clear exactly who all the people are, and the supply is "
-		"limited - but not 'a random text'.");
+		"this asks to find a random choice from a range which is too large or "
+		"impractical",
+		"so can't be done. For instance, 'a random person' is fine - it's clear "
+		"exactly who all the people are, and the supply is limited - but not 'a "
+		"random text'.");
+	return TRUE;
 
 @ Some kinds are such that all legal values can efficiently be looped through
 at run-time, some are not: we can sensibly loop over all scenes, but not
@@ -600,74 +556,41 @@ int Deferrals::has_finite_domain(kind *K) {
 @ And similarly for "total of":
 
 =
-void Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
+int Deferrals::defer_total_of_matches(property *prn, parse_node *spec) {
 	if (prn == NULL) internal_error("total of on non-property");
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				Produce::ref_iname(Emit::tree(), K_value,
+					Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 			Produce::down(Emit::tree());
 				CompileValues::to_code_val(spec);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TOTAL_DUSAGE);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+					(inter_ti) TOTAL_DUSAGE);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
 			"a total property value for things matching a description", spec);
-		Deferrals::emit_call_to_deferred_desc(prop, TOTAL_DEFER,
+		Deferrals::call_deferred_fn(prop, TOTAL_DEFER,
 			STORE_POINTER_property(prn), NULL);
 	}
+	return TRUE;
 }
 
-@ Also for the occasionally useful task of seeing if the current value of
-the "substitution variable") is within the domain.
+@ And the extremal case is pretty well the same, too, with only some fuss over
+identifying which superlative is meant. We get here from code like "let X be
+the heaviest thing in the wooden box" where there has previously been a
+definition of "heavy".
 
 =
-void Deferrals::emit_substitution_test(parse_node *in,
-	parse_node *spec) {
-	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-		Produce::down(Emit::tree());
-			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-			CompileValues::to_code_val(in);
-		Produce::up(Emit::tree());
-	} else {
-		CompilePropositions::to_test_as_condition(
-			in, SentencePropositions::from_spec(spec));
-	}
-}
-
-@ A variation on which is:
-
-=
-void Deferrals::emit_substitution_now(parse_node *in,
-	parse_node *spec) {
-	pcalc_prop *prop = SentencePropositions::from_spec(spec);
-	Binding::substitute_var_0_in(prop, in);
-	TypecheckPropositions::type_check(prop,
-		TypecheckPropositions::tc_no_problem_reporting());
-	int save_cck = suppress_C14CantChangeKind;
-	suppress_C14CantChangeKind = TRUE;
-	CompilePropositions::to_make_true(prop);
-	suppress_C14CantChangeKind = save_cck;
-}
-
-@ And the extremal case is pretty well the same, too, with only some fuss
-over identifying which superlative is meant. We get here from code like
-
->> let X be the heaviest thing in the wooden box;
-
-where there has previously been a definition of "heavy".
-
-=
-void Deferrals::emit_extremal_of_S(parse_node *spec,
+int Deferrals::defer_extremal_match(parse_node *spec,
 	property *prn, int sign) {
 	if (prn == NULL) internal_error("extremal of on non-property");
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
@@ -675,20 +598,23 @@ void Deferrals::emit_extremal_of_S(parse_node *spec,
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				Produce::ref_iname(Emit::tree(), K_value,
+					Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
-					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+					Produce::ref_iname(Emit::tree(), K_value,
+						Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sign);
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 				Produce::down(Emit::tree());
 					CompileValues::to_code_val(spec);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) EXTREMAL_DUSAGE);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+						(inter_ti) EXTREMAL_DUSAGE);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -698,364 +624,29 @@ void Deferrals::emit_extremal_of_S(parse_node *spec,
 			pcalc_prop *prop = SentencePropositions::from_spec(spec);
 			CompilePropositions::verify_descriptive(prop,
 				"an extreme case of something matching a description", spec);
-			Deferrals::emit_call_to_deferred_desc(prop, EXTREMAL_DEFER,
+			Deferrals::call_deferred_fn(prop, EXTREMAL_DEFER,
 				STORE_POINTER_measurement_definition(mdef_found), NULL);
 		}
 	}
-}
-
-@h Domains of loops.
-Here we define an I6 |for| loop header to handle a repeat loop through all
-of the $x$ matching a given description $\phi(x)$.
-
-We are allowed to use two local variables in the current stack frame: |t_v1|
-and |t_v2|, where the numbers $v_1$ and $v_2$ are supplied to us. We mark
-them as available for reuse once the loop has been exited, by setting their
-scope to the code block for the loop.
-
-We use $v_1$ as the current value and $v_2$ as the one which will follow it.
-Always evaluating one step ahead protects us in case the body of the loop
-takes action which moves $v_1$ out of the domain -- e.g., in the case of
-
->> repeat with T running through items on the table: now T is in the box.
-
-This is the famous "broken |objectloop|" hazard of Inform 6, which typically
-occurs because the mechanism to move from one value to the next uses |sibling|
-in the I6 object tree, and that relies on $v_1$ being an object which is still
-in the same location at the end of the loop as at the beginning.
-
-Thus a typical loop header has the form
-= (text as Inform 6)
-	for (t_1=D(0), t_2=D(t_1): t_1: t_1=t_2, t_2=D(t_1))
-=
-where |D| is a routine such that at 0 it produces the first element of the
-domain, and then given |x| in the domain, |D(x)| produces the next element
-until it returns 0, when the domain is exhausted.
-
-=
-void Deferrals::emit_repeat_through_domain_S(parse_node *spec,
-	local_variable *v1) {
-	kind *DK = Specifications::to_kind(spec);
-	if (Kinds::get_construct(DK) != CON_description)
-		internal_error("repeat through non-description");
-	kind *K = Kinds::unary_construction_material(DK);
-
-	local_variable *v2 = LocalVariables::new_let_value(EMPTY_WORDING, K);
-
-	CodeBlocks::set_scope_to_block_about_to_open(v1);
-	CodeBlocks::set_scope_to_block_about_to_open(v2);
-
-	inter_symbol *val_var_s = LocalVariables::declare(v1);
-	inter_symbol *aux_var_s = LocalVariables::declare(v2);
-
-	if (Kinds::Behaviour::is_object(K)) {
-		pcalc_prop *domain_prop = NULL; int use_as_is = FALSE;
-		if (Deferrals::spec_is_variable_of_kind_description(spec)) use_as_is = TRUE;
-		else {
-			domain_prop = SentencePropositions::from_spec(spec);
-			if (CreationPredicates::contains_callings(domain_prop))
-				@<Issue called in repeat problem@>;
-		}
-
-		Produce::inv_primitive(Emit::tree(), FOR_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
-					if (use_as_is) Deferrals::emit_repeat_call(spec, NULL);
-					else Deferrals::emit_repeat_domain(domain_prop, NULL);
-				Produce::up(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, aux_var_s);
-					if (use_as_is) Deferrals::emit_repeat_call(spec, v1);
-					else Deferrals::emit_repeat_domain(domain_prop, v1);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-
-			Produce::val_symbol(Emit::tree(), K_value, val_var_s);
-
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
-					Produce::val_symbol(Emit::tree(), K_value, aux_var_s);
-				Produce::up(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, aux_var_s);
-					if (use_as_is) Deferrals::emit_repeat_call(spec, v2);
-					else Deferrals::emit_repeat_domain(domain_prop, v2);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-	} else {
-		i6_schema loop_schema;
-		if (Deferrals::write_loop_schema(&loop_schema, K)) {
-			CompileSchemas::from_local_variables_in_void_context(&loop_schema, v1, v2);
-			if (Lvalues::is_lvalue(spec) == FALSE) {
-				if (Specifications::to_proposition(spec)) {
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
-						CompilePropositions::to_test_as_condition(
-							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1),
-							Specifications::to_proposition(spec));
-						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
-				}
-			} else {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-					Produce::down(Emit::tree());
-						CompileValues::to_code_val(spec);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
-						CompileValues::to_code_val(
-							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
-					Produce::up(Emit::tree());
-					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
-			}
-		} else @<Issue bad repeat domain problem@>;
-	}
-}
-
-@<Issue called in repeat problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CalledInRepeat),
-		"this tries to use '(called ...)' to give names to values "
-		"arising in the course of working out what to repeat through",
-		"but this is not allowed. (Sorry: it's too hard to get right.)");
-
-@<Issue bad repeat domain problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRepeatDomain),
-		"this describes a collection of values which can't be repeated through",
-		"because the possible range is too large (or has no sensible ordering). "
-		"For instance, you can 'repeat with D running through doors' because "
-		"there are only a small number of doors and they can be put in order "
-		"of creation. But you can't 'repeat with N running through numbers' "
-		"because numbers are without end.");
-
-@ If the domain is a kind of object, say "things", then we can certainly
-perform the loop by inefficiently looping through all objects and checking
-each in turn for its class membership -- this is slow, though, so we ask
-the counting plugin to optimise matters by using a linked list fixed at
-compile time.
-
-If it happens that no instances exist -- unlikely for things, but often true
-of more unusual kinds -- then a loop header which never executes the block
-following it is compiled.
-
-If the domain |K| is not a kind of object, then we loop through the
-known constants which make up this kind of value; each kind is
-allowed to provide its own loop syntax for this. For "time", for
-instance, it becomes a |for| loop running from 0 (midnight) to 1439 (one
-minute to midnight).
-
-In all cases, we copy a valid schema to |sch| if the loop can be made, and
-return |TRUE| or |FALSE| to indicate success.
-
-@d MAX_LOOP_DOMAIN_SCHEMA_LENGTH 1000
-
-=
-int Deferrals::write_loop_schema(i6_schema *sch, kind *K) {
-	if (K == NULL) return FALSE;
-
-	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		if (PL::Counting::optimise_loop(sch, K) == FALSE)
-			Calculus::Schemas::modify(sch, "objectloop (*1 ofclass %n)",
-				RTKinds::I6_classname(K));
-		return TRUE;
-	}
-
-	if (Kinds::eq(K, K_object)) {
-		Calculus::Schemas::modify(sch, "objectloop (*1 ofclass Object)");
-		return TRUE;
-	}
-
-	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		Calculus::Schemas::modify(sch,
-			"for (*1=1: *1<=%d: *1++)", Kinds::Behaviour::get_highest_valid_value_as_integer(K));
-		return TRUE;
-	}
-
-	text_stream *p = K->construct->loop_domain_schema;
-	if (p == NULL) return FALSE;
-	Calculus::Schemas::modify(sch, "%S", p);
 	return TRUE;
 }
 
-@ If the description $D$ is not explicitly known -- because it sits inside
-a variable -- then the following compiles code to call |D| in order to
-calculate the next value in the domain after the one stored in |fromv|.
-
-Here, once again, we know that $D$ has been compiled to a general-purpose
-deferred description routine, and we simply call that routine with the
-|LOOP_DOMAIN_DUSAGE| task.
+@ Finally, the occasionally useful task of seeing if the current value of
+the "substitution variable") is within the domain.
 
 =
-void Deferrals::emit_repeat_call(parse_node *spec, local_variable *fromv) {
-	Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-	Produce::down(Emit::tree());
-		CompileValues::to_code_val(spec);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) LOOP_DOMAIN_DUSAGE);
-		if (fromv) {
-			inter_symbol *fromv_s = LocalVariables::declare(fromv);
-			Produce::val_symbol(Emit::tree(), K_value, fromv_s);
-		} else {
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		}
-	Produce::up(Emit::tree());
-}
-
-@ But if the description $D=\phi(x)$ is an explicitly known proposition,
-then we defer it to a routine specifically tailored to loop domains -- it
-will never be needed for anything else.
-
-=
-void Deferrals::emit_repeat_domain(pcalc_prop *prop, local_variable *fromv) {
-	pcalc_prop_deferral *pdef = Deferrals::defer_loop_domain(prop);
-	int arity = Deferrals::Cinders::find_count(prop, pdef) + 1;
-	switch (arity) {
-		case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
-		case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
-		case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
-		case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
-		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
-		default: internal_error("indirect function call with too many arguments");
+int Deferrals::defer_if_matches(parse_node *in, parse_node *spec) {
+	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
+		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
+		Produce::down(Emit::tree());
+			CompileValues::to_code_val(spec);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+				(inter_ti) CONDITION_DUSAGE);
+			CompileValues::to_code_val(in);
+		Produce::up(Emit::tree());
+	} else {
+		CompilePropositions::to_test_as_condition(
+			in, SentencePropositions::from_spec(spec));
 	}
-	Produce::down(Emit::tree());
-		Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
-		Deferrals::Cinders::find_emit(prop, pdef);
-		if (fromv) {
-			inter_symbol *fromv_s = LocalVariables::declare(fromv);
-			Produce::val_symbol(Emit::tree(), K_value, fromv_s);
-		} else {
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		}
-	Produce::up(Emit::tree());
-}
-
-@ And for looping over lists:
-
-=
-void Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable *val_var) {
-	local_variable *index_var = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
-	local_variable *copy_var = LocalVariables::new_let_value(EMPTY_WORDING, K_number);
-	kind *K = Specifications::to_kind(spec);
-	kind *CK = Kinds::unary_construction_material(K);
-
-	int pointery = FALSE;
-	if (Kinds::Behaviour::uses_pointer_values(CK)) {
-		pointery = TRUE;
-		LocalVariableSlates::free_at_end_of_scope(val_var);
-	}
-
-	CodeBlocks::set_scope_to_block_about_to_open(val_var);
-	LocalVariables::set_kind(val_var, CK);
-	CodeBlocks::set_scope_to_block_about_to_open(index_var);
-
-	inter_symbol *val_var_s = LocalVariables::declare(val_var);
-	inter_symbol *index_var_s = LocalVariables::declare(index_var);
-	inter_symbol *copy_var_s = LocalVariables::declare(copy_var);
-
-	Produce::inv_primitive(Emit::tree(), FOR_BIP);
-	Produce::down(Emit::tree());
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_symbol(Emit::tree(), K_value, copy_var_s);
-				CompileValues::to_code_val(spec);
-			Produce::up(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, index_var_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
-				if (pointery) {
-					Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Produce::down(Emit::tree());
-							Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
-							Produce::down(Emit::tree());
-								RTKinds::emit_strong_id_as_val(CK);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPYAZ_HL));
-						Produce::down(Emit::tree());
-							Produce::val_symbol(Emit::tree(), K_value, val_var_s);
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-							Produce::down(Emit::tree());
-								Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-								Produce::val_symbol(Emit::tree(), K_value, index_var_s);
-								Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				} else {
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
-						Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
-						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-						Produce::down(Emit::tree());
-							Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-							Produce::val_symbol(Emit::tree(), K_value, index_var_s);
-							Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				}
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), LE_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_symbol(Emit::tree(), K_value, index_var_s);
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_symbol(Emit::tree(), K_value, index_var_s);
-			Produce::up(Emit::tree());
-			if (pointery) {
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPYAZ_HL));
-				Produce::down(Emit::tree());
-					Produce::val_symbol(Emit::tree(), K_value, val_var_s);
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Produce::down(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-						Produce::val_symbol(Emit::tree(), K_value, index_var_s);
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			} else {
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Produce::down(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-						Produce::val_symbol(Emit::tree(), K_value, index_var_s);
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			}
-		Produce::up(Emit::tree());
-
-		Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+	return TRUE;
 }

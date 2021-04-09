@@ -685,7 +685,7 @@ proposition.
 @<Inline command "new-list-of"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	Deferrals::emit_list_of_S(tokens->token_vals[0], K);
+	CompilePropositions::to_list_of_matches(tokens->token_vals[0], K);
 	return;
 
 @<Inline command "next-routine"@> =
@@ -1155,7 +1155,7 @@ the object in variable |{-my:1}| matches the description or not.
 			"'%5' is a valid description for '%4', has gone wrong: I couldn't "
 			"work those out.");
 	} else {
-		Deferrals::emit_substitution_test(to_test, to_match);
+		CompilePropositions::to_test_if_matches(to_test, to_match);
 	}
 	return;
 
@@ -1176,7 +1176,8 @@ variable matches the given description.
 			"that '%5' becomes a valid description of it, has gone wrong: I couldn't "
 			"work those out.");
 	} else {
-		Deferrals::emit_substitution_now(to_test, to_match);
+		pcalc_prop *prop = SentencePropositions::from_spec(to_match);
+		CompilePropositions::to_make_true_about(prop, to_test);
 	}
 	return;
 
@@ -1374,26 +1375,26 @@ especially those involving complicated linguistic propositions.
 @<Expand an entirely internal-made definition@> =
 	switch (ist->inline_subcommand) {
 		case repeat_through_ISINSC:
-			Deferrals::emit_repeat_through_domain_S(tokens->token_vals[1],
+			CompileLoops::through_matches(tokens->token_vals[1],
 				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 			break;
 		case repeat_through_list_ISINSC:
-			Deferrals::emit_loop_over_list_S(tokens->token_vals[1],
+			CompileLoops::through_list(tokens->token_vals[1],
 				Lvalues::get_local_variable_if_any(tokens->token_vals[0]));
 			break;
 		case number_of_ISINSC:
-			Deferrals::emit_number_of_S(tokens->token_vals[0]);	
+			CompilePropositions::to_number_of_matches(tokens->token_vals[0]);	
 			break;
 		case random_of_ISINSC:
-			Deferrals::emit_random_of_S(tokens->token_vals[0]);
+			CompilePropositions::to_random_match(tokens->token_vals[0]);
 			break;
 		case total_of_ISINSC:
-			Deferrals::emit_total_of_S(
+			CompilePropositions::to_total_of_matches(
 				Rvalues::to_property(tokens->token_vals[0]), tokens->token_vals[1]);
 			break;
 		case extremal_ISINSC:
 			if ((ist->extremal_property_sign != MEASURE_T_EXACTLY) && (ist->extremal_property)) {
-				Deferrals::emit_extremal_of_S(tokens->token_vals[0],
+				CompilePropositions::to_extremal_match(tokens->token_vals[0],
 					ist->extremal_property, ist->extremal_property_sign);
 			} else {
 				StandardProblems::inline_problem(_p_(PM_InlineExtremal),

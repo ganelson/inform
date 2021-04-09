@@ -103,8 +103,8 @@ int ComparativeRelations::schema(bp_family *self, int task, binary_predicate *bp
 
 @<Rewrite the annotated schema if it turns out to be an absolute comparison@> =
 	kind *st[2];
-	st[0] = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
-	st[1] = Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+	st[0] = Cinders::kind_of_term(asch->pt0);
+	st[1] = Cinders::kind_of_term(asch->pt1);
 	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
 		(Properties::can_name_coincide_with_kind(st[1]))) {
 		property *prn = Properties::property_with_same_name_as(st[1]);

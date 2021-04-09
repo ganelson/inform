@@ -233,7 +233,10 @@ function, but that is fine because they cannot arise anywhere else.
 
 @<Compile constant term@> =
 	if (pt.cinder >= 0) {
-		Deferrals::Cinders::emit(pt.cinder);
+		local_variable *lvar = Cinders::find_cinder_var(pt.cinder);
+		if (lvar == NULL) internal_error("absent calculus variable");
+		inter_symbol *lvar_s = LocalVariables::declare(lvar);
+		Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 	} else {
 		if (Specifications::is_phrasal(pt.constant)) Dash::check_value(pt.constant, NULL);
 		if (by_reference) CompileValues::to_code_val_of_kind(pt.constant, K);

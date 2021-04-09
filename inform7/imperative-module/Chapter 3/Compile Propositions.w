@@ -33,7 +33,7 @@ tests the portion of a proposition between two atoms (including the two ends).
 void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_atom,
 	pcalc_prop *to_atom) {
 	int active = FALSE, bl = 0;
-	pcalc_prop *penultimate_atom = NULL;
+	pcalc_prop *penult_atom = NULL;
 	TRAVERSE_VARIABLE(atom);
 	TRAVERSE_PROPOSITION(atom, prop) {
 		if (atom == from_atom) active = TRUE;
@@ -49,17 +49,18 @@ void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_ato
 			if (atom->element == NEGATION_CLOSE_ATOM) bl--;
 			if (atom->element == NEGATION_OPEN_ATOM) bl++;
 		}
-		if (atom == to_atom) { active = FALSE; penultimate_atom = atom_prev; }
+		if (atom == to_atom) { active = FALSE; penult_atom = atom_prev; }
 	}
 
-	if ((from_atom->element == NEGATION_OPEN_ATOM) && (to_atom->element == NEGATION_CLOSE_ATOM)) {
-		if (from_atom == penultimate_atom) {
+	if ((from_atom->element == NEGATION_OPEN_ATOM) &&
+		(to_atom->element == NEGATION_CLOSE_ATOM)) {
+		if (from_atom == penult_atom) {
 			/* the negation of empty proposition is always false */
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		} else {
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);
 			Produce::down(Emit::tree());
-				CompilePropositions::to_test_segment(prop, from_atom->next, penultimate_atom);
+				CompilePropositions::to_test_segment(prop, from_atom->next, penult_atom);
 			Produce::up(Emit::tree());
 		}
 		return;
@@ -117,6 +118,7 @@ decision when asserting propositions about the initial state of the model.)
 =
 void CompilePropositions::to_make_true(pcalc_prop *prop) {
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Compiling as 'now': $D\n", prop);
+	@<Vet the proposition to be forced@>;
 	if (Deferrals::defer_now_proposition(prop) == FALSE) {
 		int parity = TRUE;
 		TRAVERSE_VARIABLE(atom);
@@ -132,6 +134,121 @@ void CompilePropositions::to_make_true(pcalc_prop *prop) {
 			}
 		}
 	}
+}
+
+@ We reject $\exists x$ because it would either require us to judge the $x$
+most likely to be meant -- tricky -- or to create an $x$ out of nothing, which
+it's too late for, since Inform does not have run-time object or value creation.
+
+@<Vet the proposition to be forced@> =
+	TRAVERSE_VARIABLE(atom);
+	TRAVERSE_PROPOSITION(atom, prop) {
+		if (atom->element == QUANTIFIER_ATOM) {
+			if (Atoms::is_existence_quantifier(atom)) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_CantForceExistence),
+					"this is not explicit enough",
+					"and should set out definite relationships between specific things, "
+					"like 'now the cat is in the bag', not something more elusive like "
+					"'now the cat is carried by a woman.' (Which woman? That's the trouble.)");
+				return;
+			}
+			if (Atoms::is_now_assertable_quantifier(atom) == FALSE) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_CantForceGeneralised),
+					"this can't be made true with 'now'",
+					"because it is too vague about what it applies to. It's fine to say "
+					"'now all the doors are open' or 'now none of the doors is open', "
+					"because that clearly tells me which doors are affected; but if you "
+					"write 'now six of the doors are open' or 'now almost all the doors "
+					"are open', what am I to do?");
+				return;
+			}
+		}
+		if (CreationPredicates::is_calling_up_atom(atom)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_CantForceCalling),
+				"a 'now' is not allowed to call names",
+				"and it wouldn't really make sense to do so anyway. 'if a person (called "
+				"the victim) is in the Trap Room' makes sense, because it gives a name - "
+				"'victim' - to someone whose identity we don't know. But 'now a person "
+				"(called the victim) is in the Trap Room' won't be allowed, because 'now' "
+				"can only talk about people or things whose identities we do know.");
+			return;
+		}
+	}
+
+@ A variation on which: if we have a proposition $'phi(x)$ with one free variable,
+and a value $t$, then we make it true that $\phi(t)$.
+
+Ordinarily a problem message is triggered by attempting to change a kind, but we
+allow it in this case so that, e.g., making "an open door" true about some door
+will not throw the problem. The real issue here, of course, is that the user is
+asserting the openness, and does not mean to be changing the doorness at all.
+
+=
+void CompilePropositions::to_make_true_about(pcalc_prop *prop, parse_node *t) {
+	Binding::substitute_var_0_in(prop, t);
+	TypecheckPropositions::type_check(prop,
+		TypecheckPropositions::tc_no_problem_reporting());
+	int save_cck = suppress_C14CantChangeKind;
+	suppress_C14CantChangeKind = TRUE;
+	CompilePropositions::to_make_true(prop);
+	suppress_C14CantChangeKind = save_cck;
+}
+
+@h Compiling code about the values matching a description.
+Given a description containing the proposition $\phi(x)$, how many $x$ in its
+domain of validity currently satisfy this? And so on.
+
+Some of these could be optimised in the case where $\phi(x) = {\int kind}_K(x)$
+for some kind $K$ -- for example, "the list of containers" -- because then we
+can know the answer at compile time. But for now this doesn't seem worth the effort.
+
+=
+void CompilePropositions::to_number_of_matches(parse_node *desc) {
+	if (Deferrals::defer_number_of_matches(desc)) return;
+	internal_error("no way to compile this without deferral");
+}
+
+void CompilePropositions::to_list_of_matches(parse_node *desc, kind *K) {
+	if (Deferrals::defer_list_of_matches(desc, K)) return;
+	internal_error("no way to compile this without deferral");
+}
+
+void CompilePropositions::to_random_match(parse_node *desc) {
+	if (Rvalues::is_CONSTANT_construction(desc, CON_description)) {
+		kind *K = Node::get_kind_of_value(desc);
+		K = Kinds::unary_construction_material(K);
+		if ((K) && (Kinds::Behaviour::is_an_enumeration(K)) &&
+			(Specifications::to_proposition(desc) == NULL) &&
+			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(desc)) == FALSE) &&
+			(Descriptions::to_instance(desc) == NULL) &&
+			(Descriptions::number_of_adjectives_applied_to(desc) == 0)) {
+			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
+			Produce::up(Emit::tree());
+			return;
+		}
+	}
+	if (Deferrals::defer_random_match(desc)) return;
+	internal_error("no way to compile this without deferral");
+}
+
+void CompilePropositions::to_total_of_matches(property *prn, parse_node *desc) {
+	if (Deferrals::defer_total_of_matches(prn, desc)) return;
+	internal_error("no way to compile this without deferral");
+}
+
+void CompilePropositions::to_extremal_match(parse_node *desc, property *prn, int sign) {
+	if (Deferrals::defer_extremal_match(desc, prn, sign)) return;
+	internal_error("no way to compile this without deferral");
+}
+
+void CompilePropositions::to_test_if_matches(parse_node *in, parse_node *desc) {
+	if (Deferrals::defer_if_matches(in, desc)) return;
+	internal_error("no way to compile this without deferral");
 }
 
 @h Checking the validity of a description.

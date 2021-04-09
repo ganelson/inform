@@ -25,7 +25,6 @@ Global say__n; Global say__comp;
 Global los_rv = false;
 Global parameter_object; ! = I7 "parameter-object" = I7 "container in question"
 Global parameter_value; ! not typesafe in I7
-Array deferred_calling_list --> 27;
 Global property_to_be_totalled; ! used to implement "total P of..."
 Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
 Global suppress_scope_loops;

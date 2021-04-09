@@ -1095,7 +1095,6 @@ void Hierarchy::establish(inter_tree *I) {
 @e DEBUG_SCENES_HL
 @e DECIMALNUMBER_HL
 @e DEFAULTTOPIC_HL
-@e DEFERRED_CALLING_LIST_HL
 @e DETECTPLURALWORD_HL
 @e DIGITTOVALUE_HL
 @e DIVIDEPARAGRAPHPOINT_HL
@@ -1336,7 +1335,6 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, DEBUG_SCENES_HL, I"debug_scenes", Translation::same(), template);
 	HierarchyLocations::con(I, DECIMALNUMBER_HL, I"DecimalNumber", Translation::same(), template);
 	HierarchyLocations::con(I, DEFAULTTOPIC_HL, I"DefaultTopic", Translation::same(), template);
-	HierarchyLocations::con(I, DEFERRED_CALLING_LIST_HL, I"deferred_calling_list", Translation::same(), template);
 	HierarchyLocations::con(I, DETECTPLURALWORD_HL, I"DetectPluralWord", Translation::same(), template);
 	HierarchyLocations::con(I, DIGITTOVALUE_HL, I"DigitToValue", Translation::same(), template);
 	HierarchyLocations::con(I, DIVIDEPARAGRAPHPOINT_HL, I"DivideParagraphPoint", Translation::same(), template);

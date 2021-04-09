@@ -28,6 +28,7 @@ Chapter 3: Propositions
 	Compile Schemas
 	Compile Atoms
 	Compile Propositions
+	Compile Loops
 	Deciding to Defer
 	Cinders and Deferrals
 	Compile Deferred Propositions

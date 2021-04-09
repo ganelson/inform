@@ -4,7 +4,7 @@ To compile the Inter functions needed to perform the tests or tasks
 deferred as being too difficult in their original contexts.
 
 @h Comment.
-The following compiles an I6 comment noting the reason for a deferral.
+The following compiles an Inter comment noting the reason for a deferral.
 
 =
 void DeferredPropositions::compile_comment_about_deferral_reason(int reason) {
@@ -32,17 +32,13 @@ void DeferredPropositions::compile_comment_about_deferral_reason(int reason) {
 }
 
 @h Preliminaries.
-We have seen that propositions are deferred for diverse reasons. Here we
-take our medicine, and actually compile the deferred propositions into
-routines. This is part of the phrase-compilation-coroutine process because
+Propositions are deferred for diverse reasons: see //Deciding to Defer//. Here
+we take our medicine, and actually compile those deferred propositions into
+functions. This is part of the phrase-compilation-coroutine process because
 funny things can happen when we compile: we can create new text substitutions
-which create routines which... and so on.
+which create routines which... and so on. (See //core: How To Compile//.)
 
 =
-void DeferredPropositions::compile_remaining_deferred(void) {
-	DeferredPropositions::compilation_coroutine();
-}
-
 pcalc_prop_deferral *latest_pcd = NULL;
 int DeferredPropositions::compilation_coroutine(void) {
 	int N = 0;
@@ -53,32 +49,32 @@ int DeferredPropositions::compilation_coroutine(void) {
 		else pdef = NEXT_OBJECT(latest_pcd, pcalc_prop_deferral);
 		if (pdef == NULL) break;
 		latest_pcd = pdef;
-		@<Compile an individual deferred proposition@>;
+		pcalc_prop_deferral *save_current_pdef = current_pdef;
+		current_pdef = pdef;
+		DeferredPropositions::compile(pdef);
+		current_pdef = save_current_pdef;
 		N++;
 	}
 	return N;
 }
 
-@ The basic structure of a proposition routine is the same for all
-of the various reasons, but with considerable variations affecting (mainly)
-the initial setup and the returned value.
+@ The basic structure of a proposition function is the same for all of the
+various reasons, but with considerable variations affecting (mainly) the
+initial setup and the returned value.
 
-Note that the unchecked array bounds of 26 are safe here because
-propositions may only use 26 different variables at most (|x|, |y|, |z|,
-|a|, ..., |w|). There therefore can't be more than 26 callings, or 26
-quantifiers, either.
+Note that the unchecked array bounds of 26 are safe here because propositions
+may only use 26 different variables at most (|x|, |y|, |z|, |a|, ..., |w|). There
+therefore can't be more than 26 callings, or 26 quantifiers, either.
 
 @d MAX_QC_VARIABLES 100
 
-@<Compile an individual deferred proposition@> =
-	pcalc_prop_deferral *save_current_pdef = current_pdef;
-	current_pdef = pdef;
-
+=
+void DeferredPropositions::compile(pcalc_prop_deferral *pdef) {
 	int ct_locals_problem_thrown = FALSE, negated_quantifier_found = FALSE;
 	current_sentence = pdef->deferred_from;
 	pcalc_prop *proposition = Propositions::copy(pdef->proposition_to_defer);
 	int multipurpose_routine = (pdef->reason == MULTIPURPOSE_DEFER)?TRUE:FALSE;
-	int reason = CONDITION_DEFER; /* redundant assignment to appease |gcc -O2| */
+	int reason = CONDITION_DEFER; /* redundant assignment to appease compilers */
 
 	inter_symbol *reason_s = NULL;
 	inter_symbol *var_s[26], *var_ix_s[26];
@@ -103,15 +99,15 @@ quantifiers, either.
 
 	packaging_state save = Functions::begin(pdef->ppd_iname);
 
-	@<Declare the I6 local variables which will be needed by this deferral routine@>;
-	@<Compile the code inside this deferral routine@>;
+	@<Declare the I6 local variables which will be needed by this deferral function@>;
+	@<Compile the code inside this deferral function@>;
 	@<Issue a problem message if the table-lookup locals were needed@>;
 	@<Issue a problem message if a negated quantifier was needed@>;
 
 	Functions::end(save);
 
 	if (pdef->rtp_iname) @<Compile the constant origin text for run-time problem use@>;
-	current_pdef = save_current_pdef;
+}
 
 @ We compile the following only in cases where it seems possible that a
 run-time problem message may be needed; compiling it for every deferred
@@ -138,7 +134,7 @@ proposition would be wasteful of space in the Z-machine.
 @ While unfortunate in a way, this is for the best, because a successful
 match on a condition looking up a table would record the table and row
 in local variables within the deferred proposition: they would then be
-wrong in the calling routine, where they are needed.
+wrong in the calling function, where they are needed.
 
 @<Issue a problem message if the table-lookup locals were needed@> =
 	if ((LocalVariables::are_we_using_table_lookup()) && (!ct_locals_problem_thrown)) {
@@ -177,12 +173,12 @@ bound; then the enumeration variables needed to compile generalised
 quantifiers, if any; and finally any oddball variables needed by code
 specific to particular deferral reasons.
 
-@<Declare the I6 local variables which will be needed by this deferral routine@> =
+@<Declare the I6 local variables which will be needed by this deferral function@> =
 	int j, var_states[26], no_extras;
 	if (multipurpose_routine)
 		reason_s = LocalVariables::new_other_as_symbol(I"reason"); /* no cinders exist here */
 	else
-		Deferrals::Cinders::declare(proposition, pdef);
+		Cinders::declare(proposition, pdef);
 
 	@<Declare the I6 call parameters needed by adaptations to particular deferral cases@>;
 
@@ -220,7 +216,7 @@ specific to particular deferral reasons.
 	@<Declare the I6 locals needed by adaptations to particular deferral cases@>;
 
 
-@<Compile the code inside this deferral routine@> =
+@<Compile the code inside this deferral function@> =
 	if (multipurpose_routine) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
@@ -278,7 +274,7 @@ specific to particular deferral reasons.
 		@<Compile body of deferred proposition for the given reason@>;
 	}
 
-@ From here on, we compile the body of a routine to handle the deferral case
+@ From here on, we compile the body of a function to handle the deferral case
 in the variable |reason|.
 
 What these different cases have in common is that each is basically a search
@@ -419,7 +415,7 @@ capacity of 27 slots on the R-stack (counting the initial |reason|) and
 
 	/* The C-stack */
 	pcalc_term C_stack_term[26]; /* the term to which a called-name is being given */
-	int C_stack_index[26]; /* its index in the |deferred_calling_list| */
+	int C_stack_index[26]; /* its index in the stash of callings */
 	int C_sp = 0;
 
 	/* The L-stack */
@@ -461,7 +457,7 @@ closed, and this is a subgoal to which we give the pseudo-reason
 |FILTER_DEFER|. We push this new sub-goal onto the R-stack, leaving the
 original to be resumed when we're done.
 
-@d FILTER_DEFER 10000 /* pseudo-reason value used only inside this routine */
+@d FILTER_DEFER 10000 /* pseudo-reason value used only inside this function */
 
 @<Push domain-opening onto the R-stack@> =
 	R_stack_reason[R_sp] = FILTER_DEFER;
@@ -752,7 +748,7 @@ code gets to the end of testing $\theta$ then it must have found a valid
 case: in the "at least three doors are unlocked" example, it will have
 found an unlocked one among the doors making up the domain. We then need
 to record any "called" values for later retrieval by whoever called
-this proposition routine: see below. That leaves just this part:
+this proposition function: see below. That leaves just this part:
 = (text)
 	        }
 	    }
@@ -789,8 +785,8 @@ thing works, or doesn't, and is more like testing a single |if|.
 
 @h The C-stack.
 When a CALLED atom in the proposition gives a name to a variable, we have to
-transcribe that to the |deferred_calling_list| for the benefit of the code
-calling this proposition routine. Each time we discover that a term $t$ is
+transcribe that to the stash of callings for the benefit of the code
+calling this proposition function. Each time we discover that a term $t$ is
 to be given a name, we stack it up. These are not always variables:
 
 >> if a person (called the dupe) is in a dark room (called the lair), ...
@@ -804,7 +800,7 @@ given a name.
 	C_stack_index[C_sp] = no_deferred_callings++;
 	C_sp++;
 
-@ When does the compiled search code record values into |deferred_calling_list|?
+@ When does the compiled search code record values into the stash of callings?
 In two situations:
 
 (a) when a domain-search has successfully found a viable case for a quantifier,
@@ -839,7 +835,7 @@ quantifier.
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+			Produce::val_iname(Emit::tree(), K_value, LocalParking::callings());
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
 		CompileSchemas::compile_term(C_stack_term[C_sp], K_value, TRUE);
@@ -872,7 +868,7 @@ each case, some setting-up code; some code to execute when a viable set
 of variable values is found; and some winding-up code.
 
 In some of the cases, additional local variables are needed within the
-|Prop_N| routine, to keep track of counters or totals. These are they:
+|Prop_N| function, to keep track of counters or totals. These are they:
 
 @<Declare the I6 locals needed by adaptations to particular deferral cases@> =
 	if (multipurpose_routine) {
@@ -980,7 +976,7 @@ syntax to break or continue a loop other than the innermost one.
 	Produce::place_label(Emit::tree(), NextOuterLoop_labels[reason]);
 
 @ The continue-outer-loop labels are marked with the reason number so that
-if code is compiled for each reason in turn within a single routine -- which
+if code is compiled for each reason in turn within a single function -- which
 is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
@@ -1080,7 +1076,7 @@ syntax to break or continue a loop other than the innermost one.
 	@<Jump to next outer loop for this reason@>;
 
 @ The continue-outer-loop labels are marked with the reason number so that
-if code is compiled for each reason in turn within a single routine -- which
+if code is compiled for each reason in turn within a single function -- which
 is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
@@ -1265,7 +1261,7 @@ domain is found, its $P$-value must be at least as good as the starting
 value of |best|.
 
 Again the only nuisance is that sometimes we know $P$, and whether we are
-maximising or minimising, at compile time; but for a multipurpose routine
+maximising or minimising, at compile time; but for a multipurpose function
 we don't, and have to look that up at run-time.
 
 @<Initialisation before EXTREMAL search@> =
@@ -1587,7 +1583,7 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 	@<Scan the proposition to find the domain of the loop, and look for opportunities@>;
 
 	if ((K) && (parent_optimised == FALSE)) { /* parent optimisation is stronger, so we prefer that */
-		if (Deferrals::write_loop_schema(&loop_schema, K) == FALSE) {
+		if (CompileLoops::schema(&loop_schema, K) == FALSE) {
 			if (pdef->rtp_iname == NULL) {
 				pdef->rtp_iname = Hierarchy::make_iname_in(RTP_HL, pdef->ppd_package);
 			}

@@ -111,8 +111,8 @@ call in I6.
 =
 int Calculus::QuasinumericRelations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *st[2];
-	st[0] = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
-	st[1] = Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+	st[0] = Cinders::kind_of_term(asch->pt0);
+	st[1] = Cinders::kind_of_term(asch->pt1);
 	switch (task) {
 		case TEST_ATOM_TASK:
 			if ((st[0]) && (st[1])) {

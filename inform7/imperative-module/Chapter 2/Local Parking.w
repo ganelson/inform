@@ -30,35 +30,30 @@ void B(void) {
 Note that B can now read, but not write, the locals from A. The scratch array
 |lp| used here for storage is meaningless except for immediately before and
 after the call to B, so we don't need to worry about multiple uses of local
-parking getting in each other's way. We just need |lp| to be large enough for
-the maximum number of cars ever needing to be parked.
+parking getting in each other's way.
 
 @ This compiles the necessary code before the call to B:
 
 =
-int size_of_local_parking_area = 0;
 int LocalParking::park(stack_frame *frame) {
 	int NC = 0;
-	inter_ti j = 0;
 	local_variable *lvar;
+	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) NC++;
+	inter_name *park = LocalParking::array((NC<2)?2:NC);
+	inter_ti j = 0;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
-		NC++;
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCALPARKING_HL));
+					Produce::val_iname(Emit::tree(), K_value, park);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
 				Produce::up(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 			Produce::up(Emit::tree());
-	}
-	if (NC > size_of_local_parking_area) {
-		size_of_local_parking_area = NC;
-		if (size_of_local_parking_area < 2) size_of_local_parking_area = 2;
 	}
 	return NC;
 }
@@ -67,7 +62,7 @@ int LocalParking::park(stack_frame *frame) {
 
 =
 void LocalParking::retrieve(stack_frame *frame) {
-	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
+	inter_name *park = LocalParking::array(0);
 	inter_ti j=0;
 	local_variable *lvar;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
@@ -76,19 +71,38 @@ void LocalParking::retrieve(stack_frame *frame) {
 			Produce::ref_symbol(Emit::tree(), K_value, LocalVariables::declare(lvar));
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, LP);
+				Produce::val_iname(Emit::tree(), K_value, park);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
 }
 
-@ And this makes a suitably-sized car park, if one is needed at all:
+@ We just need |park| to be large enough for the maximum number of cars ever
+needing to be parked:
+
+=
+int size_of_local_parking_area = 0;
+inter_name *LocalParking::array(int N) {
+	if (N > size_of_local_parking_area) size_of_local_parking_area = N;
+	return Hierarchy::find(LOCALPARKING_HL);
+}
+
+@ We also sometimes need the same park to hold returned callings from deferred
+propositions; and that needs to be large enough to hold values of up to 26
+variables, plus a single other value.
+
+=
+inter_name *LocalParking::callings(void) {
+	return LocalParking::array(27);
+}
+
+@ So this makes a suitably-sized car park, if one is needed at all:
 
 =
 void LocalParking::compile_array(void) {
 	if (size_of_local_parking_area > 0) {
-		inter_name *iname = Hierarchy::find(LOCALPARKING_HL);
+		inter_name *iname = LocalParking::array(0);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		for (int i=0; i<size_of_local_parking_area; i++)
 			Emit::array_numeric_entry(0);

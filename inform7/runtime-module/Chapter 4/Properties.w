@@ -430,7 +430,7 @@ property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_
 
 =
 int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
-	kind *K = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	kind *K = Cinders::kind_of_term(asch->pt0);
 	property *prn = Rvalues::to_property(asch->pt1.constant);
 	if (K) {
 		if (prn) {
@@ -440,7 +440,7 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 				@<Determine the result now, since we know already, and compile only the outcome@>;
 			return TRUE;
 		} else if (Kinds::Behaviour::is_object(K)) {
-			kind *PK = Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+			kind *PK = Cinders::kind_of_term(asch->pt1);
 			if (Kinds::get_construct(PK) == CON_property) {
 				if (Kinds::eq(K_truth_state, Kinds::unary_construction_material(PK)))
 					Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
@@ -473,7 +473,7 @@ answer now.
 
 @ =
 int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property *prn) {
-	kind *K = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	kind *K = Cinders::kind_of_term(asch->pt0);
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
 	Calculus::Schemas::modify(asch->schema,
 		"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
@@ -481,7 +481,7 @@ int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property
 }
 
 int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property *prn) {
-	kind *K = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	kind *K = Cinders::kind_of_term(asch->pt0);
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
 	Calculus::Schemas::modify(asch->schema,
 		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));

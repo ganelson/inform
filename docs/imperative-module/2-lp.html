@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -95,37 +103,32 @@ like this:
 <p class="commentary">Note that B can now read, but not write, the locals from A. The scratch array
 <span class="extract"><span class="extract-syntax">lp</span></span> used here for storage is meaningless except for immediately before and
 after the call to B, so we don't need to worry about multiple uses of local
-parking getting in each other's way. We just need <span class="extract"><span class="extract-syntax">lp</span></span> to be large enough for
-the maximum number of cars ever needing to be parked.
+parking getting in each other's way.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This compiles the necessary code before the call to B:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LocalParking::park</span><span class="plain-syntax">(</span><span class="reserved-syntax">stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">frame</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">NC</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LOCALS_IN_FRAME</span><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">, </span><span class="identifier-syntax">frame</span><span class="plain-syntax">) </span><span class="identifier-syntax">NC</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">park</span><span class="plain-syntax"> = </span><a href="2-lp.html#SP4" class="function-link"><span class="function-syntax">LocalParking::array</span></a><span class="plain-syntax">((</span><span class="identifier-syntax">NC</span><span class="plain-syntax">&lt;2)?2:</span><span class="identifier-syntax">NC</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LOCALS_IN_FRAME</span><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">, </span><span class="identifier-syntax">frame</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">NC</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">SEQUENTIAL_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">LOOKUPREF_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOCALPARKING_HL</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">park</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lvar_s</span><span class="plain-syntax"> = </span><a href="2-lv.html#SP1" class="function-link"><span class="function-syntax">LocalVariables::declare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::val_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">lvar_s</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">NC</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NC</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NC</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -135,7 +138,7 @@ the maximum number of cars ever needing to be parked.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LocalParking::retrieve</span><span class="plain-syntax">(</span><span class="reserved-syntax">stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">frame</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">LP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOCALPARKING_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">park</span><span class="plain-syntax"> = </span><a href="2-lp.html#SP4" class="function-link"><span class="function-syntax">LocalParking::array</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">=0;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LOCALS_IN_FRAME</span><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">, </span><span class="identifier-syntax">frame</span><span class="plain-syntax">) {</span>
@@ -144,20 +147,41 @@ the maximum number of cars ever needing to be parked.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::ref_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><a href="2-lv.html#SP1" class="function-link"><span class="function-syntax">LocalVariables::declare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">LOOKUP_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">LP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">park</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And this makes a suitably-sized car park, if one is needed at all:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>We just need <span class="extract"><span class="extract-syntax">park</span></span> to be large enough for the maximum number of cars ever
+needing to be parked:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">LocalParking::array</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">LocalParking::array</span></span>:<br/><a href="2-lp.html#SP2">&#167;2</a>, <a href="2-lp.html#SP3">&#167;3</a>, <a href="2-lp.html#SP5">&#167;5</a>, <a href="2-lp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax">) </span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOCALPARKING_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We also sometimes need the same park to hold returned callings from deferred
+propositions; and that needs to be large enough to hold values of up to 26
+variables, plus a single other value.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">LocalParking::callings</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LocalParking::callings</span></span>:<br/>Deciding to Defer - <a href="3-dtd.html#SP8">&#167;8</a>, <a href="3-dtd.html#SP9">&#167;9</a><br/>Compile Deferred Propositions - <a href="3-cdp.html#SP3_6_1_2_5">&#167;3.6.1.2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-lp.html#SP4" class="function-link"><span class="function-syntax">LocalParking::array</span></a><span class="plain-syntax">(27);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>So this makes a suitably-sized car park, if one is needed at all:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LocalParking::compile_array</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOCALPARKING_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-lp.html#SP4" class="function-link"><span class="function-syntax">LocalParking::array</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Emit::named_array_begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">size_of_local_parking_area</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Emit::array_numeric_entry</span><span class="plain-syntax">(0);</span>

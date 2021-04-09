@@ -223,6 +223,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Sequence::compile_function_resources)
 	BENCH(TextSubstitutions::allow_no_further_text_subs)
+	BENCH(Deferrals::allow_no_further_deferrals)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
@@ -234,8 +235,6 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
-	BENCH(DeferredPropositions::compile_remaining_deferred)
-	BENCH(Deferrals::allow_no_further_deferrals)
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)

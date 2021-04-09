@@ -774,7 +774,7 @@ void RTRelations::compile_relation_records(void) {
 	#endif
 	if (Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
-		if (Deferrals::write_loop_schema(&loop_schema, K)) {
+		if (CompileLoops::schema(&loop_schema, K)) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema, Z1_lv, Z2_lv);
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());
@@ -874,7 +874,7 @@ void RTRelations::compile_relation_records(void) {
 	#endif
 	if (Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
-		if (Deferrals::write_loop_schema(&loop_schema, K)) {
+		if (CompileLoops::schema(&loop_schema, K)) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema, Z1_lv, Z2_lv);
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());
@@ -914,8 +914,8 @@ void RTRelations::compile_relation_records(void) {
 	#endif
 	if ((Deferrals::has_finite_domain(KL)) && (Deferrals::has_finite_domain(KL))) {
 		i6_schema loop_schema_L, loop_schema_R;
-		if ((Deferrals::write_loop_schema(&loop_schema_L, KL)) &&
-			(Deferrals::write_loop_schema(&loop_schema_R, KR))) {
+		if ((CompileLoops::schema(&loop_schema_L, KL)) &&
+			(CompileLoops::schema(&loop_schema_R, KR))) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema_L, Z1_lv, Z2_lv);
 					CompileSchemas::from_local_variables_in_void_context(&loop_schema_R, Z3_lv, Z4_lv);
 
