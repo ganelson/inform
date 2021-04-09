@@ -182,7 +182,7 @@ specific to particular deferral reasons.
 	if (multipurpose_routine)
 		reason_s = LocalVariables::new_other_as_symbol(I"reason"); /* no cinders exist here */
 	else
-		Calculus::Deferrals::Cinders::declare(proposition, pdef);
+		Deferrals::Cinders::declare(proposition, pdef);
 
 	@<Declare the I6 call parameters needed by adaptations to particular deferral cases@>;
 
@@ -1587,7 +1587,7 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 	@<Scan the proposition to find the domain of the loop, and look for opportunities@>;
 
 	if ((K) && (parent_optimised == FALSE)) { /* parent optimisation is stronger, so we prefer that */
-		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K) == FALSE) {
+		if (Deferrals::write_loop_schema(&loop_schema, K) == FALSE) {
 			if (pdef->rtp_iname == NULL) {
 				pdef->rtp_iname = Hierarchy::make_iname_in(RTP_HL, pdef->ppd_package);
 			}

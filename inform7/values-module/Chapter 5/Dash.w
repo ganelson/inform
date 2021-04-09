@@ -2887,14 +2887,14 @@ delegate that to "Type Check Propositions.w".
 	if (Descriptions::is_complex(p)) desired_to = "be a description";
 
 	if (desired_to) {
-		if (Propositions::Checker::type_check(Specifications::to_proposition(p),
-			Propositions::Checker::tc_no_problem_reporting())
+		if (TypecheckPropositions::type_check(Specifications::to_proposition(p),
+			TypecheckPropositions::tc_no_problem_reporting())
 			== NEVER_MATCH) {
 			LOGIF(MATCHING, "(5.c) on $P failed proposition type-checking: $D\n",
 				p, Specifications::to_proposition(p));
 			THIS_IS_A_GROSS_PROBLEM;
-			Propositions::Checker::type_check(Specifications::to_proposition(p),
-				Propositions::Checker::tc_problem_reporting(Node::get_text(p), desired_to));
+			TypecheckPropositions::type_check(Specifications::to_proposition(p),
+				TypecheckPropositions::tc_problem_reporting(Node::get_text(p), desired_to));
 			return NEVER_MATCH;
 		} else { LOG_DASH("(5.c) Okay!"); }
 	}

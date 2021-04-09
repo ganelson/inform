@@ -235,7 +235,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(DeferredPropositions::compile_remaining_deferred)
-	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
+	BENCH(Deferrals::allow_no_further_deferrals)
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)

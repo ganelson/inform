@@ -1,4 +1,4 @@
-[Calculus::Deferrals::Cinders::] Cinders and Deferrals.
+[Deferrals::Cinders::] Cinders and Deferrals.
 
 To compile terms, having carefully preserved any constants which might
 have been lost in the process of deferring a proposition (such tricky constants
@@ -58,7 +58,7 @@ call), note down their kinds of value in the record of the deferral, and
 return the number of cinders made.
 
 =
-int Calculus::Deferrals::Cinders::find_count(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
+int Deferrals::Cinders::find_count(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
 	TRAVERSE_VARIABLE(pl);
 	int cinder_number = 0;
 	pcalc_prop_deferral *save_current_pdef = current_pdef;
@@ -66,13 +66,13 @@ int Calculus::Deferrals::Cinders::find_count(pcalc_prop *prop, pcalc_prop_deferr
 	TRAVERSE_PROPOSITION(pl, prop)
 		for (int i=0; i<pl->arity; i++)
 			cinder_number =
-				Calculus::Deferrals::Cinders::cind_find_in_term_count(&(pl->terms[i]), cinder_number);
+				Deferrals::Cinders::cind_find_in_term_count(&(pl->terms[i]), cinder_number);
 
 	current_pdef = save_current_pdef;
 	return cinder_number;
 }
 
-int Calculus::Deferrals::Cinders::find_emit(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
+int Deferrals::Cinders::find_emit(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
 	TRAVERSE_VARIABLE(pl);
 	int i, cinder_number = 0, started = FALSE;
 	pcalc_prop_deferral *save_current_pdef = current_pdef;
@@ -80,18 +80,18 @@ int Calculus::Deferrals::Cinders::find_emit(pcalc_prop *prop, pcalc_prop_deferra
 	TRAVERSE_PROPOSITION(pl, prop)
 		for (i=0; i<pl->arity; i++)
 			cinder_number =
-				Calculus::Deferrals::Cinders::cind_find_in_term_emit(&(pl->terms[i]), cinder_number, &started);
+				Deferrals::Cinders::cind_find_in_term_emit(&(pl->terms[i]), cinder_number, &started);
 
 	current_pdef = save_current_pdef;
 	return cinder_number;
 }
 
-int Calculus::Deferrals::Cinders::cind_find_in_term_emit(pcalc_term *pt, int cinder_number, int *started) {
+int Deferrals::Cinders::cind_find_in_term_emit(pcalc_term *pt, int cinder_number, int *started) {
 	/* do not clear the local I6 stream */
 	if (pt->function)
-		return Calculus::Deferrals::Cinders::cind_find_in_term_emit(&(pt->function->fn_of), cinder_number, started);
+		return Deferrals::Cinders::cind_find_in_term_emit(&(pt->function->fn_of), cinder_number, started);
 	if (pt->constant) {
-		if (Calculus::Deferrals::Cinders::spec_needs_to_be_cindered(pt->constant)) {
+		if (Deferrals::Cinders::spec_needs_to_be_cindered(pt->constant)) {
 			pt->cinder = cinder_number++;
 			CompileValues::to_code_val(pt->constant);
 			current_pdef->cinder_kinds[pt->cinder] =
@@ -102,12 +102,12 @@ int Calculus::Deferrals::Cinders::cind_find_in_term_emit(pcalc_term *pt, int cin
 	return cinder_number;
 }
 
-int Calculus::Deferrals::Cinders::cind_find_in_term_count(pcalc_term *pt, int cinder_number) {
+int Deferrals::Cinders::cind_find_in_term_count(pcalc_term *pt, int cinder_number) {
 	/* do not clear the local I6 stream */
 	if (pt->function)
-		return Calculus::Deferrals::Cinders::cind_find_in_term_count(&(pt->function->fn_of), cinder_number);
+		return Deferrals::Cinders::cind_find_in_term_count(&(pt->function->fn_of), cinder_number);
 	if (pt->constant) {
-		if (Calculus::Deferrals::Cinders::spec_needs_to_be_cindered(pt->constant)) {
+		if (Deferrals::Cinders::spec_needs_to_be_cindered(pt->constant)) {
 			cinder_number++;
 		}
 	}
@@ -135,7 +135,7 @@ and never needs more than a single array entry lookup at run-time:
 (b) global variables.
 
 =
-int Calculus::Deferrals::Cinders::spec_needs_to_be_cindered(parse_node *spec) {
+int Deferrals::Cinders::spec_needs_to_be_cindered(parse_node *spec) {
 	if (Node::is(spec, CONSTANT_NT)) return FALSE;
 	if (Lvalues::is_global_variable(spec)) return FALSE;
 	return TRUE;
@@ -151,7 +151,7 @@ We also set |current_pdef|, since this is the first action taken in starting
 a new deferred routine.
 
 =
-void Calculus::Deferrals::Cinders::declare(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
+void Deferrals::Cinders::declare(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
 	TRAVERSE_VARIABLE(pl);
 	int i, cinder_number = 0;
 
@@ -160,14 +160,14 @@ void Calculus::Deferrals::Cinders::declare(pcalc_prop *prop, pcalc_prop_deferral
 
 	TRAVERSE_PROPOSITION(pl, prop)
 		for (i=0; i<pl->arity; i++)
-			cinder_number = Calculus::Deferrals::Cinders::cind_declare_in(cinder_number, &(pl->terms[i]));
+			cinder_number = Deferrals::Cinders::cind_declare_in(cinder_number, &(pl->terms[i]));
 
 	current_pdef = save_current_pdef;
 }
 
-int Calculus::Deferrals::Cinders::cind_declare_in(int cinder_number, pcalc_term *pt) {
+int Deferrals::Cinders::cind_declare_in(int cinder_number, pcalc_term *pt) {
 	if (pt->function)
-		return Calculus::Deferrals::Cinders::cind_declare_in(cinder_number, &(pt->function->fn_of));
+		return Deferrals::Cinders::cind_declare_in(cinder_number, &(pt->function->fn_of));
 	if ((pt->constant) && (pt->cinder >= 0))
 		if (Node::is(pt->constant, CONSTANT_NT) == FALSE) {
 			TEMPORARY_TEXT(cinder_name)
@@ -184,7 +184,7 @@ compiled is. The only troublesome case is when the term is a cinder; its
 kind is then part of the information recorded at deferral time.
 
 =
-kind *Calculus::Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
+kind *Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
 	if (pt.variable >= 0) {
 		if (pt.term_checked_as_kind) return pt.term_checked_as_kind;
 		return K_object;
@@ -201,14 +201,14 @@ kind *Calculus::Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
 }
 
 @ =
-void Calculus::Deferrals::Cinders::emit(int c) {
-	local_variable *lvar = Calculus::Deferrals::Cinders::find_cinder_var(c);
+void Deferrals::Cinders::emit(int c) {
+	local_variable *lvar = Deferrals::Cinders::find_cinder_var(c);
 	if (lvar == NULL) internal_error("absent calculus variable");
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 }
 
-local_variable *Calculus::Deferrals::Cinders::find_cinder_var(int v) {
+local_variable *Deferrals::Cinders::find_cinder_var(int v) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "const_%d", v);
 	local_variable *found = LocalVariables::by_identifier(T);

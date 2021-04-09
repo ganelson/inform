@@ -73,7 +73,7 @@ and generating better problem messages than the normal machinery would if not:
 =
 int WherePredicates::typecheck_everywhere(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *actually_find = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(prop->terms[0]), actually_find);
@@ -91,7 +91,7 @@ int WherePredicates::typecheck_everywhere(up_family *self, unary_predicate *up,
 
 int WherePredicates::typecheck_nowhere(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *actually_find = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(prop->terms[0]), actually_find);
@@ -112,7 +112,7 @@ apply "here" incorrectly, but just in case:
 =
 int WherePredicates::typecheck_here(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *actually_find = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(prop->terms[0]), actually_find);

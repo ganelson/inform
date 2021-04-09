@@ -201,7 +201,7 @@ need bespoke handling:
 	if (Node::is(cs, TEST_PROPOSITION_NT)) {
 		if (rv != NEVER_MATCH) {
 			pcalc_prop *prop = Specifications::to_proposition(cs);
-			if (prop) Calculus::Deferrals::emit_now_proposition(prop);
+			if (prop) CompilePropositions::to_make_true(prop);
 		}
 	} else if (Specifications::is_condition(cs))
 		@<Issue a problem message for the wrong sort of condition in a "now"@>
@@ -469,9 +469,9 @@ of |downs| is how many times we have called |Produce::down|.
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, sw_lv);
 		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
 			R_equality, NULL, sw_v, NULL, case_spec);
-		Propositions::Checker::type_check(prop,
-			Propositions::Checker::tc_no_problem_reporting());
-		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
+		TypecheckPropositions::type_check(prop,
+			TypecheckPropositions::tc_no_problem_reporting());
+		CompilePropositions::to_test_as_condition(NULL, prop);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			statement_count = CompileBlocksAndLines::code_block(statement_count,

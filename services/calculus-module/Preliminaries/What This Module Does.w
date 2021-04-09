@@ -201,7 +201,7 @@ nevertheless be "bad": for example, ${\it contains}(7, x)$ is not just untrue
 but at some level meaningless -- a number cannot contain things.
 
 Throughout Inform, then, all propositions have to be type-checked before use,
-and this is done by //Propositions::Checker::type_check//.
+and this is done by //TypecheckPropositions::type_check//.
 
 @h Sentences.
 Our whole interest in propositions is to use them to provide a meaning for

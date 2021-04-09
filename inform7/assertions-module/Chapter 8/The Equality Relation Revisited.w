@@ -155,8 +155,8 @@ of both A and B.
 =
 int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *st[2];
-	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
-	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+	st[0] = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	st[1] = Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 
 	if ((Kinds::Behaviour::is_object(st[0])) &&
 		(Properties::can_name_coincide_with_kind(st[1])) && (Properties::property_with_same_name_as(st[1])))

@@ -32,11 +32,11 @@ int KindPredicatesRevisited::typecheck(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	kind *need_to_find = up->assert_kind;
 	if (Kinds::Behaviour::is_object(need_to_find)) need_to_find = K_object;
-	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *actually_find = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if (Kinds::compatible(actually_find, need_to_find) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not %u\n", &(prop->terms[0]), actually_find, need_to_find);
-		Propositions::Checker::issue_kind_typecheck_error(actually_find, need_to_find, tck, prop);
+		TypecheckPropositions::issue_kind_typecheck_error(actually_find, need_to_find, tck, prop);
 		return NEVER_MATCH;
 	}
 	return ALWAYS_MATCH;

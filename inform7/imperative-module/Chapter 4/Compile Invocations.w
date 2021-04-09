@@ -224,11 +224,11 @@ a specific value, such as "10".
 	nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 	parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	if (Specifications::is_description(check_against)) {
-		Calculus::Deferrals::emit_test_if_var_matches_description(spec, check_against);
+		CompilePropositions::to_test_if_variable_matches(spec, check_against);
 	} else if (Specifications::is_value(check_against)) {
 		pcalc_prop *prop = Propositions::Abstract::to_set_relation(R_equality,
 			NULL, spec, NULL, check_against);
-		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
+		CompilePropositions::to_test_as_condition(NULL, prop);
 	} else {
 		LOG("Error on: $T", check_against);
 		internal_error("bad check-against in runtime type check");

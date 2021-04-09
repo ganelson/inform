@@ -141,7 +141,7 @@ int CreationPredicates::typecheck_is_a_const(up_family *self, unary_predicate *u
 }
 int CreationPredicates::typecheck_is_a_kind(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *actually_find = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH)
 		internal_error("is_a_kind predicate misapplied");
 	return ALWAYS_MATCH;

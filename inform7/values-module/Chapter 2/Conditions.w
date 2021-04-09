@@ -218,7 +218,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 	if (PluginCalls::compile_condition(VH, spec_found)) return;
 	switch (Node::get_type(spec_found)) {
 		case TEST_PROPOSITION_NT:
-			Calculus::Deferrals::emit_test_of_proposition(NULL,
+			CompilePropositions::to_test_as_condition(NULL,
 				Specifications::to_proposition(spec_found));
 			break;
 		case LOGICAL_TENSE_NT:

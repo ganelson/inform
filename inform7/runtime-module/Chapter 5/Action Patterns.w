@@ -245,7 +245,7 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			prop = Propositions::concatenate(prop,
 				KindPredicates::new_atom(
 					verify_as_kind, Terms::new_variable(0)));
-			Calculus::Deferrals::prop_verify_descriptive(prop,
+			CompilePropositions::verify_descriptive(prop,
 				"an action or activity to apply to things matching a given "
 				"description", spec);
 		}
@@ -253,8 +253,8 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 
 	if (prop) {
 		LOGIF(ACTION_PATTERN_COMPILATION, "[MPE faces proposition: $D]\n", prop);
-		Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
-		Calculus::Deferrals::emit_test_of_proposition(I6_var_TS, prop);
+		TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
+		CompilePropositions::to_test_as_condition(I6_var_TS, prop);
 	}
 
 	if (Wordings::nonempty(C)) {

@@ -1,4 +1,4 @@
-[Propositions::Checker::] Type Check Propositions.
+[TypecheckPropositions::] Type Check Propositions.
 
 Predicate calculus is a largely symbolic exercise, and its rules of
 working tend to assume that all predicates are meaningful for all terms: this
@@ -14,7 +14,7 @@ ${\it is}(4, x)$, where $x$ is a variable. Our calculus allows variables to
 range over many domains -- numbers, texts, scenes, objects, and so on.
 
 @h Problem reporting kit.
-The caller to |Propositions::Checker::type_check| has to fill this form out first. Paperwork,
+The caller to |TypecheckPropositions::type_check| has to fill this form out first. Paperwork,
 what can you do, eh?
 
 @d DECLINE_TO_MATCH 1000 /* not one of the three legal |*_MATCH| values */
@@ -29,14 +29,14 @@ typedef struct tc_problem_kit {
 	int flag_problem;
 } tc_problem_kit;
 
-tc_problem_kit Propositions::Checker::tc_no_problem_reporting(void) {
+tc_problem_kit TypecheckPropositions::tc_no_problem_reporting(void) {
 	tc_problem_kit tck;
 	tck.issue_error = FALSE; tck.ew_text = EMPTY_WORDING; tck.intention = "be silent checking";
 	tck.log_to_I6_text = FALSE; tck.flag_problem = FALSE; return tck;
 }
 
-tc_problem_kit Propositions::Checker::tc_problem_reporting(wording W, char *intent) {
-	tc_problem_kit tck = Propositions::Checker::tc_no_problem_reporting();
+tc_problem_kit TypecheckPropositions::tc_problem_reporting(wording W, char *intent) {
+	tc_problem_kit tck = TypecheckPropositions::tc_no_problem_reporting();
 	tck.issue_error = TRUE; tck.ew_text = W; tck.intention = intent;
 	return tck;
 }
@@ -45,13 +45,13 @@ tc_problem_kit Propositions::Checker::tc_problem_reporting(wording W, char *inte
 into the debugging log, but diverted to an I6 string in the compiled code.
 
 =
-tc_problem_kit Propositions::Checker::tc_problem_logging(void) {
-	tc_problem_kit tck = Propositions::Checker::tc_no_problem_reporting();
+tc_problem_kit TypecheckPropositions::tc_problem_logging(void) {
+	tc_problem_kit tck = TypecheckPropositions::tc_no_problem_reporting();
 	tck.intention = "be internal testing"; tck.log_to_I6_text = TRUE; return tck;
 }
 
 @h Type-checking whole propositions.
-This section provides a single routine to the rest of Inform: |Propositions::Checker::type_check|.
+This section provides a single routine to the rest of Inform: |TypecheckPropositions::type_check|.
 We determine the kinds for all variables, then work through the proposition,
 ensuring that every predicate-like atom has terms which match at least one
 possible reading of the meaning of the atom.
@@ -60,7 +60,7 @@ As usual in Inform, type-checking is not a passive process. If it can make
 sense of the proposition by changing it, it will do so.
 
 =
-int Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
+int TypecheckPropositions::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
 	TRAVERSE_VARIABLE(pl);
 	variable_type_assignment vta;
 	tc_problem_kit *tck = &tck_s;
@@ -80,7 +80,7 @@ int Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
 	@<Assume any still-unfathomable variables represent objects@>;
 
 	TRAVERSE_PROPOSITION(pl, prop) {
-		for (j=0; j<pl->arity; j++) Propositions::Checker::kind_of_term(&(pl->terms[j]), &vta, tck);
+		for (j=0; j<pl->arity; j++) TypecheckPropositions::kind_of_term(&(pl->terms[j]), &vta, tck);
 		if (tck->flag_problem) return NEVER_MATCH;
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 2))
 			@<A binary predicate is required to apply to terms of the right kinds@>;
@@ -155,7 +155,7 @@ treat it as a piece of nonsense, like "if Wednesday is not custard".
 					if (Kinds::compatible(old_kind, new_kind) == NEVER_MATCH) {
 						if (tck->log_to_I6_text)
 							LOG("%c is both %u and %u\n", pcalc_vars[v], old_kind, new_kind);
-						Propositions::Checker::issue_kind_typecheck_error(old_kind, new_kind, tck, pl);
+						TypecheckPropositions::issue_kind_typecheck_error(old_kind, new_kind, tck, pl);
 						return NEVER_MATCH;
 					}
 					if (Kinds::Behaviour::definite(new_kind) == FALSE) new_kind = old_kind;
@@ -173,7 +173,7 @@ but it's a very subtle one, and we want to use it only when everything else
 		if (KindPredicates::is_unarticled_atom(pl)) {
 			if (tck->log_to_I6_text) LOG("Rejecting as unarticled\n");
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
-			Propositions::Checker::problem(BareKindVariable_CALCERROR,
+			TypecheckPropositions::problem(BareKindVariable_CALCERROR,
 				NULL, EMPTY_WORDING, NULL, NULL, NULL, tck);
 			return NEVER_MATCH;
 		}
@@ -206,7 +206,7 @@ problem message has already been issued, but just in case not...
 	if (problem_count == 0) {
 		if (tck->log_to_I6_text) LOG("Atom $o contains failed constant\n", pl);
 		if (tck->issue_error == FALSE) return NEVER_MATCH;
-		Propositions::Checker::problem(ConstantFailed_CALCERROR, spec,
+		TypecheckPropositions::problem(ConstantFailed_CALCERROR, spec,
 			EMPTY_WORDING, NULL, NULL, NULL, tck);
 	}
 	return NEVER_MATCH;
@@ -231,14 +231,14 @@ would work instead. If it would, we make the change within the proposition.
 @<A binary predicate is required to apply to terms of the right kinds@> =
 	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(pl->predicate);
 	if (BinaryPredicates::is_the_wrong_way_round(bp)) internal_error("BP wrong way round");
-	if (Propositions::Checker::type_check_binary_predicate(pl, &vta, tck) == NEVER_MATCH) {
+	if (TypecheckPropositions::type_check_binary_predicate(pl, &vta, tck) == NEVER_MATCH) {
 		if (bp == R_equality) {
 			unary_predicate *alt = Terms::noun_to_adj_conversion(pl->terms[1]);
 			if (alt) {
 				pcalc_prop test_unary = *pl;
 				test_unary.arity = 1;
 				test_unary.predicate = STORE_POINTER_unary_predicate(alt);
-				if (Propositions::Checker::type_check_unary_predicate(&test_unary, &vta, tck) == NEVER_MATCH)
+				if (TypecheckPropositions::type_check_unary_predicate(&test_unary, &vta, tck) == NEVER_MATCH)
 					@<The BP fails type-checking@>;
 				pl->arity = 1;
 				pl->predicate = STORE_POINTER_unary_predicate(alt);
@@ -272,9 +272,9 @@ in each variable, we cannot know the kind of value a general term represents,
 which is why the routine is here and not in the Terms section.
 
 =
-kind *Propositions::Checker::kind_of_term(pcalc_term *pt, variable_type_assignment *vta,
+kind *TypecheckPropositions::kind_of_term(pcalc_term *pt, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
-	kind *K = Propositions::Checker::kind_of_term_inner(pt, vta, tck);
+	kind *K = TypecheckPropositions::kind_of_term_inner(pt, vta, tck);
 	pt->term_checked_as_kind = K;
 	if (K == NULL) { LOGIF(MATCHING, "No kind for term $0 = $T\n", pt, pt->constant); tck->flag_problem = TRUE; }
 	return K;
@@ -287,19 +287,19 @@ to a value of that kind. If $B$ is a binary predicate with domains $R$ and $S$
 versa; so we have to check that $s$ lies in $R$ (or $S$, respectively).
 
 =
-kind *Propositions::Checker::kind_of_term_inner(pcalc_term *pt, variable_type_assignment *vta,
+kind *TypecheckPropositions::kind_of_term_inner(pcalc_term *pt, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	if (pt->constant) return VALUE_TO_KIND_FUNCTION(pt->constant);
 	if (pt->variable >= 0) return vta->assigned_kinds[pt->variable];
 	if (pt->function) {
 		binary_predicate *bp = pt->function->bp;
-		kind *kind_found = Propositions::Checker::kind_of_term(&(pt->function->fn_of), vta, tck);
-		kind *kind_from = Propositions::Checker::approximate_argument_kind(bp, pt->function->from_term);
-		kind *kind_to = Propositions::Checker::approximate_argument_kind(bp, 1 - pt->function->from_term);
+		kind *kind_found = TypecheckPropositions::kind_of_term(&(pt->function->fn_of), vta, tck);
+		kind *kind_from = TypecheckPropositions::approximate_argument_kind(bp, pt->function->from_term);
+		kind *kind_to = TypecheckPropositions::approximate_argument_kind(bp, 1 - pt->function->from_term);
 		if ((kind_from) && (Kinds::compatible(kind_found, kind_from) == NEVER_MATCH)) {
 			if (tck->log_to_I6_text)
 				LOG("Term $0 applies function to %u not %u\n", pt, kind_found, kind_from);
-			Propositions::Checker::issue_bp_typecheck_error(bp, kind_found, kind_to, tck);
+			TypecheckPropositions::issue_bp_typecheck_error(bp, kind_found, kind_to, tck);
 			kind_found = kind_from; /* the better to recover */
 		}
 		if (kind_to) return kind_to;
@@ -318,7 +318,7 @@ the BP is one constraining its terms, such as when it provides a $f_B$
 function.
 
 =
-kind *Propositions::Checker::approximate_argument_kind(binary_predicate *bp, int i) {
+kind *TypecheckPropositions::approximate_argument_kind(binary_predicate *bp, int i) {
 	kind *K = BinaryPredicates::term_kind(bp, i);
 	if (K == NULL) return K_object;
 	return Kinds::weaken(K, K_object);
@@ -330,7 +330,7 @@ adjectives, and all of the work for that has already been done, so we need
 only produce a problem message when the worst happens.
 
 =
-int Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
+int TypecheckPropositions::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
 	if (UnaryPredicateFamilies::typecheck(tr, pl, vta, tck) == NEVER_MATCH)
@@ -344,7 +344,7 @@ harder because the work hasn't already been done and because some BPs --
 like "is" -- are polymorphic. Here goes:
 
 =
-int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
+int TypecheckPropositions::type_check_binary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(pl->predicate);
 	kind *kinds_of_terms[2], *kinds_required[2];
@@ -368,17 +368,17 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 		if (result == NEVER_MATCH_SAYING_WHY_NOT) {
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
 			if (pl->terms[0].function)
-				Propositions::Checker::issue_bp_typecheck_error(pl->terms[0].function->bp,
-					Propositions::Checker::kind_of_term(&(pl->terms[0].function->fn_of), vta, tck),
+				TypecheckPropositions::issue_bp_typecheck_error(pl->terms[0].function->bp,
+					TypecheckPropositions::kind_of_term(&(pl->terms[0].function->fn_of), vta, tck),
 					kinds_of_terms[1], tck);
 			else if (pl->terms[1].function)
-				Propositions::Checker::issue_bp_typecheck_error(pl->terms[1].function->bp,
+				TypecheckPropositions::issue_bp_typecheck_error(pl->terms[1].function->bp,
 					kinds_of_terms[0],
-					Propositions::Checker::kind_of_term(&(pl->terms[1].function->fn_of), vta, tck),
+					TypecheckPropositions::kind_of_term(&(pl->terms[1].function->fn_of), vta, tck),
 					tck);
 			else {
 				LOG("(%u, %u) failed in $2\n", kinds_of_terms[0], kinds_of_terms[1], bp);
-				Propositions::Checker::problem(ComparisonFailed_CALCERROR, NULL, EMPTY_WORDING,
+				TypecheckPropositions::problem(ComparisonFailed_CALCERROR, NULL, EMPTY_WORDING,
 					kinds_of_terms[0], kinds_of_terms[1], NULL, tck);
 			}
 			return NEVER_MATCH;
@@ -405,16 +405,16 @@ produce a |kinds_required| which is |NULL|.
 @<Work out what kinds we find@> =
 	for (int i=0; i<2; i++)
 		kinds_of_terms[i] =
-			Propositions::Checker::kind_of_term(&(pl->terms[i]), vta, tck);
+			TypecheckPropositions::kind_of_term(&(pl->terms[i]), vta, tck);
 
 @<Adapt to the universal relation@> =
 	if (Kinds::get_construct(kinds_of_terms[0]) != CON_relation) {
-		Propositions::Checker::problem(BadUniversal1_CALCERROR, NULL, EMPTY_WORDING,
+		TypecheckPropositions::problem(BadUniversal1_CALCERROR, NULL, EMPTY_WORDING,
 			kinds_of_terms[0], NULL, NULL, tck);
 		return NEVER_MATCH;
 	}
 	if (Kinds::get_construct(kinds_of_terms[1]) != CON_combination) {
-		Propositions::Checker::problem(BadUniversal2_CALCERROR, NULL, EMPTY_WORDING,
+		TypecheckPropositions::problem(BadUniversal2_CALCERROR, NULL, EMPTY_WORDING,
 			kinds_of_terms[1], NULL, NULL, tck);
 		return NEVER_MATCH;
 	}
@@ -439,7 +439,7 @@ required.
 				if (tck->log_to_I6_text)
 					LOG("Term %d is %u not %u\n",
 						i, kinds_of_terms[i], kinds_required[i]);
-				Propositions::Checker::issue_bp_typecheck_error(bp,
+				TypecheckPropositions::issue_bp_typecheck_error(bp,
 					kinds_of_terms[0], kinds_of_terms[1], tck);
 				return NEVER_MATCH;
 			}
@@ -447,20 +447,20 @@ required.
 @h Two problem messages needed more than once.
 
 =
-void Propositions::Checker::issue_bp_typecheck_error(binary_predicate *bp,
+void TypecheckPropositions::issue_bp_typecheck_error(binary_predicate *bp,
 	kind *t0, kind *t1, tc_problem_kit *tck) {
-	Propositions::Checker::problem(BinaryMisapplied2_CALCERROR, NULL, EMPTY_WORDING,
+	TypecheckPropositions::problem(BinaryMisapplied2_CALCERROR, NULL, EMPTY_WORDING,
 		t0, t1, bp, tck);
 }
 
-void Propositions::Checker::issue_kind_typecheck_error(kind *actually_find,
+void TypecheckPropositions::issue_kind_typecheck_error(kind *actually_find,
 	kind *need_to_find, tc_problem_kit *tck, pcalc_prop *ka) {
 	binary_predicate *bp = (ka)?(ka->saved_bp):NULL;
 	if (bp) {
-		Propositions::Checker::problem(BinaryMisapplied1_CALCERROR, NULL, EMPTY_WORDING,
+		TypecheckPropositions::problem(BinaryMisapplied1_CALCERROR, NULL, EMPTY_WORDING,
 			actually_find, need_to_find, bp, tck);
 	} else {
-		Propositions::Checker::problem(KindMismatch_CALCERROR, NULL, EMPTY_WORDING,
+		TypecheckPropositions::problem(KindMismatch_CALCERROR, NULL, EMPTY_WORDING,
 			actually_find, need_to_find, bp, tck);
 	}
 }
@@ -481,7 +481,7 @@ to some routine of her own, gazumping this one.
 @e KindMismatch_CALCERROR
 
 =
-void Propositions::Checker::problem(int err_no, parse_node *spec, wording W,
+void TypecheckPropositions::problem(int err_no, parse_node *spec, wording W,
 	kind *K1, kind *K2, binary_predicate *bp, tc_problem_kit *tck) {
 	#ifdef PROBLEM_CALCULUS_CALLBACK
 	PROBLEM_CALCULUS_CALLBACK(err_no, spec, W, K1, K2, bp, tck);

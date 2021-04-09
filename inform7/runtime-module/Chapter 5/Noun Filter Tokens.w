@@ -90,7 +90,7 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), NOT_BIP);
 					Produce::down(Emit::tree());
-						Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
+						CompilePropositions::to_test_if_variable_matches(noun_var, nft->the_filter);
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -147,7 +147,7 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 						Produce::down(Emit::tree());
 							Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
 							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K_object));
-							Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
+							CompilePropositions::to_test_if_variable_matches(noun_var, nft->the_filter);
 
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
@@ -225,11 +225,11 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			if (Specifications::to_proposition(nft->the_filter)) {
-				Propositions::Checker::type_check(Specifications::to_proposition(nft->the_filter), Propositions::Checker::tc_no_problem_reporting());
-				Calculus::Deferrals::emit_test_of_proposition(
+				TypecheckPropositions::type_check(Specifications::to_proposition(nft->the_filter), TypecheckPropositions::tc_no_problem_reporting());
+				CompilePropositions::to_test_as_condition(
 					noun_var, Specifications::to_proposition(nft->the_filter));
 			} else
-				Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
+				CompilePropositions::to_test_if_variable_matches(noun_var, nft->the_filter);
 		Produce::up(Emit::tree());
 	}
 	Functions::end(save);

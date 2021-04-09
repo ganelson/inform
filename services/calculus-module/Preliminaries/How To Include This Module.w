@@ -56,7 +56,7 @@ See //Simplifications::nothing_constant// and //Binding::substitute_nothing_in_t
 
 (*) |PROBLEM_CALCULUS_CALLBACK| is called when a proposition is mis-constructed,
 and can prevent the resulting warning from being issued to the terminal as an
-error message: see //Propositions::Checker::problem//.
+error message: see //TypecheckPropositions::problem//.
 
 (*) |PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK| can provide the |nothing| constant;
 see above, and see //Simplifications::not_related_to_something//.
@@ -65,4 +65,4 @@ see above, and see //Simplifications::not_related_to_something//.
 
 (*) |VERB_MEANING_UNIVERSAL_CALCULUS_RELATION| should be the universal relation,
 that is, the binary predicate which defines "relates". This requires specialist
-type-checking: see //Propositions::Checker::type_check_binary_predicate//.
+type-checking: see //TypecheckPropositions::type_check_binary_predicate//.

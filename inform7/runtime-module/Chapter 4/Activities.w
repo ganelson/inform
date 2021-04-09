@@ -58,7 +58,7 @@ void RTActivities::emit_activity_list(activity_list *al) {
 				if (al->acting_on) {
 					if (Specifications::is_description(al->acting_on)) {
 						Produce::val_iname(Emit::tree(), K_value,
-							Calculus::Deferrals::compile_deferred_description_test(al->acting_on));
+							Deferrals::compile_deferred_description_test(al->acting_on));
 					} else {
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 						CompileValues::to_code_val(al->acting_on);

@@ -70,7 +70,7 @@ int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 	if ((kinds_required[0]) &&
 		(Kinds::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
 		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
-		Propositions::Checker::issue_bp_typecheck_error(bp,
+		TypecheckPropositions::issue_bp_typecheck_error(bp,
 			kinds_of_terms[0], kinds_of_terms[1], tck);
 		return NEVER_MATCH;
 	}
@@ -103,8 +103,8 @@ int ComparativeRelations::schema(bp_family *self, int task, binary_predicate *bp
 
 @<Rewrite the annotated schema if it turns out to be an absolute comparison@> =
 	kind *st[2];
-	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
-	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+	st[0] = Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	st[1] = Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
 		(Properties::can_name_coincide_with_kind(st[1]))) {
 		property *prn = Properties::property_with_same_name_as(st[1]);

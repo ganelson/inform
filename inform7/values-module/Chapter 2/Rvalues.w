@@ -659,7 +659,7 @@ kinds of value:
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_description) {
-		Calculus::Deferrals::compile_multiple_use_proposition(VH,
+		Deferrals::compile_multiple_use_proposition(VH,
 			spec_found, Kinds::unary_construction_material(kind_of_constant));
 		return;
 	}

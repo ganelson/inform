@@ -182,7 +182,7 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 					Produce::down(Emit::tree());
 				}
 				if (spec) CompileValues::to_code_val_of_kind(spec, K_truth_state);
-				if (prop) Calculus::Deferrals::emit_test_of_proposition(Rvalues::new_self_object_constant(), prop);
+				if (prop) CompilePropositions::to_test_as_condition(Rvalues::new_self_object_constant(), prop);
 				if ((spec) && (prop)) {
 					Produce::up(Emit::tree());
 				}

@@ -47,8 +47,8 @@ parse_node *Descriptions::from_kind(kind *K, int composited) {
 			prop = KindPredicates::new_composited_atom(K, Terms::new_variable(0));
 		else
 			prop = KindPredicates::new_atom(K, Terms::new_variable(0));
-		Propositions::Checker::type_check(prop,
-			Propositions::Checker::tc_no_problem_reporting());
+		TypecheckPropositions::type_check(prop,
+			TypecheckPropositions::tc_no_problem_reporting());
 		Descriptions::set_proposition(spec, prop);
 	}
 	return spec;
@@ -83,8 +83,8 @@ parse_node *Descriptions::from_instance(instance *I, wording W) {
 	if (I == NULL) internal_error("description of null instance");
 	parse_node *val = Rvalues::from_instance(I);
 	pcalc_prop *prop = Atoms::prop_x_is_constant(val);
-	Propositions::Checker::type_check(prop,
-		Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop,
+		TypecheckPropositions::tc_no_problem_reporting());
 	return Descriptions::from_proposition(prop, W);
 }
 
@@ -195,8 +195,8 @@ void Descriptions::add_to_adjective_list(unary_predicate *au, parse_node *spec) 
 	if (AdjectivalPredicates::parity(au) == FALSE) negated = TRUE;
 	prop = Propositions::concatenate(prop,
 		AdjectivalPredicates::new_atom_on_x(aph, negated));
-	Propositions::Checker::type_check(prop,
-		Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop,
+		TypecheckPropositions::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
 }
 
@@ -209,8 +209,8 @@ void Descriptions::add_to_adjective_list_w(unary_predicate *au, parse_node *spec
 	if (AdjectivalPredicates::parity(au) == FALSE) negated = TRUE;
 	prop = Propositions::concatenate(prop,
 		AdjectivalPredicates::new_atom_on_x(aph, negated));
-	Propositions::Checker::type_check(prop,
-		Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop,
+		TypecheckPropositions::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
 	if (Q) Descriptions::quantify(spec, Q, N);
 }
@@ -227,7 +227,7 @@ void Descriptions::quantify(parse_node *spec, quantifier *q, int par) {
 	if (q != exists_quantifier)
 		prop = Propositions::concatenate(prop, Atoms::new(DOMAIN_CLOSE_ATOM));
 	Descriptions::set_proposition(spec, prop);
-	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
 }
 
 pcalc_prop *Descriptions::get_inner_prop(parse_node *spec) {
@@ -274,7 +274,7 @@ void Descriptions::attach_calling(parse_node *spec, wording C) {
 	prop = Propositions::concatenate(
 		prop,
 		CreationPredicates::calling_up(C, Terms::new_variable(0), K));
-	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
 }
 

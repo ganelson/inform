@@ -115,7 +115,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 	if ((Kinds::Behaviour::get_highest_valid_value_as_integer(K) == 0) &&
 		(Kinds::Behaviour::indexed_grey_if_empty(K)))
 			shaded = TRUE;
-	if (Calculus::Deferrals::has_finite_domain(K)) repeat = "tick";
+	if (Deferrals::has_finite_domain(K)) repeat = "tick";
 	if (KindSubjects::has_properties(K)) props = "tick";
 	if (Kinds::Behaviour::offers_I6_GPR(K)) under = "tick";
 	Kinds::Index::begin_chart_row(OUT);

@@ -54,11 +54,11 @@ void AdjectivalPredicates::infer_kind(up_family *self, unary_predicate *up, kind
 int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	adjective *adj = AdjectivalPredicates::to_adjective(up);
-	kind *K = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	kind *K = TypecheckPropositions::kind_of_term(&(prop->terms[0]), vta, tck);
 	if ((adj) && (AdjectiveAmbiguity::can_be_applied_to(adj, K) == FALSE)) {
 		wording W = Adjectives::get_nominative_singular(adj);
 		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
-		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
+		TypecheckPropositions::problem(UnaryMisapplied_CALCERROR,
 			NULL, W, K, NULL, NULL, tck);
 		return NEVER_MATCH;
 	}

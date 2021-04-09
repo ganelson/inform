@@ -170,8 +170,8 @@ in any case, so it doesn't matter that we wouldn't know what text to use in them
 @<Typecheck the proposition, in case this has not already been done@> =
 	wording W = EMPTY_WORDING;
 	if (current_sentence) W = Node::get_text(current_sentence);
-	if (Propositions::Checker::type_check(prop,
-			Propositions::Checker::tc_problem_reporting(W, "be asserting something"))
+	if (TypecheckPropositions::type_check(prop,
+			TypecheckPropositions::tc_problem_reporting(W, "be asserting something"))
 		!= ALWAYS_MATCH)
 		return;
 

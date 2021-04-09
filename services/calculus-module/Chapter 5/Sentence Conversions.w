@@ -743,7 +743,7 @@ it's a formality, but we want to enforce the rule that all propositions
 created in Inform go through type-checking, so:
 
 @<Typecheck the propositional form, and return@> =
-	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
+	TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
 	return prop;
 
 @ These are failed assertions, not for problem messages the user will ever see,

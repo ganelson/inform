@@ -233,7 +233,7 @@ function, but that is fine because they cannot arise anywhere else.
 
 @<Compile constant term@> =
 	if (pt.cinder >= 0) {
-		Calculus::Deferrals::Cinders::emit(pt.cinder);
+		Deferrals::Cinders::emit(pt.cinder);
 	} else {
 		if (Specifications::is_phrasal(pt.constant)) Dash::check_value(pt.constant, NULL);
 		if (by_reference) CompileValues::to_code_val_of_kind(pt.constant, K);

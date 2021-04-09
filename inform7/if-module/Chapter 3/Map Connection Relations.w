@@ -166,7 +166,7 @@ int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 		if ((Kinds::compatible(kinds_of_terms[t], K_room) == NEVER_MATCH) &&
 			(Kinds::compatible(kinds_of_terms[t], K_door) == NEVER_MATCH)) {
 		LOG("Term %d is %u but should be a room or door\n", t, kinds_of_terms[t]);
-		Propositions::Checker::issue_bp_typecheck_error(bp, kinds_of_terms[0],
+		TypecheckPropositions::issue_bp_typecheck_error(bp, kinds_of_terms[0],
 			kinds_of_terms[1], tck);
 		return NEVER_MATCH;
 	}

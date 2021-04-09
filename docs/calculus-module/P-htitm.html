@@ -124,7 +124,7 @@ If provided, the function should test whether the supplied constant is <span cla
 See <a href="5-smp.html#SP2" class="internal">Simplifications::nothing_constant</a> and <a href="4-bas.html#SP11" class="internal">Binding::substitute_nothing_in_term</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_CALCULUS_CALLBACK</span></span> is called when a proposition is mis-constructed,
 and can prevent the resulting warning from being issued to the terminal as an
-error message: see <a href="4-tcp.html#SP11" class="internal">Propositions::Checker::problem</a>.
+error message: see <a href="4-tcp.html#SP11" class="internal">TypecheckPropositions::problem</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK</span></span> can provide the <span class="extract"><span class="extract-syntax">nothing</span></span> constant;
 see above, and see <a href="5-smp.html#SP14" class="internal">Simplifications::not_related_to_something</a>.
 </li></ul>
@@ -133,7 +133,7 @@ see above, and see <a href="5-smp.html#SP14" class="internal">Simplifications::n
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">VERB_MEANING_UNIVERSAL_CALCULUS_RELATION</span></span> should be the universal relation,
 that is, the binary predicate which defines "relates". This requires specialist
-type-checking: see <a href="4-tcp.html#SP9" class="internal">Propositions::Checker::type_check_binary_predicate</a>.
+type-checking: see <a href="4-tcp.html#SP9" class="internal">TypecheckPropositions::type_check_binary_predicate</a>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-sc.html">5</a></li><li class="progressnext"><a href="1-cm.html">&#10095;</a></li></ul></div>
