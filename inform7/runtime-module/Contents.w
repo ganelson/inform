@@ -20,10 +20,6 @@ Chapter 3: Calculated Adjectives
 "Adjectives whose truth or falsity at run-time has to be determined by
 running code."
 	Adjectival Definitions
-	Adjectives by Raw Phrase
-	Adjectives by Raw Condition
-	Adjectives by Phrase
-	Adjectives by Condition
 
 Chapter 4: Compilation Utilities
 "Mainly low-level utilities for compiling code."

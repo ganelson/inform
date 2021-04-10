@@ -54,7 +54,7 @@ void AdjectivalDefinitionFamily::identify(imperative_defn_family *self, imperati
 			ImperativeSubtrees::accept_body(id->at->next);
 			Node::set_type(id->at->next, DEFN_CONT_NT);
 		}
-		Phrases::Adjectives::look_for_headers(id->at);
+		AdjectivalDefinitionFamily::look_for_headers(id->at);
 	}
 }
 
@@ -96,4 +96,162 @@ void AdjectivalDefinitionFamily::compile(imperative_defn_family *self,
 			IDCompilation::compile(id->body_of_defn, total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL);
 	RTAdjectives::compile_support_code();
+}
+
+@
+
+
+=
+typedef struct definition {
+	struct parse_node *definition_node; /* current sentence: where the word "Definition" is */
+	struct parse_node *node; /* where the actual definition is */
+	int format; /* |+1| to go by condition, |-1| to negate it, |0| to use routine */
+	struct wording condition_to_match; /* text of condition to match, if |+1| or |-1| */
+	struct wording domain_calling; /* what if anything the term is called */
+	struct adjective_meaning *am_of_def; /* which adjective meaning */
+	CLASS_DEFINITION
+} definition;
+
+@h Implementation details.
+First, some Preform grammar:
+
+=
+<definition-header> ::=
+	definition
+
+<adjective-definition> ::=
+	<adjective-domain> is/are <adjective-wording> if ... |      ==> { DEFINED_POSITIVELY, - }
+	<adjective-domain> is/are <adjective-wording> unless ... |  ==> { DEFINED_NEGATIVELY, - }
+	<adjective-domain> is/are <adjective-wording>               ==> { DEFINED_PHRASALLY, - }
+
+<adjective-domain> ::=
+	... ( called the ... ) |  ==> { 0, -, <<calling>> = TRUE }
+	... ( called ... ) |      ==> { 0, -, <<calling>> = TRUE }
+	...                       ==> { 0, -, <<calling>> = FALSE }
+
+<adjective-wording> ::=
+	... rather than ... |     ==> { 0, -, <<antonym>> = TRUE }
+	...                       ==> { 0, -, <<antonym>> = FALSE }
+
+@ The following function provides the method of identification:
+
+@d DEFINED_POSITIVELY 1
+@d DEFINED_NEGATIVELY -1
+@d DEFINED_PHRASALLY 0
+@d DEFINED_IN_SOME_WAY_NOT_YET_KNOWN -2
+
+=
+void AdjectivalDefinitionFamily::look_for_headers(parse_node *p) {
+	if (Node::get_type(p) == IMPERATIVE_NT)
+		if (<definition-header>(Node::get_text(p))) {
+			compilation_unit *cm = CompilationUnits::current();
+			CompilationUnits::set_current(p);
+			parse_node *q = NULL;
+			if (Node::get_type(p->next) == DEFN_CONT_NT) q = p->next;
+			else q = (p->down)?(p->down->down):NULL;
+
+			wording DNW = EMPTY_WORDING; /* domain name */
+			wording CALLW = EMPTY_WORDING; /* calling */
+			wording AW = EMPTY_WORDING; /* adjective name */
+			wording NW = EMPTY_WORDING; /* negation name */
+			wording CONW = EMPTY_WORDING; /* condition text */
+			int the_format = DEFINED_IN_SOME_WAY_NOT_YET_KNOWN;
+
+			@<Parse the Q-node as an adjective definition@>;
+			@<Perform sanity checks on the result@>;
+			@<Register the resulting adjective@>;
+
+			if (the_format != DEFINED_PHRASALLY)  p->down = NULL;
+
+			CompilationUnits::set_current_to(cm);
+		}
+}
+
+@<Parse the Q-node as an adjective definition@> =
+	if (<adjective-definition>(Node::get_text(q))) {
+		the_format = <<r>>;
+		DNW = GET_RW(<adjective-domain>, 1);
+		if (<<calling>>) CALLW = GET_RW(<adjective-domain>, 2);
+		AW = GET_RW(<adjective-wording>, 1);
+		if (<<antonym>>) NW = GET_RW(<adjective-wording>, 2);
+		if (the_format != DEFINED_PHRASALLY)
+			CONW = GET_RW(<adjective-definition>, 1);
+	}
+
+@<Perform sanity checks on the result@> =
+	if ((the_format == DEFINED_IN_SOME_WAY_NOT_YET_KNOWN) ||
+		((the_format == DEFINED_PHRASALLY) && (q->down == NULL))) {
+		LOG("Definition tree (%d):\n$T\n", the_format, q);
+		StandardProblems::definition_problem(Task::syntax_tree(),
+			_p_(PM_DefinitionWithoutCondition),
+			q, "a definition must take the form 'Definition: a ... is ... if/unless "
+			"...' or else 'Definition: a ... is ...: ...'",
+			"but I can't make this fit either shape.");
+		return;
+	}
+	if ((Wordings::mismatched_brackets(AW)) ||
+		((Wordings::nonempty(NW)) && (Wordings::mismatched_brackets(NW)))) {
+		LOG("Definition tree:\n$T\n", p);
+		StandardProblems::definition_problem(Task::syntax_tree(),
+			_p_(PM_BracketedAdjective),
+			q, "this definition seems to involve unexpected brackets in the name of "
+			"the adjective being defined",
+			"so I think I must be misreading it.");
+		return;
+	}
+
+@<Register the resulting adjective@> =
+	current_sentence = q;
+	adjective_meaning *am = AdjectiveMeanings::claim_definition(q, the_format, AW,
+		DNW, CONW, CALLW);
+	if (am == NULL) internal_error("unclaimed adjective definition");
+	if (Wordings::nonempty(NW)) {
+		current_sentence = q;
+		adjective *adj = Adjectives::declare(NW, NULL);
+		adjective_meaning *neg = AdjectiveMeanings::negate(am);
+		AdjectiveAmbiguity::add_meaning_to_adjective(neg, adj);
+	}
+
+@ The usual strictures apply:
+
+@d ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK AdjectivalDefinitionFamily::vet_name
+
+=
+int AdjectivalDefinitionFamily::vet_name(wording W) {
+	if (<article>(W)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_ArticleAsAdjective),
+			"a defined adjective cannot consist only of an article such as 'a' or 'the'",
+			"since this will lead to parsing ambiguities.");
+		return FALSE;
+	}
+	if (<unsuitable-name>(W)) {
+		if (problem_count == 0) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, W);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_AdjectivePunctuated));
+			Problems::issue_problem_segment(
+				"The sentence %1 seems to create an adjective with the name '%2', but "
+				"adjectives have to be contain only unpunctuated words.");
+			Problems::issue_problem_end();
+		}
+		return FALSE;
+	}
+	LOOP_THROUGH_WORDING(n, W)
+		NTI::mark_word(n, <s-adjective>);
+	return TRUE;
+}
+
+@ Which leaves only:
+
+=
+definition *AdjectivalDefinitionFamily::new_definition(parse_node *q) {
+	definition *def = CREATE(definition);
+	def->node = q;
+	def->format = 0;
+	def->condition_to_match = EMPTY_WORDING;
+	def->domain_calling = EMPTY_WORDING;
+	def->definition_node = current_sentence;
+	return def;
 }

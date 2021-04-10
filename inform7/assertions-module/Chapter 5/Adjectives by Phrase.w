@@ -28,13 +28,11 @@ void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, id_body *idb, w
 
 	LOOP_OVER(def, definition)
 		if ((def->node == p) && (Phrases::Phrasal::is_defined_by_phrase(def->am_of_def))) {
-			i6_schema *sch = AdjectiveMeanings::make_schema(def->am_of_def, TEST_ATOM_TASK);
-			Calculus::Schemas::modify(sch, "(%n(*1))", IDCompilation::iname(idb));
+			RTAdjectives::set_schemas_for_I7_phrase(def->am_of_def, idb);
 			*CW = def->domain_calling;
 			AdjectiveMeaningDomains::determine_if_possible(def->am_of_def);
 			*K = AdjectiveMeaningDomains::get_kind(def->am_of_def);
-			if ((*K == NULL) || (Kinds::Behaviour::is_object(*K)))
-				*K = K_object;
+			if ((*K == NULL) || (Kinds::Behaviour::is_object(*K))) *K = K_object;
 			return;
 		}
 }
@@ -43,7 +41,7 @@ int Phrases::Phrasal::claim_definition(adjective_meaning_family *f,
 	adjective_meaning **result, parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	if (sense != 0) return FALSE;
-	definition *def = Phrases::Adjectives::def_new(q);
+	definition *def = AdjectivalDefinitionFamily::new_definition(q);
 	adjective_meaning *am = AdjectiveMeanings::new(phrase_amf,
 		STORE_POINTER_definition(def), Node::get_text(q));
 	def->domain_calling = CALLW;

@@ -53,6 +53,10 @@ Chapter 5: Imperative Code
 	Imperative Definitions
 	Imperative Definition Families
 	Adjectival Definition Family
+	Adjectives by Phrase
+	Adjectives by Condition
+	Adjectives by Inter Function
+	Adjectives by Inter Condition
 	To Phrase Family
 	Phrase Type Data
 	Parsing Type Data

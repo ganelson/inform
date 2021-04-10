@@ -1,6 +1,6 @@
-[Phrases::RawCondition::] Adjectives by Raw Condition.
+[Phrases::RawCondition::] Adjectives by Inter Condition.
 
-Defining an adjective with an I6 condition.
+Defining an adjective with an Inter condition.
 
 @ This grammar catches definitions delegated to Inform 6 conditions.
 
@@ -27,7 +27,7 @@ int Phrases::RawCondition::claim_definition(adjective_meaning_family *f,
 	int text_wn = <<r>>;
 	wording IN = GET_RW(<inform6-condition-adjective-definition>, 1);
 
-	definition *def = Phrases::Adjectives::def_new(q);
+	definition *def = AdjectivalDefinitionFamily::new_definition(q);
 	adjective_meaning *am =
 		AdjectiveMeanings::new(inter_condition_amf,
 			STORE_POINTER_definition(def), IN);
@@ -35,9 +35,7 @@ int Phrases::RawCondition::claim_definition(adjective_meaning_family *f,
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeaningDomains::set_from_text(am, DNW);
-	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-	Word::dequote(text_wn);
-	Calculus::Schemas::modify(sch, "(%N)", text_wn);
+	RTAdjectives::set_schemas_for_raw_Inter_condition(am, text_wn);
 	*result = am;
 	return TRUE;
 }

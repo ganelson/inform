@@ -1,6 +1,6 @@
-[Phrases::RawPhrasal::] Adjectives by Raw Phrase.
+[Phrases::RawPhrasal::] Adjectives by Inter Function.
 
-Defining an adjective with an I6 routine.
+Defining an adjective with an Inter function to test or make it true.
 
 @ I6-defined routine adjectives.
 This little grammar catches definitions delegated to Inform 6 routines.
@@ -39,31 +39,14 @@ int Phrases::RawPhrasal::claim_definition(adjective_meaning_family *f,
 	if (sense != 1) return FALSE;
 	if (Wordings::nonempty(CALLW)) return FALSE;
 
-	int rname_wn = Wordings::first_wn(RW);
-	Word::dequote(rname_wn);
-
-	definition *def = Phrases::Adjectives::def_new(q);
+	definition *def = AdjectivalDefinitionFamily::new_definition(q);
 	adjective_meaning *am =
 		AdjectiveMeanings::new(inter_routine_amf, STORE_POINTER_definition(def), EW);
 	def->am_of_def = am;
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeaningDomains::set_from_text(am, DNW);
-	if (setting) {
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "*=-(%N(*1, -1))", rname_wn);
-		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "*=-(%N(*1, true))", rname_wn);
-		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_TRUE_TASK);
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "*=-(%N(*1, false))", rname_wn);
-		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_FALSE_TASK);
-	} else {
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "*=-(%N(*1))", rname_wn);
-		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
-	}
+	RTAdjectives::set_schemas_for_raw_Inter_function(am, RW, setting);
 	*result = am;
 	return TRUE;
 }

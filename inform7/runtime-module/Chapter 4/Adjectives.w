@@ -348,3 +348,76 @@ inter_name *RTAdjectives::iname_of_adjective_test_function(adjective *adj) {
 	}
 	return RTAdjectives::iname(adj, TEST_ATOM_TASK, weak_id);
 }
+
+void RTAdjectives::set_schemas_for_raw_Inter_condition(adjective_meaning *am, int wn) {
+	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+	Word::dequote(wn);
+	Calculus::Schemas::modify(sch, "(%N)", wn);
+}
+
+void RTAdjectives::set_schemas_for_raw_Inter_function(adjective_meaning *am, wording RW,
+	int setting) {
+	int wn = Wordings::first_wn(RW);
+	Word::dequote(wn);
+	if (setting) {
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "*=-(%N(*1, -1))", wn);
+		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "*=-(%N(*1, true))", wn);
+		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_TRUE_TASK);
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "*=-(%N(*1, false))", wn);
+		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_FALSE_TASK);
+	} else {
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "*=-(%N(*1))", wn);
+		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
+	}
+}
+
+void RTAdjectives::set_schemas_for_I7_phrase(adjective_meaning *am, id_body *idb) {
+	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+	Calculus::Schemas::modify(sch, "(%n(*1))", IDCompilation::iname(idb));
+}
+
+int RTAdjectives::support_for_I7_condition(adjective_meaning_family *family,
+	adjective_meaning *am, int T, int emit_flag, stack_frame *phsf) {
+	definition *def = RETRIEVE_POINTER_definition(am->family_specific_data);
+	switch (T) {
+		case TEST_ATOM_TASK:
+			if (emit_flag) {
+				Frames::alias_it(phsf, def->domain_calling);
+
+				if (Wordings::nonempty(def->condition_to_match)) {
+					current_sentence = def->node;
+					parse_node *spec = NULL;
+					if (<s-condition>(def->condition_to_match)) spec = <<rp>>;
+					if ((spec == NULL) ||
+						(Dash::validate_conditional_clause(spec) == FALSE)) {
+						LOG("Error on: %W = $T", def->condition_to_match, spec);
+						StandardProblems::definition_problem(Task::syntax_tree(),
+							_p_(PM_DefinitionBadCondition),
+							def->node,
+							"that condition makes no sense to me",
+							"although the preamble to the definition was properly "
+							"written. There must be something wrong after 'if'.");
+					} else {
+						if (def->format == -1) {
+							Produce::inv_primitive(Emit::tree(), NOT_BIP);
+							Produce::down(Emit::tree());
+						}
+						CompileValues::to_code_val_of_kind(spec, K_number);
+						if (def->format == -1) {
+							Produce::up(Emit::tree());
+						}
+					}
+				}
+
+				Frames::alias_it(phsf, EMPTY_WORDING);
+			}
+			return TRUE;
+	}
+	return FALSE;
+}
+
