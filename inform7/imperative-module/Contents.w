@@ -10,7 +10,14 @@ Preliminaries
 Chapter 1: Configuration and Control
 	Imperative Module
 
-Chapter 2: Functions
+Chapter 2: Values
+"Compiling rvalues, lvalues and conditions."
+	Compile Values
+	Compile Rvalues
+	Compile Lvalues
+	Compile Conditions
+
+Chapter 3: Functions
 "Managing the compilation of Inter functions."
 	Stack Frames
 	Local Variable Slates
@@ -22,9 +29,8 @@ Chapter 2: Functions
 	Closures
 	Compile Imperative Definitions
 
-Chapter 3: Propositions
+Chapter 4: Propositions
 "Generating code to test or assert propositions from predicate calculus."
-	Compile Values
 	Compile Schemas
 	Compile Atoms
 	Compile Propositions
@@ -33,7 +39,7 @@ Chapter 3: Propositions
 	Cinders and Deferrals
 	Compile Deferred Propositions
 
-Chapter 4: Invocations
+Chapter 5: Invocations
 "Generating code to perform invocations of individual phrases."
 	Compile Blocks and Lines
 	Compile Invocations

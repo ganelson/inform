@@ -192,7 +192,7 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 			} else {
 				@<Exceptional case of setting the "player" global variable@>;
 				Calculus::Schemas::modify(asch->schema, "%s",
-					Lvalues::interpret_store(storage_class, st[0], st[1], 0));
+					CompileLvalues::interpret_store(storage_class, st[0], st[1], 0));
 				@<Add kind-checking code for run-time checking@>;
 			}
 			return TRUE;

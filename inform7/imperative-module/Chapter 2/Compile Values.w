@@ -168,15 +168,15 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 
 @<Actually compile@> =
 	if (Lvalues::is_lvalue(value)) {
-		Lvalues::compile(VH, value);
+		CompileLvalues::in_rvalue_context(VH, value);
 	} else if (Rvalues::is_rvalue(value)) {
-		Rvalues::compile(VH, value);
+		CompileRvalues::compile(VH, value);
 		if ((VH->vhmode_provided == INTER_DATA_VHMODE) &&
 			(VH->vhmode_wanted == INTER_VAL_VHMODE)) {
 			Holsters::unholster_to_code_val(Emit::tree(), VH);
 		}
 	} else if (Specifications::is_condition(value)) {
-		Conditions::compile(VH, value);
+		CompileConditions::compile(VH, value);
 	}
 
 @ "Casting" is converting a value of one kind to a value of another but which has

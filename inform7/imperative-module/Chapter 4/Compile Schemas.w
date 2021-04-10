@@ -179,7 +179,7 @@ void CompileSchemas::compile_term_of_token(pcalc_term *pt, int m, kind *cast_to,
 	return;
 
 @<Compile term as an lvalue or an rvalue@> =
-	int storage_mode = COMPILE_LVALUE_NORMALLY;
+	int storage_mode = COMPILE_LVALUE_AS_RVALUE;
 	if (m & LVALUE_CONTEXT_ISSBM)      storage_mode = COMPILE_LVALUE_AS_LVALUE;
 	if (m & STORAGE_AS_FUNCTION_ISSBM) storage_mode = COMPILE_LVALUE_AS_FUNCTION;
 	pcalc_term cpt = *pt;
@@ -189,10 +189,10 @@ void CompileSchemas::compile_term_of_token(pcalc_term *pt, int m, kind *cast_to,
 			cpt = Terms::new_constant(
 				Lvalues::new_PROPERTY_VALUE(
 					Node::duplicate(cpt.constant), Rvalues::new_self_object_constant()));
-	if ((storage_mode != COMPILE_LVALUE_NORMALLY) &&
+	if ((storage_mode != COMPILE_LVALUE_AS_RVALUE) &&
 		((cpt.constant) && (Lvalues::is_lvalue(cpt.constant)))) {
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-		Lvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
+		CompileLvalues::compile_in_mode(&VH, cpt.constant, storage_mode);
 	} else {
 		CompileSchemas::compile_term(cpt, cast_to, by_reference);
 	}

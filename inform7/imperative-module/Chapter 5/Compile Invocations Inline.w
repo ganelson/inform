@@ -393,13 +393,13 @@ this list, the original will change.
 @ And, variedly:
 
 @<Inline annotation "by-reference-blank-out"@> =
-	Lvalues::compile_table_reference(VH, supplied, FALSE, TRUE, 0);
+	CompileLvalues::compile_table_reference(VH, supplied, FALSE, TRUE, 0);
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ And, variedly:
 
 @<Inline annotation "reference-exists"@> =
-	Lvalues::compile_table_reference(VH, supplied, TRUE, FALSE, 0);
+	CompileLvalues::compile_table_reference(VH, supplied, TRUE, FALSE, 0);
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
 
 @ This is a variant which checks that the reference is to an lvalue, that is,
@@ -1066,7 +1066,7 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 	kind *K2 = Specifications::to_kind(from);
 	node_type_t storage_class = Lvalues::get_storage_form(to);
 	if (copy_form != 0) @<Check that increment or decrement make sense@>;
-	char *prototype = Lvalues::interpret_store(storage_class, K1, K2, copy_form);
+	char *prototype = CompileLvalues::interpret_store(storage_class, K1, K2, copy_form);
 	i6_schema *sch = Calculus::Schemas::new("%s;", prototype);
 	LOGIF(KIND_CHECKING, "Inline copy: %s\n", prototype);
 	CompileSchemas::from_terms_in_val_context(sch, &pt1, &pt2);

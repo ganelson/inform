@@ -86,135 +86,157 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="2"></a>
-						<span class="chaptertitle">Chapter 2: Functions</span></p>
+						<span class="chaptertitle">Chapter 2: Values</span></p>
+					<p class="chapterpurpose">Compiling rvalues, lvalues and conditions.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-cv.html">
+								<spon class="sectiontitle">Compile Values</span></a> -
+							<span class="sectionpurpose">To compile specifications of values into Inter value opcodes or array entries.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-cr.html">
+								<spon class="sectiontitle">Compile Rvalues</span></a> -
+							<span class="sectionpurpose">To compile rvalues into Inter value opcodes or array entries.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-cl.html">
+								<spon class="sectiontitle">Compile Lvalues</span></a> -
+							<span class="sectionpurpose">To compile storage references into Inter value opcodes.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-cc.html">
+								<spon class="sectiontitle">Compile Conditions</span></a> -
+							<span class="sectionpurpose">To compile Inter code to test a condition.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Functions</span></p>
 					<p class="chapterpurpose">Managing the compilation of Inter functions.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="2-sf.html">
+							<p class="sectionentry"><a href="3-sf.html">
 								<spon class="sectiontitle">Stack Frames</span></a> -
 							<span class="sectionpurpose">When Inform compiles imperative code, it does so in the context of a "stack frame".</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-lvs.html">
+							<p class="sectionentry"><a href="3-lvs.html">
 								<spon class="sectiontitle">Local Variable Slates</span></a> -
 							<span class="sectionpurpose">The collection of Inter locals belonging to a stack frame.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-lv.html">
+							<p class="sectionentry"><a href="3-lv.html">
 								<spon class="sectiontitle">Local Variables</span></a> -
 							<span class="sectionpurpose">Local variables are used for call parameters, temporary values, and other ephemeral workspace.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-lp.html">
+							<p class="sectionentry"><a href="3-lp.html">
 								<spon class="sectiontitle">Local Parking</span></a> -
 							<span class="sectionpurpose">Like Free Parking in Monopoly, except that it is not free and has an overhead cost.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-cb.html">
+							<p class="sectionentry"><a href="3-cb.html">
 								<spon class="sectiontitle">Code Blocks</span></a> -
 							<span class="sectionpurpose">Blocks of code are used to give conditionals and loops greater scope, as in more traditional programming languages.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-fnc.html">
+							<p class="sectionentry"><a href="3-fnc.html">
 								<spon class="sectiontitle">Functions</span></a> -
 							<span class="sectionpurpose">To compile Inter functions.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-pr.html">
+							<p class="sectionentry"><a href="3-pr.html">
 								<spon class="sectiontitle">Phrase Requests</span></a> -
 							<span class="sectionpurpose">To store and later fill requests to compile To... phrases.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-cls.html">
+							<p class="sectionentry"><a href="3-cls.html">
 								<spon class="sectiontitle">Closures</span></a> -
 							<span class="sectionpurpose">To provide the names of phrases as first-class values.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-cid.html">
+							<p class="sectionentry"><a href="3-cid.html">
 								<spon class="sectiontitle">Compile Imperative Definitions</span></a> -
 							<span class="sectionpurpose">Compiling an Inter function from the body of an imperative definition.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="3"></a>
-						<span class="chaptertitle">Chapter 3: Propositions</span></p>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Propositions</span></p>
 					<p class="chapterpurpose">Generating code to test or assert propositions from predicate calculus.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="3-cv.html">
-								<spon class="sectiontitle">Compile Values</span></a> -
-							<span class="sectionpurpose">To compile specifications of values into Inter value opcodes or array entries.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="3-cs.html">
+							<p class="sectionentry"><a href="4-cs.html">
 								<spon class="sectiontitle">Compile Schemas</span></a> -
 							<span class="sectionpurpose">Here we compile fragments of code from paraphrases written in Inform 6 notation, and use that ability to compile general predicate calculus terms.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-ca.html">
+							<p class="sectionentry"><a href="4-ca.html">
 								<spon class="sectiontitle">Compile Atoms</span></a> -
 							<span class="sectionpurpose">Given an atom of a proposition we compile Inter code to test it, to make it henceforth true, or to make it henceforth false.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-cp.html">
+							<p class="sectionentry"><a href="4-cp.html">
 								<spon class="sectiontitle">Compile Propositions</span></a> -
 							<span class="sectionpurpose">To compile a proposition within the body of the current function.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-cl.html">
+							<p class="sectionentry"><a href="4-cl.html">
 								<spon class="sectiontitle">Compile Loops</span></a> -
 							<span class="sectionpurpose">To compile loop headers from a range of values expressed by a proposition.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-dtd.html">
+							<p class="sectionentry"><a href="4-dtd.html">
 								<spon class="sectiontitle">Deciding to Defer</span></a> -
 							<span class="sectionpurpose">To decide whether a proposition can be compiled immediately, in the body of the current function, or whether it must be deferred to a function of its own, which is merely called from the current function.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-cad.html">
+							<p class="sectionentry"><a href="4-cad.html">
 								<spon class="sectiontitle">Cinders and Deferrals</span></a> -
 							<span class="sectionpurpose">Cinders are constants in deferred propositions referring to values in the original stack frame.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-cdp.html">
+							<p class="sectionentry"><a href="4-cdp.html">
 								<spon class="sectiontitle">Compile Deferred Propositions</span></a> -
 							<span class="sectionpurpose">To compile the Inter functions needed to perform the tests or tasks deferred as being too difficult in their original contexts.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="4"></a>
-						<span class="chaptertitle">Chapter 4: Invocations</span></p>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: Invocations</span></p>
 					<p class="chapterpurpose">Generating code to perform invocations of individual phrases.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="4-cbal.html">
+							<p class="sectionentry"><a href="5-cbal.html">
 								<spon class="sectiontitle">Compile Blocks and Lines</span></a> -
 							<span class="sectionpurpose">Compiling a code block of lines from an imperative definition.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-ci.html">
+							<p class="sectionentry"><a href="5-ci.html">
 								<spon class="sectiontitle">Compile Invocations</span></a> -
 							<span class="sectionpurpose">Generating code to perform an invocation.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-ciac.html">
+							<p class="sectionentry"><a href="5-ciac.html">
 								<spon class="sectiontitle">Compile Invocations As Calls</span></a> -
 							<span class="sectionpurpose">An invocation defined with Inform 7 source text is made with an Inter function call.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-cii.html">
+							<p class="sectionentry"><a href="5-cii.html">
 								<spon class="sectiontitle">Compile Invocations Inline</span></a> -
 							<span class="sectionpurpose">Here we generate Inter code to invoke a phrase from its inline definition.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-cste.html">
+							<p class="sectionentry"><a href="5-cste.html">
 								<spon class="sectiontitle">Compile Solutions to Equations</span></a> -
 							<span class="sectionpurpose">To compile code to solve an equation involving numerical quantities.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-ca.html">
+							<p class="sectionentry"><a href="5-ca.html">
 								<spon class="sectiontitle">Compile Arithmetic</span></a> -
 							<span class="sectionpurpose">To compile code performing an arithmetic operation.</span></p>
 						</li>

@@ -348,7 +348,7 @@ inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
 }
 
 @h Loop optimisation.
-Lastly, then, the coup de gr\^ace: here's where we define loop schemas to
+Lastly, then, the coup de grace: here's where we define loop schemas to
 perform loops through kinds quickly at run-time. We start from the First
 constants, and use the Link constants to progress; we stop at |nothing|.
 
