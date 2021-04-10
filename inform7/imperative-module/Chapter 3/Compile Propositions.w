@@ -178,7 +178,7 @@ it's too late for, since Inform does not have run-time object or value creation.
 		}
 	}
 
-@ A variation on which: if we have a proposition $'phi(x)$ with one free variable,
+@ A variation on which: if we have a proposition $\phi(x)$ with one free variable,
 and a value $t$, then we make it true that $\phi(t)$.
 
 Ordinarily a problem message is triggered by attempting to change a kind, but we
@@ -201,33 +201,49 @@ void CompilePropositions::to_make_true_about(pcalc_prop *prop, parse_node *t) {
 Given a description containing the proposition $\phi(x)$, how many $x$ in its
 domain of validity currently satisfy this? And so on.
 
-Some of these could be optimised in the case where $\phi(x) = {\int kind}_K(x)$
-for some kind $K$ -- for example, "the list of containers" -- because then we
-can know the answer at compile time. But for now this doesn't seem worth the effort.
+In a few cases where the answer is known at compile time, we optimise: for
+example, "the number of containers" or "the list of vehicles" can be known now.
+But as soon as qualifying adjectives or subclauses are brought in, it's no
+longer possible to know at compile-time.
 
 =
 void CompilePropositions::to_number_of_matches(parse_node *desc) {
+	pcalc_prop *prop = Node::get_proposition(desc);
+	if (Propositions::length(prop) == 1) {
+		kind *K = Propositions::describes_kind(prop);
+		int N = ConstantLists::extent_of_instance_list(K);
+		if (N >= 0) {
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) N);
+			return;
+		}
+	}
 	if (Deferrals::defer_number_of_matches(desc)) return;
 	internal_error("no way to compile this without deferral");
 }
 
 void CompilePropositions::to_list_of_matches(parse_node *desc, kind *K) {
+	pcalc_prop *prop = Node::get_proposition(desc);
+	if (Propositions::length(prop) == 1) {
+		kind *K = Propositions::describes_kind(prop);
+		inter_name *iname = ConstantLists::get_instance_list(K);
+		if (iname) {
+			Produce::val_iname(Emit::tree(), K_value, iname);
+			return;
+		}
+	}
 	if (Deferrals::defer_list_of_matches(desc, K)) return;
 	internal_error("no way to compile this without deferral");
 }
 
 void CompilePropositions::to_random_match(parse_node *desc) {
-	if (Rvalues::is_CONSTANT_construction(desc, CON_description)) {
-		kind *K = Node::get_kind_of_value(desc);
-		K = Kinds::unary_construction_material(K);
-		if ((K) && (Kinds::Behaviour::is_an_enumeration(K)) &&
-			(Specifications::to_proposition(desc) == NULL) &&
-			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(desc)) == FALSE) &&
-			(Descriptions::to_instance(desc) == NULL) &&
-			(Descriptions::number_of_adjectives_applied_to(desc) == 0)) {
+	pcalc_prop *prop = Node::get_proposition(desc);
+	if (Propositions::length(prop) == 1) {
+		kind *K = Propositions::describes_kind(prop);
+		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
+				Produce::val_iname(Emit::tree(), K_value,
+					Kinds::Behaviour::get_ranger_iname(K));
 			Produce::up(Emit::tree());
 			return;
 		}

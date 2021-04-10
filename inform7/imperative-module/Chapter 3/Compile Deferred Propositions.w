@@ -63,8 +63,9 @@ various reasons, but with considerable variations affecting (mainly) the
 initial setup and the returned value.
 
 Note that the unchecked array bounds of 26 are safe here because propositions
-may only use 26 different variables at most (|x|, |y|, |z|, |a|, ..., |w|). There
-therefore can't be more than 26 callings, or 26 quantifiers, either.
+may only use 26 different variables at most (|x|, |y|, |z|, |a|, ..., |w|). Only
+in very contrived circumstances are there ever more than three quantifiers, so
+this is plenty large enough:
 
 @d MAX_QC_VARIABLES 100
 
@@ -73,7 +74,7 @@ void DeferredPropositions::compile(pcalc_prop_deferral *pdef) {
 	int ct_locals_problem_thrown = FALSE, negated_quantifier_found = FALSE;
 	current_sentence = pdef->deferred_from;
 	pcalc_prop *proposition = Propositions::copy(pdef->proposition_to_defer);
-	int multipurpose_routine = (pdef->reason == MULTIPURPOSE_DEFER)?TRUE:FALSE;
+	int multipurpose_function = (pdef->reason == MULTIPURPOSE_DEFER)?TRUE:FALSE;
 	int reason = CONDITION_DEFER; /* redundant assignment to appease compilers */
 
 	inter_symbol *reason_s = NULL;
@@ -99,7 +100,7 @@ void DeferredPropositions::compile(pcalc_prop_deferral *pdef) {
 
 	packaging_state save = Functions::begin(pdef->ppd_iname);
 
-	@<Declare the I6 local variables which will be needed by this deferral function@>;
+	@<Declare the Inter local variables which will be needed by this deferral function@>;
 	@<Compile the code inside this deferral function@>;
 	@<Issue a problem message if the table-lookup locals were needed@>;
 	@<Issue a problem message if a negated quantifier was needed@>;
@@ -131,59 +132,50 @@ proposition would be wasteful of space in the Z-machine.
 		LOGIF(PREDICATE_CALCULUS, "Simplifications::negated_determiners: $D\n", proposition);
 	}
 
-@ While unfortunate in a way, this is for the best, because a successful
-match on a condition looking up a table would record the table and row
-in local variables within the deferred proposition: they would then be
-wrong in the calling function, where they are needed.
+@ While unfortunate in a way, this is for the best, because a successful match
+on a condition looking up a table would record the table and row in local
+variables within the deferred proposition: they would then be wrong in the
+calling function, where they are needed.
 
 @<Issue a problem message if the table-lookup locals were needed@> =
 	if ((LocalVariables::are_we_using_table_lookup()) && (!ct_locals_problem_thrown)) {
 		ct_locals_problem_thrown = TRUE;
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantLookUpTableInDeferred),
-			"I am not able to look up table entries in this complicated "
-			"condition",
-			"which seems to involve making a potentially large number "
-			"of checks in rather few words (and may perhaps result from "
-			"a misunderstanding such as writing the name of a kind where "
-			"an individual object is intended?).");
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CantLookUpTableInDeferred),
+			"I am not able to look up table entries in this complicated condition",
+			"which seems to involve making a potentially large number of checks in "
+			"rather few words (and may perhaps result from a misunderstanding such as "
+			"writing the name of a kind where an individual object is intended?).");
 	}
 
-@ This looks like a horrible restriction, but in fact propositions are
-built and simplified in such a way that it never bites. (Quantifiers are
-always moved outside of negation where possible, and it is almost always
-possible.)
+@ This looks like a horrible restriction, but in fact propositions are built
+and simplified in such a way that it never bites. (Quantifiers are always
+moved outside of negation where possible, and it is almost always possible.)
 
 @<Issue a problem message if a negated quantifier was needed@> =
-	if (negated_quantifier_found) {
+	if (negated_quantifier_found)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this involves a very complicated negative thought",
-			"which I'm not able to untangle. Perhaps you could rephrase "
-			"this more simply, or split it into more than one sentence?");
-	}
+			"which I'm not able to untangle. Perhaps you could rephrase this more simply, "
+			"or split it into more than one sentence?");
 
-@ Recall that an I6 function header consists of a |[|, then an identifier
-name for the function -- in this case always |Prop_N| for some number |N| --
-and then a space-delimited list of local variable names, the initial of
-which are used to receive function arguments. The order of the variables
-is: any cinders (constants evaluated back at deferral time and being
-handed forward on the stack as function arguments); then any variables
-in the predicate calculus sense, of which the first may or may not be
-being used as a function argument, depending on whether or not it is
-bound; then the enumeration variables needed to compile generalised
-quantifiers, if any; and finally any oddball variables needed by code
-specific to particular deferral reasons.
-
-@<Declare the I6 local variables which will be needed by this deferral function@> =
-	int j, var_states[26], no_extras;
-	if (multipurpose_routine)
+@<Declare the Inter local variables which will be needed by this deferral function@> =
+	if (multipurpose_function)
 		reason_s = LocalVariables::new_other_as_symbol(I"reason"); /* no cinders exist here */
 	else
-		Cinders::declare(proposition, pdef);
+		Cinders::declare(proposition, pdef); /* no reason code needed, function does one thing */
+	@<Declare the Inter call parameters needed by adaptations to particular deferral cases@>;
+	@<Declare locals corresponding to predicate calculus variables@>;
+	@<Declare one pair of locals for each quantifier@>;
+	@<Declare the Inter locals needed by adaptations to particular deferral cases@>;
 
-	@<Declare the I6 call parameters needed by adaptations to particular deferral cases@>;
+@ If the proposition uses |x| and |y|, we will define locals called |x| and |y|
+to hold their current values, and so on.
 
+@<Declare locals corresponding to predicate calculus variables@> =
+	int var_states[26];
 	Binding::determine_status(proposition, var_states, NULL);
-	for (j=0; j<26; j++)
+	for (int j=0; j<26; j++)
 		if (var_states[j] != UNUSED_VST) {
 			TEMPORARY_TEXT(letter_var)
 			PUT_TO(letter_var, pcalc_vars[j]);
@@ -198,7 +190,11 @@ specific to particular deferral reasons.
 			var_ix_lv[j] = NULL;
 		}
 
-	no_extras = 0;
+@ The first quantifier gets |qcy_0|, |qcn_0|; the second |qcy_1|, |qcn_1|;
+and so on.
+
+@<Declare one pair of locals for each quantifier@> =
+	int no_extras = 0;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, proposition)
 		if (pl->element == DOMAIN_OPEN_ATOM) {
@@ -213,11 +209,14 @@ specific to particular deferral reasons.
 			no_extras++;
 		}
 
-	@<Declare the I6 locals needed by adaptations to particular deferral cases@>;
-
+@ A multipurpose function |f(x)| has to test whether $\phi(x)$ is true if $x \geq 0$,
+but if $x < 0$ then it will be one of the |*_DUSAGE| values, and we switch on which
+it is. Each of those switch cases contains code for one of the possibilities;
+whereas for a single-purpose function, we just compile the code for that single
+possibility.
 
 @<Compile the code inside this deferral function@> =
-	if (multipurpose_routine) {
+	if (multipurpose_function) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), GE_BIP);
@@ -274,8 +273,7 @@ specific to particular deferral reasons.
 		@<Compile body of deferred proposition for the given reason@>;
 	}
 
-@ From here on, we compile the body of a function to handle the deferral case
-in the variable |reason|.
+@ So from here on we compile code to handle a single function.
 
 What these different cases have in common is that each is basically a search
 of all possible values of the bound variables in the expression. There will
@@ -319,7 +317,7 @@ and at the end of the search it performs |return counter|.
 	}
 
 @h The Search.
-We can now begin the real work. Given $\phi$, we compile I6 code which
+We can now begin the real work. Given $\phi$, we compile Inter code which
 contains a magic position M (for "match") such that M is visited exactly
 once for every combination of possible substitutions into the bound
 variables such that $\phi$ is true. For example,
@@ -334,37 +332,33 @@ such that execution reaches |M| exactly once for each combination of open
 door $x$ and room $y$ such that $x$ is in $y$. (Position |M| is where we
 will place the case-dependent code for what to do on a successful match.)
 In the language of model theory, this is a loop over all interpretations
-in which $\phi$ is true.
+of the variables in which $\phi$ is true.
 
-We will do this by compiling the proposition from left to right. If there
+The algorithm below is, so far as I know, original to Inform, and it is not
+simple to prove correct, so the reader will excuse a fairly hefty amount of
+commentary here.
+
+Our basic method is to compile the proposition from left to right. If there
 are $k$ atoms in $\phi$, then there are $k+1$ positions between atoms,
-counting the start and the end. Then:
+counting the start and the end. We maintain the following:
 
-Invariant.\quad Let $\psi$ be any syntactically valid subproposition
+(*) Invariant. Let $\psi$ be any syntactically valid subproposition
 of $\phi$ (that is, a contiguous sequence of atoms from $\psi$ which would
 be a valid proposition in its own right). Then there are before and after
-positions |B| and |A| in the compiled I6 code for searching $\phi$ such that
-(a) |A| cannot be reached except from |B|, and
-(b) at execution time, on every occasion |B| is reached, |A| is then reached
+positions |B| and |A| in the compiled Inter code for searching $\phi$ such that
+(-a) |A| cannot be reached except from |B|, and
+(-b) at execution time, on every occasion |B| is reached, |A| is then reached
 exactly once for each combination of possible substitutions into the
 $\exists$-bound variables of $\psi$ such that $\psi$ is then true.
 
 In particular, in the case when $\psi = \phi$, |B| is the start of our
-compiled I6 code (before anything is done) and |A| is the magic match
+compiled Inter code (before anything is done) and |A| is the magic match
 position |M|.
 
-The restriction to syntactically valid subpropositions is important. Suppose
-$\phi$ arises from "all doors are open" and is stored in memory as:
-= (text)
-	Forall x IN[ door(x) IN] open(x)
-=
-Then |door(x)| and |Forall x IN[ door(x) IN]| are valid, for instance, but
-|IN] open(x)| is not.
-
-Lemma.\quad If the Invariant holds for two adjacent syntactically valid
+@ Lemma: If the Invariant holds for two adjacent syntactically valid
 subpropositions $\mu$ and $\nu$, then it holds for the subproposition $\mu\nu$.
 
-Proof.\quad There are now three positions in the code: |B1|, before $\mu$;
+Proof of lemma: There are now three positions in the code: |B1|, before $\mu$;
 |B2|, before $\nu$, which is the same position as after $\mu$; and |A|, after
 $\nu$. Execution reaches |B2| $m$ times for each visit to |B1|, where $m$
 is the number of combinations of viable bound variable values in $\mu$.
@@ -373,54 +367,68 @@ similar number for $\nu$. Therefore execution reaches |A| a total of $nm$
 times for each visit to |B1|, the product of the number of variable combinations
 in $\mu$ and $\nu$, which is exactly the number of combinations in total.
 
-Corollary.\quad If the Invariant holds for subpropositions in each of
-the following forms, then it will hold overall.
+Corollary: If the Invariant holds for subpropositions in each of
+the following forms, then it will hold overall:
 (a) |Exists v|, for some variable $v$, or |Q v IN[ ... IN]|, for some quantifier other than $\exists$.
 (b) |NOT[ ... NOT]|.
-(c) any single predicate-like atom.
+(c) Any single predicate-like atom.
 
-Proof.\quad Because all valid subpropositions are concatenations of
-these, and we then apply the Lemma.
+Proof of corollary: All valid subpropositions are concatenations of (a) to (c),
+and we then apply the Lemma inductively.
 
 It follows that if we can prove our algorithm maintains the invariant in
-cases (a) to (d), we can be sure it will correctly construct code leading
+cases (a) to (c), we can be sure it will correctly construct code leading
 to the match point |M|.
 
-@ We will make use of three stacks:
-
+@ We will make use of four stacks:
 (a) The R-stack, which holds the current "reason": the goal being pursued
-by the I6 code currently being compiled.
+by the Inter code currently being compiled.
 (b) The Q-stack, which holds details of quantifiers being searched on.
 (c) The C-stack, which holds details of callings of variables.
+(d) The L-stack, which records hierarchical levels in the Inter code generated.
+The current stack pointer |L_sp| for this is equivalent to the depth of nesting
+of the Inter code being generated.
 
-Since each is tied to a quantifier, each of which is tied to a distinct
-variable, and there are at most 26 variables, we need a worst-case
-capacity of 27 slots on the R-stack (counting the initial |reason|) and
-26 on the Q-stack and C-stack.
+Each stack begins empty: we want to be absolutely sure that this algorithm
+behaves as expected, so internal errors are thrown if any stack underflows,
+overflows, or is other than empty again at the end. The maximum capacity in each
+case is tied either to the number of distinct predicate calculus variables, or
+the number of quantifiers, and in either case is at worst 26. But the R-stack
+potentially needs one more slot to hold the outermost reason, so we'll just
+give them all a capacity of 27.
+
+@d R_STACK_CAPACITY 27
+@d Q_STACK_CAPACITY 27
+@d C_STACK_CAPACITY 27
+@d L_STACK_CAPACITY 27
+
+=
+typedef struct r_stack_data {
+	int reason;                /* what task are we performing? A |*_DEFER| value */
+	int parity;                /* |TRUE| if we want a match, |FALSE| if we want no match */
+} r_stack_data;
+
+typedef struct q_stack_data {
+	struct quantifier *quant;  /* which quantifier */
+	int parameter;             /* its parameter, e.g., 9 for "more than nine" */
+	int C_stack_level;         /* at the point this occurs */
+	int L_stack_level;
+} q_stack_data;
+
+typedef struct c_stack_data {
+	struct pcalc_term term;    /* the term to which a calling is being given */
+	int stash_index;           /* its index in the stash of callings */
+} c_stack_data;
+
+typedef struct l_stack_data {
+	int level;                 /* Inter emission level at start of code block */
+} l_stack_data;
 
 @<Compile code to search for valid combinations of variables@> =
-	int block_nesting = 0; /* how many |{| ... |}| blocks are open in I6 code being compiled */
-
-	/* The R-stack */
-	int R_stack_reason[27];
-	int R_stack_parity[27];
-	int R_sp = 0;
-
-	/* The Q-stack */
-	quantifier *Q_stack_quantifier[26];
-	int Q_stack_parameter[26];
-	int Q_stack_C_stack_level[26];
-	int Q_stack_block_nesting[26];
-	int Q_sp = 0;
-
-	/* The C-stack */
-	pcalc_term C_stack_term[26]; /* the term to which a called-name is being given */
-	int C_stack_index[26]; /* its index in the stash of callings */
-	int C_sp = 0;
-
-	/* The L-stack */
-	int L_stack_level[26]; /* emission level at start of block */
-	/* block_nesting serves at stack pointer here */
+	r_stack_data R_stack[R_STACK_CAPACITY]; int R_sp = 0;
+	q_stack_data Q_stack[Q_STACK_CAPACITY]; int Q_sp = 0;
+	c_stack_data C_stack[C_STACK_CAPACITY]; int C_sp = 0;
+	l_stack_data L_stack[L_STACK_CAPACITY]; int L_sp = 0;
 
 	@<Push initial reason onto the R-stack@>;
 	/* we now begin compiling the search code */
@@ -429,53 +437,53 @@ capacity of 27 slots on the R-stack (counting the initial |reason|) and
 	while (C_sp > 0) @<Pop the C-stack@>;
 	/* we are now at the magic match point |M| in the search code */
 	@<Pop the R-stack@>;
-	while (block_nesting > 0)
-		@<Close a block in the I6 code compiled to perform the search@>;
+	while (L_sp > 0) @<Pop the L-stack@>;
 	/* we have now finished compiling the search code */
 
 	if (R_sp != 0) internal_error("R-stack failure");
 	if (Q_sp != 0) internal_error("Q-stack failure");
 	if (C_sp != 0) internal_error("C-stack failure");
+	if (L_sp != 0) internal_error("L-stack failure");
 
 @h The R-stack.
 This is a sort of "split goals into sub-goals" mechanism. In order to
-determine
-
->> if all but one of the closed doors are unlocked, ...
-
-our main goal is to determine the truth of the "are unlocked" part. This
-is reason |CONDITION_DEFER|, and it is pushed onto the R-stack at the
+determine, say, "if all but one of the closed doors are unlocked", the main
+goal is to determine the truth of the "are unlocked" part. For that example,
+|reason| will be |CONDITION_DEFER|, and it is pushed onto the R-stack at the
 start of the compilation:
 
 @<Push initial reason onto the R-stack@> =
-	R_stack_reason[R_sp] = reason;
-	R_stack_parity[R_sp] = TRUE;
+	if (R_sp >= R_STACK_CAPACITY) internal_error("R-stack overflow");
+	R_stack[R_sp].reason = reason;
+	R_stack[R_sp].parity = TRUE;
 	R_sp++;
 
-@ But in order to work this out, we have to work out which doors are
-closed, and this is a subgoal to which we give the pseudo-reason
-|FILTER_DEFER|. We push this new sub-goal onto the R-stack, leaving the
-original to be resumed when we're done.
+@ But in order to work this out, we have to work out which doors are closed,
+and this is a subgoal to which we give the pseudo-reason |FILTER_DEFER|. We
+push this new sub-goal onto the R-stack, leaving the original to be resumed
+when we're done.
 
 @d FILTER_DEFER 10000 /* pseudo-reason value used only inside this function */
 
 @<Push domain-opening onto the R-stack@> =
-	R_stack_reason[R_sp] = FILTER_DEFER;
-	R_stack_parity[R_sp] = TRUE;
+	if (R_sp >= R_STACK_CAPACITY) internal_error("R-stack overflow");
+	R_stack[R_sp].reason = FILTER_DEFER;
+	R_stack[R_sp].parity = TRUE;
 	R_sp++;
 
 @ The R-stack is then popped when the goal is accomplished (or rather, when
-the I6 code we are compiling has reached a point which will be executed when
+the Inter code we are compiling has reached a point which will be executed when
 its goal has been accomplished).
 
-In the case of |FILTER_DEFER|, when scanning domains of quantifiers, we
-increment the count of the domain set size -- the number of closed doors,
-in the above example. (See below.)
+In the case of |FILTER_DEFER|, when scanning domains of quantifiers, we increment
+the count of the domain set size -- the number of closed doors, in the above
+example. (See below.)
 
 @<Pop the R-stack@> =
-	R_sp--; if (R_sp < 0) internal_error("R stack underflow");
+	if (R_sp <= 0) internal_error("R stack underflow");
+	R_sp--;
 
-	switch(R_stack_reason[R_sp]) {
+	switch(R_stack[R_sp].reason) {
 		case FILTER_DEFER:
 			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
 			Produce::down(Emit::tree());
@@ -494,23 +502,23 @@ in the above example. (See below.)
 
 @h Compiling the search.
 In the following we run through the proposition from left to right, compiling
-I6 code as we go, but preserving the Invariant.
+Inter code as we go, but preserving the Invariant.
 
 @<Compile the proposition into a search algorithm@> =
 	TRAVERSE_VARIABLE(pl);
 	int run_of_conditions = 0;
-	int no_deferred_callings = 0; /* how many |CALLED| atoms have been found to date */
+	int no_deferred_callings = 0; /* how many callings found to date */
 
 	TRAVERSE_PROPOSITION(pl, proposition) {
 		switch (pl->element) {
 			case NEGATION_OPEN_ATOM:
 			case NEGATION_CLOSE_ATOM:
 				@<End a run of predicate-like conditions, if one is under way@>;
-				R_stack_parity[R_sp-1] = (R_stack_parity[R_sp-1])?FALSE:TRUE; /* reverse parity */
+				R_stack[R_sp-1].parity = (R_stack[R_sp-1].parity)?FALSE:TRUE; /* reverse parity */
 				break;
 			case QUANTIFIER_ATOM:
 				@<End a run of predicate-like conditions, if one is under way@>;
-				if (R_stack_parity[R_sp-1] == FALSE) negated_quantifier_found = TRUE;
+				if (R_stack[R_sp-1].parity == FALSE) negated_quantifier_found = TRUE;
 				quantifier *quant = pl->quant;
 				int param = Atoms::get_quantification_parameter(pl);
 				if (quant != exists_quantifier) @<Push the Q-stack@>;
@@ -527,7 +535,7 @@ I6 code as we go, but preserving the Invariant.
 			default: {
 				if (CreationPredicates::is_calling_up_atom(pl))
 					@<Push the C-stack@>
-				else if (R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)
+				else if (R_stack[R_sp-1].reason == NOW_ASSERTION_DEFER)
 					@<Compile code to force the atom@>
 				else {
 					int last_in_run = TRUE, first_in_run = TRUE;
@@ -597,7 +605,7 @@ statement properly:
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 
-		if (R_stack_parity[R_sp-1] == FALSE) {
+		if (R_stack[R_sp-1].parity == FALSE) {
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);
 			Produce::down(Emit::tree());
 		}
@@ -611,27 +619,26 @@ statement properly:
 @<End a run of predicate-like conditions, if one is under way@> =
 	if (run_of_conditions > 0) {
 		while (run_of_conditions > 1) { Produce::up(Emit::tree()); run_of_conditions--; }
-		if (R_stack_parity[R_sp-1] == FALSE) { Produce::up(Emit::tree()); }
+		if (R_stack[R_sp-1].parity == FALSE) { Produce::up(Emit::tree()); }
 		run_of_conditions = 0;
-		@<Open a block in the I6 code compiled to perform the search, if variant@>;
+		@<Open a block in the Inter code compiled to perform the search, if variant@>;
 	}
 
 @ The |NOW_ASSERTION_DEFER| reason is different from all of the others,
 because rather than searching for a given situation it tries force it to
 happen (or not to). Forcing rather than testing is easy here: we just supply
-a different task when calling |CompileAtoms::code_to_perform|.
+a different task when calling //CompileAtoms::code_to_perform//.
 
 In the negated case, we again cheat de Morgan, by falsifying $\phi$ more
 aggressively than we need: we force $\lnot(X)\land\lnot(Y)\land\lnot(Z)$ to
 be true, though strictly speaking it would be enough to falsify X alone.
 (We do it that way for consistency with the same convention when asserting
-about the model world.)
-
-We don't need to consider runs of predicates for that; we can take the atoms
-one at a time.
+about the model world.) But we don't need to consider runs of predicates for
+that; we can take the atoms one at a time.
 
 @<Compile code to force the atom@> =
-	CompileAtoms::code_to_perform((R_stack_parity[R_sp-1])?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl);
+	CompileAtoms::code_to_perform(
+		(R_stack[R_sp-1].parity)?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl);
 
 @h Quantifiers and the Q-stack.
 It remains to deal with quantifiers, and to show that the Invariant is
@@ -642,18 +649,17 @@ The existence case is the easiest. Given $\exists v: \psi(v)$ we compile
 	loop header for v to run through its domain set {
 	    ...
 =
-and note that execution reaches the start of the loop body once for each
-possible choice of $v$, as required by the Invariant -- indeed the Invariant
-pretty much requires that this is what we compile.
+arranging that execution reaches the start of the loop body once for each
+possible choice of $v$, as required by the Invariant.
 
 @<Compile a loop through possible values of the variable quantified@> =
 	int level_back_to = Produce::level(Emit::tree());
 	pl = DeferredPropositions::compile_loop_header(
 		pl->terms[0].variable, var_ix_lv[pl->terms[0].variable],
 		pl,
-		(R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)?TRUE:FALSE,
+		(R_stack[R_sp-1].reason == NOW_ASSERTION_DEFER)?TRUE:FALSE,
 		(quant != exists_quantifier)?TRUE:FALSE, pdef);
-	@<Open a block in the I6 code compiled to perform the search@>;
+	@<Open a block in the Inter code compiled to perform the search@>;
 
 @ Generalised quantifiers -- "at least three", "all but four", and
 so on -- make quantitative statements about the number of valid or invalid
@@ -697,13 +703,13 @@ the R-stack, but we don't need to do anything to make that happen here,
 because the |DOMAIN_OPEN| atom does it.
 
 @<Push the Q-stack@> =
-	if (R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)
+	if (R_stack[R_sp-1].reason == NOW_ASSERTION_DEFER)
 		@<Handle "not exists" as "for all not"@>;
 
-	Q_stack_quantifier[Q_sp] = quant;
-	Q_stack_parameter[Q_sp] = param;
-	Q_stack_block_nesting[Q_sp] = block_nesting;
-	Q_stack_C_stack_level[Q_sp] = C_sp;
+	Q_stack[Q_sp].quant = quant;
+	Q_stack[Q_sp].parameter = param;
+	Q_stack[Q_sp].L_stack_level = L_sp;
+	Q_stack[Q_sp].C_stack_level = C_sp;
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, qcy_s[Q_sp]);
@@ -727,7 +733,7 @@ $\not\exists x: {\it person}(x)\land{\it likes}(x, W)$.
 
 @<Handle "not exists" as "for all not"@> =
 	if (quant == not_exists_quantifier) {
-		R_stack_parity[R_sp-1] = (R_stack_parity[R_sp-1])?FALSE:TRUE;
+		R_stack[R_sp-1].parity = (R_stack[R_sp-1].parity)?FALSE:TRUE;
 		quant = for_all_quantifier;
 	}
 
@@ -743,7 +749,7 @@ compiled code to test $\theta$.
 
 Now we are at the end of the line, and still have the quantifier code
 half-done, as we know because the Q-stack is not empty. We first compile
-an increment of the valid cases count, because if execution of the I6
+an increment of the valid cases count, because if execution of the Inter
 code gets to the end of testing $\theta$ then it must have found a valid
 case: in the "at least three doors are unlocked" example, it will have
 found an unlocked one among the doors making up the domain. We then need
@@ -766,22 +772,23 @@ not a question of enumerating which $v$ work and which do not; the whole
 thing works, or doesn't, and is more like testing a single |if|.
 
 @<Pop the Q-stack@> =
-	Q_sp--; if (Q_sp < 0) internal_error("Q stack underflow");
+	if (Q_sp <= 0) internal_error("Q stack underflow");
+	Q_sp--;
 	Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, qcy_s[Q_sp]);
 	Produce::up(Emit::tree());
 
-	while (C_sp > Q_stack_C_stack_level[Q_sp])
+	while (C_sp > Q_stack[Q_sp].C_stack_level)
 		@<Pop the C-stack@>;
 
-	while (block_nesting > Q_stack_block_nesting[Q_sp])
-		@<Close a block in the I6 code compiled to perform the search@>;
+	while (L_sp > Q_stack[Q_sp].L_stack_level)
+		@<Pop the L-stack@>;
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
-	Quantifiers::emit_test(Q_stack_quantifier[Q_sp], Q_stack_parameter[Q_sp], qcy_s[Q_sp], qcn_s[Q_sp]);
-	@<Open a block in the I6 code compiled to perform the search, if variant@>;
+	Quantifiers::emit_test(Q_stack[Q_sp].quant, Q_stack[Q_sp].parameter, qcy_s[Q_sp], qcn_s[Q_sp]);
+	@<Open a block in the Inter code compiled to perform the search, if variant@>;
 
 @h The C-stack.
 When a CALLED atom in the proposition gives a name to a variable, we have to
@@ -796,8 +803,9 @@ simplification has eliminated the variable $y$ which appears to be being
 given a name.
 
 @<Push the C-stack@> =
-	C_stack_term[C_sp] = pl->terms[0];
-	C_stack_index[C_sp] = no_deferred_callings++;
+	if (C_sp >= C_STACK_CAPACITY) internal_error("C-stack overflow");
+	C_stack[C_sp].term = pl->terms[0];
+	C_stack[C_sp].stash_index = no_deferred_callings++;
 	C_sp++;
 
 @ When does the compiled search code record values into the stash of callings?
@@ -830,36 +838,40 @@ because |M| is outside the loop which searches the domain of the "exactly one"
 quantifier.
 
 @<Pop the C-stack@> =
-	C_sp--; if (C_sp < 0) internal_error("C stack underflow");
+	if (C_sp <= 0) internal_error("C stack underflow");
+	C_sp--;
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, LocalParking::callings());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack[C_sp].stash_index);
 		Produce::up(Emit::tree());
-		CompileSchemas::compile_term(C_stack_term[C_sp], K_value, TRUE);
+		CompileSchemas::compile_term(C_stack[C_sp].term, K_value, TRUE);
 	Produce::up(Emit::tree());
 
-@ That just leaves the blocking, which follows the One True Brace Style. Thus:
+@ Opening a block is the same thing as pushing to the L-stack:
 
-@<Open a block in the I6 code compiled to perform the search@> =
-	L_stack_level[block_nesting] = level_back_to;
-	block_nesting++;
+@<Open a block in the Inter code compiled to perform the search@> =
+	if (L_sp >= L_STACK_CAPACITY) internal_error("L-stack overflow");
+	L_stack[L_sp].level = level_back_to;
+	L_sp++;
 
 @ Not for a loop body:
 
-@<Open a block in the I6 code compiled to perform the search, if variant@> =
-	L_stack_level[block_nesting] = Produce::level(Emit::tree())-1;
+@<Open a block in the Inter code compiled to perform the search, if variant@> =
+	if (L_sp >= L_STACK_CAPACITY) internal_error("L-stack overflow");
+	L_stack[L_sp].level = Produce::level(Emit::tree())-1;
 	Produce::code(Emit::tree());
 	Produce::down(Emit::tree());
-	block_nesting++;
+	L_sp++;
 
-@ and:
+@ Close a block in the Inter code compiled to perform the search:
 
-@<Close a block in the I6 code compiled to perform the search@> =
-	while (Produce::level(Emit::tree()) > L_stack_level[block_nesting-1]) Produce::up(Emit::tree());
-	block_nesting--;
+@<Pop the L-stack@> =
+	if (L_sp <= 0) internal_error("L-stack underflow");
+	while (Produce::level(Emit::tree()) > L_stack[L_sp-1].level) Produce::up(Emit::tree());
+	L_sp--;
 
 @h Adaptations.
 That completes the general pattern of searching according to the proposition's
@@ -870,8 +882,8 @@ of variable values is found; and some winding-up code.
 In some of the cases, additional local variables are needed within the
 |Prop_N| function, to keep track of counters or totals. These are they:
 
-@<Declare the I6 locals needed by adaptations to particular deferral cases@> =
-	if (multipurpose_routine) {
+@<Declare the Inter locals needed by adaptations to particular deferral cases@> =
+	if (multipurpose_function) {
 		total_s = LocalVariables::new_internal_as_symbol(I"total");
 		counter_s = LocalVariables::new_internal_as_symbol(I"counter");
 		selection_s = LocalVariables::new_internal_as_symbol(I"selection");
@@ -900,8 +912,8 @@ In some of the cases, additional local variables are needed within the
 		}
 	}
 
-@<Declare the I6 call parameters needed by adaptations to particular deferral cases@> =
-	if ((!multipurpose_routine) && (pdef->reason == LIST_OF_DEFER)) {
+@<Declare the Inter call parameters needed by adaptations to particular deferral cases@> =
+	if ((!multipurpose_function) && (pdef->reason == LIST_OF_DEFER)) {
 		list_s = LocalVariables::new_other_as_symbol(I"list");
 		strong_kind_s = LocalVariables::new_other_as_symbol(I"strong_kind");
 	}
@@ -933,17 +945,18 @@ by the searching mechanism above.
 
 In the first case, we want to count the number of $x$ for which $\phi(x)$
 is true. The local |counter| holds the count so far; it starts out automatically
-at 0, since all I6 locals do.
+at 0, since all Inter locals do.
 
 @<Initialisation before NUMBER search@> =
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
 $\phi$. But we only want to increment |counter| once, so having done so, we
 exit the searching code and continue the outer loop.
 
-The |jump| to a label is forced on us since I6, unlike, say, Perl, has no
+The |jump| to a label is forced on us since Inter, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in NUMBER search@> =
@@ -1007,14 +1020,15 @@ is true. The local |list| holds the list so far, and already exists.
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
 $\phi$. But we only want to increment |counter| once, so having done so, we
 exit the searching code and continue the outer loop.
 
-The |jump| to a label is forced on us since I6, unlike, say, Perl, has no
+The |jump| to a label is forced on us since Inter, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in LIST search@> =
@@ -1100,7 +1114,7 @@ uniformly random number such that $1\leq n\leq x$.
 
 This avoids needing to store the full list of matches anywhere, which would
 be impossible since (a) it's potentially a lot of storage and (b) it can
-only safely live on the current stack frame, and I6 does not allow arrays
+only safely live on the current stack frame, and Inter does not allow arrays
 on the current stack frame (because of restrictions in the Z-machine).
 This means that, on average, the compiled code takes 50\% longer to find
 its random $x$ than it ideally would, but we accept the trade-off.
@@ -1124,7 +1138,8 @@ its random $x$ than it ideally would, but we accept the trade-off.
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	Produce::up(Emit::tree());
 
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
 
 @ Again we exit the searcher as soon as a match is found, since that guarantees
 that $\phi(x)$.
@@ -1205,13 +1220,14 @@ Here the task is to sum the values of property $P$ attached to each object
 in the domain $\lbrace x\mid \phi(x)\rbrace$.
 
 @<Initialisation before TOTAL search@> =
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
 
 @ The only wrinkle here is the way the compiled code knows which property it
 should be totalling. If we know that ourselves, we can compile in a direct
 reference. But if we are compiling a multipurpose deferred proposition, then
 it might be used to total any property over the domain, and we won't know
-which until runtime -- when its identity will be found in the I6 variable
+which until runtime -- when its identity will be found in the Inter variable
 |property_to_be_totalled|.
 
 @<Act on successful match in TOTAL search@> =
@@ -1224,8 +1240,9 @@ which until runtime -- when its identity will be found in the I6 variable
 			Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, var_s[0]);
-				if (multipurpose_routine) {
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				if (multipurpose_function) {
+					Produce::val_iname(Emit::tree(), K_value,
+						Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				} else {
 					prn = RETRIEVE_POINTER_property(pdef->defn_ref);
 					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
@@ -1265,12 +1282,13 @@ maximising or minimising, at compile time; but for a multipurpose function
 we don't, and have to look that up at run-time.
 
 @<Initialisation before EXTREMAL search@> =
-	if (multipurpose_routine) {
+	if (multipurpose_function) {
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+				Produce::val_iname(Emit::tree(), K_value,
+					Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -1278,7 +1296,8 @@ we don't, and have to look that up at run-time.
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
 					Produce::ref_symbol(Emit::tree(), K_value, best_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
+					Produce::val_iname(Emit::tree(), K_value,
+						Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -1286,7 +1305,8 @@ we don't, and have to look that up at run-time.
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
 					Produce::ref_symbol(Emit::tree(), K_value, best_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+					Produce::val_iname(Emit::tree(), K_value,
+						Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -1298,17 +1318,20 @@ we don't, and have to look that up at run-time.
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, best_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
+				Produce::val_iname(Emit::tree(), K_value,
+					Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 			Produce::up(Emit::tree());
 		} else {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, best_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+				Produce::val_iname(Emit::tree(), K_value,
+					Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 			Produce::up(Emit::tree());
 		}
 	}
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
 
 @ It might look as if we could speed up the multipurpose case by
 multiplying by |property_loop_sign|, thus combining the max and min
@@ -1319,12 +1342,13 @@ penalty), and (b) we need to watch out because $-1$ times $-32768$, on a
 multiplying by $-1$ is order-reversing.
 
 @<Act on successful match in EXTREMAL search@> =
-	if (multipurpose_routine) {
+	if (multipurpose_function) {
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+				Produce::val_iname(Emit::tree(), K_value,
+					Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -1405,10 +1429,12 @@ multiplying by $-1$ is order-reversing.
 	Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, var_s[0]);
-		if (multipurpose_routine) {
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+		if (multipurpose_function) {
+			Produce::val_iname(Emit::tree(), K_value,
+				Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 		} else {
-			Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(def_prn));
+			Produce::val_iname(Emit::tree(), K_value,
+				RTProperties::iname(def_prn));
 		}
 	Produce::up(Emit::tree());
 
@@ -1451,14 +1477,13 @@ domain.
 	}
 =
 Which is not really a loop at all, but is a cheap way to extract either the
-initial value or the successor value from a loop header. (The trick actually
-caused some consternation for I6 hackers when early drafts of I7 came out,
-because they had been experimenting with a patch to I6 which protected
-|objectloop| from object-tree rearrangements but which assumed that nobody
-ever used |jump| to enter a loop body bypassing its header. But the DM4,
-which defines I6, doesn't forbid this. The designer of I6 has learned his
-lesson, though: I7 has no goto or jump instruction, and I7 loops can be
-proved to be entered and exited cleanly.)
+initial value or the successor value from a loop header.[1]
+
+[1] This trick caused some consternation for I6 hackers when early drafts of
+I7 came out, because they had been experimenting with a patch to I6 which
+protected |objectloop| from object-tree rearrangements but which assumed that
+nobody ever used |jump| to enter a loop body bypassing its header. But the DM4,
+which defines I6, does not forbid this, and nor does Inter.
 
 @<Initialisation before LOOP search@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1487,7 +1512,8 @@ proved to be entered and exited cleanly.)
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition,
+		FALSE, FALSE, pdef);
 
 @<Act on successful match in LOOP search@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1502,20 +1528,14 @@ proved to be entered and exited cleanly.)
 	Produce::up(Emit::tree());
 
 @h Compiling loop headers.
-The final task of this entire chapter is to compile an I6 loop header which
+The final task of this entire chapter is to compile an Inter loop header which
 causes a given variable $v$ to range through a domain set $D$ -- which we
 have to deduce by looking at the proposition $\psi$ in front of us.
 
-We want this loop to run as quickly as possible: efficiency here makes
-a very big difference to the running time of compiled I7 code. Most
-optimisations aren't worth the risk in added complexity -- but these are.
-
-Loops through kinds of value are not in general optimisable. The problem cases
-involve loops through objects. Consider:
-
->> if everyone in the Dining Room can see an animal, ...
-
-Code like this will run very slowly:
+We want this loop to run as quickly as possible: efficiency here makes a very
+big difference to the running time of compiled I7 code. Consider compiling
+"everyone in the Dining Room can see an animal". Code like this would run very
+slowly:
 = (text)
 	loop over objects (x)
 	    loop over objects (y)
@@ -1525,7 +1545,7 @@ Code like this will run very slowly:
 	                    if x can see y
 	                        success!
 =
-This is folly in so many ways. Most objects aren't people or animals, so
+This is folly in so many ways. Most objects are not people or animals, so
 almost all combinations of $x$ and $y$ are wasted. We test the eligibility
 of $x$ for every possible $y$. And there are quick ways to find what is in
 the Dining Room, so we're missing a trick there, too. What we want is:
@@ -1541,27 +1561,23 @@ quantifiers as far forwards as they can be, so we won't loop over $y$ before
 checking the validity of $x$. The rest of the work comes from two basic
 optimisations:
 
-(1) if a loop over $v$ is such that $K(v)$ holds in every case, where $K$
-is a kind, then loop $v$ over $K$ rather than all objects, and
-(2) if a loop over $v$ is such that $R(v, t)$ holds in every case, then loop over
-all $v$ such that $R(v, t)$ in cases where $R$ has a run-time representation
-making this quick and easy.
+(1) "Kind optimisation." If a loop over $v$ is such that $K(v)$ holds in every case,
+where $K$ is a kind, then loop $v$ over $K$ rather than all objects, and
+(2) "Parent optimisation." If a loop over $v$ is such that $R(v, t)$ holds in
+every case, then loop over all $v$ such that $R(v, t)$ in cases where $R$ has a
+run-time representation making this quick and easy.
 
-In each case we can then delete $K(v)$ or $R(v, t)$ from the proposition
-as redundant, since the loop header has taken care of it.
+In either case we can then delete $K(v)$ or $R(v, t)$ from the proposition
+as redundant, since the loop header has taken care of it. "Parent optimisation"
+is so called because the original use of this was to do with the IF world model's
+containment tree, where one object containing another is called its "parent"; but
+in fact it can be applied to any suitable relation $R$.
 
-Case (1) is called "kind optimisation"; case (2), "parent
-optimisation", because the prototype case is $R$ being containment -- we
-exploit that the object-tree parent of $v$ is known, and that I6 has a fast
-form of |objectloop| to visit the children of a given node in the object
-tree. Case (2) has to be avoided if we are compiling code to force a
-proposition, rather than test it, because then $R(v, t)$ is not an
-accomplished fact but is something we have yet to make come true. This is
-why the loop-compiler takes a flag |avoid_parent_optimisation|. Case (1)
-doesn't suffer from this since kinds cannot be changed at run-time.
-
-@ So here is the code. We write an I6 schema for the loop into |loop_schema|,
-then expand it into the output.
+Parent optimisation cannot be used if we are compiling code to force a proposition,
+rather than test it, because then $R(v, t)$ is not an accomplished fact but is
+something we have yet to make come true. This is why the function below needs a
+flag |avoid_parent_optimisation|. Case (1) doesn't suffer from this since
+kinds cannot be changed at run-time.
 
 =
 i6_schema loop_schema;
@@ -1625,14 +1641,14 @@ proposition makes up $\psi$, and now |grouped| is clear.
 			if (bl < 0) break;
 			if (bl > 0) continue;
 		}
-		@<Scan $\psi$, the part of the proposition establishing the domain@>;
+		@<Scan the part of the proposition establishing the domain@>;
 	}
 
 @ In either case, we scan $\psi$ looking for $K(v)$ atoms, which would tell
 us the domain set for the variable $v$, or for $R(v, t)$ atoms for
 parent-optimisable relations $R$.
 
-@<Scan $\psi$, the part of the proposition establishing the domain@> =
+@<Scan the part of the proposition establishing the domain@> =
 	if ((KindPredicates::is_kind_atom(pl)) && (pl->terms[0].variable == var)) {
 		K = KindPredicates::get_kind(pl);
 		kind_position = pl_prev;
@@ -1678,4 +1694,4 @@ simplifications. We set |optimise_on| to $R$ and |parent| to $t$.
 		proposition = Propositions::delete_atom(proposition, pl_prev);
 	}
 
-@ And that concludes the predicate-calculus engine at the heart of Inform.
+@ And that finally concludes the predicate-calculus engine at the heart of Inform.

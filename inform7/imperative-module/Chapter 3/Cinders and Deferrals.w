@@ -111,12 +111,10 @@ int Cinders::cind_declare_in_term(int N, pcalc_term *pt) {
 	if (pt->function)
 		return Cinders::cind_declare_in_term(N, &(pt->function->fn_of));
 	if ((pt->constant) && (pt->cinder >= 0)) {
-//		if (Node::is(pt->constant, CONSTANT_NT) == FALSE) {
-			TEMPORARY_TEXT(cinder_name)
-			WRITE_TO(cinder_name, "const_%d", N++);
-			LocalVariables::new_other_as_symbol(cinder_name);
-			DISCARD_TEXT(cinder_name)
-//		}
+		TEMPORARY_TEXT(cinder_name)
+		WRITE_TO(cinder_name, "const_%d", N++);
+		LocalVariables::new_other_as_symbol(cinder_name);
+		DISCARD_TEXT(cinder_name)
 	}
 	return N;
 }

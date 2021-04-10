@@ -67,6 +67,7 @@ typedef struct kind_constructor {
 	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
 	struct inter_name *con_iname;
+	struct inter_name *list_iname;
 	struct package_request *kc_package;
 	#endif
 	int small_block_size; /* if stored as a block value, size in words of the SB */
@@ -196,6 +197,7 @@ kind_constructor *Kinds::Constructors::new(kind_constructor *super,
 	#ifdef CORE_MODULE
 	con->con_iname = NULL;
 	con->kc_package = NULL;
+	con->list_iname = NULL;
 	#endif
 	if (Str::len(source_name) > 0) WRITE_TO(con->name_in_template_code, "%S", source_name);
 	#ifdef CORE_MODULE
@@ -430,6 +432,12 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {
 	return con->con_iname;
+}
+inter_name *Kinds::Constructors::list_iname(kind_constructor *con) {
+	return con->list_iname;
+}
+void Kinds::Constructors::set_list_iname(kind_constructor *con, inter_name *iname) {
+	con->list_iname = iname;
 }
 inter_name *Kinds::Constructors::first_instance_iname(kind_constructor *con) {
 	return con->first_instance_iname;

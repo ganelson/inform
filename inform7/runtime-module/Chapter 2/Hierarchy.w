@@ -552,6 +552,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e KIND_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
+@e ILIST_HL
 @e DEFAULT_VALUE_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
@@ -606,6 +607,7 @@ void Hierarchy::establish(inter_tree *I) {
 		HierarchyLocations::con(I, KIND_HL, NULL, Translation::generate(I"KD"), in_kind);
 		HierarchyLocations::con(I, WEAK_ID_HL, NULL, Translation::imposed(), in_kind);
 		HierarchyLocations::con(I, ICOUNT_HL, NULL, Translation::imposed(), in_kind);
+		HierarchyLocations::con(I, ILIST_HL, NULL, Translation::imposed(), in_kind);
 		HierarchyLocations::con(I, DEFAULT_VALUE_HL, I"default_value", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(I, DECREMENT_FN_HL, I"decrement_fn", Translation::uniqued(), in_kind);
 		HierarchyLocations::func(I, INCREMENT_FN_HL, I"increment_fn", Translation::uniqued(), in_kind);

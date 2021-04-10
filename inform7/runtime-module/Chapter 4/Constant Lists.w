@@ -81,3 +81,62 @@ void ConstantLists::compile_default_list(inter_name *identifier, kind *K) {
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }
+
+int ConstantLists::extent_of_instance_list(kind *K) {
+	if (Kinds::Behaviour::is_an_enumeration(K))
+		return Kinds::Behaviour::get_highest_valid_value_as_integer(K);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
+		int N = 0;
+		instance *I;
+		LOOP_OVER_INSTANCES(I, K) N++;
+		return N;
+	}
+	return -1;
+}
+
+inter_name *ConstantLists::get_instance_list(kind *K) {
+	int N = ConstantLists::extent_of_instance_list(K);
+	if (N < 0) return NULL;
+	inter_name *iname = Kinds::Constructors::list_iname(Kinds::get_construct(K));
+	if (iname == NULL) {
+		TEMPORARY_TEXT(ILN)
+		WRITE_TO(ILN, "ILIST_");
+		Kinds::Textual::write(ILN, K);
+		Str::truncate(ILN, 31);
+		LOOP_THROUGH_TEXT(pos, ILN) {
+			Str::put(pos, Characters::toupper(Str::get(pos)));
+			if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
+		}
+		iname = Hierarchy::make_iname_with_specific_name(ILIST_HL,
+			Emit::main_render_unique(Produce::main_scope(Emit::tree()), ILN),
+				Kinds::Behaviour::package(K));
+		DISCARD_TEXT(ILN)
+		Hierarchy::make_available(Emit::tree(), iname);
+
+		packaging_state save = Emit::named_array_begin(iname, K_value);
+		RTKinds::emit_block_value_header(Kinds::unary_con(CON_list_of, K), TRUE, N + 2);
+		RTKinds::emit_strong_id(K);
+		Emit::array_numeric_entry((inter_ti) N);
+		if (Kinds::Behaviour::is_an_enumeration(K)) {
+			for (int i = 1; i <= N; i++) {
+				Emit::array_numeric_entry((inter_ti) i);
+			}
+		}		
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			instance *I = PL::Counting::next_instance_of(NULL, K);
+			while (I) {
+//			LOOP_OVER_INSTANCES(I, K)
+				Emit::array_iname_entry(RTInstances::iname(I));
+				I = PL::Counting::next_instance_of(I, K);
+			}
+		}
+		Emit::array_end(save);
+		Kinds::Constructors::set_list_iname(Kinds::get_construct(K), iname);
+	}
+	inter_name *bc = RTKinds::new_block_constant_iname();
+	packaging_state save = Emit::named_late_array_begin(bc, K_value);
+	Emit::array_iname_entry(iname);
+	Emit::array_numeric_entry(0);
+	Emit::array_end(save);
+	return bc;
+}
