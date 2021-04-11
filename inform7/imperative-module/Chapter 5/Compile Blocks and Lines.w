@@ -588,7 +588,7 @@ inline definitions for "say if" and similar.
 	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYL));
 	DISCARD_TEXT(SAYL)
 
-	JumpLabels::read_counter(I"Say", TRUE);
+	JumpLabels::read_counter(I"Say", 1);
 
 	TEMPORARY_TEXT(SAYXL)
 	WRITE_TO(SAYXL, ".");
@@ -596,7 +596,7 @@ inline definitions for "say if" and similar.
 	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYXL));
 	DISCARD_TEXT(SAYXL)
 
-	JumpLabels::read_counter(I"SayX", TRUE);
+	JumpLabels::read_counter(I"SayX", 1);
 
 @<Compile an instead tail@> =
 	Produce::rtrue(Emit::tree());

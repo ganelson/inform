@@ -25,6 +25,7 @@ Chapter 3: Functions
 	Local Parking
 	Code Blocks
 	Functions
+	Jump Labels
 	Phrase Requests
 	Closures
 	Compile Imperative Definitions

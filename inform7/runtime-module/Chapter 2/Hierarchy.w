@@ -684,8 +684,9 @@ void Hierarchy::establish(inter_tree *I) {
 			location_requirement in_request = HierarchyLocations::any_package_of_type(I"_request");
 			HierarchyLocations::func(I, PHRASE_FN_HL, I"phrase_fn", Translation::uniqued(), in_request);
 
-	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(I, phrases);
-	HierarchyLocations::ap(I, LABEL_STORAGES_HAP, synoptic_phrases, I"label_storage", I"_label_storage");
+//	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(I, phrases);
+	location_requirement in_any_enclosure = HierarchyLocations::any_enclosure();
+	HierarchyLocations::ap(I, LABEL_STORAGES_HAP, in_any_enclosure, I"label_storage", I"_label_storage");
 		location_requirement in_label_storage = HierarchyLocations::any_package_of_type(I"_label_storage");
 		HierarchyLocations::con(I, LABEL_ASSOCIATED_STORAGE_HL, I"label_associated_storage", Translation::uniqued(), in_label_storage);
 

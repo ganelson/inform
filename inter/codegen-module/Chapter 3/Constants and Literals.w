@@ -171,7 +171,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		}
 		case CONSTANT_INDIRECT_LIST: {
 			char *format = "-->";
-			int do_not_bracket = FALSE, unsub = FALSE;
+			int do_not_bracket = FALSE, unsub = FALSE, extra_zero = FALSE;
 			int X = (P->W.extent - DATA_CONST_IFLD)/2;
 			if (X == 1) do_not_bracket = TRUE;
 			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = "->";
@@ -193,6 +193,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
 				if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE(")");
 			}
+			if (extra_zero) WRITE(" 0");
 			WRITE(";\n");
 			break;
 		}

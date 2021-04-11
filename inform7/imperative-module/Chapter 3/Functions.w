@@ -46,6 +46,7 @@ typedef struct function_under_compilation {
 	int currently_compiling_nnp; /* is this a nonphrasal stack frame we made ourselves? */
 	struct inter_package *into_package; /* where Inter is being emitted to */
 	struct inter_name *currently_compiling_iname; /* function we end up with */
+	struct linked_list *label_namespaces; /* of |label_namespace| */
 } function_under_compilation;
 
 int function_compilation_is_happening_now = FALSE;
@@ -61,6 +62,15 @@ id_body *Functions::defn_being_compiled(void) {
 parse_node *Functions::line_being_compiled(void) {
 	if (function_compilation_is_happening_now)
 		return current_sentence;
+	return NULL;
+}
+
+linked_list *Functions::current_label_namespaces(void) {
+	if (function_compilation_is_happening_now) {
+		if (current_function.from_idb)
+			return current_function.from_idb->compilation_data.label_namespaces;
+		return current_function.label_namespaces;
+	}
 	return NULL;
 }
 
@@ -86,7 +96,12 @@ packaging_state Functions::begin_from_idb(inter_name *iname, stack_frame *frame,
 	current_function.into_package = Produce::block(Emit::tree(), &save, iname);
 	current_function.currently_compiling_iname = iname;
 	current_function.from_idb = idb;
-
+	if (idb) {
+		JumpLabels::restart_counters(idb);
+		current_function.label_namespaces = NULL;
+	} else {
+		current_function.label_namespaces = NEW_LINKED_LIST(label_namespace);
+	}
 	Frames::make_current(frame);
 	CodeBlocks::begin_code_blocks();
 	LocalVariableSlates::declare_all(frame);
@@ -171,6 +186,7 @@ void Functions::end(packaging_state save) {
 	if (current_function.currently_compiling_nnp) Frames::remove_nonphrase_stack_frame();
 	Frames::remove_current();
 	Produce::end_main_block(Emit::tree(), save);
+	JumpLabels::compile_necessary_storage();
 
 	function_compilation_is_happening_now = FALSE;
 	current_function.currently_compiling_nnp = FALSE;

@@ -16,24 +16,28 @@ Chapter 2: Emission
 	Compilation Units
 	Emit
 
-Chapter 3: Compilation Utilities
+Chapter 3: Basics
 "Mainly low-level utilities for compiling code."
 	Fundamental Constants
+	Use Options at Run Time
+	Extension Files at Run Time
 	Inform 6 Inclusions
-	List Together
-	Jump Labels
+	I6 Template Interpreter
+
+Chapter 4: Literals
+	Literal Patterns at Run Time
 	Text Literals
 	Text Substitutions
 	Responses
 	Compiled Text
 	Constant Lists
+
+Chapter 5: Miscellany
+	Runtime Support for Kinds
+	List Together
 	Rules
 	Activities
 	Equations Support
-	I6 Template Interpreter
-	Test Scripts
-	Internal Test Cases
-	Use Options at Run Time
 	Temporary Variables
 	Variables
 	Properties
@@ -42,39 +46,48 @@ Chapter 3: Compilation Utilities
 	Instances
 	Instance Counting
 	Adjectives
-	Runtime Support for Kinds
-	Extension Files at Run Time
 	Noun Identifiers
 	Verbs at Run Time
 	Relations at Run Time
-	Literal Patterns at Run Time
 	Runtime Support for Tables
-	Imperative Compilation Data
 	Chronology
 
-Chapter 4: Plugin Support
+Chapter 6: World Model
 	Naming
-	Parsing
-	Figures
-	Sound Effects
-	External Files
 	Bibliographic Data
 	Spatial
 	The Player
 	Backdrops
 	Regions
 	The Map
-	Showme Command
 	The Score
 	Timed Rules
 	Scenes
+
+Chapter 7: Actions
 	Actions
-	Looping Over Scope
 	Named Action Patterns
 	Action Patterns
 	Going
+
+Chapter 8: Command Parser
+	Parsing
 	Command Grammars
 	Command Grammar Lines
 	Noun Filter Tokens
 	Tokens Parsing Values
 	General Parsing Routines
+	Looping Over Scope
+
+Chapter 9: Multimedia
+	Figures
+	Sound Effects
+	External Files
+
+Chapter 10: Testing
+	Showme Command
+	Test Scripts
+	Internal Test Cases
+
+Chapter 11: Imperative
+	Imperative Compilation Data

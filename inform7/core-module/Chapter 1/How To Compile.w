@@ -238,7 +238,7 @@ so on. Those absolute basics are made here.
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)
-	BENCH(JumpLabels::compile_necessary_storage)
+//	BENCH(JumpLabels::compile_necessary_storage)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)

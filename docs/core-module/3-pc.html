@@ -597,7 +597,7 @@ and not only for automatic placement.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_TEST_TAIL_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>Called from <a href="../imperative-module/4-cii.html" class="internal">Compile Invocations Inline (in imperative)</a>, but only when an
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>Called from <a href="../imperative-module/5-cii.html" class="internal">Compile Invocations Inline (in imperative)</a>, but only when an
 annotation arises which the regular machinery doesn't know how to handle.
 This is currently only used by <a href="../if-module/3-tr.html" class="internal">Timed Rules (in if)</a>.
 </p>
@@ -744,7 +744,7 @@ previously by a <span class="extract"><span class="extract-syntax">PARSE_AP_CLAU
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ACT_ON_ANL_ENTRY_OPTIONS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry_options</span><span class="plain-syntax">, </span><span class="identifier-syntax">fail</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>Called from <a href="../runtime-module/5-ap.html" class="internal">Action Patterns (in runtime)</a> when assembling the requirement
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>Called from <a href="../runtime-module/7-ap.html" class="internal">Action Patterns (in runtime)</a> when assembling the requirement
 clauses for compiling a mattern match; this gives plugins a chance to act
 extra stipulations, which are not explicit in clauses already in the pattern.
 </p>
@@ -757,7 +757,7 @@ extra stipulations, which are not explicit in clauses already in the pattern.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpm</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed_apoc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>Called from <a href="../runtime-module/5-ap.html" class="internal">Action Patterns (in runtime)</a> when compiling any additional
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>Called from <a href="../runtime-module/7-ap.html" class="internal">Action Patterns (in runtime)</a> when compiling any additional
 requirements set by <span class="extract"><span class="extract-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span></span>.
 </p>
 

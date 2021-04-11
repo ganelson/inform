@@ -14,9 +14,9 @@
         <s-literal-real-number>=1 
           (hits 11/9911) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
-          (hits 78/215) (matched: 'false') constraint CS = {6} extremes [1, 1]
+          (hits 78/776) (matched: 'false') constraint CS = {6} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/1889) constraint DS = {8} extremes [2, infinity)
+          (hits 0/1896) constraint DS = {8} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
           (hits 0/4300) constraint DS = {12} extremes [2, infinity)
         <s-literal-time>=1 

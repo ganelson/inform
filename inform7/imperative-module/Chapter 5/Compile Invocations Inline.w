@@ -816,26 +816,26 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 
 @<Inline command "counter"@> =
 	Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-		(inter_ti) JumpLabels::read_counter(ist->operand, NOT_APPLICABLE));
+		(inter_ti) JumpLabels::read_counter(ist->operand, 0));
 	return;
 
 @ We can also output just the storage array:
 
 @<Inline command "counter-storage"@> =
-	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage(ist->operand));
+	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage_iname(ist->operand));
 	return;
 
 @ Or increment it, printing nothing:
 
 @<Inline command "counter-up"@> =
-	JumpLabels::read_counter(ist->operand, TRUE);
+	JumpLabels::read_counter(ist->operand, 1);
 	return;
 
 @ Or decrement it. (Careful, though: if it decrements below zero, an enigmatic
 internal error will halt Inform.)
 
 @<Inline command "counter-down"@> =
-	JumpLabels::read_counter(ist->operand, FALSE);
+	JumpLabels::read_counter(ist->operand, 0);
 	return;
 
 @ We can use counters for anything, not just to generate labels, and one
@@ -867,7 +867,7 @@ made with different numbers here, the maximum is taken.)
 @<Inline command "counter-makes-array"@> =
 	int words_per_count = 1;
 	if (Str::len(ist->operand2) > 0) words_per_count = Str::atoi(ist->operand2, 0);
-	JumpLabels::allocate_counter(ist->operand, words_per_count);
+	JumpLabels::allocate_storage(ist->operand, words_per_count);
 	return;
 
 @h High-level commands.

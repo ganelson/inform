@@ -1107,7 +1107,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">JumpLabels::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-jl.html#SP2" class="function-link"><span class="function-syntax">JumpLabels::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::lab</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">Produce::reserve_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">L</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
@@ -1121,7 +1121,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">JumpLabels::read_counter</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><a href="3-jl.html#SP5" class="function-link"><span class="function-syntax">JumpLabels::read_counter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cii.html#SP6_4">&#167;6.4</a>.</li></ul>
@@ -1132,7 +1132,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">JumpLabels::storage</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><a href="3-jl.html#SP6" class="function-link"><span class="function-syntax">JumpLabels::storage_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cii.html#SP6_4">&#167;6.4</a>.</li></ul>
@@ -1143,7 +1143,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">JumpLabels::read_counter</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-jl.html#SP5" class="function-link"><span class="function-syntax">JumpLabels::read_counter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cii.html#SP6_4">&#167;6.4</a>.</li></ul>
@@ -1155,7 +1155,7 @@ internal error will halt Inform.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">JumpLabels::read_counter</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-jl.html#SP5" class="function-link"><span class="function-syntax">JumpLabels::read_counter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cii.html#SP6_4">&#167;6.4</a>.</li></ul>
@@ -1200,7 +1200,7 @@ made with different numbers here, the maximum is taken.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">words_per_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand2</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">words_per_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::atoi</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand2</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">JumpLabels::allocate_counter</span><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="identifier-syntax">words_per_count</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-jl.html#SP6" class="function-link"><span class="function-syntax">JumpLabels::allocate_storage</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ist</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">operand</span><span class="plain-syntax">, </span><span class="identifier-syntax">words_per_count</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cii.html#SP6_4">&#167;6.4</a>.</li></ul>
