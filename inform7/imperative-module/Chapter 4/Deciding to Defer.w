@@ -91,7 +91,7 @@ evaluate the condition we just need to call it.
 int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *prop) {
 	if (Propositions::contains_quantifier(prop)) {
 		pcalc_prop_deferral *pdef;
-		RTConditions::begin_condition_emit();
+		CompileConditions::begin();
 		int go_up = FALSE;
 		@<If the proposition is a negation, take care of that now@>;
 		int NC = Deferrals::count_callings_in_condition(prop);
@@ -107,7 +107,7 @@ int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *p
 		}
 		if (NC > 0) Produce::up(Emit::tree());
 		if (go_up) Produce::up(Emit::tree());
-		RTConditions::end_condition_emit();
+		CompileConditions::end();
 		return TRUE;
 	}
 	return FALSE;
@@ -290,7 +290,7 @@ void Deferrals::retrieve_callings_inner(pcalc_prop *prop, int NC, int as_test) {
 				(inter_ti) (calling_count - 1));
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	if (as_test) RTConditions::add_calling_to_condition(local);
+	if (as_test) CompileConditions::add_calling(local);
 
 @ The following function can be used when:
 (*) we want to force deferral in all cases, regardless of the proposition, and

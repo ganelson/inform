@@ -9,4 +9,5 @@ inspect-plugs
 make-identifiers-unique
 reconcile-verbs
 eliminate-redundant-labels
+eliminate-redundant-operations
 generate inform6 -> *out

@@ -23,6 +23,7 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Reconcile Verbs
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
+	Eliminate Redundant Operations
 
 Chapter 3: Inter to Final Code
 	Code Generation

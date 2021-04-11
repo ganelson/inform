@@ -73,3 +73,115 @@ type-checker won't allow these specifications to be compiled anywhere else.
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 			(inter_ti) Annotations::read_int(cond, phrase_option_ANNOT));
 	Produce::up(Emit::tree());
+
+@ We need a mechanism for keeping track of the callings made in a condition,
+and here it is. An issue here is that they generally have a scope extending
+beyond that condition, and can't be left with kind-unsafe (or no) values. For
+example, if:
+
+>> if a device (called the mechanism) is switched on: ...
+
+turns out false, then "mechanism" has to be safely defused to some typesafe value.
+So, then, the model is that if some part of Inform wants to compile a condition
+which may involve callings, it should call //CompileConditions::begin// first,
+then notify us with //CompileConditions::add_calling// of any local being used
+as a calling, and then //CompileConditions::end// when the code is done.
+
+Callings arise from variables in predicate calculus, and there can only be 26
+of those, so the following looks excessive. Well, so it is, of course: Inform
+code in the wild never makes more than about three callings in any one condition.
+But note that these condition sessions can be nested: you can begin a second
+one inside the first, provided that you end it before you end the first one.
+
+@d MAX_CALLINGS_IN_MATCH 128
+
+=
+int current_session_number = -1;
+int callings_in_condition_sp = 0;
+int callings_session_number[MAX_CALLINGS_IN_MATCH];
+local_variable *callings_in_condition[MAX_CALLINGS_IN_MATCH];
+
+@ The basic strategy here is to compile this:
+= (text)
+	((condition setting C1, ..., Ci) || (C1 = default, C2 = default, ..., Ci = default))
+=
+using the short-circuit property of |OR_BIP|: if the condition evaluates to false,
+and therefore there is no consistent set of values written into the calling
+variables |C1| to |Ci|, then we evaluate the second clause, and set all of the
+variables to default values for their kinds. In particular, if the condition
+fails halfway, with some callings set and some not, they are all defaulted out,
+so that you can never see partial results.
+
+=
+void CompileConditions::begin(void) {
+	current_session_number++;
+	Produce::inv_primitive(Emit::tree(), OR_BIP);
+	Produce::down(Emit::tree());
+}
+
+@ Each variable records which "session" it belongs to, since there can be
+multiple sessions happening at once:
+
+=
+void CompileConditions::add_calling(local_variable *lvar) {
+	if (current_session_number < 0) internal_error("no PM session");
+	if (callings_in_condition_sp + 1 == MAX_CALLINGS_IN_MATCH)
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		"that makes too complicated a condition to test",
+		"with all of those clauses involving 'called' values.");
+	else {
+		callings_session_number[callings_in_condition_sp] = current_session_number;
+		callings_in_condition[callings_in_condition_sp++] = lvar;
+	}
+}
+
+@ Now for the second operand of the |OR_BIP|. If there weren't any callings,
+we just compile |false|. (It looks wasteful to have compiled "if (... or false)",
+but in that event the use of |OP_BIP| will be optimised out later: see
+//codegen: Eliminate Redundant Operations//.) If there were callings, we default them.
+
+=
+void CompileConditions::end(void) {
+	if (current_session_number < 0) internal_error("unstarted PM session");
+	int NC = 0, x = callings_in_condition_sp, downs = 1;
+	while ((x > 0) && (callings_session_number[x-1] == current_session_number)) {
+		NC++;
+		x--;
+	}
+	if (NC == 0) {
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+	} else {
+		@<Set the callings in this session to default values for their kinds@>;
+	}
+	current_session_number--;
+	while (downs > 0) { downs--; Produce::up(Emit::tree()); }
+}
+
+@<Set the callings in this session to default values for their kinds@> =
+	Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+	Produce::down(Emit::tree()); downs++;
+	int NM = 0, inner_downs = 0;;
+	while ((callings_in_condition_sp > 0) &&
+		(callings_session_number[callings_in_condition_sp-1] == current_session_number)) {
+		NM++;
+		local_variable *lvar = callings_in_condition[callings_in_condition_sp-1];
+		if (NM < NC) {
+			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+			Produce::down(Emit::tree()); inner_downs++;
+		}
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			inter_symbol *lvar_s = LocalVariables::declare(lvar);
+			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
+			kind *K = LocalVariables::kind(lvar);
+			if ((K == NULL) ||
+				(Kinds::Behaviour::is_object(K)) ||
+				(Kinds::Behaviour::definite(K) == FALSE) ||
+				(RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
+					"'called' value") != TRUE))
+				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+		Produce::up(Emit::tree());
+		callings_in_condition_sp--;
+	}
+	while (inner_downs > 0) { inner_downs--; Produce::up(Emit::tree()); }
+	Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

@@ -16,8 +16,12 @@ void CodeGen::Labels::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"eliminate-redundant-labels", CodeGen::Labels::run_pipeline_stage, NO_STAGE_ARG, FALSE);
 }
 
+int redundant_labels_removed = 0;
 int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
+	redundant_labels_removed = 0;
 	Inter::Tree::traverse(step->repository, CodeGen::Labels::visitor, NULL, NULL, 0);
+	if (redundant_labels_removed > 0)
+		LOG("%d redundant label(s) removed\n", redundant_labels_removed);
 	return TRUE;
 }
 
@@ -66,6 +70,7 @@ anywhere) we may as well remove it.
 			if (Inter::Symbols::get_flag(S, USED_MARK_BIT) == FALSE) {
 				Inter::Symbols::strike_definition(S);
 				Inter::Symbols::remove_from_table(S);
+				redundant_labels_removed++;
 			}
 
 @ The following visits every line of code in the function, in the same order
@@ -79,7 +84,7 @@ void CodeGen::Labels::traverse_code_tree(inter_tree_node *P) {
 	}
 }
 
-@ If a label is used, there will be line reading |lab Example| or similar.
+@ If a label is used, there will be a line reading |lab Example| or similar.
 We look for such lines.
 
 @<Examine a line of code in the function@> =

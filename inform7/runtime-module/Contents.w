@@ -16,19 +16,13 @@ Chapter 2: Emission
 	Compilation Units
 	Emit
 
-Chapter 3: Calculated Adjectives
-"Adjectives whose truth or falsity at run-time has to be determined by
-running code."
-	Adjectival Definitions
-
-Chapter 4: Compilation Utilities
+Chapter 3: Compilation Utilities
 "Mainly low-level utilities for compiling code."
 	Fundamental Constants
 	Inform 6 Inclusions
 	List Together
 	Jump Labels
 	Text Literals
-	Conditions
 	Text Substitutions
 	Responses
 	Compiled Text
@@ -58,7 +52,7 @@ Chapter 4: Compilation Utilities
 	Imperative Compilation Data
 	Chronology
 
-Chapter 5: Plugin Support
+Chapter 4: Plugin Support
 	Naming
 	Parsing
 	Figures

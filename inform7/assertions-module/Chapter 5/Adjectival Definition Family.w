@@ -80,7 +80,7 @@ void AdjectivalDefinitionFamily::given_body(imperative_defn_family *self, impera
 
 	wording CALLW = EMPTY_WORDING;
 	kind *K = NULL;
-	Phrases::Phrasal::define_adjective_by_phrase(id->at, body, &CALLW, &K);
+	AdjectivesByPhrase::define_adjective_by_phrase(id->at, body, &CALLW, &K);
 	Frames::enable_it(&(body->compilation_data.id_stack_frame), CALLW, K);
 
 }
