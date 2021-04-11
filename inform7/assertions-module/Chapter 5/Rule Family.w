@@ -57,6 +57,7 @@ typedef struct rule_family_data {
 	struct rule *defines;
 	struct rulebook *owning_rulebook; /* the primary booking for the phrase will be here */
 	int owning_rulebook_placement; /* ...and with this placement value: see Rulebooks */
+	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 
 	void *plugin_rfd[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
 	CLASS_DEFINITION
@@ -75,6 +76,7 @@ rule_family_data *RuleFamily::new_data(void) {
 	rfd->defines = NULL;
 	rfd->owning_rulebook = NULL;
 	rfd->owning_rulebook_placement = MIDDLE_PLACEMENT;
+	rfd->permit_all_outcomes = FALSE;
 	for (int i=0; i<MAX_PLUGINS; i++) rfd->plugin_rfd[i] = NULL;
 	return rfd;
 }
@@ -353,8 +355,7 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	id->body_of_defn->compilation_data.compile_with_run_time_debugging = TRUE;
 	IDTypeData::set_mor(&(id->body_of_defn->type_data),
 		DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
-	if (rfd->not_in_rulebook)
-		id->body_of_defn->compilation_data.permit_all_outcomes = TRUE;
+	if (rfd->not_in_rulebook) rfd->permit_all_outcomes = TRUE;
 }
 
 @<Set R to a corresponding rule structure@> =
@@ -394,6 +395,19 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 		}
 	}
 	IXRules::set_italicised_index_text(R, IX);
+
+@ This is to do with named outcomes of rules, whereby certain outcomes are
+normally limited to the use of rules in particular rulebooks.
+
+=
+int RuleFamily::outcome_restrictions_waived(void) {
+	id_body *idb = Functions::defn_being_compiled();
+	if (idb == NULL) return FALSE;
+	imperative_defn *id = idb->head_of_defn;
+	if (id->family != rule_idf) return FALSE;
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	return rfd->permit_all_outcomes;
+}
 
 @ At the end of the assessment process, we can finally put the rules into their
 rulebooks. We make "automatic placements" first -- i.e., those where the usage

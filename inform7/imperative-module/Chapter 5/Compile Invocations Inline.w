@@ -71,9 +71,9 @@ int CSIInline::csi_inline(value_holster *VH, parse_node *inv, source_location *w
 	id_body *idb = Node::get_phrase_invoked(inv);
 	@<Initialise the CSI state@>;
 	@<Create any new local variables explicitly called for@>;
-	CSIInline::from_schema(IDCompilation::get_inter_front(idb), &CSIS);
+	CSIInline::from_schema(CompileImperativeDefn::get_front_schema(idb), &CSIS);
 	if (IDTypeData::block_follows(idb))
-		CodeBlocks::attach_back_schema(IDCompilation::get_inter_back(idb), CSIS);
+		CodeBlocks::attach_back_schema(CompileImperativeDefn::get_back_schema(idb), CSIS);
 	else
 		@<Release any my-variables created inline@>;
 	return idb->compilation_data.inline_mor;

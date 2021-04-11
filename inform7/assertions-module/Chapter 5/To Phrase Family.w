@@ -191,7 +191,7 @@ imperative_defn *first_in_logical_order = NULL;
 
 void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	id_body *body = id->body_of_defn;
-	IDCompilation::prepare_for_requests(body);
+	CompileImperativeDefn::prepare_for_requests(body);
 
 	ParsingIDTypeData::parse(&(id->body_of_defn->type_data),
 		ToPhraseFamily::get_prototype_text(id));
@@ -547,7 +547,7 @@ imperative_defn *ToPhraseFamily::to_begin(void) {
 						"and in Basic mode, Inform expects to see exactly one of "
 						"these, specifying where execution should begin.");
 				} else {
-					if (IDCompilation::compiled_inline(id->body_of_defn)) {
+					if (CompileImperativeDefn::is_inline(id->body_of_defn)) {
 						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
 							"the 'to begin' phrase seems to be defined inline",
 							"which in Basic mode is not allowed.");

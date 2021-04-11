@@ -88,6 +88,3 @@ Chapter 10: Testing
 	Showme Command
 	Test Scripts
 	Internal Test Cases
-
-Chapter 11: Imperative
-	Imperative Compilation Data

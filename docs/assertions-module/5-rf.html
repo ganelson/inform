@@ -73,7 +73,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#5">Chapter 5: Imperative Code</a></li><li><b>Rule Family</b></li></ul></div>
 <p class="purpose">Imperative definitions of rules.</p>
 
-<ul class="toc"><li><a href="5-rf.html#SP1">&#167;1. Introduction</a></li><li><a href="5-rf.html#SP4">&#167;4. Identification</a></li><li><a href="5-rf.html#SP6">&#167;6. Assessment</a></li><li><a href="5-rf.html#SP10">&#167;10. Runtime context data</a></li><li><a href="5-rf.html#SP15">&#167;15. Compilation</a></li><li><a href="5-rf.html#SP16">&#167;16. Miscellaneous access functions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-rf.html#SP1">&#167;1. Introduction</a></li><li><a href="5-rf.html#SP4">&#167;4. Identification</a></li><li><a href="5-rf.html#SP6">&#167;6. Assessment</a></li><li><a href="5-rf.html#SP11">&#167;11. Runtime context data</a></li><li><a href="5-rf.html#SP16">&#167;16. Compilation</a></li><li><a href="5-rf.html#SP17">&#167;17. Miscellaneous access functions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>This family handles definitions of rules which give explicit Inform 7
 source text to show what they do. (It's also possible to create rules which
@@ -96,11 +96,11 @@ So there's quite a lot to do.
 <span class="plain-syntax">    </span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax"> = </span><a href="5-idf.html#SP2" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"rule-idf"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP5" class="function-link"><span class="function-syntax">RuleFamily::identify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESS_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP7" class="function-link"><span class="function-syntax">RuleFamily::assess</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP9" class="function-link"><span class="function-syntax">RuleFamily::assessment_complete</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP16" class="function-link"><span class="function-syntax">RuleFamily::allows_rule_only</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP10" class="function-link"><span class="function-syntax">RuleFamily::assessment_complete</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP17" class="function-link"><span class="function-syntax">RuleFamily::allows_rule_only</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">GIVEN_BODY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP8" class="function-link"><span class="function-syntax">RuleFamily::given_body</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">TO_RCD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP10" class="function-link"><span class="function-syntax">RuleFamily::to_rcd</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">COMPILE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP15" class="function-link"><span class="function-syntax">RuleFamily::compile</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">TO_RCD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP11" class="function-link"><span class="function-syntax">RuleFamily::to_rcd</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">, </span><span class="constant-syntax">COMPILE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><a href="5-rf.html#SP16" class="function-link"><span class="function-syntax">RuleFamily::compile</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Each family member gets one of the following. In splitting up preambles,
@@ -133,6 +133,7 @@ this is divided up into smaller excerpts of text, as in the following examples:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defines</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owning_rulebook</span><span class="plain-syntax">; </span><span class="comment-syntax"> the primary booking for the phrase will be here</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">owning_rulebook_placement</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...and with this placement value: see Rulebooks</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permit_all_outcomes</span><span class="plain-syntax">; </span><span class="comment-syntax"> waive the usual restrictions on rule outcomes</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugin_rfd</span><span class="plain-syntax">[</span><span class="identifier-syntax">MAX_PLUGINS</span><span class="plain-syntax">]; </span><span class="comment-syntax"> storage for plugins to attach, if they want to</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -151,6 +152,7 @@ this is divided up into smaller excerpts of text, as in the following examples:
 <span class="plain-syntax">    </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook_placement</span><span class="plain-syntax"> = </span><span class="constant-syntax">MIDDLE_PLACEMENT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permit_all_outcomes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">MAX_PLUGINS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugin_rfd</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -480,8 +482,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="identifier-syntax">compile_with_run_time_debugging</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="5-ptd.html#SP10" class="function-link"><span class="function-syntax">IDTypeData::set_mor</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type_data</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="constant-syntax">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">not_in_rulebook</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="identifier-syntax">permit_all_outcomes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">not_in_rulebook</span><span class="plain-syntax">) </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permit_all_outcomes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set R to a corresponding rule structure</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
@@ -534,7 +535,21 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    </span><span class="identifier-syntax">IXRules::set_italicised_index_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">IX</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP8_1">&#167;8.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>At the end of the assessment process, we can finally put the rules into their
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This is to do with named outcomes of rules, whereby certain outcomes are
+normally limited to the use of rules in particular rulebooks.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RuleFamily::outcome_restrictions_waived</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Functions::defn_being_compiled</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">idb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">head_of_defn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> != </span><span class="identifier-syntax">rule_idf</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rule_family_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rfd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_rule_family_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permit_all_outcomes</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>At the end of the assessment process, we can finally put the rules into their
 rulebooks. We make "automatic placements" first &mdash; i.e., those where the usage
 preamble specified which rulebook the rule belonged to; and then we make manual
 placements, which may move or remove rules already place. See <a href="3-rpr.html" class="internal">Rule Placement Requests</a>
@@ -556,7 +571,7 @@ for how sentences specifying this are parsed.
 <span class="plain-syntax">    </span><a href="6-rb.html#SP6" class="function-link"><span class="function-syntax">RuleBookings::make_automatic_placements</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><a href="5-rf.html#SP9" class="function-link"><span class="function-syntax">RuleFamily::visit_to_parse_placements</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><a href="5-rf.html#SP10" class="function-link"><span class="function-syntax">RuleFamily::visit_to_parse_placements</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuleFamily::visit_to_parse_placements</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -568,7 +583,7 @@ for how sentences specifying this are parsed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Runtime context data. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Runtime context data. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">NAP_problem_explained</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> pertains to Named Action Patterns</span>
@@ -579,7 +594,7 @@ for how sentences specifying this are parsed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rule_family_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rfd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_rule_family_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">not_in_rulebook</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Parse the applicability text into the PHRCD</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph">Parse the applicability text into the PHRCD</span><span class="named-paragraph-number">11.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whenwhile</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">rcd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">activity_context</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Wordings::from</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whenwhile</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whenwhile</span><span class="plain-syntax">) + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -587,17 +602,17 @@ for how sentences specifying this are parsed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>Here we try the text first without its when clause, then with, and accept
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>Here we try the text first without its when clause, then with, and accept
 whichever way works.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the applicability text into the PHRCD</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the applicability text into the PHRCD</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-rlb.html#SP2_2" class="function-link"><span class="function-syntax">Rulebooks::action_focus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ActionRules::set_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">, </span><span class="identifier-syntax">ActionPatterns::parse_action_based</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for a bad action</span><span class="named-paragraph-number">10.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for a bad action</span><span class="named-paragraph-number">11.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pk</span><span class="plain-syntax"> = </span><a href="6-rlb.html#SP2_2" class="function-link"><span class="function-syntax">Rulebooks::get_focus_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_rulebook</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ActionRules::set_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">, </span><span class="identifier-syntax">ActionPatterns::parse_parametric</span><span class="plain-syntax">(</span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">, </span><span class="identifier-syntax">pk</span><span class="plain-syntax">));</span>
@@ -611,11 +626,11 @@ whichever way works.
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for a bad parameter</span><span class="named-paragraph-number">10.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionRules::get_ap</span><span class="plain-syntax">(</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for a bad parameter</span><span class="named-paragraph-number">11.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1" class="paragraph-anchor"></a><b>&#167;10.1.1.  </b>All that's left is to issue a "good" problem message, but this is quite a
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11">&#167;11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1" class="paragraph-anchor"></a><b>&#167;11.1.1.  </b>All that's left is to issue a "good" problem message, but this is quite a
 large undertaking, because the situation as we currently know it is just that
 something's wrong with the rule preamble &mdash; which covers an enormous range of
 different faults.
@@ -625,7 +640,7 @@ different faults.
 parser, recording how it most recently failed.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for a bad action</span><span class="named-paragraph-number">10.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for a bad action</span><span class="named-paragraph-number">11.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -635,15 +650,15 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">rfd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;action-problem-diagnosis&gt;(rfd-&gt;</span><span class="element-syntax">applicability</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">pap_failure_reason</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">MIXEDNOUNS_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">10.1.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOPARTICIPLE_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">10.1.1.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMMISCIBLE_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">10.1.1.3</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_4" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">10.1.1.4</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_5" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APUnknown problem</span><span class="named-paragraph-number">10.1.1.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">MIXEDNOUNS_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">11.1.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOPARTICIPLE_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">11.1.1.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMMISCIBLE_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">11.1.1.3</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_PAPF:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_4" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">11.1.1.4</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_5" class="named-paragraph-link"><span class="named-paragraph">Issue PM_APUnknown problem</span><span class="named-paragraph-number">11.1.1.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_1" class="paragraph-anchor"></a><b>&#167;10.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">10.1.1.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1">&#167;11.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_1" class="paragraph-anchor"></a><b>&#167;11.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">11.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -658,8 +673,8 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        </span><span class="string-syntax">"mischievous...'), or it may be less bother just to write more than one rule."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1">&#167;10.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_2" class="paragraph-anchor"></a><b>&#167;10.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">10.1.1.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1">&#167;11.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_2" class="paragraph-anchor"></a><b>&#167;11.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">11.1.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -671,8 +686,8 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        </span><span class="string-syntax">"what you intended."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1">&#167;10.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_3" class="paragraph-anchor"></a><b>&#167;10.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">10.1.1.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1">&#167;11.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_3" class="paragraph-anchor"></a><b>&#167;11.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">11.1.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -686,8 +701,8 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        </span><span class="string-syntax">"alternatives there would make different use of objects from each other.)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1">&#167;10.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_4" class="paragraph-anchor"></a><b>&#167;10.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">10.1.1.4</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1">&#167;11.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_4" class="paragraph-anchor"></a><b>&#167;11.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">11.1.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -726,8 +741,8 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">            </span><span class="string-syntax">"with '...and when Peter is...' is not allowed."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1">&#167;10.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_5" class="paragraph-anchor"></a><b>&#167;10.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APUnknown problem</span><span class="named-paragraph-number">10.1.1.5</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1">&#167;11.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_5" class="paragraph-anchor"></a><b>&#167;11.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APUnknown problem</span><span class="named-paragraph-number">11.1.1.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -740,15 +755,15 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, which seems to introduce a rule taking effect only if the action "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"is '%2'. %3 did not make sense as a description of an action."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_5_1" class="named-paragraph-link"><span class="named-paragraph">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">10.1.1.5.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_5_2" class="named-paragraph-link"><span class="named-paragraph">See if this might be a when-for confusion</span><span class="named-paragraph-number">10.1.1.5.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP10_1_1_5_3" class="named-paragraph-link"><span class="named-paragraph">Break down the action list and say which are okay</span><span class="named-paragraph-number">10.1.1.5.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_5_1" class="named-paragraph-link"><span class="named-paragraph">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">11.1.1.5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_5_2" class="named-paragraph-link"><span class="named-paragraph">See if this might be a when-for confusion</span><span class="named-paragraph-number">11.1.1.5.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP11_1_1_5_3" class="named-paragraph-link"><span class="named-paragraph">Break down the action list and say which are okay</span><span class="named-paragraph-number">11.1.1.5.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">" I am unable to place this rule into any rulebook."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1">&#167;10.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_5_1" class="paragraph-anchor"></a><b>&#167;10.1.1.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">10.1.1.5.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1">&#167;11.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_5_1" class="paragraph-anchor"></a><b>&#167;11.1.1.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">11.1.1.5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -766,8 +781,8 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1_5">&#167;10.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_5_2" class="paragraph-anchor"></a><b>&#167;10.1.1.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this might be a when-for confusion</span><span class="named-paragraph-number">10.1.1.5.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1_5">&#167;11.1.1.5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_5_2" class="paragraph-anchor"></a><b>&#167;11.1.1.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this might be a when-for confusion</span><span class="named-paragraph-number">11.1.1.5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -781,15 +796,15 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1_5">&#167;10.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1_5_3" class="paragraph-anchor"></a><b>&#167;10.1.1.5.3.  </b>If the action pattern contains what looks like a list of action names, as for example
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1_5">&#167;11.1.1.5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_1_5_3" class="paragraph-anchor"></a><b>&#167;11.1.1.5.3.  </b>If the action pattern contains what looks like a list of action names, as for example
 "Instead of taking or dropping the magnet: ..." then the &lt;anl-diagnosis&gt; grammar will
  parse this and return N equal to 2, the apparent number of action names. We then
  run the grammar again, but this time allowing it to print comments on each apparent
  action name it sees.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break down the action list and say which are okay</span><span class="named-paragraph-number">10.1.1.5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break down the action list and say which are okay</span><span class="named-paragraph-number">11.1.1.5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -810,12 +825,12 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">" so"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1_1_5">&#167;10.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2" class="paragraph-anchor"></a><b>&#167;10.1.2.  </b>We have a much easier time if the rulebook was value-focused, so that
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1_1_5">&#167;11.1.1.5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_1_2" class="paragraph-anchor"></a><b>&#167;11.1.2.  </b>We have a much easier time if the rulebook was value-focused, so that
 the only possible problem is that the value was wrong.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for a bad parameter</span><span class="named-paragraph-number">10.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for a bad parameter</span><span class="named-paragraph-number">11.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -824,22 +839,22 @@ the only possible problem is that the value was wrong.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(3, </span><span class="identifier-syntax">pk</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="function-syntax">&lt;parametric-problem-diagnosis&gt;(rfd-&gt;</span><span class="element-syntax">pruned_stem</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And that is the end of the code as such, but we still have to define the
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP11_1">&#167;11.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>And that is the end of the code as such, but we still have to define the
 three diagnosis grammars we needed.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Parametric rules are those applying to values not actions, and the following
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Parametric rules are those applying to values not actions, and the following
 is used to choose a problem message if the value makes no sense.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;parametric-problem-diagnosis&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">when</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">play</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begins/ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP12_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">12.1</span></a></span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadParameter problem</span><span class="named-paragraph-number">12.2</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">when</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">play</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begins/ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">13.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP13_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadParameter problem</span><span class="named-paragraph-number">13.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">12.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -849,8 +864,8 @@ is used to choose a problem message if the value makes no sense.
 <span class="plain-syntax">        </span><span class="string-syntax">"play begins' and 'When play ends', and I think you probably mean to refer to "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"one of those."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadParameter problem</span><span class="named-paragraph-number">12.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP13">&#167;13</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadParameter problem</span><span class="named-paragraph-number">13.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -860,18 +875,18 @@ is used to choose a problem message if the value makes no sense.
 <span class="plain-syntax">        </span><span class="string-syntax">"did not make sense. This is %3 based rulebook, so that should have described %3."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>And here we choose a problem message if a rule applying to an action is used,
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP13">&#167;13</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And here we choose a problem message if a rule applying to an action is used,
 but the action isn't one we recognise.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;action-problem-diagnosis&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">presence</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">13.1</span></a></span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP13_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">13.2</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">presence</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP14_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">14.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP14_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">14.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">14.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -885,8 +900,8 @@ but the action isn't one we recognise.
 <span class="plain-syntax">        </span><span class="string-syntax">"about the current situation instead: 'Every turn when the player can see...'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">13.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP14">&#167;14</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14_2" class="paragraph-anchor"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -898,8 +913,8 @@ but the action isn't one we recognise.
 <span class="plain-syntax">        </span><span class="string-syntax">"when in the Library'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The following is used to choose a problem when the trouble with the rule
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP14">&#167;14</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The following is used to choose a problem when the trouble with the rule
 occurred in a when/while condition at the end; while all five cases produce
 the PM_APWithBadWhen problem, they each provide different clues as to what
 might have gone wrong.
@@ -926,10 +941,10 @@ might have gone wrong.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">_,/or</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;anl-inner-diagnosis&gt;</span><span class="Preform-plain-syntax">                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 
 <span class="Preform-function-syntax">&lt;anl-entry-diagnosis&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">                                        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP14_1" class="named-paragraph-link"><span class="named-paragraph">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">14.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">                                        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-rf.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">15.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">14.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -975,8 +990,8 @@ might have gone wrong.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">1</span><span class="plain-syntax">, - };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Compilation. </b>We compile these in rulebook order first, and then pick up any rules not in
+<ul class="endnotetexts"><li>This code is used in <a href="5-rf.html#SP15">&#167;15</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Compilation. </b>We compile these in rulebook order first, and then pick up any rules not in
 rulebooks. This is really just to make the Inter output tidily arranged;
 any order would have done just as well.
 </p>
@@ -994,7 +1009,7 @@ any order would have done just as well.
 <span class="plain-syntax">            </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Miscellaneous access functions. </b></p>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Miscellaneous access functions. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">RuleFamily::get_prewhile_text</span><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>

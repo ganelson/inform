@@ -376,9 +376,18 @@ void RTAdjectives::set_schemas_for_raw_Inter_function(adjective_meaning *am, wor
 	}
 }
 
+void RTAdjectives::make_iname(id_body *idb) {
+	if (CompileImperativeDefn::iname(idb) == NULL) {
+		package_request *R = Hierarchy::package(idb->compilation_data.owning_module,
+			ADJECTIVE_PHRASES_HAP);
+		CompileImperativeDefn::set_iname(idb, Hierarchy::make_iname_in(DEFINITION_FN_HL, R));
+	}
+}
+
 void RTAdjectives::set_schemas_for_I7_phrase(adjective_meaning *am, id_body *idb) {
+	RTAdjectives::make_iname(idb);
 	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-	Calculus::Schemas::modify(sch, "(%n(*1))", IDCompilation::iname(idb));
+	Calculus::Schemas::modify(sch, "(%n(*1))", CompileImperativeDefn::iname(idb));
 }
 
 int RTAdjectives::support_for_I7_condition(adjective_meaning_family *family,

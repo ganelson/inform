@@ -58,7 +58,7 @@ we simply give in and throw a problem.
 	return symb;
 
 @<Extract an identifier from the inline definition@> =
-	wchar_t *p = IDCompilation::get_inline_definition(idb);
+	wchar_t *p = CompileImperativeDefn::get_inline_definition(idb);
 	for (int i=0; p[i]; i++)
 		if (Characters::isalpha(p[i])) {
 			int j = 0;
@@ -137,12 +137,9 @@ list is a list of. The result would be:
 	req->req_kind = K;
 	req->compile_from = idb;
 	Latticework::unpack_kvd(req->kv_interpretation, kvd);
-	compilation_unit *cm = CompilationUnits::current();
-	if (ImperativeDefinitions::body_at(idb))
-		cm = CompilationUnits::find(ImperativeDefinitions::body_at(idb));
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP,
-		IDCompilation::package_for_requests(idb));
-	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);
+		CompileImperativeDefn::requests_package(idb));
+	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P);
 	return req;
 
 @ Two access functions:
@@ -173,7 +170,7 @@ int PhraseRequests::compilation_coroutine(void) {
 
 		latest_request_granted = req;
 		CompileImperativeDefn::go(req->compile_from, NULL, req, NULL);
-		IDCompilation::advance_progress_bar(req->compile_from,
+		CompileImperativeDefn::advance_progress_bar(req->compile_from,
 			&total_phrases_compiled, total_phrases_to_compile);
 		req->compile_from->compilation_data.at_least_one_compiled_form_needed = FALSE;
 		N++;

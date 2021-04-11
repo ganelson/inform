@@ -271,7 +271,7 @@ need bespoke handling:
 		}
 	}
 	rulebook *rb = NULL;
-	if (IDCompilation::outcome_restrictions_waived() == FALSE)
+	if (RuleFamily::outcome_restrictions_waived() == FALSE)
 		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, Functions::defn_being_compiled());
 	if (rb) {
 		Problems::quote_source(1, current_sentence);

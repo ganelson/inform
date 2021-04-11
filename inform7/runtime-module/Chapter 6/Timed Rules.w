@@ -14,7 +14,7 @@ void RTTimedRules::TimedEventsTable(void) {
 		int t = TimedRules::get_timing_of_event(idb->head_of_defn);
 		if (t == NOT_A_TIMED_EVENT) continue;
 		if (t == NO_FIXED_TIME) when_count++;
-		else Emit::array_iname_entry(IDCompilation::iname(idb));
+		else Emit::array_iname_entry(CompileImperativeDefn::iname(idb));
 	}
 
 	for (int i=0; i<when_count+1; i++) {

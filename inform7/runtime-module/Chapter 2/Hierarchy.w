@@ -684,7 +684,6 @@ void Hierarchy::establish(inter_tree *I) {
 			location_requirement in_request = HierarchyLocations::any_package_of_type(I"_request");
 			HierarchyLocations::func(I, PHRASE_FN_HL, I"phrase_fn", Translation::uniqued(), in_request);
 
-//	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(I, phrases);
 	location_requirement in_any_enclosure = HierarchyLocations::any_enclosure();
 	HierarchyLocations::ap(I, LABEL_STORAGES_HAP, in_any_enclosure, I"label_storage", I"_label_storage");
 		location_requirement in_label_storage = HierarchyLocations::any_package_of_type(I"_label_storage");
@@ -1612,7 +1611,7 @@ inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_
 	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING, derive_from, -1, NULL);
 }
 
-inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_unit *C) {
+inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P) {
 	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 

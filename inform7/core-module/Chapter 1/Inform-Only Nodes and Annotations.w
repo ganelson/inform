@@ -733,7 +733,7 @@ void CoreSyntax::write_modal_verb_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void CoreSyntax::write_phrase_invoked_ANNOT(text_stream *OUT, parse_node *p) {
 	id_body *idb = Node::get_phrase_invoked(p);
-	if (idb) WRITE(" {phrase invoked: %n}", IDCompilation::iname(idb));
+	if (idb) WRITE(" {phrase invoked: %n}", CompileImperativeDefn::iname(idb));
 }
 void CoreSyntax::write_phrase_options_invoked_ANNOT(text_stream *OUT, parse_node *p) {
 	invocation_options *io = Node::get_phrase_options_invoked(p);

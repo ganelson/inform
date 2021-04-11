@@ -106,7 +106,7 @@ void ImperativeDefinitions::assess_all(void) {
 			id->body_of_defn = ImperativeDefinitions::new_body(id);
 			ImperativeDefinitions::detect_inline(id);
 			ImperativeDefinitionFamilies::given_body(id);
-			IDCompilation::prepare_stack_frame(id->body_of_defn);
+			CompileImperativeDefn::initialise_stack_frame(id->body_of_defn);
 		}
 	}
 	if (initial_problem_count < problem_count) return;
@@ -178,7 +178,7 @@ id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
 	body->head_of_defn = id;
 	body->runtime_context_data = RuntimeContextData::new();
 	body->type_data = IDTypeData::new();
-	body->compilation_data = IDCompilation::new_data(id->at);
+	body->compilation_data = CompileImperativeDefn::new_data(id->at);
 	return body;
 }
 
@@ -259,7 +259,7 @@ void ImperativeDefinitions::detect_inline(imperative_defn *id) {
 			@<Inline is for To... phrases only@>;
 		id_body *idb = id->body_of_defn;
 		IDTypeData::make_inline(&(idb->type_data));
-		IDCompilation::make_inline(idb, inline_wn, mor);
+		CompileImperativeDefn::make_inline(idb, inline_wn, mor);
 	}
 }
 
@@ -287,7 +287,7 @@ Inter kit instead.
 =
 void ImperativeDefinitions::log_body(id_body *idb) {
 	if (idb == NULL) { LOG("RULE:NULL"); return; }
-	LOG("%n", IDCompilation::iname(idb));
+	LOG("%n", CompileImperativeDefn::iname(idb));
 }
 
 void ImperativeDefinitions::log_body_fuller(id_body *idb) {

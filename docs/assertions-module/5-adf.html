@@ -73,7 +73,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#5">Chapter 5: Imperative Code</a></li><li><b>Adjectival Definition Family</b></li></ul></div>
 <p class="purpose">Imperative definitions of "Definition: X is Y: ..." adjectives.</p>
 
-<ul class="toc"><li><a href="5-adf.html#SP9">&#167;9. Implementation details</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-adf.html#SP8">&#167;8. Implementation details</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This family is used for adjective definitions, whether or not they run on
 into substantial amounts of code.
@@ -138,7 +138,7 @@ of its own.
 <span class="plain-syntax">            </span><a href="2-is.html#SP1" class="function-link"><span class="function-syntax">ImperativeSubtrees::accept_body</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Node::set_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONT_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><a href="5-adf.html#SP10" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::look_for_headers</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-adf.html#SP9" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::look_for_headers</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -180,25 +180,15 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> == </span><span class="identifier-syntax">adjectival_idf</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">IDCompilation::compile</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> == </span><span class="identifier-syntax">adjectival_idf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">RTAdjectives::make_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">CompileImperativeDefn::not_from_phrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">RTAdjectives::compile_support_code</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">definition</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">definition_node</span><span class="plain-syntax">; </span><span class="comment-syntax"> current sentence: where the word "Definition" is</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node</span><span class="plain-syntax">; </span><span class="comment-syntax"> where the actual definition is</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">format</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">+1</span></span><span class="comment-syntax"> to go by condition, </span><span class="extract"><span class="extract-syntax">-1</span></span><span class="comment-syntax"> to negate it, </span><span class="extract"><span class="extract-syntax">0</span></span><span class="comment-syntax"> to use routine</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_to_match</span><span class="plain-syntax">; </span><span class="comment-syntax"> text of condition to match, if </span><span class="extract"><span class="extract-syntax">+1</span></span><span class="comment-syntax"> or </span><span class="extract"><span class="extract-syntax">-1</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">domain_calling</span><span class="plain-syntax">; </span><span class="comment-syntax"> what if anything the term is called</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am_of_def</span><span class="plain-syntax">; </span><span class="comment-syntax"> which adjective meaning</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="reserved-syntax">definition</span><span class="plain-syntax">;</span>
-</pre>
-<ul class="endnotetexts"><li>The structure definition is accessed in 8/abp, 8/abc, 8/abif, 8/abic and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Implementation details. </b>First, some Preform grammar:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Implementation details. </b>First, some Preform grammar:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -220,7 +210,7 @@ container (called the sack) is capacious if...".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, -, &lt;&lt;antonym&gt;&gt; = FALSE }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following function provides the method of identification:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following function provides the method of identification:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">DEFINED_POSITIVELY</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span>
@@ -245,9 +235,9 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">            </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">; </span><span class="comment-syntax"> condition text</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_format</span><span class="plain-syntax"> = </span><span class="constant-syntax">DEFINED_IN_SOME_WAY_NOT_YET_KNOWN</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Parse the Q-node as an adjective definition</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP10_2" class="named-paragraph-link"><span class="named-paragraph">Perform sanity checks on the result</span><span class="named-paragraph-number">10.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP10_3" class="named-paragraph-link"><span class="named-paragraph">Register the resulting adjective</span><span class="named-paragraph-number">10.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Parse the Q-node as an adjective definition</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Perform sanity checks on the result</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-adf.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Register the resulting adjective</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">the_format</span><span class="plain-syntax"> != </span><span class="constant-syntax">DEFINED_PHRASALLY</span><span class="plain-syntax">)  </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
@@ -255,7 +245,7 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the Q-node as an adjective definition</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the Q-node as an adjective definition</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -269,8 +259,8 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">            </span><span class="identifier-syntax">CONW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;adjective-definition&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform sanity checks on the result</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform sanity checks on the result</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -295,8 +285,8 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register the resulting adjective</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register the resulting adjective</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -311,11 +301,11 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">        </span><a href="8-aa.html#SP2" class="function-link"><span class="function-syntax">AdjectiveAmbiguity::add_meaning_to_adjective</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">neg</span><span class="plain-syntax">, </span><span class="identifier-syntax">adj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The usual strictures apply:
+<ul class="endnotetexts"><li>This code is used in <a href="5-adf.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The usual strictures apply:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-adf.html#SP11" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::vet_name</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-adf.html#SP10" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::vet_name</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectivalDefinitionFamily::vet_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -344,10 +334,20 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Which leaves only:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Which leaves only:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">definition</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">definition_node</span><span class="plain-syntax">; </span><span class="comment-syntax"> current sentence: where the word "Definition" is</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node</span><span class="plain-syntax">; </span><span class="comment-syntax"> where the actual definition is</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">format</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">+1</span></span><span class="comment-syntax"> to go by condition, </span><span class="extract"><span class="extract-syntax">-1</span></span><span class="comment-syntax"> to negate it, </span><span class="extract"><span class="extract-syntax">0</span></span><span class="comment-syntax"> to use routine</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_to_match</span><span class="plain-syntax">; </span><span class="comment-syntax"> text of condition to match, if </span><span class="extract"><span class="extract-syntax">+1</span></span><span class="comment-syntax"> or </span><span class="extract"><span class="extract-syntax">-1</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">domain_calling</span><span class="plain-syntax">; </span><span class="comment-syntax"> what if anything the term is called</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am_of_def</span><span class="plain-syntax">; </span><span class="comment-syntax"> which adjective meaning</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">definition</span><span class="plain-syntax">;</span>
+
 <span class="reserved-syntax">definition</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectivalDefinitionFamily::new_definition</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">AdjectivalDefinitionFamily::new_definition</span></span>:<br/>Adjectives by Phrase - <a href="8-abp.html#SP1">&#167;1</a><br/>Adjectives by Condition - <a href="8-abc.html#SP2">&#167;2</a><br/>Adjectives by Inter Function - <a href="8-abif.html#SP2">&#167;2</a><br/>Adjectives by Inter Condition - <a href="8-abic.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">definition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">def</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">definition</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">def</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">node</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">;</span>
@@ -358,6 +358,7 @@ container (called the sack) is capacious if...".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">def</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
+<ul class="endnotetexts"><li>The structure definition is accessed in 8/abp, 8/abc, 8/abif, 8/abic and here.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-idf.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-id.html">id</a></li><li class="progresssection"><a href="5-idf.html">idf</a></li><li class="progresscurrent">adf</li><li class="progresssection"><a href="5-tpf.html">tpf</a></li><li class="progresssection"><a href="5-ptd.html">ptd</a></li><li class="progresssection"><a href="5-ptd2.html">ptd2</a></li><li class="progresssection"><a href="5-po.html">po</a></li><li class="progresssection"><a href="5-rf.html">rf</a></li><li class="progresssection"><a href="5-rcd.html">rcd</a></li><li class="progresschapter"><a href="6-rls.html">6</a></li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progresschapter"><a href="8-kpr.html">8</a></li><li class="progressnext"><a href="5-tpf.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -46,7 +46,7 @@ inter_name *Closures::iname(constant_phrase *cphr) {
 		id_body *idb = ToPhraseFamily::body_of_constant(cphr);
 		if (idb == NULL) internal_error("cannot reconstruct phrase from cphr");
 		package_request *P = Hierarchy::package_within(CLOSURES_HAP,
-			IDCompilation::package_for_requests(idb));
+			CompileImperativeDefn::requests_package(idb));
 		cphr->cphr_iname = Hierarchy::make_iname_in(CLOSURE_DATA_HL, P);
 	}
 	return cphr->cphr_iname;

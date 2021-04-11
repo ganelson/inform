@@ -92,25 +92,13 @@ void AdjectivalDefinitionFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	imperative_defn *id;
 	LOOP_OVER(id, imperative_defn)
-		if (id->family == adjectival_idf)
-			IDCompilation::compile(id->body_of_defn, total_phrases_compiled,
+		if (id->family == adjectival_idf) {
+			RTAdjectives::make_iname(id->body_of_defn);
+			CompileImperativeDefn::not_from_phrase(id->body_of_defn, total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL);
+		}
 	RTAdjectives::compile_support_code();
 }
-
-@
-
-
-=
-typedef struct definition {
-	struct parse_node *definition_node; /* current sentence: where the word "Definition" is */
-	struct parse_node *node; /* where the actual definition is */
-	int format; /* |+1| to go by condition, |-1| to negate it, |0| to use routine */
-	struct wording condition_to_match; /* text of condition to match, if |+1| or |-1| */
-	struct wording domain_calling; /* what if anything the term is called */
-	struct adjective_meaning *am_of_def; /* which adjective meaning */
-	CLASS_DEFINITION
-} definition;
 
 @h Implementation details.
 First, some Preform grammar:
@@ -246,6 +234,16 @@ int AdjectivalDefinitionFamily::vet_name(wording W) {
 @ Which leaves only:
 
 =
+typedef struct definition {
+	struct parse_node *definition_node; /* current sentence: where the word "Definition" is */
+	struct parse_node *node; /* where the actual definition is */
+	int format; /* |+1| to go by condition, |-1| to negate it, |0| to use routine */
+	struct wording condition_to_match; /* text of condition to match, if |+1| or |-1| */
+	struct wording domain_calling; /* what if anything the term is called */
+	struct adjective_meaning *am_of_def; /* which adjective meaning */
+	CLASS_DEFINITION
+} definition;
+
 definition *AdjectivalDefinitionFamily::new_definition(parse_node *q) {
 	definition *def = CREATE(definition);
 	def->node = q;
