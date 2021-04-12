@@ -59,10 +59,10 @@ void Kinds::Scalings::rescale_multiplication_emit_op(kind *kindx, kind *kindy) {
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_X*k_Y > k_O) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
 	}
 	if (k_X*k_Y < k_O) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
 	}
 }
 
@@ -75,11 +75,11 @@ void Kinds::Scalings::rescale_multiplication_emit_factor(kind *kindx, kind *kind
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_X*k_Y > k_O) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X*k_Y/k_O));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (k_X*k_Y < k_O) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O/k_X/k_Y));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 #endif
@@ -99,11 +99,11 @@ void Kinds::Scalings::rescale_division_emit_op(kind *kindx, kind *kindy) {
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_O*k_Y > k_X) {
 		Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 	if (k_O*k_Y < k_X) {
 		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 }
 
@@ -116,11 +116,11 @@ void Kinds::Scalings::rescale_division_emit_factor(kind *kindx, kind *kindy) {
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_O*k_Y > k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_Y/k_X));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (k_O*k_Y < k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_Y));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 #endif
@@ -154,10 +154,10 @@ function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit a scaling correction for square roots@> =
 	if (k_O*k_O > k_X) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
 	}
 	if (k_O*k_O < k_X) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
 	}
 
 @ For cube roots,
@@ -167,10 +167,10 @@ the rooting function, we scale by $k^3$:
 
 @<Emit a scaling correction for cube roots@> =
 	if (k_O*k_O*k_O > k_X) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
 	}
 	if (k_O*k_O*k_O < k_X) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
 	}
 
 @ =
@@ -201,11 +201,11 @@ function, not outside, and it scales by $k^2$ not $k$:
 @<Emit factor for a scaling correction for square roots@> =
 	if (k_O*k_O > k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O/k_X));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (k_O*k_O < k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O)); 
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @ For cube roots,
@@ -216,11 +216,11 @@ the rooting function, we scale by $k^3$:
 @<Emit factor for a scaling correction for cube roots@> =
 	if (k_O*k_O*k_O > k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O*k_O/k_X));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (k_O*k_O*k_O < k_X) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O/k_O));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @h Scaling transformations.
@@ -588,40 +588,40 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 	} else {
 		if (sc.real_M != 1.0) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_value, V_var);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, V_var);
 					Produce::val_real(Emit::tree(), sc.real_M);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		if (sc.real_O != 0.0) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_value, V_var);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, V_var);
 					Produce::val_real(Emit::tree(), sc.real_O);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_NAN_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, V_var);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::lab(Emit::tree(), label);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 }
 #endif
@@ -649,79 +649,79 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 		long long int max = 2147483647LL;
 		if (TargetVMs::is_16_bit(Task::vm())) max = 32767LL;
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, sgn_var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				@<Compile the overflow check@>;
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				max++;
 				@<Compile the overflow check@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, var);
 		Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) scale_factor);
 				Produce::val_symbol(Emit::tree(), K_value, var);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
 				Produce::val_symbol(Emit::tree(), K_value, var_to_add);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 }
 #endif
 
 @<Compile the overflow check@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), OR_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::inv_primitive(Emit::tree(), GT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
 						Produce::val_symbol(Emit::tree(), K_value, var_to_add);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::lab(Emit::tree(), label);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 @ And conversely... Note that in the real case, the remainder variable |R_var|
 is ignored, since the division can be performed "exactly".
@@ -733,59 +733,59 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 	if (sc.use_integer_scaling) {
 		if (sc.int_O != 0) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, V_var);
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_O);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		if (sc.int_M != 1) {
 			if (R_var) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, R_var);
 					Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, V_var);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, V_var);
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 	} else {
 		if (sc.int_M != 0.0) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, V_var);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
 					Produce::val_real(Emit::tree(), sc.real_O);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		if (sc.real_M != 1.0) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, V_var);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
 					Produce::val_real(Emit::tree(), sc.real_M);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 	}
 }
@@ -801,25 +801,25 @@ operator to use: say, |">="|.
 void Kinds::Scalings::compile_threshold_test(scaling_transformation sc,
 	inter_symbol *V_var, inter_ti op) {
 	Produce::inv_primitive(Emit::tree(), op);
-	Produce::down(Emit::tree());
+	Emit::down();
 	if (sc.use_integer_scaling) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_ABS_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Scalings::quantum(sc));
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_ABS_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, V_var);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val_real(Emit::tree(), Kinds::Scalings::real_quantum(sc));
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 #endif
 
@@ -837,27 +837,27 @@ void Kinds::Scalings::compile_print_in_quanta(scaling_transformation sc,
 
 	if (sc.use_integer_scaling) {
 		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, R_var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				@<Print a decimal expansion for the remainder@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_SAY_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 #endif
@@ -873,9 +873,9 @@ recurring decimals. If it can't, then we must approximate.
 
 @<Print a decimal expansion for the remainder@> =
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_text(Emit::tree(), I".");
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	int M = sc.int_M;
 	int cl10M = 1; while (M > cl10M) cl10M = cl10M*10;
@@ -905,97 +905,97 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 	int t = cl10M/M;
 	if (t != 1) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, R_var);
 			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, R_var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) t);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, S_var);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) cl10M);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, R_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, R_var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, R_var);
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, R_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, S_var);
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, S_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), LT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, R_var);
 			Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, S_var);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_text(Emit::tree(), I"0");
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, S_var);
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, S_var);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, R_var);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ In this approximation, |R_var| is measured in units of |1/M|. Thus the first
 digit after the decimal point should be |R_var| times |10/M|, the second
@@ -1007,27 +1007,27 @@ digit after the decimal point should be |R_var| times |10/M|, the second
 		R = R*10;
 		int g = Kinds::Dimensions::gcd(R, M);
 		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, R_var);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (R/g));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (M/g));
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}

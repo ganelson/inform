@@ -6,12 +6,10 @@ and "transpile" it down to lower-level, more orthodox code which another
 compiler can take the rest of the way. Usually, but not necessarily, that
 other compiler is the typeless but otherwise C-like Inform 6 (1996-2003).
 
-Inform offers three compiler tools: //inbuild//, //inform7//
-and //inter//. These represent the front end (build control, resource
-management), the middle part (actual compilation), and the back end (code
-generation, assimilation of kits), but really they are three points of access
-to the same code base. See //inbuild: Manual//, //inform7: Manual//, //inter: Manual//
-and //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
+Inform offers three compiler tools: //inbuild//, //inform7// and //inter//,
+though really they are three points of access to the same code base. See
+//inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
+//inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
 
 Each tool has its own CLI (or "command-line interface") but is otherwise
 divided up into "modules", many shared between two or even all three tools.
@@ -21,28 +19,26 @@ divided up into "modules", many shared between two or even all three tools.
     |   //inbuild//   |          |   //inform7//   |          |    //inter//    |
     |    (cli)    |          |    (cli)    |          |    (cli)    |
     +-------------+          +-------------+          +-------------+    
-+----------------------------------------------+      .             .
-|  //supervisor//-module                           |      .             .
-+----------------------------------------------+      .             .
-    .             .      +---------------------+      .             .
-    .             .      | BASIC INFORM        |      .             .
-    .             .      |     //core//-module     |      .             .
-    .             .      |  //assertions//-module  |      .             .
-    .             .      |    //values//-module    |      .             .
-    .             .      |   //knowledge//-module  |      .             .
-    .             .      |  //imperative//-module  |      .             .
-    .             .      |    //runtime//-module   |      .             .
-    .             .      |    //index//-module     |      .             .
-    .             .      +---------------------+      .             .
-    .             .      | EXTRAS              |      .             .
-    .             .      |      //if//-module      |      .             .
-    .             .      |  //multimedia//-module  |      .             .
-    .             .      +---------------------+      .             .
++----------------------------------------------+      .             .       
+|  //supervisor//-module                           |      .             .       } Stage 1
++----------------------------------------------+      .             . 
+    .             .      |     //core//-module     |      .             .       } Stage 2
+    .             .      + ------------------- +      .             .
+    .             .      |  //assertions//-module  |      .             .       }
+    .             .      |    //values//-module    |      .             .       } Stage 3
+    .             .      |   //knowledge//-module  |      .             .       }
+    .             .      |      //if//-module*     |      .             .       } * not used in
+    .             .      |  //multimedia//-module* |      .             .       } Basic Inform
+    .             .      + ------------------- +      .             .
+    .             .      |  //imperative//-module  |      .             .       } Stage 4
+    .             .      |    //runtime//-module   |      .             .       } 
     .             .      +----------------------------------------------+
-    .             .      |                            //bytecode//-module   |
-    .             .      |                            //building//-module   |
-    .             .      |                            //codegen//-module    |
+    .             .      |                            //bytecode//-module   |   }
+    .             .      |                            //building//-module   |   } Stage 5
+    .             .      |                            //codegen//-module    |   }
     .             .      +----------------------------------------------+
+    .             .      |    //index//-module     |      .             .       } Stage 6
+    .             .      +---------------------+      .             .
 +-----------------------------------------------------------------------+
 |  SERVICES              shared //linguistics//-module                      |
 |                         shared //calculus//-module                        |
@@ -61,14 +57,32 @@ divided up into "modules", many shared between two or even all three tools.
 |                           (standard C library)                        |
 +-----------------------------------------------------------------------+
 =
-The three tools each use a "services" library, made up of a variety of modules
+The Inform compiler contains all of these modules, and runs in six stages.
+It is not literally true that each completes before the next begins, but
+compilation broadly flows downwards in the diagram:
+(*) Stage 1. The build manager //supervisor// decides what must be compiled.
+This is essentially an embedded copy of //inbuild//.
+(*) Stage 2. //core// organises compilation of a single Inform project,
+doing little except to co-ordinate the other modules.
+(*) Stage 3. //assertions//, //values// and //knowledge// assemble a world model
+and a set of rules and phrases to operate it. //if// and //multimedia// provide
+"plugins" with additional features, adapting the language for interactive fiction.
+(*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 2
+into an intermediate bytecode format called Inter.
+(*) Stage 5. //bytecode//, //building// and //codegen// optimise the Inter
+code and translate it to our final output. This is essentially an embedded
+copy of //inter//.
+(*) Stage 6. //index// generates the human-readable Index pages, which are like
+a small website about the project.
+
+@ All three tools each use a "services" library, made up of a variety of modules
 providing services useful for natural language-based programs (though only
 //inform7// needs them all). At one time this was going to be called "Second
 Foundation" or possibly "Foundation and Empire", because there is also
 //foundation// underneath, a library of utility functions provided by //inweb//.
 
-@ That's a lot: for code-spelunkers, this is a veritable limestone hillside
-of points of entry. Where to begin? Here are some suggested entrances:
+@ That's a lot: for code-spelunkers, this is a veritable limestone hillside.
+Where to begin? Here are some suggested entrances:
 (a) See //supervisor: What This Module Does// for an overview of the
 build-management process.
 (b) Or take that on trust, and see //core: What This Module Does// for

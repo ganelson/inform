@@ -383,9 +383,9 @@ void LocalVariableSlates::end_scope(int s) {
 				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
 				inter_symbol *LN = LocalVariables::declare(lvar);
 				Produce::inv_call_iname(Emit::tree(), iname);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, LN);
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			LocalVariableSlates::deallocate_I7_local(lvar);
 		}

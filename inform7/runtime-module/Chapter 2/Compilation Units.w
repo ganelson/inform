@@ -1,31 +1,37 @@
 [CompilationUnits::] Compilation Units.
 
-To identify which parts of the source text come from which source (the main source
-text, the Standard Rules, or another extension).
+The source text is divided into compilation units, and the material they lead
+to is similarly divided up.
 
-@ Inform is a language in which it is semantically relevant which source file the
-source text is coming from: unlike, say, C, where |#include| allows files to include
-each other in arbitrary ways. In Inform, all source text comes from one of the
-following places:
-
-(a) The main source text, as shown in the Source panel of the UI app;
-(b) An extension file, including the Standard Rules extension;
-(c) Invented text created by the compiler itself.
-
-The Inter hierarchy also splits, with named units representing each possibility
-in (a) or (b) above. This section of code determines to which unit any new
-definition (of, say, a property or kind) belongs.
-
-@ We find these by performing a traverse of the parse tree, and looking for
-level-0 headings, which are the nodes from which these blocks of source text hang:
+@h Units.
+The source text is divided up into "compilation units". Each extension is its
+own compilation unit, and so is the main source text. This demarcation is also
+reflected in the Inter hierarchy, where each different compilation unit has its
+own sub-hierarchy, a |module_package|.
 
 =
 typedef struct compilation_unit {
-	struct module_package *inter_presence;
-	struct parse_node *hanging_from;
+	struct module_package *to_module;
+	struct parse_node *head_node;
 	CLASS_DEFINITION
 } compilation_unit;
 
+void CompilationUnits::log(compilation_unit *cu) {
+	if (cu == NULL) LOG("<null>");
+	else LOG("unit'%W'", Node::get_text(cu->head_node));
+}
+
+module_package *CompilationUnits::to_module_package(compilation_unit *C) {
+	if (C == NULL) internal_error("no unit");
+	return C->to_module;
+}
+
+@ The main source text, and the extensions included, are exactly the level-0
+|HEADING_NT| nodes in the parse tree which correspond to files read in, so we
+can find them easily enough. This is done very early in compilation: see
+//core: How To Compile//.
+
+=
 void CompilationUnits::determine(void) {
 	SyntaxTree::traverse(Task::syntax_tree(), CompilationUnits::look_for_cu);
 }
@@ -33,52 +39,47 @@ void CompilationUnits::determine(void) {
 void CompilationUnits::look_for_cu(parse_node *p) {
 	if (Node::get_type(p) == HEADING_NT) {
 		heading *h = Headings::from_node(p);
-		if ((h) && (h->level == 0)) CompilationUnits::new(p);
+		if ((h) && (h->level == 0)) {
+			source_location sl = Wordings::location(Node::get_text(p));
+			if (sl.file_of_origin) @<Create a new compilation unit for this heading@>;
+		}
 	}
 }
 
-void CompilationUnits::log(compilation_unit *cu) {
-	if (cu == NULL) LOG("<null>");
-	else LOG("unit'%W'", Node::get_text(cu->hanging_from));
-}
-
-compilation_unit *CompilationUnits::new(parse_node *from) {
-	source_location sl = Wordings::location(Node::get_text(from));
-	if (sl.file_of_origin == NULL) return NULL;
-	inform_extension *owner = Extensions::corresponding_to(
-		Lexer::file_of_origin(Wordings::first_wn(Node::get_text(from))));
-
-	compilation_unit *C = CREATE(compilation_unit);
-	C->inter_presence = NULL;
-	C->hanging_from = from;
-	Node::set_unit(from, C);
-	CompilationUnits::propagate_downwards(from->down, C);
+@<Create a new compilation unit for this heading@> =
+	inform_extension *ext = Extensions::corresponding_to(
+		Lexer::file_of_origin(Wordings::first_wn(Node::get_text(p))));
 
 	TEMPORARY_TEXT(pname)
 	@<Compose a name for the unit package this will lead to@>;
-	C->inter_presence = Packaging::get_unit(Emit::tree(), pname);
+	module_package *M = Packaging::get_unit(Emit::tree(), pname);
+	if (ext) @<Give M metadata indicating the source extension@>;
 	DISCARD_TEXT(pname)
 
-	if (owner) {
-		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->as_copy->edition->work->raw_author_name);
-		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->as_copy->edition->work->raw_title);
-		TEMPORARY_TEXT(V)
-		semantic_version_number N = owner->as_copy->edition->version;
-		WRITE_TO(V, "%v", &N);
-		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
-		DISCARD_TEXT(V)
-	}
-	return C;
-}
+	compilation_unit *C = CREATE(compilation_unit);
+	C->head_node = p;
+	C->to_module = M;
+	CompilationUnits::join(p->down, C);
+
+@<Give M metadata indicating the source extension@> =
+	Hierarchy::markup(M->the_package, EXT_AUTHOR_HMD,
+		ext->as_copy->edition->work->raw_author_name);
+	Hierarchy::markup(M->the_package, EXT_TITLE_HMD,
+		ext->as_copy->edition->work->raw_title);
+	TEMPORARY_TEXT(V)
+	semantic_version_number N = ext->as_copy->edition->version;
+	WRITE_TO(V, "%v", &N);
+	Hierarchy::markup(M->the_package, EXT_VERSION_HMD, V);
+	DISCARD_TEXT(V)
 
 @ Here we must find a unique name, valid as an Inter identifier: the code
 compiled from the compilation unit will go into a package of that name.
 
 @<Compose a name for the unit package this will lead to@> =
-	if (Extensions::is_standard(owner)) WRITE_TO(pname, "standard_rules");
-	else if (owner == NULL) WRITE_TO(pname, "source_text");
+	if (Extensions::is_standard(ext)) WRITE_TO(pname, "standard_rules");
+	else if (ext == NULL) WRITE_TO(pname, "source_text");
 	else {
-		WRITE_TO(pname, "%X", owner->as_copy->edition->work);
+		WRITE_TO(pname, "%X", ext->as_copy->edition->work);
 		LOOP_THROUGH_TEXT(pos, pname)
 			if (Str::get(pos) == ' ')
 				Str::put(pos, '_');
@@ -86,41 +87,33 @@ compiled from the compilation unit will go into a package of that name.
 				Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
 
-@ We are eventually going to need to be able to look at a given node in the parse
-tree and say which compilation unit it belongs to. If there were a fast way
-to go up in the tree, that would be easy -- we could simply run upward until we
-reach a level-0 heading. But the node links all run downwards. Instead, we'll
-"mark" nodes in the tree, annotating them with the compilation unit which owns
-them. This is done by "propagating downwards", as follows.
+@h What unit a node belongs to.
+We are going to need to determine, for any node |p|, which compilation unit it
+belongs to. If there were a fast way to go up in the syntax tree, that would be
+easy -- we could simply run upward until we reach a level-0 heading. But the
+node links all run downwards. Instead, we'll annotate the nodes in a given unit.
+The annotations propagates downwards thus:
 
-@ =
-void CompilationUnits::propagate_downwards(parse_node *P, compilation_unit *C) {
-	while (P) {
-		Node::set_unit(P, C);
-		CompilationUnits::propagate_downwards(P->down, C);
-		P = P->next;
-	}
+=
+void CompilationUnits::join(parse_node *p, compilation_unit *C) {
+	Node::set_unit(p, C);
+	for (parse_node *d = p->down; d; d = d->next)
+		CompilationUnits::join(d, C);
 }
 
+@ Nodes are sometimes added later, so that it may be necessary to mark them
+by hand as belonging to the same nodes as their progenitors:
+
+=
 void CompilationUnits::assign_to_same_unit(parse_node *to, parse_node *from) {
-	Node::set_unit(to, Node::get_unit(from));
+	CompilationUnits::join(to, Node::get_unit(from));
 }
 
 @ As promised, then, given a parse node, we have to return its compilation unit:
-but that's now easy, as we just have to read off the annotation made above --
+but that's now easy.
 
 =
 compilation_unit *CompilationUnits::find(parse_node *from) {
-	if (from == NULL) return NULL;
-	return Node::get_unit(from);
-}
-
-@h Relating to Inter.
-Creating the necessary package, of type |_module|, is the work of the
-Packaging code.
-
-=
-module_package *CompilationUnits::inter_presence(compilation_unit *C) {
-	if (C == NULL) internal_error("no unit");
-	return C->inter_presence;
+	if (from) Node::get_unit(from);
+	return NULL;
 }

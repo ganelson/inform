@@ -160,10 +160,10 @@ a newline.
 	}
 	/* warn the paragraph breaker by setting the say__p flag that this will print */
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 	CompileBlocksAndLines::verify_say_node_list(p->down);
 
 @h Midriff code for lines.
@@ -309,27 +309,27 @@ is false:
 @<Compile an if midriff@> =
 	if (p->down->next->next) Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	else Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		current_sentence = to_compile;
 		CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VAL_VHMODE,
 			allow_implied_newlines);
 
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			CodeBlocks::open_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				p->down->next, FALSE, allow_implied_newlines);
 		if (p->down->next->next) {
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			CodeBlocks::divide_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				p->down->next->next, FALSE, allow_implied_newlines);
 		}
 			CodeBlocks::close_code_block();
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @ Switches, like |switch| in C, offer code to execute in different cases
 depending on the "switch value". How efficiently this can be done depends
@@ -450,10 +450,10 @@ the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster
 	sw_lv = LocalVariables::add_switch_value(K_value);
 	sw_v = LocalVariables::declare(sw_lv);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, sw_v);
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
 of |downs| is how many times we have called |Produce::down|.
@@ -464,7 +464,7 @@ of |downs| is how many times we have called |Produce::down|.
 
 	if (final_flag) Produce::inv_primitive(Emit::tree(), IF_BIP);
 	else Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		LocalVariables::set_kind(sw_lv, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, sw_lv);
 		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
@@ -473,13 +473,13 @@ of |downs| is how many times we have called |Produce::down|.
 			TypecheckPropositions::tc_no_problem_reporting());
 		CompilePropositions::to_test_as_condition(NULL, prop);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
 		if (final_flag == FALSE) {
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 	downs += 2;
 
@@ -490,7 +490,7 @@ of |downs| is how many times we have called |Produce::down|.
 		FALSE, allow_implied_newlines);
 
 @<End a pointery switch@> =
-	while (downs-- > 0) Produce::up(Emit::tree());
+	while (downs-- > 0) Emit::up();
 	CodeBlocks::close_code_block();
 
 @ And now the more efficient case, using Inter's |SWITCH_BIP|, |CASE_BIP| and
@@ -498,36 +498,36 @@ of |downs| is how many times we have called |Produce::down|.
 
 @<Begin a non-pointery switch@> =
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 @<Handle a non-pointery case@> =
 	Produce::inv_primitive(Emit::tree(), CASE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileValues::to_code_val_of_kind(case_spec, switch_kind);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @<Handle a non-pointery default@> =
 	Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @<End a non-pointery switch@> =
-	Produce::up(Emit::tree());
+	Emit::up();
 	CodeBlocks::close_code_block();
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ In either implementation, we perform this check:
 
@@ -605,7 +605,7 @@ inline definitions for "say if" and similar.
 	CodeBlocks::open_code_block();
 	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next,
 		FALSE, allow_implied_newlines);
-	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
+	while (Produce::level(Emit::tree()) > L) Emit::up();
 	CodeBlocks::close_code_block();
 
 @h The evaluator.

@@ -105,42 +105,42 @@ integer versions may have been scaled.
 void Kinds::FloatingPoint::begin_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 }
 
 void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
-	Produce::up(Emit::tree());
+	Emit::up();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 				(inter_ti) Kinds::Behaviour::scale_factor(K));
-		Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+		Emit::up();
+		Emit::up();
 	}
 }
 
 void Kinds::FloatingPoint::begin_deflotation_emit(kind *K) {
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 }
 
 void Kinds::FloatingPoint::end_deflotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 				(inter_ti) Kinds::Behaviour::scale_factor(K));
-		Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+		Emit::up();
+		Emit::up();
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 #endif

@@ -69,39 +69,39 @@ that authors value safety over the slight speed overhead incurred.
 	}
 
 	Produce::inv_primitive(Emit::tree(), FOR_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 				CompileLoops::iterate(spec, NULL);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, aux_var_s);
 				CompileLoops::iterate(spec, v1);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::val_symbol(Emit::tree(), K_value, val_var_s);
 
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 				Produce::val_symbol(Emit::tree(), K_value, aux_var_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, aux_var_s);
 				CompileLoops::iterate(spec, v2);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 @ It would be nice to generate the whole loop from the schema for the kind,
 but of course our description is unlikely to be just ${\it kind}_K(x)$. So
@@ -120,26 +120,26 @@ We can optimise out the "if" part in the case when $\phi(x) = {\it kind}_K(x)$.
 			pcalc_prop *prop = Specifications::to_proposition(spec);
 			if (prop) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					CompilePropositions::to_test_as_condition(
 						Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1), prop);
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 			}
 		}
 	} else {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				CompileValues::to_code_val(spec);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 					(inter_ti) CONDITION_DUSAGE);
 				CompileValues::to_code_val(
 					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 	}
 
 @<Issue called in repeat problem@> =
@@ -166,7 +166,7 @@ we can more efficiently defer for this single purpose if it is.
 void CompileLoops::iterate(parse_node *spec, local_variable *fromv) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			CompileValues::to_code_val(spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 				(inter_ti) LOOP_DOMAIN_DUSAGE);
@@ -176,7 +176,7 @@ void CompileLoops::iterate(parse_node *spec, local_variable *fromv) {
 			} else {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			}
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		pcalc_prop_deferral *pdef = Deferrals::defer_loop_domain(prop);
@@ -189,7 +189,7 @@ void CompileLoops::iterate(parse_node *spec, local_variable *fromv) {
 			case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
 			default: internal_error("indirect function call with too many arguments");
 		}
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
 			Cinders::compile_cindered_values(prop, pdef);
 			if (fromv) {
@@ -198,7 +198,7 @@ void CompileLoops::iterate(parse_node *spec, local_variable *fromv) {
 			} else {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			}
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 
@@ -271,98 +271,98 @@ void CompileLoops::through_list(parse_node *spec, local_variable *val_var) {
 	inter_symbol *copy_var_s = LocalVariables::declare(copy_var);
 
 	Produce::inv_primitive(Emit::tree(), FOR_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, copy_var_s);
 				CompileValues::to_code_val(spec);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, index_var_s);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
+				Emit::up();
 				if (pointery) {
 					Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
-							Produce::down(Emit::tree());
+							Emit::down();
 								RTKinds::emit_strong_id_as_val(CK);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPYAZ_HL));
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_symbol(Emit::tree(), K_value, val_var_s);
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
 								Produce::val_symbol(Emit::tree(), K_value, index_var_s);
 								Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
 				} else {
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
 							Produce::val_symbol(Emit::tree(), K_value, index_var_s);
 							Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 				}
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), LE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, index_var_s);
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, index_var_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 			if (pointery) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPYAZ_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, val_var_s);
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
 						Produce::val_symbol(Emit::tree(), K_value, index_var_s);
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			} else {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, copy_var_s);
 						Produce::val_symbol(Emit::tree(), K_value, index_var_s);
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 }

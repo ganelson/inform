@@ -44,11 +44,11 @@ void CompileSchemas::from_local_variables_in_val_context(i6_schema *sch,
 void CompileSchemas::from_annotated_schema(annotated_i6_schema *asch) {
 	if (asch->negate_schema) {
 		Produce::inv_primitive(Emit::tree(), NOT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 	CompileSchemas::from_terms_in_void_context(asch->schema, &(asch->pt0), &(asch->pt1));
 	if (asch->negate_schema) {
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 

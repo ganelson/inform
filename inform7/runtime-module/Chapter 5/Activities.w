@@ -39,7 +39,7 @@ inter_name *RTActivities::iname(activity *av) {
 void RTActivities::emit_activity_list(activity_list *al) {
 	int negate_me = FALSE, downs = 0;
 	if (al->ACL_parity == FALSE) negate_me = TRUE;
-	if (negate_me) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); downs++; }
+	if (negate_me) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Emit::down(); downs++; }
 
 	int cl = 0;
 	for (activity_list *k = al; k; k = k->next) cl++;
@@ -48,12 +48,12 @@ void RTActivities::emit_activity_list(activity_list *al) {
 	while (al != NULL) {
 		if (++ncl < cl) {
 			Produce::inv_primitive(Emit::tree(), OR_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 			downs++;
 		}
 		if (al->activity != NULL) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIVITY_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, al->activity->compilation_data.av_iname);
 				if (al->acting_on) {
 					if (Specifications::is_description(al->acting_on)) {
@@ -64,7 +64,7 @@ void RTActivities::emit_activity_list(activity_list *al) {
 						CompileValues::to_code_val(al->acting_on);
 					}
 				}
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 		else {
 			CompileValues::to_code_val(al->only_when);
@@ -72,7 +72,7 @@ void RTActivities::emit_activity_list(activity_list *al) {
 		al = al->next;
 	}
 
-	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+	while (downs > 0) { Emit::up(); downs--; }
 }
 
 void RTActivities::arrays(void) {

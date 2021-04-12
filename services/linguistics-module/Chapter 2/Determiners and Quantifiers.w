@@ -223,7 +223,7 @@ void Quantifiers::emit_test(quantifier *quant,
 	int quantification_parameter, inter_symbol *qcy, inter_symbol *qcn) {
 
 	Produce::inv_primitive(Emit::tree(), quant->operator_prim);
-	Produce::down(Emit::tree());
+	Emit::down();
 
 	int TC = quant->T_coefficient;
 	switch (TC) {
@@ -231,11 +231,11 @@ void Quantifiers::emit_test(quantifier *quant,
 			if (quant->is_complementary) {
 				Produce::val_symbol(Emit::tree(), K_value, qcy);
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, qcn);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 						(inter_ti) quantification_parameter);
-				Produce::up(Emit::tree());
+				Emit::up();
 			} else {
 				Produce::val_symbol(Emit::tree(), K_value, qcy);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
@@ -253,30 +253,30 @@ void Quantifiers::emit_test(quantifier *quant,
 		default:
 			if (quant->operator_prim != EQ_BIP) {
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, qcy);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
 					Produce::val_symbol(Emit::tree(), K_value, qcn);
-				Produce::up(Emit::tree());
+				Emit::up();
 			} else {
 				Produce::val_symbol(Emit::tree(), K_value, qcy);
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
 						Produce::val_symbol(Emit::tree(), K_value, qcn);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			break;
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 #endif
 

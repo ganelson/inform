@@ -29,18 +29,18 @@ int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
 	switch (cpmc) {
 		case NOWHERE_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) GoingPlugin::id());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			return TRUE;
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
@@ -52,18 +52,18 @@ int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
 		}
 		case NOT_NOWHERE_CPMC:
 			Produce::inv_primitive(Emit::tree(), NE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) GoingPlugin::id());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			return TRUE;
 	}
 	return FALSE;

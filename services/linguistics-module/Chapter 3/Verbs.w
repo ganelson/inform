@@ -19,7 +19,7 @@ typedef struct verb {
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
-	struct verb_compilation_data verb_compilation; /* see //values: Using Nametags// on this */
+	struct verb_compilation_data verb_compilation;
 	#endif
 
 	CLASS_DEFINITION

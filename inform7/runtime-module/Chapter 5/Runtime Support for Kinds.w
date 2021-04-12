@@ -419,7 +419,7 @@ int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 		DISCARD_TEXT(N)
 		Produce::inv_call_iname(Emit::tree(), iname);
 		*down = TRUE;
-		Produce::down(Emit::tree());
+		Emit::down();
 		if (Kinds::Behaviour::uses_pointer_values(to)) {
 			Frames::emit_new_local_value(to);
 		}
@@ -765,26 +765,26 @@ void RTKinds::compile_structures(void) {
 		kind *K = rks->kind_described;
 		if (rks->make_default) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, k_s);
 					RTKinds::emit_strong_id_as_val(K);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, rks->rks_dv_iname);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	}
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 
@@ -870,16 +870,16 @@ void RTKinds::emit_heap_allocation(heap_allocation ha) {
 	if (ha.stack_offset >= 0) {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATEONSTACK_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ha.stack_offset);
 		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 
@@ -1157,9 +1157,9 @@ compilation errors.
 	Emit::code_comment(C);
 	DISCARD_TEXT(C)
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, value_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Functions::end(save);
 
 @ A unit is printed back with its earliest-defined literal pattern used as
@@ -1174,9 +1174,9 @@ but at present this can't happen.
 		packaging_state save = Functions::begin(printing_rule_name);
 		inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, value_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Functions::end(save);
 	}
 
@@ -1185,19 +1185,19 @@ but at present this can't happen.
 	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, value_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			instance *I;
 			LOOP_OVER_INSTANCES(I, K) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(I));
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							TEMPORARY_TEXT(CT)
 							wording NW = Instances::get_name_in_play(I, FALSE);
 							LOOP_THROUGH_WORDING(k, NW) {
@@ -1206,16 +1206,16 @@ but at present this can't happen.
 							}
 							Produce::val_text(Emit::tree(), CT);
 							DISCARD_TEXT(CT)
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
 			}
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP); /* this default case should never be needed, unless the user has blundered at the I6 level: */
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						TEMPORARY_TEXT(DT)
 						wording W = Kinds::Behaviour::get_name(K, FALSE);
 						WRITE_TO(DT, "<illegal ");
@@ -1224,11 +1224,11 @@ but at present this can't happen.
 						WRITE_TO(DT, ">");
 						Produce::val_text(Emit::tree(), DT);
 						DISCARD_TEXT(DT)
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Functions::end(save);
 
@@ -1267,29 +1267,29 @@ first function ever implemented by emitting Inter code, on 12 November 2017.
 	inter_symbol *x = LocalVariables::declare(lv_x);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 
 	if (instance_count <= 1) {
 		Produce::val_symbol(Emit::tree(), K, x);
 	} else {
 		Emit::cast(K_number, K);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Emit::cast(K, K_number);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K, x);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ And this was the second, a few minutes later.
 
@@ -1299,42 +1299,42 @@ first function ever implemented by emitting Inter code, on 12 November 2017.
 	inter_symbol *x = LocalVariables::declare(lv_x);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 
 	if (instance_count <= 1) {
 		Produce::val_symbol(Emit::tree(), K, x);
 	} else {
 		Emit::cast(K_number, K);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 
 				if (instance_count > 2) {
 					Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Emit::cast(K, K_number);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_symbol(Emit::tree(), K, x);
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count-2);
-					Produce::up(Emit::tree());
+					Emit::up();
 				} else {
 					Emit::cast(K, K_number);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K, x);
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
 
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ And here we add:
 
@@ -1351,99 +1351,99 @@ and |b| inclusive.
 	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, a_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, b_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), RANDOM_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					if (Kinds::Behaviour::is_quasinumerical(K))
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 					else
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, a_s);
 			Produce::val_symbol(Emit::tree(), K_value, b_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, b_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	inter_symbol *smaller = NULL, *larger = NULL;
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, a_s);
 			Produce::val_symbol(Emit::tree(), K_value, b_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				smaller = b_s; larger = a_s;
 				@<Formula for range@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		smaller = a_s; larger = b_s;
 		@<Formula for range@>;
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Functions::end(save);
 
 @<Formula for range@> =
 	Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, smaller);
 		Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), RANDOM_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, larger);
 					Produce::val_symbol(Emit::tree(), K_value, smaller);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 @h Further runtime support.
 These last routines are synoptic: they take the ID number of the kind as an
@@ -1467,50 +1467,50 @@ deduced from its value alone, |K| must explicitly be supplied.)
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	inter_symbol *v_s = LocalVariables::new_other_as_symbol(I"v");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, k_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					inter_name *pname = Kinds::Behaviour::get_iname(K);
 					Produce::inv_call_iname(Emit::tree(), pname);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, v_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 	}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, v_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), pkvp_iname);
 
@@ -1525,59 +1525,59 @@ which have to be given some type-safe value to start out at.
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, sk_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::definite(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						if (Kinds::Behaviour::uses_pointer_values(K)) {
 							inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 							Produce::inv_call_iname(Emit::tree(), iname);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, sk_s);
-							Produce::up(Emit::tree());
+							Emit::up();
 						} else {
 							RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
 						}
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, 0);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), dvok_iname);
 
@@ -1596,53 +1596,53 @@ unless the two values are genuinely equal.
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, k_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if ((Kinds::Behaviour::definite(K)) &&
 			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						inter_name *iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
 						Produce::val_iname(Emit::tree(), K_value, iname);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, 0);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kcf_iname);
 
@@ -1652,52 +1652,52 @@ unless the two values are genuinely equal.
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, k_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti)
 							Kinds::Behaviour::get_highest_valid_value_as_integer(K));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, 0);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kds_iname);
 
@@ -1709,35 +1709,35 @@ storing pointers to blocks on the heap.
 	packaging_state save = Functions::begin(kibv_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, k_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 		LOOP_OVER_BASE_KINDS(K) {
 			if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			if (Kinds::Behaviour::uses_pointer_values(K)) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					RTKinds::emit_weak_id_as_val(K);
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::rtrue(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
 		}
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Produce::rfalse(Emit::tree());
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kibv_iname);
@@ -1753,51 +1753,51 @@ such a function does, see "BlockValues.i6t".
 	inter_symbol *fail_s = LocalVariables::new_other_as_symbol(I"fail");
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, k_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, k_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						inter_name *iname = Kinds::Behaviour::get_support_routine_as_iname(K);
 						Produce::val_iname(Emit::tree(), K_value, iname);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	}
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, fail_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEERROR_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, fail_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::rfalse(Emit::tree());
 	Functions::end(save);
@@ -1816,23 +1816,23 @@ void RTKinds::I7_Kind_Name_routine(void) {
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, k_s);
 					Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						TEMPORARY_TEXT(S)
 						WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
 						Produce::val_text(Emit::tree(), S);
 						DISCARD_TEXT(S)
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		}
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -1874,10 +1874,10 @@ int RTKinds::emit_element_of_condition(inference_subject_family *family,
 	kind *K = KindSubjects::to_kind(infs);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, t0_s);
 			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-		Produce::up(Emit::tree());
+		Emit::up();
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_object)) {

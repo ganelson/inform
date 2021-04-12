@@ -34,9 +34,9 @@ void CallingFunctions::direct_function_call(tokens_packet *tokens, inter_name *i
 	@<Compute the return kind of the phrase@>;
 
 	Produce::inv_call_iname(Emit::tree(), identifier);
-	Produce::down(Emit::tree());
+	Emit::down();
 		@<Emit the comma-separated list of arguments@>;
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 @<Compute the return kind of the phrase@> =
@@ -76,17 +76,17 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
-	Produce::down(Emit::tree());
+	Emit::down();
 	if (lookup_flag) {
 		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			CompileValues::to_code_val(indirect_spec);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		CompileValues::to_code_val(indirect_spec);
 	}
 	int phrase_options = -1;
 	@<Emit the comma-separated list of arguments@>;
-	Produce::up(Emit::tree());
+	Emit::up();
 }

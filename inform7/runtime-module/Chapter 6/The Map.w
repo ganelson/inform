@@ -143,50 +143,50 @@ void RTMap::write_door_dir_routines(void) {
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value,
 						RTInstances::iname(Map::get_value_of_opposite_property(notice->D1)));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value,
 				RTInstances::iname(Map::get_value_of_opposite_property(notice->D2)));
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Functions::end(save);
 	}
@@ -199,48 +199,48 @@ void RTMap::write_door_to_routines(void) {
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R2));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Functions::end(save);
 	}

@@ -156,7 +156,7 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 				downs = LocalParking::park(phsf);
 				phsf = Frames::boxed_frame(phsf);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Frames::emit_new_local_value(K_text);
 				captured = TRUE;
 			}
@@ -168,8 +168,8 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 			else
 				Produce::val_iname(Emit::tree(), K_value, tin);
 			if (captured) {
-				Produce::up(Emit::tree());
-				while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+				Emit::up();
+				while (downs > 0) { Emit::up(); downs--; }
 			}
 		}
 	}
@@ -327,26 +327,26 @@ a request for a new text substitution to be compiled later...
 @<Compile a say-phrase@> =
 	if (TargetVMs::debug_enabled(Task::vm())) {
 		Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							TEMPORARY_TEXT(S)
 							WRITE_TO(S, "%W", ts->unsubstituted_text);
 							Produce::val_text(Emit::tree(), S);
 							DISCARD_TEXT(S)
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::rtrue(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 
 	parse_node *ts_code_block = Node::new(IMPERATIVE_NT);

@@ -67,41 +67,41 @@ void RTScenes::DetectSceneChange_routine(void) {
 
 @<Add the scene-change tail@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, chs_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 				(inter_ti) MAX_SCENE_CHANGE_ITERATION);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_text(Emit::tree(), I">--> The scene change machinery is stuck.\n");
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::rtrue(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, ch_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_call_iname(Emit::tree(), iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), PREINCREMENT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, chs_s);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::rfalse(Emit::tree());
 
@@ -112,39 +112,39 @@ numbers so that more abstruse ways to end take precedence over less.
 
 @<Compile code detecting the ends of a specific scene@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			for (int end=sc->no_ends-1; end>=1; end--)
 				RTScenes::test_scene_end(sc, end, ch_s, CScene_l);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			RTScenes::test_scene_end(sc, 0, ch_s, CScene_l);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @ Individual ends are tested here. There are actually three ways an end can
 occur: at start of play (for end 0 only), when an I7 condition holds, or when
@@ -156,25 +156,25 @@ below.
 void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_symbol *CScene_l) {
 	if ((end == 0) && (sc->start_of_play)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), BITWISEAND_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_ENDINGS_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTScenes::compile_scene_end(sc, 0);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 	parse_node *S = sc->ends[end].anchor_condition;
 	if (S) {
@@ -207,23 +207,23 @@ instruction because we're not compiling a loop.)
 
 @<Compile code to test the scene end condition@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		current_sentence = sc->ends[end].anchor_condition_set;
 		CompileValues::to_code_val_of_kind(S, K_truth_state);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, ch_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
+			Emit::up();
 			RTScenes::compile_scene_end(sc, end);
 			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::lab(Emit::tree(), CScene_l);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 @ That's everything except for the consequences of a scene end occurring.
 Code for that is generated here.
@@ -281,118 +281,118 @@ end actually occurred.)
 @<Compile code to update the scene status@> =
 	if (end == 0) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTKinds::emit_weak_id_as_val(K_scene);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ix+1);
 				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_recurring));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 
 @<Compile code to run the scene end rulebooks@> =
 	if (end == 0) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WHEN_SCENE_BEGINS_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->allocation_id + 1));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->ends[end].end_rulebook->allocation_id));
-	Produce::up(Emit::tree());
+	Emit::up();
 	if (end == 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WHEN_SCENE_ENDS_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->allocation_id + 1));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @<Compile code to update the arrays recording most recent scene ending@> =
 	inter_name *sarr = Hierarchy::find(SCENE_ENDED_HL);
 	if (end == 0) sarr = Hierarchy::find(SCENE_STARTED_HL);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, sarr);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(THE_TIME_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), BITWISEOR_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (1 << end));
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) end);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @<Compile code to print text in response to the SCENES command@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEBUG_SCENES_HL));
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			TEMPORARY_TEXT(OUT)
 			WRITE("[Scene '");
 			if (sc->as_instance) WRITE("%+W", Instances::get_name(sc->as_instance, FALSE));
@@ -401,12 +401,12 @@ end actually occurred.)
 			if (end >= 2) WRITE(" %+W", sc->ends[end].end_names);
 			WRITE("]\n");
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_text(Emit::tree(), OUT);
-			Produce::up(Emit::tree());
+			Emit::up();
 			DISCARD_TEXT(OUT)
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @ In general, the marker count is used to ensure that |RTScenes::compile_scene_end_dash|
 never calls itself for a scene it has been called with before on this round.
@@ -431,24 +431,24 @@ This is allowed; it's a case where the "tolerance" below is raised.
 				for (scon = other_scene->ends[other_end].anchor_connectors; scon; scon = scon->next) {
 					if ((scon->connect_to == sc) && (scon->end == end)) {
 						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
 									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) other_scene->allocation_id);
-								Produce::up(Emit::tree());
+								Emit::up();
 								if (other_end >= 1)
 									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 								else
 									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::code(Emit::tree());
-							Produce::down(Emit::tree());
+							Emit::down();
 								RTScenes::compile_scene_end_dash(other_scene, other_end);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 					}
 				}
 			}
@@ -466,36 +466,36 @@ void RTScenes::ShowSceneStatus_routine(void) {
 	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
 	packaging_state save = Functions::begin(iname);
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			scene *sc;
 			LOOP_OVER(sc, scene) {
 				wording NW = Instances::get_name(sc->as_instance, FALSE);
 
 				Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						@<Show status of this running scene@>;
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						@<Show status of this non-running scene@>;
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
@@ -504,90 +504,90 @@ void RTScenes::ShowSceneStatus_routine(void) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "Scene '%+W' playing (for ", NW);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_text(Emit::tree(), T);
-	Produce::up(Emit::tree());
+	Emit::up();
 	DISCARD_TEXT(T)
 
 	Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(THE_TIME_HL));
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STARTED_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_text(Emit::tree(), I" mins now)\n");
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @<Show status of this non-running scene@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Show status of this recently ended scene@>;
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 @<Show status of this recently ended scene@> =
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "Scene '%+W' ended", NW);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_text(Emit::tree(), T);
-	Produce::up(Emit::tree());
+	Emit::up();
 	DISCARD_TEXT(T)
 
 	if (sc->no_ends > 2) {
 		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				for (int end=2; end<sc->no_ends; end++) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) end);
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							TEMPORARY_TEXT(T)
 							WRITE_TO(T, " %+W", sc->ends[end].end_names);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), T);
-							Produce::up(Emit::tree());
+							Emit::up();
 							DISCARD_TEXT(T)
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 				}
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_text(Emit::tree(), I"\n");
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @h During clauses.
 We've now seen one use of scenes: they kick off rulebooks when they begin or
@@ -607,14 +607,14 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 		if (Instances::of_kind(I, K_scene)) {
 			scene *sc = Scenes::from_named_constant(I);
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
+			Emit::up();
 			stuck = FALSE;
 		}
 	} else {
@@ -622,9 +622,9 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 			parse_node *desc = Descriptions::to_rvalue(spec);
 			if (desc) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DURINGSCENEMATCHING_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					CompileValues::to_code_val(desc);
-				Produce::up(Emit::tree());
+				Emit::up();
 				stuck = FALSE;
 			}
 		}

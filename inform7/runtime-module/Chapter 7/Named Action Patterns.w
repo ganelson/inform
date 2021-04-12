@@ -27,13 +27,13 @@ void RTNamedActionPatterns::compile(void) {
 			action_pattern *ap = nape->behaviour;
 			current_sentence = nape->where_decided;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTActionPatterns::emit_pattern_match(ap, TRUE);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		Produce::rfalse(Emit::tree());
 		Functions::end(save);

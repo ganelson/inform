@@ -14,3 +14,29 @@ and where functions have names like |Tags::add_by_name| rather than just |add_by
 (c) This module uses other modules drawn from the //compiler//, and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
+
+@h About this layer of Inform.
+The //runtime// and //imperative// modules (see //imperative: What This Module Does//)
+jointly make up a layer of Inform whose task is to take the conceptual structures
+now build up -- rules, phrases, tables, the world model -- and turn them into
+Inter code. For the bigger picture, see //compiler//.
+
+Neither module is in charge of the other. //runtime// makes extensive use of
+//imperative: Functions//, while //imperative// uses //runtime: Emit// and
+//runtime: Hierarchy//. The demarcation line is that:
+
+(*) //imperative// provides general mechanisms for compiling Inter functions,
+and uses them to construct the functions needed for rules and phrases.
+(*) //runtime// organises the hierarchical structure of the Inter code being
+made, and compiles the Inter representations of data structures like rulebooks
+or tables, and any Inter functions needed to manage them at runtime.
+
+@h The Inter hierarchy.
+Inter code is an intermediate-level representation of the program we are to
+compile. Inter can exist in binary or textual forms: see //inter: Manual// for
+a general introduction to programming it in textual form. We will compile
+binary Inter for speed, but they are really very similar.
+
+
+
+

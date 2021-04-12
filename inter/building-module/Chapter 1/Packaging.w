@@ -334,7 +334,7 @@ module to have this submodule. It should call one of the following four function
 #ifdef CORE_MODULE
 package_request *Packaging::request_submodule(inter_tree *I, compilation_unit *C, submodule_identity *sid) {
 	if (C == NULL) return Packaging::generic_submodule(I, sid);
-	return Packaging::new_submodule_inner(I, CompilationUnits::inter_presence(C), sid);
+	return Packaging::new_submodule_inner(I, CompilationUnits::to_module_package(C), sid);
 }
 
 package_request *Packaging::local_submodule(inter_tree *I, submodule_identity *sid) {

@@ -187,41 +187,41 @@ void RTPropertyValues::emit_has_property(kind *K, inter_symbol *S, property *prn
 	if (RTProperties::implemented_as_attribute(prn)) {
 		if (RTProperties::stored_in_negation(prn)) {
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), HAS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K, S);
 					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(EitherOrProperties::get_negation(prn)));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		} else {
 			Produce::inv_primitive(Emit::tree(), HAS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K, S);
 				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	} else {
 		if (RTProperties::stored_in_negation(prn)) {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K, S);
 					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(EitherOrProperties::get_negation(prn)));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 		} else {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K, S);
 					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	}
 }

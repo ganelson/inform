@@ -27,7 +27,7 @@ void RTActionPatterns::emit_try(explicit_action *ea, int store_instead) {
 	if (ea->request) flag_bits += 1;
 
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYACTION_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) flag_bits);
 		if (spec2) RTActionPatterns::emit_try_action_parameter(spec2, K_object);
 		else Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
@@ -38,11 +38,11 @@ void RTActionPatterns::emit_try(explicit_action *ea, int store_instead) {
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		if (store_instead) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Frames::emit_new_local_value(K_stored_action);
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 @ Which requires the following. As ever, there have to be hacks to ensure that
@@ -134,13 +134,13 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 				Specifications::to_kind(spec));
 		CompileConditions::add_calling(lvar);
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 				CompileValues::to_code_val(I6_var_TS);
-			Produce::up(Emit::tree());
+			Emit::up();
 	}
 
 	force_proposition = TRUE;
@@ -160,19 +160,19 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
 			inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, ct_1_s);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(EXISTSTABLEROWCORR_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, ct_0_s);
 						CompileValues::to_code_val(spec->down->next);
-					Produce::up(Emit::tree());
+					Emit::up();
 					CompileValues::to_code_val(spec->down);
 					CompileValues::to_code_val(I6_var_TS);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			force_proposition = FALSE;
 		}
 	}
@@ -187,15 +187,15 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 			} else {
 				Produce::inv_primitive(Emit::tree(), NE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						CompileValues::to_code_val(spec);
 						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_FROM_HL));
 						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_WORDS_HL));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			force_proposition = FALSE;
 		}
@@ -207,10 +207,10 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 					"$P on %u : $T\n", spec, verify_as_kind, current_sentence);
 				if (adapt_region) {
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						CompileValues::to_code_val(I6_var_TS);
 						CompileValues::to_code_val(spec);
-					Produce::up(Emit::tree());
+					Emit::up();
 					force_proposition = FALSE;
 				}
 			}
@@ -222,10 +222,10 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 			(adapt_region) &&
 			(Instances::of_kind(Descriptions::to_instance(spec), K_region)))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				CompileValues::to_code_val(I6_var_TS);
 				CompileValues::to_code_val(spec);
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 		force_proposition = FALSE;
 	}
@@ -258,7 +258,7 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 	}
 
 	if (Wordings::nonempty(C)) {
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 
@@ -497,22 +497,22 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 	if (ActionNameLists::listwise_negated(ap->action_list)) {
 		if (ranges_count[0] > 0) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				range_to_compile = 0;
 				@<Emit CPM range@>;
 		}
 		if (ranges_count[3] > 0) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 		Produce::inv_primitive(Emit::tree(), NOT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 		if ((ranges_count[1] == 0) && (ranges_count[2] == 0))
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		else {
 			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 			}
 			if (ranges_count[1] > 0) {
 				range_to_compile = 1;
@@ -522,21 +522,21 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 				range_to_compile = 2;
 				@<Emit CPM range@>;
 			}
-			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) Produce::up(Emit::tree());
+			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) Emit::up();
 		}
-		Produce::up(Emit::tree());
+		Emit::up();
 		if (ranges_count[3] > 0) {
 			range_to_compile = 3;
 			@<Emit CPM range@>;
 		}
-		if (ranges_count[3] > 0) Produce::up(Emit::tree());
-		if (ranges_count[0] > 0) Produce::up(Emit::tree());
+		if (ranges_count[3] > 0) Emit::up();
+		if (ranges_count[0] > 0) Emit::up();
 	} else {
 		int downs = 0;
 		if (ranges_count[1] > 0) {
 			if (ranges_count[0]+ranges_count[2]+ranges_count[3] > 0) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree()); downs++;
+				Emit::down(); downs++;
 			}
 			range_to_compile = 1;
 			@<Emit CPM range@>;
@@ -544,7 +544,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 		if (ranges_count[0] > 0) {
 			if (ranges_count[2]+ranges_count[3] > 0) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree()); downs++;
+				Emit::down(); downs++;
 			}
 			range_to_compile = 0;
 			@<Emit CPM range@>;
@@ -552,7 +552,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 		if (ranges_count[2] > 0) {
 			if (ranges_count[3] > 0) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree()); downs++;
+				Emit::down(); downs++;
 			}
 			range_to_compile = 2;
 			@<Emit CPM range@>;
@@ -561,7 +561,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			range_to_compile = 3;
 			@<Emit CPM range@>;
 		}
-		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+		while (downs > 0) { Emit::up(); downs--; }
 	}
 
 	if ((ranges_count[0] + ranges_count[1] + ranges_count[2] + ranges_count[3] == 0) &&
@@ -582,13 +582,13 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			done++;
 			if (done < ranges_count[range_to_compile]) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree()); downs++;
+				Emit::down(); downs++;
 			}
 			ap_clause *apoc = needed_apoc[i];
 			@<Emit CPM condition piece@>;
 		}
 	}
-	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+	while (downs > 0) { Emit::up(); downs--; }
 
 @<Emit CPM condition piece@> =
 	TEMPORARY_TEXT(C)
@@ -599,27 +599,27 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 	switch (cpmc) {
 		case ACTOR_IS_PLAYER_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case ACTOR_ISNT_PLAYER_CPMC:
 			Produce::inv_primitive(Emit::tree(), NE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case REQUESTER_EXISTS_CPMC:
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACT_REQUESTER_HL));
 			break;
 		case REQUESTER_DOESNT_EXIST_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACT_REQUESTER_HL));
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case ACTOR_MATCHES_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(VH, Inter_actor_VAR, APClauses::spec(ap, ACTOR_AP_CLAUSE), K_object, FALSE);
@@ -632,20 +632,20 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			break;
 		case NOUN_IS_INP1_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(INP1_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case SECOND_EXISTS_CPMC:
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SECOND_HL));
 			break;
 		case SECOND_IS_INP1_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SECOND_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(INP2_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(VH, Inter_noun_VAR, APClauses::spec(ap, NOUN_AP_CLAUSE),
@@ -670,13 +670,13 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_LOCATION_HL));
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LOCATIONOF_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			break;
 		case ACTOR_LOCATION_MATCHES_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(VH, actor_location_VAR,
@@ -709,10 +709,10 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSCOPE_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(to_be_present));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
@@ -722,59 +722,59 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 				Specifications::to_kind(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE)));
 			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LOOPOVERSCOPE_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, los->los_iname);
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
 			loop_over_scope *los = LoopingOverScope::new(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LOOPOVERSCOPE_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, los->los_iname);
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			break;
 		}
 		case SET_SELF_TO_ACTOR_CPMC:
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 					Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 		case WHEN_CONDITION_HOLDS_CPMC:
 			CompileValues::to_code_val(APClauses::spec(ap, WHEN_AP_CLAUSE));
@@ -785,7 +785,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIONBITMAP_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 	if (APClauses::spec(ap, NOUN_AP_CLAUSE) == NULL)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
@@ -800,7 +800,7 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 			bad_form = TRUE;
 		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(item->action_listed));
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 	if (APClauses::viable_in_past_tense(ap) == FALSE) bad_form = TRUE;
 	if (bad_form)
 		@<Issue too complex PT problem@>;

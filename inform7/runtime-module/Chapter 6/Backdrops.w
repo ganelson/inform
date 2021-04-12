@@ -37,26 +37,26 @@ void RTBackdrops::write_found_in_routines(void) {
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
 		instance *loc = Backdrops::get_inferred_location(inf);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {
 			Produce::inv_call_iname(Emit::tree(),
 				Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
 				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
-			Produce::up(Emit::tree());
+			Emit::up();
 		} else {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
 				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::rtrue(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::rfalse(Emit::tree());
 		break;
 	}

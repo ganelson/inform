@@ -50,7 +50,7 @@ int LoopingOverScope::compilation_coroutine(void) {
 	inter_symbol *it_s = LocalVariables::declare(it_lv);
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileConditions::begin();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
@@ -61,12 +61,12 @@ int LoopingOverScope::compilation_coroutine(void) {
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		CompileConditions::end();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
 				Produce::val_symbol(Emit::tree(), K_value, it_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 	Functions::end(save);

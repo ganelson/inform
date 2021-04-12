@@ -74,13 +74,13 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 	} else {
 		if (storage_mode != 1) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		CompileValues::to_code_val(prop_spec);
 		if (storage_mode != 1) {
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	}
 	return;
@@ -121,10 +121,10 @@ object as produced the original text containing the substitution.
 @<Emit the property's owner@> =
 	if (Annotations::read_int(spec_found, record_as_self_ANNOT)) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 			CompileValues::to_code_val(owner);
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		CompileValues::to_code_val(owner);
 	}
@@ -141,12 +141,12 @@ object as produced the original text containing the substitution.
 	} else {
 		if (storage_mode != 1) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 		CompileValues::to_code_val(spec_found->down);
 		CompileValues::to_code_val(spec_found->down->next);
 		if (storage_mode != 1) {
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	}
 	return;
@@ -176,7 +176,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 				LocalVariables::add_table_lookup();
 				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
-					Produce::down(Emit::tree());
+					Emit::down();
 				}
 				local_variable *ct_0_lv = LocalVariables::find_internal(I"ct_0");
 				inter_symbol *ct_0_s = LocalVariables::declare(ct_0_lv);
@@ -189,7 +189,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (storage_mode != 1) {
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
 			}
 			break;
@@ -202,7 +202,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 			} else {
 				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup);
-					Produce::down(Emit::tree());
+					Emit::down();
 				}
 				CompileValues::to_code_val(spec_found->down->next->next);
 				CompileValues::to_code_val(spec_found->down);
@@ -211,7 +211,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (storage_mode != 1) {
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
 			}
 			break;
@@ -221,7 +221,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 			} else {
 				if (storage_mode != 1) {
 					Produce::inv_call_iname(Emit::tree(), lookup_corr);
-					Produce::down(Emit::tree());
+					Emit::down();
 				}
 				CompileValues::to_code_val(spec_found->down->next->next->next);
 				CompileValues::to_code_val(spec_found->down);
@@ -231,7 +231,7 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (storage_mode != 1) {
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
 			}
 			break;

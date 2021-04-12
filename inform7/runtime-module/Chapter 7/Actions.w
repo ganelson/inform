@@ -154,15 +154,15 @@ void RTActions::compile_action_routines(void) {
 		inter_name *iname = RTActions::Sub(an);
 		packaging_state save = Functions::begin(iname);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			Produce::inv_call_iname(Emit::tree(), generic_iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->check_rules->allocation_id);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->carry_out_rules->allocation_id);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->report_rules->allocation_id);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Functions::end(save);
 	}
 }
@@ -210,17 +210,17 @@ void RTActions::ActionData(void) {
 	inter_symbol *s_s = LocalVariables::new_other_as_symbol(I"s");
 	inter_symbol *for_say_s = LocalVariables::new_other_as_symbol(I"for_say");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, act_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	LOOP_OVER(an, action_name) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(an));
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 
 				int j = Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), j0 = -1, somethings = 0, clc = 0;
 				while (j <= Wordings::last_wn(ActionNameNames::tensed(an, IS_TENSE))) {
@@ -231,33 +231,33 @@ void RTActions::ActionData(void) {
 							TEMPORARY_TEXT(AT)
 							RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), AT);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), AT);
-							Produce::up(Emit::tree());
+							Emit::up();
 							DISCARD_TEXT(AT)
 
 							j0 = -1;
 						}
 						@<Insert a space here if needed to break up the action name@>;
 						Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, for_say_s);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::code(Emit::tree());
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::val_text(Emit::tree(), I"it");
-								Produce::up(Emit::tree());
-							Produce::up(Emit::tree());
+								Emit::up();
+							Emit::up();
 							Produce::code(Emit::tree());
-							Produce::down(Emit::tree());
+							Emit::down();
 								RTActions::cat_something2(an, somethings++, n_s, s_s);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 					} else {
 						if (j0<0) j0 = j;
 					}
@@ -268,33 +268,33 @@ void RTActions::ActionData(void) {
 					TEMPORARY_TEXT(AT)
 					RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), AT);
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), AT);
-					Produce::up(Emit::tree());
+					Emit::up();
 					DISCARD_TEXT(AT)
 				}
 				if (somethings < ActionSemantics::max_parameters(an)) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), NE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_symbol(Emit::tree(), K_value, for_say_s);
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							@<Insert a space here if needed to break up the action name@>;
 							RTActions::cat_something2(an, somethings++, n_s, s_s);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 				}
 
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 	}
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), DB_Action_Details_iname);
 }
@@ -302,9 +302,9 @@ void RTActions::ActionData(void) {
 @<Insert a space here if needed to break up the action name@> =
 	if (clc++ > 0) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I" ");
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @
@@ -330,22 +330,22 @@ void RTActions::cat_something2(action_name *an, int n, inter_symbol *n_s, inter_
 	if (Kinds::Behaviour::is_object(K) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
 		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 100);
 					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_FROM_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_WORDS_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 		} else {
 			Produce::val_symbol(Emit::tree(), K_value, var);
 		}
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *spec) {
@@ -386,28 +386,28 @@ void RTActions::emit_anl(action_name_list *head) {
 	LOGIF(ACTION_PATTERN_COMPILATION, "Emitting action name list: $L", head);
 
 	int neg = ActionNameLists::itemwise_negated(head);
-	if (neg) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
+	if (neg) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Emit::down(); }
 
 	int N = 0, downs = 0;
 	LOOP_THROUGH_ANL(L, head) {
 		N++;
-		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
+		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Emit::down(); downs++; }
 		if (L->item.nap_listed) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, RTNamedActionPatterns::identifier(L->item.nap_listed));
-			Produce::up(Emit::tree());
+			Emit::up();
 		} else {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
 				Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(L->item.action_listed));
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	}
-	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+	while (downs > 0) { Emit::up(); downs--; }
 
-	if (neg) Produce::up(Emit::tree());
+	if (neg) Emit::up();
 }
 
 @ =

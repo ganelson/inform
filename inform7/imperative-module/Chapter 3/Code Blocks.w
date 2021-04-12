@@ -251,12 +251,12 @@ void CodeBlocks::emit_break(void) {
 				current_block_stack.pb_stack[i].label_following =
 					unique_breakage_count++;
 			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				TEMPORARY_TEXT(TL)
 				WRITE_TO(TL, ".loop_break_%d", current_block_stack.pb_stack[i].label_following);
 				Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), TL));
 				DISCARD_TEXT(TL)
-			Produce::up(Emit::tree());
+			Emit::up();
 			return;
 		}
 	internal_error("not inside a loop block");

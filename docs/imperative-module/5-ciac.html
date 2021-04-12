@@ -106,9 +106,9 @@ phrase value stored dynamically at run-time.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ciac.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Compute the return kind of the phrase</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_call_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ciac.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Emit the comma-separated list of arguments</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the return kind of the phrase</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
@@ -158,19 +158,19 @@ invocations.
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">INDIRECT4_BIP</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"indirect function call with too many arguments"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">lookup_flag</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">LOOKUP_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="2-cv.html#SP5" class="function-link"><span class="function-syntax">CompileValues::to_code_val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">indirect_spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="2-cv.html#SP5" class="function-link"><span class="function-syntax">CompileValues::to_code_val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">indirect_spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phrase_options</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ciac.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Emit the comma-separated list of arguments</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

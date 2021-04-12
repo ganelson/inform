@@ -64,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">runtime</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the runtime module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. About this layer of Inform</a></li><li><a href="P-wtmd.html#SP3">&#167;3. The Inter hierarchy</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The runtime module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -80,6 +80,29 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. About this layer of Inform. </b>The <a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> modules (see <a href="../imperative-module/P-wtmd.html" class="internal">What This Module Does (in imperative)</a>)
+jointly make up a layer of Inform whose task is to take the conceptual structures
+now build up &mdash; rules, phrases, tables, the world model &mdash; and turn them into
+Inter code. For the bigger picture, see <a href="../compiler.html" class="internal">compiler</a>.
+</p>
+
+<p class="commentary">Neither module is in charge of the other. <a href="index.html" class="internal">runtime</a> makes extensive use of
+<a href="../imperative-module/3-fnc.html" class="internal">Functions (in imperative)</a>, while <a href="../imperative-module/index.html" class="internal">imperative</a> uses <a href="2-emt.html" class="internal">Emit (in runtime)</a> and
+<a href="2-hrr.html" class="internal">Hierarchy (in runtime)</a>. The demarcation line is that:
+</p>
+
+<ul class="items"><li>&#9679; <a href="../imperative-module/index.html" class="internal">imperative</a> provides general mechanisms for compiling Inter functions,
+and uses them to construct the functions needed for rules and phrases.
+</li><li>&#9679; <a href="index.html" class="internal">runtime</a> organises the hierarchical structure of the Inter code being
+made, and compiles the Inter representations of data structures like rulebooks
+or tables, and any Inter functions needed to manage them at runtime.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The Inter hierarchy. </b>Inter code is an intermediate-level representation of the program we are to
+compile. Inter can exist in binary or textual forms: see <a href="../inter/M-ui.html" class="internal">Manual (in inter)</a> for
+a general introduction to programming it in textual form. We will compile
+binary Inter for speed, but they are really very similar.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-rm.html">1</a></li><li class="progresschapter"><a href="2-hrr.html">2</a></li><li class="progresschapter"><a href="3-fc.html">3</a></li><li class="progresschapter"><a href="4-lpart.html">4</a></li><li class="progresschapter"><a href="5-rsfk.html">5</a></li><li class="progresschapter"><a href="6-nmn.html">6</a></li><li class="progresschapter"><a href="7-act.html">7</a></li><li class="progresschapter"><a href="8-prs.html">8</a></li><li class="progresschapter"><a href="9-fgr.html">9</a></li><li class="progresschapter"><a href="10-sc.html">10</a></li><li class="progressnext"><a href="1-rm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

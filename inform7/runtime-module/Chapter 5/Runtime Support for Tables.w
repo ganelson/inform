@@ -23,32 +23,32 @@ void RTTables::column_introspection_routine(void) {
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, tcv_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
 		Produce::inv_primitive(Emit::tree(), CASE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					RTKinds::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
-	Produce::up(Emit::tree());
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
@@ -332,55 +332,55 @@ void RTTables::compile_print_table_names(void) {
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, T_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_table, Hierarchy::find(THEEMPTYTABLE_HL));
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I"(the empty table)");
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 
 		LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_table, RTTables::identifier(t));
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						TEMPORARY_TEXT(S)
 						WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
 						Produce::val_text(Emit::tree(), S);
 						DISCARD_TEXT(S)
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I"** No such table **");
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 }
 

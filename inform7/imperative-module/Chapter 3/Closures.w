@@ -137,20 +137,20 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 	Kinds::binary_construction_material(K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 
 		if (Kinds::Behaviour::uses_pointer_values(result)) {
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 			RTKinds::emit_strong_id_as_val(result);
-			Produce::up(Emit::tree());
+			Emit::up();
 		} else {
 			if (RTKinds::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		}
 
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	Functions::end(save);
 

@@ -40,10 +40,10 @@ void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_ato
 		if (active) {
 			if ((bl == 0) && (atom != from_atom) &&
 				(Propositions::implied_conjunction_between(atom_prev, atom))) {
-				Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), AND_BIP); Emit::down();
 				CompilePropositions::to_test_segment(prop, from_atom, atom_prev);
 				CompilePropositions::to_test_segment(prop, atom, to_atom);
-				Produce::up(Emit::tree());
+				Emit::up();
 				return;
 			}
 			if (atom->element == NEGATION_CLOSE_ATOM) bl--;
@@ -59,9 +59,9 @@ void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_ato
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		} else {
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				CompilePropositions::to_test_segment(prop, from_atom->next, penult_atom);
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 		return;
 	}
@@ -241,10 +241,10 @@ void CompilePropositions::to_random_match(parse_node *desc) {
 		kind *K = Propositions::describes_kind(prop);
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value,
 					Kinds::Behaviour::get_ranger_iname(K));
-			Produce::up(Emit::tree());
+			Emit::up();
 			return;
 		}
 	}

@@ -71,11 +71,11 @@ kinds of value:
 			NT++;
 			if (NT < NC) {
 				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-				Produce::down(Emit::tree()); downs++;
+				Emit::down(); downs++;
 			}
 			CompileValues::to_code_val(term);
 		}
-		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+		while (downs > 0) { Emit::up(); downs--; }
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_equation)) {

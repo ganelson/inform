@@ -220,13 +220,13 @@ void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 				if (tok->leaf_symbol->promote_local_to_real) {
 					Produce::inv_call_iname(Emit::tree(),
 						Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 				}
 				inter_symbol *tok_s =
 					LocalVariables::declare(tok->leaf_symbol->local_map);
 				Produce::val_symbol(Emit::tree(), K_value, tok_s);
 				if (tok->leaf_symbol->promote_local_to_real)
-					Produce::up(Emit::tree());
+					Emit::up();
 			}
 			else if (tok->leaf_symbol->function_notated) {
 				inter_name *RS = PhraseRequests::simple_request(

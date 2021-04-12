@@ -49,50 +49,50 @@ void RTNaming::compile_small_names(void) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
 			Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), PROPERTYADDRESS_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), porname);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), porname);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SHORT_NAME_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 		} else {
 			Produce::inv_primitive(Emit::tree(), PRINTNAME_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I"'s ");
-		Produce::up(Emit::tree());
+		Emit::up();
 		TEMPORARY_TEXT(SNAMES)
 		LOOP_THROUGH_WORDING(j, NA) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), SNAMES);
-		Produce::up(Emit::tree());
+		Emit::up();
 		DISCARD_TEXT(SNAMES)
 
 		Produce::rtrue(Emit::tree());

@@ -15,6 +15,12 @@ inter_tree *I7_generation_tree = NULL;
 inter_tree *Emit::tree(void) {
 	return I7_generation_tree;
 }
+void Emit::up(void) {
+	Produce::up(Emit::tree());
+}
+void Emit::down(void) {
+	Produce::down(Emit::tree());
+}
 
 void Emit::begin(void) {
 	inter_tree *I = Inter::Tree::new();

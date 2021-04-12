@@ -110,7 +110,7 @@ void CompileValues::to_code_val_inner(parse_node *value, kind *K, int how) {
 	if (K) value = CompileValues::cast_nonconstant(value, K, &down);
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	CompileValues::to_holster(&VH, value, how);
-	if (down) Produce::up(Emit::tree());
+	if (down) Emit::up();
 }
 
 @h Implementation.
@@ -156,14 +156,14 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 		kind *K = Specifications::to_kind(value);
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Frames::emit_new_local_value(K);
 			made_fresh = TRUE;
 		}
 	}
 	@<Actually compile@>;
 	if (made_fresh) {
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @<Actually compile@> =

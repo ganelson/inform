@@ -121,9 +121,9 @@ as the definition of the rule in future.
 	packaging_state save = Functions::begin(shell_iname);
 	if (RTRules::compile_constraint(R) == FALSE) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 		Produce::inv_call_iname(Emit::tree(), R->compilation_data.rule_extern_iname);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	Functions::end(save);
 
@@ -138,22 +138,22 @@ int RTRules::compile_constraint(rule *R) {
 			current_sentence = acl->where_imposed;
 			if (Wordings::nonempty(acl->text_of_condition)) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 				if (acl->sense_of_applicability) {
 					Produce::inv_primitive(Emit::tree(), NOT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 				}
 				@<Compile the constraint condition@>;
 				if (acl->sense_of_applicability) {
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 			}
 			@<Compile the rule termination code used if the constraint was violated@>;
 			if (Wordings::nonempty(acl->text_of_condition)) {
-				Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+				Emit::up();
+				Emit::up();
 			} else {
 				return TRUE;
 			}
@@ -187,7 +187,7 @@ failing; so it doesn't terminate the following of its rulebook.
 
 @<Compile the rule termination code used if the constraint was violated@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 	if (acl->substituted_rule) {
 		inter_name *subbed = RTRules::iname(acl->substituted_rule);
 		if (Inter::Constant::is_routine(InterNames::to_symbol(subbed)) == FALSE) {
@@ -198,7 +198,7 @@ failing; so it doesn't terminate the following of its rulebook.
 	} else {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @h Printing rule names at run time.
 
@@ -208,29 +208,29 @@ void RTRules::RulePrintingRule_routine(void) {
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), GE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, R_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), LT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, R_s);
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL));
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Print a rulebook name@>;
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Print a rule name@>;
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
@@ -238,42 +238,42 @@ void RTRules::RulePrintingRule_routine(void) {
 @<Print a rulebook name@> =
 	if (global_compilation_settings.memory_economy_in_force) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I"(rulebook ");
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, R_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I")");
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		Produce::inv_primitive(Emit::tree(), PRINTSTRING_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RULEBOOKNAMES_HL));
 				Produce::val_symbol(Emit::tree(), K_value, R_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
 @<Print a rule name@> =
 	if (global_compilation_settings.memory_economy_in_force) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I"(rule at address ");
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, R_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I")");
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		rule *R;
 		LOOP_OVER(R, rule) {
@@ -283,37 +283,37 @@ void RTRules::RulePrintingRule_routine(void) {
 					(R->defn_as_I7_source->at->down == NULL)))
 					continue;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, R_s);
 					Produce::val_iname(Emit::tree(), K_value, RTRules::iname(R));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					TEMPORARY_TEXT(OUT)
 					@<Print a textual name for this rule@>;
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), OUT);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::rtrue(Emit::tree());
 					DISCARD_TEXT(OUT)
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I"(nameless rule at address ");
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, R_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I")");
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @<Print a textual name for this rule@> =
@@ -443,17 +443,17 @@ than once for each rule.
 
 			if (countup > 1) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, original_deadflag_s);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			if (parameter_based) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, p_s);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			break;
 		}
@@ -473,14 +473,14 @@ than once for each rule.
 			#ifdef IF_MODULE
 			if (an) {
 				Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
 						Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(an));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 
 				action_group_open = TRUE;
 			}
@@ -497,75 +497,75 @@ than once for each rule.
 		case ROUTINE_RBF:
 			if (entry_count > 0) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), NE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, original_deadflag_s);
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
 			}
 			@<Compile an optional mid-rulebook paragraph break@>;
 			if (parameter_based) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
 					Produce::val_symbol(Emit::tree(), K_value, p_s);
-				Produce::up(Emit::tree());
+				Emit::up();
 			}
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, rv_s);
 				Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					CompileValues::to_code_val(spec);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, rv_s);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_symbol(Emit::tree(), K_value, rv_s);
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
 
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						CompileValues::to_code_val(spec);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			break;
 	}
 
@@ -573,12 +573,12 @@ than once for each rule.
 	if (action_group_open) {
 		switch (format) {
 			case ROUTINE_RBF:
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						@<Compile an optional mid-rulebook paragraph break@>;
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 				break;
 		}
 		action_group_open = FALSE;
@@ -593,9 +593,9 @@ than once for each rule.
 			break;
 		case ROUTINE_RBF:
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Functions::end(save_array);
 			break;
 	}
@@ -603,16 +603,16 @@ than once for each rule.
 @<Compile an optional mid-rulebook paragraph break@> =
 	if (entry_count > 0) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEBOOKPARBREAK_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, forbid_breaks_s);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 
 @
@@ -749,33 +749,33 @@ void RTRules::rulebook_var_creators(void) {
 	inter_symbol *rb_s = LocalVariables::new_other_as_symbol(I"rb");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, rb_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 		rulebook *B;
 		LOOP_OVER(B, rulebook)
 			if (SharedVariables::set_empty(B->my_variables) == FALSE) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (B->allocation_id));
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_iname(Emit::tree(), K_value, RTRules::get_stv_creator_iname(B));
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
 			}
 
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Functions::end(save);
 
@@ -830,20 +830,20 @@ void RTRules::compile_default_outcome(outcomes *outs) {
 			case SUCCESS_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
-				Produce::down(Emit::tree());
+				Emit::down();
 				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
-				Produce::up(Emit::tree());
+				Emit::up();
 				rtrue = TRUE;
 				break;
 			}
 			case FAILURE_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
-				Produce::down(Emit::tree());
+				Emit::down();
 				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
-				Produce::up(Emit::tree());
+				Emit::up();
 				rtrue = TRUE;
 				break;
 			}
@@ -853,20 +853,20 @@ void RTRules::compile_default_outcome(outcomes *outs) {
 			case SUCCESS_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
-				Produce::down(Emit::tree());
+				Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
+				Emit::up();
 				rtrue = TRUE;
 				break;
 			}
 			case FAILURE_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
-				Produce::down(Emit::tree());
+				Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
+				Emit::up();
 				rtrue = TRUE;
 				break;
 			}
@@ -896,20 +896,20 @@ void RTRules::compile_outcome(named_rulebook_outcome *rbno) {
 		case SUCCESS_OUTCOME: {
 			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::rtrue(Emit::tree());
 			break;
 		}
 		case FAILURE_OUTCOME: {
 			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
-			Produce::down(Emit::tree());
+			Emit::down();
 			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::rtrue(Emit::tree());
 			break;
 		}
@@ -934,28 +934,28 @@ void RTRules::RulebookOutcomePrintingRule(void) {
 	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *rbnov_s = LocalVariables::new_other_as_symbol(I"rbno");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, rbnov_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_text(Emit::tree(), I"(no outcome)");
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), PRINTSTRING_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, rbnov_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::rfalse(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 }
 
@@ -996,18 +996,18 @@ int RTRules::compile_test_head(id_body *idb, rule *R) {
 
 	if ((tests > 0) || (idb->compilation_data.compile_with_run_time_debugging)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, identifier);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) idb->allocation_id);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 	return FALSE;
 }
@@ -1049,10 +1049,10 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 
 @<Compile a scene test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		RTScenes::emit_during_clause(Scenes::get_rcd_spec(phrcd));
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	(*tests)++;
 
@@ -1064,37 +1064,37 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 
 @<Compile an action test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	tests++;
 	if (ActionPatterns::involves_actions(ActionRules::get_ap(phrcd))) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 	}
 
 @<Compile possibly testing actor action test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		if (ActionRules::get_never_test_actor(phrcd))
 			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
 		else
 			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), FALSE);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	(*tests)++;
 	if (ActionPatterns::involves_actions(ActionRules::get_ap(phrcd))) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 	}
 
 @<Compile an action test tail@> =
@@ -1105,14 +1105,14 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 
 @<Compile an actor-is-player test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 	(*tests)++;
 
@@ -1124,7 +1124,7 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 
 @<Compile an activity or explicit condition test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		activity_list *avl = phrcd->avl;
 		if (avl) {
 			RTActivities::emit_activity_list(avl);
@@ -1135,7 +1135,7 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		}
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 
 		IXActivities::annotate_list_for_cross_references(avl, idb);
 		tests++;
@@ -1145,25 +1145,25 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 	@<Compile a generic test fail@>;
 
 @<Compile a generic test fail@> =
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), GT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, identifier);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) idb->allocation_id);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, failure_code);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();

@@ -371,9 +371,9 @@ void Frames::compile_lbv_setup(stack_frame *frame) {
 		if (lbv->offset_past > size) size = lbv->offset_past;
 	}
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STACKFRAMECREATE_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) size);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values)
 		RTKinds::emit_heap_allocation(lbv->allocation);
@@ -389,9 +389,9 @@ void Frames::compile_lbv_teardown(stack_frame *frame) {
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values) {
 		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) lbv->offset_index);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 	Produce::pull(Emit::tree(), Hierarchy::find(I7SFRAME_HL));

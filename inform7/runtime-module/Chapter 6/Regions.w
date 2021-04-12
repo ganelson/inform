@@ -18,18 +18,18 @@ void RTRegions::write_found_in_functions(void) {
 			inter_name *iname = RTRegions::found_in_iname(I);
 			packaging_state save = Functions::begin(iname);
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 					Produce::inv_call_iname(Emit::tree(),
 						Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
 						Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(I));
-					Produce::up(Emit::tree());
+					Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::rfalse(Emit::tree());
 			Functions::end(save);
 		}

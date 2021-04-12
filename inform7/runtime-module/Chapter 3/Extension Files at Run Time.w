@@ -38,9 +38,9 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 				TEMPORARY_TEXT(C)
 				RTExtensions::credit_ef(C, E, TRUE); /* then we award a credit */
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_text(Emit::tree(), C);
-				Produce::up(Emit::tree());
+				Emit::up();
 				DISCARD_TEXT(C)
 			}
 		DISCARD_TEXT(the_author_name)
@@ -54,9 +54,9 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 		TEMPORARY_TEXT(C)
 		RTExtensions::credit_ef(C, E, TRUE);
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), C);
-		Produce::up(Emit::tree());
+		Emit::up();
 		DISCARD_TEXT(C)
 	}
 	Functions::end(save);
@@ -67,23 +67,23 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 	inter_symbol *id_s = LocalVariables::new_other_as_symbol(I"id");
 	LOOP_OVER(E, inform_extension) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_symbol(Emit::tree(), K_value, id_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (E->allocation_id + 1));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				TEMPORARY_TEXT(C)
 				RTExtensions::credit_ef(C, E, FALSE);
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_text(Emit::tree(), C);
-				Produce::up(Emit::tree());
+				Emit::up();
 				DISCARD_TEXT(C)
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);

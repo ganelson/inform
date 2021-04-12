@@ -1,10 +1,20 @@
 [Hierarchy::] Hierarchy.
 
-@
+@ Inter code is not a linear stream, like the assembly language produced by a
+conventional compiler: rather, it is a hierarchy of nested "packages". Each
+package can contain some symbols, some other packages, and some actual code
+or data. This makes it possible for Inter code to be heavily structured, with
+similar resources grouped appropriately together.
 
-@e BOGUS_HAP from 0
+Inform makes good use of that, and this section of code gives a complete
+rundown on how it arranges this hierarchy of packages: it's a sort of directory
+listing of every resource we might compile. In actual runs, of course, not all
+of them will be.
 
-=
+This section makes extensive use of //building: Hierarchy Locations//, which
+provides a general way to set up Inter hierarchies.
+
+@ =
 void Hierarchy::establish(inter_tree *I) {
 	@<Establish basics@>;
 	@<Establish modules@>;
@@ -31,7 +41,6 @@ void Hierarchy::establish(inter_tree *I) {
 	@<Establish variables@>;
 	@<Establish enclosed matter@>;
 	@<The rest@>;
-	
 	@<Establish template resources@>;
 }
 
@@ -119,6 +128,7 @@ void Hierarchy::establish(inter_tree *I) {
 
 @h Actions.
 
+@e BOGUS_HAP from 0
 @e ACTIONS_HAP
 @e ACTION_NAME_HMD
 @e ACTION_BASE_NAME_HL

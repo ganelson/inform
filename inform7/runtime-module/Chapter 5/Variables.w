@@ -204,28 +204,28 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 	inter_symbol *state_s = LocalVariables::new_other_as_symbol(I"state");
 
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, state_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Compile frame creator if state is set@>;
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Compile frame creator if state is clear@>;
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	int count = LinkedLists::len(set->variables);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) count);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Functions::end(save);
 	return count;
@@ -237,22 +237,22 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 		nonlocal_variable *q = SharedVariables::get_variable(shv);
 		kind *K = NonlocalVariables::kind(q);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 				Produce::val_symbol(Emit::tree(), K_value, pos_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 			if (Kinds::Behaviour::uses_pointer_values(K))
 				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
 			else
 				RTVariables::emit_initial_value_as_val(q);
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @<Compile frame creator if state is clear@> =
@@ -262,18 +262,18 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEFREE_HL));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 					Produce::val_symbol(Emit::tree(), K_value, pos_s);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 @ =
@@ -327,16 +327,16 @@ void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
 		Produce::val_iname(Emit::tree(), K_value, nve->iname_form);
 	} else if (nve->stv_ID >= 0) {
 		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
 			if (nve->allow_outside) ex = MSTVON_HL;
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ex));
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nve->stv_ID);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nve->stv_index);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}  else if (nve->use_own_iname) {
 		Produce::val_iname(Emit::tree(), K_value, RTVariables::iname(nlv));
 	} else if (nve->nothing_form) {
@@ -375,9 +375,9 @@ command prompt variable; see //CommandParserKit: Parser//.
 		inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
 		packaging_state save = Functions::begin(cpt_iname);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_text, iname);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Functions::end(save);
 		Hierarchy::make_available(Emit::tree(), cpt_iname);
 	}

@@ -101,7 +101,7 @@ value for its return kind: for example, the empty text for |K_text|.
 
 @<Compile a terminal return statement@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 	kind *K = Frames::get_kind_returned();
 	if (K) {
 		if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
@@ -115,7 +115,7 @@ value for its return kind: for example, the empty text for |K_text|.
 	} else {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0); /* that is, "false" */
 	}
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @h Data about compilation.
 Each imperative definition body has the following data attached to it. 

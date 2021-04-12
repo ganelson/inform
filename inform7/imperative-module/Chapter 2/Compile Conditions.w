@@ -36,9 +36,9 @@ void CompileConditions::compile(value_holster *VH, parse_node *cond) {
 	if (Node::no_children(cond) != 1)
 		internal_error("Compiled malformed LOGICAL_NOT_NT");
 	Produce::inv_primitive(Emit::tree(), NOT_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileValues::to_code_val(cond->down);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ An easy case, running straight out to Inter operators:
 
@@ -52,10 +52,10 @@ void CompileConditions::compile(value_holster *VH, parse_node *cond) {
 
 	if (Node::is(cond, LOGICAL_AND_NT)) Produce::inv_primitive(Emit::tree(), AND_BIP);
 	if (Node::is(cond, LOGICAL_OR_NT)) Produce::inv_primitive(Emit::tree(), OR_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileValues::to_code_val(left_operand);
 		CompileValues::to_code_val(right_operand);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ Phrase options are stored as bits in a 16-bit map, so that each individual
 option is a power of two from $2^0$ to $2^15$. We test if this is valid by
@@ -65,14 +65,14 @@ type-checker won't allow these specifications to be compiled anywhere else.
 
 @<Compile a phrase option test@> =
 	Produce::inv_primitive(Emit::tree(), BITWISEAND_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		local_variable *po = LocalVariables::options_parameter();
 		if (po == NULL) internal_error("no phrase options exist in this frame");
 		inter_symbol *po_s = LocalVariables::declare(po);
 		Produce::val_symbol(Emit::tree(), K_value, po_s);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 			(inter_ti) Annotations::read_int(cond, phrase_option_ANNOT));
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ We need a mechanism for keeping track of the callings made in a condition,
 and here it is. An issue here is that they generally have a scope extending
@@ -116,7 +116,7 @@ so that you can never see partial results.
 void CompileConditions::begin(void) {
 	current_session_number++;
 	Produce::inv_primitive(Emit::tree(), OR_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 }
 
 @ Each variable records which "session" it belongs to, since there can be
@@ -154,12 +154,12 @@ void CompileConditions::end(void) {
 		@<Set the callings in this session to default values for their kinds@>;
 	}
 	current_session_number--;
-	while (downs > 0) { downs--; Produce::up(Emit::tree()); }
+	while (downs > 0) { downs--; Emit::up(); }
 }
 
 @<Set the callings in this session to default values for their kinds@> =
 	Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-	Produce::down(Emit::tree()); downs++;
+	Emit::down(); downs++;
 	int NM = 0, inner_downs = 0;;
 	while ((callings_in_condition_sp > 0) &&
 		(callings_session_number[callings_in_condition_sp-1] == current_session_number)) {
@@ -167,10 +167,10 @@ void CompileConditions::end(void) {
 		local_variable *lvar = callings_in_condition[callings_in_condition_sp-1];
 		if (NM < NC) {
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Produce::down(Emit::tree()); inner_downs++;
+			Emit::down(); inner_downs++;
 		}
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 			kind *K = LocalVariables::kind(lvar);
@@ -180,8 +180,8 @@ void CompileConditions::end(void) {
 				(RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
 					"'called' value") != TRUE))
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		callings_in_condition_sp--;
 	}
-	while (inner_downs > 0) { inner_downs--; Produce::up(Emit::tree()); }
+	while (inner_downs > 0) { inner_downs--; Emit::up(); }
 	Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

@@ -294,12 +294,12 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 
 	packaging_state save = Functions::begin(iname);
 	Produce::inv_primitive(Emit::tree(), BOX_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		TEMPORARY_TEXT(T)
 		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));
 		Produce::val_text(Emit::tree(), T);
 		DISCARD_TEXT(T)
-	Produce::up(Emit::tree());
+	Emit::up();
 	Functions::end(save);
 
 @ =

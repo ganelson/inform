@@ -202,213 +202,213 @@ void UnderstandGeneralTokens::top_of_head(gpr_kit *gprk, inter_name *cg_iname, i
 	int test_distinguishability, int sometimes_has_visible_properties, inter_name *given_name) {
 
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), GE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TRACE_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I"Parse_name called\n");
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	if ((cg_iname) && (sometimes_has_visible_properties == FALSE)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ACTION_HL));
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THESAME_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 	@<Save word number@>;
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->pass_s);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), LE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Reset word number@>;
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->n_s);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 
 					/* On pass 1 only, advance |wn| past name property words */
 					/* (but do not do this for |##TheSame|, when |wn| is undefined) */
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), AND_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), NE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ACTION_HL));
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THESAME_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(WORDINPROPERTY_HL));
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 									Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
-								Produce::up(Emit::tree());
+								Emit::up();
 								Produce::code(Emit::tree());
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::inv_primitive(Emit::tree(), STORE_BIP);
-									Produce::down(Emit::tree());
+									Emit::down();
 										Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 										Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-									Produce::up(Emit::tree());
-								Produce::up(Emit::tree());
-							Produce::up(Emit::tree());
+									Emit::up();
+								Emit::up();
+							Emit::up();
 
 							Produce::inv_primitive(Emit::tree(), POSTDECREMENT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
 
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), OR_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 						UnderstandGeneralTokens::consider_visible_properties(gprk, subj, test_distinguishability);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), AND_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), NE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ACTION_HL));
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THESAME_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(WORDINPROPERTY_HL));
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 									Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
-								Produce::up(Emit::tree());
+								Emit::up();
 								Produce::code(Emit::tree());
-								Produce::down(Emit::tree());
+								Emit::down();
 									Produce::inv_primitive(Emit::tree(), STORE_BIP);
-									Produce::down(Emit::tree());
+									Emit::down();
 										Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 										Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-									Produce::up(Emit::tree());
-								Produce::up(Emit::tree());
-							Produce::up(Emit::tree());
+									Emit::up();
+								Emit::up();
+							Emit::up();
 
 							Produce::inv_primitive(Emit::tree(), POSTDECREMENT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
 }
 
 @<Save word number@> =
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @<Reset word number@> =
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 		Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ The head and tail routines can only be understood by knowing that the
 following code is used to reset the grammar-line parser after each failure
@@ -418,29 +418,29 @@ of a CGL to parse.
 void UnderstandGeneralTokens::after_gl_failed(gpr_kit *gprk, inter_symbol *label, int pluralised) {
 	if (pluralised) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ACTION_HL));
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PLURALFOUND_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), CONTINUE_BIP);
 
 	Produce::place_label(Emit::tree(), label);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 		Produce::val_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 @ The interesting point about the tail of the |parse_name| routine is that
@@ -452,205 +452,205 @@ in which case it would need to be followed by a semi-colon.
 =
 void UnderstandGeneralTokens::compile_parse_name_tail(gpr_kit *gprk) {
 					Produce::inv_primitive(Emit::tree(), BREAK_BIP);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 
 			Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(WORDINPROPERTY_HL));
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 					Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->n_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), OR_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, gprk->f_s);
 					Produce::inv_primitive(Emit::tree(), GT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->n_s);
 						Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
 								Produce::val_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
+			Emit::up();
 
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->pass1_n_s);
 						Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, gprk->pass_s);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->pass2_n_s);
 						Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->pass_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), GE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TRACE_HL));
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I"Pass 1: ");
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, gprk->pass1_n_s);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I" Pass 2: ");
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, gprk->pass2_n_s);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I" Pass 3: ");
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_text(Emit::tree(), I"\n");
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->pass1_n_s);
 			Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->n_s);
 				Produce::val_symbol(Emit::tree(), K_value, gprk->pass1_n_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->pass2_n_s);
 			Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->n_s);
 				Produce::val_symbol(Emit::tree(), K_value, gprk->pass2_n_s);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 		Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 			Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DETECTPLURALWORD_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 		Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, gprk->n_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 @ We generate code suitable for inclusion in a |parse_name| routine which
@@ -721,7 +721,7 @@ void UnderstandGeneralTokens::consider_visible_property(gpr_kit *gprk, inference
 	else
 		UnderstandGeneralTokens::parse_visible_property(gprk, subj, pr, Visibility::get_level(pp));
 
-	if (conditional_vis) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
+	if (conditional_vis) { Emit::up(); Emit::up(); }
 }
 
 void UnderstandGeneralTokens::finish_considering_visible_properties(gpr_kit *gprk, int phase) {
@@ -745,99 +745,99 @@ the I6 parser's standard algorithm, which looks at the |name| property.
 =
 void UnderstandGeneralTokens::begin_distinguishing_visible_properties(gpr_kit *gprk) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ACTION_HL));
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THESAME_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), GE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TRACE_HL));
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), I"p1, p2 = ");
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), I", ");
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), I"\n");
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
+				Emit::up();
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->ss_s);
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-			Produce::up(Emit::tree());
+			Emit::up();
 }
 
 void UnderstandGeneralTokens::test_distinguish_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 		CompileValues::to_code_val_of_kind(spec, K_truth_state);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
 		CompileValues::to_code_val_of_kind(spec, K_truth_state);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), NE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_value, gprk->f_s);
 			Produce::val_symbol(Emit::tree(), K_value, gprk->g_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			@<Return minus two@>;
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, gprk->f_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 }
 
 void UnderstandGeneralTokens::distinguish_visible_property(gpr_kit *gprk, property *prn) {
@@ -848,97 +848,97 @@ void UnderstandGeneralTokens::distinguish_visible_property(gpr_kit *gprk, proper
 
 	if (Properties::is_either_or(prn)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
 				Produce::inv_primitive(Emit::tree(), NOT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				@<Return minus two@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
 				Produce::inv_primitive(Emit::tree(), NOT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				@<Return minus two@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	} else {
 		kind *K = ValueProperties::kind(prn);
 		inter_name *distinguisher = Kinds::Behaviour::get_distinguisher_as_iname(K);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			if (distinguisher) {
 				Produce::inv_call_iname(Emit::tree(), distinguisher);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
 						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
 						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			} else {
 				Produce::inv_primitive(Emit::tree(), NE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
 						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-					Produce::up(Emit::tree());
+					Emit::up();
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
 						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				@<Return minus two@>;
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 }
 
 @<Return minus two@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -2);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ =
 void UnderstandGeneralTokens::finish_distinguishing_visible_properties(gpr_kit *gprk) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 				Produce::val_symbol(Emit::tree(), K_value, gprk->ss_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
+	Emit::up();
 }
 
 @h Parsing visible properties.
@@ -950,33 +950,33 @@ alter the value of |self| to make any visibility condition work correctly.
 void UnderstandGeneralTokens::begin_parsing_visible_properties(gpr_kit *gprk) {
 	Emit::code_comment(I"Match any number of visible property values");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, gprk->g_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-			Produce::up(Emit::tree());
+			Emit::up();
 }
 
 void UnderstandGeneralTokens::test_parse_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		CompileValues::to_code_val_of_kind(spec, K_truth_state);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 }
 
 int unique_pvp_counter = 0;
@@ -1003,124 +1003,124 @@ void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 		Produce::place_label(Emit::tree(), pass_label);
 	} else {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 			Produce::val_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, gprk->spn_s);
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, gprk->ss_s);
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ETYPE_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			kind *K = ValueProperties::kind(prn);
 			inter_name *recog_gpr = Kinds::Behaviour::get_recognition_only_GPR_as_iname(K);
 			if (recog_gpr) {
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), recog_gpr);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 							Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 			} else if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				inter_name *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR_iname(K);
 				if (i6_gpr_name) {
 					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_call_iname(Emit::tree(), i6_gpr_name);
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_NUMBER_HL));
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_call_iname(Emit::tree(), RTKinds::get_instance_GPR_iname(K));
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_NUMBER_HL));
-					Produce::up(Emit::tree());
+					Emit::up();
 				} else {
 					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_call_iname(Emit::tree(), RTKinds::get_kind_GPR_iname(K));
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_NUMBER_HL));
-						Produce::up(Emit::tree());
+						Emit::up();
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-							Produce::up(Emit::tree());
+							Emit::up();
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
 				}
 			} else internal_error("Unable to recognise kind of value in parsing");
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
 					Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-				Produce::up(Emit::tree());
+				Emit::up();
 				if (visibility_level == 2) {
 					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
+					Emit::up();
 				}
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
 			Produce::val_symbol(Emit::tree(), K_value, gprk->spn_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(ETYPE_HL));
 			Produce::val_symbol(Emit::tree(), K_value, gprk->ss_s);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 
@@ -1129,95 +1129,95 @@ void UnderstandGeneralTokens::parse_visible_either_or(gpr_kit *gprk, property *p
 	command_grammar *cg = EitherOrProperties::get_parsing_grammar(prn);
 	UnderstandGeneralTokens::pvp_test_begins_dash(gprk);
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		wording W = prn->name;
 		int j = 0; LOOP_THROUGH_WORDING(i, W) j++;
 		int ands = 0;
-		if (j > 0) { Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree()); ands++; }
+		if (j > 0) { Produce::inv_primitive(Emit::tree(), AND_BIP); Emit::down(); ands++; }
 		RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 		int k = 0;
 		LOOP_THROUGH_WORDING(i, W) {
-			if (k < j-1) { Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree()); ands++; }
+			if (k < j-1) { Produce::inv_primitive(Emit::tree(), AND_BIP); Emit::down(); ands++; }
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 				TEMPORARY_TEXT(N)
 				WRITE_TO(N, "%N", i);
 				Produce::val_dword(Emit::tree(), N);
 				DISCARD_TEXT(N)
-			Produce::up(Emit::tree());
+			Emit::up();
 			k++;
 		}
 
-		for (int a=0; a<ands; a++) Produce::up(Emit::tree());
+		for (int a=0; a<ands; a++) Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			UnderstandGeneralTokens::pvp_test_passes_dash(gprk, visibility_level, pass_l);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	if (cg) {
 		if (cg->compilation_data.cg_prn_iname == NULL) internal_error("no PRN iname");
 		UnderstandGeneralTokens::pvp_test_begins_dash(gprk);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::inv_call_iname(Emit::tree(), cg->compilation_data.cg_prn_iname);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				UnderstandGeneralTokens::pvp_test_passes_dash(gprk, visibility_level, pass_l);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 }
 
 void UnderstandGeneralTokens::pvp_test_begins_dash(gpr_kit *gprk) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 		Produce::val_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 }
 
 void UnderstandGeneralTokens::pvp_test_passes_dash(gpr_kit *gprk, int visibility_level, inter_symbol *pass_l) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->g_s);
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 	if (visibility_level == 2) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (pass_l) {
 		Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::lab(Emit::tree(), pass_l);
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 }
 
 void UnderstandGeneralTokens::finish_parsing_visible_properties(gpr_kit *gprk) {
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Emit::code_comment(I"try_from_wn is now advanced past any visible property values");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
 		Produce::val_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
-	Produce::up(Emit::tree());
+	Emit::up();
 }

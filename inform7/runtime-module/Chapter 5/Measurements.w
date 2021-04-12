@@ -50,13 +50,13 @@ void RTMeasurements::compile_test_functions(void) {
 					mdef->region_threshold_text,
 					"be giving the boundary of the definition")) == ALWAYS_MATCH) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					CompilePropositions::to_test_as_condition(NULL, prop);
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::rtrue(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+					Emit::up();
+				Emit::up();
 			}
 			Produce::rfalse(Emit::tree());
 			Functions::end(save);

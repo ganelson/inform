@@ -43,17 +43,17 @@ int LocalParking::park(stack_frame *frame) {
 	inter_ti j = 0;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_iname(Emit::tree(), K_value, park);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
-				Produce::up(Emit::tree());
+				Emit::up();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
-			Produce::up(Emit::tree());
+			Emit::up();
 	}
 	return NC;
 }
@@ -67,14 +67,14 @@ void LocalParking::retrieve(stack_frame *frame) {
 	local_variable *lvar;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, LocalVariables::declare(lvar));
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_iname(Emit::tree(), K_value, park);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 }
 

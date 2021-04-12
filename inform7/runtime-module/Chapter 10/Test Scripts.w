@@ -155,27 +155,27 @@ void TestCommand::TestScriptSub_routine(void) {
 	packaging_state save = Functions::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_text(Emit::tree(), I">--> No test scripts exist for this game.\n");
-		Produce::up(Emit::tree());
+		Emit::up();
 	} else {
 		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SPECIAL_WORD_HL));
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 				test_scenario *test;
 				LOOP_OVER(test, test_scenario) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Produce::down(Emit::tree());
+					Emit::down();
 						TEMPORARY_TEXT(W)
 						WRITE_TO(W, "%w", Lexer::word_raw_text(Wordings::first_wn(test->name)));
 						Produce::val_dword(Emit::tree(), W);
 						DISCARD_TEXT(W)
 						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSTART_HL));
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_iname(Emit::tree(), K_value, test->text_iname);
 								Produce::val_iname(Emit::tree(), K_value, test->req_iname);
 								int l = 0;
@@ -184,36 +184,36 @@ void TestCommand::TestScriptSub_routine(void) {
 									if (Str::includes_wide_string_at(p, L"[']", i))
 										l -= 2;
 								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) l);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+							Emit::up();
+						Emit::up();
+					Emit::up();
 				}
 				Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_text(Emit::tree(), I">--> The following tests are available:\n");
-						Produce::up(Emit::tree());
+						Emit::up();
 						LOOP_OVER(test, test_scenario) {
 							TEMPORARY_TEXT(T)
 							WRITE_TO(T, "'test %w'\n",
 								Lexer::word_raw_text(Wordings::first_wn(test->name)));
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
+							Emit::down();
 								Produce::val_text(Emit::tree(), T);
-							Produce::up(Emit::tree());
+							Emit::up();
 							DISCARD_TEXT(T)
 						}
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							Produce::val_text(Emit::tree(), I"\n");
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
+			Emit::up();
+		Emit::up();
 	}
 
 	Functions::end(save);

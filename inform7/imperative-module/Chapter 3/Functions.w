@@ -238,22 +238,22 @@ after the call parameters, and is used only as a scratch variable.
 	if (returns_block_value) {
 		inter_name *iname = Hierarchy::find(BLKVALUECOPY_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_symbol(Emit::tree(), K_number, rv_symbol);
 			Produce::inv_call_iname(Emit::tree(), kernel_name);
-			Produce::down(Emit::tree());
+			Emit::down();
 				LocalVariableSlates::emit_all_parameters(frame);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	} else {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_symbol(Emit::tree(), K_value, rv_symbol);
 			Produce::inv_call_iname(Emit::tree(), kernel_name);
-			Produce::down(Emit::tree());
+			Emit::down();
 				LocalVariableSlates::emit_all_parameters(frame);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
+			Emit::up();
+		Emit::up();
 	}
 
 @ Here we deallocate all the memory allocated earlier.
@@ -267,9 +267,9 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile a return from the outer shell@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, rv_symbol);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @<Issue a problem for too many locals@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyLocals),

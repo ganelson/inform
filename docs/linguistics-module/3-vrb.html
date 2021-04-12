@@ -92,7 +92,7 @@ usages in a sentence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_compilation</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../values-module/3-un.html" class="internal">Using Nametags (in values)</a><span class="comment-syntax"> on this</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_compilation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -224,10 +224,10 @@ SVO means "subject, verb, object", as in "Peter likes Jane"; VOO means
 form usages can be legal for the same form, this is a bitmap:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SVO_FS_BIT</span><span class="plain-syntax"> 			</span><span class="constant-syntax">1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">VO_FS_BIT</span><span class="plain-syntax">			</span><span class="constant-syntax">2</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SVOO_FS_BIT</span><span class="plain-syntax">			</span><span class="constant-syntax">4</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">VOO_FS_BIT</span><span class="plain-syntax">			</span><span class="constant-syntax">8</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SVO_FS_BIT</span><span class="plain-syntax">          </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">VO_FS_BIT</span><span class="plain-syntax">           </span><span class="constant-syntax">2</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SVOO_FS_BIT</span><span class="plain-syntax">         </span><span class="constant-syntax">4</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">VOO_FS_BIT</span><span class="plain-syntax">          </span><span class="constant-syntax">8</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So here's the verb form:
 </p>

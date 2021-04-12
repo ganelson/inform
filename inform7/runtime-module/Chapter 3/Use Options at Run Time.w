@@ -21,18 +21,18 @@ void RTUseOptions::TestUseOption_routine(void) {
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val_symbol(Emit::tree(), K_value, UO_s);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 						(inter_ti) uo->allocation_id);
-				Produce::up(Emit::tree());
+				Emit::up();
 				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
+				Emit::up();
+			Emit::up();
 		}
 	Produce::rfalse(Emit::tree());
 	Functions::end(save);
@@ -42,32 +42,32 @@ void RTUseOptions::TestUseOption_routine(void) {
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val_symbol(Emit::tree(), K_value, UO_s);
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 			use_option *uo;
 			LOOP_OVER(uo, use_option) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
 						(inter_ti) uo->allocation_id);
 					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
+					Emit::down();
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Produce::down(Emit::tree());
+						Emit::down();
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%W option", uo->name);
 							if (uo->minimum_setting_value > 0)
 								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
 							Produce::val_text(Emit::tree(), N);
 							DISCARD_TEXT(N)
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
+						Emit::up();
+					Emit::up();
+				Emit::up();
 			}
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
+		Emit::up();
+	Emit::up();
 	Functions::end(save);
 
 @ And we also compile constants. The aim of all of this is to enable Inter

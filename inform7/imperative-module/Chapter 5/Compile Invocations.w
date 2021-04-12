@@ -166,30 +166,30 @@ works in all cases, and is what we do.
 		LOGIF(MATCHING, "RC%d: $e\n", pos, inv); pos++;
 		last_inv = inv;
 		if (if_depth > 0) {
-			Produce::up(Emit::tree());
+			Emit::up();
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 		tokens_packet tokens = CompileInvocations::new_tokens_packet(inv);
 		@<Substitute the formal parameters into the tokens packet@>;
 		if (Invocations::is_marked_unproven(inv)) {
 			Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 			@<Put the condition check here@>;
 			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
+			Emit::down();
 			if_depth++;
 		}
 		CompileInvocations::single(VH, inv, &sl, &tokens, allow_implied_newlines);
 	}
 	if (Invocations::is_marked_unproven(last_inv)) {
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
+		Emit::down();
 		@<Compile call to function throwing an RTP@>;
 	}
 	while (if_depth > 0) {
-		Produce::up(Emit::tree()); Produce::up(Emit::tree());
+		Emit::up(); Emit::up();
 		if_depth--;
 	}
 
@@ -209,13 +209,13 @@ a list divided by logical-and |&&| operators.
 			check_count++;
 			if (check_count < check_needed) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree());
+				Emit::down();
 			}
 			@<Compile a check that this formal variable matches the token@>;
 		}
 	}
 	if (check_count == 0) internal_error("this should not be marked unproven");
-	for (int i = 1; i <= check_count - 1; i++) Produce::up(Emit::tree());
+	for (int i = 1; i <= check_count - 1; i++) Emit::up();
 
 @ The check is either against a general description, such as "even number", or
 a specific value, such as "10".
@@ -240,7 +240,7 @@ at runtime; we assign 0 to it for the sake of tidiness.
 @<Set the ith formal parameter to the ith token value@> =
 	RTTemporaryVariables::formal_parameter(i);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::ref_iname(Emit::tree(), K_value,
 			RTTemporaryVariables::iname_of_formal_parameter(i));
 		if (idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC) {
@@ -252,7 +252,7 @@ at runtime; we assign 0 to it for the sake of tidiness.
 				idb->type_data.token_sequence[i].to_match);
 			CompileValues::to_fresh_code_val_of_kind(value, to_be_used_as);
 		}
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @<Substitute the formal parameters into the tokens packet@> =
 	for (int i=0; i<tokens.tokens_count; i++) {
@@ -263,11 +263,11 @@ at runtime; we assign 0 to it for the sake of tidiness.
 
 @<Compile call to function throwing an RTP@> =
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ARGUMENTTYPEFAILED_HL));
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sl.line_number);
 		inform_extension *E = Extensions::corresponding_to(sl.file_of_origin);
 		if (E) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) E->allocation_id + 1);
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ In value mode we want the same strategy and code paths, but all in the context
 of a value. This means we can only use Inter opcodes which are legal in a value
@@ -283,14 +283,14 @@ producing the answer.
 
 @<Compile the resolution in value mode@> =
 	Produce::inv_primitive(Emit::tree(), TERNARYSEQUENTIAL_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		/* Here is x: */
 		@<Set the formal parameters in value mode@>;
 		/* Here is y: */
 		@<Perform the tests and invocations in value mode@>;
 		/* Here is z: */
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(FORMAL_RV_HL));
-	Produce::up(Emit::tree());
+	Emit::up();
 
 @ In Inter, as in C, assignments return a value and are therefore legal here.
 But because Inter does not provide a binary sequential opcode, we will fold
@@ -309,11 +309,11 @@ and so on, provided Inform 6 is the eventual code generator.
 @<Set the formal parameters in value mode@> =
 	int L = Produce::level(Emit::tree());
 	for (int i = N-1; i >= 0; i--) {
-		if (i > 0) { Produce::inv_primitive(Emit::tree(), PLUS_BIP); Produce::down(Emit::tree()); }
+		if (i > 0) { Produce::inv_primitive(Emit::tree(), PLUS_BIP); Emit::down(); }
 		@<Set the ith formal parameter to the ith token value@>;
 	}
 	for (int i = N-1; i >= 0; i--) {
-		if (i > 0) Produce::up(Emit::tree());
+		if (i > 0) Emit::up();
 	}
 	if (L != Produce::level(Emit::tree())) internal_error("misimplemented");
 
@@ -355,12 +355,12 @@ Matters are a little simpler if the final invocation is proven:
 		else last_is_unproven = FALSE;
 	if (last_is_unproven) {
 		Produce::inv_primitive(Emit::tree(), OR_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 	}
 	@<Perform the tests and invocations without RTP in value mode@>;
 	if (last_is_unproven) {
 		@<Compile call to function throwing an RTP@>;
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 	if (L != Produce::level(Emit::tree())) internal_error("misimplemented");
 
@@ -371,14 +371,14 @@ Matters are a little simpler if the final invocation is proven:
 		LOGIF(MATCHING, "RC%d: $e\n", pos, inv); pos++;
 		if (pos < InvocationLists::length(invl)) {
 			Produce::inv_primitive(Emit::tree(), OR_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 		}
 		tokens_packet tokens = CompileInvocations::new_tokens_packet(inv);
 		@<Substitute the formal parameters into the tokens packet@>;
 		@<Compile code to apply this invocation if it's applicable, value mode@>;
 	}
 	for (int i = 1; i <= InvocationLists::length(invl) - 1; i++)
-		Produce::up(Emit::tree());
+		Emit::up();
 	if (L != Produce::level(Emit::tree())) internal_error("misimplemented");
 
 @<Compile code to apply this invocation if it's applicable, value mode@> =
@@ -386,15 +386,15 @@ Matters are a little simpler if the final invocation is proven:
 	int ands_made = 0;
 	@<Compile the check on invocation applicability, value mode@>;
 	Produce::inv_primitive(Emit::tree(), BITWISEOR_BIP);
-	Produce::down(Emit::tree());
+	Emit::down();
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(FORMAL_RV_HL));
 			CompileInvocations::single(VH, inv, &sl, &tokens, allow_implied_newlines);
-		Produce::up(Emit::tree());
+		Emit::up();
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
-	for (int i=0; i<ands_made; i++) Produce::up(Emit::tree());
+	Emit::up();
+	for (int i=0; i<ands_made; i++) Emit::up();
 	if (L != Produce::level(Emit::tree())) internal_error("misimplemented");
 
 @<Compile the check on invocation applicability, value mode@> =
@@ -404,7 +404,7 @@ Matters are a little simpler if the final invocation is proven:
 			parse_node *check_against = Invocations::get_token_check_to_do(inv, i);
 			if (check_against) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
-				Produce::down(Emit::tree()); ands_made++;
+				Emit::down(); ands_made++;
 				@<Compile a check that this formal variable matches the token@>;
 				checks_made++;
 			}
@@ -441,9 +441,9 @@ errors, since |self| would be pushed but not pulled.
 
 	if (save_self) {
 		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 	@<The art of invocation is delegation@>;
@@ -451,9 +451,9 @@ errors, since |self| would be pushed but not pulled.
 
 	if (save_self) {
 		Produce::inv_primitive(Emit::tree(), PULL_BIP);
-		Produce::down(Emit::tree());
+		Emit::down();
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-		Produce::up(Emit::tree());
+		Emit::up();
 	}
 
 	if (manner_of_return != DONT_KNOW_MOR)
@@ -526,9 +526,9 @@ contexts in which newlines are not implied:
 			(Word::text_ending_sentence(
 				Wordings::first_wn(Node::get_text(tokens->token_vals[0]))))) {
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Produce::down(Emit::tree());
+			Emit::down();
 				Produce::val_text(Emit::tree(), I"\n");
-			Produce::up(Emit::tree());
+			Emit::up();
 		}
 	}
 
