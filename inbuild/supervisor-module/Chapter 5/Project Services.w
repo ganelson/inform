@@ -61,8 +61,9 @@ void Projects::scan(inbuild_copy *C) {
 	else
 		M = Projects::materialise_pathname(
 			P, Filenames::get_leafname(proj->as_copy->location_if_file));
-	proj->materials_nest = Nests::new(M);
-	Nests::set_tag(proj->materials_nest, MATERIALS_NEST_TAG);
+	proj->materials_nest = Supervisor::add_nest(M, MATERIALS_NEST_TAG);
+//	proj->materials_nest = Nests::new(M);
+//	Nests::set_tag(proj->materials_nest, MATERIALS_NEST_TAG);
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);

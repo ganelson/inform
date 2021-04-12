@@ -86,6 +86,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
 	if ((req->work->genre) && (req->work->genre != pipeline_genre)) return;
 	pathname *P = PipelineManager::path_within_nest(N);
+LOG("Looking in %p\n", P);
 	scan_directory *D = Directories::open(P);
 	if (D) {
 		TEMPORARY_TEXT(LEAFNAME)
