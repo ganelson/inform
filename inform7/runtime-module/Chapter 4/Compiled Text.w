@@ -133,28 +133,6 @@ void CompiledText::bq_from_wide_string(OUTPUT_STREAM, wchar_t *p) {
 	}
 	for (i=from; i<to; i++) {
 		switch(p[i]) {
-/*			case '\n':
-				WRITE("\n");
-				break;
-			case '\t':
-				WRITE("\n");
-				break;
-			case NEWLINE_IN_STRING:
-				WRITE("\n");
-				break;
-			case '"': WRITE("~"); break;
-			case '@':
-				WRITE("@@64"); esc_digit = TRUE; continue;
-			case '^':
-				WRITE("^");
-				break;
-			case '~':
-				WRITE("@@126"); esc_digit = TRUE; continue;
-			case '\\': WRITE("@{5C}"); break;
-			case '\'':
-				WRITE("'");
-				break;
-*/
 			case '[': {
 				int n = CompiledText::expand_unisub(OUT, p, i);
 				if (n == -1) WRITE("["); else i = n;

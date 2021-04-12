@@ -18,7 +18,6 @@ We need to itemise the structures we'll want to allocate:
 @e module_package_CLASS
 @e submodule_identity_CLASS
 @e submodule_request_CLASS
-@e compilation_unit_CLASS
 @e inter_schema_CLASS
 @e inter_schema_node_CLASS
 @e inter_schema_token_CLASS
@@ -33,7 +32,6 @@ DECLARE_CLASS(package_request)
 DECLARE_CLASS(module_package)
 DECLARE_CLASS(submodule_identity)
 DECLARE_CLASS(submodule_request)
-DECLARE_CLASS(compilation_unit)
 DECLARE_CLASS(inter_schema)
 DECLARE_CLASS(inter_schema_node)
 DECLARE_CLASS(inter_schema_token)
@@ -43,7 +41,6 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name_generator, 1000)
 
 #ifdef CORE_MODULE
 MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
-MAKE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
 #endif
 
 @h The beginning.

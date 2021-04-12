@@ -75,7 +75,6 @@ which represents the entire model.
 
 [2] The subject hierarchy thus contains the same tree structure of
 //kinds: The Lattice of Kinds//, which is not a coincidence -- see
-//
 but of course it includes instances and much else as well.
 
 @ The top of the inference hierarchy is essentially fixed, and contains a number

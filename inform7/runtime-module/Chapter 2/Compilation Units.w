@@ -16,13 +16,16 @@ The Inter hierarchy also splits, with named units representing each possibility
 in (a) or (b) above. This section of code determines to which unit any new
 definition (of, say, a property or kind) belongs.
 
-=
-compilation_unit *source_text_unit = NULL; /* the one for the main text */
-
 @ We find these by performing a traverse of the parse tree, and looking for
 level-0 headings, which are the nodes from which these blocks of source text hang:
 
 =
+typedef struct compilation_unit {
+	struct module_package *inter_presence;
+	struct parse_node *hanging_from;
+	CLASS_DEFINITION
+} compilation_unit;
+
 void CompilationUnits::determine(void) {
 	SyntaxTree::traverse(Task::syntax_tree(), CompilationUnits::look_for_cu);
 }
@@ -34,13 +37,19 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	}
 }
 
+void CompilationUnits::log(compilation_unit *cu) {
+	if (cu == NULL) LOG("<null>");
+	else LOG("unit'%W'", Node::get_text(cu->hanging_from));
+}
+
 compilation_unit *CompilationUnits::new(parse_node *from) {
 	source_location sl = Wordings::location(Node::get_text(from));
 	if (sl.file_of_origin == NULL) return NULL;
 	inform_extension *owner = Extensions::corresponding_to(
 		Lexer::file_of_origin(Wordings::first_wn(Node::get_text(from))));
 
-	compilation_unit *C = Packaging::new_cu();
+	compilation_unit *C = CREATE(compilation_unit);
+	C->inter_presence = NULL;
 	C->hanging_from = from;
 	Node::set_unit(from, C);
 	CompilationUnits::propagate_downwards(from->down, C);
@@ -59,8 +68,6 @@ compilation_unit *CompilationUnits::new(parse_node *from) {
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
 		DISCARD_TEXT(V)
 	}
-
-	if (owner == NULL) source_text_unit = C;
 	return C;
 }
 
@@ -95,6 +102,10 @@ void CompilationUnits::propagate_downwards(parse_node *P, compilation_unit *C) {
 	}
 }
 
+void CompilationUnits::assign_to_same_unit(parse_node *to, parse_node *from) {
+	Node::set_unit(to, Node::get_unit(from));
+}
+
 @ As promised, then, given a parse node, we have to return its compilation unit:
 but that's now easy, as we just have to read off the annotation made above --
 
@@ -102,26 +113,6 @@ but that's now easy, as we just have to read off the annotation made above --
 compilation_unit *CompilationUnits::find(parse_node *from) {
 	if (from == NULL) return NULL;
 	return Node::get_unit(from);
-}
-
-@h Current unit.
-Inform has a concept of the "current unit" it's working on, much as it has
-a concept of "current sentence".
-
-=
-compilation_unit *current_CM = NULL;
-
-compilation_unit *CompilationUnits::current(void) {
-	return current_CM;
-}
-
-void CompilationUnits::set_current_to(compilation_unit *CM) {
-	current_CM = CM;
-}
-
-void CompilationUnits::set_current(parse_node *P) {
-	if (P) current_CM = CompilationUnits::find(P);
-	else current_CM = NULL;
 }
 
 @h Relating to Inter.

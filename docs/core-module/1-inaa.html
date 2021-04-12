@@ -381,11 +381,11 @@ which compilation unit the node belongs.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">unit</span><span class="plain-syntax">, </span><span class="identifier-syntax">compilation_unit</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>For tedious code-sequencing reasons, the annotation functions for <span class="extract"><span class="extract-syntax">unit_ANNOT</span></span>
-are made in <a href="../building-module/1-bm.html" class="internal">Building Module (in building)</a>.
-</p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">unit</span><span class="plain-syntax">, </span><span class="identifier-syntax">compilation_unit</span><span class="plain-syntax">)</span>
+
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CoreSyntax::declare_unit</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CoreSyntax::declare_unit</span></span>:<br/><a href="1-inaa.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::declare_type</span><span class="plain-syntax">(</span><span class="constant-syntax">unit_ANNOT</span><span class="plain-syntax">, </span><a href="1-inaa.html#SP10" class="function-link"><span class="function-syntax">CoreSyntax::write_unit_ANNOT</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -932,6 +932,7 @@ are made in <a href="../building-module/1-bm.html" class="internal">Building Mod
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">token_check_to_do_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">token_to_be_parsed_against_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">verb_problem_issued_ANNOT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_LIST_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">unit_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_LIST_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">from_text_substitution_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_LIST_SAY_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">suppress_newlines_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">epistemological_status_ANNOT</span><span class="plain-syntax">);</span>

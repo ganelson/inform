@@ -31,7 +31,7 @@ package_request *RTRelations::package(binary_predicate *bp) {
 	if (bp == NULL) internal_error("null bp");
 	if (bp->imp->bp_package == NULL)
 		bp->imp->bp_package =
-			Hierarchy::package(CompilationUnits::find(bp->bp_created_at), RELATIONS_HAP);
+			Hierarchy::local_package_to(RELATIONS_HAP, bp->bp_created_at);
 	return bp->imp->bp_package;
 }
 

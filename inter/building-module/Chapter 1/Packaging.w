@@ -274,19 +274,6 @@ inter_package *Packaging::incarnate(package_request *R) {
 	return R->actual_package;
 }
 
-@h Compilation modules.
-
-=
-typedef struct compilation_unit {
-	struct module_package *inter_presence;
-	struct parse_node *hanging_from;
-	CLASS_DEFINITION
-} compilation_unit;
-
-compilation_unit *Packaging::new_cu(void) {
-	return CREATE(compilation_unit);
-}
-
 @h Modules.
 With the code above, then, we can get the Inter hierarchy of packages set up
 as far as creating |main|. After that the Hierarchy code takes over, but it

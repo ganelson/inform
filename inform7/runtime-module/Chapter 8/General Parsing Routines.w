@@ -65,8 +65,7 @@ will simply compile a |parse_name| routine inline, in the usual I6 way.
 =
 inter_name *UnderstandGeneralTokens::get_gv_parse_name(command_grammar *cg) {
 	if (cg->compilation_data.cg_parse_name_iname == NULL) {
-		compilation_unit *C = CompilationUnits::find(cg->where_cg_created);
-		package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
+		package_request *PR = Hierarchy::local_package_to(PARSE_NAMES_HAP, cg->where_cg_created);
 		cg->compilation_data.cg_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
 	}
 	return cg->compilation_data.cg_parse_name_iname;
@@ -80,8 +79,7 @@ inter_name *UnderstandGeneralTokens::compile_parse_name_property(inference_subje
 	} else {
 		if (Visibility::any_property_visible_to_subject(subj, FALSE)) {
 			parse_name_notice *notice = CREATE(parse_name_notice);
-			compilation_unit *C = CompilationUnits::find(subj->infs_created_at);
-			package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
+			package_request *PR = Hierarchy::local_package_to(PARSE_NAMES_HAP, subj->infs_created_at);
 			notice->pnn_iname = Hierarchy::make_iname_in(PARSE_NAME_DASH_FN_HL, PR);
 			notice->parse_subject = subj;
 			symb = notice->pnn_iname;

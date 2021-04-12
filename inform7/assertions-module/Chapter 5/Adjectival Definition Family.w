@@ -132,8 +132,6 @@ First, some Preform grammar:
 void AdjectivalDefinitionFamily::look_for_headers(parse_node *p) {
 	if (Node::get_type(p) == IMPERATIVE_NT)
 		if (<definition-header>(Node::get_text(p))) {
-			compilation_unit *cm = CompilationUnits::current();
-			CompilationUnits::set_current(p);
 			parse_node *q = NULL;
 			if (Node::get_type(p->next) == DEFN_CONT_NT) q = p->next;
 			else q = (p->down)?(p->down->down):NULL;
@@ -150,8 +148,6 @@ void AdjectivalDefinitionFamily::look_for_headers(parse_node *p) {
 			@<Register the resulting adjective@>;
 
 			if (the_format != DEFINED_PHRASALLY)  p->down = NULL;
-
-			CompilationUnits::set_current_to(cm);
 		}
 }
 

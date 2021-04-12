@@ -280,7 +280,7 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 inter_name *RTVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->compilation_data.nlv_iname == NULL) {
 		package_request *R =
-			Hierarchy::package(CompilationUnits::find(nlv->nlv_created_at), VARIABLES_HAP);
+			Hierarchy::local_package_to(VARIABLES_HAP, nlv->nlv_created_at);
 		Hierarchy::markup_wording(R, VARIABLE_NAME_HMD, nlv->name);
 		nlv->compilation_data.nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
 	}

@@ -22,7 +22,7 @@ typedef struct property_compilation_data {
 
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname) {
 	if (pkg == NULL) {
-		pkg = Hierarchy::package(CompilationUnits::find(current_sentence), PROPERTIES_HAP);
+		pkg = Hierarchy::local_package(PROPERTIES_HAP);
 		Hierarchy::markup_wording(pkg, PROPERTY_NAME_HMD, prn->name);
 	}
 	if (iname == NULL) {

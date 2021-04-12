@@ -1591,6 +1591,10 @@ package_request *Hierarchy::local_package(int hap_id) {
 	return HierarchyLocations::attach_new_package(Emit::tree(), CompilationUnits::find(current_sentence), NULL, hap_id);
 }
 
+package_request *Hierarchy::local_package_to(int hap_id, parse_node *at) {
+	return HierarchyLocations::attach_new_package(Emit::tree(), CompilationUnits::find(at), NULL, hap_id);
+}
+
 package_request *Hierarchy::package_in_enclosure(int hap_id) {
 	return HierarchyLocations::attach_new_package(Emit::tree(), NULL, Packaging::enclosure(Emit::tree()), hap_id);
 }

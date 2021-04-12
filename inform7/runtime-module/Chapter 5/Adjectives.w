@@ -18,7 +18,7 @@ typedef struct adjective_compilation_data {
 =
 void RTAdjectives::initialise_compilation_data(adjective *adj) {
 	adj->adjective_compilation.aph_package =
-		Hierarchy::package(CompilationUnits::current(), ADJECTIVES_HAP);
+		Hierarchy::local_package(ADJECTIVES_HAP);
 	adj->adjective_compilation.aph_iname =
 		Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
 	for (int i=1; i<=NO_ATOM_TASKS; i++)
@@ -378,8 +378,7 @@ void RTAdjectives::set_schemas_for_raw_Inter_function(adjective_meaning *am, wor
 
 void RTAdjectives::make_iname(id_body *idb) {
 	if (CompileImperativeDefn::iname(idb) == NULL) {
-		package_request *R = Hierarchy::package(idb->compilation_data.owning_module,
-			ADJECTIVE_PHRASES_HAP);
+		package_request *R = Hierarchy::local_package_to(ADJECTIVE_PHRASES_HAP, idb->head_of_defn->at);
 		CompileImperativeDefn::set_iname(idb, Hierarchy::make_iname_in(DEFINITION_FN_HL, R));
 	}
 }

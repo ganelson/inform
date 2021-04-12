@@ -35,8 +35,6 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", code_at);
 
 	current_sentence = code_at;
-	CompilationUnits::set_current(code_at);
-
 	stack_frame *frame = &(idb->compilation_data.id_stack_frame);
 	inter_name *iname = req?(req->req_iname):(CompileImperativeDefn::iname(idb));
 
@@ -48,7 +46,6 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	Functions::end(save);
 
 	current_sentence = NULL;
-	CompilationUnits::set_current(NULL);
 }
 
 @<Compile some commentary about the function to follow@> =
@@ -125,7 +122,6 @@ Each imperative definition body has the following data attached to it.
 
 =
 typedef struct id_compilation_data {
-	struct compilation_unit *owning_module;
 	struct stack_frame id_stack_frame;
 	int at_least_one_compiled_form_needed; /* do we still need to compile this? */
 
@@ -141,13 +137,11 @@ typedef struct id_compilation_data {
 	struct linked_list *label_namespaces; /* of |label_namespace| */
 	int compile_with_run_time_debugging; /* in the RULES command */
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
-
 } id_compilation_data;
 
 @ =
 id_compilation_data CompileImperativeDefn::new_data(parse_node *p) {
 	id_compilation_data phcd;
-	phcd.owning_module = CompilationUnits::find(p);
 	phcd.id_stack_frame = Frames::new();
 	phcd.at_least_one_compiled_form_needed = TRUE;
 
@@ -226,7 +220,7 @@ package for the function:
 =
 void CompileImperativeDefn::prepare_for_requests(id_body *idb) {
 	idb->compilation_data.requests_package =
-		Hierarchy::package(idb->compilation_data.owning_module, PHRASES_HAP);
+		Hierarchy::local_package_to(PHRASES_HAP, idb->head_of_defn->at);
 }
 package_request *CompileImperativeDefn::requests_package(id_body *idb) {
 	return idb->compilation_data.requests_package;

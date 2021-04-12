@@ -91,11 +91,8 @@ any additional sentences generated.
 =
 void MajorNodes::visit(parse_node *p, parse_node **last) {
 	global_pass_state.assembly_position = current_sentence;
-	compilation_unit *cm = CompilationUnits::current();
-	CompilationUnits::set_current(p);
 	*last = p;
 	@<Deal with an individual major node@>;
-	CompilationUnits::set_current_to(cm);
 }
 
 @ Headings cause us to begin a fresh topic of discussion, on a fresh piece of

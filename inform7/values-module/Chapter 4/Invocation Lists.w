@@ -85,6 +85,7 @@ thoroughly parsed parts of the syntax tree:
 parse_node *InvocationLists::new(wording W) {
 	parse_node *L = Node::new(INVOCATION_LIST_NT);
 	if (Wordings::nonempty(W)) Node::set_text(L, W);
+	CompilationUnits::assign_to_same_unit(L, current_sentence);
 	return L;
 }
 parse_node *InvocationLists::new_singleton(wording W, parse_node *inv) {

@@ -125,7 +125,6 @@ inter_name *ConstantLists::get_instance_list(kind *K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			instance *I = PL::Counting::next_instance_of(NULL, K);
 			while (I) {
-//			LOOP_OVER_INSTANCES(I, K)
 				Emit::array_iname_entry(RTInstances::iname(I));
 				I = PL::Counting::next_instance_of(I, K);
 			}

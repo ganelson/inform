@@ -322,27 +322,18 @@ hierarchy_attachment_point *HierarchyLocations::ap(inter_tree *I, int hap_id, lo
 	return hap;
 }
 
+#ifdef CORE_MODULE
 package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilation_unit *C, package_request *R, int hap_id) {
 	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.haps_indexed_by_id[hap_id] == NULL))
 		internal_error("invalid HAP request");
 	hierarchy_attachment_point *hap = I->site.haps_indexed_by_id[hap_id];
 
 	if (hap->requirements.any_submodule_package_of_this_identity) {
-		#ifdef CORE_MODULE
 		R = Packaging::request_submodule(I, C, hap->requirements.any_submodule_package_of_this_identity);
-		#endif
-		#ifndef CORE_MODULE
-		internal_error("feature available only within inform7 compiler");
-		#endif
-	} else if (hap->requirements.this_exact_package)
+	} else if (hap->requirements.this_exact_package) {
 		R = hap->requirements.this_exact_package;
-	else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
-		#ifdef CORE_MODULE
+	} else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
 		R = Hierarchy::exotic_package(hap->requirements.this_exact_package_not_yet_created);
-		#endif
-		#ifndef CORE_MODULE
-		internal_error("feature available only within inform7 compiler");
-		#endif
 	} else if (hap->requirements.any_package_of_this_type) {
 		if ((R == NULL) || (R->eventual_type != PackageTypes::get(I, hap->requirements.any_package_of_this_type)))
 			internal_error("subpackage in wrong superpackage");
@@ -350,6 +341,7 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 	
 	return Packaging::request(I, Packaging::make_iname_within(R, hap->name_stem), PackageTypes::get(I, hap->type));
 }
+#endif
 
 @h Hierarchy metadata.
 

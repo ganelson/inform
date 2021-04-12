@@ -262,10 +262,9 @@ which compilation unit the node belongs.
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
 
-@ For tedious code-sequencing reasons, the annotation functions for |unit_ANNOT|
-are made in //building: Building Module//.
+@ =
+MAKE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
 
-=
 void CoreSyntax::declare_unit(void) {
 	Annotations::declare_type(unit_ANNOT, CoreSyntax::write_unit_ANNOT);
 }
@@ -800,6 +799,7 @@ void CoreSyntax::grant_code_permissions(void) {
 	Annotations::allow_for_category(CODE_NCAT, token_check_to_do_ANNOT);
 	Annotations::allow_for_category(CODE_NCAT, token_to_be_parsed_against_ANNOT);
 	Annotations::allow_for_category(CODE_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow(INVOCATION_LIST_NT, unit_ANNOT);
 	Annotations::allow(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
 	Annotations::allow(INVOCATION_LIST_SAY_NT, suppress_newlines_ANNOT);
 	Annotations::allow(INVOCATION_NT, epistemological_status_ANNOT);

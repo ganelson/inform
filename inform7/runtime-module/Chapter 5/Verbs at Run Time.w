@@ -32,8 +32,7 @@ void RTVerbs::initialise_verb_form(verb_form *VF) {
 package_request *RTVerbs::package(verb *V, parse_node *where) {
 	if (V == NULL) internal_error("no verb identity");
 	if (V->verb_compilation.verb_package == NULL)
-		V->verb_compilation.verb_package =
-			Hierarchy::package(CompilationUnits::find(where), VERBS_HAP);
+		V->verb_compilation.verb_package = Hierarchy::local_package_to(VERBS_HAP, where);
 	return V->verb_compilation.verb_package;
 }
 

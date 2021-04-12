@@ -12,6 +12,7 @@ manage that here.
 inter_ti cs_sequence_counter = 0;
 void RTPropertyValues::emit_subject(inference_subject *subj) {
 	LOGIF(OBJECT_COMPILATION, "Compiling object definition for $j\n", subj);
+	current_sentence = subj->infs_created_at;
 	kind *K = KindSubjects::to_kind(subj);
 	instance *I = InstanceSubjects::to_instance(subj);
 

@@ -87,32 +87,32 @@ ROOT_NT
             DEFN_CONT_NT'a room is air-conditioned' {unit: 4}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
-                        INVOCATION_LIST_NT'if it is outdoors' {colon_block_command}
+                        INVOCATION_LIST_NT'if it is outdoors' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if it is outdoors' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'it is outdoors'
                                     TEST_PROPOSITION_NT'it is outdoors' {proposition: << outdoors('it') >>} {term: 'it'}
                         CODE_BLOCK_NT
-                            INVOCATION_LIST_NT'no' {results_from_splitting} {indent: 1}
+                            INVOCATION_LIST_NT'no' {unit: 4} {results_from_splitting} {indent: 1}
                                 INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
                     CODE_BLOCK_NT {control structure: IF}
-                        INVOCATION_LIST_NT'if it is the pool hall and the air conditioner is switched o' {colon_block_command}
+                        INVOCATION_LIST_NT'if it is the pool hall and the air conditioner is switched o' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if it is the pool hall and the air conditioner is switched o' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'it is the pool hall and the air conditioner is switched off'
                                     LOGICAL_AND_NT'it is the pool hall and the air conditioner is switched off'
                                         TEST_PROPOSITION_NT'it is the pool hall' {proposition: << ('it' == 'the pool hall') >>} {term: 'it'}
                                         TEST_PROPOSITION_NT'the air conditioner is switched off' {proposition: << switched off('the air conditioner') >>} {term: 'the air conditioner'}
                         CODE_BLOCK_NT
-                            INVOCATION_LIST_NT'no' {results_from_splitting} {indent: 1}
+                            INVOCATION_LIST_NT'no' {unit: 4} {results_from_splitting} {indent: 1}
                                 INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
                     CODE_BLOCK_NT {control structure: IF}
-                        INVOCATION_LIST_NT'if it is protected by a door' {colon_block_command}
+                        INVOCATION_LIST_NT'if it is protected by a door' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if it is protected by a door' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'it is protected by a door'
                                     TEST_PROPOSITION_NT'it is protected by a door' {proposition: << Exists x : kind=door(x) ^ protection(x, 'it') >>} {term: 'it'}
                         CODE_BLOCK_NT
-                            INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}
+                            INVOCATION_LIST_NT'yes' {unit: 4} {results_from_splitting} {indent: 1}
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
-                    INVOCATION_LIST_NT'no'
+                    INVOCATION_LIST_NT'no' {unit: 4}
                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
             SENTENCE_NT'protection relates a door ( called x ) to a room ( called y ' {unit: 4} {classified}
                 VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
@@ -748,22 +748,22 @@ ROOT_NT
             DEFN_CONT_NT'a door is proximate' {unit: 4}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
-                        INVOCATION_LIST_NT'if the front side of it is the location' {colon_block_command}
+                        INVOCATION_LIST_NT'if the front side of it is the location' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if the front side of it is the location' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'front side of it is the location'
                                     TEST_PROPOSITION_NT'front side of it is the location' {proposition: << ('front side of it' == 'the location') >>} {term: 'front side of it'}
                         CODE_BLOCK_NT
-                            INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}
+                            INVOCATION_LIST_NT'yes' {unit: 4} {results_from_splitting} {indent: 1}
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
                     CODE_BLOCK_NT {control structure: IF}
-                        INVOCATION_LIST_NT'if the back side of it is the location' {colon_block_command}
+                        INVOCATION_LIST_NT'if the back side of it is the location' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if the back side of it is the location' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'back side of it is the location'
                                     TEST_PROPOSITION_NT'back side of it is the location' {proposition: << ('back side of it' == 'the location') >>} {term: 'back side of it'}
                         CODE_BLOCK_NT
-                            INVOCATION_LIST_NT'yes' {results_from_splitting} {indent: 1}
+                            INVOCATION_LIST_NT'yes' {unit: 4} {results_from_splitting} {indent: 1}
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
-                    INVOCATION_LIST_NT'no'
+                    INVOCATION_LIST_NT'no' {unit: 4}
                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
             IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 4} {imperative definition: 915}
             SENTENCE_NT'blank is a room' {unit: 4} {classified} {interpretation of subject: infs'key to the city'}

@@ -62,7 +62,7 @@ inter_name *RTTables::new_tcu_iname(table *t) {
 
 =
 void RTTables::new_table(parse_node *PN, table *t) {
-	t->table_package = Hierarchy::package(CompilationUnits::find(PN), TABLES_HAP);
+	t->table_package = Hierarchy::local_package_to(TABLES_HAP, PN);
 	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
 }
 
