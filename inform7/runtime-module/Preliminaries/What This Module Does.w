@@ -37,6 +37,48 @@ compile. Inter can exist in binary or textual forms: see //inter: Manual// for
 a general introduction to programming it in textual form. We will compile
 binary Inter for speed, but they are really very similar.
 
+The top of the final hierarchy might look like this:
+= (text)
+version number                  version 1
+package type declarations       packagetype _plain
+                                packagetype _code
+                                ...
+pragmas                         pragma target_I6 "$ALLOC_CHUNK_SIZE=32000"
+                                ...
+primitive declarations          primitive !font val -> void
+                                ...
+main                            package main _plain
+									package veneer _module
+									package generic _module
+									package synoptic _module
+									package basic_inform_by_graham_nelson _module
+									package english_language_by_graham_nelson _module
+									package standard_rules_by_graham_nelson _module
+									package BasicInformKit _module
+									package EnglishLanguageKit _module
+									package WorldModelKit _module
+									package CommandParserKit _module
+									package connectors _linkage
+									package template _plain
+=
+The modest amount of global material is the same on every compilation, and just
+sets up our conventions. Inter also requires the top-level package to be |main|.
+But it's our decision to then subdivide |main| up into packages called "modules",
+which have the package type |_module|. These come from several sources:
 
+(*) The |veneer| module is named after the veneer system in Inform 6, and provides
+access to its (very modest) facilities.
+(*) The |generic| module contains definitions which are built-in to the language:
+for example, kinds like |K_number|.
+(*) Each compilation unit of Inform 7 source text produces one module. See
+//Compilation Units//; in particular, each included extension is a compilation unit.
+(*) Each included kit of Inter code is a module.
+(*) The |synoptic| module contains material which gathers up references from all
+of the other modules.
 
-
+Modules then have sub-departments called submodules, which are packages of type
+|_submodule|. For example, the rules created in any given compilation unit live
+in the |rules| submodule of its module; the properties in |properties|; and
+so on. This is all very orderly, but there are a great many different structures
+to compile for a large number of different reasons. The //Hierarchy// section
+of code provides a detailed specification of exactly where everything goes.

@@ -76,8 +76,8 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 compiled from the compilation unit will go into a package of that name.
 
 @<Compose a name for the unit package this will lead to@> =
-	if (Extensions::is_standard(ext)) WRITE_TO(pname, "standard_rules");
-	else if (ext == NULL) WRITE_TO(pname, "source_text");
+	/* if (Extensions::is_standard(ext)) WRITE_TO(pname, "standard_rules");
+	else */ if (ext == NULL) WRITE_TO(pname, "source_text");
 	else {
 		WRITE_TO(pname, "%X", ext->as_copy->edition->work);
 		LOOP_THROUGH_TEXT(pos, pname)

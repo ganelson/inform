@@ -104,11 +104,19 @@ void RTUseOptions::compile(void) {
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
 			text_stream *UO = Str::new();
-			I6T::interpret_i6t(UO,
-				Lexer::word_raw_text(Wordings::first_wn(uo->expansion) + 1),
-				uo->minimum_setting_value);
-			WRITE_TO(UO, "\n");
-			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, UO, NULL);
+			WRITE_TO(UO, "%W", Wordings::from(uo->expansion,
+				Wordings::first_wn(uo->expansion) + 1));
+			text_stream *S = Str::new();
+			for (int i=0; i<Str::len(UO); i++) {
+				if ((Str::get_at(UO, i) == '{') && (Str::get_at(UO, i+1) == 'N') &&
+					(Str::get_at(UO, i+2) == '}')) {
+					WRITE_TO(S, "%d", uo->minimum_setting_value);
+					i += 2;
+				} else {
+					PUT_TO(S, Str::get_at(UO, i));
+				}
+			}
+			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, S, NULL);
 		}
 }
 
