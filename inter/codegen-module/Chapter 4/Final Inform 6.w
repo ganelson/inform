@@ -111,7 +111,7 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 	switch (P->W.data[ID_IFLD]) {
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
-				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			int choice = early_matter_I7CGS;
 			if (Str::eq(con_name->symbol_name, I"DynamicMemoryAllocation")) choice = very_early_matter_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = code_at_eof_I7CGS;

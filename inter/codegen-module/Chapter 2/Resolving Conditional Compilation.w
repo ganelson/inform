@@ -118,7 +118,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	DISCARD_TEXT(ident)
 
 @<Decide whether symbol defined@> =
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, symbol_name);
+	inter_symbol *symbol = InterSymbolsTables::symbol_from_name_in_main_or_basics(I, symbol_name);
 	if (symbol) {
 		result = TRUE;
 		if (Inter::Symbols::is_extern(symbol)) result = FALSE;
@@ -134,7 +134,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
-		inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, identifier);
+		inter_symbol *symbol = InterSymbolsTables::symbol_from_name_in_main_or_basics(I, identifier);
 		if (symbol) {
 			inter_tree_node *P = Inter::Symbols::definition(symbol);
 			if ((P) &&

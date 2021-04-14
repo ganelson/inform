@@ -104,7 +104,11 @@ will divide according to these units.
 	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units",
 		-1, debugging, sequence_timer);
 	BENCH(CompilationSettings::initialise_gcs)
-	BENCH(Emit::begin);
+	BENCH(Emit::create_emission_tree)
+	BENCH(Hierarchy::establish)
+	BENCH(Emit::rudimentary_kinds);
+	BENCH(FundamentalConstants::emit);
+	BENCH(RTVerbs::ConjugateVerbDefinitions);
 	BENCH(NameResolution::make_the_tree)
 	BENCH(IndexHeadings::write_as_xml)
 	BENCH(CompilationUnits::determine)

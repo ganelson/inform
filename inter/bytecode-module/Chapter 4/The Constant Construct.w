@@ -59,7 +59,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
 	if (op != 0) {
 		inter_tree_node *P =
-			Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_ti) ilp->indent_level);
+			Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
@@ -89,7 +89,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) form = CONSTANT_QUOTIENT_LIST;
 			if (form != 0) {
 				inter_tree_node *P =
-					Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_ti) ilp->indent_level);
+					Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_ti) ilp->indent_level);
 				*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 				if (*E) return;
 				text_stream *conts = mr2.exp[0];
@@ -113,7 +113,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				 Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
+				 Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
 			int arity = Inter::Kind::arity(con_kind);
 			int counter = 0;
 			text_stream *conts = mr2.exp[0];
@@ -141,7 +141,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_ti) ilp->indent_level);
+				Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_ti) ilp->indent_level);
 			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 			if (*E) return;
 			text_stream *conts = mr2.exp[0];
@@ -171,7 +171,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			}
 			DISCARD_TEXT(parsed_text)
 			if (*E) return;
-			*E = Inter::Constant::new_textual(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), ID, (inter_ti) ilp->indent_level, eloc);
+			*E = Inter::Constant::new_textual(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), ID, (inter_ti) ilp->indent_level, eloc);
 			return;
 		}
 	}
@@ -181,7 +181,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		if (block == NULL) {
 			*E = Inter::Errors::quoted(I"no such code block", S, eloc); return;
 		}
-		*E = Inter::Constant::new_function(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), block, (inter_ti) ilp->indent_level, eloc);
+		*E = Inter::Constant::new_function(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), block, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -194,7 +194,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		if (*E) return;
 	}
 
-	*E = Inter::Constant::new_numerical(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Constant::parse_text(text_stream *parsed_text, text_stream *S, int from, int to, inter_error_location *eloc) {
@@ -308,7 +308,7 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	*E = Inter::Verify::defn(owner, P, DEFN_CONST_IFLD); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_CONST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_CONST_IFLD]);
+	inter_symbol *con_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_CONST_IFLD]);
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
 			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
@@ -377,8 +377,8 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 }
 
 void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_CONST_IFLD);
+	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	inter_symbol *con_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_CONST_IFLD);
 	int hex = FALSE;
 	if (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
@@ -443,7 +443,7 @@ inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
 	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.data[ID_IFLD] != CONSTANT_IST) return NULL;
-	return Inter::SymbolsTables::symbol_from_frame_data(D, KIND_CONST_IFLD);
+	return InterSymbolsTables::symbol_from_frame_data(D, KIND_CONST_IFLD);
 }
 
 inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {

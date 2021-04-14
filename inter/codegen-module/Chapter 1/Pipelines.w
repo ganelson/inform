@@ -369,14 +369,14 @@ inter_symbol *to_phrase_ptype_symbol = NULL;
 
 void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 
-	code_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_code");
-	plain_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_plain");
-	submodule_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
-	function_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
-	action_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
-	command_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
-	property_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
-	to_phrase_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
+	code_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_code");
+	plain_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_plain");
+	submodule_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
+	function_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
+	action_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
+	command_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
+	property_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
+	to_phrase_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
 
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");

@@ -103,30 +103,41 @@ a general introduction to programming it in textual form. We will compile
 binary Inter for speed, but they are really very similar.
 </p>
 
+<p class="commentary">Inter code is not a linear stream, like the assembly language produced by a
+conventional compiler: rather, it is a hierarchy of nested "packages". Each
+package can contain some symbols, some other packages, and some actual code
+or data. This makes it possible for Inter code to be heavily structured, with
+similar resources grouped appropriately together. A package also has a "type",
+and this can be used to find resources of different sorts, or to regulate where
+they are placed. Types are written with an initial underscore: for example,
+one package type we will create is <span class="extract"><span class="extract-syntax">_module</span></span>.
+</p>
+
 <p class="commentary">The top of the final hierarchy might look like this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">version number                  version 1</span>
-<span class="plain-syntax">package type declarations       packagetype _plain</span>
+<span class="plain-syntax">version number --&gt;              version 1</span>
+<span class="plain-syntax">package type declarations --&gt;   packagetype _plain</span>
 <span class="plain-syntax">                                packagetype _code</span>
 <span class="plain-syntax">                                ...</span>
-<span class="plain-syntax">pragmas                         pragma target_I6 "$ALLOC_CHUNK_SIZE=32000"</span>
+<span class="plain-syntax">pragmas --&gt;                     pragma target_I6 "$ALLOC_CHUNK_SIZE=32000"</span>
 <span class="plain-syntax">                                ...</span>
-<span class="plain-syntax">primitive declarations          primitive !font val -&gt; void</span>
+<span class="plain-syntax">primitive declarations --&gt;      primitive !font val -&gt; void</span>
 <span class="plain-syntax">                                ...</span>
-<span class="plain-syntax">main                            package main _plain</span>
-<span class="plain-syntax">                                    package veneer _module</span>
+<span class="plain-syntax">main --&gt;                        package main _plain</span>
+<span class="plain-syntax">    general material --&gt;            package veneer _module</span>
 <span class="plain-syntax">                                    package generic _module</span>
 <span class="plain-syntax">                                    package synoptic _module</span>
-<span class="plain-syntax">                                    package basic_inform_by_graham_nelson _module</span>
+<span class="plain-syntax">    from compilation units --&gt;      package basic_inform_by_graham_nelson _module</span>
 <span class="plain-syntax">                                    package english_language_by_graham_nelson _module</span>
 <span class="plain-syntax">                                    package standard_rules_by_graham_nelson _module</span>
-<span class="plain-syntax">                                    package BasicInformKit _module</span>
+<span class="plain-syntax">                                    package source_text _module</span>
+<span class="plain-syntax">    from kits --&gt;                   package BasicInformKit _module</span>
 <span class="plain-syntax">                                    package EnglishLanguageKit _module</span>
 <span class="plain-syntax">                                    package WorldModelKit _module</span>
 <span class="plain-syntax">                                    package CommandParserKit _module</span>
-<span class="plain-syntax">                                    package connectors _linkage</span>
+<span class="plain-syntax">    to do with linking --&gt;          package connectors _linkage</span>
 <span class="plain-syntax">                                    package template _plain</span>
 </pre>
 <p class="commentary">The modest amount of global material is the same on every compilation, and just
@@ -140,17 +151,39 @@ access to its (very modest) facilities.
 </li><li>&#9679; The <span class="extract"><span class="extract-syntax">generic</span></span> module contains definitions which are built-in to the language:
 for example, kinds like <span class="extract"><span class="extract-syntax">K_number</span></span>.
 </li><li>&#9679; Each compilation unit of Inform 7 source text produces one module. See
-<a href="2-cu.html" class="internal">Compilation Units</a>; in particular, each included extension is a compilation unit.
+<a href="2-cu.html" class="internal">Compilation Units</a>; in particular, each included extension is a compilation unit,
+and the main source text puts material into <span class="extract"><span class="extract-syntax">source_text</span></span>.
 </li><li>&#9679; Each included kit of Inter code is a module.
 </li><li>&#9679; The <span class="extract"><span class="extract-syntax">synoptic</span></span> module contains material which gathers up references from all
 of the other modules.
 </li></ul>
+<p class="commentary">The role of <a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> is to build the generic, synoptic
+and compilation-unit modules; the modules from kits will come later in the
+linking stage (see <a href="../codegen-module/index.html" class="internal">codegen</a>).
+</p>
+
 <p class="commentary">Modules then have sub-departments called submodules, which are packages of type
 <span class="extract"><span class="extract-syntax">_submodule</span></span>. For example, the rules created in any given compilation unit live
 in the <span class="extract"><span class="extract-syntax">rules</span></span> submodule of its module; the properties in <span class="extract"><span class="extract-syntax">properties</span></span>; and
 so on. This is all very orderly, but there are a great many different structures
 to compile for a large number of different reasons. The <a href="2-hrr.html" class="internal">Hierarchy</a> section
 of code provides a detailed specification of exactly where everything goes.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b><a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> should not make raw Inter code directly, but
+through a three-level process:
+</p>
+
+<ul class="items"><li>&#9679; <a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> call the functions in <a href="2-hrr.html" class="internal">Hierarchy</a> and
+<a href="2-emt.html" class="internal">Emitting Inter</a> to "emit" code and find out where to put it.
+</li><li>&#9679; <a href="2-hrr.html" class="internal">Hierarchy</a> and <a href="2-emt.html" class="internal">Emitting Inter</a> then call the <a href="../building-module/index.html" class="internal">building</a> module, which gives
+general code (not tied to the Inform compiler) for constructing Inter.
+</li><li>&#9679; The <a href="../building-module/index.html" class="internal">building</a> module then calls down to <a href="../bytecode-module/index.html" class="internal">bytecode</a> to put the actual
+bytes in memory.
+</li></ul>
+<p class="commentary">In effect, then, <a href="2-hrr.html" class="internal">Chapter 2: Emission</a> is the bridge (or the shaft?) between the upper
+levels of Inform and the lower, and it provides an API for the rest of <a href="index.html" class="internal">runtime</a>
+and <a href="../imperative-module/index.html" class="internal">imperative</a> to use.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

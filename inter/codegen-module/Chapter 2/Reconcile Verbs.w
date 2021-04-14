@@ -26,7 +26,7 @@ void CodeGen::ReconcileVerbs::reconcile(inter_tree *I) {
 void CodeGen::ReconcileVerbs::visitor1(inter_tree *I, inter_tree_node *P, void *v_state) {
 	dictionary *observed_verbs = (dictionary *) v_state;
 	if (P->W.data[ID_IFLD] == CONSTANT_IST) {
-		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 		if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
 			(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) != 1))
 			@<Attend to the verb@>;
@@ -37,7 +37,7 @@ void CodeGen::ReconcileVerbs::visitor1(inter_tree *I, inter_tree_node *P, void *
 void CodeGen::ReconcileVerbs::visitor2(inter_tree *I, inter_tree_node *P, void *v_state) {
 	dictionary *observed_verbs = (dictionary *) v_state;
 	if (P->W.data[ID_IFLD] == CONSTANT_IST) {
-		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 		if ((Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) &&
 			(Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1))
 			@<Attend to the verb@>;

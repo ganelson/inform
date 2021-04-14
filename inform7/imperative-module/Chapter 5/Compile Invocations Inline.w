@@ -1690,7 +1690,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
 	if (nlv) {
 		PUT(URL_SYMBOL_CHAR);
-		Inter::SymbolsTables::symbol_to_url_name(OUT,
+		InterSymbolsTables::symbol_to_url_name(OUT,
 			InterNames::to_symbol(RTVariables::iname(nlv)));
 		PUT(URL_SYMBOL_CHAR);
 		return;
@@ -1705,8 +1705,8 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =
 			Inter::Packages::scope(Emit::current_enclosure()->actual_package);
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
-		Inter::SymbolsTables::symbol_to_url_name(OUT, S);
+		inter_symbol *S = InterSymbolsTables::symbol_from_id(T, v2);
+		InterSymbolsTables::symbol_to_url_name(OUT, S);
 		PUT(URL_SYMBOL_CHAR);
 	} else {
 		CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);

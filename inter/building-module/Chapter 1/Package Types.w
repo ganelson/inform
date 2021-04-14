@@ -16,7 +16,7 @@ Instead we use the following function:
 inter_symbol *PackageTypes::get(inter_tree *I, text_stream *name) {
 	inter_symbols_table *scope = Inter::Tree::global_scope(I);
 
-	inter_symbol *ptype = Inter::SymbolsTables::symbol_from_name(scope, name);
+	inter_symbol *ptype = InterSymbolsTables::symbol_from_name(scope, name);
 	if (ptype == NULL) {
 		int enclose = TRUE;
 		@<Decide if this package type is to be enclosing@>;

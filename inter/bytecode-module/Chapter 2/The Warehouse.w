@@ -200,7 +200,7 @@ inter_ti Inter::Warehouse::create_symbols_table(inter_warehouse *warehouse) {
 	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	if (warehouse->stored_resources[n].stored_symbols_table == NULL) {
 		warehouse->stored_resources[n].irsrc = SYMBOLS_TABLE_IRSRC;
-		warehouse->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
+		warehouse->stored_resources[n].stored_symbols_table = InterSymbolsTables::new();
 		warehouse->stored_resources[n].stored_symbols_table->n_index = (int) n;
 	}
 	return n;

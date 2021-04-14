@@ -161,12 +161,12 @@ inter_symbol *Veneer::make(inter_tree *I, inter_symbol **slot, text_stream *S, t
 		inter_package *veneer_package = Packaging::incarnate(Site::veneer_request(I));
 		inter_bookmark *IBM = Site::veneer_booknark(I);
 		inter_symbols_table *tab = Inter::Packages::scope(veneer_package);
-		*slot = Inter::SymbolsTables::symbol_from_name_creating(tab, S);
+		*slot = InterSymbolsTables::symbol_from_name_creating(tab, S);
 		if (Str::len(T) > 0) Inter::Symbols::set_translate(*slot, T);
 		Inter::Symbols::annotate_i(*slot, VENEER_IANN, 1);
 		Produce::guard(Inter::Constant::new_numerical(IBM,
-			Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, *slot),
-			Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, unchecked_kind_symbol),
+			InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, *slot),
+			InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, unchecked_kind_symbol),
 			LITERAL_IVAL, 0,
 			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	}

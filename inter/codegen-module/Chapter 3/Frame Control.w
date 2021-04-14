@@ -40,7 +40,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 		case SYMBOL_IST: break;
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
-				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			inter_tree *I = gen->from;
 			if (Inter::Packages::container(P) == Site::main_package_if_it_exists(I)) {
 				WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
@@ -99,7 +99,7 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 				if (c == URL_SYMBOL_CHAR) break;
 				PUT_TO(T, c);
 			}
-			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
+			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
 			WRITE("%S", CodeGen::CL::name(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);
@@ -108,14 +108,14 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 
 void CodeGen::FC::local(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 	CodeGen::Targets::declare_local_variable(gen, P, var_name);
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
 	WRITE("%S;\n", lab_name->symbol_name);
 }
 
@@ -161,7 +161,7 @@ void CodeGen::FC::cast(code_generation *gen, inter_tree_node *P) {
 
 void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
+	inter_symbol *lab = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	text_stream *OUT = CodeGen::current(gen);
 	if (query_labels_mode) PUT('?');
@@ -174,7 +174,7 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 
 void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(
+		inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(
 			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
 		WRITE("%S", CodeGen::CL::name(symb));
@@ -202,14 +202,14 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, in
 }
 
 void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
-	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
+	inter_symbol *val_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
 		inter_ti val1 = P->W.data[VAL1_VAL_IFLD];
 		inter_ti val2 = P->W.data[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_package *pack = Inter::Packages::container(P);
-			inter_symbol *symb = Inter::SymbolsTables::local_symbol_from_id(pack, val2);
-			if (symb == NULL) symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
+			inter_symbol *symb = InterSymbolsTables::local_symbol_from_id(pack, val2);
+			if (symb == NULL) symb = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 			if (symb == NULL) internal_error("bad val");
 			text_stream *OUT = CodeGen::current(gen);
 			WRITE("%S", CodeGen::CL::name(symb));
@@ -255,7 +255,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			break;
 		}
 		case INVOKED_ROUTINE: {
-			inter_symbol *routine = Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
+			inter_symbol *routine = InterSymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
 			if (routine == NULL) internal_error("bad routine");
 			WRITE("%S(", CodeGen::CL::name(routine));
 			int argc = 0;
@@ -277,7 +277,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 					inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
 					inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
 					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
+						inter_symbol *symb = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
 						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
 							negate_label_mode = TRUE;
 							continue;

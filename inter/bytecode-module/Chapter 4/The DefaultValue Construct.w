@@ -38,7 +38,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::DefaultValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::DefaultValue::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
@@ -54,7 +54,7 @@ void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
+	inter_symbol *con_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", con_kind->symbol_name);
 		Inter::Types::write(OUT, P, con_kind,

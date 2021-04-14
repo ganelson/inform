@@ -222,8 +222,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		case OBJECT_PLM: {
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Constant::new_numerical(IBM,
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
@@ -231,34 +231,34 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		case GLOBAL_PLM:
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Variable::new(IBM,
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		case ATTRIBUTE_PLM: {
 			TEMPORARY_TEXT(A)
 			WRITE_TO(A, "P_%S", con_name->symbol_name);
-			inter_symbol *attr_symbol = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
+			inter_symbol *attr_symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
 			
 			if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
 				if (attr_symbol == NULL) attr_symbol = con_name;
 				Produce::guard(Inter::Property::new(IBM,
-					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
-					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
 					(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 				Inter::Symbols::annotate_i(attr_symbol, ATTRIBUTE_IANN, 1);
 				Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
 				Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
 				if (Str::ne(attr_symbol->symbol_name, con_name->symbol_name)) {
-					inter_symbol *alias_symbol = Inter::SymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), con_name->symbol_name);
-					Inter::SymbolsTables::equate(alias_symbol, attr_symbol);
+					inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), con_name->symbol_name);
+					InterSymbolsTables::equate(alias_symbol, attr_symbol);
 				}
 			} else {
 				Inter::Symbols::annotate_i(attr_symbol, ASSIMILATED_IANN, 1);
 				if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol))) {
-					inter_symbol *alias_symbol = Inter::SymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), Inter::Symbols::get_translate(attr_symbol));
-					Inter::SymbolsTables::equate(alias_symbol, attr_symbol);
+					inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), Inter::Symbols::get_translate(attr_symbol));
+					InterSymbolsTables::equate(alias_symbol, attr_symbol);
 				}
 			}
 			CodeGen::Assimilate::install_socket(I, attr_symbol, A);
@@ -270,8 +270,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		}
 		case PROPERTY_PLM: {
 			Produce::guard(Inter::Property::new(IBM,
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			if (Str::eq(identifier, I"absent"))
@@ -332,7 +332,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					v2_pile[no_assimilated_array_entries] = v2;
 					no_assimilated_array_entries++;
 					if ((plm == VERB_PLM) && (verb_directive_result_symbol) &&
-						(Inter::SymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == verb_directive_result_symbol))
+						(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == verb_directive_result_symbol))
 						next_is_action = TRUE;
 				}
 				DISCARD_TEXT(value)
@@ -340,8 +340,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 			inter_tree_node *array_in_progress =
 				Inode::fill_3(IBM, CONSTANT_IST,
-					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
 					CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 			int pos = array_in_progress->W.extent;
 			if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
@@ -441,7 +441,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			TEMPORARY_TEXT(value)
 			@<Extract a token@>;
 			if (Str::len(value) == 0) break;
-			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
+			inter_symbol *loc_name = InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
 			Inter::Symbols::local(loc_name);
 			Produce::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			DISCARD_TEXT(value)
@@ -462,8 +462,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_symbol *rsymb = CodeGen::Assimilate::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(rsymb, ASSIMILATED_IANN, 1);
 	Produce::guard(Inter::Constant::new_function(IBM,
-		Inter::SymbolsTables::id_from_symbol(I, FP, rsymb),
-		Inter::SymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
+		InterSymbolsTables::id_from_symbol(I, FP, rsymb),
+		InterSymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
 		IP,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
@@ -486,7 +486,7 @@ void CodeGen::Assimilate::install_socket(inter_tree *I, inter_symbol *con_name, 
 }
 
 inter_symbol *CodeGen::Assimilate::make_socketed_symbol(inter_tree *I, text_stream *identifier, inter_symbols_table *into_scope) {
-	inter_symbol *new_symbol = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
+	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(into_scope, identifier);
 	CodeGen::Assimilate::install_socket(I, new_symbol, identifier);
 	return new_symbol;
 }
@@ -508,12 +508,12 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
 		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
-		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
-		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
+		inter_symbol *xsymb = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
+		if (txsymb) InterSymbolsTables::equate(xsymb, txsymb);
 		DISCARD_TEXT(unsharped)
 		Produce::guard(Inter::Constant::new_numerical(IBM,
-			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
-			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
 			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
 	}
@@ -656,8 +656,8 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
-		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
+		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
+		InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
 	return mcc_name;
@@ -713,8 +713,8 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 	if (v1 == UNDEF_IVAL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
-		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
+		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
+		InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	return mcc_name;
 }
@@ -724,7 +724,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -738,7 +738,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_ti op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -753,7 +753,7 @@ int ccs_count = 0;
 inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
-	inter_symbol *mcc_name = Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+	inter_symbol *mcc_name = InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
 	Inter::Symbols::set_flag(mcc_name, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
 	return mcc_name;

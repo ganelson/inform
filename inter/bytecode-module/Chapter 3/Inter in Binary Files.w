@@ -222,7 +222,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 
 @<Read a symbols table resource@> =
-	if (res->stored_symbols_table == NULL) res->stored_symbols_table = Inter::SymbolsTables::new();
+	if (res->stored_symbols_table == NULL) res->stored_symbols_table = InterSymbolsTables::new();
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
 		unsigned int st;
@@ -248,7 +248,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			PUT_TO(trans, (int) c);
 		}
 
-		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_creating_at_ID(res->stored_symbols_table, name, X);
+		inter_symbol *S = InterSymbolsTables::symbol_from_name_creating_at_ID(res->stored_symbols_table, name, X);
 		Inter::Symbols::set_type(S, (int) st);
 		Inter::Symbols::set_scope(S, (int) sc);
 		if (uniq == 1) Inter::Symbols::set_flag(S, MAKE_NAME_UNIQUE);
@@ -389,11 +389,11 @@ enough that the slot exists for the eventual list to be stored in.
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			inter_symbols_table *to_T = Inter::Warehouse::get_symbols_table(warehouse, to_T_id);
 			if (from_T == NULL) internal_error("no to_T");
-			inter_symbol *from_S = Inter::SymbolsTables::symbol_from_id(from_T, from_ID);
+			inter_symbol *from_S = InterSymbolsTables::symbol_from_id(from_T, from_ID);
 			if (from_S == NULL) internal_error("no from_S");
-			inter_symbol *to_S = Inter::SymbolsTables::symbol_from_id(to_T, to_ID);
+			inter_symbol *to_S = InterSymbolsTables::symbol_from_id(to_T, to_ID);
 			if (to_S == NULL) internal_error("no to_S");
-			Inter::SymbolsTables::equate(from_S, to_S);
+			InterSymbolsTables::equate(from_S, to_S);
 		}
 	}
 

@@ -159,7 +159,7 @@ inter_package *Inter::Packages::template(inter_tree *I) {
 }
 
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
-	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	inter_symbol *found = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;
 	inter_tree_node *D = Inter::Packages::definition(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -227,7 +227,7 @@ int Inter::Packages::baseline(inter_package *P) {
 
 text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) {
 	if (P == NULL) return NULL;
-	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
+	inter_symbol *found = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
 	if ((found) && (Inter::Symbols::is_defined(found))) {
 		inter_tree_node *D = Inter::Symbols::definition(found);
 		inter_ti val2 = D->W.data[VAL1_MD_IFLD + 1];

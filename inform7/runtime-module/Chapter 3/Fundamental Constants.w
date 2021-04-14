@@ -68,7 +68,8 @@ inter_name *FundamentalConstants::emit_unchecked_hex(int id, inter_ti val) {
 	return iname;
 }
 
-void FundamentalConstants::emit(target_vm *VM) {
+void FundamentalConstants::emit(void) {
+	target_vm *VM = Task::vm();
 	if (VM == NULL) internal_error("target VM not set yet");
 
 	if (TargetVMs::debug_enabled(VM))

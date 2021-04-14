@@ -15,7 +15,7 @@ void CodeGen::CL::prepare(code_generation *gen) {
 }
 
 void CodeGen::CL::quartet_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 	if ((Str::eq(con_name->symbol_name, I"thedark")) ||
 		(Str::eq(con_name->symbol_name, I"InformLibrary")) ||
 		(Str::eq(con_name->symbol_name, I"InformParser")) ||
@@ -60,7 +60,7 @@ void CodeGen::CL::responses(code_generation *gen) {
 void CodeGen::CL::response_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	response_traverse_state *rts = (response_traverse_state *) state;
 	generated_segment *saved = CodeGen::select(rts->gen, CodeGen::Targets::general_segment(rts->gen, P));
-	inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
+	inter_symbol *resp_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
 	CodeGen::Targets::begin_constant(rts->gen, CodeGen::CL::name(resp_name), TRUE);
 	text_stream *OUT = CodeGen::current(rts->gen);
 	rts->NR = rts->NR + 1;
@@ -90,7 +90,7 @@ is 20. We instead compile this as
 =
 void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
-	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 
 	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
 	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1) return;
@@ -263,7 +263,7 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
 		if (val1 == ALIAS_IVAL) {
 			inter_symbol *alias =
-				Inter::SymbolsTables::symbol_from_data_pair_and_table(
+				InterSymbolsTables::symbol_from_data_pair_and_table(
 					val1, val2, Inter::Packages::scope(D->package));
 			return CodeGen::CL::constant_depth(alias) + 1;
 		}
@@ -279,7 +279,7 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 			inter_ti val2 = D->W.data[i + 1];
 			if (val1 == ALIAS_IVAL) {
 				inter_symbol *alias =
-					Inter::SymbolsTables::symbol_from_data_pair_and_table(
+					InterSymbolsTables::symbol_from_data_pair_and_table(
 						val1, val2, Inter::Packages::scope(D->package));
 				total += CodeGen::CL::constant_depth(alias);
 			} else total++;
@@ -356,7 +356,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 		if (hex) WRITE("$%x", val2);
 		else WRITE("%d", val2);
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-		inter_symbol *aliased = Inter::SymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
+		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
 		if (aliased == verb_directive_divider_symbol) WRITE("\n\t*");
 		else if (aliased == verb_directive_reverse_symbol) WRITE("reverse");

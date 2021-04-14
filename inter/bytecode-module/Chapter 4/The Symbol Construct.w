@@ -82,11 +82,11 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		}
 		if (equate_name) {
 			if (Inter::Symbols::get_scope(name_name) == PLUG_ISYMS)
-				Inter::SymbolsTables::make_plug(name_name, equate_name);
+				InterSymbolsTables::make_plug(name_name, equate_name);
 			else {
-				inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
-				if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
-				Inter::SymbolsTables::make_socket(name_name, eq);
+				inter_symbol *eq = InterSymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
+				if (eq == NULL) InterSymbolsTables::equate_textual(name_name, equate_name);
+				InterSymbolsTables::make_socket(name_name, eq);
 			}
 		} else {
 			*E = Inter::Errors::plain(I"link symbol not equated", eloc); return;
@@ -97,9 +97,9 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		}
 		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
 		if (equate_name) {
-			inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
-			if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
-			else Inter::SymbolsTables::equate(name_name, eq);
+			inter_symbol *eq = InterSymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
+			if (eq == NULL) InterSymbolsTables::equate_textual(name_name, equate_name);
+			else InterSymbolsTables::equate(name_name, eq);
 		}
 	}
 

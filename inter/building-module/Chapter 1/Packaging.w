@@ -138,7 +138,8 @@ very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_tree *I) {
-	I->site.current_state.saved_IRS = Packaging::push_IRS(I, Inter::Bookmarks::at_start_of_this_repository(I));
+	I->site.current_state.saved_IRS =
+		Packaging::push_IRS(I, Inter::Bookmarks::at_start_of_this_repository(I));
 	I->site.current_state.saved_enclosure = NULL;
 }
 
@@ -184,6 +185,7 @@ room to insert those resources, then incarnate |main| and enter it.
 
 =
 void Packaging::outside_all_packages(inter_tree *I) {
+	Packaging::initialise_state(I);
 	Produce::version(I, 1);
 
 	Produce::comment(I, I"Package types:");

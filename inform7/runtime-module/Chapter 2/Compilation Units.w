@@ -59,7 +59,7 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	compilation_unit *C = CREATE(compilation_unit);
 	C->head_node = p;
 	C->to_module = M;
-	CompilationUnits::join(p->down, C);
+	CompilationUnits::join(p, C);
 
 @<Give M metadata indicating the source extension@> =
 	Hierarchy::markup(M->the_package, EXT_AUTHOR_HMD,
@@ -114,6 +114,6 @@ but that's now easy.
 
 =
 compilation_unit *CompilationUnits::find(parse_node *from) {
-	if (from) Node::get_unit(from);
+	if (from) return Node::get_unit(from);
 	return NULL;
 }

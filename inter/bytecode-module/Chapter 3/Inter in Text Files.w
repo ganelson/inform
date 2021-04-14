@@ -14,7 +14,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
-	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
+	InterSymbolsTables::resolve_forward_references(I, &eloc);
 	default_ptree = NULL;
 	Inter::Tree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 	Primitives::scan_tree(I);
@@ -27,7 +27,7 @@ void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state
 
 inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if (symb) {
 		if (Inter::Symbols::is_predeclared(symb)) {
 			Inter::Symbols::undefine(symb);
@@ -36,12 +36,12 @@ inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbo
 		*E = Inter::Errors::quoted(I"symbol already exists", name, eloc);
 		return NULL;
 	}
-	return Inter::SymbolsTables::symbol_from_name_creating(T, name);
+	return InterSymbolsTables::symbol_from_name_creating(T, name);
 }
 
 inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_ti construct, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (Inter::Symbols::is_extern(symb)) return symb;
@@ -55,7 +55,7 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 
 inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	if ((Inter::Symbols::is_defined(symb)) &&
 		(Inter::Symbols::is_predeclared(symb) == FALSE) &&
@@ -71,7 +71,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 
 inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }

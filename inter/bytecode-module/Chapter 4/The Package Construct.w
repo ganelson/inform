@@ -68,7 +68,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_strea
 	inter_ti STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
 	inter_tree_node *P = Inode::fill_3(IBM,
 		PACKAGE_IST,
-		Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
+		InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_ti PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);
 	pack->package_head = P;
@@ -108,7 +108,7 @@ void Inter::Package::verify(inter_construct *IC, inter_tree_node *P, inter_packa
 
 void Inter::Package::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
-	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
+	inter_symbol *ptype_name = InterSymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if ((pack) && (ptype_name)) {
 		WRITE("package %S %S", Inter::Packages::name(pack), ptype_name->symbol_name);
 	} else {
@@ -121,7 +121,7 @@ inter_error_message *Inter::Package::write_symbols(OUTPUT_STREAM, inter_tree_nod
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (pack) {
 		inter_symbols_table *locals = Inter::Packages::scope(pack);
-		Inter::SymbolsTables::write_declarations(OUT, locals, (int) (P->W.data[LEVEL_IFLD] + 1));
+		InterSymbolsTables::write_declarations(OUT, locals, (int) (P->W.data[LEVEL_IFLD] + 1));
 	}
 	return NULL;
 }
@@ -150,7 +150,7 @@ inter_package *Inter::Package::defined_by_frame(inter_tree_node *D) {
 inter_symbol *Inter::Package::type(inter_package *pack) {
 	if (pack == NULL) return NULL;
 	inter_tree_node *D = pack->package_head;
-	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(D, PTYPE_PACKAGE_IFLD);
+	inter_symbol *ptype_name = InterSymbolsTables::global_symbol_from_frame_data(D, PTYPE_PACKAGE_IFLD);
 	return ptype_name;
 }
 
@@ -163,7 +163,7 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 }
 
 void Inter::Package::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
+	inter_symbol *ptype_name = InterSymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
 	if (Str::eq(ptype_name->symbol_name, I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C->W.data[0] != LABEL_IST) && (C->W.data[0] != LOCAL_IST) && (C->W.data[0] != SYMBOL_IST)) {

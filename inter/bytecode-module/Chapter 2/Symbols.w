@@ -62,7 +62,7 @@ void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
 	inter_symbol *S = (inter_symbol *) vs;
 	if (S == NULL) WRITE("<no-symbol>");
 	else {
-		Inter::SymbolsTables::symbol_to_url_name(DL, S);
+		InterSymbolsTables::symbol_to_url_name(DL, S);
 		WRITE("{%d}", S->symbol_ID - SYMBOL_BASE_VAL);
 		if (Str::len(S->translate_text) > 0) WRITE("'%S'", S->translate_text);
 	}
@@ -81,7 +81,7 @@ int Inter::Symbols::is_stored_in_data(inter_ti val1, inter_ti val2) {
 
 void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
-	*val1 = ALIAS_IVAL; *val2 = Inter::SymbolsTables::id_from_symbol(I, pack, S);
+	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTables::id_from_symbol(I, pack, S);
 }
 
 @ =
@@ -115,7 +115,7 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	inter_symbol *eq = mark->equated_to;
 	if (eq) {
 		WRITE(" --> ");
-		Inter::SymbolsTables::symbol_to_url_name(OUT, eq);
+		InterSymbolsTables::symbol_to_url_name(OUT, eq);
 	}
 }
 
@@ -148,7 +148,7 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 		(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
 		(P->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P->W.data[DATA_CONST_IFLD + 1]);
+		inter_symbol *alias_to = InterSymbolsTables::symbol_from_id(scope, P->W.data[DATA_CONST_IFLD + 1]);
 		return Inter::Symbols::evaluate_to_int(alias_to);
 	}
 	return -1;

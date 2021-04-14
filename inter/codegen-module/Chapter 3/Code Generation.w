@@ -179,7 +179,7 @@ void CodeGen::generate(code_generation *gen) {
 =
 void CodeGen::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	inter_symbol *target_symbol = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
 	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);

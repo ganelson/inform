@@ -6,7 +6,7 @@ Verifying that a chunk of inter is correct and consistent.
 inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *P, int index) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	inter_symbol *S = Inter::SymbolsTables::unequated_symbol_from_id(T, P->W.data[index]);
+	inter_symbol *S = InterSymbolsTables::unequated_symbol_from_id(T, P->W.data[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 1)", NULL);
 	if (S->equated_to) {
 		LOG("This is $6 but $3 equates to $3 in $6\n",
@@ -26,7 +26,7 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 }
 
 inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, inter_symbols_table *T) {
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, P->W.data[index]);
+	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, P->W.data[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 2)", NULL);
 	if ((Inter::Symbols::is_defined(S)) &&
 		(Inter::Symbols::is_predeclared_local(S) == FALSE))
@@ -38,7 +38,7 @@ inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, in
 inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node *P, inter_ti ID, inter_ti construct) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
+	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 3)", NULL);
 	inter_tree_node *D = Inter::Symbols::definition(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;
@@ -53,7 +53,7 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node
 }
 
 inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_ti ID, inter_ti construct) {
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(Inode::globals(P), ID);
+	inter_symbol *S = InterSymbolsTables::symbol_from_id(Inode::globals(P), ID);
 	if (S == NULL) { internal_error("IO"); return Inode::error(P, I"3no symbol for ID", NULL); }
 	inter_tree_node *D = Inter::Symbols::definition(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;
@@ -68,7 +68,7 @@ inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_ti I
 }
 
 inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_ti ID, inter_ti construct, inter_symbols_table *T) {
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
+	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"4no symbol for ID", NULL);
 	inter_tree_node *D = Inter::Symbols::definition(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;
@@ -85,7 +85,7 @@ inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_ti ID
 inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_node *P, inter_ti ID) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
+	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"5no symbol for ID", NULL);
 	inter_tree_node *D = Inter::Symbols::definition(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;

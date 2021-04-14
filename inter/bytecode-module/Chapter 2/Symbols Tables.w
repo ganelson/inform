@@ -1,4 +1,4 @@
-[Inter::SymbolsTables::] Symbols Tables.
+[InterSymbolsTables::] Symbols Tables.
 
 To manage searchable tables of named symbols.
 
@@ -21,7 +21,7 @@ typedef struct inter_symbols_table {
 @d SYMBOLS_THRESHOLD 5
 
 =
-inter_symbols_table *Inter::SymbolsTables::new(void) {
+inter_symbols_table *InterSymbolsTables::new(void) {
 	inter_symbols_table *ST = CREATE(inter_symbols_table);
 	ST->symbols_lookup = NULL;
 	ST->size = INITIAL_INTER_SYMBOLS_ID_RANGE;
@@ -34,7 +34,7 @@ inter_symbols_table *Inter::SymbolsTables::new(void) {
 	return ST;
 }
 
-void Inter::SymbolsTables::log(OUTPUT_STREAM, void *vst) {
+void InterSymbolsTables::log(OUTPUT_STREAM, void *vst) {
 	inter_symbols_table *ST = (inter_symbols_table *) vst;
 	if (ST == NULL) WRITE("<null-stable>");
 	else {
@@ -52,7 +52,7 @@ void Inter::SymbolsTables::log(OUTPUT_STREAM, void *vst) {
 		for (inter_symbol *S = T->symbol_array[i]; S; S = NULL)
 
 =
-void Inter::SymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table *ST, int L) {
+void InterSymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table *ST, int L) {
 	if (ST == NULL) return;
 	for (int i=0; i<ST->size; i++) {
 		inter_symbol *S = ST->symbol_array[i];
@@ -62,7 +62,7 @@ void Inter::SymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table
 	}
 }
 
-inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_ti ID, int equating) {
+inter_symbol *InterSymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_ti ID, int equating) {
 	if (T == NULL) internal_error("no IST");
 	if (S == NULL) return NULL;
 	
@@ -137,58 +137,58 @@ inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_st
 @h From name to symbol.
 
 =
-inter_symbol *Inter::SymbolsTables::symbol_from_name(inter_symbols_table *T, text_stream *S) {
-	return Inter::SymbolsTables::search_inner(T, S, FALSE, 0, TRUE);
+inter_symbol *InterSymbolsTables::symbol_from_name(inter_symbols_table *T, text_stream *S) {
+	return InterSymbolsTables::search_inner(T, S, FALSE, 0, TRUE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_not_equating(inter_symbols_table *T, text_stream *S) {
-	return Inter::SymbolsTables::search_inner(T, S, FALSE, 0, FALSE);
+inter_symbol *InterSymbolsTables::symbol_from_name_not_equating(inter_symbols_table *T, text_stream *S) {
+	return InterSymbolsTables::search_inner(T, S, FALSE, 0, FALSE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_creating(inter_symbols_table *T, text_stream *S) {
-	return Inter::SymbolsTables::search_inner(T, S, TRUE, 0, TRUE);
+inter_symbol *InterSymbolsTables::symbol_from_name_creating(inter_symbols_table *T, text_stream *S) {
+	return InterSymbolsTables::search_inner(T, S, TRUE, 0, TRUE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_table *T, text_stream *S, inter_ti ID) {
-	return Inter::SymbolsTables::search_inner(T, S, TRUE, ID, TRUE);
+inter_symbol *InterSymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_table *T, text_stream *S, inter_ti ID) {
+	return InterSymbolsTables::search_inner(T, S, TRUE, ID, TRUE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Site::main_package_if_it_exists(I)), S);
+inter_symbol *InterSymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(Site::main_package_if_it_exists(I)), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
+inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::basics(I);
 	if (P == NULL) return NULL;
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
+inter_symbol *InterSymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::veneer(I);
 	if (P == NULL) return NULL;
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_tree *I, text_stream *S) {
+inter_symbol *InterSymbolsTables::symbol_from_name_in_template(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::template(I);
 	if (P == NULL) return NULL;
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_tree *I, text_stream *S) {
-	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
-	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_veneer(I, S);
-	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, S);
+inter_symbol *InterSymbolsTables::symbol_from_name_in_main_or_basics(inter_tree *I, text_stream *S) {
+	inter_symbol *symbol = InterSymbolsTables::symbol_from_name_in_basics(I, S);
+	if (symbol == NULL) symbol = InterSymbolsTables::symbol_from_name_in_veneer(I, S);
+	if (symbol == NULL) symbol = InterSymbolsTables::symbol_from_name_in_main(I, S);
 	return symbol;
 }
 
 @h Creation by unique name.
 
 =
-text_stream *Inter::SymbolsTables::render_identifier_unique(inter_symbols_table *T, text_stream *name) {
+text_stream *InterSymbolsTables::render_identifier_unique(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *ST;
 	int N = 1, A = 0, still_unduplicated = TRUE;
-	while ((ST = Inter::SymbolsTables::symbol_from_name(T, name)) != NULL) {
+	while ((ST = InterSymbolsTables::symbol_from_name(T, name)) != NULL) {
 		if (still_unduplicated) {
 			name = Str::duplicate(name);
 			still_unduplicated = FALSE;
@@ -204,9 +204,9 @@ text_stream *Inter::SymbolsTables::render_identifier_unique(inter_symbols_table 
 	return name;
 }
 
-inter_symbol *Inter::SymbolsTables::create_with_unique_name(inter_symbols_table *T, text_stream *name) {
-	return Inter::SymbolsTables::symbol_from_name_creating(T,
-		Inter::SymbolsTables::render_identifier_unique(T, name));
+inter_symbol *InterSymbolsTables::create_with_unique_name(inter_symbols_table *T, text_stream *name) {
+	return InterSymbolsTables::symbol_from_name_creating(T,
+		InterSymbolsTables::render_identifier_unique(T, name));
 }
 
 @h From symbol to ID.
@@ -216,7 +216,7 @@ a different meaning in one inter frame than in another. We provide two ways
 to access this: one following equations, the other not.
 
 =
-inter_symbol *Inter::SymbolsTables::unequated_symbol_from_id(inter_symbols_table *T, inter_ti ID) {
+inter_symbol *InterSymbolsTables::unequated_symbol_from_id(inter_symbols_table *T, inter_ti ID) {
 	if (T == NULL) return NULL;
 	int index = (int) ID - (int) SYMBOL_BASE_VAL;
 	if (index < 0) return NULL;
@@ -224,8 +224,8 @@ inter_symbol *Inter::SymbolsTables::unequated_symbol_from_id(inter_symbols_table
 	return T->symbol_array[index];
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_id(inter_symbols_table *T, inter_ti ID) {
-	inter_symbol *S = Inter::SymbolsTables::unequated_symbol_from_id(T, ID);
+inter_symbol *InterSymbolsTables::symbol_from_id(inter_symbols_table *T, inter_ti ID) {
+	inter_symbol *S = InterSymbolsTables::unequated_symbol_from_id(T, ID);
 	while ((S) && (S->equated_to)) S = S->equated_to;
 	return S;
 }
@@ -233,25 +233,25 @@ inter_symbol *Inter::SymbolsTables::symbol_from_id(inter_symbols_table *T, inter
 @ It's convenient to have some abbreviations for common ways to access the above.
 
 =
-inter_symbol *Inter::SymbolsTables::symbol_from_frame_data(inter_tree_node *P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.data[x]);
+inter_symbol *InterSymbolsTables::symbol_from_frame_data(inter_tree_node *P, int x) {
+	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.data[x]);
 }
 
-inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[x]);
+inter_symbol *InterSymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
+	return InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[x]);
 }
 
-inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_ti ID) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), ID);
+inter_symbol *InterSymbolsTables::local_symbol_from_id(inter_package *owner, inter_ti ID) {
+	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), ID);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_table(inter_ti val1, inter_ti val2, inter_symbols_table *T) {
-	if (val1 == ALIAS_IVAL) return Inter::SymbolsTables::symbol_from_id(T, val2);
+inter_symbol *InterSymbolsTables::symbol_from_data_pair_and_table(inter_ti val1, inter_ti val2, inter_symbols_table *T) {
+	if (val1 == ALIAS_IVAL) return InterSymbolsTables::symbol_from_id(T, val2);
 	return NULL;
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_frame(inter_ti val1, inter_ti val2, inter_tree_node *P) {
-	return Inter::SymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+inter_symbol *InterSymbolsTables::symbol_from_data_pair_and_frame(inter_ti val1, inter_ti val2, inter_tree_node *P) {
+	return InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 }
 
 @h From ID to symbol.
@@ -259,7 +259,7 @@ If all we want is to read the ID of a symbol definitely present in the given
 symbols table, that's easy:
 
 =
-inter_ti Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
+inter_ti InterSymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T == NULL) T = Inter::Tree::global_scope(I);
@@ -270,12 +270,12 @@ inter_ti Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, 
 	return S->symbol_ID;
 }
 
-inter_ti Inter::SymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
+inter_ti InterSymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
+	return InterSymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
 }
 
-inter_ti Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S);
+inter_ti InterSymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
+	return InterSymbolsTables::id_from_symbol_inner_not_creating(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S);
 }
 
 @ However, things become more interesting if we want an ID for a symbol in
@@ -289,7 +289,7 @@ well if we did.) It's therefore an internal error to call this routine with
 a global symbol in any non-global context.
 
 =
-inter_ti Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
+inter_ti InterSymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T == NULL) T = G;
@@ -302,10 +302,10 @@ inter_ti Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inte
 		for (int i=0; i<T->size; i++)
 			if ((T->symbol_array[i]) && (T->symbol_array[i]->equated_to == S))
 				return (inter_ti) T->symbol_array[i]->symbol_ID;
-		text_stream *N = Inter::SymbolsTables::render_identifier_unique(T, S->symbol_name);
-		inter_symbol *X = Inter::SymbolsTables::search_inner(T, N, TRUE, 0, FALSE);
+		text_stream *N = InterSymbolsTables::render_identifier_unique(T, S->symbol_name);
+		inter_symbol *X = InterSymbolsTables::search_inner(T, N, TRUE, 0, FALSE);
 		if (X->equated_to == NULL) {
-			Inter::SymbolsTables::equate(X, S);
+			InterSymbolsTables::equate(X, S);
 			LOGIF(INTER_SYMBOLS, "Equating $3 to new $3\n", S, X);
 		}
 		if (X->equated_to != S) {
@@ -317,22 +317,22 @@ inter_ti Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inte
 	return S->symbol_ID;
 }
 
-inter_ti Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(I), P, S);
+inter_ti InterSymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
+	return InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(I), P, S);
 }
 
-inter_ti Inter::SymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(Inode::globals(F), P, S);
+inter_ti InterSymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
+	return InterSymbolsTables::id_from_symbol_inner(Inode::globals(F), P, S);
 }
 
-inter_ti Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
+inter_ti InterSymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
+	return InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
 }
 
 @h Equations.
 
 =
-void Inter::SymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
+void InterSymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
 	if ((S_from == NULL) || (S_to == NULL)) internal_error("bad symbol equation");
 	S_from->equated_to = S_to;
 	if ((Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS) &&
@@ -349,14 +349,14 @@ void Inter::SymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
 		}
 }
 
-void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *name) {
+void InterSymbolsTables::equate_textual(inter_symbol *S_from, text_stream *name) {
 	if ((S_from == NULL) || (name == NULL)) internal_error("bad symbol equation");
 	S_from->equated_to = NULL;
 	S_from->equated_name = Str::duplicate(name);
 	Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
 }
 
-void Inter::SymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) {
+void InterSymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) {
 	if ((S_from == NULL) || (wanted == NULL)) internal_error("bad link equation");
 	S_from->equated_to = NULL;
 	S_from->equated_name = Str::duplicate(wanted);
@@ -364,17 +364,17 @@ void Inter::SymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) 
 	Inter::Symbols::set_type(S_from, MISC_ISYMT);
 }
 
-void Inter::SymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_from) {
+void InterSymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_from) {
 	if (S_from == NULL) internal_error("bad link equation");
 	S_from->equated_to = wired_from;
 	Inter::Symbols::set_scope(S_from, SOCKET_ISYMS);
 }
 
-void Inter::SymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
-	Inter::Tree::traverse(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
+void InterSymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
+	Inter::Tree::traverse(I, InterSymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
-void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void InterSymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (pack == NULL) internal_error("no package defined here");
@@ -384,11 +384,11 @@ void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *
 		inter_symbol *symb = T->symbol_array[i];
 		if ((symb) && (symb->equated_name)) {
 			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) continue;
-			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, symb->equated_name);
+			inter_symbol *S_to = InterSymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, symb->equated_name);
 			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
 			else if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)
-				Inter::SymbolsTables::make_socket(symb, S_to);
-			else Inter::SymbolsTables::equate(symb, S_to);
+				InterSymbolsTables::make_socket(symb, S_to);
+			else InterSymbolsTables::equate(symb, S_to);
 			symb->equated_name = NULL;
 		}
 	}
@@ -399,7 +399,7 @@ void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *
 @d MAX_URL_SYMBOL_NAME_DEPTH 512
 
 =
-inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbols_table *T, text_stream *S) {
+inter_symbol *InterSymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbols_table *T, text_stream *S) {
 	inter_symbols_table *at = Inter::Tree::global_scope(I);
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;
@@ -416,15 +416,15 @@ inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_tree *I, inter_symb
 				PUT_TO(C, c);
 			}
 		}
-		return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(at_P), C);
+		return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(at_P), C);
 	}
-	inter_symbol *try = Inter::SymbolsTables::symbol_from_name(at, S);
+	inter_symbol *try = InterSymbolsTables::symbol_from_name(at, S);
 	if (try) return try;
-	if (T) return Inter::SymbolsTables::symbol_from_name(T, S);
+	if (T) return InterSymbolsTables::symbol_from_name(T, S);
 	return NULL;
 }
 
-void Inter::SymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
+void InterSymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
 	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
 	int chain_length = 0;
 	inter_package *P = S->owning_table->owning_package;

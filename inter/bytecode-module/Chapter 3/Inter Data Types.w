@@ -79,7 +79,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			return Inode::error(P, I"unknown kind for value", NULL);
 		}
 		case ALIAS_IVAL: {
-			inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(scope, V2);
+			inter_symbol *symb = InterSymbolsTables::symbol_from_id(scope, V2);
 			if (symb == NULL) {
 				LOG("No such symbol when verifying memory inter\n");
 				LOG("V2 is %08x\n", V2);
@@ -121,7 +121,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 }
 
 inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_ti V1, inter_ti V2) {
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(V1, V2, T);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(V1, V2, T);
 	if (symb) {
 		inter_tree_node *D = Inter::Symbols::definition(symb);
 		if (D == NULL) return NULL;
@@ -164,7 +164,7 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 			WRITE("\"");
 			break;
 		case ALIAS_IVAL: {
-			inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(scope, V2);
+			inter_symbol *symb = InterSymbolsTables::symbol_from_id(scope, V2);
 			if (symb) WRITE("%S", symb->symbol_name); else WRITE("<invalid-symbol>");
 			break;
 		}
@@ -229,7 +229,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	}
 	inter_data_type *idt = int32_idt;
 	if (kind_symbol) idt = Inter::Kind::data_type(kind_symbol);
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(scope, S);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(scope, S);
 	if (symb) {
 		inter_tree_node *D = Inter::Symbols::definition(symb);
 		if (Inter::Symbols::is_predeclared(symb)) {

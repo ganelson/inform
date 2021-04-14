@@ -172,7 +172,7 @@ must rule out any property which might belong to any value.
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
 		inter_symbol *owner_name =
-			Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
+			InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
 		if (owner_name == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind = NULL;
 		inter_tree_node *D = Inter::Symbols::definition(owner_name);
@@ -315,7 +315,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 @<Make a list of properties in source order@> =
 	for (int i=0; i<no_property_frames; i++) {
 		inter_tree_node *P = property_frames[i];
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 			total_no_properties++;
 		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
@@ -329,7 +329,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
 			inter_tree_node *P = property_frames[i];
-			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 				all_props_in_source_order[c++] = prop_name;
 			else
@@ -349,14 +349,14 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
 			inter_tree_node *P = property_frames[i];
-			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 				props_in_source_order[c++] = prop_name;
 		}
 
 		for (int i=0; i<no_property_frames; i++) {
 			inter_tree_node *P = property_frames[i];
-			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
 				(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
 				CodeGen::Targets::declare_property(gen, prop_name, TRUE);
@@ -371,7 +371,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		(Memory::calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_tree_node *P = kind_frames[i];
-		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+		inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 		kinds_in_source_order[i] = kind_name;
 	}
 	qsort(kinds_in_source_order, (size_t) no_kind_frames, sizeof(inter_symbol *),
@@ -382,7 +382,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		(Memory::calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_tree_node *P = kind_frames[i];
-		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+		inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 		kinds_in_declaration_order[i] = kind_name;
 	}
 	qsort(kinds_in_declaration_order, (size_t) no_kind_frames, sizeof(inter_symbol *),
@@ -394,7 +394,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			(Memory::calloc(no_instance_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		for (int i=0; i<no_instance_frames; i++) {
 			inter_tree_node *P = instance_frames[i];
-			inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 			instances_in_declaration_order[i] = inst_name;
 		}
 		qsort(instances_in_declaration_order, (size_t) no_instance_frames, sizeof(inter_symbol *),
@@ -492,7 +492,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Write Value Property Holder objects for each kind of value instance@> =
 	@<Define the I6 VPH class@>;
-	inter_symbol *max_weak_id = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, I"MAX_WEAK_ID");
+	inter_symbol *max_weak_id = InterSymbolsTables::symbol_from_name_in_main_or_basics(I, I"MAX_WEAK_ID");
 	if (max_weak_id) {
 		inter_tree_node *P = Inter::Symbols::definition(max_weak_id);
 		int M = (int) P->W.data[DATA_CONST_IFLD + 1];
@@ -598,14 +598,14 @@ just to force the property into being.
 @<Work through this frame list of permissions@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
 			text_stream *call_it = CodeGen::CL::name(prop_name);
 			WRITE("    with %S ", call_it);
 			if (X->W.data[STORAGE_PERM_IFLD]) {
-				inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
+				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
 				WRITE("%S", CodeGen::CL::name(store));
 			} else {
@@ -653,7 +653,7 @@ because I6 doesn't allow function calls in a constant context.
 @<Work through this frame list of values@> =
 	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_NODE_LIST(Y, PVL) {
-		inter_symbol *p_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(Y), Y->W.data[PROP_PVAL_IFLD]);
+		inter_symbol *p_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(Y), Y->W.data[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
 			inter_ti v1 = Y->W.data[DVAL1_PVAL_IFLD];
@@ -783,7 +783,7 @@ linearly with the size of the source text, even though $N$ does.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
 					WRITE("%S ", CodeGen::CL::name(kind_name));
 					pos++;
@@ -796,7 +796,7 @@ linearly with the size of the source text, even though $N$ does.
 		if (CodeGen::IP::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
 					WRITE("%S ", CodeGen::CL::name(inst_name));
 					pos++;
@@ -809,7 +809,7 @@ linearly with the size of the source text, even though $N$ does.
 	if (Inter::Symbols::read_annotation(eprop_name, RTO_IANN) < 0) {
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-			inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+			inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
 				WRITE("K0_kind "); pos++;
 				for (int k=0; k<no_kind_frames; k++) {
@@ -837,8 +837,8 @@ linearly with the size of the source text, even though $N$ does.
 
 =
 void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
-	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE) {
 		inter_ti val1 = P->W.data[VAL1_INST_IFLD];
@@ -920,8 +920,8 @@ really make much conceptual sense, and I7 dropped the idea -- it has no
 
 =
 void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
-	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
 		text_stream *OUT = CodeGen::current(gen);
@@ -945,7 +945,7 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 	if (FL == NULL) internal_error("no properties list");
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
 		text_stream *call_it = CodeGen::CL::name(prop_name);
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
@@ -957,7 +957,7 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 			WRITE("    with %S ", call_it);
 			int done = FALSE;
 			if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
-				inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
+				inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
 				if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
 					inter_tree_node *P = Inter::Symbols::definition(S);
 					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
@@ -991,7 +991,7 @@ void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
 				if (c == URL_SYMBOL_CHAR) break;
 				PUT_TO(T, c);
 			}
-			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
+			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
 			WRITE("%S", CodeGen::CL::name(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);

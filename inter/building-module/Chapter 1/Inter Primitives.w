@@ -418,7 +418,7 @@ void Primitives::scan_tree(inter_tree *I) {
 }
 
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
-	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
+	inter_symbol *prim_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 	if (bip) Site::set_opcode(I, bip, prim_name);
 }

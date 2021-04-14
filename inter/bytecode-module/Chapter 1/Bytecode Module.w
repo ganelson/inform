@@ -94,6 +94,6 @@ void BytecodeModule::end(void) {
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('3', Inter::Symbols::log);
-	Writers::register_logger('4', Inter::SymbolsTables::log);
+	Writers::register_logger('4', InterSymbolsTables::log);
 	Writers::register_logger('5', Inter::Bookmarks::log);
 	Writers::register_logger('6', Inter::Packages::log);

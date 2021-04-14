@@ -40,7 +40,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
+	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
 
 	text_stream *in = ilp->mr.exp[1];
 	match_results mr2 = Regexp::create_mr();
@@ -87,7 +87,7 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_ti cat) {
 void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < MIN_EXTENT_PRIM_IFR) { *E = Inode::error(P, I"primitive extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
-	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[DEFN_PRIM_IFLD]);
+	inter_symbol *prim_name = InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
 		{ *E = Inode::error(P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;
@@ -100,7 +100,7 @@ void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_pac
 }
 
 void Inter::Primitive::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
+	inter_symbol *prim_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	if (prim_name) {
 		WRITE("primitive %S", prim_name->symbol_name);
 		int cats = 0;

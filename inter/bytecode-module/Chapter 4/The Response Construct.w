@@ -48,7 +48,7 @@ void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_ti v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), val_name, &v1, &v2);
-	*E = Inter::Response::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, rule_name), n2, v1, v2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Response::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, resp_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, rule_name), n2, v1, v2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_ti SID, inter_ti RID, inter_ti marker, inter_ti v1, inter_ti v2, inter_ti level, inter_error_location *eloc) {
@@ -65,8 +65,8 @@ void Inter::Response::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 }
 
 void Inter::Response::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-	inter_symbol *rule_name = Inter::SymbolsTables::symbol_from_frame_data(P, RULE_RESPONSE_IFLD);
+	inter_symbol *resp_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
+	inter_symbol *rule_name = InterSymbolsTables::symbol_from_frame_data(P, RULE_RESPONSE_IFLD);
 	if ((resp_name) && (rule_name)) {
 		WRITE("response %S %S %d = ", resp_name->symbol_name, rule_name->symbol_name, P->W.data[MARKER_RESPONSE_IFLD]);
 		Inter::Types::write(OUT, P, NULL,

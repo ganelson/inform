@@ -37,28 +37,38 @@ compile. Inter can exist in binary or textual forms: see //inter: Manual// for
 a general introduction to programming it in textual form. We will compile
 binary Inter for speed, but they are really very similar.
 
+Inter code is not a linear stream, like the assembly language produced by a
+conventional compiler: rather, it is a hierarchy of nested "packages". Each
+package can contain some symbols, some other packages, and some actual code
+or data. This makes it possible for Inter code to be heavily structured, with
+similar resources grouped appropriately together. A package also has a "type",
+and this can be used to find resources of different sorts, or to regulate where
+they are placed. Types are written with an initial underscore: for example,
+one package type we will create is |_module|.
+
 The top of the final hierarchy might look like this:
 = (text)
-version number                  version 1
-package type declarations       packagetype _plain
+version number -->              version 1
+package type declarations -->   packagetype _plain
                                 packagetype _code
                                 ...
-pragmas                         pragma target_I6 "$ALLOC_CHUNK_SIZE=32000"
+pragmas -->                     pragma target_I6 "$ALLOC_CHUNK_SIZE=32000"
                                 ...
-primitive declarations          primitive !font val -> void
+primitive declarations -->      primitive !font val -> void
                                 ...
-main                            package main _plain
-									package veneer _module
+main -->                        package main _plain
+	general material -->			package veneer _module
 									package generic _module
 									package synoptic _module
-									package basic_inform_by_graham_nelson _module
+    from compilation units -->		package basic_inform_by_graham_nelson _module
 									package english_language_by_graham_nelson _module
 									package standard_rules_by_graham_nelson _module
-									package BasicInformKit _module
+                                    package source_text _module
+	from kits -->					package BasicInformKit _module
 									package EnglishLanguageKit _module
 									package WorldModelKit _module
 									package CommandParserKit _module
-									package connectors _linkage
+	to do with linking -->			package connectors _linkage
 									package template _plain
 =
 The modest amount of global material is the same on every compilation, and just
@@ -71,10 +81,15 @@ access to its (very modest) facilities.
 (*) The |generic| module contains definitions which are built-in to the language:
 for example, kinds like |K_number|.
 (*) Each compilation unit of Inform 7 source text produces one module. See
-//Compilation Units//; in particular, each included extension is a compilation unit.
+//Compilation Units//; in particular, each included extension is a compilation unit,
+and the main source text puts material into |source_text|.
 (*) Each included kit of Inter code is a module.
 (*) The |synoptic| module contains material which gathers up references from all
 of the other modules.
+
+The role of //runtime// and //imperative// is to build the generic, synoptic
+and compilation-unit modules; the modules from kits will come later in the
+linking stage (see //codegen//).
 
 Modules then have sub-departments called submodules, which are packages of type
 |_submodule|. For example, the rules created in any given compilation unit live
@@ -82,3 +97,17 @@ in the |rules| submodule of its module; the properties in |properties|; and
 so on. This is all very orderly, but there are a great many different structures
 to compile for a large number of different reasons. The //Hierarchy// section
 of code provides a detailed specification of exactly where everything goes.
+
+@ //runtime// and //imperative// should not make raw Inter code directly, but
+through a three-level process:
+
+(*) //runtime// and //imperative// call the functions in //Hierarchy// and
+//Emitting Inter// to "emit" code and find out where to put it.
+(*) //Hierarchy// and //Emitting Inter// then call the //building// module, which gives
+general code (not tied to the Inform compiler) for constructing Inter.
+(*) The //building// module then calls down to //bytecode// to put the actual
+bytes in memory.
+
+In effect, then, //Chapter 2// is the bridge (or the shaft?) between the upper
+levels of Inform and the lower, and it provides an API for the rest of //runtime//
+and //imperative// to use.

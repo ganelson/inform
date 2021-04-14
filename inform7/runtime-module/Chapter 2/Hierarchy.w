@@ -1,21 +1,17 @@
 [Hierarchy::] Hierarchy.
 
-@ Inter code is not a linear stream, like the assembly language produced by a
-conventional compiler: rather, it is a hierarchy of nested "packages". Each
-package can contain some symbols, some other packages, and some actual code
-or data. This makes it possible for Inter code to be heavily structured, with
-similar resources grouped appropriately together.
+@ See //What This Module Does// for an overview of how Inter hierarchies work.
 
-Inform makes good use of that, and this section of code gives a complete
-rundown on how it arranges this hierarchy of packages: it's a sort of directory
-listing of every resource we might compile. In actual runs, of course, not all
-of them will be.
+This section of code amounts to a detailed rundown of exactly how Inform's
+hierarchy of packages fits together: it's a sort of directory listing of every
+resource we might compile. In actual runs, of course, not all of them will be.
 
 This section makes extensive use of //building: Hierarchy Locations//, which
 provides a general way to set up Inter hierarchies.
 
 @ =
-void Hierarchy::establish(inter_tree *I) {
+void Hierarchy::establish(void) {
+	inter_tree *I = Emit::tree();
 	@<Establish basics@>;
 	@<Establish modules@>;
 	@<Establish actions@>;
@@ -1067,7 +1063,6 @@ void Hierarchy::establish(inter_tree *I) {
 @e THESAME_HL
 @e PLURALFOUND_HL
 @e THEDARK_HL
-@e INFORMLIBRARY_HL
 @e ACT_REQUESTER_HL
 @e ACTION_HL
 @e ACTIONCURRENTLYHAPPENINGFLAG_HL
@@ -1307,7 +1302,6 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, THESAME_HL, I"##TheSame", Translation::same(), template);
 	HierarchyLocations::con(I, PLURALFOUND_HL, I"##PluralFound", Translation::same(), template);
 	HierarchyLocations::con(I, THEDARK_HL, I"thedark", Translation::same(), template);
-	HierarchyLocations::con(I, INFORMLIBRARY_HL, I"InformLibrary", Translation::same(), template);
 	HierarchyLocations::con(I, ACT_REQUESTER_HL, I"act_requester", Translation::same(), template);
 	HierarchyLocations::con(I, ACTION_HL, I"action", Translation::same(), template);
 	HierarchyLocations::con(I, ACTIONCURRENTLYHAPPENINGFLAG_HL, I"ActionCurrentlyHappeningFlag", Translation::same(), template);

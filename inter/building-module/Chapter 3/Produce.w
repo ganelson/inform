@@ -10,7 +10,7 @@ void Produce::guard(inter_error_message *ERR) {
 }
 
 inter_symbol *Produce::new_symbol(inter_symbols_table *T, text_stream *name) {
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
 		Produce::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
 		inter_tree_node *D = Inter::Symbols::definition(symb);
@@ -18,7 +18,7 @@ inter_symbol *Produce::new_symbol(inter_symbols_table *T, text_stream *name) {
 		Inter::Symbols::undefine(symb);
 		return symb;
 	}
-	return Inter::SymbolsTables::create_with_unique_name(T, name);
+	return InterSymbolsTables::create_with_unique_name(T, name);
 }
 
 inter_symbol *Produce::define_symbol(inter_name *iname) {
@@ -77,7 +77,7 @@ void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text
 	inter_name *iname = InterNames::explicitly_named(key, P);
 	inter_symbol *key_name = Produce::define_symbol(iname);
 	packaging_state save = Packaging::enter_home_of(iname);
-	Produce::guard(Inter::Metadata::new(Packaging::at(I), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), key_name), ID, Produce::baseline(Packaging::at(I)), NULL));
+	Produce::guard(Inter::Metadata::new(Packaging::at(I), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), key_name), ID, Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, save);
 }
 
@@ -415,11 +415,11 @@ void Produce::place_label(inter_tree *I, inter_symbol *lab_name) {
 }
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Site::get_cir(I)), lname);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(Site::get_cir(I)), lname);
 }
 
 inter_symbol *Produce::seek_symbol(inter_symbols_table *T, text_stream *name) {
-	return Inter::SymbolsTables::symbol_from_name(T, name);
+	return InterSymbolsTables::symbol_from_name(T, name);
 }
 
 void Produce::text_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *text) {
@@ -527,7 +527,7 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 }
 
 inter_symbol *Produce::new_local_symbol(inter_package *rpack, text_stream *name) {
-	return Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(rpack), name);
+	return InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(rpack), name);
 }
 
 inter_symbol *Produce::kind_to_symbol(kind *K) {

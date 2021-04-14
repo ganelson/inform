@@ -1,8 +1,44 @@
 [Emit::] Emitting Inter.
 
-@h Definitions.
+"Emitting" is the process of generating Inter bytecode, and this section provides
+a comprehensive API for the runtime and imperative modules to do that.
 
-@
+@h The emission tree.
+The //bytecode// module can maintain multiple independent trees of Inter code
+in memory, so that most calls to //bytecode// or //building// take an |inter_tree|
+pointer as their first function argument. But //runtime// and //imperative// work
+on just one single tree.
+
+Calling |Packaging::outside_all_packages| makes a minimum of package types,
+creates the |main| package, and so on, but leaves the tree basically still empty.
+We then give it three top-level modules to start off with: |veneer|, |generic|
+and |synoptic|. These are needed early because //Hierarchy// uses them as
+reference points. But as newly-created packages they are initially empty.
+
+=
+inter_tree *main_emission_tree = NULL;
+
+inter_tree *Emit::create_emission_tree(void) {
+	main_emission_tree = Inter::Tree::new();
+	Packaging::outside_all_packages(main_emission_tree);
+	Packaging::incarnate(Site::veneer_request(main_emission_tree));
+	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic")->the_package);
+	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic")->the_package);
+	return main_emission_tree;
+}
+inter_tree *Emit::tree(void) {
+	return main_emission_tree;
+}
+
+@h Rudimentary kinds.
+Inter has a very simple, and non-binding, system of "kinds" -- a much simpler
+one than Inform. We need symbols to refer to some of these, and here they are.
+
+The way these are created is typical. First we ask //Hierarchy// for the
+Inter tree position of what we're intending to make. Then call |Packaging::enter_home_of|
+to move the emission point to the current end of the package in question; then
+we compile what it is we actually want to make; and then call |Packaging::exit|
+again to return to where we were.
 
 =
 inter_symbol *unchecked_interk = NULL;
@@ -10,11 +46,82 @@ inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-inter_tree *I7_generation_tree = NULL;
+void Emit::rudimentary_kinds(void) {
+	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
+	packaging_state save = Packaging::enter_home_of(KU);
+	unchecked_interk = InterNames::to_symbol(KU);
+	Emit::kind_inner(InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), unchecked_interk),
+		UNCHECKED_IDT, 0, BASE_ICON, 0, NULL);
+	Packaging::exit(Emit::tree(), save);
 
-inter_tree *Emit::tree(void) {
-	return I7_generation_tree;
+	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
+	save = Packaging::enter_home_of(KUF);
+	unchecked_function_interk = InterNames::to_symbol(KUF);
+	inter_ti operands[2];
+	operands[0] = InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), unchecked_interk);
+	operands[1] = InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), unchecked_interk);
+	Emit::kind_inner(InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), unchecked_function_interk),
+		ROUTINE_IDT, 0, FUNCTION_ICON, 2, operands);
+	Packaging::exit(Emit::tree(), save);
+
+	inter_name *KTI = Hierarchy::find(K_TYPELESS_INT_HL);
+	save = Packaging::enter_home_of(KTI);
+	int_interk = InterNames::to_symbol(KTI);
+	Emit::kind_inner(InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), int_interk),
+		INT32_IDT, 0, BASE_ICON, 0, NULL);
+	Packaging::exit(Emit::tree(), save);
+
+	inter_name *KTS = Hierarchy::find(K_TYPELESS_STRING_HL);
+	save = Packaging::enter_home_of(KTS);
+	string_interk = InterNames::to_symbol(KTS);
+	Emit::kind_inner(InterSymbolsTables::id_from_IRS_and_symbol(
+		Packaging::at(Emit::tree()), string_interk),
+		TEXT_IDT, 0, BASE_ICON, 0, NULL);
+	Packaging::exit(Emit::tree(), save);
 }
+
+@h Pragmas.
+The Inter language allows pragmas, or code-generation hints, to be passed
+through. These are specific to the target of compilation, and can be ignored
+by all other targets. Here we generate only I6-target pragmas, which are commands
+in I6's "Inform Control Language".
+
+This is a mini-language for controlling the I6 compiler, able to set
+command-line switches, memory settings and so on. I6 ordinarily discards lines
+beginning with exclamation marks as comments, but at the very top of the file,
+lines beginning |!%| are read as ICL commands: as soon as any line (including
+a blank line) doesn't have this signature, I6 exits ICL mode.
+
+Pragmas occupy a fixed position in the global material at the root of the Inter
+tree, so there's no need to ask //Hierarchy// where these live.
+
+=
+void Emit::pragma(text_stream *text) {
+	inter_tree *I = Emit::tree();
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I),
+		Inter::Tree::root_package(I));
+	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), text);
+	inter_symbol *target_name =
+		InterSymbolsTables::symbol_from_name_creating(
+			Inter::Tree::global_scope(I), I"target_I6");
+	Produce::guard(Inter::Pragma::new(Site::pragmas(I), target_name, ID, 0, NULL));
+}
+
+@h Up and down.
+We are generating a hierarchical structure and not a stream, so we need the
+ability to move the point at which new opcodes are being spawned. Big moves
+are made by changing package (see above), but small ones are made by moving
+up or down in the hierarchy. For example, |Emit::down()| shifts us so that
+we are now creating bytecode below the instruction last emitted, not after it.
+|Emit::up()| then returns us back to where we were. These should always be
+used in ways guaranteed to match.
+
+=
 void Emit::up(void) {
 	Produce::up(Emit::tree());
 }
@@ -22,84 +129,21 @@ void Emit::down(void) {
 	Produce::down(Emit::tree());
 }
 
-void Emit::begin(void) {
-	inter_tree *I = Inter::Tree::new();
-	Packaging::initialise_state(I);
-	Packaging::outside_all_packages(I);
-	I7_generation_tree = I;
-	
-	Packaging::incarnate(Site::veneer_request(I));
-	Packaging::incarnate(Packaging::get_unit(I, I"generic")->the_package);
-	Packaging::incarnate(Packaging::get_unit(I, I"synoptic")->the_package);
-//	Packaging::incarnate(Packaging::get_unit(I, I"standard_rules")->the_package);	
-
-	Hierarchy::establish(I);
-
-	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
-	packaging_state save = Packaging::enter_home_of(KU);
-	unchecked_interk = InterNames::to_symbol(KU);
-	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), UNCHECKED_IDT, 0, BASE_ICON, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
-	save = Packaging::enter_home_of(KUF);
-	unchecked_function_interk = InterNames::to_symbol(KUF);
-	inter_ti operands[2];
-	operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk);
-	operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk);
-	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_function_interk), ROUTINE_IDT, 0, FUNCTION_ICON, 2, operands);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KTI = Hierarchy::find(K_TYPELESS_INT_HL);
-	save = Packaging::enter_home_of(KTI);
-	int_interk = InterNames::to_symbol(KTI);
-	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), INT32_IDT, 0, BASE_ICON, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KTS = Hierarchy::find(K_TYPELESS_STRING_HL);
-	save = Packaging::enter_home_of(KTS);
-	string_interk = InterNames::to_symbol(KTS);
-	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	FundamentalConstants::emit(Task::vm());
-	RTVerbs::ConjugateVerbDefinitions();
-	
-	Hierarchy::find(INFORMLIBRARY_HL);
-}
-
+@ =
 inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name *val_iname) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symb = InterNames::to_symbol(iname);
 	inter_symbol *rsymb = InterNames::to_symbol(RTRules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
 	inter_ti val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())), Inter::Bookmarks::package(Packaging::at(Emit::tree())), vsymb, &val1, &val2);
-	Produce::guard(Inter::Response::new(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb), (inter_ti) marker, val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())),
+		Inter::Bookmarks::package(Packaging::at(Emit::tree())), vsymb, &val1, &val2);
+	Produce::guard(Inter::Response::new(Packaging::at(Emit::tree()),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), symb),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb),
+		(inter_ti) marker, val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return symb;
-}
-
-@ The Inter language allows pragmas, or code-generation hints, to be passed
-through. These are specific to the target of compilation. Here we generate
-only I6-target pragmas, which are commands in Inform Control Language.
-
-This is a mini-language for controlling the I6 compiler, able to set
-command-line switches, memory settings and so on. I6 ordinarily discards lines
-beginning with exclamation marks as comments, but at the very top of the file,
-lines beginning |!%| are read as ICL commands: as soon as any line (including
-a blank line) doesn't have this signature, I6 exits ICL mode. This is why we
-insert them into the Inter stream close to the top.
-
-=
-void Emit::pragma(text_stream *text) {
-	inter_tree *I = Emit::tree();
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Tree::root_package(I));
-	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), text);
-	inter_symbol *target_name =
-		Inter::SymbolsTables::symbol_from_name_creating(
-			Inter::Tree::global_scope(I), I"target_I6");
-	Produce::guard(Inter::Pragma::new(Site::pragmas(I), target_name, ID, 0, NULL));
 }
 
 void Emit::append(inter_name *iname, text_stream *text) {
@@ -112,15 +156,15 @@ void Emit::append(inter_name *iname, text_stream *text) {
 }
 
 text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
-	return Inter::SymbolsTables::render_identifier_unique(T, name);
+	return InterSymbolsTables::render_identifier_unique(T, name);
 }
 
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
-	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) {
 		symb = Produce::new_symbol(T, name);
 		inter_tree *I = Emit::tree();
-		Produce::guard(Inter::Constant::new_numerical(Site::holdings(I), Inter::SymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), int_interk), LITERAL_IVAL, 0, Produce::baseline(Site::holdings(I)), NULL));
+		Produce::guard(Inter::Constant::new_numerical(Site::holdings(I), InterSymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), symb), InterSymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), int_interk), LITERAL_IVAL, 0, Produce::baseline(Site::holdings(I)), NULL));
 		Produce::annotate_symbol_i(symb, HOLDING_IANN, 1);
 	}
 	return symb;
@@ -131,17 +175,17 @@ void Emit::kind(inter_name *iname, inter_ti TID, inter_name *super,
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *S = InterNames::to_symbol(iname);
 	inter_ti SID = 0;
-	if (S) SID = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);
+	if (S) SID = InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);
 	inter_symbol *SS = (super)?InterNames::to_symbol(super):NULL;
 	inter_ti SUP = 0;
-	if (SS) SUP = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), SS);
+	if (SS) SUP = InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), SS);
 	inter_ti operands[MAX_KIND_ARITY];
 	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
 	for (int i=0; i<arity; i++) {
 		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
 		else {
 			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
-			operands[i] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);
+			operands[i] = InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);
 		}
 	}
 	Emit::kind_inner(SID, TID, SUP, constructor, arity, operands);
@@ -159,7 +203,7 @@ inter_symbol *Emit::variable(inter_name *name, kind *K, inter_ti v1, inter_ti v2
 	inter_symbol *var_name = Produce::define_symbol(name);
 	inter_symbol *var_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Variable::new(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), var_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), var_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), var_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	if (rvalue) Produce::annotate_symbol_i(var_name, EXPLICIT_VARIABLE_IANN, 1);
 	Packaging::exit(Emit::tree(), save);
 	return var_name;
@@ -170,7 +214,7 @@ void Emit::property(inter_name *name, kind *K) {
 	inter_symbol *prop_name = Produce::define_symbol(name);
 	inter_symbol *prop_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Property::new(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_kind), Produce::baseline(Packaging::at(Emit::tree())), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_kind), Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -201,7 +245,7 @@ void Emit::basic_permission(inter_bookmark *at, inter_name *name, inter_symbol *
 	DISCARD_TEXT(ident)
 	Produce::guard(E);
 	Produce::guard(Inter::Permission::new(at,
-		Inter::SymbolsTables::id_from_IRS_and_symbol(at, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(at, owner_name), Inter::SymbolsTables::id_from_IRS_and_symbol(at, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(at, store)):0, Produce::baseline(at), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(at, prop_name), InterSymbolsTables::id_from_IRS_and_symbol(at, owner_name), InterSymbolsTables::id_from_IRS_and_symbol(at, pp_name), (store)?(InterSymbolsTables::id_from_IRS_and_symbol(at, store)):0, Produce::baseline(at), NULL));
 }
 
 typedef struct dval_written {
@@ -228,7 +272,7 @@ void Emit::defaultvalue(kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::DefaultValue::new(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -237,7 +281,7 @@ void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
 	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
 void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
@@ -245,7 +289,7 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_t
 	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_kind = InterNames::to_symbol(RTInstances::emitted_iname(I));
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
 void Emit::named_string_constant(inter_name *name, text_stream *contents) {
@@ -253,7 +297,7 @@ void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), contents);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_textual(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), string_interk), ID, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_textual(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), string_interk), ID, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -264,7 +308,7 @@ void Emit::instance(inter_name *name, kind *K, int v) {
 	if (val_kind == NULL) internal_error("no kind for val");
 	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
-	Produce::guard(Inter::Instance::new(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Instance::new(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), inst_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -277,21 +321,21 @@ void Emit::named_generic_constant_xiname(package_request *PR, inter_name *name, 
 void Emit::named_generic_constant(inter_name *name, inter_ti val1, inter_ti val2) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
 inter_name *Emit::named_numeric_constant(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
 
 void Emit::hold_numeric_constant(inter_name *name, inter_ti val) {
 	inter_symbol *con_name = InterNames::to_symbol(name);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
 void Emit::named_text_constant(inter_name *name, text_stream *content) {
@@ -299,7 +343,7 @@ void Emit::named_text_constant(inter_name *name, text_stream *content) {
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_ti v1 = 0, v2 = 0;
 	Produce::text_value(Emit::tree(), &v1, &v2, content);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -307,7 +351,7 @@ void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_ti val
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -315,7 +359,7 @@ void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_ti 
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -530,12 +574,12 @@ void Emit::array_end(packaging_state save) {
 			con_kind = Produce::kind_to_symbol(Kinds::unary_con(CON_list_of, K));
 		else
 			con_kind = Produce::kind_to_symbol(K);
-		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind);
+		CID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind);
 	} else {
-		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
+		CID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
 	}
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Produce::baseline(IBM));
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Produce::baseline(IBM));
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
 		internal_error("can't extend frame");
@@ -560,7 +604,7 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 	}
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())), Inter::Bookmarks::package(Packaging::at(Emit::tree())), alias, &val1, &val2);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
@@ -569,7 +613,7 @@ inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
@@ -578,7 +622,7 @@ inter_name *Emit::named_unchecked_constant_hex(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
@@ -587,7 +631,7 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, SIGNED_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, (inter_ti) val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, (inter_ti) val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
@@ -612,8 +656,8 @@ void Emit::function(inter_name *rname, kind *rkind, inter_package *block) {
 	inter_symbol *AB_symbol = Produce::kind_to_symbol(rkind);
 	inter_symbol *rsymb = Produce::define_symbol(rname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(Emit::tree()),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), AB_symbol),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), AB_symbol),
 		block,
 		Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }

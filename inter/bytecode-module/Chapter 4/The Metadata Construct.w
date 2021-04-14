@@ -44,7 +44,7 @@ void Inter::Metadata::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		}
 		DISCARD_TEXT(parsed_text)
 		if (*E) return;
-		*E = Inter::Metadata::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, key_name), ID, (inter_ti) ilp->indent_level, eloc);
+		*E = Inter::Metadata::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, key_name), ID, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 	*E = Inter::Errors::quoted(I"metadata value must be string", S, eloc);
@@ -64,7 +64,7 @@ void Inter::Metadata::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 }
 
 void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *key_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_MD_IFLD);
+	inter_symbol *key_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_MD_IFLD);
 	if (key_name) {
 		WRITE("metadata %S: ", key_name->symbol_name);
 		Inter::Types::write(OUT, P, NULL,

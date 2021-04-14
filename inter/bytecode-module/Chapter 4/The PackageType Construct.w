@@ -38,7 +38,7 @@ void Inter::PackageType::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 }
 
 inter_error_message *Inter::PackageType::new_packagetype(inter_bookmark *IBM, inter_symbol *ptype, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_1(IBM, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
+	inter_tree_node *P = Inode::fill_1(IBM, PACKAGETYPE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -51,7 +51,7 @@ void Inter::PackageType::verify(inter_construct *IC, inter_tree_node *P, inter_p
 }
 
 void Inter::PackageType::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *ptype_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PTYPE_IFLD);
+	inter_symbol *ptype_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PTYPE_IFLD);
 	if (ptype_name) WRITE("packagetype %S", ptype_name->symbol_name);
 	else { *E = Inode::error(P, I"cannot write packagetype", NULL); return; }
 }

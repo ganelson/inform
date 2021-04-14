@@ -525,7 +525,7 @@ inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream 
 		Str::copy(SR, name);
 		Str::delete_first_character(SR);
 		Str::delete_last_character(SR);
-		inter_symbol *S = Inter::SymbolsTables::url_name_to_symbol(I, NULL, SR);
+		inter_symbol *S = InterSymbolsTables::url_name_to_symbol(I, NULL, SR);
 		DISCARD_TEXT(SR)
 		if (S) return S;
 	}
