@@ -34,7 +34,7 @@ void CodeGen::Operations::create_pipeline_stage(void) {
 int redundant_operations_removed = 0;
 int CodeGen::Operations::run_pipeline_stage(pipeline_step *step) {
 	redundant_operations_removed = 0;
-	Inter::Tree::traverse(step->repository, CodeGen::Operations::visitor, NULL, NULL, 0);
+	InterTree::traverse(step->repository, CodeGen::Operations::visitor, NULL, NULL, 0);
 	if (redundant_operations_removed > 0)
 		LOG("%d redundant operation(s) removed\n", redundant_operations_removed);
 	return TRUE;
@@ -76,8 +76,8 @@ void CodeGen::Operations::traverse_code_tree(inter_tree_node *P) {
 
 @<An elimination candidate@> =
 	inter_tree_node *operands[2];
-	operands[0] = Inter::Tree::first_child(F);
-	operands[1] = Inter::Tree::second_child(F);
+	operands[0] = InterTree::first_child(F);
+	operands[1] = InterTree::second_child(F);
 	if ((operands[0]) && (operands[1])) {
 		for (int i = 0; i < 2; i++) {
 			if ((iden[i] >= 0) && (operands[i]->W.data[ID_IFLD] == VAL_IST)) {
@@ -85,9 +85,9 @@ void CodeGen::Operations::traverse_code_tree(inter_tree_node *P) {
 				inter_ti val2 = operands[i]->W.data[VAL2_VAL_IFLD];
 				if ((val1 == LITERAL_IVAL) && (val2 == (inter_ti) iden[i])) {
 					redundant_operations_removed++;
-					Inter::Tree::remove_node(operands[i]);
-					Inter::Tree::place(operands[1-i], IMMEDIATELY_AFTER_ICPLACEMENT, F);
-					Inter::Tree::remove_node(F);
+					InterTree::remove_node(operands[i]);
+					InterTree::place(operands[1-i], IMMEDIATELY_AFTER_ICPLACEMENT, F);
+					InterTree::remove_node(F);
 					break;
 				}
 			}

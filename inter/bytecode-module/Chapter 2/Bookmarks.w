@@ -45,7 +45,7 @@ void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P
 	if (P == NULL) internal_error("invalid package supplied");
 	inter_tree_node *D = Inter::Packages::definition(P);
 	if (D == NULL) D = Inter::Packages::tree(P)->root_node;
-	IBM->R = Inter::Tree::last_child(D);
+	IBM->R = InterTree::last_child(D);
 	IBM->placement_wrt_R = AFTER_ICPLACEMENT;
 	if (IBM->R == NULL) {
 		IBM->R = D;
@@ -59,7 +59,7 @@ inter_tree *Inter::Bookmarks::tree(inter_bookmark *IBM) {
 }
 
 inter_warehouse *Inter::Bookmarks::warehouse(inter_bookmark *IBM) {
-	return Inter::Tree::warehouse(Inter::Bookmarks::tree(IBM));
+	return InterTree::warehouse(Inter::Bookmarks::tree(IBM));
 }
 
 int Inter::Bookmarks::get_placement(inter_bookmark *IBM) {
@@ -116,7 +116,7 @@ void Inter::Bookmarks::log(OUTPUT_STREAM, void *virs) {
 inter_symbols_table *Inter::Bookmarks::scope(inter_bookmark *IBM) {
 	inter_package *pack = Inter::Bookmarks::package(IBM);
 	if (pack) return Inter::Packages::scope(pack);
-	return Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM));
+	return InterTree::global_scope(Inter::Bookmarks::tree(IBM));
 }
 
 inter_package *Inter::Bookmarks::package(inter_bookmark *IBM) {
@@ -138,10 +138,10 @@ void Inter::Bookmarks::insert(inter_bookmark *IBM, inter_tree_node *F) {
 	LOGIF(INTER_FRAMES, "Insert frame %F\n", *F);
 	inter_ti F_level = F->W.data[LEVEL_IFLD];
 	if (F_level == 0) {
-		if (Inter::Tree::parent(Inter::Bookmarks::get_ref(IBM)) == NULL)
-			Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_node);
+		if (InterTree::parent(Inter::Bookmarks::get_ref(IBM)) == NULL)
+			InterTree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_node);
 		else
-			Inter::Tree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
+			InterTree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
 		if ((Inter::Bookmarks::get_placement(IBM) == AFTER_ICPLACEMENT) ||
 			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
 			Inter::Bookmarks::set_ref(IBM, F);
@@ -152,25 +152,25 @@ void Inter::Bookmarks::insert(inter_bookmark *IBM, inter_tree_node *F) {
 			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
 			while (F_level < Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD]) {
 				inter_tree_node *R = Inter::Bookmarks::get_ref(IBM);
-				inter_tree_node *PR = Inter::Tree::parent(R);
+				inter_tree_node *PR = InterTree::parent(R);
 				if (PR == NULL) internal_error("bubbled up out of tree");
 				Inter::Bookmarks::set_ref(IBM, PR);
 			}
 			if (F_level > Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
 			if (F_level == Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD] + 1) {
 				if (Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT) {
-					Inter::Tree::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+					InterTree::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
 					Inter::Bookmarks::set_placement(IBM, AFTER_ICPLACEMENT);
 				} else {
-					Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+					InterTree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
 				}
 			} else {
-				Inter::Tree::place(F, AFTER_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+				InterTree::place(F, AFTER_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
 			}
 			Inter::Bookmarks::set_ref(IBM, F);
 			return;
 		}
-		Inter::Tree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
+		InterTree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
 		if (Inter::Bookmarks::get_placement(IBM) == AS_FIRST_CHILD_OF_ICPLACEMENT) {
 			Inter::Bookmarks::set_ref(IBM, F);
 			Inter::Bookmarks::set_placement(IBM, AFTER_ICPLACEMENT);

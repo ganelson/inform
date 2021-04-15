@@ -264,7 +264,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 
 @<Compile a standard literal text@> =
 	if (Task::wraps_existing_storyfile()) { /* to prevent trouble when no story file is really being made */
-		Emit::named_string_constant(lt->lt_iname, I"--");
+		Emit::text_constant(lt->lt_iname, I"--");
 	} else {
 		TEMPORARY_TEXT(TLT)
 		int options = CT_DEQUOTE + CT_EXPAND_APOSTROPHES;
@@ -273,7 +273,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 			options += CT_RECOGNISE_APOSTROPHE_SUBSTITUTION + CT_RECOGNISE_UNICODE_SUBSTITUTION;
 		if (lt->unexpanded) options = CT_DEQUOTE;
 		CompiledText::from_wide_string(TLT, Lexer::word_text(lt->lt_position), options);
-		Emit::named_string_constant(lt->lt_iname, TLT);
+		Emit::text_constant(lt->lt_iname, TLT);
 		DISCARD_TEXT(TLT)
 	}
 	if (lt->small_block_array_needed) {

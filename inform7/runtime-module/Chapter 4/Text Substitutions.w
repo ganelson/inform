@@ -302,7 +302,7 @@ void TextSubstitutions::compile_single_substitution(text_substitution *ts) {
 	int makes_local_references =
 		LocalVariables::local_parsed_recently(Frames::current_stack_frame());
 	if (makes_local_references) {
-		Produce::push_code_position(Emit::tree(), Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Packaging::at(Emit::tree())));
+		Produce::push_code_position(Emit::tree(), Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Emit::at()));
 		LocalParking::retrieve(phsf);
 		Produce::pop_code_position(Emit::tree());
 	}

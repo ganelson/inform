@@ -43,7 +43,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
-	inter_symbol *invoked_name = InterSymbolsTables::symbol_from_name(Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[0]);
+	inter_symbol *invoked_name = InterSymbolsTables::symbol_from_name(InterTree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[0]);
 	if (invoked_name == NULL) invoked_name = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 

@@ -12,7 +12,7 @@ void CodeGen::Externals::create_pipeline_stage(void) {
 int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 	Inter::Connectors::stecker(step->repository);
 	int resolution_failed = FALSE;
-	Inter::Tree::traverse(step->repository, CodeGen::Externals::visitor, &resolution_failed, NULL, PACKAGE_IST);
+	InterTree::traverse(step->repository, CodeGen::Externals::visitor, &resolution_failed, NULL, PACKAGE_IST);
 	if (resolution_failed) internal_error("undefined external link(s)");
 	return TRUE;
 }

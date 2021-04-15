@@ -159,15 +159,15 @@ void CodeGen::generate(code_generation *gen) {
 }
 
 @<Phase one - preparation@> =
-	Inter::Tree::traverse(gen->from, CodeGen::clear_transients, NULL, NULL, PACKAGE_IST);
+	InterTree::traverse(gen->from, CodeGen::clear_transients, NULL, NULL, PACKAGE_IST);
 	CodeGen::FC::prepare(gen);
 	CodeGen::CL::prepare(gen);
 	CodeGen::Var::prepare(gen);
 	CodeGen::IP::prepare(gen);
 
 @<Phase two - traverse@> =
-	Inter::Tree::traverse_root_only(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
-	Inter::Tree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
+	InterTree::traverse_root_only(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
+	InterTree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
 
 @<Phase three - consolidation@> =
 	CodeGen::CL::responses(gen);

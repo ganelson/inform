@@ -196,7 +196,7 @@ inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) internal_error("can't determine scope of unlocated name");
-		// return Inter::Tree::global_scope(InterNames::tree(iname));
+		// return InterTree::global_scope(InterNames::tree(iname));
 	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 

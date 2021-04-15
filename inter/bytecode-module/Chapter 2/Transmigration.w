@@ -130,7 +130,7 @@ typedef struct ipct_state {
 @<Correct any references from the migrant to the origin@> =
 	ipct_state ipct;
 	@<Initialise the IPCT state@>;
-	Inter::Tree::traverse(destination->package_head->tree,
+	InterTree::traverse(destination->package_head->tree,
 		Inter::Transmigration::correct_migrant, &ipct, migrant, 0);
 
 @ =
@@ -139,7 +139,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	P->tree = I;
 	if ((P->W.data[ID_IFLD] == INV_IST) && (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *primitive =
-			InterSymbolsTables::symbol_from_id(Inter::Tree::global_scope(ipct->origin_tree), P->W.data[INVOKEE_INV_IFLD]);
+			InterSymbolsTables::symbol_from_id(InterTree::global_scope(ipct->origin_tree), P->W.data[INVOKEE_INV_IFLD]);
 		if (primitive) @<Correct the reference to this primitive@>;
 	}
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
@@ -181,16 +181,16 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this primitive@> =
 	inter_symbol *equivalent_primitive = Inter::Transmigration::cached_equivalent(primitive);
 	if (equivalent_primitive == NULL) {
-		equivalent_primitive = InterSymbolsTables::symbol_from_name(Inter::Tree::global_scope(ipct->destination_tree), primitive->symbol_name);
+		equivalent_primitive = InterSymbolsTables::symbol_from_name(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
 		if (equivalent_primitive == NULL) @<Duplicate this primitive@>;
 		if (equivalent_primitive) Inter::Transmigration::cache(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		P->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
+		P->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
 
 @<Duplicate this primitive@> =
-	equivalent_primitive = InterSymbolsTables::symbol_from_name_creating(Inter::Tree::global_scope(ipct->destination_tree), primitive->symbol_name);
-	inter_tree_node *D = Inode::fill_1(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
+	equivalent_primitive = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
+	inter_tree_node *D = Inode::fill_1(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
 		if (Inode::extend(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
@@ -207,19 +207,19 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this package type@> =
 	inter_symbol *original_ptype =
 		InterSymbolsTables::symbol_from_id(
-			Inter::Tree::global_scope(ipct->origin_tree), P->W.data[PTYPE_PACKAGE_IFLD]);
+			InterTree::global_scope(ipct->origin_tree), P->W.data[PTYPE_PACKAGE_IFLD]);
 	inter_symbol *equivalent_ptype = Inter::Transmigration::cached_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
-		equivalent_ptype = InterSymbolsTables::symbol_from_name(Inter::Tree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+		equivalent_ptype = InterSymbolsTables::symbol_from_name(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
 		if (equivalent_ptype) Inter::Transmigration::cache(original_ptype, equivalent_ptype);
 	}
 	if (equivalent_ptype)
-		P->W.data[PTYPE_PACKAGE_IFLD] = InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
+		P->W.data[PTYPE_PACKAGE_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
 
 @<Duplicate this package type@> =
-	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(Inter::Tree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
-	inter_tree_node *D = Inode::fill_1(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
+	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+	inter_tree_node *D = Inode::fill_1(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(ipct->ptypes_point), D);
 	if (E) {
 		Inter::Errors::issue(E);
@@ -246,7 +246,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct any references from the origin to the migrant@> =
 	ipct_state ipct;
 	@<Initialise the IPCT state@>;
-	Inter::Tree::traverse(origin->package_head->tree,
+	InterTree::traverse(origin->package_head->tree,
 		Inter::Transmigration::correct_origin, &ipct, NULL, 0);
 
 @ =

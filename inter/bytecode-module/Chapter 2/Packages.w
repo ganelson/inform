@@ -91,7 +91,7 @@ inter_package *Inter::Packages::parent(inter_package *pack) {
 	if (pack) {
 		if (Inter::Packages::is_rootlike(pack)) return NULL;
 		inter_tree_node *D = Inter::Packages::definition(pack);
-		inter_tree_node *P = Inter::Tree::parent(D);
+		inter_tree_node *P = InterTree::parent(D);
 		if (P == NULL) return NULL;
 		return Inter::Package::defined_by_frame(P);
 	}
@@ -231,7 +231,7 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	if ((found) && (Inter::Symbols::is_defined(found))) {
 		inter_tree_node *D = Inter::Symbols::definition(found);
 		inter_ti val2 = D->W.data[VAL1_MD_IFLD + 1];
-		return Inter::Warehouse::get_text(Inter::Tree::warehouse(Inter::Packages::tree(P)), val2);
+		return Inter::Warehouse::get_text(InterTree::warehouse(Inter::Packages::tree(P)), val2);
 	}
 	return NULL;
 }

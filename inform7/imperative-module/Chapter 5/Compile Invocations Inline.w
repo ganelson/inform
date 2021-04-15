@@ -1709,7 +1709,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 		InterSymbolsTables::symbol_to_url_name(OUT, S);
 		PUT(URL_SYMBOL_CHAR);
 	} else {
-		CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
+		CodeGen::FC::val_from(OUT, Emit::at(), v1, v2);
 	}
 }
 

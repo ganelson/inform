@@ -198,33 +198,33 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
 	}
 	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = LITERAL_TEXT_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = LITERAL_TEXT_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 1, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"r\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = REAL_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = REAL_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"&\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = GLOB_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = GLOB_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dw'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = DWORD_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = DWORD_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 3, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dwp'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = PDWORD_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = PDWORD_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 4, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"^\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = DIVIDER_IVAL; *val2 = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *divider_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), *val2);
+		*val1 = DIVIDER_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *divider_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	inter_data_type *idt = int32_idt;

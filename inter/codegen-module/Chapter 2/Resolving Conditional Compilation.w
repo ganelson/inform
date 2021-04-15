@@ -29,7 +29,7 @@ void CodeGen::RCC::resolve(inter_tree *I) {
 	rcc_state state;
 	state.I6_level_symbols = Dictionaries::new(1024, TRUE);
 	state.cc_sp = 0;
-	Inter::Tree::traverse(I, CodeGen::RCC::visitor, &state, NULL, 0);
+	InterTree::traverse(I, CodeGen::RCC::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
 		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
@@ -59,7 +59,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 			}
 		}
 	}
-	if (allow == FALSE) Inter::Tree::remove_node(P);
+	if (allow == FALSE) InterTree::remove_node(P);
 }
 
 @<Extract second token into ident@> =

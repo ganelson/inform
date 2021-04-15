@@ -88,7 +88,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inter::Warehouse::get_text(InterTree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);
@@ -128,7 +128,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
 	int function_code_block = FALSE;
-	inter_tree_node *PAR = Inter::Tree::parent(P);
+	inter_tree_node *PAR = InterTree::parent(P);
 	if (PAR == NULL) internal_error("misplaced code node");
 	if (PAR->W.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
@@ -233,14 +233,14 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 
 @
 
-@d INV_A1 CodeGen::FC::frame(gen, Inter::Tree::first_child(P))
+@d INV_A1 CodeGen::FC::frame(gen, InterTree::first_child(P))
 @d INV_A1_PRINTMODE CodeGen::CL::enter_print_mode(); INV_A1; CodeGen::CL::exit_print_mode();
 @d INV_A1_BOXMODE CodeGen::CL::enter_box_mode(); INV_A1; CodeGen::CL::exit_box_mode();
-@d INV_A2 CodeGen::FC::frame(gen, Inter::Tree::second_child(P))
-@d INV_A3 CodeGen::FC::frame(gen, Inter::Tree::third_child(P))
-@d INV_A4 CodeGen::FC::frame(gen, Inter::Tree::fourth_child(P))
-@d INV_A5 CodeGen::FC::frame(gen, Inter::Tree::fifth_child(P))
-@d INV_A6 CodeGen::FC::frame(gen, Inter::Tree::sixth_child(P))
+@d INV_A2 CodeGen::FC::frame(gen, InterTree::second_child(P))
+@d INV_A3 CodeGen::FC::frame(gen, InterTree::third_child(P))
+@d INV_A4 CodeGen::FC::frame(gen, InterTree::fourth_child(P))
+@d INV_A5 CodeGen::FC::frame(gen, InterTree::fifth_child(P))
+@d INV_A6 CodeGen::FC::frame(gen, InterTree::sixth_child(P))
 
 =
 void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {

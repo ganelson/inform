@@ -14,7 +14,7 @@ inter_symbol *Produce::new_symbol(inter_symbols_table *T, text_stream *name) {
 	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
 		Produce::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
 		inter_tree_node *D = Inter::Symbols::definition(symb);
-		Inter::Tree::remove_node(D);
+		InterTree::remove_node(D);
 		Inter::Symbols::undefine(symb);
 		return symb;
 	}
@@ -72,8 +72,8 @@ void Produce::version(inter_tree *I, int N) {
 }
 
 void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text_stream *value) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), value);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), value);
 	inter_name *iname = InterNames::explicitly_named(key, P);
 	inter_symbol *key_name = Produce::define_symbol(iname);
 	packaging_state save = Packaging::enter_home_of(iname);
@@ -82,8 +82,8 @@ void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text
 }
 
 void Produce::comment(inter_tree *I, text_stream *text) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), text);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), text);
 	Produce::guard(Inter::Comment::new(Packaging::at(I), Produce::baseline(Packaging::at(I)), NULL, ID));
 }
 
@@ -314,8 +314,8 @@ void Produce::pop_code_position(inter_tree *I) {
 }
 
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
-	inter_ti SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Produce::at(I)));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), SID);
+	inter_ti SID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Produce::at(I)));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), SID);
 	Str::copy(glob_storage, opcode);
 	Produce::guard(Inter::Inv::new_assembly(Produce::at(I), SID, (inter_ti) Produce::level(I), NULL));
 }
@@ -423,16 +423,16 @@ inter_symbol *Produce::seek_symbol(inter_symbols_table *T, text_stream *name) {
 }
 
 void Produce::text_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *text) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	text_stream *text_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	text_stream *text_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(text_storage, text);
 	*v1 = LITERAL_TEXT_IVAL;
 	*v2 = ID;
 }
 
 void Produce::real_value(inter_tree *I, inter_ti *v1, inter_ti *v2, double g) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	if (g > 0) WRITE_TO(glob_storage, "+");
 	WRITE_TO(glob_storage, "%g", g);
 	*v1 = REAL_IVAL;
@@ -440,8 +440,8 @@ void Produce::real_value(inter_tree *I, inter_ti *v1, inter_ti *v2, double g) {
 }
 
 void Produce::real_value_from_text(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *S) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '$')
 			PUT_TO(glob_storage, Str::get(pos));
@@ -450,16 +450,16 @@ void Produce::real_value_from_text(inter_tree *I, inter_ti *v1, inter_ti *v2, te
 }
 
 void Produce::dword_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *glob) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = DWORD_IVAL;
 	*v2 = ID;
 }
 
 void Produce::plural_dword_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *glob) {
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = PDWORD_IVAL;
 	*v2 = ID;

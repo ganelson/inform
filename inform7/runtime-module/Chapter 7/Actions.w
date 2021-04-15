@@ -64,7 +64,7 @@ inter_name *RTActions::double_sharp(action_name *an) {
 	if (an->compilation_data.an_iname == NULL) {
 		an->compilation_data.an_iname =
 			Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, RTActions::base_iname(an), an->compilation_data.an_package);
-		Emit::ds_named_pseudo_numeric_constant(an->compilation_data.an_iname, K_value, (inter_ti) an->allocation_id);
+		Emit::unchecked_numeric_constant(an->compilation_data.an_iname, (inter_ti) an->allocation_id);
 		Hierarchy::make_available(Emit::tree(), an->compilation_data.an_iname);
 		Produce::annotate_i(an->compilation_data.an_iname, ACTION_IANN, 1);
 	}

@@ -91,7 +91,7 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 	inter_tree_node *X = F;
 	int n = 0;
 	while (TRUE) {
-		X = Inter::Tree::parent(X);
+		X = InterTree::parent(X);
 		if (X == NULL) break;
 		n++;
 	}
@@ -99,7 +99,7 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 		inter_tree_node *X = F;
 		int m = 0;
 		while (TRUE) {
-			inter_tree_node *Y = Inter::Tree::parent(X);
+			inter_tree_node *Y = InterTree::parent(X);
 			if (Y == NULL) break;
 			if (m == i) {
 				WRITE("%2d. ", (n-i));

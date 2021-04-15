@@ -126,7 +126,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
 	Produce::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
-	inter_symbol *S = Inter::Textual::find_symbol(I, NULL, Inter::Tree::global_scope(I), prim, PRIMITIVE_IST, &E);
+	inter_symbol *S = Inter::Textual::find_symbol(I, NULL, InterTree::global_scope(I), prim, PRIMITIVE_IST, &E);
 	inter_ti bip = Primitives::to_bip(I, S);
 	if (bip == 0) internal_error("missing bip");
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
@@ -414,7 +414,7 @@ text_stream *Primitives::name(inter_ti bip) {
 }
 
 void Primitives::scan_tree(inter_tree *I) {
-	Inter::Tree::traverse_root_only(I, Primitives::scan_visitor, NULL, PRIMITIVE_IST);
+	InterTree::traverse_root_only(I, Primitives::scan_visitor, NULL, PRIMITIVE_IST);
 }
 
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {

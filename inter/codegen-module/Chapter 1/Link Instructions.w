@@ -34,7 +34,7 @@ int CodeGen::LinkInstructions::run_link_stage(pipeline_step *step) {
 		filename *arch_file = Architectures::canonical_binary(req->location, A);
 		if (TextFiles::exists(arch_file) == FALSE) internal_error("no arch file for requirement");
 
-		inter_tree *sidecar = Inter::Tree::new();
+		inter_tree *sidecar = InterTree::new();
 		if (Inter::Binary::test_file(arch_file)) Inter::Binary::read(sidecar, arch_file);
 		else Inter::Textual::read(sidecar, arch_file);		
 

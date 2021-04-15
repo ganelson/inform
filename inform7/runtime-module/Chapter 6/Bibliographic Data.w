@@ -23,44 +23,38 @@ void RTBibliographicData::compile_constants(void) {
 
 @<Compile the I6 Story constant@> =
 	inter_name *iname = Hierarchy::find(STORY_HL);
-	NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
-	inter_ti v1 = 0, v2 = 0;
-	if (VariableSubjects::has_initial_value_set(story_title_VAR))
-		RTVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
-	else
-		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
-	Emit::named_generic_constant(iname, v1, v2);
+	if (VariableSubjects::has_initial_value_set(story_title_VAR)) {
+		NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
+		Emit::initial_value_as_constant(iname, story_title_VAR);
+	} else {
+		Emit::text_constant_from_wide_string(iname, L"\"Welcome\"");
+	}
 	Hierarchy::make_available(Emit::tree(), iname);
 
 @ And similarly here:
 
 @<Compile the I6 Headline constant@> =
 	inter_name *iname = Hierarchy::find(HEADLINE_HL);
-	inter_ti v1 = 0, v2 = 0;
 	if (VariableSubjects::has_initial_value_set(story_headline_VAR)) {
 		NonlocalVariables::initial_value_as_plain_text(story_headline_VAR);
-		RTVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
+		Emit::initial_value_as_constant(iname, story_headline_VAR);
 	} else {
-		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
+		Emit::text_constant_from_wide_string(iname, L"\"An Interactive Fiction\"");
 	}
-	Emit::named_generic_constant(iname, v1, v2);
 	Hierarchy::make_available(Emit::tree(), iname);
 
-@ This time we compile nothing if no author is provided:
+@ This time we compile a zero constant if no author is provided:
 
 @<Compile the I6 Story Author constant@> =
 	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
-		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
-		RTVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
-		Emit::named_generic_constant(iname, v1, v2);
+		Emit::initial_value_as_constant(iname, story_author_VAR);
 		Hierarchy::make_available(Emit::tree(), iname);
 		global_compilation_settings.story_author_given = TRUE;
 	} else {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
-		inter_ti v1 = LITERAL_IVAL, v2 = 0;
-		Emit::named_generic_constant(iname, v1, v2);
+		Emit::unchecked_numeric_constant(iname, 0);
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
 
@@ -69,9 +63,7 @@ void RTBibliographicData::compile_constants(void) {
 @<Compile the I6 Release directive@> =
 	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
-		inter_ti v1 = 0, v2 = 0;
-		RTVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
-		Emit::named_generic_constant(iname, v1, v2);
+		Emit::initial_value_as_constant(iname, story_release_number_VAR);
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
 
@@ -85,7 +77,7 @@ should be able to fake the date-stamp with dates of their own choosing.
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
-	Emit::named_text_constant(iname, SN);
+	Emit::serial_number(iname, SN);
 	DISCARD_TEXT(SN)
 	Hierarchy::make_available(Emit::tree(), iname);
 
@@ -99,7 +91,7 @@ around it, in byte-accessible memory.
 void RTBibliographicData::IFID_text(void) {
 	text_stream *uuid = BibliographicData::read_uuid();
 	inter_name *UUID_array_iname = Hierarchy::find(UUID_ARRAY_HL);
-	Emit::named_string_constant(UUID_array_iname, uuid);
+	Emit::text_constant(UUID_array_iname, uuid);
 	Hierarchy::make_available(Emit::tree(), UUID_array_iname);
 }
 

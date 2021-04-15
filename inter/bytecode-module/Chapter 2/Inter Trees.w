@@ -1,4 +1,4 @@
-[Inter::Tree::] Inter Trees.
+[InterTree::] Inter Trees.
 
 To manage tree structures of inter code, and manage the movement of nodes
 within these trees.
@@ -15,7 +15,7 @@ typedef struct inter_tree {
 } inter_tree;
 
 @ =
-inter_tree *Inter::Tree::new(void) {
+inter_tree *InterTree::new(void) {
 	inter_tree *I = CREATE(inter_tree);
 	I->housed = Inter::Warehouse::new();
 	inter_ti N = Inter::Warehouse::create_symbols_table(I->housed);
@@ -32,42 +32,42 @@ inter_tree *Inter::Tree::new(void) {
 	return I;
 }
 
-inter_package *Inter::Tree::root_package(inter_tree *I) {
+inter_package *InterTree::root_package(inter_tree *I) {
 	if (I) return I->root_package;
 	return NULL;
 }
 
-inter_warehouse *Inter::Tree::warehouse(inter_tree *I) {
+inter_warehouse *InterTree::warehouse(inter_tree *I) {
 	return I->housed;
 }
 
-inter_symbols_table *Inter::Tree::global_scope(inter_tree *I) {
+inter_symbols_table *InterTree::global_scope(inter_tree *I) {
 	return Inter::Packages::scope(I->root_package);
 }
 
-inter_tree_node *Inter::Tree::previous(inter_tree_node *F) {
+inter_tree_node *InterTree::previous(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->previous_itn;
 }
 
-inter_tree_node *Inter::Tree::next(inter_tree_node *F) {
+inter_tree_node *InterTree::next(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->next_itn;
 }
 
-inter_tree_node *Inter::Tree::first_child(inter_tree_node *F) {
+inter_tree_node *InterTree::first_child(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->first_child_itn;
 }
 
-inter_tree_node *Inter::Tree::second_child(inter_tree_node *P) {
+inter_tree_node *InterTree::second_child(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	P = P->first_child_itn;
 	if (P == NULL) return NULL;
 	return P->next_itn;
 }
 
-inter_tree_node *Inter::Tree::third_child(inter_tree_node *P) {
+inter_tree_node *InterTree::third_child(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	P = P->first_child_itn;
 	if (P == NULL) return NULL;
@@ -76,22 +76,9 @@ inter_tree_node *Inter::Tree::third_child(inter_tree_node *P) {
 	return P->next_itn;
 }
 
-inter_tree_node *Inter::Tree::fourth_child(inter_tree_node *P) {
+inter_tree_node *InterTree::fourth_child(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	P = P->first_child_itn;
-	if (P == NULL) return NULL;
-	P = P->next_itn;
-	if (P == NULL) return NULL;
-	P = P->next_itn;
-	if (P == NULL) return NULL;
-	return P->next_itn;
-}
-
-inter_tree_node *Inter::Tree::fifth_child(inter_tree_node *P) {
-	if (P == NULL) return NULL;
-	P = P->first_child_itn;
-	if (P == NULL) return NULL;
-	P = P->next_itn;
 	if (P == NULL) return NULL;
 	P = P->next_itn;
 	if (P == NULL) return NULL;
@@ -100,11 +87,9 @@ inter_tree_node *Inter::Tree::fifth_child(inter_tree_node *P) {
 	return P->next_itn;
 }
 
-inter_tree_node *Inter::Tree::sixth_child(inter_tree_node *P) {
+inter_tree_node *InterTree::fifth_child(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	P = P->first_child_itn;
-	if (P == NULL) return NULL;
-	P = P->next_itn;
 	if (P == NULL) return NULL;
 	P = P->next_itn;
 	if (P == NULL) return NULL;
@@ -115,12 +100,27 @@ inter_tree_node *Inter::Tree::sixth_child(inter_tree_node *P) {
 	return P->next_itn;
 }
 
-inter_tree_node *Inter::Tree::last_child(inter_tree_node *F) {
+inter_tree_node *InterTree::sixth_child(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	P = P->first_child_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	P = P->next_itn;
+	if (P == NULL) return NULL;
+	return P->next_itn;
+}
+
+inter_tree_node *InterTree::last_child(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->last_child_itn;
 }
 
-inter_tree_node *Inter::Tree::parent(inter_tree_node *F) {
+inter_tree_node *InterTree::parent(inter_tree_node *F) {
 	if (F == NULL) return NULL;
 	return F->parent_itn;
 }
@@ -128,11 +128,11 @@ inter_tree_node *Inter::Tree::parent(inter_tree_node *F) {
 @
 
 =
-void Inter::Tree::remove_node(inter_tree_node *P) {
-	Inter::Tree::place(P, NOWHERE_ICPLACEMENT, NULL);
+void InterTree::remove_node(inter_tree_node *P) {
+	InterTree::place(P, NOWHERE_ICPLACEMENT, NULL);
 }
 
-void Inter::Tree::place(inter_tree_node *C, int how, inter_tree_node *R) {
+void InterTree::place(inter_tree_node *C, int how, inter_tree_node *R) {
 	@<Extricate C from its current tree position@>;
 	switch (how) {
 		case NOWHERE_ICPLACEMENT:
@@ -156,113 +156,113 @@ void Inter::Tree::place(inter_tree_node *C, int how, inter_tree_node *R) {
 }
 
 @<Extricate C from its current tree position@> =
-	inter_tree_node *OP = Inter::Tree::parent(C);
+	inter_tree_node *OP = InterTree::parent(C);
 	if (OP) {
-		if (Inter::Tree::first_child(OP) == C)
-			Inter::Tree::set_first_child_UNSAFE(OP, Inter::Tree::next(C));
-		if (Inter::Tree::last_child(OP) == C)
-			Inter::Tree::set_last_child_UNSAFE(OP, Inter::Tree::previous(C));
+		if (InterTree::first_child(OP) == C)
+			InterTree::set_first_child_UNSAFE(OP, InterTree::next(C));
+		if (InterTree::last_child(OP) == C)
+			InterTree::set_last_child_UNSAFE(OP, InterTree::previous(C));
 	}
-	inter_tree_node *OB = Inter::Tree::previous(C);
-	inter_tree_node *OD = Inter::Tree::next(C);
+	inter_tree_node *OB = InterTree::previous(C);
+	inter_tree_node *OD = InterTree::next(C);
 	if (OB) {
-		Inter::Tree::set_next_UNSAFE(OB, OD);
+		InterTree::set_next_UNSAFE(OB, OD);
 	}
 	if (OD) {
-		Inter::Tree::set_previous_UNSAFE(OD, OB);
+		InterTree::set_previous_UNSAFE(OD, OB);
 	}
-	Inter::Tree::set_parent_UNSAFE(C, NULL);
-	Inter::Tree::set_previous_UNSAFE(C, NULL);
-	Inter::Tree::set_next_UNSAFE(C, NULL);
+	InterTree::set_parent_UNSAFE(C, NULL);
+	InterTree::set_previous_UNSAFE(C, NULL);
+	InterTree::set_next_UNSAFE(C, NULL);
 
 @<Make C the first child of R@> =
-	Inter::Tree::set_parent_UNSAFE(C, R);
-	inter_tree_node *D = Inter::Tree::first_child(R);
+	InterTree::set_parent_UNSAFE(C, R);
+	inter_tree_node *D = InterTree::first_child(R);
 	if (D == NULL) {
-		Inter::Tree::set_last_child_UNSAFE(R, C);
-		Inter::Tree::set_next_UNSAFE(C, NULL);
+		InterTree::set_last_child_UNSAFE(R, C);
+		InterTree::set_next_UNSAFE(C, NULL);
 	} else {
-		Inter::Tree::set_previous_UNSAFE(D, C);
-		Inter::Tree::set_next_UNSAFE(C, D);
+		InterTree::set_previous_UNSAFE(D, C);
+		InterTree::set_next_UNSAFE(C, D);
 	}
-	Inter::Tree::set_first_child_UNSAFE(R, C);
+	InterTree::set_first_child_UNSAFE(R, C);
 
 @<Make C the last child of R@> =
-	Inter::Tree::set_parent_UNSAFE(C, R);
-	inter_tree_node *B = Inter::Tree::last_child(R);
+	InterTree::set_parent_UNSAFE(C, R);
+	inter_tree_node *B = InterTree::last_child(R);
 	if (B == NULL) {
-		Inter::Tree::set_first_child_UNSAFE(R, C);
-		Inter::Tree::set_previous_UNSAFE(C, NULL);
+		InterTree::set_first_child_UNSAFE(R, C);
+		InterTree::set_previous_UNSAFE(C, NULL);
 	} else {
-		Inter::Tree::set_next_UNSAFE(B, C);
-		Inter::Tree::set_previous_UNSAFE(C, B);
+		InterTree::set_next_UNSAFE(B, C);
+		InterTree::set_previous_UNSAFE(C, B);
 	}
-	Inter::Tree::set_last_child_UNSAFE(R, C);
+	InterTree::set_last_child_UNSAFE(R, C);
 
 @<Insert C after R@> =
-	inter_tree_node *P = Inter::Tree::parent(R);
+	inter_tree_node *P = InterTree::parent(R);
 	if (P == NULL) internal_error("can't move C before R when R is nowhere");
-	Inter::Tree::set_parent_UNSAFE(C, P);
-	if (Inter::Tree::last_child(P) == R)
-		Inter::Tree::set_last_child_UNSAFE(P, C);
+	InterTree::set_parent_UNSAFE(C, P);
+	if (InterTree::last_child(P) == R)
+		InterTree::set_last_child_UNSAFE(P, C);
 	else {
-		inter_tree_node *D = Inter::Tree::next(R);
+		inter_tree_node *D = InterTree::next(R);
 		if (D == NULL) internal_error("inter tree broken");
-		Inter::Tree::set_next_UNSAFE(C, D);
-		Inter::Tree::set_previous_UNSAFE(D, C);
+		InterTree::set_next_UNSAFE(C, D);
+		InterTree::set_previous_UNSAFE(D, C);
 	}
-	Inter::Tree::set_next_UNSAFE(R, C);
-	Inter::Tree::set_previous_UNSAFE(C, R);
+	InterTree::set_next_UNSAFE(R, C);
+	InterTree::set_previous_UNSAFE(C, R);
 
 @<Insert C before R@> =
-	inter_tree_node *P = Inter::Tree::parent(R);
+	inter_tree_node *P = InterTree::parent(R);
 	if (P == NULL) internal_error("can't move C before R when R is nowhere");
-	Inter::Tree::set_parent_UNSAFE(C, P);
-	if (Inter::Tree::first_child(P) == R)
-		Inter::Tree::set_first_child_UNSAFE(P, C);
+	InterTree::set_parent_UNSAFE(C, P);
+	if (InterTree::first_child(P) == R)
+		InterTree::set_first_child_UNSAFE(P, C);
 	else {
-		inter_tree_node *B = Inter::Tree::previous(R);
+		inter_tree_node *B = InterTree::previous(R);
 		if (B == NULL) internal_error("inter tree broken");
-		Inter::Tree::set_previous_UNSAFE(C, B);
-		Inter::Tree::set_next_UNSAFE(B, C);
+		InterTree::set_previous_UNSAFE(C, B);
+		InterTree::set_next_UNSAFE(B, C);
 	}
-	Inter::Tree::set_next_UNSAFE(C, R);
-	Inter::Tree::set_previous_UNSAFE(R, C);
+	InterTree::set_next_UNSAFE(C, R);
+	InterTree::set_previous_UNSAFE(R, C);
 
 @
 
 =
-void Inter::Tree::set_previous_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
+void InterTree::set_previous_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 	if (F) F->previous_itn = V;
 }
 
-void Inter::Tree::set_next_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
+void InterTree::set_next_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 	if (F) F->next_itn = V;
 }
 
-void Inter::Tree::set_first_child_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
+void InterTree::set_first_child_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 	if (F) F->first_child_itn = V;
 }
 
-void Inter::Tree::set_last_child_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
+void InterTree::set_last_child_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 	if (F) F->last_child_itn = V;
 }
 
-void Inter::Tree::set_parent_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
+void InterTree::set_parent_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 	if (F) F->parent_itn = V;
 }
 
 @
 
 @d LOOP_THROUGH_INTER_CHILDREN(F, P)
-	for (inter_tree_node *F = Inter::Tree::first_child(P); F; F = Inter::Tree::next(F))
+	for (inter_tree_node *F = InterTree::first_child(P); F; F = InterTree::next(F))
 
 @d PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
-	for (inter_tree_node *F = Inter::Tree::first_child(P), *FN = F?(Inter::Tree::next(F)):NULL;
-		F; F = FN, FN = FN?(Inter::Tree::next(FN)):NULL)
+	for (inter_tree_node *F = InterTree::first_child(P), *FN = F?(InterTree::next(F)):NULL;
+		F; F = FN, FN = FN?(InterTree::next(FN)):NULL)
 
 =
-void Inter::Tree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
+void InterTree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(P, from->root_node) {
 		if ((filter == 0) ||
 			((filter > 0) && (P->W.data[ID_IFLD] == (inter_ti) filter)) ||
@@ -271,7 +271,7 @@ void Inter::Tree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tre
 	}
 }
 
-void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, inter_package *mp, int filter) {
+void InterTree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, inter_package *mp, int filter) {
 	if (mp == NULL) mp = Site::main_package_if_it_exists(from);
 	if (mp) {
 		inter_tree_node *D = Inter::Packages::definition(mp);
@@ -279,15 +279,15 @@ void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter
 			((filter > 0) && (D->W.data[ID_IFLD] == (inter_ti) filter)) ||
 			((filter < 0) && (D->W.data[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, D, state);
-		Inter::Tree::traverse_r(from, D, visitor, state, filter);
+		InterTree::traverse_r(from, D, visitor, state, filter);
 	}
 }
-void Inter::Tree::traverse_r(inter_tree *from, inter_tree_node *P, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
+void InterTree::traverse_r(inter_tree *from, inter_tree_node *P, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((filter == 0) ||
 			((filter > 0) && (C->W.data[ID_IFLD] == (inter_ti) filter)) ||
 			((filter < 0) && (C->W.data[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, C, state);
-		Inter::Tree::traverse_r(from, C, visitor, state, filter);
+		InterTree::traverse_r(from, C, visitor, state, filter);
 	}
 }

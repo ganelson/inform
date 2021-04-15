@@ -157,7 +157,7 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 	Functions::end(save);
 	
 	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
-	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
+	Emit::unchecked_numeric_constant(MistakeAction_iname, 10000);
 	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
 	Hierarchy::make_available(Emit::tree(), MistakeAction_iname);
 }

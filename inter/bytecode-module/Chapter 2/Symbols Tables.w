@@ -262,7 +262,7 @@ symbols table, that's easy:
 inter_ti InterSymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
-	if (T == NULL) T = Inter::Tree::global_scope(I);
+	if (T == NULL) T = InterTree::global_scope(I);
 	if (T != S->owning_table) {
 		LOG("Symbol is $3, owned by $4, but we wanted ID from $4\n", S, S->owning_table, T);
 		internal_error("ID not available in this scope");
@@ -318,7 +318,7 @@ inter_ti InterSymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_
 }
 
 inter_ti InterSymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
-	return InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(I), P, S);
+	return InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(I), P, S);
 }
 
 inter_ti InterSymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
@@ -326,7 +326,7 @@ inter_ti InterSymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package 
 }
 
 inter_ti InterSymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
-	return InterSymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
+	return InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
 }
 
 @h Equations.
@@ -371,7 +371,7 @@ void InterSymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_f
 }
 
 void InterSymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
-	Inter::Tree::traverse(I, InterSymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
+	InterTree::traverse(I, InterSymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
 void InterSymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
@@ -400,7 +400,7 @@ void InterSymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *st
 
 =
 inter_symbol *InterSymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbols_table *T, text_stream *S) {
-	inter_symbols_table *at = Inter::Tree::global_scope(I);
+	inter_symbols_table *at = InterTree::global_scope(I);
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;
 		TEMPORARY_TEXT(C)

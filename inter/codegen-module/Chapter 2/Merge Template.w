@@ -22,9 +22,9 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	if (Str::eq(template_file, I"none"))
-		Inter::Tree::traverse(I, CodeGen::MergeTemplate::catch_all_visitor, NULL, NULL, 0);
+		InterTree::traverse(I, CodeGen::MergeTemplate::catch_all_visitor, NULL, NULL, 0);
 	else
-		Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
+		InterTree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
 	inter_package *template_package = Site::ensure_assimilation_package(I, plain_ptype_symbol);	
 	

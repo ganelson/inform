@@ -120,7 +120,7 @@ proposition would be wasteful of space in the Z-machine.
 		WRITE_TO(COTT, "%~W", Node::get_text(pdef->deferred_from));
 	else
 		WRITE_TO(COTT, "not sure where this came from");
-	Emit::named_string_constant(pdef->rtp_iname, COTT);
+	Emit::text_constant(pdef->rtp_iname, COTT);
 	DISCARD_TEXT(COTT)
 
 @ Just in case this hasn't already been done:

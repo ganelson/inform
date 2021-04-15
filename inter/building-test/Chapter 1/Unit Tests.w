@@ -6,7 +6,7 @@ How we shall test it.
 
 =
 void Unit::run(filename *F) {
-	inter_tree *dummy = Inter::Tree::new();
+	inter_tree *dummy = InterTree::new();
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(dummy);
 	Primitives::emit(dummy, &IBM);
 	Streams::enable_debugging(STDOUT);

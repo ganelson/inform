@@ -10,7 +10,7 @@ void CodeGen::PLM::create_pipeline_stage(void) {
 }
 
 int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
-	Inter::Tree::traverse(step->repository, CodeGen::PLM::visitor, NULL, NULL, 0);
+	InterTree::traverse(step->repository, CodeGen::PLM::visitor, NULL, NULL, 0);
 	return TRUE;
 }
 
@@ -49,7 +49,7 @@ void CodeGen::PLM::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			LOOP_THROUGH_TEXT(pos, S)
 				if (Characters::is_whitespace(Str::get(pos)) == FALSE)
 					keep = TRUE;
-			if (keep == FALSE) Inter::Tree::remove_node(P);
+			if (keep == FALSE) InterTree::remove_node(P);
 		}
 	}
 }

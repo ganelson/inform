@@ -46,10 +46,10 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 		Inter::Connectors::socket(I, I"self", ss);
 	}
 
-	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
-	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
 	CodeGen::Assimilate::function_bodies(I);
-	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor3, NULL, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor3, NULL, NULL, SPLAT_IST);
 	return TRUE;
 }
 
@@ -129,7 +129,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		if ((plm == DEFAULT_PLM) && (Inter::Connectors::find_socket(I, identifier) == NULL))
 			plm = CONSTANT_PLM;
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
-		Inter::Tree::remove_node(P);
+		InterTree::remove_node(P);
 	}
 	Regexp::dispose_of(&mr);
 
@@ -470,7 +470,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	*IBM = outer_save;
 
 	CodeGen::Assimilate::install_socket(I, rsymb, rsymb->symbol_name);
-	Inter::Tree::remove_node(P);
+	InterTree::remove_node(P);
 
 @ =
 inter_package *CodeGen::Assimilate::new_package_named(inter_bookmark *IBM, text_stream *name, inter_symbol *ptype) {
@@ -532,8 +532,8 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+		inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = DWORD_IVAL; *val2 = ID;
 		DISCARD_TEXT(dw)
@@ -549,8 +549,8 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+		inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
 		DISCARD_TEXT(dw)
@@ -650,8 +650,8 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	WRITE_TO(STDERR, "Forced to glob: %S\n", sch->converted_from);
 	internal_error("Reduced to glob in assimilation");
 
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, sch->converted_from);
 
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);

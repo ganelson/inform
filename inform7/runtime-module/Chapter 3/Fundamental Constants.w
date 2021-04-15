@@ -113,7 +113,7 @@ void FundamentalConstants::emit_build_number(void) {
 	TEMPORARY_TEXT(build)
 	WRITE_TO(build, "%B", TRUE);
 	inter_name *iname = Hierarchy::find(NI_BUILD_COUNT_HL);
-	Emit::named_string_constant(iname, build);
+	Emit::text_constant(iname, build);
 	Hierarchy::make_available(Emit::tree(), iname);
 	DISCARD_TEXT(build)
 }

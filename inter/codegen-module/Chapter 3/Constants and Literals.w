@@ -11,7 +11,7 @@ int box_mode = FALSE, printing_mode = FALSE;
 void CodeGen::CL::prepare(code_generation *gen) {
 	the_quartet_found = FALSE;
 	box_mode = FALSE; printing_mode = FALSE;
-	Inter::Tree::traverse(gen->from, CodeGen::CL::quartet_visitor, NULL, NULL, CONSTANT_IST);
+	InterTree::traverse(gen->from, CodeGen::CL::quartet_visitor, NULL, NULL, CONSTANT_IST);
 }
 
 void CodeGen::CL::quartet_visitor(inter_tree *I, inter_tree_node *P, void *state) {
@@ -39,7 +39,7 @@ void CodeGen::CL::responses(code_generation *gen) {
 	response_traverse_state rts;
 	rts.NR = 0;
 	rts.gen = gen;
-	Inter::Tree::traverse(gen->from, CodeGen::CL::response_visitor, &rts, NULL, RESPONSE_IST);
+	InterTree::traverse(gen->from, CodeGen::CL::response_visitor, &rts, NULL, RESPONSE_IST);
 	if (rts.NR > 0) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
@@ -48,7 +48,7 @@ void CodeGen::CL::responses(code_generation *gen) {
 		CodeGen::deselect(gen, saved);
 		saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
 		WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
-		Inter::Tree::traverse(gen->from, CodeGen::CL::response_revisitor, gen, NULL, RESPONSE_IST);
+		InterTree::traverse(gen->from, CodeGen::CL::response_revisitor, gen, NULL, RESPONSE_IST);
 		WRITE_TO(CodeGen::current(gen), "0 0;\n");
 		CodeGen::deselect(gen, saved);
 	}
@@ -387,22 +387,22 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 			}
 		}
 	} else if (val1 == DIVIDER_IVAL) {
-		text_stream *divider_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE(" ! %S\n\t", divider_text);
 	} else if (val1 == REAL_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("$%S", glob_text);
 	} else if (val1 == DWORD_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		CodeGen::Targets::compile_dictionary_word(gen, glob_text, FALSE);
 	} else if (val1 == PDWORD_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		CodeGen::Targets::compile_dictionary_word(gen, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode);
 	} else if (val1 == GLOB_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), val2);
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("%S", glob_text);
 	} else internal_error("unimplemented direct constant");
 }

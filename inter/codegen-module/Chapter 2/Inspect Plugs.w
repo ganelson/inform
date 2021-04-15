@@ -12,7 +12,7 @@ void CodeGen::Inspection::create_pipeline_stage(void) {
 int CodeGen::Inspection::run_pipeline_stage(pipeline_step *step) {
 	Inter::Connectors::stecker(step->repository);
 	int resolution_failed = FALSE;
-	Inter::Tree::traverse(step->repository, CodeGen::Inspection::visitor, &resolution_failed, NULL, PACKAGE_IST);
+	InterTree::traverse(step->repository, CodeGen::Inspection::visitor, &resolution_failed, NULL, PACKAGE_IST);
 	if (resolution_failed) internal_error("loose plug(s)");
 	return TRUE;
 }

@@ -258,7 +258,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			else
 				Time::resume_stopwatch(prep_timer);
 			if (S->repositories[step->repository_argument] == NULL)
-				S->repositories[step->repository_argument] = Inter::Tree::new();
+				S->repositories[step->repository_argument] = InterTree::new();
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::prepare_to_run(I);
@@ -404,7 +404,7 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_tree *I) {
-	Inter::Tree::traverse(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
+	InterTree::traverse(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
 void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) {

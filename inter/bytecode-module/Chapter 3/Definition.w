@@ -119,8 +119,8 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				TEMPORARY_TEXT(parsed_text)
 				inter_error_message *EP =
 					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
-				inter_warehouse *warehouse = Inter::Tree::warehouse(I);
-				val = Inter::Warehouse::create_text(warehouse, Inter::Tree::root_package(I));
+				inter_warehouse *warehouse = InterTree::warehouse(I);
+				val = Inter::Warehouse::create_text(warehouse, InterTree::root_package(I));
 				Str::copy(Inter::Warehouse::get_text(warehouse, val), parsed_text);
 				DISCARD_TEXT(parsed_text)
 				if (EP) *E = EP;

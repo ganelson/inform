@@ -31,7 +31,7 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	*E = Inter::Defn::vet_level(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, InterTree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;

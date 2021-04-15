@@ -100,7 +100,7 @@ form, which would be written to |*outt|.
 	else Errors::fatal("pipeline could not be parsed");
 
 @<Read the list of inter files, and perhaps transcode them@> =
-	inter_tree *I = Inter::Tree::new();
+	inter_tree *I = InterTree::new();
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, inter_file_list) {
 		if (Inter::Binary::test_file(F))

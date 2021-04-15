@@ -74,7 +74,7 @@ void RTRules::define_by_Inter_function(rule *R) {
 	R->compilation_data.rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->compilation_data.rule_package);
 
 	inter_name *xiname = Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
-	Emit::named_generic_constant_xiname(R->compilation_data.rule_package, R->compilation_data.rule_extern_iname, xiname);
+	Emit::iname_as_constant(R->compilation_data.rule_package, R->compilation_data.rule_extern_iname, xiname);
 
 	R->compilation_data.xiname = xiname;
 }
@@ -926,7 +926,7 @@ void RTRules::RulebookOutcomePrintingRule(void) {
 	LOOP_OVER(rbno, named_rulebook_outcome) {
 		TEMPORARY_TEXT(RV)
 		WRITE_TO(RV, "%+W", Nouns::nominative_singular(rbno->name));
-		Emit::named_string_constant(rbno->nro_iname, RV);
+		Emit::text_constant(rbno->nro_iname, RV);
 		DISCARD_TEXT(RV)
 	}
 

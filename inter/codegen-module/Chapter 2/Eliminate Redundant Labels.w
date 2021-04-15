@@ -19,7 +19,7 @@ void CodeGen::Labels::create_pipeline_stage(void) {
 int redundant_labels_removed = 0;
 int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
 	redundant_labels_removed = 0;
-	Inter::Tree::traverse(step->repository, CodeGen::Labels::visitor, NULL, NULL, 0);
+	InterTree::traverse(step->repository, CodeGen::Labels::visitor, NULL, NULL, 0);
 	if (redundant_labels_removed > 0)
 		LOG("%d redundant label(s) removed\n", redundant_labels_removed);
 	return TRUE;
