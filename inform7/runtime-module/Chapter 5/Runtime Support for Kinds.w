@@ -280,24 +280,6 @@ void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 		return;
 	}
 
-	if (Kinds::eq(K, K_table)) {
-		inter_name *empty = Hierarchy::find(EMPTY_TABLE_HL);
-		Emit::to_ival(v1, v2, empty);
-		return;
-	}
-
-	if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
-		inter_name *empty = Hierarchy::find(DEFAULTTOPIC_HL);
-		Emit::to_ival(v1, v2, empty);
-		return;
-	}
-	
-	if (Kinds::get_construct(K) == CON_rule) {
-		inter_name *empty = Hierarchy::find(LITTLE_USED_DO_NOTHING_R_HL);
-		Emit::to_ival(v1, v2, empty);
-		return;
-	}
-
 	text_stream *name = K->construct->default_value;
 
 	if (Str::len(name) == 0) return;
@@ -316,13 +298,9 @@ void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (Str::eq(name, I"true")) { *v1 = LITERAL_IVAL; *v2 = 1; return; }
 	if (Str::eq(name, I"false")) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
 
-	S = Emit::holding_symbol(Produce::main_scope(Emit::tree()), name);
-	if (S) {
-		Emit::symbol_to_ival(v1, v2, S);
-		return;
-	}
-
-	return;
+	int hl = Hierarchy::kind_default(Kinds::get_construct(K), name);
+	inter_name *default_iname = Hierarchy::find(hl);
+	Emit::to_ival(v1, v2, default_iname);
 }
 
 @h Equality tests.

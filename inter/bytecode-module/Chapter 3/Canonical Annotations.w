@@ -21,12 +21,10 @@ Defining the one true set of Inter annotation codes.
 @e BUFFERARRAY_IANN
 @e BYTEARRAY_IANN
 @e DECLARATION_ORDER_IANN
-@e DELENDA_EST_IANN
 @e EITHER_OR_IANN
 @e ENCLOSING_IANN
 @e FAKE_ACTION_IANN
 @e OBJECT_IANN
-@e HOLDING_IANN
 @e INLINE_ARRAY_IANN
 @e LATE_IANN
 @e METAVERB_IANN
@@ -88,12 +86,10 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(BUFFERARRAY_IANN, I"__buffer_array", FALSE);
 	Inter::Annotations::form(BYTEARRAY_IANN, I"__byte_array", FALSE);
 	Inter::Annotations::form(DECLARATION_ORDER_IANN, I"__declaration_order", FALSE);
-	Inter::Annotations::form(DELENDA_EST_IANN, I"__delenda_est", FALSE);
 	Inter::Annotations::form(EITHER_OR_IANN, I"__either_or", FALSE);
 	Inter::Annotations::form(ENCLOSING_IANN, I"__enclosing", FALSE);
 	Inter::Annotations::form(FAKE_ACTION_IANN, I"__fake_action", FALSE);
 	Inter::Annotations::form(OBJECT_IANN, I"__object", FALSE);
-	Inter::Annotations::form(HOLDING_IANN, I"__holding", FALSE);
 	Inter::Annotations::form(INLINE_ARRAY_IANN, I"__inline_array", FALSE);
 	Inter::Annotations::form(LATE_IANN, I"__late", FALSE);
 	Inter::Annotations::form(METAVERB_IANN, I"__meta_verb", FALSE);

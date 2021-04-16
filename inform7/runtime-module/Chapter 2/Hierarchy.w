@@ -1101,7 +1101,6 @@ void Hierarchy::establish(void) {
 @e DEBUG_RULES_HL
 @e DEBUG_SCENES_HL
 @e DECIMALNUMBER_HL
-@e DEFAULTTOPIC_HL
 @e DETECTPLURALWORD_HL
 @e DIGITTOVALUE_HL
 @e DIVIDEPARAGRAPHPOINT_HL
@@ -1156,7 +1155,6 @@ void Hierarchy::establish(void) {
 @e LIST_OF_TY_INSERTITEM_HL
 @e LIST_OF_TY_SAY_HL
 @e LIST_OF_TY_SETLENGTH_HL
-@e LITTLE_USED_DO_NOTHING_R_HL
 @e LOCATION_HL
 @e LOCATIONOF_HL
 @e LOOPOVERSCOPE_HL
@@ -1340,7 +1338,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(I, DEBUG_RULES_HL, I"debug_rules", Translation::same(), template);
 	HierarchyLocations::con(I, DEBUG_SCENES_HL, I"debug_scenes", Translation::same(), template);
 	HierarchyLocations::con(I, DECIMALNUMBER_HL, I"DecimalNumber", Translation::same(), template);
-	HierarchyLocations::con(I, DEFAULTTOPIC_HL, I"DefaultTopic", Translation::same(), template);
 	HierarchyLocations::con(I, DETECTPLURALWORD_HL, I"DetectPluralWord", Translation::same(), template);
 	HierarchyLocations::con(I, DIGITTOVALUE_HL, I"DigitToValue", Translation::same(), template);
 	HierarchyLocations::con(I, DIVIDEPARAGRAPHPOINT_HL, I"DivideParagraphPoint", Translation::same(), template);
@@ -1395,7 +1392,6 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(I, LIST_OF_TY_INSERTITEM_HL, I"LIST_OF_TY_InsertItem", Translation::same(), template);
 	HierarchyLocations::con(I, LIST_OF_TY_SAY_HL, I"LIST_OF_TY_Say", Translation::same(), template);
 	HierarchyLocations::con(I, LIST_OF_TY_SETLENGTH_HL, I"LIST_OF_TY_SetLength", Translation::same(), template);
-	HierarchyLocations::con(I, LITTLE_USED_DO_NOTHING_R_HL, I"LITTLE_USED_DO_NOTHING_R", Translation::same(), template);
 	HierarchyLocations::con(I, LOCATION_HL, I"location", Translation::same(), template);
 	HierarchyLocations::con(I, LOCATIONOF_HL, I"LocationOf", Translation::same(), template);
 	HierarchyLocations::con(I, LOOPOVERSCOPE_HL, I"LoopOverScope", Translation::same(), template);
@@ -1535,6 +1531,44 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(I, WORDADDRESS_HL, I"WordAddress", Translation::same(), template);
 	HierarchyLocations::con(I, WORDINPROPERTY_HL, I"WordInProperty", Translation::same(), template);
 	HierarchyLocations::con(I, WORDLENGTH_HL, I"WordLength", Translation::same(), template);
+
+
+@
+
+@e KIND_DEFAULT1_HL
+@e KIND_DEFAULT2_HL
+@e KIND_DEFAULT3_HL
+@e KIND_DEFAULT4_HL
+@e KIND_DEFAULT5_HL
+@e KIND_DEFAULT6_HL
+@e KIND_DEFAULT7_HL
+@e KIND_DEFAULT8_HL
+@e KIND_DEFAULT9_HL
+@e KIND_DEFAULT10_HL
+@e KIND_DEFAULT11_HL
+@e KIND_DEFAULT12_HL
+@e KIND_DEFAULT13_HL
+@e KIND_DEFAULT14_HL
+@e KIND_DEFAULT15_HL
+@e KIND_DEFAULT16_HL
+
+@d MAX_KIND_DEFAULTS 16
+
+=
+int no_kind_defaults_used;
+kind_constructor *kind_defaults_used[MAX_KIND_DEFAULTS];
+int Hierarchy::kind_default(kind_constructor *con, text_stream *Inter_constant_name) {
+	for (int i=0; i<no_kind_defaults_used; i++)
+		if (con == kind_defaults_used[i])
+			return KIND_DEFAULT1_HL + i;
+	if (no_kind_defaults_used >= MAX_KIND_DEFAULTS)
+		internal_error("too many Neptune file-defined kinds have default values");
+	location_requirement template = HierarchyLocations::plug();
+	int hl = KIND_DEFAULT1_HL + no_kind_defaults_used;
+	kind_defaults_used[no_kind_defaults_used++] = con;
+	HierarchyLocations::con(Emit::tree(), hl, Inter_constant_name, Translation::same(), template);
+	return hl;
+}
 
 @
 

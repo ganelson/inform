@@ -10,14 +10,6 @@ void Produce::guard(inter_error_message *ERR) {
 }
 
 inter_symbol *Produce::new_symbol(inter_symbols_table *T, text_stream *name) {
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
-	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
-		Produce::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
-		inter_tree_node *D = Inter::Symbols::definition(symb);
-		InterTree::remove_node(D);
-		Inter::Symbols::undefine(symb);
-		return symb;
-	}
 	return InterSymbolsTables::create_with_unique_name(T, name);
 }
 
@@ -27,13 +19,6 @@ inter_symbol *Produce::define_symbol(inter_name *iname) {
 		if (Inter::Symbols::is_predeclared(iname->symbol)) {
 			Inter::Symbols::undefine(iname->symbol);
 		}
-	}
-	if ((iname->symbol) && (Inter::Symbols::read_annotation(iname->symbol, HOLDING_IANN) == 1)) {
-		if (Inter::Symbols::read_annotation(iname->symbol, DELENDA_EST_IANN) != 1) {
-			Produce::annotate_symbol_i(iname->symbol, DELENDA_EST_IANN, 1);
-			Inter::Symbols::strike_definition(iname->symbol);
-		}
-		return iname->symbol;
 	}
 	return iname->symbol;
 }

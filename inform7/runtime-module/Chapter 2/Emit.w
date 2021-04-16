@@ -247,17 +247,6 @@ text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name)
 	return InterSymbolsTables::render_identifier_unique(T, name);
 }
 
-inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
-	if (symb == NULL) {
-		symb = Produce::new_symbol(T, name);
-		inter_tree *I = Emit::tree();
-		Produce::guard(Inter::Constant::new_numerical(Site::holdings(I), InterSymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), symb), InterSymbolsTables::id_from_IRS_and_symbol(Site::holdings(I), int_interk), LITERAL_IVAL, 0, Produce::baseline(Site::holdings(I)), NULL));
-		Produce::annotate_symbol_i(symb, HOLDING_IANN, 1);
-	}
-	return symb;
-}
-
 void Emit::kind(inter_name *iname, inter_ti TID, inter_name *super,
 	int constructor, int arity, kind **operand_kinds) {
 	packaging_state save = Packaging::enter_home_of(iname);
