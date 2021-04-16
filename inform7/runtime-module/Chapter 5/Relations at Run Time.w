@@ -67,7 +67,7 @@ void RTRelations::mark_as_needed(binary_predicate *bp) {
 		if (default_rr == NULL) {
 			default_rr = bp->imp->bp_iname;
 			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
-			Emit::named_iname_constant(iname, K_value, RTRelations::default_iname());
+			Emit::iname_constant(iname, K_value, RTRelations::default_iname());
 			Hierarchy::make_available(Emit::tree(), iname);
 		}
 	}
@@ -1162,7 +1162,7 @@ above: it forces the template layer to generate the cache when first used.
 			words_used += 2*left_count*left_count;
 		}
 	} else {
-		v2v_iname = Emit::named_numeric_constant(iname, 0);
+		v2v_iname = Emit::numeric_constant(iname, 0);
 	}
 
 @ The following routine conveniently determines whether a given INFS is

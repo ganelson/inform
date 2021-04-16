@@ -1061,7 +1061,7 @@ void RTKinds::kind_declarations(void) {
 }
 
 void RTKinds::compile_nnci(inter_name *name, int val) {
-	Emit::named_numeric_constant(name, (inter_ti) val);
+	Emit::numeric_constant(name, (inter_ti) val);
 	Hierarchy::make_available(Emit::tree(), name);
 }
 
@@ -1080,7 +1080,7 @@ void RTKinds::compile_instance_counts(void) {
 			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, Emit::main_render_unique(Produce::main_scope(Emit::tree()), ICN), Kinds::Behaviour::package(K));
 			Hierarchy::make_available(Emit::tree(), iname);
 			DISCARD_TEXT(ICN)
-			Emit::named_numeric_constant(iname, (inter_ti) Instances::count(K));
+			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
 		}
 	}
 
@@ -1876,7 +1876,7 @@ particular order.
 =
 int RTKinds::emit_all(inference_subject_family *f, int ignored) {
 	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) next_free_data_type_ID);
+	Emit::numeric_constant(iname, (inter_ti) next_free_data_type_ID);
 	RTKinds::emit_recursive(KindSubjects::from_kind(K_object));
 	return FALSE;
 }

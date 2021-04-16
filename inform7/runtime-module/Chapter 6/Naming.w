@@ -107,7 +107,7 @@ void RTNaming::compile_small_names(void) {
 void RTNaming::compile_cap_short_name(void) {
 	if (P_cap_short_name == NULL) {
 		inter_name *iname = Hierarchy::find(CAPSHORTNAME_HL);
-		Emit::named_iname_constant(iname, K_value, Hierarchy::find(SHORT_NAME_HL));
+		Emit::iname_constant(iname, K_value, Hierarchy::find(SHORT_NAME_HL));
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
 }

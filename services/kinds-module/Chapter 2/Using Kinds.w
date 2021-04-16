@@ -489,7 +489,7 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 		if (external) {
 			K->construct->pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
 			inter_name *actual_iname = Produce::find_by_name(Emit::tree(), X);
-			Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
+			Emit::iname_constant(K->construct->pr_iname, K_value, actual_iname);
 		} else internal_error("internal but unknown kind printing routine");
 	} else {
 		if (external) K->construct->pr_iname = Produce::find_by_name(Emit::tree(), X);

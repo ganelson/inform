@@ -290,7 +290,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 	if (lt->lt_sba_iname == NULL)
 		lt->lt_sba_iname = RTKinds::new_block_constant_iname();
 
-	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
+	Emit::iname_constant(lt->lt_sba_iname, K_value, iname);
 
 	packaging_state save = Functions::begin(iname);
 	Produce::inv_primitive(Emit::tree(), BOX_BIP);

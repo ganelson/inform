@@ -74,7 +74,7 @@ void RTRules::define_by_Inter_function(rule *R) {
 	R->compilation_data.rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->compilation_data.rule_package);
 
 	inter_name *xiname = Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
-	Emit::iname_as_constant(R->compilation_data.rule_package, R->compilation_data.rule_extern_iname, xiname);
+	Emit::iname_constant(R->compilation_data.rule_extern_iname, K_value, xiname); 
 
 	R->compilation_data.xiname = xiname;
 }
@@ -367,7 +367,7 @@ inter_name *RTRules::list_compile(booking_list *L,
 
 	int countup = BookingLists::length(L);
 	if (countup == 0) {
-		rb_symb = Emit::named_iname_constant(identifier, K_value,
+		rb_symb = Emit::iname_constant(identifier, K_value,
 			Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
 	} else {
 		int format = ROUTINE_RBF;
@@ -631,7 +631,7 @@ action_name *RTRules::br_required_action(booking *br) {
 =
 void RTRules::compile_NUMBER_RULEBOOKS_CREATED(void) {
 	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) NUMBER_CREATED(rulebook));
+	Emit::numeric_constant(iname, (inter_ti) NUMBER_CREATED(rulebook));
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -806,7 +806,7 @@ void RTRules::new_outcome(named_rulebook_outcome *rbno, wording W) {
 		if (i >= 0) {
 			inter_name *iname = Hierarchy::find(i);
 			Hierarchy::make_available(Emit::tree(), iname);
-			Emit::named_iname_constant(iname, K_value, rbno->nro_iname);
+			Emit::iname_constant(iname, K_value, rbno->nro_iname);
 		}
 	}
 }

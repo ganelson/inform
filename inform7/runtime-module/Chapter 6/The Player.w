@@ -27,7 +27,7 @@ void RTPlayer::InitialSituation(void) {
 void RTPlayer::InitialSituation_define(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
 	Emit::named_array_begin(iname, K_value);
-	Emit::named_numeric_constant(iname, (inter_ti) val);
+	Emit::numeric_constant(iname, (inter_ti) val);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

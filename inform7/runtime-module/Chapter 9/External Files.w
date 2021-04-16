@@ -18,7 +18,7 @@ external_file_compilation_data RTExternalFiles::new_data(wording W) {
 
 void RTExternalFiles::arrays(void) {
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
+	Emit::numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	files_data *exf;

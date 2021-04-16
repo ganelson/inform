@@ -18,7 +18,7 @@ activity_compilation_data RTActivities::new_compilation_data(activity *av) {
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	Hierarchy::markup_wording(acd.av_package, ACTIVITY_NAME_HMD, av->name);
 	acd.av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, acd.av_package, av->name);
-	Emit::named_numeric_constant(acd.av_iname, (inter_ti) av->allocation_id);
+	Emit::numeric_constant(acd.av_iname, (inter_ti) av->allocation_id);
 	return acd;
 }
 

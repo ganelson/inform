@@ -43,7 +43,7 @@ means we need a different value for each possible word size.
 inter_name *FundamentalConstants::emit_one(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(Emit::tree(), iname);
-	Emit::named_numeric_constant(iname, val);
+	Emit::numeric_constant(iname, val);
 	return iname;
 }
 

@@ -89,7 +89,12 @@ resource block later on.
 			PUT_TO(keyword, (int) c);
 		}
 		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, FALSE);
-		if (IA == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"conflicting annotation name");
+		if (IA == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "conflicting annotation name '%S'", keyword);
+			Inter::Binary::read_error(&eloc, ftell(fh), err);
+			DISCARD_TEXT(err)
+		}
 		DISCARD_TEXT(keyword)
 	}
 

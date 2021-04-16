@@ -9,7 +9,7 @@ one to test them, one to print them.
 =
 void RTUseOptions::TestUseOption_routine(void) {
 	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) NUMBER_CREATED(use_option));
+	Emit::numeric_constant(iname, (inter_ti) NUMBER_CREATED(use_option));
 	@<Compile the TestUseOption routine@>;
 	@<Compile the PrintUseOption routine@>;
 }
@@ -88,11 +88,11 @@ void RTUseOptions::configure_template(void) {
 	if (global_compilation_settings.ranking_table_given) bitmap += 512;
 
 	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) bitmap);
+	Emit::numeric_constant(iname, (inter_ti) bitmap);
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	iname = Hierarchy::find(TEMPLATE_CONFIGURATION_LOOKMODE_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) global_compilation_settings.room_description_level);
+	Emit::numeric_constant(iname, (inter_ti) global_compilation_settings.room_description_level);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

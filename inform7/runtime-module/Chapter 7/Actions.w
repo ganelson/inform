@@ -200,7 +200,7 @@ void RTActions::ActionData(void) {
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
-	Emit::named_numeric_constant(ad_iname, (inter_ti) record_count);
+	Emit::numeric_constant(ad_iname, (inter_ti) record_count);
 	Hierarchy::make_available(Emit::tree(), ad_iname);
 
 	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);

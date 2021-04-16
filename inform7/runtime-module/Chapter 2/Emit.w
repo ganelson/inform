@@ -62,9 +62,9 @@ void Emit::down(void) {
 	Produce::down(Emit::tree());
 }
 
-@h Rudimentary kinds.
+@h Kinds.
 Inter has a very simple, and non-binding, system of "kinds" -- a much simpler
-one than Inform. We need symbols to refer to some of these, and here they are.
+one than Inform. We need symbols to refer to some basic Inter kinds, and here they are.
 
 The way these are created is typical. First we ask //Hierarchy// for the
 Inter tree position of what we're intending to make. Then call |Packaging::enter_home_of|
@@ -109,6 +109,73 @@ void Emit::rudimentary_kinds(void) {
 	Packaging::exit(Emit::tree(), save);
 }
 
+@ This emits a more general Inter kind, and is used by //Runtime Support for Kinds//.
+Here |idt| is one of the |*_IDT| constants expressing what actual data is held;
+|super| is the superkind, if any; the other three arguments are for kind
+constructors.
+
+=
+void Emit::kind(inter_name *iname, inter_ti idt, inter_name *super,
+	int constructor, int arity, kind **operand_kinds) {
+	packaging_state save = Packaging::enter_home_of(iname);
+	inter_symbol *S = InterNames::to_symbol(iname);
+	inter_ti SID = 0;
+	if (S) SID = Emit::symbol_id(S);
+	inter_symbol *SS = (super)?InterNames::to_symbol(super):NULL;
+	inter_ti SUP = 0;
+	if (SS) SUP = Emit::symbol_id(SS);
+	inter_ti operands[MAX_KIND_ARITY];
+	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
+	for (int i=0; i<arity; i++) {
+		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
+		else {
+			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
+			operands[i] = Emit::symbol_id(S);
+		}
+	}
+	Emit::kind_inner(SID, idt, SUP, constructor, arity, operands);
+	InterNames::to_symbol(iname);
+	Packaging::exit(Emit::tree(), save);
+}
+
+@ The above both use:
+
+=
+void Emit::kind_inner(inter_ti SID, inter_ti idt, inter_ti SUP,
+	int constructor, int arity, inter_ti *operands) {
+	Produce::guard(Inter::Kind::new(Emit::at(), SID, idt, SUP, constructor, arity,
+		operands, Emit::baseline(), NULL));
+}
+
+@ Default values for kinds are emitted thus. This is inefficient, but is called
+so little that it doesn't matter.
+
+=
+typedef struct dval_written {
+	kind *K_written;
+	inter_ti v1;
+	inter_ti v2;
+	CLASS_DEFINITION
+} dval_written;
+
+void Emit::ensure_defaultvalue(kind *K) {
+	if (K == K_value) return;
+	dval_written *dw;
+	LOOP_OVER(dw, dval_written)
+		if (Kinds::eq(K, dw->K_written))
+			return;
+	dw = CREATE(dval_written);
+	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
+	RTKinds::get_default_value(&(dw->v1), &(dw->v2), K);
+	if (dw->v1 != 0) {
+		packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
+		inter_symbol *owner_kind = Produce::kind_to_symbol(K);
+		Produce::guard(Inter::DefaultValue::new(Emit::at(),
+			Emit::symbol_id(owner_kind), dw->v1, dw->v2, Emit::baseline(), NULL));
+		Packaging::exit(Emit::tree(), save);
+	}
+}
+
 @h Pragmas.
 The Inter language allows pragmas, or code-generation hints, to be passed
 through. These are specific to the target of compilation, and can be ignored
@@ -142,29 +209,47 @@ an unsigned numeric constant, use one of these two functions -- the first if
 it represents an actual number at run-time, the second if not:
 
 =
-inter_name *Emit::named_numeric_constant(inter_name *name, inter_ti val) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name),
-		Emit::symbol_id(int_interk), LITERAL_IVAL, val, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return name;
+inter_name *Emit::numeric_constant(inter_name *con_iname, inter_ti val) {
+	return Emit::numeric_constant_inner(con_iname, val, int_interk, INVALID_IANN);
 }
 
-void Emit::unchecked_numeric_constant(inter_name *name, inter_ti val) {
-	Emit::named_generic_constant(name, LITERAL_IVAL, val);
+inter_name *Emit::named_numeric_constant_hex(inter_name *con_iname, inter_ti val) {
+	return Emit::numeric_constant_inner(con_iname, val, int_interk, HEX_IANN);
+}
+
+inter_name *Emit::named_unchecked_constant_hex(inter_name *con_iname, inter_ti val) {
+	return Emit::numeric_constant_inner(con_iname, val, unchecked_interk, HEX_IANN);
+}
+
+inter_name *Emit::named_numeric_constant_signed(inter_name *con_iname, int val) {
+	return Emit::numeric_constant_inner(con_iname, (inter_ti) val, int_interk, SIGNED_IANN);
+}
+
+inter_name *Emit::unchecked_numeric_constant(inter_name *con_iname, inter_ti val) {
+	return Emit::numeric_constant_inner(con_iname, val, unchecked_interk, INVALID_IANN);
+}
+
+inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
+	inter_symbol *kind_s, inter_ti annotation) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	if (annotation != INVALID_IANN) Produce::annotate_symbol_i(con_s, annotation, 0);
+	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
+		Emit::symbol_id(kind_s), LITERAL_IVAL, val, Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+	return con_iname;
 }
 
 @ Text:
 
 =
-void Emit::text_constant(inter_name *name, text_stream *contents) {
-	packaging_state save = Packaging::enter_home_of(name);
+void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_ti ID = Inter::Warehouse::create_text(Emit::warehouse(),
 		Inter::Bookmarks::package(Emit::at()));
 	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), contents);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_name),
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(string_interk), ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
@@ -172,27 +257,41 @@ void Emit::text_constant(inter_name *name, text_stream *contents) {
 @ And equating one constant to another named constant:
 
 =
-void Emit::iname_as_constant(package_request *PR, inter_name *name, inter_name *xiname) {
-	inter_ti v1 = 0, v2 = 0;
-	Inter::Symbols::to_data(Emit::tree(), Packaging::incarnate(PR), InterNames::to_symbol(xiname), &v1, &v2);
-	Emit::named_generic_constant(name, v1, v2);
+inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val_iname) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	inter_symbol *kind_s = Produce::kind_to_symbol(K);
+	inter_symbol *val_s = (val_iname)?InterNames::to_symbol(val_iname):NULL;
+	if (val_s == NULL) {
+		if (Kinds::Behaviour::is_object(K))
+			val_s = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
+		else
+			internal_error("can't handle a null alias");
+	}
+	inter_ti val1 = 0, val2 = 0;
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(Emit::at()),
+		Inter::Bookmarks::package(Emit::at()), val_s, &val1, &val2);
+	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
+		Emit::symbol_id(kind_s), val1, val2, Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+	return con_iname;
 }
 
 @ These two variants are needed only for the oddball way //Bibliographic Data//
 is compiled.
 
 =
-void Emit::text_constant_from_wide_string(inter_name *name, wchar_t *str) {
+void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
 	inter_ti v1 = 0, v2 = 0;
-	TextLiterals::compile_literal_from_text(name, &v1, &v2, str);
-	Emit::named_generic_constant(name, v1, v2);
+	TextLiterals::compile_literal_from_text(con_iname, &v1, &v2, str);
+	Emit::named_generic_constant(con_iname, v1, v2);
 }
 
-void Emit::serial_number(inter_name *name, text_stream *serial) {
-	packaging_state save = Packaging::enter_home_of(name);
+void Emit::serial_number(inter_name *con_iname, text_stream *serial) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_ti v1 = 0, v2 = 0;
 	Produce::text_value(Emit::tree(), &v1, &v2, serial);
-	Emit::named_generic_constant(name, v1, v2);
+	Emit::named_generic_constant(con_iname, v1, v2);
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -200,21 +299,115 @@ void Emit::serial_number(inter_name *name, text_stream *serial) {
 of a "variable" and define it as a constant:
 
 =
-void Emit::initial_value_as_constant(inter_name *name, nonlocal_variable *var) {
+void Emit::initial_value_as_constant(inter_name *con_iname, nonlocal_variable *var) {
 	inter_ti v1 = 0, v2 = 0;
-	RTVariables::seek_initial_value(name, &v1, &v2, var);
-	Emit::named_generic_constant(name, v1, v2);
+	RTVariables::seek_initial_value(con_iname, &v1, &v2, var);
+	Emit::named_generic_constant(con_iname, v1, v2);
 }
 
 @ The above make use of this:
 
 =
-void Emit::named_generic_constant(inter_name *name, inter_ti val1, inter_ti val2) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name),
+void Emit::named_generic_constant(inter_name *con_iname, inter_ti val1, inter_ti val2) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(unchecked_interk), val1, val2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
+}
+
+@h Instances.
+
+=
+void Emit::instance(inter_name *name, kind *K, int v) {
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *inst_name = Produce::define_symbol(name);
+	inter_symbol *kind_s = Produce::kind_to_symbol(K);
+	if (kind_s == NULL) internal_error("no kind for val");
+	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
+	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
+	Produce::guard(Inter::Instance::new(Emit::at(), Emit::symbol_id(inst_name),
+		Emit::symbol_id(kind_s), v1, v2, Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+}
+
+@h Variables.
+
+=
+inter_symbol *Emit::variable(inter_name *name, kind *K, inter_ti v1, inter_ti v2) {
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *var_name = Produce::define_symbol(name);
+	inter_symbol *var_kind = Produce::kind_to_symbol(K);
+	Produce::guard(Inter::Variable::new(Emit::at(),
+		Emit::symbol_id(var_name), Emit::symbol_id(var_kind), v1, v2, Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+	return var_name;
+}
+
+@h Properties and permissions.
+
+=
+void Emit::property(inter_name *name, kind *K) {
+	packaging_state save = Packaging::enter_home_of(name);
+	inter_symbol *prop_name = Produce::define_symbol(name);
+	inter_symbol *prop_kind = Produce::kind_to_symbol(K);
+	Produce::guard(Inter::Property::new(Emit::at(),
+		Emit::symbol_id(prop_name), Emit::symbol_id(prop_kind), Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+}
+
+void Emit::permission(property *prn, kind *K, inter_name *name) {
+	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
+	inter_name *prop_name = RTProperties::iname(prn);
+	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
+	inter_symbol *store = (name)?InterNames::to_symbol(name):NULL;
+	Emit::basic_permission(prop_name, owner_kind, store);
+	Packaging::exit(Emit::tree(), save);
+}
+
+void Emit::instance_permission(property *prn, inter_name *inst_iname) {
+	inter_name *prop_name = RTProperties::iname(prn);
+	inter_symbol *inst_name = InterNames::to_symbol(inst_iname);
+	packaging_state save = Packaging::enter_home_of(inst_iname);
+	Emit::basic_permission(prop_name, inst_name, NULL);
+	Packaging::exit(Emit::tree(), save);
+}
+
+int ppi7_counter = 0;
+void Emit::basic_permission(inter_name *name, inter_symbol *owner_name,
+	inter_symbol *store) {
+	inter_bookmark *at = Emit::at();
+	inter_symbol *prop_name = Produce::define_symbol(name);
+	inter_error_message *E = NULL;
+	TEMPORARY_TEXT(ident)
+	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
+	inter_symbol *pp_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(at), ident, &E);
+	DISCARD_TEXT(ident)
+	Produce::guard(E);
+	Produce::guard(Inter::Permission::new(at,
+		Emit::symbol_id(prop_name), Emit::symbol_id(owner_name), Emit::symbol_id(pp_name),
+		(store)?(Emit::symbol_id(store)):0, Produce::baseline(at), NULL));
+}
+
+@h Property values.
+
+=
+void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
+	RTProperties::emit_single(P);
+	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
+	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
+	Produce::guard(Inter::PropertyValue::new(Emit::at(),
+		Emit::symbol_id(prop_name),
+		Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
+}
+
+void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
+	RTProperties::emit_single(P);
+	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
+	inter_symbol *owner_kind = InterNames::to_symbol(RTInstances::emitted_iname(I));
+	Produce::guard(Inter::PropertyValue::new(Emit::at(),
+		Emit::symbol_id(prop_name),
+		Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
 }
 
 @ =
@@ -245,139 +438,6 @@ void Emit::append(inter_name *iname, text_stream *text) {
 
 text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
 	return InterSymbolsTables::render_identifier_unique(T, name);
-}
-
-void Emit::kind(inter_name *iname, inter_ti TID, inter_name *super,
-	int constructor, int arity, kind **operand_kinds) {
-	packaging_state save = Packaging::enter_home_of(iname);
-	inter_symbol *S = InterNames::to_symbol(iname);
-	inter_ti SID = 0;
-	if (S) SID = Emit::symbol_id(S);
-	inter_symbol *SS = (super)?InterNames::to_symbol(super):NULL;
-	inter_ti SUP = 0;
-	if (SS) SUP = Emit::symbol_id(SS);
-	inter_ti operands[MAX_KIND_ARITY];
-	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
-	for (int i=0; i<arity; i++) {
-		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
-		else {
-			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
-			operands[i] = Emit::symbol_id(S);
-		}
-	}
-	Emit::kind_inner(SID, TID, SUP, constructor, arity, operands);
-	InterNames::to_symbol(iname);
-	Packaging::exit(Emit::tree(), save);
-}
-
-void Emit::kind_inner(inter_ti SID, inter_ti TID, inter_ti SUP,
-	int constructor, int arity, inter_ti *operands) {
-	Produce::guard(Inter::Kind::new(Emit::at(), SID, TID, SUP, constructor, arity, operands, Emit::baseline(), NULL));
-}
-
-inter_symbol *Emit::variable(inter_name *name, kind *K, inter_ti v1, inter_ti v2, text_stream *rvalue) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *var_name = Produce::define_symbol(name);
-	inter_symbol *var_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::Variable::new(Emit::at(),
-		Emit::symbol_id(var_name), Emit::symbol_id(var_kind), v1, v2, Emit::baseline(), NULL));
-	if (rvalue) Produce::annotate_symbol_i(var_name, EXPLICIT_VARIABLE_IANN, 1);
-	Packaging::exit(Emit::tree(), save);
-	return var_name;
-}
-
-void Emit::property(inter_name *name, kind *K) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *prop_name = Produce::define_symbol(name);
-	inter_symbol *prop_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::Property::new(Emit::at(),
-		Emit::symbol_id(prop_name), Emit::symbol_id(prop_kind), Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-}
-
-void Emit::permission(property *prn, kind *K, inter_name *name) {
-	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
-	inter_name *prop_name = RTProperties::iname(prn);
-	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
-	inter_symbol *store = (name)?InterNames::to_symbol(name):NULL;
-	Emit::basic_permission(Emit::at(), prop_name, owner_kind, store);
-	Packaging::exit(Emit::tree(), save);
-}
-
-void Emit::instance_permission(property *prn, inter_name *inst_iname) {
-	inter_name *prop_name = RTProperties::iname(prn);
-	inter_symbol *inst_name = InterNames::to_symbol(inst_iname);
-	packaging_state save = Packaging::enter_home_of(inst_iname);
-	Emit::basic_permission(Emit::at(), prop_name, inst_name, NULL);
-	Packaging::exit(Emit::tree(), save);
-}
-
-int ppi7_counter = 0;
-void Emit::basic_permission(inter_bookmark *at, inter_name *name, inter_symbol *owner_name, inter_symbol *store) {
-	inter_symbol *prop_name = Produce::define_symbol(name);
-	inter_error_message *E = NULL;
-	TEMPORARY_TEXT(ident)
-	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
-	inter_symbol *pp_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(at), ident, &E);
-	DISCARD_TEXT(ident)
-	Produce::guard(E);
-	Produce::guard(Inter::Permission::new(at,
-		InterSymbolsTables::id_from_IRS_and_symbol(at, prop_name), InterSymbolsTables::id_from_IRS_and_symbol(at, owner_name), InterSymbolsTables::id_from_IRS_and_symbol(at, pp_name), (store)?(InterSymbolsTables::id_from_IRS_and_symbol(at, store)):0, Produce::baseline(at), NULL));
-}
-
-typedef struct dval_written {
-	kind *K_written;
-	inter_ti v1;
-	inter_ti v2;
-	CLASS_DEFINITION
-} dval_written;
-
-void Emit::ensure_defaultvalue(kind *K) {
-	if (K == K_value) return;
-	dval_written *dw;
-	LOOP_OVER(dw, dval_written)
-		if (Kinds::eq(K, dw->K_written))
-			return;
-	dw = CREATE(dval_written);
-	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
-	RTKinds::get_default_value(&(dw->v1), &(dw->v2), K);
-	if (dw->v1 != 0)
-		Emit::defaultvalue(K, dw->v1, dw->v2);
-}
-
-void Emit::defaultvalue(kind *K, inter_ti v1, inter_ti v2) {
-	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
-	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::DefaultValue::new(Emit::at(),
-		Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-}
-
-void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
-	RTProperties::emit_single(P);
-	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
-	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
-	Produce::guard(Inter::PropertyValue::new(Emit::at(),
-		Emit::symbol_id(prop_name), Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
-}
-
-void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
-	RTProperties::emit_single(P);
-	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
-	inter_symbol *owner_kind = InterNames::to_symbol(RTInstances::emitted_iname(I));
-	Produce::guard(Inter::PropertyValue::new(Emit::at(),
-		Emit::symbol_id(prop_name), Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
-}
-
-void Emit::instance(inter_name *name, kind *K, int v) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *inst_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	if (val_kind == NULL) internal_error("no kind for val");
-	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
-	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
-	Produce::guard(Inter::Instance::new(Emit::at(), Emit::symbol_id(inst_name), Emit::symbol_id(val_kind), v1, v2, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
 }
 
 packaging_state Emit::named_late_array_begin(inter_name *name, kind *K) {
@@ -581,7 +641,7 @@ inter_bookmark *Emit::array_IRS(void) {
 
 void Emit::array_end(packaging_state save) {
 	if (current_A == NULL) internal_error("inter array not opened");
-	inter_symbol *con_name = current_A->array_name_symbol;
+	inter_symbol *con_s = current_A->array_name_symbol;
 	inter_bookmark *IBM = Emit::at();
 	kind *K = current_A->entry_kind;
 	inter_ti CID = 0;
@@ -596,7 +656,7 @@ void Emit::array_end(packaging_state save) {
 		CID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
 	}
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Produce::baseline(IBM));
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s), CID, current_A->array_form, NULL, Produce::baseline(IBM));
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
 		internal_error("can't extend frame");
@@ -608,49 +668,6 @@ void Emit::array_end(packaging_state save) {
 	Inter::Bookmarks::insert(Emit::at(), array_in_progress);
 	Emit::pull_array();
 	Packaging::exit(Emit::tree(), save);
-}
-
-inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *iname) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
-	if (alias == NULL) {
-		if (Kinds::Behaviour::is_object(K)) alias = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
-		else internal_error("can't handle a null alias");
-	}
-	inter_ti val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(Emit::at()), Inter::Bookmarks::package(Emit::at()), alias, &val1, &val2);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name), Emit::symbol_id(val_kind), val1, val2, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return name;
-}
-
-inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_ti val) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name), Emit::symbol_id(int_interk), LITERAL_IVAL, val, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return name;
-}
-
-inter_name *Emit::named_unchecked_constant_hex(inter_name *name, inter_ti val) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name), Emit::symbol_id(unchecked_interk), LITERAL_IVAL, val, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return name;
-}
-
-inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
-	packaging_state save = Packaging::enter_home_of(name);
-	inter_symbol *con_name = Produce::define_symbol(name);
-	Produce::annotate_symbol_i(con_name, SIGNED_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_name), Emit::symbol_id(int_interk), LITERAL_IVAL, (inter_ti) val, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return name;
 }
 
 void Emit::early_comment(text_stream *text) {

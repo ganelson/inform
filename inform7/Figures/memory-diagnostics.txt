@@ -1,6 +1,6 @@
-Total memory consumption was 277896K = 271 MB
+Total memory consumption was 277895K = 271 MB
 
-64.4% was used for 1349765 objects, in 309377 frames in 224 x 800K = 179200K = 175 MB:
+64.4% was used for 1349763 objects, in 309375 frames in 224 x 800K = 179200K = 175 MB:
 
      9.3%  inter_tree_node_array                    37 x 8192 = 303104 objects, 26674336 bytes
      5.6%  linked_list                              28956 objects, 16215360 bytes
@@ -156,8 +156,8 @@ Total memory consumption was 277896K = 271 MB
      ----  plugin                                   25 objects, 1600 bytes
      ----  pipeline_step                            13 objects, 1560 bytes
      ----  kind_interaction                         39 objects, 1560 bytes
-     ----  inter_annotation_form                    37 objects, 1480 bytes
      ----  noun_filter_token                        22 objects, 1408 bytes
+     ----  inter_annotation_form                    35 objects, 1400 bytes
      ----  special_meaning_holder                   33 objects, 1320 bytes
      ----  constant_phrase                          20 objects, 1280 bytes
      ----  build_script                             40 objects, 1280 bytes
@@ -239,7 +239,7 @@ Total memory consumption was 277896K = 271 MB
 
 35.5% was used for memory not allocated for objects:
 
-    15.1%  text stream storage                      43173040 bytes in 273918 claims
+    15.1%  text stream storage                      43171944 bytes in 273910 claims
      3.4%  dictionary storage                       9948160 bytes in 17684 claims
      ----  sorting                                  1016 bytes in 3 claims
      2.5%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 277896K = 271 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.9% was overhead - 59579280 bytes = 58182K = 56 MB
+20.9% was overhead - 59579360 bytes = 58182K = 56 MB
 

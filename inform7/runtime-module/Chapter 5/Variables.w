@@ -360,7 +360,8 @@ int RTVariables::emit_all(inference_subject_family *f, int ignored) {
 			text_stream *rvalue = NULL;
 			if (nlv->compilation_data.housed_in_variables_array == FALSE)
 				rvalue = RTVariables::get_identifier(nlv);
-			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
+			inter_symbol *v_s = Emit::variable(iname, nlv->nlv_kind, v1, v2);
+			if (rvalue) Produce::annotate_symbol_i(v_s, EXPLICIT_VARIABLE_IANN, 1);
 			@<Add any anomalous extras@>;
 		}
 	return TRUE;

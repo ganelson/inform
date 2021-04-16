@@ -790,11 +790,11 @@ times".
 void Chronology::chronology_extents_i6_escape(void) {
 	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
 	Hierarchy::make_available(Emit::tree(), iname1);
-	Emit::named_numeric_constant(iname1, (inter_ti) no_past_tenses);
+	Emit::numeric_constant(iname1, (inter_ti) no_past_tenses);
 
 	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);
 	Hierarchy::make_available(Emit::tree(), iname2);
-	Emit::named_numeric_constant(iname2, (inter_ti) no_past_actions);
+	Emit::numeric_constant(iname2, (inter_ti) no_past_actions);
 }
 
 @ =

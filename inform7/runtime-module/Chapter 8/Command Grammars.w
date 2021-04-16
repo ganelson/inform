@@ -46,7 +46,7 @@ void RTCommandGrammars::set_CG_IS_TOKEN_identifier(command_grammar *cg, wording 
 
 void RTCommandGrammars::create_no_verb_verb(command_grammar *cg) {
 	inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_HL);
-	Emit::named_numeric_constant(iname, (inter_ti) 1);
+	Emit::numeric_constant(iname, (inter_ti) 1);
 	global_compilation_settings.no_verb_verb_exists = TRUE;
 }
 
@@ -103,7 +103,7 @@ inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 
 inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
-	Emit::named_numeric_constant(iname, 1);
+	Emit::numeric_constant(iname, 1);
 	Hierarchy::make_available(Emit::tree(), iname);
 	return iname;
 }

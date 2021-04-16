@@ -20,12 +20,12 @@ int RTMap::compile_model_tables(void) {
 
 @<Declare I6 constants for the directions@> =
 	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
-	Emit::named_numeric_constant(ndi, (inter_ti) Map::number_of_directions());
+	Emit::numeric_constant(ndi, (inter_ti) Map::number_of_directions());
 	Hierarchy::make_available(Emit::tree(), ndi);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction)
-		Emit::named_iname_constant(MAP_DATA(I)->direction_iname, K_object,
+		Emit::iname_constant(MAP_DATA(I)->direction_iname, K_object,
 			RTInstances::emitted_iname(I));
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
