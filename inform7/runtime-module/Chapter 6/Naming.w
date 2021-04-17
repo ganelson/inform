@@ -9,7 +9,7 @@ property *RTNaming::cap_short_name_property(void) {
 		inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
 		P_cap_short_name = ValueProperties::new_nameless_using(
 			K_text, Kinds::Behaviour::package(K_object), property_iname);
-		Hierarchy::make_available(Emit::tree(), property_iname);
+		Hierarchy::make_available(property_iname);
 	}
 	return P_cap_short_name;
 }
@@ -48,66 +48,66 @@ void RTNaming::compile_small_names(void) {
 		if (notice->capped) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
-			Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), PROPERTYADDRESS_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_call_iname(Emit::tree(), porname);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_call_iname(Emit::tree(), porname);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SHORT_NAME_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(IFELSE_BIP);
+			EmitCode::down();
+				EmitCode::inv(PROPERTYADDRESS_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTInstances::iname(owner));
+					EmitCode::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::call(porname);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTInstances::iname(owner));
+						EmitCode::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
+						EmitCode::val_number(1);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::call(porname);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTInstances::iname(owner));
+						EmitCode::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
+						EmitCode::val_number(1);
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		} else {
-			Produce::inv_primitive(Emit::tree(), PRINTNAME_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-			Emit::up();
+			EmitCode::inv(PRINTNAME_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTInstances::iname(owner));
+			EmitCode::up();
 		}
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
-			Produce::val_text(Emit::tree(), I"'s ");
-		Emit::up();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_text(I"'s ");
+		EmitCode::up();
 		TEMPORARY_TEXT(SNAMES)
 		LOOP_THROUGH_WORDING(j, NA) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
-			Produce::val_text(Emit::tree(), SNAMES);
-		Emit::up();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_text(SNAMES);
+		EmitCode::up();
 		DISCARD_TEXT(SNAMES)
 
-		Produce::rtrue(Emit::tree());
+		EmitCode::rtrue();
 		Functions::end(save);
 
-		save = Emit::named_array_begin(notice->snn_iname, NULL);
-		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		Emit::array_iname_entry(notice->routine_iname);
-		Emit::array_end(save);
+		save = EmitArrays::begin(notice->snn_iname, NULL);
+		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+		EmitArrays::iname_entry(notice->routine_iname);
+		EmitArrays::end(save);
 	}
 }
 void RTNaming::compile_cap_short_name(void) {
 	if (P_cap_short_name == NULL) {
 		inter_name *iname = Hierarchy::find(CAPSHORTNAME_HL);
 		Emit::iname_constant(iname, K_value, Hierarchy::find(SHORT_NAME_HL));
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 	}
 }

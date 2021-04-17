@@ -345,10 +345,3 @@ void CompiledText::comment(OUTPUT_STREAM, wording W) {
 void CompiledText::from_text(OUTPUT_STREAM, wording W) {
 	CompiledText::from_text_with_options(OUT, W, 0, TRUE);
 }
-
-@ This doesn't really belong here, or anywhere else, really:
-
-=
-void CompiledText::divider_comment(void) {
-	Produce::comment(Emit::tree(), I"----------------------------------------------------------------------------------------------------");
-}

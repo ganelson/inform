@@ -36,33 +36,32 @@ void RTBackdrops::write_found_in_routines(void) {
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
 		instance *loc = Backdrops::get_inferred_location(inf);
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {
-			Produce::inv_call_iname(Emit::tree(),
-				Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
-			Emit::up();
+			EmitCode::call(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_object, Hierarchy::find(LOCATION_HL));
+				EmitCode::val_iname(K_object, RTInstances::iname(loc));
+			EmitCode::up();
 		} else {
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
-			Emit::up();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_object, Hierarchy::find(LOCATION_HL));
+				EmitCode::val_iname(K_object, RTInstances::iname(loc));
+			EmitCode::up();
 		}
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::rtrue(Emit::tree());
-			Emit::up();
-		Emit::up();
-		Produce::rfalse(Emit::tree());
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::rtrue();
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::rfalse();
 		break;
 	}
 	Functions::end(save);
 
 @<The object is found nowhere@> =
 	packaging_state save = Functions::begin(notice->found_in_routine_iname);
-	Produce::rfalse(Emit::tree());
+	EmitCode::rfalse();
 	Functions::end(save);

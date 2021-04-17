@@ -52,7 +52,7 @@ void CompileValues::to_array_entry(parse_node *value) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	CompileValues::to_holster(&VH, value, COMPILE_SPEC_AS_CONSTANT);
 	Holsters::unholster_pair(&VH, &v1, &v2);
-	Emit::array_generic_entry(v1, v2);
+	EmitArrays::generic_entry(v1, v2);
 }
 
 @ Now constants, which can be compiled either to a holster or to a pair of |inter_t|
@@ -110,7 +110,7 @@ void CompileValues::to_code_val_inner(parse_node *value, kind *K, int how) {
 	if (K) value = CompileValues::cast_nonconstant(value, K, &down);
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	CompileValues::to_holster(&VH, value, how);
-	if (down) Emit::up();
+	if (down) EmitCode::up();
 }
 
 @h Implementation.
@@ -155,15 +155,15 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 			internal_error("must compile by reference in INTER_DATA_VHMODE"); 
 		kind *K = Specifications::to_kind(value);
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
-			Emit::down();
+			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
+			EmitCode::down();
 				Frames::emit_new_local_value(K);
 			made_fresh = TRUE;
 		}
 	}
 	@<Actually compile@>;
 	if (made_fresh) {
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Actually compile@> =

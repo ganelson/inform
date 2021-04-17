@@ -203,29 +203,29 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 	inter_symbol *pos_s = LocalVariables::new_other_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::new_other_as_symbol(I"state");
 
-	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, state_s);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(IFELSE_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, state_s);
+			EmitCode::val_number(1);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			@<Compile frame creator if state is set@>;
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			@<Compile frame creator if state is clear@>;
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 	int count = LinkedLists::len(set->variables);
 
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) count);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_number((inter_ti) count);
+	EmitCode::up();
 
 	Functions::end(save);
 	return count;
@@ -236,23 +236,23 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
 		nonlocal_variable *q = SharedVariables::get_variable(shv);
 		kind *K = NonlocalVariables::kind(q);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
-				Produce::val_symbol(Emit::tree(), K_value, pos_s);
-			Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::inv(LOOKUPREF_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+				EmitCode::val_symbol(K_value, pos_s);
+			EmitCode::up();
 			if (Kinds::Behaviour::uses_pointer_values(K))
 				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
 			else
 				RTVariables::emit_initial_value_as_val(q);
-		Emit::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
-		Emit::up();
+		EmitCode::inv(POSTINCREMENT_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, pos_s);
+		EmitCode::up();
 	}
 
 @<Compile frame creator if state is clear@> =
@@ -261,19 +261,19 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 		nonlocal_variable *q = SharedVariables::get_variable(shv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEFREE_HL));
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
-					Produce::val_symbol(Emit::tree(), K_value, pos_s);
-				Emit::up();
-			Emit::up();
+			EmitCode::call(Hierarchy::find(BLKVALUEFREE_HL));
+			EmitCode::down();
+				EmitCode::inv(LOOKUP_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					EmitCode::val_symbol(K_value, pos_s);
+				EmitCode::up();
+			EmitCode::up();
 		}
-		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
-		Emit::up();
+		EmitCode::inv(POSTINCREMENT_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, pos_s);
+		EmitCode::up();
 	}
 
 @ =
@@ -324,23 +324,23 @@ void RTVariables::warn_about_change(nonlocal_variable *nlv) {
 void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
 	nonlocal_variable_emission *nve = &(nlv->compilation_data.lvalue_nve);
 	if (nve->iname_form) {
-		Produce::val_iname(Emit::tree(), K_value, nve->iname_form);
+		EmitCode::val_iname(K_value, nve->iname_form);
 	} else if (nve->stv_ID >= 0) {
-		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
+		EmitCode::inv(LOOKUP_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
 			if (nve->allow_outside) ex = MSTVON_HL;
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ex));
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nve->stv_ID);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nve->stv_index);
-			Emit::up();
-		Emit::up();
+			EmitCode::call(Hierarchy::find(ex));
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) nve->stv_ID);
+				EmitCode::val_number((inter_ti) nve->stv_index);
+			EmitCode::up();
+		EmitCode::up();
 	}  else if (nve->use_own_iname) {
-		Produce::val_iname(Emit::tree(), K_value, RTVariables::iname(nlv));
+		EmitCode::val_iname(K_value, RTVariables::iname(nlv));
 	} else if (nve->nothing_form) {
-		Produce::val_symbol(Emit::tree(), K_value, Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB));
+		EmitCode::val_symbol(K_value, Emit::get_veneer_symbol(NOTHING_VSYMB));
 	} else {
 		internal_error("improperly formed nve");
 	}
@@ -375,12 +375,12 @@ command prompt variable; see //CommandParserKit: Parser//.
 		inter_name *iname = RTVariables::iname(nlv);
 		inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
 		packaging_state save = Functions::begin(cpt_iname);
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_text, iname);
-		Emit::up();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_text, iname);
+		EmitCode::up();
 		Functions::end(save);
-		Hierarchy::make_available(Emit::tree(), cpt_iname);
+		Hierarchy::make_available(cpt_iname);
 	}
 
 @ The following routine compiles the correct initial value for the given
@@ -400,7 +400,7 @@ void RTVariables::emit_initial_value(nonlocal_variable *nlv) {
 	RTVariables::compile_initial_value_vh(&VH, nlv);
 	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
-	Emit::array_generic_entry(v1, v2);
+	EmitArrays::generic_entry(v1, v2);
 }
 
 void RTVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
@@ -411,9 +411,11 @@ void RTVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 
 void RTVariables::seek_initial_value(inter_name *iname, inter_ti *v1,
 	inter_ti *v2, nonlocal_variable *nlv) {
-	ival_emission IE = Emit::begin_ival_emission(iname);
-	RTVariables::compile_initial_value_vh(Emit::ival_holster(&IE), nlv);
-	Emit::end_ival_emission(&IE, v1, v2);
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	packaging_state save = Packaging::enter_home_of(iname);
+	RTVariables::compile_initial_value_vh(&VH, nlv);
+	Holsters::unholster_pair(&VH, v1, v2);
+	Packaging::exit(Emit::tree(), save);
 }
 
 void RTVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable *nlv) {

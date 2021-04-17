@@ -174,9 +174,9 @@ of code provides a detailed specification of exactly where everything goes.
 through a three-level process:
 </p>
 
-<ul class="items"><li>&#9679; <a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> call the functions in <a href="2-hrr.html" class="internal">Hierarchy</a> and
-<a href="2-emt.html" class="internal">Emitting Inter</a> to "emit" code and find out where to put it.
-</li><li>&#9679; <a href="2-hrr.html" class="internal">Hierarchy</a> and <a href="2-emt.html" class="internal">Emitting Inter</a> then call the <a href="../building-module/index.html" class="internal">building</a> module, which gives
+<ul class="items"><li>&#9679; <a href="index.html" class="internal">runtime</a> and <a href="../imperative-module/index.html" class="internal">imperative</a> call the functions in <a href="2-hrr.html" class="internal">Chapter 2: Emission</a>
+to "emit" code and find out where to put it.
+</li><li>&#9679; Those functions in turn call the <a href="../building-module/index.html" class="internal">building</a> module, which gives
 general code (not tied to the Inform compiler) for constructing Inter.
 </li><li>&#9679; The <a href="../building-module/index.html" class="internal">building</a> module then calls down to <a href="../bytecode-module/index.html" class="internal">bytecode</a> to put the actual
 bytes in memory.

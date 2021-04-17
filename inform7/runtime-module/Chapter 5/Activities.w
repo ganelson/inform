@@ -39,7 +39,7 @@ inter_name *RTActivities::iname(activity *av) {
 void RTActivities::emit_activity_list(activity_list *al) {
 	int negate_me = FALSE, downs = 0;
 	if (al->ACL_parity == FALSE) negate_me = TRUE;
-	if (negate_me) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Emit::down(); downs++; }
+	if (negate_me) { EmitCode::inv(NOT_BIP); EmitCode::down(); downs++; }
 
 	int cl = 0;
 	for (activity_list *k = al; k; k = k->next) cl++;
@@ -47,24 +47,24 @@ void RTActivities::emit_activity_list(activity_list *al) {
 	int ncl = 0;
 	while (al != NULL) {
 		if (++ncl < cl) {
-			Produce::inv_primitive(Emit::tree(), OR_BIP);
-			Emit::down();
+			EmitCode::inv(OR_BIP);
+			EmitCode::down();
 			downs++;
 		}
 		if (al->activity != NULL) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIVITY_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, al->activity->compilation_data.av_iname);
+			EmitCode::call(Hierarchy::find(TESTACTIVITY_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, al->activity->compilation_data.av_iname);
 				if (al->acting_on) {
 					if (Specifications::is_description(al->acting_on)) {
-						Produce::val_iname(Emit::tree(), K_value,
+						EmitCode::val_iname(K_value,
 							Deferrals::function_to_test_description(al->acting_on));
 					} else {
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+						EmitCode::val_number(0);
 						CompileValues::to_code_val(al->acting_on);
 					}
 				}
-			Emit::up();
+			EmitCode::up();
 		}
 		else {
 			CompileValues::to_code_val(al->only_when);
@@ -72,7 +72,7 @@ void RTActivities::emit_activity_list(activity_list *al) {
 		al = al->next;
 	}
 
-	while (downs > 0) { Emit::up(); downs--; }
+	while (downs > 0) { EmitCode::up(); downs--; }
 }
 
 void RTActivities::arrays(void) {
@@ -84,58 +84,58 @@ void RTActivities::arrays(void) {
 
 void RTActivities::Activity_before_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
+	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->before_rules->allocation_id);
+		EmitArrays::numeric_entry((inter_ti) av->before_rules->allocation_id);
 		i++;
 	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	if (i==0) EmitArrays::null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }
 
 void RTActivities::Activity_for_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
+	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->for_rules->allocation_id);
+		EmitArrays::numeric_entry((inter_ti) av->for_rules->allocation_id);
 		i++;
 	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	if (i==0) EmitArrays::null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }
 
 void RTActivities::Activity_after_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
+	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->after_rules->allocation_id);
+		EmitArrays::numeric_entry((inter_ti) av->after_rules->allocation_id);
 		i++;
 	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	if (i==0) EmitArrays::null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }
 
 void RTActivities::Activity_atb_rulebooks_array(void) {
 	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
-	packaging_state save = Emit::named_byte_array_begin(iname, K_number);
+	packaging_state save = EmitArrays::begin_byte(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
+		EmitArrays::numeric_entry((inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
 		i++;
 	}
-	if (i==0) Emit::array_numeric_entry(255);
-	Emit::array_numeric_entry(255);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	if (i==0) EmitArrays::numeric_entry(255);
+	EmitArrays::numeric_entry(255);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }
 
 void RTActivities::activity_var_creators(void) {
@@ -149,15 +149,15 @@ void RTActivities::activity_var_creators(void) {
 	}
 
 	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	int c = 0;
 	LOOP_OVER(av, activity) {
-		if (SharedVariables::set_empty(av->activity_variables)) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(RTVariables::get_shared_variables_creator(av->activity_variables));
+		if (SharedVariables::set_empty(av->activity_variables)) EmitArrays::numeric_entry(0);
+		else EmitArrays::iname_entry(RTVariables::get_shared_variables_creator(av->activity_variables));
 		c++;
 	}
-	Emit::array_numeric_entry(0);
-	if (c == 0) Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	EmitArrays::numeric_entry(0);
+	if (c == 0) EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }

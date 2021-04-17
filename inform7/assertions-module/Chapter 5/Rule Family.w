@@ -776,17 +776,10 @@ might have gone wrong.
 	==> { 1, - };
 
 @h Compilation.
-We compile these in rulebook order first, and then pick up any rules not in
-rulebooks. This is really just to make the Inter output tidily arranged;
-any order would have done just as well.
 
 =
 void RuleFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook)
-		RTRules::compile_rule_phrases(rb,
-			total_phrases_compiled, total_phrases_to_compile);
 	rule *R;
 	LOOP_OVER(R, rule)
 		RTRules::compile_definition(R,

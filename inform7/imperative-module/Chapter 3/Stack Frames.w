@@ -363,17 +363,17 @@ then initialise the small blocks one by one to default values.
 
 =
 void Frames::compile_lbv_setup(stack_frame *frame) {
-	Produce::push(Emit::tree(), Hierarchy::find(I7SFRAME_HL));
+	EmitCode::push(Hierarchy::find(I7SFRAME_HL));
 
 	int size = 0;
 	local_block_value *lbv;
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values) {
 		if (lbv->offset_past > size) size = lbv->offset_past;
 	}
-	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STACKFRAMECREATE_HL));
-	Emit::down();
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) size);
-	Emit::up();
+	EmitCode::call(Hierarchy::find(STACKFRAMECREATE_HL));
+	EmitCode::down();
+		EmitCode::val_number((inter_ti) size);
+	EmitCode::up();
 
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values)
 		RTKinds::emit_heap_allocation(lbv->allocation);
@@ -388,13 +388,13 @@ void Frames::compile_lbv_teardown(stack_frame *frame) {
 	local_block_value *lbv;
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values) {
 		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
-		Produce::inv_call_iname(Emit::tree(), iname);
-		Emit::down();
-			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) lbv->offset_index);
-		Emit::up();
+		EmitCode::call(iname);
+		EmitCode::down();
+			EmitCode::val_number((inter_ti) lbv->offset_index);
+		EmitCode::up();
 	}
 
-	Produce::pull(Emit::tree(), Hierarchy::find(I7SFRAME_HL));
+	EmitCode::pull(Hierarchy::find(I7SFRAME_HL));
 }
 
 @ The net effect is that when the rest of Inform needs to compile the address

@@ -119,7 +119,7 @@ literal_text *TextLiterals::compile_literal(value_holster *VH, int write, wordin
 not stored in the tree.
 
 @<Handle the empty text outside the tree@> =
-	if ((write) && (VH)) Emit::holster(VH, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
+	if ((write) && (VH)) Emit::holster_iname(VH, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
 	return NULL;
 
 @ Note that the tree doesn't begin empty, but with a null node. Moreover,
@@ -163,7 +163,7 @@ which are null pointers.
 	if (write) {
 		if (x->lt_sba_iname == NULL)
 			x->lt_sba_iname = RTKinds::new_block_constant_iname();
-		if (VH) Emit::holster(VH, x->lt_sba_iname);
+		if (VH) Emit::holster_iname(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
 	}
 	return x;
@@ -235,7 +235,7 @@ void TextLiterals::compile_literal_from_text(inter_name *context,
 	inter_ti *v1, inter_ti *v2, wchar_t *p) {
 	literal_text *lt =
 		TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_C_string(p));
-	Emit::to_ival_in_context(context, v1, v2, lt->lt_sba_iname);
+	Emit::to_value_pair_in_context(context, v1, v2, lt->lt_sba_iname);
 }
 
 @ The above gradually piled up the need for |TX_L_*| constants/routines,
@@ -277,10 +277,10 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 		DISCARD_TEXT(TLT)
 	}
 	if (lt->small_block_array_needed) {
-		packaging_state save = Emit::named_array_begin(lt->lt_sba_iname, K_value);
-		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		Emit::array_iname_entry(lt->lt_iname);
-		Emit::array_end(save);
+		packaging_state save = EmitArrays::begin(lt->lt_sba_iname, K_value);
+		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+		EmitArrays::iname_entry(lt->lt_iname);
+		EmitArrays::end(save);
 	}
 
 @<Compile a boxed-quotation literal text@> =
@@ -293,13 +293,13 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 	Emit::iname_constant(lt->lt_sba_iname, K_value, iname);
 
 	packaging_state save = Functions::begin(iname);
-	Produce::inv_primitive(Emit::tree(), BOX_BIP);
-	Emit::down();
+	EmitCode::inv(BOX_BIP);
+	EmitCode::down();
 		TEMPORARY_TEXT(T)
 		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));
-		Produce::val_text(Emit::tree(), T);
+		EmitCode::val_text(T);
 		DISCARD_TEXT(T)
-	Emit::up();
+	EmitCode::up();
 	Functions::end(save);
 
 @ =
@@ -307,13 +307,13 @@ literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
 	if (CompileValues::compiling_in_constant_mode()) {
 		inter_name *N = RTKinds::new_block_constant_iname();
-		packaging_state save = Emit::named_late_array_begin(N, K_value);
+		packaging_state save = EmitArrays::begin_late(N, K_value);
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);
-		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
-		if (lt == NULL) Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		else Emit::array_iname_entry(lt->lt_iname);
-		Emit::array_end(save);
-		if (N) Emit::holster(VH, N);
+		EmitArrays::iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
+		if (lt == NULL) EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
+		else EmitArrays::iname_entry(lt->lt_iname);
+		EmitArrays::end(save);
+		if (N) Emit::holster_iname(VH, N);
 	} else {
 		lt = TextLiterals::compile_literal(VH, TRUE, W);
 	}

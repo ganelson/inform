@@ -43,12 +43,12 @@ void CompileSchemas::from_local_variables_in_val_context(i6_schema *sch,
 
 void CompileSchemas::from_annotated_schema(annotated_i6_schema *asch) {
 	if (asch->negate_schema) {
-		Produce::inv_primitive(Emit::tree(), NOT_BIP);
-		Emit::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
 	}
 	CompileSchemas::from_terms_in_void_context(asch->schema, &(asch->pt0), &(asch->pt1));
 	if (asch->negate_schema) {
-		Emit::up();
+		EmitCode::up();
 	}
 }
 
@@ -150,7 +150,7 @@ both, one after the other.
 	}
 	if (emit_without_combination) {
 		CompileSchemas::compile_term_of_token(pt1, m, NULL, by_reference);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+		EmitCode::val_number(0);
 	}
 
 @ In either case (substitution or combination) we can end up down here. One
@@ -175,7 +175,7 @@ void CompileSchemas::compile_term_of_token(pcalc_term *pt, int m, kind *cast_to,
 		cr = Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind);
 	else
 		cr = Hierarchy::find(SIGNEDCOMPARE_HL);
-	Produce::val_iname(Emit::tree(), K_value, cr);
+	EmitCode::val_iname(K_value, cr);
 	return;
 
 @<Compile term as an lvalue or an rvalue@> =
@@ -220,7 +220,7 @@ with the same names -- that is, they are called |x|, |y|, |z|, ... and so on.
 		internal_error("no local exists which corresponds to calculus variable");
 	}
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
-	Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+	EmitCode::val_symbol(K_value, lvar_s);
 	return;
 
 @ Constants are compiled using //Compile Values//, but note that we typecheck
@@ -236,7 +236,7 @@ function, but that is fine because they cannot arise anywhere else.
 		local_variable *lvar = Cinders::find_cinder_var(pt.cinder);
 		if (lvar == NULL) internal_error("absent calculus variable");
 		inter_symbol *lvar_s = LocalVariables::declare(lvar);
-		Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+		EmitCode::val_symbol(K_value, lvar_s);
 	} else {
 		if (Specifications::is_phrasal(pt.constant)) Dash::check_value(pt.constant, NULL);
 		if (by_reference) CompileValues::to_code_val_of_kind(pt.constant, K);

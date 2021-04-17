@@ -26,16 +26,16 @@ void RTNamedActionPatterns::compile(void) {
 		LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns) {
 			action_pattern *ap = nape->behaviour;
 			current_sentence = nape->where_decided;
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
 				RTActionPatterns::emit_pattern_match(ap, TRUE);
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
 		}
-		Produce::rfalse(Emit::tree());
+		EmitCode::rfalse();
 		Functions::end(save);
 	}
 }

@@ -34,8 +34,8 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 	@<Choose which form of arithmetic and promotion@>;
 	@<Optimise promotions from number to real number@>;
 	if (reduce_modulo_1440) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL));
+		EmitCode::down();
 	}
 	switch (op) {
 		case EQUALS_OPERATION: @<Emit set-equals@>; break;
@@ -57,7 +57,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 				"suggesting a problem with some inline definition.");
 			break;
 	}
-	if (reduce_modulo_1440) Emit::up();
+	if (reduce_modulo_1440) EmitCode::up();
 }
 
 @ For a binary operation, note that "pi plus pi", "pi plus 3", and "3 plus pi"
@@ -105,175 +105,175 @@ it as a real.
 
 @<Emit plus@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-		Emit::down();
+		EmitCode::inv(PLUS_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit minus@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-		Emit::down();
+		EmitCode::inv(MINUS_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit times@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
 		Kinds::Scalings::rescale_multiplication_emit_op(KX, KY);
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-		Emit::down();
+		EmitCode::inv(TIMES_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 		Kinds::Scalings::rescale_multiplication_emit_factor(KX, KY);
 	}
 
 @<Emit divide@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(INTEGERDIVIDE_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(INTEGERDIVIDE_HL));
+		EmitCode::down();
 			Kinds::Scalings::rescale_division_emit_op(KX, KY);
 			@<Emit the X-operand@>;
 			Kinds::Scalings::rescale_division_emit_factor(KX, KY);
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit remainder@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_REMAINDER_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_REMAINDER_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(INTEGERREMAINDER_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(INTEGERREMAINDER_HL));
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit approximation@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_APPROXIMATE_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_APPROXIMATE_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ROUNDOFFVALUE_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(ROUNDOFFVALUE_HL));
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit root@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_ROOT_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_ROOT_HL));
+		EmitCode::down();
 			@<Emit the X-operand@>;
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(SQUAREROOT_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(SQUAREROOT_HL));
+		EmitCode::down();
 			Kinds::Scalings::rescale_root_emit_op(KX, 2);
 			@<Emit the X-operand@>;
 			Kinds::Scalings::rescale_root_emit_factor(KX, 2);
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit cube root@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_CUBE_ROOT_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_CUBE_ROOT_HL));
+		EmitCode::down();
 			@<Emit the X-operand@>;
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CUBEROOT_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(CUBEROOT_HL));
+		EmitCode::down();
 			Kinds::Scalings::rescale_root_emit_op(KX, 3);
 			@<Emit the X-operand@>;
 			Kinds::Scalings::rescale_root_emit_factor(KX, 3);
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit set-equals@> =
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::reference(Emit::tree());
-		Emit::down();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::reference();
+		EmitCode::down();
 			@<Emit the X-operand@>;
-		Emit::up();
+		EmitCode::up();
 		if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 		@<Emit the Y-operand@>;
 		if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-	Emit::up();
+	EmitCode::up();
 
 @<Emit unary minus@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_NEGATE_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_NEGATE_HL));
+		EmitCode::down();
 			@<Emit the X-operand@>;
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), UNARYMINUS_BIP);
-		Emit::down();
+		EmitCode::inv(UNARYMINUS_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @ We accomplish integer powers by repeated multiplication. This is partly
@@ -282,15 +282,15 @@ will always be small, partly because of the need for scaling to come out right.
 
 @<Emit a power of the left operand@> =
 	if (use_fp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_POW_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_POW_HL));
+		EmitCode::down();
 			if (promote_X) Kinds::FloatingPoint::begin_flotation_emit(KX);
 			@<Emit the X-operand@>;
 			if (promote_X) Kinds::FloatingPoint::end_flotation_emit(KX);
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
 		int p = 0;
 		if (Y) p = Rvalues::to_int(Y);
@@ -299,13 +299,13 @@ will always be small, partly because of the need for scaling to come out right.
 		else {
 			for (int i=1; i<p; i++) {
 				Kinds::Scalings::rescale_multiplication_emit_op(KX, KX);
-				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Emit::down();
+				EmitCode::inv(TIMES_BIP);
+				EmitCode::down();
 					@<Emit the X-operand@>;
 			}
 			@<Emit the X-operand@>;
 			for (int i=1; i<p; i++) {
-				Emit::up();
+				EmitCode::up();
 				Kinds::Scalings::rescale_multiplication_emit_factor(KX, KX);
 			}
 		}
@@ -317,19 +317,19 @@ function like |log pi|, where |X| is the function (in this case |log|) and
 
 @<Emit implicit application@> =
 	if (use_fp) {
-		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-		Emit::down();
+		EmitCode::inv(INDIRECT1_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
 			@<Emit the Y-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
-		Emit::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-		Emit::down();
+		EmitCode::inv(INDIRECT1_BIP);
+		EmitCode::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
-		Emit::up();
+		EmitCode::up();
 	}
 
 @<Emit the X-operand@> =

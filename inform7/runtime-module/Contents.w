@@ -15,6 +15,8 @@ Chapter 2: Emission
 	Hierarchy
 	Compilation Units
 	Emit
+	Emit Code
+	Emit Arrays
 
 Chapter 3: Basics
 "Mainly low-level utilities for compiling code."

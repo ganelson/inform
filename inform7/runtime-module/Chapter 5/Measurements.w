@@ -49,16 +49,16 @@ void RTMeasurements::compile_test_functions(void) {
 				TypecheckPropositions::tc_problem_reporting(
 					mdef->region_threshold_text,
 					"be giving the boundary of the definition")) == ALWAYS_MATCH) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
 					CompilePropositions::to_test_as_condition(NULL, prop);
-					Produce::code(Emit::tree());
-					Emit::down();
-						Produce::rtrue(Emit::tree());
-					Emit::up();
-				Emit::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::rtrue();
+					EmitCode::up();
+				EmitCode::up();
 			}
-			Produce::rfalse(Emit::tree());
+			EmitCode::rfalse();
 			Functions::end(save);
 		}
 }

@@ -59,10 +59,10 @@ void Kinds::Scalings::rescale_multiplication_emit_op(kind *kindx, kind *kindy) {
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_X*k_Y > k_O) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
+		EmitCode::inv(DIVIDE_BIP); EmitCode::down();
 	}
 	if (k_X*k_Y < k_O) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
+		EmitCode::inv(TIMES_BIP); EmitCode::down();
 	}
 }
 
@@ -74,12 +74,12 @@ void Kinds::Scalings::rescale_multiplication_emit_factor(kind *kindx, kind *kind
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_X*k_Y > k_O) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X*k_Y/k_O));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_X*k_Y/k_O));
+		EmitCode::up();
 	}
 	if (k_X*k_Y < k_O) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O/k_X/k_Y));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_O/k_X/k_Y));
+		EmitCode::up();
 	}
 }
 #endif
@@ -98,12 +98,12 @@ void Kinds::Scalings::rescale_division_emit_op(kind *kindx, kind *kindy) {
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_O*k_Y > k_X) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-		Emit::down();
+		EmitCode::inv(TIMES_BIP);
+		EmitCode::down();
 	}
 	if (k_O*k_Y < k_X) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-		Emit::down();
+		EmitCode::inv(DIVIDE_BIP);
+		EmitCode::down();
 	}
 }
 
@@ -115,12 +115,12 @@ void Kinds::Scalings::rescale_division_emit_factor(kind *kindx, kind *kindy) {
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
 	if (k_O*k_Y > k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_Y/k_X));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_O*k_Y/k_X));
+		EmitCode::up();
 	}
 	if (k_O*k_Y < k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_Y));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_X/k_O/k_Y));
+		EmitCode::up();
 	}
 }
 #endif
@@ -154,10 +154,10 @@ function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit a scaling correction for square roots@> =
 	if (k_O*k_O > k_X) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
+		EmitCode::inv(TIMES_BIP); EmitCode::down();
 	}
 	if (k_O*k_O < k_X) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
+		EmitCode::inv(DIVIDE_BIP); EmitCode::down();
 	}
 
 @ For cube roots,
@@ -167,10 +167,10 @@ the rooting function, we scale by $k^3$:
 
 @<Emit a scaling correction for cube roots@> =
 	if (k_O*k_O*k_O > k_X) {
-		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Emit::down();
+		EmitCode::inv(TIMES_BIP); EmitCode::down();
 	}
 	if (k_O*k_O*k_O < k_X) {
-		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Emit::down();
+		EmitCode::inv(DIVIDE_BIP); EmitCode::down();
 	}
 
 @ =
@@ -200,12 +200,12 @@ function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit factor for a scaling correction for square roots@> =
 	if (k_O*k_O > k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O/k_X));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_O*k_O/k_X));
+		EmitCode::up();
 	}
 	if (k_O*k_O < k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O)); 
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_X/k_O/k_O)); 
+		EmitCode::up();
 	}
 
 @ For cube roots,
@@ -215,12 +215,12 @@ the rooting function, we scale by $k^3$:
 
 @<Emit factor for a scaling correction for cube roots@> =
 	if (k_O*k_O*k_O > k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O*k_O/k_X));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_O*k_O*k_O/k_X));
+		EmitCode::up();
 	}
 	if (k_O*k_O*k_O < k_X) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O/k_O));
-		Emit::up();
+		EmitCode::val_number((inter_ti) (k_X/k_O/k_O/k_O));
+		EmitCode::up();
 	}
 
 @h Scaling transformations.
@@ -587,41 +587,41 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 			InterNames::to_symbol(V_var), sgn_var, sc.int_M, sc.int_O, x_var, label);
 	} else {
 		if (sc.real_M != 1.0) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, V_var);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, V_var);
-					Produce::val_real(Emit::tree(), sc.real_M);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, V_var);
+				EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
+				EmitCode::down();
+					EmitCode::val_iname(K_value, V_var);
+					EmitCode::val_real(sc.real_M);
+				EmitCode::up();
+			EmitCode::up();
 		}
 		if (sc.real_O != 0.0) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, V_var);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, V_var);
-					Produce::val_real(Emit::tree(), sc.real_O);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, V_var);
+				EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
+				EmitCode::down();
+					EmitCode::val_iname(K_value, V_var);
+					EmitCode::val_real(sc.real_O);
+				EmitCode::up();
+			EmitCode::up();
 		}
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_NAN_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, V_var);
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-				Emit::down();
-					Produce::lab(Emit::tree(), label);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_NAN_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, V_var);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(JUMP_BIP);
+				EmitCode::down();
+					EmitCode::lab(label);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 }
 #endif
@@ -648,80 +648,80 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 	if (scale_factor > 1) {
 		long long int max = 2147483647LL;
 		if (TargetVMs::is_16_bit(Task::vm())) max = 32767LL;
-		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, sgn_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
+		EmitCode::inv(IFELSE_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, sgn_var);
+				EmitCode::val_number(1);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
 				@<Compile the overflow check@>;
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
 				max++;
 				@<Compile the overflow check@>;
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, var);
-		Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) scale_factor);
-				Produce::val_symbol(Emit::tree(), K_value, var);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
-				Produce::val_symbol(Emit::tree(), K_value, var_to_add);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, var);
+		EmitCode::inv(PLUS_BIP);
+		EmitCode::down();
+			EmitCode::inv(TIMES_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) scale_factor);
+				EmitCode::val_symbol(K_value, var);
+			EmitCode::up();
+			EmitCode::inv(PLUS_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) to_add);
+				EmitCode::val_symbol(K_value, var_to_add);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 }
 #endif
 
 @<Compile the overflow check@> =
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), OR_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), GT_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
-						Produce::val_symbol(Emit::tree(), K_value, var_to_add);
-					Emit::up();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
-				Emit::up();
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-			Emit::down();
-				Produce::lab(Emit::tree(), label);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(OR_BIP);
+		EmitCode::down();
+			EmitCode::inv(GT_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, var);
+				EmitCode::val_number((inter_ti) (max/scale_factor));
+			EmitCode::up();
+			EmitCode::inv(AND_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, var);
+					EmitCode::val_number((inter_ti) (max/scale_factor));
+				EmitCode::up();
+				EmitCode::inv(GT_BIP);
+				EmitCode::down();
+					EmitCode::inv(PLUS_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) to_add);
+						EmitCode::val_symbol(K_value, var_to_add);
+					EmitCode::up();
+					EmitCode::val_number((inter_ti) (max/scale_factor));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(JUMP_BIP);
+			EmitCode::down();
+				EmitCode::lab(label);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @ And conversely... Note that in the real case, the remainder variable |R_var|
 is ignored, since the division can be performed "exactly".
@@ -732,60 +732,60 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 	inter_symbol *V_var, inter_symbol *R_var) {
 	if (sc.use_integer_scaling) {
 		if (sc.int_O != 0) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, V_var);
-				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_O);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, V_var);
+				EmitCode::inv(MINUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, V_var);
+					EmitCode::val_number((inter_ti) sc.int_O);
+				EmitCode::up();
+			EmitCode::up();
 		}
 		if (sc.int_M != 1) {
 			if (R_var) {
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, R_var);
-					Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, V_var);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
-					Emit::up();
-				Emit::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, R_var);
+					EmitCode::inv(MODULO_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, V_var);
+						EmitCode::val_number((inter_ti) sc.int_M);
+					EmitCode::up();
+				EmitCode::up();
 			}
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, V_var);
-				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, V_var);
+				EmitCode::inv(DIVIDE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, V_var);
+					EmitCode::val_number((inter_ti) sc.int_M);
+				EmitCode::up();
+			EmitCode::up();
 		}
 	} else {
 		if (sc.int_M != 0.0) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, V_var);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val_real(Emit::tree(), sc.real_O);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, V_var);
+				EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, V_var);
+					EmitCode::val_real(sc.real_O);
+				EmitCode::up();
+			EmitCode::up();
 		}
 		if (sc.real_M != 1.0) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, V_var);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val_real(Emit::tree(), sc.real_M);
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, V_var);
+				EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, V_var);
+					EmitCode::val_real(sc.real_M);
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 }
@@ -800,26 +800,26 @@ operator to use: say, |">="|.
 #ifdef CORE_MODULE
 void Kinds::Scalings::compile_threshold_test(scaling_transformation sc,
 	inter_symbol *V_var, inter_ti op) {
-	Produce::inv_primitive(Emit::tree(), op);
-	Emit::down();
+	EmitCode::inv(op);
+	EmitCode::down();
 	if (sc.use_integer_scaling) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_ABS_HL));
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Emit::up();
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Scalings::quantum(sc));
+		EmitCode::call(Hierarchy::find(NUMBER_TY_ABS_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, V_var);
+		EmitCode::up();
+		EmitCode::val_number((inter_ti) Kinds::Scalings::quantum(sc));
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL));
-		Emit::down();
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_ABS_HL));
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, V_var);
-			Emit::up();
-			Produce::val_real(Emit::tree(), Kinds::Scalings::real_quantum(sc));
-		Emit::up();
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL));
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_ABS_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, V_var);
+			EmitCode::up();
+			EmitCode::val_real(Kinds::Scalings::real_quantum(sc));
+		EmitCode::up();
+		EmitCode::val_number(0);
 	}
-	Emit::up();
+	EmitCode::up();
 }
 #endif
 
@@ -836,28 +836,28 @@ void Kinds::Scalings::compile_print_in_quanta(scaling_transformation sc,
 	Kinds::Scalings::compile_value_to_quanta(sc, V_var, R_var);
 
 	if (sc.use_integer_scaling) {
-		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Emit::up();
+		EmitCode::inv(PRINTNUMBER_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, V_var);
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, R_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(GT_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, R_var);
+				EmitCode::val_number(0);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
 				@<Print a decimal expansion for the remainder@>;
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_SAY_HL));
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, V_var);
-		Emit::up();
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_SAY_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, V_var);
+		EmitCode::up();
 	}
 }
 #endif
@@ -872,17 +872,17 @@ that means the decimal expansion can be printed exactly: there are no
 recurring decimals. If it can't, then we must approximate.
 
 @<Print a decimal expansion for the remainder@> =
-	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Emit::down();
-		Produce::val_text(Emit::tree(), I".");
-	Emit::up();
+	EmitCode::inv(PRINT_BIP);
+	EmitCode::down();
+		EmitCode::val_text(I".");
+	EmitCode::up();
 
 	int M = sc.int_M;
 	int cl10M = 1; while (M > cl10M) cl10M = cl10M*10;
 
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "M = %d, ceiling(log_10(M)) = %d", M, cl10M);
-	Emit::code_comment(C);
+	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 
 	if (cl10M % M == 0)
@@ -904,98 +904,98 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 @<Use an exact method, since the multiplier divides a power of 10@> =
 	int t = cl10M/M;
 	if (t != 1) {
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, R_var);
-			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, R_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) t);
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, R_var);
+			EmitCode::inv(TIMES_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, R_var);
+				EmitCode::val_number((inter_ti) t);
+			EmitCode::up();
+		EmitCode::up();
 	}
 
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, S_var);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) cl10M);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, S_var);
+		EmitCode::val_number((inter_ti) cl10M);
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, R_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), GT_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, R_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, R_var);
-				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, R_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, S_var);
-				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, S_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(WHILE_BIP);
+	EmitCode::down();
+		EmitCode::inv(AND_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::inv(MODULO_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, R_var);
+					EmitCode::val_number(10);
+				EmitCode::up();
+				EmitCode::val_number(0);
+			EmitCode::up();
+			EmitCode::inv(GT_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, R_var);
+				EmitCode::val_number(0);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, R_var);
+				EmitCode::inv(DIVIDE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, R_var);
+					EmitCode::val_number(10);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, S_var);
+				EmitCode::inv(DIVIDE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, S_var);
+					EmitCode::val_number(10);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), LT_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, R_var);
-			Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, S_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Emit::down();
-				Produce::val_text(Emit::tree(), I"0");
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, S_var);
-				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, S_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(WHILE_BIP);
+	EmitCode::down();
+		EmitCode::inv(LT_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, R_var);
+			EmitCode::inv(DIVIDE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, S_var);
+				EmitCode::val_number(10);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(PRINT_BIP);
+			EmitCode::down();
+				EmitCode::val_text(I"0");
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, S_var);
+				EmitCode::inv(DIVIDE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, S_var);
+					EmitCode::val_number(10);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, R_var);
-	Emit::up();
+	EmitCode::inv(PRINTNUMBER_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, R_var);
+	EmitCode::up();
 
 @ In this approximation, |R_var| is measured in units of |1/M|. Thus the first
 digit after the decimal point should be |R_var| times |10/M|, the second
@@ -1006,28 +1006,28 @@ digit after the decimal point should be |R_var| times |10/M|, the second
 	while (R<=M) {
 		R = R*10;
 		int g = Kinds::Dimensions::gcd(R, M);
-		Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, R_var);
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (R/g));
-							Emit::up();
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (M/g));
-						Emit::up();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-					Emit::up();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(PRINTNUMBER_BIP);
+		EmitCode::down();
+			EmitCode::inv(MODULO_BIP);
+			EmitCode::down();
+				EmitCode::inv(PLUS_BIP);
+				EmitCode::down();
+					EmitCode::inv(MODULO_BIP);
+					EmitCode::down();
+						EmitCode::inv(DIVIDE_BIP);
+						EmitCode::down();
+							EmitCode::inv(TIMES_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, R_var);
+								EmitCode::val_number((inter_ti) (R/g));
+							EmitCode::up();
+							EmitCode::val_number((inter_ti) (M/g));
+						EmitCode::up();
+						EmitCode::val_number(10);
+					EmitCode::up();
+					EmitCode::val_number(10);
+				EmitCode::up();
+				EmitCode::val_number(10);
+			EmitCode::up();
+		EmitCode::up();
 	}

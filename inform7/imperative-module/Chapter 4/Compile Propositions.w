@@ -16,7 +16,7 @@ void CompilePropositions::to_test_as_condition(parse_node *v, pcalc_prop *prop) 
 	prop = Propositions::copy(prop);
 	if (prop == NULL) {
 		/* the empty proposition is always true */
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+		EmitCode::val_true();
 	} else if (Deferrals::defer_test_of_proposition(v, prop) == FALSE) {
 		if (v) Binding::substitute_var_0_in(prop, v);
 		TRAVERSE_VARIABLE(atom);
@@ -40,10 +40,10 @@ void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_ato
 		if (active) {
 			if ((bl == 0) && (atom != from_atom) &&
 				(Propositions::implied_conjunction_between(atom_prev, atom))) {
-				Produce::inv_primitive(Emit::tree(), AND_BIP); Emit::down();
+				EmitCode::inv(AND_BIP); EmitCode::down();
 				CompilePropositions::to_test_segment(prop, from_atom, atom_prev);
 				CompilePropositions::to_test_segment(prop, atom, to_atom);
-				Emit::up();
+				EmitCode::up();
 				return;
 			}
 			if (atom->element == NEGATION_CLOSE_ATOM) bl--;
@@ -56,12 +56,12 @@ void CompilePropositions::to_test_segment(pcalc_prop *prop, pcalc_prop *from_ato
 		(to_atom->element == NEGATION_CLOSE_ATOM)) {
 		if (from_atom == penult_atom) {
 			/* the negation of empty proposition is always false */
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			EmitCode::val_false();
 		} else {
-			Produce::inv_primitive(Emit::tree(), NOT_BIP);
-			Emit::down();
+			EmitCode::inv(NOT_BIP);
+			EmitCode::down();
 				CompilePropositions::to_test_segment(prop, from_atom->next, penult_atom);
-			Emit::up();
+			EmitCode::up();
 		}
 		return;
 	}
@@ -98,7 +98,7 @@ void CompilePropositions::to_test_if_variable_matches(parse_node *v, parse_node 
 	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P (%u) matches $D]\n", v, K, prop);
 	if (TypecheckPropositions::type_check(prop,
 		TypecheckPropositions::tc_no_problem_reporting()) == NEVER_MATCH) {
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+		EmitCode::val_false();
 	} else {
 		CompilePropositions::to_test_as_condition(v, prop);
 	}
@@ -213,7 +213,7 @@ void CompilePropositions::to_number_of_matches(parse_node *desc) {
 		kind *K = Propositions::describes_kind(prop);
 		int N = ConstantLists::extent_of_instance_list(K);
 		if (N >= 0) {
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) N);
+			EmitCode::val_number((inter_ti) N);
 			return;
 		}
 	}
@@ -227,7 +227,7 @@ void CompilePropositions::to_list_of_matches(parse_node *desc, kind *K) {
 		kind *K = Propositions::describes_kind(prop);
 		inter_name *iname = ConstantLists::get_instance_list(K);
 		if (iname) {
-			Produce::val_iname(Emit::tree(), K_value, iname);
+			EmitCode::val_iname(K_value, iname);
 			return;
 		}
 	}
@@ -240,11 +240,11 @@ void CompilePropositions::to_random_match(parse_node *desc) {
 	if (Propositions::length(prop) == 1) {
 		kind *K = Propositions::describes_kind(prop);
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
-			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value,
+			EmitCode::inv(INDIRECT0_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value,
 					Kinds::Behaviour::get_ranger_iname(K));
-			Emit::up();
+			EmitCode::up();
 			return;
 		}
 	}

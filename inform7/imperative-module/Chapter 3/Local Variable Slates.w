@@ -382,10 +382,10 @@ void LocalVariableSlates::end_scope(int s) {
 			if (lvar->current_usage.free_at_end_of_scope) {
 				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
 				inter_symbol *LN = LocalVariables::declare(lvar);
-				Produce::inv_call_iname(Emit::tree(), iname);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, LN);
-				Emit::up();
+				EmitCode::call(iname);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, LN);
+				EmitCode::up();
 			}
 			LocalVariableSlates::deallocate_I7_local(lvar);
 		}
@@ -425,7 +425,7 @@ inter_symbol *LocalVariableSlates::declare_one(local_variable *lvar) {
 		case TOKEN_CALL_PARAMETER_LV: annot = CALL_PARAMETER_IANN; break;
 		case OTHER_CALL_PARAMETER_LV: annot = IMPLIED_CALL_PARAMETER_IANN; break;
 	}
-	inter_symbol *symb = Emit::local(lvar->current_usage.kind_as_declared,
+	inter_symbol *symb = Produce::local(Emit::tree(), lvar->current_usage.kind_as_declared,
 		lvar->identifier, annot, lvar->comment_on_use);
 	return symb;
 }
@@ -444,7 +444,7 @@ void LocalVariableSlates::emit_all_with_purpose(stack_frame *frame, int p) {
 		LOOP_OVER_LOCALS_IN_FRAME(lvar, frame)
 			if (lvar->lv_purpose == p) {
 				inter_symbol *vs = LocalVariables::declare(lvar);
-				Produce::val_symbol(Emit::tree(), K_value, vs);
+				EmitCode::val_symbol(K_value, vs);
 			}
 	}
 }

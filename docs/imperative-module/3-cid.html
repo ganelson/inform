@@ -112,10 +112,10 @@ That's a function called either from <a href="3-pr.html" class="internal">Phrase
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">req</span><span class="plain-syntax">?(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">req_iname</span><span class="plain-syntax">):(</span><a href="3-cid.html#SP5" class="function-link"><span class="function-syntax">CompileImperativeDefn::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">idb</span><span class="plain-syntax">));</span>
 
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cid.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Set up the stack frame for this compilation request</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cid.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Compile some commentary about the function to follow</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><a href="3-fnc.html#SP5" class="function-link"><span class="function-syntax">Functions::begin_from_idb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">frame</span><span class="plain-syntax">, </span><span class="identifier-syntax">idb</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cid.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph">Compile the body of the routine</span><span class="named-paragraph-number">2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cid.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Compile some commentary about the function to follow</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cid.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph">Compile the body of the function</span><span class="named-paragraph-number">2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-fnc.html#SP6" class="function-link"><span class="function-syntax">Functions::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -126,12 +126,12 @@ That's a function called either from <a href="3-pr.html" class="internal">Phrase
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">req</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"No specific request"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"No specific request"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="string-syntax">"Request %d: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Textual::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><a href="3-pr.html#SP3" class="function-link"><span class="function-syntax">PhraseRequests::kind_of_request</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ImperativeDefinitions::write_comment_describing</span><span class="plain-syntax">(</span><span class="identifier-syntax">idb</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">head_of_defn</span><span class="plain-syntax">);</span>
@@ -158,7 +158,7 @@ That's a function called either from <a href="3-pr.html" class="internal">Phrase
 <span class="plain-syntax">    </span><span class="identifier-syntax">PreformCache::warn_of_changes</span><span class="plain-syntax">(); </span><span class="comment-syntax"> that local variables may have changed</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cid.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the body of the routine</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the body of the function</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -190,8 +190,8 @@ value for its return kind: for example, the empty text for <span class="extract"
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><a href="3-sf.html#SP7" class="function-link"><span class="function-syntax">Frames::get_kind_returned</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">RTKinds::emit_default_value_as_val</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">,</span>
@@ -200,12 +200,12 @@ value for its return kind: for example, the empty text for <span class="extract"
 <span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DefaultDecideFails</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"it's not possible to decide such a value"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"so this can't be allowed."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="comment-syntax"> that is, "false"</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(0); </span><span class="comment-syntax"> that is, "false"</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cid.html#SP2_3">&#167;2.3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Data about compilation. </b>Each imperative definition body has the following data attached to it.

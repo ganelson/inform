@@ -306,13 +306,10 @@ int BookingLists::contains_ph(booking_list *L, id_body *idb_to_find) {
 	return FALSE;
 }
 
-@h Compilation of rule definitions for rulebook.
-There's no real need to do so, but we compile rule definitions in rulebook
-order to make the compiled code more legible, and for the same reason we add
-plenty of commentary.
+@h Commentary on the contents of a rulebook.
 
 =
-void BookingLists::compile(booking_list *L, int *i, int max_i) {
+void BookingLists::commentary(booking_list *L) {
 	int t = BookingLists::length(L);
 	int s = 0;
 	LOOP_OVER_BOOKINGS(br, L) {
@@ -328,13 +325,12 @@ void BookingLists::compile(booking_list *L, int *i, int max_i) {
 					case LAST_PLACEMENT:   WRITE_TO(C, "last-placed rules"); break;
 				}
 				WRITE_TO(C, " ---");
-				Produce::comment(Emit::tree(), C);
+				EmitCode::comment(C);
 			} else {
 				RuleBookings::comment(C, br);
-				if (Str::len(C) > 0) Produce::comment(Emit::tree(), C);
+				if (Str::len(C) > 0) EmitCode::comment(C);
 			}
 			DISCARD_TEXT(C)
 		}
 	}
-	if (t > 0) CompiledText::divider_comment();
 }

@@ -193,9 +193,9 @@ void PhraseRequests::invoke_to_begin(void) {
 				PhraseRequests::simple_request(
 					beginner->body_of_defn,
 					Kinds::function_kind(0, NULL, K_nil));
-			Produce::inv_call_iname(Emit::tree(), begin_fn);
+			EmitCode::call(begin_fn);
 		}
 		Functions::end(save);
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 	}
 }

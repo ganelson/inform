@@ -64,45 +64,45 @@ int ListTogether::compilation_coroutine(void) {
 
 @<Compile the actual LTR@> =
 	packaging_state save = Functions::begin(ltr->ltr_routine_iname);
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(INVENTORY_STAGE_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), SETBIT_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(C_STYLE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ENGLISH_BIT_HL));
-			Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(INVENTORY_STAGE_HL));
+			EmitCode::val_number(1);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(SETBIT_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(ENGLISH_BIT_HL));
+			EmitCode::up();
 			if (!(ltr->articles_bit)) {
-			Produce::inv_primitive(Emit::tree(), SETBIT_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(C_STYLE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NOARTICLE_BIT_HL));
-			Emit::up();
+			EmitCode::inv(SETBIT_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(NOARTICLE_BIT_HL));
+			EmitCode::up();
 			}
-			Produce::inv_primitive(Emit::tree(), CLEARBIT_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(C_STYLE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NEWLINE_BIT_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), CLEARBIT_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(C_STYLE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(INDENT_BIT_HL));
-			Emit::up();
+			EmitCode::inv(CLEARBIT_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(NEWLINE_BIT_HL));
+			EmitCode::up();
+			EmitCode::inv(CLEARBIT_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(INDENT_BIT_HL));
+			EmitCode::up();
 
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::rfalse(Emit::tree());
+	EmitCode::rfalse();
 	Functions::end(save);
 
-	save = Emit::named_array_begin(ltr->ltr_array_iname, K_value);
-	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-	Emit::array_iname_entry(ltr->ltr_routine_iname);
-	Emit::array_end(save);
+	save = EmitArrays::begin(ltr->ltr_array_iname, K_value);
+	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+	EmitArrays::iname_entry(ltr->ltr_routine_iname);
+	EmitArrays::end(save);

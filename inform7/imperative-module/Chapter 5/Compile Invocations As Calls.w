@@ -33,10 +33,10 @@ void CallingFunctions::direct_function_call(tokens_packet *tokens, inter_name *i
 	kind *return_kind = NULL;
 	@<Compute the return kind of the phrase@>;
 
-	Produce::inv_call_iname(Emit::tree(), identifier);
-	Emit::down();
+	EmitCode::call(identifier);
+	EmitCode::down();
 		@<Emit the comma-separated list of arguments@>;
-	Emit::up();
+	EmitCode::up();
 }
 
 @<Compute the return kind of the phrase@> =
@@ -54,7 +54,7 @@ to the tokens then follow, and finally the optional bitmap of phrase options.
 	for (int k=0; k<tokens->tokens_count; k++)
 		CompileValues::to_fresh_code_val_of_kind(tokens->token_vals[k], tokens->token_kinds[k]);
 	if (phrase_options != -1)
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
+		EmitCode::val_number((inter_ti) phrase_options);
 
 @ The indirect version of the function is used when a function whose address
 is not known at compile time must be called; this is needed in a few inline
@@ -69,24 +69,24 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 	int arity = tokens->tokens_count;
 	if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;
 	switch (arity) {
-		case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
-		case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
-		case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
-		case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
-		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
+		case 0: EmitCode::inv(INDIRECT0_BIP); break;
+		case 1: EmitCode::inv(INDIRECT1_BIP); break;
+		case 2: EmitCode::inv(INDIRECT2_BIP); break;
+		case 3: EmitCode::inv(INDIRECT3_BIP); break;
+		case 4: EmitCode::inv(INDIRECT4_BIP); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
-	Emit::down();
+	EmitCode::down();
 	if (lookup_flag) {
-		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Emit::down();
+		EmitCode::inv(LOOKUP_BIP);
+		EmitCode::down();
 			CompileValues::to_code_val(indirect_spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Emit::up();
+			EmitCode::val_number(1);
+		EmitCode::up();
 	} else {
 		CompileValues::to_code_val(indirect_spec);
 	}
 	int phrase_options = -1;
 	@<Emit the comma-separated list of arguments@>;
-	Emit::up();
+	EmitCode::up();
 }

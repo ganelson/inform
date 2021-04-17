@@ -53,6 +53,10 @@ int function_compilation_is_happening_now = FALSE;
 function_under_compilation current_function;
 
 @ =
+int Functions::a_function_is_being_compiled(void) {
+	return function_compilation_is_happening_now;
+}
+
 id_body *Functions::defn_being_compiled(void) {
 	if (function_compilation_is_happening_now)
 		return current_function.from_idb;
@@ -92,7 +96,7 @@ packaging_state Functions::begin_from_idb(inter_name *iname, stack_frame *frame,
 		current_function.currently_compiling_nnp = FALSE;
 	}
 	current_function.function_stack_frame = frame;
-	packaging_state save = Emit::unused_packaging_state();
+	packaging_state save = Emit::new_packaging_state();
 	current_function.into_package = Produce::block(Emit::tree(), &save, iname);
 	current_function.currently_compiling_iname = iname;
 	current_function.from_idb = idb;
@@ -219,10 +223,10 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile I6 locals for the outer shell@> =
 	if (returns_block_value)
-		rv_symbol = Emit::local(K_number, I"BRV", 0, I"block return value");
+		rv_symbol = Produce::local(Emit::tree(), K_number, I"BRV", 0, I"block return value");
 	LocalVariableSlates::declare_all_parameters(frame);
 	if (!returns_block_value)
-		rv_symbol = Emit::local(K_number, I"RV", 0, I"return value");
+		rv_symbol = Produce::local(Emit::tree(), K_number, I"RV", 0, I"return value");
 
 @ We allocate memory for each pointer value used in the stack frame:
 
@@ -231,29 +235,29 @@ after the call parameters, and is used only as a scratch variable.
 
 	for (int i=0; i<frame->no_formal_parameters_needed; i++) {
 		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
-		Produce::push(Emit::tree(), RTVariables::iname(nlv));
+		EmitCode::push(RTVariables::iname(nlv));
 	}
 
 @<Compile a call to the kernel@> =
 	if (returns_block_value) {
 		inter_name *iname = Hierarchy::find(BLKVALUECOPY_HL);
-		Produce::inv_call_iname(Emit::tree(), iname);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_number, rv_symbol);
-			Produce::inv_call_iname(Emit::tree(), kernel_name);
-			Emit::down();
+		EmitCode::call(iname);
+		EmitCode::down();
+			EmitCode::val_symbol(K_number, rv_symbol);
+			EmitCode::call(kernel_name);
+			EmitCode::down();
 				LocalVariableSlates::emit_all_parameters(frame);
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, rv_symbol);
-			Produce::inv_call_iname(Emit::tree(), kernel_name);
-			Emit::down();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, rv_symbol);
+			EmitCode::call(kernel_name);
+			EmitCode::down();
 				LocalVariableSlates::emit_all_parameters(frame);
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 
 @ Here we deallocate all the memory allocated earlier.
@@ -261,15 +265,15 @@ after the call parameters, and is used only as a scratch variable.
 @<Compile some teardown code now that the kernel has finished@> =
 	for (int i=frame->no_formal_parameters_needed-1; i>=0; i--) {
 		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
-		Produce::pull(Emit::tree(), RTVariables::iname(nlv));
+		EmitCode::pull(RTVariables::iname(nlv));
 	}
 	Frames::compile_lbv_teardown(frame);
 
 @<Compile a return from the outer shell@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, rv_symbol);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, rv_symbol);
+	EmitCode::up();
 
 @<Issue a problem for too many locals@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyLocals),

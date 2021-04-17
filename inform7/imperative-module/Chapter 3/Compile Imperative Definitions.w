@@ -39,10 +39,10 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	inter_name *iname = req?(req->req_iname):(CompileImperativeDefn::iname(idb));
 
 	@<Set up the stack frame for this compilation request@>;
-	@<Compile some commentary about the function to follow@>;
 	
 	packaging_state save = Functions::begin_from_idb(iname, frame, idb);
-	@<Compile the body of the routine@>;
+	@<Compile some commentary about the function to follow@>;
+	@<Compile the body of the function@>;
 	Functions::end(save);
 
 	current_sentence = NULL;
@@ -50,12 +50,12 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 
 @<Compile some commentary about the function to follow@> =
 	if (req == NULL) {
-		Produce::comment(Emit::tree(), I"No specific request");
+		EmitCode::comment(I"No specific request");
 	} else {
 		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "Request %d: ", req->allocation_id);
 		Kinds::Textual::write(C, PhraseRequests::kind_of_request(req));
-		Produce::comment(Emit::tree(), C);
+		EmitCode::comment(C);
 		DISCARD_TEXT(C)
 	}
 	ImperativeDefinitions::write_comment_describing(idb->head_of_defn);
@@ -77,7 +77,7 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	LocalVariableSlates::deallocate_all(frame); /* in case any are left from an earlier compile */
 	PreformCache::warn_of_changes(); /* that local variables may have changed */
 
-@<Compile the body of the routine@> =
+@<Compile the body of the function@> =
 	current_sentence = code_at;
 	if (RTRules::compile_test_head(idb, R) == FALSE) {
 		if (code_at) {
@@ -100,8 +100,8 @@ Otherwise, if execution reaches the end of our function, we return the default
 value for its return kind: for example, the empty text for |K_text|.
 
 @<Compile a terminal return statement@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
 	kind *K = Frames::get_kind_returned();
 	if (K) {
 		if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
@@ -110,12 +110,12 @@ value for its return kind: for example, the empty text for |K_text|.
 				_p_(PM_DefaultDecideFails),
 				"it's not possible to decide such a value",
 				"so this can't be allowed.");
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			EmitCode::val_number(0);
 		}
 	} else {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0); /* that is, "false" */
+		EmitCode::val_number(0); /* that is, "false" */
 	}
-	Emit::up();
+	EmitCode::up();
 
 @h Data about compilation.
 Each imperative definition body has the following data attached to it. 

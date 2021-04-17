@@ -19,47 +19,47 @@ external_file_compilation_data RTExternalFiles::new_data(wording W) {
 void RTExternalFiles::arrays(void) {
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
 	Emit::numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 
 	files_data *exf;
 	LOOP_OVER(exf, files_data) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
 			packaging_state save =
-				Emit::named_string_array_begin(exf->compilation_data.IFID_array_iname, K_value);
+				EmitArrays::begin_string(exf->compilation_data.IFID_array_iname, K_value);
 			TEMPORARY_TEXT(II)
 			WRITE_TO(II, "//%S//", exf->IFID_of_owner);
-			Emit::array_text_entry(II);
+			EmitArrays::text_entry(II);
 			DISCARD_TEXT(II)
-			Emit::array_end(save);
+			EmitArrays::end(save);
 		}
 	}
 
 	LOOP_OVER(exf, files_data) {
-		packaging_state save = Emit::named_array_begin(exf->compilation_data.exf_iname, K_value);
-		Emit::array_iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
-		Emit::array_iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
-		if (exf->file_is_binary) Emit::array_numeric_entry(1);
-		else Emit::array_numeric_entry(0);
-		Emit::array_numeric_entry(0);
+		packaging_state save = EmitArrays::begin(exf->compilation_data.exf_iname, K_value);
+		EmitArrays::iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
+		EmitArrays::iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
+		if (exf->file_is_binary) EmitArrays::numeric_entry(1);
+		else EmitArrays::numeric_entry(0);
+		EmitArrays::numeric_entry(0);
 		TEMPORARY_TEXT(WW)
 		WRITE_TO(WW, "%w", Lexer::word_raw_text(exf->unextended_filename));
 		Str::delete_first_character(WW);
 		Str::delete_last_character(WW);
-		Emit::array_text_entry(WW);
+		EmitArrays::text_entry(WW);
 		DISCARD_TEXT(WW)
 		switch (exf->file_ownership) {
-			case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(RTBibliographicData::IFID_iname()); break;
-			case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;
-			case OWNED_BY_SPECIFIC_PROJECT: Emit::array_iname_entry(exf->compilation_data.IFID_array_iname); break;
+			case OWNED_BY_THIS_PROJECT: EmitArrays::iname_entry(RTBibliographicData::IFID_iname()); break;
+			case OWNED_BY_ANOTHER_PROJECT: EmitArrays::null_entry(); break;
+			case OWNED_BY_SPECIFIC_PROJECT: EmitArrays::iname_entry(exf->compilation_data.IFID_array_iname); break;
 		}
-		Emit::array_end(save);
+		EmitArrays::end(save);
 	}
 
 	iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	Emit::array_numeric_entry(0);
-	LOOP_OVER(exf, files_data) Emit::array_iname_entry(exf->compilation_data.exf_iname);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::numeric_entry(0);
+	LOOP_OVER(exf, files_data) EmitArrays::iname_entry(exf->compilation_data.exf_iname);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }

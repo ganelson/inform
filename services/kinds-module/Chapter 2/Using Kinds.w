@@ -430,42 +430,42 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 
 	if (Kinds::eq(K, K_use_option)) {
 		K->construct->pr_iname = Hierarchy::find(PRINT_USE_OPTION_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_table))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_TABLE_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_rulebook_outcome))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_RULEBOOK_OUTCOME_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_response))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_RESPONSE_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_figure_name))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_FIGURE_NAME_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_sound_name))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_SOUND_NAME_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_external_file))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_EXTERNAL_FILE_NAME_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 	if (Kinds::eq(K, K_scene))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_SCENE_HL);
-		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
+		Hierarchy::make_available(K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
 

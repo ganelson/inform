@@ -62,7 +62,7 @@ imperative_defn *ImperativeDefinitions::new(parse_node *p) {
 void ImperativeDefinitions::write_comment_describing(imperative_defn *id) {
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%~W:", id->log_text);
-	Produce::comment(Emit::tree(), C);
+	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 }
 

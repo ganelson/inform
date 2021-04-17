@@ -134,11 +134,11 @@ this issue.
 				Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
 			if (Kinds::Behaviour::uses_pointer_values(K)) {
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, lvar_s);
 					Frames::emit_new_local_value(K);
-				Emit::up();
+				EmitCode::up();
 			}
 		}
 	}
@@ -272,7 +272,7 @@ charlatans" and what they "deserve". I'm a better person now.
 		switch (<<r>>) {
 			case OPTS_INSUB: {
 				int current_opts = Invocations::get_phrase_options_bitmap(inv);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) current_opts);
+				EmitCode::val_number((inter_ti) current_opts);
 				break;
 			}
 			case LOCAL_INSUB: {
@@ -285,9 +285,9 @@ charlatans" and what they "deserve". I'm a better person now.
 				int this_opt = -<<r>>;
 				int current_opts = Invocations::get_phrase_options_bitmap(inv);
 				if (current_opts & this_opt)
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+					EmitCode::val_number(1);
 				else
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+					EmitCode::val_number(0);
 				break;
 			}
 		}
@@ -487,11 +487,11 @@ problem messages are phrased differently if something goes wrong.
 	if (allow_me == ALWAYS_MATCH) {
 		CompileValues::to_fresh_code_val_of_kind(supplied, kind_needed);
 	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Behaviour::is_object(kind_needed))) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(CHECKKINDRETURNED_HL));
+		EmitCode::down();
 			CompileValues::to_fresh_code_val_of_kind(supplied, kind_needed);
-			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(kind_needed));
-		Emit::up();
+			EmitCode::val_iname(K_value, RTKinds::I6_classname(kind_needed));
+		EmitCode::up();
 	} else @<Issue a problem for returning a value of the wrong kind@>;
 
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
@@ -537,10 +537,10 @@ problem messages are phrased differently if something goes wrong.
 		explicit_action *ea = Node::get_constant_explicit_action(supplied);
 		RTActionPatterns::emit_try(ea, FALSE);
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
+		EmitCode::down();
 			CompileValues::to_code_val_of_kind(supplied, K_stored_action);
-		Emit::up();
+		EmitCode::up();
 	}
 	valid_annotation = TRUE;
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
@@ -548,48 +548,48 @@ problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action-silently"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(supplied);
-		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(KEEP_SILENT_HL));
-		Emit::up();
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(KEEP_SILENT_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Emit::up();
-		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SAY__P_HL));
-		Emit::up();
-		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SAY__PC_HL));
-		Emit::up();
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CLEARPARAGRAPHING_HL));
-		Emit::down();
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Emit::up();
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+			EmitCode::val_number(1);
+		EmitCode::up();
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SAY__P_HL));
+		EmitCode::up();
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
+		EmitCode::up();
+		EmitCode::call(Hierarchy::find(CLEARPARAGRAPHING_HL));
+		EmitCode::down();
+			EmitCode::val_true();
+		EmitCode::up();
 		RTActionPatterns::emit_try(ea, FALSE);
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
-		Produce::inv_primitive(Emit::tree(), PULL_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SAY__PC_HL));
-		Emit::up();
-		Produce::inv_primitive(Emit::tree(), PULL_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SAY__P_HL));
-		Emit::up();
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
-		Produce::inv_primitive(Emit::tree(), PULL_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(KEEP_SILENT_HL));
-		Emit::up();
+		EmitCode::call(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
+		EmitCode::up();
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
+		EmitCode::up();
+		EmitCode::call(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
+		EmitCode::down();
 			CompileValues::to_code_val_of_kind(supplied, K_stored_action);
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Emit::up();
+			EmitCode::val_true();
+		EmitCode::up();
 	}
 	valid_annotation = TRUE;
 	return; /* that is, don't use the regular token compiler: we've done it ourselves */
@@ -601,13 +601,13 @@ that would be "property name". Instead:
 @<Inline annotation "property-holds-block-value"@> =
 	property *prn = Rvalues::to_property(supplied);
 	if ((prn == NULL) || (Properties::is_either_or(prn))) {
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+		EmitCode::val_false();
 	} else {
 		kind *K = ValueProperties::kind(prn);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+			EmitCode::val_true();
 		} else {
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			EmitCode::val_false();
 		}
 	}
 	return;
@@ -691,21 +691,21 @@ proposition.
 @<Inline command "next-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_inc_iname(K));
+	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_inc_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "previous-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_dec_iname(K));
+	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_dec_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "printing-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
+	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -714,8 +714,8 @@ proposition.
 		Node::get_kind_variable_declarations(inv));
 	if ((Kinds::eq(K, K_number)) ||
 		(Kinds::eq(K, K_time)))
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
-	else if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
+		EmitCode::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
+	else if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -808,21 +808,20 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 	TEMPORARY_TEXT(L)
 	WRITE_TO(L, ".");
 	JumpLabels::write(L, ist->operand);
-	Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), L));
+	EmitCode::lab(EmitCode::reserve_label(L));
 	DISCARD_TEXT(L)
 	return;
 
 @ We can also output just the numerical counter:
 
 @<Inline command "counter"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-		(inter_ti) JumpLabels::read_counter(ist->operand, 0));
+	EmitCode::val_number((inter_ti) JumpLabels::read_counter(ist->operand, 0));
 	return;
 
 @ We can also output just the storage array:
 
 @<Inline command "counter-storage"@> =
-	Produce::val_iname(Emit::tree(), K_value, JumpLabels::storage_iname(ist->operand));
+	EmitCode::val_iname(K_value, JumpLabels::storage_iname(ist->operand));
 	return;
 
 @ Or increment it, printing nothing:
@@ -899,8 +898,8 @@ the second time it's simply printed.)
 	else
 		@<An Inter identifier as the name@>;
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
-	if (prim_cat == REF_PRIM_CAT) Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-	else Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+	if (prim_cat == REF_PRIM_CAT) EmitCode::ref_symbol(K_value, lvar_s);
+	else EmitCode::val_symbol(K_value, lvar_s);
 	return;
 
 @ In the first form, we don't give an explicit name, but simply a digit from
@@ -1009,21 +1008,21 @@ default values when created, so they are always typesafe anyway.
 
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		if (CodeBlocks::inside_a_loop_body()) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
-			Emit::down();
+			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
+			EmitCode::down();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
-				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+				EmitCode::val_symbol(K_value, lvar_s);
 				RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
-			Emit::up();
+			EmitCode::up();
 		}
 	} else {
 		int rv = FALSE;
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
 			inter_symbol *lvar_s = LocalVariables::declare(lvar);
-			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
+			EmitCode::ref_symbol(K_value, lvar_s);
 			rv = RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
-		Emit::up();
+		EmitCode::up();
 
 		if (rv == FALSE) {
 			Problems::quote_source(1, current_sentence);
@@ -1222,10 +1221,10 @@ result would be the same without the optimisation.
 	if (Kinds::eq(K, K_number)) @<Inline say number@>;
 	if (Kinds::eq(K, K_unicode_character)) @<Inline say unicode character@>;
 	if (K) {
-		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
-		Emit::down();
+		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
-		Emit::up();
+		EmitCode::up();
 	} else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -1234,34 +1233,34 @@ result would be the same without the optimisation.
 	if ((Rvalues::is_CONSTANT_of_kind(to_say, K_text)) &&
 		(Wordings::length(SW) == 1) &&
 		(Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC) == FALSE)) {
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
 			TEMPORARY_TEXT(T)
 			CompiledText::from_wide_string_for_emission(T,
 				Lexer::word_text(Wordings::first_wn(SW)));
-			Produce::val_text(Emit::tree(), T);
+			EmitCode::val_text(T);
 			DISCARD_TEXT(T)
-		Emit::up();
+		EmitCode::up();
 	} else {
 		kind *K = Specifications::to_kind(to_say);
-		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
-		Emit::down();
+		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
-		Emit::up();
+		EmitCode::up();
 	}
 	return;
 
 @ Numbers are also handled directly...
 
 @<Inline say number@> =
-	Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__N_HL));
+	EmitCode::inv(PRINTNUMBER_BIP);
+	EmitCode::down();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_number, Hierarchy::find(SAY__N_HL));
 			CompileValues::to_code_val_of_kind(to_say, K);
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 	return;
 
 @ And similarly for Unicode characters. It would be tidier to abstract this
@@ -1271,21 +1270,21 @@ Note that emitting a Unicode character is currently done with direct assembly
 language.
 
 @<Inline say unicode character@> =
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		CompileValues::to_code_val_of_kind(to_say, K);
-	Emit::up();
+	EmitCode::up();
 	if (TargetVMs::is_16_bit(Task::vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		Emit::up();
+		EmitCode::down();
+			EmitCode::val_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
+		EmitCode::up();
 	} else {
 		Produce::inv_assembly(Emit::tree(), I"@streamunichar");
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		Emit::up();
+		EmitCode::down();
+			EmitCode::val_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
+		EmitCode::up();
 	}
 	return;
 
@@ -1299,13 +1298,13 @@ phrase applied to the named variable.
 		@<Issue a no-such-local problem message@>;
 		return;
 	}
-	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-	Emit::down();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(IFDEBUG_BIP);
+	EmitCode::down();
+		EmitCode::code();
+		EmitCode::down();
 			InternalTests::emit_showme(to_show);
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 	return;
 
 @h Miscellaneous commands.
@@ -1322,19 +1321,18 @@ very special circumstances.
 "say" phrases.
 
 @<Inline command "segment-count"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-		(inter_ti) Annotations::read_int(inv, ssp_segment_count_ANNOT));
+	EmitCode::val_number((inter_ti) Annotations::read_int(inv, ssp_segment_count_ANNOT));
 	return;
 
 @<Inline command "final-segment-marker"@> =
 	if (Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT) == 0) {
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NULL_HL));
+		EmitCode::val_iname(K_value, Hierarchy::find(NULL_HL));
 	} else {
 		TEMPORARY_TEXT(T)
 		WRITE_TO(T, "%~W", Wordings::one_word(
 			Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
 		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(Emit::tree(), T, NULL, NULL);
-		Produce::val_symbol(Emit::tree(), K_value, T_s);
+		EmitCode::val_symbol(K_value, T_s);
 		DISCARD_TEXT(T)
 	}
 	return;
@@ -1345,10 +1343,10 @@ the "group... together" phrases.
 @<Inline command "list-together"@> =
 	if (ist->inline_subcommand == unarticled_ISINSC) {
 		inter_name *iname = ListTogether::new(FALSE);
-		Produce::val_iname(Emit::tree(), K_value, iname);
+		EmitCode::val_iname(K_value, iname);
 	} else if (ist->inline_subcommand == articled_ISINSC) {
 		inter_name *iname = ListTogether::new(TRUE);
-		Produce::val_iname(Emit::tree(), K_value, iname);
+		EmitCode::val_iname(K_value, iname);
 	} else StandardProblems::inline_problem(_p_(PM_InlineListTogether),
 		idb, ist->owner->parent_schema->converted_from,
 		"The only legal forms here are {-list-together:articled} and "
@@ -1587,11 +1585,11 @@ void CSIInline::from_source_text(value_holster *VH, text_stream *p, void *opaque
 	int prim_cat) {
 	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
 		Produce::evaluation(Emit::tree());
-		Emit::down();
+		EmitCode::down();
 	}
 	CSIInline::eval_bracket_plus(VH, Feeds::feed_text(p), prim_cat);
 	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
-		Emit::up();
+		EmitCode::up();
 	}
 }
 
@@ -1649,9 +1647,9 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 
 void CSIInline::eval_to_iname(inter_name *iname, int prim_cat) {
 	if (prim_cat == REF_PRIM_CAT)
-		Produce::ref_iname(Emit::tree(), K_value, iname);
+		EmitCode::ref_iname(K_value, iname);
 	else 
-		Produce::val_iname(Emit::tree(), K_value, iname);
+		EmitCode::val_iname(K_value, iname);
 }
 
 @ The really bad case is this one, where we compile a sort of faux textual

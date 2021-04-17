@@ -222,61 +222,59 @@ the resulting I6 is more legible.)
 void Quantifiers::emit_test(quantifier *quant,
 	int quantification_parameter, inter_symbol *qcy, inter_symbol *qcn) {
 
-	Produce::inv_primitive(Emit::tree(), quant->operator_prim);
-	Emit::down();
+	EmitCode::inv(quant->operator_prim);
+	EmitCode::down();
 
 	int TC = quant->T_coefficient;
 	switch (TC) {
 		case -1:
 			if (quant->is_complementary) {
-				Produce::val_symbol(Emit::tree(), K_value, qcy);
-				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, qcn);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-						(inter_ti) quantification_parameter);
-				Emit::up();
+				EmitCode::val_symbol(K_value, qcy);
+				EmitCode::inv(MINUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, qcn);
+					EmitCode::val_number((inter_ti) quantification_parameter);
+				EmitCode::up();
 			} else {
-				Produce::val_symbol(Emit::tree(), K_value, qcy);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-					(inter_ti) quantification_parameter);
+				EmitCode::val_symbol(K_value, qcy);
+				EmitCode::val_number((inter_ti) quantification_parameter);
 			}
 			break;
 		case 10:
-			Produce::val_symbol(Emit::tree(), K_value, qcy);
-			Produce::val_symbol(Emit::tree(), K_value, qcn);
+			EmitCode::val_symbol(K_value, qcy);
+			EmitCode::val_symbol(K_value, qcn);
 			break;
 		case 0:
-			Produce::val_symbol(Emit::tree(), K_value, qcy);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			EmitCode::val_symbol(K_value, qcy);
+			EmitCode::val_number(0);
 			break;
 		default:
 			if (quant->operator_prim != EQ_BIP) {
-				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, qcy);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Emit::down();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
-					Produce::val_symbol(Emit::tree(), K_value, qcn);
-				Emit::up();
+				EmitCode::inv(TIMES_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, qcy);
+					EmitCode::val_number(10);
+				EmitCode::up();
+				EmitCode::inv(TIMES_BIP);
+				EmitCode::down();
+					EmitCode::val_number((inter_ti) TC);
+					EmitCode::val_symbol(K_value, qcn);
+				EmitCode::up();
 			} else {
-				Produce::val_symbol(Emit::tree(), K_value, qcy);
-				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
-						Produce::val_symbol(Emit::tree(), K_value, qcn);
-					Emit::up();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
-				Emit::up();
+				EmitCode::val_symbol(K_value, qcy);
+				EmitCode::inv(DIVIDE_BIP);
+				EmitCode::down();
+					EmitCode::inv(TIMES_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) TC);
+						EmitCode::val_symbol(K_value, qcn);
+					EmitCode::up();
+					EmitCode::val_number(10);
+				EmitCode::up();
 			}
 			break;
 	}
-	Emit::up();
+	EmitCode::up();
 }
 #endif
 

@@ -397,14 +397,14 @@ void Kinds::Constructors::emit_constants(void) {
 		if (Str::len(tn) > 0) {
 			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL,
 				tn, Kinds::Constructors::package(con));
-			Hierarchy::make_available(Emit::tree(), con->con_iname);
+			Hierarchy::make_available(con->con_iname);
 			Emit::numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
 		}
 	}
 
 	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
 	Emit::numeric_constant(hwm, (inter_ti) next_free_data_type_ID);
-	Hierarchy::make_available(Emit::tree(), hwm);
+	Hierarchy::make_available(hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	return CON_UNKNOWN->con_iname;

@@ -20,7 +20,7 @@ void RTEquations::compile_identifiers(void) {
 	equation *eqn;
 	LOOP_OVER(eqn, equation) {
 		packaging_state save = Functions::begin(eqn->eqn_iname);
-		Produce::rfalse(Emit::tree());
+		EmitCode::rfalse();
 		Functions::end(save);
 	}
 }

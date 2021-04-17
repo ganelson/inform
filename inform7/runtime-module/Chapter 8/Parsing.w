@@ -33,7 +33,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 	package_request *PR =
 		Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *name_array = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Emit::named_array_begin(name_array, K_value);
+	packaging_state save = EmitArrays::begin(name_array, K_value);
 
 	LOOP_THROUGH_WORDING(j, W) {
 		vocabulary_entry *ve = Lexer::word(j);
@@ -43,7 +43,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 		wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "%w", p);
-		Emit::array_dword_entry(content);
+		EmitArrays::dword_entry(content);
 		DISCARD_TEXT(content)
 	}
 	if (from_kind) /* see test case PM_PluralsFromKind */
@@ -55,7 +55,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 			if (additional) {
 				TEMPORARY_TEXT(content)
 				WRITE_TO(content, "%w", Lexer::word_text(j));
-				Emit::array_plural_dword_entry(content);
+				EmitArrays::plural_dword_entry(content);
 				DISCARD_TEXT(content)
 			}
 		}
@@ -74,7 +74,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 		}
 	}
 
-	Emit::array_end(save);
+	EmitArrays::end(save);
 	Produce::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
 	return Rvalues::from_iname(name_array);
 }
@@ -99,7 +99,7 @@ void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W)
 		cached_understanding *cu;
 		LOOP_OVER(cu, cached_understanding)
 			if (Wordings::match(cu->understanding_text, W)) {
-				Emit::to_ival(val1, val2, cu->cu_iname);
+				Emit::to_value_pair(val1, val2, cu->cu_iname);
 				return;
 			}
 		command_grammar *cg = Understand::consultation(W);
@@ -108,7 +108,7 @@ void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W)
 			cu = CREATE(cached_understanding);
 			cu->understanding_text = W;
 			cu->cu_iname = iname;
-			Emit::to_ival(val1, val2, iname);
+			Emit::to_value_pair(val1, val2, iname);
 		}
 	}
 }

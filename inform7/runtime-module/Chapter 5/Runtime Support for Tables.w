@@ -22,35 +22,35 @@ void RTTables::column_introspection_routine(void) {
 	inter_name *iname = Hierarchy::find(TC_KOV_HL);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, tcv_s);
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, tcv_s);
+		EmitCode::code();
+		EmitCode::down();
 
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
-		Produce::inv_primitive(Emit::tree(), CASE_BIP);
-		Emit::down();
-			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
+		EmitCode::inv(CASE_BIP);
+		EmitCode::down();
+			EmitCode::val_number((inter_ti) RTTables::column_id(tc));
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
 					RTKinds::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 
-		Emit::up();
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Kinds::Constructors::UNKNOWN_iname());
+	EmitCode::up();
 	Functions::end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 }
 
 inter_name *RTTables::new_tcu_iname(table *t) {
@@ -109,11 +109,11 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	for (int j=0; j<t->no_columns; j++) {
 		@<Compile the inner table array for column j@>;
 	}
-	packaging_state save = Emit::named_table_array_begin(RTTables::identifier(t), K_value);
+	packaging_state save = EmitArrays::begin_table(RTTables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
-		Emit::array_iname_entry(t->columns[j].tcu_iname);
+		EmitArrays::iname_entry(t->columns[j].tcu_iname);
 	}
-	Emit::array_end(save);
+	EmitArrays::end(save);
 	words_used += t->no_columns + 1;
 
 @ Each column table |C| has its identifying number and bitmap combined in
@@ -128,7 +128,7 @@ a single bit in the "blanks array" which records whether the cell is blank
 or not.
 
 @<Compile the inner table array for column j@> =
-	packaging_state save = Emit::named_table_array_begin(t->columns[j].tcu_iname, K_value);
+	packaging_state save = EmitArrays::begin_table(t->columns[j].tcu_iname, K_value);
 
 	table_column *tc = t->columns[j].column_identity;
 	LOGIF(TABLES, "Compiling column: $C\n", tc);
@@ -153,7 +153,7 @@ or not.
 	}
 	@<Pad out the blanks array as needed@>;
 
-	Emit::array_end(save);
+	EmitArrays::end(save);
 	LOGIF(TABLES, "Done column: $C\n", tc);
 
 @ In this part of the code we're carefully keeping track of how much blank
@@ -202,11 +202,11 @@ the values given there.
 	if (RTTables::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
 
-	Emit::array_numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
+	EmitArrays::numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
 	if (bits & TB_COLUMN_NOBLANKBITS)
-		Emit::array_null_entry();
+		EmitArrays::null_entry();
 	else
-		Emit::array_numeric_entry((inter_ti) blanks_array_hwm);
+		EmitArrays::numeric_entry((inter_ti) blanks_array_hwm);
 	words_used += 2;
 
 @ The cell can only contain a generic value in the case of column 1 of a table
@@ -223,11 +223,11 @@ used to define new kinds; in this case it doesn't matter what we write, but
 			inter_ti v1 = 0, v2 = 0;
 			wording W = Node::get_text(cell);
 			RTParsing::compile_understanding(&v1, &v2, W);
-			Emit::array_generic_entry(v1, v2);
+			EmitArrays::generic_entry(v1, v2);
 		} else {
 		#endif
 			parse_node *val = Node::get_evaluation(cell);
-			if (Specifications::is_kind_like(val)) Emit::array_numeric_entry(0);
+			if (Specifications::is_kind_like(val)) EmitArrays::numeric_entry(0);
 			else if (val == NULL) internal_error("Valueless cell");
 			else CompileValues::to_array_entry_of_kind(val, K);
 		#ifdef IF_MODULE
@@ -257,12 +257,12 @@ practice I6 and I7 are not capable of generating story files above 2 GB in any
 case.)
 
 @<Write a cell value for a blank cell@> =
-	if (t->fill_in_blanks == FALSE) Emit::array_iname_entry(Hierarchy::find(TABLE_NOVALUE_HL));
+	if (t->fill_in_blanks == FALSE) EmitArrays::iname_entry(Hierarchy::find(TABLE_NOVALUE_HL));
 	else RTKinds::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
 	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
-	packaging_state save = Emit::named_byte_array_begin(iname, K_number);
+	packaging_state save = EmitArrays::begin_byte(iname, K_number);
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -277,10 +277,10 @@ case.)
 				if (current_bit != 1) @<Ship the current byte of the blanks table@>;
 			}
 		}
-	Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	EmitArrays::null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;
@@ -301,7 +301,7 @@ case.)
 	}
 
 @<Ship the current byte of the blanks table@> =
-	Emit::array_numeric_entry((inter_ti) byte_so_far);
+	EmitArrays::numeric_entry((inter_ti) byte_so_far);
 	byte_so_far = 0; current_bit = 1;
 
 @ We need a default value for the "table" kind, but it's not obvious what
@@ -311,16 +311,16 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
 	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	Emit::array_iname_entry(Hierarchy::find(EMPTY_TABLE_HL));
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::iname_entry(Hierarchy::find(EMPTY_TABLE_HL));
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			Emit::array_iname_entry(RTTables::identifier(t));
+			EmitArrays::iname_entry(RTTables::identifier(t));
 		}
-	Emit::array_numeric_entry(0);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
 
 @ The following allows tables to be said: it's a routine which switches on
 table values and prints the (title-cased) name of the one which matches.
@@ -331,56 +331,56 @@ void RTTables::compile_print_table_names(void) {
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, T_s);
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_table, Hierarchy::find(THEEMPTYTABLE_HL));
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Emit::down();
-						Produce::val_text(Emit::tree(), I"(the empty table)");
-					Emit::up();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, T_s);
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_table, Hierarchy::find(THEEMPTYTABLE_HL));
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						EmitCode::val_text(I"(the empty table)");
+					EmitCode::up();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
 
 		LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_table, RTTables::identifier(t));
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Emit::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_table, RTTables::identifier(t));
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
 						TEMPORARY_TEXT(S)
 						WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
-						Produce::val_text(Emit::tree(), S);
+						EmitCode::val_text(S);
 						DISCARD_TEXT(S)
-					Emit::up();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
+					EmitCode::up();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
 		}
 
-			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Emit::down();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Emit::down();
-						Produce::val_text(Emit::tree(), I"** No such table **");
-					Emit::up();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+			EmitCode::inv(DEFAULT_BIP);
+			EmitCode::down();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						EmitCode::val_text(I"** No such table **");
+					EmitCode::up();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 	Functions::end(save);
 }
 

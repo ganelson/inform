@@ -189,7 +189,7 @@ keep the following state variable:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cbal.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Compile a comment about this line</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Produce::level</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cbal.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Compile the head</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cbal.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Compile the midriff</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cbal.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Compile the tail</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
@@ -206,7 +206,7 @@ keep the following state variable:
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="string-syntax">"[%d: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CompiledText::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">to_compile</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="string-syntax">"]"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::code_comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -253,11 +253,11 @@ a newline.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="comment-syntax"> warn the paragraph breaker by setting the say__p flag that this will print</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::ref_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAY__P_HL</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::ref_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAY__P_HL</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(1);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="5-cbal.html#SP7" class="function-link"><span class="function-syntax">CompileBlocksAndLines::verify_say_node_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_2">&#167;4.2</a>.</li></ul>
@@ -436,29 +436,29 @@ is false:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">IFELSE_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">IFELSE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">to_compile</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="5-cbal.html#SP5" class="function-link"><span class="function-syntax">CompileBlocksAndLines::evaluate_invocation</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to_compile</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">INTER_VAL_VHMODE</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="3-cb.html#SP11" class="function-link"><span class="function-syntax">CodeBlocks::open_code_block</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="3-cb.html#SP12" class="function-link"><span class="function-syntax">CodeBlocks::divide_code_block</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">            </span><a href="3-cb.html#SP13" class="function-link"><span class="function-syntax">CodeBlocks::close_code_block</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3">&#167;4.3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5" class="paragraph-anchor"></a><b>&#167;4.3.5.  </b>Switches, like <span class="extract"><span class="extract-syntax">switch</span></span> in C, offer code to execute in different cases
@@ -596,11 +596,11 @@ the data into <span class="extract"><span class="extract-syntax">sw_v</span></sp
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">sw_lv</span><span class="plain-syntax"> = </span><a href="3-lv.html#SP11" class="function-link"><span class="function-syntax">LocalVariables::add_switch_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sw_v</span><span class="plain-syntax"> = </span><a href="3-lv.html#SP1" class="function-link"><span class="function-syntax">LocalVariables::declare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sw_lv</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::ref_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">sw_v</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::ref_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">sw_v</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-cv.html#SP5" class="function-link"><span class="function-syntax">CompileValues::to_code_val_of_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">switch_val</span><span class="plain-syntax">, </span><span class="identifier-syntax">switch_kind</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5">&#167;4.3.5</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5_1_1" class="paragraph-anchor"></a><b>&#167;4.3.5.1.1.  </b>Now we handle the switch case for what to do when <span class="extract"><span class="extract-syntax">sw_v</span></span> is <span class="extract"><span class="extract-syntax">case_spec</span></span>. The count
@@ -614,9 +614,9 @@ of <span class="extract"><span class="extract-syntax">downs</span></span> is how
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">final_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ow_node</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">final_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">IFELSE_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">IFELSE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><a href="3-lv.html#SP25" class="function-link"><span class="function-syntax">LocalVariables::set_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sw_lv</span><span class="plain-syntax">, </span><span class="identifier-syntax">switch_kind</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sw_v</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lvalues::new_LOCAL_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">sw_lv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Propositions::Abstract::to_set_relation</span><span class="plain-syntax">(</span>
@@ -624,14 +624,14 @@ of <span class="extract"><span class="extract-syntax">downs</span></span> is how
 <span class="plain-syntax">        </span><span class="identifier-syntax">TypecheckPropositions::type_check</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">TypecheckPropositions::tc_no_problem_reporting</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><a href="4-cp.html#SP1" class="function-link"><span class="function-syntax">CompilePropositions::to_test_as_condition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ow_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final_flag</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">downs</span><span class="plain-syntax"> += </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 </pre>
@@ -651,7 +651,7 @@ of <span class="extract"><span class="extract-syntax">downs</span></span> is how
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">downs</span><span class="plain-syntax">-- &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">downs</span><span class="plain-syntax">-- &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-cb.html#SP13" class="function-link"><span class="function-syntax">CodeBlocks::close_code_block</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5">&#167;4.3.5</a>.</li></ul>
@@ -663,49 +663,49 @@ of <span class="extract"><span class="extract-syntax">downs</span></span> is how
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">SWITCH_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">SWITCH_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><a href="2-cv.html#SP5" class="function-link"><span class="function-syntax">CompileValues::to_code_val_of_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">switch_val</span><span class="plain-syntax">, </span><span class="identifier-syntax">switch_kind</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5">&#167;4.3.5</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5_1_2" class="paragraph-anchor"></a><b>&#167;4.3.5.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Handle a non-pointery case</span><span class="named-paragraph-number">4.3.5.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">CASE_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">CASE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><a href="2-cv.html#SP5" class="function-link"><span class="function-syntax">CompileValues::to_code_val_of_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">case_spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">switch_kind</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ow_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5_1">&#167;4.3.5.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5_6" class="paragraph-anchor"></a><b>&#167;4.3.5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Handle a non-pointery default</span><span class="named-paragraph-number">4.3.5.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">DEFAULT_BIP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">DEFAULT_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::code</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ow_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5">&#167;4.3.5</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5_7" class="paragraph-anchor"></a><b>&#167;4.3.5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a non-pointery switch</span><span class="named-paragraph-number">4.3.5.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-cb.html#SP13" class="function-link"><span class="function-syntax">CodeBlocks::close_code_block</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_3_5">&#167;4.3.5</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3_5_8" class="paragraph-anchor"></a><b>&#167;4.3.5.8.  </b>In either implementation, we perform this check:
@@ -791,7 +791,7 @@ inline definitions for "say if" and similar.
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">, </span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-jl.html#SP2" class="function-link"><span class="function-syntax">JumpLabels::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Say"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::place_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">Produce::reserve_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::place_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">EmitCode::reserve_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYL</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">    </span><a href="3-jl.html#SP5" class="function-link"><span class="function-syntax">JumpLabels::read_counter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Say"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -799,7 +799,7 @@ inline definitions for "say if" and similar.
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">, </span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-jl.html#SP2" class="function-link"><span class="function-syntax">JumpLabels::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"SayX"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::place_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">Produce::reserve_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::place_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">EmitCode::reserve_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">SAYXL</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">    </span><a href="3-jl.html#SP5" class="function-link"><span class="function-syntax">JumpLabels::read_counter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"SayX"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -809,7 +809,7 @@ inline definitions for "say if" and similar.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::rtrue</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EmitCode::rtrue</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_4">&#167;4.4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_4_5" class="paragraph-anchor"></a><b>&#167;4.4.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a loop tail</span><span class="named-paragraph-number">4.4.5</span></span><span class="comment-syntax"> =</span>
@@ -819,7 +819,7 @@ inline definitions for "say if" and similar.
 <span class="plain-syntax">    </span><a href="3-cb.html#SP11" class="function-link"><span class="function-syntax">CodeBlocks::open_code_block</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">statement_count</span><span class="plain-syntax"> = </span><a href="5-cbal.html#SP2" class="function-link"><span class="function-syntax">CompileBlocksAndLines::code_block</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">statement_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_implied_newlines</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Produce::level</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">()) &gt; </span><span class="identifier-syntax">L</span><span class="plain-syntax">) </span><span class="identifier-syntax">Emit::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">EmitCode::level</span><span class="plain-syntax">() &gt; </span><span class="identifier-syntax">L</span><span class="plain-syntax">) </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-cb.html#SP13" class="function-link"><span class="function-syntax">CodeBlocks::close_code_block</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cbal.html#SP4_4">&#167;4.4</a>.</li></ul>
@@ -841,7 +841,7 @@ type-checks it, and finally, all being well, compiles it.
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">IDTypeData::is_a_say_phrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">))) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Node::get_phrase_invoked</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">)-&gt;</span><span class="identifier-syntax">type_data</span><span class="plain-syntax">.</span><span class="identifier-syntax">as_say</span><span class="plain-syntax">.</span><span class="identifier-syntax">say_control_structure</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NO_SAY_CS</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::inv_call_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">PARACONTENT_HL</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::call</span><span class="plain-syntax">(</span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">PARACONTENT_HL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">SParser::parse_void_phrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>

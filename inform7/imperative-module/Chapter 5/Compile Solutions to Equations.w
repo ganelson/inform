@@ -51,7 +51,7 @@ void EquationSolver::compile_solution_inner(wording W, equation *eqn) {
 
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Solving %n for '$w'", eqn->eqn_iname, to_solve->name);
-	Emit::code_comment(C);
+	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 	EquationSolver::compile_enode(eqn, eqn->parsed_equation);
 }
@@ -218,21 +218,20 @@ void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 				CompileValues::to_code_val(tok->leaf_symbol->var_const);
 			else if (tok->leaf_symbol->local_map) {
 				if (tok->leaf_symbol->promote_local_to_real) {
-					Produce::inv_call_iname(Emit::tree(),
-						Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-					Emit::down();
+					EmitCode::call(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
+					EmitCode::down();
 				}
 				inter_symbol *tok_s =
 					LocalVariables::declare(tok->leaf_symbol->local_map);
-				Produce::val_symbol(Emit::tree(), K_value, tok_s);
+				EmitCode::val_symbol(K_value, tok_s);
 				if (tok->leaf_symbol->promote_local_to_real)
-					Emit::up();
+					EmitCode::up();
 			}
 			else if (tok->leaf_symbol->function_notated) {
 				inter_name *RS = PhraseRequests::simple_request(
 					tok->leaf_symbol->function_notated,
 					IDTypeData::kind(&(tok->leaf_symbol->function_notated->type_data)));
-				Produce::val_iname(Emit::tree(), K_value, RS);
+				EmitCode::val_iname(K_value, RS);
 			} else internal_error("uncompilable equation node");
 			break;
 		case CONSTANT_EQN:

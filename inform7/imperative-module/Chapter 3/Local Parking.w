@@ -42,18 +42,18 @@ int LocalParking::park(stack_frame *frame) {
 	inter_name *park = LocalParking::array((NC<2)?2:NC);
 	inter_ti j = 0;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, park);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
-				Emit::up();
+		EmitCode::inv(SEQUENTIAL_BIP);
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::inv(LOOKUPREF_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, park);
+					EmitCode::val_number(j++);
+				EmitCode::up();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
-				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
-			Emit::up();
+				EmitCode::val_symbol(K_value, lvar_s);
+			EmitCode::up();
 	}
 	return NC;
 }
@@ -66,15 +66,15 @@ void LocalParking::retrieve(stack_frame *frame) {
 	inter_ti j=0;
 	local_variable *lvar;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, LocalVariables::declare(lvar));
-			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, park);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, LocalVariables::declare(lvar));
+			EmitCode::inv(LOOKUP_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, park);
+				EmitCode::val_number(j++);
+			EmitCode::up();
+		EmitCode::up();
 	}
 }
 
@@ -103,10 +103,10 @@ inter_name *LocalParking::callings(void) {
 void LocalParking::compile_array(void) {
 	if (size_of_local_parking_area > 0) {
 		inter_name *iname = LocalParking::array(0);
-		packaging_state save = Emit::named_array_begin(iname, K_value);
+		packaging_state save = EmitArrays::begin(iname, K_value);
 		for (int i=0; i<size_of_local_parking_area; i++)
-			Emit::array_numeric_entry(0);
-		Emit::array_end(save);
-		Hierarchy::make_available(Emit::tree(), iname);
+			EmitArrays::numeric_entry(0);
+		EmitArrays::end(save);
+		Hierarchy::make_available(iname);
 	}
 }

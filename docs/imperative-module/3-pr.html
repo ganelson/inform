@@ -310,10 +310,10 @@ that phrase. This provides a neat example of how to make a phrase request:
 <span class="plain-syntax">                </span><a href="3-pr.html#SP1" class="function-link"><span class="function-syntax">PhraseRequests::simple_request</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">beginner</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">body_of_defn</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Kinds::function_kind</span><span class="plain-syntax">(0, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_nil</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::inv_call_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">begin_fn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::call</span><span class="plain-syntax">(</span><span class="identifier-syntax">begin_fn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><a href="3-fnc.html#SP6" class="function-link"><span class="function-syntax">Functions::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>

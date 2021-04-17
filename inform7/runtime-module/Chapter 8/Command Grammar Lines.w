@@ -51,32 +51,32 @@ void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 	if (cgl->mistaken) {
 		packaging_state save = Functions::begin(cgl->compilation_data.mistake_iname);
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), NE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(NE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				EmitCode::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100 + cgl->allocation_id));
-		Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
+			EmitCode::val_number((inter_ti) (100 + cgl->allocation_id));
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		Emit::up();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+		EmitCode::up();
 
 		Functions::end(save);
 	}
@@ -85,7 +85,7 @@ void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 void RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
 	if (cgl->mistaken) {
 		if (cg_is == CG_IS_COMMAND) {
-			Emit::array_iname_entry(cgl->compilation_data.mistake_iname);
+			EmitArrays::iname_entry(cgl->compilation_data.mistake_iname);
 		} else
 			internal_error("CGLs may only be mistaken in command grammar");
 	}
@@ -96,8 +96,8 @@ inter_name *MistakeAction_iname = NULL;
 int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line *cgl) {
 	if (cgl->mistaken) {
 		if (MistakeAction_iname == NULL) internal_error("no MistakeAction yet");
-		Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
-		Emit::array_iname_entry(MistakeAction_iname);
+		EmitArrays::iname_entry(VERB_DIRECTIVE_RESULT_iname);
+		EmitArrays::iname_entry(MistakeAction_iname);
 		return TRUE;
 	}
 	return FALSE;
@@ -107,11 +107,11 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
 	packaging_state save = Functions::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
 
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
+		EmitCode::code();
+		EmitCode::down();
 			cg_line *cgl;
 			LOOP_OVER(cgl, cg_line)
 				if (cgl->mistaken) {
@@ -121,45 +121,45 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 						spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
 					else if (<s-value>(cgl->mistake_response_text)) spec = <<rp>>;
 					else spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+cgl->allocation_id));
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
-							Emit::down();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) (100+cgl->allocation_id));
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::call(Hierarchy::find(PARSERERROR_HL));
+							EmitCode::down();
 								CompileValues::to_code_val_of_kind(spec, K_text);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
 				}
 
-			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Emit::down();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Emit::down();
-						Produce::val_text(Emit::tree(), I"I didn't understand that sentence.\n");
-					Emit::up();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+			EmitCode::inv(DEFAULT_BIP);
+			EmitCode::down();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						EmitCode::val_text(I"I didn't understand that sentence.\n");
+					EmitCode::up();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
+		EmitCode::val_number(1);
+	EmitCode::up();
 
 	Functions::end(save);
 	
 	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
 	Emit::unchecked_numeric_constant(MistakeAction_iname, 10000);
 	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
-	Hierarchy::make_available(Emit::tree(), MistakeAction_iname);
+	Hierarchy::make_available(MistakeAction_iname);
 }
 
 void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) {
@@ -175,30 +175,30 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 		pcalc_prop *prop = cgl->understand_when_prop;
 
 		if ((spec) || (prop)) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
 				if ((spec) && (prop)) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Emit::down();
+					EmitCode::inv(AND_BIP);
+					EmitCode::down();
 				}
 				if (spec) CompileValues::to_code_val_of_kind(spec, K_truth_state);
 				if (prop) CompilePropositions::to_test_as_condition(Rvalues::new_self_object_constant(), prop);
 				if ((spec) && (prop)) {
-					Emit::up();
+					EmitCode::up();
 				}
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-					Emit::up();
-				Emit::up();
-			Emit::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(RETURN_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-		Emit::up();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+		EmitCode::up();
 
 		Functions::end(save);
 	}
@@ -209,23 +209,23 @@ void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk,
 	if (CGLines::conditional(cgl)) {
 		if (cgl->compilation_data.cond_token_iname == NULL) internal_error("CGL cond token not ready");
 		if (cg_is == CG_IS_COMMAND) {
-			Emit::array_iname_entry(cgl->compilation_data.cond_token_iname);
+			EmitArrays::iname_entry(cgl->compilation_data.cond_token_iname);
 		} else {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::inv_call_iname(Emit::tree(), cgl->compilation_data.cond_token_iname);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-					Emit::down();
-						Produce::lab(Emit::tree(), current_label);
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::call(cgl->compilation_data.cond_token_iname);
+					EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(JUMP_BIP);
+					EmitCode::down();
+						EmitCode::lab(current_label);
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 }
@@ -305,14 +305,14 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 	token_values = 0;
 	for (i=0; i<2; i++) token_value_kinds[i] = NULL;
 
-	if (code_mode == FALSE) Emit::array_iname_entry(VERB_DIRECTIVE_DIVIDER_iname);
+	if (code_mode == FALSE) EmitArrays::iname_entry(VERB_DIRECTIVE_DIVIDER_iname);
 
 	inter_symbol *fail_label = NULL;
 
 	if (gprk) {
 		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".Fail_%d", current_label);
-		fail_label = Produce::reserve_label(Emit::tree(), L);
+		fail_label = EmitCode::reserve_label(L);
 		DISCARD_TEXT(L)
 	}
 
@@ -332,15 +332,15 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 	}
 
 	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, gprk->instance_s);
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->instance_s);
 				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
 	}
 
 	cg_token *cgt_from = cgt, *cgt_to = cgt_from;
@@ -350,8 +350,8 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 	switch (cg_is) {
 		case CG_IS_COMMAND:
 			if (RTCommandGrammarLines::cgl_compile_result_of_mistake(gprk, cgl)) break;
-			Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
-			Emit::array_action_entry(cgl->resulting_action);
+			EmitArrays::iname_entry(VERB_DIRECTIVE_RESULT_iname);
+			RTActions::action_array_entry(cgl->resulting_action);
 
 			if (cgl->reversed) {
 				if (token_values < 2) {
@@ -364,7 +364,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 				kind *swap = token_value_kinds[0];
 				token_value_kinds[0] = token_value_kinds[1];
 				token_value_kinds[1] = swap;
-				Emit::array_iname_entry(VERB_DIRECTIVE_REVERSE_iname);
+				EmitArrays::iname_entry(VERB_DIRECTIVE_REVERSE_iname);
 			}
 
 			ActionSemantics::check_valid_application(cgl->resulting_action, token_values,
@@ -372,88 +372,88 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 			break;
 		case CG_IS_PROPERTY_NAME:
 		case CG_IS_TOKEN:
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-			Emit::up();
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->rv_s);
+			EmitCode::up();
+			EmitCode::place_label(fail_label);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk->original_wn_s);
+			EmitCode::up();
 			break;
 		case CG_IS_CONSULT:
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), OR_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->range_words_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->range_from_s);
-						Emit::up();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->range_words_s);
-					Emit::up();
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(OR_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->range_words_s);
+						EmitCode::val_number(0);
+					EmitCode::up();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::inv(MINUS_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::val_symbol(K_value, gprk->range_from_s);
+						EmitCode::up();
+						EmitCode::val_symbol(K_value, gprk->range_words_s);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(RETURN_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->rv_s);
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Emit::up();
+			EmitCode::place_label(fail_label);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk->original_wn_s);
+			EmitCode::up();
 			break;
 		case CG_IS_SUBJECT:
 			UnderstandGeneralTokens::after_gl_failed(gprk, fail_label, cgl->pluralised);
 			break;
 		case CG_IS_VALUE:
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(GPR_NUMBER_HL));
-			Emit::up();
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Emit::up();
+			EmitCode::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
+			EmitCode::up();
+			EmitCode::place_label(fail_label);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk->original_wn_s);
+			EmitCode::up();
 			break;
 	}
 
 	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 
 	current_label++;
@@ -523,23 +523,23 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 		if (lexeme_equivalence_class > 0) {
 			if (code_mode) {
 				if (first_token_in_lexeme) {
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Emit::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk->group_wn_s);
+						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::up();
 				}
-				if (next_reserved_label) Produce::place_label(Emit::tree(), next_reserved_label);
+				if (next_reserved_label) EmitCode::place_label(next_reserved_label);
 				TEMPORARY_TEXT(L)
 				WRITE_TO(L, ".group_%d_%d_%d", current_grammar_block, lexeme_equivalence_class, alternative_number+1);
-				next_reserved_label = Produce::reserve_label(Emit::tree(), L);
+				next_reserved_label = EmitCode::reserve_label(L);
 				DISCARD_TEXT(L)
 
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Produce::val_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-				Emit::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, gprk->group_wn_s);
+				EmitCode::up();
 
 				if ((last_token_in_lexeme == FALSE) || (empty_text_allowed_in_lexeme)) {
 					jump_on_fail = next_reserved_label;
@@ -556,7 +556,7 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 			sgpr->last_choice = cgt;
 			package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
 			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
-			Emit::array_iname_entry(sgpr->sgpr_iname);
+			EmitArrays::iname_entry(sgpr->sgpr_iname);
 			last_token_in_lexeme = TRUE;
 		} else {
 			kind *grammar_token_kind =
@@ -580,21 +580,21 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 					if (empty_text_allowed_in_lexeme) {
 						@<Jump to end of group@>;
 						if (next_reserved_label)
-							Produce::place_label(Emit::tree(), next_reserved_label);
+							EmitCode::place_label(next_reserved_label);
 						next_reserved_label = NULL;
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Emit::down();
-							Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-						Emit::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::val_symbol(K_value, gprk->group_wn_s);
+						EmitCode::up();
 					}
-					if (eog_reserved_label) Produce::place_label(Emit::tree(), eog_reserved_label);
+					if (eog_reserved_label) EmitCode::place_label(eog_reserved_label);
 					eog_reserved_label = NULL;
 				} else {
 					@<Jump to end of group@>;
 				}
 			} else {
-				if (last_token_in_lexeme == FALSE) Emit::array_iname_entry(VERB_DIRECTIVE_SLASH_iname);
+				if (last_token_in_lexeme == FALSE) EmitArrays::iname_entry(VERB_DIRECTIVE_SLASH_iname);
 			}
 		}
 
@@ -608,12 +608,12 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".group_%d_%d_end",
 			current_grammar_block, lexeme_equivalence_class);
-		eog_reserved_label = Produce::reserve_label(Emit::tree(), L);
+		eog_reserved_label = EmitCode::reserve_label(L);
 	}
-	Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-	Emit::down();
-		Produce::lab(Emit::tree(), eog_reserved_label);
-	Emit::up();
+	EmitCode::inv(JUMP_BIP);
+	EmitCode::down();
+		EmitCode::lab(eog_reserved_label);
+	EmitCode::up();
 
 @ =
 void RTCommandGrammarLines::compile_slash_gprs(void) {
@@ -625,10 +625,10 @@ void RTCommandGrammarLines::compile_slash_gprs(void) {
 		UnderstandValueTokens::add_standard_set(&gprk);
 
 		RTCommandGrammarLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		Emit::up();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+		EmitCode::up();
 		Functions::end(save);
 	}
 }
@@ -649,7 +649,7 @@ void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) 
 		if (wn >= 0) {
 			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", Lexer::word_text(wn));
-			Emit::array_dword_entry(content);
+			EmitArrays::dword_entry(content);
 			DISCARD_TEXT(content)
 			cgl->compilation_data.suppress_compilation = TRUE;
 		}
@@ -674,22 +674,22 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 	command_grammar *cg;
 	if (CGTokens::is_literal(cgt)) {
 		if (code_mode) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), NE_BIP);
-				Emit::down();
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(NE_BIP);
+				EmitCode::down();
+					EmitCode::call(Hierarchy::find(NEXTWORDSTOPPED_HL));
 					TEMPORARY_TEXT(N)
 					WRITE_TO(N, "%N", wn);
-					Produce::val_dword(Emit::tree(), N);
+					EmitCode::val_dword(N);
 					DISCARD_TEXT(N)
-				Emit::up();
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		} else {
 			TEMPORARY_TEXT(WT)
 			WRITE_TO(WT, "%N", wn);
-			Emit::array_dword_entry(WT);
+			EmitArrays::dword_entry(WT);
 			DISCARD_TEXT(WT)
 		}
 		return NULL;
@@ -697,54 +697,54 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 
 	bp = cgt->token_relation;
 	if (bp) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ARTICLEDESCRIPTORS_HL));
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-		Emit::up();
+		EmitCode::call(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::up();
 		if (bp == R_containment) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), NOT_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), HAS_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CONTAINER_HL));
-					Emit::up();
-				Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(NOT_BIP);
+				EmitCode::down();
+					EmitCode::inv(HAS_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
+					EmitCode::up();
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		}
 		if (bp == R_support) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), NOT_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), HAS_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SUPPORTER_HL));
-					Emit::up();
-				Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(NOT_BIP);
+				EmitCode::down();
+					EmitCode::inv(HAS_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
+					EmitCode::up();
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		}
 		if ((bp == a_has_b_predicate) || (bp == R_wearing) ||
 			(bp == R_carrying)) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), NOT_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), HAS_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ANIMATE_HL));
-					Emit::up();
-				Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(NOT_BIP);
+				EmitCode::down();
+					EmitCode::inv(HAS_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
+					EmitCode::up();
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		}
 		if ((bp == R_containment) ||
 			(bp == R_support) ||
@@ -753,173 +753,173 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 			(bp == R_carrying)) {
 			TEMPORARY_TEXT(L)
 			WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-			inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
+			inter_symbol *exit_label = EmitCode::reserve_label(L);
 			DISCARD_TEXT(L)
 
-			Produce::inv_primitive(Emit::tree(), OBJECTLOOP_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K_object));
-				Produce::inv_primitive(Emit::tree(), IN_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
+			EmitCode::inv(OBJECTLOOP_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_iname(K_value, RTKinds::I6_classname(K_object));
+				EmitCode::inv(IN_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, gprk->rv_s);
+					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
 					if (bp == R_carrying) {
-						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), HAS_BIP);
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
-							Emit::up();
-							Produce::code(Emit::tree());
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), CONTINUE_BIP);
-							Emit::up();
-						Emit::up();
+						EmitCode::inv(IF_BIP);
+						EmitCode::down();
+							EmitCode::inv(HAS_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk->rv_s);
+								EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
+								EmitCode::inv(CONTINUE_BIP);
+							EmitCode::up();
+						EmitCode::up();
 					}
 					if (bp == R_wearing) {
-						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), NOT_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), HAS_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-									Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
-								Emit::up();
-							Emit::up();
-							Produce::code(Emit::tree());
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), CONTINUE_BIP);
-							Emit::up();
-						Emit::up();
+						EmitCode::inv(IF_BIP);
+						EmitCode::down();
+							EmitCode::inv(NOT_BIP);
+							EmitCode::down();
+								EmitCode::inv(HAS_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->rv_s);
+									EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
+								EmitCode::inv(CONTINUE_BIP);
+							EmitCode::up();
+						EmitCode::up();
 					}
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-						Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-						Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYGIVENOBJECT_HL));
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), GT_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-						Emit::up();
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-							Emit::down();
-								Produce::lab(Emit::tree(), exit_label);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::inv(PLUS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk->rv_s);
+								EmitCode::val_true();
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(IF_BIP);
+					EmitCode::down();
+						EmitCode::inv(GT_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::up();
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::inv(JUMP_BIP);
+							EmitCode::down();
+								EmitCode::lab(exit_label);
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
 			@<Jump to our doom@>;
-			Produce::place_label(Emit::tree(), exit_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			EmitCode::place_label(exit_label);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
 		} else if (bp == R_incorporation) {
 			TEMPORARY_TEXT(L)
 			WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-			inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
+			inter_symbol *exit_label = EmitCode::reserve_label(L);
 			DISCARD_TEXT(L)
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(COMPONENT_CHILD_HL));
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), WHILE_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-						Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-						Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYGIVENOBJECT_HL));
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), GT_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-						Emit::up();
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-							Emit::down();
-								Produce::lab(Emit::tree(), exit_label);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+					EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(WHILE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->rv_s);
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::inv(PLUS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk->rv_s);
+								EmitCode::val_true();
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(IF_BIP);
+					EmitCode::down();
+						EmitCode::inv(GT_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::up();
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::inv(JUMP_BIP);
+							EmitCode::down();
+								EmitCode::lab(exit_label);
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk->rv_s);
+						EmitCode::inv(PROPERTYVALUE_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, gprk->rv_s);
+							EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
 			@<Jump to our doom@>;
-			Produce::place_label(Emit::tree(), exit_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			EmitCode::place_label(exit_label);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
 		} else if (bp == R_equality) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, CGTokens::text(cgt));
@@ -936,103 +936,103 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 			(BinaryPredicates::get_reversal(bp) == R_wearing) ||
 			(BinaryPredicates::get_reversal(bp) == R_carrying)) {
 			if (BinaryPredicates::get_reversal(bp) == R_carrying) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), HAS_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
-					Emit::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(HAS_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+					EmitCode::up();
 					@<Then jump to our doom@>;
-				Emit::up();
+				EmitCode::up();
 			}
 			if (BinaryPredicates::get_reversal(bp) == R_wearing) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), NOT_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), HAS_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-							Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
-						Emit::up();
-					Emit::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(NOT_BIP);
+					EmitCode::down();
+						EmitCode::inv(HAS_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+							EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+						EmitCode::up();
+					EmitCode::up();
 					@<Then jump to our doom@>;
-				Emit::up();
+				EmitCode::up();
 			}
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::inv_call(Emit::tree(), Site::veneer_symbol(Emit::tree(), PARENT_VSYMB));
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::call_symbol(Emit::get_veneer_symbol(PARENT_VSYMB));
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::up();
+			EmitCode::up();
 
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYGIVENOBJECT_HL));
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-				Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk->w_s);
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::inv(PLUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->rv_s);
+						EmitCode::val_true();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		} else if (BinaryPredicates::get_reversal(bp) == R_incorporation) {
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(COMPONENT_PARENT_HL));
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYGIVENOBJECT_HL));
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-				Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+					EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk->w_s);
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::inv(PLUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->rv_s);
+						EmitCode::val_true();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::up();
 				@<Then jump to our doom@>;
-			Emit::up();
+			EmitCode::up();
 		} else {
 			i6_schema *i6s;
 			int reverse = FALSE;
@@ -1050,16 +1050,16 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 				kind *K = BinaryPredicates::term_kind(bp, 1);
 				if (Kinds::Behaviour::is_subkind_of_object(K)) {
 					LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is %u\n", K);
-					Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
-					Emit::down();
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
+					EmitCode::inv(OBJECTLOOPX_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk->rv_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
 									pcalc_term rv_term = Terms::new_constant(
 										Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, gprk->rv_lv));
 									pcalc_term self_term = Terms::new_constant(
@@ -1090,30 +1090,30 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 				}
 				if (prn) {
 					if (reverse) {
-						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), PROVIDES_BIP);
-							Emit::down();
-								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-							Emit::up();
-							Produce::code(Emit::tree());
-							Emit::down();
+						EmitCode::inv(IF_BIP);
+						EmitCode::down();
+							EmitCode::inv(PROVIDES_BIP);
+							EmitCode::down();
+								EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+								EmitCode::val_iname(K_value, RTProperties::iname(prn));
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
 
-								Produce::inv_primitive(Emit::tree(), STORE_BIP);
-								Emit::down();
-									Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-									Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-									Emit::down();
-										Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-										Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-									Emit::up();
-								Emit::up();
-								Produce::inv_primitive(Emit::tree(), IF_BIP);
-								Emit::down();
-									Produce::inv_primitive(Emit::tree(), EQ_BIP);
-									Emit::down();
-										Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
+								EmitCode::inv(STORE_BIP);
+								EmitCode::down();
+									EmitCode::ref_symbol(K_value, gprk->rv_s);
+									EmitCode::inv(PROPERTYVALUE_BIP);
+									EmitCode::down();
+										EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+										EmitCode::val_iname(K_value, RTProperties::iname(prn));
+									EmitCode::up();
+								EmitCode::up();
+								EmitCode::inv(IF_BIP);
+								EmitCode::down();
+									EmitCode::inv(EQ_BIP);
+									EmitCode::down();
+										EmitCode::val_symbol(K_value, gprk->rv_s);
 
 						continue_loop_on_fail = FALSE;
 					} else {
@@ -1133,33 +1133,33 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							Problems::issue_problem_end();
 							return K_object;
 						}
-						Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
-						Emit::down();
-							Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-							Produce::code(Emit::tree());
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), IF_BIP);
-								Emit::down();
-									Produce::inv_primitive(Emit::tree(), EQ_BIP);
-									Emit::down();
-										Produce::inv_primitive(Emit::tree(), AND_BIP);
-										Emit::down();
-											Produce::inv_primitive(Emit::tree(), PROVIDES_BIP);
-											Emit::down();
-												Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-												Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-											Emit::up();
-											Produce::inv_primitive(Emit::tree(), EQ_BIP);
-											Emit::down();
-												Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-												Emit::down();
-													Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-													Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-												Emit::up();
-												Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-											Emit::up();
-										Emit::up();
+						EmitCode::inv(OBJECTLOOPX_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk->rv_s);
+							EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+							EmitCode::code();
+							EmitCode::down();
+								EmitCode::inv(IF_BIP);
+								EmitCode::down();
+									EmitCode::inv(EQ_BIP);
+									EmitCode::down();
+										EmitCode::inv(AND_BIP);
+										EmitCode::down();
+											EmitCode::inv(PROVIDES_BIP);
+											EmitCode::down();
+												EmitCode::val_symbol(K_value, gprk->rv_s);
+												EmitCode::val_iname(K_value, RTProperties::iname(prn));
+											EmitCode::up();
+											EmitCode::inv(EQ_BIP);
+											EmitCode::down();
+												EmitCode::inv(PROPERTYVALUE_BIP);
+												EmitCode::down();
+													EmitCode::val_symbol(K_value, gprk->rv_s);
+													EmitCode::val_iname(K_value, RTProperties::iname(prn));
+												EmitCode::up();
+												EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+											EmitCode::up();
+										EmitCode::up();
 						continue_loop_on_fail = TRUE;
 					}
 				} else {
@@ -1176,72 +1176,72 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 				}
 			}
 
-								Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-							Emit::up();
-							Produce::code(Emit::tree());
-							Emit::down();
+								EmitCode::val_false();
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
 								if (continue_loop_on_fail == FALSE) {
 									@<Jump to our doom@>;
 								} else {
-									Produce::inv_primitive(Emit::tree(), CONTINUE_BIP);
+									EmitCode::inv(CONTINUE_BIP);
 								}
-							Emit::up();
-						Emit::up();
+							EmitCode::up();
+						EmitCode::up();
 
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Emit::down();
-							Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-						Emit::up();
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Emit::down();
-							Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYGIVENOBJECT_HL));
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-									Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-								Emit::up();
-							Emit::up();
-						Emit::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::inv(PLUS_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk->w_s);
+								EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->rv_s);
+									EmitCode::val_true();
+								EmitCode::up();
+							EmitCode::up();
+						EmitCode::up();
 
 						TEMPORARY_TEXT(L)
 						WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-						inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
+						inter_symbol *exit_label = EmitCode::reserve_label(L);
 						DISCARD_TEXT(L)
 
-						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), GT_BIP);
-							Emit::down();
-								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Emit::up();
-							Produce::code(Emit::tree());
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-								Emit::down();
-									Produce::lab(Emit::tree(), exit_label);
-								Emit::up();
-							Emit::up();
-						Emit::up();
+						EmitCode::inv(IF_BIP);
+						EmitCode::down();
+							EmitCode::inv(GT_BIP);
+							EmitCode::down();
+								EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+								EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
+								EmitCode::inv(JUMP_BIP);
+								EmitCode::down();
+									EmitCode::lab(exit_label);
+								EmitCode::up();
+							EmitCode::up();
+						EmitCode::up();
 
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Emit::up();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
 				@<Jump to our doom@>;
-				Produce::place_label(Emit::tree(), exit_label);
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-				Emit::up();
+				EmitCode::place_label(exit_label);
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
 			}
 			return NULL;
 		}
@@ -1257,37 +1257,37 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 			if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
 				if (code_mode) {
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk->w_s);
+						EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+						EmitCode::down();
+							EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 							if (Str::len(i6_gpr_name) > 0)
-								Produce::val_iname(Emit::tree(), K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
+								EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								Produce::val_iname(Emit::tree(), K_value, RTKinds::get_kind_GPR_iname(K));
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), NE_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_NUMBER_HL));
-						Emit::up();
+								EmitCode::val_iname(K_value, RTKinds::get_kind_GPR_iname(K));
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(IF_BIP);
+					EmitCode::down();
+						EmitCode::inv(NE_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+						EmitCode::up();
 						@<Then jump to our doom@>;
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Emit::down();
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_NUMBER_HL));
-					Emit::up();
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk->rv_s);
+						EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+					EmitCode::up();
 				} else {
 					if (Str::len(i6_gpr_name) > 0)
-						Emit::array_iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
+						EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 					else
-						Emit::array_iname_entry(RTKinds::get_kind_GPR_iname(K));
+						EmitArrays::iname_entry(RTKinds::get_kind_GPR_iname(K));
 				}
 				return K;
 			}
@@ -1321,59 +1321,59 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 						"the player's command, but here we already have "
 						"a snippet, and don't want to snip it further.");
 				}
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ELEMENTARY_TT_HL));
-						Produce::val_iname(Emit::tree(), K_value, i6_token_iname);
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-						Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-					Emit::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->w_s);
+					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
+						EmitCode::val_iname(K_value, i6_token_iname);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+					EmitCode::up();
 					@<Then jump to our doom@>;
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-				Emit::up();
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::up();
 			} else {
-				Emit::array_iname_entry(i6_token_iname);
+				EmitArrays::iname_entry(i6_token_iname);
 			}
 		} else {
 			if (Specifications::is_description(spec)) {
 				K = Specifications::to_kind(spec);
 				if (Descriptions::is_qualified(spec)) {
  					if (code_mode) {
-		 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Emit::down();
-							Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-							Emit::down();
+		 				EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk->w_s);
+							EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+							EmitCode::down();
 								UnderstandFilterTokens::compile_id(cgt->noun_filter);
-							Emit::up();
-						Emit::up();
-						Produce::inv_primitive(Emit::tree(), IF_BIP);
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-							Emit::up();
+							EmitCode::up();
+						EmitCode::up();
+						EmitCode::inv(IF_BIP);
+						EmitCode::down();
+							EmitCode::inv(EQ_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk->w_s);
+								EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+							EmitCode::up();
 							@<Then jump to our doom@>;
-						Emit::up();
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Emit::down();
-							Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-						Emit::up();
+						EmitCode::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk->rv_s);
+							EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::up();
 					} else {
 						UnderstandFilterTokens::emit_id(cgt->noun_filter);
 					}
@@ -1381,62 +1381,62 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 					if (Kinds::Behaviour::offers_I6_GPR(K)) {
 						text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
 						if (code_mode) {
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-								Emit::down();
-									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->w_s);
+								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+								EmitCode::down();
+									EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
 									if (Str::len(i6_gpr_name) > 0)
-										Produce::val_iname(Emit::tree(), K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
+										EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 									else
-										Produce::val_iname(Emit::tree(), K_value, RTKinds::get_kind_GPR_iname(K));
-								Emit::up();
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), NE_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_NUMBER_HL));
-								Emit::up();
+										EmitCode::val_iname(K_value, RTKinds::get_kind_GPR_iname(K));
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(NE_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+								EmitCode::up();
 								@<Then jump to our doom@>;
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_NUMBER_HL));
-							Emit::up();
+							EmitCode::up();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->rv_s);
+								EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+							EmitCode::up();
 						} else {
 							if (Str::len(i6_gpr_name) > 0)
-								Emit::array_iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
+								EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								Emit::array_iname_entry(RTKinds::get_kind_GPR_iname(K));
+								EmitArrays::iname_entry(RTKinds::get_kind_GPR_iname(K));
 						}
 					} else if (Kinds::Behaviour::is_object(K)) {
 						if (code_mode) {
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-								Emit::down();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->w_s);
+								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+								EmitCode::down();
 									UnderstandFilterTokens::compile_id(cgt->noun_filter);
-								Emit::up();
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-								Emit::up();
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+								EmitCode::up();
 								@<Then jump to our doom@>;
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Emit::up();
+							EmitCode::up();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->rv_s);
+								EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::up();
 						} else {
 							UnderstandFilterTokens::emit_id(cgt->noun_filter);
 						}
@@ -1447,71 +1447,71 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 					if (cgt->defined_by) {
 						cg = cgt->defined_by;
 						if (code_mode) {
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-								Emit::down();
-									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
-									Produce::val_iname(Emit::tree(), K_value, RTCommandGrammars::i6_token_as_iname(cg));
-								Emit::up();
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-								Emit::up();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->w_s);
+								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+								EmitCode::down();
+									EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+									EmitCode::val_iname(K_value, RTCommandGrammars::i6_token_as_iname(cg));
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+								EmitCode::up();
 								@<Then jump to our doom@>;
-							Emit::up();
+							EmitCode::up();
 
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), NE_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_PREPOSITION_HL));
-								Emit::up();
-								Produce::code(Emit::tree());
-								Emit::down();
-									Produce::inv_primitive(Emit::tree(), STORE_BIP);
-									Emit::down();
-										Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-										Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Emit::up();
-								Emit::up();
-							Emit::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(NE_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
+								EmitCode::up();
+								EmitCode::code();
+								EmitCode::down();
+									EmitCode::inv(STORE_BIP);
+									EmitCode::down();
+										EmitCode::ref_symbol(K_value, gprk->rv_s);
+										EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::up();
+								EmitCode::up();
+							EmitCode::up();
 						} else {
-							Emit::array_iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
+							EmitArrays::iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
 						}
 						K = CommandGrammars::get_kind_matched(cg);
 					} else
 				if (Node::is(spec, CONSTANT_NT)) {
 					if (Rvalues::is_object(spec)) {
 						if (code_mode) {
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
-								Emit::down();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->w_s);
+								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+								EmitCode::down();
 									UnderstandFilterTokens::compile_id(cgt->noun_filter);
-								Emit::up();
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-									Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(GPR_FAIL_HL));
-								Emit::up();
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk->w_s);
+									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+								EmitCode::up();
 								@<Then jump to our doom@>;
-							Emit::up();
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
-							Emit::up();
+							EmitCode::up();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, gprk->rv_s);
+								EmitCode::val_symbol(K_value, gprk->w_s);
+							EmitCode::up();
 						} else {
 							UnderstandFilterTokens::emit_id(cgt->noun_filter);
 						}
@@ -1525,13 +1525,13 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 }
 
 @<Then jump to our doom@> =
-	Produce::code(Emit::tree());
-	Emit::down();
+	EmitCode::code();
+	EmitCode::down();
 		@<Jump to our doom@>;
-	Emit::up();
+	EmitCode::up();
 
 @<Jump to our doom@> =
-	Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-	Emit::down();
-		Produce::lab(Emit::tree(), failure_label);
-	Emit::up();
+	EmitCode::inv(JUMP_BIP);
+	EmitCode::down();
+		EmitCode::lab(failure_label);
+	EmitCode::up();

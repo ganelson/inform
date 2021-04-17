@@ -156,7 +156,7 @@ property *P_name = NULL;
 property *ParsingPlugin::name_property(void) {
 	if (P_name == NULL) {
 		P_name = ValueProperties::new_nameless(I"name", K_text);
-		Hierarchy::make_available(Emit::tree(), RTParsing::name_iname());
+		Hierarchy::make_available(RTParsing::name_iname());
 	}
 	return P_name;
 }

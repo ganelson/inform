@@ -84,19 +84,19 @@ for the underlying function's compilation.
 
 @<Compile the closure array for this constant phrase@> =
 	inter_name *iname = Closures::iname(cphr);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 
 	RTKinds::emit_strong_id(cphr->cphr_kind);
 
 	inter_name *RS = PhraseRequests::simple_request(idb, ToPhraseFamily::kind(cphr));
-	Emit::array_iname_entry(RS);
+	EmitArrays::iname_entry(RS);
 
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%W", Nouns::nominative_singular(cphr->name));
-	Emit::array_text_entry(name);
+	EmitArrays::text_entry(name);
 	DISCARD_TEXT(name)
 
-	Emit::array_end(save);
+	EmitArrays::end(save);
 
 @ Now we come to something trickier. We want default values for kinds of phrases,
 because otherwise we can't have variables holding phrases unless they are
@@ -136,30 +136,30 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 	kind *result = NULL;
 	Kinds::binary_construction_material(K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
 
 		if (Kinds::Behaviour::uses_pointer_values(result)) {
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-			Produce::inv_call_iname(Emit::tree(), iname);
-			Emit::down();
+			EmitCode::call(iname);
+			EmitCode::down();
 			RTKinds::emit_strong_id_as_val(result);
-			Emit::up();
+			EmitCode::up();
 		} else {
 			if (RTKinds::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				EmitCode::val_number(0);
 		}
 
-		Emit::up();
+		EmitCode::up();
 	}
 	Functions::end(save);
 
 @<Compile its closure@> =
-	packaging_state save = Emit::named_array_begin(closure_identifier, K_value);
+	packaging_state save = EmitArrays::begin(closure_identifier, K_value);
 	RTKinds::emit_strong_id(K);
-	Emit::array_iname_entry(rname);
+	EmitArrays::iname_entry(rname);
 	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
-	Emit::array_text_entry(DVT);
+	EmitArrays::text_entry(DVT);
 	DISCARD_TEXT(DVT)
-	Emit::array_end(save);
+	EmitArrays::end(save);

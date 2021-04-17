@@ -74,9 +74,10 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 		case LAB_IST: CodeGen::FC::lab(gen, P); break;
 		case PROPERTYVALUE_IST: CodeGen::IP::write_properties(gen); break;
 		case NOP_IST: break;
+		case COMMENT_IST: break;
 		default:
 			Inter::Defn::write_construct_text(DL, P);
-			internal_error("unimplemented\n");
+			internal_error("unimplemented");
 	}
 }
 

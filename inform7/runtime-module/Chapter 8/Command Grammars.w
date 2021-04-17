@@ -104,7 +104,7 @@ inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
 	Emit::numeric_constant(iname, 1);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	return iname;
 }
 
@@ -177,19 +177,19 @@ packaging_state RTCommandGrammars::cg_compile_Verb_directive_header(command_gram
 	if (CGLines::list_length(cg) == 0)
 		internal_error("compiling Verb for empty grammar");
 
-	packaging_state save = Emit::named_verb_array_begin(array_iname, K_value);
+	packaging_state save = EmitArrays::begin_late_verb(array_iname, K_value);
 
 	if (Wordings::empty(cg->command))
-		Emit::array_dword_entry(I"no.verb");
+		EmitArrays::dword_entry(I"no.verb");
 	else {
 		TEMPORARY_TEXT(WD)
 		WRITE_TO(WD, "%N", Wordings::first_wn(cg->command));
-		Emit::array_dword_entry(WD);
+		EmitArrays::dword_entry(WD);
 		DISCARD_TEXT(WD)
 		for (int i=0; i<cg->no_aliased_commands; i++) {
 			TEMPORARY_TEXT(WD)
 			WRITE_TO(WD, "%N", Wordings::first_wn(cg->aliased_command[i]));
-			Emit::array_dword_entry(WD);
+			EmitArrays::dword_entry(WD);
 			DISCARD_TEXT(WD)
 		}
 	}
@@ -261,7 +261,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
 			packaging_state save = RTCommandGrammars::cg_compile_Verb_directive_header(cg, array_iname);
 			RTCommandGrammars::cg_compile_lines(NULL, cg);
-			Emit::array_end(save);
+			EmitArrays::end(save);
 			break;
 		}
 		case CG_IS_TOKEN: {
@@ -270,21 +270,21 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			packaging_state save = Functions::begin(cg->compilation_data.cg_token_iname);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.original_wn_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.original_wn_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
 			RTCommandGrammars::cg_compile_lines(&gprk, cg);
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
 			Functions::end(save);
 			break;
 		}
@@ -295,32 +295,32 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			UnderstandValueTokens::add_range_calls(&gprk);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk.range_from_s);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.original_wn_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, gprk.range_from_s);
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.original_wn_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
 			RTCommandGrammars::cg_compile_lines(&gprk, cg);
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
 			Functions::end(save);
 			break;
 		}
 		case CG_IS_SUBJECT: {
 			gpr_kit gprk = UnderstandValueTokens::new_kit();
-			packaging_state save = Emit::unused_packaging_state();
+			packaging_state save = Emit::new_packaging_state();
 			if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk, cg->subj_understood, cg, NULL)) {
 				RTCommandGrammars::cg_compile_parse_name_lines(&gprk, cg);
 				UnderstandGeneralTokens::compile_parse_name_tail(&gprk);
@@ -337,21 +337,21 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			packaging_state save = Functions::begin(cg->compilation_data.cg_prn_iname);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.original_wn_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, gprk.rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Emit::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.original_wn_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
 			RTCommandGrammars::cg_compile_lines(&gprk, cg);
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
 			Functions::end(save);
 			break;
 		}

@@ -55,44 +55,44 @@ void RTVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 	inter_name *cv_neg = Hierarchy::find(CV_NEG_HL);
 	if (modal) {
 		if (negated) {
-			Produce::inv_call_iname(Emit::tree(), Conjugation::conj_iname(modal));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, cv_neg);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PNTOVP_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(STORY_TENSE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Conjugation::conj_iname(vc));
-			Emit::up();
+			EmitCode::call(Conjugation::conj_iname(modal));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, cv_neg);
+				EmitCode::call(Hierarchy::find(PNTOVP_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
+				EmitCode::val_iname(K_value, Conjugation::conj_iname(vc));
+			EmitCode::up();
 		} else {
-			Produce::inv_call_iname(Emit::tree(), Conjugation::conj_iname(modal));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, cv_pos);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PNTOVP_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(STORY_TENSE_HL));
-				Produce::val_iname(Emit::tree(), K_value, Conjugation::conj_iname(vc));
-			Emit::up();
+			EmitCode::call(Conjugation::conj_iname(modal));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, cv_pos);
+				EmitCode::call(Hierarchy::find(PNTOVP_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
+				EmitCode::val_iname(K_value, Conjugation::conj_iname(vc));
+			EmitCode::up();
 		}
 	} else {
 		if (negated) {
-			Produce::inv_call_iname(Emit::tree(), Conjugation::conj_iname(vc));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, cv_neg);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PNTOVP_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(STORY_TENSE_HL));
-			Emit::up();
+			EmitCode::call(Conjugation::conj_iname(vc));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, cv_neg);
+				EmitCode::call(Hierarchy::find(PNTOVP_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
+			EmitCode::up();
 		} else {
-			Produce::inv_call_iname(Emit::tree(), Conjugation::conj_iname(vc));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, cv_pos);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PNTOVP_HL));
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(STORY_TENSE_HL));
-			Emit::up();
+			EmitCode::call(Conjugation::conj_iname(vc));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, cv_pos);
+				EmitCode::call(Hierarchy::find(PNTOVP_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(STORY_TENSE_HL));
+			EmitCode::up();
 		}
 	}
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
+		EmitCode::val_number(1);
+	EmitCode::up();
 }
 
 @ Each VC is represented by a routine at run-time:
@@ -117,10 +117,10 @@ void RTVerbs::ConjugateVerbDefinitions(void) {
 	Emit::named_numeric_constant_signed(CV_MODAL_INAME_iname, -3);
 	Emit::named_numeric_constant_signed(CV_MEANING_iname, -4);
 	
-	Hierarchy::make_available(Emit::tree(), CV_POS_iname);
-	Hierarchy::make_available(Emit::tree(), CV_NEG_iname);
-	Hierarchy::make_available(Emit::tree(), CV_MODAL_INAME_iname);
-	Hierarchy::make_available(Emit::tree(), CV_MEANING_iname);
+	Hierarchy::make_available(CV_POS_iname);
+	Hierarchy::make_available(CV_NEG_iname);
+	Hierarchy::make_available(CV_MODAL_INAME_iname);
+	Hierarchy::make_available(CV_MEANING_iname);
 }
 
 void RTVerbs::ConjugateVerb(void) {
@@ -132,12 +132,12 @@ void RTVerbs::ConjugateVerb(void) {
 		if (RTVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
 	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
 		if (RTVerbs::verb_form_is_instance(vf))
-			Emit::array_iname_entry(RTVerbs::form_iname(vf));
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
+			EmitArrays::iname_entry(RTVerbs::form_iname(vf));
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
 }
 
 @<Compile ConjugateVerb routine@> =
@@ -147,35 +147,35 @@ void RTVerbs::ConjugateVerb(void) {
 	inter_symbol *t_s = LocalVariables::new_other_as_symbol(I"t");
 	inter_symbol *modal_to_s = LocalVariables::new_other_as_symbol(I"modal_to");
 
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, fn_s);
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-				Produce::code(Emit::tree());
-				Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, fn_s);
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number(1);
+				EmitCode::code();
+				EmitCode::down();
 					RTVerbs::conj_from_wa(&(vc->infinitive), vc, modal_to_s, 0);
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-				Produce::code(Emit::tree());
-				Emit::down();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number(2);
+				EmitCode::code();
+				EmitCode::down();
 					RTVerbs::conj_from_wa(&(vc->past_participle), vc, modal_to_s, 0);
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-				Produce::code(Emit::tree());
-				Emit::down();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number(3);
+				EmitCode::code();
+				EmitCode::down();
 					RTVerbs::conj_from_wa(&(vc->present_participle), vc, modal_to_s, 0);
-				Emit::up();
-			Emit::up();
+				EmitCode::up();
+			EmitCode::up();
 
 	int modal_verb = FALSE;
 	@<Check for modality@>;
@@ -189,48 +189,48 @@ void RTVerbs::ConjugateVerb(void) {
 		rel_iname = RTRelations::iname(meaning);
 	}
 
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CV_MODAL_HL));
-				Produce::code(Emit::tree());
-				Emit::down();
-					if (modal_verb) Produce::rtrue(Emit::tree());
-					else Produce::rfalse(Emit::tree());
-				Emit::up();
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CV_MEANING_HL));
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, rel_iname);
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(CV_MODAL_HL));
+				EmitCode::code();
+				EmitCode::down();
+					if (modal_verb) EmitCode::rtrue();
+					else EmitCode::rfalse();
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(CV_MEANING_HL));
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(RETURN_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, rel_iname);
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 
 	for (int sense = 0; sense < 2; sense++) {
 		inter_name *sense_iname = Hierarchy::find(CV_POS_HL);
 		if (sense == 1) sense_iname = Hierarchy::find(CV_NEG_HL);
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, sense_iname);
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, t_s);
-						Produce::code(Emit::tree());
-						Emit::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, sense_iname);
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(SWITCH_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, t_s);
+						EmitCode::code();
+						EmitCode::down();
 							@<Compile conjugation in this sense@>;
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 	}
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 	Functions::end(save);
 
@@ -244,36 +244,36 @@ void RTVerbs::ConjugateVerb(void) {
 
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%A", &(vf->infinitive_reference_text));
-	Emit::code_comment(C);
+	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, t_s);
-		Produce::inv_call_iname(Emit::tree(), Conjugation::conj_iname(vc));
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, fn_s);
-			Produce::val_symbol(Emit::tree(), K_value, vp_s);
-			Produce::val_symbol(Emit::tree(), K_value, t_s);
-			Produce::val_symbol(Emit::tree(), K_value, modal_to_s);
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, t_s);
+		EmitCode::call(Conjugation::conj_iname(vc));
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, fn_s);
+			EmitCode::val_symbol(K_value, vp_s);
+			EmitCode::val_symbol(K_value, t_s);
+			EmitCode::val_symbol(K_value, modal_to_s);
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, fn_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CV_MODAL_HL));
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, t_s);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, fn_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(CV_MODAL_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, t_s);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
 	verb_meaning *vm = &(vf->list_of_senses->vm);
 	inter_name *rel_iname = RTRelations::default_iname();
@@ -283,29 +283,29 @@ void RTVerbs::ConjugateVerb(void) {
 		rel_iname = RTRelations::iname(meaning);
 	}
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, fn_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CV_MEANING_HL));
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, rel_iname);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, fn_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(CV_MEANING_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, rel_iname);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
 	if (vf->preposition) {
 		TEMPORARY_TEXT(T)
 		WRITE_TO(T, " %A", &(vf->preposition->prep_text));
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
-			Produce::val_text(Emit::tree(), T);
-		Emit::up();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_text(T);
+		EmitCode::up();
 		DISCARD_TEXT(T)
 	}
 
@@ -348,11 +348,11 @@ void RTVerbs::ConjugateVerb(void) {
 				else some_dont_exist = TRUE;
 			}
 		if (some_exist) {
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (tense+1));
-				Produce::code(Emit::tree());
-				Emit::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) (tense+1));
+				EmitCode::code();
+				EmitCode::down();
 					if ((some_differ) || (some_are_modal)) {
 						if ((some_except_3PS_differ) || (some_dont_exist) || (some_are_modal))
 							@<Compile a full switch of all six parts@>
@@ -361,55 +361,55 @@ void RTVerbs::ConjugateVerb(void) {
 					} else {
 						@<Compile for the case where all six parts are the same@>;
 					}
-				Emit::up();
-			Emit::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 
 @<Compile a full switch of all six parts@> =
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, vp_s);
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, vp_s);
+		EmitCode::code();
+		EmitCode::down();
 			for (int person=0; person<NO_KNOWN_PERSONS; person++)
 				for (int number=0; number<NO_KNOWN_NUMBERS; number++) {
 					word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][person][number]);
 					if (WordAssemblages::nonempty(*wa)) {
-						Produce::inv_primitive(Emit::tree(), CASE_BIP);
-						Emit::down();
+						EmitCode::inv(CASE_BIP);
+						EmitCode::down();
 							inter_ti part = ((inter_ti) person) + 3*((inter_ti) number) + 1;
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) part);
-							Produce::code(Emit::tree());
-							Emit::down();
+							EmitCode::val_number((inter_ti) part);
+							EmitCode::code();
+							EmitCode::down();
 								int mau = vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][person][number];
 								RTVerbs::conj_from_wa(wa, vc, modal_to_s, mau);
-							Emit::up();
-						Emit::up();
+							EmitCode::up();
+						EmitCode::up();
 					}
 				}
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<Compile a choice between 3PS and the rest@> =
-	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, vp_s);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(IFELSE_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, vp_s);
+			EmitCode::val_number(3);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][THIRD_PERSON][SINGULAR_NUMBER]);
 			RTVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
 			RTVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<Compile for the case where all six parts are the same@> =
 	word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
@@ -417,8 +417,8 @@ void RTVerbs::ConjugateVerb(void) {
 
 @ =
 void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symbol *modal_to_s, int mau) {
-	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Emit::down();
+	EmitCode::inv(PRINT_BIP);
+	EmitCode::down();
 		TEMPORARY_TEXT(OUT)
 		if ((RTVerbs::takes_contraction_form(wa) == FALSE) && (RTVerbs::takes_contraction_form(&(vc->infinitive))))
 			WRITE(" ");
@@ -445,26 +445,26 @@ void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symb
 				WRITE("%V", words[i]);
 			}
 		}
-		Produce::val_text(Emit::tree(), OUT);
+		EmitCode::val_text(OUT);
 		DISCARD_TEXT(OUT)
-	Emit::up();
+	EmitCode::up();
 	if (mau != 0) {
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, modal_to_s);
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Emit::down();
-					Produce::val_text(Emit::tree(), I" ");
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, modal_to_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) mau);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, modal_to_s);
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(PRINT_BIP);
+				EmitCode::down();
+					EmitCode::val_text(I" ");
+				EmitCode::up();
+				EmitCode::inv(INDIRECT1V_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, modal_to_s);
+					EmitCode::val_number((inter_ti) mau);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 }
 

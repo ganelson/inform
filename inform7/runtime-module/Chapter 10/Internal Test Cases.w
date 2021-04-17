@@ -83,23 +83,23 @@ void InternalTests::InternalTestCases_routine(void) {
 		n++;
 		if (itc->itc_code == HEADLINE_INTT) {
 			n = 0;
-			Produce::inv_primitive(Emit::tree(), STYLEBOLD_BIP);
+			EmitCode::inv(STYLEBOLD_BIP);
 			TEMPORARY_TEXT(T)
 			WRITE_TO(T, "\n%+W\n", itc->text_supplying_the_case);
-			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-			Emit::down();
-				Produce::val_text(Emit::tree(), T);
-			Emit::up();
+			EmitCode::inv(PRINT_BIP);
+			EmitCode::down();
+				EmitCode::val_text(T);
+			EmitCode::up();
 			DISCARD_TEXT(T)
-			Produce::inv_primitive(Emit::tree(), STYLEROMAN_BIP);
+			EmitCode::inv(STYLEROMAN_BIP);
 			continue;
 		}
 		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "%d. %+W\n", n, itc->text_supplying_the_case);
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
-			Produce::val_text(Emit::tree(), C);
-		Emit::up();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_text(C);
+		EmitCode::up();
 		DISCARD_TEXT(C)
 
 		TEMPORARY_TEXT(OUT)
@@ -132,16 +132,16 @@ void InternalTests::InternalTestCases_routine(void) {
 					LOG(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
 				@<End reporting on the internal test case@>;
 				WRITE("\nPrints as: ");
-				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Emit::down();
-					Produce::val_text(Emit::tree(), OUT);
-				Emit::up();
+				EmitCode::inv(PRINT_BIP);
+				EmitCode::down();
+					EmitCode::val_text(OUT);
+				EmitCode::up();
 
-				Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
+				EmitCode::inv(INDIRECT1V_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Kinds::Behaviour::get_iname(K));
 					CompileValues::to_code_val(spec);
-				Emit::up();
+				EmitCode::up();
 
 				Str::clear(OUT);
 				WRITE("\n");
@@ -193,15 +193,15 @@ void InternalTests::InternalTestCases_routine(void) {
 				break;
 		}
 		WRITE("\n");
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Emit::down();
-			Produce::val_text(Emit::tree(), OUT);
-		Emit::up();
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_text(OUT);
+		EmitCode::up();
 		if (internal_test_output_file) WRITE_TO(OUTFILE, "%S", OUT);
 		DISCARD_TEXT(OUT)
 	}
 	Functions::end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	if (internal_test_output_file) STREAM_CLOSE(OUTFILE);
 }
 
@@ -271,28 +271,28 @@ void InternalTests::emit_showme(parse_node *spec) {
 	Kinds::Textual::log(K);
 	@<End reporting on the internal test case@>;
 	WRITE(": ");
-	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Emit::down();
-		Produce::val_text(Emit::tree(), OUT);
-	Emit::up();
+	EmitCode::inv(PRINT_BIP);
+	EmitCode::down();
+		EmitCode::val_text(OUT);
+	EmitCode::up();
 	DISCARD_TEXT(OUT)
 
 	if (Kinds::get_construct(K) == CON_list_of) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SAY_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(LIST_OF_TY_SAY_HL));
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-		Emit::up();
+			EmitCode::val_number(1);
+		EmitCode::up();
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
-		Emit::down();
+		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-		Emit::up();
+		EmitCode::up();
 	}
-	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-	Emit::down();
-		Produce::val_text(Emit::tree(), I"\n");
-	Emit::up();
+	EmitCode::inv(PRINT_BIP);
+	EmitCode::down();
+		EmitCode::val_text(I"\n");
+	EmitCode::up();
 }
 
 @<Perform an internal test of the sentence converter@> =

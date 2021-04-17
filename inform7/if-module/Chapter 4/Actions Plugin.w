@@ -123,7 +123,7 @@ property *P_action_bitmap = NULL;
 int ActionsPlugin::complete_model(int stage) {
 	if (stage == WORLD_STAGE_V) {
 		P_action_bitmap = ValueProperties::new_nameless(I"action_bitmap", K_value);
-		Hierarchy::make_available(Emit::tree(), RTProperties::iname(P_action_bitmap));
+		Hierarchy::make_available(RTProperties::iname(P_action_bitmap));
 
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object) {

@@ -14,10 +14,10 @@ inter_name *ConstantLists::compile_literal_list(wording W) {
 	if (ll) {
 		Lists::kind_of_ll(ll, FALSE);
 		inter_name *N = RTKinds::new_block_constant_iname();
-		packaging_state save = Emit::named_late_array_begin(N, K_value);
-		Emit::array_iname_entry(ConstantLists::iname(ll));
-		Emit::array_numeric_entry(0);
-		Emit::array_end(save);
+		packaging_state save = EmitArrays::begin_late(N, K_value);
+		EmitArrays::iname_entry(ConstantLists::iname(ll));
+		EmitArrays::numeric_entry(0);
+		EmitArrays::end(save);
 		return N;
 	}
 	return NULL;
@@ -56,7 +56,7 @@ the list!);
 (d) that number of values, each representing one entry.
 
 @<Actually compile the list array@> =
-	packaging_state save = Emit::named_array_begin(ll->ll_iname, K_value);
+	packaging_state save = EmitArrays::begin(ll->ll_iname, K_value);
 	llist_entry *lle;
 	int n = 0;
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) n++;
@@ -65,21 +65,21 @@ the list!);
 
 	RTKinds::emit_strong_id(ll->entry_kind);
 
-	Emit::array_numeric_entry((inter_ti) n);
+	EmitArrays::numeric_entry((inter_ti) n);
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
 		CompileValues::to_array_entry_of_kind(
 			lle->llist_entry_value, ll->entry_kind);
-	Emit::array_end(save);
+	EmitArrays::end(save);
 
 @ The default list of any given kind is empty.
 
 =
 void ConstantLists::compile_default_list(inter_name *identifier, kind *K) {
-	packaging_state save = Emit::named_array_begin(identifier, K_value);
+	packaging_state save = EmitArrays::begin(identifier, K_value);
 	RTKinds::emit_block_value_header(K, TRUE, 2);
 	RTKinds::emit_strong_id(Kinds::unary_construction_material(K));
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
 }
 
 int ConstantLists::extent_of_instance_list(kind *K) {
@@ -108,34 +108,34 @@ inter_name *ConstantLists::get_instance_list(kind *K) {
 			if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 		}
 		iname = Hierarchy::make_iname_with_specific_name(ILIST_HL,
-			Emit::main_render_unique(Produce::main_scope(Emit::tree()), ILN),
+			InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ILN),
 				Kinds::Behaviour::package(K));
 		DISCARD_TEXT(ILN)
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 
-		packaging_state save = Emit::named_array_begin(iname, K_value);
+		packaging_state save = EmitArrays::begin(iname, K_value);
 		RTKinds::emit_block_value_header(Kinds::unary_con(CON_list_of, K), TRUE, N + 2);
 		RTKinds::emit_strong_id(K);
-		Emit::array_numeric_entry((inter_ti) N);
+		EmitArrays::numeric_entry((inter_ti) N);
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			for (int i = 1; i <= N; i++) {
-				Emit::array_numeric_entry((inter_ti) i);
+				EmitArrays::numeric_entry((inter_ti) i);
 			}
 		}		
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			instance *I = PL::Counting::next_instance_of(NULL, K);
 			while (I) {
-				Emit::array_iname_entry(RTInstances::iname(I));
+				EmitArrays::iname_entry(RTInstances::iname(I));
 				I = PL::Counting::next_instance_of(I, K);
 			}
 		}
-		Emit::array_end(save);
+		EmitArrays::end(save);
 		Kinds::Constructors::set_list_iname(Kinds::get_construct(K), iname);
 	}
 	inter_name *bc = RTKinds::new_block_constant_iname();
-	packaging_state save = Emit::named_late_array_begin(bc, K_value);
-	Emit::array_iname_entry(iname);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
+	packaging_state save = EmitArrays::begin_late(bc, K_value);
+	EmitArrays::iname_entry(iname);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
 	return bc;
 }

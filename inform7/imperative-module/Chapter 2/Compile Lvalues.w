@@ -49,7 +49,7 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 		LOG("Bad: %08x\n", spec_found);
 		internal_error("Compiled never-specified LOCAL VARIABLE SP");
 	}
-	Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+	EmitCode::val_symbol(K_value, lvar_s);
 	return;
 
 @<Compile a non-local variable specification@> =
@@ -70,17 +70,17 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
 	if (storage_mode == 2) {
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPROPERTY_HL));
+		EmitCode::val_iname(K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
 		if (storage_mode != 1) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
-			Emit::down();
+			EmitCode::call(Hierarchy::find(GPROPERTY_HL));
+			EmitCode::down();
 		}
 		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		CompileValues::to_code_val(prop_spec);
 		if (storage_mode != 1) {
-			Emit::up();
+			EmitCode::up();
 		}
 	}
 	return;
@@ -120,11 +120,11 @@ object as produced the original text containing the substitution.
 
 @<Emit the property's owner@> =
 	if (Annotations::read_int(spec_found, record_as_self_ANNOT)) {
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(SELF_HL));
 			CompileValues::to_code_val(owner);
-		Emit::up();
+		EmitCode::up();
 	} else {
 		CompileValues::to_code_val(owner);
 	}
@@ -137,16 +137,16 @@ object as produced the original text containing the substitution.
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
 	if (storage_mode == 2) {
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+		EmitCode::val_iname(K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
 		if (storage_mode != 1) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-			Emit::down();
+			EmitCode::call(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+			EmitCode::down();
 		}
 		CompileValues::to_code_val(spec_found->down);
 		CompileValues::to_code_val(spec_found->down->next);
 		if (storage_mode != 1) {
-			Emit::up();
+			EmitCode::up();
 		}
 	}
 	return;
@@ -170,68 +170,68 @@ void CompileLvalues::compile_table_reference(value_holster *VH, parse_node *spec
 	switch(Node::no_children(spec_found)) {
 		case 1:
 			if (storage_mode == 2) {
-				Produce::val_iname(Emit::tree(), K_value, lookup);
+				EmitCode::val_iname(K_value, lookup);
 			} else {
 				LocalVariables::used_ct_locals();
 				LocalVariables::add_table_lookup();
 				if (storage_mode != 1) {
-					Produce::inv_call_iname(Emit::tree(), lookup);
-					Emit::down();
+					EmitCode::call(lookup);
+					EmitCode::down();
 				}
 				local_variable *ct_0_lv = LocalVariables::find_internal(I"ct_0");
 				inter_symbol *ct_0_s = LocalVariables::declare(ct_0_lv);
 				local_variable *ct_1_lv = LocalVariables::find_internal(I"ct_1");
 				inter_symbol *ct_1_s = LocalVariables::declare(ct_1_lv);
-				Produce::val_symbol(Emit::tree(), K_value, ct_0_s);
+				EmitCode::val_symbol(K_value, ct_0_s);
 				CompileValues::to_code_val(spec_found->down);
-				Produce::val_symbol(Emit::tree(), K_value, ct_1_s);
+				EmitCode::val_symbol(K_value, ct_1_s);
 				if (blank_out) {
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
+					EmitCode::val_number(4);
 				}
 				if (storage_mode != 1) {
-					Emit::up();
+					EmitCode::up();
 				}
 			}
 			break;
 		case 2: /* never here except when printing debugging code */
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			EmitCode::val_false();
 			break;
 		case 3:
 			if (storage_mode == 2) {
-				Produce::val_iname(Emit::tree(), K_value, lookup);
+				EmitCode::val_iname(K_value, lookup);
 			} else {
 				if (storage_mode != 1) {
-					Produce::inv_call_iname(Emit::tree(), lookup);
-					Emit::down();
+					EmitCode::call(lookup);
+					EmitCode::down();
 				}
 				CompileValues::to_code_val(spec_found->down->next->next);
 				CompileValues::to_code_val(spec_found->down);
 				CompileValues::to_code_val(spec_found->down->next);
 				if (blank_out) {
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
+					EmitCode::val_number(4);
 				}
 				if (storage_mode != 1) {
-					Emit::up();
+					EmitCode::up();
 				}
 			}
 			break;
 		case 4:	
 			if (storage_mode == 2) {
-				Produce::val_iname(Emit::tree(), K_value, lookup_corr);
+				EmitCode::val_iname(K_value, lookup_corr);
 			} else {
 				if (storage_mode != 1) {
-					Produce::inv_call_iname(Emit::tree(), lookup_corr);
-					Emit::down();
+					EmitCode::call(lookup_corr);
+					EmitCode::down();
 				}
 				CompileValues::to_code_val(spec_found->down->next->next->next);
 				CompileValues::to_code_val(spec_found->down);
 				CompileValues::to_code_val(spec_found->down->next);
 				CompileValues::to_code_val(spec_found->down->next->next);
 				if (blank_out) {
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
+					EmitCode::val_number(4);
 				}
 				if (storage_mode != 1) {
-					Emit::up();
+					EmitCode::up();
 				}
 			}
 			break;

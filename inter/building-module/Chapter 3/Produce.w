@@ -376,6 +376,12 @@ void Produce::val_nothing(inter_tree *I) {
 	Produce::val(I, K_value, LITERAL_IVAL, 0);
 }
 
+void Produce::cast(inter_tree *I, kind *F, kind *T) {
+	inter_symbol *F_s = Produce::kind_to_symbol(F);
+	inter_symbol *T_s = Produce::kind_to_symbol(T);
+	Produce::guard(Inter::Cast::new(Produce::at(I), F_s, T_s, (inter_ti) Produce::level(I), NULL));
+}
+
 void Produce::lab(inter_tree *I, inter_symbol *L) {
 	Produce::guard(Inter::Lab::new(Produce::at(I), L, (inter_ti) Produce::level(I), NULL));
 }
@@ -397,6 +403,31 @@ inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 
 void Produce::place_label(inter_tree *I, inter_symbol *lab_name) {
 	Produce::guard(Inter::Label::new(Produce::at(I), lab_name, (inter_ti) Produce::level(I), NULL));
+}
+
+@ While it is true that this function adds a local variable to the stack frame for
+the function being compiled, and returns an |inter_symbol| for it, use the proper
+API in //imperative: Local Variables//.
+
+=
+inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
+	inter_ti annot, text_stream *comm) {
+	if (Site::get_cir(I) == NULL)
+		internal_error("local variable emitted outside function");
+	if (K == NULL) K = K_value;
+	inter_symbol *local_s = Produce::new_local_symbol(Site::get_cir(I), lname);
+	inter_symbol *kind_s = Produce::kind_to_symbol(K);
+	inter_ti ID = 0;
+	if ((comm) && (Str::len(comm) > 0)) {
+		ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
+			Inter::Bookmarks::package(Packaging::at(I)));
+		Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), comm);
+	}
+	if (annot) Produce::annotate_symbol_i(local_s, annot, 0);
+	Inter::Symbols::local(local_s);
+	Produce::guard(Inter::Local::new(Produce::locals_bookmark(I), local_s, kind_s,
+		ID, Produce::baseline(Produce::locals_bookmark(I)) + 1, NULL));
+	return local_s;
 }
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {

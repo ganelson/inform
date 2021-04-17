@@ -20,54 +20,52 @@ void RTUseOptions::TestUseOption_routine(void) {
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, UO_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-						(inter_ti) uo->allocation_id);
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, UO_s);
+					EmitCode::val_number((inter_ti) uo->allocation_id);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
 		}
-	Produce::rfalse(Emit::tree());
+	EmitCode::rfalse();
 	Functions::end(save);
 
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, UO_s);
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, UO_s);
+		EmitCode::code();
+		EmitCode::down();
 			use_option *uo;
 			LOOP_OVER(uo, use_option) {
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Emit::down();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-						(inter_ti) uo->allocation_id);
-					Produce::code(Emit::tree());
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Emit::down();
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_number((inter_ti) uo->allocation_id);
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(PRINT_BIP);
+						EmitCode::down();
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%W option", uo->name);
 							if (uo->minimum_setting_value > 0)
 								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
-							Produce::val_text(Emit::tree(), N);
+							EmitCode::val_text(N);
 							DISCARD_TEXT(N)
-						Emit::up();
-					Emit::up();
-				Emit::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
 			}
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 	Functions::end(save);
 
 @ And we also compile constants. The aim of all of this is to enable Inter
@@ -89,11 +87,11 @@ void RTUseOptions::configure_template(void) {
 
 	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
 	Emit::numeric_constant(iname, (inter_ti) bitmap);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 
 	iname = Hierarchy::find(TEMPLATE_CONFIGURATION_LOOKMODE_HL);
 	Emit::numeric_constant(iname, (inter_ti) global_compilation_settings.room_description_level);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 }
 
 @ Most use options take effect by causing a constant to be defined:

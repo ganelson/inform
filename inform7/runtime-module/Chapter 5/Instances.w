@@ -32,11 +32,11 @@ inter_name *RTInstances::iname(instance *I) {
 int RTInstances::emit_element_of_condition(inference_subject_family *family,
 	inference_subject *infs, inter_symbol *t0_s) {
 	instance *I = InstanceSubjects::to_instance(infs);
-	Produce::inv_primitive(Emit::tree(), EQ_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, t0_s);
-		Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(I));
-	Emit::up();
+	EmitCode::inv(EQ_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, t0_s);
+		EmitCode::val_iname(K_value, RTInstances::iname(I));
+	EmitCode::up();
 	return TRUE;
 }
 

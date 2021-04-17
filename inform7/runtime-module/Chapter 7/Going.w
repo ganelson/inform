@@ -28,19 +28,19 @@ int RTGoing::set_pattern_match_requirements(action_pattern *ap, int *cpm, int ne
 int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap, int cpmc) {
 	switch (cpmc) {
 		case NOWHERE_CPMC:
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) GoingPlugin::id());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::inv(LOOKUP_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					EmitCode::call(Hierarchy::find(MSTVON_HL));
+					EmitCode::down();
+						EmitCode::val_number((unsigned int) GoingPlugin::id());
+						EmitCode::val_number(1);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::val_number(0);
+			EmitCode::up();
 			return TRUE;
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
@@ -51,19 +51,19 @@ int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
 			return TRUE;
 		}
 		case NOT_NOWHERE_CPMC:
-			Produce::inv_primitive(Emit::tree(), NE_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) GoingPlugin::id());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			EmitCode::inv(NE_BIP);
+			EmitCode::down();
+				EmitCode::inv(LOOKUP_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					EmitCode::call(Hierarchy::find(MSTVON_HL));
+					EmitCode::down();
+						EmitCode::val_number((unsigned int) GoingPlugin::id());
+						EmitCode::val_number(1);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::val_number(0);
+			EmitCode::up();
 			return TRUE;
 	}
 	return FALSE;

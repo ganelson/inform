@@ -49,8 +49,8 @@ int LoopingOverScope::compilation_coroutine(void) {
 	local_variable *it_lv = Frames::enable_it(phsf, EMPTY_WORDING, K_object);
 	inter_symbol *it_s = LocalVariables::declare(it_lv);
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
 		CompileConditions::begin();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
@@ -58,15 +58,15 @@ int LoopingOverScope::compilation_coroutine(void) {
 			RTActionPatterns::compile_pattern_match_clause_inner(&VH,
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			EmitCode::val_false();
 		CompileConditions::end();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
-				Produce::val_symbol(Emit::tree(), K_value, it_s);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
+				EmitCode::val_symbol(K_value, it_s);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 	Functions::end(save);

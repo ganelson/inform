@@ -64,7 +64,7 @@ void NounIdentifiers::noun_set_translation(noun *t, text_stream *new) {
 		Str::delete_last_character(t->name_compilation.nt_identifier);
 	Produce::change_translation(t->name_compilation.nt_iname, t->name_compilation.nt_identifier);
 	Produce::clear_flag(t->name_compilation.nt_iname, MAKE_NAME_UNIQUE);
-	Hierarchy::make_available(Emit::tree(), t->name_compilation.nt_iname);
+	Hierarchy::make_available(t->name_compilation.nt_iname);
 }
 
 @ The identifiers are created all at once, but the process is complicated by

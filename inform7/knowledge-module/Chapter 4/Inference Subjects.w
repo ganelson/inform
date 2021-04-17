@@ -485,7 +485,7 @@ void InferenceSubjects::emit_element_of_condition(inference_subject *infs,
 	int written = FALSE;
 	INT_METHOD_CALL(written, infs->infs_family, EMIT_ELEMENT_INFS_MTID, infs, t0_s);
 	if (written == FALSE) {
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+		EmitCode::val_true();
 	}
 }
 

@@ -46,7 +46,7 @@ a number: all that matters is that the correct integer value is compiled.
 	if (I) {
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = RTInstances::emitted_iname(I);
-			if (N) Emit::holster(VH, N);
+			if (N) Emit::holster_iname(VH, N);
 			else internal_error("no iname for instance");
 		}
 	} else internal_error("no instance");
@@ -60,7 +60,7 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_activity) {
 		activity *act = Rvalues::to_activity(value);
 		inter_name *N = RTActivities::iname(act);
-		if (N) Emit::holster(VH, N);
+		if (N) Emit::holster_iname(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_combination) {
@@ -70,18 +70,18 @@ kinds of value:
 		for (parse_node *term = value->down; term; term = term->next) {
 			NT++;
 			if (NT < NC) {
-				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-				Emit::down(); downs++;
+				EmitCode::inv(SEQUENTIAL_BIP);
+				EmitCode::down(); downs++;
 			}
 			CompileValues::to_code_val(term);
 		}
-		while (downs > 0) { Emit::up(); downs--; }
+		while (downs > 0) { EmitCode::up(); downs--; }
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_equation)) {
 		equation *eqn = Rvalues::to_equation(value);
 		inter_name *N = RTEquations::identifier(eqn);
-		if (N) Emit::holster(VH, N);
+		if (N) Emit::holster_iname(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_description) {
@@ -91,19 +91,19 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_list_of) {
 		inter_name *N = ConstantLists::compile_literal_list(Node::get_text(value));
-		if (N) Emit::holster(VH, N);
+		if (N) Emit::holster_iname(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_phrase) {
 		constant_phrase *cphr = Rvalues::to_constant_phrase(value);
 		inter_name *N = Closures::iname(cphr);
-		if (N) Emit::holster(VH, N);
+		if (N) Emit::holster_iname(VH, N);
 		return;
 	}
 	if (Kinds::Behaviour::is_object(kind_of_constant)) {
 		if (Annotations::read_int(value, self_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH)) {
-				Emit::holster(VH, Hierarchy::find(SELF_HL));
+				Emit::holster_iname(VH, Hierarchy::find(SELF_HL));
 			}
 		} else if (Annotations::read_int(value, nothing_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH))
@@ -112,7 +112,7 @@ kinds of value:
 			instance *I = Rvalues::to_instance(value);
 			if (I) {
 				inter_name *N = RTInstances::emitted_iname(I);
-				if (N) Emit::holster(VH, N);
+				if (N) Emit::holster_iname(VH, N);
 			}
 			parse_node *NB = Functions::line_being_compiled();
 			if (NB) IXInstances::note_usage(I, NB);
@@ -127,12 +127,12 @@ kinds of value:
 		binary_predicate *bp = Rvalues::to_binary_predicate(value);
 		RTRelations::mark_as_needed(bp);
 		inter_name *N = RTRelations::iname(bp);
-		if (N) Emit::holster(VH, N);
+		if (N) Emit::holster_iname(VH, N);
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rule) {
 		rule *R = Rvalues::to_rule(value);
-		Emit::holster(VH, RTRules::iname(R));
+		Emit::holster_iname(VH, RTRules::iname(R));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
@@ -144,12 +144,12 @@ kinds of value:
 	if (Kinds::eq(kind_of_constant, K_rulebook_outcome)) {
 		named_rulebook_outcome *rbno =
 			Rvalues::to_named_rulebook_outcome(value);
-		Emit::holster(VH, RTRules::outcome_identifier(rbno));
+		Emit::holster_iname(VH, RTRules::outcome_identifier(rbno));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_table)) {
 		table *t = Rvalues::to_table(value);
-		Emit::holster(VH, RTTables::identifier(t));
+		Emit::holster_iname(VH, RTTables::identifier(t));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
@@ -182,14 +182,14 @@ kinds of value:
 	}
 	if (Kinds::eq(kind_of_constant, K_verb)) {
 		verb_form *vf = Rvalues::to_verb_form(value);
-		Emit::holster(VH, RTVerbs::form_iname(vf));
+		Emit::holster_iname(VH, RTVerbs::form_iname(vf));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(value);
 		int c = Annotations::read_int(value, response_code_ANNOT);
 		inter_name *iname = Strings::response_constant_iname(R, c);
-		if (iname) Emit::holster(VH, iname);
+		if (iname) Emit::holster_iname(VH, iname);
 		else Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		Rules::now_rule_needs_response(R, c, EMPTY_WORDING);
 		return;
@@ -225,7 +225,7 @@ contexts by using a tilde: |~attr|.
 
 		if (Holsters::data_acceptable(VH)) {
 			if (parity == 1) {
-				Emit::holster(VH, RTProperties::iname(prn_to_eval));
+				Emit::holster_iname(VH, RTProperties::iname(prn_to_eval));
 			} else {
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 					"this refers to an either-or property with a negative "
@@ -236,6 +236,6 @@ contexts by using a tilde: |~attr|.
 		}
 	} else {
 		if (Holsters::data_acceptable(VH)) {
-			Emit::holster(VH, RTProperties::iname(prn));
+			Emit::holster_iname(VH, RTProperties::iname(prn));
 		}
 	}

@@ -42,28 +42,28 @@ means we need a different value for each possible word size.
 =
 inter_name *FundamentalConstants::emit_one(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	Emit::numeric_constant(iname, val);
 	return iname;
 }
 
 inter_name *FundamentalConstants::emit_signed(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	Emit::named_numeric_constant_signed(iname, val);
 	return iname;
 }
 
 inter_name *FundamentalConstants::emit_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	return iname;
 }
 
 inter_name *FundamentalConstants::emit_unchecked_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	Emit::named_unchecked_constant_hex(iname, val);
 	return iname;
 }
@@ -114,7 +114,7 @@ void FundamentalConstants::emit_build_number(void) {
 	WRITE_TO(build, "%B", TRUE);
 	inter_name *iname = Hierarchy::find(NI_BUILD_COUNT_HL);
 	Emit::text_constant(iname, build);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	DISCARD_TEXT(build)
 }
 

@@ -99,7 +99,7 @@ property *ValueProperties::new_nameless_using(kind *K, package_request *R,
 	inter_name *using) {
 	if (K == NULL) internal_error("new nameless property without kind");
 	property *prn = Properties::create(EMPTY_WORDING, R, using, FALSE);
-	RTProperties::set_translation_S(prn, Emit::to_text(using));
+	RTProperties::set_translation_S(prn, InterNames::to_text(using));
 	@<Initialise this nameless property@>;
 	return prn;
 }

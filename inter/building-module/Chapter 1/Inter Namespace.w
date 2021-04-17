@@ -223,3 +223,15 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 	}
 	return iname->symbol;
 }
+
+text_stream *InterNames::to_text(inter_name *iname) {
+	if (iname == NULL) return NULL;
+	return InterNames::to_symbol(iname)->symbol_name;
+}
+
+int InterNames::is_defined(inter_name *iname) {
+	if (iname == NULL) return FALSE;
+	inter_symbol *S = InterNames::to_symbol(iname);
+	if (Inter::Symbols::is_defined(S)) return TRUE;
+	return FALSE;
+}

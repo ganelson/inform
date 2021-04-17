@@ -1609,10 +1609,10 @@ inter_name *Hierarchy::find(int id) {
 	return HierarchyLocations::find(Emit::tree(), id);
 }
 
-void Hierarchy::make_available(inter_tree *I, inter_name *iname) {
+void Hierarchy::make_available(inter_name *iname) {
 	text_stream *ma_as = Produce::get_translation(iname);
-	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
-	PackageTypes::get(I, I"_linkage");
+	if (Str::len(ma_as) == 0) ma_as = InterNames::to_text(iname);
+	PackageTypes::get(Emit::tree(), I"_linkage");
 	inter_symbol *S = InterNames::to_symbol(iname);
 	Inter::Connectors::socket(Emit::tree(), ma_as, S);
 }
@@ -1663,7 +1663,7 @@ inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording 
 
 inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P, wording W, int x) {
 	inter_name *iname = HierarchyLocations::find_in_package(Emit::tree(), id, P, W, NULL, x, NULL);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	return iname;
 }
 

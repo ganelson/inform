@@ -118,7 +118,7 @@ void RTProperties::set_translation(property *prn, wchar_t *t) {
 			PUT_TO(T, '_');
 	}
 	Produce::change_translation(prn->compilation_data.prop_iname, T);
-	Hierarchy::make_available(Emit::tree(), prn->compilation_data.prop_iname);
+	Hierarchy::make_available(prn->compilation_data.prop_iname);
 	DISCARD_TEXT(T)
 	prn->compilation_data.translated = TRUE;
 }

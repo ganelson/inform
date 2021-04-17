@@ -68,7 +68,7 @@ void RTRelations::mark_as_needed(binary_predicate *bp) {
 			default_rr = bp->imp->bp_iname;
 			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
 			Emit::iname_constant(iname, K_value, RTRelations::default_iname());
-			Hierarchy::make_available(Emit::tree(), iname);
+			Hierarchy::make_available(iname);
 		}
 	}
 	bp->imp->record_needed = TRUE;
@@ -108,7 +108,7 @@ inter_name *TTF_iname = NULL;
 
 inter_name *RTRelations::compile_defined_relation_constant(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	return iname;
 }
@@ -161,90 +161,90 @@ void RTRelations::compile_relation_records(void) {
 	LOOP_OVER(bp, binary_predicate) {
 		if ((Relations::Explicit::stored_dynamically(bp)) && (bp->right_way_round)) {
 
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
-			Emit::down();
+			EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
+			EmitCode::down();
 				RTKinds::emit_strong_id_as_val(BinaryPredicates::kind(bp));
-				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-			Emit::up();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+			EmitCode::up();
 
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_NAME_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
+			EmitCode::call(Hierarchy::find(RELATION_TY_NAME_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
 				TEMPORARY_TEXT(A)
 				WRITE_TO(A, "%A", &(bp->relation_name));
-				Produce::val_text(Emit::tree(), A);
+				EmitCode::val_text(A);
 				DISCARD_TEXT(A)
-			Emit::up();
+			EmitCode::up();
 
 			switch(Relations::Explicit::get_form_of_relation(bp)) {
 				case Relation_OtoO:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 				case Relation_OtoV:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 				case Relation_VtoO:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 				case Relation_Sym_OtoO:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 				case Relation_Equiv:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 				case Relation_VtoV: break;
 				case Relation_Sym_VtoV:
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
+					EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTRelations::iname(bp));
+						EmitCode::val_true();
+					EmitCode::up();
 					break;
 			}
-			Produce::inv_primitive(Emit::tree(), INDIRECT0V_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, RTRelations::initialiser_iname(bp));
-			Emit::up();
+			EmitCode::inv(INDIRECT0V_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::initialiser_iname(bp));
+			EmitCode::up();
 		}
 	}
 	Functions::end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 }
 
 @<Write the relation record for this BP@> =
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
-	packaging_state save = Emit::named_array_begin(RTRelations::iname(bp), K_value);
+	packaging_state save = EmitArrays::begin(RTRelations::iname(bp), K_value);
 	if (Relations::Explicit::stored_dynamically(bp)) {
-		Emit::array_numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
+		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
 		RTKinds::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
-		Emit::array_null_entry();
-		Emit::array_null_entry();
+		EmitArrays::null_entry();
+		EmitArrays::null_entry();
 		@<Write the name field of the relation record@>;
 		@<Write the permissions field of the relation record@>;
 		@<Write the storage field of the relation metadata array@>;
@@ -252,57 +252,57 @@ void RTRelations::compile_relation_records(void) {
 		@<Write the handler field of the relation record@>;
 		@<Write the description field of the relation record@>;
 	}
-	Emit::array_end(save);
+	EmitArrays::end(save);
 
 @<Write the name field of the relation record@> =
 	TEMPORARY_TEXT(NF)
 	WRITE_TO(NF, "%A relation", &(bp->relation_name));
-	Emit::array_text_entry(NF);
+	EmitArrays::text_entry(NF);
 	DISCARD_TEXT(NF)
 
 @<Write the permissions field of the relation record@> =
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
 	inter_name *bm_symb = Hierarchy::make_iname_in(ABILITIES_HL, bp->imp->bp_package);
-	packaging_state save_sum = Emit::sum_constant_begin(bm_symb, K_value);
+	packaging_state save_sum = EmitArrays::begin_sum_constant(bm_symb, K_value);
 	if (RELS_TEST_iname == NULL) internal_error("no RELS symbols yet");
-	Emit::array_iname_entry(RELS_TEST_iname);
+	EmitArrays::iname_entry(RELS_TEST_iname);
 	if (minimal == FALSE) {
-		Emit::array_iname_entry(RELS_LOOKUP_ANY_iname);
-		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
-		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
-		Emit::array_iname_entry(RELS_LIST_iname);
+		EmitArrays::iname_entry(RELS_LOOKUP_ANY_iname);
+		EmitArrays::iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
+		EmitArrays::iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
+		EmitArrays::iname_entry(RELS_LIST_iname);
 	}
 	switch(Relations::Explicit::get_form_of_relation(dbp)) {
 		case Relation_Implicit:
 			if ((minimal == FALSE) && (BinaryPredicates::can_be_made_true_at_runtime(dbp))) {
-				Emit::array_iname_entry(RELS_ASSERT_TRUE_iname);
-				Emit::array_iname_entry(RELS_ASSERT_FALSE_iname);
-				Emit::array_iname_entry(RELS_LOOKUP_ANY_iname); // Really?
+				EmitArrays::iname_entry(RELS_ASSERT_TRUE_iname);
+				EmitArrays::iname_entry(RELS_ASSERT_FALSE_iname);
+				EmitArrays::iname_entry(RELS_LOOKUP_ANY_iname); // Really?
 			}
 			break;
-		case Relation_OtoO: Emit::array_iname_entry(RELS_X_UNIQUE_iname); Emit::array_iname_entry(RELS_Y_UNIQUE_iname); @<Throw in the full suite@>; break;
-		case Relation_OtoV: Emit::array_iname_entry(RELS_X_UNIQUE_iname); @<Throw in the full suite@>; break;
-		case Relation_VtoO: Emit::array_iname_entry(RELS_Y_UNIQUE_iname); @<Throw in the full suite@>; break;
+		case Relation_OtoO: EmitArrays::iname_entry(RELS_X_UNIQUE_iname); EmitArrays::iname_entry(RELS_Y_UNIQUE_iname); @<Throw in the full suite@>; break;
+		case Relation_OtoV: EmitArrays::iname_entry(RELS_X_UNIQUE_iname); @<Throw in the full suite@>; break;
+		case Relation_VtoO: EmitArrays::iname_entry(RELS_Y_UNIQUE_iname); @<Throw in the full suite@>; break;
 		case Relation_Sym_OtoO:
-			Emit::array_iname_entry(RELS_SYMMETRIC_iname);
-			Emit::array_iname_entry(RELS_X_UNIQUE_iname);
-			Emit::array_iname_entry(RELS_Y_UNIQUE_iname);
+			EmitArrays::iname_entry(RELS_SYMMETRIC_iname);
+			EmitArrays::iname_entry(RELS_X_UNIQUE_iname);
+			EmitArrays::iname_entry(RELS_Y_UNIQUE_iname);
 			@<Throw in the full suite@>; break;
-		case Relation_Equiv: Emit::array_iname_entry(RELS_EQUIVALENCE_iname); @<Throw in the full suite@>; break;
+		case Relation_Equiv: EmitArrays::iname_entry(RELS_EQUIVALENCE_iname); @<Throw in the full suite@>; break;
 		case Relation_VtoV: @<Throw in the full suite@>; break;
-		case Relation_Sym_VtoV: Emit::array_iname_entry(RELS_SYMMETRIC_iname); @<Throw in the full suite@>; break;
+		case Relation_Sym_VtoV: EmitArrays::iname_entry(RELS_SYMMETRIC_iname); @<Throw in the full suite@>; break;
 		default:
 			internal_error("Binary predicate with unknown structural type");
 	}
-	Emit::array_end(save_sum); /* of the summation, that is */
-	Emit::array_iname_entry(bm_symb);
+	EmitArrays::end(save_sum); /* of the summation, that is */
+	EmitArrays::iname_entry(bm_symb);
 
 @<Throw in the full suite@> =
-	Emit::array_iname_entry(RELS_ASSERT_TRUE_iname);
-	Emit::array_iname_entry(RELS_ASSERT_FALSE_iname);
-	Emit::array_iname_entry(RELS_SHOW_iname);
-	Emit::array_iname_entry(RELS_ROUTE_FIND_iname);
+	EmitArrays::iname_entry(RELS_ASSERT_TRUE_iname);
+	EmitArrays::iname_entry(RELS_ASSERT_FALSE_iname);
+	EmitArrays::iname_entry(RELS_SHOW_iname);
+	EmitArrays::iname_entry(RELS_ROUTE_FIND_iname);
 
 @ The storage field has different meanings for different families of BPs:
 
@@ -312,18 +312,18 @@ void RTRelations::compile_relation_records(void) {
 	if (bp->relation_family == by_routine_bp_family) {
 		/* Field 0 is the routine used to test the relation */
 		by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(dbp->family_specific);
-		Emit::array_iname_entry(D->bp_by_routine_iname);
+		EmitArrays::iname_entry(D->bp_by_routine_iname);
 	} else {
 		switch(Relations::Explicit::get_form_of_relation(dbp)) {
 			case Relation_Implicit: /* Field 0 is not used */
-				Emit::array_numeric_entry(0); /* which is not the same as |NULL|, unlike in C */
+				EmitArrays::numeric_entry(0); /* which is not the same as |NULL|, unlike in C */
 				break;
 			case Relation_OtoO:
 			case Relation_OtoV:
 			case Relation_VtoO:
 			case Relation_Sym_OtoO:
 			case Relation_Equiv: /* Field 0 is the property used for run-time storage */
-				Emit::array_iname_entry(
+				EmitArrays::iname_entry(
 					RTProperties::iname(Relations::Explicit::get_i6_storage_property(dbp)));
 				break;
 			case Relation_VtoV:
@@ -331,7 +331,7 @@ void RTRelations::compile_relation_records(void) {
 				/* Field 0 is the bitmap array used for run-time storage */
 				explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 				if (ED->v2v_bitmap_iname == NULL) internal_error("gaah");
-				Emit::array_iname_entry(ED->v2v_bitmap_iname);
+				EmitArrays::iname_entry(ED->v2v_bitmap_iname);
 				break;
 			}
 		}
@@ -345,11 +345,11 @@ void RTRelations::compile_relation_records(void) {
 	if (Relations::Explicit::get_form_of_relation(bp) == Relation_Implicit)
 		WRITE_TO(DF, "%S", BinaryPredicates::get_log_name(bp));
 	else CompiledText::from_text(DF, Node::get_text(bp->bp_created_at));
-	Emit::array_text_entry(DF);
+	EmitArrays::text_entry(DF);
 	DISCARD_TEXT(DF)
 
 @<Write the handler field of the relation record@> =
-	Emit::array_iname_entry(handler);
+	EmitArrays::iname_entry(handler);
 
 @<Write the relation handler routine for this BP@> =
 	text_stream *X = I"X", *Y = I"Y";
@@ -375,77 +375,77 @@ void RTRelations::compile_relation_records(void) {
 
 	annotated_i6_schema asch; i6_schema *i6s = NULL;
 
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, task_s);
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
-				Produce::code(Emit::tree());
-				Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, task_s);
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
+				EmitCode::code();
+				EmitCode::down();
 					@<The TEST task@>;
-				Emit::up();
-			Emit::up();
+				EmitCode::up();
+			EmitCode::up();
 			if (minimal) {
-				Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-				Emit::down();
-					Produce::code(Emit::tree());
-					Emit::down();
+				EmitCode::inv(DEFAULT_BIP);
+				EmitCode::down();
+					EmitCode::code();
+					EmitCode::down();
 						@<The default case for minimal relations only@>;
-					Emit::up();
-				Emit::up();
+					EmitCode::up();
+				EmitCode::up();
 			} else {
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_LOOKUP_ANY_HL));
-					Produce::code(Emit::tree());
-					Emit::down();
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ANY_HL));
+					EmitCode::code();
+					EmitCode::down();
 						@<The LOOKUP ANY task@>;
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
-					Produce::code(Emit::tree());
-					Emit::down();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
+					EmitCode::code();
+					EmitCode::down();
 						@<The LOOKUP ALL X task@>;
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_HL));
-					Produce::code(Emit::tree());
-					Emit::down();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_HL));
+					EmitCode::code();
+					EmitCode::down();
 						@<The LOOKUP ALL Y task@>;
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_LIST_HL));
-					Produce::code(Emit::tree());
-					Emit::down();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(RELS_LIST_HL));
+					EmitCode::code();
+					EmitCode::down();
 						@<The LIST task@>;
-					Emit::up();
-				Emit::up();
+					EmitCode::up();
+				EmitCode::up();
 				if (BinaryPredicates::can_be_made_true_at_runtime(bp)) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The ASSERT TRUE task@>;
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_FALSE_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_ASSERT_FALSE_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The ASSERT FALSE task@>;
-						Emit::up();
-					Emit::up();
+						EmitCode::up();
+					EmitCode::up();
 				}
 				inter_name *shower = NULL;
 				int par = 0;
@@ -459,14 +459,14 @@ void RTRelations::compile_relation_records(void) {
 					case Relation_Sym_VtoV: shower = Hierarchy::find(RELATION_SHOWVTOV_HL); par = 1; break;
 				}
 				if (shower) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_SHOW_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_SHOW_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The SHOW task@>;
-						Emit::up();
-					Emit::up();
+						EmitCode::up();
+					EmitCode::up();
 				}
 				inter_name *emptier = NULL;
 				par = 0;
@@ -480,14 +480,14 @@ void RTRelations::compile_relation_records(void) {
 					case Relation_Sym_VtoV: emptier = Hierarchy::find(RELATION_EMPTYVTOV_HL); par = 1; break;
 				}
 				if (emptier) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_EMPTY_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_EMPTY_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The EMPTY task@>;
-						Emit::up();
-					Emit::up();
+						EmitCode::up();
+					EmitCode::up();
 				}
 				inter_name *router = NULL;
 				int id_flag = TRUE;
@@ -503,60 +503,60 @@ void RTRelations::compile_relation_records(void) {
 						break;
 				}
 				if (router) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ROUTE_FIND_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The ROUTE FIND task@>;
-						Emit::up();
-					Emit::up();
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_HL));
-						Produce::code(Emit::tree());
-						Emit::down();
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_HL));
+						EmitCode::code();
+						EmitCode::down();
 							@<The ROUTE FIND COUNT task@>;
-						Emit::up();
-					Emit::up();
+						EmitCode::up();
+					EmitCode::up();
 				}
 			}
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::rfalse(Emit::tree());
+	EmitCode::rfalse();
 	Functions::end(save);
 
 @<The default case for minimal relations only@> =
-	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RUNTIMEPROBLEM_HL));
-	Emit::down();
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
-		Produce::val_symbol(Emit::tree(), K_value, task_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-	Emit::up();
+	EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
+		EmitCode::val_symbol(K_value, task_s);
+		EmitCode::val_number(0);
+		EmitCode::val_iname(K_value, RTRelations::iname(bp));
+	EmitCode::up();
 
 @<The ASSERT TRUE task@> =
 	asch = Calculus::Schemas::blank_asch();
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_TRUE_TASK, dbp, &asch);
-	if (i6s == NULL) Produce::rfalse(Emit::tree());
+	if (i6s == NULL) EmitCode::rfalse();
 	else {
 		CompileSchemas::from_local_variables_in_void_context(i6s, X_lv, Y_lv);
-		Produce::rtrue(Emit::tree());
+		EmitCode::rtrue();
 	}
 
 @<The ASSERT FALSE task@> =
 	asch = Calculus::Schemas::blank_asch();
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_FALSE_TASK, dbp, &asch);
-	if (i6s == NULL) Produce::rfalse(Emit::tree());
+	if (i6s == NULL) EmitCode::rfalse();
 	else {
 		CompileSchemas::from_local_variables_in_void_context(i6s, X_lv, Y_lv);
-		Produce::rtrue(Emit::tree());
+		EmitCode::rtrue();
 	}
 
 @<The TEST task@> =
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
 		asch = Calculus::Schemas::blank_asch();
 		i6s = BinaryPredicateFamilies::get_schema(TEST_ATOM_TASK, dbp, &asch);
 		int adapted = FALSE;
@@ -564,208 +564,208 @@ void RTRelations::compile_relation_records(void) {
 			i6_schema *fnsc = BinaryPredicates::get_term_as_fn_of_other(bp, j);
 			if (fnsc) {
 				if (j == 0) {
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, X_s);
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, X_s);
 						CompileSchemas::from_local_variables_in_val_context(fnsc, Y_lv, Y_lv);
-					Emit::up();
+					EmitCode::up();
 					adapted = TRUE;
 				} else {
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, Y_s);
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, Y_s);
 						CompileSchemas::from_local_variables_in_val_context(fnsc, X_lv, X_lv);
-					Emit::up();
+					EmitCode::up();
 					adapted = TRUE;
 				}
 			}
 		}
 		if (adapted == FALSE) {
-			if (i6s == NULL) Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			if (i6s == NULL) EmitCode::val_false();
 			else CompileSchemas::from_local_variables_in_val_context(i6s, X_lv, Y_lv);
 		}
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::rtrue(Emit::tree());
-		Emit::up();
-	Emit::up();
-	Produce::rfalse(Emit::tree());
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rtrue();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::rfalse();
 
 @<The ROUTE FIND task@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, router);
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::inv(INDIRECT3_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, router);
 			@<Expand the ID operand@>;
-			Produce::val_symbol(Emit::tree(), K_value, X_s);
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-		Emit::up();
-	Emit::up();
+			EmitCode::val_symbol(K_value, X_s);
+			EmitCode::val_symbol(K_value, Y_s);
+		EmitCode::up();
+	EmitCode::up();
 
 @<Expand the ID operand@> =
 	if (id_flag) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RLNGETF_HL));
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, rr_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RR_STORAGE_HL));
-		Emit::up();
+		EmitCode::call(Hierarchy::find(RLNGETF_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, rr_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(RR_STORAGE_HL));
+		EmitCode::up();
 	} else {
-		Produce::val_symbol(Emit::tree(), K_value, rr_s);
+		EmitCode::val_symbol(K_value, rr_s);
 	}
 
 @<The ROUTE FIND COUNT task@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
 	if (follow) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELFOLLOWVECTOR_HL));
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP);
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, router);
+		EmitCode::call(Hierarchy::find(RELFOLLOWVECTOR_HL));
+		EmitCode::down();
+			EmitCode::inv(INDIRECT3_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, router);
 				@<Expand the ID operand@>;
-				Produce::val_symbol(Emit::tree(), K_value, X_s);
-				Produce::val_symbol(Emit::tree(), K_value, Y_s);
-			Emit::up();
-			Produce::val_symbol(Emit::tree(), K_value, X_s);
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-		Emit::up();
+				EmitCode::val_symbol(K_value, X_s);
+				EmitCode::val_symbol(K_value, Y_s);
+			EmitCode::up();
+			EmitCode::val_symbol(K_value, X_s);
+			EmitCode::val_symbol(K_value, Y_s);
+		EmitCode::up();
 	} else {
-		Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, router);
+		EmitCode::inv(INDIRECT4_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, router);
 			@<Expand the ID operand@>;
-			Produce::val_symbol(Emit::tree(), K_value, X_s);
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Emit::up();
+			EmitCode::val_symbol(K_value, X_s);
+			EmitCode::val_symbol(K_value, Y_s);
+			EmitCode::val_true();
+		EmitCode::up();
 	}
-	Emit::up();
+	EmitCode::up();
 
 @<The SHOW task@> =
-	Produce::inv_primitive(Emit::tree(), INDIRECT2V_BIP);
-	Emit::down();
-		Produce::val_iname(Emit::tree(), K_value, shower);
-		Produce::val_symbol(Emit::tree(), K_value, rr_s);
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_ti) par);
-	Emit::up();
-	Produce::rtrue(Emit::tree());
+	EmitCode::inv(INDIRECT2V_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, shower);
+		EmitCode::val_symbol(K_value, rr_s);
+		if (par) EmitCode::val_true(); else EmitCode::val_false();
+	EmitCode::up();
+	EmitCode::rtrue();
 
 @<The EMPTY task@> =
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, emptier);
-			Produce::val_symbol(Emit::tree(), K_value, rr_s);
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_ti) par);
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, X_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::inv(INDIRECT3_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, emptier);
+			EmitCode::val_symbol(K_value, rr_s);
+			if (par) EmitCode::val_true(); else EmitCode::val_false();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, X_s);
+				EmitCode::val_number(1);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<The LOOKUP ANY task@> =
-	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), OR_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, Y_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_GET_X_HL));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, Y_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(IFELSE_BIP);
+	EmitCode::down();
+		EmitCode::inv(OR_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, Y_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(RLANY_GET_X_HL));
+			EmitCode::up();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, Y_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			int t = 0;
 			@<Write rels lookup@>;
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			t = 1;
 			@<Write rels lookup@>;
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<The LOOKUP ALL X task@> =
-	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, Y_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Emit::up();
+	EmitCode::call(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, Y_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
 
 	int t = 0;
 	@<Write rels lookup list@>;
 
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, Y_s);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, Y_s);
+	EmitCode::up();
 
 @<The LOOKUP ALL Y task@> =
-	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, Y_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Emit::up();
+	EmitCode::call(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, Y_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
 
 	int t = 1;
 	@<Write rels lookup list@>;
 
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, Y_s);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, Y_s);
+	EmitCode::up();
 
 @<The LIST task@> =
-	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, X_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Emit::up();
+	EmitCode::call(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, X_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLIST_ALL_X_HL));
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(IFELSE_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, Y_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(RLIST_ALL_X_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			int t = 0;
 			@<Write rels lookup list all@>;
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, Y_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLIST_ALL_Y_HL));
-				Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, Y_s);
+					EmitCode::val_iname(K_value, Hierarchy::find(RLIST_ALL_Y_HL));
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
 					t = 1;
 					@<Write rels lookup list all@>;
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, X_s);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, X_s);
+	EmitCode::up();
 
 @<Write rels lookup@> =
 	kind *K = BinaryPredicates::term_kind(dbp, t);
@@ -776,95 +776,95 @@ void RTRelations::compile_relation_records(void) {
 		i6_schema loop_schema;
 		if (CompileLoops::schema(&loop_schema, K)) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema, Z1_lv, Z2_lv);
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
-							Produce::val_symbol(Emit::tree(), K_value, rr_s);
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
+					EmitCode::inv(IF_BIP);
+					EmitCode::down();
+						EmitCode::inv(INDIRECT4_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, RTRelations::handler_iname(dbp));
+							EmitCode::val_symbol(K_value, rr_s);
+							EmitCode::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-								Produce::val_symbol(Emit::tree(), K_value, X_s);
+								EmitCode::val_symbol(K_value, Z1_s);
+								EmitCode::val_symbol(K_value, X_s);
 							} else {
-								Produce::val_symbol(Emit::tree(), K_value, X_s);
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
+								EmitCode::val_symbol(K_value, X_s);
+								EmitCode::val_symbol(K_value, Z1_s);
 							}
-						Emit::up();
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, Y_s);
-									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
-								Emit::up();
-								Produce::code(Emit::tree());
-								Emit::down();
-									Produce::rtrue(Emit::tree());
-								Emit::up();
-							Emit::up();
+						EmitCode::up();
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, Y_s);
+									EmitCode::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
+								EmitCode::up();
+								EmitCode::code();
+								EmitCode::down();
+									EmitCode::rtrue();
+								EmitCode::up();
+							EmitCode::up();
 
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), EQ_BIP);
-								Emit::down();
-									Produce::val_symbol(Emit::tree(), K_value, Y_s);
-									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
-								Emit::up();
-								Produce::code(Emit::tree());
-								Emit::down();
-									Produce::rtrue(Emit::tree());
-								Emit::up();
-							Emit::up();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(EQ_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, Y_s);
+									EmitCode::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
+								EmitCode::up();
+								EmitCode::code();
+								EmitCode::down();
+									EmitCode::rtrue();
+								EmitCode::up();
+							EmitCode::up();
 
-							Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
+							EmitCode::inv(RETURN_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, Z1_s);
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::rfalse(Emit::tree());
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, Y_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rfalse();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), EQ_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, Y_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::rfalse(Emit::tree());
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, Y_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rfalse();
+		EmitCode::up();
+	EmitCode::up();
 
-	if (K == NULL) Produce::rfalse(Emit::tree());
+	if (K == NULL) EmitCode::rfalse();
 	else {
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DEFAULTVALUEOFKOV_HL));
-			Emit::down();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(DEFAULTVALUEOFKOV_HL));
+			EmitCode::down();
 				RTKinds::emit_strong_id_as_val(K);
-			Emit::up();
-		Emit::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 
 @<Write rels lookup list@> =
@@ -876,32 +876,32 @@ void RTRelations::compile_relation_records(void) {
 		i6_schema loop_schema;
 		if (CompileLoops::schema(&loop_schema, K)) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema, Z1_lv, Z2_lv);
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
-						Emit::down();
-							Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
-							Produce::val_symbol(Emit::tree(), K_value, rr_s);
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
+					EmitCode::inv(IF_BIP);
+					EmitCode::down();
+						EmitCode::inv(INDIRECT4_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, RTRelations::handler_iname(dbp));
+							EmitCode::val_symbol(K_value, rr_s);
+							EmitCode::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-								Produce::val_symbol(Emit::tree(), K_value, X_s);
+								EmitCode::val_symbol(K_value, Z1_s);
+								EmitCode::val_symbol(K_value, X_s);
 							} else {
-								Produce::val_symbol(Emit::tree(), K_value, X_s);
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
+								EmitCode::val_symbol(K_value, X_s);
+								EmitCode::val_symbol(K_value, Z1_s);
 							}
-						Emit::up();
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
-							Emit::down();
-								Produce::val_symbol(Emit::tree(), K_value, Y_s);
-								Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-							Emit::up();
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
+						EmitCode::up();
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::call(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, Y_s);
+								EmitCode::val_symbol(K_value, Z1_s);
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 
@@ -919,40 +919,40 @@ void RTRelations::compile_relation_records(void) {
 			CompileSchemas::from_local_variables_in_void_context(&loop_schema_L, Z1_lv, Z2_lv);
 					CompileSchemas::from_local_variables_in_void_context(&loop_schema_R, Z3_lv, Z4_lv);
 
-							Produce::inv_primitive(Emit::tree(), IF_BIP);
-							Emit::down();
-								Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
-								Emit::down();
-									Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
-									Produce::val_symbol(Emit::tree(), K_value, rr_s);
-									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
-									Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-									Produce::val_symbol(Emit::tree(), K_value, Z3_s);
-								Emit::up();
-								Produce::code(Emit::tree());
-								Emit::down();
-									Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
-									Emit::down();
+							EmitCode::inv(IF_BIP);
+							EmitCode::down();
+								EmitCode::inv(INDIRECT4_BIP);
+								EmitCode::down();
+									EmitCode::val_iname(K_value, RTRelations::handler_iname(dbp));
+									EmitCode::val_symbol(K_value, rr_s);
+									EmitCode::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
+									EmitCode::val_symbol(K_value, Z1_s);
+									EmitCode::val_symbol(K_value, Z3_s);
+								EmitCode::up();
+								EmitCode::code();
+								EmitCode::down();
+									EmitCode::call(Hierarchy::find(LIST_OF_TY_INSERTITEM_HL));
+									EmitCode::down();
 										if (t == 0) {
-											Produce::val_symbol(Emit::tree(), K_value, X_s);
-											Produce::val_symbol(Emit::tree(), K_value, Z1_s);
-											Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-											Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-											Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+											EmitCode::val_symbol(K_value, X_s);
+											EmitCode::val_symbol(K_value, Z1_s);
+											EmitCode::val_false();
+											EmitCode::val_number(0);
+											EmitCode::val_true();
 										} else {
-											Produce::val_symbol(Emit::tree(), K_value, X_s);
-											Produce::val_symbol(Emit::tree(), K_value, Z3_s);
-											Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-											Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-											Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+											EmitCode::val_symbol(K_value, X_s);
+											EmitCode::val_symbol(K_value, Z3_s);
+											EmitCode::val_false();
+											EmitCode::val_number(0);
+											EmitCode::val_true();
 										}
-									Emit::up();
-								Emit::up();
-							Emit::up();
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
+									EmitCode::up();
+								EmitCode::up();
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
 		}
 	}
 
@@ -961,45 +961,45 @@ between numbers and texts.
 
 =
 void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
-	packaging_state save = Emit::named_array_begin(identifier, K_value);
+	packaging_state save = EmitArrays::begin(identifier, K_value);
 	RTKinds::emit_block_value_header(K, FALSE, 8);
-	Emit::array_null_entry();
-	Emit::array_null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::null_entry();
 	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
-	Emit::array_text_entry(DVT);
-	Emit::array_iname_entry(TTF_iname);
-	Emit::array_numeric_entry(0);
+	EmitArrays::text_entry(DVT);
+	EmitArrays::iname_entry(TTF_iname);
+	EmitArrays::numeric_entry(0);
 	RTKinds::emit_strong_id(K);
-	Emit::array_iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
-	Emit::array_text_entry(DVT);
+	EmitArrays::iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
+	EmitArrays::text_entry(DVT);
 	DISCARD_TEXT(DVT)
-	Emit::array_end(save);
+	EmitArrays::end(save);
 }
 
 void RTRelations::compile_blank_relation(kind *K) {
 	RTKinds::emit_block_value_header(K, FALSE, 34);
-	Emit::array_null_entry();
-	Emit::array_null_entry();
+	EmitArrays::null_entry();
+	EmitArrays::null_entry();
 	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "anonymous "); Kinds::Textual::write(DVT, K);
-	Emit::array_text_entry(DVT);
+	EmitArrays::text_entry(DVT);
 	DISCARD_TEXT(DVT)
 
-	Emit::array_iname_entry(TTF_iname);
-	Emit::array_numeric_entry(7);
+	EmitArrays::iname_entry(TTF_iname);
+	EmitArrays::numeric_entry(7);
 	RTKinds::emit_strong_id(K);
 	kind *EK = Kinds::unary_construction_material(K);
 	if (Kinds::Behaviour::uses_pointer_values(EK))
-		Emit::array_iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
+		EmitArrays::iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
 	else
-		Emit::array_iname_entry(Hierarchy::find(DOUBLEHASHSETRELATIONHANDLER_HL));
+		EmitArrays::iname_entry(Hierarchy::find(DOUBLEHASHSETRELATIONHANDLER_HL));
 
-	Emit::array_text_entry(I"an anonymous relation");
+	EmitArrays::text_entry(I"an anonymous relation");
 
-	Emit::array_numeric_entry(0);
-	Emit::array_numeric_entry(0);
-	for (int i=0; i<24; i++) Emit::array_numeric_entry(0);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::numeric_entry(0);
+	for (int i=0; i<24; i++) EmitArrays::numeric_entry(0);
 }
 
 @h Support for the RELATIONS command.
@@ -1012,14 +1012,14 @@ void RTRelations::IterateRelations(void) {
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
 		if (bp->imp->record_needed) {
-			Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, callback_s);
-				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-			Emit::up();
+			EmitCode::inv(INDIRECT1V_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, callback_s);
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+			EmitCode::up();
 		}
 	Functions::end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 }
 
 @h The bitmap for various-to-various relations.
@@ -1048,7 +1048,7 @@ void RTRelations::compile_bit(int b) {
 	word_compiled += (b << bit_counter);
 	bit_counter++;
 	if (bit_counter == 16) {
-		Emit::array_numeric_entry((inter_ti) word_compiled);
+		EmitArrays::numeric_entry((inter_ti) word_compiled);
 		words_compiled++;
 		word_compiled = 0; bit_counter = 0;
 	}
@@ -1075,13 +1075,13 @@ void RTRelations::compile_vtov_storage(binary_predicate *bp) {
 	package_request *P = RTRelations::package(bp);
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	ED->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
-	packaging_state save = Emit::named_array_begin(ED->v2v_bitmap_iname, K_value);
+	packaging_state save = EmitArrays::begin(ED->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
 
 	if ((left_count > 0) && (right_count > 0))
 		@<Compile bitmap pre-initialised to the V-to-V relation at start of play@>;
 
-	Emit::array_end(save);
+	EmitArrays::end(save);
 
 	RTRelations::free_index_storage();
 }
@@ -1114,22 +1114,22 @@ this is done by the routine |RTRelations::relation_range| (below).
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 
 	if ((Kinds::Behaviour::is_subkind_of_object(left_kind)) && (left_count > 0)) {
-		Emit::array_iname_entry(PL::Counting::instance_count_property_symbol(left_kind));
-	} else Emit::array_numeric_entry(0);
+		EmitArrays::iname_entry(PL::Counting::instance_count_property_symbol(left_kind));
+	} else EmitArrays::numeric_entry(0);
 	if ((Kinds::Behaviour::is_subkind_of_object(right_kind)) && (right_count > 0)) {
-		Emit::array_iname_entry(PL::Counting::instance_count_property_symbol(right_kind));
-	} else Emit::array_numeric_entry(0);
+		EmitArrays::iname_entry(PL::Counting::instance_count_property_symbol(right_kind));
+	} else EmitArrays::numeric_entry(0);
 
-	Emit::array_numeric_entry((inter_ti) left_count);
-	Emit::array_numeric_entry((inter_ti) right_count);
-	Emit::array_iname_entry(Kinds::Behaviour::get_iname(left_kind));
-	Emit::array_iname_entry(Kinds::Behaviour::get_iname(right_kind));
+	EmitArrays::numeric_entry((inter_ti) left_count);
+	EmitArrays::numeric_entry((inter_ti) right_count);
+	EmitArrays::iname_entry(Kinds::Behaviour::get_iname(left_kind));
+	EmitArrays::iname_entry(Kinds::Behaviour::get_iname(right_kind));
 
-	Emit::array_numeric_entry(1); /* Cache broken flag */
+	EmitArrays::numeric_entry(1); /* Cache broken flag */
 	if ((left_count > 0) && (right_count > 0))
-		Emit::array_iname_entry(v2v_iname);
+		EmitArrays::iname_entry(v2v_iname);
 	else
-		Emit::array_numeric_entry(0);
+		EmitArrays::numeric_entry(0);
 	words_used += 8;
 
 @ Fast route finding is available only where the left and right domains are
@@ -1150,15 +1150,15 @@ above: it forces the template layer to generate the cache when first used.
 		(left_count == right_count)) {
 		if (left_count < 256) {
 			v2v_iname = iname;
-			packaging_state save = Emit::named_byte_array_begin(iname, K_number);
-			Emit::array_numeric_entry((inter_ti) (2*left_count*left_count));
-			Emit::array_end(save);
+			packaging_state save = EmitArrays::begin_byte(iname, K_number);
+			EmitArrays::numeric_entry((inter_ti) (2*left_count*left_count));
+			EmitArrays::end(save);
 			bytes_used += 2*left_count*left_count;
 		} else {
 			v2v_iname = iname;
-			packaging_state save = Emit::named_array_begin(iname, K_number);
-			Emit::array_numeric_entry((inter_ti) (2*left_count*left_count));
-			Emit::array_end(save);
+			packaging_state save = EmitArrays::begin(iname, K_number);
+			EmitArrays::numeric_entry((inter_ti) (2*left_count*left_count));
+			EmitArrays::end(save);
 			words_used += 2*left_count*left_count;
 		}
 	} else {
@@ -1491,29 +1491,29 @@ void RTRelations::compile_defined_relations(void) {
 	inter_symbol *cl_s = LocalVariables::new_other_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::new_other_as_symbol(I"pr");
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, obj_s);
-			Produce::val_symbol(Emit::tree(), K_value, cl_s);
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, obj_s);
-					Produce::val_symbol(Emit::tree(), K_value, pr_s);
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_nothing(Emit::tree());
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(OFCLASS_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, obj_s);
+			EmitCode::val_symbol(K_value, cl_s);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, obj_s);
+					EmitCode::val_symbol(K_value, pr_s);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_nothing();
+	EmitCode::up();
 	Functions::end(save);
 
 @<Compile RGuard f0 routine@> =
@@ -1524,33 +1524,33 @@ void RTRelations::compile_defined_relations(void) {
 		inter_symbol *X_s = LocalVariables::declare(X_lv);
 		if (rg->f0) {
 			if (rg->check_R) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, X_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
-					Emit::up();
-					Produce::code(Emit::tree());
-					Emit::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, X_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
 			}
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
 			CompileSchemas::from_local_variables_in_val_context(rg->f0, X_lv, X_lv);
-			Emit::up();
+			EmitCode::up();
 			if (rg->check_R) {
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
-					Produce::val_nothing(Emit::tree());
-				Emit::up();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_nothing();
+				EmitCode::up();
 			}
 		} else {
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_nothing(Emit::tree());
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_nothing();
+			EmitCode::up();
 		}
 		Functions::end(save);
 	}
@@ -1563,33 +1563,33 @@ void RTRelations::compile_defined_relations(void) {
 		inter_symbol *X_s = LocalVariables::declare(X_lv);
 		if (rg->f1) {
 			if (rg->check_L) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, X_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
-					Emit::up();
-					Produce::code(Emit::tree());
-					Emit::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, X_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
 			}
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
 			CompileSchemas::from_local_variables_in_val_context(rg->f1, X_lv, X_lv);
-			Emit::up();
+			EmitCode::up();
 			if (rg->check_L) {
-					Emit::up();
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
-					Produce::val_nothing(Emit::tree());
-				Emit::up();
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_nothing();
+				EmitCode::up();
 			}
 		} else {
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Emit::down();
-				Produce::val_nothing(Emit::tree());
-			Emit::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_nothing();
+			EmitCode::up();
 		}
 		Functions::end(save);
 	}
@@ -1602,41 +1602,41 @@ void RTRelations::compile_defined_relations(void) {
 		inter_symbol *L_s = LocalVariables::declare(L_lv);
 		inter_symbol *R_s = LocalVariables::declare(R_lv);
 		if (rg->inner_test) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Emit::down();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
 
 				int downs = 0;
 				if (rg->check_L) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, L_s);
-							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
-						Emit::up();
+					EmitCode::inv(AND_BIP);
+					EmitCode::down();
+						EmitCode::inv(OFCLASS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, L_s);
+							EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+						EmitCode::up();
 					downs++;
 				}
 				if (rg->check_R) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-						Emit::down();
-							Produce::val_symbol(Emit::tree(), K_value, R_s);
-							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
-						Emit::up();
+					EmitCode::inv(AND_BIP);
+					EmitCode::down();
+						EmitCode::inv(OFCLASS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, R_s);
+							EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+						EmitCode::up();
 					downs++;
 				}
 				CompileSchemas::from_local_variables_in_val_context(rg->inner_test, L_lv, R_lv);
-				for (int i=0; i<downs; i++) Emit::up();
+				for (int i=0; i<downs; i++) EmitCode::up();
 
-				Produce::code(Emit::tree());
-				Emit::down();
-					Produce::rtrue(Emit::tree());
-				Emit::up();
-			Emit::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::rtrue();
+				EmitCode::up();
+			EmitCode::up();
 
 		}
-		Produce::rfalse(Emit::tree());
+		EmitCode::rfalse();
 		Functions::end(save);
 	}
 
@@ -1652,46 +1652,46 @@ void RTRelations::compile_defined_relations(void) {
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
 
 			if (downs > 0) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
 
 				if ((rg->check_L) && (rg->check_R)) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Emit::down();
+					EmitCode::inv(AND_BIP);
+					EmitCode::down();
 					downs = 2;
 				}
 
 				if (rg->check_L) {
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, L_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
-					Emit::up();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, L_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+					EmitCode::up();
 				}
 				if (rg->check_R) {
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, R_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
-					Emit::up();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, R_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+					EmitCode::up();
 				}
-				for (int i=0; i<downs-1; i++) Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
+				for (int i=0; i<downs-1; i++) EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
 			}
 
 			CompileSchemas::from_local_variables_in_void_context(rg->inner_make_true, L_lv, R_lv);
-			Produce::rtrue(Emit::tree());
+			EmitCode::rtrue();
 
-			if (downs > 0) { Emit::up(); Emit::up(); }
+			if (downs > 0) { EmitCode::up(); EmitCode::up(); }
 
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RUNTIMEPROBLEM_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
-				Produce::val_symbol(Emit::tree(), K_value, L_s);
-				Produce::val_symbol(Emit::tree(), K_value, R_s);
-				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
-			Emit::up();
+			EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
+				EmitCode::val_symbol(K_value, L_s);
+				EmitCode::val_symbol(K_value, R_s);
+				EmitCode::val_iname(K_value, rg->guarding->imp->bp_iname);
+			EmitCode::up();
 		}
 		Functions::end(save);
 	}
@@ -1708,46 +1708,46 @@ void RTRelations::compile_defined_relations(void) {
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
 
 			if (downs > 0) {
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
 
 				if ((rg->check_L) && (rg->check_R)) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Emit::down();
+					EmitCode::inv(AND_BIP);
+					EmitCode::down();
 					downs = 2;
 				}
 
 				if (rg->check_L) {
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, L_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
-					Emit::up();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, L_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+					EmitCode::up();
 				}
 				if (rg->check_R) {
-					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-					Emit::down();
-						Produce::val_symbol(Emit::tree(), K_value, R_s);
-						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
-					Emit::up();
+					EmitCode::inv(OFCLASS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, R_s);
+						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+					EmitCode::up();
 				}
-				for (int i=0; i<downs-1; i++) Emit::up();
-				Produce::code(Emit::tree());
-				Emit::down();
+				for (int i=0; i<downs-1; i++) EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
 			}
 
 			CompileSchemas::from_local_variables_in_void_context(rg->inner_make_false, L_lv, R_lv);
-			Produce::rtrue(Emit::tree());
+			EmitCode::rtrue();
 
-			if (downs > 0) { Emit::up(); Emit::up(); }
+			if (downs > 0) { EmitCode::up(); EmitCode::up(); }
 
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RUNTIMEPROBLEM_HL));
-			Emit::down();
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
-				Produce::val_symbol(Emit::tree(), K_value, L_s);
-				Produce::val_symbol(Emit::tree(), K_value, R_s);
-				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
-			Emit::up();
+			EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
+				EmitCode::val_symbol(K_value, L_s);
+				EmitCode::val_symbol(K_value, R_s);
+				EmitCode::val_iname(K_value, rg->guarding->imp->bp_iname);
+			EmitCode::up();
 		}
 		Functions::end(save);
 	}
@@ -1772,10 +1772,10 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 			"although the definition was properly formed - it is only "
 			"the part after 'when' which I can't follow.");
 	} else {
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-		Emit::up();
+		EmitCode::up();
 	}
 
 	Functions::end(save);
@@ -1795,21 +1795,21 @@ void RTRelations::add_term_as_call_parameter(stack_frame *phsf,
 	local_variable *lv = LocalVariables::new_call_parameter(phsf, bptd.called_name, PK);
 	inter_symbol *lv_s = LocalVariables::declare(lv);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), NOT_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, lv_s);
-					Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
-				Emit::up();
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::rfalse(Emit::tree());
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(NOT_BIP);
+			EmitCode::down();
+				EmitCode::inv(OFCLASS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, lv_s);
+					EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::rfalse();
+			EmitCode::up();
+		EmitCode::up();
 	}
 }
 
@@ -1880,13 +1880,13 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 				parse_node *spec0, *spec1;
 				RelationInferences::get_term_specs(i, &spec0, &spec1);
 				RTRelations::mark_as_needed(bp);
-				Produce::inv_call_iname(Emit::tree(), rtiname);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
+				EmitCode::call(rtiname);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTRelations::iname(bp));
+					EmitCode::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 					CompileValues::to_code_val(spec0);
 					CompileValues::to_code_val(spec1);
-				Emit::up();
+				EmitCode::up();
 			}
 			Functions::end(save);
 		} else {

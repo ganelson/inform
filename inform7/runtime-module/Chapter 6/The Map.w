@@ -21,7 +21,7 @@ int RTMap::compile_model_tables(void) {
 @<Declare I6 constants for the directions@> =
 	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
 	Emit::numeric_constant(ndi, (inter_ti) Map::number_of_directions());
-	Hierarchy::make_available(Emit::tree(), ndi);
+	Hierarchy::make_available(ndi);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction)
@@ -39,17 +39,17 @@ at run-time, so we can't know now how many we will need.
 	LOOP_OVER_INSTANCES(I, K_object)
 		RTInstances::emitted_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_object);
+	packaging_state save = EmitArrays::begin(iname, K_object);
 	int words_used = 0;
 	if (Task::wraps_existing_storyfile()) {
-		Emit::array_divider(I"minimal, as there are no rooms");
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
+		EmitArrays::divider(I"minimal, as there are no rooms");
+		EmitArrays::iname_entry(NULL);
+		EmitArrays::iname_entry(NULL);
+		EmitArrays::iname_entry(NULL);
+		EmitArrays::iname_entry(NULL);
 		words_used = 4;
 	} else {
-		Emit::array_divider(I"one row per room");
+		EmitArrays::divider(I"one row per room");
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
 			if (Spatial::object_is_a_room(I)) {
@@ -57,19 +57,19 @@ at run-time, so we can't know now how many we will need.
 				for (int i=0; i<N; i++) {
 					instance *to = MAP_EXIT(I, i);
 					if (to)
-						Emit::array_iname_entry(RTInstances::iname(to));
+						EmitArrays::iname_entry(RTInstances::iname(to));
 					else
-						Emit::array_numeric_entry(0);
+						EmitArrays::numeric_entry(0);
 				}
 				words_used++;
 				TEMPORARY_TEXT(divider)
 				WRITE_TO(divider, "Exits from: %~I", I);
-				Emit::array_divider(divider);
+				EmitArrays::divider(divider);
 				DISCARD_TEXT(divider)
 			}
 	}
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 
 @h Two-sided doors.
 The I6 implementation of two-way doors and of what, in I7, are called backdrops,
@@ -125,10 +125,10 @@ parse_node *RTMap::found_in_for_2_sided(instance *I, instance *R1, instance *R2)
 	package_request *PR =
 		Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Emit::named_array_begin(S, K_value);
-	Emit::array_iname_entry(RTInstances::iname(R1));
-	Emit::array_iname_entry(RTInstances::iname(R2));
-	Emit::array_end(save);
+	packaging_state save = EmitArrays::begin(S, K_value);
+	EmitArrays::iname_entry(RTInstances::iname(R1));
+	EmitArrays::iname_entry(RTInstances::iname(R2));
+	EmitArrays::end(save);
 	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	return Rvalues::from_iname(S);
 }
@@ -142,51 +142,51 @@ void RTMap::write_door_dir_routines(void) {
 		packaging_state save = Functions::begin(notice->ddn_iname);
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, loc_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(LOCATION_HL));
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, loc_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(THEDARK_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, loc_s);
+					EmitCode::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value,
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, loc_s);
+				EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value,
 						RTInstances::iname(Map::get_value_of_opposite_property(notice->D1)));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value,
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value,
 				RTInstances::iname(Map::get_value_of_opposite_property(notice->D2)));
-		Emit::up();
+		EmitCode::up();
 
 		Functions::end(save);
 	}
@@ -198,49 +198,49 @@ void RTMap::write_door_to_routines(void) {
 		packaging_state save = Functions::begin(notice->dtn_iname);
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Emit::down();
-			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Emit::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, loc_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(LOCATION_HL));
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, loc_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(THEDARK_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, loc_s);
+					EmitCode::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R2));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, loc_s);
+				EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTInstances::iname(notice->R2));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-		Emit::up();
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+		EmitCode::up();
 
 		Functions::end(save);
 	}

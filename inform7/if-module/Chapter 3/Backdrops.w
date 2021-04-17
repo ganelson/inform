@@ -194,11 +194,11 @@ int Backdrops::complete_model(int stage) {
 @<The object is found only in a few rooms, and no regions, so make it a list@> =
 	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *iname = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf)
-		Emit::array_iname_entry(RTInstances::iname(Backdrops::get_inferred_location(inf)));
-	Emit::array_end(save);
+		EmitArrays::iname_entry(RTInstances::iname(Backdrops::get_inferred_location(inf)));
+	EmitArrays::end(save);
 	Produce::annotate_i(iname, INLINE_ARRAY_IANN, 1);
 	val_of_found_in = Rvalues::from_iname(iname);
 

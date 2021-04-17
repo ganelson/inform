@@ -29,7 +29,7 @@ void RTBibliographicData::compile_constants(void) {
 	} else {
 		Emit::text_constant_from_wide_string(iname, L"\"Welcome\"");
 	}
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 
 @ And similarly here:
 
@@ -41,7 +41,7 @@ void RTBibliographicData::compile_constants(void) {
 	} else {
 		Emit::text_constant_from_wide_string(iname, L"\"An Interactive Fiction\"");
 	}
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 
 @ This time we compile a zero constant if no author is provided:
 
@@ -50,12 +50,12 @@ void RTBibliographicData::compile_constants(void) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
 		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
 		Emit::initial_value_as_constant(iname, story_author_VAR);
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 		global_compilation_settings.story_author_given = TRUE;
 	} else {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
 		Emit::unchecked_numeric_constant(iname, 0);
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 	}
 
 @ Similarly (but numerically):
@@ -64,7 +64,7 @@ void RTBibliographicData::compile_constants(void) {
 	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
 		Emit::initial_value_as_constant(iname, story_release_number_VAR);
-		Hierarchy::make_available(Emit::tree(), iname);
+		Hierarchy::make_available(iname);
 	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
@@ -79,7 +79,7 @@ should be able to fake the date-stamp with dates of their own choosing.
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
 	Emit::serial_number(iname, SN);
 	DISCARD_TEXT(SN)
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 
 @ The IFID is written into the compiled story file, too, both in order
 that it can be printed by the VERSION command and to brand the file so
@@ -92,7 +92,7 @@ void RTBibliographicData::IFID_text(void) {
 	text_stream *uuid = BibliographicData::read_uuid();
 	inter_name *UUID_array_iname = Hierarchy::find(UUID_ARRAY_HL);
 	Emit::text_constant(UUID_array_iname, uuid);
-	Hierarchy::make_available(Emit::tree(), UUID_array_iname);
+	Hierarchy::make_available(UUID_array_iname);
 }
 
 inter_name *RTBibliographicData::IFID_iname(void) {

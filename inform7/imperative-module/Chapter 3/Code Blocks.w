@@ -189,7 +189,7 @@ void CodeBlocks::close_code_block(void) {
 	if (block_being_compiled->label_following >= 0) {
 		TEMPORARY_TEXT(TL)
 		WRITE_TO(TL, ".loop_break_%d", block_being_compiled->label_following);
-		Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), TL));
+		EmitCode::place_label(EmitCode::reserve_label(TL));
 		DISCARD_TEXT(TL)
 	}
 
@@ -250,13 +250,13 @@ void CodeBlocks::emit_break(void) {
 			if (current_block_stack.pb_stack[i].label_following == -1)
 				current_block_stack.pb_stack[i].label_following =
 					unique_breakage_count++;
-			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-			Emit::down();
+			EmitCode::inv(JUMP_BIP);
+			EmitCode::down();
 				TEMPORARY_TEXT(TL)
 				WRITE_TO(TL, ".loop_break_%d", current_block_stack.pb_stack[i].label_following);
-				Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), TL));
+				EmitCode::lab(EmitCode::reserve_label(TL));
 				DISCARD_TEXT(TL)
-			Emit::up();
+			EmitCode::up();
 			return;
 		}
 	internal_error("not inside a loop block");

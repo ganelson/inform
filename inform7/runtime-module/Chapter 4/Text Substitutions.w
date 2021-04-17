@@ -155,8 +155,8 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
 				downs = LocalParking::park(phsf);
 				phsf = Frames::boxed_frame(phsf);
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
-				Emit::down();
+				EmitCode::call(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
+				EmitCode::down();
 					Frames::emit_new_local_value(K_text);
 				captured = TRUE;
 			}
@@ -164,12 +164,12 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 				adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 			inter_name *tin = TextSubstitutions::text_substitution_iname(ts);
 			if (VH->vhmode_wanted == INTER_DATA_VHMODE)
-				Emit::holster(VH, tin);
+				Emit::holster_iname(VH, tin);
 			else
-				Produce::val_iname(Emit::tree(), K_value, tin);
+				EmitCode::val_iname(K_value, tin);
 			if (captured) {
-				Emit::up();
-				while (downs > 0) { Emit::up(); downs--; }
+				EmitCode::up();
+				while (downs > 0) { EmitCode::up(); downs--; }
 			}
 		}
 	}
@@ -180,15 +180,15 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 		adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 	if (CompileValues::compiling_in_constant_mode()) {
 		inter_name *N = RTKinds::new_block_constant_iname();
-		packaging_state save = Emit::named_late_array_begin(N, K_value);
-		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		Emit::array_iname_entry(ts->ts_routine_iname);
-		Emit::array_end(save);
-		if (N) Emit::holster(VH, N);
+		packaging_state save = EmitArrays::begin_late(N, K_value);
+		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+		EmitArrays::iname_entry(ts->ts_routine_iname);
+		EmitArrays::end(save);
+		if (N) Emit::holster_iname(VH, N);
 	} else {
 		inter_name *tin = TextSubstitutions::text_substitution_iname(ts);
 		if (Holsters::data_acceptable(VH)) {
-			if (tin) Emit::holster(VH, tin);
+			if (tin) Emit::holster_iname(VH, tin);
 		}
 	}
 
@@ -309,13 +309,13 @@ void TextSubstitutions::compile_single_substitution(text_substitution *ts) {
 	Functions::end(save);
 
 	if (ts->ts_sb_needed) {
-		packaging_state save = Emit::named_array_begin(ts->ts_iname, K_value);
+		packaging_state save = EmitArrays::begin(ts->ts_iname, K_value);
 		if (makes_local_references)
-			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
+			EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
 		else
-			Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		Emit::array_iname_entry(ts->ts_routine_iname);
-		Emit::array_end(save);
+			EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+		EmitArrays::iname_entry(ts->ts_routine_iname);
+		EmitArrays::end(save);
 	}
 	current_ts_being_compiled = NULL;
 }
@@ -326,27 +326,27 @@ a request for a new text substitution to be compiled later...
 
 @<Compile a say-phrase@> =
 	if (TargetVMs::debug_enabled(Task::vm())) {
-		Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
-		Emit::down();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), IF_BIP);
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
-					Produce::code(Emit::tree());
-					Emit::down();
-						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-						Emit::down();
+		EmitCode::inv(IFDEBUG_BIP);
+		EmitCode::down();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(PRINT_BIP);
+						EmitCode::down();
 							TEMPORARY_TEXT(S)
 							WRITE_TO(S, "%W", ts->unsubstituted_text);
-							Produce::val_text(Emit::tree(), S);
+							EmitCode::val_text(S);
 							DISCARD_TEXT(S)
-						Emit::up();
-						Produce::rtrue(Emit::tree());
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+						EmitCode::up();
+						EmitCode::rtrue();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 
 	parse_node *ts_code_block = Node::new(IMPERATIVE_NT);
@@ -358,7 +358,7 @@ a request for a new text substitution to be compiled later...
 
 	CompileBlocksAndLines::full_definition_body(0, ts_code_block->down, FALSE);
 
-	Produce::rtrue(Emit::tree());
+	EmitCode::rtrue();
 
 @ See the "Responses" section for why, but we sometimes want to force
 the coroutine to go through the whole queue once, then go back to the

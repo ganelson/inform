@@ -12,23 +12,23 @@ void RTPlayer::InitialSituation(void) {
 	RTPlayer::InitialSituation_define(DONE_INIS_HL, 4);
 
 	inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	RTVariables::emit_initial_value(player_VAR);
-	if (start_object == NULL) Emit::array_numeric_entry(0);
-	else Emit::array_iname_entry(RTInstances::iname(start_object));
-	if (start_room == NULL) Emit::array_numeric_entry(0);
-	else Emit::array_iname_entry(RTInstances::iname(start_room));
+	if (start_object == NULL) EmitArrays::numeric_entry(0);
+	else EmitArrays::iname_entry(RTInstances::iname(start_object));
+	if (start_room == NULL) EmitArrays::numeric_entry(0);
+	else EmitArrays::iname_entry(RTInstances::iname(start_room));
 	RTVariables::emit_initial_value(time_of_day_VAR);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 }
 
 void RTPlayer::InitialSituation_define(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
-	Emit::named_array_begin(iname, K_value);
+	EmitArrays::begin(iname, K_value);
 	Emit::numeric_constant(iname, (inter_ti) val);
-	Hierarchy::make_available(Emit::tree(), iname);
+	Hierarchy::make_available(iname);
 }
 
 @ "Player" is set in an unusual way. That is, Inform does not compile

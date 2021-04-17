@@ -96,8 +96,8 @@ int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *p
 		@<If the proposition is a negation, take care of that now@>;
 		int NC = Deferrals::count_callings_in_condition(prop);
 		if (NC > 0) {
-			Produce::inv_primitive(Emit::tree(), AND_BIP);
-			Emit::down();
+			EmitCode::inv(AND_BIP);
+			EmitCode::down();
 		}
 		pdef = Deferrals::new(prop, CONDITION_DEFER);
 		@<Compile the call to the deferred function@>;
@@ -105,8 +105,8 @@ int Deferrals::defer_test_of_proposition(parse_node *substitution, pcalc_prop *p
 			Deferrals::prepare_to_retrieve_callings_in_test_context(prop);
 			Deferrals::retrieve_callings_in_test_context(prop, NC);
 		}
-		if (NC > 0) Emit::up();
-		if (go_up) Emit::up();
+		if (NC > 0) EmitCode::up();
+		if (go_up) EmitCode::up();
 		CompileConditions::end();
 		return TRUE;
 	}
@@ -119,8 +119,8 @@ then we defer $\psi$ instead, negating the result of testing it.
 @<If the proposition is a negation, take care of that now@> =
 	if (Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
 		prop = Propositions::remove_topmost_group(prop);
-		Produce::inv_primitive(Emit::tree(), NOT_BIP);
-		Emit::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
 		go_up = TRUE;
 	}
 
@@ -144,11 +144,11 @@ the local variable |x| in the deferred function |f|. This is correct, because
 in the |x| argument neatly effects a substitution of $x = t$.
 
 @<Compile the call to the deferred function@> =
-	Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
-	Emit::down();
+	EmitCode::call(pdef->ppd_iname);
+	EmitCode::down();
 		Cinders::compile_cindered_values(prop, pdef);
 		if (substitution) CompileValues::to_code_val(substitution);
-	Emit::up();
+	EmitCode::up();
 
 @ The second practical problem concerns callings. If we compile:
 = (text as Inform 7)
@@ -215,18 +215,18 @@ void Deferrals::prepare_to_retrieve_callings(pcalc_prop *prop, int as_test) {
 	inter_name *stash = LocalParking::callings();
 	if (CreationPredicates::contains_callings(prop)) {
 		if (as_test) {
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (1) */
-			Emit::down();
+			EmitCode::inv(SEQUENTIAL_BIP); /* (1) */
+			EmitCode::down();
 		} else {
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (2) */
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP); /* (3) */
-				Emit::down();
-					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
-					Emit::down();
-						Produce::val_iname(Emit::tree(), K_value, stash);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
-					Emit::up();
+			EmitCode::inv(SEQUENTIAL_BIP); /* (2) */
+			EmitCode::down();
+				EmitCode::inv(STORE_BIP); /* (3) */
+				EmitCode::down();
+					EmitCode::inv(LOOKUPREF_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, stash);
+						EmitCode::val_number(26);
+					EmitCode::up();
 		}
 	}
 }
@@ -244,9 +244,9 @@ void Deferrals::retrieve_callings_in_other_context(pcalc_prop *prop) {
 
 void Deferrals::retrieve_callings_inner(pcalc_prop *prop, int NC, int as_test) {
 	if (as_test == FALSE) {
-		Emit::up(); /* closes (3) */
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); /* (4) */
-		Emit::down();
+		EmitCode::up(); /* closes (3) */
+		EmitCode::inv(SEQUENTIAL_BIP); /* (4) */
+		EmitCode::down();
 	}
 	inter_name *stash = LocalParking::callings();
 	int calling_count = 0, downs = 0;
@@ -254,18 +254,18 @@ void Deferrals::retrieve_callings_inner(pcalc_prop *prop, int NC, int as_test) {
 	TRAVERSE_PROPOSITION(atom, prop)
 		if (CreationPredicates::is_calling_up_atom(atom))
 			@<Retrieve this calling@>;
-	while (downs > 0) { Emit::up(); downs--; }
+	while (downs > 0) { EmitCode::up(); downs--; }
 	if (as_test) {
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Emit::up(); /* closes (1) */
+		EmitCode::val_true();
+		EmitCode::up(); /* closes (1) */
 	} else {
-		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, stash);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 26);
-		Emit::up();
-		Emit::up(); /* closes (4) */
-		Emit::up(); /* closes (2) */
+		EmitCode::inv(LOOKUP_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, stash);
+			EmitCode::val_number(26);
+		EmitCode::up();
+		EmitCode::up(); /* closes (4) */
+		EmitCode::up(); /* closes (2) */
 	}
 }
 
@@ -275,21 +275,20 @@ void Deferrals::retrieve_callings_inner(pcalc_prop *prop, int NC, int as_test) {
 		LocalVariables::ensure_calling(W, CreationPredicates::what_kind_of_calling(atom));
 	calling_count++;
 	if (calling_count < NC) {
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Emit::down();
+		EmitCode::inv(SEQUENTIAL_BIP);
+		EmitCode::down();
 		downs++;
 	}
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
 		inter_symbol *local_s = LocalVariables::declare(local);
-		Produce::ref_symbol(Emit::tree(), K_value, local_s);
-		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-		Emit::down();
-			Produce::val_iname(Emit::tree(), K_value, stash);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-				(inter_ti) (calling_count - 1));
-		Emit::up();
-	Emit::up();
+		EmitCode::ref_symbol(K_value, local_s);
+		EmitCode::inv(LOOKUP_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, stash);
+			EmitCode::val_number((inter_ti) (calling_count - 1));
+		EmitCode::up();
+	EmitCode::up();
 	if (as_test) CompileConditions::add_calling(local);
 
 @ The following function can be used when:
@@ -320,10 +319,10 @@ is much easier here: we're in a void context, and we don't have callings.
 int Deferrals::defer_now_proposition(pcalc_prop *prop) {
 	if (Propositions::contains_quantifier(prop)) {
 		pcalc_prop_deferral *pdef = Deferrals::new(prop, NOW_ASSERTION_DEFER);
-		Produce::inv_call_iname(Emit::tree(), pdef->ppd_iname);
-		Emit::down();
+		EmitCode::call(pdef->ppd_iname);
+		EmitCode::down();
 		Cinders::compile_cindered_values(prop, pdef);
-		Emit::up();
+		EmitCode::up();
 		return TRUE;
 	}
 	return FALSE;
@@ -347,21 +346,21 @@ void Deferrals::call_deferred_fn(pcalc_prop *prop,
 	int arity = Cinders::count(prop, pdef);
 	if (K) arity = arity + 2;
 	switch (arity) {
-		case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
-		case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
-		case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
-		case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
-		case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
+		case 0: EmitCode::inv(INDIRECT0_BIP); break;
+		case 1: EmitCode::inv(INDIRECT1_BIP); break;
+		case 2: EmitCode::inv(INDIRECT2_BIP); break;
+		case 3: EmitCode::inv(INDIRECT3_BIP); break;
+		case 4: EmitCode::inv(INDIRECT4_BIP); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
-	Emit::down();
-	Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
+	EmitCode::down();
+	EmitCode::val_iname(K_value, pdef->ppd_iname);
 	Cinders::compile_cindered_values(prop, pdef);
 	if (K) {
 		Frames::emit_new_local_value(K);
 		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 	}
-	Emit::up();
+	EmitCode::up();
 	Deferrals::retrieve_callings_in_other_context(prop);
 }
 
@@ -435,7 +434,7 @@ void Deferrals::compile_multiple_use_proposition(value_holster *VH,
 		Problems::issue_problem_end();
 	} else {
 		pcalc_prop_deferral *pdef = Deferrals::new(prop, MULTIPURPOSE_DEFER);
-		Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
+		EmitCode::val_iname(K_value, pdef->ppd_iname);
 	}
 }
 
@@ -463,11 +462,11 @@ $\phi(x)$ because it only occurs in this one context.
 =
 int Deferrals::defer_number_of_matches(parse_node *spec) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-		Emit::down();
+		EmitCode::inv(INDIRECT1_BIP);
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
-		Emit::up();
+			EmitCode::val_number((inter_ti) NUMBER_OF_DUSAGE);
+		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
@@ -492,12 +491,12 @@ int Deferrals::spec_is_variable_of_kind_description(parse_node *spec) {
 =
 int Deferrals::defer_list_of_matches(parse_node *spec, kind *K) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_DESC_HL));
-		Emit::down();
+		EmitCode::call(Hierarchy::find(LIST_OF_TY_DESC_HL));
+		EmitCode::down();
 			Frames::emit_new_local_value(K);
 			CompileValues::to_code_val(spec);
 			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
-		Emit::up();
+		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
@@ -512,12 +511,11 @@ int Deferrals::defer_list_of_matches(parse_node *spec, kind *K) {
 =
 int Deferrals::defer_random_match(parse_node *spec) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-		Emit::down();
+		EmitCode::inv(INDIRECT1_BIP);
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-				(inter_ti) RANDOM_OF_DUSAGE);
-		Emit::up();
+			EmitCode::val_number((inter_ti) RANDOM_OF_DUSAGE);
+		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
@@ -559,21 +557,20 @@ int Deferrals::has_finite_domain(kind *K) {
 int Deferrals::defer_total_of_matches(property *prn, parse_node *spec) {
 	if (prn == NULL) internal_error("total of on non-property");
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value,
+		EmitCode::inv(SEQUENTIAL_BIP);
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value,
 					Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-			Emit::down();
+				EmitCode::val_iname(K_value, RTProperties::iname(prn));
+			EmitCode::up();
+			EmitCode::inv(INDIRECT1_BIP);
+			EmitCode::down();
 				CompileValues::to_code_val(spec);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-					(inter_ti) TOTAL_DUSAGE);
-			Emit::up();
-		Emit::up();
+				EmitCode::val_number((inter_ti) TOTAL_DUSAGE);
+			EmitCode::up();
+		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
@@ -594,30 +591,29 @@ int Deferrals::defer_extremal_match(parse_node *spec,
 	property *prn, int sign) {
 	if (prn == NULL) internal_error("extremal of on non-property");
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_iname(Emit::tree(), K_value,
+		EmitCode::inv(SEQUENTIAL_BIP);
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value,
 					Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
-			Emit::down();
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Emit::down();
-					Produce::ref_iname(Emit::tree(), K_value,
+				EmitCode::val_iname(K_value, RTProperties::iname(prn));
+			EmitCode::up();
+			EmitCode::inv(SEQUENTIAL_BIP);
+			EmitCode::down();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value,
 						Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sign);
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
-				Emit::down();
+					EmitCode::val_number((inter_ti) sign);
+				EmitCode::up();
+				EmitCode::inv(INDIRECT1_BIP);
+				EmitCode::down();
 					CompileValues::to_code_val(spec);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-						(inter_ti) EXTREMAL_DUSAGE);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+					EmitCode::val_number((inter_ti) EXTREMAL_DUSAGE);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	} else {
 		measurement_definition *mdef_found = Measurements::retrieve(prn, sign);
 		if (mdef_found) {
@@ -637,13 +633,12 @@ the "substitution variable") is within the domain.
 =
 int Deferrals::defer_if_matches(parse_node *in, parse_node *spec) {
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
-		Emit::down();
+		EmitCode::inv(INDIRECT2_BIP);
+		EmitCode::down();
 			CompileValues::to_code_val(spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-				(inter_ti) CONDITION_DUSAGE);
+			EmitCode::val_number((inter_ti) CONDITION_DUSAGE);
 			CompileValues::to_code_val(in);
-		Emit::up();
+		EmitCode::up();
 	} else {
 		CompilePropositions::to_test_as_condition(
 			in, SentencePropositions::from_spec(spec));

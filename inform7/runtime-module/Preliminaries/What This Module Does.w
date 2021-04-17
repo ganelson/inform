@@ -101,9 +101,9 @@ of code provides a detailed specification of exactly where everything goes.
 @ //runtime// and //imperative// should not make raw Inter code directly, but
 through a three-level process:
 
-(*) //runtime// and //imperative// call the functions in //Hierarchy// and
-//Emitting Inter// to "emit" code and find out where to put it.
-(*) //Hierarchy// and //Emitting Inter// then call the //building// module, which gives
+(*) //runtime// and //imperative// call the functions in //Chapter 2//
+to "emit" code and find out where to put it.
+(*) Those functions in turn call the //building// module, which gives
 general code (not tied to the Inform compiler) for constructing Inter.
 (*) The //building// module then calls down to //bytecode// to put the actual
 bytes in memory.

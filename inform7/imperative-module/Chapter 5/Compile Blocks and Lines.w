@@ -107,7 +107,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 	}
 	statement_count++;
 	@<Compile a comment about this line@>;
-	int L = Produce::level(Emit::tree());
+	int L = EmitCode::level();
 	@<Compile the head@>;
 	@<Compile the midriff@>;
 	@<Compile the tail@>;
@@ -121,7 +121,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 		WRITE_TO(C, "[%d: ", statement_count);
 		CompiledText::comment(C, Node::get_text(to_compile));
 		WRITE_TO(C, "]");
-		Emit::code_comment(C);
+		EmitCode::comment(C);
 		DISCARD_TEXT(C)
 	}
 
@@ -159,11 +159,11 @@ a newline.
 		}
 	}
 	/* warn the paragraph breaker by setting the say__p flag that this will print */
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
+		EmitCode::val_number(1);
+	EmitCode::up();
 	CompileBlocksAndLines::verify_say_node_list(p->down);
 
 @h Midriff code for lines.
@@ -307,29 +307,29 @@ is false:
 =
 
 @<Compile an if midriff@> =
-	if (p->down->next->next) Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	else Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
+	if (p->down->next->next) EmitCode::inv(IFELSE_BIP);
+	else EmitCode::inv(IF_BIP);
+	EmitCode::down();
 		current_sentence = to_compile;
 		CompileBlocksAndLines::evaluate_invocation(to_compile, FALSE, INTER_VAL_VHMODE,
 			allow_implied_newlines);
 
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::code();
+		EmitCode::down();
 			CodeBlocks::open_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				p->down->next, FALSE, allow_implied_newlines);
 		if (p->down->next->next) {
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			CodeBlocks::divide_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				p->down->next->next, FALSE, allow_implied_newlines);
 		}
 			CodeBlocks::close_code_block();
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @ Switches, like |switch| in C, offer code to execute in different cases
 depending on the "switch value". How efficiently this can be done depends
@@ -449,11 +449,11 @@ the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster
 @<Begin a pointery switch@> =
 	sw_lv = LocalVariables::add_switch_value(K_value);
 	sw_v = LocalVariables::declare(sw_lv);
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, sw_v);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, sw_v);
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
-	Emit::up();
+	EmitCode::up();
 
 @ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
 of |downs| is how many times we have called |Produce::down|.
@@ -462,9 +462,9 @@ of |downs| is how many times we have called |Produce::down|.
 	int final_flag = FALSE;
 	if (ow_node->next == NULL) final_flag = TRUE;
 
-	if (final_flag) Produce::inv_primitive(Emit::tree(), IF_BIP);
-	else Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-	Emit::down();
+	if (final_flag) EmitCode::inv(IF_BIP);
+	else EmitCode::inv(IFELSE_BIP);
+	EmitCode::down();
 		LocalVariables::set_kind(sw_lv, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, sw_lv);
 		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
@@ -472,14 +472,14 @@ of |downs| is how many times we have called |Produce::down|.
 		TypecheckPropositions::type_check(prop,
 			TypecheckPropositions::tc_no_problem_reporting());
 		CompilePropositions::to_test_as_condition(NULL, prop);
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::code();
+		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
 		if (final_flag == FALSE) {
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
 		}
 	downs += 2;
 
@@ -490,44 +490,44 @@ of |downs| is how many times we have called |Produce::down|.
 		FALSE, allow_implied_newlines);
 
 @<End a pointery switch@> =
-	while (downs-- > 0) Emit::up();
+	while (downs-- > 0) EmitCode::up();
 	CodeBlocks::close_code_block();
 
 @ And now the more efficient case, using Inter's |SWITCH_BIP|, |CASE_BIP| and
 |DEFAULT_BIP| instructions.
 
 @<Begin a non-pointery switch@> =
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::code();
+		EmitCode::down();
 
 @<Handle a non-pointery case@> =
-	Produce::inv_primitive(Emit::tree(), CASE_BIP);
-	Emit::down();
+	EmitCode::inv(CASE_BIP);
+	EmitCode::down();
 		CompileValues::to_code_val_of_kind(case_spec, switch_kind);
-		Produce::code(Emit::tree());
-		Emit::down();
+		EmitCode::code();
+		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<Handle a non-pointery default@> =
-	Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-	Emit::down();
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(DEFAULT_BIP);
+	EmitCode::down();
+		EmitCode::code();
+		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
 				ow_node, FALSE, allow_implied_newlines);
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
 @<End a non-pointery switch@> =
-	Emit::up();
+	EmitCode::up();
 	CodeBlocks::close_code_block();
-	Emit::up();
+	EmitCode::up();
 
 @ In either implementation, we perform this check:
 
@@ -585,7 +585,7 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYL)
 	WRITE_TO(SAYL, ".");
 	JumpLabels::write(SAYL, I"Say");
-	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYL));
+	EmitCode::place_label(EmitCode::reserve_label(SAYL));
 	DISCARD_TEXT(SAYL)
 
 	JumpLabels::read_counter(I"Say", 1);
@@ -593,19 +593,19 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYXL)
 	WRITE_TO(SAYXL, ".");
 	JumpLabels::write(SAYXL, I"SayX");
-	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYXL));
+	EmitCode::place_label(EmitCode::reserve_label(SAYXL));
 	DISCARD_TEXT(SAYXL)
 
 	JumpLabels::read_counter(I"SayX", 1);
 
 @<Compile an instead tail@> =
-	Produce::rtrue(Emit::tree());
+	EmitCode::rtrue();
 
 @<Compile a loop tail@> =
 	CodeBlocks::open_code_block();
 	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next,
 		FALSE, allow_implied_newlines);
-	while (Produce::level(Emit::tree()) > L) Emit::up();
+	while (EmitCode::level() > L) EmitCode::up();
 	CodeBlocks::close_code_block();
 
 @h The evaluator.
@@ -626,7 +626,7 @@ void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parse
 			(Node::get_phrase_invoked(inv)) &&
 			(IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
 			(Node::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARACONTENT_HL));
+			EmitCode::call(Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
 		SParser::parse_void_phrase(p);

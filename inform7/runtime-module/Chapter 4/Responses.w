@@ -74,7 +74,7 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, resp->resp_package);
 	if (VH) {
 		if (Holsters::data_acceptable(VH)) {
-			Produce::val_iname(Emit::tree(), K_value, Strings::response_launcher_iname(resp));
+			EmitCode::val_iname(K_value, Strings::response_launcher_iname(resp));
 		}
 	}
 	return resp;
@@ -111,17 +111,17 @@ a call to an activity based on that value:
 		resp->responding_rule, resp->response_marker);
 
 	inter_name *rname = Hierarchy::find(RESPONSEVIAACTIVITY_HL);
-	Produce::inv_call_iname(Emit::tree(), rname);
-	Emit::down();
-	Produce::val_iname(Emit::tree(), K_value, iname);
-	Emit::up();
+	EmitCode::call(rname);
+	EmitCode::down();
+	EmitCode::val_iname(K_value, iname);
+	EmitCode::up();
 
 	Functions::end(save);
 
-	save = Emit::named_array_begin(resp->resp_iname, K_value);
-	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-	Emit::array_iname_entry(launcher);
-	Emit::array_end(save);
+	save = EmitArrays::begin(resp->resp_iname, K_value);
+	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+	EmitArrays::iname_entry(launcher);
+	EmitArrays::end(save);
 
 @ Something skated over above is that responses can also be created when the
 source text defines a rule only as an I6 routine. For example:
@@ -153,137 +153,137 @@ essence here.
 	inter_symbol *str_s = LocalVariables::new_internal_as_symbol(I"str");
 	inter_symbol *f_s = LocalVariables::new_internal_as_symbol(I"f");
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), GE_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, code_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) 'a');
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), LE_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, code_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) 'z');
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, f_s);
-				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-			Emit::up();
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Emit::down();
-				Produce::ref_symbol(Emit::tree(), K_value, code_s);
-				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-				Emit::down();
-					Produce::val_symbol(Emit::tree(), K_value, code_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('a'-'A'));
-				Emit::up();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(AND_BIP);
+		EmitCode::down();
+			EmitCode::inv(GE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, code_s);
+				EmitCode::val_number((inter_ti) 'a');
+			EmitCode::up();
+			EmitCode::inv(LE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, code_s);
+				EmitCode::val_number((inter_ti) 'z');
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, f_s);
+				EmitCode::val_true();
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, code_s);
+				EmitCode::inv(MINUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, code_s);
+					EmitCode::val_number((inter_ti) ('a'-'A'));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, s_s);
-		Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, s2_s);
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SECOND_HL));
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_symbol(Emit::tree(), K_value, s3_s);
-		Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PARSED_NUMBER_HL));
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-		Produce::val_symbol(Emit::tree(), K_value, val_s);
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SECOND_HL));
-		Produce::val_symbol(Emit::tree(), K_value, val2_s);
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(PARSED_NUMBER_HL));
-		Produce::val_symbol(Emit::tree(), K_value, val_s);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, s_s);
+		EmitCode::val_iname(K_object, Hierarchy::find(NOUN_HL));
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, s2_s);
+		EmitCode::val_iname(K_value, Hierarchy::find(SECOND_HL));
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, s3_s);
+		EmitCode::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(NOUN_HL));
+		EmitCode::val_symbol(K_value, val_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(SECOND_HL));
+		EmitCode::val_symbol(K_value, val2_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
+		EmitCode::val_symbol(K_value, val_s);
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, code_s);
-		Produce::code(Emit::tree());
-		Emit::down();
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, code_s);
+		EmitCode::code();
+		EmitCode::down();
 			response_message *r2;
 			LOOP_OVER(r2, response_message) {
 				if (r2->responding_rule == resp->responding_rule) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Emit::down();
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('A' + r2->response_marker));
-						Produce::code(Emit::tree());
-						Emit::down();
-							Produce::inv_primitive(Emit::tree(), STORE_BIP);
-							Emit::down();
-								Produce::ref_symbol(Emit::tree(), K_value, str_s);
-								Produce::val_iname(Emit::tree(), K_value, r2->resp_iname);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+					EmitCode::inv(CASE_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) ('A' + r2->response_marker));
+						EmitCode::code();
+						EmitCode::down();
+							EmitCode::inv(STORE_BIP);
+							EmitCode::down();
+								EmitCode::ref_symbol(K_value, str_s);
+								EmitCode::val_iname(K_value, r2->resp_iname);
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
 					r2->via_I6_routine_compiled = TRUE;
 				}
 			}
-		Emit::up();
-	Emit::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), IF_BIP);
-	Emit::down();
-		Produce::inv_primitive(Emit::tree(), AND_BIP);
-		Emit::down();
-			Produce::val_symbol(Emit::tree(), K_value, str_s);
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, f_s);
-				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
-			Emit::up();
-		Emit::up();
-		Produce::code(Emit::tree());
-		Emit::down();
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_SAY_HL));
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, str_s);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(AND_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, str_s);
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, f_s);
+				EmitCode::val_false();
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(TEXT_TY_SAY_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, str_s);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-		Produce::val_symbol(Emit::tree(), K_value, s_s);
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SECOND_HL));
-		Produce::val_symbol(Emit::tree(), K_value, s2_s);
-	Emit::up();
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Emit::down();
-		Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(PARSED_NUMBER_HL));
-		Produce::val_symbol(Emit::tree(), K_value, s3_s);
-	Emit::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(NOUN_HL));
+		EmitCode::val_symbol(K_value, s_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(SECOND_HL));
+		EmitCode::val_symbol(K_value, s2_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
+		EmitCode::val_symbol(K_value, s3_s);
+	EmitCode::up();
 
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Emit::down();
-		Produce::val_symbol(Emit::tree(), K_value, str_s);
-	Emit::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, str_s);
+	EmitCode::up();
 
 	Functions::end(save);
 
@@ -336,33 +336,33 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 	LOOP_OVER(resp, response_message) {
 		inter_name *iname = Strings::response_constant_iname(resp->responding_rule,
 			resp->response_marker);
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Emit::down();
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Emit::down();
-				Produce::val_symbol(Emit::tree(), K_value, R_s);
-				Produce::val_iname(Emit::tree(), K_value, iname);
-			Emit::up();
-			Produce::code(Emit::tree());
-			Emit::down();
-				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEPRINTINGRULE_HL));
-				Emit::down();
-					Produce::val_iname(Emit::tree(), K_value, RTRules::iname(resp->responding_rule));
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Emit::down();
-					Produce::val_text(Emit::tree(), I" response (");
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), PRINTCHAR_BIP);
-				Emit::down();
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('A' + resp->response_marker));
-				Emit::up();
-				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-				Emit::down();
-					Produce::val_text(Emit::tree(), I")");
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, R_s);
+				EmitCode::val_iname(K_value, iname);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::call(Hierarchy::find(RULEPRINTINGRULE_HL));
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTRules::iname(resp->responding_rule));
+				EmitCode::up();
+				EmitCode::inv(PRINT_BIP);
+				EmitCode::down();
+					EmitCode::val_text(I" response (");
+				EmitCode::up();
+				EmitCode::inv(PRINTCHAR_BIP);
+				EmitCode::down();
+					EmitCode::val_number((inter_ti) ('A' + resp->response_marker));
+				EmitCode::up();
+				EmitCode::inv(PRINT_BIP);
+				EmitCode::down();
+					EmitCode::val_text(I")");
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 	}
 	Functions::end(save);
 
@@ -372,16 +372,16 @@ divided up by the extensions containing the rules which produce them.
 
 @<Compile the Response Divisions array@> =
 	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	inform_extension *group_E = NULL;
 	@<Make a ResponseDivisions entry@>;
 	LOOP_OVER(group_E, inform_extension)
 		@<Make a ResponseDivisions entry@>;
-	Emit::array_numeric_entry(0);
-	Emit::array_numeric_entry(0);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
 
 @<Make a ResponseDivisions entry@> =
 	rule *R;
@@ -403,16 +403,16 @@ divided up by the extensions containing the rules which produce them.
 		if ((no_cms++ == 0) && (E)) {
 			TEMPORARY_TEXT(QT)
 			WRITE_TO(QT, "%<X", E->as_copy->edition->work);
-			Emit::array_text_entry(QT);
+			EmitArrays::text_entry(QT);
 			DISCARD_TEXT(QT)
 		} else
-			Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		Emit::array_numeric_entry((inter_ti) (tally));
+			EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
+		EmitArrays::numeric_entry((inter_ti) (tally));
 	}
 
 @<End a possible run of matches@> =
 	if (contiguous_match) {
-		Emit::array_numeric_entry((inter_ti) (tally-1));
+		EmitArrays::numeric_entry((inter_ti) (tally-1));
 		contiguous_match = FALSE;
 	}
 
@@ -486,7 +486,7 @@ void Strings::compile_general(value_holster *VH, parse_node *str) {
 	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
 		if (Node::get_explicit_iname(str)) {
 			if (Holsters::data_acceptable(VH)) {
-				Emit::holster(VH, Node::get_explicit_iname(str));
+				Emit::holster_iname(VH, Node::get_explicit_iname(str));
 			} else internal_error("unvalued SCG");
 		} else {
 			int A = Annotations::read_int(str, constant_number_ANNOT);
@@ -533,7 +533,7 @@ so the penultimate word, if it's there, is the letter.
 			Strings::response_cue(VH, rule_being_compiled, code, SW,
 				Frames::boxed_frame(phsf), FALSE);
 		Rules::set_response(rule_being_compiled, code, resp);
-		while (downs > 0) { Emit::up(); downs--; }
+		while (downs > 0) { EmitCode::up(); downs--; }
 	}
 
 @<This isn't a response@> =
