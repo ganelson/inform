@@ -23,7 +23,7 @@ typedef struct property_compilation_data {
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname) {
 	if (pkg == NULL) {
 		pkg = Hierarchy::local_package(PROPERTIES_HAP);
-		Hierarchy::markup_wording(pkg, PROPERTY_NAME_HMD, prn->name);
+		Hierarchy::apply_metadata_from_wording(pkg, PROPERTY_NAME_HMD, prn->name);
 	}
 	if (iname == NULL) {
 		iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, pkg, prn->name);
@@ -419,7 +419,7 @@ which would work just as well, but more slowly.
 property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_identifier) {
 	wording W = Feeds::feed_text(Inter_identifier);
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
-	Hierarchy::markup(R, PROPERTY_NAME_HMD, Inter_identifier);
+	Hierarchy::apply_metadata(R, PROPERTY_NAME_HMD, Inter_identifier);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
 	RTProperties::set_translation_S(prn, Inter_identifier);

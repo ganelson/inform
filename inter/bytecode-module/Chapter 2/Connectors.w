@@ -5,7 +5,6 @@ To manage link symbols.
 @ =
 int unique_plug_number = 1;
 inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *wanted) {
-if (Str::eq(wanted, I"self")) internal_error("selfie!");
 	inter_package *connectors = Inter::Connectors::connectors_package(I);
 	TEMPORARY_TEXT(PN)
 	WRITE_TO(PN, "plug_%05d", unique_plug_number++);

@@ -106,7 +106,7 @@ where he is, the surprise will not be spoiled.
 	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
 
 	not_yet_in_play = true;
-	lookmode = TEMPLATE_CONFIGURATION_LOOKMODE;
+	lookmode = KIT_CONFIGURATION_LOOKMODE;
 	player = InitialSituation-->PLAYER_OBJECT_INIS;
 	the_time = InitialSituation-->START_TIME_INIS;
 	real_location = nothing;
@@ -653,7 +653,7 @@ obituary" activity.
 
 =
 [ PRINT_FINAL_SCORE_R;
-	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
+	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
 	rfalse;
 ];
 

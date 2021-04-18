@@ -20,7 +20,7 @@ action_compilation_data RTActions::new_data(wording W) {
 	acd.an_base_iname = NULL;
 	acd.an_routine_iname = NULL;
 	acd.an_package = Hierarchy::local_package(ACTIONS_HAP);
-	Hierarchy::markup_wording(acd.an_package, ACTION_NAME_HMD, W);
+	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_HMD, W);
 	return acd;
 }
 
@@ -52,7 +52,7 @@ inter_name *RTActions::base_iname(action_name *an) {
 				Hierarchy::make_iname_in(WAIT_HL, an->compilation_data.an_package);
 		else if (Str::len(an->compilation_data.translated_name) > 0)
 			an->compilation_data.an_base_iname =
-				Hierarchy::make_iname_with_specific_name(TRANSLATED_BASE_NAME_HL, an->compilation_data.translated_name, an->compilation_data.an_package);
+				Hierarchy::make_iname_with_specific_translation(TRANSLATED_BASE_NAME_HL, an->compilation_data.translated_name, an->compilation_data.an_package);
 		else
 			an->compilation_data.an_base_iname =
 				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->compilation_data.an_package, ActionNameNames::tensed(an, IS_TENSE));

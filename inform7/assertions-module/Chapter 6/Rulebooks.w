@@ -43,7 +43,7 @@ typedef struct rulebook {
 
 =
 rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
-	Hierarchy::markup_wording(R, RULEBOOK_NAME_HMD, W);
+	Hierarchy::apply_metadata_from_wording(R, RULEBOOK_NAME_HMD, W);
 
 	rulebook *B = CREATE(rulebook);
 	Rulebooks::set_std(B);

@@ -85,11 +85,11 @@ void RTUseOptions::configure_template(void) {
 	if (global_compilation_settings.story_author_given) bitmap += 256;
 	if (global_compilation_settings.ranking_table_given) bitmap += 512;
 
-	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
+	inter_name *iname = Hierarchy::find(KIT_CONFIGURATION_BITMAP_HL);
 	Emit::numeric_constant(iname, (inter_ti) bitmap);
 	Hierarchy::make_available(iname);
 
-	iname = Hierarchy::find(TEMPLATE_CONFIGURATION_LOOKMODE_HL);
+	iname = Hierarchy::find(KIT_CONFIGURATION_LOOKMODE_HL);
 	Emit::numeric_constant(iname, (inter_ti) global_compilation_settings.room_description_level);
 	Hierarchy::make_available(iname);
 }

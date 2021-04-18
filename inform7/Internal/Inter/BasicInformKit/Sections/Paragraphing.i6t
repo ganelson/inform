@@ -270,7 +270,7 @@ whatever is the current language of play.
         print (LanguageNumber) n/100, " hundred"; n = n%100; f = 1;
     }
     if (n == 0) rfalse;
-    if (TEMPLATE_CONFIGURATION_BITMAP & DIALECT_US_TCBIT) {
+    if (KIT_CONFIGURATION_BITMAP & DIALECT_US_TCBIT) {
 	    if (f == 1) print " ";
     } else {
 	    if (f == 1) print " and ";

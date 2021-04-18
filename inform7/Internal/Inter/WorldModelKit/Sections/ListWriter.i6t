@@ -768,7 +768,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 		groups_to_do--;
         if (c_style & ENGLISH_BIT ~= 0) {
             if (groups_to_do == 1) {
-            	if (TEMPLATE_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+            	if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
             		if (cl > 1) print ",";
             	}
             	LIST_WRITER_INTERNAL_RM('C');
@@ -939,7 +939,7 @@ the iterator used at the top level) and increasing the depth by 1.
 			if (o has container) {
 				if (o has openable) {
 					if (parenth_flag) {
-						if (TEMPLATE_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT)
+						if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT)
 							print ",";
 						LIST_WRITER_INTERNAL_RM('C');
 					} else            LIST_WRITER_INTERNAL_RM('A', o);

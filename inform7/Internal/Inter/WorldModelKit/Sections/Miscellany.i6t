@@ -226,7 +226,7 @@ Global move_by;
 Global move_through;
 
 ! (12)
-Global lookmode = TEMPLATE_CONFIGURATION_LOOKMODE; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
+Global lookmode = KIT_CONFIGURATION_LOOKMODE; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
 Global c_style; ! current list-writer style
 Global c_depth; ! current recursion depth
 Global c_iterator; ! current iteration function
@@ -390,13 +390,13 @@ needed.
 
 =
 [ UnknownVerb;
-	if (TEMPLATE_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
 		verb_wordnum = 0; return 'no.verb';
 	}
 	rfalse;
 ];
 [ PrintVerb v;
-	if (TEMPLATE_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
 		if (v == 'no.verb') { print "do something to"; rtrue; }
 	}
 	rfalse;

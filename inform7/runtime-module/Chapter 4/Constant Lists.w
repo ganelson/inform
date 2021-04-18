@@ -107,7 +107,7 @@ inter_name *ConstantLists::get_instance_list(kind *K) {
 			Str::put(pos, Characters::toupper(Str::get(pos)));
 			if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 		}
-		iname = Hierarchy::make_iname_with_specific_name(ILIST_HL,
+		iname = Hierarchy::make_iname_with_specific_translation(ILIST_HL,
 			InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ILN),
 				Kinds::Behaviour::package(K));
 		DISCARD_TEXT(ILN)

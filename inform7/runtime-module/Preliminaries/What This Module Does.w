@@ -37,6 +37,15 @@ compile. Inter can exist in binary or textual forms: see //inter: Manual// for
 a general introduction to programming it in textual form. We will compile
 binary Inter for speed, but they are really very similar.
 
+You can get a rough idea of what the Inter hierarchy looks like by compiling
+an Inform project with:
+= (text as Inform 7)
+Include Inter hierarchy in the debugging log.
+=
+...and then looking at the log file. This will give an inventory, a summarised
+listing, at two stages: first when the main Inform compiler has completed, and
+second when linking with kits is all done, and we've reached the final state.
+
 Inter code is not a linear stream, like the assembly language produced by a
 conventional compiler: rather, it is a hierarchy of nested "packages". Each
 package can contain some symbols, some other packages, and some actual code

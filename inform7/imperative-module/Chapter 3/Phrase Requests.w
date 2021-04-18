@@ -139,7 +139,7 @@ list is a list of. The result would be:
 	Latticework::unpack_kvd(req->kv_interpretation, kvd);
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP,
 		CompileImperativeDefn::requests_package(idb));
-	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P);
+	req->req_iname = Hierarchy::make_iname_in(PHRASE_FN_HL, P);
 	return req;
 
 @ Two access functions:

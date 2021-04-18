@@ -373,7 +373,6 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Lists::check</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ConstantLists::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">TextLiterals::compile</span><span class="plain-syntax">)</span>
-<span class="comment-syntax">	BENCH(JumpLabels::compile_necessary_storage)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_heap_allocator</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_structures</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Rules::check_response_usages</span><span class="plain-syntax">)</span>
@@ -388,6 +387,7 @@ so on. Those absolute basics are made here.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::advance_stage_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">BIBLIOGRAPHIC_CSEQ</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Bibliographic work"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        -1, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Hierarchy::log</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">I6T::produce_index</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>

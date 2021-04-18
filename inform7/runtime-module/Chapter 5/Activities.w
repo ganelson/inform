@@ -16,7 +16,7 @@ typedef struct activity_compilation_data {
 activity_compilation_data RTActivities::new_compilation_data(activity *av) {
 	activity_compilation_data acd;
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
-	Hierarchy::markup_wording(acd.av_package, ACTIVITY_NAME_HMD, av->name);
+	Hierarchy::apply_metadata_from_wording(acd.av_package, ACTIVITY_NAME_HMD, av->name);
 	acd.av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, acd.av_package, av->name);
 	Emit::numeric_constant(acd.av_iname, (inter_ti) av->allocation_id);
 	return acd;

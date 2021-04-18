@@ -242,7 +242,6 @@ so on. Those absolute basics are made here.
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)
-//	BENCH(JumpLabels::compile_necessary_storage)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
@@ -253,6 +252,7 @@ so on. Those absolute basics are made here.
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
 		-1, debugging, sequence_timer);
+	BENCH(Hierarchy::log);
 	BENCH(I6T::produce_index);
 
 @ We will define just one of the above steps here, because it works in a way

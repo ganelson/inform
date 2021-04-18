@@ -444,7 +444,7 @@ The return value is the number of words typed.
 			continue;
 		}
 		i = VM_Save_Undo();
-		if (TEMPLATE_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) undo_flag = 0;
+		if (KIT_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) undo_flag = 0;
 		else undo_flag = 2;
 		if (i == -1) undo_flag = 0;
 		if (i == 0) undo_flag = 1;
@@ -2211,7 +2211,7 @@ because we want to allow duplicates).
 
         if (i < j-1)  print ", ";
         if (i == j-1) {
-			if (TEMPLATE_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+			if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
 				if (j ~= 2) print ",";
         	}
         	PARSER_CLARIF_INTERNAL_RM('H');

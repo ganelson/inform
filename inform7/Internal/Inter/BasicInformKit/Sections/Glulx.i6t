@@ -988,7 +988,7 @@ light to the Dark Room.")
 			gg_backgroundchan = glk_schannel_create(GG_BACKGROUNDCHAN_ROCK);
 	}
 
-	if (TEMPLATE_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
 		@random 10000 i;
 		i = -i-2000;
 		print "[Random number generator seed is ", i, "]^";
@@ -1337,7 +1337,7 @@ to document all of that.
         glk_window_close(gg_quotewin, 0);
         gg_quotewin = 0;
     }
-    if (TEMPLATE_CONFIGURATION_BITMAP & ECHO_COMMANDS_TCBIT) {
+    if (KIT_CONFIGURATION_BITMAP & ECHO_COMMANDS_TCBIT) {
 		print "** ";
 		for (ix=WORDSIZE: ix<(a_buffer-->0)+WORDSIZE: ix++) print (char) a_buffer->ix;
 		print "^";

@@ -62,6 +62,10 @@ location_requirement HierarchyLocations::any_enclosure(void) {
 	return req;
 }
 
+location_requirement HierarchyLocations::the_veneer(inter_tree *I) {
+	return HierarchyLocations::this_package(Site::veneer_request(I));
+}
+
 location_requirement HierarchyLocations::this_package(package_request *P) {
 	location_requirement req = HierarchyLocations::blank();
 	req.this_exact_package = P;
@@ -108,7 +112,7 @@ hierarchy_location *HierarchyLocations::new(void) {
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::ctr(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = HierarchyLocations::new();
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(name);
@@ -118,7 +122,17 @@ hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::package(inter_tree *I, int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
+hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *name, location_requirement req) {
+	hierarchy_location *hl = HierarchyLocations::new();
+	hl->access_number = id;
+	hl->access_name = Str::duplicate(name);
+	hl->requirements = req;
+	hl->trans = Translation::same();
+	HierarchyLocations::index(I, hl);
+	return hl;
+}
+
+hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
 	hierarchy_location *hl = HierarchyLocations::new();
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(name);
@@ -138,7 +152,7 @@ hierarchy_location *HierarchyLocations::make_as(inter_tree *I, int id, text_stre
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::func(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(nt.translate_to);
@@ -149,7 +163,7 @@ hierarchy_location *HierarchyLocations::func(inter_tree *I, int id, text_stream 
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::datum(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(nt.translate_to);
@@ -312,7 +326,7 @@ void HierarchyLocations::index_ap(inter_tree *I, hierarchy_attachment_point *hap
 	if (hap->hap_id >= 0) I->site.haps_indexed_by_id[hap->hap_id] = hap;
 }
 
-hierarchy_attachment_point *HierarchyLocations::ap(inter_tree *I, int hap_id, location_requirement req, text_stream *iterated_text, text_stream *ptype_name) {
+hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id, text_stream *iterated_text, text_stream *ptype_name, location_requirement req) {
 	hierarchy_attachment_point *hap = CREATE(hierarchy_attachment_point);
 	hap->hap_id = hap_id;
 	hap->requirements = req;
@@ -357,7 +371,8 @@ void HierarchyLocations::index_md(inter_tree *I, hierarchy_metadatum *hmd) {
 	if (hmd->hm_id >= 0) I->site.hmds_indexed_by_id[hmd->hm_id] = hmd;
 }
 
-hierarchy_metadatum *HierarchyLocations::metadata(inter_tree *I, int hm_id, location_requirement req, text_stream *key) {
+hierarchy_metadatum *HierarchyLocations::mtd(inter_tree *I, int hm_id,
+	text_stream *key, location_requirement req) {
 	hierarchy_metadatum *hmd = CREATE(hierarchy_metadatum);
 	hmd->hm_id = hm_id;
 	hmd->requirements = req;

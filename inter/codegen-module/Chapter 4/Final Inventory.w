@@ -20,6 +20,10 @@ int CodeGen::Inventory::inv(code_generation_target *cgt, code_generation *gen) {
 	return TRUE;
 }
 
+void CodeGen::Inventory::inv_to(OUTPUT_STREAM, inter_tree *I) {
+	InterTree::traverse(I, CodeGen::Inventory::visitor, OUT, NULL, 0);
+}
+
 void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *OUT = (text_stream *) state;
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
@@ -39,7 +43,8 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 			int contents = 0;
 			LOOP_THROUGH_INTER_CHILDREN(C, P) contents++;
 			if (contents > 0) {
-				WRITE("%S:\n", Inter::Packages::name(from));
+				WRITE("    %S:\n", Inter::Packages::name(from));
+				INDENT;
 				INDENT;
 					Inter::Packages::unmark_all();
 					LOOP_THROUGH_INTER_CHILDREN(C, P) {
@@ -79,6 +84,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 						}
 					}
 					Inter::Packages::unmark_all();
+				OUTDENT;
 				OUTDENT;
 			}
 			return;

@@ -30,7 +30,7 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	rcd.rule_package = Hierarchy::local_package(RULES_HAP);
 	rcd.defn_compiled = FALSE;
 	if (Wordings::nonempty(R->name))
-		Hierarchy::markup_wording(rcd.rule_package, RULE_NAME_HMD, R->name);
+		Hierarchy::apply_metadata_from_wording(rcd.rule_package, RULE_NAME_HMD, R->name);
 	return rcd;
 }
 
@@ -43,9 +43,9 @@ void RTRules::prepare_rule(imperative_defn *id, rule *R) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
 	package_request *P = RTRules::package(R);
 	if (Wordings::empty(rfd->constant_name))
-		Hierarchy::markup_wording(P, RULE_NAME_HMD, Node::get_text(id->at));
+		Hierarchy::apply_metadata_from_wording(P, RULE_NAME_HMD, Node::get_text(id->at));
 	CompileImperativeDefn::set_iname(id->body_of_defn, 
-		Hierarchy::make_localised_iname_in(RULE_FN_HL, P));
+		Hierarchy::make_iname_in(RULE_FN_HL, P));
 }
 
 package_request *RTRules::package(rule *R) {
@@ -798,7 +798,7 @@ void RTRules::rulebook_var_creators(void) {
 @ =
 void RTRules::new_outcome(named_rulebook_outcome *rbno, wording W) {
 	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
-	Hierarchy::markup_wording(R, OUTCOME_NAME_HMD, W);
+	Hierarchy::apply_metadata_from_wording(R, OUTCOME_NAME_HMD, W);
 	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
 	if (<notable-rulebook-outcomes>(W)) {
 		int i = -1;

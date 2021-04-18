@@ -65,7 +65,7 @@ Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
 	standard_interpreter = HDR_TERPSTANDARD-->0;
 	top_object = #largest_object-255;
 
-	if (TEMPLATE_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
 		@random 10000 -> i;
 		i = -i-2000;
 		print "[Random number generator seed is ", i, "]^";

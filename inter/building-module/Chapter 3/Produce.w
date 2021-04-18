@@ -566,7 +566,7 @@ inter_name *Produce::find_by_name(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty extern");
 	inter_name *try = HierarchyLocations::find_by_name(I, name);
 	if (try == NULL) {
-		HierarchyLocations::con(I, -1, name, Translation::same(), HierarchyLocations::plug());
+		HierarchyLocations::ctr(I, -1, name, Translation::same(), HierarchyLocations::plug());
 		try = HierarchyLocations::find_by_name(I, name);
 	}
 	return try;

@@ -266,7 +266,7 @@ based on character cells.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">move_through</span><span class="plain-syntax">;</span>
 
 <span class="comment-syntax">(12)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TEMPLATE_CONFIGURATION_LOOKMODE</span><span class="plain-syntax">; </span><span class="comment-syntax">1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KIT_CONFIGURATION_LOOKMODE</span><span class="plain-syntax">; </span><span class="comment-syntax">1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_style</span><span class="plain-syntax">; </span><span class="comment-syntax">current list-writer style</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_depth</span><span class="plain-syntax">; </span><span class="comment-syntax">current recursion depth</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_iterator</span><span class="plain-syntax">; </span><span class="comment-syntax">current iteration function</span>
@@ -419,13 +419,13 @@ needed.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">UnknownVerb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'no.verb'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax"> == </span><span class="character-syntax">'no.verb'</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"do something to"</span><span class="plain-syntax">; </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>

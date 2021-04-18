@@ -62,14 +62,14 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	CompilationUnits::join(p, C);
 
 @<Give M metadata indicating the source extension@> =
-	Hierarchy::markup(M->the_package, EXT_AUTHOR_HMD,
+	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_HMD,
 		ext->as_copy->edition->work->raw_author_name);
-	Hierarchy::markup(M->the_package, EXT_TITLE_HMD,
+	Hierarchy::apply_metadata(M->the_package, EXT_TITLE_HMD,
 		ext->as_copy->edition->work->raw_title);
 	TEMPORARY_TEXT(V)
 	semantic_version_number N = ext->as_copy->edition->version;
 	WRITE_TO(V, "%v", &N);
-	Hierarchy::markup(M->the_package, EXT_VERSION_HMD, V);
+	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_HMD, V);
 	DISCARD_TEXT(V)
 
 @ Here we must find a unique name, valid as an Inter identifier: the code

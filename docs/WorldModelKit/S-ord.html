@@ -161,7 +161,7 @@ where he is, the surprise will not be spoiled.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">; </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">(); #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">not_yet_in_play</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TEMPLATE_CONFIGURATION_LOOKMODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KIT_CONFIGURATION_LOOKMODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">player</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InitialSituation</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">PLAYER_OBJECT_INIS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">the_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InitialSituation</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">START_TIME_INIS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">real_location</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
@@ -702,7 +702,7 @@ obituary" activity.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PRINT_FINAL_SCORE_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

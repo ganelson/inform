@@ -14,11 +14,14 @@ which use this module:
 @e PARTITION_MREASON
 @e RELATION_CONSTRUCTION_MREASON
 
+@e HIERARCHY_DA
+
 =
 void RuntimeModule::start(void) {
 	Memory::reason_name(EMIT_ARRAY_MREASON, "emitter array storage");
 	Memory::reason_name(PARTITION_MREASON, "initial state for relations in groups");
 	Memory::reason_name(RELATION_CONSTRUCTION_MREASON, "relation bitmap storage");
+	Log::declare_aspect(HIERARCHY_DA, L"inter hierarchy", FALSE, FALSE);
 }
 void RuntimeModule::end(void) {
 }

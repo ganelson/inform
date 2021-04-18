@@ -57,7 +57,7 @@ fancy text style for Glulx, ...
 
 =
 [ NotifyTheScore d;
-	if ((TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
+	if ((KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
 		DivideParagraphPoint();
 		VM_Style(NOTE_VMSTY);
 		d = score-last_score;
@@ -75,7 +75,7 @@ not to use these now dated conventions.
 
 =
 [ PrintRank i j v;
-	if (TEMPLATE_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
+	if (KIT_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
 		ANNOUNCE_SCORE_RM('B');
 		j = TableRows(RANKING_TABLE);
 		for (i=j:i>=1:i--)
@@ -128,7 +128,7 @@ Array T_SL_Score_Moves --> CONSTANT_PACKED_TEXT_STORAGE SL_Score_Moves;
 
 [ SL_Score_Moves;
 	if (not_yet_in_play) return;
-	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT)
+	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT)
 		print sline1, "/", sline2;
 ];
 
@@ -163,7 +163,7 @@ compile a |Story_Author|.
 		VM_Style(NORMAL_VMSTY);
 		new_line;
 		TEXT_TY_Say(Headline);
-		if (TEMPLATE_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
+		if (KIT_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
 			print " by "; TEXT_TY_Say(Story_Author);
 		}
 		new_line;
