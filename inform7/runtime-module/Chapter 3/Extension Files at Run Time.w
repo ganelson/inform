@@ -1,27 +1,33 @@
 [RTExtensions::] Extension Files at Run Time.
 
-To provide the credits routines.
+To compile the credits functions.
 
-@ Here we compile a routine to print out credits for all the extensions
-present in the compiled work. This is important because the extensions
-published at the Inform website are available under a Creative Commons
-license which requires users to give credit to the authors: Inform
-ensures that this happens automatically.
+@ Extensions have an obvious effect at runtime -- they include extra material.
+But there are also just three functions which deal with extensions as if
+they were values; all of them simply print credits out.
 
-Use of authorial modesty (see above) will suppress a credit in the
-|ShowExtensionVersions| routine, but the system is set up so that one can
-only be modest about one's own extensions: this would otherwise violate a
-CC license of somebody else. General authorial modesty thus suppresses
-credits for all extensions used which are by the user himself. On the
-other hand, if an extension contains an authorial modesty disclaimer
-in its own text, then that must have been the wish of its author, so
-we can suppress the credit whoever that author was.
+This is more important than it may sound because many extensions are published
+under a Creative Commons attribution license which requires users to give credit
+to the authors: Inform thus ensures that this happens automatically.
 
-In |I7FullExtensionVersions| all extensions are credited whatever anyone's
-feelings of modesty.
+There are two forms of exemption from this --
+(*) specific authorial modesty suppresses the author's name for one extension,
+at that extension author's discretion;
+(*) general authorial modesty suppresses the author's name for any extensions
+by the same person who wrote the main source text.
+
+By design, however, the author of the main source text cannot remove the name
+of a different author writing an extension which did not ask for modesty. That
+would violate the CC license.
 
 =
-void RTExtensions::ShowExtensionVersions_routine(void) {
+void RTExtensions::compile_support(void) {
+	@<Compile SHOWEXTENSIONVERSIONS function@>;
+	@<Compile SHOWFULLEXTENSIONVERSIONS function@>;
+	@<Compile SHOWONEEXTENSION function@>;
+}
+
+@<Compile SHOWEXTENSIONVERSIONS function@> =
 	inter_name *iname = Hierarchy::find(SHOWEXTENSIONVERSIONS_HL);
 	packaging_state save = Functions::begin(iname);
 	inform_extension *E;
@@ -29,12 +35,10 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 		TEMPORARY_TEXT(the_author_name)
 		WRITE_TO(the_author_name, "%S", E->as_copy->edition->work->author_name);
 		int self_penned = FALSE;
-		#ifdef IF_MODULE
 		if (BibliographicData::story_author_is(the_author_name)) self_penned = TRUE;
-		#endif
-		if (((E == NULL) || (E->authorial_modesty == FALSE)) && /* if (1) extension doesn't ask to be modest */
-			((general_authorial_modesty == FALSE) || /* and (2) author doesn't ask to be modest, or... */
-			(self_penned == FALSE))) { /* ...didn't write this extension */
+		if ((E->authorial_modesty == FALSE) &&      /* if (1) extension doesn't ask to be modest */
+			((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
+			    (self_penned == FALSE))) {           /*     (2b) didn't write this extension */
 				TEMPORARY_TEXT(C)
 				RTExtensions::credit_ef(C, E, TRUE); /* then we award a credit */
 				EmitCode::inv(PRINT_BIP);
@@ -48,8 +52,12 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 
-	iname = Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL);
-	save = Functions::begin(iname);
+@ This fuller version does not allow the exemptions.
+
+@<Compile SHOWFULLEXTENSIONVERSIONS function@> =
+	inter_name *iname = Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL);
+	packaging_state save = Functions::begin(iname);
+	inform_extension *E;
 	LOOP_OVER(E, inform_extension) {
 		TEMPORARY_TEXT(C)
 		RTExtensions::credit_ef(C, E, TRUE);
@@ -61,10 +69,16 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 	}
 	Functions::end(save);
 	Hierarchy::make_available(iname);
-	
-	iname = Hierarchy::find(SHOWONEEXTENSION_HL);
-	save = Functions::begin(iname);
+
+@ This prints the name of a single extension, identified by a value which
+is its allocation ID plus 1. (In effect, this means extensions are numbered from
+1 upwards in order of inclusion.)
+
+@<Compile SHOWONEEXTENSION function@> =	
+	inter_name *iname = Hierarchy::find(SHOWONEEXTENSION_HL);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *id_s = LocalVariables::new_other_as_symbol(I"id");
+	inform_extension *E;
 	LOOP_OVER(E, inform_extension) {
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
@@ -87,14 +101,13 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 	}
 	Functions::end(save);
 	Hierarchy::make_available(iname);
-}
 
 @ The actual credit consists of a single line, with name, version number
-and author.
+and author; together with any "extra credit" asked for by the extension.
 
 =
 void RTExtensions::credit_ef(OUTPUT_STREAM, inform_extension *E, int with_newline) {
-	if (E == NULL) internal_error("unfound ef");
+	if (E == NULL) internal_error("no ef");
 	WRITE("%S", E->as_copy->edition->work->raw_title);
 	semantic_version_number V = E->as_copy->edition->version;
 	if (VersionNumbers::is_null(V) == FALSE) WRITE(" version %v", &V);

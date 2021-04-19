@@ -51,7 +51,6 @@ void RTBibliographicData::compile_constants(void) {
 		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
 		Emit::initial_value_as_constant(iname, story_author_VAR);
 		Hierarchy::make_available(iname);
-		global_compilation_settings.story_author_given = TRUE;
 	} else {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
 		Emit::unchecked_numeric_constant(iname, 0);
@@ -99,3 +98,12 @@ inter_name *RTBibliographicData::IFID_iname(void) {
 	return Hierarchy::find(UUID_ARRAY_HL);
 }
 
+@
+
+=
+int RTBibliographicData::story_author_given(void) {
+	if ((story_author_VAR) &&
+		(VariableSubjects::has_initial_value_set(story_author_VAR)))
+		return TRUE;
+	return FALSE;
+}

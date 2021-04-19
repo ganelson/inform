@@ -1,5 +1,8 @@
 [Hierarchy::] Hierarchy.
 
+To provide an enforced structure and set of naming conventions for packages
+and names in the Inter code we generate.
+
 @h Introduction.
 See //What This Module Does// for an overview of how Inter hierarchies work.
 

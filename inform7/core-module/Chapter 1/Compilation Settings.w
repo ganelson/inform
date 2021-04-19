@@ -79,7 +79,6 @@ typedef struct compilation_settings {
 	int room_description_level;
 	int scoring_option_set;
 	int serial_comma;
-	int story_author_given;
 	int undo_prevention;
 	int use_exact_parsing_option;
 } compilation_settings;
@@ -104,7 +103,6 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.room_description_level = 2;
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
 	global_compilation_settings.serial_comma = FALSE;
-	global_compilation_settings.story_author_given = FALSE;
 	global_compilation_settings.undo_prevention = FALSE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
 }

@@ -3,12 +3,12 @@
 @
 
 =
-void RTTheScore::support(table *ranking_table) {
-	if (ranking_table) {
+void RTTheScore::support(void) {
+	table *the_ranking_table = TheScore::ranking_table();
+	if (the_ranking_table) {
 		inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
-		Emit::iname_constant(iname, K_value, RTTables::identifier(ranking_table));
+		Emit::iname_constant(iname, K_value, RTTables::identifier(the_ranking_table));
 		Hierarchy::make_available(iname);
-		global_compilation_settings.ranking_table_given = TRUE;
 	} else {
 		inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
 		Emit::unchecked_numeric_constant(iname, 0);

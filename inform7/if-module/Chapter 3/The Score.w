@@ -14,8 +14,11 @@ void TheScore::start(void) {
 }
 
 int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
+	if (stage == MODEL_CSEQ) {
 		BENCH(TheScore::max_score_and_ranking_table);
+	}
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTTheScore::support);
 	}
 	return FALSE;
 }
@@ -72,21 +75,27 @@ be the score corresponding to successful completion and the highest rank.
 The test case |Cooking|, an example from the documentation, tests this.
 
 =
+table *the_ranking_table = NULL;
+
 void TheScore::max_score_and_ranking_table(void) {
-	table *t, *ranking_table = NULL;
+	table *t = NULL;
 	LOOP_OVER(t, table)
 		if ((<rankings-table-name>(t->table_name_text)) &&
 			(Tables::get_no_columns(t) >= 2) &&
 			(Kinds::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::eq(Tables::kind_of_ith_column(t, 1), K_text)))
-			ranking_table = t;
-	if (ranking_table) {
-		parse_node *PN = Tables::cells_in_ith_column(ranking_table, 0);
+			the_ranking_table = t;
+	if (the_ranking_table) {
+		global_compilation_settings.ranking_table_given = TRUE;
+		parse_node *PN = Tables::cells_in_ith_column(the_ranking_table, 0);
 		while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
 		if ((PN != NULL) && (max_score_VAR) &&
 			(VariableSubjects::has_initial_value_set(max_score_VAR) == FALSE))
 			Assertions::PropertyKnowledge::initialise_global_variable(
 				max_score_VAR, Node::get_evaluation(PN));
 	}
-	RTTheScore::support(ranking_table);
+}
+
+table *TheScore::ranking_table(void) {
+	return the_ranking_table;
 }

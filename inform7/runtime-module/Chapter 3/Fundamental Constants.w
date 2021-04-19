@@ -1,17 +1,17 @@
-[FundamentalConstants::] Fundamental Constants.
+[RTFundamentalConstants::] Fundamental Constants.
 
 Inter constants for, say, extremal number values, which depend on the
 target we are compiling to, and are generally low-level in nature.
 
 @ =
-void FundamentalConstants::emit(void) {
+void RTFundamentalConstants::compile(void) {
 	@<Version number constant@>;
 	@<Semantic version number constant@>;
 
 	target_vm *VM = Task::vm();
 	if (VM == NULL) internal_error("target VM not set yet");
 
-	if (TargetVMs::debug_enabled(VM)) FundamentalConstants::emit_one(DEBUG_HL, 1);
+	if (TargetVMs::debug_enabled(VM)) RTFundamentalConstants::emit_one(DEBUG_HL, 1);
 
 	@<Special constants for Z-machine and Glulx VMs@>;
 	if (TargetVMs::is_16_bit(VM)) @<16-bit constants@>
@@ -43,13 +43,13 @@ will make sense even if I6 is not the final code-generator.
 
 @<Special constants for Z-machine and Glulx VMs@> =
 	if (Str::eq(VM->family_name, I"Z-Machine")) {
-		FundamentalConstants::emit_one(TARGET_ZCODE_HL,     1);
-		FundamentalConstants::emit_one(DICT_WORD_SIZE_HL,   6);
+		RTFundamentalConstants::emit_one(TARGET_ZCODE_HL,     1);
+		RTFundamentalConstants::emit_one(DICT_WORD_SIZE_HL,   6);
 	}
 	if (Str::eq(VM->family_name, I"Glulx")) {
-		FundamentalConstants::emit_one(TARGET_GLULX_HL,     1);
-		FundamentalConstants::emit_one(DICT_WORD_SIZE_HL,   9);
-		FundamentalConstants::emit_one(INDIV_PROP_START_HL, 0);
+		RTFundamentalConstants::emit_one(TARGET_GLULX_HL,     1);
+		RTFundamentalConstants::emit_one(DICT_WORD_SIZE_HL,   9);
+		RTFundamentalConstants::emit_one(INDIV_PROP_START_HL, 0);
 	}
 
 @ These constants mostly have obvious meanings, but a few notes:
@@ -70,44 +70,44 @@ size, because it needs to be a large number but also such that an address
 in the VM can be added to it without it becoming negative.
 
 @<16-bit constants@> =
-	FundamentalConstants::emit_one(WORDSIZE_HL,                         2);
-	FundamentalConstants::emit_unchecked_hex(NULL_HL,              0xffff);
-	FundamentalConstants::emit_hex(WORD_HIGHBIT_HL,                0x8000);
-	FundamentalConstants::emit_hex(WORD_NEXTTOHIGHBIT_HL,          0x4000);
-	FundamentalConstants::emit_hex(IMPROBABLE_VALUE_HL,            0x7fe3);
-	FundamentalConstants::emit_hex(REPARSE_CODE_HL,                 10000);
-	FundamentalConstants::emit_one(MAX_POSITIVE_NUMBER_HL,          32767);
-	FundamentalConstants::emit_signed(MIN_NEGATIVE_NUMBER_HL,      -32768);
+	RTFundamentalConstants::emit_one(WORDSIZE_HL,                         2);
+	RTFundamentalConstants::emit_unchecked_hex(NULL_HL,              0xffff);
+	RTFundamentalConstants::emit_hex(WORD_HIGHBIT_HL,                0x8000);
+	RTFundamentalConstants::emit_hex(WORD_NEXTTOHIGHBIT_HL,          0x4000);
+	RTFundamentalConstants::emit_hex(IMPROBABLE_VALUE_HL,            0x7fe3);
+	RTFundamentalConstants::emit_hex(REPARSE_CODE_HL,                 10000);
+	RTFundamentalConstants::emit_one(MAX_POSITIVE_NUMBER_HL,          32767);
+	RTFundamentalConstants::emit_signed(MIN_NEGATIVE_NUMBER_HL,      -32768);
 
 @<32-bit constants@> =
-	FundamentalConstants::emit_one(WORDSIZE_HL,                         4);
-	FundamentalConstants::emit_unchecked_hex(NULL_HL,          0xffffffff);
-	FundamentalConstants::emit_hex(WORD_HIGHBIT_HL,            0x80000000);
-	FundamentalConstants::emit_hex(WORD_NEXTTOHIGHBIT_HL,      0x40000000);
-	FundamentalConstants::emit_hex(IMPROBABLE_VALUE_HL,        0xdeadce11);
-	FundamentalConstants::emit_hex(REPARSE_CODE_HL,            0x40000000);
-	FundamentalConstants::emit_one(MAX_POSITIVE_NUMBER_HL,     2147483647);
-	FundamentalConstants::emit_signed(MIN_NEGATIVE_NUMBER_HL, -2147483648);
+	RTFundamentalConstants::emit_one(WORDSIZE_HL,                         4);
+	RTFundamentalConstants::emit_unchecked_hex(NULL_HL,          0xffffffff);
+	RTFundamentalConstants::emit_hex(WORD_HIGHBIT_HL,            0x80000000);
+	RTFundamentalConstants::emit_hex(WORD_NEXTTOHIGHBIT_HL,      0x40000000);
+	RTFundamentalConstants::emit_hex(IMPROBABLE_VALUE_HL,        0xdeadce11);
+	RTFundamentalConstants::emit_hex(REPARSE_CODE_HL,            0x40000000);
+	RTFundamentalConstants::emit_one(MAX_POSITIVE_NUMBER_HL,     2147483647);
+	RTFundamentalConstants::emit_signed(MIN_NEGATIVE_NUMBER_HL, -2147483648);
 
 @ Note that all of these constants are made available for linking:
 
 =
-void FundamentalConstants::emit_one(int id, inter_ti val) {
+void RTFundamentalConstants::emit_one(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(iname);
 	Emit::numeric_constant(iname, val);
 }
-void FundamentalConstants::emit_signed(int id, int val) {
+void RTFundamentalConstants::emit_signed(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(iname);
 	Emit::named_numeric_constant_signed(iname, val);
 }
-void FundamentalConstants::emit_hex(int id, inter_ti val) {
+void RTFundamentalConstants::emit_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(iname);
 	Emit::named_numeric_constant_hex(iname, val);
 }
-void FundamentalConstants::emit_unchecked_hex(int id, inter_ti val) {
+void RTFundamentalConstants::emit_unchecked_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(iname);
 	Emit::named_unchecked_constant_hex(iname, val);
