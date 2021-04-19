@@ -107,7 +107,6 @@ will divide according to these units.
 	BENCH(Emit::create_emission_tree)
 	BENCH(Hierarchy::establish)
 	BENCH(Emit::rudimentary_kinds);
-	BENCH(FundamentalConstants::emit);
 	BENCH(RTVerbs::ConjugateVerbDefinitions);
 	BENCH(NameResolution::make_the_tree)
 	BENCH(IndexHeadings::write_as_xml)
@@ -182,8 +181,8 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 1@> =
 	Task::advance_stage_to(INTER1_CSEQ, I"Generating inter (1)",
 		4, debugging, sequence_timer);
+	BENCH(FundamentalConstants::emit);
 	BENCH(RTUseOptions::compile_pragmas)
-	BENCH(FundamentalConstants::emit_build_number)
 	BENCH(RTExtensions::ShowExtensionVersions_routine)
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH(RTUseOptions::TestUseOption_routine)

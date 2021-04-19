@@ -202,6 +202,7 @@ opcode, and so Glulx followed suit.
 [ ANNOUNCE_STORY_FILE_VERSION_R ix;
 	if (actor ~= player) rfalse;
 	Banner();
+	print "Inform 7 v", (PrintI6Text) I7_FULL_VERSION_NUMBER, "^";
 	print "Identification number: ";
 	for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
 	print "^";

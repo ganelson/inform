@@ -168,14 +168,9 @@ compile a |Story_Author|.
 		}
 		new_line;
 		VM_Describe_Release();
-		print " / Inform 7 build ", (PrintI6Text) NI_BUILD_COUNT, " ";
-		print "(I6/v"; inversion;
-		print ") ";
-		#Ifdef STRICT_MODE;
-		print "S";
-		#Endif; ! STRICT_MODE
+		print " / Inform 7 v", (PrintI6Text) I7_VERSION_NUMBER;
 		#Ifdef DEBUG;
-		print "D";
+		print " / D";
 		#Endif; ! DEBUG
 		new_line;
     }

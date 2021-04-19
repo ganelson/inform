@@ -158,6 +158,18 @@ target_vm *Task::vm(void) {
 	return inform7_task->task->for_vm;
 }
 
+int Task::veto_number(int X) {
+	if (((X > 32767) || (X < -32768)) &&
+		(TargetVMs::is_16_bit(Task::vm()))) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralOverflow),
+			"you use a number which is too large",
+			"at least with the Settings for this project as they currently "
+			"are. (Change to Glulx to be allowed to use much larger numbers.)");
+		return TRUE;
+	}
+	return FALSE;
+}
+
 inbuild_edition *Task::edition(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return inform7_task->project->as_copy->edition;
