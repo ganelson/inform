@@ -7085,7 +7085,7 @@ We can continue to add rules at any point, and a classic thing that happens when
 		if the noun is the camera:
 			say "That would require some sort of contraption with mirrors." instead.
 
-[x] Action variables {PM_ActionVarsPastTense} {PM_ActionVarAnd} {PM_ActionVarOverspecific} {PM_ActionVarUnknownKOV} {PM_ActionVarValue} {PM_BadMatchingSyntax} {PM_BadOptionalAPClause}
+[x] Action variables {PM_ActionVarsPastTense} {PM_ActionVarAnd} {PM_ActionVarOverspecific} {PM_ActionVarUnknownKOV} {PM_ActionVarValue} {PM_BadMatchingSyntax}
 
 ^^{actions: variables for actions}
 ^^{variables: for actions}
