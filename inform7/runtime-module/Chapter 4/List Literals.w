@@ -1,21 +1,22 @@
-[ConstantLists::] Constant Lists.
+[ListLiterals::] List Literals.
 
-In this section we compile I6 arrays for constant lists arising
-from braced literals.
+Each enclosure contains the literal lists needed by its functions.
 
-@ That leaves just the compilation of lists at run-time. This used to be a
-complex dance with initialisation code interleaved with heap construction,
-so there was once a two-page explanation here, but it is now blessedly simple.
+@ Literal lists arise from source text such as:
+= (text as Inform 7)
+	let Q be { 2, 3, 5, 7, 11 };
+=
+The data to hold |{ 2, 3, 5, 7, 11 }| has to go somewhere, and it goes into
+a block constant inside the enclosure for the function which contained this
+definition.
 
 =
-inter_name *ConstantLists::compile_literal_list(wording W) {
-	int incipit = Wordings::first_wn(W);
-	literal_list *ll = Lists::find_literal(incipit+1);
+inter_name *ListLiterals::compile_literal_list(literal_list *ll) {
 	if (ll) {
 		Lists::kind_of_ll(ll, FALSE);
-		inter_name *N = RTKinds::new_block_constant_iname();
+		inter_name *N = Hierarchy::new_block_constant_iname();
 		packaging_state save = EmitArrays::begin_late(N, K_value);
-		EmitArrays::iname_entry(ConstantLists::iname(ll));
+		EmitArrays::iname_entry(ListLiterals::iname(ll));
 		EmitArrays::numeric_entry(0);
 		EmitArrays::end(save);
 		return N;
@@ -23,18 +24,16 @@ inter_name *ConstantLists::compile_literal_list(wording W) {
 	return NULL;
 }
 
-inter_name *ConstantLists::iname(literal_list *ll) {
-	if (ll->ll_iname == NULL) {
-		package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
-		ll->ll_iname = Hierarchy::make_iname_in(LIST_LITERAL_HL, PR);
-	}
+inter_name *ListLiterals::iname(literal_list *ll) {
+	if (ll->ll_iname == NULL)
+		ll->ll_iname = Hierarchy::iname_in_enclosure(LITERALS_HAP, LIST_LITERAL_HL);
 	return ll->ll_iname;
 }
 
 @ Using:
 
 =
-void ConstantLists::compile(void) {
+void ListLiterals::compile(void) {
 	literal_list *ll;
 
 	if (problem_count == 0)
@@ -74,7 +73,7 @@ the list!);
 @ The default list of any given kind is empty.
 
 =
-void ConstantLists::compile_default_list(inter_name *identifier, kind *K) {
+void ListLiterals::compile_default_list(inter_name *identifier, kind *K) {
 	packaging_state save = EmitArrays::begin(identifier, K_value);
 	RTKinds::emit_block_value_header(K, TRUE, 2);
 	RTKinds::emit_strong_id(Kinds::unary_construction_material(K));
@@ -82,7 +81,7 @@ void ConstantLists::compile_default_list(inter_name *identifier, kind *K) {
 	EmitArrays::end(save);
 }
 
-int ConstantLists::extent_of_instance_list(kind *K) {
+int ListLiterals::extent_of_instance_list(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K))
 		return Kinds::Behaviour::get_highest_valid_value_as_integer(K);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
@@ -94,8 +93,8 @@ int ConstantLists::extent_of_instance_list(kind *K) {
 	return -1;
 }
 
-inter_name *ConstantLists::get_instance_list(kind *K) {
-	int N = ConstantLists::extent_of_instance_list(K);
+inter_name *ListLiterals::get_instance_list(kind *K) {
+	int N = ListLiterals::extent_of_instance_list(K);
 	if (N < 0) return NULL;
 	inter_name *iname = Kinds::Constructors::list_iname(Kinds::get_construct(K));
 	if (iname == NULL) {
@@ -132,7 +131,7 @@ inter_name *ConstantLists::get_instance_list(kind *K) {
 		EmitArrays::end(save);
 		Kinds::Constructors::set_list_iname(Kinds::get_construct(K), iname);
 	}
-	inter_name *bc = RTKinds::new_block_constant_iname();
+	inter_name *bc = Hierarchy::new_block_constant_iname();
 	packaging_state save = EmitArrays::begin_late(bc, K_value);
 	EmitArrays::iname_entry(iname);
 	EmitArrays::numeric_entry(0);

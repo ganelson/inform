@@ -264,7 +264,7 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 
 @ =
 void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) {
-	inter_name *N = RTKinds::new_block_constant_iname();
+	inter_name *N = Hierarchy::new_block_constant_iname();
 	packaging_state save = EmitArrays::begin_late(N, K_value);
 
 	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);

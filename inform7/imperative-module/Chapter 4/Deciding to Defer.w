@@ -28,8 +28,7 @@ typedef struct pcalc_prop_deferral {
 	struct parse_node *deferred_from; /* remember where it came from, for Problem reports */
 	struct general_pointer defn_ref; /* sometimes we must remember other things too */
 	struct kind *cinder_kinds[16]; /* the kinds of value being cindered (see below) */
-	struct package_request *ppd_package; /* where to put both of the following: */
-	struct inter_name *ppd_iname; /* routine to implement this */
+	struct inter_name *ppd_iname; /* function to implement this */
 	struct inter_name *rtp_iname; /* compile a string of the origin text for run-time problems? */
 	CLASS_DEFINITION
 } pcalc_prop_deferral;
@@ -54,8 +53,7 @@ pcalc_prop_deferral *Deferrals::new(pcalc_prop *prop, int reason) {
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
-	pdef->ppd_package = Hierarchy::package_in_enclosure(PROPOSITIONS_HAP);
-	pdef->ppd_iname = Hierarchy::make_iname_in(PROPOSITION_HL, pdef->ppd_package);
+	pdef->ppd_iname = Hierarchy::iname_in_enclosure(PROPOSITIONS_HAP, PROPOSITION_HL);
 	if (no_further_deferrals) internal_error("Too late now to defer propositions");
 	return pdef;
 }

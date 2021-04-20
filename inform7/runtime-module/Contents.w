@@ -25,12 +25,12 @@ Chapter 3: Basics
 	Extensions
 
 Chapter 4: Literals
-	Literal Patterns at Run Time
+	List Literals
 	Text Literals
 	Text Substitutions
 	Responses
 	Compiled Text
-	Constant Lists
+	Literal Patterns at Run Time
 
 Chapter 5: Miscellany
 	Runtime Support for Kinds

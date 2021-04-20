@@ -83,8 +83,7 @@ literal_text *TextLiterals::lt_new(int w1, int colour) {
 	x->unexpanded = FALSE;
 	x->small_block_array_needed = FALSE;
 	x->lt_sba_iname = NULL;
-	package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
-	x->lt_iname = Hierarchy::make_iname_in(TEXT_LITERAL_HL, PR);
+	x->lt_iname = Hierarchy::iname_in_enclosure(LITERALS_HAP, TEXT_LITERAL_HL);
 	Produce::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
@@ -162,7 +161,7 @@ which are null pointers.
 	if (encode_constant_text_bibliographically) x->bibliographic_conventions = TRUE;
 	if (write) {
 		if (x->lt_sba_iname == NULL)
-			x->lt_sba_iname = RTKinds::new_block_constant_iname();
+			x->lt_sba_iname = Hierarchy::new_block_constant_iname();
 		if (VH) Emit::holster_iname(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
 	}
@@ -284,11 +283,10 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 	}
 
 @<Compile a boxed-quotation literal text@> =
-	package_request *PR = Hierarchy::package_in_enclosure(BOX_QUOTATIONS_HAP);
-	inter_name *iname = Hierarchy::make_iname_in(BOX_QUOTATION_FN_HL, PR);
+	inter_name *iname = Hierarchy::iname_in_enclosure(BOX_QUOTATIONS_HAP, BOX_QUOTATION_FN_HL);
 
 	if (lt->lt_sba_iname == NULL)
-		lt->lt_sba_iname = RTKinds::new_block_constant_iname();
+		lt->lt_sba_iname = Hierarchy::new_block_constant_iname();
 
 	Emit::iname_constant(lt->lt_sba_iname, K_value, iname);
 
@@ -306,7 +304,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
 	if (CompileValues::compiling_in_constant_mode()) {
-		inter_name *N = RTKinds::new_block_constant_iname();
+		inter_name *N = Hierarchy::new_block_constant_iname();
 		packaging_state save = EmitArrays::begin_late(N, K_value);
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);
 		EmitArrays::iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));

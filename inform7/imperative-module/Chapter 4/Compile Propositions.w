@@ -211,7 +211,7 @@ void CompilePropositions::to_number_of_matches(parse_node *desc) {
 	pcalc_prop *prop = Node::get_proposition(desc);
 	if (Propositions::length(prop) == 1) {
 		kind *K = Propositions::describes_kind(prop);
-		int N = ConstantLists::extent_of_instance_list(K);
+		int N = ListLiterals::extent_of_instance_list(K);
 		if (N >= 0) {
 			EmitCode::val_number((inter_ti) N);
 			return;
@@ -225,7 +225,7 @@ void CompilePropositions::to_list_of_matches(parse_node *desc, kind *K) {
 	pcalc_prop *prop = Node::get_proposition(desc);
 	if (Propositions::length(prop) == 1) {
 		kind *K = Propositions::describes_kind(prop);
-		inter_name *iname = ConstantLists::get_instance_list(K);
+		inter_name *iname = ListLiterals::get_instance_list(K);
 		if (iname) {
 			EmitCode::val_iname(K_value, iname);
 			return;

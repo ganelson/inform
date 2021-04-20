@@ -102,7 +102,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			inter_name *N = RTKinds::new_block_constant_iname();
+			inter_name *N = Hierarchy::new_block_constant_iname();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			inter_name *rks_symb = RTKinds::compile_default_value_inner(K);
 			EmitArrays::iname_entry(rks_symb);
@@ -110,7 +110,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			EmitArrays::end(save);
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
-			inter_name *N = RTKinds::new_block_constant_iname();
+			inter_name *N = Hierarchy::new_block_constant_iname();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
 			EmitArrays::iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
@@ -127,7 +127,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			EmitArrays::end(save);
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			inter_name *N = RTKinds::new_block_constant_iname();
+			inter_name *N = Hierarchy::new_block_constant_iname();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			RTRelations::compile_blank_relation(K);
 			EmitArrays::end(save);
@@ -148,7 +148,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 	}
 
 	if (Kinds::eq(K, K_text)) {
-		inter_name *N =  RTKinds::new_block_constant_iname();
+		inter_name *N =  Hierarchy::new_block_constant_iname();
 		packaging_state save = EmitArrays::begin_late(N, K_value);
 		EmitArrays::iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
@@ -229,14 +229,6 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 		"(a number, a time, some text perhaps?).");
 	Problems::issue_problem_end();
 	return NOT_APPLICABLE;
-
-@
-
-=
-inter_name *RTKinds::new_block_constant_iname(void) {
-	package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-	return Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
-}
 
 @ This returns either valid I6 code for the value which is the default for
 $K$, or else |NULL| if $K$ has no values, or no default can be chosen.
@@ -723,7 +715,7 @@ void RTKinds::compile_structures(void) {
 	} else if (Kinds::get_construct(K) == CON_relation) {
 		RTRelations::compile_default_relation(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {
-		ConstantLists::compile_default_list(identifier, K);
+		ListLiterals::compile_default_list(identifier, K);
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);

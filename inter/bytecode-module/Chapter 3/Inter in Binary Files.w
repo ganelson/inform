@@ -367,7 +367,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 enough that the slot exists for the eventual list to be stored in.
 
 @<Read a frame list resource@> =
-	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::ConstantLists::new();
+	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::ListLiterals::new();
 
 @<Write a frame list resource@> =
 	;

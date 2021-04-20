@@ -1600,9 +1600,9 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 
 	if ((K) && (parent_optimised == FALSE)) { /* parent optimisation is stronger, so we prefer that */
 		if (CompileLoops::schema(&loop_schema, K) == FALSE) {
-			if (pdef->rtp_iname == NULL) {
-				pdef->rtp_iname = Hierarchy::make_iname_in(RTP_HL, pdef->ppd_package);
-			}
+			if (pdef->rtp_iname == NULL)
+				pdef->rtp_iname =
+					Hierarchy::make_iname_in(RTP_HL, InterNames::location(pdef->ppd_iname));
 			Calculus::Schemas::modify(&loop_schema, "if (RunTimeProblem(RTP_CANTITERATE, %n))",
 				pdef->rtp_iname);
 		}

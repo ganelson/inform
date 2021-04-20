@@ -215,13 +215,13 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",
 		-1, debugging, sequence_timer);
 	BENCH(Lists::check)
-	BENCH(ConstantLists::compile)
+	BENCH(ListLiterals::compile)
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::compile_function_resources)
 	BENCH(Strings::compile_responses)
 	BENCH(Lists::check)
-	BENCH(ConstantLists::compile)
+	BENCH(ListLiterals::compile)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Sequence::compile_function_resources)
 	BENCH(TextSubstitutions::allow_no_further_text_subs)
@@ -238,7 +238,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Lists::check)
-	BENCH(ConstantLists::compile)
+	BENCH(ListLiterals::compile)
 	BENCH(TextLiterals::compile)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
