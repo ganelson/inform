@@ -17,14 +17,12 @@ Chapter 2: Emission
 	Emit
 	Emit Code
 	Emit Arrays
+	Interventions
 
 Chapter 3: Basics
-"Mainly low-level utilities for compiling code."
 	Fundamental Constants
-	Use Options at Run Time
-	Extension Files at Run Time
-	Inform 6 Inclusions
-	I6 Template Interpreter
+	Use Options
+	Extensions
 
 Chapter 4: Literals
 	Literal Patterns at Run Time

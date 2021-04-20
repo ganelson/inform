@@ -35,6 +35,7 @@ Chapter 3: Requests
 	New Property Requests
 	New Verb Requests
 	New Adjective Requests
+	Intervention Requests
 
 Chapter 4: Assertions
 "Turning regular assertion sentences into propositions about the model world."

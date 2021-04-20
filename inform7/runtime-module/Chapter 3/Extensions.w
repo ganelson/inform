@@ -1,4 +1,4 @@
-[RTExtensions::] Extension Files at Run Time.
+[RTExtensions::] Extensions.
 
 To compile the credits functions.
 

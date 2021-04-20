@@ -183,6 +183,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTFundamentalConstants::compile);
 	BENCH(RTUseOptions::compile)
 	BENCH(RTExtensions::compile_support)
+	BENCH(Interventions::make_all)
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH(RTActivities::arrays)
 	BENCH(RTRelations::compile_defined_relation_constants)
@@ -249,7 +250,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
 		-1, debugging, sequence_timer);
 	BENCH(Hierarchy::log);
-	BENCH(I6T::produce_index);
+	BENCH(InterpretIndex::produce_index);
 
 @ We will define just one of the above steps here, because it works in a way
 which breaks the pattern of doing everything just once. For one thing, it's

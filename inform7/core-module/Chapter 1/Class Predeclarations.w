@@ -44,6 +44,7 @@ DECLARE_CLASS(compile_task_data)
 @e rule_family_data_CLASS
 @e rulebook_CLASS
 @e rulebook_outcome_CLASS
+@e source_text_intervention_CLASS
 @e table_CLASS
 @e table_column_CLASS
 @e table_contribution_CLASS
@@ -77,6 +78,7 @@ DECLARE_CLASS(rule_family_data)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook_outcome)
 DECLARE_CLASS(rulebook)
+DECLARE_CLASS(source_text_intervention)
 DECLARE_CLASS(table_column)
 DECLARE_CLASS(table)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
@@ -189,7 +191,6 @@ DECLARE_CLASS(local_block_value)
 @e door_dir_notice_CLASS
 @e door_to_notice_CLASS
 @e dval_written_CLASS
-@e i6_inclusion_matter_CLASS
 @e internal_test_case_CLASS
 @e kind_interaction_CLASS
 @e label_namespace_CLASS
@@ -211,7 +212,6 @@ DECLARE_CLASS(definition)
 DECLARE_CLASS(door_dir_notice)
 DECLARE_CLASS(door_to_notice)
 DECLARE_CLASS(dval_written)
-DECLARE_CLASS(i6_inclusion_matter)
 DECLARE_CLASS(internal_test_case)
 DECLARE_CLASS(kind_interaction)
 DECLARE_CLASS(label_namespace)

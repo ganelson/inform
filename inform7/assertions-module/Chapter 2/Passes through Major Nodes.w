@@ -124,7 +124,7 @@ organisation, and are not directly functional in themselves.
 		case EQUATION_NT: if (global_pass_state.pass == 0) Equations::new_at(p, FALSE);
 			break;
 		case INFORM6CODE_NT:
-			if (global_pass_state.pass == 2) Config::Inclusions::inform_6_inclusion(p);
+			if (global_pass_state.pass == 2) InterventionRequests::make(p);
 			break;
 		case BIBLIOGRAPHIC_NT:
 			#ifdef IF_MODULE

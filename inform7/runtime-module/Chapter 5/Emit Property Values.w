@@ -49,14 +49,11 @@ each one is marked when visited.
 	#endif
 
 @ This is an ugly business, but the I7 language supports the injection of raw
-I6 code into object bodies, and the I6 template does make use of this a little.
-In an ideal world we would revoke this ability.
+I6 code into object bodies. In an ideal world we would revoke this ability;
+the Standard Rules do not use it.
 
 @<Append any inclusions the source text requested@> =
-	TEMPORARY_TEXT(incl)
-	Config::Inclusions::compile_inclusions_for_subject(incl, subj);
-	if (Str::len(incl) > 0) Emit::append(iname, incl);
-	DISCARD_TEXT(incl)
+	Interventions::make_for_subject(iname, subj);
 
 @ Now, here goes with the properties. We first compile clauses for those we
 know about, then for any other properties which are permitted but apparently

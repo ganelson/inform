@@ -222,10 +222,84 @@ void Kits::load_built_in_kind_constructors(inform_kit *K) {
 		pathname *P = Pathnames::down(K->as_copy->location_if_path, I"kinds");
 		filename *F = Filenames::in(P, segment);
 		LOG("Loading kinds definitions from %f\n", F);
-		I6T::interpret_neptune(F);
+		Kits::interpret_neptune(F);
 	}
 }
 #endif
+
+@ Using this rudimentary interpreter:
+
+=
+#ifdef CORE_MODULE
+void Kits::interpret_neptune(filename *neptune_file) {
+	FILE *Input_File = NULL;
+	int col = 1, cr, lc = 0;
+	TEMPORARY_TEXT(heading_name)
+	@<Open a file for input, if necessary@>;
+	TEMPORARY_TEXT(command)
+	TEMPORARY_TEXT(argument)
+	do {
+		Str::clear(command);
+		Str::clear(argument);
+		@<Read next character from I6T stream@>;
+		if (cr == EOF) break;
+		lc++;
+		if ((cr == 10) || (cr == 13)) continue; /* skip blank lines here */
+		@<Read rest of line as argument@>;
+		if ((Str::get_first_char(argument) == '!') ||
+			(Str::get_first_char(argument) == 0)) continue; /* skip blanks and comments */
+		text_file_position tfp = TextFiles::at(neptune_file, lc);				
+		parse_node *cs = current_sentence;
+		current_sentence = NULL;
+		NeptuneFiles::read_command(argument, &tfp);
+		current_sentence = cs;
+	} while (cr != EOF);
+	DISCARD_TEXT(command)
+	DISCARD_TEXT(argument)
+	if (Input_File) { if (DL) STREAM_FLUSH(DL); fclose(Input_File); }
+	DISCARD_TEXT(heading_name)
+}
+#endif
+
+@<Open a file for input, if necessary@> =
+	if (neptune_file) {
+		Input_File = Filenames::fopen(neptune_file, "r");
+		if (Input_File == NULL) {
+			LOG("Filename was %f\n", neptune_file);
+			StandardProblems::unlocated_problem(Task::syntax_tree(),
+				_p_(BelievedImpossible), /* or anyway not usefully testable */
+				"I couldn't open a Neptune file for defining built-in kinds.");
+		}
+	}
+
+@ I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
+ordinary |fgetc| is used, and no BOM marker is parsed. Lines are assumed
+to be terminated with either |0x0a| or |0x0d|. (Since blank lines are
+harmless, we take no trouble over |0a0d| or |0d0a| combinations.) The
+built-in template files, almost always the only ones used, are line
+terminated |0x0a| in Unix fashion.
+
+@<Read next character from I6T stream@> =
+	if (Input_File) cr = fgetc(Input_File);
+	else cr = EOF;
+	col++; if ((cr == 10) || (cr == 13)) col = 0;
+
+@ We get here when reading a kinds template file. Note that initial and
+trailing white space on the line is deleted: this makes it easier to lay
+out I6T template files tidily.
+
+@<Read rest of line as argument@> =
+	Str::clear(argument);
+	if (Characters::is_space_or_tab(cr) == FALSE) PUT_TO(argument, cr);
+	int at_start = TRUE;
+	while (TRUE) {
+		@<Read next character from I6T stream@>;
+		if ((cr == 10) || (cr == 13)) break;
+		if ((at_start) && (Characters::is_space_or_tab(cr))) continue;
+		PUT_TO(argument, cr); at_start = FALSE;
+	}
+	while (Characters::is_space_or_tab(Str::get_last_char(argument)))
+		Str::delete_last_character(argument);
 
 @h Language element activation.
 Note that this function is meaningful only when this module is part of the

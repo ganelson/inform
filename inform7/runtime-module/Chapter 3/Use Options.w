@@ -1,4 +1,4 @@
-[RTUseOptions::] Use Options at Run Time.
+[RTUseOptions::] Use Options.
 
 To give use options a presence at run-time.
 
@@ -109,7 +109,7 @@ made in that second case would be something like
 					PUT_TO(S, Str::get_at(UO, i));
 				}
 			}
-			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, S, NULL);
+			Interventions::from_use_option(S);
 		}
 
 @ A relatively late addition to the design of use options was to make them
