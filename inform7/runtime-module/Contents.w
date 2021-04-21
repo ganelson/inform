@@ -24,16 +24,17 @@ Chapter 3: Basics
 	Use Options
 	Extensions
 
-Chapter 4: Literals
+Chapter 4: Enclosed Resources
+	Enclosures
 	List Literals
 	Text Literals
 	Text Substitutions
 	Responses
 	Compiled Text
-	Literal Patterns at Run Time
 
 Chapter 5: Miscellany
 	Runtime Support for Kinds
+	Literal Patterns at Run Time
 	List Together
 	Rules
 	Activities

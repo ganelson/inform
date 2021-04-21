@@ -2,6 +2,29 @@
 
 In this section we compile text constants.
 
+@
+
+=
+inter_name *TextLiterals::small_block(inter_name *large_block, inter_name *format) {
+	inter_name *N = Enclosures::new_small_block_for_constant();
+	return TextLiterals::small_block_at(large_block, format, N);
+}
+
+inter_name *TextLiterals::small_block_at(inter_name *large_block, inter_name *format,
+	inter_name *small_block) {
+	packaging_state save = EmitArrays::begin_late(small_block, K_value);
+	EmitArrays::iname_entry(large_block);
+	EmitArrays::iname_entry(format);
+	EmitArrays::end(save);
+	return small_block;
+}
+
+inter_name *TextLiterals::default_text(void) {
+	return TextLiterals::small_block(
+			Hierarchy::find(PACKED_TEXT_STORAGE_HL),
+			Hierarchy::find(EMPTY_TEXT_PACKED_HL));
+}
+
 @ Each literal text needed is stored as a "small block array", or SBA, with
 just two words in it. These are then compiled in the Inter hierarchy in
 alphabetical sequence, with no repetitions. Because of that, a numerical
@@ -83,7 +106,7 @@ literal_text *TextLiterals::lt_new(int w1, int colour) {
 	x->unexpanded = FALSE;
 	x->small_block_array_needed = FALSE;
 	x->lt_sba_iname = NULL;
-	x->lt_iname = Hierarchy::iname_in_enclosure(LITERALS_HAP, TEXT_LITERAL_HL);
+	x->lt_iname = Enclosures::new_iname(LITERALS_HAP, TEXT_LITERAL_HL);
 	Produce::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
@@ -161,7 +184,7 @@ which are null pointers.
 	if (encode_constant_text_bibliographically) x->bibliographic_conventions = TRUE;
 	if (write) {
 		if (x->lt_sba_iname == NULL)
-			x->lt_sba_iname = Hierarchy::new_block_constant_iname();
+			x->lt_sba_iname = Enclosures::new_small_block_for_constant();
 		if (VH) Emit::holster_iname(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
 	}
@@ -276,17 +299,17 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 		DISCARD_TEXT(TLT)
 	}
 	if (lt->small_block_array_needed) {
-		packaging_state save = EmitArrays::begin(lt->lt_sba_iname, K_value);
-		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		EmitArrays::iname_entry(lt->lt_iname);
-		EmitArrays::end(save);
+		TextLiterals::small_block_at(
+			Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL),
+			lt->lt_iname,
+			lt->lt_sba_iname);
 	}
 
 @<Compile a boxed-quotation literal text@> =
-	inter_name *iname = Hierarchy::iname_in_enclosure(BOX_QUOTATIONS_HAP, BOX_QUOTATION_FN_HL);
+	inter_name *iname = Enclosures::new_iname(BOX_QUOTATIONS_HAP, BOX_QUOTATION_FN_HL);
 
 	if (lt->lt_sba_iname == NULL)
-		lt->lt_sba_iname = Hierarchy::new_block_constant_iname();
+		lt->lt_sba_iname = Enclosures::new_small_block_for_constant();
 
 	Emit::iname_constant(lt->lt_sba_iname, K_value, iname);
 
@@ -304,14 +327,11 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
 	if (CompileValues::compiling_in_constant_mode()) {
-		inter_name *N = Hierarchy::new_block_constant_iname();
-		packaging_state save = EmitArrays::begin_late(N, K_value);
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);
-		EmitArrays::iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
-		if (lt == NULL) EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		else EmitArrays::iname_entry(lt->lt_iname);
-		EmitArrays::end(save);
-		if (N) Emit::holster_iname(VH, N);
+		inter_name *N = NULL;
+		if (lt == NULL) N = TextLiterals::default_text();
+		else N = TextLiterals::small_block(Hierarchy::find(PACKED_TEXT_STORAGE_HL), lt->lt_iname);
+		Emit::holster_iname(VH, N);
 	} else {
 		lt = TextLiterals::compile_literal(VH, TRUE, W);
 	}

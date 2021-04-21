@@ -53,7 +53,7 @@ pcalc_prop_deferral *Deferrals::new(pcalc_prop *prop, int reason) {
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
-	pdef->ppd_iname = Hierarchy::iname_in_enclosure(PROPOSITIONS_HAP, PROPOSITION_HL);
+	pdef->ppd_iname = Enclosures::new_iname(PROPOSITIONS_HAP, PROPOSITION_HL);
 	if (no_further_deferrals) internal_error("Too late now to defer propositions");
 	return pdef;
 }

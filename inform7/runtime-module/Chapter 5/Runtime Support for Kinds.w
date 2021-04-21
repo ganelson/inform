@@ -103,17 +103,9 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
 			inter_name *N = ListLiterals::small_block(RTKinds::compile_default_value_inner(K));
-			
-/*			Hierarchy::new_block_constant_iname();
-			packaging_state save = EmitArrays::begin_late(N, K_value);
-			inter_name *rks_symb = RTKinds::compile_default_value_inner(K);
-			EmitArrays::iname_entry(rks_symb);
-			EmitArrays::numeric_entry(0);
-			EmitArrays::end(save);
-*/
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
-			inter_name *N = Hierarchy::new_block_constant_iname();
+			inter_name *N = Enclosures::new_small_block_for_constant();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
 			EmitArrays::iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
@@ -130,7 +122,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			EmitArrays::end(save);
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			inter_name *N = Hierarchy::new_block_constant_iname();
+			inter_name *N = Enclosures::new_small_block_for_constant();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			RTRelations::compile_blank_relation(K);
 			EmitArrays::end(save);
@@ -151,12 +143,8 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 	}
 
 	if (Kinds::eq(K, K_text)) {
-		inter_name *N =  Hierarchy::new_block_constant_iname();
-		packaging_state save = EmitArrays::begin_late(N, K_value);
-		EmitArrays::iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
-		EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		EmitArrays::end(save);
-		if (N) Emit::holster_iname(VH, N);
+		inter_name *N = TextLiterals::default_text();
+		Emit::holster_iname(VH, N);
 		return TRUE;
 	}
 

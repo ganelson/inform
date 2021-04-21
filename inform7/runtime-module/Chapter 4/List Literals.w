@@ -51,7 +51,7 @@ void ListLiterals::end_large_block(packaging_state save) {
 
 =
 inter_name *ListLiterals::small_block(inter_name *large_block) {
-	inter_name *N = Hierarchy::new_block_constant_iname();
+	inter_name *N = Enclosures::new_small_block_for_constant();
 	packaging_state save = EmitArrays::begin(N, K_value);
 	EmitArrays::iname_entry(large_block);
 	EmitArrays::numeric_entry(0);
@@ -98,7 +98,7 @@ inter_name *ListLiterals::compile_literal_list(literal_list *ll) {
 
 inter_name *ListLiterals::large_block_iname(literal_list *ll) {
 	if (ll->ll_iname == NULL)
-		ll->ll_iname = Hierarchy::iname_in_enclosure(LITERALS_HAP, LIST_LITERAL_HL);
+		ll->ll_iname = Enclosures::new_iname(LITERALS_HAP, LIST_LITERAL_HL);
 	return ll->ll_iname;
 }
 

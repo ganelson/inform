@@ -179,12 +179,10 @@ void TextSubstitutions::text_substitution_cue(value_holster *VH, wording W) {
 	text_substitution *ts = TextSubstitutions::new_text_substitution(W, phsf,
 		adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 	if (CompileValues::compiling_in_constant_mode()) {
-		inter_name *N = Hierarchy::new_block_constant_iname();
-		packaging_state save = EmitArrays::begin_late(N, K_value);
-		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		EmitArrays::iname_entry(ts->ts_routine_iname);
-		EmitArrays::end(save);
-		if (N) Emit::holster_iname(VH, N);
+		inter_name *N = TextLiterals::small_block(
+			Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL),
+			ts->ts_routine_iname);
+		Emit::holster_iname(VH, N);
 	} else {
 		inter_name *tin = TextSubstitutions::text_substitution_iname(ts);
 		if (Holsters::data_acceptable(VH)) {

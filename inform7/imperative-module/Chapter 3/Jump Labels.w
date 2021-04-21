@@ -103,7 +103,7 @@ label_namespace *JumpLabels::obtain_namespace(text_stream *name) {
 	lns = CREATE(label_namespace);
 	lns->label_prefix = Str::duplicate(name);
 	lns->label_storage_iname =
-		Hierarchy::iname_in_enclosure(LABEL_STORAGES_HAP, LABEL_ASSOCIATED_STORAGE_HL);
+		Enclosures::new_iname(LABEL_STORAGES_HAP, LABEL_ASSOCIATED_STORAGE_HL);
 	lns->label_counter = 0;
 	lns->allocate_storage = 0;
 	lns->storage_compiled = FALSE;
