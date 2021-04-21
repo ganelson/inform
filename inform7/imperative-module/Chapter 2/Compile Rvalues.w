@@ -92,8 +92,10 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_list_of) {
 		wording W = Node::get_text(value);
 		literal_list *ll = Lists::find_literal(Wordings::first_wn(W) + 1);
-		inter_name *N = ListLiterals::compile_literal_list(ll);
-		if (N) Emit::holster_iname(VH, N);
+		if (ll) {
+			inter_name *N = ListLiterals::compile_literal_list(ll);
+			if (N) Emit::holster_iname(VH, N);
+		}
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_phrase) {

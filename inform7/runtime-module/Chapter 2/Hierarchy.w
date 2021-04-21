@@ -741,6 +741,7 @@ void Hierarchy::establish(void) {
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
 @e INSTANCE_GPR_FN_HL
+@e INSTANCE_LIST_HL
 @e FIRST_INSTANCE_HL
 @e NEXT_INSTANCE_HL
 @e COUNT_INSTANCE_1_HL
@@ -796,6 +797,7 @@ void Hierarchy::establish(void) {
 			H_F_U(DEFAULT_CLOSURE_FN_HL,      I"default_closure_fn")
 			H_F_U(GPR_FN_HL,                  I"gpr_fn")
 			H_F_U(INSTANCE_GPR_FN_HL,         I"instance_gpr_fn")
+			H_C_U(INSTANCE_LIST_HL,           I"instance_list")
 			H_C_S(FIRST_INSTANCE_HL,          I"_First")
 			H_C_S(NEXT_INSTANCE_HL,           I"_Next")
 			H_C_T(COUNT_INSTANCE_1_HL,        I"IK1_Count")

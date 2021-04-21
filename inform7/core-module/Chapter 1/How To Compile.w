@@ -214,14 +214,12 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 3@> =
 	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",
 		-1, debugging, sequence_timer);
-	BENCH(Lists::check)
-	BENCH(ListLiterals::compile)
+	BENCH(Sequence::compile_literal_resources)
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::compile_function_resources)
 	BENCH(Strings::compile_responses)
-	BENCH(Lists::check)
-	BENCH(ListLiterals::compile)
+	BENCH(Sequence::compile_literal_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Sequence::compile_function_resources)
 	BENCH(TextSubstitutions::allow_no_further_text_subs)
@@ -237,8 +235,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
-	BENCH(Lists::check)
-	BENCH(ListLiterals::compile)
+	BENCH(Sequence::compile_literal_resources)
 	BENCH(TextLiterals::compile)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
@@ -319,5 +316,23 @@ void Sequence::compile_function_resources(void) {
 	iterations--; /* since the final round is one where everyone does nothing */
 	if (iterations > 0)
 		LOG(".... Sequence::compile_function_resources completed in %d iteration%s\n",
+			iterations, (iterations == 1)?"":"s");
+}
+
+@ And very similarly:
+
+=
+void Sequence::compile_literal_resources(void) {
+	int repeat = TRUE, iterations = 0;
+	while (repeat) {
+		repeat = FALSE; iterations++;
+
+		if (ListLiterals::compile_support_matter() > 0)        repeat = TRUE;
+
+		if ((problem_count > 0) && (iterations > 10)) repeat = FALSE;
+	}
+	iterations--; /* since the final round is one where everyone does nothing */
+	if (iterations > 0)
+		LOG(".... Sequence::compile_literal_resources completed in %d iteration%s\n",
 			iterations, (iterations == 1)?"":"s");
 }

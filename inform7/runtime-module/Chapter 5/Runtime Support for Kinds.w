@@ -102,12 +102,15 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			inter_name *N = Hierarchy::new_block_constant_iname();
+			inter_name *N = ListLiterals::small_block(RTKinds::compile_default_value_inner(K));
+			
+/*			Hierarchy::new_block_constant_iname();
 			packaging_state save = EmitArrays::begin_late(N, K_value);
 			inter_name *rks_symb = RTKinds::compile_default_value_inner(K);
 			EmitArrays::iname_entry(rks_symb);
 			EmitArrays::numeric_entry(0);
 			EmitArrays::end(save);
+*/
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
 			inter_name *N = Hierarchy::new_block_constant_iname();
@@ -715,7 +718,7 @@ void RTKinds::compile_structures(void) {
 	} else if (Kinds::get_construct(K) == CON_relation) {
 		RTRelations::compile_default_relation(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {
-		ListLiterals::compile_default_list(identifier, K);
+		ListLiterals::default_large_block(identifier, K);
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);

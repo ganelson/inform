@@ -245,14 +245,3 @@ void Lists::check_one(wording W) {
 	literal_list *ll = Lists::find_literal(incipit+1);
 	if (ll) Lists::kind_of_ll(ll, TRUE);
 }
-
-@ And this checks every list, with problem messages on:
-
-=
-void Lists::check(void) {
-	if (problem_count == 0) {
-		literal_list *ll;
-		LOOP_OVER(ll, literal_list)
-			Lists::kind_of_ll(ll, TRUE);
-	}
-}
