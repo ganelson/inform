@@ -236,7 +236,6 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::compile_literal_resources)
-	BENCH(TextLiterals::compile)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
@@ -328,7 +327,7 @@ void Sequence::compile_literal_resources(void) {
 		repeat = FALSE; iterations++;
 
 		if (ListLiterals::compile_support_matter() > 0)        repeat = TRUE;
-		if (BoxQuotations::compile_support_matter() > 0)        repeat = TRUE;
+		if (BoxQuotations::compile_support_matter() > 0)       repeat = TRUE;
 
 		if ((problem_count > 0) && (iterations > 10)) repeat = FALSE;
 	}

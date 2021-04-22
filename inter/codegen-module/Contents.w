@@ -24,6 +24,7 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
 	Eliminate Redundant Operations
+	Consolidate Packed Text
 
 Chapter 3: Inter to Final Code
 	Code Generation

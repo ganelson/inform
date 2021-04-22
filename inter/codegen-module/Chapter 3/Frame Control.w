@@ -50,6 +50,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 				inter_ti ID = P->W.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
 					Inode::ID_to_text(P, ID));
+LOG("$3 has tli\n", con_name);
 				CodeGen::select_temporary(gen, S);
 				CodeGen::CL::constant(gen, P);
 				CodeGen::deselect_temporary(gen);

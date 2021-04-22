@@ -1,37 +1,38 @@
 100.0% in inform7 run
-     66.2% in compilation to Inter
-         25.6% in //ImperativeDefinitions::compile_first_block//
-          8.6% in //Sequence::compile_function_resources//
-          7.0% in //Strings::compile_responses//
-          5.9% in //InferenceSubjects::emit_all//
+     63.7% in compilation to Inter
+         26.0% in //ImperativeDefinitions::compile_first_block//
+          9.4% in //Sequence::compile_function_resources//
+          7.5% in //Strings::compile_responses//
           3.7% in //MajorNodes::pre_pass//
-          3.2% in //MajorNodes::pass_1//
+          3.3% in //MajorNodes::pass_1//
           1.9% in //RTRules::RulePrintingRule_routine//
-          1.8% in //RTRules::rulebooks_array_array//
+          1.9% in //RTRules::rulebooks_array_array//
           1.6% in //ImperativeDefinitions::assess_all//
-          1.0% in //RTVerbs::ConjugateVerb//
+          1.6% in //InferenceSubjects::emit_all//
+          1.2% in //RTVerbs::ConjugateVerb//
           0.5% in //RTRules::compile_rulebooks//
+          0.5% in //World::stage_V//
           0.3% in //MajorNodes::pass_2//
           0.3% in //RTRelations::compile_defined_relations//
-          0.3% in //World::stage_V//
           0.1% in //RTCommandGrammars::compile_all//
           0.1% in //RTKinds::compile_data_type_support_routines//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          3.1% not specifically accounted for
-     31.5% in running Inter pipeline
-         10.6% in step preparation
-          9.5% in inter step 2/13: link
-          7.0% in inter step 13/13: generate inform6 -> auto.inf
-          0.5% in inter step 9/13: make-identifiers-unique
-          0.3% in inter step 12/13: eliminate-redundant-operations
-          0.1% in inter step 10/13: reconcile-verbs
-          0.1% in inter step 11/13: eliminate-redundant-labels
-          0.1% in inter step 4/13: parse-linked-matter
-          0.1% in inter step 5/13: resolve-conditional-compilation
-          0.1% in inter step 6/13: assimilate
-          0.1% in inter step 7/13: resolve-external-symbols
-          0.1% in inter step 8/13: inspect-plugs
-          2.1% not specifically accounted for
+          2.7% not specifically accounted for
+     33.7% in running Inter pipeline
+         11.9% in step preparation
+         10.0% in inter step 2/14: link
+          7.3% in inter step 14/14: generate inform6 -> auto.inf
+          0.3% in inter step 13/14: eliminate-redundant-operations
+          0.3% in inter step 9/14: make-identifiers-unique
+          0.1% in inter step 10/14: consolidate-text
+          0.1% in inter step 11/14: reconcile-verbs
+          0.1% in inter step 12/14: eliminate-redundant-labels
+          0.1% in inter step 4/14: parse-linked-matter
+          0.1% in inter step 5/14: resolve-conditional-compilation
+          0.1% in inter step 6/14: assimilate
+          0.1% in inter step 7/14: resolve-external-symbols
+          0.1% in inter step 8/14: inspect-plugs
+          2.3% not specifically accounted for
       1.9% in supervisor
-      0.2% not specifically accounted for
+      0.6% not specifically accounted for

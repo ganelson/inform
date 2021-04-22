@@ -1435,9 +1435,6 @@ file: this may possibly be useful to I6 hackers.
 			"I think perhaps I could manage without this sentence.");
 		Problems::issue_problem_end();
 	}
-	if ((var_set == FALSE) && (Kinds::eq(a_kind, K_text))) {
-		TextLiterals::compile_literal(NULL, TRUE, Node::get_text(px));
-	}
 	return;
 
 @ My, aren't we charming?

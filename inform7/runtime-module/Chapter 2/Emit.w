@@ -324,7 +324,8 @@ is compiled.
 =
 void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
 	inter_ti v1 = 0, v2 = 0;
-	TextLiterals::compile_literal_from_text(con_iname, &v1, &v2, str);
+	inter_name *iname = TextLiterals::to_value(Feeds::feed_C_string(str));
+	Emit::to_value_pair_in_context(con_iname, &v1, &v2, iname);
 	Emit::named_generic_constant(con_iname, v1, v2);
 }
 

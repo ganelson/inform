@@ -8,6 +8,12 @@ Note that some of the bibliographic variables are actually compiled to
 constants.
 
 =
+int encode_constant_text_bibliographically = FALSE; /* Compile literal text semi-literally */
+
+int RTBibliographicData::in_bibliographic_mode(void) {
+	return encode_constant_text_bibliographically;
+}
+
 void RTBibliographicData::compile_constants(void) {
 	encode_constant_text_bibliographically = TRUE;
 	if (story_title_VAR) @<Compile the I6 Story constant@>;

@@ -7,6 +7,7 @@ assimilate
 resolve-external-symbols
 inspect-plugs
 make-identifiers-unique
+consolidate-text
 reconcile-verbs
 eliminate-redundant-labels
 generate inform6 -> *out

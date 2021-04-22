@@ -271,7 +271,7 @@ void BibliographicData::compile_bibliographic_text(OUTPUT_STREAM, wchar_t *p, in
 		@<Compile bibliographic text as XML respecting Treaty of Babel rules@>;
 	if (mode == TRUNCATE_BIBTEXT_MODE)
 		@<Compile bibliographic text as a truncated filename@>;
-	if ((encode_constant_text_bibliographically) || (mode == I6_BIBTEXT_MODE))
+	if ((RTBibliographicData::in_bibliographic_mode()) || (mode == I6_BIBTEXT_MODE))
 		@<Compile bibliographic text as an I6 string@>
 	@<Compile bibliographic text as HTML@>;
 }

@@ -46,6 +46,20 @@ void Inter::Annotations::add_to_set(inter_annotation_set *set, inter_annotation 
 	}
 }
 
+void Inter::Annotations::remove_from_set(inter_annotation_set *set, inter_ti annot_ID) {
+	if (set) {
+		inter_annotation *prev = NULL;
+		for (inter_annotation *L = set->anns; L; L = L->next) {
+			if (L->annot->annotation_ID == annot_ID) {
+				if (prev) prev->next = L->next;
+				else set->anns = L->next;
+				break;
+			}
+			prev = L;
+		}
+	}
+}
+
 void Inter::Annotations::copy_set_to_symbol(inter_annotation_set *set, inter_symbol *S) {
 	if (set)
 		for (inter_annotation *A = set->anns; A; A = A->next)

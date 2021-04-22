@@ -16,6 +16,7 @@ typedef struct building_site {
 	struct inter_package *main_package;
 	struct inter_package *connectors_package;
 	struct inter_package *assimilation_package;
+	struct inter_package *texts_package;
 	struct inter_symbol *opcodes_set[MAX_BIPS];
 	struct inter_bookmark pragmas_bookmark;
 	struct inter_bookmark package_types_bookmark;
@@ -27,6 +28,7 @@ typedef struct building_site {
 	struct dictionary *modules_indexed_by_name;
 	struct package_request *main_pr;
 	struct package_request *connectors_pr;
+	struct package_request *texts_pr;
 	struct package_request *veneer_pr;
 	struct inter_package *current_inter_routine;
 	struct packaging_state current_state;
@@ -58,6 +60,7 @@ void Site::clear(inter_tree *I) {
 	building_site *B = &(I->site);
 	B->main_package = NULL;
 	B->connectors_package = NULL;
+	B->texts_package = NULL;
 	B->assimilation_package = NULL;
 	for (int i=0; i<MAX_BIPS; i++) B->opcodes_set[i] = NULL;
 	B->pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
@@ -157,6 +160,17 @@ inter_package *Site::connectors_package(inter_tree *I) {
 	return NULL;
 }
 
+inter_package *Site::texts_package(inter_tree *I) {
+	if (I) {
+		inter_package *P = I->site.texts_package;
+		if (P) return P;
+		P = Inter::Packages::by_url(I, I"/main/texts");
+		if (P) I->site.texts_package = P;
+		return P;
+	}
+	return NULL;
+}
+
 void Site::set_main_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->site.main_package = M;
@@ -165,6 +179,11 @@ void Site::set_main_package(inter_tree *I, inter_package *M) {
 void Site::set_connectors_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->site.connectors_package = M;
+}
+
+void Site::set_texts_package(inter_tree *I, inter_package *M) {
+	if (I == NULL) internal_error("no tree"); 
+	I->site.texts_package = M;
 }
 
 inter_package *Site::assimilation_package(inter_tree *I) {

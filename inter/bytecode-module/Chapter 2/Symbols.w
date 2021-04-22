@@ -206,6 +206,11 @@ void Inter::Symbols::annotate(inter_symbol *symb, inter_annotation IA) {
 	Inter::Annotations::add_to_set(&(symb->ann_set), IA);
 }
 
+void Inter::Symbols::unannotate(inter_symbol *symb, inter_ti annot_ID) {
+	if (symb == NULL) internal_error("annotated null symbol");
+	Inter::Annotations::remove_from_set(&(symb->ann_set), annot_ID);
+}
+
 void Inter::Symbols::annotate_i(inter_symbol *symb, inter_ti annot_ID, inter_ti n) {
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);

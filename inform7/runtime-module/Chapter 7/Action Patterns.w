@@ -276,8 +276,8 @@ void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) 
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->first_noun, K_understanding))) {
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC)
-			literal_text *lt = TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ea->first_noun));
-			EmitArrays::iname_entry(lt->lt_sba_iname);
+			inter_name *iname = TextLiterals::to_value(Node::get_text(ea->first_noun));
+			EmitArrays::iname_entry(iname);
 			DISCARD_TEXT(BC)
 		} else CompileValues::to_array_entry(ea->first_noun);
 	} else {
@@ -286,8 +286,8 @@ void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) 
 	if (ea->second_noun) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->second_noun, K_understanding))) {
 			request_bits = request_bits | 32;
-			literal_text *lt = TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ea->second_noun));
-			EmitArrays::iname_entry(lt->lt_sba_iname);
+			inter_name *iname = TextLiterals::to_value(Node::get_text(ea->second_noun));
+			EmitArrays::iname_entry(iname);
 		} else CompileValues::to_array_entry(ea->second_noun);
 	} else {
 		EmitArrays::numeric_entry(0);

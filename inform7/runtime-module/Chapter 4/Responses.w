@@ -538,10 +538,21 @@ so the penultimate word, if it's there, is the letter.
 
 @<This isn't a response@> =
 	if (Annotations::read_int(str, text_unescaped_ANNOT)) {
-		literal_text *lt = TextLiterals::compile_literal_sb(VH, SW);
-		TextLiterals::mark_as_unescaped(lt);
+		if (CompileValues::compiling_in_constant_mode()) {
+			inter_name *val_iname = TextLiterals::to_value_unescaped(SW);
+			Emit::holster_iname(VH, val_iname);
+		} else {
+			inter_name *val_iname = TextLiterals::to_value_unescaped(SW);
+			Emit::holster_iname(VH, val_iname);
+		}
 	} else if (Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC)) {
 		TextSubstitutions::text_substitution_cue(VH, SW);
 	} else {
-		TextLiterals::compile_literal_sb(VH, SW);
+		if (CompileValues::compiling_in_constant_mode()) {
+			inter_name *val_iname = TextLiterals::to_value(SW);
+			Emit::holster_iname(VH, val_iname);
+		} else {
+			inter_name *val_iname = TextLiterals::to_value(SW);
+			Emit::holster_iname(VH, val_iname);
+		}
 	}
