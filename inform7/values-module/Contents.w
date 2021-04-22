@@ -26,6 +26,7 @@ Chapter 3: Literals
 	Literal Real Numbers
 	Times of Day
 	Unicode Literals
+	Transcoding Text
 	Literal Lists
 
 Chapter 4: The S-Parser

@@ -122,7 +122,7 @@ void TestCommand::write_text(void) {
 	LOOP_OVER(test, test_scenario) {
 		packaging_state save = EmitArrays::begin_byte(test->text_iname, K_text);
 		TEMPORARY_TEXT(tttext)
-		CompiledText::from_stream(tttext, test->text_of_script,
+		TranscodeText::from_stream(tttext, test->text_of_script,
 			CT_EXPAND_APOSTROPHES + CT_RECOGNISE_APOSTROPHE_SUBSTITUTION);
 		WRITE_TO(tttext, "||||");
 		EmitArrays::text_entry(tttext);

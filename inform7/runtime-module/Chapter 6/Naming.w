@@ -86,7 +86,7 @@ void RTNaming::compile_small_names(void) {
 		EmitCode::up();
 		TEMPORARY_TEXT(SNAMES)
 		LOOP_THROUGH_WORDING(j, NA) {
-			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
+			TranscodeText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
 		EmitCode::inv(PRINT_BIP);

@@ -1070,7 +1070,6 @@ void RTKinds::compile_instance_counts(void) {
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
-	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), TextLiterals::CCOUNT_QUOTATIONS());
 	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), SharedVariables::size_of_largest_set());
 	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }
@@ -1162,7 +1161,7 @@ but at present this can't happen.
 							TEMPORARY_TEXT(CT)
 							wording NW = Instances::get_name_in_play(I, FALSE);
 							LOOP_THROUGH_WORDING(k, NW) {
-								CompiledText::from_wide_string(CT, Lexer::word_raw_text(k), CT_RAW);
+								TranscodeText::from_wide_string(CT, Lexer::word_raw_text(k), CT_RAW);
 								if (k < Wordings::last_wn(NW)) WRITE_TO(CT, " ");
 							}
 							EmitCode::val_text(CT);

@@ -344,7 +344,7 @@ void RTRelations::compile_relation_records(void) {
 	TEMPORARY_TEXT(DF)
 	if (Relations::Explicit::get_form_of_relation(bp) == Relation_Implicit)
 		WRITE_TO(DF, "%S", BinaryPredicates::get_log_name(bp));
-	else CompiledText::from_text(DF, Node::get_text(bp->bp_created_at));
+	else TranscodeText::from_text(DF, Node::get_text(bp->bp_created_at));
 	EmitArrays::text_entry(DF);
 	DISCARD_TEXT(DF)
 

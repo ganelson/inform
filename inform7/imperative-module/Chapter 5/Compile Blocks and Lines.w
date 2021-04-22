@@ -119,7 +119,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 	if (Wordings::nonempty(Node::get_text(to_compile))) {
 		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "[%d: ", statement_count);
-		CompiledText::comment(C, Node::get_text(to_compile));
+		TranscodeText::comment(C, Node::get_text(to_compile));
 		WRITE_TO(C, "]");
 		EmitCode::comment(C);
 		DISCARD_TEXT(C)

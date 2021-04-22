@@ -1,24 +1,21 @@
-[CompiledText::] Compiled Text.
+[TranscodeText::] Transcoding Text.
 
-To compile string constants and comments.
+To change the escape-character conventions used in text streams.
 
-@ We now take a wide Unicode string and compile a double-quoted I6 string
-constant which will print out the same content, or initialise a string array.
+@ The functions in this section -- which perhaps doesn't belong in the //values//
+module any better than anywhere else -- all work on text to change its encoding.
+This is not encoding in the sense of ASCII vs UTF-8, though it can have a bearing
+on whether the text can now be written as plain ASCII or not. Rather, it has
+to do with whether certain "difficult" characters are expressed as their literal
+character codes, or with a sequence of "escape characters".
 
-A subtly different set of escape characters are used here. It's all trickier
-than it might be because of some unfortunate design choices in I6. For
-instance, an |@| character can't be escaped as |@{40}| because that
-would be expanded too early in the string-reading process, so that it
-would still be read as an escape-character |@|, not a literal one.
-We therefore have to use |@@64|. This unfortunately goes wrong, however,
-when the immediately following character is a decimal digit, because then
-we might construct, e.g., |@@647|, and I6 will throw an error: no valid
-character has ZSCII code 647. We therefore use the |@{...}| escape to
-represent any digit following an |@@| escape. Since no digit is itself
-an escape character with side-effects, a vicious circle is avoided.
+For example, in some situations |can[']t| means "can't"; and sometimes
+"[unicode 65]mazonia" means "Amazonia". The functions here allow the escaping
+conventions to be applied or removed.
 
-Initialisation of I6 string arrays has different conventions again: these
-behave more like dictionary words and the |@@| escape is not allowed.
+@ First off, we take a wide Unicode string and convert it to a text stream
+using an encoding scheme to mask characters we don't want to appear. The
+scheme is expressed as a bitmap of features, each o which can be off or on.
 
 @d CT_CAPITALISE 1 /* capitalise first letter of text */
 @d CT_EXPAND_APOSTROPHES 2 /* sometimes regard |'| as |"| */
@@ -32,7 +29,7 @@ behave more like dictionary words and the |@@| escape is not allowed.
 @d CT_EXPAND_APOSTROPHES_RAWLY 512 /* sometimes regard |'| as |"| */
 
 =
-void CompiledText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
+void TranscodeText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
 	int i, from = 0, to = Wide::len(p), esc_digit = FALSE;
 	if ((options & CT_DEQUOTE) && (p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -75,14 +72,14 @@ void CompiledText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
 				case '\\': WRITE("@{5C}"); break;
 				case '\'':
 					if (options & CT_EXPAND_APOSTROPHES)
-						@<Apply Inform 7's convention on interpreting single quotation marks@>
+						@<Apply Inform 7's convention on single quotation marks@>
 					else WRITE("'");
 					break;
 				case '[':
 					if ((options & CT_RECOGNISE_APOSTROPHE_SUBSTITUTION) &&
 						(p[i+1] == '\'') && (p[i+2] == ']')) { i += 2; WRITE("'"); }
 					else if (options & CT_RECOGNISE_UNICODE_SUBSTITUTION) {
-						int n = CompiledText::expand_unisub(OUT, p, i);
+						int n = TranscodeText::expand_unisub(OUT, p, i);
 						if (n == -1) WRITE("["); else i = n;
 					} else WRITE("[");
 					break;
@@ -100,7 +97,11 @@ void CompiledText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
 	}
 }
 
-void CompiledText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
+@ This much simpler encoder is used when emitting text in a |say "Whatever"|
+phrase invocation:
+
+=
+void TranscodeText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
 	int i, from = 0, to = Wide::len(p);
 	if ((p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -117,7 +118,7 @@ void CompiledText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
 				WRITE("\n");
 				break;
 			case '\'':
-				@<Rawly apply Inform 7's convention on interpreting single quotation marks@>
+				@<Rawly apply Inform 7's convention on single quotation marks@>
 				break;
 			default:
 				WRITE("%c", p[i]);
@@ -126,7 +127,10 @@ void CompiledText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
 	}
 }
 
-void CompiledText::bq_from_wide_string(OUTPUT_STREAM, wchar_t *p) {
+@ And this one for the special conventions applying to box quotations:
+
+=
+void TranscodeText::bq_from_wide_string(OUTPUT_STREAM, wchar_t *p) {
 	int i, from = 0, to = Wide::len(p), esc_digit = FALSE;
 	if ((p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -134,7 +138,7 @@ void CompiledText::bq_from_wide_string(OUTPUT_STREAM, wchar_t *p) {
 	for (i=from; i<to; i++) {
 		switch(p[i]) {
 			case '[': {
-				int n = CompiledText::expand_unisub(OUT, p, i);
+				int n = TranscodeText::expand_unisub(OUT, p, i);
 				if (n == -1) WRITE("["); else i = n;
 				break;
 			}
@@ -154,30 +158,33 @@ to double, provided they appear to be quoting text rather than used as
 apostrophes in contractions such as "don't", is implemented. Note the
 exceptional case.
 
-@<Apply Inform 7's convention on interpreting single quotation marks@> =
+@<Apply Inform 7's convention on single quotation marks@> =
 	if ((i==from) && (p[i+1] == 's') && ((to == 3) || (p[i+2] == ' ')))
 		WRITE("'"); /* allow apostrophe if appending e.g. "'s nose" to "Jane" */
 	else if ((i>0) && (p[i+1]) &&
-		(CompiledText::alphabetic(p[i-1])) &&
-		(CompiledText::alphabetic(p[i+1])))
+		(Characters::isalphabetic(p[i-1])) &&
+		(Characters::isalphabetic(p[i+1])))
 		WRITE("'"); /* allow apostrophe sandwiched between two letters */
 	else {
 		WRITE("~"); /* and otherwise convert to double-quote */
 	}
 
-@<Rawly apply Inform 7's convention on interpreting single quotation marks@> =
+@<Rawly apply Inform 7's convention on single quotation marks@> =
 	if ((i==from) && (p[i+1] == 's') && ((to == 3) || (p[i+2] == ' ')))
 		WRITE("'"); /* allow apostrophe if appending e.g. "'s nose" to "Jane" */
 	else if ((i>0) && (p[i+1]) &&
-		(CompiledText::alphabetic(p[i-1])) &&
-		(CompiledText::alphabetic(p[i+1])))
+		(Characters::isalphabetic(p[i-1])) &&
+		(Characters::isalphabetic(p[i+1])))
 		WRITE("'"); /* allow apostrophe sandwiched between two letters */
 	else {
 		WRITE("\""); /* and otherwise convert to double-quote */
 	}
 
-@ =
-void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
+@ This stream version is essentially the same as //TranscodeText::from_wide_string//,
+but with a different input:
+
+=
+void TranscodeText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 	int i, from = 0, to = Str::len(p), esc_digit = FALSE;
 	if ((options & CT_DEQUOTE) && (Str::get_at(p, from) == '"') && (Str::get_at(p, to-1) == '"')) {
 		from++; to--;
@@ -235,7 +242,7 @@ void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 					break;
 				case '\'':
 					if (options & CT_EXPAND_APOSTROPHES)
-						@<Apply Inform 7's convention on interpreting single quotation marks, stream version@>
+						@<Apply Inform 7's convention on single quotation marks, stream version@>
 					else WRITE("'");
 					break;
 				case '[':
@@ -243,7 +250,7 @@ void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 						(Str::get_at(p, i+1) == '\'') && (Str::get_at(p, i+2) == ']')) {
 							i += 2; WRITE("'");
 					} else if (options & CT_RECOGNISE_UNICODE_SUBSTITUTION) {
-						int n = CompiledText::expand_unisub_S(OUT, p, i);
+						int n = TranscodeText::expand_unisub_S(OUT, p, i);
 						if (n == -1) WRITE("["); else i = n;
 					} else WRITE("[");
 					break;
@@ -266,31 +273,25 @@ to double, provided they appear to be quoting text rather than used as
 apostrophes in contractions such as "don't", is implemented. Note the
 exceptional case.
 
-@<Apply Inform 7's convention on interpreting single quotation marks, stream version@> =
-	if ((i==from) && (Str::get_at(p, i+1) == 's') && ((to == 3) || (Str::get_at(p, i+2) == ' ')))
+@<Apply Inform 7's convention on single quotation marks, stream version@> =
+	if ((i==from) && (Str::get_at(p, i+1) == 's') &&
+		((to == 3) || (Str::get_at(p, i+2) == ' ')))
 		WRITE("'"); /* allow apostrophe if appending e.g. "'s nose" to "Jane" */
 	else if ((i>0) && (Str::get_at(p, i+1)) &&
-		(CompiledText::alphabetic(Str::get_at(p, i-1))) &&
-		(CompiledText::alphabetic(Str::get_at(p, i+1))))
+		(Characters::isalphabetic(Str::get_at(p, i-1))) &&
+		(Characters::isalphabetic(Str::get_at(p, i+1))))
 		WRITE("'"); /* allow apostrophe sandwiched between two letters */
 	else {
 		if (options & CT_I6) WRITE("~"); /* and otherwise convert to double-quote */
 		else WRITE("\"");
 	}
 
-@ Where we must tiresomely use this:
-
-=
-int CompiledText::alphabetic(int letter) {
-	return Characters::isalpha((wchar_t) Characters::remove_accent(letter));
-}
-
 @ This looks for "[unicode 8212]" and turns it into an em-dash, for example.
 
 @d MAX_UNISUB_LENGTH 128
 
 =
-int CompiledText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
+int TranscodeText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 	if ((p[i+1] == 'u') && (p[i+2] == 'n') && (p[i+3] == 'i') && (p[i+4] == 'c')
 		&& (p[i+5] == 'o') && (p[i+6] == 'd') && (p[i+7] == 'e') && (p[i+8] == ' ')) {
 		TEMPORARY_TEXT(substitution_buffer)
@@ -307,7 +308,7 @@ int CompiledText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 	} else return -1;
 }
 
-int CompiledText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
+int TranscodeText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 	if (Str::includes_wide_string_at(p, L"unicode ", i+1)) {
 		TEMPORARY_TEXT(substitution_buffer)
 		int j = i+9;
@@ -326,22 +327,22 @@ int CompiledText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 @ A convenient package for the above:
 
 =
-void CompiledText::from_text_with_options(OUTPUT_STREAM, wording W, int opts, int raw) {
+void TranscodeText::from_text_with_options(OUTPUT_STREAM, wording W, int opts, int raw) {
 	LOOP_THROUGH_WORDING(j, W) {
 		wchar_t *p;
 		if (raw) p = Lexer::word_raw_text(j); else p = Lexer::word_text(j);
-		CompiledText::from_wide_string(OUT, p, opts);
+		TranscodeText::from_wide_string(OUT, p, opts);
 		if (j<Wordings::last_wn(W)) WRITE(" ");
 	}
 }
 
-@ Whence:
+@ With the options all off:
 
 =
-void CompiledText::comment(OUTPUT_STREAM, wording W) {
-	CompiledText::from_text_with_options(OUT, W, 0, FALSE);
+void TranscodeText::comment(OUTPUT_STREAM, wording W) {
+	TranscodeText::from_text_with_options(OUT, W, 0, FALSE);
 }
 
-void CompiledText::from_text(OUTPUT_STREAM, wording W) {
-	CompiledText::from_text_with_options(OUT, W, 0, TRUE);
+void TranscodeText::from_text(OUTPUT_STREAM, wording W) {
+	TranscodeText::from_text_with_options(OUT, W, 0, TRUE);
 }

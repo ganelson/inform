@@ -226,7 +226,6 @@ void Hierarchy::establish(void) {
 @e KIT_CONFIGURATION_LOOKMODE_HL
 @e LOCALPARKING_HL
 
-@e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
@@ -255,7 +254,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, basics))
-		H_C_T(CCOUNT_QUOTATIONS_HL,           I"CCOUNT_QUOTATIONS")
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
 	H_END
@@ -1138,6 +1136,7 @@ void Hierarchy::establish(void) {
 @e BLOCK_CONSTANTS_HAP
 @e BLOCK_CONSTANT_HL
 @e BOX_QUOTATIONS_HAP
+@e BOX_FLAG_HL
 @e BOX_QUOTATION_FN_HL
 @e TEXT_SUBSTITUTIONS_HAP
 
@@ -1156,6 +1155,7 @@ void Hierarchy::establish(void) {
 			H_C_U(BLOCK_CONSTANT_HL,          I"bc")
 		H_END
 		H_BEGIN_AP(BOX_QUOTATIONS_HAP,        I"block_constant", I"_box_quotation")
+			H_C_U(BOX_FLAG_HL,                I"quotation_flag")
 			H_F_U(BOX_QUOTATION_FN_HL,        I"quotation_fn")
 		H_END
 		H_C_U(RTP_HL,                         I"rtp")

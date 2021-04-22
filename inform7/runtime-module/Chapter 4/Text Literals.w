@@ -2,27 +2,54 @@
 
 In this section we compile text constants.
 
-@
+@h Runtime representation.
+Literal texts arise from source text such as:
+= (text as Inform 7)
+	let Q be "the quick brown fox";
+	say "Where has that indolent hound got to?";
+=
+Note that only |"the quick brown fox"| is actually a constant value here; the
+text concerning the hound is turned directly into operands for Inter instructions
+for printing text, and never needs to be a value. The fox text, on the other hand,
+is being stored in |Q|, so it clearly has to be something we can manipulate and
+copy.
+
+Text at runtime is stored in small blocks, always of size 2:
+= (text)
+	                    small block:
+	Q ----------------> format
+	                    content
+=
+The format can be one of four possible alternatives at runtime, and the runtime
+system may dynamically switch between them; essentially it uses this to
+decompress text from its "packed" form to a character-accessible form only
+on demand.
+
+The compiler generates only one of these formats: |CONSTANT_PACKED_TEXT_STORAGE|.
+In this format, the |content| is a packed string, and there is no long block
+to make. (Note that in Inter, as in the Inform 6 virtual machines on which it
+is based, a pointer to a function to print text is a valid packed string: so
+the |content| will sometimes be a function, and sometimes a string array.)
 
 =
-inter_name *TextLiterals::small_block(inter_name *large_block, inter_name *format) {
+inter_name *TextLiterals::small_block(inter_name *content) {
 	inter_name *N = Enclosures::new_small_block_for_constant();
-	return TextLiterals::small_block_at(large_block, format, N);
+	return TextLiterals::small_block_at(content, N);
 }
 
-inter_name *TextLiterals::small_block_at(inter_name *large_block, inter_name *format,
-	inter_name *small_block) {
-	packaging_state save = EmitArrays::begin_late(small_block, K_value);
-	EmitArrays::iname_entry(large_block);
-	EmitArrays::iname_entry(format);
+inter_name *TextLiterals::small_block_at(inter_name *content, inter_name *small_block) {
+	packaging_state save = EmitArrays::begin(small_block, K_value);
+	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+	EmitArrays::iname_entry(content);
 	EmitArrays::end(save);
 	return small_block;
 }
 
+@ The default text is empty:
+
+=
 inter_name *TextLiterals::default_text(void) {
-	return TextLiterals::small_block(
-			Hierarchy::find(PACKED_TEXT_STORAGE_HL),
-			Hierarchy::find(EMPTY_TEXT_PACKED_HL));
+	return TextLiterals::small_block(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 }
 
 @ Each literal text needed is stored as a "small block array", or SBA, with
@@ -51,7 +78,6 @@ The name is used because each node in the tree is marked either "red" or "black"
 =
 typedef struct literal_text {
 	int lt_position; /* position in the source of quoted text */
-	int as_boxed_quotation; /* formatted for the Inform 6 |box| statement */
 	int bibliographic_conventions; /* mostly for apostrophes */
 	int unescaped; /* completely so */
 	int unexpanded; /* don't expand single quotes to double */
@@ -100,7 +126,6 @@ literal_text *TextLiterals::lt_new(int w1, int colour) {
 	x->right_node = NULL;
 	x->node_colour = colour;
 	x->lt_position = w1;
-	x->as_boxed_quotation = FALSE;
 	x->bibliographic_conventions = FALSE;
 	x->unescaped = FALSE;
 	x->unexpanded = FALSE;
@@ -223,33 +248,6 @@ literal_text *TextLiterals::rotate(int w1, literal_text *y) {
 	return gc;
 }
 
-@ It's a little strange to be writing, in 2012, code to handle an idiosyncratic
-one-off form of text called a "quotation", just to match an idiosyncratic
-feature of Inform 1 from 1993 which was in turn matching an idiosyncratic
-feature of version 4 of the Z-machine from 1985 which, in turn, existed only
-to serve the needs of an unusual single work of IF called "Trinity".
-But here we are. Boxed quotations are handled much like other literal
-texts in that they enter the red-black tree, but they are marked out as
-different for compilation purposes.
-
-=
-int extent_of_runtime_quotations_array = 1; /* start at 1 to avoid 0 length */
-
-void TextLiterals::compile_quotation(value_holster *VH, wording W) {
-	literal_text *lt = TextLiterals::compile_literal(VH, TRUE, W);
-	if (lt) lt->as_boxed_quotation = TRUE;
-	else
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EmptyQuotationBox),
-			"a boxed quotation can't be empty",
-			"though I suppose you could make it consist of just a few spaces "
-			"to get a similar effect if you really needed to.");
-	extent_of_runtime_quotations_array++;
-}
-
-int TextLiterals::CCOUNT_QUOTATIONS(void) {
-	return extent_of_runtime_quotations_array;
-}
-
 @ A version from fixed text:
 
 =
@@ -275,17 +273,12 @@ void TextLiterals::compile(void) {
 
 void TextLiterals::traverse_lts(literal_text *lt) {
 	if (lt->left_node != z_node) TextLiterals::traverse_lts(lt->left_node);
-	if (lt->lt_position >= 0) {
-		if (lt->as_boxed_quotation == FALSE)
-			@<Compile a standard literal text@>
-		else
-			@<Compile a boxed-quotation literal text@>;
-	}
+	if (lt->lt_position >= 0) @<Compile a standard literal text@>;
 	if (lt->right_node != z_node) TextLiterals::traverse_lts(lt->right_node);
 }
 
 @<Compile a standard literal text@> =
-	if (Task::wraps_existing_storyfile()) { /* to prevent trouble when no story file is really being made */
+	if (Task::wraps_existing_storyfile()) {
 		Emit::text_constant(lt->lt_iname, I"--");
 	} else {
 		TEMPORARY_TEXT(TLT)
@@ -294,34 +287,12 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 		if (lt->bibliographic_conventions)
 			options += CT_RECOGNISE_APOSTROPHE_SUBSTITUTION + CT_RECOGNISE_UNICODE_SUBSTITUTION;
 		if (lt->unexpanded) options = CT_DEQUOTE;
-		CompiledText::from_wide_string(TLT, Lexer::word_text(lt->lt_position), options);
+		TranscodeText::from_wide_string(TLT, Lexer::word_text(lt->lt_position), options);
 		Emit::text_constant(lt->lt_iname, TLT);
 		DISCARD_TEXT(TLT)
 	}
-	if (lt->small_block_array_needed) {
-		TextLiterals::small_block_at(
-			Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL),
-			lt->lt_iname,
-			lt->lt_sba_iname);
-	}
-
-@<Compile a boxed-quotation literal text@> =
-	inter_name *iname = Enclosures::new_iname(BOX_QUOTATIONS_HAP, BOX_QUOTATION_FN_HL);
-
-	if (lt->lt_sba_iname == NULL)
-		lt->lt_sba_iname = Enclosures::new_small_block_for_constant();
-
-	Emit::iname_constant(lt->lt_sba_iname, K_value, iname);
-
-	packaging_state save = Functions::begin(iname);
-	EmitCode::inv(BOX_BIP);
-	EmitCode::down();
-		TEMPORARY_TEXT(T)
-		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));
-		EmitCode::val_text(T);
-		DISCARD_TEXT(T)
-	EmitCode::up();
-	Functions::end(save);
+	if (lt->small_block_array_needed)
+		TextLiterals::small_block_at(lt->lt_iname, lt->lt_sba_iname);
 
 @ =
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
@@ -330,7 +301,7 @@ literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);
 		inter_name *N = NULL;
 		if (lt == NULL) N = TextLiterals::default_text();
-		else N = TextLiterals::small_block(Hierarchy::find(PACKED_TEXT_STORAGE_HL), lt->lt_iname);
+		else N = TextLiterals::small_block(lt->lt_iname);
 		Emit::holster_iname(VH, N);
 	} else {
 		lt = TextLiterals::compile_literal(VH, TRUE, W);

@@ -36,17 +36,9 @@ Global pending_boxed_quotation; ! a routine to overlay the quotation on screen
 
 [ ClearBoxedText i;
 	if (pending_boxed_quotation) {
-		for (i=0: Runtime_Quotations_Displayed-->i: i++)
-			if (Runtime_Quotations_Displayed-->i == pending_boxed_quotation) {
-				pending_boxed_quotation = 0;
-				return;
-			}
-		Runtime_Quotations_Displayed-->i = pending_boxed_quotation;
-
 		ClearParagraphing(15);
 		pending_boxed_quotation();
 		ClearParagraphing(16);
-
 		pending_boxed_quotation = 0;
 	}
 ];

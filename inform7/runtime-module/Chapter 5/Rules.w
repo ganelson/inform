@@ -318,9 +318,9 @@ void RTRules::RulePrintingRule_routine(void) {
 
 @<Print a textual name for this rule@> =
 	if (Wordings::nonempty(R->name)) {
-		CompiledText::from_text(OUT, R->name);
+		TranscodeText::from_text(OUT, R->name);
 	} else if (R->defn_as_I7_source->at) {
-		CompiledText::from_text(OUT,
+		TranscodeText::from_text(OUT,
 			Articles::remove_the(
 				Node::get_text(R->defn_as_I7_source->at)));
 	} else WRITE("%n", RTRules::iname(R));

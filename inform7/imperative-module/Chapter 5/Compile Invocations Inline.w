@@ -436,7 +436,7 @@ but honestly having this annotation seems the smaller of the two warts.
 		return;
 	} else {
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-		TextLiterals::compile_quotation(&VH, Node::get_text(supplied));
+		BoxQuotations::new(&VH, Node::get_text(supplied));
 		Holsters::unholster_to_code_val(Emit::tree(), &VH);
 		return; /* that is, don't use the regular token compiler: we've done it ourselves */
 	}
@@ -1236,7 +1236,7 @@ result would be the same without the optimisation.
 		EmitCode::inv(PRINT_BIP);
 		EmitCode::down();
 			TEMPORARY_TEXT(T)
-			CompiledText::from_wide_string_for_emission(T,
+			TranscodeText::from_wide_string_for_emission(T,
 				Lexer::word_text(Wordings::first_wn(SW)));
 			EmitCode::val_text(T);
 			DISCARD_TEXT(T)

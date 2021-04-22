@@ -1,22 +1,4 @@
-Output Template.
-
-This is the superstructure of the file of I6 code output by Inform:
-from ICL commands at the top down to the signing-off comments at the bottom.
-
-@h ICL Commands.
-The Inform Control Language is a mini-language for controlling the I6 compiler,
-able to set command-line switches, memory settings and so on. I6 ordinarily
-discards lines beginning with exclamation marks as comments, but at the very
-top of the file, lines beginning |!%| are read as ICL commands: as soon as
-any line (including a blank line) doesn't have this signature, I6 exits
-ICL mode.
-
-@h Identification.
-Both of the compiler and template layer, and of the story file to be produced.
-
-@h Constants.
-
-=
+Miscellany Template.
 
 @h Global Variables.
 These are not the only global variables defined in the template layer:
@@ -256,30 +238,7 @@ possibility later.
 =
 Global MAX_SCORE = INITIAL_MAX_SCORE;
 
-@h The Old Library.
-The I6 library consisted essentially of the parser, the verb routines, and
-a pile of utilities and world-modelling code, of which the biggest single
-component was the list-writer. The parser lives on below; the verb routines
-are gone, with the equivalent functionality having moved upstairs into
-I7 source text in the Standard Rules; and the rest of the library largely
-lives here:
-
-=
-
-@h Parser.
-The largest single block of code in the traditional I6 library part of the
-template layer is the parser.
-
-The two pseudo-objects |InformParser| and |InformLibrary| are relics of the
-object-oriented approach in I6, and are used only very slightly in the
-template layer; they are not used at all in I7, and are not valid for the
-"object" kind of value.
-
-The parser includes arrays for typed text and some parsing information
-derived from it, and if these should overrun it would cause enigmatic
-bugs, as the next arrays in memory would be corrupted: as a tripwire,
-the |Protect_I7_Arrays| array consists of two magic values in sequence.
-If it is ever discovered to contain the wrong data, the alarm sounds.
+@h Other odds and ends.
 
 =
 Object InformParser "(Inform Parser)" has proper;
@@ -291,104 +250,6 @@ Object InformParser "(Inform Parser)" has proper;
 
 Object InformLibrary "(Inform Library)" has proper;
 
-@h Order of Play.
-The |Main| routine, where execution begins, and the primitive rules in the
-principal rulebooks.
-
-=
-
-@h Activities.
-These are numbered upwards from 0 in order of creation. The following arrays
-taken together provide, for each activity number: (i) the rulebook numbers
-for the before, for, and after stages of the activity, and (ii) a flag
-indicating whether the activity is "future action"-capable, that is, is
-a parsing activity allowed to make use of the action which conjecturally
-might result from the current grammar line being parsed. (This is called
-the "action to be", hence "atb".)
-
-@h Object Tree.
-The I6 object tree contains |Class| definitions as well as objects, but
-we precede both with a pseudo-object called |property_numberspace_forcer|.
-It does nothing except to ensure that properties are declared in I6 in the
-same sequence as I7 (which need not otherwise happen); it plays no part
-in play, and is not a valid I7 "object" value.
-
-@h Tables.
-The initial state of the I6 arrays corresponding to each I7 table: see
-"Tables.i6t" for details.
-
-@h Equations.
-Routines to evaluate from equations.
-
-@h Actions.
-
-@h Phrases.
-The following innocent-looking commands tell Inform to compile I6 definitions
-for all of the rules which are not I6-written primitives, and also for
-adjective definitions, so it results in a fairly enormous cataract of code.
-
-@h Rulebooks.
-The literally hundreds of rulebooks are set up here. (In the end a rulebook
-is only a (word) array of rule addresses, terminated with a |NULL|.)
-
-@h Scenes.
-
-@h The New Library.
-The gleaming, aluminium and glass extension to the library: almost all of it
-material new in I7 usage.
-
-=
-
-@h Parsing Tokens.
-GPRs, scope and noun filters to be used in grammar lines, but no actual
-grammar lines as yet.
-
-=
-
-@h Text generation.
-
-@h Testing commands.
-
-=
-
-@h I6 Inclusions.
-This paragraph contains no code, by default: it's a hook on which to hang
-verbatim I6 material.
-
-=
-
-@h Entries in constant lists.
-Well: most of them, anyway. In particular, all of those which are lists of
-texts with substitution will be swept up, which is important for timing
-reasons. A second round later on will catch any later ones.
-
-@h To Phrases.
-We now compile all of the remaining code in the source text: the "To..."
-phrases and all of their attendant text routines, loop-over-scope routines
-and so on.
-
-We now have to be quite careful about the sequence of events. Compiling the
-text routines is an irrevocable step, after which we must not compile any
-new text with substitutions. On the other hand we mustn't leave it any later,
-because a text substitution might contain references to the past, or involve
-propositions which must be deferred into routines.
-
-@h Chronology.
-Similarly, this is where we wrap up all references to past tenses: after this
-point, we cannot safely compile any I7 condition in the past tense.
-
-=
-
-@h Grammar.
-This is the trickiest matter of timing. We had to leave the grammar lines
-until now because the past-tense code above might have needed to investigate
-whether the player's command matched a given pattern at some time in the
-past (a case which arose naturally in one of the example games, so which
-should not be dismissed as an aberration). This is therefore the earliest
-point at which we can know for sure that no further grammar lines are
-needed.
-
-=
 [ UnknownVerb;
 	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
 		verb_wordnum = 0; return 'no.verb';
@@ -401,47 +262,3 @@ needed.
 	}
 	rfalse;
 ];
-
-@h Deferred Propositions.
-Most conditions, such as "the score is 10", and descriptions, such as
-"open doors which are in lighted rooms", are translated by Inform into
-propositions in a form of predicate calculus. Sometimes these can be
-compiled immediately to I6 code, but other times they involve complicated
-searches and have to be "deferred" into special routines which will
-perform them. This is where we compile those routines.
-
-@h Miscellaneous Loose Ends.
-And we still aren't done, because we still have:
-
-(1) Routines which switch between possible interpretations of phrases
-by performing run-time type checking. (Note that these cannot involve
-grammar, or the past tenses, or text substitutions, or deferred propositions.)
-
-(2) Arrays holding constant lists, such as |{2, 3, 4}|, if any.
-
-(3) The string constants, named in the pattern |SC_*|, in alphabetical order.
-(This ensures that their packed addresses will have unsigned comparison
-ordering equivalent to alphabetical order.)
-
-(4) "Stub" I6 constants for property names where properties aren't used,
-to prevent them causing errors if they are referred to in code but not
-actually present in any object (as can easily happen with extensions
-presenting optional features which the user chooses not to employ).
-
-(5) Counters are used to allocate cells of storage to inline phrases which
-need a permanent state associated with them: see the Standard Rules. Since
-all I7 source text has been compiled by now, we know the final values of
-the counters, and therefore the amount of storage we need to allocate.
-
-(6) Similarly, each "quotation" box needs its own cell of memory.
-
-=
-Array Runtime_Quotations_Displayed --> CCOUNT_QUOTATIONS;
-
-@h Block Values.
-These are values which are pointers to more elaborate data on the memory heap,
-rather than values in themselves: they point to "blocks". A section of code
-handles the heap, and there is then one further section to support each of
-the kinds of value in question.
-
-=

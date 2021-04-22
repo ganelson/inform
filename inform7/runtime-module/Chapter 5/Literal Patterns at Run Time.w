@@ -1198,7 +1198,7 @@ the sorting measure.
 
 @<Compile I6 code to print a fixed word token within a literal pattern@> =
 	TEMPORARY_TEXT(T)
-	CompiledText::from_wide_string(T, Lexer::word_raw_text(lp->lp_tokens[tc].token_wn), CT_RAW);
+	TranscodeText::from_wide_string(T, Lexer::word_raw_text(lp->lp_tokens[tc].token_wn), CT_RAW);
 	EmitCode::inv(PRINT_BIP);
 	EmitCode::down();
 		EmitCode::val_text(T);
@@ -1209,7 +1209,7 @@ the sorting measure.
 	TEMPORARY_TEXT(T)
 	TEMPORARY_TEXT(tiny_string)
 	PUT_TO(tiny_string, (int) lp->lp_tokens[tc].token_char);
-	CompiledText::from_stream(T, tiny_string, CT_RAW);
+	TranscodeText::from_stream(T, tiny_string, CT_RAW);
 	DISCARD_TEXT(tiny_string)
 	EmitCode::inv(PRINT_BIP);
 	EmitCode::down();

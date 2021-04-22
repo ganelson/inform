@@ -30,7 +30,7 @@ Chapter 4: Enclosed Resources
 	Text Literals
 	Text Substitutions
 	Responses
-	Compiled Text
+	Box Quotations
 
 Chapter 5: Miscellany
 	Runtime Support for Kinds

@@ -382,17 +382,17 @@ void Naming::compose_words_to_I6_naming_text(OUTPUT_STREAM, wording W, int cap,
 			if (cap) {
 				if ((j==Wordings::first_wn(W)) && (your_here) && (your_flag)) {
 					PUT(Characters::toupper(p[0]));
-					CompiledText::from_wide_string(OUT, p+1, CT_RAW);
+					TranscodeText::from_wide_string(OUT, p+1, CT_RAW);
 				} else if (j==Wordings::first_wn(W)) {
-					CompiledText::from_wide_string(OUT, p, CT_RAW + CT_CAPITALISE);
+					TranscodeText::from_wide_string(OUT, p, CT_RAW + CT_CAPITALISE);
 				} else {
-					CompiledText::from_wide_string(OUT, p, CT_RAW);
+					TranscodeText::from_wide_string(OUT, p, CT_RAW);
 				}
 			} else {
 				if ((j==Wordings::first_wn(W)) && (your_here) && (your_flag)) {
 					PUT(Characters::tolower(p[0]));
-					CompiledText::from_wide_string(OUT, p+1, CT_RAW);
-				} else CompiledText::from_wide_string(OUT, p, CT_RAW);
+					TranscodeText::from_wide_string(OUT, p+1, CT_RAW);
+				} else TranscodeText::from_wide_string(OUT, p, CT_RAW);
 			}
 			if (j<Wordings::last_wn(W)) WRITE(" ");
 		}

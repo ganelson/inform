@@ -305,7 +305,7 @@ for fields in iFiction records.)
 					i += 2;
 					WRITE("'"); break;
 				}
-				int n = CompiledText::expand_unisub(OUT, p, i);
+				int n = TranscodeText::expand_unisub(OUT, p, i);
 				if (n >= 0) { i = n; break; }
 				/* and otherwise fall through to the default case */
 			default:
@@ -347,7 +347,7 @@ also the |[']| escape to obtain a literal single quotation mark.
 					i += 2;
 					PUT('\''); break;
 				}
-				int n = CompiledText::expand_unisub(OUT, p, i);
+				int n = TranscodeText::expand_unisub(OUT, p, i);
 				if (n >= 0) { i = n; break; }
 				/* and otherwise fall through to the default case */
 			default:
