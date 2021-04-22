@@ -151,7 +151,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 	inter_ti v1 = 0, v2 = 0;
 	RTKinds::get_default_value(&v1, &v2, K);
 	if (v1 != 0) {
-		if (Holsters::data_acceptable(VH)) {
+		if (Holsters::non_void_context(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 			return TRUE;
 		}

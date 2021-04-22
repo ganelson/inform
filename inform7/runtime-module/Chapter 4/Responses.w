@@ -1,4 +1,4 @@
-[Strings::] Responses.
+[Responses::] Responses.
 
 In this section we keep track of response texts.
 
@@ -25,7 +25,7 @@ typedef struct response_message {
 is the "launcher" routine for a response:
 
 =
-inter_name *Strings::response_launcher_iname(response_message *resp) {
+inter_name *Responses::response_launcher_iname(response_message *resp) {
 	return resp->resp_iname;
 }
 
@@ -33,7 +33,7 @@ inter_name *Strings::response_launcher_iname(response_message *resp) {
 its name in the output code:
 
 =
-inter_name *Strings::response_constant_iname(rule *R, int marker) {
+inter_name *Responses::response_constant_iname(rule *R, int marker) {
 	response_message *RM = Rules::get_response(R, marker);
 	if (RM == NULL) return NULL;
 	if (RM->constant_iname == NULL) internal_error("no response value");
@@ -59,13 +59,13 @@ Thus the above source text will produce not only a |TX_R_*| launcher routine,
 but also (in most cases) a |TX_S_*| text substitution routine.
 
 =
-response_message *Strings::response_cue(value_holster *VH, rule *owner, int marker,
-	wording W, stack_frame *phsf, int via_I6) {
+response_message *Responses::response_cue(value_holster *VH, rule *owner, int marker,
+	wording W, stack_frame *frame, int via_I6) {
 	response_message *resp = CREATE(response_message);
-	resp->original_stack_frame = Frames::boxed_frame(phsf);
+	resp->original_stack_frame = Frames::boxed_frame(frame);
 	resp->responding_rule = owner;
 	resp->response_marker = marker;
-	resp->original_text = TextSubstitutions::new_text_substitution(W, phsf, owner, marker, RTRules::package(owner));
+	resp->original_text = TextSubstitutions::new_text_substitution(W, frame, owner, marker);
 	resp->launcher_compiled = FALSE;
 	resp->via_I6 = via_I6;
 	resp->via_I6_routine_compiled = FALSE;
@@ -73,8 +73,8 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->resp_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, resp->resp_package);
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, resp->resp_package);
 	if (VH) {
-		if (Holsters::data_acceptable(VH)) {
-			EmitCode::val_iname(K_value, Strings::response_launcher_iname(resp));
+		if (Holsters::non_void_context(VH)) {
+			EmitCode::val_iname(K_value, Responses::response_launcher_iname(resp));
 		}
 	}
 	return resp;
@@ -86,7 +86,7 @@ doesn't matter, since so little is done and the response count can't be
 enormous.
 
 =
-void Strings::compile_response_launchers(void) {
+void Responses::compile_response_launchers(void) {
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
 		if (resp->launcher_compiled == FALSE) {
@@ -107,7 +107,7 @@ a call to an activity based on that value:
 
 	packaging_state save = Functions::begin(launcher);
 
-	inter_name *iname = Strings::response_constant_iname(
+	inter_name *iname = Responses::response_constant_iname(
 		resp->responding_rule, resp->response_marker);
 
 	inter_name *rname = Hierarchy::find(RESPONSEVIAACTIVITY_HL);
@@ -292,7 +292,7 @@ and some run-time tables which will enable the I6 template code to keep
 track of the content of each response.
 
 =
-void Strings::compile_responses(void) {
+void Responses::compile_responses(void) {
 	@<Compile the array holding the current text of each response@>;
 	@<Compile the PrintResponse routine@>;
 	@<Compile the Response Divisions array@>;
@@ -313,13 +313,12 @@ text for the response than the one we first created.
 				wording W = Rules::get_response_content(R, marker);
 				if (Wordings::nonempty(W)) { /* i.e., if the rule gives us a better text */
 					current_sentence = Rules::get_response_sentence(R, marker);
-					ts = TextSubstitutions::new_text_substitution(W,
-						NULL, R, marker, RTRules::package(R));
-					resp->original_text->dont_need_after_all = TRUE;
+					ts = TextSubstitutions::new_text_substitution(W, NULL, R, marker);
+					resp->original_text->tr_done_already = TRUE;
 				}
-				inter_name *ts_iname = TextSubstitutions::text_substitution_iname(ts);
-				inter_name *rc_iname = Strings::response_constant_iname(R, marker);
-				Emit::response(rc_iname, R, marker, ts_iname);
+				inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
+				inter_name *rc_iname = Responses::response_constant_iname(R, marker);
+				Emit::response(rc_iname, R, marker, ts_value_iname);
 			}
 		}
 	}
@@ -334,7 +333,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
-		inter_name *iname = Strings::response_constant_iname(resp->responding_rule,
+		inter_name *iname = Responses::response_constant_iname(resp->responding_rule,
 			resp->response_marker);
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
@@ -417,7 +416,7 @@ divided up by the extensions containing the rules which produce them.
 	}
 
 @ =
-stack_frame *Strings::frame_for_response(response_message *resp) {
+stack_frame *Responses::frame_for_response(response_message *resp) {
 	if (resp == NULL) return NULL;
 	return resp->original_stack_frame;
 }
@@ -426,7 +425,7 @@ stack_frame *Strings::frame_for_response(response_message *resp) {
 a given response even at compile time. But the rules code looks after that:
 
 =
-void Strings::assert_response_value(rule *R, int marker, wording W) {
+void Responses::assert_response_value(rule *R, int marker, wording W) {
 	Rules::now_rule_needs_response(R, marker, W);
 }
 
@@ -434,7 +433,7 @@ void Strings::assert_response_value(rule *R, int marker, wording W) {
 text to assert a change:
 
 =
-void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_message *resp) {
+void Responses::index_response(OUTPUT_STREAM, rule *R, int marker, response_message *resp) {
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
 	HTML_OPEN_WITH("span",
 		"style=\"color: #ffffff; "
@@ -458,7 +457,7 @@ void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 }
 
 @ =
-int Strings::get_marker_from_response_spec(parse_node *rs) {
+int Responses::get_marker_from_response_spec(parse_node *rs) {
 	if (Rvalues::is_CONSTANT_of_kind(rs, K_response)) {
 		wording SW = Node::get_text(rs);
 		if ((Wordings::length(SW) >= 2) && (<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1))))
@@ -481,16 +480,16 @@ but to something like an XML description of its metadata, where again the
 text needs to be printed in a particular way.
 
 =
-void Strings::compile_general(value_holster *VH, parse_node *str) {
+void Responses::compile_general(value_holster *VH, parse_node *str) {
 	wording SW = Node::get_text(str);
 	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
 		if (Node::get_explicit_iname(str)) {
-			if (Holsters::data_acceptable(VH)) {
+			if (Holsters::non_void_context(VH)) {
 				Emit::holster_iname(VH, Node::get_explicit_iname(str));
 			} else internal_error("unvalued SCG");
 		} else {
 			int A = Annotations::read_int(str, constant_number_ANNOT);
-			if (Holsters::data_acceptable(VH))
+			if (Holsters::non_void_context(VH))
 				Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
 		}
 	} else {
@@ -526,12 +525,12 @@ so the penultimate word, if it's there, is the letter.
 			"some text as a response, then it can only occur once in its rule.");
 		return;
 	}
-	stack_frame *phsf = Frames::current_stack_frame();
-	if (Holsters::data_acceptable(VH)) {
-		int downs = LocalParking::park(phsf);
+	stack_frame *frame = Frames::current_stack_frame();
+	if (Holsters::non_void_context(VH)) {
+		int downs = LocalParking::park(frame);
 		response_message *resp =
-			Strings::response_cue(VH, rule_being_compiled, code, SW,
-				Frames::boxed_frame(phsf), FALSE);
+			Responses::response_cue(VH, rule_being_compiled, code, SW,
+				Frames::boxed_frame(frame), FALSE);
 		Rules::set_response(rule_being_compiled, code, resp);
 		while (downs > 0) { EmitCode::up(); downs--; }
 	}

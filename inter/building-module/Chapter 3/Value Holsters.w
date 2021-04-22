@@ -29,7 +29,7 @@ value_holster Holsters::new(int vhm) {
 @h Conversions.
 
 =
-int Holsters::data_acceptable(value_holster *vh) {
+int Holsters::non_void_context(value_holster *vh) {
 	if (vh == NULL) internal_error("no VH");
 	if ((vh->vhmode_wanted == INTER_DATA_VHMODE) ||
 		(vh->vhmode_wanted == INTER_VAL_VHMODE)) return TRUE;

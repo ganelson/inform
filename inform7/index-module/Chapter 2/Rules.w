@@ -87,7 +87,7 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 		if (R->responses[l].message) {
 			if (c == 0) Index::extra_div_open_nested(OUT, 1000000+R->allocation_id, 2);
 			else HTML_TAG("br");
-			Strings::index_response(OUT, R, l, R->responses[l].message);
+			Responses::index_response(OUT, R, l, R->responses[l].message);
 			c++;
 		}
 	if (c > 0) Index::extra_div_close_nested(OUT);

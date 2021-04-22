@@ -18,8 +18,6 @@ inter_tree_node **text_consolidation_list = NULL;
 int CodeGen::PackedText::run_pipeline_stage(pipeline_step *step) {
 	InterTree::traverse(step->repository, CodeGen::PackedText::visitor, NULL, NULL, 0);
 	if (text_consolidation_list_used > 0) {
-		LOG("%d text literals:\n", text_consolidation_list_used);
-
 		qsort(text_consolidation_list, (size_t) text_consolidation_list_used, sizeof(inter_tree_node *),
 			CodeGen::PackedText::compare_texts);
 
@@ -33,7 +31,6 @@ int CodeGen::PackedText::run_pipeline_stage(pipeline_step *step) {
 			inter_tree_node *P = text_consolidation_list[i];
 			text_stream *S = CodeGen::PackedText::unpack(P);
 			if (Str::cmp(S, current) != 0) {
-				LOG("%d: %S\n", j++, S);
 				TEMPORARY_TEXT(ALPHA)
 				WRITE_TO(ALPHA, "alphabetised_text_%d", j);
 				inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
@@ -65,8 +62,6 @@ int CodeGen::PackedText::run_pipeline_stage(pipeline_step *step) {
 			inter_symbol *con_name =
 				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			Inter::Symbols::unannotate(con_name, TEXT_LITERAL_IANN);
-
-			LOG("P%d = %d\n", i, j-1);
 		}
 	}
 

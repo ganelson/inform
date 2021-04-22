@@ -6,8 +6,8 @@ To compile run-time support for rules.
 
 = (early code)
 rule *rule_being_compiled = NULL; /* rule whose phrase's definition is being compiled */
-rule *adopted_rule_for_compilation = NULL; /* when a new response is being compiled */
-int adopted_marker_for_compilation = -1; /* when a new response is being compiled */
+rule *rule_to_which_this_is_a_response = NULL; /* when a new response is being compiled */
+int response_marker_within_that_rule = -1; /* when a new response is being compiled */
 
 @ In Inter code, a rule is compiled to the name of the routine implementing it.
 

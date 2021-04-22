@@ -2521,7 +2521,7 @@ helpful about what exactly is wrong.
 
 		int preceding = Wordings::first_wn(Node::get_text(p)) - 1;
 		if ((preceding >= 0) && (current_sentence) &&
-			(((compiling_text_routines_mode) || (shape == SAY_UTSHAPE))) &&
+			(((TextSubstitutions::currently_compiling()) || (shape == SAY_UTSHAPE))) &&
 			((preceding == Wordings::first_wn(Node::get_text(current_sentence)))
 				|| (Lexer::word(preceding) == COMMA_V)))
 			@<Unknown found text occurs as a text substitution@>

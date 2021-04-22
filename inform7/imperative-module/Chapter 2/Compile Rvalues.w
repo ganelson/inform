@@ -36,7 +36,7 @@ a number: all that matters is that the correct integer value is compiled.
 
 @<Compile a literal-compilation-mode constant@> =
 	int N = Rvalues::to_int(value);
-	if (Holsters::data_acceptable(VH))
+	if (Holsters::non_void_context(VH))
 		Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) N);
 
 @ Whereas here, an instance is attached.
@@ -44,7 +44,7 @@ a number: all that matters is that the correct integer value is compiled.
 @<Compile a quantitative-compilation-mode constant@> =
 	instance *I = Node::get_constant_instance(value);
 	if (I) {
-		if (Holsters::data_acceptable(VH)) {
+		if (Holsters::non_void_context(VH)) {
 			inter_name *N = RTInstances::emitted_iname(I);
 			if (N) Emit::holster_iname(VH, N);
 			else internal_error("no iname for instance");
@@ -106,11 +106,11 @@ kinds of value:
 	}
 	if (Kinds::Behaviour::is_object(kind_of_constant)) {
 		if (Annotations::read_int(value, self_object_ANNOT)) {
-			if (Holsters::data_acceptable(VH)) {
+			if (Holsters::non_void_context(VH)) {
 				Emit::holster_iname(VH, Hierarchy::find(SELF_HL));
 			}
 		} else if (Annotations::read_int(value, nothing_object_ANNOT)) {
-			if (Holsters::data_acceptable(VH))
+			if (Holsters::non_void_context(VH))
 				Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		} else {
 			instance *I = Rvalues::to_instance(value);
@@ -141,7 +141,7 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
 		rulebook *rb = Rvalues::to_rulebook(value);
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) rb->allocation_id);
 		return;
 	}
@@ -158,12 +158,12 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
 		table_column *tc = Rvalues::to_table_column(value);
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_text)) {
-		Strings::compile_general(VH, value);
+		Responses::compile_general(VH, value);
 		return;
 	}
 	#ifdef IF_MODULE
@@ -172,7 +172,7 @@ kinds of value:
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_ti v1 = 0, v2 = 0;
 		RTParsing::compile_understanding(&v1, &v2, Node::get_text(value));
-		if (Holsters::data_acceptable(VH)) {
+		if (Holsters::non_void_context(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 		}
 		return;
@@ -180,7 +180,7 @@ kinds of value:
 	#endif
 	if (Kinds::eq(kind_of_constant, K_use_option)) {
 		use_option *uo = Rvalues::to_use_option(value);
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) uo->allocation_id);
 		return;
 	}
@@ -192,7 +192,7 @@ kinds of value:
 	if (Kinds::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(value);
 		int c = Annotations::read_int(value, response_code_ANNOT);
-		inter_name *iname = Strings::response_constant_iname(R, c);
+		inter_name *iname = Responses::response_constant_iname(R, c);
 		if (iname) Emit::holster_iname(VH, iname);
 		else Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		Rules::now_rule_needs_response(R, c, EMPTY_WORDING);
@@ -227,7 +227,7 @@ contexts by using a tilde: |~attr|.
 			prn_to_eval = EitherOrProperties::get_negation(prn_to_eval);
 		}
 
-		if (Holsters::data_acceptable(VH)) {
+		if (Holsters::non_void_context(VH)) {
 			if (parity == 1) {
 				Emit::holster_iname(VH, RTProperties::iname(prn_to_eval));
 			} else {
@@ -239,7 +239,7 @@ contexts by using a tilde: |~attr|.
 			}
 		}
 	} else {
-		if (Holsters::data_acceptable(VH)) {
+		if (Holsters::non_void_context(VH)) {
 			Emit::holster_iname(VH, RTProperties::iname(prn));
 		}
 	}

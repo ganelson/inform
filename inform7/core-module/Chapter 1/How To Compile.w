@@ -218,12 +218,11 @@ so on. Those absolute basics are made here.
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::compile_function_resources)
-	BENCH(Strings::compile_responses)
+	BENCH(Responses::compile_responses)
 	BENCH(Sequence::compile_literal_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Sequence::compile_function_resources)
-	BENCH(TextSubstitutions::allow_no_further_text_subs)
-	BENCH(Deferrals::allow_no_further_deferrals)
+	BENCH(Sequence::allow_no_further_function_resources)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
@@ -316,6 +315,20 @@ void Sequence::compile_function_resources(void) {
 	if (iterations > 0)
 		LOG(".... Sequence::compile_function_resources completed in %d iteration%s\n",
 			iterations, (iterations == 1)?"":"s");
+}
+
+@ The template layer calls the following when that midnight hour chimes:
+
+=
+int no_further_function_resources = FALSE;
+
+void Sequence::allow_no_further_function_resources(void) {
+	no_further_function_resources = TRUE;
+}
+
+int Sequence::function_resources_allowed(void) {
+	if (no_further_function_resources) return FALSE;
+	return TRUE;
 }
 
 @ And very similarly:

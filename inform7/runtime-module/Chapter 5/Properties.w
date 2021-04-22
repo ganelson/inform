@@ -282,16 +282,16 @@ change the strings of compiled code here without making a matching change in
 =
 void RTProperties::compile_value(value_holster *VH, property *prn, int val) {
 	if (val) {
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, 1);
 	} else {
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 	}
 }
 
 void RTProperties::compile_default_value(value_holster *VH, property *prn) {
-	if (Holsters::data_acceptable(VH))
+	if (Holsters::non_void_context(VH))
 		Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 }
 
@@ -326,7 +326,7 @@ void RTProperties::compile_vp_value(value_holster *VH, property *prn, parse_node
 
 void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 	if (RTProperties::uses_non_typesafe_0(prn)) {
-		if (Holsters::data_acceptable(VH))
+		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		return;
 	}

@@ -110,18 +110,18 @@ Here |this| is the term in question, and |other| the other of the two.
 	int N = t->constant_number;
 	if ((N < 0) || (N >= 2)) internal_error("schemas are currently limited to *1 and *2");
 	pcalc_term *this = ems->ops_termwise[N], *other = ems->ops_termwise[1-N];
-	rule *R = adopted_rule_for_compilation;
-	int M = adopted_marker_for_compilation;
+	rule *R = rule_to_which_this_is_a_response;
+	int M = response_marker_within_that_rule;
 	if ((m & ADOPT_LOCAL_STACK_FRAME_ISSBM) &&
 		(Rvalues::is_CONSTANT_of_kind(other->constant, K_response))) {
-		adopted_rule_for_compilation = Rvalues::to_rule(other->constant);
-		adopted_marker_for_compilation = Strings::get_marker_from_response_spec(other->constant);
+		rule_to_which_this_is_a_response = Rvalues::to_rule(other->constant);
+		response_marker_within_that_rule = Responses::get_marker_from_response_spec(other->constant);
 	}
 	kind *K = NULL;
 	if (m & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) K = other->term_checked_as_kind;
 	CompileSchemas::compile_term_of_token(this, m, K, by_reference);
-	adopted_rule_for_compilation = R;
-	adopted_marker_for_compilation = M;
+	rule_to_which_this_is_a_response = R;
+	response_marker_within_that_rule = M;
 
 @ This is for |*&|, which can only be used on the second term (i.e., term 1).
 If that is a combination of two values then we unpack those and compile them

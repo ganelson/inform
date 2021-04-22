@@ -33,28 +33,19 @@ typedef struct pcalc_prop_deferral {
 	CLASS_DEFINITION
 } pcalc_prop_deferral;
 
-@h The guillotine.
-We must be careful not to request a fresh deferral after the point at which
-all deferral requests are redeemed -- they would then never be reached.
-
-=
-int no_further_deferrals = FALSE;
-void Deferrals::allow_no_further_deferrals(void) {
-	no_further_deferrals = TRUE;
-}
-
 @h Deferral requests.
 The following fills out the paperwork to request a deferred proposition.
 
 =
 pcalc_prop_deferral *Deferrals::new(pcalc_prop *prop, int reason) {
+	if (Sequence::function_resources_allowed() == FALSE)
+		internal_error("too late now to defer propositions");
 	pcalc_prop_deferral *pdef = CREATE(pcalc_prop_deferral);
 	pdef->proposition_to_defer = prop;
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
 	pdef->ppd_iname = Enclosures::new_iname(PROPOSITIONS_HAP, PROPOSITION_HL);
-	if (no_further_deferrals) internal_error("Too late now to defer propositions");
 	return pdef;
 }
 

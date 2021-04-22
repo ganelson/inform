@@ -333,7 +333,7 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 	} else {
 		if (<extra-response>(Node::get_text(p))) {
 			int code = <<r>>;
-			response_message *resp = Strings::response_cue(NULL, R,
+			response_message *resp = Responses::response_cue(NULL, R,
 				code, Node::get_text(p), NULL, TRUE);
 			Rules::set_response(R, code, resp);
 		} else {

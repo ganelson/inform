@@ -43,12 +43,11 @@ inter_name *TextLiterals::small_block(inter_name *content) {
 }
 
 @h Default value.
-The default text is empty. It's defined in //BasicInformKit//, but is equivalent
-to calling |TextLiterals::small_block(EMPTY_TEXT_PACKED_HL)|.
+The default text is empty:
 
 =
 inter_name *TextLiterals::default_text(void) {
-	return Hierarchy::find(EMPTY_TEXT_VALUE_HL);
+	return TextLiterals::small_block(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 }
 
 @h Suppressing apostrophe substitution.
@@ -85,7 +84,7 @@ inter_name *TextLiterals::to_value_unescaped(wording W) {
 inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 	int w1 = Wordings::first_wn(W);
 	if (Wide::cmp(Lexer::word_text(w1), L"\"\"") == 0)
-		return Hierarchy::find(EMPTY_TEXT_VALUE_HL);
+		return TextLiterals::default_text();
 
 	inter_name *content_iname = Enclosures::new_iname(LITERALS_HAP, TEXT_LITERAL_HL);
 	Produce::annotate_i(content_iname, TEXT_LITERAL_IANN, 1);

@@ -1761,7 +1761,7 @@ but that's not evident without a lot of contextual checking.
 		(Rvalues::is_CONSTANT_of_kind(val, K_text))) {
 		rule *R = Rvalues::to_rule(constant);
 		int c = Annotations::read_int(constant, response_code_ANNOT);
-		Strings::assert_response_value(R, c, Node::get_text(val));
+		Responses::assert_response_value(R, c, Node::get_text(val));
 		return;
 	}
 
