@@ -1054,6 +1054,7 @@ void Hierarchy::establish(void) {
 
 @e RULEPRINTINGRULE_HL
 @e RESPONSEDIVISIONS_HL
+@e RESPONSEDIVISIONS2_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
@@ -1075,6 +1076,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
 		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
+		H_C_T(RESPONSEDIVISIONS2_HL,          I"ResponseDivisions2")
 		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
 	H_END
 

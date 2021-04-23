@@ -43,6 +43,7 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 	PackageTypes::get(I, I"_command");
 	PackageTypes::get(I, I"_property");
 	PackageTypes::get(I, I"_to_phrase");
+	PackageTypes::get(I, I"_response");
 	inter_package *main_p = Site::main_package(I);
 	inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_p);
 	inter_package *generic_p = NULL;

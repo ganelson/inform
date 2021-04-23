@@ -432,6 +432,12 @@ divided up by the extensions containing the rules which produce them.
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);
 
+	inter_name *iname2 = Hierarchy::find(RESPONSEDIVISIONS2_HL);
+	Produce::annotate_i(iname2, SYNOPTIC_IANN, 1);
+	save = EmitArrays::begin(iname2, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname2);
+
 @<Make a ResponseDivisions entry@> =
 	rule *R;
 	int tally = 0, contiguous_match = FALSE, no_cms = 0;

@@ -15,6 +15,10 @@ int text_consolidation_list_extent = 0;
 int text_consolidation_list_used = 0;
 inter_tree_node **text_consolidation_list = NULL;
 
+int response_consolidation_list_extent = 0;
+int response_consolidation_list_used = 0;
+inter_tree_node **response_consolidation_list = NULL;
+
 int CodeGen::PackedText::run_pipeline_stage(pipeline_step *step) {
 	InterTree::traverse(step->repository, CodeGen::PackedText::visitor, NULL, NULL, 0);
 	if (text_consolidation_list_used > 0) {
@@ -109,9 +113,9 @@ text_stream *CodeGen::PackedText::unpack(inter_tree_node *P) {
 
 void CodeGen::PackedText::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.data[ID_IFLD] == CONSTANT_IST) {
-		inter_symbol *con_name =
+		inter_symbol *con_s =
 			InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-		if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
+		if (Inter::Symbols::read_annotation(con_s, TEXT_LITERAL_IANN) == 1) {
 			if (text_consolidation_list_extent == 0) {
 				text_consolidation_list_extent = 16;
 				text_consolidation_list = (inter_tree_node **)
@@ -131,5 +135,76 @@ void CodeGen::PackedText::visitor(inter_tree *I, inter_tree_node *P, void *state
 			}
 			text_consolidation_list[text_consolidation_list_used++] = P;
 		}
+		if (Inter::Symbols::read_annotation(con_s, SYNOPTIC_IANN) == 1) {
+			Inter::Symbols::unannotate(con_s, SYNOPTIC_IANN);
+			inter_package *pack = Inter::Packages::container(P);
+			inter_tree_node *Q = NULL;
+			inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
+			if (Str::eq(con_s->symbol_name, I"ResponseDivisions2")) {
+				Inter::Symbols::strike_definition(con_s);
+				@<Define the new ResponseDivisions array as Q@>;
+				@<Finish up redefinition@>;
+			} else {
+				LOG("Couldn't consolidate $3\n", con_s);
+				internal_error("symbol cannot be consolidated");
+			}
+		}
 	}
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_symbol *ptype = Inter::Packages::type(pack);
+		if (ptype == PackageTypes::get(I, I"_response")) {
+			LOG("Yes! $6\n", pack);				
+			if (response_consolidation_list_extent == 0) {
+				response_consolidation_list_extent = 16;
+				response_consolidation_list = (inter_tree_node **)
+					(Memory::calloc(response_consolidation_list_extent,
+						sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
+			}
+			if (response_consolidation_list_used >= response_consolidation_list_extent) {
+				int old_extent = response_consolidation_list_extent;
+				response_consolidation_list_extent *= 4;
+				inter_tree_node **new_list = (inter_tree_node **)
+					(Memory::calloc(response_consolidation_list_extent,
+						sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
+				for (int i=0; i<response_consolidation_list_used; i++)
+					new_list[i] = response_consolidation_list[i];
+				Memory::I7_free(response_consolidation_list, CODE_GENERATION_MREASON, old_extent);
+				response_consolidation_list = new_list;
+			}
+			response_consolidation_list[response_consolidation_list_used++] = P;
+		}
+	}
+}
+
+@<Finish up redefinition@> =
+	inter_error_message *E = Inter::Defn::verify_construct(pack, Q);
+	if (E) {
+		Inter::Errors::issue(E);
+		internal_error("wouldn't verify");
+	}
+	Inter::Bookmarks::insert(&IBM, Q);
+
+@<Define the new ResponseDivisions array as Q@> =
+	Q = CodeGen::PackedText::redef_array(con_s, &IBM);
+	for (int j=0; j<10; j++) {
+		CodeGen::PackedText::redef_array_entry(Q, LITERAL_IVAL, (inter_ti) j);
+	}
+	CodeGen::PackedText::redef_array_entry(Q, LITERAL_IVAL, 0);
+	CodeGen::PackedText::redef_array_entry(Q, LITERAL_IVAL, 0);
+	CodeGen::PackedText::redef_array_entry(Q, LITERAL_IVAL, 0);
+
+@
+
+=
+inter_tree_node *CodeGen::PackedText::redef_array(inter_symbol *con_s, inter_bookmark *IBM) {
+	return Inode::fill_3(IBM, CONSTANT_IST,
+		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
+		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
+		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+}
+void CodeGen::PackedText::redef_array_entry(inter_tree_node *Q, inter_ti val1, inter_ti val2) {
+	if (Inode::extend(Q, 2) == FALSE) internal_error("cannot extend");
+	Q->W.data[Q->W.extent-2] = val1;
+	Q->W.data[Q->W.extent-1] = val2;
 }
