@@ -130,7 +130,6 @@ typedef struct text_substitution {
 	struct stack_frame *using_frame; /* for cases where possible */
 
 	struct inter_name *ts_value_iname; /* the I6 array for this */
-	int ts_value_iname_used;
 	struct inter_name *ts_function_iname; /* the routine to implement it */
 
 	struct rule *responding_to_rule;
@@ -145,13 +144,9 @@ typedef struct text_substitution {
 	value ----------------> CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE
 	                        function ----------------------> ...
 =
-While the function is always compiled, the small block is only compiled if
-the value iname is ever actually requested. (Sometimes when making alternative
-responses we just want to make the function.)
 
 =
 inter_name *TextSubstitutions::value_iname(text_substitution *ts) {
-	ts->ts_value_iname_used = TRUE;
 	return ts->ts_value_iname;
 }
 
@@ -159,7 +154,8 @@ inter_name *TextSubstitutions::function_iname(text_substitution *ts) {
 	return ts->ts_function_iname;
 }
 
-@ 
+@ Note that this function is called both when cues are detected (above), and
+also when responses are created -- see //Responses//.
 
 =
 text_substitution *TextSubstitutions::new_text_substitution(wording W,
@@ -170,9 +166,8 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 		internal_error("Too late for further text substitutions");
 	ts->unsubstituted_text = Wordings::first_word(W);
 	ts->sentence_using_this = current_sentence;
-	if (R) {
-		ts->using_frame = NULL;
-	} else {
+	ts->using_frame = NULL;
+	if (R == NULL) {
 		stack_frame new_frame = Frames::new();
 		ts->using_frame = Frames::boxed_frame(&new_frame);
 		if (frame) LocalVariableSlates::append(ts->using_frame, frame);
@@ -190,7 +185,6 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	if (R) P = RTRules::package(R);
 	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);
 	ts->ts_value_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_HL, PR);
-	ts->ts_value_iname_used = FALSE;
 	ts->ts_function_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_FN_HL, PR);
 
 	ts->owning_point = current_sentence;
@@ -202,16 +196,13 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 }
 
 @h Compilation.
+Functions for substitutions are then compiled in due course by the following coroutine
+(see //core: How To Compile//):
 
 =
-int TextSubstitutions::compilation_coroutine(void) {
-	return TextSubstitutions::compile_as_needed(FALSE);
-}
-
 text_substitution *latest_ts_compiled = NULL;
 int compiling_text_routines_mode = FALSE; /* used for better problem messages */
-int TextSubstitutions::compile_as_needed(int in_response_mode) {
-	Responses::compile_response_launchers();
+int TextSubstitutions::compilation_coroutine(void) {
 	int N = 0;
 	compiling_text_routines_mode = TRUE;
 	while (TRUE) {
@@ -220,13 +211,11 @@ int TextSubstitutions::compile_as_needed(int in_response_mode) {
 		else ts = NEXT_OBJECT(latest_ts_compiled, text_substitution);
 		if (ts == NULL) break;
 		latest_ts_compiled = ts;
-		int responding = FALSE;
-		if (ts->responding_to_rule) responding = TRUE;
-		if ((responding == in_response_mode) && (ts->tr_done_already == FALSE)) {
+		if (ts->tr_done_already == FALSE) {
 			ts->tr_done_already = TRUE;
 			int makes_local_refs = TextSubstitutions::compile_function(ts);
-			if (ts->ts_value_iname_used)
-				TextSubstitutions::compile_value(ts->ts_value_iname, ts->ts_function_iname, makes_local_refs);
+			TextSubstitutions::compile_value(ts->ts_value_iname,
+				ts->ts_function_iname, makes_local_refs);
 		}
 		N++;
 	}
@@ -252,34 +241,30 @@ int TextSubstitutions::compile_function(text_substitution *ts) {
 
 	current_ts_being_compiled = ts;
 	packaging_state save = Functions::begin(ts->ts_function_iname);
-	stack_frame *frame = ts->using_frame;
-	if ((ts->responding_to_rule) && (ts->responding_to_marker >= 0)) {
-		response_message *resp = Rules::get_response(
-			ts->responding_to_rule, ts->responding_to_marker);
-		if (resp) frame = Responses::frame_for_response(resp);
-	}
-	if (frame) LocalVariableSlates::append(Frames::current_stack_frame(), frame);
+	stack_frame *frame = NULL;
+	@<Give the function access to shared variables visible to its user@>;
+
 	LocalVariables::monitor_local_parsing(Frames::current_stack_frame());
-
+	@<Compile some debugging text@>;
 	@<Compile a say-phrase@>;
-
 	int makes_local_references =
 		LocalVariables::local_parsed_recently(Frames::current_stack_frame());
-	if (makes_local_references) {
-		Produce::push_code_position(Emit::tree(), Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Emit::at()));
-		LocalParking::retrieve(frame);
-		Produce::pop_code_position(Emit::tree());
-	}
+	if (makes_local_references) @<Insert code at start of function to retrieve parked values@>;
+
 	Functions::end(save);
 	current_ts_being_compiled = NULL;
 	return makes_local_references;
 }
 
-@ Of course, if we used Inform's standard phrase mechanism exactly, then
-the whole thing would be circular, because that would once again generate
-a request for a new text substitution to be compiled later...
+@<Give the function access to shared variables visible to its user@> =
+	frame = Responses::frame_for_response(ts->responding_to_rule, ts->responding_to_marker);
+	if (frame == NULL) frame = ts->using_frame;
+	if (frame) LocalVariableSlates::append(Frames::current_stack_frame(), frame);
 
-@<Compile a say-phrase@> =
+@ In DEBUG mode, there's an option to print the unsubstituted text instead --
+note the |rtrue| here, which stops the function from proceeding.
+
+@<Compile some debugging text@> =
 	if (TargetVMs::debug_enabled(Task::vm())) {
 		EmitCode::inv(IFDEBUG_BIP);
 		EmitCode::down();
@@ -287,7 +272,8 @@ a request for a new text substitution to be compiled later...
 			EmitCode::down();
 				EmitCode::inv(IF_BIP);
 				EmitCode::down();
-					EmitCode::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
+					EmitCode::val_iname(K_number,
+						Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
 					EmitCode::code();
 					EmitCode::down();
 						EmitCode::inv(PRINT_BIP);
@@ -304,6 +290,11 @@ a request for a new text substitution to be compiled later...
 		EmitCode::up();
 	}
 
+@ Of course, if we used Inform's standard phrase mechanism exactly, then
+the whole thing would be circular, because that would once again generate
+a request for a new text substitution to be compiled later...
+
+@<Compile a say-phrase@> =
 	parse_node *ts_code_block = Node::new(IMPERATIVE_NT);
 	CompilationUnits::assign_to_same_unit(ts_code_block, ts->owning_point);
 	ts_code_block->next = Node::new(UNKNOWN_NT);
@@ -315,17 +306,17 @@ a request for a new text substitution to be compiled later...
 
 	EmitCode::rtrue();
 
-@ See the "Responses" section for why, but we sometimes want to force
-the coroutine to go through the whole queue once, then go back to the
-start again -- which would be very inefficient except that in this mode
-we aren't doing very much; most TSs will be passed quickly over.
+@ Where a text substitution refers to local variables in the caller,
+//imperative: Local Parking// is used to pass it the current values of those
+locals; and this means that the function must begin by retrieving those values.
+But since we have already compiled most of the function, we have to go back to
+the start temporarily to insert this extra code.
 
-=
-void TextSubstitutions::compile_text_routines_in_response_mode(void) {
-	latest_ts_compiled = NULL;
-	TextSubstitutions::compile_as_needed(TRUE);
-	latest_ts_compiled = NULL;
-}
+@<Insert code at start of function to retrieve parked values@> =
+	Produce::push_code_position(Emit::tree(),
+		Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Emit::at()));
+	LocalParking::retrieve(frame);
+	Produce::pop_code_position(Emit::tree());
 
 @h It may be worth adding.
 Finally, the following clarifies problem messages arising from the issue of

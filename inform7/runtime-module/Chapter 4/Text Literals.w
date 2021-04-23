@@ -35,11 +35,15 @@ it will always be a function.
 =
 inter_name *TextLiterals::small_block(inter_name *content) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
-	packaging_state save = EmitArrays::begin(small_block, K_value);
+	TextLiterals::compile_value_to(small_block, content);
+	return small_block;
+}
+
+void TextLiterals::compile_value_to(inter_name *at, inter_name *content) {
+	packaging_state save = EmitArrays::begin(at, K_value);
 	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	EmitArrays::iname_entry(content);
 	EmitArrays::end(save);
-	return small_block;
 }
 
 @h Default value.

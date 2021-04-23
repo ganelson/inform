@@ -163,7 +163,7 @@ kinds of value:
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_text)) {
-		Responses::compile_general(VH, value);
+		CompileRvalues::text(VH, value);
 		return;
 	}
 	#ifdef IF_MODULE
@@ -243,3 +243,78 @@ contexts by using a tilde: |~attr|.
 			Emit::holster_iname(VH, RTProperties::iname(prn));
 		}
 	}
+
+@ Texts can be compiled in four different ways, so the following splits into
+four cases. Note that responses take the form
+= (text)
+	"blah blah blah" ( letter )
+=
+so the penultimate word, if it's there, is the letter.
+
+=
+void CompileRvalues::text(value_holster *VH, parse_node *str) {
+	if (Holsters::non_void_context(VH) == FALSE) internal_error("text in void context");
+	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
+		@<This is an explicit text@>;
+	} else {
+		wording SW = Node::get_text(str);
+		int unescaped = Annotations::read_int(str, text_unescaped_ANNOT);
+		if (Wordings::empty(SW)) internal_error("text without wording");
+		if ((Wordings::length(SW) >= 2) &&
+			(<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1)))) {
+			@<This is a response text@>;
+		} else if ((unescaped == 0) &&
+				(Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC))) {
+			@<This is a text substitution@>;
+		} else if (unescaped) {				
+			@<This is an unescaped text literal@>;
+		} else {
+			@<This is a regular text literal@>;
+		}
+	}
+}
+
+@ Not explicit in the sense of an advisory sticker on an Eminem CD: explicit
+in providing a text stream for its content, rather than a wording from the
+source text. (This usually means it has been manufactured somewhere in the
+compiler, rather than parsed from the source.)
+
+@<This is an explicit text@> =
+	if (Node::get_explicit_iname(str)) {
+		if (Holsters::non_void_context(VH)) {
+			Emit::holster_iname(VH, Node::get_explicit_iname(str));
+		} else internal_error("unvalued SCG");
+	} else {
+		int A = Annotations::read_int(str, constant_number_ANNOT);
+		if (Holsters::non_void_context(VH))
+			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
+	}
+
+@<This is a response text@> =
+	int marker = <<r>>;
+	if ((rule_being_compiled == NULL) ||
+		(Rules::rule_allows_responses(rule_being_compiled) == FALSE)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseContextWrong),
+			"lettered responses can only be used in named rules",
+			"not in any of the other contexts in which quoted text can appear.");
+		return;
+	}
+	if (Rules::get_response(rule_being_compiled, marker)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseDuplicated),
+			"this duplicates a response letter",
+			"which is not allowed: if a bracketed letter like (A) is used to mark "
+			"some text as a response, then it can only occur once in its rule.");
+		return;
+	}
+	Responses::set_via_source_text(VH, rule_being_compiled, marker, SW);
+
+@<This is a text substitution@> =
+	TextSubstitutions::text_substitution_cue(VH, SW);
+
+@<This is an unescaped text literal@> =
+	inter_name *val_iname = TextLiterals::to_value_unescaped(SW);
+	Emit::holster_iname(VH, val_iname);
+
+@<This is a regular text literal@> =
+	inter_name *val_iname = TextLiterals::to_value(SW);
+	Emit::holster_iname(VH, val_iname);

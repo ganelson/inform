@@ -516,7 +516,7 @@ rule_response Rules::new_rule_response(void) {
 	return rr;
 }
 
-wording Rules::get_response_content(rule *R, int code) {
+wording Rules::get_response_replacement_wording(rule *R, int code) {
 	if (R == NULL) return EMPTY_WORDING;
 	if ((code < 0) || (code >= 26)) return EMPTY_WORDING;
 	return R->responses[code].content;

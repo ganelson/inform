@@ -87,7 +87,7 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 		if (R->responses[l].message) {
 			if (c == 0) Index::extra_div_open_nested(OUT, 1000000+R->allocation_id, 2);
 			else HTML_TAG("br");
-			Responses::index_response(OUT, R, l, R->responses[l].message);
+			IXRules::index_response(OUT, R, l, R->responses[l].message);
 			c++;
 		}
 	if (c > 0) Index::extra_div_close_nested(OUT);
@@ -737,3 +737,31 @@ int IXRules::phrase_fits_rule_context(id_body *idb, rule_context rc) {
 	if (Scenes::rcd_scene(&(idb->runtime_context_data)) != rc.scene_context) return FALSE;
 	return TRUE;
 }
+
+@ When we index a response, we also provide a paste button for the source
+text to assert a change:
+
+=
+void IXRules::index_response(OUTPUT_STREAM, rule *R, int marker, response_message *resp) {
+	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+	HTML_OPEN_WITH("span",
+		"style=\"color: #ffffff; "
+		"font-family: 'Courier New', Courier, monospace; background-color: #8080ff;\"");
+	WRITE("&nbsp;&nbsp;%c&nbsp;&nbsp; ", 'A' + marker);
+	HTML_CLOSE("span");
+	HTML_OPEN_WITH("span", "style=\"color: #000066;\"");
+	WRITE("%+W", resp->the_ts->unsubstituted_text);
+	HTML_CLOSE("span");
+	WRITE("&nbsp;&nbsp;");
+	TEMPORARY_TEXT(S)
+	WRITE_TO(S, "%+W response (%c)", R->name, 'A' + marker);
+	PasteButtons::paste_text(OUT, S);
+	WRITE("&nbsp;<i>name</i>");
+	WRITE("&nbsp;");
+	Str::clear(S);
+	WRITE_TO(S, "The %+W response (%c) is \"New text.\".");
+	PasteButtons::paste_text(OUT, S);
+	WRITE("&nbsp;<i>set</i>");
+	DISCARD_TEXT(S)
+}
+

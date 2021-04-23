@@ -218,7 +218,7 @@ so on. Those absolute basics are made here.
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::compile_function_resources)
-	BENCH(Responses::compile_responses)
+	BENCH(Responses::compile_synoptic_resources)
 	BENCH(Sequence::compile_literal_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Sequence::compile_function_resources)
@@ -306,6 +306,7 @@ void Sequence::compile_function_resources(void) {
 		if (PhraseRequests::compilation_coroutine() > 0)       repeat = TRUE;
 		if (ListTogether::compilation_coroutine() > 0)         repeat = TRUE;
 		if (LoopingOverScope::compilation_coroutine() > 0)     repeat = TRUE;
+		if (Responses::compilation_coroutine() > 0)            repeat = TRUE;
 		if (TextSubstitutions::compilation_coroutine() > 0)    repeat = TRUE;
 		if (DeferredPropositions::compilation_coroutine() > 0) repeat = TRUE;
 

@@ -76,6 +76,15 @@ property *Rvalues::to_property(parse_node *spec) {
 		CONV_TO(property) }
 rule *Rvalues::to_rule(parse_node *spec) { 
 		CONV_TO(rule) }
+int Rvalues::to_response_marker(parse_node *spec) { 
+	if (Rvalues::is_CONSTANT_of_kind(spec, K_response)) {
+		wording SW = Node::get_text(spec);
+		if ((Wordings::length(SW) >= 2) &&
+			(<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1))))
+			return <<r>>;
+	}
+	return -1;
+}
 rulebook *Rvalues::to_rulebook(parse_node *spec) { 
 		CONV_TO(rulebook) }
 table *Rvalues::to_table(parse_node *spec) { 

@@ -332,10 +332,8 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 		Translations::plus_responses(p->down->next, R);
 	} else {
 		if (<extra-response>(Node::get_text(p))) {
-			int code = <<r>>;
-			response_message *resp = Responses::response_cue(NULL, R,
-				code, Node::get_text(p), NULL, TRUE);
-			Rules::set_response(R, code, resp);
+			int marker = <<r>>;
+			Responses::set_via_translation(R, marker, Node::get_text(p));
 		} else {
 			StandardProblems::sentence_problem(Task::syntax_tree(),
 				_p_(PM_I6ResponsesAwry),

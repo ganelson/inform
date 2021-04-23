@@ -2,113 +2,197 @@
 
 In this section we keep track of response texts.
 
-@ Responses are texts -- which may be either literals or text substitutions --
+@h Introduction.
+Responses are texts -- which may be either literals or text substitutions --
 occurring inside the body of rules, and marked out (A), (B), (C), ... within
-that rule. This enables them to be manipulated or changed.
+that rule. This enables them to be manipulated or changed. For example:
+= (text as Inform 7)
+Report an actor taking (this is the standard report taking rule):
+	if the action is not silent:
+		if the actor is the player:
+			say "Taken." (A);
+		otherwise:
+			say "[The actor] [pick] up [the noun]." (B).
+=
+In effect there is a two-element array attached to this rule, one holding
+the current response (A), the other (B). These are identified by an index called
+the "marker", which counts from 0: so (A) is 0, (B) is 1.
+
+Those original appearances inside the rule are called the "cues". The texts are
+stored as //Text Substitutions//, even if, as in example (A) here, they do not
+actually involve any substituting. (It's simpler to have a common format, and in
+any case these are the exception.) All of the difficulties attendant on text
+substitutions apply here, too. Note, for example, that (B) refers to the "actor",
+a shared variable which is not normally visible from here:
+= (text as Inform 7)
+To grab is a verb.
+When play begins:
+	now the standard report taking rule response (B) is "[The actor] [grab] [the noun]."
+=
+Here, "actor" has to be read in the context of the standard report taking rule's
+stack frame, not in the stack for the "when play begins" rule.
+
+Each time a cue is found, a |response_message| object is created, as follows:
 
 =
 typedef struct response_message {
-	struct rule *responding_rule; /* named rule in which this response occurs */
-	int response_marker; /* 0 for A, 1 for B, and so on up */
-	struct text_substitution *original_text;
+	struct rule *the_rule; /* to which this is a response */
+	int the_marker; /* 0 for A, 1 for B, and so on up */
+	struct text_substitution *the_ts;
 	struct stack_frame *original_stack_frame;
-	struct inter_name *resp_iname;
+	struct inter_name *value_iname;
 	struct inter_name *constant_iname;
-	struct package_request *resp_package;
+	struct inter_name *launcher_iname;
 	int launcher_compiled;
-	int via_I6; /* if responding to a rule defined by I6 code, not source text */
-	int via_I6_routine_compiled;
+	int via_Inter; /* if responding to a rule defined by Inter code, not source text */
+	int via_Inter_routine_compiled;
 	CLASS_DEFINITION
 } response_message;
 
-@ Continuing with our naming convention for text resources at runtime, here
-is the "launcher" routine for a response:
+@ Note that each response has its own package, which is stored inside the package
+of the rule to which it responds.
+
+It occasionally happens that assertion sentences have changed the wording of a
+response long before any code is compiled, and therefore before this call,
+through a sentence like:
+= (text as Inform 7)
+The print empty inventory rule response (A) is "I got nothing."
+=
+This would cause |RW|, the replacement wording, below to be |"I got nothing."|.
 
 =
-inter_name *Responses::response_launcher_iname(response_message *resp) {
-	return resp->resp_iname;
-}
-
-@ Each response is itself a value at run-time, and the following compiles
-its name in the output code:
-
-=
-inter_name *Responses::response_constant_iname(rule *R, int marker) {
-	response_message *RM = Rules::get_response(R, marker);
-	if (RM == NULL) return NULL;
-	if (RM->constant_iname == NULL) internal_error("no response value");
-	return RM->constant_iname;
-}
-
-@ The following is called in response to a usage of a text followed by a
-response marker; for example,
-
->> say "You can't open [the noun]." (A);
-
-We compile it as the name of the response's "launcher" routine; that is, as
-the launcher for response (A) of the rule currently being compiled.
-
-The original text, |"You can't open [the noun]."| is then remembered as if
-it were a text substitution -- as of course it is, but it may be supplanted
-at run-time, or even before that. (For simplicity we choose to treat the text
-as a substitution even if, in fact, it's just literal text.) All of the
-problems usually attendant on text substitutions apply here, too; we
-need to remember the stack frame for later.
-
-Thus the above source text will produce not only a |TX_R_*| launcher routine,
-but also (in most cases) a |TX_S_*| text substitution routine.
-
-=
-response_message *Responses::response_cue(value_holster *VH, rule *owner, int marker,
-	wording W, stack_frame *frame, int via_I6) {
+response_message *Responses::response_cue(rule *R, int marker, wording W, stack_frame *frame) {
 	response_message *resp = CREATE(response_message);
-	resp->original_stack_frame = Frames::boxed_frame(frame);
-	resp->responding_rule = owner;
-	resp->response_marker = marker;
-	resp->original_text = TextSubstitutions::new_text_substitution(W, frame, owner, marker);
+	resp->original_stack_frame = frame;
+	resp->the_rule = R;
+	resp->the_marker = marker;
 	resp->launcher_compiled = FALSE;
-	resp->via_I6 = via_I6;
-	resp->via_I6_routine_compiled = FALSE;
-	resp->resp_package = Hierarchy::package_within(RESPONSES_HAP, RTRules::package(resp->responding_rule));
-	resp->resp_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, resp->resp_package);
-	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, resp->resp_package);
-	if (VH) {
-		if (Holsters::non_void_context(VH)) {
-			EmitCode::val_iname(K_value, Responses::response_launcher_iname(resp));
-		}
-	}
+	resp->via_Inter = FALSE;
+	resp->via_Inter_routine_compiled = FALSE;
+
+	package_request *PR = Hierarchy::package_within(RESPONSES_HAP, RTRules::package(R));
+	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, PR);
+	resp->value_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, PR);
+	resp->launcher_iname = Hierarchy::make_iname_in(LAUNCHER_HL, PR);
+
+	Rules::set_response(R, marker, resp);
+
+	wording RW = Rules::get_response_replacement_wording(R, marker);
+	if (Wordings::nonempty(RW)) W = RW;
+	resp->the_ts = TextSubstitutions::new_text_substitution(W, frame, R, marker);
+	TextSubstitutions::value_iname(resp->the_ts);
+
 	return resp;
 }
 
-@ Response launchers can be compiled in sets, but not quite all at once.
-The following code is quadratic in the number of responses, but it really
-doesn't matter, since so little is done and the response count can't be
-enormous.
+@ Some access functions:
 
 =
-void Responses::compile_response_launchers(void) {
+inter_name *Responses::response_launcher_iname(response_message *resp) {
+	return resp->value_iname;
+}
+
+inter_name *Responses::response_constant_iname(rule *R, int marker) {
+	response_message *resp = Rules::get_response(R, marker);
+	if (resp == NULL) return NULL;
+	if (resp->constant_iname == NULL) internal_error("no response value");
+	return resp->constant_iname;
+}
+
+stack_frame *Responses::frame_for_response(rule *R, int marker) {
+	response_message *resp = Rules::get_response(R, marker);
+	if (resp == NULL) return NULL;
+	return resp->original_stack_frame;
+}
+
+@h How rules gain responses.
+There are two ways a rule can get a new response. Firstly, and the way most
+Inform authors do it:
+= (text as Inform 7)
+say "[The actor] [pick] up [the noun]." (B).
+=
+Will cause //Responses::set_via_source_text// to be called. This compiles Inter
+code suitable for the response to be called (i.e., printed), setting up the cue
+and attaching it to its rule in the process.
+
+Note the use of //imperative: Local Parking// to stash local values before the
+evaluation: and see //TextSubstitutions::compile_function// for where those are
+retrieved.
+
+=
+void Responses::set_via_source_text(value_holster *VH, rule *R, int marker, wording SW) {
+	stack_frame *frame = Frames::current_stack_frame();
+	int downs = LocalParking::park(frame);
+	response_message *resp =
+		Responses::response_cue(R, marker, SW, Frames::boxed_frame(frame));
+	EmitCode::val_iname(K_value, Responses::response_launcher_iname(resp));
+	while (downs > 0) { EmitCode::up(); downs--; }
+}
+
+@ Secondly, a lower-level technique used by extensions to give responses even
+to rules defined in Inter kits rather than by source text:
+= (text as Inform 7)
+The requested actions require persuasion rule translates into Inter as
+	"REQUESTED_ACTIONS_REQUIRE_R" with
+	 "[The noun] [have] better things to do." (A).
+=
+Which causes the following to be called:
+
+=
+void Responses::set_via_translation(rule *R, int marker, wording SW) {
+	response_message *resp = Responses::response_cue(R, marker, SW, NULL);
+	resp->via_Inter = TRUE;
+}
+
+@h Compilation.
+Values and launchers for responses are then compiled in due course by the
+following coroutine (see //core: How To Compile//):
+
+=
+int Responses::compilation_coroutine(void) {
+	int N = 0;
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
 		if (resp->launcher_compiled == FALSE) {
 			resp->launcher_compiled = TRUE;
-			@<Compile the actual launcher@>;
-			if ((resp->via_I6) && (resp->via_I6_routine_compiled == FALSE))
-				@<If the response is via I6, compile the necessary routine for this rule@>;
+			N++;
+			@<Compile resources needed by this response@>;
+		}
+		if ((resp->via_Inter) && (resp->via_Inter_routine_compiled == FALSE)) {
+			response_message *r2;
+			LOOP_OVER(r2, response_message)
+				if (r2->the_rule == resp->the_rule)
+					r2->via_Inter_routine_compiled = TRUE;
+			N++;
+			@<Compile the response-handler function for this rule@>;
 		}
 	}
+	return N;
 }
 
-@ Each response is itself a value, and the launcher routine consists only of
-a call to an activity based on that value:
+@ Each response compiles to a text value like so:
+= (text)
+	                        small block:
+	value ----------------> CONSTANT_PACKED_TEXT_STORAGE
+	                        launcher function ----------------------> ...
+=
+Thus, printing this value at runtime calls the launcher function. This in
+turn runs the "issuing the response text" activity, though it does it via
+a function defined in //BasicInformKit//.
 
-@<Compile the actual launcher@> =
-	package_request *R = resp->resp_package;
-	inter_name *launcher = Hierarchy::make_iname_in(LAUNCHER_HL, R);
+@<Compile resources needed by this response@> =
+	text_substitution *ts = resp->the_ts;
+	inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
+	inter_name *rc_iname =
+		Responses::response_constant_iname(resp->the_rule, resp->the_marker);
+	Emit::response(rc_iname, resp->the_rule, resp->the_marker, ts_value_iname);
 
-	packaging_state save = Functions::begin(launcher);
+	TextLiterals::compile_value_to(resp->value_iname, resp->launcher_iname);
+
+	packaging_state save = Functions::begin(resp->launcher_iname);
 
 	inter_name *iname = Responses::response_constant_iname(
-		resp->responding_rule, resp->response_marker);
+		resp->the_rule, resp->the_marker);
 
 	inter_name *rname = Hierarchy::find(RESPONSEVIAACTIVITY_HL);
 	EmitCode::call(rname);
@@ -118,19 +202,13 @@ a call to an activity based on that value:
 
 	Functions::end(save);
 
-	save = EmitArrays::begin(resp->resp_iname, K_value);
-	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-	EmitArrays::iname_entry(launcher);
-	EmitArrays::end(save);
-
 @ Something skated over above is that responses can also be created when the
-source text defines a rule only as an I6 routine. For example:
-
->> The hack mode rule translates into I6 as "HACK_MODE_ON_R" with "Hack mode on." (A).
-
-Responses like this one are "via I6", and they cause us to create a support
-routine for the rule, called in this case |HACK_MODE_ON_RM|. The rule then
-calls
+source text defines a rule only as an Inter routine. For example:
+= (text as Inform 7)
+The hack mode rule translates into Inter as "HACK_MODE_ON_R" with "Hack mode on." (A).
+=
+Responses like this one are "via Inter", and they cause us to create a handler
+function for the rule, called (say) |HACK_MODE_ON_RM|. The rule then calls:
 = (text as Inform 6)
 	HACK_MODE_ON_RM('A');
 =
@@ -138,11 +216,12 @@ to produce response (A), or alternatively
 = (text as Inform 6)
 	HACK_MODE_ON_RM('a');
 =
-to return the current text of (A) without printing it. Speed is not of the
-essence here.
+to return the current text of (A) without printing it. Speed is not of the essence;
+and note that the response-handler is created in the package for the rule to which
+it responds.
 
-@<If the response is via I6, compile the necessary routine for this rule@> =
-	inter_name *responder_iname = RTRules::get_handler_definition(resp->responding_rule);
+@<Compile the response-handler function for this rule@> =
+	inter_name *responder_iname = RTRules::get_handler_definition(resp->the_rule);
 	packaging_state save = Functions::begin(responder_iname);
 	inter_symbol *code_s = LocalVariables::new_other_as_symbol(I"code");
 	inter_symbol *val_s = LocalVariables::new_other_as_symbol(I"val");
@@ -225,20 +304,19 @@ essence here.
 		EmitCode::down();
 			response_message *r2;
 			LOOP_OVER(r2, response_message) {
-				if (r2->responding_rule == resp->responding_rule) {
+				if (r2->the_rule == resp->the_rule) {
 					EmitCode::inv(CASE_BIP);
 					EmitCode::down();
-						EmitCode::val_number((inter_ti) ('A' + r2->response_marker));
+						EmitCode::val_number((inter_ti) ('A' + r2->the_marker));
 						EmitCode::code();
 						EmitCode::down();
 							EmitCode::inv(STORE_BIP);
 							EmitCode::down();
 								EmitCode::ref_symbol(K_value, str_s);
-								EmitCode::val_iname(K_value, r2->resp_iname);
+								EmitCode::val_iname(K_value, r2->value_iname);
 							EmitCode::up();
 						EmitCode::up();
 					EmitCode::up();
-					r2->via_I6_routine_compiled = TRUE;
 				}
 			}
 		EmitCode::up();
@@ -287,41 +365,13 @@ essence here.
 
 	Functions::end(save);
 
-@ So much for the launchers. We also have to compile the response values,
-and some run-time tables which will enable the I6 template code to keep
-track of the content of each response.
+@ There's then one function and one array left to compile:
 
 =
-void Responses::compile_responses(void) {
-	@<Compile the array holding the current text of each response@>;
+void Responses::compile_synoptic_resources(void) {
 	@<Compile the PrintResponse routine@>;
 	@<Compile the Response Divisions array@>;
-	TextSubstitutions::compile_text_routines_in_response_mode();
 }
-
-@ Note that each rule is allowed to tell us that it already has a better
-text for the response than the one we first created.
-
-@<Compile the array holding the current text of each response@> =
-	rule *R;
-	LOOP_OVER(R, rule) {
-		int marker;
-		for (marker = 0; marker < 26; marker++) {
-			response_message *resp = Rules::get_response(R, marker);
-			if (resp) {
-				text_substitution *ts = resp->original_text;
-				wording W = Rules::get_response_content(R, marker);
-				if (Wordings::nonempty(W)) { /* i.e., if the rule gives us a better text */
-					current_sentence = Rules::get_response_sentence(R, marker);
-					ts = TextSubstitutions::new_text_substitution(W, NULL, R, marker);
-					resp->original_text->tr_done_already = TRUE;
-				}
-				inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
-				inter_name *rc_iname = Responses::response_constant_iname(R, marker);
-				Emit::response(rc_iname, R, marker, ts_value_iname);
-			}
-		}
-	}
 
 @ This is in effect a big switch statement, so it's not fast; but as usual
 with printing routines it really doesn't need to be. Given a response value,
@@ -333,8 +383,8 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
-		inter_name *iname = Responses::response_constant_iname(resp->responding_rule,
-			resp->response_marker);
+		inter_name *iname = Responses::response_constant_iname(resp->the_rule,
+			resp->the_marker);
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
@@ -346,7 +396,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			EmitCode::down();
 				EmitCode::call(Hierarchy::find(RULEPRINTINGRULE_HL));
 				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRules::iname(resp->responding_rule));
+					EmitCode::val_iname(K_value, RTRules::iname(resp->the_rule));
 				EmitCode::up();
 				EmitCode::inv(PRINT_BIP);
 				EmitCode::down();
@@ -354,7 +404,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 				EmitCode::up();
 				EmitCode::inv(PRINTCHAR_BIP);
 				EmitCode::down();
-					EmitCode::val_number((inter_ti) ('A' + resp->response_marker));
+					EmitCode::val_number((inter_ti) ('A' + resp->the_marker));
 				EmitCode::up();
 				EmitCode::inv(PRINT_BIP);
 				EmitCode::down();
@@ -366,7 +416,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 	Functions::end(save);
 
 @ The following array is used only by the testing command RESPONSES, and
-enables the I6 template to print out all known responses at run-time,
+enables the Inter template to print out all known responses at run-time,
 divided up by the extensions containing the rules which produce them.
 
 @<Compile the Response Divisions array@> =
@@ -413,145 +463,4 @@ divided up by the extensions containing the rules which produce them.
 	if (contiguous_match) {
 		EmitArrays::numeric_entry((inter_ti) (tally-1));
 		contiguous_match = FALSE;
-	}
-
-@ =
-stack_frame *Responses::frame_for_response(response_message *resp) {
-	if (resp == NULL) return NULL;
-	return resp->original_stack_frame;
-}
-
-@ As mentioned above, assertions in the source text can change the text of
-a given response even at compile time. But the rules code looks after that:
-
-=
-void Responses::assert_response_value(rule *R, int marker, wording W) {
-	Rules::now_rule_needs_response(R, marker, W);
-}
-
-@ When we index a response, we also provide a paste button for the source
-text to assert a change:
-
-=
-void Responses::index_response(OUTPUT_STREAM, rule *R, int marker, response_message *resp) {
-	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-	HTML_OPEN_WITH("span",
-		"style=\"color: #ffffff; "
-		"font-family: 'Courier New', Courier, monospace; background-color: #8080ff;\"");
-	WRITE("&nbsp;&nbsp;%c&nbsp;&nbsp; ", 'A' + marker);
-	HTML_CLOSE("span");
-	HTML_OPEN_WITH("span", "style=\"color: #000066;\"");
-	WRITE("%+W", resp->original_text->unsubstituted_text);
-	HTML_CLOSE("span");
-	WRITE("&nbsp;&nbsp;");
-	TEMPORARY_TEXT(S)
-	WRITE_TO(S, "%+W response (%c)", R->name, 'A' + marker);
-	PasteButtons::paste_text(OUT, S);
-	WRITE("&nbsp;<i>name</i>");
-	WRITE("&nbsp;");
-	Str::clear(S);
-	WRITE_TO(S, "The %+W response (%c) is \"New text.\".");
-	PasteButtons::paste_text(OUT, S);
-	WRITE("&nbsp;<i>set</i>");
-	DISCARD_TEXT(S)
-}
-
-@ =
-int Responses::get_marker_from_response_spec(parse_node *rs) {
-	if (Rvalues::is_CONSTANT_of_kind(rs, K_response)) {
-		wording SW = Node::get_text(rs);
-		if ((Wordings::length(SW) >= 2) && (<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1))))
-			return <<r>>;
-	}
-	return -1;
-}
-
-@ To complete the code on strings, we just need the top-level routine which
-handles the compilation of a general string literal. There are actually three
-ways we might not even be compiling an I7 text value here:
-
-(a) If the specification is flagged "explicit", we're using this as a device
-to hold low-level I6 property values such as |parse_name| routines, and we
-simply compile the text raw.
-(b) If we're in quotation mode, that means the text is destined to be in an
-I6 "box" statement, which needs it to be formed in an eccentric way.
-(c) If we're in bibliographic mode, we're compiling not to the I6 program
-but to something like an XML description of its metadata, where again the
-text needs to be printed in a particular way.
-
-=
-void Responses::compile_general(value_holster *VH, parse_node *str) {
-	wording SW = Node::get_text(str);
-	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
-		if (Node::get_explicit_iname(str)) {
-			if (Holsters::non_void_context(VH)) {
-				Emit::holster_iname(VH, Node::get_explicit_iname(str));
-			} else internal_error("unvalued SCG");
-		} else {
-			int A = Annotations::read_int(str, constant_number_ANNOT);
-			if (Holsters::non_void_context(VH))
-				Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
-		}
-	} else {
-		if (Wordings::empty(SW)) internal_error("Text no longer available for CONSTANT/TEXT");
-		@<This is going to make a valid I7 text value@>;
-	}
-}
-
-@ Responses take the form
-= (text)
-	"blah blah blah" ( letter )
-=
-so the penultimate word, if it's there, is the letter.
-
-@<This is going to make a valid I7 text value@> =
-	if ((Wordings::length(SW) >= 2) && (<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1))))
-		@<This is a response@>
-	else @<This isn't a response@>;
-
-@<This is a response@> =
-	int code = <<r>>;
-	if ((rule_being_compiled == NULL) ||
-		(Rules::rule_allows_responses(rule_being_compiled) == FALSE)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseContextWrong),
-			"lettered responses can only be used in named rules",
-			"not in any of the other contexts in which quoted text can appear.");
-		return;
-	}
-	if (Rules::get_response(rule_being_compiled, code)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseDuplicated),
-			"this duplicates a response letter",
-			"which is not allowed: if a bracketed letter like (A) is used to mark "
-			"some text as a response, then it can only occur once in its rule.");
-		return;
-	}
-	stack_frame *frame = Frames::current_stack_frame();
-	if (Holsters::non_void_context(VH)) {
-		int downs = LocalParking::park(frame);
-		response_message *resp =
-			Responses::response_cue(VH, rule_being_compiled, code, SW,
-				Frames::boxed_frame(frame), FALSE);
-		Rules::set_response(rule_being_compiled, code, resp);
-		while (downs > 0) { EmitCode::up(); downs--; }
-	}
-
-@<This isn't a response@> =
-	if (Annotations::read_int(str, text_unescaped_ANNOT)) {
-		if (CompileValues::compiling_in_constant_mode()) {
-			inter_name *val_iname = TextLiterals::to_value_unescaped(SW);
-			Emit::holster_iname(VH, val_iname);
-		} else {
-			inter_name *val_iname = TextLiterals::to_value_unescaped(SW);
-			Emit::holster_iname(VH, val_iname);
-		}
-	} else if (Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC)) {
-		TextSubstitutions::text_substitution_cue(VH, SW);
-	} else {
-		if (CompileValues::compiling_in_constant_mode()) {
-			inter_name *val_iname = TextLiterals::to_value(SW);
-			Emit::holster_iname(VH, val_iname);
-		} else {
-			inter_name *val_iname = TextLiterals::to_value(SW);
-			Emit::holster_iname(VH, val_iname);
-		}
 	}

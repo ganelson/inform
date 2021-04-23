@@ -115,7 +115,7 @@ Here |this| is the term in question, and |other| the other of the two.
 	if ((m & ADOPT_LOCAL_STACK_FRAME_ISSBM) &&
 		(Rvalues::is_CONSTANT_of_kind(other->constant, K_response))) {
 		rule_to_which_this_is_a_response = Rvalues::to_rule(other->constant);
-		response_marker_within_that_rule = Responses::get_marker_from_response_spec(other->constant);
+		response_marker_within_that_rule = Rvalues::to_response_marker(other->constant);
 	}
 	kind *K = NULL;
 	if (m & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) K = other->term_checked_as_kind;
