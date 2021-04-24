@@ -43,6 +43,10 @@ typedef struct response_message {
 	struct inter_name *value_iname;
 	struct inter_name *constant_iname;
 	struct inter_name *launcher_iname;
+	struct inter_name *value_md_iname;
+	struct inter_name *rule_md_iname;
+	struct inter_name *marker_md_iname;
+	struct inter_name *group_md_iname;
 	int launcher_compiled;
 	int via_Inter; /* if responding to a rule defined by Inter code, not source text */
 	int via_Inter_routine_compiled;
@@ -74,6 +78,10 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, PR);
 	resp->value_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, PR);
 	resp->launcher_iname = Hierarchy::make_iname_in(LAUNCHER_HL, PR);
+	resp->value_md_iname = Hierarchy::make_iname_in(RESP_VALUE_METADATA_HL, PR);
+	resp->rule_md_iname = Hierarchy::make_iname_in(RULE_METADATA_HL, PR);
+	resp->marker_md_iname = Hierarchy::make_iname_in(MARKER_METADATA_HL, PR);
+	resp->group_md_iname = Hierarchy::make_iname_in(GROUP_HL, PR);
 
 	Rules::set_response(R, marker, resp);
 
@@ -185,7 +193,20 @@ a function defined in //BasicInformKit//.
 	inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
 	inter_name *rc_iname =
 		Responses::response_constant_iname(resp->the_rule, resp->the_marker);
-	Emit::response(rc_iname, resp->the_rule, resp->the_marker, ts_value_iname);
+//	Emit::response(rc_iname, resp->the_rule, resp->the_marker, ts_value_iname);
+	Emit::iname_constant(rc_iname, K_value, ts_value_iname);
+
+	Emit::iname_constant(resp->value_md_iname, K_value, rc_iname);
+	Emit::iname_constant(resp->rule_md_iname, K_value, RTRules::iname(resp->the_rule));
+	Emit::numeric_constant(resp->marker_md_iname, (inter_ti) resp->the_marker);
+	inform_extension *E = Extensions::corresponding_to(
+		Lexer::file_of_origin(Wordings::first_wn(resp->the_rule->name)));
+	TEMPORARY_TEXT(QT)
+	if (E) WRITE_TO(QT, "%<X", E->as_copy->edition->work);
+	else WRITE_TO(QT, "source text");
+	EmitArrays::text_entry(QT);
+	Emit::text_constant(resp->group_md_iname, QT);
+	DISCARD_TEXT(QT)
 
 	TextLiterals::compile_value_to(resp->value_iname, resp->launcher_iname);
 
@@ -370,103 +391,38 @@ it responds.
 =
 void Responses::compile_synoptic_resources(void) {
 	@<Compile the PrintResponse routine@>;
-	@<Compile the Response Divisions array@>;
+	@<Compile the NO_RESPONSES constant@>;
+	@<Compile the ResponseDivisions array@>;
+	@<Compile the ResponseTexts array@>;
 }
 
-@ This is in effect a big switch statement, so it's not fast; but as usual
-with printing routines it really doesn't need to be. Given a response value,
-say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
-
 @<Compile the PrintResponse routine@> =
-	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_response);
-	packaging_state save = Functions::begin(printing_rule_name);
+	inter_name *iname = Hierarchy::find(PRINT_RESPONSE_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_RESPONSE_SYNID);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
-	response_message *resp;
-	LOOP_OVER(resp, response_message) {
-		inter_name *iname = Responses::response_constant_iname(resp->the_rule,
-			resp->the_marker);
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, R_s);
-				EmitCode::val_iname(K_value, iname);
-			EmitCode::up();
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::call(Hierarchy::find(RULEPRINTINGRULE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRules::iname(resp->the_rule));
-				EmitCode::up();
-				EmitCode::inv(PRINT_BIP);
-				EmitCode::down();
-					EmitCode::val_text(I" response (");
-				EmitCode::up();
-				EmitCode::inv(PRINTCHAR_BIP);
-				EmitCode::down();
-					EmitCode::val_number((inter_ti) ('A' + resp->the_marker));
-				EmitCode::up();
-				EmitCode::inv(PRINT_BIP);
-				EmitCode::down();
-					EmitCode::val_text(I")");
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	}
+	inter_symbol *RPR_s = InterSymbolsTables::create_with_unique_name(R_s->owning_table, I"RPR");
+	inter_name *RPR_iname = Hierarchy::find(RULEPRINTINGRULE_HL);
+	InterSymbolsTables::equate(RPR_s, InterNames::to_symbol(RPR_iname));
+	LOG("Made $3\n", RPR_s);
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 
-@ The following array is used only by the testing command RESPONSES, and
-enables the Inter template to print out all known responses at run-time,
-divided up by the extensions containing the rules which produce them.
+@<Compile the NO_RESPONSES constant@> =
+	inter_name *iname = Hierarchy::find(NO_RESPONSES_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_RESPONSES_SYNID);
+	Emit::numeric_constant(iname, 0);
 
-@<Compile the Response Divisions array@> =
+@<Compile the ResponseDivisions array@> =
 	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, RESPONSEDIVISIONS_SYNID);
 	packaging_state save = EmitArrays::begin(iname, K_value);
-	inform_extension *group_E = NULL;
-	@<Make a ResponseDivisions entry@>;
-	LOOP_OVER(group_E, inform_extension)
-		@<Make a ResponseDivisions entry@>;
-	EmitArrays::numeric_entry(0);
-	EmitArrays::numeric_entry(0);
-	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);
 
-	inter_name *iname2 = Hierarchy::find(RESPONSEDIVISIONS2_HL);
-	Produce::annotate_i(iname2, SYNOPTIC_IANN, 1);
-	save = EmitArrays::begin(iname2, K_value);
+@<Compile the ResponseTexts array@> =
+	inter_name *iname = Hierarchy::find(RESPONSETEXTS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, RESPONSETEXTS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	EmitArrays::end(save);
-	Hierarchy::make_available(iname2);
-
-@<Make a ResponseDivisions entry@> =
-	rule *R;
-	int tally = 0, contiguous_match = FALSE, no_cms = 0;
-	LOOP_OVER(R, rule)
-		for (int marker = 0; marker < 26; marker++)
-			if (Rules::get_response(R, marker)) {
-				tally++;
-				inform_extension *E = Extensions::corresponding_to(
-					Lexer::file_of_origin(Wordings::first_wn(R->name)));
-				if (E == group_E) @<Start a possible run of matches@>
-				else @<End a possible run of matches@>;
-			}
-	@<End a possible run of matches@>;
-
-@<Start a possible run of matches@> =
-	if (contiguous_match == FALSE) {
-		contiguous_match = TRUE;
-		if ((no_cms++ == 0) && (E)) {
-			TEMPORARY_TEXT(QT)
-			WRITE_TO(QT, "%<X", E->as_copy->edition->work);
-			EmitArrays::text_entry(QT);
-			DISCARD_TEXT(QT)
-		} else
-			EmitArrays::iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		EmitArrays::numeric_entry((inter_ti) (tally));
-	}
-
-@<End a possible run of matches@> =
-	if (contiguous_match) {
-		EmitArrays::numeric_entry((inter_ti) (tally-1));
-		contiguous_match = FALSE;
-	}
+	Hierarchy::make_available(iname);

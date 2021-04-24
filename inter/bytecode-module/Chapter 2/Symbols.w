@@ -17,6 +17,7 @@ typedef struct inter_symbol {
 	struct text_stream *translate_text;
 	int link_time;
 	struct inter_symbol *linked_to;
+	int metadata_key;
 } inter_symbol;
 
 @ =
@@ -37,6 +38,11 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->translate_text = NULL;
 	symb->link_time = 0;
 	symb->linked_to = NULL;
+	symb->metadata_key = FALSE;
+	if (Str::get_at(name, 0) == '^') {
+		symb->metadata_key = TRUE;
+		Inter::Symbols::set_scope(symb, PRIVATE_ISYMS);
+	}
 	LOGIF(INTER_SYMBOLS, "Created symbol $3 in $4\n", symb, T);
 
 	return symb;

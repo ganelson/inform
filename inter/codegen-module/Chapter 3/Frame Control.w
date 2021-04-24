@@ -41,6 +41,8 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
 				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+			if (con_name == NULL) internal_error("no constant");
+			if (con_name->metadata_key) break;
 			inter_tree *I = gen->from;
 			if (Inter::Packages::container(P) == Site::main_package_if_it_exists(I)) {
 				WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);

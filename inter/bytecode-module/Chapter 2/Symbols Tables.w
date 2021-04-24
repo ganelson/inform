@@ -333,7 +333,10 @@ inter_ti InterSymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_s
 
 =
 void InterSymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
-	if ((S_from == NULL) || (S_to == NULL)) internal_error("bad symbol equation");
+	if ((S_from == NULL) || (S_to == NULL))
+		internal_error("bad symbol equation");
+	if ((S_from->metadata_key) || (S_to->metadata_key))
+		internal_error("metadata keys cannot equate");
 	S_from->equated_to = S_to;
 	if ((Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS) &&
 		(Inter::Symbols::get_scope(S_from) != PLUG_ISYMS))

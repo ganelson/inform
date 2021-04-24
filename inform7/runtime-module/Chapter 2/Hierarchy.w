@@ -1051,10 +1051,15 @@ void Hierarchy::establish(void) {
 @e AS_CONSTANT_HL
 @e AS_BLOCK_CONSTANT_HL
 @e LAUNCHER_HL
+@e RESP_VALUE_METADATA_HL
+@e RULE_METADATA_HL
+@e MARKER_METADATA_HL
+@e GROUP_HL
 
 @e RULEPRINTINGRULE_HL
+@e RESPONSETEXTS_HL
+@e NO_RESPONSES_HL
 @e RESPONSEDIVISIONS_HL
-@e RESPONSEDIVISIONS2_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
@@ -1067,6 +1072,10 @@ void Hierarchy::establish(void) {
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")
 			H_F_S(RESPONDER_FN_HL,            I"responder_fn", I"M")
 			H_BEGIN_AP(RESPONSES_HAP,         I"response", I"_response")
+				H_C_U(RESP_VALUE_METADATA_HL, I"^value")
+				H_C_U(RULE_METADATA_HL,       I"^rule")
+				H_C_U(MARKER_METADATA_HL,     I"^marker")
+				H_C_U(GROUP_HL,               I"^group")
 				H_C_U(AS_CONSTANT_HL,         I"as_constant")
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
 				H_F_U(LAUNCHER_HL,            I"launcher")
@@ -1076,7 +1085,8 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
 		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
-		H_C_T(RESPONSEDIVISIONS2_HL,          I"ResponseDivisions2")
+		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
+		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
 		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
 	H_END
 
