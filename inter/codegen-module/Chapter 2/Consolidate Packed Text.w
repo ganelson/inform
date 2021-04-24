@@ -22,6 +22,16 @@ inter_tree_node **response_consolidation_list = NULL;
 int CodeGen::PackedText::run_pipeline_stage(pipeline_step *step) {
 	InterTree::traverse(step->repository, CodeGen::PackedText::visitor, NULL, NULL, 0);
 	InterTree::traverse(step->repository, CodeGen::PackedText::synoptic_visitor, NULL, NULL, 0);
+	if (response_consolidation_list_used > 0) {
+		for (int i=0; i<response_consolidation_list_used; i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(response_consolidation_list[i]);
+			inter_symbol *as_con_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"as_constant");
+			if (as_con_s == NULL) internal_error("no as_constant for response");
+			inter_tree_node *D = as_con_s->definition;
+			if (D == NULL) internal_error("undefined as_constant for response");
+			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i+1;
+		}
+	}
 	if (text_consolidation_list_used > 0) {
 		qsort(text_consolidation_list, (size_t) text_consolidation_list_used, sizeof(inter_tree_node *),
 			CodeGen::PackedText::compare_texts);

@@ -194,9 +194,9 @@ a function defined in //BasicInformKit//.
 	inter_name *rc_iname =
 		Responses::response_constant_iname(resp->the_rule, resp->the_marker);
 //	Emit::response(rc_iname, resp->the_rule, resp->the_marker, ts_value_iname);
-	Emit::iname_constant(rc_iname, K_value, ts_value_iname);
+	Emit::numeric_constant(rc_iname, 0);
 
-	Emit::iname_constant(resp->value_md_iname, K_value, rc_iname);
+	Emit::iname_constant(resp->value_md_iname, K_value, ts_value_iname);
 	Emit::iname_constant(resp->rule_md_iname, K_value, RTRules::iname(resp->the_rule));
 	Emit::numeric_constant(resp->marker_md_iname, (inter_ti) resp->the_marker);
 	inform_extension *E = Extensions::corresponding_to(
