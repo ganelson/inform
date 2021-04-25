@@ -56,16 +56,6 @@ void Produce::version(inter_tree *I, int N) {
 	Produce::guard(Inter::Version::new(Packaging::at(I), N, Produce::baseline(Packaging::at(I)), NULL));
 }
 
-void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text_stream *value) {
-	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
-	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), value);
-	inter_name *iname = InterNames::explicitly_named(key, P);
-	inter_symbol *key_name = Produce::define_symbol(iname);
-	packaging_state save = Packaging::enter_home_of(iname);
-	Produce::guard(Inter::Metadata::new(Packaging::at(I), InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), key_name), ID, Produce::baseline(Packaging::at(I)), NULL));
-	Packaging::exit(I, save);
-}
-
 void Produce::comment(inter_tree *I, text_stream *text) {
 	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), text);

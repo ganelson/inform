@@ -14,7 +14,6 @@ We need to itemise the structures we'll want to allocate:
 @e package_request_CLASS
 @e hierarchy_location_CLASS
 @e hierarchy_attachment_point_CLASS
-@e hierarchy_metadatum_CLASS
 @e module_package_CLASS
 @e submodule_identity_CLASS
 @e submodule_request_CLASS
@@ -27,7 +26,6 @@ We need to itemise the structures we'll want to allocate:
 =
 DECLARE_CLASS(hierarchy_location)
 DECLARE_CLASS(hierarchy_attachment_point)
-DECLARE_CLASS(hierarchy_metadatum)
 DECLARE_CLASS(package_request)
 DECLARE_CLASS(module_package)
 DECLARE_CLASS(submodule_identity)

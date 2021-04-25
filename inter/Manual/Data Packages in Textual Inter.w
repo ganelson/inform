@@ -261,16 +261,14 @@ another value (of the same kind). For example,
 	variable V_score K_number = 10
 
 @h Metadata.
-This has no effect on the code generated, and is simply semantic markup for
-the benefit of onlookers. The scheme here is that any package can have a
-dictionary of textual key-value pairs, specified by:
+This provides important semantic markup, even though it has no direct effect on
+the code generated. Metadata is specified by constant definitions, but
+where the symbol name begins with the magic character |^|. For example:
 = (text as Inter)
-	metadata KEY: VALUE
+	constant ^name = "blue book"
 =
-Here |KEY| must be a (public) symbol whose name begins with a backtick, and
-|VALUE| must be literal text. For example:
-= (text as Inter)
-	metadata `name: "blue book"
+Metadata constants compile to nothing, and cannot be equated to symbols in
+other packages, nor vice versa.
 
 @h Append and Link.
 Two rather ugly constructs are currently needed in order to implement very

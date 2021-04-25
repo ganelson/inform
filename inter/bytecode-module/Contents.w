@@ -15,6 +15,7 @@ Chapter 2: Interoperability
 	Inter Trees
 	Bookmarks
 	Inter Nodes
+	Tree Location Lists
 	The Warehouse
 	Inter Node Lists
 	Symbols Tables
@@ -31,12 +32,12 @@ Chapter 3: Language Definition
 	Inter in Text Files
 	Verifying Inter
 	Inter Data Types
+	Metadata
 	Inter Errors
 
 Chapter 4: Void Constructs
 	The Nop Construct
 	The Comment Construct
-	The Metadata Construct
 	The Symbol Construct
 	The Version Construct
 	The Pragma Construct

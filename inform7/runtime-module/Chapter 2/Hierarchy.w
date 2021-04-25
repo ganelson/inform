@@ -93,20 +93,14 @@ principle to any depth, though as it happens we never exceed 3.
 	if (req_sp != 0) internal_error("hierarchy misaligned");
 
 @ So, other than |H_BEGIN_AP| ... |H_END| blocks, what can appear inside a
-block? The answer is that we can define five different things.
-
-The simplest is metadata, which has no effect on the final compiled code, but
-annotates the Inter. |mid| is the metadata ID, one of the |*_HMD| enumerated
-values, and |key| is the metadata key. These all begin with backticks.
-
-@d H_MTD(mid, key) HierarchyLocations::mtd(I, mid, key, H_CURRENT);
+block? The answer is that we can define four different things.
 
 @ A package can appear. |id| is the location ID, one of the |*_HL| enumerated
 values. |name| and |type| are then the package name and type.
 
 @d H_PKG(id, name, type) HierarchyLocations::pkg(I, id, name, type, H_CURRENT);
 
-@ A constant can appear here. Constants, like cats, have three different
+@ A constant can appear. Constants, like cats, have three different
 names: the |id| is one of the |*_HL| enumeration values; the |identifier| is
 the identifier this constant will have within its Inter package; and the
 |translation| is the identifier that will be translated to when the Inter code
@@ -265,22 +259,22 @@ void Hierarchy::establish(void) {
 
 @h Modules.
 
-@e EXT_TITLE_HMD from 0
-@e EXT_AUTHOR_HMD
-@e EXT_VERSION_HMD
+@e EXT_TITLE_METADATA_HL
+@e EXT_AUTHOR_METADATA_HL
+@e EXT_VERSION_METADATA_HL
 
 @<Establish modules@> =
 	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
-		H_MTD(EXT_TITLE_HMD,                  I"`title")
-		H_MTD(EXT_AUTHOR_HMD,                 I"`author")
-		H_MTD(EXT_VERSION_HMD,                I"`version")
+		H_C_U(EXT_TITLE_METADATA_HL,          I"^title")
+		H_C_U(EXT_AUTHOR_METADATA_HL,         I"^author")
+		H_C_U(EXT_VERSION_METADATA_HL,        I"^version")
 	H_END
 
 @h Actions.
 
 @e BOGUS_HAP from 0
 @e ACTIONS_HAP
-@e ACTION_NAME_HMD
+@e ACTION_NAME_METADATA_HL
 @e ACTION_BASE_NAME_HL
 @e WAIT_HL
 @e TRANSLATED_BASE_NAME_HL
@@ -307,7 +301,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(actions))
 		H_BEGIN_AP(ACTIONS_HAP,               I"action", I"_action")
-			H_MTD(ACTION_NAME_HMD,            I"`name")
+			H_C_U(ACTION_NAME_METADATA_HL,    I"^name")
 			H_C_U(ACTION_BASE_NAME_HL,        I"A")
 			H_C_T(WAIT_HL,                    I"Wait")
 			H_C_I(TRANSLATED_BASE_NAME_HL)
@@ -337,7 +331,7 @@ void Hierarchy::establish(void) {
 @h Activities.
 
 @e ACTIVITIES_HAP
-@e ACTIVITY_NAME_HMD
+@e ACTIVITY_NAME_METADATA_HL
 @e ACTIVITY_HL
 @e BEFORE_RB_HL
 @e FOR_RB_HL
@@ -355,7 +349,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
-			H_MTD(ACTIVITY_NAME_HMD,          I"`name")
+			H_C_U(ACTIVITY_NAME_METADATA_HL,  I"^name")
 			H_C_G(ACTIVITY_HL,                I"V")
 			H_PKG(BEFORE_RB_HL,               I"before_rb", I"_rulebook")
 			H_PKG(FOR_RB_HL,                  I"for_rb", I"_rulebook")
@@ -459,10 +453,10 @@ void Hierarchy::establish(void) {
 @e CV_POS_HL
 
 @e MVERBS_HAP
-@e MVERB_NAME_HMD
+@e MVERB_NAME_METADATA_HL
 @e MODAL_CONJUGATION_FN_HL
 @e VERBS_HAP
-@e VERB_NAME_HMD
+@e VERB_NAME_METADATA_HL
 @e NONMODAL_CONJUGATION_FN_HL
 @e VERB_FORMS_HAP
 @e FORM_FN_HL
@@ -480,11 +474,11 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(conjugations))
 		H_BEGIN_AP(MVERBS_HAP,                I"mverb", I"_modal_verb")
-			H_MTD(MVERB_NAME_HMD,             I"`name")
+			H_C_U(MVERB_NAME_METADATA_HL,     I"^name")
 			H_F_G(MODAL_CONJUGATION_FN_HL,    I"conjugation_fn", I"ConjugateModalVerb")
 		H_END
 		H_BEGIN_AP(VERBS_HAP,                 I"verb", I"_verb")
-			H_MTD(VERB_NAME_HMD,              I"`name")
+			H_C_U(VERB_NAME_METADATA_HL,      I"^name")
 			H_F_G(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", I"ConjugateVerb")
 			H_BEGIN_AP(VERB_FORMS_HAP,        I"form", I"_verb_form")
 				H_F_U(FORM_FN_HL,             I"form_fn")
@@ -649,7 +643,7 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
-@e INSTANCE_NAME_HMD
+@e INSTANCE_NAME_METADATA_HL
 @e INSTANCE_HL
 @e BACKDROP_FOUND_IN_FN_HL
 @e REGION_FOUND_IN_FN_HL
@@ -665,7 +659,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
-			H_MTD(INSTANCE_NAME_HMD,          I"`name")
+			H_C_U(INSTANCE_NAME_METADATA_HL,  I"^name")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(BACKDROP_FOUND_IN_FN_HL,    I"backdrop_found_in_fn")
 			H_F_G(SHORT_NAME_FN_HL,           I"short_name_fn", I"SN_R")
@@ -724,7 +718,7 @@ void Hierarchy::establish(void) {
 @e RUCKSACK_CLASS_HL
 
 @e KIND_HAP
-@e KIND_NAME_HMD
+@e KIND_NAME_METADATA_HL
 @e KIND_CLASS_HL
 @e KIND_HL
 @e WEAK_ID_HL
@@ -780,7 +774,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
-			H_MTD(KIND_NAME_HMD,              I"`name")
+			H_C_U(KIND_NAME_METADATA_HL,      I"^name")
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_C_G(KIND_HL,                    I"KD")
 			H_C_I(WEAK_ID_HL)
@@ -877,7 +871,7 @@ void Hierarchy::establish(void) {
 @h Properties.
 
 @e PROPERTIES_HAP
-@e PROPERTY_NAME_HMD
+@e PROPERTY_NAME_METADATA_HL
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
@@ -888,7 +882,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(properties))
 		H_BEGIN_AP(PROPERTIES_HAP,            I"property", I"_property")
-			H_MTD(PROPERTY_NAME_HMD,          I"`name")
+			H_C_U(PROPERTY_NAME_METADATA_HL,  I"^name")
 			H_C_T(PROPERTY_HL,                I"P")
 			H_F_G(EITHER_OR_GPR_FN_HL,        I"either_or_GPR_fn", I"PRN_PN")
 		H_END
@@ -994,10 +988,10 @@ void Hierarchy::establish(void) {
 @e RBNO0_INAME_HL
 
 @e OUTCOMES_HAP
-@e OUTCOME_NAME_HMD
+@e OUTCOME_NAME_METADATA_HL
 @e OUTCOME_HL
 @e RULEBOOKS_HAP
-@e RULEBOOK_NAME_HMD
+@e RULEBOOK_NAME_METADATA_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
 
@@ -1021,11 +1015,11 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(rulebooks))
 		H_BEGIN_AP(OUTCOMES_HAP,              I"rulebook_outcome", I"_outcome")
-			H_MTD(OUTCOME_NAME_HMD,           I"`name")
+			H_C_U(OUTCOME_NAME_METADATA_HL,   I"^name")
 			H_C_U(OUTCOME_HL,                 I"outcome")
 		H_END
 		H_BEGIN_AP(RULEBOOKS_HAP,             I"rulebook", I"_rulebook")
-			H_MTD(RULEBOOK_NAME_HMD,          I"`name")
+			H_C_U(RULEBOOK_NAME_METADATA_HL,  I"^name")
 			H_F_U(RUN_FN_HL,                  I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn")
 		H_END
@@ -1042,7 +1036,7 @@ void Hierarchy::establish(void) {
 @h Rules.
 
 @e RULES_HAP
-@e RULE_NAME_HMD
+@e RULE_NAME_METADATA_HL
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -1066,7 +1060,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
-			H_MTD(RULE_NAME_HMD,              I"`name")
+			H_C_U(RULE_NAME_METADATA_HL,      I"^name")
 			H_F_U(SHELL_FN_HL,                I"shell_fn")
 			H_F_U(RULE_FN_HL,                 I"rule_fn")
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")
@@ -1076,7 +1070,7 @@ void Hierarchy::establish(void) {
 				H_C_U(RULE_METADATA_HL,       I"^rule")
 				H_C_U(MARKER_METADATA_HL,     I"^marker")
 				H_C_U(GROUP_HL,               I"^group")
-				H_C_U(AS_CONSTANT_HL,         I"as_constant")
+				H_C_U(AS_CONSTANT_HL,         I"response_id")
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
 				H_F_U(LAUNCHER_HL,            I"launcher")
 			H_END
@@ -1093,7 +1087,7 @@ void Hierarchy::establish(void) {
 @h Tables.
 
 @e TABLES_HAP
-@e TABLE_NAME_HMD
+@e TABLE_NAME_METADATA_HL
 @e TABLE_DATA_HL
 @e TABLE_COLUMNS_HAP
 @e COLUMN_DATA_HL
@@ -1106,7 +1100,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(tables))
 		H_BEGIN_AP(TABLES_HAP,                I"table", I"_table")
-			H_MTD(TABLE_NAME_HMD,             I"`name")
+			H_C_U(TABLE_NAME_METADATA_HL,     I"^name")
 			H_C_U(TABLE_DATA_HL,              I"table_data")
 			H_BEGIN_AP(TABLE_COLUMNS_HAP,     I"table_column", I"_table_column")
 				H_C_U(COLUMN_DATA_HL,         I"column_data")
@@ -1122,7 +1116,7 @@ void Hierarchy::establish(void) {
 @h Variables.
 
 @e VARIABLES_HAP
-@e VARIABLE_NAME_HMD
+@e VARIABLE_NAME_METADATA_HL
 @e VARIABLE_HL
 
 @<Establish variables@> =
@@ -1130,7 +1124,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(variables))
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
-			H_MTD(VARIABLE_NAME_HMD,          I"`name")
+			H_C_U(VARIABLE_NAME_METADATA_HL,  I"^name")
 			H_C_G(VARIABLE_HL,                I"V")
 		H_END
 	H_END
@@ -2027,30 +2021,18 @@ package_request *Hierarchy::make_package_in(int id, package_request *P) {
 	return HierarchyLocations::package_in_package(Emit::tree(), id, P);
 }
 
-@h Metadata and package markup.
-Marking up a package is like giving a memo text on an iname translation (see
-above); it adds some metadata to a package making it clearer what is going on.
-In effect this is semantically marked-up commentary. |hm_id| must be one of
-the |*_HMD| enumerated constants, and |P| must refer to a package which is
-authorised to have it. For example, the above declarations say:
-= (text as InC)
-	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
-		...
-		H_MTD(EXT_VERSION_HMD,                I"`version")
-	H_END
-=
-and therefore |Hierarchy::apply_metadata(P, EXT_VERSION_HMD, I"v1.0.2")| would be a
-legal call for any package |P| of package type |_module|. (If |P| has any
-other package type, an internal error is thrown.)
+@h Metadata.
+These are convenient functions for marking up packages with metadata:
 
 =
-void Hierarchy::apply_metadata(package_request *P, int hm_id, text_stream *value) {
-	HierarchyLocations::markup(Emit::tree(), P, hm_id, value);
+void Hierarchy::apply_metadata(package_request *P, int id, text_stream *value) {
+	inter_name *iname = Hierarchy::make_iname_in(id, P);
+	Emit::text_constant(iname, value);
 }
 
-void Hierarchy::apply_metadata_from_wording(package_request *P, int hm_id, wording W) {
+void Hierarchy::apply_metadata_from_wording(package_request *P, int id, wording W) {
 	TEMPORARY_TEXT(ANT)
 	WRITE_TO(ANT, "%W", W);
-	Hierarchy::apply_metadata(P, hm_id, ANT);
+	Hierarchy::apply_metadata(P, id, ANT);
 	DISCARD_TEXT(ANT)
 }

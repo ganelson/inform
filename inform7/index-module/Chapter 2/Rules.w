@@ -764,4 +764,3 @@ void IXRules::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 	WRITE("&nbsp;<i>set</i>");
 	DISCARD_TEXT(S)
 }
-

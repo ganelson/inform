@@ -26,6 +26,7 @@ which use this module:
 @e inter_package_CLASS
 @e inter_node_list_CLASS
 @e inter_node_list_entry_CLASS
+@e inter_tree_location_list_CLASS
 
 =
 DECLARE_CLASS(inter_tree)
@@ -41,6 +42,7 @@ DECLARE_CLASS(inter_error_stash)
 DECLARE_CLASS(inter_package)
 DECLARE_CLASS(inter_node_list)
 DECLARE_CLASS(inter_node_list_entry)
+DECLARE_CLASS(inter_tree_location_list)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_symbol, 1024)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_tree_node, 8192)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_annotation, 8192)
@@ -65,11 +67,13 @@ void BytecodeModule::end(void) {
 @e INTER_SYMBOLS_MREASON
 @e INTER_BYTECODE_MREASON
 @e INTER_LINKS_MREASON
+@e TREE_LIST_MREASON
 
 @<Register this module's memory allocation reasons@> =
 	Memory::reason_name(INTER_SYMBOLS_MREASON, "inter symbols storage");
 	Memory::reason_name(INTER_BYTECODE_MREASON, "inter bytecode storage");
 	Memory::reason_name(INTER_LINKS_MREASON, "inter links storage");
+	Memory::reason_name(TREE_LIST_MREASON, "inter tree location list storage");
 
 @<Register this module's stream writers@> =
 	Writers::register_writer('t', &Inter::Textual::writer);

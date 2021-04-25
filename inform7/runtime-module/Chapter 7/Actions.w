@@ -20,7 +20,7 @@ action_compilation_data RTActions::new_data(wording W) {
 	acd.an_base_iname = NULL;
 	acd.an_routine_iname = NULL;
 	acd.an_package = Hierarchy::local_package(ACTIONS_HAP);
-	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_HMD, W);
+	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_METADATA_HL, W);
 	return acd;
 }
 

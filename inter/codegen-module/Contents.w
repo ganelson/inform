@@ -24,16 +24,20 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
 	Eliminate Redundant Operations
-	Consolidate Packed Text
 
-Chapter 3: Inter to Final Code
+Chapter 3: Synoptic Resources
+	Synoptic Utilities
+	Literal Text
+	Responses
+
+Chapter 4: Inter to Final Code
 	Code Generation
 	Frame Control
 	Constants and Literals
 	Instances and Properties
 	Variables
 
-Chapter 4: Final Code
+Chapter 5: Final Code
 	Final Targets
 	Final Textual Inter
 	Final Binary Inter

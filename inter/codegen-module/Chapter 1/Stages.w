@@ -58,7 +58,7 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Inspection::create_pipeline_stage();
 		CodeGen::Labels::create_pipeline_stage();
 		CodeGen::Operations::create_pipeline_stage();
-		CodeGen::PackedText::create_pipeline_stage();
+		Synoptic::create_pipeline_stage();
 		CodeGen::MergeTemplate::create_pipeline_stage();
 		CodeGen::PLM::create_pipeline_stage();
 		CodeGen::RCC::create_pipeline_stage();

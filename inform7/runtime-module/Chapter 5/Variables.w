@@ -281,7 +281,7 @@ inter_name *RTVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->compilation_data.nlv_iname == NULL) {
 		package_request *R =
 			Hierarchy::local_package_to(VARIABLES_HAP, nlv->nlv_created_at);
-		Hierarchy::apply_metadata_from_wording(R, VARIABLE_NAME_HMD, nlv->name);
+		Hierarchy::apply_metadata_from_wording(R, VARIABLE_NAME_METADATA_HL, nlv->name);
 		nlv->compilation_data.nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
 	}
 	return nlv->compilation_data.nlv_iname;

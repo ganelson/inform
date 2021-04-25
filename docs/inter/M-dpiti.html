@@ -382,21 +382,18 @@ who the owner is. Variables must be declared as:
 <p class="commentary">	variable V_score K_number = 10
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Metadata. </b>This has no effect on the code generated, and is simply semantic markup for
-the benefit of onlookers. The scheme here is that any package can have a
-dictionary of textual key-value pairs, specified by:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Metadata. </b>This provides important semantic markup, even though it has no direct effect on
+the code generated. Metadata is specified by constant definitions, but
+where the symbol name begins with the magic character <span class="extract"><span class="extract-syntax">^</span></span>. For example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">metadata</span><span class="plain-syntax"> KEY: VALUE</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> ^name = </span><span class="string-syntax">"blue book"</span>
 </pre>
-<p class="commentary">Here <span class="extract"><span class="extract-syntax">KEY</span></span> must be a (public) symbol whose name begins with a backtick, and
-<span class="extract"><span class="extract-syntax">VALUE</span></span> must be literal text. For example:
+<p class="commentary">Metadata constants compile to nothing, and cannot be equated to symbols in
+other packages, nor vice versa.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">metadata</span><span class="plain-syntax"> </span><span class="element-syntax">`name</span><span class="plain-syntax">: </span><span class="string-syntax">"blue book"</span>
-</pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Append and Link. </b>Two rather ugly constructs are currently needed in order to implement very
 low-level features of Inform 7, at points in I7's design where the normally
 subterranean presence of Inform 6 pokes up above the surface:

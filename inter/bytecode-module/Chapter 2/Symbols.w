@@ -39,7 +39,7 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->link_time = 0;
 	symb->linked_to = NULL;
 	symb->metadata_key = FALSE;
-	if (Str::get_at(name, 0) == '^') {
+	if (Metadata::valid_key(name)) {
 		symb->metadata_key = TRUE;
 		Inter::Symbols::set_scope(symb, PRIVATE_ISYMS);
 	}

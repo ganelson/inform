@@ -171,6 +171,33 @@ inter_package *Site::texts_package(inter_tree *I) {
 	return NULL;
 }
 
+inter_package *Site::make_linkage_package(inter_tree *I, text_stream *name) {
+	inter_package *P = Inter::Packages::by_name(Site::main_package(I), name);
+	if (P == NULL) {
+		inter_symbol *linkage = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_linkage");
+		if (linkage == NULL) internal_error("no linkage ptype");
+		inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(Site::main_package(I));
+		Inter::Package::new_package(&IBM, name, linkage,
+			(inter_ti) Inter::Bookmarks::baseline(&IBM)+1, NULL, &P);
+	}
+	if (P == NULL) internal_error("unable to create package");
+	return P;
+}
+
+@ And this obtains the |texts| module, constructing it if necessary:
+
+=
+inter_package *Site::ensure_texts_package(inter_tree *I) {
+	if (I == NULL) internal_error("no tree for texts");
+	inter_package *texts = Site::texts_package(I);
+	if (texts == NULL) {
+		texts = Site::make_linkage_package(I, I"texts");
+		Site::set_texts_package(I, texts);
+//		Inter::Packages::make_linklike(texts);
+	}
+	return texts;
+}
+
 void Site::set_main_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->site.main_package = M;

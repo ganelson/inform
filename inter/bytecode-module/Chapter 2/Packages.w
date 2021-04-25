@@ -225,17 +225,6 @@ int Inter::Packages::baseline(inter_package *P) {
 	return Inter::Defn::get_level(Inter::Packages::definition(P));
 }
 
-text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) {
-	if (P == NULL) return NULL;
-	inter_symbol *found = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
-	if ((found) && (Inter::Symbols::is_defined(found))) {
-		inter_tree_node *D = Inter::Symbols::definition(found);
-		inter_ti val2 = D->W.data[VAL1_MD_IFLD + 1];
-		return Inter::Warehouse::get_text(InterTree::warehouse(Inter::Packages::tree(P)), val2);
-	}
-	return NULL;
-}
-
 void Inter::Packages::write_url_name(OUTPUT_STREAM, inter_package *P) {
 	if (P == NULL) { WRITE("<none>"); return; }
 	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];

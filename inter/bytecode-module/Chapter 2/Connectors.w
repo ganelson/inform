@@ -29,17 +29,7 @@ inter_package *Inter::Connectors::connectors_package(inter_tree *I) {
 	if (I == NULL) internal_error("no tree for connectors");
 	inter_package *connectors = Site::connectors_package(I);
 	if (connectors == NULL) {
-		inter_package *main_package = Site::main_package(I);
-		if (main_package == NULL) internal_error("tree without main");
-		connectors = Inter::Packages::by_name(main_package, I"connectors");
-		if (connectors == NULL) {
-			inter_symbol *linkage = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_linkage");
-			if (linkage == NULL) internal_error("no linkage ptype");
-			inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
-			Inter::Package::new_package(&IBM, I"connectors", linkage,
-				(inter_ti) Inter::Bookmarks::baseline(&IBM)+1, NULL, &(connectors));
-		}
-		if (connectors == NULL) internal_error("unable to create connector package");
+		connectors = Site::make_linkage_package(I, I"connectors");
 		Site::set_connectors_package(I, connectors);
 		Inter::Packages::make_linklike(connectors);
 	}

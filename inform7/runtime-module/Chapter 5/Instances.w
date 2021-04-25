@@ -16,7 +16,7 @@ void RTInstances::initialise_icd(instance *I) {
 	NounIdentifiers::noun_compose_identifier(I->icd.instance_package,
 		I->as_noun, I->allocation_id);
 	I->icd.instance_iname = NounIdentifiers::iname(I->as_noun);
-	Hierarchy::apply_metadata_from_wording(I->icd.instance_package, INSTANCE_NAME_HMD,
+	Hierarchy::apply_metadata_from_wording(I->icd.instance_package, INSTANCE_NAME_METADATA_HL,
 		Nouns::nominative(I->as_noun, FALSE));
 	I->icd.instance_emitted = FALSE;
 }

@@ -67,7 +67,7 @@ void RTTables::new_table(parse_node *PN, table *t) {
 }
 
 void RTTables::supply_table_wording(table *t, wording W) {
-	Hierarchy::apply_metadata_from_wording(t->table_package, TABLE_NAME_HMD, W);
+	Hierarchy::apply_metadata_from_wording(t->table_package, TABLE_NAME_METADATA_HL, W);
 }
 
 inter_name *RTTables::identifier(table *t) {
