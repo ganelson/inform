@@ -264,42 +264,8 @@ void RTActionPatterns::compile_pattern_match_clause_inner(value_holster *VH,
 
 @ =
 void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) {
-	inter_name *N = Enclosures::new_small_block_for_constant();
-	packaging_state save = EmitArrays::begin_late(N, K_value);
-
-	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
-	action_name *an = ea->action;
-	RTActions::action_array_entry(an);
-
-	int request_bits = (ea->request)?1:0;
-	if (ea->first_noun) {
-		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->first_noun, K_understanding))) {
-			request_bits = request_bits | 16;
-			TEMPORARY_TEXT(BC)
-			inter_name *iname = TextLiterals::to_value(Node::get_text(ea->first_noun));
-			EmitArrays::iname_entry(iname);
-			DISCARD_TEXT(BC)
-		} else CompileValues::to_array_entry(ea->first_noun);
-	} else {
-		EmitArrays::numeric_entry(0);
-	}
-	if (ea->second_noun) {
-		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->second_noun, K_understanding))) {
-			request_bits = request_bits | 32;
-			inter_name *iname = TextLiterals::to_value(Node::get_text(ea->second_noun));
-			EmitArrays::iname_entry(iname);
-		} else CompileValues::to_array_entry(ea->second_noun);
-	} else {
-		EmitArrays::numeric_entry(0);
-	}
-	if (ea->actor) {
-		CompileValues::to_array_entry(ea->actor);
-	} else
-		EmitArrays::iname_entry(RTInstances::iname(I_yourself));
-	EmitArrays::numeric_entry((inter_ti) request_bits);
-	EmitArrays::numeric_entry(0);
-	EmitArrays::end(save);
-	if (N) Emit::holster_iname(VH, N);
+	inter_name *N = StoredActionLiterals::small_block(ea);
+	Emit::holster_iname(VH, N);
 }
 
 void RTActionPatterns::emit_pattern_match(action_pattern *ap, int naming_mode) {

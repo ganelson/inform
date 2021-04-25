@@ -31,6 +31,8 @@ Chapter 4: Enclosed Resources
 	Text Substitutions
 	Responses
 	Box Quotations
+	Relation Literals
+	Stored Action Literals
 
 Chapter 5: Miscellany
 	Runtime Support for Kinds

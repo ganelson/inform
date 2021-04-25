@@ -105,28 +105,11 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			inter_name *N = ListLiterals::small_block(RTKinds::compile_default_value_inner(K));
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
-			inter_name *N = Enclosures::new_small_block_for_constant();
-			packaging_state save = EmitArrays::begin_late(N, K_value);
-			RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
-			EmitArrays::iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
-			EmitArrays::numeric_entry(0);
-			EmitArrays::numeric_entry(0);
-			#ifdef IF_MODULE
-			EmitArrays::iname_entry(RTInstances::iname(I_yourself));
-			#endif
-			#ifndef IF_MODULE
-			EmitArrays::numeric_entry(I"0");
-			#endif
-			EmitArrays::numeric_entry(0);
-			EmitArrays::numeric_entry(0);
-			EmitArrays::end(save);
-			if (N) Emit::holster_iname(VH, N);
+			inter_name *N = StoredActionLiterals::default();
+			Emit::holster_iname(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			inter_name *N = Enclosures::new_small_block_for_constant();
-			packaging_state save = EmitArrays::begin_late(N, K_value);
-			RTRelations::compile_blank_relation(K);
-			EmitArrays::end(save);
-			if (N) Emit::holster_iname(VH, N);
+			inter_name *N = RelationLiterals::default(K);
+			Emit::holster_iname(VH, N);
 		} else {
 			inter_name *N = RTKinds::compile_default_value_inner(K);
 			if (N) Emit::holster_iname(VH, N);

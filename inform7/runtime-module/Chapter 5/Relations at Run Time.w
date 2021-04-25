@@ -977,31 +977,6 @@ void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
 	EmitArrays::end(save);
 }
 
-void RTRelations::compile_blank_relation(kind *K) {
-	RTKinds::emit_block_value_header(K, FALSE, 34);
-	EmitArrays::null_entry();
-	EmitArrays::null_entry();
-	TEMPORARY_TEXT(DVT)
-	WRITE_TO(DVT, "anonymous "); Kinds::Textual::write(DVT, K);
-	EmitArrays::text_entry(DVT);
-	DISCARD_TEXT(DVT)
-
-	EmitArrays::iname_entry(TTF_iname);
-	EmitArrays::numeric_entry(7);
-	RTKinds::emit_strong_id(K);
-	kind *EK = Kinds::unary_construction_material(K);
-	if (Kinds::Behaviour::uses_pointer_values(EK))
-		EmitArrays::iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
-	else
-		EmitArrays::iname_entry(Hierarchy::find(DOUBLEHASHSETRELATIONHANDLER_HL));
-
-	EmitArrays::text_entry(I"an anonymous relation");
-
-	EmitArrays::numeric_entry(0);
-	EmitArrays::numeric_entry(0);
-	for (int i=0; i<24; i++) EmitArrays::numeric_entry(0);
-}
-
 @h Support for the RELATIONS command.
 
 =
