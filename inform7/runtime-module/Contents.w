@@ -33,11 +33,11 @@ Chapter 4: Enclosed Resources
 	Box Quotations
 	Relation Literals
 	Stored Action Literals
+	Group Together
 
 Chapter 5: Miscellany
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
-	List Together
 	Rules
 	Activities
 	Equations Support

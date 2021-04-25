@@ -193,7 +193,7 @@ DECLARE_CLASS(local_block_value)
 @e internal_test_case_CLASS
 @e kind_interaction_CLASS
 @e label_namespace_CLASS
-@e list_together_routine_CLASS
+@e group_together_function_CLASS
 @e nascent_array_CLASS
 @e plugin_CLASS
 @e property_of_value_storage_CLASS
@@ -215,7 +215,7 @@ DECLARE_CLASS(dval_written)
 DECLARE_CLASS(internal_test_case)
 DECLARE_CLASS(kind_interaction)
 DECLARE_CLASS(label_namespace)
-DECLARE_CLASS(list_together_routine)
+DECLARE_CLASS(group_together_function)
 DECLARE_CLASS(nascent_array)
 DECLARE_CLASS(plugin)
 DECLARE_CLASS(property_of_value_storage)

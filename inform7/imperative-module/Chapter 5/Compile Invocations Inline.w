@@ -1342,10 +1342,10 @@ the "group... together" phrases.
 
 @<Inline command "list-together"@> =
 	if (ist->inline_subcommand == unarticled_ISINSC) {
-		inter_name *iname = ListTogether::new(FALSE);
+		inter_name *iname = GroupTogether::new(FALSE);
 		EmitCode::val_iname(K_value, iname);
 	} else if (ist->inline_subcommand == articled_ISINSC) {
-		inter_name *iname = ListTogether::new(TRUE);
+		inter_name *iname = GroupTogether::new(TRUE);
 		EmitCode::val_iname(K_value, iname);
 	} else StandardProblems::inline_problem(_p_(PM_InlineListTogether),
 		idb, ist->owner->parent_schema->converted_from,

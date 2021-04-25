@@ -185,7 +185,6 @@ void Hierarchy::establish(void) {
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
 	@<Establish kinds@>;
-	@<Establish listing@>;
 	@<Establish phrases@>;
 	@<Establish properties@>;
 	@<Establish relations@>;
@@ -822,22 +821,6 @@ void Hierarchy::establish(void) {
 		H_F_T(SHOWMEDETAILS_HL,               I"showmedetails_fn", I"ShowMeDetails")
 	H_END
 
-@h Listing.
-
-@e LISTS_TOGETHER_HAP
-@e LIST_TOGETHER_ARRAY_HL
-@e LIST_TOGETHER_FN_HL
-
-@<Establish listing@> =
-	submodule_identity *listing = Packaging::register_submodule(I"listing");
-
-	H_BEGIN(HierarchyLocations::local_submodule(listing))
-		H_BEGIN_AP(LISTS_TOGETHER_HAP,        I"list_together", I"_list_together")
-			H_C_U(LIST_TOGETHER_ARRAY_HL,     I"list_together_array")
-			H_F_G(LIST_TOGETHER_FN_HL,        I"list_together_fn", I"LTR_R")
-		H_END
-	H_END
-
 @h Phrases.
 
 @e CLOSURES_HAP
@@ -1144,7 +1127,8 @@ void Hierarchy::establish(void) {
 @e BOX_QUOTATIONS_HAP
 @e BOX_FLAG_HL
 @e BOX_QUOTATION_FN_HL
-@e TEXT_SUBSTITUTIONS_HAP
+@e GROUPS_TOGETHER_HAP
+@e GROUP_TOGETHER_FN_HL
 
 @<Establish enclosed matter@> =
 	H_BEGIN(HierarchyLocations::any_enclosure())
@@ -1163,6 +1147,9 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(BOX_QUOTATIONS_HAP,        I"block_constant", I"_box_quotation")
 			H_C_U(BOX_FLAG_HL,                I"quotation_flag")
 			H_F_U(BOX_QUOTATION_FN_HL,        I"quotation_fn")
+		H_END
+		H_BEGIN_AP(GROUPS_TOGETHER_HAP,       I"group_together", I"_group_together")
+			H_F_U(GROUP_TOGETHER_FN_HL,       I"group_together_fn")
 		H_END
 		H_C_U(RTP_HL,                         I"rtp")
 	H_END

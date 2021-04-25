@@ -304,7 +304,7 @@ void Sequence::compile_function_resources(void) {
 		repeat = FALSE; iterations++;
 
 		if (PhraseRequests::compilation_coroutine() > 0)       repeat = TRUE;
-		if (ListTogether::compilation_coroutine() > 0)         repeat = TRUE;
+		if (GroupTogether::compilation_coroutine() > 0)         repeat = TRUE;
 		if (LoopingOverScope::compilation_coroutine() > 0)     repeat = TRUE;
 		if (Responses::compilation_coroutine() > 0)            repeat = TRUE;
 		if (TextSubstitutions::compilation_coroutine() > 0)    repeat = TRUE;
