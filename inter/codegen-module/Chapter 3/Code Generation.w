@@ -170,7 +170,6 @@ void CodeGen::generate(code_generation *gen) {
 	InterTree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
 
 @<Phase three - consolidation@> =
-	CodeGen::CL::responses(gen);
 	CodeGen::IP::write_properties(gen);
 	CodeGen::CL::sort_literals(gen);
 

@@ -87,7 +87,6 @@ void Inter::Defn::create_language(void) {
 	Inter::DefaultValue::define();
 	Inter::Constant::define();
 	Inter::Metadata::define();
-	Inter::Response::define();
 	Inter::Instance::define();
 	Inter::Variable::define();
 	Inter::Property::define();

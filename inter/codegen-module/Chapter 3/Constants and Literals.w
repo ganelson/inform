@@ -27,55 +27,6 @@ int CodeGen::CL::quartet_present(void) {
 	return the_quartet_found;
 }
 
-@
-
-=
-typedef struct response_traverse_state {
-	int NR;
-	struct code_generation *gen;
-} response_traverse_state;
-
-void CodeGen::CL::responses(code_generation *gen) {
-	response_traverse_state rts;
-	rts.NR = 0;
-	rts.gen = gen;
-	InterTree::traverse(gen->from, CodeGen::CL::response_visitor, &rts, NULL, RESPONSE_IST);
-	if (rts.NR > 0) {
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"NO_RESPONSES", TRUE);
-		WRITE_TO(CodeGen::current(gen), "%d", rts.NR);
-		CodeGen::Targets::end_constant(gen, I"NO_RESPONSES");
-		CodeGen::deselect(gen, saved);
-		saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
-		WRITE_TO(CodeGen::current(gen), "Array ResponseTexts --> ");
-		InterTree::traverse(gen->from, CodeGen::CL::response_revisitor, gen, NULL, RESPONSE_IST);
-		WRITE_TO(CodeGen::current(gen), "0 0;\n");
-		CodeGen::deselect(gen, saved);
-	}
-}
-
-@
-
-=
-void CodeGen::CL::response_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	response_traverse_state *rts = (response_traverse_state *) state;
-	generated_segment *saved = CodeGen::select(rts->gen, CodeGen::Targets::general_segment(rts->gen, P));
-	inter_symbol *resp_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
-	CodeGen::Targets::begin_constant(rts->gen, CodeGen::CL::name(resp_name), TRUE);
-	text_stream *OUT = CodeGen::current(rts->gen);
-	rts->NR = rts->NR + 1;
-	WRITE("%d", rts->NR);
-	CodeGen::Targets::end_constant(rts->gen, CodeGen::CL::name(resp_name));
-	CodeGen::deselect(rts->gen, saved);
-}
-
-void CodeGen::CL::response_revisitor(inter_tree *I, inter_tree_node *P, void *state) {
-	code_generation *gen = (code_generation *) state;
-	CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P),
-		P->W.data[VAL1_RESPONSE_IFLD], P->W.data[VAL1_RESPONSE_IFLD+1], FALSE);
-	WRITE_TO(CodeGen::current(gen), " ");
-}
-
 @ There's a contrivance here to get around an awkward point of I6 syntax:
 an array written in the form
 = (text as Inform 6)

@@ -452,26 +452,6 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_t
 		Emit::symbol_id(owner_s), v1, v2, Emit::baseline(), NULL));
 }
 
-@h Responses.
-Here |R| is the rule to which the text is a response, and |marker| an A-Z
-marker from 0 to 25.
-
-=
-inter_symbol *Emit::response(inter_name *response_iname, rule *R, int marker,
-	inter_name *val_iname) {
-	packaging_state save = Packaging::enter_home_of(response_iname);
-	inter_symbol *response_s = InterNames::to_symbol(response_iname);
-	inter_symbol *rule_s = InterNames::to_symbol(RTRules::iname(R));
-	inter_ti v1 = 0, v2 = 0;
-	Emit::to_value_pair(&v1, &v2, val_iname);
-	Produce::guard(Inter::Response::new(Emit::at(),
-		Emit::symbol_id(response_s),
-		Emit::symbol_id(rule_s),
-		(inter_ti) marker, v1, v2, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
-	return response_s;
-}
-
 @h Private, keep out.
 The following should be called only by //imperative: Functions//, which provides
 the real API for starting and ending functions.

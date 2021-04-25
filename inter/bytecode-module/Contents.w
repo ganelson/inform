@@ -48,7 +48,6 @@ Chapter 4: Void Constructs
 	The DefaultValue Construct
 	The Variable Construct
 	The Constant Construct
-	The Response Construct
 	The Instance Construct
 	The Property Construct
 	The PropertyValue Construct

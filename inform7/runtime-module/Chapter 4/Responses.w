@@ -193,7 +193,6 @@ a function defined in //BasicInformKit//.
 	inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
 	inter_name *rc_iname =
 		Responses::response_constant_iname(resp->the_rule, resp->the_marker);
-//	Emit::response(rc_iname, resp->the_rule, resp->the_marker, ts_value_iname);
 	Emit::numeric_constant(rc_iname, 0);
 
 	Emit::iname_constant(resp->value_md_iname, K_value, ts_value_iname);
@@ -386,7 +385,8 @@ it responds.
 
 	Functions::end(save);
 
-@ There's then one function and one array left to compile:
+@h Synoptic resources.
+These are all completed at the linking stage.
 
 =
 void Responses::compile_synoptic_resources(void) {

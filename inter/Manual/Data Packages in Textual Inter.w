@@ -260,19 +260,6 @@ another value (of the same kind). For example,
 = (text as Inter)
 	variable V_score K_number = 10
 
-@h Responses.
-A "response" is a special sort of property belonging to a function rather than
-an instance: it's a piece of text. This can be set with:
-= (text as Inter)
-	response NAME MARKER FUNCTION = VALUE
-=
-|NAME| provides a unique symbol name identifying this specific response; this
-is needed so that other code elsewhere in the program can alter this response
-at run-time. |MARKER| indicates which of 26 possible responses is meant: in
-high-level Inform 7 code these are labelled with the letters A to Z, but in
-inter, the numbers 0 to 25 must be used. The |VALUE| must be textual, that is,
-must be a |text| literal.
-
 @h Metadata.
 This has no effect on the code generated, and is simply semantic markup for
 the benefit of onlookers. The scheme here is that any package can have a

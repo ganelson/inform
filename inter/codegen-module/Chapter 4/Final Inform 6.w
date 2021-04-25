@@ -124,8 +124,6 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 			if (Inter::Constant::is_routine(con_name)) choice = routines_at_eof_I7CGS;
 			return choice;
 		}
-		case RESPONSE_IST:
-			return early_matter_I7CGS;
 	}
 	return CodeGen::I6::default_segment(cgt);
 }
