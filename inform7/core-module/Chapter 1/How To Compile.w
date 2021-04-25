@@ -32,9 +32,12 @@ We group the steps into departments, which are in order of when they work:
 then the sequence itself.
 
 =
+text_stream *current_sequence_bench = NULL;
+
 int Sequence::carry_out(int debugging) {
 	stopwatch_timer *sequence_timer =
 		Time::start_stopwatch(inform7_timer, I"compilation to Inter");
+	current_sequence_bench = Str::new();
 	@<Divide into compilation units@>;
 	@<Build a rudimentary set of kinds, relations, verbs and inference subjects@>;
 	@<Pass three times through the major nodes@>;
@@ -48,7 +51,7 @@ int Sequence::carry_out(int debugging) {
 	@<Generate inter, part 4@>
 	@<Generate inter, part 5@>
 	@<Generate index and bibliographic file@>;
-
+	if (problem_count == 0) Sequence::throw_error_if_subtasks_remain();
 	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1, debugging, sequence_timer);
 	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
@@ -81,6 +84,8 @@ as possible.
 				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
 			}
 		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
+		Str::clear(current_sequence_bench);
+		WRITE_TO(current_sequence_bench, "%S", name);
 		DISCARD_TEXT(name)
 		routine();
 		int cs = Time::stop_stopwatch(st);
@@ -214,15 +219,14 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 3@> =
 	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",
 		-1, debugging, sequence_timer);
-	BENCH(Sequence::compile_literal_resources)
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
-	BENCH(Sequence::compile_function_resources)
+	BENCH(Sequence::undertake_queued_tasks)
 	BENCH(Responses::compile_synoptic_resources)
-	BENCH(Sequence::compile_literal_resources)
 	BENCH(RTRelations::compile_defined_relations)
-	BENCH(Sequence::compile_function_resources)
-	BENCH(Sequence::allow_no_further_function_resources)
+	BENCH(RTMeasurements::compile_test_functions)
+	BENCH(Sequence::undertake_queued_tasks)
+	BENCH(Sequence::allow_no_further_queued_tasks)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
@@ -233,8 +237,6 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 5@> =
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
-	BENCH(RTMeasurements::compile_test_functions)
-	BENCH(Sequence::compile_literal_resources)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
@@ -275,78 +277,178 @@ between 5 and 10] pounds" to be compiled, and that in turn creates a further
 function compilation in order to provide a context for execution of the phrase
 "a random number between 5 and 10", which in turn... and so on.
 
-The only way to be sure of handling all needs here is to keep on compiling
-until the process exhausts itself, and this we do. The process is structured
-as a set of coroutines[1] which each carry out as much as they can of the work
-which has arisen since they were last called, then return how much they did.
-Each may indirectly create work for the others, so we repeat until they are
-all happy.
+@ The only way to be sure of handling all needs here is to keep on compiling
+until the process exhausts itself, and this we do with a queue of tasks to
+perform.[1] Suppose we have this queue:
+= (text)
+	T1 -> T2 -> T3 -> T4 -> ...
+=
+and we are working on T2. That uncovers the need for three further tasks
+X1, X2, X3: those are added immediately after T2 --
+= (text)
+	T1 -> T2 -> X1 -> X2 -> X3 -> T3 -> T4 -> ...
+=
+Thus we never reach T3 until T2 has been completely exhausted, including its
+secondary tasks. To get a sense of how this works in practice, try:
+= (text)
+Include task queue in the debugging log.
+=
 
-The result terminates since eventually every "To..." phrase definition will
-have been compiled with every possible interpretation of its kinds. After that,
-everything fizzles out quickly, because none of the other resources here are
-able to create new work for each other. The safety cutout in this function is
-just defensive programming, and has never been activated. Typically only
-one or two iterations are needed in practical cases.
+[1] Until 2021 this process is structured as a set of coroutines rather than a
+queue. C does not strictly speaking support coroutines, though that hasn't stopped
+hackers from using assembly language to manipulate return addresses on the C call
+stack, and/or use
+//Duff's device -> https://en.wikipedia.org/wiki/Duff%27s_device//. It never
+quite came to that here, but it was sometimes difficult to reason about.
 
-[1] C does not support coroutines, though that hasn't stopped hackers from using
-assembly language to manipulate return addresses on the C call stack, and/or use
-//Duff's device -> https://en.wikipedia.org/wiki/Duff%27s_device//. We avoid
-all that by using regular C functions which merely imitate coroutines by
-cooperatively giving way to each other. They |return| to the central organising
-function //Sequence::compile_function_resources//, not directly into each
-other's bodies. But I think the term "coroutine" is reasonable just the same.
+@ A task is abstracted as being a call to a function, called the "agent", with
+a pointer to the relevant data.
 
 =
-void Sequence::compile_function_resources(void) {
-	int repeat = TRUE, iterations = 0;
-	while (repeat) {
-		repeat = FALSE; iterations++;
+typedef struct compilation_subtask {
+	struct compilation_subtask *caused_by;
+	struct compilation_subtask *next_task;
+	void (*agent)(struct compilation_subtask *);
+	struct general_pointer data;
+	struct parse_node *current_sentence_when_queued;
+	struct text_stream *description;
+	CLASS_DEFINITION
+} compilation_subtask;
 
-		if (PhraseRequests::compilation_coroutine() > 0)       repeat = TRUE;
-		if (GroupTogether::compilation_coroutine() > 0)         repeat = TRUE;
-		if (LoopingOverScope::compilation_coroutine() > 0)     repeat = TRUE;
-		if (Responses::compilation_coroutine() > 0)            repeat = TRUE;
-		if (TextSubstitutions::compilation_coroutine() > 0)    repeat = TRUE;
-		if (DeferredPropositions::compilation_coroutine() > 0) repeat = TRUE;
+compilation_subtask *Sequence::new_subtask(void (*agent)(struct compilation_subtask *),
+	general_pointer gp, text_stream *desc) {
+	compilation_subtask *t = CREATE(compilation_subtask);
+	t->caused_by = NULL;
+	t->next_task = NULL;
+	t->agent = agent;
+	t->data = gp;
+	t->current_sentence_when_queued = current_sentence;
+	t->description = desc;
+	return t;
+}
 
-		if ((problem_count > 0) && (iterations > 10)) repeat = FALSE;
+@ Each call to //Sequence::undertake_queued_tasks// works methodically through
+the queue until everything is done.
+
+The queue is a linked list of |compilation_subtask| objects in between |first_task|
+and |last_task|. (The queue is empty if and only if both are |NULL|.) The queue
+only grows, and never has items removed.
+
+A marker called |last_task_undetaken| shows how much progress we have made in
+completing the tasks queued: so, when this is equal to |last_task|, there is
+nothing to do. Another marker called |current_task| is set only when a task
+is under way, and is |NULL| at all other times.
+
+=
+compilation_subtask *first_task = NULL, *last_task = NULL, *last_task_undetaken = NULL;
+compilation_subtask *current_task = NULL, *current_horizon = NULL;
+int task_queue_is_closed = FALSE;
+
+@ The rest of Inform, if it wants to schedule a compilation task, should call
+one of these two functions:
+
+=
+void Sequence::queue(void (*agent)(struct compilation_subtask *),
+	general_pointer gp, text_stream *desc) {
+	compilation_subtask *t = Sequence::new_subtask(agent, gp, desc);
+	@<Queue the task@>;
+}
+
+void Sequence::queue_at(void (*agent)(struct compilation_subtask *),
+	general_pointer gp, text_stream *desc, parse_node *at) {
+	compilation_subtask *t = Sequence::new_subtask(agent, gp, desc);
+	t->current_sentence_when_queued = at;
+	@<Queue the task@>;
+}
+
+@ New entries are inserted in the queue at two write positions:
+(*) after the |last_task|, i.e., at the back, if no task is currently going on; or
+(*) after the |current_horizon| marker, i.e., after the current task finishes.
+
+@<Queue the task@> =
+	t->caused_by = current_task;
+	if (first_task == NULL) { first_task = t; last_task = t; return; }
+	if (current_horizon) {
+		t->next_task = current_horizon->next_task;
+		current_horizon->next_task = t;
+		current_horizon = t;
+	} else {
+		t->next_task = NULL;
+		last_task->next_task = t;
+		last_task = t;
 	}
-	iterations--; /* since the final round is one where everyone does nothing */
-	if (iterations > 0)
-		LOG(".... Sequence::compile_function_resources completed in %d iteration%s\n",
-			iterations, (iterations == 1)?"":"s");
-}
-
-@ The template layer calls the following when that midnight hour chimes:
-
-=
-int no_further_function_resources = FALSE;
-
-void Sequence::allow_no_further_function_resources(void) {
-	no_further_function_resources = TRUE;
-}
-
-int Sequence::function_resources_allowed(void) {
-	if (no_further_function_resources) return FALSE;
-	return TRUE;
-}
-
-@ And very similarly:
-
-=
-void Sequence::compile_literal_resources(void) {
-	int repeat = TRUE, iterations = 0;
-	while (repeat) {
-		repeat = FALSE; iterations++;
-
-		if (ListLiterals::compile_support_matter() > 0)        repeat = TRUE;
-		if (BoxQuotations::compile_support_matter() > 0)       repeat = TRUE;
-
-		if ((problem_count > 0) && (iterations > 10)) repeat = FALSE;
+	if (t->caused_by) WRITE_TO(t->description, " from [%d]", t->caused_by->allocation_id);
+	else WRITE_TO(t->description, " from %S", current_sequence_bench);
+	if (task_queue_is_closed) {
+		LOG("offending task was: ");
+		Sequence::write_task(DL, t);
+		internal_error("too late to schedule further compilation tasks");
 	}
-	iterations--; /* since the final round is one where everyone does nothing */
-	if (iterations > 0)
-		LOG(".... Sequence::compile_literal_resources completed in %d iteration%s\n",
-			iterations, (iterations == 1)?"":"s");
+	if (Log::aspect_switched_on(TASK_QUEUE_DA)) {
+		LOG("queued:    ");
+		Sequence::write_task(DL, t);
+	}
+
+@ Here the chimes of midnight sound:
+
+=
+void Sequence::allow_no_further_queued_tasks(void) {
+	task_queue_is_closed = TRUE;
+}
+
+@ So here is where the work is done, and the |last_task_undetaken| advances:
+
+=
+void Sequence::undertake_queued_tasks(void) {
+	compilation_subtask *t;
+	do {
+		t = first_task;
+		if (last_task_undetaken) t = last_task_undetaken->next_task;
+		if (t) {
+			last_task_undetaken = t;
+			compilation_subtask *save_task = current_task;
+			compilation_subtask *save_horizon = current_horizon;
+			parse_node *save = current_sentence;
+			current_task = t;
+			current_horizon = t;
+			current_sentence = t->current_sentence_when_queued;
+			(*(t->agent))(t);
+			if (Log::aspect_switched_on(TASK_QUEUE_DA)) {
+				LOG("completed: ");
+				Sequence::write_task(DL, t);
+			}
+			current_sentence = save;
+			current_task = save_task; 
+			current_horizon = save_horizon;
+			current_sentence = save;
+		}
+	} while (t);
+}	
+
+@ At the end of compilation, the queue ought to be empty, but just in case:
+
+=
+void Sequence::throw_error_if_subtasks_remain(void) {
+	if (first_task) {
+		compilation_subtask *t = first_task;
+		if (last_task_undetaken) t = last_task_undetaken->next_task;
+		if (t) {
+			Sequence::write_from(DL, t);
+			internal_error("there are compilation tasks never reached");
+		}
+	}
+}
+
+@ And these are used for logging:
+
+=
+void Sequence::write_from(OUTPUT_STREAM, compilation_subtask *t) {
+	while (t) {
+		Sequence::write_task(OUT, t);
+		t = t->next_task;
+	}
+}
+
+void Sequence::write_task(OUTPUT_STREAM, compilation_subtask *t) {
+	WRITE("[%d] %S\n", t->allocation_id, t->description);
 }

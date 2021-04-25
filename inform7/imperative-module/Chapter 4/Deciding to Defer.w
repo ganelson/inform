@@ -38,14 +38,17 @@ The following fills out the paperwork to request a deferred proposition.
 
 =
 pcalc_prop_deferral *Deferrals::new(pcalc_prop *prop, int reason) {
-	if (Sequence::function_resources_allowed() == FALSE)
-		internal_error("too late now to defer propositions");
 	pcalc_prop_deferral *pdef = CREATE(pcalc_prop_deferral);
 	pdef->proposition_to_defer = prop;
 	pdef->reason = reason;
 	pdef->deferred_from = current_sentence;
 	pdef->rtp_iname = NULL;
 	pdef->ppd_iname = Enclosures::new_iname(PROPOSITIONS_HAP, PROPOSITION_HL);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "deferred proposition (reason %d) for ", reason);
+	Propositions::write(desc, prop);
+	Sequence::queue(&DeferredPropositions::compilation_agent,
+		STORE_POINTER_pcalc_prop_deferral(pdef), desc);
 	return pdef;
 }
 

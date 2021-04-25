@@ -97,28 +97,26 @@ inter_name *ListLiterals::compile_literal_list(literal_list *ll) {
 }
 
 inter_name *ListLiterals::large_block_iname(literal_list *ll) {
-	if (ll->ll_iname == NULL)
+	if (ll->ll_iname == NULL) {
 		ll->ll_iname = Enclosures::new_iname(LITERALS_HAP, LIST_LITERAL_HL);
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "list literal '%W'", ll->unbraced_text);
+		Sequence::queue_at(&ListLiterals::compilation_agent,
+			STORE_POINTER_literal_list(ll), desc, ll->list_text);
+	}
 	return ll->ll_iname;
 }
 
-@ The large blocks are then compiled in due course by the following coroutine
+@ The large blocks are then compiled in due course by the following agent
 (see //core: How To Compile//):
 
 =
-int ListLiterals::compile_support_matter(void) {
-	int N = 0;
-	literal_list *ll;
-
-	if (problem_count == 0)
-		LOOP_OVER(ll, literal_list)
-			if ((ll->list_compiled == FALSE) && (ll->ll_iname)) {
-				ll->list_compiled = TRUE; N++;
-				current_sentence = ll->list_text;
-				Lists::kind_of_ll(ll, TRUE);
-				if (problem_count == 0) @<Compile the large block for this literal@>;
-			}
-	return N;
+void ListLiterals::compilation_agent(compilation_subtask *t) {
+	literal_list *ll = RETRIEVE_POINTER_literal_list(t->data);
+	if (ll->ll_iname) {
+		Lists::kind_of_ll(ll, TRUE);
+		if (problem_count == 0) @<Compile the large block for this literal@>;
+	}
 }
 
 @<Compile the large block for this literal@> =

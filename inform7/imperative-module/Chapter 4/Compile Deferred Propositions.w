@@ -34,28 +34,17 @@ void DeferredPropositions::compile_comment_about_deferral_reason(int reason) {
 @h Preliminaries.
 Propositions are deferred for diverse reasons: see //Deciding to Defer//. Here
 we take our medicine, and actually compile those deferred propositions into
-functions. This is part of the phrase-compilation-coroutine process because
-funny things can happen when we compile: we can create new text substitutions
-which create routines which... and so on. (See //core: How To Compile//.)
+functions. This has to be done by an agent because funny things can happen
+when we compile: we can create new text substitutions which create routines
+which... and so on. (See //core: How To Compile//.)
 
 =
-pcalc_prop_deferral *latest_pcd = NULL;
-int DeferredPropositions::compilation_coroutine(void) {
-	int N = 0;
-	while (TRUE) {
-		pcalc_prop_deferral *pdef;
-		if (latest_pcd == NULL)
-			pdef = FIRST_OBJECT(pcalc_prop_deferral);
-		else pdef = NEXT_OBJECT(latest_pcd, pcalc_prop_deferral);
-		if (pdef == NULL) break;
-		latest_pcd = pdef;
-		pcalc_prop_deferral *save_current_pdef = current_pdef;
-		current_pdef = pdef;
-		DeferredPropositions::compile(pdef);
-		current_pdef = save_current_pdef;
-		N++;
-	}
-	return N;
+void DeferredPropositions::compilation_agent(compilation_subtask *t) {
+	pcalc_prop_deferral *pdef = RETRIEVE_POINTER_pcalc_prop_deferral(t->data);
+	pcalc_prop_deferral *save_current_pdef = current_pdef;
+	current_pdef = pdef;
+	DeferredPropositions::compile(pdef);
+	current_pdef = save_current_pdef;	
 }
 
 @ The basic structure of a proposition function is the same for all of the

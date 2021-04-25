@@ -30,29 +30,18 @@ void BoxQuotations::new(value_holster *VH, wording W) {
 			"a boxed quotation can't be empty",
 			"though I suppose you could make it consist of just a few spaces "
 			"to get a similar effect if you really needed to.");
-	
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "box quotation '%W'", W);
+	Sequence::queue(&BoxQuotations::compilation_agent, STORE_POINTER_box_quotation(bq), desc);
 	if (VH) Emit::holster_iname(VH, bq->function_iname);
 }
 
-@ The box functions are then compiled in due course by the following coroutine
+@ The box functions are then compiled in due course by the following agent
 (see //core: How To Compile//). The reason they weren't simply compiled earlier
 is that a function was already being compiled at the time, and you can't
 compile two functions at the same time.
 
-=
-int BoxQuotations::compile_support_matter(void) {
-	int N = 0;
-	box_quotation *bq;
-	if (problem_count == 0)
-		LOOP_OVER(bq, box_quotation)
-			if (bq->function_compiled == FALSE) {
-				bq->function_compiled = TRUE; N++;
-				if (problem_count == 0) @<Compile the box function@>;
-			}
-	return N;
-}
-
-@ The "box function", which displays the quotation, roughly translates to:
+The "box function", which displays the quotation, roughly translates to:
 = (text)
 	if (flag == false) {
 		flag = true;
@@ -62,7 +51,9 @@ int BoxQuotations::compile_support_matter(void) {
 and ensures that the quotation displays only once. The flag is stored as a
 tiny array inside the same enclosure as the box function.
 
-@<Compile the box function@> =
+=
+void BoxQuotations::compilation_agent(compilation_subtask *t) {
+	box_quotation *bq = RETRIEVE_POINTER_box_quotation(t->data);
 	packaging_state save = EmitArrays::begin(bq->seen_flag_iname, K_number);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::numeric_entry(0);
@@ -99,3 +90,4 @@ tiny array inside the same enclosure as the box function.
 	EmitCode::up();
 	
 	Functions::end(save);
+}

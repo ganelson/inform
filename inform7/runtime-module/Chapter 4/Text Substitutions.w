@@ -162,8 +162,6 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	stack_frame *frame, rule *R, int marker) {
 
 	text_substitution *ts = CREATE(text_substitution);
-	if (Sequence::function_resources_allowed() == FALSE)
-		internal_error("Too late for further text substitutions");
 	ts->unsubstituted_text = Wordings::first_word(W);
 	ts->sentence_using_this = current_sentence;
 	ts->using_frame = NULL;
@@ -190,48 +188,39 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	ts->owning_point = current_sentence;
 	id_body *idb = Functions::defn_being_compiled();
 	if (idb) ts->owning_point = idb->head_of_defn->at;
+
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "text substitution '%W'", W);
+	Sequence::queue(&TextSubstitutions::compilation_agent,
+		STORE_POINTER_text_substitution(ts), desc);
+
 	LOGIF(TEXT_SUBSTITUTIONS, "Requesting text routine %d %08x %W %08x\n",
 		ts->allocation_id, (int) frame, W, R);
 	return ts;
 }
 
 @h Compilation.
-Functions for substitutions are then compiled in due course by the following coroutine
+Functions for substitutions are then compiled in due course by the following agent
 (see //core: How To Compile//):
 
 =
-text_substitution *latest_ts_compiled = NULL;
 int compiling_text_routines_mode = FALSE; /* used for better problem messages */
-int TextSubstitutions::compilation_coroutine(void) {
-	int N = 0;
+void TextSubstitutions::compilation_agent(compilation_subtask *t) {
+	text_substitution *ts = RETRIEVE_POINTER_text_substitution(t->data);
+	int save = compiling_text_routines_mode;
 	compiling_text_routines_mode = TRUE;
-	while (TRUE) {
-		text_substitution *ts;
-		if (latest_ts_compiled == NULL) ts = FIRST_OBJECT(text_substitution);
-		else ts = NEXT_OBJECT(latest_ts_compiled, text_substitution);
-		if (ts == NULL) break;
-		latest_ts_compiled = ts;
-		if (ts->tr_done_already == FALSE) {
-			ts->tr_done_already = TRUE;
-			int makes_local_refs = TextSubstitutions::compile_function(ts);
-			TextSubstitutions::compile_value(ts->ts_value_iname,
-				ts->ts_function_iname, makes_local_refs);
-		}
-		N++;
-	}
-
-	compiling_text_routines_mode = FALSE;
-	return N;
+	int makes_local_refs = TextSubstitutions::compile_function(ts);
+	TextSubstitutions::compile_value(ts->ts_value_iname,
+		ts->ts_function_iname, makes_local_refs);
+	compiling_text_routines_mode = save;
 }
 
 int TextSubstitutions::currently_compiling(void) {
 	return compiling_text_routines_mode;
 }
 
-@ We can now forget about the coroutine management, and just compile a single
-text substitution. The main thing is to copy over references to local variables
-from the stack frame creating this text substitution to the stack frame
-compiling it.
+@ The main thing is to copy over references to local variables from the stack
+frame creating this text substitution to the stack frame compiling it.
 
 =
 text_substitution *current_ts_being_compiled = NULL;

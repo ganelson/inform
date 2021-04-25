@@ -140,6 +140,11 @@ list is a list of. The result would be:
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP,
 		CompileImperativeDefn::requests_package(idb));
 	req->req_iname = Hierarchy::make_iname_in(PHRASE_FN_HL, P);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "phrase request (%u) for '%W'",
+		K, Node::get_text(req->compile_from->head_of_defn->at));
+	Sequence::queue(&PhraseRequests::compilation_agent,
+		STORE_POINTER_to_phrase_request(req), desc);
 	return req;
 
 @ Two access functions:
@@ -155,27 +160,16 @@ kind **PhraseRequests::kind_variables_for_request(to_phrase_request *req) {
 	return req->kv_interpretation;
 }
 
-@ The following coroutine acts on any pending requests for phrase compilation
-since the last time it was called: see //core: How To Compile//.
+@ The following agent acts on a pending requests for phrase compilation: see
+//core: How To Compile//.
 
 =
-to_phrase_request *latest_request_granted = NULL;
-int PhraseRequests::compilation_coroutine(void) {
-	int N = 0;
-	while (TRUE) {
-		to_phrase_request *req;
-		if (latest_request_granted == NULL) req = FIRST_OBJECT(to_phrase_request);
-		else req = NEXT_OBJECT(latest_request_granted, to_phrase_request);
-		if (req == NULL) break;
-
-		latest_request_granted = req;
-		CompileImperativeDefn::go(req->compile_from, NULL, req, NULL);
-		CompileImperativeDefn::advance_progress_bar(req->compile_from,
-			&total_phrases_compiled, total_phrases_to_compile);
-		req->compile_from->compilation_data.at_least_one_compiled_form_needed = FALSE;
-		N++;
-	}
-	return N;
+void PhraseRequests::compilation_agent(compilation_subtask *task) {
+	to_phrase_request *req = RETRIEVE_POINTER_to_phrase_request(task->data);
+	CompileImperativeDefn::go(req->compile_from, NULL, req, NULL);
+	CompileImperativeDefn::advance_progress_bar(req->compile_from,
+		&total_phrases_compiled, total_phrases_to_compile);
+	req->compile_from->compilation_data.at_least_one_compiled_form_needed = FALSE;
 }
 
 @ In Basic Inform, only, execution begins at the "To..." phrase "To begin", and

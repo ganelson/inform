@@ -58,31 +58,18 @@ inter_name *GroupTogether::new(int include_articles) {
 		Enclosures::new_iname(GROUPS_TOGETHER_HAP, GROUP_TOGETHER_FN_HL);
 	gtf->text_value_iname = TextLiterals::small_block(gtf->printing_fn_iname);
 	gtf->articles_bit = include_articles;
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "group together '%n'", gtf->printing_fn_iname);
+	Sequence::queue(&GroupTogether::compilation_agent,
+		STORE_POINTER_group_together_function(gtf), desc);
 	return gtf->text_value_iname;
-}
-
-@ And here we work through the queue of GTFs waiting to be compiled:
-
-=
-group_together_function *latest_gtf_compiled = NULL;
-
-int GroupTogether::compilation_coroutine(void) {
-	int N = 0;
-	while (TRUE) {
-		group_together_function *gtf = FIRST_OBJECT(group_together_function);
-		if (latest_gtf_compiled)
-			gtf = NEXT_OBJECT(latest_gtf_compiled, group_together_function);
-		if (gtf == NULL) break;
-		@<Compile the actual GTF@>;
-		latest_gtf_compiled = gtf;
-		N++;
-	}
-	return N;
 }
 
 @ Again, see the DM4; this all continues to follow Inform 6 conventions.
 
-@<Compile the actual GTF@> =
+=
+void GroupTogether::compilation_agent(compilation_subtask *t) {
+	group_together_function *gtf = RETRIEVE_POINTER_group_together_function(t->data);
 	packaging_state save = Functions::begin(gtf->printing_fn_iname);
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
@@ -121,3 +108,4 @@ int GroupTogether::compilation_coroutine(void) {
 
 	EmitCode::rfalse();
 	Functions::end(save);
+}

@@ -11,9 +11,11 @@ of each other or of //core// in any case.
 Deep breath, then: the following macros define several hundred functions.
 We begin with //core// itself.
 
+@e compilation_subtask_CLASS
 @e compile_task_data_CLASS
 
 =
+DECLARE_CLASS(compilation_subtask)
 DECLARE_CLASS(compile_task_data)
 
 @ //assertions// --

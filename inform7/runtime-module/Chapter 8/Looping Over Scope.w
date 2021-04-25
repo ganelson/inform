@@ -23,26 +23,15 @@ loop_over_scope *LoopingOverScope::new(parse_node *what) {
 	}
 	package_request *PR = Hierarchy::local_package(LOOP_OVER_SCOPES_HAP);
 	los->los_iname = Hierarchy::make_iname_in(LOOP_OVER_SCOPE_FN_HL, PR);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "loop over scope '%W'", Node::get_text(los->what_to_find));
+	Sequence::queue(&LoopingOverScope::compilation_agent,
+		STORE_POINTER_loop_over_scope(los), desc);
 	return los;
 }
 
-loop_over_scope *latest_los = NULL;
-int LoopingOverScope::compilation_coroutine(void) {
-	int N = 0;
-	while (TRUE) {
-		loop_over_scope *los;
-		if (latest_los == NULL)
-			los = FIRST_OBJECT(loop_over_scope);
-		else los = NEXT_OBJECT(latest_los, loop_over_scope);
-		if (los == NULL) break;
-		latest_los = los;
-		@<Compile an individual loop-over-scope@>;
-		N++;
-	}
-	return N;
-}
-
-@<Compile an individual loop-over-scope@> =
+void LoopingOverScope::compilation_agent(compilation_subtask *t) {
+	loop_over_scope *los = RETRIEVE_POINTER_loop_over_scope(t->data);
 	packaging_state save = Functions::begin(los->los_iname);
 
 	stack_frame *phsf = Frames::current_stack_frame();
@@ -70,3 +59,4 @@ int LoopingOverScope::compilation_coroutine(void) {
 		EmitCode::up();
 	EmitCode::up();
 	Functions::end(save);
+}

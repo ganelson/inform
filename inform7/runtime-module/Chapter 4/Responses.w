@@ -48,8 +48,7 @@ typedef struct response_message {
 	struct inter_name *marker_md_iname;
 	struct inter_name *group_md_iname;
 	int launcher_compiled;
-	int via_Inter; /* if responding to a rule defined by Inter code, not source text */
-	int via_Inter_routine_compiled;
+	int via_Inter_routine_compiled; /* if responding to a rule defined by Inter code */
 	CLASS_DEFINITION
 } response_message;
 
@@ -71,7 +70,6 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	resp->the_rule = R;
 	resp->the_marker = marker;
 	resp->launcher_compiled = FALSE;
-	resp->via_Inter = FALSE;
 	resp->via_Inter_routine_compiled = FALSE;
 
 	package_request *PR = Hierarchy::package_within(RESPONSES_HAP, RTRules::package(R));
@@ -89,6 +87,10 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	if (Wordings::nonempty(RW)) W = RW;
 	resp->the_ts = TextSubstitutions::new_text_substitution(W, frame, R, marker);
 	TextSubstitutions::value_iname(resp->the_ts);
+
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "response (%c) to '%W'", 'A'+marker, R->name);
+	Sequence::queue(&Responses::compilation_agent, STORE_POINTER_response_message(resp), desc);
 
 	return resp;
 }
@@ -149,36 +151,15 @@ Which causes the following to be called:
 =
 void Responses::set_via_translation(rule *R, int marker, wording SW) {
 	response_message *resp = Responses::response_cue(R, marker, SW, NULL);
-	resp->via_Inter = TRUE;
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "Inter response agent function for '%W'", R->name);
+	Sequence::queue(&Responses::via_Inter_compilation_agent,
+		STORE_POINTER_response_message(resp), desc);
 }
 
 @h Compilation.
 Values and launchers for responses are then compiled in due course by the
-following coroutine (see //core: How To Compile//):
-
-=
-int Responses::compilation_coroutine(void) {
-	int N = 0;
-	response_message *resp;
-	LOOP_OVER(resp, response_message) {
-		if (resp->launcher_compiled == FALSE) {
-			resp->launcher_compiled = TRUE;
-			N++;
-			@<Compile resources needed by this response@>;
-		}
-		if ((resp->via_Inter) && (resp->via_Inter_routine_compiled == FALSE)) {
-			response_message *r2;
-			LOOP_OVER(r2, response_message)
-				if (r2->the_rule == resp->the_rule)
-					r2->via_Inter_routine_compiled = TRUE;
-			N++;
-			@<Compile the response-handler function for this rule@>;
-		}
-	}
-	return N;
-}
-
-@ Each response compiles to a text value like so:
+following agent. Each response compiles to a text value like so:
 = (text)
 	                        small block:
 	value ----------------> CONSTANT_PACKED_TEXT_STORAGE
@@ -188,7 +169,9 @@ Thus, printing this value at runtime calls the launcher function. This in
 turn runs the "issuing the response text" activity, though it does it via
 a function defined in //BasicInformKit//.
 
-@<Compile resources needed by this response@> =
+=
+void Responses::compilation_agent(compilation_subtask *t) {
+	response_message *resp = RETRIEVE_POINTER_response_message(t->data);
 	text_substitution *ts = resp->the_ts;
 	inter_name *ts_value_iname = TextSubstitutions::value_iname(ts);
 	inter_name *rc_iname =
@@ -221,6 +204,7 @@ a function defined in //BasicInformKit//.
 	EmitCode::up();
 
 	Functions::end(save);
+}
 
 @ Something skated over above is that responses can also be created when the
 source text defines a rule only as an Inter routine. For example:
@@ -239,6 +223,18 @@ to produce response (A), or alternatively
 to return the current text of (A) without printing it. Speed is not of the essence;
 and note that the response-handler is created in the package for the rule to which
 it responds.
+
+=
+void Responses::via_Inter_compilation_agent(compilation_subtask *t) {
+	response_message *resp = RETRIEVE_POINTER_response_message(t->data);
+	if (resp->via_Inter_routine_compiled == FALSE) {
+		response_message *r2;
+		LOOP_OVER(r2, response_message)
+			if (r2->the_rule == resp->the_rule)
+				r2->via_Inter_routine_compiled = TRUE;
+		@<Compile the response-handler function for this rule@>;
+	}
+}
 
 @<Compile the response-handler function for this rule@> =
 	inter_name *responder_iname = RTRules::get_handler_definition(resp->the_rule);

@@ -13,7 +13,7 @@ Inform must also work out the kind -- here, it's "list of numbers".
 Note that the empty list "{}" is valid as a constant, but that it contains
 no indication of its kind -- this must be determined from context.
 
-The following Preform grammar handles that:
+The following Preform grammar handles the syntax, at least:
 
 =
 <s-literal-list> ::=
@@ -21,12 +21,12 @@ The following Preform grammar handles that:
 	\{ <list-conts> \}   ==> { -, Lists::at(RP[1], W) }
 
 <list-conts> ::=
-	<list-entry> , <list-conts> |  ==> { 0, Lists::add(RP[1], RP[2], W, R[1]) }
-	<list-entry>                   ==> { 0, Lists::add(RP[1], Lists::empty_literal(W), W, R[1]) }
+	<list-entry> , <list-conts> | ==> { 0, Lists::add(RP[1], RP[2], W, R[1]) }
+	<list-entry>                  ==> { 0, Lists::add(RP[1], Lists::empty_literal(W), W, R[1]) }
 
 <list-entry> ::=
-	<s-value> |  ==> { FALSE, RP[1] }
-	......       ==> { TRUE, Specifications::new_UNKNOWN(W) }
+	<s-value> |          ==> { FALSE, RP[1] }
+	......               ==> { TRUE, Specifications::new_UNKNOWN(W) }
 
 @ And the result of this grammar, if it matches, is an rvalue made thus:
 
@@ -53,9 +53,6 @@ typedef struct literal_list {
 
 	struct package_request *ll_package; /* which will be the enclosure for... */
 	struct inter_name *ll_iname;
-
-	int list_compiled; /* lists are compiled at several different points: has this one been done? */
-
 	CLASS_DEFINITION
 } literal_list;
 
@@ -74,10 +71,7 @@ They begin with a call to:
 =
 literal_list *Lists::empty_literal(wording W) {
 	literal_list *ll = Lists::find_literal(Wordings::first_wn(W));
-	if (ll == NULL) {
-		ll = CREATE(literal_list);
-		ll->list_compiled = FALSE;
-	}
+	if (ll == NULL) ll = CREATE(literal_list);
 	ll->unbraced_text = W; ll->entry_kind = K_nil;
 	ll->listed_within_code = FALSE;
 	ll->kinds_known_to_be_inconsistent = FALSE;
