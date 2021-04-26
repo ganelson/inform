@@ -781,9 +781,13 @@ might have gone wrong.
 void RuleFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	rule *R;
-	LOOP_OVER(R, rule)
-		RTRules::compile_definition(R,
-			total_phrases_compiled, total_phrases_to_compile);
+	LOOP_OVER(R, rule) {
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "compile rule '%W'", R->name);
+		if (R->defn_as_I7_source)
+			R->defn_as_I7_source->body_of_defn->compilation_data.at_least_one_compiled_form_needed = FALSE;
+		Sequence::queue(&RTRules::from_source_text_agent, STORE_POINTER_rule(R), desc);
+	}
 }
 
 @h Miscellaneous access functions.

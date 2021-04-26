@@ -37,10 +37,19 @@ void CodeGen::Externals::visitor(inter_tree *I, inter_tree_node *P, void *state)
 			}
 			if (!Inter::Symbols::is_defined(D)) {
 				if (Inter::Symbols::get_scope(D) != PLUG_ISYMS) {
-					LOG("$3 == $3 which is undefined\n", S, D);
-					WRITE_TO(STDERR, "Failed to resolve symbol: %S = %S (in ",
+					if (D == S) {
+					LOG("$3 is undefined\n", S);
+					WRITE_TO(STDERR, "Failed to resolve symbol: %S (in ",
 						S->symbol_name, D->symbol_name);
-					Inter::Packages::write_url_name(STDERR, Q);
+					} else {
+						LOG("$3 == $3 which is undefined\n", S, D);
+						WRITE_TO(STDERR, "Failed to resolve symbol: %S -> %S (in ",
+							S->symbol_name, D->symbol_name);
+					}
+					Inter::Packages::write_url_name(STDERR, S->owning_table->owning_package);
+					if (D != S) {
+						WRITE_TO(STDERR, "\n   --> "); Inter::Packages::write_url_name(STDERR, D->owning_table->owning_package);
+					}
 					WRITE_TO(STDERR, ")\n");
 					if (fail_flag) *fail_flag = TRUE;
 				}

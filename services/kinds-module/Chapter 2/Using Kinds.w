@@ -571,6 +571,13 @@ this will be allowed or not.
 =
 int Kinds::Behaviour::request_I6_GPR(kind *K) {
 	if (Kinds::Behaviour::offers_I6_GPR(K) == FALSE) return FALSE; /* can't oblige */
+	#ifdef CORE_MODULE
+	if (K->construct->needs_GPR == FALSE) {
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "GPR for kind %u", K);
+		Sequence::queue(&UnderstandValueTokens::agent, STORE_POINTER_kind(K), desc);
+	}
+	#endif
 	K->construct->needs_GPR = TRUE; /* make note to oblige later */
 	return TRUE;
 }

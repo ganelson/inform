@@ -36,10 +36,10 @@ Chapter 4: Enclosed Resources
 	Group Together
 
 Chapter 5: Miscellany
-	Runtime Support for Kinds
-	Literal Patterns at Run Time
 	Rules
 	Activities
+	Runtime Support for Kinds
+	Literal Patterns at Run Time
 	Equations Support
 	Temporary Variables
 	Variables

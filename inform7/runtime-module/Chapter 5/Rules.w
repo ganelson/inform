@@ -44,8 +44,7 @@ void RTRules::prepare_rule(imperative_defn *id, rule *R) {
 	package_request *P = RTRules::package(R);
 	if (Wordings::empty(rfd->constant_name))
 		Hierarchy::apply_metadata_from_wording(P, RULE_NAME_METADATA_HL, Node::get_text(id->at));
-	CompileImperativeDefn::set_iname(id->body_of_defn, 
-		Hierarchy::make_iname_in(RULE_FN_HL, P));
+	CompileImperativeDefn::set_iname(id->body_of_defn, Hierarchy::make_iname_in(RULE_FN_HL, P));
 }
 
 package_request *RTRules::package(rule *R) {
@@ -54,7 +53,8 @@ package_request *RTRules::package(rule *R) {
 
 inter_name *RTRules::shell_iname(rule *R) {
 	if (R->compilation_data.shell_routine_iname == NULL)
-		R->compilation_data.shell_routine_iname = Hierarchy::make_iname_in(SHELL_FN_HL, R->compilation_data.rule_package);
+		R->compilation_data.shell_routine_iname =
+			Hierarchy::make_iname_in(SHELL_FN_HL, R->compilation_data.rule_package);
 	return R->compilation_data.shell_routine_iname;
 }
 
@@ -71,12 +71,13 @@ inter_name *RTRules::iname(rule *R) {
 }
 
 void RTRules::define_by_Inter_function(rule *R) {
-	R->compilation_data.rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->compilation_data.rule_package);
-
-	inter_name *xiname = Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
-	Emit::iname_constant(R->compilation_data.rule_extern_iname, K_value, xiname); 
-
-	R->compilation_data.xiname = xiname;
+	R->compilation_data.rule_extern_iname =
+		Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->compilation_data.rule_package);
+	R->compilation_data.xiname =
+		Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "external iname for '%W'", R->name);
+	Sequence::queue(&RTRules::from_Inter_function_agent, STORE_POINTER_rule(R), desc);
 }
 
 inter_name *RTRules::get_handler_definition(rule *R) {
@@ -88,18 +89,26 @@ inter_name *RTRules::get_handler_definition(rule *R) {
 	return R->compilation_data.rule_extern_response_handler_iname;
 }
 
-@h Compilation.
-Only those rules defined as I7 phrases need us to compile anything -- and then
-what we compile, of course, is the phrase in question.
+void RTRules::from_Inter_function_agent(compilation_subtask *t) {
+	rule *R = RETRIEVE_POINTER_rule(t->data);
+	Emit::iname_constant(R->compilation_data.rule_extern_iname, K_value,
+		R->compilation_data.xiname); 
+}
 
-=
-void RTRules::compile_definition(rule *R, int *i, int max_i) {
+void RTRules::from_source_text_agent(compilation_subtask *t) {
+	rule *R = RETRIEVE_POINTER_rule(t->data);
 	if (R->compilation_data.defn_compiled == FALSE) {
 		R->compilation_data.defn_compiled = TRUE;
 		rule_being_compiled = R;
-		if (R->defn_as_I7_source)
-			CompileImperativeDefn::not_from_phrase(R->defn_as_I7_source->body_of_defn, i, max_i,
+		if (R->defn_as_I7_source) {
+			R->defn_as_I7_source->body_of_defn->compilation_data.at_least_one_compiled_form_needed = TRUE;
+			current_sentence = R->defn_as_I7_source->at;
+			CompileImperativeDefn::not_from_phrase(
+				R->defn_as_I7_source->body_of_defn,
+				&total_phrases_compiled, total_phrases_to_compile,
 				R->variables_visible_in_definition, R);
+			R->defn_as_I7_source->body_of_defn->compilation_data.at_least_one_compiled_form_needed = FALSE;
+		}
 		if ((R->compilation_data.rule_extern_iname) &&
 			(LinkedLists::len(R->applicability_constraints) > 0))
 			@<Compile a shell routine to apply conditions to an I6 rule@>;

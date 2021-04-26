@@ -53,6 +53,7 @@ the effort we go to! They are entirely clean exits from the program! The
 ingratitude of some -- oh, all right.
 
 @<Issue problem summary for an internal error@> =
+	Sequence::backtrace(); /* to the debugging log */
 	Problems::issue_problem_segment(
 		"What has happened here is that one of the checks Inform carries "
 		"out internally, to see if it is working properly, has failed. "

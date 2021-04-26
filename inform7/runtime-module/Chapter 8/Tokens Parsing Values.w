@@ -166,6 +166,42 @@ void UnderstandValueTokens::truth_state(void) {
 	Hierarchy::make_available(iname);
 }
 
+void UnderstandValueTokens::agent(compilation_subtask *t) {
+	kind *K = RETRIEVE_POINTER_kind(t->data);
+		if ((Kinds::Behaviour::is_an_enumeration(K)) ||
+			(Kinds::Behaviour::is_quasinumerical(K))) {
+	int next_label = 1, longest;
+	command_grammar *cg;
+	instance *q; literal_pattern *lp;
+			inter_name *iname = RTKinds::get_kind_GPR_iname(K);
+			packaging_state save = Functions::begin(iname);
+			int need_lf_vars = FALSE;
+			LITERAL_FORMS_LOOP(lp, K) {
+				need_lf_vars = TRUE;
+				break;
+			}
+			gpr_kit gprk = UnderstandValueTokens::new_kit();
+			UnderstandValueTokens::add_original(&gprk);
+			UnderstandValueTokens::add_standard_set(&gprk);
+			if (need_lf_vars) UnderstandValueTokens::add_lp_vars(&gprk);
+			@<Compile body of kind GPR@>;
+			Functions::end(save);
+			
+			if (Kinds::Behaviour::is_an_enumeration(K)) {
+				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
+				packaging_state save = Functions::begin(iname);
+				gpr_kit gprk = UnderstandValueTokens::new_kit();
+				UnderstandValueTokens::add_instance_call(&gprk);
+				UnderstandValueTokens::add_original(&gprk);
+				UnderstandValueTokens::add_standard_set(&gprk);
+				GV_IS_VALUE_instance_mode = TRUE;
+				@<Compile body of kind GPR@>;
+				GV_IS_VALUE_instance_mode = FALSE;
+				Functions::end(save);
+			}
+			}
+}
+
 void UnderstandValueTokens::compile_type_gprs(void) {
 	int next_label = 1, longest;
 	command_grammar *cg;

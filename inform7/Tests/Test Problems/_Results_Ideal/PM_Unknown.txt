@@ -1,12 +1,13 @@
-Inform 7 build 6L26 has started.
-I've now read your source text, which is 27 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 29 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_Unknown
-  >--> In the sentence 'award arfle barfle gloop points' (source text, line 7),
+  >--> In the sentence 'award arfle barfle gloop points' (source text, line 9),
     I was expecting to read a number, but instead found some text that I
     couldn't understand - 'arfle barfle gloop'.
     I was trying to match this phrase:
       award (arfle barfle gloop - number) points 
     But I didn't recognise 'arfle barfle gloop'.
-Inform 7 has finished: 44 centiseconds used.
+Inform 7 has finished.

@@ -1,10 +1,25 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 46 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_UndeterminedKind
   >--> The phrase 'To decide which K is foo (L - a value of kind K) bar (Q - a
     value of kind Z)' (source text, line 4) needs to be used in such a way that
     I know what kinds of values go into it; so I'm not sure how to make sense
     of it from 'Foo {{1}} bar {}' (source text, line 3).
-Inform 7 has finished: 44 centiseconds used.
+Problem__ PM_AllInvsFailed
+  >--> You wrote 'add 0 to Q' (source text, line 5), which I tried to match
+    against several possible phrase definitions. None of them worked.
+    1.  add (0 - list of values) to (q - list of values) 
+    2.  add (0 - value) to (q - list of values) 
+    I recognised:
+    q = a temporary named value, holding a list of nothing
+Problem__ PM_AllInvsFailed
+  >--> You wrote 'add "" to Q' (source text, line 6), which I tried to match
+    against several possible phrase definitions. None of them worked.
+    1.  add ("" - list of values) to (q - list of values) 
+    2.  add ("" - value) to (q - list of values) 
+    I recognised:
+    q = a temporary named value, holding a list of nothing
+Inform 7 has finished.

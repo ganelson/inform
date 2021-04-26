@@ -400,7 +400,6 @@ void Responses::compile_synoptic_resources(void) {
 	inter_symbol *RPR_s = InterSymbolsTables::create_with_unique_name(R_s->owning_table, I"RPR");
 	inter_name *RPR_iname = Hierarchy::find(RULEPRINTINGRULE_HL);
 	InterSymbolsTables::equate(RPR_s, InterNames::to_symbol(RPR_iname));
-	LOG("Made $3\n", RPR_s);
 	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 

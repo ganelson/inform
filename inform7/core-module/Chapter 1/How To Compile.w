@@ -52,6 +52,7 @@ int Sequence::carry_out(int debugging) {
 	@<Generate inter, part 5@>
 	@<Generate index and bibliographic file@>;
 	if (problem_count == 0) Sequence::throw_error_if_subtasks_remain();
+	Str::clear(current_sequence_bench);
 	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1, debugging, sequence_timer);
 	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
@@ -226,17 +227,18 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
-	BENCH(Sequence::allow_no_further_queued_tasks)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
 		-1, debugging, sequence_timer);
 	BENCH(Chronology::past_actions_i6_routines)
 	BENCH(Chronology::compile_runtime)
-	
+
 @<Generate inter, part 5@> =
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
+	BENCH(Sequence::undertake_queued_tasks)
+	BENCH(Sequence::allow_no_further_queued_tasks)
 	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
@@ -423,6 +425,7 @@ void Sequence::undertake_queued_tasks(void) {
 			current_sentence = save;
 		}
 	} while (t);
+	while ((last_task) && (last_task->next_task)) last_task = last_task->next_task;
 }	
 
 @ At the end of compilation, the queue ought to be empty, but just in case:
@@ -439,6 +442,19 @@ void Sequence::throw_error_if_subtasks_remain(void) {
 	}
 }
 
+void Sequence::backtrace(void) {
+	compilation_subtask *t = current_task;
+	int d = 0;
+	while (t) {
+		if (d++ == 0) LOG("During compilation task: ");
+		else LOG("caused by compilation task: ");
+		Sequence::write_task(DL, t);
+		t = t->caused_by;
+	}
+	if (Str::len(current_sequence_bench) > 0)
+		LOG("During bench %S\n", current_sequence_bench);
+}
+
 @ And these are used for logging:
 
 =
@@ -450,5 +466,6 @@ void Sequence::write_from(OUTPUT_STREAM, compilation_subtask *t) {
 }
 
 void Sequence::write_task(OUTPUT_STREAM, compilation_subtask *t) {
-	WRITE("[%d] %S\n", t->allocation_id, t->description);
+	if (t == NULL) WRITE("[NULL]\n");
+	else WRITE("[%d] %S\n", t->allocation_id, t->description);
 }

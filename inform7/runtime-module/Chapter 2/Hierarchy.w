@@ -166,6 +166,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN_DECLARATIONS
 	@<Establish locations for material created by the compiler@>;
 	@<Establish locations for material expected to be added by linking@>;
+	InterNames::to_symbol(Hierarchy::find(SELF_HL));
 	H_END_DECLARATIONS
 }
 

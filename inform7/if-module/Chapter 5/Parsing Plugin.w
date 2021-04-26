@@ -36,7 +36,7 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(UnderstandValueTokens::number);
 		BENCH(UnderstandValueTokens::truth_state);
 		BENCH(UnderstandValueTokens::time);
-		BENCH(UnderstandValueTokens::compile_type_gprs);
+//		BENCH(UnderstandValueTokens::compile_type_gprs);
 		if (debugging) {
 			BENCH(TestCommand::write_text);
 			BENCH(TestCommand::TestScriptSub_routine);
