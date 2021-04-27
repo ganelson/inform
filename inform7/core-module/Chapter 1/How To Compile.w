@@ -206,9 +206,9 @@ so on. Those absolute basics are made here.
 	BENCH(ImperativeDefinitions::compile_first_block)
 	BENCH(RTRules::rulebook_var_creators)
 	BENCH(RTRules::compile_rulebooks)
+	BENCH(RTRules::compile_metadata)
 	BENCH(RTActivities::activity_var_creators)
 	BENCH(RTRelations::IterateRelations)
-	BENCH(RTRules::RulePrintingRule_routine)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
 	if (debugging) {

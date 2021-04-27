@@ -1031,6 +1031,8 @@ void Hierarchy::establish(void) {
 
 @e RULES_HAP
 @e RULE_NAME_METADATA_HL
+@e RULE_PNAME_METADATA_HL
+@e RULE_VALUE_METADATA_HL
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -1055,6 +1057,8 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
 			H_C_U(RULE_NAME_METADATA_HL,      I"^name")
+			H_C_U(RULE_PNAME_METADATA_HL,     I"^printed_name")
+			H_C_U(RULE_VALUE_METADATA_HL,     I"^value")
 			H_F_U(SHELL_FN_HL,                I"shell_fn")
 			H_F_U(RULE_FN_HL,                 I"rule_fn")
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")
@@ -2031,6 +2035,11 @@ void Hierarchy::apply_metadata(package_request *P, int id, text_stream *value) {
 void Hierarchy::apply_metadata_from_number(package_request *P, int id, inter_ti N) {
 	inter_name *iname = Hierarchy::make_iname_in(id, P);
 	Emit::numeric_constant(iname, N);
+}
+
+void Hierarchy::apply_metadata_from_iname(package_request *P, int id, inter_name *val) {
+	inter_name *iname = Hierarchy::make_iname_in(id, P);
+	Emit::iname_constant(iname, K_value, val);
 }
 
 void Hierarchy::apply_metadata_from_wording(package_request *P, int id, wording W) {

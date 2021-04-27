@@ -140,7 +140,7 @@ code is less limited.
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		inter_ti m = Metadata::read_numeric(pack, I"^marker");
-		inter_symbol *rule_s = Metadata::read_symbol(pack, I"^rule");
+		inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);
 			Produce::inv_primitive(I, EQ_BIP);

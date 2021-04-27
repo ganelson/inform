@@ -29,8 +29,6 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	rcd.shell_routine_iname = NULL;
 	rcd.rule_package = Hierarchy::local_package(RULES_HAP);
 	rcd.defn_compiled = FALSE;
-	if (Wordings::nonempty(R->name))
-		Hierarchy::apply_metadata_from_wording(rcd.rule_package, RULE_NAME_METADATA_HL, R->name);
 	return rcd;
 }
 
@@ -136,6 +134,29 @@ as the definition of the rule in future.
 	}
 	Functions::end(save);
 
+@
+
+=
+void RTRules::compile_metadata(void) {
+	rule *R;
+	LOOP_OVER(R, rule) {
+		if (Wordings::nonempty(R->name))
+			Hierarchy::apply_metadata_from_wording(R->compilation_data.rule_package, RULE_NAME_METADATA_HL, R->name);
+		TEMPORARY_TEXT(PN)
+		if (Wordings::nonempty(R->name)) {
+			TranscodeText::from_text(PN, R->name);
+		} else if (R->defn_as_I7_source) {
+			TranscodeText::from_text(PN,
+				Articles::remove_the(
+					Node::get_text(R->defn_as_I7_source->at)));
+		} else WRITE_TO(PN, "%n", RTRules::iname(R));
+		Hierarchy::apply_metadata(R->compilation_data.rule_package, RULE_PNAME_METADATA_HL, PN);
+		Hierarchy::apply_metadata_from_iname(R->compilation_data.rule_package, RULE_VALUE_METADATA_HL,
+			RTRules::iname(R));
+		DISCARD_TEXT(PN)
+	}
+}
+
 @ The following generates code to terminate a rule early if its applicability
 conditions have not been met.
 
@@ -208,131 +229,6 @@ failing; so it doesn't terminate the following of its rulebook.
 		EmitCode::val_number(0);
 	}
 	EmitCode::up();
-
-@h Printing rule names at run time.
-
-=
-void RTRules::RulePrintingRule_routine(void) {
-	inter_name *iname = Hierarchy::find(RULEPRINTINGRULE_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
-	EmitCode::inv(IFELSE_BIP);
-	EmitCode::down();
-		EmitCode::inv(AND_BIP);
-		EmitCode::down();
-			EmitCode::inv(GE_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, R_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-			EmitCode::inv(LT_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, R_s);
-				EmitCode::val_iname(K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL));
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			@<Print a rulebook name@>;
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			@<Print a rule name@>;
-		EmitCode::up();
-	EmitCode::up();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-}
-
-@<Print a rulebook name@> =
-	if (global_compilation_settings.memory_economy_in_force) {
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I"(rulebook ");
-		EmitCode::up();
-		EmitCode::inv(PRINTNUMBER_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, R_s);
-		EmitCode::up();
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I")");
-		EmitCode::up();
-	} else {
-		EmitCode::inv(PRINTSTRING_BIP);
-		EmitCode::down();
-			EmitCode::inv(LOOKUP_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(RULEBOOKNAMES_HL));
-				EmitCode::val_symbol(K_value, R_s);
-			EmitCode::up();
-		EmitCode::up();
-	}
-
-@<Print a rule name@> =
-	if (global_compilation_settings.memory_economy_in_force) {
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I"(rule at address ");
-		EmitCode::up();
-		EmitCode::inv(PRINTNUMBER_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, R_s);
-		EmitCode::up();
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I")");
-		EmitCode::up();
-	} else {
-		rule *R;
-		LOOP_OVER(R, rule) {
-			if ((Wordings::nonempty(R->name) == FALSE) &&
-				((R->defn_as_I7_source == NULL) ||
-					(R->defn_as_I7_source->at == NULL) ||
-					(R->defn_as_I7_source->at->down == NULL)))
-					continue;
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, R_s);
-					EmitCode::val_iname(K_value, RTRules::iname(R));
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					TEMPORARY_TEXT(OUT)
-					@<Print a textual name for this rule@>;
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						EmitCode::val_text(OUT);
-					EmitCode::up();
-					EmitCode::rtrue();
-					DISCARD_TEXT(OUT)
-				EmitCode::up();
-			EmitCode::up();
-		}
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I"(nameless rule at address ");
-		EmitCode::up();
-		EmitCode::inv(PRINTNUMBER_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, R_s);
-		EmitCode::up();
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(I")");
-		EmitCode::up();
-	}
-
-@<Print a textual name for this rule@> =
-	if (Wordings::nonempty(R->name)) {
-		TranscodeText::from_text(OUT, R->name);
-	} else if (R->defn_as_I7_source->at) {
-		TranscodeText::from_text(OUT,
-			Articles::remove_the(
-				Node::get_text(R->defn_as_I7_source->at)));
-	} else WRITE("%n", RTRules::iname(R));
 
 @ =
 void RTRules::compile_comment(rule *R, int index, int from) {
@@ -1114,6 +1010,7 @@ void RTRules::compile_synoptic_resources(void) {
 	@<Provide placeholder for the RULEBOOKS_ARRAY array@>;
 	@<Provide placeholder for one of the ways to look up rulebook names@>;
 	@<Provide placeholder for one of the ways to look up shared variables@>;
+	@<Provide placeholder for the RULEPRINTINGRULE function@>;
 }
 
 @<Provide placeholder for the NUMBER_RULEBOOKS_CREATED constant@> =
@@ -1154,3 +1051,18 @@ void RTRules::compile_synoptic_resources(void) {
 		EmitCode::comment(I"This function is consolidated");
 		Functions::end(save);
 	}
+
+@<Provide placeholder for the RULEPRINTINGRULE function@> =
+	inter_name *iname = Hierarchy::find(RULEPRINTINGRULE_HL);
+	if (global_compilation_settings.memory_economy_in_force)
+		Produce::annotate_i(iname, SYNOPTIC_IANN, ECONOMY_RULEPRINTINGRULE_SYNID);
+	else
+		Produce::annotate_i(iname, SYNOPTIC_IANN, RULEPRINTINGRULE_SYNID);
+	packaging_state save = Functions::begin(iname);
+	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
+	inter_symbol *rba_s = InterSymbolsTables::create_with_unique_name(R_s->owning_table, I"rba");
+	inter_name *rba_iname = Hierarchy::find(RULEBOOKNAMES_HL);
+	InterSymbolsTables::equate(rba_s, InterNames::to_symbol(rba_iname));
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);
