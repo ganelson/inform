@@ -158,9 +158,9 @@ void RTActions::compile_action_routines(void) {
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			EmitCode::call(generic_iname);
 			EmitCode::down();
-				EmitCode::val_number((inter_ti) an->check_rules->allocation_id);
-				EmitCode::val_number((inter_ti) an->carry_out_rules->allocation_id);
-				EmitCode::val_number((inter_ti) an->report_rules->allocation_id);
+				EmitCode::val_iname(K_value, an->check_rules->compilation_data.rb_id_iname);
+				EmitCode::val_iname(K_value, an->carry_out_rules->compilation_data.rb_id_iname);
+				EmitCode::val_iname(K_value, an->report_rules->compilation_data.rb_id_iname);
 			EmitCode::up();
 		EmitCode::up();
 		Functions::end(save);
@@ -194,7 +194,7 @@ void RTActions::ActionData(void) {
 				(SharedVariables::set_empty(an->action_variables) == FALSE))
 			EmitArrays::iname_entry(RTVariables::get_shared_variables_creator(an->action_variables));
 		else EmitArrays::numeric_entry(0);
-		EmitArrays::numeric_entry((inter_ti) (20000+an->allocation_id));
+		EmitArrays::numeric_entry((inter_ti) (RTActions::action_variable_set_ID(an)));
 	}
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);

@@ -395,6 +395,7 @@ void Rules::check_constraints_are_typesafe(rule *R) {
 			kind *K1 = Kinds::binary_con(CON_rule, B1, P1);
 			kind *K2 = Kinds::binary_con(CON_rule, B2, P2);
 			if (Kinds::compatible(K2, K1) != ALWAYS_MATCH) {
+				current_sentence = ac->where_imposed;
 				Problems::quote_source(1, ac->where_imposed);
 				Problems::quote_wording(2, ac->substituted_rule->name);
 				Problems::quote_wording(3, R->name);

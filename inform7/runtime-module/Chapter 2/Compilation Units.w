@@ -53,6 +53,7 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	TEMPORARY_TEXT(pname)
 	@<Compose a name for the unit package this will lead to@>;
 	module_package *M = Packaging::get_unit(Emit::tree(), pname);
+	@<Give M a category@>;
 	if (ext) @<Give M metadata indicating the source extension@>;
 	DISCARD_TEXT(pname)
 
@@ -60,6 +61,12 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	C->head_node = p;
 	C->to_module = M;
 	CompilationUnits::join(p, C);
+
+@<Give M a category@> =
+	inter_ti cat = 1;
+	if (ext) cat = 2;
+	if (Extensions::is_standard(ext)) cat = 3;
+	Hierarchy::apply_metadata_from_number(M->the_package, EXT_CATEGORY_METADATA_HL, cat);
 
 @<Give M metadata indicating the source extension@> =
 	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_METADATA_HL,
@@ -76,9 +83,9 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 compiled from the compilation unit will go into a package of that name.
 
 @<Compose a name for the unit package this will lead to@> =
-	/* if (Extensions::is_standard(ext)) WRITE_TO(pname, "standard_rules");
-	else */ if (ext == NULL) WRITE_TO(pname, "source_text");
-	else {
+	if (ext == NULL) {
+		WRITE_TO(pname, "source_text");
+	} else {
 		WRITE_TO(pname, "%X", ext->as_copy->edition->work);
 		LOOP_THROUGH_TEXT(pos, pname)
 			if (Str::get(pos) == ' ')

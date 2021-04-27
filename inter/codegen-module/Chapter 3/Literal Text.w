@@ -32,7 +32,7 @@ void SynopticText::alphabetise(inter_tree *I, inter_tree_location_list *text_nod
 		text_stream *latest_text = NULL;
 		inter_symbol *latest_s = NULL;
 		for (int i=0, j=0; i<TreeLists::len(text_nodes); i++) {
-			inter_tree_node *P = text_nodes->list[i];
+			inter_tree_node *P = text_nodes->list[i].node;
 			inter_package *pack = Inter::Packages::container(P);
 			text_stream *S = SynopticText::text_quoted_here(P);
 			if ((latest_text == NULL) || (Str::ne(S, latest_text)))
@@ -99,9 +99,11 @@ text_stream *SynopticText::text_quoted_here(inter_tree_node *P) {
 }
 
 int SynopticText::cmp(const void *ent1, const void *ent2) {
-	inter_tree_node *P1 = *((inter_tree_node **) ent1);
-	inter_tree_node *P2 = *((inter_tree_node **) ent2);
-	if (P1 == P2) return 0;
+	itl_entry *E1 = (itl_entry *) ent1;
+	itl_entry *E2 = (itl_entry *) ent2;
+	if (E1 == E2) return 0;
+	inter_tree_node *P1 = E1->node;
+	inter_tree_node *P2 = E2->node;
 	text_stream *S1 = SynopticText::text_quoted_here(P1);
 	text_stream *S2 = SynopticText::text_quoted_here(P2);
 	return Str::cmp(S1, S2);

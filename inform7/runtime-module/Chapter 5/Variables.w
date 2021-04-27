@@ -41,8 +41,9 @@ typedef struct nonlocal_variable_emission {
 	struct inter_name *iname_form;
 	struct text_stream *textual_form;
 	int nothing_form;
-	int stv_ID;
-	int stv_index;
+	int shv_ID;
+	struct inter_name *shv_ID_iname;
+	int shv_index;
 	int allow_outside;
 	int use_own_iname;
 } nonlocal_variable_emission;
@@ -51,8 +52,9 @@ nonlocal_variable_emission RTVariables::new_nve(void) {
 	nonlocal_variable_emission nve;
 	nve.iname_form = NULL;
 	nve.textual_form = Str::new();
-	nve.stv_ID = -1;
-	nve.stv_index = -1;
+	nve.shv_ID = -1;
+	nve.shv_ID_iname = NULL;
+	nve.shv_index = -1;
 	nve.allow_outside = FALSE;
 	nve.use_own_iname = FALSE;
 	nve.nothing_form = FALSE;
@@ -79,8 +81,21 @@ nonlocal_variable_emission RTVariables::nve_from_mstack(int N, int index, int al
 		WRITE_TO(nve.textual_form, "(MStack-->MstVON(%d,%d))", N, index);
 	else
 		WRITE_TO(nve.textual_form, "(MStack-->MstVO(%d,%d))", N, index);
-	nve.stv_ID = N;
-	nve.stv_index = index;
+	nve.shv_ID = N;
+	nve.shv_index = index;
+	nve.allow_outside = allow_outside;
+	return nve;
+}
+
+nonlocal_variable_emission RTVariables::nve_from_named_mstack(inter_name *iname,
+	int index, int allow_outside) {
+	nonlocal_variable_emission nve = RTVariables::new_nve();
+	if (allow_outside)
+		WRITE_TO(nve.textual_form, "(MStack-->MstVON(%n,%d))", iname, index);
+	else
+		WRITE_TO(nve.textual_form, "(MStack-->MstVO(%n,%d))", iname, index);
+	nve.shv_ID_iname = iname;
+	nve.shv_index = index;
 	nve.allow_outside = allow_outside;
 	return nve;
 }
@@ -117,7 +132,6 @@ not always.
 
 =
 void RTVariables::set_I6_identifier(nonlocal_variable *nlv, int left, nonlocal_variable_emission nve) {
-	if (Str::len(nve.textual_form) > 30) internal_error("name too long");
 	if (nlv == NULL) internal_error("null nlv");
 	if (left) nlv->compilation_data.lvalue_nve = nve; else nlv->compilation_data.rvalue_nve = nve;
 	nlv->compilation_data.housed_in_variables_array = FALSE;
@@ -185,6 +199,8 @@ inter_name *RTVariables::get_shared_variables_creator(shared_variable_set *set) 
 nonlocal_variable_emission RTVariables::shv_lvalue(shared_variable *shv) {
 	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_index(shv) == 0))
 		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
+	else if (SharedVariables::get_owner_iname(shv))
+		return RTVariables::nve_from_named_mstack(SharedVariables::get_owner_iname(shv), SharedVariables::get_index(shv), FALSE);
 	else
 		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_index(shv), FALSE);
 }
@@ -325,7 +341,7 @@ void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
 	nonlocal_variable_emission *nve = &(nlv->compilation_data.lvalue_nve);
 	if (nve->iname_form) {
 		EmitCode::val_iname(K_value, nve->iname_form);
-	} else if (nve->stv_ID >= 0) {
+	} else if (nve->shv_ID_iname) {
 		EmitCode::inv(LOOKUP_BIP);
 		EmitCode::down();
 			EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
@@ -333,11 +349,23 @@ void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
 			if (nve->allow_outside) ex = MSTVON_HL;
 			EmitCode::call(Hierarchy::find(ex));
 			EmitCode::down();
-				EmitCode::val_number((inter_ti) nve->stv_ID);
-				EmitCode::val_number((inter_ti) nve->stv_index);
+				EmitCode::val_iname(K_value, nve->shv_ID_iname);
+				EmitCode::val_number((inter_ti) nve->shv_index);
 			EmitCode::up();
 		EmitCode::up();
-	}  else if (nve->use_own_iname) {
+	} else if (nve->shv_ID >= 0) {
+		EmitCode::inv(LOOKUP_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+			int ex = MSTVO_HL;
+			if (nve->allow_outside) ex = MSTVON_HL;
+			EmitCode::call(Hierarchy::find(ex));
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) nve->shv_ID);
+				EmitCode::val_number((inter_ti) nve->shv_index);
+			EmitCode::up();
+		EmitCode::up();
+	} else if (nve->use_own_iname) {
 		EmitCode::val_iname(K_value, RTVariables::iname(nlv));
 	} else if (nve->nothing_form) {
 		EmitCode::val_symbol(K_value, Emit::get_veneer_symbol(NOTHING_VSYMB));

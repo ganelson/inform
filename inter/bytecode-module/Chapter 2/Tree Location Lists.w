@@ -10,9 +10,14 @@ sorted by index.
 typedef struct inter_tree_location_list {
 	int list_extent;
 	int list_used;
-	inter_tree_node **list;
+	struct itl_entry *list;
 	CLASS_DEFINITION
 } inter_tree_location_list;
+
+typedef struct itl_entry {
+	int sort_key;
+	struct inter_tree_node *node;
+} itl_entry;
 
 inter_tree_location_list *TreeLists::new(void) {
 	inter_tree_location_list *NL = CREATE(inter_tree_location_list);
@@ -32,24 +37,25 @@ int TreeLists::len(inter_tree_location_list *NL) {
 void TreeLists::add(inter_tree_location_list *NL, inter_tree_node *P) {
 	if (NL->list_extent == 0) {
 		NL->list_extent = 256;
-		NL->list = (inter_tree_node **)
+		NL->list = (itl_entry *)
 			(Memory::calloc(NL->list_extent,
-				sizeof(inter_tree_node *), TREE_LIST_MREASON));
+				sizeof(itl_entry), TREE_LIST_MREASON));
 	}
 	if (NL->list_used >= NL->list_extent) {
 		int old_extent = NL->list_extent;
 		NL->list_extent *= 4;
-		inter_tree_node **new_list = (inter_tree_node **)
+		itl_entry *new_list = (itl_entry *)
 			(Memory::calloc(NL->list_extent,
-				sizeof(inter_tree_node *), TREE_LIST_MREASON));
+				sizeof(itl_entry), TREE_LIST_MREASON));
 		for (int i=0; i<NL->list_used; i++)
 			new_list[i] = NL->list[i];
 		Memory::I7_free(NL->list, TREE_LIST_MREASON, old_extent);
 		NL->list = new_list;
 	}
-	NL->list[NL->list_used++] = P;
+	NL->list[NL->list_used].sort_key = NL->list_used;
+	NL->list[NL->list_used++].node = P;
 }
 
 void TreeLists::sort(inter_tree_location_list *NL, int (*cmp)(const void *, const void *)) {
-	qsort(NL->list, (size_t) NL->list_used, sizeof(inter_tree_node *), cmp);
+	qsort(NL->list, (size_t) NL->list_used, sizeof(itl_entry), cmp);
 }

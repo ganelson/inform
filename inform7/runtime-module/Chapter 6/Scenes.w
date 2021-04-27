@@ -335,7 +335,7 @@ end actually occurred.)
 	}
 	EmitCode::call(Hierarchy::find(FOLLOWRULEBOOK_HL));
 	EmitCode::down();
-		EmitCode::val_number((inter_ti) (sc->ends[end].end_rulebook->allocation_id));
+		EmitCode::val_iname(K_value, sc->ends[end].end_rulebook->compilation_data.rb_id_iname);
 	EmitCode::up();
 	if (end == 1) {
 		EmitCode::call(Hierarchy::find(FOLLOWRULEBOOK_HL));

@@ -1,4 +1,4 @@
-[SynopticResources::] Responses.
+[SynopticResponses::] Responses.
 
 To renumber the responses and construct suitable arrays.
 
@@ -18,10 +18,10 @@ of packages of type |_response|. Each of these contains a constant called
 correct ID.
 
 =
-void SynopticResources::renumber(inter_tree *I, inter_tree_location_list *response_nodes) {
+void SynopticResponses::renumber(inter_tree *I, inter_tree_location_list *response_nodes) {
 	if (TreeLists::len(response_nodes) > 0) {
 		for (int i=0; i<TreeLists::len(response_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i]);
+			inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"response_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i+1;
 		}
@@ -36,7 +36,7 @@ void SynopticResources::renumber(inter_tree *I, inter_tree_location_list *respon
 @e PRINT_RESPONSE_SYNID
 
 =
-int SynopticResources::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
+int SynopticResponses::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_tree_node *Q = NULL;
 	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
@@ -78,7 +78,7 @@ of the text of that response. (The main compiler created only an empty array.)
 
 @<Define the new ResponseTexts array as Q@> =
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i]);
+		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
 		Synoptic::symbol_entry(Q, value_s);
 	}
@@ -99,7 +99,7 @@ The triple |(0, 0, 0)| ends the array.
 @<Define the new ResponseDivisions array as Q@> =
 	text_stream *current_group = NULL; int start_pos = -1;
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i]);
+		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		text_stream *group = Metadata::read_textual(pack, I"^group");
 		if (Str::ne(group, current_group)) {
 			if (start_pos >= 0) {
@@ -138,7 +138,7 @@ code is less limited.
 	inter_symbol *RPR_s = Synoptic::get_local(I, I"RPR");
 
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i]);
+		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		inter_ti m = Metadata::read_numeric(pack, I"^marker");
 		inter_symbol *rule_s = Metadata::read_symbol(pack, I"^rule");
 		Produce::inv_primitive(I, IF_BIP);

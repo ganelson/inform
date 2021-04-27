@@ -52,8 +52,8 @@ int Sequence::carry_out(int debugging) {
 	@<Generate inter, part 5@>
 	@<Generate index and bibliographic file@>;
 	if (problem_count == 0) Sequence::throw_error_if_subtasks_remain();
-	Str::clear(current_sequence_bench);
 	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1, debugging, sequence_timer);
+	Str::clear(current_sequence_bench);
 	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
 	if (problem_count > 0) return FALSE;
@@ -204,12 +204,10 @@ so on. Those absolute basics are made here.
 	BENCH(RTTables::compile)
 	BENCH(RTEquations::compile_identifiers)
 	BENCH(ImperativeDefinitions::compile_first_block)
-	BENCH(RTRules::compile_rulebooks)
-	BENCH(RTRules::rulebooks_array_array)
 	BENCH(RTRules::rulebook_var_creators)
+	BENCH(RTRules::compile_rulebooks)
 	BENCH(RTActivities::activity_var_creators)
 	BENCH(RTRelations::IterateRelations)
-	BENCH(RTRules::RulebookNames_array)
 	BENCH(RTRules::RulePrintingRule_routine)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
@@ -224,6 +222,7 @@ so on. Those absolute basics are made here.
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::undertake_queued_tasks)
 	BENCH(Responses::compile_synoptic_resources)
+	BENCH(RTRules::compile_synoptic_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)

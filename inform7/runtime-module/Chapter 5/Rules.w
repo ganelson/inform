@@ -645,19 +645,12 @@ action_name *RTRules::br_required_action(booking *br) {
 @
 
 =
-void RTRules::compile_NUMBER_RULEBOOKS_CREATED(void) {
-	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
-	Emit::numeric_constant(iname, (inter_ti) NUMBER_CREATED(rulebook));
-	Hierarchy::make_available(iname);
-}
-
-@
-
-=
 typedef struct rulebook_compilation_data {
 	struct inter_name *stv_creator_iname;
 	struct package_request *rb_package;
 	struct inter_name *rb_iname; /* run-time storage/routine holding contents */
+	struct inter_name *rb_id_iname;
+	struct inter_name *rb_run_md_iname;
 } rulebook_compilation_data;
 
 rulebook_compilation_data RTRules::new_rulebook_compilation_data(rulebook *rb,
@@ -666,6 +659,8 @@ rulebook_compilation_data RTRules::new_rulebook_compilation_data(rulebook *rb,
 	rcd.stv_creator_iname = NULL;
 	rcd.rb_package = R;
 	rcd.rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, R);
+	rcd.rb_id_iname = Hierarchy::make_iname_in(RULEBOOK_ID_HL, R);
+	rcd.rb_run_md_iname = Hierarchy::make_iname_in(RULEBOOK_RUN_FN_METADATA_HL, R);
 	return rcd;
 }
 
@@ -680,21 +675,13 @@ void RTRules::commentary(booking_list *L) {
 	BookingLists::commentary(L);
 }
 
-void RTRules::rulebooks_array_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook)
-		EmitArrays::iname_entry(rb->compilation_data.rb_iname);
-	EmitArrays::numeric_entry(0);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
 void RTRules::compile_rulebooks(void) {
 	RTRules::start_list_compilation();
 	rulebook *B;
 	LOOP_OVER(B, rulebook) {
+		Emit::numeric_constant(B->compilation_data.rb_id_iname, 0);
+		Emit::iname_constant(B->compilation_data.rb_run_md_iname, K_value,
+			B->compilation_data.rb_iname);
 		int act = FALSE;
 		if (Rulebooks::action_focus(B)) act = TRUE;
 		if (B->automatically_generated) act = FALSE;
@@ -708,26 +695,6 @@ void RTRules::compile_rulebooks(void) {
 	LOOP_OVER(R, rule)
 		Rules::check_constraints_are_typesafe(R);
 }
-
-void RTRules::RulebookNames_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	if (global_compilation_settings.memory_economy_in_force) {
-		EmitArrays::numeric_entry(0);
-		EmitArrays::numeric_entry(0);
-	} else {
-		rulebook *B;
-		LOOP_OVER(B, rulebook) {
-			TEMPORARY_TEXT(rbt)
-			WRITE_TO(rbt, "%~W rulebook", B->primary_name);
-			EmitArrays::text_entry(rbt);
-			DISCARD_TEXT(rbt)
-		}
-	}
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
 
 inter_name *RTRules::get_stv_creator_iname(rulebook *B) {
 	if (B->compilation_data.stv_creator_iname == NULL)
@@ -743,56 +710,12 @@ void RTRules::rulebook_var_creators(void) {
 			RTVariables::set_shared_variables_creator(B->my_variables,
 				RTRules::get_stv_creator_iname(B));
 			RTVariables::compile_frame_creator(B->my_variables);
+			inter_name *vc = Hierarchy::make_iname_in(RULEBOOK_VARC_METADATA_HL,
+				B->compilation_data.rb_package);
+			Emit::iname_constant(vc, K_value,
+				RTVariables::get_shared_variables_creator(B->my_variables));
 		}
-
-	if (global_compilation_settings.memory_economy_in_force == FALSE) {
-		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
-		packaging_state save = EmitArrays::begin(iname, K_value);
-		LOOP_OVER(B, rulebook) {
-			if (SharedVariables::set_empty(B->my_variables)) EmitArrays::numeric_entry(0);
-			else EmitArrays::iname_entry(RTVariables::get_shared_variables_creator(B->my_variables));
-		}
-		EmitArrays::numeric_entry(0);
-		EmitArrays::end(save);
-		Hierarchy::make_available(iname);
-	} else @<Make slow lookup routine@>;
 }
-
-@<Make slow lookup routine@> =
-	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *rb_s = LocalVariables::new_other_as_symbol(I"rb");
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, rb_s);
-		EmitCode::code();
-		EmitCode::down();
-
-		rulebook *B;
-		LOOP_OVER(B, rulebook)
-			if (SharedVariables::set_empty(B->my_variables) == FALSE) {
-				EmitCode::inv(CASE_BIP);
-				EmitCode::down();
-					EmitCode::val_number((inter_ti) (B->allocation_id));
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(RETURN_BIP);
-						EmitCode::down();
-							EmitCode::val_iname(K_value, RTRules::get_stv_creator_iname(B));
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-			}
-
-		EmitCode::up();
-	EmitCode::up();
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_number(0);
-	EmitCode::up();
-
-	Functions::end(save);
 
 @
 
@@ -1182,3 +1105,52 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 			EmitCode::up();
 		EmitCode::up();
 	EmitCode::up();
+
+@h Synoptic resources.
+
+=
+void RTRules::compile_synoptic_resources(void) {
+	@<Provide placeholder for the NUMBER_RULEBOOKS_CREATED constant@>;
+	@<Provide placeholder for the RULEBOOKS_ARRAY array@>;
+	@<Provide placeholder for one of the ways to look up rulebook names@>;
+	@<Provide placeholder for one of the ways to look up shared variables@>;
+}
+
+@<Provide placeholder for the NUMBER_RULEBOOKS_CREATED constant@> =
+	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, NUMBER_RULEBOOKS_CREATED_SYNID);
+	Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the RULEBOOKS_ARRAY array@> =
+	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, RULEBOOKS_ARRAY_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for one of the ways to look up rulebook names@> =
+	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
+	if (global_compilation_settings.memory_economy_in_force)
+		Produce::annotate_i(iname, SYNOPTIC_IANN, ECONOMY_RULEBOOKNAMES_SYNID);
+	else
+		Produce::annotate_i(iname, SYNOPTIC_IANN, RULEBOOKNAMES_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for one of the ways to look up shared variables@> =
+	if (global_compilation_settings.memory_economy_in_force == FALSE) {
+		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
+		Produce::annotate_i(iname, SYNOPTIC_IANN, RULEBOOK_VAR_CREATORS_SYNID);
+		packaging_state save = EmitArrays::begin(iname, K_value);
+		EmitArrays::end(save);
+		Hierarchy::make_available(iname);
+	} else {
+		inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
+		Produce::annotate_i(iname, SYNOPTIC_IANN, SLOW_LOOKUP_SYNID);
+		packaging_state save = Functions::begin(iname);
+		LocalVariables::new_other_as_symbol(I"rb");
+		EmitCode::comment(I"This function is consolidated");
+		Functions::end(save);
+	}

@@ -14,15 +14,20 @@ void Synoptic::create_pipeline_stage(void) {
 
 inter_tree_location_list *text_nodes = NULL;
 inter_tree_location_list *response_nodes = NULL;
+inter_tree_location_list *rulebook_nodes = NULL;
+inter_tree_location_list *rule_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
 	response_nodes = TreeLists::new();
+	rulebook_nodes = TreeLists::new();
+	rule_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
 	InterTree::traverse(step->repository, Synoptic::syn_visitor, NULL, NULL, 0);
-	SynopticResources::renumber(step->repository, response_nodes);
+	SynopticResponses::renumber(step->repository, response_nodes);
+	SynopticRules::renumber(step->repository, rulebook_nodes);
 	return TRUE;
 }
 
@@ -38,6 +43,10 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 		inter_symbol *ptype = Inter::Packages::type(pack);
 		if (ptype == PackageTypes::get(I, I"_response"))
 			TreeLists::add(response_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_rulebook"))
+			TreeLists::add(rulebook_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_rule"))
+			TreeLists::add(rule_nodes, P);
 	}
 }
 
@@ -53,7 +62,8 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 		int synid = Inter::Symbols::read_annotation(con_s, SYNOPTIC_IANN);
 		if (synid > NO_SYNID) {
 			Inter::Symbols::unannotate(con_s, SYNOPTIC_IANN);
-			if (SynopticResources::redefine(I, P, con_s, synid)) return;
+			if (SynopticResponses::redefine(I, P, con_s, synid)) return;
+			if (SynopticRules::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
@@ -167,8 +177,19 @@ void Synoptic::textual_entry(inter_tree_node *Q, text_stream *text) {
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {
 	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
-	if (def_s == NULL) internal_error("no response_id constant for response");
+	if (def_s == NULL) internal_error("no symbol");
 	inter_tree_node *D = def_s->definition;
-	if (D == NULL) internal_error("undefined as_constant for response");
+	if (D == NULL) internal_error("undefined symbol");
 	return D;
+}
+
+inter_package *Synoptic::module_containing(inter_tree_node *P) {
+	inter_package *pack = Inter::Packages::container(P);
+	inter_tree *I = Inter::Packages::tree(pack);
+	while (pack) {
+		inter_symbol *ptype = Inter::Packages::type(pack);
+		if (ptype == PackageTypes::get(I, I"_module")) return pack;
+		pack = Inter::Packages::parent(pack);
+	}
+	return NULL;
 }

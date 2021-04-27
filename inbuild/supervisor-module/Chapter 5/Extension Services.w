@@ -516,7 +516,6 @@ parse_node *Extensions::get_inclusion_sentence(inform_extension *E) {
 }
 
 @ An extension is "standard" if it's either the Standard Rules or Basic Inform.
-(This affects indexing and crediting.)
 
 =
 int Extensions::is_standard(inform_extension *E) {

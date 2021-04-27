@@ -29,6 +29,7 @@ Chapter 3: Synoptic Resources
 	Synoptic Utilities
 	Literal Text
 	Responses
+	Rules
 
 Chapter 4: Inter to Final Code
 	Code Generation

@@ -259,12 +259,14 @@ void Hierarchy::establish(void) {
 
 @h Modules.
 
+@e EXT_CATEGORY_METADATA_HL
 @e EXT_TITLE_METADATA_HL
 @e EXT_AUTHOR_METADATA_HL
 @e EXT_VERSION_METADATA_HL
 
 @<Establish modules@> =
 	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
+		H_C_U(EXT_CATEGORY_METADATA_HL,       I"^category")
 		H_C_U(EXT_TITLE_METADATA_HL,          I"^title")
 		H_C_U(EXT_AUTHOR_METADATA_HL,         I"^author")
 		H_C_U(EXT_VERSION_METADATA_HL,        I"^version")
@@ -976,6 +978,10 @@ void Hierarchy::establish(void) {
 @e OUTCOME_HL
 @e RULEBOOKS_HAP
 @e RULEBOOK_NAME_METADATA_HL
+@e RULEBOOK_PNAME_METADATA_HL
+@e RULEBOOK_VARC_METADATA_HL
+@e RULEBOOK_RUN_FN_METADATA_HL
+@e RULEBOOK_ID_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
 
@@ -1004,6 +1010,10 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(RULEBOOKS_HAP,             I"rulebook", I"_rulebook")
 			H_C_U(RULEBOOK_NAME_METADATA_HL,  I"^name")
+			H_C_U(RULEBOOK_PNAME_METADATA_HL, I"^printed_name")
+			H_C_U(RULEBOOK_RUN_FN_METADATA_HL, I"^run_fn")
+			H_C_U(RULEBOOK_VARC_METADATA_HL,  I"^var_creator")
+			H_C_U(RULEBOOK_ID_HL,             I"rulebook_id")
 			H_F_U(RUN_FN_HL,                  I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn")
 		H_END
@@ -2018,9 +2028,21 @@ void Hierarchy::apply_metadata(package_request *P, int id, text_stream *value) {
 	Emit::text_constant(iname, value);
 }
 
+void Hierarchy::apply_metadata_from_number(package_request *P, int id, inter_ti N) {
+	inter_name *iname = Hierarchy::make_iname_in(id, P);
+	Emit::numeric_constant(iname, N);
+}
+
 void Hierarchy::apply_metadata_from_wording(package_request *P, int id, wording W) {
 	TEMPORARY_TEXT(ANT)
 	WRITE_TO(ANT, "%W", W);
+	Hierarchy::apply_metadata(P, id, ANT);
+	DISCARD_TEXT(ANT)
+}
+
+void Hierarchy::apply_metadata_from_raw_wording(package_request *P, int id, wording W) {
+	TEMPORARY_TEXT(ANT)
+	WRITE_TO(ANT, "%+W", W);
 	Hierarchy::apply_metadata(P, id, ANT);
 	DISCARD_TEXT(ANT)
 }

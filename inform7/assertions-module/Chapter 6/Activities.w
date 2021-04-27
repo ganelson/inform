@@ -84,7 +84,7 @@ activity *Activities::new(kind *K, wording W) {
 
 	@<Make proper nouns for the activity name@>;
 
-	av->activity_variables = SharedVariables::new_set(10000+av->allocation_id);
+	av->activity_variables = SharedVariables::new_set(10000+av->allocation_id, NULL);
 
 	av->before_rules = Activities::make_rulebook(av, 0, future_action_flag);
 	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);

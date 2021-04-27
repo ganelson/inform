@@ -55,7 +55,7 @@ action_name *Actions::act_new(wording W) {
 	an->carry_out_rules =  Actions::new_rulebook(an, CARRY_OUT_RB_HL);
 	an->report_rules =     Actions::new_rulebook(an, REPORT_RB_HL);
 	an->action_variables =
-		SharedVariables::new_set(RTActions::action_variable_set_ID(an));
+		SharedVariables::new_set(RTActions::action_variable_set_ID(an), NULL);
 
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
 	return an;

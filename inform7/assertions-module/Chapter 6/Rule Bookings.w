@@ -110,7 +110,6 @@ void RuleBookings::make_automatic_placements(void) {
 				internal_error("Inter-defined rules cannot be automatically placed");
 			}
 		}
-	RTRules::compile_NUMBER_RULEBOOKS_CREATED();
 }
 
 @h Specificity of bookings.

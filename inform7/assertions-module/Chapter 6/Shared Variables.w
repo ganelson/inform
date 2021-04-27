@@ -59,6 +59,10 @@ int SharedVariables::get_owner_id(shared_variable *shv) {
 	return shv->owner->recognition_id;
 }
 
+inter_name *SharedVariables::get_owner_iname(shared_variable *shv) {
+	return shv->owner->recognition_iname;
+}
+
 int SharedVariables::get_index(shared_variable *shv) {
 	return shv->index_in_owner;
 }
@@ -94,14 +98,16 @@ only be a 16-bit unsigned integer.
 =
 typedef struct shared_variable_set {
 	int recognition_id;
+	struct inter_name *recognition_iname;
 	struct linked_list *variables; /* of |shared_variable| */
 	struct shared_variable_set_compilation_data compilation_data;
 	CLASS_DEFINITION
 } shared_variable_set;
 
-shared_variable_set *SharedVariables::new_set(int id) {
+shared_variable_set *SharedVariables::new_set(int id, inter_name *iname) {
 	shared_variable_set *set = CREATE(shared_variable_set);
 	set->recognition_id = id;
+	set->recognition_iname = iname;
 	set->variables = NEW_LINKED_LIST(shared_variable);
 	set->compilation_data = RTVariables::new_set_data(set);
 	return set;

@@ -207,7 +207,7 @@ void Responses::compilation_agent(compilation_subtask *t) {
 }
 
 @ Something skated over above is that responses can also be created when the
-source text defines a rule only as an Inter routine. For example:
+source text defines a rule only as an Inter function. For example:
 = (text as Inform 7)
 The hack mode rule translates into Inter as "HACK_MODE_ON_R" with "Hack mode on." (A).
 =
@@ -386,13 +386,13 @@ These are all completed at the linking stage.
 
 =
 void Responses::compile_synoptic_resources(void) {
-	@<Compile the PrintResponse routine@>;
-	@<Compile the NO_RESPONSES constant@>;
-	@<Compile the ResponseDivisions array@>;
-	@<Compile the ResponseTexts array@>;
+	@<Provide placeholder for the PrintResponse function@>;
+	@<Provide placeholder for the NO_RESPONSES constant@>;
+	@<Provide placeholder for the ResponseDivisions array@>;
+	@<Provide placeholder for the ResponseTexts array@>;
 }
 
-@<Compile the PrintResponse routine@> =
+@<Provide placeholder for the PrintResponse function@> =
 	inter_name *iname = Hierarchy::find(PRINT_RESPONSE_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_RESPONSE_SYNID);
 	packaging_state save = Functions::begin(iname);
@@ -403,19 +403,19 @@ void Responses::compile_synoptic_resources(void) {
 	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 
-@<Compile the NO_RESPONSES constant@> =
+@<Provide placeholder for the NO_RESPONSES constant@> =
 	inter_name *iname = Hierarchy::find(NO_RESPONSES_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_RESPONSES_SYNID);
 	Emit::numeric_constant(iname, 0);
 
-@<Compile the ResponseDivisions array@> =
+@<Provide placeholder for the ResponseDivisions array@> =
 	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, RESPONSEDIVISIONS_SYNID);
 	packaging_state save = EmitArrays::begin(iname, K_value);
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);
 
-@<Compile the ResponseTexts array@> =
+@<Provide placeholder for the ResponseTexts array@> =
 	inter_name *iname = Hierarchy::find(RESPONSETEXTS_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, RESPONSETEXTS_SYNID);
 	packaging_state save = EmitArrays::begin(iname, K_value);

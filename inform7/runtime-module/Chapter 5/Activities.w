@@ -87,7 +87,7 @@ void RTActivities::Activity_before_rulebooks_array(void) {
 	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		EmitArrays::numeric_entry((inter_ti) av->before_rules->allocation_id);
+		EmitArrays::iname_entry(av->before_rules->compilation_data.rb_id_iname);
 		i++;
 	}
 	if (i==0) EmitArrays::null_entry();
@@ -101,7 +101,7 @@ void RTActivities::Activity_for_rulebooks_array(void) {
 	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		EmitArrays::numeric_entry((inter_ti) av->for_rules->allocation_id);
+		EmitArrays::iname_entry(av->for_rules->compilation_data.rb_id_iname);
 		i++;
 	}
 	if (i==0) EmitArrays::null_entry();
@@ -115,7 +115,7 @@ void RTActivities::Activity_after_rulebooks_array(void) {
 	packaging_state save = EmitArrays::begin(iname, K_number);
 	activity *av; int i = 0;
 	LOOP_OVER(av, activity) {
-		EmitArrays::numeric_entry((inter_ti) av->after_rules->allocation_id);
+		EmitArrays::iname_entry(av->after_rules->compilation_data.rb_id_iname);
 		i++;
 	}
 	if (i==0) EmitArrays::null_entry();

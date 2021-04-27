@@ -141,8 +141,7 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
 		rulebook *rb = Rvalues::to_rulebook(value);
-		if (Holsters::non_void_context(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) rb->allocation_id);
+		Emit::holster_iname(VH, rb->compilation_data.rb_id_iname);
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_rulebook_outcome)) {
