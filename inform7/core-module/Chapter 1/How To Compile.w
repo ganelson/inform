@@ -367,6 +367,10 @@ void Sequence::queue_at(void (*agent)(struct compilation_subtask *),
 (*) after the |last_task|, i.e., at the back, if no task is currently going on; or
 (*) after the |current_horizon| marker, i.e., after the current task finishes.
 
+In the case where we are currently in the middle of what was the last task
+when it started, these two positions will be the same, so we sometimes need
+to advance |last_task| even when |current_horizon| is set.
+
 @<Queue the task@> =
 	t->caused_by = current_task;
 	if (first_task == NULL) { first_task = t; last_task = t; return; }
@@ -377,8 +381,8 @@ void Sequence::queue_at(void (*agent)(struct compilation_subtask *),
 	} else {
 		t->next_task = NULL;
 		last_task->next_task = t;
-		last_task = t;
 	}
+	if (t->next_task == NULL) last_task = t;
 	if (t->caused_by) WRITE_TO(t->description, " from [%d]", t->caused_by->allocation_id);
 	else WRITE_TO(t->description, " from %S", current_sequence_bench);
 	if (task_queue_is_closed) {
@@ -425,7 +429,6 @@ void Sequence::undertake_queued_tasks(void) {
 			current_sentence = save;
 		}
 	} while (t);
-	while ((last_task) && (last_task->next_task)) last_task = last_task->next_task;
 }	
 
 @ At the end of compilation, the queue ought to be empty, but just in case:

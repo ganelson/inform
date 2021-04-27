@@ -520,6 +520,11 @@ one of these two functions:
 <ul class="items"><li>&#9679; after the <span class="extract"><span class="extract-syntax">last_task</span></span>, i.e., at the back, if no task is currently going on; or
 </li><li>&#9679; after the <span class="extract"><span class="extract-syntax">current_horizon</span></span> marker, i.e., after the current task finishes.
 </li></ul>
+<p class="commentary">In the case where we are currently in the middle of what was the last task
+when it started, these two positions will be the same, so we sometimes need
+to advance <span class="extract"><span class="extract-syntax">last_task</span></span> even when <span class="extract"><span class="extract-syntax">current_horizon</span></span> is set.
+</p>
+
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Queue the task</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
@@ -533,8 +538,8 @@ one of these two functions:
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">last_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">last_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">last_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">caused_by</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">description</span><span class="plain-syntax">, </span><span class="string-syntax">" from [%d]"</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">caused_by</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">description</span><span class="plain-syntax">, </span><span class="string-syntax">" from %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_sequence_bench</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task_queue_is_closed</span><span class="plain-syntax">) {</span>
@@ -584,7 +589,6 @@ one of these two functions:
 <span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">last_task</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">last_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_task</span><span class="plain-syntax">)) </span><span class="identifier-syntax">last_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">last_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_task</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>At the end of compilation, the queue ought to be empty, but just in case:
