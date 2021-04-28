@@ -30,6 +30,7 @@ Chapter 3: Synoptic Resources
 	Literal Text
 	Responses
 	Rules
+	Activities
 
 Chapter 4: Inter to Final Code
 	Code Generation

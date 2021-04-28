@@ -8,6 +8,7 @@ To write support code for activities.
 typedef struct activity_compilation_data {
 	struct package_request *av_package;
 	struct inter_name *av_iname; /* an identifier for a constant identifying this */
+	struct inter_name *variables_id; /* for the shared variables set */
 } activity_compilation_data;
 
 @
@@ -18,7 +19,7 @@ activity_compilation_data RTActivities::new_compilation_data(activity *av) {
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	Hierarchy::apply_metadata_from_wording(acd.av_package, ACTIVITY_NAME_METADATA_HL, av->name);
 	acd.av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, acd.av_package, av->name);
-	Emit::numeric_constant(acd.av_iname, (inter_ti) av->allocation_id);
+	acd.variables_id = Hierarchy::make_iname_in(ACTIVITY_SHV_ID_HL, acd.av_package);
 	return acd;
 }
 
@@ -75,89 +76,71 @@ void RTActivities::emit_activity_list(activity_list *al) {
 	while (downs > 0) { EmitCode::up(); downs--; }
 }
 
-void RTActivities::arrays(void) {
-	RTActivities::Activity_before_rulebooks_array();
-	RTActivities::Activity_for_rulebooks_array();
-	RTActivities::Activity_after_rulebooks_array();
-	RTActivities::Activity_atb_rulebooks_array();
-}
-
-void RTActivities::Activity_before_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
-	packaging_state save = EmitArrays::begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		EmitArrays::iname_entry(av->before_rules->compilation_data.rb_id_iname);
-		i++;
-	}
-	if (i==0) EmitArrays::null_entry();
-	EmitArrays::null_entry();
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
-void RTActivities::Activity_for_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
-	packaging_state save = EmitArrays::begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		EmitArrays::iname_entry(av->for_rules->compilation_data.rb_id_iname);
-		i++;
-	}
-	if (i==0) EmitArrays::null_entry();
-	EmitArrays::null_entry();
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
-void RTActivities::Activity_after_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
-	packaging_state save = EmitArrays::begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		EmitArrays::iname_entry(av->after_rules->compilation_data.rb_id_iname);
-		i++;
-	}
-	if (i==0) EmitArrays::null_entry();
-	EmitArrays::null_entry();
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
-void RTActivities::Activity_atb_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
-	packaging_state save = EmitArrays::begin_byte(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		EmitArrays::numeric_entry((inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
-		i++;
-	}
-	if (i==0) EmitArrays::numeric_entry(255);
-	EmitArrays::numeric_entry(255);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
 void RTActivities::activity_var_creators(void) {
 	activity *av;
 	LOOP_OVER(av, activity) {
+		inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_ID_HL, av->compilation_data.av_package);
+		Emit::numeric_constant(iname, 0);
+		Emit::iname_constant(av->compilation_data.av_iname, K_value, iname);
+		Hierarchy::apply_metadata_from_iname(av->compilation_data.av_package, ACTIVITY_BEFORE_METADATA_HL,
+			av->before_rules->compilation_data.rb_id_iname);
+		Hierarchy::apply_metadata_from_iname(av->compilation_data.av_package, ACTIVITY_FOR_METADATA_HL,
+			av->for_rules->compilation_data.rb_id_iname);
+		Hierarchy::apply_metadata_from_iname(av->compilation_data.av_package, ACTIVITY_AFTER_METADATA_HL,
+			av->after_rules->compilation_data.rb_id_iname);
+		int ufa = Rulebooks::used_by_future_actions(av->before_rules);
+		Hierarchy::apply_metadata_from_number(av->compilation_data.av_package, ACTIVITY_UFA_METADATA_HL, (inter_ti) ufa);
+
 		if (SharedVariables::set_empty(av->activity_variables) == FALSE) {
 			inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_STV_CREATOR_FN_HL, av->compilation_data.av_package);
 			RTVariables::set_shared_variables_creator(av->activity_variables, iname);
 			RTVariables::compile_frame_creator(av->activity_variables);
+			Hierarchy::apply_metadata_from_iname(av->compilation_data.av_package, ACTIVITY_VARC_METADATA_HL,
+				iname);
 		}
+		Emit::numeric_constant(av->compilation_data.variables_id, 0);
 	}
+}
 
-	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	int c = 0;
-	LOOP_OVER(av, activity) {
-		if (SharedVariables::set_empty(av->activity_variables)) EmitArrays::numeric_entry(0);
-		else EmitArrays::iname_entry(RTVariables::get_shared_variables_creator(av->activity_variables));
-		c++;
-	}
-	EmitArrays::numeric_entry(0);
-	if (c == 0) EmitArrays::numeric_entry(0);
+void RTActivities::compile_synoptic_resources(void) {
+	@<Provide placeholder for the ACTIVITY_BEFORE_RULEBOOKS array@>;
+	@<Provide placeholder for the ACTIVITY_FOR_RULEBOOKS array@>;
+	@<Provide placeholder for the ACTIVITY_AFTER_RULEBOOKS array@>;
+	@<Provide placeholder for the ACTIVITY_ATB_RULEBOOKS array@>;
+	@<Provide placeholder for the ACTIVITY_VAR_CREATORS array@>;
+}
+
+@<Provide placeholder for the ACTIVITY_BEFORE_RULEBOOKS array@> =
+	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIVITY_BEFORE_RULEBOOKS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_number);
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);
-}
+
+@<Provide placeholder for the ACTIVITY_FOR_RULEBOOKS array@> =
+	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIVITY_FOR_RULEBOOKS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIVITY_AFTER_RULEBOOKS array@> =
+	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIVITY_AFTER_RULEBOOKS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIVITY_ATB_RULEBOOKS array@> =
+	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIVITY_ATB_RULEBOOKS_SYNID);
+	packaging_state save = EmitArrays::begin_byte(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIVITY_VAR_CREATORS array@> =
+	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIVITY_VAR_CREATORS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);

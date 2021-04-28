@@ -334,10 +334,17 @@ void Hierarchy::establish(void) {
 
 @e ACTIVITIES_HAP
 @e ACTIVITY_NAME_METADATA_HL
+@e ACTIVITY_VARC_METADATA_HL
+@e ACTIVITY_BEFORE_METADATA_HL
+@e ACTIVITY_FOR_METADATA_HL
+@e ACTIVITY_AFTER_METADATA_HL
+@e ACTIVITY_UFA_METADATA_HL
+@e ACTIVITY_ID_HL
 @e ACTIVITY_HL
 @e BEFORE_RB_HL
 @e FOR_RB_HL
 @e AFTER_RB_HL
+@e ACTIVITY_SHV_ID_HL
 @e ACTIVITY_STV_CREATOR_FN_HL
 
 @e ACTIVITY_AFTER_RULEBOOKS_HL
@@ -352,10 +359,17 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
 			H_C_U(ACTIVITY_NAME_METADATA_HL,  I"^name")
+			H_C_U(ACTIVITY_BEFORE_METADATA_HL, I"^before_rulebook")
+			H_C_U(ACTIVITY_FOR_METADATA_HL,   I"^for_rulebook")
+			H_C_U(ACTIVITY_AFTER_METADATA_HL, I"^after_rulebook")
+			H_C_U(ACTIVITY_UFA_METADATA_HL,   I"^used_by_future")
+			H_C_U(ACTIVITY_VARC_METADATA_HL,  I"^var_creator")
+			H_C_U(ACTIVITY_ID_HL,             I"activity_id")
 			H_C_G(ACTIVITY_HL,                I"V")
 			H_PKG(BEFORE_RB_HL,               I"before_rb", I"_rulebook")
 			H_PKG(FOR_RB_HL,                  I"for_rb", I"_rulebook")
 			H_PKG(AFTER_RB_HL,                I"after_rb", I"_rulebook")
+			H_C_U(ACTIVITY_SHV_ID_HL,         I"var_id")
 			H_F_U(ACTIVITY_STV_CREATOR_FN_HL, I"stv_creator_fn")
 		H_END
 	H_END
