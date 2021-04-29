@@ -14,14 +14,6 @@ void SynopticRules::renumber(inter_tree *I, inter_tree_location_list *rulebook_n
 		TreeLists::sort(rulebook_nodes, SynopticRules::cmp);
 		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
-			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
-			inter_package *mod = Synoptic::module_containing(rulebook_nodes->list[i].node);
-			LOG("Mod $6\n", mod);
-			inter_ti c = Metadata::read_optional_numeric(mod, I"^category");
-			LOG("RB %S has cat %d\n", name, c);
-		}			
-		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}

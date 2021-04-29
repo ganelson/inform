@@ -375,7 +375,7 @@ than once for each rule.
 	switch (format) {
 		case GROUPED_ARRAY_RBF:
 			#ifdef IF_MODULE
-			if (an) RTActions::action_array_entry(an); else
+			if (an) EmitArrays::iname_entry(RTActions::double_sharp(an)); else
 			#endif
 				EmitArrays::numeric_entry((inter_ti) -2);
 			if (group_size > 1) EmitArrays::numeric_entry((inter_ti) group_size);

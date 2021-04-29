@@ -502,6 +502,12 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
 		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
 		DISCARD_TEXT(an)
+		inter_symbol *aid_s = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), I"action_id");
+		Produce::guard(Inter::Constant::new_numerical(IBM,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), aid_s),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
 		inter_symbol *asymb = CodeGen::Assimilate::make_socketed_symbol(I, value, Inter::Bookmarks::scope(IBM));
 		TEMPORARY_TEXT(unsharped)
 		WRITE_TO(unsharped, "%SSub", value);

@@ -104,8 +104,8 @@ int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line 
 }
 
 void RTCommandGrammarLines::MistakeActionSub_routine(void) {
-	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
-	packaging_state save = Functions::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
+	inter_name *iname = Hierarchy::find(MISTAKEACTIONSUB_HL);
+	packaging_state save = Functions::begin(iname);
 
 	EmitCode::inv(SWITCH_BIP);
 	EmitCode::down();
@@ -156,7 +156,7 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 
 	Functions::end(save);
 	
-	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
+	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_HL);
 	Emit::unchecked_numeric_constant(MistakeAction_iname, 10000);
 	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
 	Hierarchy::make_available(MistakeAction_iname);
@@ -351,7 +351,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 		case CG_IS_COMMAND:
 			if (RTCommandGrammarLines::cgl_compile_result_of_mistake(gprk, cgl)) break;
 			EmitArrays::iname_entry(VERB_DIRECTIVE_RESULT_iname);
-			RTActions::action_array_entry(cgl->resulting_action);
+			EmitArrays::iname_entry(RTActions::double_sharp(cgl->resulting_action));
 
 			if (cgl->reversed) {
 				if (token_values < 2) {

@@ -17,6 +17,7 @@ inter_tree_location_list *response_nodes = NULL;
 inter_tree_location_list *rulebook_nodes = NULL;
 inter_tree_location_list *rule_nodes = NULL;
 inter_tree_location_list *activity_nodes = NULL;
+inter_tree_location_list *action_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -24,6 +25,7 @@ int Synoptic::go(pipeline_step *step) {
 	rulebook_nodes = TreeLists::new();
 	rule_nodes = TreeLists::new();
 	activity_nodes = TreeLists::new();
+	action_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -31,6 +33,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticResponses::renumber(step->repository, response_nodes);
 	SynopticRules::renumber(step->repository, rulebook_nodes);
 	SynopticActivities::renumber(step->repository, activity_nodes);
+	SynopticActions::renumber(step->repository, action_nodes);
 	return TRUE;
 }
 
@@ -52,6 +55,8 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(rule_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_activity"))
 			TreeLists::add(activity_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_action"))
+			TreeLists::add(action_nodes, P);
 	}
 }
 
@@ -70,6 +75,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticResponses::redefine(I, P, con_s, synid)) return;
 			if (SynopticRules::redefine(I, P, con_s, synid)) return;
 			if (SynopticActivities::redefine(I, P, con_s, synid)) return;
+			if (SynopticActions::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
@@ -147,6 +153,13 @@ inter_tree_node *Synoptic::begin_array(inter_symbol *con_s, inter_bookmark *IBM)
 }
 inter_tree_node *Synoptic::begin_byte_array(inter_symbol *con_s, inter_bookmark *IBM) {
 	Inter::Symbols::annotate_i(con_s, BYTEARRAY_IANN, 1);
+	return Inode::fill_3(IBM, CONSTANT_IST,
+		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
+		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
+		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+}
+inter_tree_node *Synoptic::begin_table_array(inter_symbol *con_s, inter_bookmark *IBM) {
+	Inter::Symbols::annotate_i(con_s, TABLEARRAY_IANN, 1);
 	return Inode::fill_3(IBM, CONSTANT_IST,
 		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
 		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),

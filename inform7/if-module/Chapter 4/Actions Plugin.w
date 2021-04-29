@@ -56,10 +56,12 @@ void ActionsPlugin::start(void) {
 int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
 		BENCH(RTNamedActionPatterns::compile);
-		BENCH(RTActions::ActionData);
-		BENCH(RTActions::ActionCoding_array);
-		BENCH(RTActions::ActionHappened);
-		BENCH(RTActions::compile_action_routines);
+		BENCH(RTActions::compile_action_name_var_creators);
+		BENCH(RTActions::compile_metadata);
+		BENCH(RTActions::compile_functions);
+	}
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTActions::compile_synoptic_resources);
 	}
 	return FALSE;
 }

@@ -45,9 +45,9 @@ int GoingPlugin::new_action_notify(action_name *an) {
 @ The going action variables are identified at runtime by this ID number:
 
 =
-int GoingPlugin::id(void) {
+inter_name *GoingPlugin::id(void) {
 	if (going_action == NULL) return 0;
-	return RTActions::action_variable_set_ID(going_action);
+	return going_action->compilation_data.variables_id;
 }
 
 @ We will need to handle five special AP clauses. Two have the existing |IN_APCA|
@@ -94,9 +94,9 @@ a special ID number of our choice.
 
 =
 int GoingPlugin::divert_clause_ID(shared_variable *stv, int *id) {
-	int oid = SharedVariables::get_owner_id(stv);
+	inter_name *oin = SharedVariables::get_owner_iname(stv);
 	int off = SharedVariables::get_index(stv);
-	if ((going_action) && (oid == GoingPlugin::id())) {
+	if ((going_action) && (oin == GoingPlugin::id())) {
 		switch (off) {
 			case 0: *id = GOING_FROM_AP_CLAUSE; return TRUE;
 			case 1: *id = GOING_TO_AP_CLAUSE; return TRUE;

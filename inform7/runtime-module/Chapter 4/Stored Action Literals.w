@@ -48,7 +48,7 @@ inter_name *StoredActionLiterals::small_block(explicit_action *ea) {
 
 	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
 	action_name *an = ea->action;
-	RTActions::action_array_entry(an);
+	EmitArrays::iname_entry(RTActions::double_sharp(an));
 
 	int request_bits = (ea->request)?1:0;
 	if (ea->first_noun) {

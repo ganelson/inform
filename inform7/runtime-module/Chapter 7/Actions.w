@@ -9,6 +9,7 @@ typedef struct action_compilation_data {
 	struct inter_name *an_base_iname; /* e.g., |Take| */
 	struct inter_name *an_iname; /* e.g., |##Take| */
 	struct inter_name *an_routine_iname; /* e.g., |TakeSub| */
+	struct inter_name *variables_id; /* for the shared variables set */
 	struct package_request *an_package;
 } action_compilation_data;
 
@@ -21,6 +22,7 @@ action_compilation_data RTActions::new_data(wording W) {
 	acd.an_routine_iname = NULL;
 	acd.an_package = Hierarchy::local_package(ACTIONS_HAP);
 	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_METADATA_HL, W);
+	acd.variables_id = Hierarchy::make_iname_in(ACTION_SHV_ID_HL, acd.an_package);
 	return acd;
 }
 
@@ -80,10 +82,6 @@ inter_name *RTActions::Sub(action_name *an) {
 	return an->compilation_data.an_routine_iname;
 }
 
-inter_name *RTActions::iname(action_name *an) {
-	return RTActions::double_sharp(an);
-}
-
 text_stream *RTActions::identifier(action_name *an) {
 	return InterNames::to_text(RTActions::base_iname(an));
 }
@@ -97,21 +95,45 @@ void RTActions::compile_action_name_var_creators(void) {
 				an->compilation_data.an_package);
 			RTVariables::set_shared_variables_creator(an->action_variables, iname);
 			RTVariables::compile_frame_creator(an->action_variables);
+			inter_name *vc = Hierarchy::make_iname_in(ACTION_VARC_METADATA_HL,
+				an->compilation_data.an_package);
+			Emit::iname_constant(vc, K_value, iname);
 		}
 	}
 }
 
-void RTActions::ActionCoding_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIONCODING_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
+void RTActions::compile_metadata(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
+		inter_name *iname = Hierarchy::make_iname_in(ACTION_ID_HL,
+			an->compilation_data.an_package);
+		Emit::numeric_constant(iname, 0);
+		Emit::numeric_constant(an->compilation_data.variables_id, 0);
 		if (Str::get_first_char(RTActions::identifier(an)) == '_')
-			EmitArrays::numeric_entry(0);
-		else RTActions::action_array_entry(an);
+			Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+				NO_CODING_METADATA_HL, 1);
+		inter_name *dsc = Hierarchy::make_iname_in(ACTION_DSHARP_METADATA_HL,
+			an->compilation_data.an_package);
+		Emit::iname_constant(dsc, K_value, RTActions::double_sharp(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			OUT_OF_WORLD_METADATA_HL, (inter_ti) ActionSemantics::is_out_of_world(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			REQUIRES_LIGHT_METADATA_HL, (inter_ti) ActionSemantics::requires_light(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			CAN_HAVE_NOUN_METADATA_HL, (inter_ti) ActionSemantics::can_have_noun(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			CAN_HAVE_SECOND_METADATA_HL, (inter_ti) ActionSemantics::can_have_second(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			NOUN_ACCESS_METADATA_HL, (inter_ti) ActionSemantics::noun_access(an));
+		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
+			SECOND_ACCESS_METADATA_HL, (inter_ti) ActionSemantics::second_access(an));
+		inter_name *kn_iname = Hierarchy::make_iname_in(NOUN_KIND_METADATA_HL,
+			an->compilation_data.an_package);
+		RTKinds::constant_from_strong_id(kn_iname, ActionSemantics::kind_of_noun(an));
+		inter_name *ks_iname = Hierarchy::make_iname_in(SECOND_KIND_METADATA_HL,
+			an->compilation_data.an_package);
+		RTKinds::constant_from_strong_id(ks_iname, ActionSemantics::kind_of_second(an));
 	}
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
 }
 
 parse_node *RTActions::compile_action_bitmap_property(instance *I) {
@@ -133,22 +155,13 @@ parse_node *RTActions::compile_action_bitmap_property(instance *I) {
 	return Rvalues::from_iname(N);
 }
 
-void RTActions::ActionHappened(void) {
-	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_HL);
-	packaging_state save = EmitArrays::begin(iname, K_number);
-	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
-		EmitArrays::numeric_entry(0);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-}
-
 @h Compiling data about actions.
 In I6, there was no common infrastructure for the implementation of
 actions: each defined its own |-Sub| routine. Here, we do have a common
 infrastructure, and we access it with a single call.
 
 =
-void RTActions::compile_action_routines(void) {
+void RTActions::compile_functions(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		inter_name *iname = RTActions::Sub(an);
@@ -164,63 +177,20 @@ void RTActions::compile_action_routines(void) {
 			EmitCode::up();
 		EmitCode::up();
 		Functions::end(save);
+
+		@<Make a debug fn@>;
 	}
 }
 
-void RTActions::ActionData(void) {
-	RTActions::compile_action_name_var_creators();
-	action_name *an;
-	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
-
-	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
-	packaging_state save = EmitArrays::begin_table(iname, K_value);
-	LOOP_OVER(an, action_name) {
-		mn = 0; ms = 0; ml = 0; mnp = 1; msp = 1; hn = 0; hs = 0;
-		if (ActionSemantics::requires_light(an)) ml = 1;
-		if (ActionSemantics::noun_access(an) == REQUIRES_ACCESS) mn = 1;
-		if (ActionSemantics::second_access(an) == REQUIRES_ACCESS) ms = 1;
-		if (ActionSemantics::noun_access(an) == REQUIRES_POSSESSION) { mn = 1; hn = 1; }
-		if (ActionSemantics::second_access(an) == REQUIRES_POSSESSION) { ms = 1; hs = 1; }
-		if (ActionSemantics::can_have_noun(an) == FALSE) mnp = 0;
-		if (ActionSemantics::can_have_second(an) == FALSE) msp = 0;
-		record_count++;
-		RTActions::action_array_entry(an);
-		inter_ti bitmap = (inter_ti) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
-			msp*0x10 + ((ActionSemantics::is_out_of_world(an))?1:0)*0x20 + hn*0x40 + hs*0x80);
-		EmitArrays::numeric_entry(bitmap);
-		RTKinds::emit_strong_id(ActionSemantics::kind_of_noun(an));
-		RTKinds::emit_strong_id(ActionSemantics::kind_of_second(an));
-		if ((an->action_variables) &&
-				(SharedVariables::set_empty(an->action_variables) == FALSE))
-			EmitArrays::iname_entry(RTVariables::get_shared_variables_creator(an->action_variables));
-		else EmitArrays::numeric_entry(0);
-		EmitArrays::numeric_entry((inter_ti) (RTActions::action_variable_set_ID(an)));
-	}
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-
-	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
-	Emit::numeric_constant(ad_iname, (inter_ti) record_count);
-	Hierarchy::make_available(ad_iname);
-
-	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
-	save = Functions::begin(DB_Action_Details_iname);
-	inter_symbol *act_s = LocalVariables::new_other_as_symbol(I"act");
+@<Make a debug fn@> = 
+	inter_name *iname = Hierarchy::derive_iname_in(DEBUG_ACTION_FN_HL,
+		RTActions::base_iname(an), an->compilation_data.an_package);
+	Hierarchy::apply_metadata_from_iname(an->compilation_data.an_package,
+		DEBUG_ACTION_METADATA_HL, iname);
+	save = Functions::begin(iname);
 	inter_symbol *n_s = LocalVariables::new_other_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::new_other_as_symbol(I"s");
 	inter_symbol *for_say_s = LocalVariables::new_other_as_symbol(I"for_say");
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, act_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER(an, action_name) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, RTActions::double_sharp(an));
-				EmitCode::code();
-				EmitCode::down();
 
 				int j = Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), j0 = -1, somethings = 0, clc = 0;
 				while (j <= Wordings::last_wn(ActionNameNames::tensed(an, IS_TENSE))) {
@@ -289,15 +259,8 @@ void RTActions::ActionData(void) {
 					EmitCode::up();
 				}
 
-				EmitCode::up();
-			EmitCode::up();
-	}
 
-		EmitCode::up();
-	EmitCode::up();
 	Functions::end(save);
-	Hierarchy::make_available(DB_Action_Details_iname);
-}
 
 @<Insert a space here if needed to break up the action name@> =
 	if (clc++ > 0) {
@@ -306,13 +269,6 @@ void RTActions::ActionData(void) {
 			EmitCode::val_text(I" ");
 		EmitCode::up();
 	}
-
-@
-
-=
-void RTActions::action_array_entry(action_name *an) {
-	EmitArrays::iname_entry(RTActions::iname(an));
-}
 
 @
 
@@ -361,7 +317,7 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 	if (Kinds::eq(K, K_action_name)) {
 		action_name *an = ARvalues::to_action_name(spec);
 		if (Holsters::non_void_context(VH)) {
-			inter_name *N = RTActions::iname(an);
+			inter_name *N = RTActions::double_sharp(an);
 			if (N) Emit::holster_iname(VH, N);
 		}
 		return TRUE;
@@ -428,3 +384,60 @@ int RTActions::is_an_action_variable(parse_node *spec) {
 	if (nlv == Inter_actor_VAR) return TRUE;
 	return FALSE;
 }
+
+@h Synoptic resources.
+
+=
+void RTActions::compile_synoptic_resources(void) {
+	@<Provide placeholder for the CCOUNT_ACTION_NAME constant@>;
+	@<Provide placeholder for the ACTIONDATA array@>;
+	@<Provide placeholder for the AD_RECORDS constant@>;
+	@<Provide placeholder for the ACTIONCODING array@>;
+	@<Provide placeholder for the ACTIONHAPPENED array@>;
+	@<Provide placeholder for the DB_ACTION_DETAILS function@>;
+}
+
+@<Provide placeholder for the CCOUNT_ACTION_NAME constant@> =
+	inter_name *iname = Hierarchy::find(CCOUNT_ACTION_NAME_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, CCOUNT_ACTION_NAME_SYNID);
+	Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIONDATA array@> =
+	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIONDATA_SYNID);
+	packaging_state save = EmitArrays::begin_table(iname, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the AD_RECORDS constant@> =
+	inter_name *iname = Hierarchy::find(AD_RECORDS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, AD_RECORDS_SYNID);
+	Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIONCODING array@> =
+	inter_name *iname = Hierarchy::find(ACTIONCODING_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIONCODING_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ACTIONHAPPENED array@> =
+	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ACTIONHAPPENED_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the DB_ACTION_DETAILS function@> =
+	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
+	Produce::annotate_i(DB_Action_Details_iname, SYNOPTIC_IANN, DB_ACTION_DETAILS_SYNID);
+	packaging_state save = Functions::begin(DB_Action_Details_iname);
+	LocalVariables::new_other_as_symbol(I"act");
+	LocalVariables::new_other_as_symbol(I"n");
+	LocalVariables::new_other_as_symbol(I"s");
+	LocalVariables::new_other_as_symbol(I"for_say");
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(DB_Action_Details_iname);

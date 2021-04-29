@@ -22,13 +22,6 @@ typedef struct action_semantics {
 	struct kind *second_kind; /* if there are 2 parameters */
 } action_semantics;
 
-@ The access possibilities for the noun and second are as follows:
-
-@d UNRESTRICTED_ACCESS 1 /* question not meaningful, e.g. for a number */
-@d DOESNT_REQUIRE_ACCESS 2 /* actor need not be able to touch this object */
-@d REQUIRES_ACCESS 3 /* actor must be able to touch this object */
-@d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
-
 @ A newly created action, by default, has this:
 
 =

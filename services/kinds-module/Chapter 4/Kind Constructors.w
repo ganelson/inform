@@ -399,6 +399,13 @@ void Kinds::Constructors::emit_constants(void) {
 				tn, Kinds::Constructors::package(con));
 			Hierarchy::make_available(con->con_iname);
 			Emit::numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
+		} else {
+			TEMPORARY_TEXT(wn)
+			WRITE_TO(wn, "WEAK_ID_%d", con->allocation_id);
+			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
+				wn, Kinds::Constructors::package(con));
+			DISCARD_TEXT(wn)
+			Emit::numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
 		}
 	}
 
@@ -433,6 +440,9 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {
 	return con->con_iname;
+}
+void Kinds::Constructors::set_iname(kind_constructor *con, inter_name *iname) {
+	con->con_iname = iname;
 }
 inter_name *Kinds::Constructors::list_iname(kind_constructor *con) {
 	return con->list_iname;

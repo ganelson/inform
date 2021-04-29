@@ -495,6 +495,28 @@ void RTKinds::emit_strong_id_as_val(kind *K) {
 	}
 }
 
+void RTKinds::constant_from_strong_id(inter_name *iname, kind *K) {
+	runtime_kind_structure *rks = RTKinds::get_rks(K);
+	if (rks) {
+		Emit::iname_constant(iname, K_value, rks->rks_iname);
+		return;
+	}
+	if (K == NULL) {
+		Emit::iname_constant(iname, K_value, Kinds::Constructors::UNKNOWN_iname());
+		return;
+	}
+	kind_constructor *con = Kinds::get_construct(K);
+	inter_name *weak_iname = Kinds::Constructors::iname(con);
+	if (weak_iname == NULL) {
+		package_request *R = Kinds::Behaviour::package(K);
+		weak_iname = Hierarchy::make_iname_in(WEAK_ID_HL, R);
+		Emit::numeric_constant(weak_iname, (inter_ti) (RTKinds::weak_id(K)));
+		Kinds::Constructors::set_iname(con, weak_iname);
+		WRITE_TO(STDERR, "This is %u, %d\n", K, RTKinds::weak_id(K));
+	}
+	Emit::iname_constant(iname, K_value, weak_iname);
+}
+
 @ Thus the following routine must return |NULL| if $K$ is a kind whose weak
 ID is the same as its strong ID -- if it's a base kind, in other words --
 and otherwise return a pointer to a unique |runtime_kind_structure| for $K$.
@@ -1052,7 +1074,6 @@ void RTKinds::compile_instance_counts(void) {
 
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
-	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
 	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), SharedVariables::size_of_largest_set());
 	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }

@@ -277,14 +277,29 @@ void Hierarchy::establish(void) {
 @e BOGUS_HAP from 0
 @e ACTIONS_HAP
 @e ACTION_NAME_METADATA_HL
+@e ACTION_VARC_METADATA_HL
+@e DEBUG_ACTION_METADATA_HL
+@e ACTION_DSHARP_METADATA_HL
+@e NO_CODING_METADATA_HL
+@e OUT_OF_WORLD_METADATA_HL
+@e REQUIRES_LIGHT_METADATA_HL
+@e CAN_HAVE_NOUN_METADATA_HL
+@e CAN_HAVE_SECOND_METADATA_HL
+@e NOUN_ACCESS_METADATA_HL
+@e SECOND_ACCESS_METADATA_HL
+@e NOUN_KIND_METADATA_HL
+@e SECOND_KIND_METADATA_HL
+@e ACTION_ID_HL
 @e ACTION_BASE_NAME_HL
 @e WAIT_HL
 @e TRANSLATED_BASE_NAME_HL
 @e DOUBLE_SHARP_NAME_HL
 @e PERFORM_FN_HL
+@e DEBUG_ACTION_FN_HL
 @e CHECK_RB_HL
 @e CARRY_OUT_RB_HL
 @e REPORT_RB_HL
+@e ACTION_SHV_ID_HL
 @e ACTION_STV_CREATOR_FN_HL
 
 @e ACTIONCODING_HL
@@ -293,10 +308,6 @@ void Hierarchy::establish(void) {
 @e AD_RECORDS_HL
 @e CCOUNT_ACTION_NAME_HL
 @e DB_ACTION_DETAILS_HL
-@e SACTIONS_HAP
-@e MISTAKEACTIONPACKAGE_HL
-@e MISTAKEACTION_HL
-@e MISTAKEACTIONSUB_HL
 
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
@@ -304,17 +315,30 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(actions))
 		H_BEGIN_AP(ACTIONS_HAP,               I"action", I"_action")
 			H_C_U(ACTION_NAME_METADATA_HL,    I"^name")
+			H_C_U(ACTION_VARC_METADATA_HL,    I"^var_creator")
+			H_C_U(DEBUG_ACTION_METADATA_HL,   I"^debug_fn")
+			H_C_U(ACTION_DSHARP_METADATA_HL,  I"^double_sharp")
+			H_C_U(NO_CODING_METADATA_HL,      I"^no_coding")
+			H_C_U(OUT_OF_WORLD_METADATA_HL,   I"^out_of_world")
+			H_C_U(REQUIRES_LIGHT_METADATA_HL, I"^requires_light")
+			H_C_U(CAN_HAVE_NOUN_METADATA_HL,  I"^can_have_noun")
+			H_C_U(CAN_HAVE_SECOND_METADATA_HL, I"^can_have_second")
+			H_C_U(NOUN_ACCESS_METADATA_HL,    I"^noun_access")
+			H_C_U(SECOND_ACCESS_METADATA_HL,  I"^second_access")
+			H_C_U(NOUN_KIND_METADATA_HL,      I"^noun_kind")
+			H_C_U(SECOND_KIND_METADATA_HL,    I"^second_kind")
+			H_C_U(ACTION_ID_HL,               I"action_id")
 			H_C_U(ACTION_BASE_NAME_HL,        I"A")
 			H_C_T(WAIT_HL,                    I"Wait")
 			H_C_I(TRANSLATED_BASE_NAME_HL)
 			H_C_P(DOUBLE_SHARP_NAME_HL,       I"##")
 			H_F_S(PERFORM_FN_HL,              I"perform_fn", I"Sub")
+			H_F_S(DEBUG_ACTION_FN_HL,         I"debug_fn", I"Dbg")
 			H_PKG(CHECK_RB_HL,                I"check_rb", I"_rulebook")
 			H_PKG(CARRY_OUT_RB_HL,            I"carry_out_rb", I"_rulebook")
 			H_PKG(REPORT_RB_HL,               I"report_rb", I"_rulebook")
+			H_C_U(ACTION_SHV_ID_HL,           I"var_id")
 			H_F_U(ACTION_STV_CREATOR_FN_HL,   I"stv_creator_fn")
-			H_C_T(MISTAKEACTION_HL,           I"##MistakeAction")
-			H_F_T(MISTAKEACTIONSUB_HL,        I"MistakeActionSub_fn", I"MistakeActionSub")
 		H_END
 	H_END
 
@@ -325,9 +349,6 @@ void Hierarchy::establish(void) {
 		H_C_T(AD_RECORDS_HL,                  I"AD_RECORDS")
 		H_C_T(CCOUNT_ACTION_NAME_HL,          I"CCOUNT_ACTION_NAME")
 		H_F_T(DB_ACTION_DETAILS_HL,           I"DB_Action_Details_fn", I"DB_Action_Details")
-		H_BEGIN_AP(SACTIONS_HAP,              I"action", I"_action")
-		H_END
-		H_PKG(MISTAKEACTIONPACKAGE_HL,        I"mistake_action", I"_action")
 	H_END
 
 @h Activities.
@@ -592,6 +613,8 @@ void Hierarchy::establish(void) {
 @e INTERNALTESTCASES_HL
 @e COMMANDS_HAP
 @e VERB_DECLARATION_ARRAY_HL
+@e MISTAKEACTION_HL
+@e MISTAKEACTIONSUB_HL
 
 @<Establish grammar@> =
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
@@ -654,6 +677,8 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
 		H_END
+		H_C_T(MISTAKEACTION_HL,               I"##MistakeAction")
+		H_F_T(MISTAKEACTIONSUB_HL,            I"MistakeActionSub_fn", I"MistakeActionSub")
 	H_END
 
 @h Instances.
