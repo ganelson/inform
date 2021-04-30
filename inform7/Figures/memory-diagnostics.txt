@@ -1,11 +1,11 @@
-Total memory consumption was 297594K = 291 MB
+Total memory consumption was 295184K = 288 MB
 
-63.9% was used for 1461514 objects, in 315826 frames in 238 x 800K = 190400K = 185 MB:
+63.6% was used for 1461521 objects, in 315833 frames in 235 x 800K = 188000K = 183 MB:
 
-     9.4%  inter_tree_node_array                    40 x 8192 = 327680 objects, 28837120 bytes
+     9.5%  inter_tree_node_array                    40 x 8192 = 327680 objects, 28837120 bytes
      5.9%  text_stream_array                        3213 x 100 = 321300 objects, 18095616 bytes
      5.3%  linked_list                              29075 objects, 16282000 bytes
-     3.3%  parse_node                               129367 objects, 10349360 bytes
+     3.4%  parse_node                               129367 objects, 10349360 bytes
      2.7%  inter_symbol_array                       84 x 1024 = 86016 objects, 8260224 bytes
      2.4%  verb_conjugation                         160 objects, 7425280 bytes
      1.8%  parse_node_annotation_array              345 x 500 = 172500 objects, 5531040 bytes
@@ -47,14 +47,14 @@ Total memory consumption was 297594K = 291 MB
      ----  nonterminal                              759 objects, 139656 bytes
      ----  compilation_subtask                      1664 objects, 133120 bytes
      ----  nascent_array                            1952 objects, 124928 bytes
-     ----  hierarchy_location                       782 objects, 112608 bytes
+     ----  hierarchy_location                       785 objects, 113040 bytes
      ----  documentation_ref                        1274 objects, 112112 bytes
      ----  inference                                1703 objects, 108992 bytes
      ----  imperative_defn                          1376 objects, 99072 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
      ----  noun_usage                               2401 objects, 96040 bytes
      ----  preposition                              273 objects, 87360 bytes
-     ----  inter_tree                               6 objects, 80928 bytes
+     ----  inter_tree                               6 objects, 81072 bytes
      ----  lexical_cluster                          2516 objects, 80512 bytes
      ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes
      ----  kind_variable_declaration                1652 objects, 79296 bytes
@@ -116,7 +116,7 @@ Total memory consumption was 297594K = 291 MB
      ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes
      ----  shared_variable_array                    1 x 100 objects, 7232 bytes
      ----  determiner                               22 objects, 7216 bytes
-     ----  uniqueness_count                         291 objects, 6984 bytes
+     ----  uniqueness_count                         294 objects, 7056 bytes
      ----  verb                                     108 objects, 6048 bytes
      ----  text_literal_holder                      144 objects, 5760 bytes
      ----  inbuild_work                             78 objects, 4992 bytes
@@ -196,19 +196,19 @@ Total memory consumption was 297594K = 291 MB
      ----  source_file                              5 objects, 360 bytes
      ----  module_package                           9 objects, 360 bytes
      ----  inbuild_genre                            7 objects, 336 bytes
-     ----  grammatical_category                     8 objects, 320 bytes
      ----  pronoun                                  8 objects, 320 bytes
      ----  door_dir_notice                          5 objects, 320 bytes
-     ----  build_step                               4 objects, 288 bytes
+     ----  inter_tree_location_list                 8 objects, 320 bytes
+     ----  grammatical_category                     8 objects, 320 bytes
      ----  up_family                                9 objects, 288 bytes
+     ----  build_step                               4 objects, 288 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
-     ----  inter_tree_location_list                 7 objects, 280 bytes
      ----  door_to_notice                           5 objects, 280 bytes
      ----  inform_pipeline                          4 objects, 256 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
-     ----  release_instructions                     1 object, 208 bytes
      ----  test_scenario                            1 object, 208 bytes
+     ----  release_instructions                     1 object, 208 bytes
      ----  compilation_unit                         5 objects, 200 bytes
      ----  build_skill                              5 objects, 200 bytes
      ----  kit_dependency                           4 objects, 192 bytes
@@ -237,9 +237,9 @@ Total memory consumption was 297594K = 291 MB
      ----  parse_name_notice                        1 object, 40 bytes
      ----  kind_template_definition                 1 object, 40 bytes
 
-36.0% was used for memory not allocated for objects:
+36.3% was used for memory not allocated for objects:
 
-    16.6%  text stream storage                      50680076 bytes in 332173 claims
+    16.7%  text stream storage                      50665028 bytes in 332174 claims
      3.5%  dictionary storage                       10797056 bytes in 19298 claims
      ----  sorting                                  952 bytes in 3 claims
      2.3%  source text                              7200000 bytes in 3 claims
@@ -249,12 +249,12 @@ Total memory consumption was 297594K = 291 MB
      0.8%  inter symbols storage                    2558160 bytes in 15683 claims
      5.5%  inter bytecode storage                   16802776 bytes in 14 claims
      2.8%  inter links storage                      8750208 bytes in 246 claims
-     ----  inter tree location list storage         93440 bytes in 11 claims
+     ----  inter tree location list storage         97536 bytes in 12 claims
      0.5%  instance-of-kind counting                1695204 bytes in 1 claim
      ----  compilation workspace for objects        21856 bytes in 25 claims
      ----  lists for type-checking invocations      16000 bytes in 1 claim
      ----  emitter array storage                    155040 bytes in 2031 claims
      ----  code generation workspace for objects    9192 bytes in 9 claims
 
-20.6% was overhead - 62932992 bytes = 61458K = 60 MB
+20.0% was overhead - 60474704 bytes = 59057K = 57 MB
 

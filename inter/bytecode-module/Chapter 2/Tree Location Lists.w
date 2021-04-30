@@ -28,6 +28,7 @@ inter_tree_location_list *TreeLists::new(void) {
 }
 
 int TreeLists::len(inter_tree_location_list *NL) {
+	if (NL == NULL) internal_error("null inter_tree_location_list");
 	return NL->list_used;
 }
 
@@ -35,6 +36,7 @@ int TreeLists::len(inter_tree_location_list *NL) {
 
 =
 void TreeLists::add(inter_tree_location_list *NL, inter_tree_node *P) {
+	if (NL == NULL) internal_error("null inter_tree_location_list");
 	if (NL->list_extent == 0) {
 		NL->list_extent = 256;
 		NL->list = (itl_entry *)
@@ -57,5 +59,6 @@ void TreeLists::add(inter_tree_location_list *NL, inter_tree_node *P) {
 }
 
 void TreeLists::sort(inter_tree_location_list *NL, int (*cmp)(const void *, const void *)) {
+	if (NL == NULL) internal_error("null inter_tree_location_list");
 	qsort(NL->list, (size_t) NL->list_used, sizeof(itl_entry), cmp);
 }

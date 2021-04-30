@@ -19,6 +19,7 @@ inter_tree_location_list *rule_nodes = NULL;
 inter_tree_location_list *activity_nodes = NULL;
 inter_tree_location_list *action_nodes = NULL;
 inter_tree_location_list *property_nodes = NULL;
+inter_tree_location_list *extension_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -28,6 +29,7 @@ int Synoptic::go(pipeline_step *step) {
 	activity_nodes = TreeLists::new();
 	action_nodes = TreeLists::new();
 	property_nodes = TreeLists::new();
+	extension_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -37,6 +39,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticActivities::renumber(step->repository, activity_nodes);
 	SynopticActions::renumber(step->repository, action_nodes);
 	SynopticProperties::renumber(step->repository, property_nodes);
+	SynopticExtensions::renumber(step->repository, extension_nodes);
 	return TRUE;
 }
 
@@ -62,6 +65,10 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(action_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_property"))
 			TreeLists::add(property_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_module")) {
+			if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
+				TreeLists::add(extension_nodes, P);
+		}
 	}
 }
 
@@ -82,6 +89,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticActivities::redefine(I, P, con_s, synid)) return;
 			if (SynopticActions::redefine(I, P, con_s, synid)) return;
 			if (SynopticProperties::redefine(I, P, con_s, synid)) return;
+			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
@@ -96,6 +104,21 @@ int Synoptic::module_order(const void *ent1, const void *ent2) {
 	inter_tree_node *P2 = E2->node;
 	inter_package *mod1 = Synoptic::module_containing(P1);
 	inter_package *mod2 = Synoptic::module_containing(P2);
+	inter_ti C1 = Metadata::read_optional_numeric(mod1, I"^category");
+	inter_ti C2 = Metadata::read_optional_numeric(mod2, I"^category");
+	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */
+	if (d != 0) return d;
+	return E1->sort_key - E2->sort_key; /* smaller values sort earlier */
+}
+
+int Synoptic::category_order(const void *ent1, const void *ent2) {
+	itl_entry *E1 = (itl_entry *) ent1;
+	itl_entry *E2 = (itl_entry *) ent2;
+	if (E1 == E2) return 0;
+	inter_tree_node *P1 = E1->node;
+	inter_tree_node *P2 = E2->node;
+	inter_package *mod1 = Inter::Packages::container(P1);
+	inter_package *mod2 = Inter::Packages::container(P2);
 	inter_ti C1 = Metadata::read_optional_numeric(mod1, I"^category");
 	inter_ti C2 = Metadata::read_optional_numeric(mod2, I"^category");
 	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */

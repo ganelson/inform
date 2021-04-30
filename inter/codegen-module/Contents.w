@@ -27,6 +27,7 @@ Chapter 2: Miscellaneous Pipeline Stages
 
 Chapter 3: Synoptic Resources
 	Synoptic Utilities
+	Extensions
 	Literal Text
 	Responses
 	Rules

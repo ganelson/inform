@@ -188,7 +188,6 @@ so on. Those absolute basics are made here.
 		4, debugging, sequence_timer);
 	BENCH(RTFundamentalConstants::compile);
 	BENCH(RTUseOptions::compile)
-	BENCH(RTExtensions::compile_support)
 	BENCH(Interventions::make_all)
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH(RTRelations::compile_defined_relation_constants)
@@ -225,6 +224,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::compile_synoptic_resources)
 	BENCH(RTActivities::compile_synoptic_resources)
 	BENCH(RTProperties::compile_synoptic_resources)
+	BENCH(RTExtensions::compile_synoptic_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)

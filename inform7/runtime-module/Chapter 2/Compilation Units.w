@@ -68,6 +68,9 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	if (Extensions::is_standard(ext)) cat = 3;
 	Hierarchy::apply_metadata_from_number(M->the_package, EXT_CATEGORY_METADATA_HL, cat);
 
+@ The extension credit consists of a single line, with name, version number
+and author; together with any "extra credit" asked for by the extension.
+
 @<Give M metadata indicating the source extension@> =
 	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_METADATA_HL,
 		ext->as_copy->edition->work->raw_author_name);
@@ -78,6 +81,27 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	WRITE_TO(V, "%v", &N);
 	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_METADATA_HL, V);
 	DISCARD_TEXT(V)
+	inter_name *iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->the_package);
+	Emit::numeric_constant(iname, 0);
+	TEMPORARY_TEXT(C)
+	WRITE_TO(C, "%S", ext->as_copy->edition->work->raw_title);
+	if (VersionNumbers::is_null(N) == FALSE) WRITE_TO(C, " version %v", &N);
+	WRITE_TO(C, " by %S", ext->as_copy->edition->work->raw_author_name);
+	if (Str::len(ext->extra_credit_as_lexed) > 0)
+		WRITE_TO(C, " (%S)", ext->extra_credit_as_lexed);
+	Hierarchy::apply_metadata(M->the_package, EXT_CREDIT_METADATA_HL, C);
+	DISCARD_TEXT(C)
+	TEMPORARY_TEXT(the_author_name)
+	WRITE_TO(the_author_name, "%S", ext->as_copy->edition->work->author_name);
+	int self_penned = FALSE;
+	if (BibliographicData::story_author_is(the_author_name)) self_penned = TRUE;
+	inter_ti modesty = 1;
+	if ((ext->authorial_modesty == FALSE) &&      /* if (1) extension doesn't ask to be modest */
+		((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
+			(self_penned == FALSE)))             /*     (2b) didn't write this extension */
+		modesty = 0;
+	Hierarchy::apply_metadata_from_number(M->the_package, EXT_MODESTY_METADATA_HL, modesty);
+	DISCARD_TEXT(the_author_name)
 
 @ Here we must find a unique name, valid as an Inter identifier: the code
 compiled from the compilation unit will go into a package of that name.

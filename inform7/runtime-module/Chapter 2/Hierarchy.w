@@ -263,6 +263,9 @@ void Hierarchy::establish(void) {
 @e EXT_TITLE_METADATA_HL
 @e EXT_AUTHOR_METADATA_HL
 @e EXT_VERSION_METADATA_HL
+@e EXT_CREDIT_METADATA_HL
+@e EXT_MODESTY_METADATA_HL
+@e EXTENSION_ID_HL
 
 @<Establish modules@> =
 	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
@@ -270,6 +273,9 @@ void Hierarchy::establish(void) {
 		H_C_U(EXT_TITLE_METADATA_HL,          I"^title")
 		H_C_U(EXT_AUTHOR_METADATA_HL,         I"^author")
 		H_C_U(EXT_VERSION_METADATA_HL,        I"^version")
+		H_C_U(EXT_CREDIT_METADATA_HL,         I"^credit")
+		H_C_U(EXT_MODESTY_METADATA_HL,        I"^modesty")
+		H_C_U(EXTENSION_ID_HL,                I"extension_id")
 	H_END
 
 @h Actions.
