@@ -208,6 +208,19 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	if (plm == OBJECT_PLM)
 		Inter::Symbols::annotate_i(con_name, OBJECT_IANN, 1);
 
+	inter_symbol *id_s = NULL;
+	if ((plm == ATTRIBUTE_PLM) || (plm == PROPERTY_PLM)) {
+		id_s = CodeGen::Assimilate::make_socketed_symbol(I, I"property_id", Inter::Bookmarks::scope(IBM));	
+	}
+	if (id_s) {
+		Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
+		Produce::guard(Inter::Constant::new_numerical(IBM,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), id_s),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+			LITERAL_IVAL, 0,
+			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	}
+	
 	if (con_name->equated_to) {
 		inter_symbol *external_name = con_name->equated_to;
 		external_name->equated_to = con_name;
@@ -237,6 +250,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		case ATTRIBUTE_PLM: {
+
 			TEMPORARY_TEXT(A)
 			WRITE_TO(A, "P_%S", con_name->symbol_name);
 			inter_symbol *attr_symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
@@ -266,6 +280,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
 				CodeGen::Assimilate::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
 			DISCARD_TEXT(A)
+
 			break;
 		}
 		case PROPERTY_PLM: {

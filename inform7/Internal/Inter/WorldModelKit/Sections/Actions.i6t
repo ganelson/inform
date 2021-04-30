@@ -725,6 +725,8 @@ anyway. There is a clearly defined meaning, but it doesn't always correspond
 to what the user might expect, which is unfortunate.
 
 =
+Constant ActionCount = CCOUNT_ACTION_NAME;
+
 [ TestActionBitmap obj act i j k bitmap;
 	if (obj == nothing) bitmap = ActionHappened;
 	else {

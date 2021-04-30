@@ -21,13 +21,6 @@ typedef struct property_compilation_data {
 } property_compilation_data;
 
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname) {
-	if (pkg == NULL) {
-		pkg = Hierarchy::local_package(PROPERTIES_HAP);
-		Hierarchy::apply_metadata_from_wording(pkg, PROPERTY_NAME_METADATA_HL, prn->name);
-	}
-	if (iname == NULL) {
-		iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, pkg, prn->name);
-	}
 	prn->compilation_data.prop_package = pkg;
 	prn->compilation_data.do_not_compile = FALSE;
 	prn->compilation_data.prop_iname = iname;
@@ -109,7 +102,6 @@ void RTProperties::set_translation(property *prn, wchar_t *t) {
 		RTProperties::set_translation(EitherOrProperties::get_negation(prn), t);
 		return;
 	}
-	RTProperties::iname(prn);
 	TEMPORARY_TEXT(T)
 	for (int i=0; ((t[i]) && (i<31)); i++) {
 		if ((Characters::isalpha(t[i])) || (Characters::isdigit(t[i])) || (t[i] == '_'))
@@ -117,8 +109,9 @@ void RTProperties::set_translation(property *prn, wchar_t *t) {
 		else
 			PUT_TO(T, '_');
 	}
-	Produce::change_translation(prn->compilation_data.prop_iname, T);
-	Hierarchy::make_available(prn->compilation_data.prop_iname);
+	inter_name *iname = RTProperties::iname(prn);
+	Produce::change_translation(iname, T);
+	Hierarchy::make_available(iname);
 	DISCARD_TEXT(T)
 	prn->compilation_data.translated = TRUE;
 }
@@ -160,6 +153,9 @@ inter_name *RTProperties::iname(property *prn) {
 	if (prn == NULL) internal_error("tried to find iname for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
 		return RTProperties::iname(EitherOrProperties::get_negation(prn));
+	if (prn->compilation_data.prop_iname == NULL)		
+		prn->compilation_data.prop_iname =
+			Hierarchy::make_iname_with_memo(PROPERTY_HL, RTProperties::package(prn), prn->name);
 	return prn->compilation_data.prop_iname;
 }
 
@@ -167,7 +163,8 @@ package_request *RTProperties::package(property *prn) {
 	if (prn == NULL) internal_error("tried to find package for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
 		return RTProperties::package(EitherOrProperties::get_negation(prn));
-	RTProperties::iname(prn);
+	if (prn->compilation_data.prop_package == NULL)
+		prn->compilation_data.prop_package = Hierarchy::local_package_to(PROPERTIES_HAP, prn->where_created);
 	return prn->compilation_data.prop_package;
 }
 
@@ -207,6 +204,18 @@ void RTProperties::emit(void) {
 			kind *K = KindSubjects::to_kind(subj);
 			if (K) Emit::permission(prn, K, RTPropertyValues::annotate_table_storage(pp));
 		}
+	}
+}
+
+void RTProperties::compile_metadata(void) {
+	property *prn;
+	LOOP_OVER(prn, property) {
+		if ((Properties::is_either_or(prn)) &&
+			(prn->compilation_data.store_in_negation)) continue;
+		package_request *pack = RTProperties::package(prn);
+		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_METADATA_HL, prn->name);
+		inter_name *iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
+		Emit::numeric_constant(iname, 0);
 	}
 }
 
@@ -488,3 +497,12 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 	return TRUE;
 }
 
+void RTProperties::compile_synoptic_resources(void) {
+	@<Provide placeholder for the CCOUNT_PROPERTY constant@>;
+}
+
+@<Provide placeholder for the CCOUNT_PROPERTY constant@> =
+	inter_name *iname = Hierarchy::find(CCOUNT_PROPERTY_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, CCOUNT_PROPERTY_SYNID);
+	Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);

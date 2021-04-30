@@ -32,6 +32,7 @@ Chapter 3: Synoptic Resources
 	Rules
 	Activities
 	Actions
+	Properties
 
 Chapter 4: Inter to Final Code
 	Code Generation

@@ -444,7 +444,7 @@ void Hierarchy::establish(void) {
 @<Establish bibliographic@> =
 	submodule_identity *bibliographic = Packaging::register_submodule(I"bibliographic");
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, bibliographic))
+	H_BEGIN(HierarchyLocations::generic_submodule(I, bibliographic))
 		H_C_T(UUID_ARRAY_HL,                  I"UUID_ARRAY")
 		H_D_T(STORY_HL,                       I"Story_datum", I"Story")
 		H_D_T(HEADLINE_HL,                    I"Headline_datum", I"Headline")
@@ -790,6 +790,7 @@ void Hierarchy::establish(void) {
 @e COUNT_INSTANCE_HL
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
+@e KIND_PROPERTIES_HAP
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
@@ -848,6 +849,8 @@ void Hierarchy::establish(void) {
 				H_C_U(KIND_INLINE_PROPERTY_HL, I"inline")
 			H_END
 		H_END
+		H_BEGIN_AP(KIND_PROPERTIES_HAP,       I"property", I"_property")
+		H_END
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, kinds))
@@ -897,6 +900,7 @@ void Hierarchy::establish(void) {
 
 @e PROPERTIES_HAP
 @e PROPERTY_NAME_METADATA_HL
+@e PROPERTY_ID_HL
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
@@ -908,6 +912,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(properties))
 		H_BEGIN_AP(PROPERTIES_HAP,            I"property", I"_property")
 			H_C_U(PROPERTY_NAME_METADATA_HL,  I"^name")
+			H_C_U(PROPERTY_ID_HL,             I"property_id")
 			H_C_T(PROPERTY_HL,                I"P")
 			H_F_G(EITHER_OR_GPR_FN_HL,        I"either_or_GPR_fn", I"PRN_PN")
 		H_END

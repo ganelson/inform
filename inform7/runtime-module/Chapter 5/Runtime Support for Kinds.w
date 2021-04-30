@@ -1073,7 +1073,6 @@ void RTKinds::compile_instance_counts(void) {
 	}
 
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
-	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
 	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), SharedVariables::size_of_largest_set());
 	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }

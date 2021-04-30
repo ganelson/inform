@@ -670,12 +670,6 @@ Property grammar; ! not used by I7, but an interesting hook in the parser
 Property inside_description; ! not used by I7, but an interesting hook in the locale code
 Property short_name_indef 0; ! not used by I7, but an interesting hook in the listmaker
 
-@h Action Count.
-The number of valid I7 actions in existence.
-
-=
-Constant ActionCount = CCOUNT_ACTION_NAME;
-
 @h Fake Actions.
 Though sometimes useful for I6 coding tricks, fake actions -- action numbers
 not corresponding to any action, but different from those of valid actions,

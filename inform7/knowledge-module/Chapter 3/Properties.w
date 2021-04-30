@@ -22,6 +22,7 @@ typedef struct property {
 	struct wording name; /* name of property */
 	int has_of_in_the_name; /* looks like a property test, e.g., "point of view"? */
 	int Inter_level_only; /* i.e., does not correspond to an I7 property */
+	struct parse_node *where_created;
 
 	struct linked_list *permissions; /* of |property_permission|: who can have this? */
 
@@ -147,6 +148,7 @@ something.
 @<Initialise the property name structure@> =
 	prn->name = W;
 	prn->has_of_in_the_name = <name-looking-like-property-test>(W);
+	prn->where_created = current_sentence;
 	prn->permissions = NEW_LINKED_LIST(property_permission);
 	prn->Inter_level_only = FALSE;
 	RTProperties::initialise_pcd(prn, using_package, using_iname);

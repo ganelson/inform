@@ -11,7 +11,7 @@ of packages of type |_activity|.
 =
 void SynopticActivities::renumber(inter_tree *I, inter_tree_location_list *activity_nodes) {
 	if (TreeLists::len(activity_nodes) > 0) {
-		TreeLists::sort(activity_nodes, SynopticActivities::cmp);
+		TreeLists::sort(activity_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");
@@ -20,21 +20,6 @@ void SynopticActivities::renumber(inter_tree *I, inter_tree_location_list *activ
 			if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (10000 + i);
 		}
 	}
-}
-
-int SynopticActivities::cmp(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
-	if (E1 == E2) return 0;
-	inter_tree_node *P1 = E1->node;
-	inter_tree_node *P2 = E2->node;
-	inter_package *mod1 = Synoptic::module_containing(P1);
-	inter_package *mod2 = Synoptic::module_containing(P2);
-	inter_ti C1 = Metadata::read_optional_numeric(mod1, I"^category");
-	inter_ti C2 = Metadata::read_optional_numeric(mod2, I"^category");
-	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */
-	if (d != 0) return d;
-	return E1->sort_key - E2->sort_key; /* smaller values sort earlier */
 }
 
 @ There are also resources to create in the |synoptic| module:
