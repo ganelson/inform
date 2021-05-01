@@ -207,6 +207,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::rulebook_var_creators)
 	BENCH(RTRules::compile_rulebooks)
 	BENCH(RTRules::compile_metadata)
+	BENCH(RTInstances::compile_metadata)
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::activity_var_creators)
 	BENCH(RTVerbs::ConjugateVerb)

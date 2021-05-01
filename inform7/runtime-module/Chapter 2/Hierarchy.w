@@ -191,6 +191,7 @@ void Hierarchy::establish(void) {
 	@<Establish relations@>;
 	@<Establish rulebooks@>;
 	@<Establish rules@>;
+	@<Establish scenes@>;
 	@<Establish tables@>;
 	@<Establish variables@>;
 	@<Establish enclosed matter@>;
@@ -245,11 +246,11 @@ void Hierarchy::establish(void) {
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
 		H_C_T(KIT_CONFIGURATION_LOOKMODE_HL,  I"KIT_CONFIGURATION_LOOKMODE")
 		H_C_T(LOCALPARKING_HL,                I"LocalParking")
+		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, basics))
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
-		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
 	H_END
 
 	submodule_identity *basic_extras = Packaging::register_submodule(I"BasicInformExtrasKit");
@@ -704,7 +705,14 @@ void Hierarchy::establish(void) {
 
 @e INSTANCES_HAP
 @e INSTANCE_NAME_METADATA_HL
+@e INSTANCE_VALUE_METADATA_HL
+@e INSTANCE_KIND_METADATA_HL
+@e INSTANCE_IS_SCENE_METADATA_HL
+@e INSTANCE_SSF_METADATA_HL
+@e INSTANCE_SCF_METADATA_HL
 @e INSTANCE_HL
+@e SCENE_STATUS_FN_HL
+@e SCENE_CHANGE_FN_HL
 @e BACKDROP_FOUND_IN_FN_HL
 @e REGION_FOUND_IN_FN_HL
 @e SHORT_NAME_FN_HL
@@ -720,7 +728,14 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
 			H_C_U(INSTANCE_NAME_METADATA_HL,  I"^name")
+			H_C_U(INSTANCE_VALUE_METADATA_HL, I"^value")
+			H_C_U(INSTANCE_KIND_METADATA_HL,  I"^kind")
+			H_C_U(INSTANCE_IS_SCENE_METADATA_HL, I"^is_scene")
+			H_C_U(INSTANCE_SSF_METADATA_HL,   I"^scene_status_fn")
+			H_C_U(INSTANCE_SCF_METADATA_HL,   I"^scene_change_fn")
 			H_C_U(INSTANCE_HL,                I"I")
+			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
+			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
 			H_F_U(BACKDROP_FOUND_IN_FN_HL,    I"backdrop_found_in_fn")
 			H_F_G(SHORT_NAME_FN_HL,           I"short_name_fn", I"SN_R")
 			H_F_G(SHORT_NAME_PROPERTY_FN_HL,  I"short_name_property_fn", I"SN_R_A")
@@ -737,8 +752,6 @@ void Hierarchy::establish(void) {
 
 @e INITIAL_MAX_SCORE_HL
 @e NO_DIRECTIONS_HL
-@e SHOWSCENESTATUS_HL
-@e DETECTSCENECHANGE_HL
 @e MAP_STORAGE_HL
 @e INITIALSITUATION_HL
 @e PLAYER_OBJECT_INIS_HL
@@ -752,18 +765,19 @@ void Hierarchy::establish(void) {
 @<Establish int-fiction@> =
 	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, interactive_fiction))
-		H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
-		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
-		H_F_T(SHOWSCENESTATUS_HL,             I"show_scene_status_fn", I"ShowSceneStatus")
-		H_F_T(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
-		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
-		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
+	H_BEGIN(HierarchyLocations::generic_submodule(I, interactive_fiction))
 		H_C_T(PLAYER_OBJECT_INIS_HL,          I"PLAYER_OBJECT_INIS")
 		H_C_T(START_OBJECT_INIS_HL,           I"START_OBJECT_INIS")
 		H_C_T(START_ROOM_INIS_HL,             I"START_ROOM_INIS")
 		H_C_T(START_TIME_INIS_HL,             I"START_TIME_INIS")
 		H_C_T(DONE_INIS_HL,                   I"DONE_INIS")
+	H_END
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, interactive_fiction))
+		H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
+		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
+		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
+		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
 		H_BEGIN_AP(DIRECTIONS_HAP,            I"direction", I"_direction")
 			H_C_G(DIRECTION_HL,               I"DirectionObject")
 		H_END
@@ -1155,6 +1169,18 @@ void Hierarchy::establish(void) {
 		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
 		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
 		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
+	H_END
+
+@h Scenes.
+
+@e SHOWSCENESTATUS_HL
+@e DETECTSCENECHANGE_HL
+
+@<Establish scenes@> =
+	submodule_identity *scenes = Packaging::register_submodule(I"scenes");
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, scenes))
+		H_F_T(SHOWSCENESTATUS_HL,             I"show_scene_status_fn", I"ShowSceneStatus")
+		H_F_T(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
 	H_END
 
 @h Tables.

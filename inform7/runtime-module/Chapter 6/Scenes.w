@@ -34,75 +34,24 @@ The following generates the necessary code to (a) detect when a scene end
 occurs, and (b) act upon it. This is all handled by the following Inter
 function.
 
-There is one argument, |chs|: the number of iterations so far. Iterations
-occur because each set of scene changes could change the circumstances in such
-a way that other scene changes are now required (through external conditions,
-not through anchors); we don't want this to lock up, so we will cap recursion.
-Within the routine, a second local variable, |ch|, is a flag indicating
-whether any change in status has or has not occurred.
-
 There is no significance to the return value.
 
-@d MAX_SCENE_CHANGE_ITERATION 20
-
 =
-void RTScenes::DetectSceneChange_routine(void) {
-	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *chs_s =
-		LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
-	inter_symbol *ch_s =
-		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
-	inter_symbol *CScene_l = EmitCode::reserve_label(I".CScene");
-
+void RTScenes::compile_change_functions(void) {
 	scene *sc;
-	LOOP_OVER(sc, scene) @<Compile code detecting the ends of a specific scene@>;
-
-	EmitCode::place_label(CScene_l);
-	@<Add the scene-change tail@>;
-
-	Functions::end(save);
-	Hierarchy::make_available(iname);
+	LOOP_OVER(sc, scene) {
+		inter_name *iname = 
+			Hierarchy::make_iname_in(SCENE_CHANGE_FN_HL, RTInstances::package(sc->as_instance));
+		packaging_state save = Functions::begin(iname);
+		inter_symbol *ch_s =
+			LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
+		@<Compile code detecting the ends of a specific scene@>;
+		EmitCode::rfalse();
+		Functions::end(save);
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SCF_METADATA_HL, RTInstances::package(sc->as_instance));
+		Emit::iname_constant(md_iname, K_value, iname);		
+	}
 }
-
-@<Add the scene-change tail@> =
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(GT_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, chs_s);
-			EmitCode::val_number((inter_ti) MAX_SCENE_CHANGE_ITERATION);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(PRINT_BIP);
-			EmitCode::down();
-				EmitCode::val_text(I">--> The scene change machinery is stuck.\n");
-			EmitCode::up();
-			EmitCode::rtrue();
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(GT_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, ch_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::call(iname);
-			EmitCode::down();
-				EmitCode::inv(PREINCREMENT_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, chs_s);
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::rfalse();
 
 @ Recall that ends numbered 1, 2, 3, ... are all ways for the scene to end,
 so they are only checked if its status is currently running; end 0 is the
@@ -124,7 +73,7 @@ numbers so that more abstruse ways to end take precedence over less.
 		EmitCode::code();
 		EmitCode::down();
 			for (int end=sc->no_ends-1; end>=1; end--)
-				RTScenes::test_scene_end(sc, end, ch_s, CScene_l);
+				RTScenes::test_scene_end(sc, end, ch_s);
 		EmitCode::up();
 	EmitCode::up();
 
@@ -141,7 +90,7 @@ numbers so that more abstruse ways to end take precedence over less.
 		EmitCode::up();
 		EmitCode::code();
 		EmitCode::down();
-			RTScenes::test_scene_end(sc, 0, ch_s, CScene_l);
+			RTScenes::test_scene_end(sc, 0, ch_s);
 		EmitCode::up();
 	EmitCode::up();
 
@@ -152,7 +101,7 @@ two, because the third way will be taken care of by the consequences code
 below.
 
 =
-void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_symbol *CScene_l) {
+void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s) {
 	if ((end == 0) && (sc->start_of_play)) {
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
@@ -217,10 +166,7 @@ instruction because we're not compiling a loop.)
 				EmitCode::val_number(1);
 			EmitCode::up();
 			RTScenes::compile_scene_end(sc, end);
-			EmitCode::inv(JUMP_BIP);
-			EmitCode::down();
-				EmitCode::lab(CScene_l);
-			EmitCode::up();
+			EmitCode::rtrue();
 		EmitCode::up();
 	EmitCode::up();
 
@@ -461,15 +407,16 @@ scene status at the moment the command is typed, and the following code is
 what handles this.
 
 =
-void RTScenes::ShowSceneStatus_routine(void) {
-	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
-	packaging_state save = Functions::begin(iname);
-	EmitCode::inv(IFDEBUG_BIP);
-	EmitCode::down();
-		EmitCode::code();
+void RTScenes::compile_show_status_functions(void) {
+	scene *sc;
+	LOOP_OVER(sc, scene) {
+		inter_name *iname = 
+			Hierarchy::make_iname_in(SCENE_STATUS_FN_HL, RTInstances::package(sc->as_instance));
+		packaging_state save = Functions::begin(iname);
+		EmitCode::inv(IFDEBUG_BIP);
 		EmitCode::down();
-			scene *sc;
-			LOOP_OVER(sc, scene) {
+			EmitCode::code();
+			EmitCode::down();
 				wording NW = Instances::get_name(sc->as_instance, FALSE);
 
 				EmitCode::inv(IFELSE_BIP);
@@ -492,11 +439,12 @@ void RTScenes::ShowSceneStatus_routine(void) {
 						@<Show status of this non-running scene@>;
 					EmitCode::up();
 				EmitCode::up();
-			}
+			EmitCode::up();
 		EmitCode::up();
-	EmitCode::up();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
+		Functions::end(save);
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SSF_METADATA_HL, RTInstances::package(sc->as_instance));
+		Emit::iname_constant(md_iname, K_value, iname);		
+	}
 }
 
 @<Show status of this running scene@> =
@@ -638,3 +586,33 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 		return;
 	}
 }
+
+@
+
+=
+void RTScenes::compile_synoptic_resources(void) {
+	@<Provide placeholder for the SHOWSCENESTATUS function@>;
+	@<Provide placeholder for the DETECTSCENECHANGE function@>;
+}
+
+@<Provide placeholder for the SHOWSCENESTATUS function@> =
+	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, SHOWSCENESTATUS_SYNID);
+	packaging_state save = Functions::begin(iname);
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the DETECTSCENECHANGE function@> =
+	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, DETECTSCENECHANGE_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
+	inter_symbol *ch_s =
+		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
+	inter_symbol *myself_s = InterSymbolsTables::create_with_unique_name(ch_s->owning_table, I"myself");
+	InterSymbolsTables::equate(myself_s, InterNames::to_symbol(iname));
+
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);

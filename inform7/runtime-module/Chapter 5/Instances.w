@@ -16,9 +16,26 @@ void RTInstances::initialise_icd(instance *I) {
 	NounIdentifiers::noun_compose_identifier(I->icd.instance_package,
 		I->as_noun, I->allocation_id);
 	I->icd.instance_iname = NounIdentifiers::iname(I->as_noun);
-	Hierarchy::apply_metadata_from_wording(I->icd.instance_package, INSTANCE_NAME_METADATA_HL,
-		Nouns::nominative(I->as_noun, FALSE));
 	I->icd.instance_emitted = FALSE;
+}
+
+void RTInstances::compile_metadata(void) {
+	instance *I;
+	LOOP_OVER(I, instance) {
+		Hierarchy::apply_metadata_from_wording(I->icd.instance_package,
+			INSTANCE_NAME_METADATA_HL,
+			Nouns::nominative(I->as_noun, FALSE));
+		Hierarchy::apply_metadata_from_iname(I->icd.instance_package,
+			INSTANCE_VALUE_METADATA_HL,
+			I->icd.instance_iname);
+		inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_METADATA_HL,
+			I->icd.instance_package);
+		kind *K = Instances::to_kind(I);
+		RTKinds::constant_from_strong_id(kn_iname, K);
+		if ((K_scene) && (Kinds::eq(K, K_scene)))
+			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+				INSTANCE_IS_SCENE_METADATA_HL, 1);
+	}
 }
 
 inter_name *RTInstances::iname(instance *I) {

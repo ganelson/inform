@@ -33,10 +33,12 @@ Chapter 3: Synoptic Resources
 	Rules
 	Activities
 	Actions
+	Instances
 	Properties
 	Relations
 	Tables
 	Chronology
+	Scenes
 
 Chapter 4: Inter to Final Code
 	Code Generation

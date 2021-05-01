@@ -26,6 +26,8 @@ inter_tree_location_list *table_column_nodes = NULL;
 inter_tree_location_list *table_column_usage_nodes = NULL;
 inter_tree_location_list *past_tense_action_nodes = NULL;
 inter_tree_location_list *past_tense_condition_nodes = NULL;
+inter_tree_location_list *instance_nodes = NULL;
+inter_tree_location_list *scene_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -42,6 +44,8 @@ int Synoptic::go(pipeline_step *step) {
 	table_column_usage_nodes = TreeLists::new();
 	past_tense_action_nodes = TreeLists::new();
 	past_tense_condition_nodes = TreeLists::new();
+	instance_nodes = TreeLists::new();
+	scene_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -55,6 +59,8 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticRelations::renumber(step->repository, relation_nodes);
 	SynopticTables::renumber(step->repository, table_nodes);
 	SynopticChronology::renumber(step->repository, past_tense_action_nodes);
+	SynopticInstances::renumber(step->repository, instance_nodes);
+	SynopticScenes::renumber(step->repository, scene_nodes);
 	return TRUE;
 }
 
@@ -96,6 +102,12 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(past_tense_action_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_past_condition"))
 			TreeLists::add(past_tense_condition_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_instance")) {
+			TreeLists::add(instance_nodes, P);
+			inter_package *pack = Inter::Package::defined_by_frame(P);
+			if (Metadata::exists(pack, I"^is_scene"))
+				TreeLists::add(scene_nodes, P);
+		}
 	}
 }
 
@@ -120,6 +132,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticRelations::redefine(I, P, con_s, synid)) return;
 			if (SynopticTables::redefine(I, P, con_s, synid)) return;
 			if (SynopticChronology::redefine(I, P, con_s, synid)) return;
+			if (SynopticScenes::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
