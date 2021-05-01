@@ -461,7 +461,13 @@ void Hierarchy::establish(void) {
 
 @h Chronology.
 
+@e PAST_TENSE_CONDITIONS_HAP
+@e PTC_ID_HL
+@e PTC_VALUE_METADATA_HL
+@e PTC_FN_HL
 @e PAST_ACTION_PATTERNS_HAP
+@e PAP_ID_HL
+@e PAP_VALUE_METADATA_HL
 @e PAP_FN_HL
 
 @e TIMEDEVENTSTABLE_HL
@@ -475,7 +481,14 @@ void Hierarchy::establish(void) {
 	submodule_identity *chronology = Packaging::register_submodule(I"chronology");
 
 	H_BEGIN(HierarchyLocations::local_submodule(chronology))
+		H_BEGIN_AP(PAST_TENSE_CONDITIONS_HAP, I"past_condition", I"_past_condition")
+			H_C_U(PTC_ID_HL,                  I"ptc_id")
+			H_C_U(PTC_VALUE_METADATA_HL,      I"^value")
+			H_F_G(PTC_FN_HL,                  I"pcon_fn", I"PCONR")
+		H_END
 		H_BEGIN_AP(PAST_ACTION_PATTERNS_HAP,  I"past_action_pattern", I"_past_action_pattern")
+			H_C_U(PAP_ID_HL,                  I"pap_id")
+			H_C_U(PAP_VALUE_METADATA_HL,      I"^value")
 			H_F_G(PAP_FN_HL,                  I"pap_fn", I"PAPR")
 		H_END
 	H_END
@@ -1091,6 +1104,8 @@ void Hierarchy::establish(void) {
 @e RULE_NAME_METADATA_HL
 @e RULE_PNAME_METADATA_HL
 @e RULE_VALUE_METADATA_HL
+@e RULE_TIMED_METADATA_HL
+@e RULE_TIMED_FOR_METADATA_HL
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -1117,6 +1132,8 @@ void Hierarchy::establish(void) {
 			H_C_U(RULE_NAME_METADATA_HL,      I"^name")
 			H_C_U(RULE_PNAME_METADATA_HL,     I"^printed_name")
 			H_C_U(RULE_VALUE_METADATA_HL,     I"^value")
+			H_C_U(RULE_TIMED_METADATA_HL,     I"^timed")
+			H_C_U(RULE_TIMED_FOR_METADATA_HL, I"^timed_for")
 			H_F_U(SHELL_FN_HL,                I"shell_fn")
 			H_F_U(RULE_FN_HL,                 I"rule_fn")
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")

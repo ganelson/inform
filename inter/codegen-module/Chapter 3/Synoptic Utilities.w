@@ -24,6 +24,8 @@ inter_tree_location_list *relation_nodes = NULL;
 inter_tree_location_list *table_nodes = NULL;
 inter_tree_location_list *table_column_nodes = NULL;
 inter_tree_location_list *table_column_usage_nodes = NULL;
+inter_tree_location_list *past_tense_action_nodes = NULL;
+inter_tree_location_list *past_tense_condition_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -38,6 +40,8 @@ int Synoptic::go(pipeline_step *step) {
 	table_nodes = TreeLists::new();
 	table_column_nodes = TreeLists::new();
 	table_column_usage_nodes = TreeLists::new();
+	past_tense_action_nodes = TreeLists::new();
+	past_tense_condition_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -50,6 +54,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticExtensions::renumber(step->repository, extension_nodes);
 	SynopticRelations::renumber(step->repository, relation_nodes);
 	SynopticTables::renumber(step->repository, table_nodes);
+	SynopticChronology::renumber(step->repository, past_tense_action_nodes);
 	return TRUE;
 }
 
@@ -87,6 +92,10 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(table_column_usage_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_table_column"))
 			TreeLists::add(table_column_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_past_action_pattern"))
+			TreeLists::add(past_tense_action_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_past_condition"))
+			TreeLists::add(past_tense_condition_nodes, P);
 	}
 }
 
@@ -110,6 +119,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
 			if (SynopticRelations::redefine(I, P, con_s, synid)) return;
 			if (SynopticTables::redefine(I, P, con_s, synid)) return;
+			if (SynopticChronology::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}

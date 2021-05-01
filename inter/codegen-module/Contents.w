@@ -36,6 +36,7 @@ Chapter 3: Synoptic Resources
 	Properties
 	Relations
 	Tables
+	Chronology
 
 Chapter 4: Inter to Final Code
 	Code Generation

@@ -8,6 +8,14 @@ int Metadata::valid_key(text_stream *key) {
 	return FALSE;
 }
 
+int Metadata::exists(inter_package *pack, text_stream *key) {
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	if (md == NULL) return FALSE;
+	inter_tree_node *D = md->definition;
+	if (D == NULL) return FALSE;
+	return TRUE;
+}
+
 inter_symbol *Metadata::read_symbol(inter_package *pack, text_stream *key) {
 	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
 	if (md == NULL) {

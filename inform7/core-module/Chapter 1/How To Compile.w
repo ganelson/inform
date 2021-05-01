@@ -228,14 +228,13 @@ so on. Those absolute basics are made here.
 	BENCH(RTExtensions::compile_synoptic_resources)
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(RTRelations::compile_synoptic_resources)
+	BENCH(Chronology::compile_synoptic_resources)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
 		-1, debugging, sequence_timer);
-	BENCH(Chronology::past_actions_i6_routines)
-	BENCH(Chronology::compile_runtime)
 
 @<Generate inter, part 5@> =
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
