@@ -22,6 +22,7 @@ typedef struct table_column {
 	struct kind *kind_stored_in_column; /* what kind of value is stored in this column */
 	struct table *table_from_which_kind_inferred; /* usually the earliest use */
 	struct binary_predicate *listed_in_predicate; /* see below */
+	struct table_column_compilation_data compilation_data;
 	CLASS_DEFINITION
 } table_column;
 
@@ -52,7 +53,6 @@ table_column *Tables::Columns::new_table_column(wording W) {
 	tc->name = NULL;
 	tc->kind_stored_in_column = NULL;
 	tc->table_from_which_kind_inferred = NULL;
-	tc->listed_in_predicate = Tables::Relations::make_listed_in_predicate(tc);
 	if (Wordings::nonempty(W)) { /* always happens unless recovering from a problem */
 		tc->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc),
@@ -65,6 +65,8 @@ table_column *Tables::Columns::new_table_column(wording W) {
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc),
 			Task::language_of_syntax());
 	}
+	tc->compilation_data = RTTables::new_tc_compilation_data(tc);
+	tc->listed_in_predicate = Tables::Relations::make_listed_in_predicate(tc);
 	return tc;
 }
 
@@ -129,7 +131,7 @@ typedef struct table_column_usage {
 	struct parse_node *observed_constant_cell; /* first one spotted */
 	int kind_name_entries; /* how many entries read, say, "a rulebook" */
 	struct parse_node *observed_kind_cell; /* first one spotted */
-	struct inter_name *tcu_iname; /* for the array holding this at run-time */
+	struct table_column_usage_compilation_data compilation_data;
 } table_column_usage;
 
 @ Each piece of heading text is passed to the following routine in turn:
@@ -155,7 +157,7 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 	tcu.observed_constant_cell = NULL;
 	tcu.kind_name_entries = 0;
 	tcu.observed_kind_cell = NULL;
-	tcu.tcu_iname = RTTables::new_tcu_iname(t);
+	tcu.compilation_data = RTTables::new_tcu_compilation_data(t);
 
 	return tcu;
 }

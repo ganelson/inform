@@ -394,7 +394,7 @@ following immediately after a permission grant.)
 
 @<Passively allow the column to become the property values@> =
 	if (global_pass_state.pass == 1)
-		RTPropertyValues::pp_set_table_storage(t->columns[i].tcu_iname);
+		RTPropertyValues::pp_set_table_storage(RTTables::tcu_iname(&(t->columns[i])));
 
 @ Active assertions of properties are, once again, a matter of calling the
 assertion handler, simulating sentences like "The P of X is Y".

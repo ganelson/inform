@@ -158,7 +158,7 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
 		table_column *tc = Rvalues::to_table_column(value);
 		if (Holsters::non_void_context(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
+			Emit::holster_iname(VH, RTTables::column_id(tc));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_text)) {

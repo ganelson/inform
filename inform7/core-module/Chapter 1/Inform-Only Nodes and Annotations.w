@@ -1048,7 +1048,7 @@ void CoreSyntax::write_constant_rulebook_ANNOT(text_stream *OUT, parse_node *p) 
 }
 void CoreSyntax::write_constant_table_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_table(p))
-		WRITE(" {table: %n}", Node::get_constant_table(p)->table_identifier);
+		WRITE(" {table: %n}", RTTables::identifier(Node::get_constant_table(p)));
 }
 void CoreSyntax::write_constant_table_column_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_table_column(p)) {

@@ -16485,7 +16485,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'a random room owned by the current owner' {unit: 4}
                                         INVOCATION_NT'a random room owned by the current owner' {phrase invoked: <no-inter-name>} {resulting: room} {kind variable declarations: K=room}
                                             RVALUE_CONTEXT_NT'room owned by the current owner' {token to be parsed against: TEST_VALUE_NT} {required: description of values}
-                                                CONSTANT_NT'room owned by the current owner' {kind: description of rooms} {proposition: << kind=room(x) ^ ('the current owner' == <(QUOTED_INAME_0_0000005d(*1)) : x>) >>}
+                                                CONSTANT_NT'room owned by the current owner' {kind: description of rooms} {proposition: << kind=room(x) ^ ('the current owner' == <(QUOTED_INAME_0_0000006d(*1)) : x>) >>}
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the shop is air-conditioned and an open door ( called the' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if the shop is air-conditioned and an open door ( called the' {phrase invoked: <no-inter-name>}
@@ -17817,7 +17817,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'if the person asked encloses something ( called item ) which' {colon_block_command} {unit: 4} {indent: 1}
                                             INVOCATION_NT'if the person asked encloses something ( called item ) which' {phrase invoked: <no-inter-name>}
                                                 CONDITION_CONTEXT_NT'person asked encloses something ( called item ) which unlock'
-                                                    TEST_PROPOSITION_NT'person asked encloses something ( called item ) which unlock' {proposition: << kind=thing_c(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ called='item':thing(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ encloses('person asked', <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) >>} {term: 'person asked'}
+                                                    TEST_PROPOSITION_NT'person asked encloses something ( called item ) which unlock' {proposition: << kind=thing_c(<(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) ^ called='item':thing(<(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) ^ encloses('person asked', <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'person asked'}
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'now the second noun is the item' {unit: 4} {indent: 2} {control structure: NOW}
                                                 CONDITION_CONTEXT_NT'the second noun is the item'
@@ -17830,7 +17830,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'if a visible passkey ( called item ) unbolts the noun' {colon_block_command} {indent: 1}
                                                     INVOCATION_NT'if a visible passkey ( called item ) unbolts the noun' {phrase invoked: <no-inter-name>}
                                                         CONDITION_CONTEXT_NT'a visible passkey ( called item ) unbolts the noun'
-                                                            TEST_PROPOSITION_NT'a visible passkey ( called item ) unbolts the noun' {proposition: << kind=passkey(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ visible(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ called='item':passkey(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) >>} {term: x}
+                                                            TEST_PROPOSITION_NT'a visible passkey ( called item ) unbolts the noun' {proposition: << kind=passkey(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) ^ visible(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) ^ called='item':passkey(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) >>} {term: x}
                                                 CODE_BLOCK_NT
                                                     INVOCATION_LIST_NT'now the second noun is the item' {unit: 4} {indent: 2} {control structure: NOW}
                                                         CONDITION_CONTEXT_NT'the second noun is the item'
@@ -17950,7 +17950,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if the second noun does not unlock the noun' {colon_block_command} {unit: 4} {indent: 1}
                                                 INVOCATION_NT'if the second noun does not unlock the noun' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'second noun does not unlock the noun'
-                                                        TEST_PROPOSITION_NT'second noun does not unlock the noun' {proposition: << NOT< ('second noun' == <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) NOT> >>} {term: 'second noun'}
+                                                        TEST_PROPOSITION_NT'second noun does not unlock the noun' {proposition: << NOT< ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) NOT> >>} {term: 'second noun'}
                                             CODE_BLOCK_NT
                                                 CODE_BLOCK_NT'say "[The second noun] [do not fit] [the noun]." ( a )' {control structure: SAY}
                                                     INVOCATION_LIST_SAY_NT'"[The second noun] [do not fit] [the noun]." ( a )'
@@ -18183,7 +18183,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 4} {colon_block_command}
                                         INVOCATION_NT'if the second noun unlocks the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun unlocks the noun'
-                                                TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) >>} {term: 'second noun'}
+                                                TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
@@ -18197,7 +18197,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 4} {colon_block_command}
                                         INVOCATION_NT'if the second noun unlocks the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun unlocks the noun'
-                                                TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) >>} {term: 'second noun'}
+                                                TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
@@ -19545,7 +19545,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if the target owns the location of the target' {unit: 4} {colon_block_command}
                             INVOCATION_NT'if the target owns the location of the target' {phrase invoked: <no-inter-name>}
                                 CONDITION_CONTEXT_NT'target owns the location of the target'
-                                    TEST_PROPOSITION_NT'target owns the location of the target' {proposition: << ('target' == <(QUOTED_INAME_0_0000005d(*1)) : 'the location of the target'>) >>} {term: 'target'}
+                                    TEST_PROPOSITION_NT'target owns the location of the target' {proposition: << ('target' == <(QUOTED_INAME_0_0000006d(*1)) : 'the location of the target'>) >>} {term: 'target'}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say " (the owner)"' {control structure: SAY}
                                 INVOCATION_LIST_SAY_NT'" (the owner)"'

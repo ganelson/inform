@@ -15,7 +15,6 @@ typedef struct table {
 	struct wording table_name_text; /* the table name (if any) */
 	struct table_contribution *table_created_at; /* where created in source */
 	struct parse_node *headline_fragment; /* a pseudo-sentence formed by the heading line */
-	struct package_request *table_package; /* where in the Inter */
 	int blank_rows; /* number of entirely blank rows to be appended (may be 0) */
 	struct wording blank_rows_for_each_text; /* add one blank for each instance */
 	struct wording blank_rows_text; /* text of blank rows specification */
@@ -27,13 +26,13 @@ typedef struct table {
 	int preserve_row_order_at_run_time; /* if set, don't sort this table */
 	struct table *amendment_of; /* if amendment of earlier table */
 	int has_been_amended; /* if there exists an amendment of this */
-	struct inter_name *table_identifier; /* at run-time */
 	int approximate_array_space_needed; /* at run-time, in words */
 	int disable_block_constant_correction; /* if set, don't translate block constant entries */
 
 	int no_columns; /* must be at least 1 */
 	struct table_column_usage columns[MAX_COLUMNS_PER_TABLE];
 
+	struct table_compilation_data compilation_data;
 	CLASS_DEFINITION
 } table;
 
@@ -125,7 +124,7 @@ table *Tables::new_table_structure(parse_node *PN) {
 	t->disable_block_constant_correction = FALSE;
 	t->no_columns = 0;
 	t->table_created_at = NULL;
-	RTTables::new_table(PN, t);
+	t->compilation_data = RTTables::new_table(PN, t);
 	Tables::add_table_contribution(t, current_sentence);
 	return t;
 }
@@ -146,7 +145,7 @@ void Tables::add_table_contribution(table *t, parse_node *src) {
 
 =
 void Tables::log(table *t) {
-	LOG("{%n}", t->table_identifier);
+	LOG("{%n}", RTTables::identifier(t));
 }
 
 @ Dimensions:

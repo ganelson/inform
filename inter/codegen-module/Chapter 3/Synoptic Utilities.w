@@ -20,6 +20,9 @@ inter_tree_location_list *activity_nodes = NULL;
 inter_tree_location_list *action_nodes = NULL;
 inter_tree_location_list *property_nodes = NULL;
 inter_tree_location_list *extension_nodes = NULL;
+inter_tree_location_list *table_nodes = NULL;
+inter_tree_location_list *table_column_nodes = NULL;
+inter_tree_location_list *table_column_usage_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -30,6 +33,9 @@ int Synoptic::go(pipeline_step *step) {
 	action_nodes = TreeLists::new();
 	property_nodes = TreeLists::new();
 	extension_nodes = TreeLists::new();
+	table_nodes = TreeLists::new();
+	table_column_nodes = TreeLists::new();
+	table_column_usage_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -40,6 +46,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticActions::renumber(step->repository, action_nodes);
 	SynopticProperties::renumber(step->repository, property_nodes);
 	SynopticExtensions::renumber(step->repository, extension_nodes);
+	SynopticTables::renumber(step->repository, table_nodes);
 	return TRUE;
 }
 
@@ -69,6 +76,12 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
 				TreeLists::add(extension_nodes, P);
 		}
+		if (ptype == PackageTypes::get(I, I"_table"))
+			TreeLists::add(table_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_table_column_usage"))
+			TreeLists::add(table_column_usage_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_table_column"))
+			TreeLists::add(table_column_nodes, P);
 	}
 }
 
@@ -90,6 +103,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticActions::redefine(I, P, con_s, synid)) return;
 			if (SynopticProperties::redefine(I, P, con_s, synid)) return;
 			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
+			if (SynopticTables::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
@@ -247,9 +261,15 @@ void Synoptic::textual_entry(inter_tree_node *Q, text_stream *text) {
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {
 	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
-	if (def_s == NULL) internal_error("no symbol");
+	if (def_s == NULL) {
+		LOG("Unable to find symbol %S in $6\n", name, pack);
+		internal_error("no symbol");
+	}
 	inter_tree_node *D = def_s->definition;
-	if (D == NULL) internal_error("undefined symbol");
+	if (D == NULL) {
+		LOG("Undefined symbol %S in $6\n", name, pack);
+		internal_error("undefined symbol");
+	}
 	return D;
 }
 

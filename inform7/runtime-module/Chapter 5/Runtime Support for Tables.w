@@ -10,8 +10,40 @@ these can't simply be addresses of the data because two uses of columns called
 by index within the current table: see //assertions: Tables//.)
 
 =
-int RTTables::column_id(table_column *tc) {
-	return 100 + tc->allocation_id;
+typedef struct table_column_compilation_data {
+	struct parse_node *where_from;
+	struct package_request *tc_package;
+	struct inter_name *id_iname;
+} table_column_compilation_data;
+
+table_column_compilation_data RTTables::new_tc_compilation_data(table_column *tc) {
+	table_column_compilation_data tccd;
+	tccd.where_from = current_sentence;
+	tccd.tc_package = Hierarchy::local_package_to(TABLE_COLUMNS_HAP, tccd.where_from);
+	tccd.id_iname = Hierarchy::make_iname_in(TABLE_COLUMN_ID_HL, tccd.tc_package);
+	return tccd;
+}
+
+inter_name *RTTables::column_id(table_column *tc) {
+	return tc->compilation_data.id_iname;
+}
+
+void RTTables::compile_table_metadata(void) {
+	table *t;
+	LOOP_OVER(t, table)
+		if (t->amendment_of == FALSE) {
+			Hierarchy::apply_metadata_from_iname(t->compilation_data.table_package, TABLE_VALUE_METADATA_HL,
+				RTTables::identifier(t));
+		}
+}
+
+void RTTables::compile_table_column_metadata(void) {
+	table_column *tc;
+	LOOP_OVER(tc, table_column) {
+		Emit::numeric_constant(tc->compilation_data.id_iname, 0);
+		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_METADATA_HL, tc->compilation_data.tc_package);
+		RTKinds::constant_from_strong_id(kind_iname, Tables::Columns::get_kind(tc));
+	}
 }
 
 @ This compiles a function which takes the ID of a column and returns its
@@ -20,58 +52,71 @@ kind as a strong kind ID.
 =
 void RTTables::column_introspection_routine(void) {
 	inter_name *iname = Hierarchy::find(TC_KOV_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TC_KOV_SYNID);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, tcv_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	table_column *tc;
-	LOOP_OVER(tc, table_column) {
-		EmitCode::inv(CASE_BIP);
-		EmitCode::down();
-			EmitCode::val_number((inter_ti) RTTables::column_id(tc));
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::inv(RETURN_BIP);
-				EmitCode::down();
-					RTKinds::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	}
-
-		EmitCode::up();
-	EmitCode::up();
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_iname(K_value, Kinds::Constructors::UNKNOWN_iname());
-	EmitCode::up();
+	inter_symbol *unk_s = InterSymbolsTables::create_with_unique_name(tcv_s->owning_table, I"unk");
+	inter_name *unk_iname = Kinds::Constructors::UNKNOWN_iname();
+	InterSymbolsTables::equate(unk_s, InterNames::to_symbol(unk_iname));
+	EmitCode::comment(I"This function is consolidated");
+	
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 }
 
-inter_name *RTTables::new_tcu_iname(table *t) {
-	package_request *R = Hierarchy::package_within(TABLE_COLUMNS_HAP, t->table_package);
-	return Hierarchy::make_iname_in(COLUMN_DATA_HL, R);
+typedef struct table_column_usage_compilation_data {
+	struct package_request *super_package;
+	struct package_request *tcu_package;
+	struct inter_name *tcu_iname; /* for the array holding this at run-time */
+} table_column_usage_compilation_data;
+
+table_column_usage_compilation_data RTTables::new_tcu_compilation_data(table *t) {
+	table_column_usage_compilation_data tcucd;
+	tcucd.super_package = t->compilation_data.table_package;
+	tcucd.tcu_package = NULL;
+	tcucd.tcu_iname = NULL;
+	return tcucd;
+}
+
+package_request *RTTables::tcu_package(table_column_usage *tcu) {
+	if (tcu->compilation_data.tcu_package == NULL)
+		tcu->compilation_data.tcu_package =
+			Hierarchy::package_within(TABLE_COLUMN_USAGES_HAP, tcu->compilation_data.super_package);
+	return tcu->compilation_data.tcu_package;
+}
+
+inter_name *RTTables::tcu_iname(table_column_usage *tcu) {
+	if (tcu->compilation_data.tcu_iname == NULL)
+		tcu->compilation_data.tcu_iname =
+			Hierarchy::make_iname_in(COLUMN_DATA_HL, RTTables::tcu_package(tcu));
+	return tcu->compilation_data.tcu_iname;
 }
 
 @h Tables.
 
 =
-void RTTables::new_table(parse_node *PN, table *t) {
-	t->table_package = Hierarchy::local_package_to(TABLES_HAP, PN);
-	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
+typedef struct table_compilation_data {
+	struct package_request *table_package;
+	struct inter_name *table_identifier;
+	struct wording name_for_metadata;
+} table_compilation_data;
+
+table_compilation_data RTTables::new_table(parse_node *PN, table *t) {
+	table_compilation_data tcd;
+	tcd.table_package = Hierarchy::local_package_to(TABLES_HAP, PN);
+	tcd.table_identifier = NULL;
+	return tcd;
 }
 
 void RTTables::supply_table_wording(table *t, wording W) {
-	Hierarchy::apply_metadata_from_wording(t->table_package, TABLE_NAME_METADATA_HL, W);
+	t->compilation_data.name_for_metadata = W;
 }
 
 inter_name *RTTables::identifier(table *t) {
-	return t->table_identifier;
+	if (t->compilation_data.table_identifier == NULL)
+		t->compilation_data.table_identifier =
+			Hierarchy::make_iname_in(TABLE_DATA_HL, t->compilation_data.table_package);
+	return t->compilation_data.table_identifier;
 }
 
 @
@@ -85,11 +130,13 @@ void RTTables::compile(void) {
 }
 
 @<Compile the data structures for entry storage@> =
-	int blanks_array_hwm = 0; /* the high water mark of storage used in the blanks array */
 	table *t;
 	LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE)
+		if (t->amendment_of == FALSE) {
+			int blanks_array_hwm = 0; /* the high water mark of storage used in the blanks array */
 			@<Compile the run-time storage for the table@>;
+			@<Compile metadata for the table@>;
+		}
 
 @<Compile the run-time storage for the table@> =
 	int words_used = 0;
@@ -111,7 +158,7 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	}
 	packaging_state save = EmitArrays::begin_table(RTTables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
-		EmitArrays::iname_entry(t->columns[j].tcu_iname);
+		EmitArrays::iname_entry(RTTables::tcu_iname(&(t->columns[j])));
 	}
 	EmitArrays::end(save);
 	words_used += t->no_columns + 1;
@@ -128,7 +175,7 @@ a single bit in the "blanks array" which records whether the cell is blank
 or not.
 
 @<Compile the inner table array for column j@> =
-	packaging_state save = EmitArrays::begin_table(t->columns[j].tcu_iname, K_value);
+	packaging_state save = EmitArrays::begin_table(RTTables::tcu_iname(&(t->columns[j])), K_value);
 
 	table_column *tc = t->columns[j].column_identity;
 	LOGIF(TABLES, "Compiling column: $C\n", tc);
@@ -199,14 +246,23 @@ the values given there.
 
 	if ((K_understanding) && (Kinds::eq(K, K_understanding)))   bits = TB_COLUMN_TOPIC;
 
-	if (RTTables::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
+	if (RTTables::requires_blanks_bitmap(K) == FALSE) 			bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
-
-	EmitArrays::numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
+	inter_name *bits_iname = Hierarchy::make_iname_in(COLUMN_BITS_HL, RTTables::tcu_package(&(t->columns[j])));
+	Emit::numeric_constant(bits_iname, (inter_ti) bits);
+	EmitArrays::iname_entry(bits_iname);
+	inter_name *identity_iname = Hierarchy::make_iname_in(COLUMN_IDENTITY_HL, RTTables::tcu_package(&(t->columns[j])));
+	Emit::iname_constant(identity_iname, K_value, RTTables::column_id(tc));
+//FIXME
+//	EmitArrays::numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
 	if (bits & TB_COLUMN_NOBLANKBITS)
 		EmitArrays::null_entry();
-	else
-		EmitArrays::numeric_entry((inter_ti) blanks_array_hwm);
+	else {
+		inter_name *blanks_iname = Hierarchy::make_iname_in(COLUMN_BLANKS_HL, RTTables::tcu_package(&(t->columns[j])));
+		Emit::numeric_constant(blanks_iname, (inter_ti) blanks_array_hwm);
+		EmitArrays::iname_entry(blanks_iname);
+//		EmitArrays::numeric_entry((inter_ti) blanks_array_hwm);
+	}
 	words_used += 2;
 
 @ The cell can only contain a generic value in the case of column 1 of a table
@@ -262,7 +318,11 @@ case.)
 
 @<Compile the blanks bitmap table@> =
 	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TB_BLANKS_SYNID);
 	packaging_state save = EmitArrays::begin_byte(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -271,16 +331,15 @@ case.)
 				table_column *tc = t->columns[j].column_identity;
 				if (RTTables::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
 					continue;
+				inter_name *iname = Hierarchy::make_iname_in(COLUMN_BLANK_DATA_HL, RTTables::tcu_package(&(t->columns[j])));
+				packaging_state save = EmitArrays::begin_byte(iname, K_number);
 				int current_bit = 1, byte_so_far = 0;
 				@<Compile blank bits for entries from the source text@>;
 				@<Compile blank bits for additional blank rows@>;
 				if (current_bit != 1) @<Ship the current byte of the blanks table@>;
+				EmitArrays::end(save);
 			}
 		}
-	EmitArrays::null_entry();
-	EmitArrays::null_entry();
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;
@@ -304,6 +363,16 @@ case.)
 	EmitArrays::numeric_entry((inter_ti) byte_so_far);
 	byte_so_far = 0; current_bit = 1;
 
+@<Compile metadata for the table@> =
+	Hierarchy::apply_metadata_from_wording(t->compilation_data.table_package,
+		TABLE_NAME_METADATA_HL, t->compilation_data.name_for_metadata);
+	inter_name *iname = Hierarchy::make_iname_in(TABLE_ID_HL, t->compilation_data.table_package);
+	Emit::numeric_constant(iname, 0);
+	TEMPORARY_TEXT(S)
+	WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
+	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_METADATA_HL, S);
+	DISCARD_TEXT(S)
+
 @ We need a default value for the "table" kind, but it's not obvious what
 it should be. So |TheEmptyTable| is a stunted form of the above data
 structure: a table with no columns and no rows, which would otherwise be
@@ -311,15 +380,12 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 
 @<Compile the Table of Tables@> =
 	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
+	inter_symbol *iname_s = InterNames::to_symbol(iname);
+	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(iname_s->owning_table, I"empty");
+	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
+	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
 	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::iname_entry(Hierarchy::find(EMPTY_TABLE_HL));
-	table *t;
-	LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE) {
-			EmitArrays::iname_entry(RTTables::identifier(t));
-		}
-	EmitArrays::numeric_entry(0);
-	EmitArrays::numeric_entry(0);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFTABLES_SYNID);
 	EmitArrays::end(save);
 
 @ The following allows tables to be said: it's a routine which switches on
@@ -327,60 +393,14 @@ table values and prints the (title-cased) name of the one which matches.
 
 =
 void RTTables::compile_print_table_names(void) {
-	table *t;
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_TABLE_SYNID);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, T_s);
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_table, Hierarchy::find(THEEMPTYTABLE_HL));
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						EmitCode::val_text(I"(the empty table)");
-					EmitCode::up();
-					EmitCode::rtrue();
-				EmitCode::up();
-			EmitCode::up();
-
-		LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_table, RTTables::identifier(t));
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						TEMPORARY_TEXT(S)
-						WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
-						EmitCode::val_text(S);
-						DISCARD_TEXT(S)
-					EmitCode::up();
-					EmitCode::rtrue();
-				EmitCode::up();
-			EmitCode::up();
-		}
-
-			EmitCode::inv(DEFAULT_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						EmitCode::val_text(I"** No such table **");
-					EmitCode::up();
-					EmitCode::rtrue();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
+	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(T_s->owning_table, I"empty");
+	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
+	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 }
 

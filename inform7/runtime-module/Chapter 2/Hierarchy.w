@@ -1136,9 +1136,20 @@ void Hierarchy::establish(void) {
 
 @e TABLES_HAP
 @e TABLE_NAME_METADATA_HL
+@e TABLE_PNAME_METADATA_HL
+@e TABLE_VALUE_METADATA_HL
+@e TABLE_ID_HL
 @e TABLE_DATA_HL
-@e TABLE_COLUMNS_HAP
+@e TABLE_COLUMN_USAGES_HAP
 @e COLUMN_DATA_HL
+@e COLUMN_IDENTITY_HL
+@e COLUMN_BITS_HL
+@e COLUMN_BLANKS_HL
+@e COLUMN_BLANK_DATA_HL
+
+@e TABLE_COLUMNS_HAP
+@e TABLE_COLUMN_ID_HL
+@e TABLE_COLUMN_KIND_METADATA_HL
 
 @e TC_KOV_HL
 @e TB_BLANKS_HL
@@ -1149,15 +1160,33 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(tables))
 		H_BEGIN_AP(TABLES_HAP,                I"table", I"_table")
 			H_C_U(TABLE_NAME_METADATA_HL,     I"^name")
+			H_C_U(TABLE_PNAME_METADATA_HL,    I"^printed_name")
+			H_C_U(TABLE_VALUE_METADATA_HL,    I"^value")
+			H_C_U(TABLE_ID_HL,                I"table_id")
 			H_C_U(TABLE_DATA_HL,              I"table_data")
-			H_BEGIN_AP(TABLE_COLUMNS_HAP,     I"table_column", I"_table_column")
+			H_BEGIN_AP(TABLE_COLUMN_USAGES_HAP, I"column", I"_table_column_usage")
 				H_C_U(COLUMN_DATA_HL,         I"column_data")
+				H_C_U(COLUMN_IDENTITY_HL,     I"column_identity")
+				H_C_U(COLUMN_BITS_HL,         I"column_bits")
+				H_C_U(COLUMN_BLANKS_HL,        I"column_blanks")
+				H_C_U(COLUMN_BLANK_DATA_HL,   I"^column_blank_data")
 			H_END
 		H_END
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
 		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
+	H_END
+
+	submodule_identity *table_columns = Packaging::register_submodule(I"table_columns");
+	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
+		H_BEGIN_AP(TABLE_COLUMNS_HAP,         I"table_column", I"_table_column")
+			H_C_U(TABLE_COLUMN_ID_HL,         I"table_column_id")
+			H_C_U(TABLE_COLUMN_KIND_METADATA_HL, I"^column_kind")
+		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, table_columns))
 		H_F_T(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
 	H_END
 

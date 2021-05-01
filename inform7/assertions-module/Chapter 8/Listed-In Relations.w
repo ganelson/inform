@@ -34,9 +34,8 @@ binary_predicate *Tables::Relations::make_listed_in_predicate(table_column *tc) 
 		BPTerms::new(NULL),
 		BPTerms::new(KindSubjects::from_kind(K_table)),
 		I"listed_in", I"lists-in", NULL,
-		Calculus::Schemas::new("(ct_1=ExistsTableRowCorr(ct_0=*2,%d,*1))",
-			RTTables::column_id(tc)),
-		WordAssemblages::lit_0());
+		Calculus::Schemas::new("(ct_1=ExistsTableRowCorr(ct_0=*2,%n,*1))",
+			RTTables::column_id(tc)), WordAssemblages::lit_0());
 	return bp;
 }
 

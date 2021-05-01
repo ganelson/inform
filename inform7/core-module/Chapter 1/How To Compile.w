@@ -200,6 +200,8 @@ so on. Those absolute basics are made here.
 	BENCH(InferenceSubjects::emit_all)
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
+	BENCH(RTTables::compile_table_metadata)
+	BENCH(RTTables::compile_table_column_metadata)
 	BENCH(RTEquations::compile_identifiers)
 	BENCH(ImperativeDefinitions::compile_first_block)
 	BENCH(RTRules::rulebook_var_creators)
