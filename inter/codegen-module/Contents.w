@@ -34,6 +34,7 @@ Chapter 3: Synoptic Resources
 	Activities
 	Actions
 	Properties
+	Relations
 	Tables
 
 Chapter 4: Inter to Final Code

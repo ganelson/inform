@@ -154,12 +154,12 @@ void RTRelations::compile_relation_records(void) {
 			@<Write the relation record for this BP@>;
 		}
 	}
-	inter_name *iname = Hierarchy::find(CREATEDYNAMICRELATIONS_HL);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
-	LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
 	LOOP_OVER(bp, binary_predicate) {
 		if ((Relations::Explicit::stored_dynamically(bp)) && (bp->right_way_round)) {
+			inter_name *iname = Hierarchy::make_iname_in(RELATION_CREATOR_FN_HL, bp->imp->bp_package);
+			packaging_state save = Functions::begin(iname);
+			LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
+			LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
 
 			EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
 			EmitCode::down();
@@ -230,13 +230,19 @@ void RTRelations::compile_relation_records(void) {
 			EmitCode::down();
 				EmitCode::val_iname(K_value, RTRelations::initialiser_iname(bp));
 			EmitCode::up();
+			Functions::end(save);
+			inter_name *md_iname = Hierarchy::make_iname_in(RELATION_CREATOR_METADATA_HL, bp->imp->bp_package);
+			Emit::iname_constant(md_iname, K_value, iname);
 		}
 	}
-	Functions::end(save);
-	Hierarchy::make_available(iname);
 }
 
 @<Write the relation record for this BP@> =
+	inter_name *id_iname = Hierarchy::make_iname_in(RELATION_ID_HL, bp->imp->bp_package);
+	Emit::numeric_constant(id_iname, 0);
+	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
+	inter_name *md_iname = Hierarchy::make_iname_in(RELATION_VALUE_METADATA_HL, bp->imp->bp_package);
+	Emit::iname_constant(md_iname, K_value, RTRelations::iname(bp));
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
 	packaging_state save = EmitArrays::begin(RTRelations::iname(bp), K_value);
 	if (Relations::Explicit::stored_dynamically(bp)) {
@@ -977,26 +983,6 @@ void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
 	EmitArrays::end(save);
 }
 
-@h Support for the RELATIONS command.
-
-=
-void RTRelations::IterateRelations(void) {
-	inter_name *iname = Hierarchy::find(ITERATERELATIONS_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *callback_s = LocalVariables::new_other_as_symbol(I"callback");
-	binary_predicate *bp;
-	LOOP_OVER(bp, binary_predicate)
-		if (bp->imp->record_needed) {
-			EmitCode::inv(INDIRECT1V_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, callback_s);
-				EmitCode::val_iname(K_value, RTRelations::iname(bp));
-			EmitCode::up();
-		}
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-}
-
 @h The bitmap for various-to-various relations.
 It is unavoidable that a general V-to-V relation will take at least $LR$ bits
 of storage, where $L$ is the size of the left domain and $R$ the size of the
@@ -1448,7 +1434,6 @@ void RTRelations::compile_defined_relations(void) {
 			RTRelations::compile_routine_to_decide(D->bp_by_routine_iname,
 				D->condition_defn_text, bp->term_details[0], bp->term_details[1]);
 		}
-	@<Compile RProperty routine@>;
 
 	relation_guard *rg;
 	LOOP_OVER(rg, relation_guard) {
@@ -1459,37 +1444,6 @@ void RTRelations::compile_defined_relations(void) {
 		@<Compile RGuard MF routine@>;
 	}
 }
-
-@<Compile RProperty routine@> =
-	packaging_state save = Functions::begin(Hierarchy::find(RPROPERTY_HL));
-	inter_symbol *obj_s = LocalVariables::new_other_as_symbol(I"obj");
-	inter_symbol *cl_s = LocalVariables::new_other_as_symbol(I"cl");
-	inter_symbol *pr_s = LocalVariables::new_other_as_symbol(I"pr");
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(OFCLASS_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, obj_s);
-			EmitCode::val_symbol(K_value, cl_s);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				EmitCode::inv(PROPERTYVALUE_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, obj_s);
-					EmitCode::val_symbol(K_value, pr_s);
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_nothing();
-	EmitCode::up();
-	Functions::end(save);
 
 @<Compile RGuard f0 routine@> =
 	if (rg->guard_f0_iname) {
@@ -1871,3 +1825,44 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 		}
 	}
 }
+
+void RTRelations::compile_synoptic_resources(void) {
+	@<Provide placeholder for the CCOUNT_BINARY_PREDICATE constant@>;
+	@<Provide placeholder for the CREATEDYNAMICRELATIONS function@>;
+	@<Provide placeholder for the ITERATERELATIONS function@>;
+	@<Provide placeholder for the RPROPERTY function@>;
+}
+
+@<Provide placeholder for the CCOUNT_BINARY_PREDICATE constant@> =
+	inter_name *iname = Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, CCOUNT_BINARY_PREDICATE_SYNID);
+	Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the CREATEDYNAMICRELATIONS function@> =
+	inter_name *iname = Hierarchy::find(CREATEDYNAMICRELATIONS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, CREATEDYNAMICRELATIONS_SYNID);
+	packaging_state save = Functions::begin(iname);
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the ITERATERELATIONS function@> =
+	inter_name *iname = Hierarchy::find(ITERATERELATIONS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, ITERATERELATIONS_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_other_as_symbol(I"callback");
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the RPROPERTY function@> =
+	inter_name *iname = Hierarchy::find(RPROPERTY_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, RPROPERTY_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_other_as_symbol(I"obj");
+	LocalVariables::new_other_as_symbol(I"cl");
+	LocalVariables::new_other_as_symbol(I"pr");
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);

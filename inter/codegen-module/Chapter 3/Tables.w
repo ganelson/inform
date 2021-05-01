@@ -37,8 +37,6 @@ void SynopticTables::renumber(inter_tree *I, inter_tree_location_list *table_nod
 			if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
 			ID = Inter::Symbols::definition(id_s);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"column_bits");
-			LOG("Bits seem to be %08x, id is %08x, %08x\n", D->W.data[DATA_CONST_IFLD+1],
-				ID->W.data[DATA_CONST_IFLD], ID->W.data[DATA_CONST_IFLD+1]);
 			D->W.data[DATA_CONST_IFLD+1] += ID->W.data[DATA_CONST_IFLD+1];
 		}
 	}

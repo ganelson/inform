@@ -1,9 +1,9 @@
 100.0% in inform7 run
-     54.8% in compilation to Inter
-         33.1% in //Sequence::undertake_queued_tasks//
-          5.6% in //InferenceSubjects::emit_all//
-          3.4% in //MajorNodes::pre_pass//
-          3.1% in //MajorNodes::pass_1//
+     54.4% in compilation to Inter
+         32.7% in //Sequence::undertake_queued_tasks//
+          5.5% in //InferenceSubjects::emit_all//
+          3.3% in //MajorNodes::pre_pass//
+          3.0% in //MajorNodes::pass_1//
           1.7% in //ImperativeDefinitions::compile_first_block//
           1.5% in //ImperativeDefinitions::assess_all//
           0.9% in //RTVerbs::ConjugateVerb//
@@ -18,21 +18,21 @@
           0.1% in //RTRules::compile_metadata//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          2.3% not specifically accounted for
-     43.0% in running Inter pipeline
-         12.7% in inter step 10/14: consolidate-text
-         10.7% in step preparation
-          8.5% in inter step 2/14: link
-          6.6% in inter step 14/14: generate inform6 -> auto.inf
+          2.5% not specifically accounted for
+     43.4% in running Inter pipeline
+         12.9% in inter step 10/14: consolidate-text
+         10.8% in step preparation
+          8.7% in inter step 2/14: link
+          6.5% in inter step 14/14: generate inform6 -> auto.inf
           0.6% in inter step 9/14: make-identifiers-unique
           0.3% in inter step 11/14: reconcile-verbs
           0.3% in inter step 13/14: eliminate-redundant-operations
-          0.3% in inter step 6/14: assimilate
           0.1% in inter step 12/14: eliminate-redundant-labels
           0.1% in inter step 4/14: parse-linked-matter
           0.1% in inter step 5/14: resolve-conditional-compilation
+          0.1% in inter step 6/14: assimilate
           0.1% in inter step 7/14: resolve-external-symbols
           0.1% in inter step 8/14: inspect-plugs
-          2.0% not specifically accounted for
+          2.1% not specifically accounted for
       1.7% in supervisor
       0.4% not specifically accounted for

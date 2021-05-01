@@ -949,6 +949,9 @@ void Hierarchy::establish(void) {
 @e MEANINGLESS_RR_HL
 
 @e RELATIONS_HAP
+@e RELATION_VALUE_METADATA_HL
+@e RELATION_CREATOR_METADATA_HL
+@e RELATION_ID_HL
 @e RELATION_RECORD_HL
 @e BITMAP_HL
 @e ABILITIES_HL
@@ -961,6 +964,7 @@ void Hierarchy::establish(void) {
 @e GUARD_MAKE_TRUE_FN_HL
 @e GUARD_MAKE_FALSE_INAME_HL
 @e RELATION_FN_HL
+@e RELATION_CREATOR_FN_HL
 
 @e CREATEDYNAMICRELATIONS_HL
 @e CCOUNT_BINARY_PREDICATE_HL
@@ -992,6 +996,9 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(relations))
 		H_BEGIN_AP(RELATIONS_HAP,             I"relation", I"_relation")
+			H_C_U(RELATION_VALUE_METADATA_HL, I"^value")
+			H_C_U(RELATION_CREATOR_METADATA_HL, I"^creator")
+			H_C_U(RELATION_ID_HL,             I"relation_id")
 			H_C_G(RELATION_RECORD_HL,         I"Rel_Record")
 			H_C_U(BITMAP_HL,                  I"as_constant")
 			H_C_U(ABILITIES_HL,               I"abilities")
@@ -1004,6 +1011,7 @@ void Hierarchy::establish(void) {
 			H_F_U(GUARD_MAKE_TRUE_FN_HL,      I"guard_make_true_fn")
 			H_F_U(GUARD_MAKE_FALSE_INAME_HL,  I"guard_make_false_iname")
 			H_F_U(RELATION_FN_HL,             I"relation_fn")
+			H_F_U(RELATION_CREATOR_FN_HL,     I"creator_fn")
 		H_END
 	H_END
 

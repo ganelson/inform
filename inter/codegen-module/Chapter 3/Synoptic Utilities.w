@@ -20,6 +20,7 @@ inter_tree_location_list *activity_nodes = NULL;
 inter_tree_location_list *action_nodes = NULL;
 inter_tree_location_list *property_nodes = NULL;
 inter_tree_location_list *extension_nodes = NULL;
+inter_tree_location_list *relation_nodes = NULL;
 inter_tree_location_list *table_nodes = NULL;
 inter_tree_location_list *table_column_nodes = NULL;
 inter_tree_location_list *table_column_usage_nodes = NULL;
@@ -33,6 +34,7 @@ int Synoptic::go(pipeline_step *step) {
 	action_nodes = TreeLists::new();
 	property_nodes = TreeLists::new();
 	extension_nodes = TreeLists::new();
+	relation_nodes = TreeLists::new();
 	table_nodes = TreeLists::new();
 	table_column_nodes = TreeLists::new();
 	table_column_usage_nodes = TreeLists::new();
@@ -46,6 +48,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticActions::renumber(step->repository, action_nodes);
 	SynopticProperties::renumber(step->repository, property_nodes);
 	SynopticExtensions::renumber(step->repository, extension_nodes);
+	SynopticRelations::renumber(step->repository, relation_nodes);
 	SynopticTables::renumber(step->repository, table_nodes);
 	return TRUE;
 }
@@ -76,6 +79,8 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
 				TreeLists::add(extension_nodes, P);
 		}
+		if (ptype == PackageTypes::get(I, I"_relation"))
+			TreeLists::add(relation_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_table"))
 			TreeLists::add(table_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_table_column_usage"))
@@ -103,6 +108,7 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticActions::redefine(I, P, con_s, synid)) return;
 			if (SynopticProperties::redefine(I, P, con_s, synid)) return;
 			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
+			if (SynopticRelations::redefine(I, P, con_s, synid)) return;
 			if (SynopticTables::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
@@ -150,7 +156,7 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 inter_symbol *Synoptic::get_local(inter_tree *I, text_stream *name) {
 	inter_package *pack = Inter::Bookmarks::package(Produce::at(I));
 	inter_symbol *loc_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
-	if (loc_s == NULL) internal_error("unable to find an expected local variable");
+	if (loc_s == NULL) Metadata::err("local not found", pack, name);
 	return loc_s;
 }
 

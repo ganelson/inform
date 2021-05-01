@@ -209,7 +209,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::compile_metadata)
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::activity_var_creators)
-	BENCH(RTRelations::IterateRelations)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
 	if (debugging) {
@@ -228,6 +227,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTProperties::compile_synoptic_resources)
 	BENCH(RTExtensions::compile_synoptic_resources)
 	BENCH(RTRelations::compile_defined_relations)
+	BENCH(RTRelations::compile_synoptic_resources)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 
