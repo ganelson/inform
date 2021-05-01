@@ -35,6 +35,15 @@ void RTInstances::compile_metadata(void) {
 		if ((K_scene) && (Kinds::eq(K, K_scene)))
 			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
 				INSTANCE_IS_SCENE_METADATA_HL, 1);
+		if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
+			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+				INSTANCE_IS_SOUND_METADATA_HL, 1);
+		if ((K_figure_name) && (Kinds::eq(K, K_figure_name)))
+			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+				INSTANCE_IS_FIGURE_METADATA_HL, 1);
+		if ((K_external_file) && (Kinds::eq(K, K_external_file)))
+			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+				INSTANCE_IS_EXF_METADATA_HL, 1);
 	}
 }
 

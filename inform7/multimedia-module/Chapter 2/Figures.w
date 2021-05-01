@@ -15,7 +15,7 @@ void Figures::start(void) {
 
 int Figures::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTFigures::compile_ResourceIDsOfFigures_array);
+		BENCH(RTFigures::compile_metadata);
 	}
 	return FALSE;
 }
@@ -147,6 +147,7 @@ typedef struct figures_data {
 	struct filename *filename_of_image_file;
 	int figure_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
+	struct instance *as_instance;
 	CLASS_DEFINITION
 } figures_data;
 
@@ -169,6 +170,7 @@ instance *Figures::figures_create(wording W, int id, filename *figure_file, int 
 	figd->name = W;
 	figd->figure_number = id;
 	figd->alt_description = alt;
+	figd->as_instance = I;
 	if (id == 1) F_cover_art = figd;
 	return I;
 }

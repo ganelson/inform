@@ -88,7 +88,7 @@ function togglePopup(material_id) {
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Sounds::production_line</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stage</span><span class="plain-syntax"> == </span><span class="identifier-syntax">INTER1_CSEQ</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTSounds::compile_ResourceIDsOfSounds_array</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTSounds::compile_metadata</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -226,6 +226,7 @@ detects that this has happened, and sets <span class="extract"><span class="extr
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">filename_of_sound_file</span><span class="plain-syntax">; </span><span class="comment-syntax"> relative to the Resources folder</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sound_number</span><span class="plain-syntax">; </span><span class="comment-syntax"> resource number of this picture inside Blorb</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt_description</span><span class="plain-syntax">; </span><span class="comment-syntax"> word number of double-quoted description</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_instance</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">sounds_data</span><span class="plain-syntax">;</span>
 </pre>
@@ -248,6 +249,7 @@ manages to make a sound, a problem message is thrown.
 <span class="plain-syntax">    </span><span class="identifier-syntax">sd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sound_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alt_description</span><span class="plain-syntax"> = </span><span class="identifier-syntax">alt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 

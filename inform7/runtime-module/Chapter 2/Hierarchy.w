@@ -186,6 +186,7 @@ void Hierarchy::establish(void) {
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
 	@<Establish kinds@>;
+	@<Establish multimedia@>;
 	@<Establish phrases@>;
 	@<Establish properties@>;
 	@<Establish relations@>;
@@ -708,6 +709,12 @@ void Hierarchy::establish(void) {
 @e INSTANCE_VALUE_METADATA_HL
 @e INSTANCE_KIND_METADATA_HL
 @e INSTANCE_IS_SCENE_METADATA_HL
+@e INSTANCE_IS_EXF_METADATA_HL
+@e INSTANCE_FILE_VALUE_METADATA_HL
+@e INSTANCE_IS_FIGURE_METADATA_HL
+@e INSTANCE_FIGURE_ID_METADATA_HL
+@e INSTANCE_IS_SOUND_METADATA_HL
+@e INSTANCE_SOUND_ID_METADATA_HL
 @e INSTANCE_SSF_METADATA_HL
 @e INSTANCE_SCF_METADATA_HL
 @e INSTANCE_HL
@@ -733,6 +740,12 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_SCENE_METADATA_HL, I"^is_scene")
 			H_C_U(INSTANCE_SSF_METADATA_HL,   I"^scene_status_fn")
 			H_C_U(INSTANCE_SCF_METADATA_HL,   I"^scene_change_fn")
+			H_C_U(INSTANCE_IS_EXF_METADATA_HL, I"^is_file")
+			H_C_U(INSTANCE_FILE_VALUE_METADATA_HL, I"^file_value")
+			H_C_U(INSTANCE_IS_FIGURE_METADATA_HL, I"^is_figure")
+			H_C_U(INSTANCE_FIGURE_ID_METADATA_HL, I"^resource_id");
+			H_C_U(INSTANCE_IS_SOUND_METADATA_HL, I"^is_sound")
+			H_C_U(INSTANCE_SOUND_ID_METADATA_HL, I"^resource_id");
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
@@ -897,6 +910,23 @@ void Hierarchy::establish(void) {
 		H_F_T(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
 		H_F_T(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
 		H_F_T(SHOWMEDETAILS_HL,               I"showmedetails_fn", I"ShowMeDetails")
+	H_END
+
+@h Multimedia.
+
+@e RESOURCEIDSOFFIGURES_HL
+@e RESOURCEIDSOFSOUNDS_HL
+@e NO_EXTERNAL_FILES_HL
+@e TABLEOFEXTERNALFILES_HL
+
+@<Establish multimedia@> =
+	submodule_identity *multimedia = Packaging::register_submodule(I"multimedia");
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, multimedia))
+		H_C_T(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
+		H_C_T(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
+		H_C_T(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
+		H_C_T(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
 	H_END
 
 @h Phrases.
@@ -1226,6 +1256,7 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
+		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
 		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
 	H_END
 
@@ -1324,8 +1355,6 @@ void Hierarchy::establish(void) {
 @e COMMANDPROMPTTEXT_HL
 @e DECIMAL_TOKEN_INNER_HL
 @e NO_USE_OPTIONS_HL
-@e RESOURCEIDSOFFIGURES_HL
-@e RESOURCEIDSOFSOUNDS_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
 
@@ -1335,8 +1364,6 @@ void Hierarchy::establish(void) {
 @e PRINT_FIGURE_NAME_HL
 @e PRINT_SOUND_NAME_HL
 @e PRINT_EXTERNAL_FILE_NAME_HL
-@e NO_EXTERNAL_FILES_HL
-@e TABLEOFEXTERNALFILES_HL
 @e PRINT_SCENE_HL
 
 @<The rest@> =
@@ -1357,7 +1384,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_TABLE_XPACKAGE))
-		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
 		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
 	H_END
 
@@ -1366,12 +1392,10 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_FIGURE_NAME_XPACKAGE))
-		H_C_T(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
 		H_F_T(PRINT_FIGURE_NAME_HL,           I"print_fn", I"PrintFigureName")
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_SOUND_NAME_XPACKAGE))
-		H_C_T(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
 		H_F_T(PRINT_SOUND_NAME_HL,            I"print_fn", I"PrintSoundName")
 	H_END
 
@@ -1386,8 +1410,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_EXTERNAL_FILE_XPACKAGE))
-		H_C_T(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
-		H_C_T(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
 		H_F_T(PRINT_EXTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintExternalFileName")
 	H_END
 

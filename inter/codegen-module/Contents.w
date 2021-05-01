@@ -39,6 +39,7 @@ Chapter 3: Synoptic Resources
 	Tables
 	Chronology
 	Scenes
+	Multimedia
 
 Chapter 4: Inter to Final Code
 	Code Generation

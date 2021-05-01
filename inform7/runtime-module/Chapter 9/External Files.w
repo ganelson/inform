@@ -17,10 +17,6 @@ external_file_compilation_data RTExternalFiles::new_data(wording W) {
 }
 
 void RTExternalFiles::arrays(void) {
-	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
-	Emit::numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
-	Hierarchy::make_available(iname);
-
 	files_data *exf;
 	LOOP_OVER(exf, files_data) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
@@ -55,11 +51,20 @@ void RTExternalFiles::arrays(void) {
 		EmitArrays::end(save);
 	}
 
+	LOOP_OVER(exf, files_data) {
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FILE_VALUE_METADATA_HL,
+			RTInstances::package(exf->as_instance));
+		Emit::iname_constant(md_iname, K_value, exf->compilation_data.exf_iname);
+	}
+
+	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_EXTERNAL_FILES_SYNID);
+	Emit::numeric_constant(iname, (inter_ti) 0);
+	Hierarchy::make_available(iname);
+
 	iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFEXTERNALFILES_SYNID);
 	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::numeric_entry(0);
-	LOOP_OVER(exf, files_data) EmitArrays::iname_entry(exf->compilation_data.exf_iname);
-	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);
 }

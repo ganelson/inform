@@ -15,7 +15,7 @@ void Sounds::start(void) {
 
 int Sounds::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTSounds::compile_ResourceIDsOfSounds_array);
+		BENCH(RTSounds::compile_metadata);
 	}
 	return FALSE;
 }
@@ -139,6 +139,7 @@ typedef struct sounds_data {
 	struct filename *filename_of_sound_file; /* relative to the Resources folder */
 	int sound_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
+	struct instance *as_instance;
 	CLASS_DEFINITION
 } sounds_data;
 
@@ -159,6 +160,7 @@ instance *Sounds::sounds_create(wording W, int id, filename *sound_file, int alt
 	sd->name = W;
 	sd->sound_number = id;
 	sd->alt_description = alt;
+	sd->as_instance = I;
 	return I;
 }
 

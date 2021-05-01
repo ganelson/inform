@@ -230,6 +230,7 @@ typedef struct files_data {
 	int file_ownership; /* one of the |OWNED_BY_*| values above */
 	struct text_stream *IFID_of_owner; /* if we know that */
 	struct external_file_compilation_data compilation_data;
+	struct instance *as_instance;
 	CLASS_DEFINITION
 } files_data;
 
@@ -253,6 +254,7 @@ instance *ExternalFiles::files_create(wording W, int binary, int ownership,
 	fd->file_ownership = ownership;
 	fd->IFID_of_owner = Str::duplicate(ifid_of_file);
 	fd->compilation_data = RTExternalFiles::new_data(W);
+	fd->as_instance = I;
 	return I;
 }
 

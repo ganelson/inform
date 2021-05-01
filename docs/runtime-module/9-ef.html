@@ -80,10 +80,6 @@
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTExternalFiles::arrays</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NO_EXTERNAL_FILES_HL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-emt.html#SP9" class="function-link"><span class="function-syntax">Emit::numeric_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">NUMBER_CREATED</span><span class="plain-syntax">(</span><span class="identifier-syntax">files_data</span><span class="plain-syntax">)));</span>
-<span class="plain-syntax">    </span><a href="2-hrr.html#SP17" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">files_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">exf</span><span class="plain-syntax">, </span><span class="identifier-syntax">files_data</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">exf</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">file_ownership</span><span class="plain-syntax"> == </span><span class="identifier-syntax">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain-syntax">) {</span>
@@ -118,11 +114,20 @@
 <span class="string-syntax">        EmitArrays::end(save);</span>
 <span class="string-syntax">    }</span>
 
+<span class="string-syntax">    LOOP_OVER(exf, files_data) {</span>
+<span class="string-syntax">        inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FILE_VALUE_METADATA_HL,</span>
+<span class="string-syntax">            RTInstances::package(exf-&gt;as_instance));</span>
+<span class="string-syntax">        Emit::iname_constant(md_iname, K_value, exf-&gt;compilation_data.exf_iname);</span>
+<span class="string-syntax">    }</span>
+
+<span class="string-syntax">    inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);</span>
+<span class="string-syntax">    Produce::annotate_i(iname, SYNOPTIC_IANN, NO_EXTERNAL_FILES_SYNID);</span>
+<span class="string-syntax">    Emit::numeric_constant(iname, (inter_ti) 0);</span>
+<span class="string-syntax">    Hierarchy::make_available(iname);</span>
+
 <span class="string-syntax">    iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);</span>
+<span class="string-syntax">    Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFEXTERNALFILES_SYNID);</span>
 <span class="string-syntax">    packaging_state save = EmitArrays::begin(iname, K_value);</span>
-<span class="string-syntax">    EmitArrays::numeric_entry(0);</span>
-<span class="string-syntax">    LOOP_OVER(exf, files_data) EmitArrays::iname_entry(exf-&gt;compilation_data.exf_iname);</span>
-<span class="string-syntax">    EmitArrays::numeric_entry(0);</span>
 <span class="string-syntax">    EmitArrays::end(save);</span>
 <span class="string-syntax">    Hierarchy::make_available(iname);</span>
 <span class="string-syntax">}</span>

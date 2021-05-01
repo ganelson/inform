@@ -50,20 +50,6 @@ void RTTables::compile_table_column_metadata(void) {
 kind as a strong kind ID.
 
 =
-void RTTables::column_introspection_routine(void) {
-	inter_name *iname = Hierarchy::find(TC_KOV_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TC_KOV_SYNID);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
-	inter_symbol *unk_s = InterSymbolsTables::create_with_unique_name(tcv_s->owning_table, I"unk");
-	inter_name *unk_iname = Kinds::Constructors::UNKNOWN_iname();
-	InterSymbolsTables::equate(unk_s, InterNames::to_symbol(unk_iname));
-	EmitCode::comment(I"This function is consolidated");
-	
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-}
-
 typedef struct table_column_usage_compilation_data {
 	struct package_request *super_package;
 	struct package_request *tcu_package;
@@ -125,8 +111,6 @@ inter_name *RTTables::identifier(table *t) {
 void RTTables::compile(void) {
 	@<Compile the data structures for entry storage@>;
 	@<Compile the blanks bitmap table@>;
-	@<Compile the Table of Tables@>;
-	RTTables::column_introspection_routine();
 }
 
 @<Compile the data structures for entry storage@> =
@@ -253,15 +237,12 @@ the values given there.
 	EmitArrays::iname_entry(bits_iname);
 	inter_name *identity_iname = Hierarchy::make_iname_in(COLUMN_IDENTITY_HL, RTTables::tcu_package(&(t->columns[j])));
 	Emit::iname_constant(identity_iname, K_value, RTTables::column_id(tc));
-//FIXME
-//	EmitArrays::numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
-	if (bits & TB_COLUMN_NOBLANKBITS)
+	if (bits & TB_COLUMN_NOBLANKBITS) {
 		EmitArrays::null_entry();
-	else {
+	} else {
 		inter_name *blanks_iname = Hierarchy::make_iname_in(COLUMN_BLANKS_HL, RTTables::tcu_package(&(t->columns[j])));
 		Emit::numeric_constant(blanks_iname, (inter_ti) blanks_array_hwm);
 		EmitArrays::iname_entry(blanks_iname);
-//		EmitArrays::numeric_entry((inter_ti) blanks_array_hwm);
 	}
 	words_used += 2;
 
@@ -317,12 +298,6 @@ case.)
 	else RTKinds::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
-	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TB_BLANKS_SYNID);
-	packaging_state save = EmitArrays::begin_byte(iname, K_number);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
@@ -373,21 +348,6 @@ case.)
 	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_METADATA_HL, S);
 	DISCARD_TEXT(S)
 
-@ We need a default value for the "table" kind, but it's not obvious what
-it should be. So |TheEmptyTable| is a stunted form of the above data
-structure: a table with no columns and no rows, which would otherwise be
-against the rules. (The Template file "Tables.i6t" defines it.)
-
-@<Compile the Table of Tables@> =
-	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
-	inter_symbol *iname_s = InterNames::to_symbol(iname);
-	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(iname_s->owning_table, I"empty");
-	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
-	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFTABLES_SYNID);
-	EmitArrays::end(save);
-
 @ The following allows tables to be said: it's a routine which switches on
 table values and prints the (title-cased) name of the one which matches.
 
@@ -415,3 +375,42 @@ int RTTables::requires_blanks_bitmap(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
 	return TRUE;
 }
+
+@h Synoptic resources.
+
+=
+void RTTables::compile_synoptic_resources(void) {
+	@<Provide placeholder for the TABLEOFTABLES array@>;
+	@<Provide placeholder for the TB_BLANKS array@>;
+	@<Provide placeholder for the TC_KOV function@>;
+}
+
+@<Provide placeholder for the TABLEOFTABLES array@> =
+	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
+	inter_symbol *iname_s = InterNames::to_symbol(iname);
+	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(iname_s->owning_table, I"empty");
+	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
+	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
+	packaging_state save = EmitArrays::begin(iname, K_value);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFTABLES_SYNID);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the TB_BLANKS array@> =
+	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TB_BLANKS_SYNID);
+	packaging_state save = EmitArrays::begin_byte(iname, K_number);
+	EmitArrays::end(save);
+	Hierarchy::make_available(iname);
+
+@<Provide placeholder for the TC_KOV function@> =
+	inter_name *iname = Hierarchy::find(TC_KOV_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TC_KOV_SYNID);
+	packaging_state save = Functions::begin(iname);
+	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
+	inter_symbol *unk_s = InterSymbolsTables::create_with_unique_name(tcv_s->owning_table, I"unk");
+	inter_name *unk_iname = Kinds::Constructors::UNKNOWN_iname();
+	InterSymbolsTables::equate(unk_s, InterNames::to_symbol(unk_iname));
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);

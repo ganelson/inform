@@ -230,6 +230,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(RTRelations::compile_synoptic_resources)
 	BENCH(Chronology::compile_synoptic_resources)
+	BENCH(RTTables::compile_synoptic_resources)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 

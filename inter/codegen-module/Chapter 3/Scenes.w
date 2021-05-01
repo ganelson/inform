@@ -2,11 +2,10 @@
 
 To renumber the scenes and construct suitable functions and arrays.
 
-@ Before this runs, property packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
+@ Before this runs, instances of scenes are scattered all over the Inter tree.
 
-As this is called, //Synoptic Utilities// has already formed a list |property_nodes|
-of packages of type |_activity|.
+As this is called, //Synoptic Utilities// has already formed a list |scene_nodes|
+of instances having the kind |K_scene|.
 
 =
 void SynopticScenes::renumber(inter_tree *I, inter_tree_location_list *scene_nodes) {
@@ -66,7 +65,6 @@ whether any change in status has or has not occurred.
 
 @<Add a body of code to the DETECTSCENECHANGE function@> =
 	inter_symbol *chs_s = Synoptic::get_local(I, I"chs");
-	inter_symbol *myself_s = Synoptic::get_local(I, I"myself");
 	inter_symbol *Again_l = Produce::reserve_label(I, I".Again");
 	inter_symbol *CScene_l = Produce::reserve_label(I, I".CScene");
 	Produce::place_label(I, Again_l);
@@ -109,14 +107,6 @@ whether any change in status has or has not occurred.
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, chs_s);
 	Produce::up(I);
-//	Produce::inv_call(I, myself_s);
-//	Produce::down(I);
-//		Produce::inv_primitive(I, PREINCREMENT_BIP);
-//		Produce::down(I);
-//			Produce::ref_symbol(I, K_value, chs_s);
-//		Produce::up(I);
-//	Produce::up(I);
-//	Produce::rtrue(I);
 	Produce::inv_primitive(I, JUMP_BIP);
 	Produce::down(I);
 		Produce::lab(I, Again_l);

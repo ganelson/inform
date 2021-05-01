@@ -608,10 +608,8 @@ void RTScenes::compile_synoptic_resources(void) {
 	Produce::annotate_i(iname, SYNOPTIC_IANN, DETECTSCENECHANGE_SYNID);
 	packaging_state save = Functions::begin(iname);
 	LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
-	inter_symbol *ch_s =
-		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
-	inter_symbol *myself_s = InterSymbolsTables::create_with_unique_name(ch_s->owning_table, I"myself");
-	InterSymbolsTables::equate(myself_s, InterNames::to_symbol(iname));
+//	inter_symbol *ch_s =
+//		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
 
 	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
