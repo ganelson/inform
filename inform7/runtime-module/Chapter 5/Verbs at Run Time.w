@@ -10,6 +10,7 @@ typedef struct verb_compilation_data {
 } verb_compilation_data;
 
 typedef struct verb_form_compilation_data {
+	struct package_request *vf_package;
 	struct inter_name *vf_iname; /* routine to conjugate this */
 	struct parse_node *where_vf_created;
 } verb_form_compilation_data;
@@ -25,6 +26,7 @@ void RTVerbs::initialise_verb(verb *V) {
 }
 
 void RTVerbs::initialise_verb_form(verb_form *VF) {
+	VF->verb_form_compilation.vf_package = NULL;
 	VF->verb_form_compilation.vf_iname = NULL;
 	VF->verb_form_compilation.where_vf_created = current_sentence;
 }
@@ -40,8 +42,9 @@ inter_name *RTVerbs::form_iname(verb_form *vf) {
 	if (vf->verb_form_compilation.vf_iname == NULL) {
 		package_request *R =
 			RTVerbs::package(vf->underlying_verb, vf->verb_form_compilation.where_vf_created);
-		package_request *R2 = Hierarchy::package_within(VERB_FORMS_HAP, R);
-		vf->verb_form_compilation.vf_iname = Hierarchy::make_iname_in(FORM_FN_HL, R2);
+		vf->verb_form_compilation.vf_package = Hierarchy::package_within(VERB_FORMS_HAP, R);
+		vf->verb_form_compilation.vf_iname =
+			Hierarchy::make_iname_in(FORM_FN_HL, vf->verb_form_compilation.vf_package);
 	}
 	return vf->verb_form_compilation.vf_iname;
 }
@@ -131,12 +134,22 @@ void RTVerbs::ConjugateVerb(void) {
 	LOOP_OVER(vf, verb_form)
 		if (RTVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
-	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
+
 	LOOP_OVER(vf, verb_form)
-		if (RTVerbs::verb_form_is_instance(vf))
-			EmitArrays::iname_entry(RTVerbs::form_iname(vf));
-	EmitArrays::numeric_entry(0);
+		if (RTVerbs::verb_form_is_instance(vf)) {
+			inter_name *md_iname =
+				Hierarchy::make_iname_in(FORM_VALUE_METADATA_HL,
+					vf->verb_form_compilation.vf_package);
+			Emit::iname_constant(md_iname, K_value, RTVerbs::form_iname(vf));
+			md_iname =
+				Hierarchy::make_iname_in(FORM_SORTING_METADATA_HL,
+					vf->verb_form_compilation.vf_package);
+			Emit::numeric_constant(md_iname, (inter_ti) vf->allocation_id);
+		}
+
+	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFVERBS_SYNID);
+	packaging_state save = EmitArrays::begin(iname, K_value);
 	EmitArrays::end(save);
 }
 

@@ -221,9 +221,11 @@ void Hierarchy::establish(void) {
 @e KIT_CONFIGURATION_BITMAP_HL
 @e KIT_CONFIGURATION_LOOKMODE_HL
 @e LOCALPARKING_HL
+@e RNG_SEED_AT_START_OF_PLAY_HL
 
 @e MAX_FRAME_SIZE_NEEDED_HL
-@e RNG_SEED_AT_START_OF_PLAY_HL
+@e NO_USE_OPTIONS_HL
+@e TESTUSEOPTION_HL
 
 @e SUBMAIN_HL
 
@@ -252,6 +254,8 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, basics))
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
+		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
+		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 	H_END
 
 	submodule_identity *basic_extras = Packaging::register_submodule(I"BasicInformExtrasKit");
@@ -517,8 +521,12 @@ void Hierarchy::establish(void) {
 @e VERB_NAME_METADATA_HL
 @e NONMODAL_CONJUGATION_FN_HL
 @e VERB_FORMS_HAP
+@e FORM_VALUE_METADATA_HL
+@e FORM_SORTING_METADATA_HL
 @e FORM_FN_HL
 @e CONJUGATION_FN_HL
+
+@e TABLEOFVERBS_HL
 
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
@@ -539,9 +547,15 @@ void Hierarchy::establish(void) {
 			H_C_U(VERB_NAME_METADATA_HL,      I"^name")
 			H_F_G(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", I"ConjugateVerb")
 			H_BEGIN_AP(VERB_FORMS_HAP,        I"form", I"_verb_form")
+				H_C_U(FORM_VALUE_METADATA_HL, I"^verb_value")
+				H_C_U(FORM_SORTING_METADATA_HL, I"^verb_sorting")
 				H_F_U(FORM_FN_HL,             I"form_fn")
 			H_END
 		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, conjugations))
+		H_C_T(TABLEOFVERBS_HL,                I"TableOfVerbs")
 	H_END
 
 @h Equations.
@@ -743,9 +757,9 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_EXF_METADATA_HL, I"^is_file")
 			H_C_U(INSTANCE_FILE_VALUE_METADATA_HL, I"^file_value")
 			H_C_U(INSTANCE_IS_FIGURE_METADATA_HL, I"^is_figure")
-			H_C_U(INSTANCE_FIGURE_ID_METADATA_HL, I"^resource_id");
+			H_C_U(INSTANCE_FIGURE_ID_METADATA_HL, I"^resource_id")
 			H_C_U(INSTANCE_IS_SOUND_METADATA_HL, I"^is_sound")
-			H_C_U(INSTANCE_SOUND_ID_METADATA_HL, I"^resource_id");
+			H_C_U(INSTANCE_SOUND_ID_METADATA_HL, I"^resource_id")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
@@ -1337,7 +1351,6 @@ void Hierarchy::establish(void) {
 @e K_TIME_XPACKAGE
 @e K_TRUTH_STATE_XPACKAGE
 @e K_TABLE_XPACKAGE
-@e K_VERB_XPACKAGE
 @e K_FIGURE_NAME_XPACKAGE
 @e K_SOUND_NAME_XPACKAGE
 @e K_USE_OPTION_XPACKAGE
@@ -1347,14 +1360,11 @@ void Hierarchy::establish(void) {
 @e K_SCENE_XPACKAGE
 @e V_COMMAND_PROMPT_XPACKAGE
 
-@e TESTUSEOPTION_HL
 @e PRINT_USE_OPTION_HL
 @e TABLEOFTABLES_HL
-@e TABLEOFVERBS_HL
 @e CAPSHORTNAME_HL
 @e COMMANDPROMPTTEXT_HL
 @e DECIMAL_TOKEN_INNER_HL
-@e NO_USE_OPTIONS_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
 
@@ -1387,10 +1397,6 @@ void Hierarchy::establish(void) {
 		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
 	H_END
 
-	H_BEGIN(HierarchyLocations::this_exotic_package(K_VERB_XPACKAGE))
-		H_C_T(TABLEOFVERBS_HL,                I"TableOfVerbs")
-	H_END
-
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_FIGURE_NAME_XPACKAGE))
 		H_F_T(PRINT_FIGURE_NAME_HL,           I"print_fn", I"PrintFigureName")
 	H_END
@@ -1400,8 +1406,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_USE_OPTION_XPACKAGE))
-		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
-		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 	H_END
 
@@ -1995,7 +1999,6 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_TIME_XPACKAGE:             return Kinds::Behaviour::package(K_time);
 		case K_TRUTH_STATE_XPACKAGE:      return Kinds::Behaviour::package(K_truth_state);
 		case K_TABLE_XPACKAGE:            return Kinds::Behaviour::package(K_table);
-		case K_VERB_XPACKAGE:             return Kinds::Behaviour::package(K_verb);
 		case K_FIGURE_NAME_XPACKAGE:      return Kinds::Behaviour::package(K_figure_name);
 		case K_SOUND_NAME_XPACKAGE:       return Kinds::Behaviour::package(K_sound_name);
 		case K_USE_OPTION_XPACKAGE:       return Kinds::Behaviour::package(K_use_option);

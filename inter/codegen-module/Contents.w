@@ -40,6 +40,7 @@ Chapter 3: Synoptic Resources
 	Chronology
 	Scenes
 	Multimedia
+	Verbs
 
 Chapter 4: Inter to Final Code
 	Code Generation
