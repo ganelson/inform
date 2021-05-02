@@ -66,10 +66,12 @@ typedef struct use_option {
 	struct wording name; /* word range where name is stored */
 	struct wording expansion; /* definition as given in source */
 	struct parse_node *where_used; /* where the option is taken in the source */
+	struct parse_node *where_created;
 	int option_used; /* set if this option has been taken */
 	int source_file_scoped; /* scope is the current source file only? */
 	int minimum_setting_value; /* for those which are numeric */
 	int notable_option_code; /* or negative if not notable */
+	struct use_option_compilation_data compilation_data;
 	CLASS_DEFINITION
 } use_option;
 
@@ -88,6 +90,9 @@ typedef struct use_option {
 	uo->notable_option_code = -1;
 	if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
 	if (uo->notable_option_code == AUTHORIAL_MODESTY_UO) uo->source_file_scoped = TRUE;
+	uo->where_used = NULL;
+	uo->where_created = current_sentence;
+	uo->compilation_data = RTUseOptions::new_compilation_data(uo);
 	Nouns::new_proper_noun(uo->name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
 

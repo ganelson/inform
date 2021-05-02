@@ -1092,6 +1092,39 @@ void RTKinds::compile_data_type_support_routines(void) {
 		if (Kinds::Behaviour::is_built_in(K)) continue;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) continue;
+		if (Kinds::eq(K, K_use_option)) {
+			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_USE_OPTION_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
+		if (Kinds::eq(K, K_table)) {
+			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_TABLE_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
+		if (Kinds::eq(K, K_response)) {
+			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_RESPONSE_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
 		if (Kinds::Behaviour::stored_as(K) == NULL) {
 			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
 			if (Kinds::Behaviour::is_quasinumerical(K)) {
@@ -1668,39 +1701,13 @@ storing pointers to blocks on the heap.
 
 @<Compile KOVIsBlockValue@> =
 	inter_name *kibv_iname = Hierarchy::find(KOVISBLOCKVALUE_HL);
+	Produce::annotate_i(kibv_iname, SYNOPTIC_IANN, KOVISBLOCKVALUE_SYNID);
 	packaging_state save = Functions::begin(kibv_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, k_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-		LOOP_OVER_BASE_KINDS(K) {
-			if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-			if (Kinds::Behaviour::uses_pointer_values(K)) {
-				EmitCode::inv(CASE_BIP);
-				EmitCode::down();
-					RTKinds::emit_weak_id_as_val(K);
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::rtrue();
-					EmitCode::up();
-				EmitCode::up();
-			}
-		}
-		EmitCode::up();
-	EmitCode::up();
-	EmitCode::rfalse();
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(kibv_iname);
 
@@ -1771,31 +1778,45 @@ Z-machine array space.
 
 =
 void RTKinds::I7_Kind_Name_routine(void) {
-	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	kind *K;
-	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, k_s);
-					EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						TEMPORARY_TEXT(S)
-						WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
-						EmitCode::val_text(S);
-						DISCARD_TEXT(S)
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
+	LOOP_OVER_BASE_KINDS(K) {
+		TEMPORARY_TEXT(S)
+		WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
+		Hierarchy::apply_metadata(Kinds::Behaviour::package(K),
+			KIND_PNAME_METADATA_HL, S);
+		DISCARD_TEXT(S)
+		Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			KIND_IS_BASE_METADATA_HL, 1);
+		if (Kinds::Behaviour::is_object(K)) {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_OBJECT_METADATA_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_OBJECT_METADATA_HL, 0);
 		}
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+				KIND_CLASS_METADATA_HL, RTKinds::I6_classname(K));
+		}
+		if (Kinds::Behaviour::uses_pointer_values(K)) {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_HAS_BV_METADATA_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_HAS_BV_METADATA_HL, 0);
+		}		
+		kind_constructor *con = Kinds::get_construct(K);
+		inter_name *weak_iname = Kinds::Constructors::iname(con);
+		if (weak_iname == NULL) internal_error("no iname for weak ID");
+		Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+			KIND_WEAK_ID_METADATA_HL, weak_iname);
+	}
+
+	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, I7_KIND_NAME_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_other_as_symbol(I"k");
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 }

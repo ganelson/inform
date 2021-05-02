@@ -34,12 +34,14 @@ Chapter 3: Synoptic Resources
 	Activities
 	Actions
 	Instances
+	Kinds
 	Properties
 	Relations
 	Tables
 	Chronology
 	Scenes
 	Multimedia
+	Use Options
 	Verbs
 
 Chapter 4: Inter to Final Code

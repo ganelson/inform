@@ -353,7 +353,7 @@ table values and prints the (title-cased) name of the one which matches.
 
 =
 void RTTables::compile_print_table_names(void) {
-	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
+	inter_name *iname = Hierarchy::find(PRINT_TABLE_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_TABLE_SYNID);
 	packaging_state save = Functions::begin(iname);
 	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");

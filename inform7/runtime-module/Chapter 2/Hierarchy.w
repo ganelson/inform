@@ -194,6 +194,7 @@ void Hierarchy::establish(void) {
 	@<Establish rules@>;
 	@<Establish scenes@>;
 	@<Establish tables@>;
+	@<Establish use options@>;
 	@<Establish variables@>;
 	@<Establish enclosed matter@>;
 	@<The rest@>;
@@ -224,8 +225,6 @@ void Hierarchy::establish(void) {
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
 @e MAX_FRAME_SIZE_NEEDED_HL
-@e NO_USE_OPTIONS_HL
-@e TESTUSEOPTION_HL
 
 @e SUBMAIN_HL
 
@@ -254,8 +253,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, basics))
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
-		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
-		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 	H_END
 
 	submodule_identity *basic_extras = Packaging::register_submodule(I"BasicInformExtrasKit");
@@ -743,6 +740,8 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 
+@e SHOWMEINSTANCEDETAILS_HL
+
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
 
@@ -773,6 +772,10 @@ void Hierarchy::establish(void) {
 				H_C_U(INLINE_PROPERTY_HL,     I"inline")
 			H_END
 		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, instances))
+		H_F_T(SHOWMEINSTANCEDETAILS_HL,       I"showmeinstancedetails_fn", I"ShowMeInstanceDetails")
 	H_END
 
 @h Interactive Fiction.
@@ -817,9 +820,17 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_INT_HL
 @e K_TYPELESS_STRING_HL
 @e RUCKSACK_CLASS_HL
+@e SHOWMEDETAILS_HL
 
 @e KIND_HAP
 @e KIND_NAME_METADATA_HL
+@e KIND_CLASS_METADATA_HL
+@e KIND_PNAME_METADATA_HL
+@e KIND_SHOWME_METADATA_HL
+@e KIND_IS_BASE_METADATA_HL
+@e KIND_IS_OBJECT_METADATA_HL
+@e KIND_HAS_BV_METADATA_HL
+@e KIND_WEAK_ID_METADATA_HL
 @e KIND_CLASS_HL
 @e KIND_HL
 @e WEAK_ID_HL
@@ -833,6 +844,7 @@ void Hierarchy::establish(void) {
 @e RANGER_FN_HL
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
+@e SHOWME_FN_HL
 @e INSTANCE_GPR_FN_HL
 @e INSTANCE_LIST_HL
 @e FIRST_INSTANCE_HL
@@ -860,7 +872,7 @@ void Hierarchy::establish(void) {
 @e KOVISBLOCKVALUE_HL
 @e I7_KIND_NAME_HL
 @e KOVSUPPORTFUNCTION_HL
-@e SHOWMEDETAILS_HL
+@e SHOWMEKINDDETAILS_HL
 @e BASE_KIND_HWM_HL
 
 @<Establish kinds@> =
@@ -872,11 +884,19 @@ void Hierarchy::establish(void) {
 		H_C_T(K_TYPELESS_INT_HL,              I"K_typeless_int")
 		H_C_T(K_TYPELESS_STRING_HL,           I"K_typeless_string")
 		H_C_T(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
+		H_F_T(SHOWMEDETAILS_HL,               I"showmedetails_fn", I"ShowMeDetails")
 	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
 			H_C_U(KIND_NAME_METADATA_HL,      I"^name")
+			H_C_U(KIND_CLASS_METADATA_HL,     I"^object_class")
+			H_C_U(KIND_PNAME_METADATA_HL,     I"^printed_name")
+			H_C_U(KIND_SHOWME_METADATA_HL,    I"^showme_fn")
+			H_C_U(KIND_IS_BASE_METADATA_HL,   I"^is_base")
+			H_C_U(KIND_IS_OBJECT_METADATA_HL, I"^is_object")
+			H_C_U(KIND_HAS_BV_METADATA_HL,    I"^has_block_values")
+			H_C_U(KIND_WEAK_ID_METADATA_HL,   I"^weak_id")
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_C_G(KIND_HL,                    I"KD")
 			H_C_I(WEAK_ID_HL)
@@ -892,6 +912,7 @@ void Hierarchy::establish(void) {
 			H_F_U(GPR_FN_HL,                  I"gpr_fn")
 			H_F_U(INSTANCE_GPR_FN_HL,         I"instance_gpr_fn")
 			H_C_U(INSTANCE_LIST_HL,           I"instance_list")
+			H_F_U(SHOWME_FN_HL,               I"showme_fn")
 			H_C_S(FIRST_INSTANCE_HL,          I"_First")
 			H_C_S(NEXT_INSTANCE_HL,           I"_Next")
 			H_C_T(COUNT_INSTANCE_1_HL,        I"IK1_Count")
@@ -923,7 +944,7 @@ void Hierarchy::establish(void) {
 		H_F_T(KOVISBLOCKVALUE_HL,             I"blockvalue_fn", I"KOVIsBlockValue")
 		H_F_T(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
 		H_F_T(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
-		H_F_T(SHOWMEDETAILS_HL,               I"showmedetails_fn", I"ShowMeDetails")
+		H_F_T(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
 	H_END
 
 @h Multimedia.
@@ -1178,9 +1199,11 @@ void Hierarchy::establish(void) {
 @e GROUP_HL
 
 @e RULEPRINTINGRULE_HL
+
 @e RESPONSETEXTS_HL
 @e NO_RESPONSES_HL
 @e RESPONSEDIVISIONS_HL
+@e PRINT_RESPONSE_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
@@ -1209,10 +1232,15 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
+		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
+	H_END
+
+	submodule_identity *responses = Packaging::register_submodule(I"responses");
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, responses))
 		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
 		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
 		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
-		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
+		H_F_T(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
 	H_END
 
 @h Scenes.
@@ -1246,8 +1274,11 @@ void Hierarchy::establish(void) {
 @e TABLE_COLUMN_ID_HL
 @e TABLE_COLUMN_KIND_METADATA_HL
 
-@e TC_KOV_HL
+@e PRINT_TABLE_HL
+@e TABLEOFTABLES_HL
 @e TB_BLANKS_HL
+
+@e TC_KOV_HL
 
 @<Establish tables@> =
 	submodule_identity *tables = Packaging::register_submodule(I"tables");
@@ -1270,6 +1301,7 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
+		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
 		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
 		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
 	H_END
@@ -1284,6 +1316,36 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::synoptic_submodule(I, table_columns))
 		H_F_T(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
+	H_END
+
+@h Use options.
+
+@e USE_OPTIONS_HAP
+@e USE_OPTION_METADATA_HL
+@e USE_OPTION_PNAME_METADATA_HL
+@e USE_OPTION_ON_METADATA_HL
+@e USE_OPTION_ID_HL
+
+@e NO_USE_OPTIONS_HL
+@e TESTUSEOPTION_HL
+@e PRINT_USE_OPTION_HL
+
+@<Establish use options@> =
+	submodule_identity *use_options = Packaging::register_submodule(I"use_options");
+
+	H_BEGIN(HierarchyLocations::local_submodule(use_options))
+		H_BEGIN_AP(USE_OPTIONS_HAP,           I"use_option", I"_use_option")
+			H_C_U(USE_OPTION_METADATA_HL,     I"^name")
+			H_C_U(USE_OPTION_PNAME_METADATA_HL, I"^printed_name")
+			H_C_U(USE_OPTION_ON_METADATA_HL,  I"^active")
+			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
+		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::synoptic_submodule(I, use_options))
+		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
+		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
+		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 	H_END
 
 @h Variables.
@@ -1360,17 +1422,13 @@ void Hierarchy::establish(void) {
 @e K_SCENE_XPACKAGE
 @e V_COMMAND_PROMPT_XPACKAGE
 
-@e PRINT_USE_OPTION_HL
-@e TABLEOFTABLES_HL
 @e CAPSHORTNAME_HL
 @e COMMANDPROMPTTEXT_HL
 @e DECIMAL_TOKEN_INNER_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
 
-@e PRINT_TABLE_HL
 @e PRINT_RULEBOOK_OUTCOME_HL
-@e PRINT_RESPONSE_HL
 @e PRINT_FIGURE_NAME_HL
 @e PRINT_SOUND_NAME_HL
 @e PRINT_EXTERNAL_FILE_NAME_HL
@@ -1393,20 +1451,12 @@ void Hierarchy::establish(void) {
 		H_F_T(TRUTH_STATE_TOKEN_INNER_HL,     I"gpr_fn", I"TRUTH_STATE_TOKEN_INNER")
 	H_END
 
-	H_BEGIN(HierarchyLocations::this_exotic_package(K_TABLE_XPACKAGE))
-		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
-	H_END
-
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_FIGURE_NAME_XPACKAGE))
 		H_F_T(PRINT_FIGURE_NAME_HL,           I"print_fn", I"PrintFigureName")
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_SOUND_NAME_XPACKAGE))
 		H_F_T(PRINT_SOUND_NAME_HL,            I"print_fn", I"PrintSoundName")
-	H_END
-
-	H_BEGIN(HierarchyLocations::this_exotic_package(K_USE_OPTION_XPACKAGE))
-		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(V_COMMAND_PROMPT_XPACKAGE))
@@ -1419,10 +1469,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_RULEBOOK_OUTCOME_XPACKAGE))
 		H_F_T(PRINT_RULEBOOK_OUTCOME_HL,      I"print_fn", I"RulebookOutcomePrintingRule")
-	H_END
-
-	H_BEGIN(HierarchyLocations::this_exotic_package(K_RESPONSE_XPACKAGE))
-		H_F_T(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_SCENE_XPACKAGE))

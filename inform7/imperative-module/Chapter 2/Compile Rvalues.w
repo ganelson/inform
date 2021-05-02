@@ -179,8 +179,7 @@ kinds of value:
 	#endif
 	if (Kinds::eq(kind_of_constant, K_use_option)) {
 		use_option *uo = Rvalues::to_use_option(value);
-		if (Holsters::non_void_context(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) uo->allocation_id);
+		Emit::holster_iname(VH, RTUseOptions::uo_iname(uo));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_verb)) {

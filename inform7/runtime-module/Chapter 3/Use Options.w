@@ -6,7 +6,39 @@ To give use options a presence at run-time.
 work at runtime:
 
 =
+typedef struct use_option_compilation_data {
+	struct package_request *uo_package;
+	struct inter_name *uo_value;
+} use_option_compilation_data;
+
+use_option_compilation_data RTUseOptions::new_compilation_data(use_option *uo) {
+	use_option_compilation_data uocd;
+	uocd.uo_package = Hierarchy::local_package_to(USE_OPTIONS_HAP, uo->where_created);
+	uocd.uo_value = Hierarchy::make_iname_in(USE_OPTION_ID_HL, uocd.uo_package);
+	return uocd;
+}
+
+inter_name *RTUseOptions::uo_iname(use_option *uo) {
+	return uo->compilation_data.uo_value;
+}
+
 void RTUseOptions::compile(void) {
+	use_option *uo;
+	LOOP_OVER(uo, use_option) {
+		package_request *R = uo->compilation_data.uo_package;
+		inter_ti set = 0;
+		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) set = 1;
+		inter_name *set_iname = Hierarchy::make_iname_in(USE_OPTION_ON_METADATA_HL, R);
+		Emit::numeric_constant(set_iname, set);
+		Emit::numeric_constant(uo->compilation_data.uo_value, (inter_ti) 0);
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "%W option", uo->name);
+		if (uo->minimum_setting_value > 0)
+			WRITE_TO(N, " [%d]", uo->minimum_setting_value);
+		Hierarchy::apply_metadata(R, USE_OPTION_PNAME_METADATA_HL, N);
+		DISCARD_TEXT(N)
+	}
+
 	@<Compile NO_USE_OPTIONS@>;
 	@<Compile pragmas from use options which set these@>;
 	@<Compile the kit configuration@>;
@@ -17,7 +49,8 @@ void RTUseOptions::compile(void) {
 
 @<Compile NO_USE_OPTIONS@> =
 	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
-	Emit::numeric_constant(iname, (inter_ti) NUMBER_CREATED(use_option));
+	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_USE_OPTIONS_SYNID);
+	Emit::numeric_constant(iname, (inter_ti) 0);
 
 @ Some use options convert directly into pragma instructions telling the Inform 6
 compiler (assuming we will be using that) to raise some limit. This is done with
@@ -118,55 +151,17 @@ one to test whether a given use option is currently set, one to print the
 name of a given use option.
 
 @<Compile the TESTUSEOPTION function@> =
-	packaging_state save = Functions::begin(Hierarchy::find(TESTUSEOPTION_HL));
-	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
-	use_option *uo;
-	LOOP_OVER(uo, use_option)
-		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, UO_s);
-					EmitCode::val_number((inter_ti) uo->allocation_id);
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::rtrue();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	EmitCode::rfalse();
+	inter_name *iname = Hierarchy::find(TESTUSEOPTION_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, TESTUSEOPTION_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_other_as_symbol(I"UO");
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 
 @<Compile the printing function for the use option kind@> =
-	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
+	inter_name *iname = Hierarchy::find(PRINT_USE_OPTION_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_USE_OPTION_SYNID);
 	packaging_state save = Functions::begin(iname);
-	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, UO_s);
-		EmitCode::code();
-		EmitCode::down();
-			use_option *uo;
-			LOOP_OVER(uo, use_option) {
-				EmitCode::inv(CASE_BIP);
-				EmitCode::down();
-					EmitCode::val_number((inter_ti) uo->allocation_id);
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(PRINT_BIP);
-						EmitCode::down();
-							TEMPORARY_TEXT(N)
-							WRITE_TO(N, "%W option", uo->name);
-							if (uo->minimum_setting_value > 0)
-								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
-							EmitCode::val_text(N);
-							DISCARD_TEXT(N)
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-			}
-		EmitCode::up();
-	EmitCode::up();
+	LocalVariables::new_other_as_symbol(I"UO");
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);

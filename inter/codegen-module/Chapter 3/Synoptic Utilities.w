@@ -31,7 +31,9 @@ inter_tree_location_list *scene_nodes = NULL;
 inter_tree_location_list *file_nodes = NULL;
 inter_tree_location_list *figure_nodes = NULL;
 inter_tree_location_list *sound_nodes = NULL;
+inter_tree_location_list *use_option_nodes = NULL;
 inter_tree_location_list *verb_form_nodes = NULL;
+inter_tree_location_list *kind_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
 	text_nodes = TreeLists::new();
@@ -53,7 +55,9 @@ int Synoptic::go(pipeline_step *step) {
 	file_nodes = TreeLists::new();
 	figure_nodes = TreeLists::new();
 	sound_nodes = TreeLists::new();
+	use_option_nodes = TreeLists::new();
 	verb_form_nodes = TreeLists::new();
+	kind_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
@@ -71,6 +75,8 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticScenes::renumber(step->repository, scene_nodes);
 	SynopticMultimedia::renumber(step->repository);
 	SynopticVerbs::renumber(step->repository);
+	SynopticUseOptions::renumber(step->repository);
+	SynopticKinds::renumber(step->repository);
 	return TRUE;
 }
 
@@ -112,8 +118,12 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(past_tense_action_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_past_condition"))
 			TreeLists::add(past_tense_condition_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_use_option"))
+			TreeLists::add(use_option_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_verb_form"))
 			TreeLists::add(verb_form_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_kind"))
+			TreeLists::add(kind_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_instance")) {
 			TreeLists::add(instance_nodes, P);
 			inter_package *pack = Inter::Package::defined_by_frame(P);
@@ -153,6 +163,8 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticScenes::redefine(I, P, con_s, synid)) return;
 			if (SynopticMultimedia::redefine(I, P, con_s, synid)) return;
 			if (SynopticVerbs::redefine(I, P, con_s, synid)) return;
+			if (SynopticUseOptions::redefine(I, P, con_s, synid)) return;
+			if (SynopticKinds::redefine(I, P, con_s, synid)) return;
 			LOG("Couldn't consolidate $3\n", con_s);
 			internal_error("symbol cannot be consolidated");
 		}
