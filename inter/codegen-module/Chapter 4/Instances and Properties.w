@@ -492,38 +492,39 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Write Value Property Holder objects for each kind of value instance@> =
 	@<Define the I6 VPH class@>;
-	inter_symbol *max_weak_id = InterSymbolsTables::symbol_from_name_in_main_or_basics(I, I"MAX_WEAK_ID");
+	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(I, NULL, 
+		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
-		inter_tree_node *P = Inter::Symbols::definition(max_weak_id);
-		int M = (int) P->W.data[DATA_CONST_IFLD + 1];
-
-		@<Decide who gets a VPH@>;
-		@<Write the VPH lookup array@>;
-		for (int w=1; w<M; w++) {
-			for (int i=0; i<no_kind_frames; i++) {
-				inter_symbol *kind_name = kinds_in_source_order[i];
-				if (CodeGen::IP::weak_id(kind_name) == w) {
-					if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
-						TEMPORARY_TEXT(sticks)
-						WRITE("VPH_Class VPH_%d\n    with value_range %d\n",
-							w, Inter::Kind::instance_count(kind_name));
-						for (int p=0; p<no_properties; p++) {
-							inter_symbol *prop_name = props_in_source_order[p];
-							CodeGen::unmark(prop_name);
-						}
-						inter_node_list *FL =
-							Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
-						@<Work through this frame list of permissions@>;
-						for (int in=0; in<no_instance_frames; in++) {
-							inter_symbol *inst_name = instances_in_declaration_order[in];
-							if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
-								inter_node_list *FL =
-									Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
-								@<Work through this frame list of permissions@>;
+		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		if (M != 0) {
+			@<Decide who gets a VPH@>;
+			@<Write the VPH lookup array@>;
+			for (int w=1; w<M; w++) {
+				for (int i=0; i<no_kind_frames; i++) {
+					inter_symbol *kind_name = kinds_in_source_order[i];
+					if (CodeGen::IP::weak_id(kind_name) == w) {
+						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
+							TEMPORARY_TEXT(sticks)
+							WRITE("VPH_Class VPH_%d\n    with value_range %d\n",
+								w, Inter::Kind::instance_count(kind_name));
+							for (int p=0; p<no_properties; p++) {
+								inter_symbol *prop_name = props_in_source_order[p];
+								CodeGen::unmark(prop_name);
 							}
+							inter_node_list *FL =
+								Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
+							@<Work through this frame list of permissions@>;
+							for (int in=0; in<no_instance_frames; in++) {
+								inter_symbol *inst_name = instances_in_declaration_order[in];
+								if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+									inter_node_list *FL =
+										Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
+									@<Work through this frame list of permissions@>;
+								}
+							}
+							WRITE(";\n%S\n", sticks);
+							DISCARD_TEXT(sticks)
 						}
-						WRITE(";\n%S\n", sticks);
-						DISCARD_TEXT(sticks)
 					}
 				}
 			}
@@ -898,8 +899,11 @@ int CodeGen::IP::kind_sequence_number_decl(const inter_symbol *kind_name) {
 }
 
 int CodeGen::IP::weak_id(inter_symbol *kind_name) {
-	int N = Inter::Symbols::read_annotation(kind_name, WEAK_ID_IANN);
-	if (N >= 0) return N;
+	inter_package *pack = Inter::Packages::container(kind_name->definition);
+	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
+	int alt_N = -1;
+	if (weak_s) alt_N = Inter::Symbols::evaluate_to_int(weak_s);
+	if (alt_N >= 0) return alt_N;
 	return 0;
 }
 

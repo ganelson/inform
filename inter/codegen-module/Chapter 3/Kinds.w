@@ -12,10 +12,17 @@ of packages of type |_kind|.
 void SynopticKinds::renumber(inter_tree *I) {
 	if (TreeLists::len(kind_nodes) > 0) {
 		TreeLists::sort(kind_nodes, Synoptic::module_order);
-//		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-//			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
-//			inter_tree_node *D = Synoptic::get_definition(pack, I"property_id");
-//			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+			inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
+			if (weak_s) Inter::Symbols::set_int(weak_s, i+2);
+		}
+	}
+	if (TreeLists::len(derived_kind_nodes) > 0) {
+		TreeLists::sort(derived_kind_nodes, Synoptic::module_order);
+//		for (int i=0; i<TreeLists::len(derived_kind_nodes); i++) {
+//			inter_package *pack = Inter::Package::defined_by_frame(derived_kind_nodes->list[i].node);
+//			LOG("Saw DK at $6\n", pack);
 //		}
 	}
 }
@@ -39,6 +46,8 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
 	switch (synid) {
 		case BASE_KIND_HWM_SYNID:
+			Inter::Symbols::strike_definition(con_s);
+			@<Define BASE_KIND_HWM@>;
 			break;
 		case DEFAULTVALUEOFKOV_SYNID: {
 			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
@@ -46,8 +55,12 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 			Synoptic::end_redefining_function(I, save);
 			break;
 		}
-		case DEFAULTVALUEFINDER_SYNID:
+		case DEFAULTVALUEFINDER_SYNID: {
+			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
+			@<Add a body of code to the DEFAULTVALUEFINDER function@>;
+			Synoptic::end_redefining_function(I, save);
 			break;
+		}
 		case PRINTKINDVALUEPAIR_SYNID: {
 			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
 			@<Add a body of code to the PRINTKINDVALUEPAIR function@>;
@@ -94,6 +107,35 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 	}
 	return TRUE;
 }
+
+@<Define BASE_KIND_HWM@> =
+	Synoptic::def_numeric_constant(con_s, (inter_ti) (TreeLists::len(kind_nodes) + 2), &IBM);
+
+@<Add a body of code to the DEFAULTVALUEFINDER function@> =
+	inter_symbol *k_s = Synoptic::get_local(I, I"k");
+	for (int i=0; i<TreeLists::len(derived_kind_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(derived_kind_nodes->list[i].node);
+		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
+			inter_symbol *rks_s = Synoptic::get_symbol(pack, I"strong_id");
+			inter_symbol *dv_s = Synoptic::get_symbol(pack, I"default_value");
+			Produce::inv_primitive(I, IF_BIP);
+			Produce::down(I);
+				Produce::inv_primitive(I, EQ_BIP);
+				Produce::down(I);
+					Produce::val_symbol(I, K_value, k_s);
+					Produce::val_symbol(I, K_value, rks_s);
+				Produce::up(I);
+				Produce::code(I);
+				Produce::down(I);
+					Produce::inv_primitive(I, RETURN_BIP);
+					Produce::down(I);
+						Produce::val_symbol(I, K_value, dv_s);
+					Produce::up(I);
+				Produce::up(I);
+			Produce::up(I);
+		}
+	}
+	Produce::rfalse(I);
 
 @<Add a body of code to the DEFAULTVALUEOFKOV function@> =
 	inter_symbol *sk_s = Synoptic::get_local(I, I"sk");

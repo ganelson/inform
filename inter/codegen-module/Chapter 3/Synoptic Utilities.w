@@ -33,6 +33,7 @@ inter_tree_location_list *figure_nodes = NULL;
 inter_tree_location_list *sound_nodes = NULL;
 inter_tree_location_list *use_option_nodes = NULL;
 inter_tree_location_list *verb_form_nodes = NULL;
+inter_tree_location_list *derived_kind_nodes = NULL;
 inter_tree_location_list *kind_nodes = NULL;
 
 int Synoptic::go(pipeline_step *step) {
@@ -57,6 +58,7 @@ int Synoptic::go(pipeline_step *step) {
 	sound_nodes = TreeLists::new();
 	use_option_nodes = TreeLists::new();
 	verb_form_nodes = TreeLists::new();
+	derived_kind_nodes = TreeLists::new();
 	kind_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
 	SynopticText::alphabetise(step->repository, text_nodes);
@@ -124,6 +126,8 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(verb_form_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_kind"))
 			TreeLists::add(kind_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_derived_kind"))
+			TreeLists::add(derived_kind_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_instance")) {
 			TreeLists::add(instance_nodes, P);
 			inter_package *pack = Inter::Package::defined_by_frame(P);
@@ -215,6 +219,12 @@ inter_symbol *Synoptic::get_local(inter_tree *I, text_stream *name) {
 	return loc_s;
 }
 
+inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {
+	inter_symbol *loc_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
+	if (loc_s == NULL) Metadata::err("package symbol not found", pack, name);
+	return loc_s;
+}
+
 packaging_state Synoptic::begin_redefining_function(inter_bookmark *IBM, inter_tree *I, inter_tree_node *P) {
 	if (P->W.data[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) {
 		LOG("%d\n", P->W.data[FORMAT_CONST_IFLD]);
@@ -246,7 +256,7 @@ void Synoptic::end_redefining_function(inter_tree *I, packaging_state save) {
 void Synoptic::def_numeric_constant(inter_symbol *con_s, inter_ti val, inter_bookmark *IBM) {
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
+		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_kind_symbol),
 		LITERAL_IVAL, val, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 }
 

@@ -164,8 +164,6 @@ not matter, since such things never come into kind definitions.
 		@<Transcribe the kind's name@>
 	else if (Str::eq_wide_string(template_wildcard_buffer, L"lower-case-kind"))
 		@<Transcribe the kind's name in lower case@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, L"kind-weak-ID"))
-		@<Transcribe the kind's weak ID@>
 	else if (Str::eq_wide_string(template_wildcard_buffer, L"printing-routine"))
 		@<Transcribe the kind's I6 printing routine@>
 	else if (Str::eq_wide_string(template_wildcard_buffer, L"comparison-routine"))
@@ -179,9 +177,6 @@ not matter, since such things never come into kind definitions.
 
 @<Transcribe the kind's name in lower case@> =
 	StarTemplates::transcribe_constructor_name(template_line_buffer, con, TRUE);
-
-@<Transcribe the kind's weak ID@> =
-	WRITE_TO(template_line_buffer, "%d", con->weak_kind_ID);
 
 @<Transcribe the kind's I6 printing routine@> =
 	WRITE_TO(template_line_buffer, "%S", con->print_identifier);

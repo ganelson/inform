@@ -199,7 +199,7 @@ negation does not, and so must use those of the original.
 		}
 	}
 	inter_name *iname = RTAdjectives::iname(use_adj, task,
-		RTKinds::weak_id(AdjectiveMeaningDomains::get_kind(am)));
+		RTKinds::weak_id_iname(AdjectiveMeaningDomains::get_kind(am)));
 	Calculus::Schemas::modify(&(am->task_data[T].call_to_support_function),
 		"*=-(%s%n(*1))", negation_operator, iname);
 

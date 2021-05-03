@@ -11,11 +11,11 @@ of instances having the kind |K_scene|.
 void SynopticScenes::renumber(inter_tree *I, inter_tree_location_list *scene_nodes) {
 	if (TreeLists::len(scene_nodes) > 0) {
 		TreeLists::sort(scene_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(scene_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
-			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
-			LOG("scene %d: %S\n", i, name);
-		}
+//		for (int i=0; i<TreeLists::len(scene_nodes); i++) {
+//			inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
+//			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
+//			LOG("scene %d: %S\n", i, name);
+//		}
 	}
 }
 

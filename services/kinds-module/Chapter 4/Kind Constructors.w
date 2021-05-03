@@ -62,7 +62,6 @@ typedef struct kind_constructor {
 	int dimensional_form_fixed; /* whether they are derived */
 
 	/* H: representing this kind at run-time */
-	int weak_kind_ID; /* as used at run-time by Inter code */
 	struct text_stream *name_in_template_code; /* an Inter identifier */
 	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
@@ -163,7 +162,6 @@ There aren't actually many possibilities.
 of object) here:
 
 = (early code)
-int next_free_data_type_ID = 2; /* i.e., leaving room for |UNKNOWN_TY| to be 1 at run-time */
 kind *latest_base_kind_of_value = NULL;
 
 @h Creation.
@@ -269,7 +267,6 @@ we apply any defaults set in Neptune files.
 	Kinds::Dimensions::dim_initialise(&(con->dim_rules));
 
 	/* H: representing this kind at run-time */
-	con->weak_kind_ID = next_free_data_type_ID++;
 	con->name_in_template_code = Str::new();
 	con->class_number = 0;
 
@@ -395,24 +392,13 @@ of the kind which the constructor makes:
 void Kinds::Constructors::emit_constants(void) {
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
-		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
-		if (Str::len(tn) > 0) {
-			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				tn, Kinds::Constructors::package(con));
-			Hierarchy::make_available(con->con_iname);
-			Emit::numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
-		} else {
-			TEMPORARY_TEXT(wn)
-			WRITE_TO(wn, "WEAK_ID_%d", con->allocation_id);
-			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				wn, Kinds::Constructors::package(con));
-			DISCARD_TEXT(wn)
-			Emit::numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
-		}
+		Emit::numeric_constant(Kinds::Constructors::iname(con), 0);
+		Hierarchy::make_available(Kinds::Constructors::iname(con));
 	}
 
 	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
-	Emit::numeric_constant(hwm, (inter_ti) next_free_data_type_ID);
+	Emit::numeric_constant(hwm, 0);
+	Produce::annotate_i(hwm, SYNOPTIC_IANN, BASE_KIND_HWM_SYNID);
 	Hierarchy::make_available(hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
@@ -441,11 +427,24 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 	return con->kc_package;
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {
+	if (con->con_iname == NULL) {
+		if (Str::len(con->name_in_template_code) > 0) {
+			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
+				con->name_in_template_code, Kinds::Constructors::package(con));
+			Hierarchy::make_available(con->con_iname);
+		} else {
+			TEMPORARY_TEXT(wn)
+			WRITE_TO(wn, "WEAK_ID_%d", con->allocation_id);
+			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
+				wn, Kinds::Constructors::package(con));
+			DISCARD_TEXT(wn)
+		}
+	}
 	return con->con_iname;
 }
-void Kinds::Constructors::set_iname(kind_constructor *con, inter_name *iname) {
-	con->con_iname = iname;
-}
+//void Kinds::Constructors::set_iname(kind_constructor *con, inter_name *iname) {
+//	con->con_iname = iname;
+//}
 inter_name *Kinds::Constructors::list_iname(kind_constructor *con) {
 	return con->list_iname;
 }
@@ -557,11 +556,6 @@ int Kinds::Constructors::is_definite(kind_constructor *con) {
 	if ((con == CON_VOID) || (con == CON_NIL) || (con == CON_INTERMEDIATE))
 		return TRUE;
 	return FALSE;
-}
-
-int Kinds::Constructors::get_weak_ID(kind_constructor *con) {
-	if (con == NULL) return 0;
-	return con->weak_kind_ID;
 }
 
 int Kinds::Constructors::offers_I6_GPR(kind_constructor *con) {

@@ -215,7 +215,6 @@ void Hierarchy::establish(void) {
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
 @e RANKING_TABLE_HL
-@e MAX_WEAK_ID_HL
 @e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
@@ -242,7 +241,6 @@ void Hierarchy::establish(void) {
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
 		H_C_T(I7_FULL_VERSION_NUMBER_HL,      I"I7_FULL_VERSION_NUMBER")
 		H_C_T(RANKING_TABLE_HL,               I"RANKING_TABLE")
-		H_C_T(MAX_WEAK_ID_HL,                 I"MAX_WEAK_ID")
 		H_C_T(NO_VERB_VERB_DEFINED_HL,        I"NO_VERB_VERB_DEFINED")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
@@ -839,11 +837,9 @@ void Hierarchy::establish(void) {
 @e KIND_MKDEF_FN_METADATA_HL
 @e KIND_DSIZE_METADATA_HL
 @e KIND_CLASS_HL
-@e KIND_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
-@e DEFAULT_VALUE_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
 @e PRINT_FN_HL
@@ -871,6 +867,12 @@ void Hierarchy::establish(void) {
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
 @e KIND_PROPERTIES_HAP
+
+@e DERIVED_KIND_HAP
+@e DK_NEEDED_METADATA_HL
+@e DK_STRONG_ID_HL
+@e DK_KIND_HL
+@e DK_DEFAULT_VALUE_HL
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
@@ -913,12 +915,10 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_MKDEF_FN_METADATA_HL,  I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_METADATA_HL,     I"^domain_size")
 			H_C_G(KIND_CLASS_HL,              I"K")
-			H_C_G(KIND_HL,                    I"KD")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
 			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
-			H_C_U(DEFAULT_VALUE_HL,           I"default_value")
 			H_F_U(DECREMENT_FN_HL,            I"decrement_fn")
 			H_F_U(INCREMENT_FN_HL,            I"increment_fn")
 			H_F_U(PRINT_FN_HL,                I"print_fn")
@@ -945,6 +945,12 @@ void Hierarchy::establish(void) {
 			H_BEGIN_AP(KIND_INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(KIND_INLINE_PROPERTY_HL, I"inline")
 			H_END
+		H_END
+		H_BEGIN_AP(DERIVED_KIND_HAP,          I"derived_kind", I"_derived_kind")
+			H_C_U(DK_NEEDED_METADATA_HL,      I"^default_value_needed")
+			H_C_U(DK_STRONG_ID_HL,            I"strong_id")
+			H_C_G(DK_KIND_HL,                 I"DK")
+			H_C_U(DK_DEFAULT_VALUE_HL,        I"default_value")
 		H_END
 		H_BEGIN_AP(KIND_PROPERTIES_HAP,       I"property", I"_property")
 		H_END

@@ -160,6 +160,29 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 	return -1;
 }
 
+void Inter::Symbols::set_int(inter_symbol *S, int N) {
+	inter_tree_node *P = Inter::Symbols::definition(S);
+	if ((P) &&
+		(P->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
+		P->W.data[DATA_CONST_IFLD + 1] = (inter_ti) N;
+		return;
+	}
+	if ((P) &&
+		(P->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
+		inter_symbols_table *scope = S->owning_table;
+		inter_symbol *alias_to = InterSymbolsTables::symbol_from_id(scope, P->W.data[DATA_CONST_IFLD + 1]);
+		Inter::Symbols::set_int(alias_to, N);
+		return;
+	}
+	if (P == NULL) LOG("Synbol $3 is undefined\n", S);
+	LOG("Synbol $3 cannot be set to %d\n", S, N);
+	internal_error("unable to set symbol");
+}
+
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_tree_node *D = Inter::Symbols::definition(S);

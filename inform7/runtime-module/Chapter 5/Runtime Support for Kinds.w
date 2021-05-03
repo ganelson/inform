@@ -12,6 +12,7 @@ typedef struct runtime_kind_structure {
 	struct kind *kind_described;
 	struct parse_node *default_requested_here;
 	int make_default;
+	struct package_request *rks_package;
 	struct inter_name *rks_iname;
 	struct inter_name *rks_dv_iname;
 	CLASS_DEFINITION
@@ -401,12 +402,16 @@ like variables. That's what makes them intermediate.)
 
 Weak IDs have already appeared:
 
-@d UNKNOWN_WEAK_ID 1
-
 =
-int RTKinds::weak_id(kind *K) {
-	if (K == NULL) return UNKNOWN_WEAK_ID;
-	return Kinds::Constructors::get_weak_ID(Kinds::get_construct(K));
+inter_name *RTKinds::weak_id_iname(kind *K) {
+	if (K == NULL) { return Kinds::Constructors::UNKNOWN_iname(); }
+	if (Kinds::Behaviour::is_subkind_of_object(K)) K = K_object;
+	kind_constructor *con = Kinds::get_construct(K);
+	inter_name *iname = Kinds::Constructors::iname(con);
+	if (iname) return iname;
+	LOG("%u has no weak ID iname\n", K);
+	internal_error("kind has no weak ID iname");
+	return NULL;
 }
 
 @ And the following compiles an easier-on-the-eye form of the weak ID, but
@@ -415,25 +420,16 @@ which might occupy up to 31 characters, the maximum length of an I6 identifier:
 =
 void RTKinds::write_weak_id(OUTPUT_STREAM, kind *K) {
 	if (K == NULL) { WRITE("UNKNOWN_TY"); return; }
-	kind_constructor *con = Kinds::get_construct(K);
-	text_stream *sn = Kinds::Constructors::name_in_template_code(con);
-	if (Str::len(sn) > 0) WRITE("%S", sn); else WRITE("%d", RTKinds::weak_id(K));
+	WRITE("%n", RTKinds::weak_id_iname(K));
 }
 
 void RTKinds::emit_weak_id(kind *K) {
-	if (K == NULL) { EmitArrays::iname_entry(Kinds::Constructors::UNKNOWN_iname()); return; }
-	kind_constructor *con = Kinds::get_construct(K);
-	inter_name *iname = Kinds::Constructors::iname(con);
-	if (iname) EmitArrays::iname_entry(iname);
-	else EmitArrays::numeric_entry((inter_ti) (RTKinds::weak_id(K)));
+	EmitArrays::iname_entry(RTKinds::weak_id_iname(K));
 }
 
 void RTKinds::emit_weak_id_as_val(kind *K) {
 	if (K == NULL) internal_error("cannot emit null kind as val");
-	kind_constructor *con = Kinds::get_construct(K);
-	inter_name *iname = Kinds::Constructors::iname(con);
-	if (iname) EmitCode::val_iname(K_value, iname);
-	else EmitCode::val_number((inter_ti) (RTKinds::weak_id(K)));
+	EmitCode::val_iname(K_value, RTKinds::weak_id_iname(K));
 }
 
 @ The strong ID is a faithful representation of the |kind| structure,
@@ -501,20 +497,7 @@ void RTKinds::constant_from_strong_id(inter_name *iname, kind *K) {
 		Emit::iname_constant(iname, K_value, rks->rks_iname);
 		return;
 	}
-	if (K == NULL) {
-		Emit::iname_constant(iname, K_value, Kinds::Constructors::UNKNOWN_iname());
-		return;
-	}
-	kind_constructor *con = Kinds::get_construct(K);
-	inter_name *weak_iname = Kinds::Constructors::iname(con);
-	if (weak_iname == NULL) {
-		package_request *R = Kinds::Behaviour::package(K);
-		weak_iname = Hierarchy::make_iname_in(WEAK_ID_HL, R);
-		Emit::numeric_constant(weak_iname, (inter_ti) (RTKinds::weak_id(K)));
-		Kinds::Constructors::set_iname(con, weak_iname);
-		WRITE_TO(STDERR, "This is %u, %d\n", K, RTKinds::weak_id(K));
-	}
-	Emit::iname_constant(iname, K_value, weak_iname);
+	Emit::iname_constant(iname, K_value, RTKinds::weak_id_iname(K));
 }
 
 @ Thus the following routine must return |NULL| if $K$ is a kind whose weak
@@ -578,13 +561,13 @@ compile under Inform 6.
 	rks->kind_described = K;
 	rks->make_default = FALSE;
 	rks->default_requested_here = NULL;
-	package_request *PR = Kinds::Behaviour::package(K);
+	rks->rks_package = Hierarchy::local_package(DERIVED_KIND_HAP);
 	TEMPORARY_TEXT(TEMP)
 	Kinds::Textual::write(TEMP, K);
 	wording W = Feeds::feed_text(TEMP);
-	rks->rks_iname = Hierarchy::make_iname_with_memo(KIND_HL, PR, W);
+	rks->rks_iname = Hierarchy::make_iname_with_memo(DK_KIND_HL, rks->rks_package, W);
 	DISCARD_TEXT(TEMP)
-	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
+	rks->rks_dv_iname = Hierarchy::make_iname_in(DK_DEFAULT_VALUE_HL, rks->rks_package);
 
 @ It's convenient to combine this system with one which constructs default
 values for kinds, since both involve tracking constructions uniquely.
@@ -647,6 +630,7 @@ void RTKinds::compile_structures(void) {
 		@<Compile the runtime ID structure for this kind@>;
 		if (rks->make_default) @<Compile a constructed default value for this kind@>;
 	}
+	@<Annotate rks package@>;
 	@<Compile the default value finder@>;
 }
 
@@ -722,11 +706,26 @@ void RTKinds::compile_structures(void) {
 		Problems::issue_problem_end();
 	}
 
+@<Annotate rks package@> =
+	runtime_kind_structure *rks;
+	LOOP_OVER(rks, runtime_kind_structure) {
+		inter_name *md_iname = Hierarchy::make_iname_in(DK_NEEDED_METADATA_HL,
+			rks->rks_package);
+		if (rks->make_default) {
+			Emit::numeric_constant(md_iname, (inter_ti) 1);
+		} else {
+			Emit::numeric_constant(md_iname, (inter_ti) 0);
+		}
+		Emit::iname_constant(Hierarchy::make_iname_in(DK_STRONG_ID_HL,
+			rks->rks_package), K_value, rks->rks_iname);
+	}
+
 @<Compile the default value finder@> =
 	inter_name *iname = Hierarchy::find(DEFAULTVALUEFINDER_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, DEFAULTVALUEFINDER_SYNID);
 	packaging_state save = Functions::begin(iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	runtime_kind_structure *rks;
+	/* inter_symbol *k_s = */ LocalVariables::new_other_as_symbol(I"k");
+/*	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
 		kind *K = rks->kind_described;
 		if (rks->make_default) {
@@ -751,6 +750,8 @@ void RTKinds::compile_structures(void) {
 	EmitCode::down();
 		EmitCode::val_number(0);
 	EmitCode::up();
+*/
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 
@@ -1043,7 +1044,6 @@ void RTKinds::kind_declarations(void) {
 		if (RTKinds::base_represented_in_inter(K)) {
 			RTKinds::emit(K);
 			inter_name *iname = RTKinds::iname(K);
-			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_ti) RTKinds::weak_id(K));
 			Produce::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
@@ -1148,7 +1148,7 @@ compilation errors.
 	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "weak kind ID: %d\n", RTKinds::weak_id(K));
+	WRITE_TO(C, "weak kind ID: %n\n", RTKinds::weak_id_iname(K));
 	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 	EmitCode::inv(PRINT_BIP);
@@ -1737,8 +1737,6 @@ particular order.
 
 =
 int RTKinds::emit_all(inference_subject_family *f, int ignored) {
-	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_HL);
-	Emit::numeric_constant(iname, (inter_ti) next_free_data_type_ID);
 	RTKinds::emit_recursive(KindSubjects::from_kind(K_object));
 	return FALSE;
 }

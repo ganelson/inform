@@ -26,16 +26,18 @@ void RTAdjectives::initialise_compilation_data(adjective *adj) {
 }
 
 typedef struct adjective_iname_holder {
-	int weak_ID_of_domain;
+	struct inter_name *weak_ID_of_domain;
 	struct inter_name *iname_held;
 	CLASS_DEFINITION
 } adjective_iname_holder;
 
-inter_name *RTAdjectives::iname(adjective *adj, int task, int weak_id) {
+inter_name *RTAdjectives::iname(adjective *adj, int task, inter_name *weak_id) {
 	adjective_iname_holder *aih;
-	LOOP_OVER_LINKED_LIST(aih, adjective_iname_holder, adj->adjective_compilation.held_inames[task])
-		if (aih->weak_ID_of_domain == weak_id)
+	LOOP_OVER_LINKED_LIST(aih, adjective_iname_holder, adj->adjective_compilation.held_inames[task]) {
+		if (aih->weak_ID_of_domain == weak_id) {
 			return aih->iname_held;
+		}
+	}
 	aih = CREATE(adjective_iname_holder);
 	aih->weak_ID_of_domain = weak_id;
 	package_request *PR =
@@ -92,7 +94,7 @@ domains of each meaning have long since been established. But performing a
 	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to %u, task %d\n",
 		W, K, T);
 
-	inter_name *iname = RTAdjectives::iname(adj, T, RTKinds::weak_id(K));
+	inter_name *iname = RTAdjectives::iname(adj, T, RTKinds::weak_id_iname(K));
 	packaging_state save = Functions::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 
@@ -337,14 +339,14 @@ objects, if there is one; otherwise the first-declared meaning.
 =
 inter_name *RTAdjectives::iname_of_adjective_test_function(adjective *adj) {
 	i6_schema *sch;
-	int weak_id = RTKinds::weak_id(K_object);
+	inter_name *weak_id = RTKinds::weak_id_iname(K_object);
 	sch = AdjectiveAmbiguity::schema_for_task(adj, NULL, TEST_ATOM_TASK);
 	if (sch == NULL) {
 		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
 		if (am == NULL) return NULL;
 		kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
 		if (am_kind == NULL) return NULL;
-		weak_id = RTKinds::weak_id(am_kind);
+		weak_id = RTKinds::weak_id_iname(am_kind);
 	}
 	return RTAdjectives::iname(adj, TEST_ATOM_TASK, weak_id);
 }
