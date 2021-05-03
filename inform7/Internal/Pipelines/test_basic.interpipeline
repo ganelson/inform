@@ -4,10 +4,10 @@ merge-template <- none
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
+consolidate-text
 resolve-external-symbols
 inspect-plugs
 make-identifiers-unique
-consolidate-text
 reconcile-verbs
 eliminate-redundant-labels
 generate inform6 -> *out

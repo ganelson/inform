@@ -112,8 +112,7 @@ will divide according to these units.
 	BENCH(CompilationSettings::initialise_gcs)
 	BENCH(Emit::create_emission_tree)
 	BENCH(Hierarchy::establish)
-	BENCH(Emit::rudimentary_kinds);
-	BENCH(RTVerbs::ConjugateVerbDefinitions);
+	BENCH(GenericModule::compile);
 	BENCH(NameResolution::make_the_tree)
 	BENCH(IndexHeadings::write_as_xml)
 	BENCH(CompilationUnits::determine)
@@ -186,11 +185,9 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 1@> =
 	Task::advance_stage_to(INTER1_CSEQ, I"Generating inter (1)",
 		4, debugging, sequence_timer);
-	BENCH(RTFundamentalConstants::compile);
 	BENCH(RTUseOptions::compile)
 	BENCH(Interventions::make_all)
 	BENCH(Kinds::Constructors::emit_constants)
-	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::compile_metadata)
 	
@@ -213,6 +210,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTActivities::activity_var_creators)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
+	BENCH(CompletionModule::compile);
 	if (debugging) {
 		BENCH(InternalTests::InternalTestCases_routine)
 	}

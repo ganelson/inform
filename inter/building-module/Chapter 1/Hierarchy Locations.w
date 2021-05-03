@@ -16,6 +16,7 @@ typedef struct location_requirement {
 	struct text_stream *any_package_of_this_type;
 	int any_enclosure;
 	int must_be_plug;
+	int must_be_main_source_text;
 } location_requirement;
 
 location_requirement HierarchyLocations::blank(void) {
@@ -26,6 +27,7 @@ location_requirement HierarchyLocations::blank(void) {
 	req.any_package_of_this_type = NULL;
 	req.any_enclosure = FALSE;
 	req.must_be_plug = FALSE;
+	req.must_be_main_source_text = FALSE;
 	return req;
 }
 
@@ -35,6 +37,13 @@ location_requirement HierarchyLocations::blank(void) {
 location_requirement HierarchyLocations::local_submodule(submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
 	req.any_submodule_package_of_this_identity = sid;
+	return req;
+}
+
+location_requirement HierarchyLocations::completion_submodule(inter_tree *I, submodule_identity *sid) {
+	location_requirement req = HierarchyLocations::blank();
+	req.this_exact_package = Packaging::completion_submodule(I, sid);
+	req.must_be_main_source_text = TRUE;
 	return req;
 }
 
@@ -342,7 +351,9 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 		internal_error("invalid HAP request");
 	hierarchy_attachment_point *hap = I->site.haps_indexed_by_id[hap_id];
 
-	if (hap->requirements.any_submodule_package_of_this_identity) {
+	if (hap->requirements.must_be_main_source_text) {
+		R = hap->requirements.this_exact_package;
+	} else if (hap->requirements.any_submodule_package_of_this_identity) {
 		R = Packaging::request_submodule(I, C, hap->requirements.any_submodule_package_of_this_identity);
 	} else if (hap->requirements.this_exact_package) {
 		R = hap->requirements.this_exact_package;

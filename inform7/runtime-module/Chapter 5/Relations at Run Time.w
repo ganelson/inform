@@ -113,7 +113,7 @@ inter_name *RTRelations::compile_defined_relation_constant(int id, inter_ti val)
 	return iname;
 }
 
-void RTRelations::compile_defined_relation_constants(void) {
+void RTRelations::compile_generic_constants(void) {
 	RELS_SYMMETRIC_iname = RTRelations::compile_defined_relation_constant(RELS_SYMMETRIC_HL, 0x8000);
 	RELS_EQUIVALENCE_iname = RTRelations::compile_defined_relation_constant(RELS_EQUIVALENCE_HL, 0x4000);
 	RELS_X_UNIQUE_iname = RTRelations::compile_defined_relation_constant(RELS_X_UNIQUE_HL, 0x2000);

@@ -212,7 +212,7 @@ SHOWME is probably the most useful testing command: it shows the state of the
 current room, or a named item.
 
 =
-[ ShowMeSub t_0;
+[ ShowMeSub t_0 na;
 	t_0 = noun;
  	if (noun == nothing) noun = real_location;
  	if (ShowMeRecursively(noun, 0, (noun == real_location))) {
@@ -222,7 +222,10 @@ current room, or a named item.
  	if (t_0 ofclass K2_thing) {
  		print "location:"; ShowRLocation(noun, true); print "^";
  	}
- 	ShowMeDetails(t_0);
+ 	na = ShowMeKindDetails(false, na, t_0);
+ 	na = ShowMeInstanceDetails(false, na, t_0);
+ 	na = ShowMeKindDetails(true, na, t_0);
+ 	na = ShowMeInstanceDetails(true, na, t_0);
 ];
 
 [ ShowRLocation obj top;

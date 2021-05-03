@@ -26,6 +26,20 @@ void SynopticChronology::renumber(inter_tree *I, inter_tree_location_list *past_
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
 	}
+
+	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_CONDS_HL);
+	SynopticChronology::numeric_constant(I, iname, (inter_ti) TreeLists::len(past_tense_condition_nodes));
+}
+
+inter_name *SynopticChronology::numeric_constant(inter_tree *I, inter_name *con_iname, inter_ti val) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(I),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), unchecked_kind_symbol),
+		LITERAL_IVAL, val, Produce::baseline(Packaging::at(I)), NULL));
+	Packaging::exit(I, save);
+	return con_iname;
 }
 
 @ There are also resources to create in the |synoptic| module:

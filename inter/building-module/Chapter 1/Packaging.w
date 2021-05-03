@@ -292,7 +292,7 @@ typedef struct module_package {
 	CLASS_DEFINITION
 } module_package;
 
-module_package *Packaging::get_unit(inter_tree *I, text_stream *name) {
+module_package *Packaging::get_unit(inter_tree *I, text_stream *name, text_stream *unit_type) {
 	if (Dictionaries::find(Site::modules_dictionary(I), name))
 		return (module_package *) Dictionaries::read_value(Site::modules_dictionary(I), name);
 	
@@ -300,7 +300,7 @@ module_package *Packaging::get_unit(inter_tree *I, text_stream *name) {
 	new_module->the_package =
 		Packaging::request(I,
 			InterNames::explicitly_named(name, Site::main_request(I)),
-			PackageTypes::get(I, I"_module"));
+			PackageTypes::get(I, unit_type));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
 	Dictionaries::create(Site::modules_dictionary(I), name);
 	Dictionaries::write_value(Site::modules_dictionary(I), name, (void *) new_module);
@@ -345,15 +345,19 @@ package_request *Packaging::local_submodule(inter_tree *I, submodule_identity *s
 #endif
 
 package_request *Packaging::generic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"generic"), sid);
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"generic", I"_module"), sid);
 }
 
 package_request *Packaging::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"synoptic"), sid);
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"synoptic", I"_module"), sid);
 }
 
-package_request *Packaging::template_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"template"), sid);
+package_request *Packaging::completion_submodule(inter_tree *I, submodule_identity *sid) {
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"completion", I"_module"), sid);
+}
+
+package_request *Packaging::template_submoduleXXXXXX(inter_tree *I, submodule_identity *sid) {
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"template", I"_module"), sid);
 }
 
 @ Those in turn all make use of this back-end function:

@@ -248,20 +248,6 @@ void RTRules::compile_comment(rule *R, int index, int from) {
 }
 
 @h Compilation of I6-format rulebook.
-The following can generate both old-style array rulebooks and routine rulebooks,
-which were introduced in December 2010.
-
-=
-void RTRules::start_list_compilation(void) {
-	inter_name *iname = Hierarchy::find(EMPTY_RULEBOOK_INAME_HL);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_parameter(I"forbid_breaks");
-	EmitCode::rfalse();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-}
-
-@
 
 @d ARRAY_RBF 1 /* format as an array simply listing the rules */
 @d GROUPED_ARRAY_RBF 2 /* format as a grouped array, for quicker action testing */
@@ -572,7 +558,6 @@ void RTRules::commentary(booking_list *L) {
 }
 
 void RTRules::compile_rulebooks(void) {
-	RTRules::start_list_compilation();
 	rulebook *B;
 	LOOP_OVER(B, rulebook) {
 		Emit::numeric_constant(B->compilation_data.rb_id_iname, 0);
@@ -638,7 +623,7 @@ void RTRules::new_outcome(named_rulebook_outcome *rbno, wording W) {
 			case 4: i = RBNO0_INAME_HL; break;
 		}
 		if (i >= 0) {
-			inter_name *iname = Hierarchy::find(i);
+			inter_name *iname = Hierarchy::make_iname_in(i, InterNames::location(rbno->nro_iname));
 			Hierarchy::make_available(iname);
 			Emit::iname_constant(iname, K_value, rbno->nro_iname);
 		}

@@ -32,58 +32,6 @@ properties.
 
 =
 void RTShowmeCommand::compile_SHOWME_details(void) {
-	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
-	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
-	EmitCode::inv(IFDEBUG_BIP);
-	EmitCode::down();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, na_s);
-				EmitCode::call(Hierarchy::find(SHOWMEKINDDETAILS_HL));
-				EmitCode::down();
-					EmitCode::val_false();
-					EmitCode::val_symbol(K_value, na_s);
-					EmitCode::val_symbol(K_value, t_0_s);
-				EmitCode::up();
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, na_s);
-				EmitCode::call(Hierarchy::find(SHOWMEINSTANCEDETAILS_HL));
-				EmitCode::down();
-					EmitCode::val_false();
-					EmitCode::val_symbol(K_value, na_s);
-					EmitCode::val_symbol(K_value, t_0_s);
-				EmitCode::up();
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, na_s);
-				EmitCode::call(Hierarchy::find(SHOWMEKINDDETAILS_HL));
-				EmitCode::down();
-					EmitCode::val_true();
-					EmitCode::val_symbol(K_value, na_s);
-					EmitCode::val_symbol(K_value, t_0_s);
-				EmitCode::up();
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, na_s);
-				EmitCode::call(Hierarchy::find(SHOWMEINSTANCEDETAILS_HL));
-				EmitCode::down();
-					EmitCode::val_true();
-					EmitCode::val_symbol(K_value, na_s);
-					EmitCode::val_symbol(K_value, t_0_s);
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
 	@<Make SHOWMEKINDDETAILS@>;
 	@<Make SHOWMEINSTANCEDETAILS@>;
 }

@@ -21,9 +21,8 @@ inter_tree *main_emission_tree = NULL;
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
 	Packaging::outside_all_packages(main_emission_tree);
-	Packaging::incarnate(Site::veneer_request(main_emission_tree));
-	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic")->the_package);
-	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic")->the_package);
+	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic", I"_module")->the_package);
+	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic", I"_module")->the_package);
 	return main_emission_tree;
 }
 inter_tree *Emit::tree(void) {

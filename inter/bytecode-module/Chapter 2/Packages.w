@@ -225,6 +225,10 @@ int Inter::Packages::baseline(inter_package *P) {
 	return Inter::Defn::get_level(Inter::Packages::definition(P));
 }
 
+void Inter::Packages::make_names_exist(inter_package *P) {
+	while (P) P = Inter::Packages::parent(P);
+}
+
 void Inter::Packages::write_url_name(OUTPUT_STREAM, inter_package *P) {
 	if (P == NULL) { WRITE("<none>"); return; }
 	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];

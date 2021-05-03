@@ -109,7 +109,7 @@ int RTVerbs::verb_form_is_instance(verb_form *vf) {
 	return FALSE;
 }
 
-void RTVerbs::ConjugateVerbDefinitions(void) {
+void RTVerbs::compile_generic_constants(void) {
 	inter_name *CV_POS_iname = Hierarchy::find(CV_POS_HL);
 	inter_name *CV_NEG_iname = Hierarchy::find(CV_NEG_HL);
 	inter_name *CV_MODAL_INAME_iname = Hierarchy::find(CV_MODAL_HL);

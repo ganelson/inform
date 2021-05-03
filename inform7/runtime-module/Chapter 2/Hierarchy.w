@@ -163,6 +163,7 @@ that the compiler can refer to it.
 
 =
 void Hierarchy::establish(void) {
+	SynopticHierarchy::establish(Emit::tree());
 	H_BEGIN_DECLARATIONS
 	@<Establish locations for material created by the compiler@>;
 	@<Establish locations for material expected to be added by linking@>;
@@ -205,7 +206,7 @@ void Hierarchy::establish(void) {
 
 @h Basics.
 
-@e NULL_HL from 0
+@e NULL_HL
 @e WORD_HIGHBIT_HL
 @e WORD_NEXTTOHIGHBIT_HL
 @e IMPROBABLE_VALUE_HL
@@ -214,17 +215,19 @@ void Hierarchy::establish(void) {
 @e MIN_NEGATIVE_NUMBER_HL
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
-@e RANKING_TABLE_HL
-@e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
 @e KIT_CONFIGURATION_BITMAP_HL
 @e KIT_CONFIGURATION_LOOKMODE_HL
 @e LOCALPARKING_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
-
+@e DEBUG_HL
+@e TARGET_ZCODE_HL
+@e TARGET_GLULX_HL
+@e DICT_WORD_SIZE_HL
+@e WORDSIZE_HL
+@e INDIV_PROP_START_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
-
 @e SUBMAIN_HL
 
 @<Establish basics@> =
@@ -238,23 +241,23 @@ void Hierarchy::establish(void) {
 		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
 		H_C_T(MAX_POSITIVE_NUMBER_HL,         I"MAX_POSITIVE_NUMBER")
 		H_C_T(MIN_NEGATIVE_NUMBER_HL,         I"MIN_NEGATIVE_NUMBER")
+		H_C_T(DEBUG_HL,                       I"DEBUG")
+		H_C_T(TARGET_ZCODE_HL,                I"TARGET_ZCODE")
+		H_C_T(TARGET_GLULX_HL,                I"TARGET_GLULX")
+		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
+		H_C_T(WORDSIZE_HL,                    I"WORDSIZE")
+		H_C_T(INDIV_PROP_START_HL,            I"INDIV_PROP_START")
+	H_END
+
+	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
 		H_C_T(I7_FULL_VERSION_NUMBER_HL,      I"I7_FULL_VERSION_NUMBER")
-		H_C_T(RANKING_TABLE_HL,               I"RANKING_TABLE")
-		H_C_T(NO_VERB_VERB_DEFINED_HL,        I"NO_VERB_VERB_DEFINED")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
 		H_C_T(KIT_CONFIGURATION_LOOKMODE_HL,  I"KIT_CONFIGURATION_LOOKMODE")
 		H_C_T(LOCALPARKING_HL,                I"LocalParking")
 		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
-	H_END
-
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, basics))
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
-	H_END
-
-	submodule_identity *basic_extras = Packaging::register_submodule(I"BasicInformExtrasKit");
-	H_BEGIN(HierarchyLocations::generic_submodule(I, basic_extras))
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
 	H_END
 
@@ -309,12 +312,12 @@ void Hierarchy::establish(void) {
 @e ACTION_SHV_ID_HL
 @e ACTION_STV_CREATOR_FN_HL
 
-@e ACTIONCODING_HL
-@e ACTIONDATA_HL
-@e ACTIONHAPPENED_HL
-@e AD_RECORDS_HL
-@e CCOUNT_ACTION_NAME_HL
-@e DB_ACTION_DETAILS_HL
+//@e ACTIONCODING_HL
+//@e ACTIONDATA_HL
+//@e ACTIONHAPPENED_HL
+//@e AD_RECORDS_HL
+//@e CCOUNT_ACTION_NAME_HL
+//@e DB_ACTION_DETAILS_HL
 
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
@@ -349,14 +352,14 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, actions))
-		H_C_T(ACTIONCODING_HL,                I"ActionCoding")
-		H_C_T(ACTIONDATA_HL,                  I"ActionData")
-		H_C_T(ACTIONHAPPENED_HL,              I"ActionHappened")
-		H_C_T(AD_RECORDS_HL,                  I"AD_RECORDS")
-		H_C_T(CCOUNT_ACTION_NAME_HL,          I"CCOUNT_ACTION_NAME")
-		H_F_T(DB_ACTION_DETAILS_HL,           I"DB_Action_Details_fn", I"DB_Action_Details")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, actions))
+//		H_C_T(ACTIONCODING_HL,                I"ActionCoding")
+//		H_C_T(ACTIONDATA_HL,                  I"ActionData")
+//		H_C_T(ACTIONHAPPENED_HL,              I"ActionHappened")
+//		H_C_T(AD_RECORDS_HL,                  I"AD_RECORDS")
+//		H_C_T(CCOUNT_ACTION_NAME_HL,          I"CCOUNT_ACTION_NAME")
+//		H_F_T(DB_ACTION_DETAILS_HL,           I"DB_Action_Details_fn", I"DB_Action_Details")
+//	H_END
 
 @h Activities.
 
@@ -375,11 +378,11 @@ void Hierarchy::establish(void) {
 @e ACTIVITY_SHV_ID_HL
 @e ACTIVITY_STV_CREATOR_FN_HL
 
-@e ACTIVITY_AFTER_RULEBOOKS_HL
-@e ACTIVITY_ATB_RULEBOOKS_HL
-@e ACTIVITY_BEFORE_RULEBOOKS_HL
-@e ACTIVITY_FOR_RULEBOOKS_HL
-@e ACTIVITY_VAR_CREATORS_HL
+//@e ACTIVITY_AFTER_RULEBOOKS_HL
+//@e ACTIVITY_ATB_RULEBOOKS_HL
+//@e ACTIVITY_BEFORE_RULEBOOKS_HL
+//@e ACTIVITY_FOR_RULEBOOKS_HL
+//@e ACTIVITY_VAR_CREATORS_HL
 
 @<Establish activities@> =
 	submodule_identity *activities = Packaging::register_submodule(I"activities");
@@ -402,13 +405,13 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, activities))
-		H_C_T(ACTIVITY_AFTER_RULEBOOKS_HL,    I"Activity_after_rulebooks")
-		H_C_T(ACTIVITY_ATB_RULEBOOKS_HL,      I"Activity_atb_rulebooks")
-		H_C_T(ACTIVITY_BEFORE_RULEBOOKS_HL,   I"Activity_before_rulebooks")
-		H_C_T(ACTIVITY_FOR_RULEBOOKS_HL,      I"Activity_for_rulebooks")
-		H_C_T(ACTIVITY_VAR_CREATORS_HL,       I"activity_var_creators")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, activities))
+//		H_C_T(ACTIVITY_AFTER_RULEBOOKS_HL,    I"Activity_after_rulebooks")
+//		H_C_T(ACTIVITY_ATB_RULEBOOKS_HL,      I"Activity_atb_rulebooks")
+//		H_C_T(ACTIVITY_BEFORE_RULEBOOKS_HL,   I"Activity_before_rulebooks")
+//		H_C_T(ACTIVITY_FOR_RULEBOOKS_HL,      I"Activity_for_rulebooks")
+//		H_C_T(ACTIVITY_VAR_CREATORS_HL,       I"activity_var_creators")
+//	H_END
 
 @h Adjectives.
 
@@ -451,7 +454,7 @@ void Hierarchy::establish(void) {
 @<Establish bibliographic@> =
 	submodule_identity *bibliographic = Packaging::register_submodule(I"bibliographic");
 
-	H_BEGIN(HierarchyLocations::generic_submodule(I, bibliographic))
+	H_BEGIN(HierarchyLocations::completion_submodule(I, bibliographic))
 		H_C_T(UUID_ARRAY_HL,                  I"UUID_ARRAY")
 		H_D_T(STORY_HL,                       I"Story_datum", I"Story")
 		H_D_T(HEADLINE_HL,                    I"Headline_datum", I"Headline")
@@ -471,12 +474,12 @@ void Hierarchy::establish(void) {
 @e PAP_VALUE_METADATA_HL
 @e PAP_FN_HL
 
-@e TIMEDEVENTSTABLE_HL
-@e TIMEDEVENTTIMESTABLE_HL
-@e PASTACTIONSI6ROUTINES_HL
-@e NO_PAST_TENSE_CONDS_HL
-@e NO_PAST_TENSE_ACTIONS_HL
-@e TESTSINGLEPASTSTATE_HL
+//@e TIMEDEVENTSTABLE_HL
+//@e TIMEDEVENTTIMESTABLE_HL
+//@e PASTACTIONSI6ROUTINES_HL
+//@e NO_PAST_TENSE_CONDS_HL
+//@e NO_PAST_TENSE_ACTIONS_HL
+//@e TESTSINGLEPASTSTATE_HL
 
 @<Establish chronology@> =
 	submodule_identity *chronology = Packaging::register_submodule(I"chronology");
@@ -493,14 +496,14 @@ void Hierarchy::establish(void) {
 			H_F_G(PAP_FN_HL,                  I"pap_fn", I"PAPR")
 		H_END
 	H_END
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, chronology))
-		H_C_T(TIMEDEVENTSTABLE_HL,            I"TimedEventsTable")
-		H_C_T(TIMEDEVENTTIMESTABLE_HL,        I"TimedEventTimesTable")
-		H_C_T(PASTACTIONSI6ROUTINES_HL,       I"PastActionsI6Routines")
-		H_C_T(NO_PAST_TENSE_CONDS_HL,         I"NO_PAST_TENSE_CONDS")
-		H_C_T(NO_PAST_TENSE_ACTIONS_HL,       I"NO_PAST_TENSE_ACTIONS")
-		H_F_T(TESTSINGLEPASTSTATE_HL,         I"test_fn", I"TestSinglePastState")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, chronology))
+//		H_C_T(TIMEDEVENTSTABLE_HL,            I"TimedEventsTable")
+//		H_C_T(TIMEDEVENTTIMESTABLE_HL,        I"TimedEventTimesTable")
+//		H_C_T(PASTACTIONSI6ROUTINES_HL,       I"PastActionsI6Routines")
+//		H_C_T(NO_PAST_TENSE_CONDS_HL,         I"NO_PAST_TENSE_CONDS")
+//		H_C_T(NO_PAST_TENSE_ACTIONS_HL,       I"NO_PAST_TENSE_ACTIONS")
+//		H_F_T(TESTSINGLEPASTSTATE_HL,         I"test_fn", I"TestSinglePastState")
+//	H_END
 
 @h Conjugations.
 
@@ -521,7 +524,7 @@ void Hierarchy::establish(void) {
 @e FORM_FN_HL
 @e CONJUGATION_FN_HL
 
-@e TABLEOFVERBS_HL
+//@e TABLEOFVERBS_HL
 
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
@@ -549,9 +552,9 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, conjugations))
-		H_C_T(TABLEOFVERBS_HL,                I"TableOfVerbs")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, conjugations))
+//		H_C_T(TABLEOFVERBS_HL,                I"TableOfVerbs")
+//	H_END
 
 @h Equations.
 
@@ -569,18 +572,18 @@ void Hierarchy::establish(void) {
 
 @h Extensions.
 
-@e SHOWEXTENSIONVERSIONS_HL
-@e SHOWFULLEXTENSIONVERSIONS_HL
-@e SHOWONEEXTENSION_HL
+//@e SHOWEXTENSIONVERSIONS_HL
+//@e SHOWFULLEXTENSIONVERSIONS_HL
+//@e SHOWONEEXTENSION_HL
 
 @<Establish extensions@> =
-	submodule_identity *extensions = Packaging::register_submodule(I"extensions");
+//	submodule_identity *extensions = Packaging::register_submodule(I"extensions");
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, extensions))
-		H_F_T(SHOWEXTENSIONVERSIONS_HL,       I"showextensionversions_fn", I"ShowExtensionVersions")
-		H_F_T(SHOWFULLEXTENSIONVERSIONS_HL,   I"showfullextensionversions_fn", I"ShowFullExtensionVersions")
-		H_F_T(SHOWONEEXTENSION_HL,            I"showoneextension_fn", I"ShowOneExtension")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, extensions))
+//		H_F_T(SHOWEXTENSIONVERSIONS_HL,       I"showextensionversions_fn", I"ShowExtensionVersions")
+//		H_F_T(SHOWFULLEXTENSIONVERSIONS_HL,   I"showfullextensionversions_fn", I"ShowFullExtensionVersions")
+//		H_F_T(SHOWONEEXTENSION_HL,            I"showoneextension_fn", I"ShowOneExtension")
+//	H_END
 
 @h External files.
 
@@ -614,6 +617,7 @@ void Hierarchy::establish(void) {
 @e NAMED_ACTION_PATTERNS_HAP
 @e NAP_FN_HL
 @e NAMED_TOKENS_HAP
+@e NO_VERB_VERB_DEFINED_HL
 @e PARSE_LINE_FN_HL
 @e NOUN_FILTERS_HAP
 @e NOUN_FILTER_FN_HL
@@ -648,6 +652,24 @@ void Hierarchy::establish(void) {
 
 @<Establish grammar@> =
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
+
+	H_BEGIN(HierarchyLocations::generic_submodule(I, grammar))
+		H_C_T(VERB_DIRECTIVE_CREATURE_HL,     I"VERB_DIRECTIVE_CREATURE")
+		H_C_T(VERB_DIRECTIVE_DIVIDER_HL,      I"VERB_DIRECTIVE_DIVIDER")
+		H_C_T(VERB_DIRECTIVE_HELD_HL,         I"VERB_DIRECTIVE_HELD")
+		H_C_T(VERB_DIRECTIVE_MULTI_HL,        I"VERB_DIRECTIVE_MULTI")
+		H_C_T(VERB_DIRECTIVE_MULTIEXCEPT_HL,  I"VERB_DIRECTIVE_MULTIEXCEPT")
+		H_C_T(VERB_DIRECTIVE_MULTIHELD_HL,    I"VERB_DIRECTIVE_MULTIHELD")
+		H_C_T(VERB_DIRECTIVE_MULTIINSIDE_HL,  I"VERB_DIRECTIVE_MULTIINSIDE")
+		H_C_T(VERB_DIRECTIVE_NOUN_HL,         I"VERB_DIRECTIVE_NOUN")
+		H_C_T(VERB_DIRECTIVE_NUMBER_HL,       I"VERB_DIRECTIVE_NUMBER")
+		H_C_T(VERB_DIRECTIVE_RESULT_HL,       I"VERB_DIRECTIVE_RESULT")
+		H_C_T(VERB_DIRECTIVE_REVERSE_HL,      I"VERB_DIRECTIVE_REVERSE")
+		H_C_T(VERB_DIRECTIVE_SLASH_HL,        I"VERB_DIRECTIVE_SLASH")
+		H_C_T(VERB_DIRECTIVE_SPECIAL_HL,      I"VERB_DIRECTIVE_SPECIAL")
+		H_C_T(VERB_DIRECTIVE_TOPIC_HL,        I"VERB_DIRECTIVE_TOPIC")
+		H_C_T(MISTAKEACTION_HL,               I"##MistakeAction")
+	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(grammar))
 		H_BEGIN_AP(COND_TOKENS_HAP,           I"conditional_token", I"_conditional_token")
@@ -687,28 +709,14 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, grammar))
-		H_C_T(VERB_DIRECTIVE_CREATURE_HL,     I"VERB_DIRECTIVE_CREATURE")
-		H_C_T(VERB_DIRECTIVE_DIVIDER_HL,      I"VERB_DIRECTIVE_DIVIDER")
-		H_C_T(VERB_DIRECTIVE_HELD_HL,         I"VERB_DIRECTIVE_HELD")
-		H_C_T(VERB_DIRECTIVE_MULTI_HL,        I"VERB_DIRECTIVE_MULTI")
-		H_C_T(VERB_DIRECTIVE_MULTIEXCEPT_HL,  I"VERB_DIRECTIVE_MULTIEXCEPT")
-		H_C_T(VERB_DIRECTIVE_MULTIHELD_HL,    I"VERB_DIRECTIVE_MULTIHELD")
-		H_C_T(VERB_DIRECTIVE_MULTIINSIDE_HL,  I"VERB_DIRECTIVE_MULTIINSIDE")
-		H_C_T(VERB_DIRECTIVE_NOUN_HL,         I"VERB_DIRECTIVE_NOUN")
-		H_C_T(VERB_DIRECTIVE_NUMBER_HL,       I"VERB_DIRECTIVE_NUMBER")
-		H_C_T(VERB_DIRECTIVE_RESULT_HL,       I"VERB_DIRECTIVE_RESULT")
-		H_C_T(VERB_DIRECTIVE_REVERSE_HL,      I"VERB_DIRECTIVE_REVERSE")
-		H_C_T(VERB_DIRECTIVE_SLASH_HL,        I"VERB_DIRECTIVE_SLASH")
-		H_C_T(VERB_DIRECTIVE_SPECIAL_HL,      I"VERB_DIRECTIVE_SPECIAL")
-		H_C_T(VERB_DIRECTIVE_TOPIC_HL,        I"VERB_DIRECTIVE_TOPIC")
+	H_BEGIN(HierarchyLocations::completion_submodule(I, grammar))
 		H_F_T(TESTSCRIPTSUB_HL,               I"TestScriptSub_fn", I"TestScriptSub")
 		H_F_T(INTERNALTESTCASES_HL,           I"run_tests_fn", I"InternalTestCases")
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
 		H_END
-		H_C_T(MISTAKEACTION_HL,               I"##MistakeAction")
 		H_F_T(MISTAKEACTIONSUB_HL,            I"MistakeActionSub_fn", I"MistakeActionSub")
+		H_C_T(NO_VERB_VERB_DEFINED_HL,        I"NO_VERB_VERB_DEFINED")
 	H_END
 
 @h Instances.
@@ -738,7 +746,7 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 
-@e SHOWMEINSTANCEDETAILS_HL
+//@e SHOWMEINSTANCEDETAILS_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
@@ -772,21 +780,25 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, instances))
-		H_F_T(SHOWMEINSTANCEDETAILS_HL,       I"showmeinstancedetails_fn", I"ShowMeInstanceDetails")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, instances))
+//		H_F_T(SHOWMEINSTANCEDETAILS_HL,       I"showmeinstancedetails_fn", I"ShowMeInstanceDetails")
+//	H_END
 
 @h Interactive Fiction.
 
-@e INITIAL_MAX_SCORE_HL
-@e NO_DIRECTIONS_HL
-@e MAP_STORAGE_HL
-@e INITIALSITUATION_HL
 @e PLAYER_OBJECT_INIS_HL
 @e START_OBJECT_INIS_HL
 @e START_ROOM_INIS_HL
 @e START_TIME_INIS_HL
 @e DONE_INIS_HL
+
+@e INITIAL_MAX_SCORE_HL
+@e NO_DIRECTIONS_HL
+@e MAP_STORAGE_HL
+@e INITIALSITUATION_HL
+@e RANKING_TABLE_HL
+@e RUCKSACK_CLASS_HL
+
 @e DIRECTIONS_HAP
 @e DIRECTION_HL
 
@@ -801,11 +813,13 @@ void Hierarchy::establish(void) {
 		H_C_T(DONE_INIS_HL,                   I"DONE_INIS")
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, interactive_fiction))
+	H_BEGIN(HierarchyLocations::completion_submodule(I, interactive_fiction))
 		H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
+		H_C_T(RANKING_TABLE_HL,               I"RANKING_TABLE")
+		H_C_T(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
 		H_BEGIN_AP(DIRECTIONS_HAP,            I"direction", I"_direction")
 			H_C_G(DIRECTION_HL,               I"DirectionObject")
 		H_END
@@ -817,8 +831,6 @@ void Hierarchy::establish(void) {
 @e K_UNCHECKED_FUNCTION_HL
 @e K_TYPELESS_INT_HL
 @e K_TYPELESS_STRING_HL
-@e RUCKSACK_CLASS_HL
-@e SHOWMEDETAILS_HL
 
 @e KIND_HAP
 @e KIND_NAME_METADATA_HL
@@ -874,16 +886,16 @@ void Hierarchy::establish(void) {
 @e DK_KIND_HL
 @e DK_DEFAULT_VALUE_HL
 
-@e DEFAULTVALUEOFKOV_HL
-@e DEFAULTVALUEFINDER_HL
-@e PRINTKINDVALUEPAIR_HL
-@e KOVCOMPARISONFUNCTION_HL
-@e KOVDOMAINSIZE_HL
-@e KOVISBLOCKVALUE_HL
-@e I7_KIND_NAME_HL
-@e KOVSUPPORTFUNCTION_HL
-@e SHOWMEKINDDETAILS_HL
-@e BASE_KIND_HWM_HL
+//@e DEFAULTVALUEOFKOV_HL
+//@e DEFAULTVALUEFINDER_HL
+//@e PRINTKINDVALUEPAIR_HL
+//@e KOVCOMPARISONFUNCTION_HL
+//@e KOVDOMAINSIZE_HL
+//@e KOVISBLOCKVALUE_HL
+//@e I7_KIND_NAME_HL
+//@e KOVSUPPORTFUNCTION_HL
+//@e SHOWMEKINDDETAILS_HL
+//@e BASE_KIND_HWM_HL
 
 @<Establish kinds@> =
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
@@ -893,8 +905,6 @@ void Hierarchy::establish(void) {
 		H_C_T(K_UNCHECKED_FUNCTION_HL,        I"K_unchecked_function")
 		H_C_T(K_TYPELESS_INT_HL,              I"K_typeless_int")
 		H_C_T(K_TYPELESS_STRING_HL,           I"K_typeless_string")
-		H_C_T(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
-		H_F_T(SHOWMEDETAILS_HL,               I"showmedetails_fn", I"ShowMeDetails")
 	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
@@ -956,35 +966,35 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, kinds))
-		H_C_T(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
-		H_F_T(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
-		H_F_T(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
-		H_F_T(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
-		H_F_T(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
-		H_F_T(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")
-		H_F_T(KOVISBLOCKVALUE_HL,             I"blockvalue_fn", I"KOVIsBlockValue")
-		H_F_T(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
-		H_F_T(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
-		H_F_T(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, kinds))
+//		H_C_T(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
+//		H_F_T(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
+//		H_F_T(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
+//		H_F_T(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
+//		H_F_T(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
+//		H_F_T(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")
+//		H_F_T(KOVISBLOCKVALUE_HL,             I"blockvalue_fn", I"KOVIsBlockValue")
+//		H_F_T(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
+//		H_F_T(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
+//		H_F_T(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
+//	H_END
 
 @h Multimedia.
 
-@e RESOURCEIDSOFFIGURES_HL
-@e RESOURCEIDSOFSOUNDS_HL
-@e NO_EXTERNAL_FILES_HL
-@e TABLEOFEXTERNALFILES_HL
+//@e RESOURCEIDSOFFIGURES_HL
+//@e RESOURCEIDSOFSOUNDS_HL
+//@e NO_EXTERNAL_FILES_HL
+//@e TABLEOFEXTERNALFILES_HL
 
 @<Establish multimedia@> =
-	submodule_identity *multimedia = Packaging::register_submodule(I"multimedia");
+//	submodule_identity *multimedia = Packaging::register_submodule(I"multimedia");
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, multimedia))
-		H_C_T(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
-		H_C_T(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
-		H_C_T(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
-		H_C_T(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, multimedia))
+//		H_C_T(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
+//		H_C_T(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
+//		H_C_T(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
+//		H_C_T(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
+//	H_END
 
 @h Phrases.
 
@@ -1024,7 +1034,7 @@ void Hierarchy::establish(void) {
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
-@e CCOUNT_PROPERTY_HL
+//@e CCOUNT_PROPERTY_HL
 
 @<Establish properties@> =
 	submodule_identity *properties = Packaging::register_submodule(I"properties");
@@ -1038,9 +1048,9 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, properties))
-		H_C_T(CCOUNT_PROPERTY_HL,             I"CCOUNT_PROPERTY")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, properties))
+//		H_C_T(CCOUNT_PROPERTY_HL,             I"CCOUNT_PROPERTY")
+//	H_END
 
 @h Relations.
 
@@ -1080,10 +1090,10 @@ void Hierarchy::establish(void) {
 @e RELATION_FN_HL
 @e RELATION_CREATOR_FN_HL
 
-@e CREATEDYNAMICRELATIONS_HL
-@e CCOUNT_BINARY_PREDICATE_HL
-@e ITERATERELATIONS_HL
-@e RPROPERTY_HL
+//@e CREATEDYNAMICRELATIONS_HL
+//@e CCOUNT_BINARY_PREDICATE_HL
+//@e ITERATERELATIONS_HL
+//@e RPROPERTY_HL
 
 @<Establish relations@> =
 	submodule_identity *relations = Packaging::register_submodule(I"relations");
@@ -1129,16 +1139,15 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, relations))
-		H_F_T(CREATEDYNAMICRELATIONS_HL,      I"creator_fn", I"CreateDynamicRelations")
-		H_C_T(CCOUNT_BINARY_PREDICATE_HL,     I"CCOUNT_BINARY_PREDICATE")
-		H_F_T(ITERATERELATIONS_HL,            I"iterator_fn", I"IterateRelations")
-		H_F_T(RPROPERTY_HL,                   I"property_fn", I"RProperty")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, relations))
+//		H_F_T(CREATEDYNAMICRELATIONS_HL,      I"creator_fn", I"CreateDynamicRelations")
+//		H_C_T(CCOUNT_BINARY_PREDICATE_HL,     I"CCOUNT_BINARY_PREDICATE")
+//		H_F_T(ITERATERELATIONS_HL,            I"iterator_fn", I"IterateRelations")
+//		H_F_T(RPROPERTY_HL,                   I"property_fn", I"RProperty")
+//	H_END
 
 @h Rulebooks.
 
-@e EMPTY_RULEBOOK_INAME_HL
 @e RBNO4_INAME_HL
 @e RBNO3_INAME_HL
 @e RBNO2_INAME_HL
@@ -1157,28 +1166,24 @@ void Hierarchy::establish(void) {
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
 
-@e NUMBER_RULEBOOKS_CREATED_HL
-@e RULEBOOK_VAR_CREATORS_HL
-@e SLOW_LOOKUP_HL
-@e RULEBOOKS_ARRAY_HL
-@e RULEBOOKNAMES_HL
+//@e NUMBER_RULEBOOKS_CREATED_HL
+//@e RULEBOOK_VAR_CREATORS_HL
+//@e SLOW_LOOKUP_HL
+//@e RULEBOOKS_ARRAY_HL
+//@e RULEBOOKNAMES_HL
 
 @<Establish rulebooks@> =
 	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
-
-	H_BEGIN(HierarchyLocations::generic_submodule(I, rulebooks))
-		H_F_T(EMPTY_RULEBOOK_INAME_HL,        I"empty_fn", I"EMPTY_RULEBOOK")
-		H_C_U(RBNO4_INAME_HL,                 I"RBNO4_OUTCOME")
-		H_C_U(RBNO3_INAME_HL,                 I"RBNO3_OUTCOME")
-		H_C_U(RBNO2_INAME_HL,                 I"RBNO2_OUTCOME")
-		H_C_U(RBNO1_INAME_HL,                 I"RBNO1_OUTCOME")
-		H_C_U(RBNO0_INAME_HL,                 I"RBNO0_OUTCOME")
-	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(rulebooks))
 		H_BEGIN_AP(OUTCOMES_HAP,              I"rulebook_outcome", I"_outcome")
 			H_C_U(OUTCOME_NAME_METADATA_HL,   I"^name")
 			H_C_U(OUTCOME_HL,                 I"outcome")
+			H_C_U(RBNO4_INAME_HL,             I"RBNO4_OUTCOME")
+			H_C_U(RBNO3_INAME_HL,             I"RBNO3_OUTCOME")
+			H_C_U(RBNO2_INAME_HL,             I"RBNO2_OUTCOME")
+			H_C_U(RBNO1_INAME_HL,             I"RBNO1_OUTCOME")
+			H_C_U(RBNO0_INAME_HL,             I"RBNO0_OUTCOME")
 		H_END
 		H_BEGIN_AP(RULEBOOKS_HAP,             I"rulebook", I"_rulebook")
 			H_C_U(RULEBOOK_NAME_METADATA_HL,  I"^name")
@@ -1191,13 +1196,13 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rulebooks))
-		H_C_T(NUMBER_RULEBOOKS_CREATED_HL,    I"NUMBER_RULEBOOKS_CREATED")
-		H_C_T(RULEBOOK_VAR_CREATORS_HL,       I"rulebook_var_creators")
-		H_F_T(SLOW_LOOKUP_HL,                 I"slow_lookup_fn", I"MStack_GetRBVarCreator")
-		H_C_T(RULEBOOKS_ARRAY_HL,             I"rulebooks_array")
-		H_C_T(RULEBOOKNAMES_HL,               I"RulebookNames")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rulebooks))
+//		H_C_T(NUMBER_RULEBOOKS_CREATED_HL,    I"NUMBER_RULEBOOKS_CREATED")
+//		H_C_T(RULEBOOK_VAR_CREATORS_HL,       I"rulebook_var_creators")
+//		H_F_T(SLOW_LOOKUP_HL,                 I"slow_lookup_fn", I"MStack_GetRBVarCreator")
+//		H_C_T(RULEBOOKS_ARRAY_HL,             I"rulebooks_array")
+//		H_C_T(RULEBOOKNAMES_HL,               I"RulebookNames")
+//	H_END
 
 @h Rules.
 
@@ -1220,12 +1225,12 @@ void Hierarchy::establish(void) {
 @e MARKER_METADATA_HL
 @e GROUP_HL
 
-@e RULEPRINTINGRULE_HL
+//@e RULEPRINTINGRULE_HL
 
-@e RESPONSETEXTS_HL
-@e NO_RESPONSES_HL
-@e RESPONSEDIVISIONS_HL
-@e PRINT_RESPONSE_HL
+//@e RESPONSETEXTS_HL
+//@e NO_RESPONSES_HL
+//@e RESPONSEDIVISIONS_HL
+//@e PRINT_RESPONSE_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
@@ -1253,29 +1258,29 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
-		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
+//		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
+//	H_END
 
-	submodule_identity *responses = Packaging::register_submodule(I"responses");
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, responses))
-		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
-		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
-		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
-		H_F_T(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
-	H_END
+//	submodule_identity *responses = Packaging::register_submodule(I"responses");
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, responses))
+//		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
+//		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
+//		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
+//		H_F_T(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
+//	H_END
 
 @h Scenes.
 
-@e SHOWSCENESTATUS_HL
-@e DETECTSCENECHANGE_HL
+//@e SHOWSCENESTATUS_HL
+//@e DETECTSCENECHANGE_HL
 
 @<Establish scenes@> =
-	submodule_identity *scenes = Packaging::register_submodule(I"scenes");
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, scenes))
-		H_F_T(SHOWSCENESTATUS_HL,             I"show_scene_status_fn", I"ShowSceneStatus")
-		H_F_T(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
-	H_END
+//	submodule_identity *scenes = Packaging::register_submodule(I"scenes");
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, scenes))
+//		H_F_T(SHOWSCENESTATUS_HL,             I"show_scene_status_fn", I"ShowSceneStatus")
+//		H_F_T(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
+//	H_END
 
 @h Tables.
 
@@ -1296,11 +1301,11 @@ void Hierarchy::establish(void) {
 @e TABLE_COLUMN_ID_HL
 @e TABLE_COLUMN_KIND_METADATA_HL
 
-@e PRINT_TABLE_HL
-@e TABLEOFTABLES_HL
-@e TB_BLANKS_HL
+//@e PRINT_TABLE_HL
+//@e TABLEOFTABLES_HL
+//@e TB_BLANKS_HL
 
-@e TC_KOV_HL
+//@e TC_KOV_HL
 
 @<Establish tables@> =
 	submodule_identity *tables = Packaging::register_submodule(I"tables");
@@ -1322,11 +1327,11 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
-		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
-		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
-		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
+//		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
+//		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
+//		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
+//	H_END
 
 	submodule_identity *table_columns = Packaging::register_submodule(I"table_columns");
 	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
@@ -1336,9 +1341,9 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, table_columns))
-		H_F_T(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, table_columns))
+//		H_F_T(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
+//	H_END
 
 @h Use options.
 
@@ -1348,9 +1353,9 @@ void Hierarchy::establish(void) {
 @e USE_OPTION_ON_METADATA_HL
 @e USE_OPTION_ID_HL
 
-@e NO_USE_OPTIONS_HL
-@e TESTUSEOPTION_HL
-@e PRINT_USE_OPTION_HL
+//@e NO_USE_OPTIONS_HL
+//@e TESTUSEOPTION_HL
+//@e PRINT_USE_OPTION_HL
 
 @<Establish use options@> =
 	submodule_identity *use_options = Packaging::register_submodule(I"use_options");
@@ -1364,11 +1369,11 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	H_BEGIN(HierarchyLocations::synoptic_submodule(I, use_options))
-		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
-		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
-		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
-	H_END
+//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, use_options))
+//		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
+//		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
+//		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
+//	H_END
 
 @h Variables.
 
@@ -1507,22 +1512,10 @@ The Inform compiler only needs to refer to a few of these symbols directly,
 and here they are. For their meanings, see the Inform 6 Technical Manual.
 
 @e SELF_HL
-@e DEBUG_HL
-@e TARGET_ZCODE_HL
-@e TARGET_GLULX_HL
-@e DICT_WORD_SIZE_HL
-@e WORDSIZE_HL
-@e INDIV_PROP_START_HL
 
 @<Establish veneer resources@> =
 	H_BEGIN(HierarchyLocations::the_veneer(I))
 		H_C_T(SELF_HL,                        I"self")
-		H_C_T(DEBUG_HL,                       I"DEBUG")
-		H_C_T(TARGET_ZCODE_HL,                I"TARGET_ZCODE")
-		H_C_T(TARGET_GLULX_HL,                I"TARGET_GLULX")
-		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
-		H_C_T(WORDSIZE_HL,                    I"WORDSIZE")
-		H_C_T(INDIV_PROP_START_HL,            I"INDIV_PROP_START")
 	H_END
 
 @h Kit-defined symbols.
@@ -1579,6 +1572,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 @e DOUBLEHASHSETRELATIONHANDLER_HL
 @e DURINGSCENEMATCHING_HL
 @e ELEMENTARY_TT_HL
+@e EMPTY_RULEBOOK_INAME_HL
 @e EMPTY_TABLE_HL
 @e EMPTY_TEXT_PACKED_HL
 @e EMPTY_TEXT_VALUE_HL
@@ -1816,6 +1810,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 		H_C_T(DOUBLEHASHSETRELATIONHANDLER_HL,     I"DoubleHashSetRelationHandler")
 		H_C_T(DURINGSCENEMATCHING_HL,              I"DuringSceneMatching")
 		H_C_T(ELEMENTARY_TT_HL,                    I"ELEMENTARY_TT")
+		H_C_T(EMPTY_RULEBOOK_INAME_HL,             I"EMPTY_RULEBOOK")
 		H_C_T(EMPTY_TABLE_HL,                      I"TheEmptyTable")
 		H_C_T(EMPTY_TEXT_PACKED_HL,                I"EMPTY_TEXT_PACKED")
 		H_C_T(EMPTY_TEXT_VALUE_HL,                 I"EMPTY_TEXT_VALUE")

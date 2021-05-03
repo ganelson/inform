@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -67,13 +75,15 @@ the player for <span class="extract"><span class="extract-syntax">WorldModelKit<
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTPlayer::InitialSituation</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTPlayer::compile_generic_constants</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RTPlayer::compile_generic_constants</span></span>:<br/>Generic Module - <a href="3-gm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="6-tp.html#SP1" class="function-link"><span class="function-syntax">RTPlayer::InitialSituation_define</span></a><span class="plain-syntax">(</span><span class="constant-syntax">PLAYER_OBJECT_INIS_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-tp.html#SP1" class="function-link"><span class="function-syntax">RTPlayer::InitialSituation_define</span></a><span class="plain-syntax">(</span><span class="constant-syntax">START_OBJECT_INIS_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-tp.html#SP1" class="function-link"><span class="function-syntax">RTPlayer::InitialSituation_define</span></a><span class="plain-syntax">(</span><span class="constant-syntax">START_ROOM_INIS_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-tp.html#SP1" class="function-link"><span class="function-syntax">RTPlayer::InitialSituation_define</span></a><span class="plain-syntax">(</span><span class="constant-syntax">START_TIME_INIS_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-tp.html#SP1" class="function-link"><span class="function-syntax">RTPlayer::InitialSituation_define</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DONE_INIS_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
 
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTPlayer::InitialSituation</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INITIALSITUATION_HL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><a href="2-ea.html#SP2" class="function-link"><span class="function-syntax">EmitArrays::begin</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-vrb.html#SP8" class="function-link"><span class="function-syntax">RTVariables::emit_initial_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">player_VAR</span><span class="plain-syntax">);</span>
@@ -114,7 +124,7 @@ the function <span class="extract"><span class="extract-syntax">ChangePlayer</sp
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="6-spt.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-rm.html">1</a></li><li class="progresschapter"><a href="2-hrr.html">2</a></li><li class="progresschapter"><a href="3-fc.html">3</a></li><li class="progresschapter"><a href="4-enc.html">4</a></li><li class="progresschapter"><a href="5-rls.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-nmn.html">nmn</a></li><li class="progresssection"><a href="6-bd.html">bd</a></li><li class="progresssection"><a href="6-spt.html">spt</a></li><li class="progresscurrent">tp</li><li class="progresssection"><a href="6-bck.html">bck</a></li><li class="progresssection"><a href="6-rgn.html">rgn</a></li><li class="progresssection"><a href="6-tm.html">tm</a></li><li class="progresssection"><a href="6-ts.html">ts</a></li><li class="progresssection"><a href="6-tr.html">tr</a></li><li class="progresssection"><a href="6-scn.html">scn</a></li><li class="progresschapter"><a href="7-act.html">7</a></li><li class="progresschapter"><a href="8-prs.html">8</a></li><li class="progresschapter"><a href="9-fgr.html">9</a></li><li class="progresschapter"><a href="10-sc.html">10</a></li><li class="progressnext"><a href="6-bck.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="6-spt.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-rm.html">1</a></li><li class="progresschapter"><a href="2-hrr.html">2</a></li><li class="progresschapter"><a href="3-gm.html">3</a></li><li class="progresschapter"><a href="4-enc.html">4</a></li><li class="progresschapter"><a href="5-rls.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-nmn.html">nmn</a></li><li class="progresssection"><a href="6-bd.html">bd</a></li><li class="progresssection"><a href="6-spt.html">spt</a></li><li class="progresscurrent">tp</li><li class="progresssection"><a href="6-bck.html">bck</a></li><li class="progresssection"><a href="6-rgn.html">rgn</a></li><li class="progresssection"><a href="6-tm.html">tm</a></li><li class="progresssection"><a href="6-ts.html">ts</a></li><li class="progresssection"><a href="6-tr.html">tr</a></li><li class="progresssection"><a href="6-scn.html">scn</a></li><li class="progresschapter"><a href="7-act.html">7</a></li><li class="progresschapter"><a href="8-prs.html">8</a></li><li class="progresschapter"><a href="9-fgr.html">9</a></li><li class="progresschapter"><a href="10-sc.html">10</a></li><li class="progressnext"><a href="6-bck.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

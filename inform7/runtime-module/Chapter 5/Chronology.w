@@ -414,10 +414,11 @@ void Chronology::compile_synoptic_resources(void) {
 	Hierarchy::make_available(iname);
 
 @<Provide placeholder for the NO_PAST_TENSE_CONDS constant@> =
-	inter_name *iname = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
+/*	inter_name *iname = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
 	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_PAST_TENSE_CONDS_SYNID);
 	Hierarchy::make_available(iname);
 	Emit::numeric_constant(iname, 0);
+*/
 
 @<Provide placeholder for the NO_PAST_TENSE_ACTIONS constant@> =
 	inter_name *iname = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);

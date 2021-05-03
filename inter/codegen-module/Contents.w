@@ -25,7 +25,8 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Eliminate Redundant Labels
 	Eliminate Redundant Operations
 
-Chapter 3: Synoptic Resources
+Chapter 3: Synoptic Module
+	Synoptic Hierarchy
 	Synoptic Utilities
 	Extensions
 	Literal Text

@@ -4,13 +4,15 @@
 the player for |WorldModelKit| to get things started.
 
 =
-void RTPlayer::InitialSituation(void) {
+void RTPlayer::compile_generic_constants(void) {
 	RTPlayer::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
 	RTPlayer::InitialSituation_define(START_OBJECT_INIS_HL, 1);
 	RTPlayer::InitialSituation_define(START_ROOM_INIS_HL, 2);
 	RTPlayer::InitialSituation_define(START_TIME_INIS_HL, 3);
 	RTPlayer::InitialSituation_define(DONE_INIS_HL, 4);
+}
 
+void RTPlayer::InitialSituation(void) {
 	inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
 	packaging_state save = EmitArrays::begin(iname, K_value);
 	RTVariables::emit_initial_value(player_VAR);

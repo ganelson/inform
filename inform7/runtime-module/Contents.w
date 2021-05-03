@@ -20,7 +20,8 @@ Chapter 2: Emission
 	Interventions
 
 Chapter 3: Basics
-	Fundamental Constants
+	Generic Module
+	Completion Module
 	Use Options
 	Extensions
 

@@ -254,7 +254,9 @@ occur, in so far as memory economy allows this.
 	print ").]^";
 ];
 
-@h The Default Rule.
+@h The Default Rule and Rulebook.
 
 =
 [ LITTLE_USED_DO_NOTHING_R; rfalse; ];
+
+[ EMPTY_RULEBOOK forbid_breaks; rfalse; ];

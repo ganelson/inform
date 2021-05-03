@@ -15,6 +15,7 @@ inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
 }
 
 void Inter::Transmigration::move(inter_package *migrant, inter_package *destination, int tidy_origin) {
+	Inter::Packages::make_names_exist(migrant);
 	inter_tree *origin_tree = Inter::Packages::tree(migrant);
 	inter_tree *destination_tree = Inter::Packages::tree(destination);
 	inter_package *origin = Inter::Packages::parent(migrant);

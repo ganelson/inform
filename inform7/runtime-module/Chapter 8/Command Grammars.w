@@ -85,6 +85,23 @@ inter_name *VERB_DIRECTIVE_CREATURE_iname = NULL;
 inter_name *VERB_DIRECTIVE_TOPIC_iname = NULL;
 inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
+void RTCommandGrammars::compile_generic_constants(void) {
+	VERB_DIRECTIVE_REVERSE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
+	VERB_DIRECTIVE_SLASH_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
+	VERB_DIRECTIVE_DIVIDER_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_DIVIDER_HL, 1);
+	VERB_DIRECTIVE_RESULT_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_RESULT_HL, 2);
+	VERB_DIRECTIVE_SPECIAL_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SPECIAL_HL, 3);
+	VERB_DIRECTIVE_NUMBER_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_NUMBER_HL, 4);
+	VERB_DIRECTIVE_NOUN_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_NOUN_HL, 5);
+	VERB_DIRECTIVE_MULTI_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTI_HL, 6);
+	VERB_DIRECTIVE_MULTIINSIDE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_HL, 7);
+	VERB_DIRECTIVE_MULTIHELD_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIHELD_HL, 8);
+	VERB_DIRECTIVE_HELD_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_HELD_HL, 9);
+	VERB_DIRECTIVE_CREATURE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_CREATURE_HL, 10);
+	VERB_DIRECTIVE_TOPIC_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
+	VERB_DIRECTIVE_MULTIEXCEPT_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
+}
+
 inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 	switch (cgt->grammar_token_code) {
 		case NOUN_TOKEN_GTC: return VERB_DIRECTIVE_NOUN_iname;
@@ -100,7 +117,6 @@ inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 	return NULL; /* to prevent a gcc error: never reached */
 }
 
-
 inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
 	Emit::numeric_constant(iname, 1);
@@ -114,20 +130,6 @@ void RTCommandGrammars::compile_all(void) {
 
 	Log::new_stage(I"Sorting and compiling non-value grammar (G3, G4)");
 
-	VERB_DIRECTIVE_REVERSE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
-	VERB_DIRECTIVE_SLASH_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
-	VERB_DIRECTIVE_DIVIDER_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_DIVIDER_HL, 1);
-	VERB_DIRECTIVE_RESULT_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_RESULT_HL, 2);
-	VERB_DIRECTIVE_SPECIAL_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SPECIAL_HL, 3);
-	VERB_DIRECTIVE_NUMBER_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_NUMBER_HL, 4);
-	VERB_DIRECTIVE_NOUN_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_NOUN_HL, 5);
-	VERB_DIRECTIVE_MULTI_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTI_HL, 6);
-	VERB_DIRECTIVE_MULTIINSIDE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIINSIDE_HL, 7);
-	VERB_DIRECTIVE_MULTIHELD_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIHELD_HL, 8);
-	VERB_DIRECTIVE_HELD_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_HELD_HL, 9);
-	VERB_DIRECTIVE_CREATURE_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_CREATURE_HL, 10);
-	VERB_DIRECTIVE_TOPIC_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
-	VERB_DIRECTIVE_MULTIEXCEPT_iname = RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
 
 	LOOP_OVER(cg, command_grammar)
 		if (cg->cg_is == CG_IS_TOKEN)

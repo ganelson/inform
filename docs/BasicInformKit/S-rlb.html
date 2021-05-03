@@ -56,7 +56,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Rulebooks Template</b></li></ul></div>
 <p class="purpose">To work through the rules in a rulebook until a decision is made.</p>
 
-<ul class="toc"><li><a href="S-rlb.html#SP1">&#167;1. Latest Rule Result</a></li><li><a href="S-rlb.html#SP2">&#167;2. Following</a></li><li><a href="S-rlb.html#SP3">&#167;3. Specifying Outcomes</a></li><li><a href="S-rlb.html#SP4">&#167;4. Discovering Outcomes</a></li><li><a href="S-rlb.html#SP5">&#167;5. Printing Rule Names</a></li><li><a href="S-rlb.html#SP6">&#167;6. Casting</a></li><li><a href="S-rlb.html#SP7">&#167;7. Debugging</a></li><li><a href="S-rlb.html#SP8">&#167;8. The Default Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-rlb.html#SP1">&#167;1. Latest Rule Result</a></li><li><a href="S-rlb.html#SP2">&#167;2. Following</a></li><li><a href="S-rlb.html#SP3">&#167;3. Specifying Outcomes</a></li><li><a href="S-rlb.html#SP4">&#167;4. Discovering Outcomes</a></li><li><a href="S-rlb.html#SP5">&#167;5. Printing Rule Names</a></li><li><a href="S-rlb.html#SP6">&#167;6. Casting</a></li><li><a href="S-rlb.html#SP7">&#167;7. Debugging</a></li><li><a href="S-rlb.html#SP8">&#167;8. The Default Rule and Rulebook</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Latest Rule Result. </b>This used to be a large data structure which kept track of the effect of
 procedural rules, but in January 2011 procedurals were abolished. It retains
@@ -317,10 +317,12 @@ occur, in so far as memory economy allows this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">").]^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The Default Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The Default Rule and Rulebook. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LITTLE_USED_DO_NOTHING_R</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; ];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">EMPTY_RULEBOOK</span><span class="plain-syntax"> </span><span class="identifier-syntax">forbid_breaks</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; ];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="S-mst.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresscurrent">rlb</li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-unc.html">unc</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-flx.html">&#10095;</a></li></ul></div>

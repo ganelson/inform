@@ -52,7 +52,7 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 
 	TEMPORARY_TEXT(pname)
 	@<Compose a name for the unit package this will lead to@>;
-	module_package *M = Packaging::get_unit(Emit::tree(), pname);
+	module_package *M = Packaging::get_unit(Emit::tree(), pname, I"_module");
 	@<Give M a category@>;
 	if (ext) @<Give M metadata indicating the source extension@>;
 	DISCARD_TEXT(pname)

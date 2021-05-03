@@ -25,9 +25,9 @@ Import: assertions
 Import: values
 Import: knowledge
 Import: imperative
+Import: inter/codegen
 Import: runtime
 Import: inter/building
-Import: inter/codegen
 Import: if
 Import: multimedia
 Import: index

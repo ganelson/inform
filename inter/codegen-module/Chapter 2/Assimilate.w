@@ -22,8 +22,8 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
-
 	Site::ensure_assimilation_package(I, plain_ptype_symbol);
+	SynopticHierarchy::establish(I);
 		
 	CodeGen::Assimilate::ensure(I, &verb_directive_reverse_symbol, I"VERB_DIRECTIVE_REVERSE");
 	CodeGen::Assimilate::ensure(I, &verb_directive_slash_symbol, I"VERB_DIRECTIVE_SLASH");
