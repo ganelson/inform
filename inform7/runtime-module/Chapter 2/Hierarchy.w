@@ -828,9 +828,16 @@ void Hierarchy::establish(void) {
 @e KIND_PNAME_METADATA_HL
 @e KIND_SHOWME_METADATA_HL
 @e KIND_IS_BASE_METADATA_HL
+@e KIND_IS_DEF_METADATA_HL
 @e KIND_IS_OBJECT_METADATA_HL
+@e KIND_IS_SKOO_METADATA_HL
 @e KIND_HAS_BV_METADATA_HL
 @e KIND_WEAK_ID_METADATA_HL
+@e KIND_PRINT_FN_METADATA_HL
+@e KIND_CMP_FN_METADATA_HL
+@e KIND_SUPPORT_FN_METADATA_HL
+@e KIND_MKDEF_FN_METADATA_HL
+@e KIND_DSIZE_METADATA_HL
 @e KIND_CLASS_HL
 @e KIND_HL
 @e WEAK_ID_HL
@@ -841,6 +848,7 @@ void Hierarchy::establish(void) {
 @e INCREMENT_FN_HL
 @e PRINT_FN_HL
 @e PRINT_DASH_FN_HL
+@e MKDEF_FN_HL
 @e RANGER_FN_HL
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
@@ -894,14 +902,22 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_PNAME_METADATA_HL,     I"^printed_name")
 			H_C_U(KIND_SHOWME_METADATA_HL,    I"^showme_fn")
 			H_C_U(KIND_IS_BASE_METADATA_HL,   I"^is_base")
+			H_C_U(KIND_IS_DEF_METADATA_HL,    I"^is_definite")
 			H_C_U(KIND_IS_OBJECT_METADATA_HL, I"^is_object")
+			H_C_U(KIND_IS_SKOO_METADATA_HL,   I"^is_subkind_of_object")
 			H_C_U(KIND_HAS_BV_METADATA_HL,    I"^has_block_values")
 			H_C_U(KIND_WEAK_ID_METADATA_HL,   I"^weak_id")
+			H_C_U(KIND_CMP_FN_METADATA_HL,    I"^cmp_fn")
+			H_C_U(KIND_PRINT_FN_METADATA_HL,  I"^print_fn")
+			H_C_U(KIND_SUPPORT_FN_METADATA_HL, I"^support_fn")
+			H_C_U(KIND_MKDEF_FN_METADATA_HL,  I"^mkdef_fn")
+			H_C_U(KIND_DSIZE_METADATA_HL,     I"^domain_size")
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_C_G(KIND_HL,                    I"KD")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
+			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
 			H_C_U(DEFAULT_VALUE_HL,           I"default_value")
 			H_F_U(DECREMENT_FN_HL,            I"decrement_fn")
 			H_F_U(INCREMENT_FN_HL,            I"increment_fn")

@@ -192,7 +192,7 @@ so on. Those absolute basics are made here.
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
-	BENCH(RTKinds::I7_Kind_Name_routine)
+	BENCH(RTKinds::compile_metadata)
 	
 @<Generate inter, part 2@> =
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
@@ -202,6 +202,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTTables::compile)
 	BENCH(RTTables::compile_table_metadata)
 	BENCH(RTTables::compile_table_column_metadata)
+	BENCH(RTKinds::compile_mkdef_functions)
 	BENCH(RTEquations::compile_identifiers)
 	BENCH(ImperativeDefinitions::compile_first_block)
 	BENCH(RTRules::rulebook_var_creators)

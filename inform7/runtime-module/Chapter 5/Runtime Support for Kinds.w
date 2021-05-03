@@ -1451,6 +1451,7 @@ argument, so there is only one of each routine.
 	@<Compile KOVDomainSize@>;
 	@<Compile KOVIsBlockValue@>;
 	@<Compile KOVSupportFunction@>;
+	@<Compile I7_KIND_NAME@>;
 
 @ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to
 be |K|. (Since I6 is typeless and in general the kind of |V| cannot be
@@ -1458,54 +1459,14 @@ deduced from its value alone, |K| must explicitly be supplied.)
 
 @<Compile PrintKindValuePair@> =
 	inter_name *pkvp_iname = Hierarchy::find(PRINTKINDVALUEPAIR_HL);
+	Produce::annotate_i(pkvp_iname, SYNOPTIC_IANN, PRINTKINDVALUEPAIR_SYNID);
 	packaging_state save = Functions::begin(pkvp_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *v_s = LocalVariables::new_other_as_symbol(I"v");
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, k_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K);
-				EmitCode::code();
-				EmitCode::down();
-					inter_name *pname = Kinds::Behaviour::get_iname(K);
-					EmitCode::call(pname);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, v_s);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-	}
-
-			EmitCode::inv(DEFAULT_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, v_s);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-
-		EmitCode::up();
-	EmitCode::up();
+	LocalVariables::new_other_as_symbol(I"v");
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(pkvp_iname);
 
@@ -1515,64 +1476,14 @@ which have to be given some type-safe value to start out at.
 
 @<Compile DefaultValueOfKOV@> =
 	inter_name *dvok_iname = Hierarchy::find(DEFAULTVALUEOFKOV_HL);
+	Produce::annotate_i(dvok_iname, SYNOPTIC_IANN, DEFAULTVALUEOFKOV_SYNID);
 	packaging_state save = Functions::begin(dvok_iname);
-	inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
-	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare(k);
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, sk_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-		if (Kinds::Behaviour::definite(K)) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K);
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						if (Kinds::Behaviour::uses_pointer_values(K)) {
-							inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-							EmitCode::call(iname);
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, sk_s);
-							EmitCode::up();
-						} else {
-							RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
-						}
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	}
-
-			EmitCode::inv(DEFAULT_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_number(0);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-
-		EmitCode::up();
-	EmitCode::up();
+	LocalVariables::new_other_as_symbol(I"sk");
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(dvok_iname);
 
@@ -1586,113 +1497,25 @@ unless the two values are genuinely equal.
 
 @<Compile KOVComparisonFunction@> =
 	inter_name *kcf_iname = Hierarchy::find(KOVCOMPARISONFUNCTION_HL);
+	Produce::annotate_i(kcf_iname, SYNOPTIC_IANN, KOVCOMPARISONFUNCTION_SYNID);
 	packaging_state save = Functions::begin(kcf_iname);
-	LocalVariables::new_other_parameter(I"k");
-	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare(k);
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, k_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-		if ((Kinds::Behaviour::definite(K)) &&
-			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K);
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						inter_name *iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
-						EmitCode::val_iname(K_value, iname);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	}
-
-			EmitCode::inv(DEFAULT_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_number(0);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-
-		EmitCode::up();
-	EmitCode::up();
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(kcf_iname);
 
 @<Compile KOVDomainSize@> =
 	inter_name *kds_iname = Hierarchy::find(KOVDOMAINSIZE_HL);
+	Produce::annotate_i(kds_iname, SYNOPTIC_IANN, KOVDOMAINSIZE_SYNID);
 	packaging_state save = Functions::begin(kds_iname);
-	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
-	inter_symbol *k_s = LocalVariables::declare(k);
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, k_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-		if (Kinds::Behaviour::is_an_enumeration(K)) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K);
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_number((inter_ti)
-							Kinds::Behaviour::get_highest_valid_value_as_integer(K));
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	}
-
-			EmitCode::inv(DEFAULT_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_number(0);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-
-		EmitCode::up();
-	EmitCode::up();
+	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(kds_iname);
 
@@ -1717,67 +1540,35 @@ such a function does, see "BlockValues.i6t".
 
 @<Compile KOVSupportFunction@> =
 	inter_name *ksf_iname = Hierarchy::find(KOVSUPPORTFUNCTION_HL);
+	Produce::annotate_i(ksf_iname, SYNOPTIC_IANN, KOVSUPPORTFUNCTION_SYNID);
 	packaging_state save = Functions::begin(ksf_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *fail_s = LocalVariables::new_other_as_symbol(I"fail");
-
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, k_s);
-		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
-		EmitCode::call(iname);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, k_s);
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, k_s);
-		EmitCode::code();
-		EmitCode::down();
-
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			EmitCode::inv(CASE_BIP);
-			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K);
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						inter_name *iname = Kinds::Behaviour::get_support_routine_as_iname(K);
-						EmitCode::val_iname(K_value, iname);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	}
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, fail_s);
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::call(Hierarchy::find(BLKVALUEERROR_HL));
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, fail_s);
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::rfalse();
+	LocalVariables::new_other_as_symbol(I"fail");
+	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
+	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
+	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
+	inter_symbol *bve_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"bve");
+	inter_name *bve_iname = Hierarchy::find(BLKVALUEERROR_HL);
+	InterSymbolsTables::equate(bve_s, InterNames::to_symbol(bve_iname));
+	EmitCode::comment(I"This function is consolidated");
 	Functions::end(save);
 	Hierarchy::make_available(ksf_iname);
+
+@<Compile I7_KIND_NAME@> =
+	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
+	Produce::annotate_i(iname, SYNOPTIC_IANN, I7_KIND_NAME_SYNID);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_other_as_symbol(I"k");
+	EmitCode::comment(I"This function is consolidated");
+	Functions::end(save);
+	Hierarchy::make_available(iname);
 
 @ Code for printing names of kinds at run-time. This needn't run quickly, and
 making it a routine rather than using an array saves a few bytes of precious
 Z-machine array space.
 
 =
-void RTKinds::I7_Kind_Name_routine(void) {
+void RTKinds::compile_metadata(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		TEMPORARY_TEXT(S)
@@ -1795,9 +1586,23 @@ void RTKinds::I7_Kind_Name_routine(void) {
 				KIND_IS_OBJECT_METADATA_HL, 0);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_SKOO_METADATA_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_SKOO_METADATA_HL, 0);
+		}
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
 				KIND_CLASS_METADATA_HL, RTKinds::I6_classname(K));
 		}
+		if (Kinds::Behaviour::definite(K)) {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_DEF_METADATA_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				KIND_IS_DEF_METADATA_HL, 0);
+		}		
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
 				KIND_HAS_BV_METADATA_HL, 1);
@@ -1810,15 +1615,67 @@ void RTKinds::I7_Kind_Name_routine(void) {
 		if (weak_iname == NULL) internal_error("no iname for weak ID");
 		Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
 			KIND_WEAK_ID_METADATA_HL, weak_iname);
-	}
+		if (Kinds::Behaviour::uses_pointer_values(K)) {
+			inter_name *sf_iname = Kinds::Behaviour::get_support_routine_as_iname(K);
+			if (sf_iname)
+				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+					KIND_SUPPORT_FN_METADATA_HL, sf_iname);
+			else internal_error("kind with block values but no support function");
+		}
 
-	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, I7_KIND_NAME_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_as_symbol(I"k");
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);
+		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
+			(Kinds::Behaviour::definite(K)) &&
+			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
+			inter_name *cf_iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
+			if (cf_iname)
+				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+					KIND_CMP_FN_METADATA_HL, cf_iname);
+			else internal_error("kind with no comparison function");
+		}
+		if (Kinds::Behaviour::definite(K)) {
+			inter_name *mkdef_iname = Kinds::Behaviour::get_mkdef_iname(K);
+			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+				KIND_MKDEF_FN_METADATA_HL, mkdef_iname);
+		}
+		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
+			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			if (printing_rule_name)
+				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+					KIND_PRINT_FN_METADATA_HL, printing_rule_name);
+		}
+		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
+			(Kinds::Behaviour::is_an_enumeration(K)))
+				Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+					KIND_DSIZE_METADATA_HL,
+					(inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
+	}
+}
+
+void RTKinds::compile_mkdef_functions(void) {
+	kind *K;
+	LOOP_OVER_BASE_KINDS(K) {
+		if (Kinds::Behaviour::definite(K)) {
+			inter_name *mkdef_iname = Kinds::Behaviour::get_mkdef_iname(K);
+			packaging_state save = Functions::begin(mkdef_iname);
+			inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				if (Kinds::Behaviour::uses_pointer_values(K)) {
+					inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
+					EmitCode::call(iname);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, sk_s);
+					EmitCode::up();
+				} else {
+					if (Kinds::Behaviour::is_subkind_of_object(K))
+						EmitCode::val_false();
+					else
+						RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
+				}
+			EmitCode::up();
+			Functions::end(save);
+		}
+	}
 }
 
 @ =

@@ -307,7 +307,7 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::Constructors::emit_constants</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRelations::compile_defined_relation_constants</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_data_type_support_routines</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::I7_Kind_Name_routine</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_metadata</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_10" class="paragraph-anchor"></a><b>&#167;2.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate inter, part 2</span><span class="named-paragraph-number">2.10</span></span><span class="comment-syntax"> =</span>
@@ -321,6 +321,7 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTTables::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTTables::compile_table_metadata</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTTables::compile_table_column_metadata</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_mkdef_functions</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTEquations::compile_identifiers</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ImperativeDefinitions::compile_first_block</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::rulebook_var_creators</span><span class="plain-syntax">)</span>

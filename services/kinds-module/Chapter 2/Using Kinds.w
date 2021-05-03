@@ -515,11 +515,18 @@ inter_name *Kinds::Behaviour::get_dec_iname(kind *K) {
 	return K->construct->dec_iname;
 }
 inter_name *Kinds::Behaviour::get_ranger_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no inc routine");
+	if (K == NULL) internal_error("null kind has no ranger fn");
 	if (K->construct->ranger_iname) return K->construct->ranger_iname;
 	package_request *R = Kinds::Behaviour::package(K);
 	K->construct->ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
 	return K->construct->ranger_iname;
+}
+inter_name *Kinds::Behaviour::get_mkdef_iname(kind *K) {
+	if (K == NULL) internal_error("null kind has no mkdef fn");
+	if (K->construct->mkdef_iname) return K->construct->mkdef_iname;
+	package_request *R = Kinds::Behaviour::package(K);
+	K->construct->mkdef_iname = Hierarchy::make_iname_in(MKDEF_FN_HL, R);
+	return K->construct->mkdef_iname;
 }
 inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;

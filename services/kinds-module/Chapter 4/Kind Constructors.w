@@ -89,6 +89,7 @@ typedef struct kind_constructor {
 	struct inter_name *pr_iname;
 	struct inter_name *inc_iname;
 	struct inter_name *dec_iname;
+	struct inter_name *mkdef_iname;
 	struct inter_name *ranger_iname;
 	struct inter_name *trace_iname;
 	#endif
@@ -292,6 +293,7 @@ we apply any defaults set in Neptune files.
 	con->pr_iname = NULL;
 	con->inc_iname = NULL;
 	con->dec_iname = NULL;
+	con->mkdef_iname = NULL;
 	con->ranger_iname = NULL;
 	con->trace_iname = NULL;
 	if (Str::len(source_name) == 0) {
