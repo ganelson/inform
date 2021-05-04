@@ -181,19 +181,16 @@ void Hierarchy::establish(void) {
 	@<Establish chronology@>;
 	@<Establish conjugations@>;
 	@<Establish equations@>;
-	@<Establish extensions@>;
 	@<Establish external files@>;
 	@<Establish grammar@>;
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
 	@<Establish kinds@>;
-	@<Establish multimedia@>;
 	@<Establish phrases@>;
 	@<Establish properties@>;
 	@<Establish relations@>;
 	@<Establish rulebooks@>;
 	@<Establish rules@>;
-	@<Establish scenes@>;
 	@<Establish tables@>;
 	@<Establish use options@>;
 	@<Establish variables@>;
@@ -202,7 +199,6 @@ void Hierarchy::establish(void) {
 
 @<Establish locations for material expected to be added by linking@> =
 	@<Establish veneer resources@>;
-	@<Establish kit-defined resources@>;
 
 @h Basics.
 
@@ -312,13 +308,6 @@ void Hierarchy::establish(void) {
 @e ACTION_SHV_ID_HL
 @e ACTION_STV_CREATOR_FN_HL
 
-//@e ACTIONCODING_HL
-//@e ACTIONDATA_HL
-//@e ACTIONHAPPENED_HL
-//@e AD_RECORDS_HL
-//@e CCOUNT_ACTION_NAME_HL
-//@e DB_ACTION_DETAILS_HL
-
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
 
@@ -352,15 +341,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, actions))
-//		H_C_T(ACTIONCODING_HL,                I"ActionCoding")
-//		H_C_T(ACTIONDATA_HL,                  I"ActionData")
-//		H_C_T(ACTIONHAPPENED_HL,              I"ActionHappened")
-//		H_C_T(AD_RECORDS_HL,                  I"AD_RECORDS")
-//		H_C_T(CCOUNT_ACTION_NAME_HL,          I"CCOUNT_ACTION_NAME")
-//		H_F_T(DB_ACTION_DETAILS_HL,           I"DB_Action_Details_fn", I"DB_Action_Details")
-//	H_END
-
 @h Activities.
 
 @e ACTIVITIES_HAP
@@ -377,12 +357,6 @@ void Hierarchy::establish(void) {
 @e AFTER_RB_HL
 @e ACTIVITY_SHV_ID_HL
 @e ACTIVITY_STV_CREATOR_FN_HL
-
-//@e ACTIVITY_AFTER_RULEBOOKS_HL
-//@e ACTIVITY_ATB_RULEBOOKS_HL
-//@e ACTIVITY_BEFORE_RULEBOOKS_HL
-//@e ACTIVITY_FOR_RULEBOOKS_HL
-//@e ACTIVITY_VAR_CREATORS_HL
 
 @<Establish activities@> =
 	submodule_identity *activities = Packaging::register_submodule(I"activities");
@@ -404,14 +378,6 @@ void Hierarchy::establish(void) {
 			H_F_U(ACTIVITY_STV_CREATOR_FN_HL, I"stv_creator_fn")
 		H_END
 	H_END
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, activities))
-//		H_C_T(ACTIVITY_AFTER_RULEBOOKS_HL,    I"Activity_after_rulebooks")
-//		H_C_T(ACTIVITY_ATB_RULEBOOKS_HL,      I"Activity_atb_rulebooks")
-//		H_C_T(ACTIVITY_BEFORE_RULEBOOKS_HL,   I"Activity_before_rulebooks")
-//		H_C_T(ACTIVITY_FOR_RULEBOOKS_HL,      I"Activity_for_rulebooks")
-//		H_C_T(ACTIVITY_VAR_CREATORS_HL,       I"activity_var_creators")
-//	H_END
 
 @h Adjectives.
 
@@ -474,13 +440,6 @@ void Hierarchy::establish(void) {
 @e PAP_VALUE_METADATA_HL
 @e PAP_FN_HL
 
-//@e TIMEDEVENTSTABLE_HL
-//@e TIMEDEVENTTIMESTABLE_HL
-//@e PASTACTIONSI6ROUTINES_HL
-//@e NO_PAST_TENSE_CONDS_HL
-//@e NO_PAST_TENSE_ACTIONS_HL
-//@e TESTSINGLEPASTSTATE_HL
-
 @<Establish chronology@> =
 	submodule_identity *chronology = Packaging::register_submodule(I"chronology");
 
@@ -496,14 +455,6 @@ void Hierarchy::establish(void) {
 			H_F_G(PAP_FN_HL,                  I"pap_fn", I"PAPR")
 		H_END
 	H_END
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, chronology))
-//		H_C_T(TIMEDEVENTSTABLE_HL,            I"TimedEventsTable")
-//		H_C_T(TIMEDEVENTTIMESTABLE_HL,        I"TimedEventTimesTable")
-//		H_C_T(PASTACTIONSI6ROUTINES_HL,       I"PastActionsI6Routines")
-//		H_C_T(NO_PAST_TENSE_CONDS_HL,         I"NO_PAST_TENSE_CONDS")
-//		H_C_T(NO_PAST_TENSE_ACTIONS_HL,       I"NO_PAST_TENSE_ACTIONS")
-//		H_F_T(TESTSINGLEPASTSTATE_HL,         I"test_fn", I"TestSinglePastState")
-//	H_END
 
 @h Conjugations.
 
@@ -523,8 +474,6 @@ void Hierarchy::establish(void) {
 @e FORM_SORTING_METADATA_HL
 @e FORM_FN_HL
 @e CONJUGATION_FN_HL
-
-//@e TABLEOFVERBS_HL
 
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
@@ -552,10 +501,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, conjugations))
-//		H_C_T(TABLEOFVERBS_HL,                I"TableOfVerbs")
-//	H_END
-
 @h Equations.
 
 @e EQUATIONS_HAP
@@ -569,21 +514,6 @@ void Hierarchy::establish(void) {
 			H_F_U(SOLVE_FN_HL,                I"solve_fn")
 		H_END
 	H_END
-
-@h Extensions.
-
-//@e SHOWEXTENSIONVERSIONS_HL
-//@e SHOWFULLEXTENSIONVERSIONS_HL
-//@e SHOWONEEXTENSION_HL
-
-@<Establish extensions@> =
-//	submodule_identity *extensions = Packaging::register_submodule(I"extensions");
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, extensions))
-//		H_F_T(SHOWEXTENSIONVERSIONS_HL,       I"showextensionversions_fn", I"ShowExtensionVersions")
-//		H_F_T(SHOWFULLEXTENSIONVERSIONS_HL,   I"showfullextensionversions_fn", I"ShowFullExtensionVersions")
-//		H_F_T(SHOWONEEXTENSION_HL,            I"showoneextension_fn", I"ShowOneExtension")
-//	H_END
 
 @h External files.
 
@@ -746,8 +676,6 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 
-//@e SHOWMEINSTANCEDETAILS_HL
-
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
 
@@ -779,10 +707,6 @@ void Hierarchy::establish(void) {
 			H_END
 		H_END
 	H_END
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, instances))
-//		H_F_T(SHOWMEINSTANCEDETAILS_HL,       I"showmeinstancedetails_fn", I"ShowMeInstanceDetails")
-//	H_END
 
 @h Interactive Fiction.
 
@@ -886,17 +810,6 @@ void Hierarchy::establish(void) {
 @e DK_KIND_HL
 @e DK_DEFAULT_VALUE_HL
 
-//@e DEFAULTVALUEOFKOV_HL
-//@e DEFAULTVALUEFINDER_HL
-//@e PRINTKINDVALUEPAIR_HL
-//@e KOVCOMPARISONFUNCTION_HL
-//@e KOVDOMAINSIZE_HL
-//@e KOVISBLOCKVALUE_HL
-//@e I7_KIND_NAME_HL
-//@e KOVSUPPORTFUNCTION_HL
-//@e SHOWMEKINDDETAILS_HL
-//@e BASE_KIND_HWM_HL
-
 @<Establish kinds@> =
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
 
@@ -966,36 +879,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, kinds))
-//		H_C_T(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
-//		H_F_T(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
-//		H_F_T(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
-//		H_F_T(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
-//		H_F_T(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
-//		H_F_T(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")
-//		H_F_T(KOVISBLOCKVALUE_HL,             I"blockvalue_fn", I"KOVIsBlockValue")
-//		H_F_T(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
-//		H_F_T(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
-//		H_F_T(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
-//	H_END
-
-@h Multimedia.
-
-//@e RESOURCEIDSOFFIGURES_HL
-//@e RESOURCEIDSOFSOUNDS_HL
-//@e NO_EXTERNAL_FILES_HL
-//@e TABLEOFEXTERNALFILES_HL
-
-@<Establish multimedia@> =
-//	submodule_identity *multimedia = Packaging::register_submodule(I"multimedia");
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, multimedia))
-//		H_C_T(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
-//		H_C_T(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
-//		H_C_T(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
-//		H_C_T(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
-//	H_END
-
 @h Phrases.
 
 @e CLOSURES_HAP
@@ -1034,8 +917,6 @@ void Hierarchy::establish(void) {
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
 
-//@e CCOUNT_PROPERTY_HL
-
 @<Establish properties@> =
 	submodule_identity *properties = Packaging::register_submodule(I"properties");
 
@@ -1047,10 +928,6 @@ void Hierarchy::establish(void) {
 			H_F_G(EITHER_OR_GPR_FN_HL,        I"either_or_GPR_fn", I"PRN_PN")
 		H_END
 	H_END
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, properties))
-//		H_C_T(CCOUNT_PROPERTY_HL,             I"CCOUNT_PROPERTY")
-//	H_END
 
 @h Relations.
 
@@ -1089,11 +966,6 @@ void Hierarchy::establish(void) {
 @e GUARD_MAKE_FALSE_INAME_HL
 @e RELATION_FN_HL
 @e RELATION_CREATOR_FN_HL
-
-//@e CREATEDYNAMICRELATIONS_HL
-//@e CCOUNT_BINARY_PREDICATE_HL
-//@e ITERATERELATIONS_HL
-//@e RPROPERTY_HL
 
 @<Establish relations@> =
 	submodule_identity *relations = Packaging::register_submodule(I"relations");
@@ -1139,13 +1011,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, relations))
-//		H_F_T(CREATEDYNAMICRELATIONS_HL,      I"creator_fn", I"CreateDynamicRelations")
-//		H_C_T(CCOUNT_BINARY_PREDICATE_HL,     I"CCOUNT_BINARY_PREDICATE")
-//		H_F_T(ITERATERELATIONS_HL,            I"iterator_fn", I"IterateRelations")
-//		H_F_T(RPROPERTY_HL,                   I"property_fn", I"RProperty")
-//	H_END
-
 @h Rulebooks.
 
 @e RBNO4_INAME_HL
@@ -1165,12 +1030,6 @@ void Hierarchy::establish(void) {
 @e RULEBOOK_ID_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
-
-//@e NUMBER_RULEBOOKS_CREATED_HL
-//@e RULEBOOK_VAR_CREATORS_HL
-//@e SLOW_LOOKUP_HL
-//@e RULEBOOKS_ARRAY_HL
-//@e RULEBOOKNAMES_HL
 
 @<Establish rulebooks@> =
 	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
@@ -1196,14 +1055,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rulebooks))
-//		H_C_T(NUMBER_RULEBOOKS_CREATED_HL,    I"NUMBER_RULEBOOKS_CREATED")
-//		H_C_T(RULEBOOK_VAR_CREATORS_HL,       I"rulebook_var_creators")
-//		H_F_T(SLOW_LOOKUP_HL,                 I"slow_lookup_fn", I"MStack_GetRBVarCreator")
-//		H_C_T(RULEBOOKS_ARRAY_HL,             I"rulebooks_array")
-//		H_C_T(RULEBOOKNAMES_HL,               I"RulebookNames")
-//	H_END
-
 @h Rules.
 
 @e RULES_HAP
@@ -1224,13 +1075,6 @@ void Hierarchy::establish(void) {
 @e RULE_METADATA_HL
 @e MARKER_METADATA_HL
 @e GROUP_HL
-
-//@e RULEPRINTINGRULE_HL
-
-//@e RESPONSETEXTS_HL
-//@e NO_RESPONSES_HL
-//@e RESPONSEDIVISIONS_HL
-//@e PRINT_RESPONSE_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
@@ -1258,30 +1102,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, rules))
-//		H_F_T(RULEPRINTINGRULE_HL,            I"print_fn", I"RulePrintingRule")
-//	H_END
-
-//	submodule_identity *responses = Packaging::register_submodule(I"responses");
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, responses))
-//		H_C_T(RESPONSEDIVISIONS_HL,           I"ResponseDivisions")
-//		H_C_T(RESPONSETEXTS_HL,               I"ResponseTexts")
-//		H_C_T(NO_RESPONSES_HL,                I"NO_RESPONSES")
-//		H_F_T(PRINT_RESPONSE_HL,              I"print_fn", I"PrintResponse")
-//	H_END
-
-@h Scenes.
-
-//@e SHOWSCENESTATUS_HL
-//@e DETECTSCENECHANGE_HL
-
-@<Establish scenes@> =
-//	submodule_identity *scenes = Packaging::register_submodule(I"scenes");
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, scenes))
-//		H_F_T(SHOWSCENESTATUS_HL,             I"show_scene_status_fn", I"ShowSceneStatus")
-//		H_F_T(DETECTSCENECHANGE_HL,           I"detect_scene_change_fn", I"DetectSceneChange")
-//	H_END
-
 @h Tables.
 
 @e TABLES_HAP
@@ -1300,12 +1120,6 @@ void Hierarchy::establish(void) {
 @e TABLE_COLUMNS_HAP
 @e TABLE_COLUMN_ID_HL
 @e TABLE_COLUMN_KIND_METADATA_HL
-
-//@e PRINT_TABLE_HL
-//@e TABLEOFTABLES_HL
-//@e TB_BLANKS_HL
-
-//@e TC_KOV_HL
 
 @<Establish tables@> =
 	submodule_identity *tables = Packaging::register_submodule(I"tables");
@@ -1327,12 +1141,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, tables))
-//		H_F_T(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
-//		H_C_T(TABLEOFTABLES_HL,               I"TableOfTables")
-//		H_C_T(TB_BLANKS_HL,                   I"TB_Blanks")
-//	H_END
-
 	submodule_identity *table_columns = Packaging::register_submodule(I"table_columns");
 	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
 		H_BEGIN_AP(TABLE_COLUMNS_HAP,         I"table_column", I"_table_column")
@@ -1341,10 +1149,6 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, table_columns))
-//		H_F_T(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
-//	H_END
-
 @h Use options.
 
 @e USE_OPTIONS_HAP
@@ -1352,10 +1156,6 @@ void Hierarchy::establish(void) {
 @e USE_OPTION_PNAME_METADATA_HL
 @e USE_OPTION_ON_METADATA_HL
 @e USE_OPTION_ID_HL
-
-//@e NO_USE_OPTIONS_HL
-//@e TESTUSEOPTION_HL
-//@e PRINT_USE_OPTION_HL
 
 @<Establish use options@> =
 	submodule_identity *use_options = Packaging::register_submodule(I"use_options");
@@ -1368,12 +1168,6 @@ void Hierarchy::establish(void) {
 			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
 		H_END
 	H_END
-
-//	H_BEGIN(HierarchyLocations::synoptic_submodule(I, use_options))
-//		H_C_T(NO_USE_OPTIONS_HL,              I"NO_USE_OPTIONS")
-//		H_F_T(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
-//		H_F_T(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
-//	H_END
 
 @h Variables.
 
@@ -1505,499 +1299,14 @@ void Hierarchy::establish(void) {
 @h Veneer-defined symbols.
 The "veneer" in the Inform 6 compiler consists of a few constants and functions
 automatically created by the compiler itself, and which therefore have no source
-code producing them. For example, |WORDSIZE| is a constant which gives the size
-of a word of data in bytes -- for Inform 6, this is always either 2 or 4.
-
-The Inform compiler only needs to refer to a few of these symbols directly,
-and here they are. For their meanings, see the Inform 6 Technical Manual.
+code producing them. See the Inform 6 Technical Manual. Of these, the most
+important is the pseudo-variable |self|.
 
 @e SELF_HL
 
 @<Establish veneer resources@> =
 	H_BEGIN(HierarchyLocations::the_veneer(I))
 		H_C_T(SELF_HL,                        I"self")
-	H_END
-
-@h Kit-defined symbols.
-The Inform 7 compiler creates none of the constants below. (Note that some are
-the addresses of functions, but they are constants for our purposes here.)
-Instead, they are defined using Inform 6 notation in one of the kits. We don't
-need to know which kit; we simply leaves them as "plugs" to be connected to
-"sockets" in the linking stage -- see //bytecode: Connectors//.
-
-@e THESAME_HL
-@e PLURALFOUND_HL
-@e THEDARK_HL
-@e ACT_REQUESTER_HL
-@e ACTION_HL
-@e ACTIONCURRENTLYHAPPENINGFLAG_HL
-@e ACTOR_HL
-@e ACTOR_LOCATION_HL
-@e ADJUSTPARAGRAPHPOINT_HL
-@e ALLOWINSHOWME_HL
-@e ANIMATE_HL
-@e ARGUMENTTYPEFAILED_HL
-@e ARTICLEDESCRIPTORS_HL
-@e AUXF_MAGIC_VALUE_HL
-@e AUXF_STATUS_IS_CLOSED_HL
-@e BLKVALUECOPY_HL
-@e BLKVALUECOPYAZ_HL
-@e BLKVALUECREATE_HL
-@e BLKVALUECREATEONSTACK_HL
-@e BLKVALUEERROR_HL
-@e BLKVALUEFREE_HL
-@e BLKVALUEFREEONSTACK_HL
-@e BLKVALUEWRITE_HL
-@e C_STYLE_HL
-@e CHECKKINDRETURNED_HL
-@e CLEARPARAGRAPHING_HL
-@e COMPONENT_CHILD_HL
-@e COMPONENT_PARENT_HL
-@e COMPONENT_SIBLING_HL
-@e CONSTANT_PACKED_TEXT_STORAGE_HL
-@e CONSTANT_PERISHABLE_TEXT_STORAGE_HL
-@e CONSULT_FROM_HL
-@e CONSULT_WORDS_HL
-@e CONTAINER_HL
-@e CUBEROOT_HL
-@e DA_NAME_HL
-@e DB_RULE_HL
-@e DEADFLAG_HL
-@e DEBUG_RULES_HL
-@e DEBUG_SCENES_HL
-@e DECIMALNUMBER_HL
-@e DETECTPLURALWORD_HL
-@e DIGITTOVALUE_HL
-@e DIVIDEPARAGRAPHPOINT_HL
-@e DOUBLEHASHSETRELATIONHANDLER_HL
-@e DURINGSCENEMATCHING_HL
-@e ELEMENTARY_TT_HL
-@e EMPTY_RULEBOOK_INAME_HL
-@e EMPTY_TABLE_HL
-@e EMPTY_TEXT_PACKED_HL
-@e EMPTY_TEXT_VALUE_HL
-@e EMPTYRELATIONHANDLER_HL
-@e ENGLISH_BIT_HL
-@e ETYPE_HL
-@e EXISTSTABLELOOKUPCORR_HL
-@e EXISTSTABLELOOKUPENTRY_HL
-@e EXISTSTABLEROWCORR_HL
-@e FLOATPARSE_HL
-@e FOLLOWRULEBOOK_HL
-@e formal_par0_HL
-@e formal_par1_HL
-@e formal_par2_HL
-@e formal_par3_HL
-@e formal_par4_HL
-@e formal_par5_HL
-@e formal_par6_HL
-@e formal_par7_HL
-@e FORMAL_RV_HL
-@e FOUND_EVERYWHERE_HL
-@e GENERATERANDOMNUMBER_HL
-@e GENERICVERBSUB_HL
-@e GETGNAOFOBJECT_HL
-@e GPR_FAIL_HL
-@e GPR_NUMBER_HL
-@e GPR_PREPOSITION_HL
-@e GPR_TT_HL
-@e GPROPERTY_HL
-@e HASHLISTRELATIONHANDLER_HL
-@e I7SFRAME_HL
-@e INDENT_BIT_HL
-@e INP1_HL
-@e INP2_HL
-@e INTEGERDIVIDE_HL
-@e INTEGERREMAINDER_HL
-@e INVENTORY_STAGE_HL
-@e KEEP_SILENT_HL
-@e KINDATOMIC_HL
-@e LATEST_RULE_RESULT_HL
-@e LIST_ITEM_BASE_HL
-@e LIST_ITEM_KOV_F_HL
-@e LIST_OF_TY_DESC_HL
-@e LIST_OF_TY_GETITEM_HL
-@e LIST_OF_TY_GETLENGTH_HL
-@e LIST_OF_TY_INSERTITEM_HL
-@e LIST_OF_TY_SAY_HL
-@e LIST_OF_TY_SETLENGTH_HL
-@e LOCATION_HL
-@e LOCATIONOF_HL
-@e LOOPOVERSCOPE_HL
-@e LOS_RV_HL
-@e MSTACK_HL
-@e MSTVO_HL
-@e MSTVON_HL
-@e NAME_HL
-@e NEWLINE_BIT_HL
-@e NEXTBEST_ETYPE_HL
-@e NEXTWORDSTOPPED_HL
-@e NOARTICLE_BIT_HL
-@e NOTINCONTEXTPE_HL
-@e NOUN_HL
-@e NUMBER_TY_ABS_HL
-@e NUMBER_TY_TO_REAL_NUMBER_TY_HL
-@e NUMBER_TY_TO_TIME_TY_HL
-@e OTOVRELROUTETO_HL
-@e PACKED_TEXT_STORAGE_HL
-@e PARACONTENT_HL
-@e PARAMETER_VALUE_HL
-@e PARSED_NUMBER_HL
-@e PARSER_ACTION_HL
-@e PARSER_ONE_HL
-@e PARSER_TRACE_HL
-@e PARSER_TWO_HL
-@e PARSERERROR_HL
-@e PARSETOKENSTOPPED_HL
-@e PAST_CHRONOLOGICAL_RECORD_HL
-@e PLACEINSCOPE_HL
-@e PLAYER_HL
-@e PNTOVP_HL
-@e PRESENT_CHRONOLOGICAL_RECORD_HL
-@e PRINTORRUN_HL
-@e PRIOR_NAMED_LIST_HL
-@e PRIOR_NAMED_LIST_GENDER_HL
-@e PRIOR_NAMED_NOUN_HL
-@e PROPERTY_LOOP_SIGN_HL
-@e PROPERTY_TO_BE_TOTALLED_HL
-@e REAL_LOCATION_HL
-@e REAL_NUMBER_TY_ABS_HL
-@e REAL_NUMBER_TY_APPROXIMATE_HL
-@e REAL_NUMBER_TY_COMPARE_HL
-@e REAL_NUMBER_TY_CUBE_ROOT_HL
-@e REAL_NUMBER_TY_DIVIDE_HL
-@e REAL_NUMBER_TY_MINUS_HL
-@e REAL_NUMBER_TY_NAN_HL
-@e REAL_NUMBER_TY_NEGATE_HL
-@e REAL_NUMBER_TY_PLUS_HL
-@e REAL_NUMBER_TY_POW_HL
-@e REAL_NUMBER_TY_REMAINDER_HL
-@e REAL_NUMBER_TY_ROOT_HL
-@e REAL_NUMBER_TY_SAY_HL
-@e REAL_NUMBER_TY_TIMES_HL
-@e REAL_NUMBER_TY_TO_NUMBER_TY_HL
-@e REASON_THE_ACTION_FAILED_HL
-@e RELATION_EMPTYEQUIV_HL
-@e RELATION_EMPTYOTOO_HL
-@e RELATION_EMPTYVTOV_HL
-@e RELATION_RSHOWOTOO_HL
-@e RELATION_SHOWEQUIV_HL
-@e RELATION_SHOWOTOO_HL
-@e RELATION_SHOWVTOV_HL
-@e RELATION_TY_EQUIVALENCEADJECTIVE_HL
-@e RELATION_TY_NAME_HL
-@e RELATION_TY_OTOOADJECTIVE_HL
-@e RELATION_TY_OTOVADJECTIVE_HL
-@e RELATION_TY_SYMMETRICADJECTIVE_HL
-@e RELATION_TY_VTOOADJECTIVE_HL
-@e RELATIONTEST_HL
-@e RELFOLLOWVECTOR_HL
-@e RELS_EMPTY_HL
-@e RESPONSEVIAACTIVITY_HL
-@e RLANY_CAN_GET_X_HL
-@e RLANY_CAN_GET_Y_HL
-@e RLANY_GET_X_HL
-@e RLIST_ALL_X_HL
-@e RLIST_ALL_Y_HL
-@e RLNGETF_HL
-@e ROUNDOFFVALUE_HL
-@e ROUTINEFILTER_TT_HL
-@e RR_STORAGE_HL
-@e RTP_RELKINDVIOLATION_HL
-@e RTP_RELMINIMAL_HL
-@e RULEBOOKFAILS_HL
-@e RULEBOOKPARBREAK_HL
-@e RULEBOOKSUCCEEDS_HL
-@e RUNTIMEPROBLEM_HL
-@e SAY__N_HL
-@e SAY__P_HL
-@e SAY__PC_HL
-@e SCENE_ENDED_HL
-@e SCENE_ENDINGS_HL
-@e SCENE_LATEST_ENDING_HL
-@e SCENE_STARTED_HL
-@e SCENE_STATUS_HL
-@e SCOPE_STAGE_HL
-@e SCOPE_TT_HL
-@e SECOND_HL
-@e SHORT_NAME_HL
-@e SIGNEDCOMPARE_HL
-@e SPECIAL_WORD_HL
-@e SQUAREROOT_HL
-@e STACKFRAMECREATE_HL
-@e STORED_ACTION_TY_CURRENT_HL
-@e STORED_ACTION_TY_TRY_HL
-@e STORY_TENSE_HL
-@e SUPPORTER_HL
-@e SUPPRESS_SCOPE_LOOPS_HL
-@e SUPPRESS_TEXT_SUBSTITUTION_HL
-@e TABLE_NOVALUE_HL
-@e TABLELOOKUPCORR_HL
-@e TABLELOOKUPENTRY_HL
-@e TESTACTIONBITMAP_HL
-@e TESTACTIVITY_HL
-@e TESTREGIONALCONTAINMENT_HL
-@e TESTSCOPE_HL
-@e TESTSTART_HL
-@e TEXT_TY_COMPARE_HL
-@e TEXT_TY_EXPANDIFPERISHABLE_HL
-@e TEXT_TY_SAY_HL
-@e THE_TIME_HL
-@e THEEMPTYTABLE_HL
-@e THEN1__WD_HL
-@e TIMESACTIONHASBEENHAPPENING_HL
-@e TIMESACTIONHASHAPPENED_HL
-@e TRYACTION_HL
-@e TRYGIVENOBJECT_HL
-@e TURNSACTIONHASBEENHAPPENING_HL
-@e UNDERSTAND_AS_MISTAKE_NUMBER_HL
-@e UNICODE_TEMP_HL
-@e VTOORELROUTETO_HL
-@e VTOVRELROUTETO_HL
-@e WHEN_SCENE_BEGINS_HL
-@e WHEN_SCENE_ENDS_HL
-@e WN_HL
-@e WORDADDRESS_HL
-@e WORDINPROPERTY_HL
-@e WORDLENGTH_HL
-
-@<Establish kit-defined resources@> =
-	H_BEGIN(HierarchyLocations::plug())
-		H_C_T(THESAME_HL,                          I"##TheSame")
-		H_C_T(PLURALFOUND_HL,                      I"##PluralFound")
-		H_C_T(THEDARK_HL,                          I"thedark")
-		H_C_T(ACT_REQUESTER_HL,                    I"act_requester")
-		H_C_T(ACTION_HL,                           I"action")
-		H_C_T(ACTIONCURRENTLYHAPPENINGFLAG_HL,     I"ActionCurrentlyHappeningFlag")
-		H_C_T(ACTOR_HL,                            I"actor")
-		H_C_T(ACTOR_LOCATION_HL,                   I"actor_location")
-		H_C_T(ADJUSTPARAGRAPHPOINT_HL,             I"AdjustParagraphPoint")
-		H_C_T(ALLOWINSHOWME_HL,                    I"AllowInShowme")
-		H_C_T(ANIMATE_HL,                          I"animate")
-		H_C_T(ARGUMENTTYPEFAILED_HL,               I"ArgumentTypeFailed")
-		H_C_T(ARTICLEDESCRIPTORS_HL,               I"ArticleDescriptors")
-		H_C_T(AUXF_MAGIC_VALUE_HL,                 I"AUXF_MAGIC_VALUE")
-		H_C_T(AUXF_STATUS_IS_CLOSED_HL,            I"AUXF_STATUS_IS_CLOSED")
-		H_C_T(BLKVALUECOPY_HL,                     I"BlkValueCopy")
-		H_C_T(BLKVALUECOPYAZ_HL,                   I"BlkValueCopyAZ")
-		H_C_T(BLKVALUECREATE_HL,                   I"BlkValueCreate")
-		H_C_T(BLKVALUECREATEONSTACK_HL,            I"BlkValueCreateOnStack")
-		H_C_T(BLKVALUEERROR_HL,                    I"BlkValueError")
-		H_C_T(BLKVALUEFREE_HL,                     I"BlkValueFree")
-		H_C_T(BLKVALUEFREEONSTACK_HL,              I"BlkValueFreeOnStack")
-		H_C_T(BLKVALUEWRITE_HL,                    I"BlkValueWrite")
-		H_C_T(C_STYLE_HL,                          I"c_style")
-		H_C_T(CHECKKINDRETURNED_HL,                I"CheckKindReturned")
-		H_C_T(CLEARPARAGRAPHING_HL,                I"ClearParagraphing")
-		H_C_T(COMPONENT_CHILD_HL,                  I"component_child")
-		H_C_T(COMPONENT_PARENT_HL,                 I"component_parent")
-		H_C_T(COMPONENT_SIBLING_HL,                I"component_sibling")
-		H_C_T(CONSTANT_PACKED_TEXT_STORAGE_HL,     I"CONSTANT_PACKED_TEXT_STORAGE")
-		H_C_T(CONSTANT_PERISHABLE_TEXT_STORAGE_HL, I"CONSTANT_PERISHABLE_TEXT_STORAGE")
-		H_C_T(CONSULT_FROM_HL,                     I"consult_from")
-		H_C_T(CONSULT_WORDS_HL,                    I"consult_words")
-		H_C_T(CONTAINER_HL,                        I"container")
-		H_C_T(CUBEROOT_HL,                         I"CubeRoot")
-		H_C_T(DA_NAME_HL,                          I"DA_Name")
-		H_C_T(DB_RULE_HL,                          I"DB_Rule")
-		H_C_T(DEADFLAG_HL,                         I"deadflag")
-		H_C_T(DEBUG_RULES_HL,                      I"debug_rules")
-		H_C_T(DEBUG_SCENES_HL,                     I"debug_scenes")
-		H_C_T(DECIMALNUMBER_HL,                    I"DecimalNumber")
-		H_C_T(DETECTPLURALWORD_HL,                 I"DetectPluralWord")
-		H_C_T(DIGITTOVALUE_HL,                     I"DigitToValue")
-		H_C_T(DIVIDEPARAGRAPHPOINT_HL,             I"DivideParagraphPoint")
-		H_C_T(DOUBLEHASHSETRELATIONHANDLER_HL,     I"DoubleHashSetRelationHandler")
-		H_C_T(DURINGSCENEMATCHING_HL,              I"DuringSceneMatching")
-		H_C_T(ELEMENTARY_TT_HL,                    I"ELEMENTARY_TT")
-		H_C_T(EMPTY_RULEBOOK_INAME_HL,             I"EMPTY_RULEBOOK")
-		H_C_T(EMPTY_TABLE_HL,                      I"TheEmptyTable")
-		H_C_T(EMPTY_TEXT_PACKED_HL,                I"EMPTY_TEXT_PACKED")
-		H_C_T(EMPTY_TEXT_VALUE_HL,                 I"EMPTY_TEXT_VALUE")
-		H_C_T(EMPTYRELATIONHANDLER_HL,             I"EmptyRelationHandler")
-		H_C_T(ENGLISH_BIT_HL,                      I"ENGLISH_BIT")
-		H_C_T(ETYPE_HL,                            I"etype")
-		H_C_T(EXISTSTABLELOOKUPCORR_HL,            I"ExistsTableLookUpCorr")
-		H_C_T(EXISTSTABLELOOKUPENTRY_HL,           I"ExistsTableLookUpEntry")
-		H_C_T(EXISTSTABLEROWCORR_HL,               I"ExistsTableRowCorr")
-		H_C_T(FLOATPARSE_HL,                       I"FloatParse")
-		H_C_T(FOLLOWRULEBOOK_HL,                   I"FollowRulebook")
-		H_C_T(formal_par0_HL,                      I"formal_par0")
-		H_C_T(formal_par1_HL,                      I"formal_par1")
-		H_C_T(formal_par2_HL,                      I"formal_par2")
-		H_C_T(formal_par3_HL,                      I"formal_par3")
-		H_C_T(formal_par4_HL,                      I"formal_par4")
-		H_C_T(formal_par5_HL,                      I"formal_par5")
-		H_C_T(formal_par6_HL,                      I"formal_par6")
-		H_C_T(formal_par7_HL,                      I"formal_par7")
-		H_C_T(FORMAL_RV_HL,                        I"formal_rv")
-		H_C_T(FOUND_EVERYWHERE_HL,                 I"FoundEverywhere")
-		H_C_T(GENERATERANDOMNUMBER_HL,             I"GenerateRandomNumber")
-		H_C_T(GENERICVERBSUB_HL,                   I"GenericVerbSub")
-		H_C_T(GETGNAOFOBJECT_HL,                   I"GetGNAOfObject")
-		H_C_T(GPR_FAIL_HL,                         I"GPR_FAIL")
-		H_C_T(GPR_NUMBER_HL,                       I"GPR_NUMBER")
-		H_C_T(GPR_PREPOSITION_HL,                  I"GPR_PREPOSITION")
-		H_C_T(GPR_TT_HL,                           I"GPR_TT")
-		H_C_T(GPROPERTY_HL,                        I"GProperty")
-		H_C_T(HASHLISTRELATIONHANDLER_HL,          I"HashListRelationHandler")
-		H_C_T(I7SFRAME_HL,                         I"I7SFRAME")
-		H_C_T(INDENT_BIT_HL,                       I"INDENT_BIT")
-		H_C_T(INP1_HL,                             I"inp1")
-		H_C_T(INP2_HL,                             I"inp2")
-		H_C_T(INTEGERDIVIDE_HL,                    I"IntegerDivide")
-		H_C_T(INTEGERREMAINDER_HL,                 I"IntegerRemainder")
-		H_C_T(INVENTORY_STAGE_HL,                  I"inventory_stage")
-		H_C_T(KEEP_SILENT_HL,                      I"keep_silent")
-		H_C_T(KINDATOMIC_HL,                       I"KindAtomic")
-		H_C_T(LATEST_RULE_RESULT_HL,               I"latest_rule_result")
-		H_C_T(LIST_ITEM_BASE_HL,                   I"LIST_ITEM_BASE")
-		H_C_T(LIST_ITEM_KOV_F_HL,                  I"LIST_ITEM_KOV_F")
-		H_C_T(LIST_OF_TY_DESC_HL,                  I"LIST_OF_TY_Desc")
-		H_C_T(LIST_OF_TY_GETITEM_HL,               I"LIST_OF_TY_GetItem")
-		H_C_T(LIST_OF_TY_GETLENGTH_HL,             I"LIST_OF_TY_GetLength")
-		H_C_T(LIST_OF_TY_INSERTITEM_HL,            I"LIST_OF_TY_InsertItem")
-		H_C_T(LIST_OF_TY_SAY_HL,                   I"LIST_OF_TY_Say")
-		H_C_T(LIST_OF_TY_SETLENGTH_HL,             I"LIST_OF_TY_SetLength")
-		H_C_T(LOCATION_HL,                         I"location")
-		H_C_T(LOCATIONOF_HL,                       I"LocationOf")
-		H_C_T(LOOPOVERSCOPE_HL,                    I"LoopOverScope")
-		H_C_T(LOS_RV_HL,                           I"los_rv")
-		H_C_T(MSTACK_HL,                           I"MStack")
-		H_C_T(MSTVO_HL,                            I"MstVO")
-		H_C_T(MSTVON_HL,                           I"MstVON")
-		H_C_T(NAME_HL,                             I"name")
-		H_C_T(NEWLINE_BIT_HL,                      I"NEWLINE_BIT")
-		H_C_T(NEXTBEST_ETYPE_HL,                   I"nextbest_etype")
-		H_C_T(NEXTWORDSTOPPED_HL,                  I"NextWordStopped")
-		H_C_T(NOARTICLE_BIT_HL,                    I"NOARTICLE_BIT")
-		H_C_T(NOTINCONTEXTPE_HL,                   I"NOTINCONTEXT_PE")
-		H_C_T(NOUN_HL,                             I"noun")
-		H_C_T(NUMBER_TY_ABS_HL,                    I"NUMBER_TY_Abs")
-		H_C_T(NUMBER_TY_TO_REAL_NUMBER_TY_HL,      I"NUMBER_TY_to_REAL_NUMBER_TY")
-		H_C_T(NUMBER_TY_TO_TIME_TY_HL,             I"NUMBER_TY_to_TIME_TY")
-		H_C_T(OTOVRELROUTETO_HL,                   I"OtoVRelRouteTo")
-		H_C_T(PACKED_TEXT_STORAGE_HL,              I"PACKED_TEXT_STORAGE")
-		H_C_T(PARACONTENT_HL,                      I"ParaContent")
-		H_C_T(PARAMETER_VALUE_HL,                  I"parameter_value")
-		H_C_T(PARSED_NUMBER_HL,                    I"parsed_number")
-		H_C_T(PARSER_ACTION_HL,                    I"parser_action")
-		H_C_T(PARSER_ONE_HL,                       I"parser_one")
-		H_C_T(PARSER_TRACE_HL,                     I"parser_trace")
-		H_C_T(PARSER_TWO_HL,                       I"parser_two")
-		H_C_T(PARSERERROR_HL,                      I"ParserError")
-		H_C_T(PARSETOKENSTOPPED_HL,                I"ParseTokenStopped")
-		H_C_T(PAST_CHRONOLOGICAL_RECORD_HL,        I"past_chronological_record")
-		H_C_T(PLACEINSCOPE_HL,                     I"PlaceInScope")
-		H_C_T(PLAYER_HL,                           I"player")
-		H_C_T(PNTOVP_HL,                           I"PNToVP")
-		H_C_T(PRESENT_CHRONOLOGICAL_RECORD_HL,     I"present_chronological_record")
-		H_C_T(PRINTORRUN_HL,                       I"PrintOrRun")
-		H_C_T(PRIOR_NAMED_LIST_HL,                 I"prior_named_list")
-		H_C_T(PRIOR_NAMED_LIST_GENDER_HL,          I"prior_named_list_gender")
-		H_C_T(PRIOR_NAMED_NOUN_HL,                 I"prior_named_noun")
-		H_C_T(PROPERTY_LOOP_SIGN_HL,               I"property_loop_sign")
-		H_C_T(PROPERTY_TO_BE_TOTALLED_HL,          I"property_to_be_totalled")
-		H_C_T(REAL_LOCATION_HL,                    I"real_location")
-		H_C_T(REAL_NUMBER_TY_ABS_HL,               I"REAL_NUMBER_TY_Abs")
-		H_C_T(REAL_NUMBER_TY_APPROXIMATE_HL,       I"REAL_NUMBER_TY_Approximate")
-		H_C_T(REAL_NUMBER_TY_COMPARE_HL,           I"REAL_NUMBER_TY_Compare")
-		H_C_T(REAL_NUMBER_TY_CUBE_ROOT_HL,         I"REAL_NUMBER_TY_Cube_Root")
-		H_C_T(REAL_NUMBER_TY_DIVIDE_HL,            I"REAL_NUMBER_TY_Divide")
-		H_C_T(REAL_NUMBER_TY_MINUS_HL,             I"REAL_NUMBER_TY_Minus")
-		H_C_T(REAL_NUMBER_TY_NAN_HL,               I"REAL_NUMBER_TY_Nan")
-		H_C_T(REAL_NUMBER_TY_NEGATE_HL,            I"REAL_NUMBER_TY_Negate")
-		H_C_T(REAL_NUMBER_TY_PLUS_HL,              I"REAL_NUMBER_TY_Plus")
-		H_C_T(REAL_NUMBER_TY_POW_HL,               I"REAL_NUMBER_TY_Pow")
-		H_C_T(REAL_NUMBER_TY_REMAINDER_HL,         I"REAL_NUMBER_TY_Remainder")
-		H_C_T(REAL_NUMBER_TY_ROOT_HL,              I"REAL_NUMBER_TY_Root")
-		H_C_T(REAL_NUMBER_TY_SAY_HL,               I"REAL_NUMBER_TY_Say")
-		H_C_T(REAL_NUMBER_TY_TIMES_HL,             I"REAL_NUMBER_TY_Times")
-		H_C_T(REAL_NUMBER_TY_TO_NUMBER_TY_HL,      I"REAL_NUMBER_TY_to_NUMBER_TY")
-		H_C_T(REASON_THE_ACTION_FAILED_HL,         I"reason_the_action_failed")
-		H_C_T(RELATION_EMPTYEQUIV_HL,              I"Relation_EmptyEquiv")
-		H_C_T(RELATION_EMPTYOTOO_HL,               I"Relation_EmptyOtoO")
-		H_C_T(RELATION_EMPTYVTOV_HL,               I"Relation_EmptyVtoV")
-		H_C_T(RELATION_RSHOWOTOO_HL,               I"Relation_RShowOtoO")
-		H_C_T(RELATION_SHOWEQUIV_HL,               I"Relation_ShowEquiv")
-		H_C_T(RELATION_SHOWOTOO_HL,                I"Relation_ShowOtoO")
-		H_C_T(RELATION_SHOWVTOV_HL,                I"Relation_ShowVtoV")
-		H_C_T(RELATION_TY_EQUIVALENCEADJECTIVE_HL, I"RELATION_TY_EquivalenceAdjective")
-		H_C_T(RELATION_TY_NAME_HL,                 I"RELATION_TY_Name")
-		H_C_T(RELATION_TY_OTOOADJECTIVE_HL,        I"RELATION_TY_OToOAdjective")
-		H_C_T(RELATION_TY_OTOVADJECTIVE_HL,        I"RELATION_TY_OToVAdjective")
-		H_C_T(RELATION_TY_SYMMETRICADJECTIVE_HL,   I"RELATION_TY_SymmetricAdjective")
-		H_C_T(RELATION_TY_VTOOADJECTIVE_HL,        I"RELATION_TY_VToOAdjective")
-		H_C_T(RELATIONTEST_HL,                     I"RelationTest")
-		H_C_T(RELFOLLOWVECTOR_HL,                  I"RelFollowVector")
-		H_C_T(RELS_EMPTY_HL,                       I"RELS_EMPTY")
-		H_C_T(RESPONSEVIAACTIVITY_HL,              I"ResponseViaActivity")
-		H_C_T(RLANY_CAN_GET_X_HL,                  I"RLANY_CAN_GET_X")
-		H_C_T(RLANY_CAN_GET_Y_HL,                  I"RLANY_CAN_GET_Y")
-		H_C_T(RLANY_GET_X_HL,                      I"RLANY_GET_X")
-		H_C_T(RLIST_ALL_X_HL,                      I"RLIST_ALL_X")
-		H_C_T(RLIST_ALL_Y_HL,                      I"RLIST_ALL_Y")
-		H_C_T(RLNGETF_HL,                          I"RlnGetF")
-		H_C_T(ROUNDOFFVALUE_HL,                    I"RoundOffValue")
-		H_C_T(ROUTINEFILTER_TT_HL,                 I"ROUTINE_FILTER_TT")
-		H_C_T(RR_STORAGE_HL,                       I"RR_STORAGE")
-		H_C_T(RTP_RELKINDVIOLATION_HL,             I"RTP_RELKINDVIOLATION")
-		H_C_T(RTP_RELMINIMAL_HL,                   I"RTP_RELMINIMAL")
-		H_C_T(RULEBOOKFAILS_HL,                    I"RulebookFails")
-		H_C_T(RULEBOOKPARBREAK_HL,                 I"RulebookParBreak")
-		H_C_T(RULEBOOKSUCCEEDS_HL,                 I"RulebookSucceeds")
-		H_C_T(RUNTIMEPROBLEM_HL,                   I"RunTimeProblem")
-		H_C_T(SAY__N_HL,                           I"say__n")
-		H_C_T(SAY__P_HL,                           I"say__p")
-		H_C_T(SAY__PC_HL,                          I"say__pc")
-		H_C_T(SCENE_ENDED_HL,                      I"scene_ended")
-		H_C_T(SCENE_ENDINGS_HL,                    I"scene_endings")
-		H_C_T(SCENE_LATEST_ENDING_HL,              I"scene_latest_ending")
-		H_C_T(SCENE_STARTED_HL,                    I"scene_started")
-		H_C_T(SCENE_STATUS_HL,                     I"scene_status")
-		H_C_T(SCOPE_STAGE_HL,                      I"scope_stage")
-		H_C_T(SCOPE_TT_HL,                         I"SCOPE_TT")
-		H_C_T(SECOND_HL,                           I"second")
-		H_C_T(SHORT_NAME_HL,                       I"short_name")
-		H_C_T(SIGNEDCOMPARE_HL,                    I"SignedCompare")
-		H_C_T(SPECIAL_WORD_HL,                     I"special_word")
-		H_C_T(SQUAREROOT_HL,                       I"SquareRoot")
-		H_C_T(STACKFRAMECREATE_HL,                 I"StackFrameCreate")
-		H_C_T(STORED_ACTION_TY_CURRENT_HL,         I"STORED_ACTION_TY_Current")
-		H_C_T(STORED_ACTION_TY_TRY_HL,             I"STORED_ACTION_TY_Try")
-		H_C_T(STORY_TENSE_HL,                      I"story_tense")
-		H_C_T(SUPPORTER_HL,                        I"supporter")
-		H_C_T(SUPPRESS_SCOPE_LOOPS_HL,             I"suppress_scope_loops")
-		H_C_T(SUPPRESS_TEXT_SUBSTITUTION_HL,       I"suppress_text_substitution")
-		H_C_T(TABLE_NOVALUE_HL,                    I"TABLE_NOVALUE")
-		H_C_T(TABLELOOKUPCORR_HL,                  I"TableLookUpCorr")
-		H_C_T(TABLELOOKUPENTRY_HL,                 I"TableLookUpEntry")
-		H_C_T(TESTACTIONBITMAP_HL,                 I"TestActionBitmap")
-		H_C_T(TESTACTIVITY_HL,                     I"TestActivity")
-		H_C_T(TESTREGIONALCONTAINMENT_HL,          I"TestRegionalContainment")
-		H_C_T(TESTSCOPE_HL,                        I"TestScope")
-		H_C_T(TESTSTART_HL,                        I"TestStart")
-		H_C_T(TEXT_TY_COMPARE_HL,                  I"TEXT_TY_Compare")
-		H_C_T(TEXT_TY_EXPANDIFPERISHABLE_HL,       I"TEXT_TY_ExpandIfPerishable")
-		H_C_T(TEXT_TY_SAY_HL,                      I"TEXT_TY_Say")
-		H_C_T(THE_TIME_HL,                         I"the_time")
-		H_C_T(THEEMPTYTABLE_HL,                    I"TheEmptyTable")
-		H_C_T(THEN1__WD_HL,                        I"THEN1__WD")
-		H_C_T(TIMESACTIONHASBEENHAPPENING_HL,      I"TimesActionHasBeenHappening")
-		H_C_T(TIMESACTIONHASHAPPENED_HL,           I"TimesActionHasHappened")
-		H_C_T(TRYACTION_HL,                        I"TryAction")
-		H_C_T(TRYGIVENOBJECT_HL,                   I"TryGivenObject")
-		H_C_T(TURNSACTIONHASBEENHAPPENING_HL,      I"TurnsActionHasBeenHappening")
-		H_C_T(UNDERSTAND_AS_MISTAKE_NUMBER_HL,     I"understand_as_mistake_number")
-		H_C_T(UNICODE_TEMP_HL,                     I"unicode_temp")
-		H_C_T(VTOORELROUTETO_HL,                   I"VtoORelRouteTo")
-		H_C_T(VTOVRELROUTETO_HL,                   I"VtoVRelRouteTo")
-		H_C_T(WHEN_SCENE_BEGINS_HL,                I"WHEN_SCENE_BEGINS_RB")
-		H_C_T(WHEN_SCENE_ENDS_HL,                  I"WHEN_SCENE_ENDS_RB")
-		H_C_T(WN_HL,                               I"wn")
-		H_C_T(WORDADDRESS_HL,                      I"WordAddress")
-		H_C_T(WORDINPROPERTY_HL,                   I"WordInProperty")
-		H_C_T(WORDLENGTH_HL,                       I"WordLength")
 	H_END
 
 @ Heaven knows, that all seems like plenty, but there's one final case. Neptune

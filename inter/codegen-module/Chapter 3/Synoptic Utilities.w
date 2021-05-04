@@ -72,7 +72,7 @@ int Synoptic::go(pipeline_step *step) {
 	SynopticExtensions::renumber(step->repository, extension_nodes);
 	SynopticRelations::renumber(step->repository, relation_nodes);
 	SynopticTables::renumber(step->repository, table_nodes);
-	SynopticChronology::renumber(step->repository, past_tense_action_nodes);
+	SynopticChronology::compile(step->repository);
 	SynopticInstances::renumber(step->repository, instance_nodes);
 	SynopticScenes::renumber(step->repository, scene_nodes);
 	SynopticMultimedia::renumber(step->repository);
@@ -163,7 +163,6 @@ void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
 			if (SynopticRelations::redefine(I, P, con_s, synid)) return;
 			if (SynopticTables::redefine(I, P, con_s, synid)) return;
-			if (SynopticChronology::redefine(I, P, con_s, synid)) return;
 			if (SynopticScenes::redefine(I, P, con_s, synid)) return;
 			if (SynopticMultimedia::redefine(I, P, con_s, synid)) return;
 			if (SynopticVerbs::redefine(I, P, con_s, synid)) return;
@@ -274,6 +273,50 @@ void Synoptic::def_textual_constant(inter_tree *I, inter_symbol *con_s, text_str
 @
 
 =
+inter_package *synoptic_fn_package = NULL;
+packaging_state synoptic_fn_ps;
+void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
+	synoptic_fn_package = Produce::block(I, &synoptic_fn_ps, iname);
+}
+void Synoptic::end_function(inter_tree *I, inter_name *iname) {
+	Produce::end_block(I);
+	Synoptic::function(I, iname, synoptic_fn_package);
+	Produce::end_main_block(I, synoptic_fn_ps);
+}
+
+void Synoptic::function(inter_tree *I, inter_name *fn_iname, inter_package *block) {
+	inter_symbol *fn_s = Produce::define_symbol(fn_iname);
+	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), fn_s),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), unchecked_kind_symbol),
+		block,
+		Produce::baseline(Packaging::at(I)), NULL));
+}
+inter_symbol *Synoptic::local(inter_tree *I, text_stream *name,
+	text_stream *comment) {
+	return Produce::local(I, K_value, name, 0, comment);
+}
+
+inter_tree_node *synoptic_array_node = NULL;
+packaging_state synoptic_array_ps;
+void Synoptic::begin_array_i(inter_tree *I, inter_name *iname) {
+	synoptic_array_ps = Packaging::enter_home_of(iname);
+	inter_symbol *con_s = Produce::define_symbol(iname);
+	synoptic_array_node = Inode::fill_3(Packaging::at(I), CONSTANT_IST,
+		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
+		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), list_of_unchecked_kind_symbol),
+		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(Packaging::at(I)) + 1);
+}
+void Synoptic::end_array_i(inter_tree *I) {
+	inter_error_message *E =
+		Inter::Defn::verify_construct(Inter::Bookmarks::package(Packaging::at(I)), synoptic_array_node);
+	if (E) {
+		Inter::Errors::issue(E);
+		internal_error("synoptic array failed verification");
+	}
+	Inter::Bookmarks::insert(Packaging::at(I), synoptic_array_node);
+	Packaging::exit(I, synoptic_array_ps);
+}
 inter_tree_node *Synoptic::begin_array(inter_symbol *con_s, inter_bookmark *IBM) {
 	return Inode::fill_3(IBM, CONSTANT_IST,
 		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
@@ -328,6 +371,15 @@ void Synoptic::textual_entry(inter_tree_node *Q, text_stream *text) {
 	Str::copy(glob_storage, text);
 	Q->W.data[Q->W.extent-2] = LITERAL_TEXT_IVAL;
 	Q->W.data[Q->W.extent-1] = val2;
+}
+void Synoptic::numeric_entry_i(inter_ti val2) {
+	Synoptic::numeric_entry(synoptic_array_node, val2);
+}
+void Synoptic::symbol_entry_i(inter_symbol *S) {
+	Synoptic::symbol_entry(synoptic_array_node, S);
+}
+void Synoptic::textual_entry_i(text_stream *text) {
+	Synoptic::textual_entry(synoptic_array_node, text);
 }
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {

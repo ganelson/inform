@@ -1,15 +1,12 @@
 [SynopticChronology::] Chronology.
 
-To construct suitable functions and arrays to manage past-tense references in code.
+To compile the main/synoptic/chronology submodule.
 
-@ Before this runs, relation packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |relation_nodes|
-of packages of type |_relation|.
+@ Before this runs, past tense action and condition packages are scattered all
+over the Inter tree. Each needs its own set of unique IDs.
 
 =
-void SynopticChronology::renumber(inter_tree *I, inter_tree_location_list *past_tense_action_nodes) {
+void SynopticChronology::compile(inter_tree *I) {
 	if (TreeLists::len(past_tense_action_nodes) > 0) {
 		TreeLists::sort(past_tense_action_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(past_tense_action_nodes); i++) {
@@ -27,149 +24,113 @@ void SynopticChronology::renumber(inter_tree *I, inter_tree_location_list *past_
 		}
 	}
 
+	@<Define NO_PAST_TENSE_CONDS@>;
+	@<Define NO_PAST_TENSE_ACTIONS@>;
+	
+	@<Define TIMEDEVENTSTABLE@>;
+	@<Define TIMEDEVENTTIMESTABLE@>;
+	
+	@<Define PASTACTIONSI6ROUTINES@>;
+	@<Define TESTSINGLEPASTSTATE@>;
+}
+
+@<Define NO_PAST_TENSE_CONDS@> =
 	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_CONDS_HL);
-	SynopticChronology::numeric_constant(I, iname, (inter_ti) TreeLists::len(past_tense_condition_nodes));
-}
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(past_tense_condition_nodes));
 
-inter_name *SynopticChronology::numeric_constant(inter_tree *I, inter_name *con_iname, inter_ti val) {
-	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_symbol *con_s = Produce::define_symbol(con_iname);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(I),
-		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
-		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), unchecked_kind_symbol),
-		LITERAL_IVAL, val, Produce::baseline(Packaging::at(I)), NULL));
-	Packaging::exit(I, save);
-	return con_iname;
-}
-
-@ There are also resources to create in the |synoptic| module:
-
-@e TIMEDEVENTSTABLE_SYNID
-@e TIMEDEVENTTIMESTABLE_SYNID
-@e PASTACTIONSI6ROUTINES_SYNID
-@e NO_PAST_TENSE_CONDS_SYNID
-@e NO_PAST_TENSE_ACTIONS_SYNID
-@e TESTSINGLEPASTSTATE_SYNID
-
-=
-int SynopticChronology::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case TIMEDEVENTSTABLE_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define TIMEDEVENTSTABLE@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case TIMEDEVENTTIMESTABLE_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define TIMEDEVENTTIMESTABLE@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case PASTACTIONSI6ROUTINES_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define PASTACTIONSI6ROUTINES@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case NO_PAST_TENSE_CONDS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define NO_PAST_TENSE_CONDS@>;
-			break;
-		case NO_PAST_TENSE_ACTIONS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define NO_PAST_TENSE_ACTIONS@>;
-			break;
-		case TESTSINGLEPASTSTATE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the TESTSINGLEPASTSTATE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@ Timed events are stored in two simple arrays, processed by run-time code.
+@<Define NO_PAST_TENSE_ACTIONS@> =
+	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_ACTIONS_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(past_tense_action_nodes));
 
 @<Define TIMEDEVENTSTABLE@> =
+	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTSTABLE_HL);
+	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
+	Synoptic::begin_array_i(I, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 			if (Metadata::exists(pack, I"^timed_for")) {
-				Synoptic::symbol_entry(Q, rule_s);
+				Synoptic::symbol_entry_i(rule_s);
 			} else when_count++;
 		}
 	}
 	for (int i=0; i<when_count+1; i++) {
-		Synoptic::numeric_entry(Q, 0);
-		Synoptic::numeric_entry(Q, 0);
-	}
+		Synoptic::numeric_entry_i(0);
+		Synoptic::numeric_entry_i(0);
+	}	
+	Synoptic::end_array_i(I);
 
 @<Define TIMEDEVENTTIMESTABLE@> =
+	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTTIMESTABLE_HL);
+	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
+	Synoptic::begin_array_i(I, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			if (Metadata::exists(pack, I"^timed_for")) {
 				inter_ti t = Metadata::read_optional_numeric(pack, I"^timed_for");
-				Synoptic::numeric_entry(Q, t);
+				Synoptic::numeric_entry_i(t);
 			} else when_count++;
 		}
 	}
 	for (int i=0; i<when_count+1; i++) {
-		Synoptic::numeric_entry(Q, 0);
-		Synoptic::numeric_entry(Q, 0);
+		Synoptic::numeric_entry_i(0);
+		Synoptic::numeric_entry_i(0);
 	}
+	Synoptic::end_array_i(I);
 
 @<Define PASTACTIONSI6ROUTINES@> =
+	inter_name *iname = HierarchyLocations::find(I, PASTACTIONSI6ROUTINES_HL);
+	Synoptic::begin_array_i(I, iname);
 	for (int i=0; i<TreeLists::len(past_tense_action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(past_tense_action_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
 		if (fn_s == NULL) internal_error("no pap_fn");
-		Synoptic::symbol_entry(Q, fn_s);
+		Synoptic::symbol_entry_i(fn_s);
 	}
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry_i(0);
+	Synoptic::numeric_entry_i(0);
+	Synoptic::end_array_i(I);
 
-@<Define NO_PAST_TENSE_CONDS@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) TreeLists::len(past_tense_condition_nodes), &IBM);
+@<Define TESTSINGLEPASTSTATE@> =
+	inter_name *iname = HierarchyLocations::find(I, TESTSINGLEPASTSTATE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *past_flag_s = Synoptic::local(I, I"past_flag", NULL);
+	inter_symbol *pt_s = Synoptic::local(I, I"pt", NULL);
+	inter_symbol *turn_end_s = Synoptic::local(I, I"turn_end", NULL);
+	inter_symbol *wanted_s = Synoptic::local(I, I"wanted", NULL);
+	inter_symbol *old_s = Synoptic::local(I, I"old", NULL);
+	inter_symbol *new_s = Synoptic::local(I, I"new", NULL);
+	inter_symbol *trips_s = Synoptic::local(I, I"trips", NULL);
+	inter_symbol *consecutives_s = Synoptic::local(I, I"consecutives", NULL);
 
-@<Define NO_PAST_TENSE_ACTIONS@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) TreeLists::len(past_tense_action_nodes), &IBM);
+	if (TreeLists::len(past_tense_condition_nodes) > 0) {
+		inter_symbol *prcr_s = InterNames::to_symbol(HierarchyLocations::find(I, PRESENT_CHRONOLOGICAL_RECORD_HL));
+		inter_symbol *pacr_s = InterNames::to_symbol(HierarchyLocations::find(I, PAST_CHRONOLOGICAL_RECORD_HL));
 
-@<Add a body of code to the TESTSINGLEPASTSTATE function@> =
-	inter_symbol *past_flag_s = Synoptic::get_local(I,I"past_flag");
-	inter_symbol *pt_s = Synoptic::get_local(I,I"pt");
-	inter_symbol *turn_end_s = Synoptic::get_local(I,I"turn_end");
-	inter_symbol *wanted_s = Synoptic::get_local(I,I"wanted");
-	inter_symbol *old_s = Synoptic::get_local(I,I"old");
-	inter_symbol *new_s = Synoptic::get_local(I,I"new");
-	inter_symbol *trips_s = Synoptic::get_local(I,I"trips");
-	inter_symbol *consecutives_s = Synoptic::get_local(I,I"consecutives");
-	inter_symbol *prcr_s = Synoptic::get_local(I,I"prcr");
-	inter_symbol *pacr_s = Synoptic::get_local(I,I"pacr");
-	Produce::inv_primitive(I, IFELSE_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, past_flag_s);
-		Produce::code(I);
+		Produce::inv_primitive(I, IFELSE_BIP);
 		Produce::down(I);
-			@<Unpack the past@>;
+			Produce::val_symbol(I, K_value, past_flag_s);
+			Produce::code(I);
+			Produce::down(I);
+				@<Unpack the past@>;
+			Produce::up(I);
+			Produce::code(I);
+			Produce::down(I);
+				@<Unpack the present@>;
+				@<Swizzle@>;
+				@<Repack the present@>;
+			Produce::up(I);
 		Produce::up(I);
-		Produce::code(I);
-		Produce::down(I);
-			@<Unpack the present@>;
-			@<Swizzle@>;
-			@<Repack the present@>;
-		Produce::up(I);
-	Produce::up(I);
-	@<Answer the question posed@>;
+		@<Answer the question posed@>;
+	} else {
+		Produce::rfalse(I);
+	}
+
+	Synoptic::end_function(I, iname);
 
 @<Unpack the past@> =
 	Produce::inv_primitive(I, STORE_BIP);

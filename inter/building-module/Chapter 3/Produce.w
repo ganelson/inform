@@ -561,3 +561,14 @@ inter_name *Produce::find_by_name(inter_tree *I, text_stream *name) {
 	}
 	return try;
 }
+
+inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind *K, inter_ti val) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(I),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), Produce::kind_to_symbol(K)),
+		LITERAL_IVAL, val, Produce::baseline(Packaging::at(I)), NULL));
+	Packaging::exit(I, save);
+	return con_iname;
+}
