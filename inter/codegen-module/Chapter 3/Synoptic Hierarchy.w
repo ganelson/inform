@@ -1,6 +1,6 @@
 [SynopticHierarchy::] Synoptic Hierarchy.
 
-To provide an enforced structure for the synoptic module.
+The layout and naming conventions for the contents of the main/synoptic module.
 
 @
 

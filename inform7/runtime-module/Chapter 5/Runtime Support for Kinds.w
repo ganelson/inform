@@ -721,39 +721,7 @@ void RTKinds::compile_structures(void) {
 	}
 
 @<Compile the default value finder@> =
-	inter_name *iname = Hierarchy::find(DEFAULTVALUEFINDER_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, DEFAULTVALUEFINDER_SYNID);
-	packaging_state save = Functions::begin(iname);
-	/* inter_symbol *k_s = */ LocalVariables::new_other_as_symbol(I"k");
-/*	runtime_kind_structure *rks;
-	LOOP_OVER(rks, runtime_kind_structure) {
-		kind *K = rks->kind_described;
-		if (rks->make_default) {
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, k_s);
-					RTKinds::emit_strong_id_as_val(K);
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_iname(K_value, rks->rks_dv_iname);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		}
-	}
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_number(0);
-	EmitCode::up();
-*/
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);
+	;
 
 @h The heap.
 Texts, lists and other flexibly-sized structures make use of a pool of
@@ -1453,115 +1421,26 @@ argument, so there is only one of each routine.
 	@<Compile KOVSupportFunction@>;
 	@<Compile I7_KIND_NAME@>;
 
-@ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to
-be |K|. (Since I6 is typeless and in general the kind of |V| cannot be
-deduced from its value alone, |K| must explicitly be supplied.)
-
 @<Compile PrintKindValuePair@> =
-	inter_name *pkvp_iname = Hierarchy::find(PRINTKINDVALUEPAIR_HL);
-	Produce::annotate_i(pkvp_iname, SYNOPTIC_IANN, PRINTKINDVALUEPAIR_SYNID);
-	packaging_state save = Functions::begin(pkvp_iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	LocalVariables::new_other_as_symbol(I"v");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(pkvp_iname);
-
-@ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
-for instance, when increasing the size of a list of $K$ to include new entries,
-which have to be given some type-safe value to start out at.
+	;
 
 @<Compile DefaultValueOfKOV@> =
-	inter_name *dvok_iname = Hierarchy::find(DEFAULTVALUEOFKOV_HL);
-	Produce::annotate_i(dvok_iname, SYNOPTIC_IANN, DEFAULTVALUEOFKOV_SYNID);
-	packaging_state save = Functions::begin(dvok_iname);
-	LocalVariables::new_other_as_symbol(I"sk");
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(dvok_iname);
-
-@ |KOVComparisonFunction(K)| returns either the address of a function to
-perform a comparison between two values, or else 0 to signal that no
-special sort of comparison is needed. (In which case signed numerical
-comparison will be used.) The function |F| may be used in a sorting algorithm,
-so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
-0 if $x=y$ and $-1$ if $x<y$. Note that it is not permitted to return 0
-unless the two values are genuinely equal.
+	;
 
 @<Compile KOVComparisonFunction@> =
-	inter_name *kcf_iname = Hierarchy::find(KOVCOMPARISONFUNCTION_HL);
-	Produce::annotate_i(kcf_iname, SYNOPTIC_IANN, KOVCOMPARISONFUNCTION_SYNID);
-	packaging_state save = Functions::begin(kcf_iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(kcf_iname);
+	;
 
 @<Compile KOVDomainSize@> =
-	inter_name *kds_iname = Hierarchy::find(KOVDOMAINSIZE_HL);
-	Produce::annotate_i(kds_iname, SYNOPTIC_IANN, KOVDOMAINSIZE_SYNID);
-	packaging_state save = Functions::begin(kds_iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(kds_iname);
-
-@ |KOVIsBlockValue(K)| is true if and only if |K| is the I6 ID of a kind
-storing pointers to blocks on the heap.
+	;
 
 @<Compile KOVIsBlockValue@> =
-	inter_name *kibv_iname = Hierarchy::find(KOVISBLOCKVALUE_HL);
-	Produce::annotate_i(kibv_iname, SYNOPTIC_IANN, KOVISBLOCKVALUE_SYNID);
-	packaging_state save = Functions::begin(kibv_iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(kibv_iname);
-
-@ |KOVSupportFunction(K)| returns the address of the specific support function
-for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
-such a function does, see "BlockValues.i6t".
+	;
 
 @<Compile KOVSupportFunction@> =
-	inter_name *ksf_iname = Hierarchy::find(KOVSUPPORTFUNCTION_HL);
-	Produce::annotate_i(ksf_iname, SYNOPTIC_IANN, KOVSUPPORTFUNCTION_SYNID);
-	packaging_state save = Functions::begin(ksf_iname);
-	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
-	LocalVariables::new_other_as_symbol(I"fail");
-	inter_symbol *ka_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"ka");
-	inter_name *ka_iname = Hierarchy::find(KINDATOMIC_HL);
-	InterSymbolsTables::equate(ka_s, InterNames::to_symbol(ka_iname));
-	inter_symbol *bve_s = InterSymbolsTables::create_with_unique_name(k_s->owning_table, I"bve");
-	inter_name *bve_iname = Hierarchy::find(BLKVALUEERROR_HL);
-	InterSymbolsTables::equate(bve_s, InterNames::to_symbol(bve_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(ksf_iname);
+	;
 
 @<Compile I7_KIND_NAME@> =
-	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, I7_KIND_NAME_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_as_symbol(I"k");
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);
+	;
 
 @ Code for printing names of kinds at run-time. This needn't run quickly, and
 making it a routine rather than using an array saves a few bytes of precious

@@ -1,6 +1,6 @@
 [SynopticTables::] Tables.
 
-To renumber the tables and construct suitable functions and arrays.
+To compile the main/synoptic/tables submodule.
 
 @ Before this runs, table packages are scattered all over the Inter tree.
 We must allocate each one a unique ID.
@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |table_nodes
 of packages of type |_table|.
 
 =
-void SynopticTables::renumber(inter_tree *I, inter_tree_location_list *table_nodes) {
+void SynopticTables::compile(inter_tree *I, inter_tree_location_list *table_nodes) {
 	if (TreeLists::len(table_nodes) > 0) {
 		TreeLists::sort(table_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(table_nodes); i++) {
@@ -40,66 +40,29 @@ void SynopticTables::renumber(inter_tree *I, inter_tree_location_list *table_nod
 			D->W.data[DATA_CONST_IFLD+1] += ID->W.data[DATA_CONST_IFLD+1];
 		}
 	}
+	@<Define TABLEOFTABLES array@>;
+	@<Define PRINT_TABLE function@>;
+	@<Define TC_KOV function@>;
+	@<Define TB_BLANKS array@>;
 }
 
-@ 
-
-@e TABLEOFTABLES_SYNID
-@e PRINT_TABLE_SYNID
-@e TC_KOV_SYNID
-@e TB_BLANKS_SYNID
-
-=
-int SynopticTables::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case TABLEOFTABLES_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new TABLEOFTABLES array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case PRINT_TABLE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the PRINT_TABLE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case TC_KOV_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the TC_KOV function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case TB_BLANKS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_byte_array(con_s, &IBM);
-			@<Define the new TB_BLANKS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@<Define the new TABLEOFTABLES array as Q@> =
-	inter_symbol *empty_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"empty");
-	if (empty_s == NULL) internal_error("not set up with empty");
-	Synoptic::symbol_entry(Q, empty_s);
+@<Define TABLEOFTABLES array@> =
+	inter_name *iname = HierarchyLocations::find(I, TABLEOFTABLES_HL);
+	Synoptic::begin_array(I, iname);
+	Synoptic::symbol_entry(InterNames::to_symbol(HierarchyLocations::find(I, THEEMPTYTABLE_HL)));
 	for (int i=0; i<TreeLists::len(table_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(table_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
-		Synoptic::symbol_entry(Q, value_s);
+		Synoptic::symbol_entry(value_s);
 	}
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
 
-@<Add a body of code to the PRINT_TABLE function@> =
-	inter_symbol *T_s = Synoptic::get_local(I, I"T");
-	inter_symbol *empty_s = Synoptic::get_local(I, I"empty");
-	if (empty_s == NULL) internal_error("not set up with empty");
+@<Define PRINT_TABLE function@> =
+	inter_name *iname = HierarchyLocations::find(I, PRINT_TABLE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *T_s = Synoptic::local(I, I"T", NULL);
 	Produce::inv_primitive(I, SWITCH_BIP);
 	Produce::down(I);
 		Produce::val_symbol(I, K_value, T_s);
@@ -107,7 +70,7 @@ int SynopticTables::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *co
 		Produce::down(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val_symbol(I, K_value, empty_s);
+				Produce::val_iname(I, K_value, HierarchyLocations::find(I, THEEMPTYTABLE_HL));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, PRINT_BIP);
@@ -149,10 +112,13 @@ int SynopticTables::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *co
 			Produce::up(I);
 		Produce::up(I);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the TC_KOV function@> =
-	inter_symbol *tc_s = Synoptic::get_local(I, I"tc");
-	inter_symbol *unk_s = Synoptic::get_local(I, I"unk");
+@<Define TC_KOV function@> =
+	inter_name *iname = HierarchyLocations::find(I, TC_KOV_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *tc_s = Synoptic::local(I, I"tc", NULL);
+	inter_symbol *unk_s = Synoptic::local(I, I"unk", NULL);
 	Produce::inv_primitive(I, SWITCH_BIP);
 	Produce::down(I);
 		Produce::val_symbol(I, K_value, tc_s);
@@ -181,8 +147,12 @@ int SynopticTables::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *co
 	Produce::down(I);
 		Produce::val_symbol(I, K_value, unk_s);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);
 
-@<Define the new TB_BLANKS array as Q@> =
+@<Define TB_BLANKS array@> =
+	inter_name *iname = HierarchyLocations::find(I, TB_BLANKS_HL);
+	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
+	Synoptic::begin_array(I, iname);
 	inter_ti hwm = 0;
 	for (int i=0; i<TreeLists::len(table_column_usage_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(table_column_usage_nodes->list[i].node);
@@ -191,10 +161,11 @@ int SynopticTables::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *co
 			D->W.data[DATA_CONST_IFLD+1] = hwm;
 			inter_tree_node *B = Synoptic::get_definition(pack, I"^column_blank_data");
 			for (int i=DATA_CONST_IFLD; i<B->W.extent; i=i+2) {
-				Synoptic::numeric_entry(Q, B->W.data[i+1]);
+				Synoptic::numeric_entry(B->W.data[i+1]);
 				hwm++;
 			}
 		}
 	}
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);

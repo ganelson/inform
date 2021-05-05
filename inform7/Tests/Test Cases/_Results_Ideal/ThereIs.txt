@@ -1,7 +1,7 @@
    Place
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Place
   You can see a box (in which are a coin, a double-bladed axe and a jigsaw puzzle) and a crate (on which are two coins) here.
@@ -29,12 +29,12 @@
       coin - coin
       coin - coin
       coin - coin
-  singular-named, improper-named; lighted, unvisited
+  lighted, unvisited; singular-named, improper-named
+  description: none
   printed name: "Shadow World"
   printed plural name: none
   indefinite article: "the"
   list grouping key: none
-  description: none
   
   >[3] relations
   Incrimination relates various things to various people:

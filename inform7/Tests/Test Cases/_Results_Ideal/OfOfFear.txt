@@ -1,7 +1,7 @@
    Duke of Clarence
   The Of Of Fear
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Duke of Clarence
   A fine public house in the 18th-century style.
@@ -29,14 +29,14 @@
   >[4] showme eleanor
   Eleanor of Aquitaine - Queen of England
   location: in the Garden of the Duke of Clarence
-  singular-named, proper-named; unlit, inedible, portable; transparent, female
-  printed name: "Eleanor of Aquitaine"
-  printed plural name: "Queen of Englands"
-  indefinite article: none
-  list grouping key: none
+  unlit, inedible, portable; transparent, female; singular-named, proper-named
   description: none
   initial appearance: none
   carrying capacity: 100
   point of view: "That the Old French of "of", the OF of "of" so to speak, is "de"."
+  printed name: "Eleanor of Aquitaine"
+  printed plural name: "Queen of Englands"
+  indefinite article: none
+  list grouping key: none
   
 > >

@@ -1,6 +1,6 @@
 [SynopticResponses::] Responses.
 
-To renumber the responses and construct suitable arrays.
+To compile the main/synoptic/responses submodule.
 
 @ Before this runs, response packages are scattered all over the Inter tree.
 We must allocate each one a unique ID in the range 1, 2, 3, ...; these will
@@ -18,7 +18,7 @@ of packages of type |_response|. Each of these contains a constant called
 correct ID.
 
 =
-void SynopticResponses::renumber(inter_tree *I, inter_tree_location_list *response_nodes) {
+void SynopticResponses::compile(inter_tree *I, inter_tree_location_list *response_nodes) {
 	if (TreeLists::len(response_nodes) > 0) {
 		for (int i=0; i<TreeLists::len(response_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
@@ -26,64 +26,30 @@ void SynopticResponses::renumber(inter_tree *I, inter_tree_location_list *respon
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i+1;
 		}
 	}
+	@<Define NO_RESPONSES@>;
+	@<Define ResponseTexts array@>;
+	@<Define ResponseDivisions array@>;
+	@<Define PrintResponse function@>;
 }
-
-@ There are also four resources to create in the |synoptic| module:
-
-@e NO_RESPONSES_SYNID
-@e RESPONSETEXTS_SYNID
-@e RESPONSEDIVISIONS_SYNID
-@e PRINT_RESPONSE_SYNID
-
-=
-int SynopticResponses::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case NO_RESPONSES_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define NO_RESPONSES@>;
-			break;
-		case RESPONSETEXTS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ResponseTexts array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case RESPONSEDIVISIONS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ResponseDivisions array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case PRINT_RESPONSE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the PrintResponse function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@ The main compiler created this constant but gave it a dummy value.
 
 @<Define NO_RESPONSES@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) TreeLists::len(response_nodes), &IBM);
+	inter_name *iname = HierarchyLocations::find(I, NO_RESPONSES_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(response_nodes)));
 
 @ This is the critical array which connects a response ID to the current value
-of the text of that response. (The main compiler created only an empty array.)
+of the text of that response.
 
-@<Define the new ResponseTexts array as Q@> =
+@<Define ResponseTexts array@> =
+	inter_name *iname = HierarchyLocations::find(I, RESPONSETEXTS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
-		Synoptic::symbol_entry(Q, value_s);
+		Synoptic::symbol_entry(value_s);
 	}
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
 
 @ The following array is used only by the testing command RESPONSES, and
 enables the Inter template to print out all known responses at run-time,
@@ -96,29 +62,32 @@ and |to| are an inclusive range of response ID numbers. (This means they
 are higher by 1 than the corresponding indices in the |response_nodes| list.)
 The triple |(0, 0, 0)| ends the array.
 
-@<Define the new ResponseDivisions array as Q@> =
+@<Define ResponseDivisions array@> =
+	inter_name *iname = HierarchyLocations::find(I, RESPONSEDIVISIONS_HL);
+	Synoptic::begin_array(I, iname);
 	text_stream *current_group = NULL; int start_pos = -1;
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
 		text_stream *group = Metadata::read_textual(pack, I"^group");
 		if (Str::ne(group, current_group)) {
 			if (start_pos >= 0) {
-				Synoptic::textual_entry(Q, current_group);
-				Synoptic::numeric_entry(Q, (inter_ti) start_pos + 1);
-				Synoptic::numeric_entry(Q, (inter_ti) i);
+				Synoptic::textual_entry(current_group);
+				Synoptic::numeric_entry((inter_ti) start_pos + 1);
+				Synoptic::numeric_entry((inter_ti) i);
 			}
 			current_group = group;
 			start_pos = i;
 		}
 	}
 	if (start_pos >= 0) {
-		Synoptic::textual_entry(Q, current_group);
-		Synoptic::numeric_entry(Q, (inter_ti) start_pos + 1);
-		Synoptic::numeric_entry(Q, (inter_ti) TreeLists::len(response_nodes));
+		Synoptic::textual_entry(current_group);
+		Synoptic::numeric_entry((inter_ti) start_pos + 1);
+		Synoptic::numeric_entry((inter_ti) TreeLists::len(response_nodes));
 	}
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
 
 @ Finally, a function used when printing values of the |K_response| kind;
 the main compiler created this as a mostly empty function with two local
@@ -133,9 +102,10 @@ efficient array lookups, is that we have to guard accessible memory space on
 the Z-machine, where such an array could consume over 1K, but where memory for
 code is less limited.
 
-@<Add a body of code to the PrintResponse function@> =
-	inter_symbol *R_s = Synoptic::get_local(I, I"R");
-	inter_symbol *RPR_s = Synoptic::get_local(I, I"RPR");
+@<Define PrintResponse function@> =
+	inter_name *iname = HierarchyLocations::find(I, PRINT_RESPONSE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *R_s = Synoptic::local(I, I"R", NULL);
 
 	for (int i=0; i<TreeLists::len(response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(response_nodes->list[i].node);
@@ -150,7 +120,7 @@ code is less limited.
 			Produce::up(I);
 			Produce::code(I);
 			Produce::down(I);
-				Produce::inv_call(I, RPR_s);
+				Produce::inv_call_iname(I, HierarchyLocations::find(I, RULEPRINTINGRULE_HL));
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, rule_s);
 				Produce::up(I);
@@ -169,3 +139,4 @@ code is less limited.
 			Produce::up(I);
 		Produce::up(I);
 	}
+	Synoptic::end_function(I, iname);

@@ -162,7 +162,6 @@ so on. Those absolute basics are made here.
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
 	BENCH(Tables::check_tables_for_kind_clashes)
-	BENCH(RTTables::compile_print_table_names)
 
 @<Augment model world with low-level properties@> =
 	Task::advance_stage_to(AUGMENT_CSEQ, I"Augment model world",
@@ -221,14 +220,7 @@ so on. Those absolute basics are made here.
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::undertake_queued_tasks)
-	BENCH(Responses::compile_synoptic_resources)
-	BENCH(RTRules::compile_synoptic_resources)
-	BENCH(RTActivities::compile_synoptic_resources)
-	BENCH(RTProperties::compile_synoptic_resources)
-	BENCH(RTExtensions::compile_synoptic_resources)
 	BENCH(RTRelations::compile_defined_relations)
-	BENCH(RTRelations::compile_synoptic_resources)
-	BENCH(RTTables::compile_synoptic_resources)
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 

@@ -586,31 +586,3 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 		return;
 	}
 }
-
-@
-
-=
-void RTScenes::compile_synoptic_resources(void) {
-	@<Provide placeholder for the SHOWSCENESTATUS function@>;
-	@<Provide placeholder for the DETECTSCENECHANGE function@>;
-}
-
-@<Provide placeholder for the SHOWSCENESTATUS function@> =
-	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, SHOWSCENESTATUS_SYNID);
-	packaging_state save = Functions::begin(iname);
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-
-@<Provide placeholder for the DETECTSCENECHANGE function@> =
-	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, DETECTSCENECHANGE_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
-//	inter_symbol *ch_s =
-//		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
-
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);

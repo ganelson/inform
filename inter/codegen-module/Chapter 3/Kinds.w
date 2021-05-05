@@ -1,15 +1,15 @@
 [SynopticKinds::] Kinds.
 
-To construct suitable functions and arrays.
+To compile the main/synoptic/kinds submodule.
 
 @ Before this runs, kind packages are scattered all over the Inter tree.
 We must allocate each one a unique ID.
 
 As this is called, //Synoptic Utilities// has already formed a list |kind_nodes|
-of packages of type |_kind|.
+of packages of type |_kind|, and similarly for |derived_kind_nodes|.
 
 =
-void SynopticKinds::renumber(inter_tree *I) {
+void SynopticKinds::compile(inter_tree *I) {
 	if (TreeLists::len(kind_nodes) > 0) {
 		TreeLists::sort(kind_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
@@ -20,99 +20,27 @@ void SynopticKinds::renumber(inter_tree *I) {
 	}
 	if (TreeLists::len(derived_kind_nodes) > 0) {
 		TreeLists::sort(derived_kind_nodes, Synoptic::module_order);
-//		for (int i=0; i<TreeLists::len(derived_kind_nodes); i++) {
-//			inter_package *pack = Inter::Package::defined_by_frame(derived_kind_nodes->list[i].node);
-//			LOG("Saw DK at $6\n", pack);
-//		}
 	}
-}
-
-@ There are also resources to create in the |synoptic| module:
-
-@e BASE_KIND_HWM_SYNID
-@e DEFAULTVALUEOFKOV_SYNID
-@e DEFAULTVALUEFINDER_SYNID
-@e PRINTKINDVALUEPAIR_SYNID
-@e KOVCOMPARISONFUNCTION_SYNID
-@e KOVDOMAINSIZE_SYNID
-@e KOVISBLOCKVALUE_SYNID
-@e I7_KIND_NAME_SYNID
-@e KOVSUPPORTFUNCTION_SYNID
-@e SHOWMEKINDDETAILS_SYNID
-
-=
-int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case BASE_KIND_HWM_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define BASE_KIND_HWM@>;
-			break;
-		case DEFAULTVALUEOFKOV_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the DEFAULTVALUEOFKOV function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case DEFAULTVALUEFINDER_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the DEFAULTVALUEFINDER function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case PRINTKINDVALUEPAIR_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the PRINTKINDVALUEPAIR function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case KOVCOMPARISONFUNCTION_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the KOVCOMPARISONFUNCTION function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case KOVDOMAINSIZE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the KOVDOMAINSIZE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case KOVISBLOCKVALUE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the KOVISBLOCKVALUE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case I7_KIND_NAME_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the I7_KIND_NAME function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case KOVSUPPORTFUNCTION_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the KOVSUPPORTFUNCTION function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case SHOWMEKINDDETAILS_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SHOWMEKINDDETAILS function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
+	@<Define BASE_KIND_HWM@>;	
+	@<Define DEFAULTVALUEFINDER function@>;
+	@<Define DEFAULTVALUEOFKOV function@>;
+	@<Define PRINTKINDVALUEPAIR function@>;
+	@<Define KOVCOMPARISONFUNCTION function@>;
+	@<Define KOVDOMAINSIZE function@>;
+	@<Define KOVISBLOCKVALUE function@>;
+	@<Define I7_KIND_NAME function@>;
+	@<Define KOVSUPPORTFUNCTION function@>;
+	@<Define SHOWMEKINDDETAILS function@>;
 }
 
 @<Define BASE_KIND_HWM@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) (TreeLists::len(kind_nodes) + 2), &IBM);
+	inter_name *iname = HierarchyLocations::find(I, BASE_KIND_HWM_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(kind_nodes) + 2));
 
-@<Add a body of code to the DEFAULTVALUEFINDER function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
+@<Define DEFAULTVALUEFINDER function@> =
+	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEFINDER_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<TreeLists::len(derived_kind_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(derived_kind_nodes->list[i].node);
 		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
@@ -136,15 +64,21 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 		}
 	}
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the DEFAULTVALUEOFKOV function@> =
-	inter_symbol *sk_s = Synoptic::get_local(I, I"sk");
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
+@ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
+for instance, when increasing the size of a list of $K$ to include new entries,
+which have to be given some type-safe value to start out at.
+
+@<Define DEFAULTVALUEOFKOV function@> =
+	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEOFKOV_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *sk_s = Synoptic::local(I, I"sk", NULL);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, sk_s);
 		Produce::up(I);
@@ -178,15 +112,19 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the PRINTKINDVALUEPAIR function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *v_s = Synoptic::get_local(I, I"v");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
+@ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to be |K|.
+
+@<Define PRINTKINDVALUEPAIR function@> =
+	inter_name *iname = HierarchyLocations::find(I, PRINTKINDVALUEPAIR_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
+	inter_symbol *v_s = Synoptic::local(I, I"v", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -228,14 +166,24 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 			Produce::up(I);
 		Produce::up(I);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the KOVCOMPARISONFUNCTION function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
+@ |KOVComparisonFunction(K)| returns either the address of a function to
+perform a comparison between two values, or else 0 to signal that no
+special sort of comparison is needed. (In which case signed numerical
+comparison will be used.) The function |F| may be used in a sorting algorithm,
+so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
+0 if $x=y$ and $-1$ if $x<y$. Note that it is not permitted to return 0
+unless the two values are genuinely equal.
+
+@<Define KOVCOMPARISONFUNCTION function@> =
+	inter_name *iname = HierarchyLocations::find(I, KOVCOMPARISONFUNCTION_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -266,14 +214,16 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the KOVDOMAINSIZE function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
+@<Define KOVDOMAINSIZE function@> =
+	inter_name *iname = HierarchyLocations::find(I, KOVDOMAINSIZE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -304,18 +254,20 @@ int SynopticKinds::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
 @ |KOVIsBlockValue(k)| is true if and only if |k| is the (strong or weak) ID of
 a kind storing pointers to blocks of data.
 
-@<Add a body of code to the KOVISBLOCKVALUE function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
+@<Define KOVISBLOCKVALUE function@> =
+	inter_name *iname = HierarchyLocations::find(I, KOVISBLOCKVALUE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -343,9 +295,12 @@ a kind storing pointers to blocks of data.
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the I7_KIND_NAME function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
+@<Define I7_KIND_NAME function@> =
+	inter_name *iname = HierarchyLocations::find(I, I7_KIND_NAME_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<TreeLists::len(kind_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
 		inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
@@ -368,17 +323,22 @@ a kind storing pointers to blocks of data.
 			Produce::up(I);
 		}
 	}
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the KOVSUPPORTFUNCTION function@> =
-	inter_symbol *k_s = Synoptic::get_local(I, I"k");
-	inter_symbol *fail_s = Synoptic::get_local(I, I"fail");
-	inter_symbol *ka_s = Synoptic::get_local(I, I"ka");
-	inter_symbol *bve_s = Synoptic::get_local(I, I"bve");
+@ |KOVSupportFunction(K)| returns the address of the specific support function
+for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
+such a function does, see "BlockValues.i6t".
+
+@<Define KOVSUPPORTFUNCTION function@> =
+	inter_name *iname = HierarchyLocations::find(I, KOVSUPPORTFUNCTION_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
+	inter_symbol *fail_s = Synoptic::local(I, I"fail", NULL);
 
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call(I, ka_s);
+		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -415,7 +375,7 @@ a kind storing pointers to blocks of data.
 		Produce::val_symbol(I, K_value, fail_s);
 		Produce::code(I);
 		Produce::down(I);
-			Produce::inv_call(I, bve_s);
+			Produce::inv_call_iname(I, HierarchyLocations::find(I, BLKVALUEERROR_HL));
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, fail_s);
 			Produce::up(I);
@@ -423,28 +383,34 @@ a kind storing pointers to blocks of data.
 	Produce::up(I);
 
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the SHOWMEKINDDETAILS function@> =
-	inter_symbol *which_s = Synoptic::get_local(I, I"which");
-	inter_symbol *na_s = Synoptic::get_local(I, I"na");
-	inter_symbol *t_0_s = Synoptic::get_local(I, I"t_0");
+@<Define SHOWMEKINDDETAILS function@> =
+	inter_name *iname = HierarchyLocations::find(I, SHOWMEKINDDETAILS_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
+	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
+	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
 	for (int i=0; i<TreeLists::len(kind_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
-			inter_symbol *showme_s = Metadata::read_symbol(pack, I"^showme_fn");
-			Produce::inv_primitive(I, STORE_BIP);
-			Produce::down(I);
-				Produce::ref_symbol(I, K_value, na_s);
-				Produce::inv_call(I, showme_s);
+			inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
+			if (showme_s) {
+				Produce::inv_primitive(I, STORE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, which_s);
-					Produce::val_symbol(I, K_value, na_s);
-					Produce::val_symbol(I, K_value, t_0_s);
+					Produce::ref_symbol(I, K_value, na_s);
+					Produce::inv_call(I, showme_s);
+					Produce::down(I);
+						Produce::val_symbol(I, K_value, which_s);
+						Produce::val_symbol(I, K_value, na_s);
+						Produce::val_symbol(I, K_value, t_0_s);
+					Produce::up(I);
 				Produce::up(I);
-			Produce::up(I);
+			}
 		}
 	}
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);		
 		Produce::val_symbol(I, K_value, na_s);
 	Produce::up(I);		
+	Synoptic::end_function(I, iname);

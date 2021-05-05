@@ -1,7 +1,7 @@
    Stage
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Stage
   
@@ -11,15 +11,15 @@
   >[1] showme orange
   orange - fruit
   location: out of play
-  singular-named, improper-named; unlit, inedible, portable
-  printed name: "orange"
-  printed plural name: "fruits"
-  indefinite article: none
-  list grouping key: none
+  unlit, inedible, portable; singular-named, improper-named
   description: none
   initial appearance: none
   fruit condition: late
   squishiness: overripe
   fruit condition 2: citrus
+  printed name: "orange"
+  printed plural name: "fruits"
+  indefinite article: none
+  list grouping key: none
   
 > >

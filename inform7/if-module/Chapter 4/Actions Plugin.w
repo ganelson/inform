@@ -60,9 +60,6 @@ int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *se
 		BENCH(RTActions::compile_metadata);
 		BENCH(RTActions::compile_functions);
 	}
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTActions::compile_synoptic_resources);
-	}
 	return FALSE;
 }
 

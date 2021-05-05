@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |extension_n
 of packages of type |_module| which derive from extensions.
 
 =
-void SynopticExtensions::renumber(inter_tree *I, inter_tree_location_list *extension_nodes) {
+void SynopticExtensions::compile(inter_tree *I, inter_tree_location_list *extension_nodes) {
 	if (TreeLists::len(extension_nodes) > 0) {
 		TreeLists::sort(extension_nodes, Synoptic::category_order);
 		for (int i=0; i<TreeLists::len(extension_nodes); i++) {
@@ -18,6 +18,9 @@ void SynopticExtensions::renumber(inter_tree *I, inter_tree_location_list *exten
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
 		}
 	}
+	@<Define SHOWEXTENSIONVERSIONS function@>;
+	@<Define SHOWFULLEXTENSIONVERSIONS function@>;
+	@<Define SHOWONEEXTENSION function@>;
 }
 
 @ Extensions have an obvious effect at runtime -- they include extra material.
@@ -38,39 +41,9 @@ By design, however, the author of the main source text cannot remove the name
 of a different author writing an extension which did not ask for modesty. That
 would violate the CC license.
 
-@e SHOWEXTENSIONVERSIONS_SYNID
-@e SHOWFULLEXTENSIONVERSIONS_SYNID
-@e SHOWONEEXTENSION_SYNID
-
-=
-int SynopticExtensions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case SHOWEXTENSIONVERSIONS_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SHOWEXTENSIONVERSIONS function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case SHOWFULLEXTENSIONVERSIONS_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SHOWFULLEXTENSIONVERSIONS function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case SHOWONEEXTENSION_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SHOWONEEXTENSION function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@<Add a body of code to the SHOWEXTENSIONVERSIONS function@> =
+@<Define SHOWEXTENSIONVERSIONS function@> =
+	inter_name *iname = HierarchyLocations::find(I, SHOWEXTENSIONVERSIONS_HL);
+	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
@@ -83,10 +56,13 @@ int SynopticExtensions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol
 			Produce::up(I);
 		}
 	}
+	Synoptic::end_function(I, iname);
 
 @ This fuller version does not allow the exemptions.
 
-@<Add a body of code to the SHOWFULLEXTENSIONVERSIONS function@> =
+@<Define SHOWFULLEXTENSIONVERSIONS function@> =
+	inter_name *iname = HierarchyLocations::find(I, SHOWFULLEXTENSIONVERSIONS_HL);
+	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
 		text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
@@ -96,13 +72,15 @@ int SynopticExtensions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol
 			Produce::val_text(I, credit);
 		Produce::up(I);
 	}
+	Synoptic::end_function(I, iname);
 
 @ This prints the name of a single extension, identified by a value which
-is its allocation ID plus 1. (In effect, this means extensions are numbered from
-1 upwards in order of inclusion.)
+is its extension ID.
 
-@<Add a body of code to the SHOWONEEXTENSION function@> =
-	inter_symbol *id_s = Synoptic::get_local(I, I"id");
+@<Define SHOWONEEXTENSION function@> =
+	inter_name *iname = HierarchyLocations::find(I, SHOWONEEXTENSION_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
 	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
 		text_stream *credit = Metadata::read_textual(pack, I"^credit");
@@ -122,3 +100,4 @@ is its allocation ID plus 1. (In effect, this means extensions are numbered from
 			Produce::up(I);
 		Produce::up(I);
 	}
+	Synoptic::end_function(I, iname);

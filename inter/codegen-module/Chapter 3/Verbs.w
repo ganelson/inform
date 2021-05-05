@@ -1,6 +1,6 @@
 [SynopticVerbs::] Verbs.
 
-To construct suitable functions and arrays for verbs.
+To compile the main/synoptic/verbs submodule.
 
 @ Before this runs, instances of these are scattered all over the Inter tree.
 
@@ -8,10 +8,12 @@ As this is called, //Synoptic Utilities// has already formed lists of |verb_form
 of instances having the kind |K_verb|.
 
 =
-void SynopticVerbs::renumber(inter_tree *I) {
+void SynopticVerbs::compile(inter_tree *I) {
 	if (TreeLists::len(verb_form_nodes) > 0) {
 		TreeLists::sort(verb_form_nodes, SynopticVerbs::form_order);
 	}
+	
+	@<Define TABLEOFVERBS array@>;
 }
 
 int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
@@ -35,31 +37,13 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	return E1->sort_key - E2->sort_key; /* smaller values sort earlier */
 }
 
-@ There is also one resource to create in the |synoptic| module:
-
-@e TABLEOFVERBS_SYNID
-
-=
-int SynopticVerbs::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case TABLEOFVERBS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new TABLEOFVERBS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@<Define the new TABLEOFVERBS array as Q@> =
+@<Define TABLEOFVERBS array@> =
+	inter_name *iname = HierarchyLocations::find(I, TABLEOFVERBS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(verb_form_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(verb_form_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^verb_value");
-		Synoptic::symbol_entry(Q, vc_s);
+		Synoptic::symbol_entry(vc_s);
 	}
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);

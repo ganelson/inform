@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |activity_no
 of packages of type |_activity|.
 
 =
-void SynopticActivities::renumber(inter_tree *I, inter_tree_location_list *activity_nodes) {
+void SynopticActivities::compile(inter_tree *I, inter_tree_location_list *activity_nodes) {
 	if (TreeLists::len(activity_nodes) > 0) {
 		TreeLists::sort(activity_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(activity_nodes); i++) {
@@ -20,90 +20,61 @@ void SynopticActivities::renumber(inter_tree *I, inter_tree_location_list *activ
 			if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (10000 + i);
 		}
 	}
+	@<Define ACTIVITY_AFTER_RULEBOOKS array@>;
+	@<Define ACTIVITY_ATB_RULEBOOKS array@>;
+	@<Define ACTIVITY_BEFORE_RULEBOOKS array@>;
+	@<Define ACTIVITY_FOR_RULEBOOKS array@>;
+	@<Define ACTIVITY_VAR_CREATORS array@>;
 }
 
-@ There are also resources to create in the |synoptic| module:
-
-@e ACTIVITY_AFTER_RULEBOOKS_SYNID
-@e ACTIVITY_ATB_RULEBOOKS_SYNID
-@e ACTIVITY_BEFORE_RULEBOOKS_SYNID
-@e ACTIVITY_FOR_RULEBOOKS_SYNID
-@e ACTIVITY_VAR_CREATORS_SYNID
-
-=
-int SynopticActivities::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case ACTIVITY_AFTER_RULEBOOKS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ACTIVITY_AFTER_RULEBOOKS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case ACTIVITY_ATB_RULEBOOKS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_byte_array(con_s, &IBM);
-			@<Define the new ACTIVITY_ATB_RULEBOOKS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case ACTIVITY_BEFORE_RULEBOOKS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ACTIVITY_BEFORE_RULEBOOKS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case ACTIVITY_FOR_RULEBOOKS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ACTIVITY_FOR_RULEBOOKS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case ACTIVITY_VAR_CREATORS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new ACTIVITY_VAR_CREATORS array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@<Define the new ACTIVITY_AFTER_RULEBOOKS array as Q@> =
+@<Define ACTIVITY_AFTER_RULEBOOKS array@> =
+	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_AFTER_RULEBOOKS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^after_rulebook");
-		Synoptic::symbol_entry(Q, vc_s);
+		Synoptic::symbol_entry(vc_s);
 	}
+	Synoptic::end_array(I);
 
-@<Define the new ACTIVITY_ATB_RULEBOOKS array as Q@> =
+@<Define ACTIVITY_ATB_RULEBOOKS array@> =
+	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_ATB_RULEBOOKS_HL);
+	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 		inter_ti ubf = Metadata::read_numeric(pack, I"^used_by_future");
-		Synoptic::numeric_entry(Q, ubf);
+		Synoptic::numeric_entry(ubf);
 	}
+	Synoptic::end_array(I);
 
-@<Define the new ACTIVITY_BEFORE_RULEBOOKS array as Q@> =
+@<Define ACTIVITY_BEFORE_RULEBOOKS array@> =
+	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_BEFORE_RULEBOOKS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^before_rulebook");
-		Synoptic::symbol_entry(Q, vc_s);
+		Synoptic::symbol_entry(vc_s);
 	}
+	Synoptic::end_array(I);
 
-@<Define the new ACTIVITY_FOR_RULEBOOKS array as Q@> =
+@<Define ACTIVITY_FOR_RULEBOOKS array@> =
+	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_FOR_RULEBOOKS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^for_rulebook");
-		Synoptic::symbol_entry(Q, vc_s);
+		Synoptic::symbol_entry(vc_s);
 	}
+	Synoptic::end_array(I);
 
-@<Define the new ACTIVITY_VAR_CREATORS array as Q@> =
+@<Define ACTIVITY_VAR_CREATORS array@> =
+	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_VAR_CREATORS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
-		if (vc_s) Synoptic::symbol_entry(Q, vc_s);
-		else Synoptic::numeric_entry(Q, 0);
+		if (vc_s) Synoptic::symbol_entry(vc_s);
+		else Synoptic::numeric_entry(0);
 	}
-
+	Synoptic::end_array(I);

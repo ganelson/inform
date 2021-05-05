@@ -348,22 +348,6 @@ case.)
 	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_METADATA_HL, S);
 	DISCARD_TEXT(S)
 
-@ The following allows tables to be said: it's a routine which switches on
-table values and prints the (title-cased) name of the one which matches.
-
-=
-void RTTables::compile_print_table_names(void) {
-	inter_name *iname = Hierarchy::find(PRINT_TABLE_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_TABLE_SYNID);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
-	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(T_s->owning_table, I"empty");
-	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
-	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-}
-
 @ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its
 improbability, be valid for this kind. If we can prove that it is not, we
 should return |FALSE|; if in any doubt, we must return |TRUE|.
@@ -375,42 +359,3 @@ int RTTables::requires_blanks_bitmap(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
 	return TRUE;
 }
-
-@h Synoptic resources.
-
-=
-void RTTables::compile_synoptic_resources(void) {
-	@<Provide placeholder for the TABLEOFTABLES array@>;
-	@<Provide placeholder for the TB_BLANKS array@>;
-	@<Provide placeholder for the TC_KOV function@>;
-}
-
-@<Provide placeholder for the TABLEOFTABLES array@> =
-	inter_name *iname = Hierarchy::find(TABLEOFTABLES_HL);
-	inter_symbol *iname_s = InterNames::to_symbol(iname);
-	inter_symbol *empty_s = InterSymbolsTables::create_with_unique_name(iname_s->owning_table, I"empty");
-	inter_name *empty_iname = Hierarchy::find(THEEMPTYTABLE_HL);
-	InterSymbolsTables::equate(empty_s, InterNames::to_symbol(empty_iname));
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFTABLES_SYNID);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-
-@<Provide placeholder for the TB_BLANKS array@> =
-	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TB_BLANKS_SYNID);
-	packaging_state save = EmitArrays::begin_byte(iname, K_number);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
-
-@<Provide placeholder for the TC_KOV function@> =
-	inter_name *iname = Hierarchy::find(TC_KOV_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TC_KOV_SYNID);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
-	inter_symbol *unk_s = InterSymbolsTables::create_with_unique_name(tcv_s->owning_table, I"unk");
-	inter_name *unk_iname = Kinds::Constructors::UNKNOWN_iname();
-	InterSymbolsTables::equate(unk_s, InterNames::to_symbol(unk_iname));
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);

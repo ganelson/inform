@@ -1,6 +1,6 @@
 [RTSounds::] Sound Effects.
 
-@ Just one array will do us:
+@ Easy:
 
 =
 void RTSounds::compile_metadata(void) {
@@ -10,9 +10,4 @@ void RTSounds::compile_metadata(void) {
 			RTInstances::package(bs->as_instance));
 		Emit::numeric_constant(md_iname, (inter_ti) bs->sound_number);
 	}
-	inter_name *iname = Hierarchy::find(RESOURCEIDSOFSOUNDS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, RESOURCEIDSOFSOUNDS_SYNID);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
 }

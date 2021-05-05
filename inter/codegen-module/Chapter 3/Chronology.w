@@ -45,55 +45,55 @@ void SynopticChronology::compile(inter_tree *I) {
 @<Define TIMEDEVENTSTABLE@> =
 	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTSTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
-	Synoptic::begin_array_i(I, iname);
+	Synoptic::begin_array(I, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 			if (Metadata::exists(pack, I"^timed_for")) {
-				Synoptic::symbol_entry_i(rule_s);
+				Synoptic::symbol_entry(rule_s);
 			} else when_count++;
 		}
 	}
 	for (int i=0; i<when_count+1; i++) {
-		Synoptic::numeric_entry_i(0);
-		Synoptic::numeric_entry_i(0);
+		Synoptic::numeric_entry(0);
+		Synoptic::numeric_entry(0);
 	}	
-	Synoptic::end_array_i(I);
+	Synoptic::end_array(I);
 
 @<Define TIMEDEVENTTIMESTABLE@> =
 	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTTIMESTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
-	Synoptic::begin_array_i(I, iname);
+	Synoptic::begin_array(I, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			if (Metadata::exists(pack, I"^timed_for")) {
 				inter_ti t = Metadata::read_optional_numeric(pack, I"^timed_for");
-				Synoptic::numeric_entry_i(t);
+				Synoptic::numeric_entry(t);
 			} else when_count++;
 		}
 	}
 	for (int i=0; i<when_count+1; i++) {
-		Synoptic::numeric_entry_i(0);
-		Synoptic::numeric_entry_i(0);
+		Synoptic::numeric_entry(0);
+		Synoptic::numeric_entry(0);
 	}
-	Synoptic::end_array_i(I);
+	Synoptic::end_array(I);
 
 @<Define PASTACTIONSI6ROUTINES@> =
 	inter_name *iname = HierarchyLocations::find(I, PASTACTIONSI6ROUTINES_HL);
-	Synoptic::begin_array_i(I, iname);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(past_tense_action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(past_tense_action_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
 		if (fn_s == NULL) internal_error("no pap_fn");
-		Synoptic::symbol_entry_i(fn_s);
+		Synoptic::symbol_entry(fn_s);
 	}
-	Synoptic::numeric_entry_i(0);
-	Synoptic::numeric_entry_i(0);
-	Synoptic::end_array_i(I);
+	Synoptic::numeric_entry(0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
 
 @<Define TESTSINGLEPASTSTATE@> =
 	inter_name *iname = HierarchyLocations::find(I, TESTSINGLEPASTSTATE_HL);
@@ -428,7 +428,7 @@ void SynopticChronology::compile(inter_tree *I) {
 						Produce::down(I);
 							Produce::inv_primitive(I, RETURN_BIP);
 							Produce::down(I);
-								Produce::inv_primitive(I, PLUS_BIP); /* Plus one because we count the current turn */
+								Produce::inv_primitive(I, PLUS_BIP); /* +1 counting the current turn */
 								Produce::down(I);
 									Produce::val_symbol(I, K_value, consecutives_s);
 									Produce::val(I, K_value, LITERAL_IVAL, 1);

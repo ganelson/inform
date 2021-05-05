@@ -7,6 +7,7 @@ into a playable work.
 void CompletionModule::compile(void) {
 	@<Version number constant@>;
 	@<Semantic version number constant@>;
+	@<Memory economy metadata@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -26,3 +27,10 @@ void CompletionModule::compile(void) {
 	Emit::text_constant(iname, svn);
 	Hierarchy::make_available(iname);
 	DISCARD_TEXT(svn)
+
+@<Memory economy metadata@> =	
+	inter_name *iname = Hierarchy::find(MEMORY_ECONOMY_METADATA_HL);
+	if (global_compilation_settings.memory_economy_in_force)
+		Emit::numeric_constant(iname, 1);
+	else
+		Emit::numeric_constant(iname, 0);

@@ -395,11 +395,6 @@ void Kinds::Constructors::emit_constants(void) {
 		Emit::numeric_constant(Kinds::Constructors::iname(con), 0);
 		Hierarchy::make_available(Kinds::Constructors::iname(con));
 	}
-
-	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
-	Emit::numeric_constant(hwm, 0);
-	Produce::annotate_i(hwm, SYNOPTIC_IANN, BASE_KIND_HWM_SYNID);
-	Hierarchy::make_available(hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	return CON_UNKNOWN->con_iname;

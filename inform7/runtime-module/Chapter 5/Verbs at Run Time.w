@@ -146,11 +146,6 @@ void RTVerbs::ConjugateVerb(void) {
 					vf->verb_form_compilation.vf_package);
 			Emit::numeric_constant(md_iname, (inter_ti) vf->allocation_id);
 		}
-
-	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFVERBS_SYNID);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::end(save);
 }
 
 @<Compile ConjugateVerb routine@> =

@@ -496,13 +496,3 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
 	return TRUE;
 }
-
-void RTProperties::compile_synoptic_resources(void) {
-	@<Provide placeholder for the CCOUNT_PROPERTY constant@>;
-}
-
-@<Provide placeholder for the CCOUNT_PROPERTY constant@> =
-	inter_name *iname = Hierarchy::find(CCOUNT_PROPERTY_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, CCOUNT_PROPERTY_SYNID);
-	Emit::numeric_constant(iname, 0);
-	Hierarchy::make_available(iname);

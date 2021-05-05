@@ -119,17 +119,6 @@
 <span class="string-syntax">            RTInstances::package(exf-&gt;as_instance));</span>
 <span class="string-syntax">        Emit::iname_constant(md_iname, K_value, exf-&gt;compilation_data.exf_iname);</span>
 <span class="string-syntax">    }</span>
-
-<span class="string-syntax">    inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);</span>
-<span class="string-syntax">    Produce::annotate_i(iname, SYNOPTIC_IANN, NO_EXTERNAL_FILES_SYNID);</span>
-<span class="string-syntax">    Emit::numeric_constant(iname, (inter_ti) 0);</span>
-<span class="string-syntax">    Hierarchy::make_available(iname);</span>
-
-<span class="string-syntax">    iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);</span>
-<span class="string-syntax">    Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFEXTERNALFILES_SYNID);</span>
-<span class="string-syntax">    packaging_state save = EmitArrays::begin(iname, K_value);</span>
-<span class="string-syntax">    EmitArrays::end(save);</span>
-<span class="string-syntax">    Hierarchy::make_available(iname);</span>
 <span class="string-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure external_file_compilation_data is private to this section.</li></ul>

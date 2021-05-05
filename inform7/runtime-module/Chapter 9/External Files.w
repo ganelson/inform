@@ -56,15 +56,5 @@ void RTExternalFiles::arrays(void) {
 			RTInstances::package(exf->as_instance));
 		Emit::iname_constant(md_iname, K_value, exf->compilation_data.exf_iname);
 	}
-
-	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_EXTERNAL_FILES_SYNID);
-	Emit::numeric_constant(iname, (inter_ti) 0);
-	Hierarchy::make_available(iname);
-
-	iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TABLEOFEXTERNALFILES_SYNID);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
 }
+

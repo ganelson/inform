@@ -1,15 +1,15 @@
 [SynopticRules::] Rules.
 
-To renumber the rulebooks and construct suitable functions and arrays.
+To compile the main/synoptic/rules and main/synoptic/rulebooks submodules.
 
 @ Before this runs, rulebook packages are scattered all over the Inter tree.
 We must allocate each one a unique ID.
 
 As this is called, //Synoptic Utilities// has already formed a list |rulebook_nodes|
-of packages of type |_rulebook|.
+of packages of type |_rulebook|; and similarly for |rule_nodes|.
 
 =
-void SynopticRules::renumber(inter_tree *I, inter_tree_location_list *rulebook_nodes) {
+void SynopticRules::compile(inter_tree *I) {
 	if (TreeLists::len(rulebook_nodes) > 0) {
 		TreeLists::sort(rulebook_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
@@ -18,110 +18,64 @@ void SynopticRules::renumber(inter_tree *I, inter_tree_location_list *rulebook_n
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
 	}
-}
-
-@ There are also resources to create in the |synoptic| module:
-
-@e NUMBER_RULEBOOKS_CREATED_SYNID
-@e RULEBOOKNAMES_SYNID
-@e ECONOMY_RULEBOOKNAMES_SYNID
-@e RULEBOOK_VAR_CREATORS_SYNID
-@e SLOW_LOOKUP_SYNID
-@e RULEBOOKS_ARRAY_SYNID
-@e RULEPRINTINGRULE_SYNID
-@e ECONOMY_RULEPRINTINGRULE_SYNID
-
-=
-int SynopticRules::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree_node *Q = NULL;
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case NUMBER_RULEBOOKS_CREATED_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define NUMBER_RULEBOOKS_CREATED@>;
-			break;
-		case RULEBOOKNAMES_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new RulebookNames array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case ECONOMY_RULEBOOKNAMES_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the economy version of the new RulebookNames array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case RULEBOOK_VAR_CREATORS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new rulebook_var_creators array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case SLOW_LOOKUP_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SlowLookup function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case RULEBOOKS_ARRAY_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			Q = Synoptic::begin_array(con_s, &IBM);
-			@<Define the new rulebooks_array array as Q@>;
-			Synoptic::end_array(Q, &IBM);
-			break;
-		case RULEPRINTINGRULE_SYNID: {
-			int economy = FALSE;
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the RULEPRINTINGRULE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case ECONOMY_RULEPRINTINGRULE_SYNID: {
-			int economy = TRUE;
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the RULEPRINTINGRULE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
+	int economy = FALSE;
+	inter_symbol *me_s = InterSymbolsTables::url_name_to_symbol(I, NULL,
+		I"/main/completion/basics/^memory_economy");
+	if (me_s) economy = Inter::Symbols::evaluate_to_int(me_s);
+	else internal_error("no me_s");
+	@<Define NUMBER_RULEBOOKS_CREATED@>;
+	@<Define RulebookNames array@>;
+	if (economy) @<Define SlowLookup function@>
+	else @<Define rulebook_var_creators array@>;
+	@<Define rulebooks_array array@>;
+	@<Define RULEPRINTINGRULE function@>;
 }
 
 @<Define NUMBER_RULEBOOKS_CREATED@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) TreeLists::len(rulebook_nodes), &IBM);
+	inter_name *iname = HierarchyLocations::find(I, NUMBER_RULEBOOKS_CREATED_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(rulebook_nodes)));
 
-@<Define the new RulebookNames array as Q@> =
-	for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
-		text_stream *name = Metadata::read_textual(pack, I"^printed_name");
-		Synoptic::textual_entry(Q, name);
+@<Define RulebookNames array@> =
+	inter_name *iname = HierarchyLocations::find(I, RULEBOOKNAMES_HL);
+	Synoptic::begin_array(I, iname);
+	if (economy) {
+		Synoptic::numeric_entry(0);
+		Synoptic::numeric_entry(0);
+	} else {
+		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
+			Synoptic::textual_entry(name);
+		}
 	}
+	Synoptic::end_array(I);
 
-@<Define the economy version of the new RulebookNames array as Q@> =
-	Synoptic::numeric_entry(Q, 0);
-	Synoptic::numeric_entry(Q, 0);
-
-@<Define the new rulebook_var_creators array as Q@> =
+@<Define rulebook_var_creators array@> =
+	inter_name *iname = HierarchyLocations::find(I, RULEBOOK_VAR_CREATORS_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
-		if (vc_s) Synoptic::symbol_entry(Q, vc_s);
-		else Synoptic::numeric_entry(Q, 0);
+		if (vc_s) Synoptic::symbol_entry(vc_s);
+		else Synoptic::numeric_entry(0);
 	}
+	Synoptic::end_array(I);
 
-@<Define the new rulebooks_array array as Q@> =
+@<Define rulebooks_array array@> =
+	inter_name *iname = HierarchyLocations::find(I, RULEBOOKS_ARRAY_HL);
+	Synoptic::begin_array(I, iname);
 	for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^run_fn");
-		Synoptic::symbol_entry(Q, fn_s);
+		Synoptic::symbol_entry(fn_s);
 	}
-	Synoptic::numeric_entry(Q, 0);
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
 
-@<Add a body of code to the SlowLookup function@> =
-	inter_symbol *rb_s = Synoptic::get_local(I, I"rb");
+@<Define SlowLookup function@> =
+	inter_name *iname = HierarchyLocations::find(I, SLOW_LOOKUP_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *rb_s = Synoptic::local(I, I"rb", NULL);
 
 	Produce::inv_primitive(I, SWITCH_BIP);
 	Produce::down(I);
@@ -151,10 +105,12 @@ int SynopticRules::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 	Produce::down(I);
 		Produce::val(I, K_value, LITERAL_IVAL, 0);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the RULEPRINTINGRULE function@> =
-	inter_symbol *R_s = Synoptic::get_local(I, I"R");
-	inter_symbol *rba_s = Synoptic::get_local(I, I"rba");
+@<Define RULEPRINTINGRULE function@> =
+	inter_name *iname = HierarchyLocations::find(I, RULEPRINTINGRULE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *R_s = Synoptic::local(I, I"R", NULL);
 
 	Produce::inv_primitive(I, IFELSE_BIP);
 	Produce::down(I);
@@ -180,6 +136,7 @@ int SynopticRules::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 			@<Print a rule name@>;
 		Produce::up(I);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);
 
 @<Print a rulebook name@> =
 	if (economy) {
@@ -200,7 +157,7 @@ int SynopticRules::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con
 		Produce::down(I);
 			Produce::inv_primitive(I, LOOKUP_BIP);
 			Produce::down(I);
-				Produce::val_symbol(I, K_value, rba_s);
+				Produce::val_iname(I, K_value, HierarchyLocations::find(I, RULEBOOKNAMES_HL));
 				Produce::val_symbol(I, K_value, R_s);
 			Produce::up(I);
 		Produce::up(I);

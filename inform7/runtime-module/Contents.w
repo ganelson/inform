@@ -23,7 +23,6 @@ Chapter 3: Basics
 	Generic Module
 	Completion Module
 	Use Options
-	Extensions
 
 Chapter 4: Enclosed Resources
 	Enclosures

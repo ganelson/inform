@@ -1,6 +1,6 @@
 [SynopticScenes::] Scenes.
 
-To renumber the scenes and construct suitable functions and arrays.
+To compile the main/synoptic/scenes submodule.
 
 @ Before this runs, instances of scenes are scattered all over the Inter tree.
 
@@ -8,50 +8,23 @@ As this is called, //Synoptic Utilities// has already formed a list |scene_nodes
 of instances having the kind |K_scene|.
 
 =
-void SynopticScenes::renumber(inter_tree *I, inter_tree_location_list *scene_nodes) {
+void SynopticScenes::compile(inter_tree *I, inter_tree_location_list *scene_nodes) {
 	if (TreeLists::len(scene_nodes) > 0) {
 		TreeLists::sort(scene_nodes, Synoptic::module_order);
-//		for (int i=0; i<TreeLists::len(scene_nodes); i++) {
-//			inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
-//			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
-//			LOG("scene %d: %S\n", i, name);
-//		}
 	}
+	@<Define SHOWSCENESTATUS function@>;
+	@<Define DETECTSCENECHANGE function@>;
 }
 
-@ There are also resources to create in the |synoptic| module:
-
-@e SHOWSCENESTATUS_SYNID
-@e DETECTSCENECHANGE_SYNID
-
-=
-int SynopticScenes::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case SHOWSCENESTATUS_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the SHOWSCENESTATUS function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case DETECTSCENECHANGE_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the DETECTSCENECHANGE function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
-}
-
-@<Add a body of code to the SHOWSCENESTATUS function@> =
+@<Define SHOWSCENESTATUS function@> =
+	inter_name *iname = HierarchyLocations::find(I, SHOWSCENESTATUS_HL);
+	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(scene_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
 		Produce::inv_call(I, ssf_s);
 	}
+	Synoptic::end_function(I, iname);
 
 @ There is one argument, |chs|: the number of iterations so far. Iterations
 occur because each set of scene changes could change the circumstances in such
@@ -63,8 +36,10 @@ whether any change in status has or has not occurred.
 
 @d MAX_SCENE_CHANGE_ITERATION 20
 
-@<Add a body of code to the DETECTSCENECHANGE function@> =
-	inter_symbol *chs_s = Synoptic::get_local(I, I"chs");
+@<Define DETECTSCENECHANGE function@> =
+	inter_name *iname = HierarchyLocations::find(I, DETECTSCENECHANGE_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *chs_s = Synoptic::local(I, I"chs", NULL);
 	inter_symbol *Again_l = Produce::reserve_label(I, I".Again");
 	inter_symbol *CScene_l = Produce::reserve_label(I, I".CScene");
 	Produce::place_label(I, Again_l);
@@ -111,3 +86,4 @@ whether any change in status has or has not occurred.
 	Produce::down(I);
 		Produce::lab(I, Again_l);
 	Produce::up(I);				
+	Synoptic::end_function(I, iname);

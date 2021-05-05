@@ -20,6 +20,7 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 			Inter::Symbols::define(S, P);
 			return NULL;
 		}
+		LOG("So S ---> %S\n", S->translate_text);
 		return Inode::error(P, I"duplicated symbol", S->symbol_name);
 	}
 	return NULL;

@@ -39,18 +39,10 @@ void RTUseOptions::compile(void) {
 		DISCARD_TEXT(N)
 	}
 
-	@<Compile NO_USE_OPTIONS@>;
 	@<Compile pragmas from use options which set these@>;
 	@<Compile the kit configuration@>;
 	@<Make interventions to give non-pragma use options effect@>;
-	@<Compile the TESTUSEOPTION function@>;
-	@<Compile the printing function for the use option kind@>;
 }
-
-@<Compile NO_USE_OPTIONS@> =
-	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, NO_USE_OPTIONS_SYNID);
-	Emit::numeric_constant(iname, (inter_ti) 0);
 
 @ Some use options convert directly into pragma instructions telling the Inform 6
 compiler (assuming we will be using that) to raise some limit. This is done with
@@ -144,24 +136,3 @@ made in that second case would be something like
 			}
 			Interventions::from_use_option(S);
 		}
-
-@ A relatively late addition to the design of use options was to make them
-values at runtime, of the kind "use option". We need to provide two functions:
-one to test whether a given use option is currently set, one to print the
-name of a given use option.
-
-@<Compile the TESTUSEOPTION function@> =
-	inter_name *iname = Hierarchy::find(TESTUSEOPTION_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, TESTUSEOPTION_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_as_symbol(I"UO");
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-
-@<Compile the printing function for the use option kind@> =
-	inter_name *iname = Hierarchy::find(PRINT_USE_OPTION_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, PRINT_USE_OPTION_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_as_symbol(I"UO");
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);

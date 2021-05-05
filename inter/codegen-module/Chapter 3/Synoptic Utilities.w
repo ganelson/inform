@@ -61,24 +61,24 @@ int Synoptic::go(pipeline_step *step) {
 	derived_kind_nodes = TreeLists::new();
 	kind_nodes = TreeLists::new();
 	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
+
 	SynopticText::alphabetise(step->repository, text_nodes);
 	
-	InterTree::traverse(step->repository, Synoptic::syn_visitor, NULL, NULL, 0);
-	SynopticResponses::renumber(step->repository, response_nodes);
-	SynopticRules::renumber(step->repository, rulebook_nodes);
-	SynopticActivities::renumber(step->repository, activity_nodes);
-	SynopticActions::renumber(step->repository, action_nodes);
-	SynopticProperties::renumber(step->repository, property_nodes);
-	SynopticExtensions::renumber(step->repository, extension_nodes);
-	SynopticRelations::renumber(step->repository, relation_nodes);
-	SynopticTables::renumber(step->repository, table_nodes);
+	SynopticActions::compile(step->repository, action_nodes);
+	SynopticActivities::compile(step->repository, activity_nodes);
 	SynopticChronology::compile(step->repository);
-	SynopticInstances::renumber(step->repository, instance_nodes);
-	SynopticScenes::renumber(step->repository, scene_nodes);
-	SynopticMultimedia::renumber(step->repository);
-	SynopticVerbs::renumber(step->repository);
-	SynopticUseOptions::renumber(step->repository);
-	SynopticKinds::renumber(step->repository);
+	SynopticExtensions::compile(step->repository, extension_nodes);
+	SynopticInstances::compile(step->repository, instance_nodes);
+	SynopticKinds::compile(step->repository);
+	SynopticMultimedia::compile(step->repository);
+	SynopticProperties::compile(step->repository, property_nodes);
+	SynopticRelations::compile(step->repository, relation_nodes);
+	SynopticResponses::compile(step->repository, response_nodes);
+	SynopticRules::compile(step->repository);
+	SynopticScenes::compile(step->repository, scene_nodes);
+	SynopticTables::compile(step->repository, table_nodes);
+	SynopticUseOptions::compile(step->repository);
+	SynopticVerbs::compile(step->repository);
 	return TRUE;
 }
 
@@ -145,35 +145,7 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 
 @
 
-@e NO_SYNID from 0
-
 =
-void Synoptic::syn_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.data[ID_IFLD] == CONSTANT_IST) {
-		inter_symbol *con_s =
-			InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-		int synid = Inter::Symbols::read_annotation(con_s, SYNOPTIC_IANN);
-		if (synid > NO_SYNID) {
-			Inter::Symbols::unannotate(con_s, SYNOPTIC_IANN);
-			if (SynopticResponses::redefine(I, P, con_s, synid)) return;
-			if (SynopticRules::redefine(I, P, con_s, synid)) return;
-			if (SynopticActivities::redefine(I, P, con_s, synid)) return;
-			if (SynopticActions::redefine(I, P, con_s, synid)) return;
-			if (SynopticProperties::redefine(I, P, con_s, synid)) return;
-			if (SynopticExtensions::redefine(I, P, con_s, synid)) return;
-			if (SynopticRelations::redefine(I, P, con_s, synid)) return;
-			if (SynopticTables::redefine(I, P, con_s, synid)) return;
-			if (SynopticScenes::redefine(I, P, con_s, synid)) return;
-			if (SynopticMultimedia::redefine(I, P, con_s, synid)) return;
-			if (SynopticVerbs::redefine(I, P, con_s, synid)) return;
-			if (SynopticUseOptions::redefine(I, P, con_s, synid)) return;
-			if (SynopticKinds::redefine(I, P, con_s, synid)) return;
-			LOG("Couldn't consolidate $3\n", con_s);
-			internal_error("symbol cannot be consolidated");
-		}
-	}
-}
-
 int Synoptic::module_order(const void *ent1, const void *ent2) {
 	itl_entry *E1 = (itl_entry *) ent1;
 	itl_entry *E2 = (itl_entry *) ent2;
@@ -211,54 +183,15 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 	return InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), name);
 }
 
-inter_symbol *Synoptic::get_local(inter_tree *I, text_stream *name) {
-	inter_package *pack = Inter::Bookmarks::package(Produce::at(I));
-	inter_symbol *loc_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
-	if (loc_s == NULL) Metadata::err("local not found", pack, name);
-	return loc_s;
-}
-
 inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {
 	inter_symbol *loc_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
 	if (loc_s == NULL) Metadata::err("package symbol not found", pack, name);
 	return loc_s;
 }
 
-packaging_state Synoptic::begin_redefining_function(inter_bookmark *IBM, inter_tree *I, inter_tree_node *P) {
-	if (P->W.data[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) {
-		LOG("%d\n", P->W.data[FORMAT_CONST_IFLD]);
-		internal_error("not a function");
-	}
-	inter_package *block = Inode::ID_to_package(P, P->W.data[DATA_CONST_IFLD]);
-	inter_tree_node *first_F = NULL;
-	LOOP_THROUGH_INTER_CHILDREN(F, block->package_head)
-		if (F->W.data[ID_IFLD] == CODE_IST)
-			first_F = InterTree::first_child(F);
-	if (first_F == NULL) internal_error("failed to find code block");
-	Site::set_cir(I, block);
-	*IBM = Inter::Bookmarks::after_this_node(I, first_F);
-	Produce::push_code_position(I, Produce::new_cip(I, IBM), Inter::Bookmarks::snapshot(Packaging::at(I)));
-	packaging_state save = I->site.current_state;
-	Packaging::set_state(I, IBM, Packaging::enclosure(I));
-	return save;
-}
-
-void Synoptic::end_redefining_function(inter_tree *I, packaging_state save) {
-	Packaging::set_state(I, save.saved_IRS, save.saved_enclosure);
-	Produce::pop_code_position(I);
-	Site::set_cir(I, NULL);
-}
-
 @
 
 =
-void Synoptic::def_numeric_constant(inter_symbol *con_s, inter_ti val, inter_bookmark *IBM) {
-	Produce::guard(Inter::Constant::new_numerical(IBM,
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_kind_symbol),
-		LITERAL_IVAL, val, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-}
-
 void Synoptic::def_textual_constant(inter_tree *I, inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
 	Inter::Symbols::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
 	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
@@ -299,7 +232,7 @@ inter_symbol *Synoptic::local(inter_tree *I, text_stream *name,
 
 inter_tree_node *synoptic_array_node = NULL;
 packaging_state synoptic_array_ps;
-void Synoptic::begin_array_i(inter_tree *I, inter_name *iname) {
+void Synoptic::begin_array(inter_tree *I, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = Produce::define_symbol(iname);
 	synoptic_array_node = Inode::fill_3(Packaging::at(I), CONSTANT_IST,
@@ -307,7 +240,7 @@ void Synoptic::begin_array_i(inter_tree *I, inter_name *iname) {
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), list_of_unchecked_kind_symbol),
 		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(Packaging::at(I)) + 1);
 }
-void Synoptic::end_array_i(inter_tree *I) {
+void Synoptic::end_array(inter_tree *I) {
 	inter_error_message *E =
 		Inter::Defn::verify_construct(Inter::Bookmarks::package(Packaging::at(I)), synoptic_array_node);
 	if (E) {
@@ -317,69 +250,31 @@ void Synoptic::end_array_i(inter_tree *I) {
 	Inter::Bookmarks::insert(Packaging::at(I), synoptic_array_node);
 	Packaging::exit(I, synoptic_array_ps);
 }
-inter_tree_node *Synoptic::begin_array(inter_symbol *con_s, inter_bookmark *IBM) {
-	return Inode::fill_3(IBM, CONSTANT_IST,
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
-		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-}
-inter_tree_node *Synoptic::begin_byte_array(inter_symbol *con_s, inter_bookmark *IBM) {
-	Inter::Symbols::annotate_i(con_s, BYTEARRAY_IANN, 1);
-	return Inode::fill_3(IBM, CONSTANT_IST,
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
-		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-}
-inter_tree_node *Synoptic::begin_table_array(inter_symbol *con_s, inter_bookmark *IBM) {
-	Inter::Symbols::annotate_i(con_s, TABLEARRAY_IANN, 1);
-	return Inode::fill_3(IBM, CONSTANT_IST,
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(IBM, list_of_unchecked_kind_symbol),
-		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-}
-void Synoptic::end_array(inter_tree_node *Q, inter_bookmark *IBM) {
-	inter_error_message *E =
-		Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), Q);
-	if (E) {
-		Inter::Errors::issue(E);
-		internal_error("synoptic array failed verification");
-	}
-	Inter::Bookmarks::insert(IBM, Q);
-}
 
-void Synoptic::numeric_entry(inter_tree_node *Q, inter_ti val2) {
-	if (Inode::extend(Q, 2) == FALSE) internal_error("cannot extend");
-	Q->W.data[Q->W.extent-2] = LITERAL_IVAL;
-	Q->W.data[Q->W.extent-1] = val2;
+void Synoptic::numeric_entry(inter_ti val2) {
+	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = LITERAL_IVAL;
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
 }
-void Synoptic::symbol_entry(inter_tree_node *Q, inter_symbol *S) {
-	if (Inode::extend(Q, 2) == FALSE) internal_error("cannot extend");
-	inter_package *pack = Inter::Packages::container(Q);
+void Synoptic::symbol_entry(inter_symbol *S) {
+	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_symbol *local_S = InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), S->symbol_name);
 	InterSymbolsTables::equate(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, local_S, &val1, &val2);
-	Q->W.data[Q->W.extent-2] = ALIAS_IVAL;
-	Q->W.data[Q->W.extent-1] = val2;
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
 }
-void Synoptic::textual_entry(inter_tree_node *Q, text_stream *text) {
-	if (Inode::extend(Q, 2) == FALSE) internal_error("cannot extend");
-	inter_package *pack = Inter::Packages::container(Q);
+void Synoptic::textual_entry(text_stream *text) {
+	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_tree *I = Inter::Packages::tree(pack);
 	inter_ti val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
 	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 	Str::copy(glob_storage, text);
-	Q->W.data[Q->W.extent-2] = LITERAL_TEXT_IVAL;
-	Q->W.data[Q->W.extent-1] = val2;
-}
-void Synoptic::numeric_entry_i(inter_ti val2) {
-	Synoptic::numeric_entry(synoptic_array_node, val2);
-}
-void Synoptic::symbol_entry_i(inter_symbol *S) {
-	Synoptic::symbol_entry(synoptic_array_node, S);
-}
-void Synoptic::textual_entry_i(text_stream *text) {
-	Synoptic::textual_entry(synoptic_array_node, text);
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = LITERAL_TEXT_IVAL;
+	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
 }
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {

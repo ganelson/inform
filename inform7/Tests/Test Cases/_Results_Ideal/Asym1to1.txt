@@ -1,7 +1,7 @@
    Mysterious Void
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Mysterious Void
   
@@ -11,13 +11,13 @@
   >[1] showme fish
   fish - thing
   location: out of play
-  singular-named, improper-named; unlit, inedible, portable
+  unlit, inedible, portable; singular-named, improper-named
+  description: none
+  initial appearance: none
   printed name: "fish"
   printed plural name: none
   indefinite article: none
   list grouping key: none
-  description: none
-  initial appearance: none
   
   >[2] n
   Red does not scratch green.
@@ -79,12 +79,12 @@
   >[10] showme fish
   fish - thing
   location: out of play
-  singular-named, improper-named; unlit, inedible, portable
+  unlit, inedible, portable; singular-named, improper-named
+  description: none
+  initial appearance: none
   printed name: "fish"
   printed plural name: none
   indefinite article: none
   list grouping key: none
-  description: none
-  initial appearance: none
   
 > >

@@ -1,12 +1,12 @@
 [SynopticUseOptions::] Use Options.
 
-To renumber the properties and construct suitable functions and arrays.
+To compile the main/synoptic/use_options submodule.
 
 @ As this is called, //Synoptic Utilities// has already formed a list |use_option_nodes|
 of packages of type |_use_option|.
 
 =
-void SynopticUseOptions::renumber(inter_tree *I) {
+void SynopticUseOptions::compile(inter_tree *I) {
 	if (TreeLists::len(use_option_nodes) > 0) {
 		TreeLists::sort(use_option_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(use_option_nodes); i++) {
@@ -15,45 +15,25 @@ void SynopticUseOptions::renumber(inter_tree *I) {
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
 	}
-}
 
-@ There are also resources to create in the |synoptic| module:
-
-@e NO_USE_OPTIONS_SYNID
-@e TESTUSEOPTION_SYNID
-@e PRINT_USE_OPTION_SYNID
-
-=
-int SynopticUseOptions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol *con_s, int synid) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(pack);
-	switch (synid) {
-		case NO_USE_OPTIONS_SYNID:
-			Inter::Symbols::strike_definition(con_s);
-			@<Define NO_USE_OPTIONS@>;
-			break;
-		case TESTUSEOPTION_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the TESTUSEOPTION function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		case PRINT_USE_OPTION_SYNID: {
-			packaging_state save = Synoptic::begin_redefining_function(&IBM, I, P);
-			@<Add a body of code to the PRINT_USE_OPTION function@>;
-			Synoptic::end_redefining_function(I, save);
-			break;
-		}
-		default: return FALSE;
-	}
-	return TRUE;
+	@<Define NO_USE_OPTIONS@>;
+	@<Define TESTUSEOPTION function@>;
+	@<Define PRINT_USE_OPTION function@>;
 }
 
 @<Define NO_USE_OPTIONS@> =
-	Synoptic::def_numeric_constant(con_s, (inter_ti) TreeLists::len(use_option_nodes), &IBM);
+	inter_name *iname = HierarchyLocations::find(I, NO_USE_OPTIONS_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(use_option_nodes)));
 
-@<Add a body of code to the TESTUSEOPTION function@> =
-	inter_symbol *UO_s = Synoptic::get_local(I, I"UO");
+@ A relatively late addition to the design of use options was to make them
+values at runtime, of the kind "use option". We need to provide two functions:
+one to test whether a given use option is currently set, one to print the
+name of a given use option.
+
+@<Define TESTUSEOPTION function@> =
+	inter_name *iname = HierarchyLocations::find(I, TESTUSEOPTION_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	for (int i=0; i<TreeLists::len(use_option_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(use_option_nodes->list[i].node);
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
@@ -73,9 +53,12 @@ int SynopticUseOptions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol
 		}
 	}
 	Produce::rfalse(I);
+	Synoptic::end_function(I, iname);
 
-@<Add a body of code to the PRINT_USE_OPTION function@> =
-	inter_symbol *UO_s = Synoptic::get_local(I, I"UO");
+@<Define PRINT_USE_OPTION function@> =
+	inter_name *iname = HierarchyLocations::find(I, PRINT_USE_OPTION_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	Produce::inv_primitive(I, SWITCH_BIP);
 	Produce::down(I);
 		Produce::val_symbol(I, K_value, UO_s);
@@ -98,3 +81,4 @@ int SynopticUseOptions::redefine(inter_tree *I, inter_tree_node *P, inter_symbol
 			}
 		Produce::up(I);
 	Produce::up(I);
+	Synoptic::end_function(I, iname);

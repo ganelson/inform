@@ -1,6 +1,7 @@
 [SynopticText::] Literal Text.
 
-To alphabetise and make unique the packed text constants.
+To alphabetise literal texts, deduplicate them, and stote a canonical set in
+the main/texts linkage.
 
 @ Before this runs, literal text constants are scattered all over the Inter tree.
 At the end, they are all moved into a package called |texts|, of type |_linkage|,

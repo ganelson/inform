@@ -1,7 +1,7 @@
    Lab
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Lab
   
@@ -11,7 +11,8 @@
   >[1] showme thing 1
   thing 1 - thing
   location: out of play
-  singular-named, proper-named; unlit, inedible, portable
+  unlit, inedible, portable; singular-named, proper-named
+  initial appearance: none
   printed name: "thing 1"
   printed plural name: none
   indefinite article: none
@@ -19,17 +20,16 @@
   
   the first thing."
   list grouping key: none
-  initial appearance: none
   
   >[2] showme thing 2
   thing 2 - thing
   location: out of play
-  singular-named, proper-named; unlit, inedible, portable
+  unlit, inedible, portable; singular-named, proper-named
+  initial appearance: none
   printed name: "thing 2"
   printed plural name: none
   indefinite article: none
   description: "This is the second thing."
   list grouping key: none
-  initial appearance: none
   
 > >

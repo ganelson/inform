@@ -1,6 +1,6 @@
 [RTFigures::] Figures.
 
-@ Just one array will do us:
+@ Easy:
 
 =
 void RTFigures::compile_metadata(void) {
@@ -10,10 +10,4 @@ void RTFigures::compile_metadata(void) {
 			RTInstances::package(bf->as_instance));
 		Emit::numeric_constant(md_iname, (inter_ti) bf->figure_number);
 	}
-
-	inter_name *iname = Hierarchy::find(RESOURCEIDSOFFIGURES_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, RESOURCEIDSOFFIGURES_SYNID);
-	packaging_state save = EmitArrays::begin(iname, K_value);
-	EmitArrays::end(save);
-	Hierarchy::make_available(iname);
 }

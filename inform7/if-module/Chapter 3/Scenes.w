@@ -27,9 +27,6 @@ int Scenes::production_line(int stage, int debugging,
 		BENCH(RTScenes::compile_change_functions);
 		BENCH(RTScenes::compile_show_status_functions);
 	}
-	if (stage == INTER3_CSEQ) {
-		BENCH(RTScenes::compile_synoptic_resources);
-	}
 	return FALSE;
 }
 

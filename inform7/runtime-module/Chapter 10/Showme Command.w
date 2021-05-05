@@ -77,16 +77,6 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 				KIND_IS_OBJECT_METADATA_HL, 0);
 		}
 
-	inter_name *iname = Hierarchy::find(SHOWMEKINDDETAILS_HL);
-	Produce::annotate_i(iname, SYNOPTIC_IANN, SHOWMEKINDDETAILS_SYNID);
-	packaging_state save = Functions::begin(iname);
-	LocalVariables::new_other_as_symbol(I"which");
-	LocalVariables::new_other_as_symbol(I"na");
-	LocalVariables::new_other_as_symbol(I"t_0");
-	EmitCode::comment(I"This function is consolidated");
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-
 @<Make SHOWMEINSTANCEDETAILS@> =
 	inter_name *iname = Hierarchy::find(SHOWMEINSTANCEDETAILS_HL);
 	packaging_state save = Functions::begin(iname);
