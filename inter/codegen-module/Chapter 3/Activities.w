@@ -1,6 +1,6 @@
 [SynopticActivities::] Activities.
 
-To renumber the activities and construct suitable functions and arrays.
+To compile the main/synoptic/activities submodule.
 
 @ Before this runs, activity packages are scattered all over the Inter tree.
 We must allocate each one a unique ID.

@@ -78,43 +78,45 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 		}
 
 @<Make SHOWMEINSTANCEDETAILS@> =
-	inter_name *iname = Hierarchy::find(SHOWMEINSTANCEDETAILS_HL);
-	packaging_state save = Functions::begin(iname);
-	inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
-	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
-	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
-	EmitCode::inv(IFDEBUG_BIP);
-	EmitCode::down();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(IFELSE_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, which_s);
-				EmitCode::code();
-				EmitCode::down();
-					RTShowmeCommand::compile_SHOWME_inst(TRUE, t_0_s, na_s);
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					RTShowmeCommand::compile_SHOWME_inst(FALSE, t_0_s, na_s);
-				EmitCode::up();
-			EmitCode::up();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();		
-				EmitCode::val_symbol(K_value, na_s);
-			EmitCode::up();		
-		EmitCode::up();
-	EmitCode::up();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-
-@ =
-void RTShowmeCommand::compile_SHOWME_inst(int val, inter_symbol *t_0_s, inter_symbol *na_s) {
 	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
-		RTShowmeCommand::compile_SHOWME_type_subj(val, Instances::as_subject(I), t_0_s, na_s);
-}
+	LOOP_OVER_INSTANCES(I, K_object) {
+		inference_subject *subj = Instances::as_subject(I);
+		inter_name *iname = Hierarchy::make_iname_in(INST_SHOWME_FN_HL,
+			RTInstances::package(I));
+		packaging_state save = Functions::begin(iname);
+		inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
+		inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
+		inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
+		EmitCode::inv(IFDEBUG_BIP);
+		EmitCode::down();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(IFELSE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, which_s);
+					EmitCode::code();
+					EmitCode::down();
+						RTShowmeCommand::compile_SHOWME_type_subj(TRUE, subj, t_0_s, na_s);
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						RTShowmeCommand::compile_SHOWME_type_subj(FALSE, subj, t_0_s, na_s);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();		
+					EmitCode::val_symbol(K_value, na_s);
+				EmitCode::up();		
+			EmitCode::up();
+		EmitCode::up();
+		Functions::end(save);
+		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
+			INST_SHOWME_METADATA_HL, iname);
+	}
 
+@
+
+=
 void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
 	@<Skip if this object's definition has nothing to offer SHOWME@>;
 

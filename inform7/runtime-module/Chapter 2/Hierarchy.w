@@ -666,6 +666,8 @@ void Hierarchy::establish(void) {
 @e INSTANCE_SOUND_ID_METADATA_HL
 @e INSTANCE_SSF_METADATA_HL
 @e INSTANCE_SCF_METADATA_HL
+@e INST_SHOWME_METADATA_HL
+@e INST_SHOWME_FN_HL
 @e INSTANCE_HL
 @e SCENE_STATUS_FN_HL
 @e SCENE_CHANGE_FN_HL
@@ -695,6 +697,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_FIGURE_ID_METADATA_HL, I"^resource_id")
 			H_C_U(INSTANCE_IS_SOUND_METADATA_HL, I"^is_sound")
 			H_C_U(INSTANCE_SOUND_ID_METADATA_HL, I"^resource_id")
+			H_C_U(INST_SHOWME_METADATA_HL,    I"^showme_fn")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
@@ -704,6 +707,7 @@ void Hierarchy::establish(void) {
 			H_F_G(REGION_FOUND_IN_FN_HL,      I"region_found_in_fn", I"RFI_for_I")
 			H_F_G(TSD_DOOR_DIR_FN_HL,         I"tsd_door_dir_fn", I"TSD_door_dir_value")
 			H_F_G(TSD_DOOR_TO_FN_HL,          I"tsd_door_to_fn", I"TSD_door_to_value")
+			H_F_U(INST_SHOWME_FN_HL,          I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,     I"inline")
 			H_END
