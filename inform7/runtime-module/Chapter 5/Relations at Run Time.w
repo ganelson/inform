@@ -231,7 +231,7 @@ void RTRelations::compile_relation_records(void) {
 				EmitCode::val_iname(K_value, RTRelations::initialiser_iname(bp));
 			EmitCode::up();
 			Functions::end(save);
-			inter_name *md_iname = Hierarchy::make_iname_in(RELATION_CREATOR_METADATA_HL, bp->imp->bp_package);
+			inter_name *md_iname = Hierarchy::make_iname_in(RELATION_CREATOR_MD_HL, bp->imp->bp_package);
 			Emit::iname_constant(md_iname, K_value, iname);
 		}
 	}
@@ -241,7 +241,7 @@ void RTRelations::compile_relation_records(void) {
 	inter_name *id_iname = Hierarchy::make_iname_in(RELATION_ID_HL, bp->imp->bp_package);
 	Emit::numeric_constant(id_iname, 0);
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
-	inter_name *md_iname = Hierarchy::make_iname_in(RELATION_VALUE_METADATA_HL, bp->imp->bp_package);
+	inter_name *md_iname = Hierarchy::make_iname_in(RELATION_VALUE_MD_HL, bp->imp->bp_package);
 	Emit::iname_constant(md_iname, K_value, RTRelations::iname(bp));
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
 	packaging_state save = EmitArrays::begin(RTRelations::iname(bp), K_value);

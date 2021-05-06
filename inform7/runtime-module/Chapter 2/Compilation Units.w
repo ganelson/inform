@@ -66,20 +66,20 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	inter_ti cat = 1;
 	if (ext) cat = 2;
 	if (Extensions::is_standard(ext)) cat = 3;
-	Hierarchy::apply_metadata_from_number(M->the_package, EXT_CATEGORY_METADATA_HL, cat);
+	Hierarchy::apply_metadata_from_number(M->the_package, EXT_CATEGORY_MD_HL, cat);
 
 @ The extension credit consists of a single line, with name, version number
 and author; together with any "extra credit" asked for by the extension.
 
 @<Give M metadata indicating the source extension@> =
-	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_METADATA_HL,
+	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_MD_HL,
 		ext->as_copy->edition->work->raw_author_name);
-	Hierarchy::apply_metadata(M->the_package, EXT_TITLE_METADATA_HL,
+	Hierarchy::apply_metadata(M->the_package, EXT_TITLE_MD_HL,
 		ext->as_copy->edition->work->raw_title);
 	TEMPORARY_TEXT(V)
 	semantic_version_number N = ext->as_copy->edition->version;
 	WRITE_TO(V, "%v", &N);
-	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_METADATA_HL, V);
+	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_MD_HL, V);
 	DISCARD_TEXT(V)
 	inter_name *iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->the_package);
 	Emit::numeric_constant(iname, 0);
@@ -89,7 +89,7 @@ and author; together with any "extra credit" asked for by the extension.
 	WRITE_TO(C, " by %S", ext->as_copy->edition->work->raw_author_name);
 	if (Str::len(ext->extra_credit_as_lexed) > 0)
 		WRITE_TO(C, " (%S)", ext->extra_credit_as_lexed);
-	Hierarchy::apply_metadata(M->the_package, EXT_CREDIT_METADATA_HL, C);
+	Hierarchy::apply_metadata(M->the_package, EXT_CREDIT_MD_HL, C);
 	DISCARD_TEXT(C)
 	TEMPORARY_TEXT(the_author_name)
 	WRITE_TO(the_author_name, "%S", ext->as_copy->edition->work->author_name);
@@ -100,7 +100,7 @@ and author; together with any "extra credit" asked for by the extension.
 		((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
 			(self_penned == FALSE)))             /*     (2b) didn't write this extension */
 		modesty = 0;
-	Hierarchy::apply_metadata_from_number(M->the_package, EXT_MODESTY_METADATA_HL, modesty);
+	Hierarchy::apply_metadata_from_number(M->the_package, EXT_MODESTY_MD_HL, modesty);
 	DISCARD_TEXT(the_author_name)
 
 @ Here we must find a unique name, valid as an Inter identifier: the code

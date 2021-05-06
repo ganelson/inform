@@ -48,7 +48,7 @@ void RTScenes::compile_change_functions(void) {
 		@<Compile code detecting the ends of a specific scene@>;
 		EmitCode::rfalse();
 		Functions::end(save);
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SCF_METADATA_HL, RTInstances::package(sc->as_instance));
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SCF_MD_HL, RTInstances::package(sc->as_instance));
 		Emit::iname_constant(md_iname, K_value, iname);		
 	}
 }
@@ -442,7 +442,7 @@ void RTScenes::compile_show_status_functions(void) {
 			EmitCode::up();
 		EmitCode::up();
 		Functions::end(save);
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SSF_METADATA_HL, RTInstances::package(sc->as_instance));
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SSF_MD_HL, RTInstances::package(sc->as_instance));
 		Emit::iname_constant(md_iname, K_value, iname);		
 	}
 }

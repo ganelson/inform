@@ -32,7 +32,7 @@ void RTTables::compile_table_metadata(void) {
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			Hierarchy::apply_metadata_from_iname(t->compilation_data.table_package, TABLE_VALUE_METADATA_HL,
+			Hierarchy::apply_metadata_from_iname(t->compilation_data.table_package, TABLE_VALUE_MD_HL,
 				RTTables::identifier(t));
 		}
 }
@@ -41,7 +41,7 @@ void RTTables::compile_table_column_metadata(void) {
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
 		Emit::numeric_constant(tc->compilation_data.id_iname, 0);
-		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_METADATA_HL, tc->compilation_data.tc_package);
+		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_MD_HL, tc->compilation_data.tc_package);
 		RTKinds::constant_from_strong_id(kind_iname, Tables::Columns::get_kind(tc));
 	}
 }
@@ -340,12 +340,12 @@ case.)
 
 @<Compile metadata for the table@> =
 	Hierarchy::apply_metadata_from_wording(t->compilation_data.table_package,
-		TABLE_NAME_METADATA_HL, t->compilation_data.name_for_metadata);
+		TABLE_NAME_MD_HL, t->compilation_data.name_for_metadata);
 	inter_name *iname = Hierarchy::make_iname_in(TABLE_ID_HL, t->compilation_data.table_package);
 	Emit::numeric_constant(iname, 0);
 	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
-	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_METADATA_HL, S);
+	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_MD_HL, S);
 	DISCARD_TEXT(S)
 
 @ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its

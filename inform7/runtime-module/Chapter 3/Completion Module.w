@@ -29,7 +29,7 @@ void CompletionModule::compile(void) {
 	DISCARD_TEXT(svn)
 
 @<Memory economy metadata@> =	
-	inter_name *iname = Hierarchy::find(MEMORY_ECONOMY_METADATA_HL);
+	inter_name *iname = Hierarchy::find(MEMORY_ECONOMY_MD_HL);
 	if (global_compilation_settings.memory_economy_in_force)
 		Emit::numeric_constant(iname, 1);
 	else

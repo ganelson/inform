@@ -304,7 +304,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 				Hierarchy::local_package_to(MVERBS_HAP, vc->where_vc_created);
 			TEMPORARY_TEXT(ANT)
 			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
-			Hierarchy::apply_metadata(R, MVERB_NAME_METADATA_HL, ANT);
+			Hierarchy::apply_metadata(R, MVERB_NAME_MD_HL, ANT);
 			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
@@ -312,7 +312,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 				RTVerbs::package(vc->vc_conjugates, vc->where_vc_created);
 			TEMPORARY_TEXT(ANT)
 			WRITE_TO(ANT, "to %A", &(vc->infinitive));
-			Hierarchy::apply_metadata(R, VERB_NAME_METADATA_HL, ANT);
+			Hierarchy::apply_metadata(R, VERB_NAME_MD_HL, ANT);
 			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
 		}

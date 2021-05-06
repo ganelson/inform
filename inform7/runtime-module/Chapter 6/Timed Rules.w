@@ -13,10 +13,10 @@ void RTTimedRules::annotate_rules(void) {
 			int t = TimedRules::get_timing_of_event(id);
 			if (t == NOT_A_TIMED_EVENT) continue;
 			Hierarchy::apply_metadata_from_number(R->compilation_data.rule_package,
-				RULE_TIMED_METADATA_HL, 1);
+				RULE_TIMED_MD_HL, 1);
 			if (t != NO_FIXED_TIME)
 				Hierarchy::apply_metadata_from_number(R->compilation_data.rule_package,
-					RULE_TIMED_FOR_METADATA_HL, (inter_ti) t);
+					RULE_TIMED_FOR_MD_HL, (inter_ti) t);
 		}
 	}
 }

@@ -213,7 +213,7 @@ void RTProperties::compile_metadata(void) {
 		if ((Properties::is_either_or(prn)) &&
 			(prn->compilation_data.store_in_negation)) continue;
 		package_request *pack = RTProperties::package(prn);
-		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_METADATA_HL, prn->name);
+		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
 		inter_name *iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
 		Emit::numeric_constant(iname, 0);
 	}
@@ -428,7 +428,7 @@ which would work just as well, but more slowly.
 property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_identifier) {
 	wording W = Feeds::feed_text(Inter_identifier);
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
-	Hierarchy::apply_metadata(R, PROPERTY_NAME_METADATA_HL, Inter_identifier);
+	Hierarchy::apply_metadata(R, PROPERTY_NAME_MD_HL, Inter_identifier);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
 	RTProperties::set_translation_S(prn, Inter_identifier);

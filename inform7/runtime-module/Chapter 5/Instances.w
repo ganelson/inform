@@ -23,27 +23,27 @@ void RTInstances::compile_metadata(void) {
 	instance *I;
 	LOOP_OVER(I, instance) {
 		Hierarchy::apply_metadata_from_wording(I->icd.instance_package,
-			INSTANCE_NAME_METADATA_HL,
+			INSTANCE_NAME_MD_HL,
 			Nouns::nominative(I->as_noun, FALSE));
 		Hierarchy::apply_metadata_from_iname(I->icd.instance_package,
-			INSTANCE_VALUE_METADATA_HL,
+			INSTANCE_VALUE_MD_HL,
 			I->icd.instance_iname);
-		inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_METADATA_HL,
+		inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL,
 			I->icd.instance_package);
 		kind *K = Instances::to_kind(I);
 		RTKinds::constant_from_strong_id(kn_iname, K);
 		if ((K_scene) && (Kinds::eq(K, K_scene)))
 			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
-				INSTANCE_IS_SCENE_METADATA_HL, 1);
+				INSTANCE_IS_SCENE_MD_HL, 1);
 		if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
 			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
-				INSTANCE_IS_SOUND_METADATA_HL, 1);
+				INSTANCE_IS_SOUND_MD_HL, 1);
 		if ((K_figure_name) && (Kinds::eq(K, K_figure_name)))
 			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
-				INSTANCE_IS_FIGURE_METADATA_HL, 1);
+				INSTANCE_IS_FIGURE_MD_HL, 1);
 		if ((K_external_file) && (Kinds::eq(K, K_external_file)))
 			Hierarchy::apply_metadata_from_number(I->icd.instance_package,
-				INSTANCE_IS_EXF_METADATA_HL, 1);
+				INSTANCE_IS_EXF_MD_HL, 1);
 	}
 }
 

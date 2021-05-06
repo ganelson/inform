@@ -76,9 +76,9 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, PR);
 	resp->value_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, PR);
 	resp->launcher_iname = Hierarchy::make_iname_in(LAUNCHER_HL, PR);
-	resp->value_md_iname = Hierarchy::make_iname_in(RESP_VALUE_METADATA_HL, PR);
-	resp->rule_md_iname = Hierarchy::make_iname_in(RULE_METADATA_HL, PR);
-	resp->marker_md_iname = Hierarchy::make_iname_in(MARKER_METADATA_HL, PR);
+	resp->value_md_iname = Hierarchy::make_iname_in(RESP_VALUE_MD_HL, PR);
+	resp->rule_md_iname = Hierarchy::make_iname_in(RULE_MD_HL, PR);
+	resp->marker_md_iname = Hierarchy::make_iname_in(MARKER_MD_HL, PR);
 	resp->group_md_iname = Hierarchy::make_iname_in(GROUP_HL, PR);
 
 	Rules::set_response(R, marker, resp);

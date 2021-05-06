@@ -28,14 +28,14 @@ void RTUseOptions::compile(void) {
 		package_request *R = uo->compilation_data.uo_package;
 		inter_ti set = 0;
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) set = 1;
-		inter_name *set_iname = Hierarchy::make_iname_in(USE_OPTION_ON_METADATA_HL, R);
+		inter_name *set_iname = Hierarchy::make_iname_in(USE_OPTION_ON_MD_HL, R);
 		Emit::numeric_constant(set_iname, set);
 		Emit::numeric_constant(uo->compilation_data.uo_value, (inter_ti) 0);
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "%W option", uo->name);
 		if (uo->minimum_setting_value > 0)
 			WRITE_TO(N, " [%d]", uo->minimum_setting_value);
-		Hierarchy::apply_metadata(R, USE_OPTION_PNAME_METADATA_HL, N);
+		Hierarchy::apply_metadata(R, USE_OPTION_PNAME_MD_HL, N);
 		DISCARD_TEXT(N)
 	}
 

@@ -36,8 +36,8 @@ Chapter 4: Enclosed Resources
 	Group Together
 
 Chapter 5: Miscellany
-	Rules
 	Activities
+	Rules
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
 	Equations Support

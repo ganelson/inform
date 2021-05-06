@@ -709,7 +709,7 @@ void RTKinds::compile_structures(void) {
 @<Annotate rks package@> =
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
-		inter_name *md_iname = Hierarchy::make_iname_in(DK_NEEDED_METADATA_HL,
+		inter_name *md_iname = Hierarchy::make_iname_in(DK_NEEDED_MD_HL,
 			rks->rks_package);
 		if (rks->make_default) {
 			Emit::numeric_constant(md_iname, (inter_ti) 1);
@@ -1453,52 +1453,52 @@ void RTKinds::compile_metadata(void) {
 		TEMPORARY_TEXT(S)
 		WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
 		Hierarchy::apply_metadata(Kinds::Behaviour::package(K),
-			KIND_PNAME_METADATA_HL, S);
+			KIND_PNAME_MD_HL, S);
 		DISCARD_TEXT(S)
 		Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-			KIND_IS_BASE_METADATA_HL, 1);
+			KIND_IS_BASE_MD_HL, 1);
 		if (Kinds::Behaviour::is_object(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_OBJECT_METADATA_HL, 1);
+				KIND_IS_OBJECT_MD_HL, 1);
 		} else {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_OBJECT_METADATA_HL, 0);
+				KIND_IS_OBJECT_MD_HL, 0);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_SKOO_METADATA_HL, 1);
+				KIND_IS_SKOO_MD_HL, 1);
 		} else {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_SKOO_METADATA_HL, 0);
+				KIND_IS_SKOO_MD_HL, 0);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-				KIND_CLASS_METADATA_HL, RTKinds::I6_classname(K));
+				KIND_CLASS_MD_HL, RTKinds::I6_classname(K));
 		}
 		if (Kinds::Behaviour::definite(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_DEF_METADATA_HL, 1);
+				KIND_IS_DEF_MD_HL, 1);
 		} else {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_DEF_METADATA_HL, 0);
+				KIND_IS_DEF_MD_HL, 0);
 		}		
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_HAS_BV_METADATA_HL, 1);
+				KIND_HAS_BV_MD_HL, 1);
 		} else {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_HAS_BV_METADATA_HL, 0);
+				KIND_HAS_BV_MD_HL, 0);
 		}		
 		kind_constructor *con = Kinds::get_construct(K);
 		inter_name *weak_iname = Kinds::Constructors::iname(con);
 		if (weak_iname == NULL) internal_error("no iname for weak ID");
 		Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-			KIND_WEAK_ID_METADATA_HL, weak_iname);
+			KIND_WEAK_ID_MD_HL, weak_iname);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			inter_name *sf_iname = Kinds::Behaviour::get_support_routine_as_iname(K);
 			if (sf_iname)
 				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-					KIND_SUPPORT_FN_METADATA_HL, sf_iname);
+					KIND_SUPPORT_FN_MD_HL, sf_iname);
 			else internal_error("kind with block values but no support function");
 		}
 
@@ -1508,24 +1508,24 @@ void RTKinds::compile_metadata(void) {
 			inter_name *cf_iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
 			if (cf_iname)
 				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-					KIND_CMP_FN_METADATA_HL, cf_iname);
+					KIND_CMP_FN_MD_HL, cf_iname);
 			else internal_error("kind with no comparison function");
 		}
 		if (Kinds::Behaviour::definite(K)) {
 			inter_name *mkdef_iname = Kinds::Behaviour::get_mkdef_iname(K);
 			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-				KIND_MKDEF_FN_METADATA_HL, mkdef_iname);
+				KIND_MKDEF_FN_MD_HL, mkdef_iname);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
 			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
 			if (printing_rule_name)
 				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-					KIND_PRINT_FN_METADATA_HL, printing_rule_name);
+					KIND_PRINT_FN_MD_HL, printing_rule_name);
 		}
 		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
 			(Kinds::Behaviour::is_an_enumeration(K)))
 				Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-					KIND_DSIZE_METADATA_HL,
+					KIND_DSIZE_MD_HL,
 					(inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
 	}
 }

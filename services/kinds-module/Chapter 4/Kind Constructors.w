@@ -412,12 +412,12 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 		}
 		wording W = Kinds::Constructors::get_name(con, FALSE);
 		if (Wordings::nonempty(W))
-			Hierarchy::apply_metadata_from_wording(con->kc_package, KIND_NAME_METADATA_HL, W);
+			Hierarchy::apply_metadata_from_wording(con->kc_package, KIND_NAME_MD_HL, W);
 		else if (Str::len(con->name_in_template_code) > 0)
-			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_METADATA_HL,
+			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_MD_HL,
 				con->name_in_template_code);
 		else
-			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_METADATA_HL, I"(anonymous kind)");
+			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_MD_HL, I"(anonymous kind)");
 	}
 	return con->kc_package;
 }

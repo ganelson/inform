@@ -211,7 +211,7 @@ void Hierarchy::establish(void) {
 @e MIN_NEGATIVE_NUMBER_HL
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
-@e MEMORY_ECONOMY_METADATA_HL
+@e MEMORY_ECONOMY_MD_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
 @e KIT_CONFIGURATION_BITMAP_HL
@@ -249,7 +249,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
 		H_C_T(I7_FULL_VERSION_NUMBER_HL,      I"I7_FULL_VERSION_NUMBER")
-		H_C_T(MEMORY_ECONOMY_METADATA_HL,     I"^memory_economy")
+		H_C_T(MEMORY_ECONOMY_MD_HL,     I"^memory_economy")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
 		H_C_T(KIT_CONFIGURATION_LOOKMODE_HL,  I"KIT_CONFIGURATION_LOOKMODE")
@@ -261,22 +261,22 @@ void Hierarchy::establish(void) {
 
 @h Modules.
 
-@e EXT_CATEGORY_METADATA_HL
-@e EXT_TITLE_METADATA_HL
-@e EXT_AUTHOR_METADATA_HL
-@e EXT_VERSION_METADATA_HL
-@e EXT_CREDIT_METADATA_HL
-@e EXT_MODESTY_METADATA_HL
+@e EXT_CATEGORY_MD_HL
+@e EXT_TITLE_MD_HL
+@e EXT_AUTHOR_MD_HL
+@e EXT_VERSION_MD_HL
+@e EXT_CREDIT_MD_HL
+@e EXT_MODESTY_MD_HL
 @e EXTENSION_ID_HL
 
 @<Establish modules@> =
 	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
-		H_C_U(EXT_CATEGORY_METADATA_HL,       I"^category")
-		H_C_U(EXT_TITLE_METADATA_HL,          I"^title")
-		H_C_U(EXT_AUTHOR_METADATA_HL,         I"^author")
-		H_C_U(EXT_VERSION_METADATA_HL,        I"^version")
-		H_C_U(EXT_CREDIT_METADATA_HL,         I"^credit")
-		H_C_U(EXT_MODESTY_METADATA_HL,        I"^modesty")
+		H_C_U(EXT_CATEGORY_MD_HL,       I"^category")
+		H_C_U(EXT_TITLE_MD_HL,          I"^title")
+		H_C_U(EXT_AUTHOR_MD_HL,         I"^author")
+		H_C_U(EXT_VERSION_MD_HL,        I"^version")
+		H_C_U(EXT_CREDIT_MD_HL,         I"^credit")
+		H_C_U(EXT_MODESTY_MD_HL,        I"^modesty")
 		H_C_U(EXTENSION_ID_HL,                I"extension_id")
 	H_END
 
@@ -284,19 +284,19 @@ void Hierarchy::establish(void) {
 
 @e BOGUS_HAP from 0
 @e ACTIONS_HAP
-@e ACTION_NAME_METADATA_HL
-@e ACTION_VARC_METADATA_HL
-@e DEBUG_ACTION_METADATA_HL
-@e ACTION_DSHARP_METADATA_HL
-@e NO_CODING_METADATA_HL
-@e OUT_OF_WORLD_METADATA_HL
-@e REQUIRES_LIGHT_METADATA_HL
-@e CAN_HAVE_NOUN_METADATA_HL
-@e CAN_HAVE_SECOND_METADATA_HL
-@e NOUN_ACCESS_METADATA_HL
-@e SECOND_ACCESS_METADATA_HL
-@e NOUN_KIND_METADATA_HL
-@e SECOND_KIND_METADATA_HL
+@e ACTION_NAME_MD_HL
+@e ACTION_VARC_MD_HL
+@e DEBUG_ACTION_MD_HL
+@e ACTION_DSHARP_MD_HL
+@e NO_CODING_MD_HL
+@e OUT_OF_WORLD_MD_HL
+@e REQUIRES_LIGHT_MD_HL
+@e CAN_HAVE_NOUN_MD_HL
+@e CAN_HAVE_SECOND_MD_HL
+@e NOUN_ACCESS_MD_HL
+@e SECOND_ACCESS_MD_HL
+@e NOUN_KIND_MD_HL
+@e SECOND_KIND_MD_HL
 @e ACTION_ID_HL
 @e ACTION_BASE_NAME_HL
 @e WAIT_HL
@@ -315,19 +315,19 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(actions))
 		H_BEGIN_AP(ACTIONS_HAP,               I"action", I"_action")
-			H_C_U(ACTION_NAME_METADATA_HL,    I"^name")
-			H_C_U(ACTION_VARC_METADATA_HL,    I"^var_creator")
-			H_C_U(DEBUG_ACTION_METADATA_HL,   I"^debug_fn")
-			H_C_U(ACTION_DSHARP_METADATA_HL,  I"^double_sharp")
-			H_C_U(NO_CODING_METADATA_HL,      I"^no_coding")
-			H_C_U(OUT_OF_WORLD_METADATA_HL,   I"^out_of_world")
-			H_C_U(REQUIRES_LIGHT_METADATA_HL, I"^requires_light")
-			H_C_U(CAN_HAVE_NOUN_METADATA_HL,  I"^can_have_noun")
-			H_C_U(CAN_HAVE_SECOND_METADATA_HL, I"^can_have_second")
-			H_C_U(NOUN_ACCESS_METADATA_HL,    I"^noun_access")
-			H_C_U(SECOND_ACCESS_METADATA_HL,  I"^second_access")
-			H_C_U(NOUN_KIND_METADATA_HL,      I"^noun_kind")
-			H_C_U(SECOND_KIND_METADATA_HL,    I"^second_kind")
+			H_C_U(ACTION_NAME_MD_HL,    I"^name")
+			H_C_U(ACTION_VARC_MD_HL,    I"^var_creator")
+			H_C_U(DEBUG_ACTION_MD_HL,   I"^debug_fn")
+			H_C_U(ACTION_DSHARP_MD_HL,  I"^double_sharp")
+			H_C_U(NO_CODING_MD_HL,      I"^no_coding")
+			H_C_U(OUT_OF_WORLD_MD_HL,   I"^out_of_world")
+			H_C_U(REQUIRES_LIGHT_MD_HL, I"^requires_light")
+			H_C_U(CAN_HAVE_NOUN_MD_HL,  I"^can_have_noun")
+			H_C_U(CAN_HAVE_SECOND_MD_HL, I"^can_have_second")
+			H_C_U(NOUN_ACCESS_MD_HL,    I"^noun_access")
+			H_C_U(SECOND_ACCESS_MD_HL,  I"^second_access")
+			H_C_U(NOUN_KIND_MD_HL,      I"^noun_kind")
+			H_C_U(SECOND_KIND_MD_HL,    I"^second_kind")
 			H_C_U(ACTION_ID_HL,               I"action_id")
 			H_C_U(ACTION_BASE_NAME_HL,        I"A")
 			H_C_T(WAIT_HL,                    I"Wait")
@@ -346,38 +346,42 @@ void Hierarchy::establish(void) {
 @h Activities.
 
 @e ACTIVITIES_HAP
-@e ACTIVITY_NAME_METADATA_HL
-@e ACTIVITY_VARC_METADATA_HL
-@e ACTIVITY_BEFORE_METADATA_HL
-@e ACTIVITY_FOR_METADATA_HL
-@e ACTIVITY_AFTER_METADATA_HL
-@e ACTIVITY_UFA_METADATA_HL
+
+@e ACTIVITY_NAME_MD_HL
+@e ACTIVITY_VAR_CREATOR_MD_HL
+@e ACTIVITY_BEFORE_MD_HL
+@e ACTIVITY_FOR_MD_HL
+@e ACTIVITY_AFTER_MD_HL
+@e ACTIVITY_UFA_MD_HL
+
 @e ACTIVITY_ID_HL
-@e ACTIVITY_HL
-@e BEFORE_RB_HL
-@e FOR_RB_HL
-@e AFTER_RB_HL
+@e ACTIVITY_VALUE_HL
+@e ACTIVITY_BEFORE_RB_HL
+@e ACTIVITY_FOR_RB_HL
+@e ACTIVITY_AFTER_RB_HL
 @e ACTIVITY_SHV_ID_HL
-@e ACTIVITY_STV_CREATOR_FN_HL
+@e ACTIVITY_VARC_FN_HL
 
 @<Establish activities@> =
 	submodule_identity *activities = Packaging::register_submodule(I"activities");
 
 	H_BEGIN(HierarchyLocations::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
-			H_C_U(ACTIVITY_NAME_METADATA_HL,  I"^name")
-			H_C_U(ACTIVITY_BEFORE_METADATA_HL, I"^before_rulebook")
-			H_C_U(ACTIVITY_FOR_METADATA_HL,   I"^for_rulebook")
-			H_C_U(ACTIVITY_AFTER_METADATA_HL, I"^after_rulebook")
-			H_C_U(ACTIVITY_UFA_METADATA_HL,   I"^used_by_future")
-			H_C_U(ACTIVITY_VARC_METADATA_HL,  I"^var_creator")
+
+			H_C_U(ACTIVITY_NAME_MD_HL,        I"^name")
+			H_C_U(ACTIVITY_BEFORE_MD_HL,      I"^before_rulebook")
+			H_C_U(ACTIVITY_FOR_MD_HL,         I"^for_rulebook")
+			H_C_U(ACTIVITY_AFTER_MD_HL,       I"^after_rulebook")
+			H_C_U(ACTIVITY_UFA_MD_HL,         I"^used_by_future")
+			H_C_U(ACTIVITY_VAR_CREATOR_MD_HL, I"^var_creator")
+
 			H_C_U(ACTIVITY_ID_HL,             I"activity_id")
-			H_C_G(ACTIVITY_HL,                I"V")
-			H_PKG(BEFORE_RB_HL,               I"before_rb", I"_rulebook")
-			H_PKG(FOR_RB_HL,                  I"for_rb", I"_rulebook")
-			H_PKG(AFTER_RB_HL,                I"after_rb", I"_rulebook")
+			H_C_G(ACTIVITY_VALUE_HL,          I"V")
+			H_PKG(ACTIVITY_BEFORE_RB_HL,      I"before_rb", I"_rulebook")
+			H_PKG(ACTIVITY_FOR_RB_HL,         I"for_rb", I"_rulebook")
+			H_PKG(ACTIVITY_AFTER_RB_HL,       I"after_rb", I"_rulebook")
 			H_C_U(ACTIVITY_SHV_ID_HL,         I"var_id")
-			H_F_U(ACTIVITY_STV_CREATOR_FN_HL, I"stv_creator_fn")
+			H_F_U(ACTIVITY_VARC_FN_HL,        I"stv_creator_fn")
 		H_END
 	H_END
 
@@ -435,11 +439,11 @@ void Hierarchy::establish(void) {
 
 @e PAST_TENSE_CONDITIONS_HAP
 @e PTC_ID_HL
-@e PTC_VALUE_METADATA_HL
+@e PTC_VALUE_MD_HL
 @e PTC_FN_HL
 @e PAST_ACTION_PATTERNS_HAP
 @e PAP_ID_HL
-@e PAP_VALUE_METADATA_HL
+@e PAP_VALUE_MD_HL
 @e PAP_FN_HL
 
 @<Establish chronology@> =
@@ -448,12 +452,12 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(chronology))
 		H_BEGIN_AP(PAST_TENSE_CONDITIONS_HAP, I"past_condition", I"_past_condition")
 			H_C_U(PTC_ID_HL,                  I"ptc_id")
-			H_C_U(PTC_VALUE_METADATA_HL,      I"^value")
+			H_C_U(PTC_VALUE_MD_HL,      I"^value")
 			H_F_G(PTC_FN_HL,                  I"pcon_fn", I"PCONR")
 		H_END
 		H_BEGIN_AP(PAST_ACTION_PATTERNS_HAP,  I"past_action_pattern", I"_past_action_pattern")
 			H_C_U(PAP_ID_HL,                  I"pap_id")
-			H_C_U(PAP_VALUE_METADATA_HL,      I"^value")
+			H_C_U(PAP_VALUE_MD_HL,      I"^value")
 			H_F_G(PAP_FN_HL,                  I"pap_fn", I"PAPR")
 		H_END
 	H_END
@@ -466,14 +470,14 @@ void Hierarchy::establish(void) {
 @e CV_POS_HL
 
 @e MVERBS_HAP
-@e MVERB_NAME_METADATA_HL
+@e MVERB_NAME_MD_HL
 @e MODAL_CONJUGATION_FN_HL
 @e VERBS_HAP
-@e VERB_NAME_METADATA_HL
+@e VERB_NAME_MD_HL
 @e NONMODAL_CONJUGATION_FN_HL
 @e VERB_FORMS_HAP
-@e FORM_VALUE_METADATA_HL
-@e FORM_SORTING_METADATA_HL
+@e FORM_VALUE_MD_HL
+@e FORM_SORTING_MD_HL
 @e FORM_FN_HL
 @e CONJUGATION_FN_HL
 
@@ -489,15 +493,15 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(conjugations))
 		H_BEGIN_AP(MVERBS_HAP,                I"mverb", I"_modal_verb")
-			H_C_U(MVERB_NAME_METADATA_HL,     I"^name")
+			H_C_U(MVERB_NAME_MD_HL,     I"^name")
 			H_F_G(MODAL_CONJUGATION_FN_HL,    I"conjugation_fn", I"ConjugateModalVerb")
 		H_END
 		H_BEGIN_AP(VERBS_HAP,                 I"verb", I"_verb")
-			H_C_U(VERB_NAME_METADATA_HL,      I"^name")
+			H_C_U(VERB_NAME_MD_HL,      I"^name")
 			H_F_G(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", I"ConjugateVerb")
 			H_BEGIN_AP(VERB_FORMS_HAP,        I"form", I"_verb_form")
-				H_C_U(FORM_VALUE_METADATA_HL, I"^verb_value")
-				H_C_U(FORM_SORTING_METADATA_HL, I"^verb_sorting")
+				H_C_U(FORM_VALUE_MD_HL, I"^verb_value")
+				H_C_U(FORM_SORTING_MD_HL, I"^verb_sorting")
 				H_F_U(FORM_FN_HL,             I"form_fn")
 			H_END
 		H_END
@@ -654,19 +658,19 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
-@e INSTANCE_NAME_METADATA_HL
-@e INSTANCE_VALUE_METADATA_HL
-@e INSTANCE_KIND_METADATA_HL
-@e INSTANCE_IS_SCENE_METADATA_HL
-@e INSTANCE_IS_EXF_METADATA_HL
-@e INSTANCE_FILE_VALUE_METADATA_HL
-@e INSTANCE_IS_FIGURE_METADATA_HL
-@e INSTANCE_FIGURE_ID_METADATA_HL
-@e INSTANCE_IS_SOUND_METADATA_HL
-@e INSTANCE_SOUND_ID_METADATA_HL
-@e INSTANCE_SSF_METADATA_HL
-@e INSTANCE_SCF_METADATA_HL
-@e INST_SHOWME_METADATA_HL
+@e INSTANCE_NAME_MD_HL
+@e INSTANCE_VALUE_MD_HL
+@e INSTANCE_KIND_MD_HL
+@e INSTANCE_IS_SCENE_MD_HL
+@e INSTANCE_IS_EXF_MD_HL
+@e INSTANCE_FILE_VALUE_MD_HL
+@e INSTANCE_IS_FIGURE_MD_HL
+@e INSTANCE_FIGURE_ID_MD_HL
+@e INSTANCE_IS_SOUND_MD_HL
+@e INSTANCE_SOUND_ID_MD_HL
+@e INSTANCE_SSF_MD_HL
+@e INSTANCE_SCF_MD_HL
+@e INST_SHOWME_MD_HL
 @e INST_SHOWME_FN_HL
 @e INSTANCE_HL
 @e SCENE_STATUS_FN_HL
@@ -685,19 +689,19 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
-			H_C_U(INSTANCE_NAME_METADATA_HL,  I"^name")
-			H_C_U(INSTANCE_VALUE_METADATA_HL, I"^value")
-			H_C_U(INSTANCE_KIND_METADATA_HL,  I"^kind")
-			H_C_U(INSTANCE_IS_SCENE_METADATA_HL, I"^is_scene")
-			H_C_U(INSTANCE_SSF_METADATA_HL,   I"^scene_status_fn")
-			H_C_U(INSTANCE_SCF_METADATA_HL,   I"^scene_change_fn")
-			H_C_U(INSTANCE_IS_EXF_METADATA_HL, I"^is_file")
-			H_C_U(INSTANCE_FILE_VALUE_METADATA_HL, I"^file_value")
-			H_C_U(INSTANCE_IS_FIGURE_METADATA_HL, I"^is_figure")
-			H_C_U(INSTANCE_FIGURE_ID_METADATA_HL, I"^resource_id")
-			H_C_U(INSTANCE_IS_SOUND_METADATA_HL, I"^is_sound")
-			H_C_U(INSTANCE_SOUND_ID_METADATA_HL, I"^resource_id")
-			H_C_U(INST_SHOWME_METADATA_HL,    I"^showme_fn")
+			H_C_U(INSTANCE_NAME_MD_HL,  I"^name")
+			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
+			H_C_U(INSTANCE_KIND_MD_HL,  I"^kind")
+			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
+			H_C_U(INSTANCE_SSF_MD_HL,   I"^scene_status_fn")
+			H_C_U(INSTANCE_SCF_MD_HL,   I"^scene_change_fn")
+			H_C_U(INSTANCE_IS_EXF_MD_HL, I"^is_file")
+			H_C_U(INSTANCE_FILE_VALUE_MD_HL, I"^file_value")
+			H_C_U(INSTANCE_IS_FIGURE_MD_HL, I"^is_figure")
+			H_C_U(INSTANCE_FIGURE_ID_MD_HL, I"^resource_id")
+			H_C_U(INSTANCE_IS_SOUND_MD_HL, I"^is_sound")
+			H_C_U(INSTANCE_SOUND_ID_MD_HL, I"^resource_id")
+			H_C_U(INST_SHOWME_MD_HL,    I"^showme_fn")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
@@ -763,21 +767,21 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_STRING_HL
 
 @e KIND_HAP
-@e KIND_NAME_METADATA_HL
-@e KIND_CLASS_METADATA_HL
-@e KIND_PNAME_METADATA_HL
-@e KIND_SHOWME_METADATA_HL
-@e KIND_IS_BASE_METADATA_HL
-@e KIND_IS_DEF_METADATA_HL
-@e KIND_IS_OBJECT_METADATA_HL
-@e KIND_IS_SKOO_METADATA_HL
-@e KIND_HAS_BV_METADATA_HL
-@e KIND_WEAK_ID_METADATA_HL
-@e KIND_PRINT_FN_METADATA_HL
-@e KIND_CMP_FN_METADATA_HL
-@e KIND_SUPPORT_FN_METADATA_HL
-@e KIND_MKDEF_FN_METADATA_HL
-@e KIND_DSIZE_METADATA_HL
+@e KIND_NAME_MD_HL
+@e KIND_CLASS_MD_HL
+@e KIND_PNAME_MD_HL
+@e KIND_SHOWME_MD_HL
+@e KIND_IS_BASE_MD_HL
+@e KIND_IS_DEF_MD_HL
+@e KIND_IS_OBJECT_MD_HL
+@e KIND_IS_SKOO_MD_HL
+@e KIND_HAS_BV_MD_HL
+@e KIND_WEAK_ID_MD_HL
+@e KIND_PRINT_FN_MD_HL
+@e KIND_CMP_FN_MD_HL
+@e KIND_SUPPORT_FN_MD_HL
+@e KIND_MKDEF_FN_MD_HL
+@e KIND_DSIZE_MD_HL
 @e KIND_CLASS_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
@@ -811,7 +815,7 @@ void Hierarchy::establish(void) {
 @e KIND_PROPERTIES_HAP
 
 @e DERIVED_KIND_HAP
-@e DK_NEEDED_METADATA_HL
+@e DK_NEEDED_MD_HL
 @e DK_STRONG_ID_HL
 @e DK_KIND_HL
 @e DK_DEFAULT_VALUE_HL
@@ -828,21 +832,21 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
-			H_C_U(KIND_NAME_METADATA_HL,      I"^name")
-			H_C_U(KIND_CLASS_METADATA_HL,     I"^object_class")
-			H_C_U(KIND_PNAME_METADATA_HL,     I"^printed_name")
-			H_C_U(KIND_SHOWME_METADATA_HL,    I"^showme_fn")
-			H_C_U(KIND_IS_BASE_METADATA_HL,   I"^is_base")
-			H_C_U(KIND_IS_DEF_METADATA_HL,    I"^is_definite")
-			H_C_U(KIND_IS_OBJECT_METADATA_HL, I"^is_object")
-			H_C_U(KIND_IS_SKOO_METADATA_HL,   I"^is_subkind_of_object")
-			H_C_U(KIND_HAS_BV_METADATA_HL,    I"^has_block_values")
-			H_C_U(KIND_WEAK_ID_METADATA_HL,   I"^weak_id")
-			H_C_U(KIND_CMP_FN_METADATA_HL,    I"^cmp_fn")
-			H_C_U(KIND_PRINT_FN_METADATA_HL,  I"^print_fn")
-			H_C_U(KIND_SUPPORT_FN_METADATA_HL, I"^support_fn")
-			H_C_U(KIND_MKDEF_FN_METADATA_HL,  I"^mkdef_fn")
-			H_C_U(KIND_DSIZE_METADATA_HL,     I"^domain_size")
+			H_C_U(KIND_NAME_MD_HL,      I"^name")
+			H_C_U(KIND_CLASS_MD_HL,     I"^object_class")
+			H_C_U(KIND_PNAME_MD_HL,     I"^printed_name")
+			H_C_U(KIND_SHOWME_MD_HL,    I"^showme_fn")
+			H_C_U(KIND_IS_BASE_MD_HL,   I"^is_base")
+			H_C_U(KIND_IS_DEF_MD_HL,    I"^is_definite")
+			H_C_U(KIND_IS_OBJECT_MD_HL, I"^is_object")
+			H_C_U(KIND_IS_SKOO_MD_HL,   I"^is_subkind_of_object")
+			H_C_U(KIND_HAS_BV_MD_HL,    I"^has_block_values")
+			H_C_U(KIND_WEAK_ID_MD_HL,   I"^weak_id")
+			H_C_U(KIND_CMP_FN_MD_HL,    I"^cmp_fn")
+			H_C_U(KIND_PRINT_FN_MD_HL,  I"^print_fn")
+			H_C_U(KIND_SUPPORT_FN_MD_HL, I"^support_fn")
+			H_C_U(KIND_MKDEF_FN_MD_HL,  I"^mkdef_fn")
+			H_C_U(KIND_DSIZE_MD_HL,     I"^domain_size")
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
@@ -876,7 +880,7 @@ void Hierarchy::establish(void) {
 			H_END
 		H_END
 		H_BEGIN_AP(DERIVED_KIND_HAP,          I"derived_kind", I"_derived_kind")
-			H_C_U(DK_NEEDED_METADATA_HL,      I"^default_value_needed")
+			H_C_U(DK_NEEDED_MD_HL,      I"^default_value_needed")
 			H_C_U(DK_STRONG_ID_HL,            I"strong_id")
 			H_C_G(DK_KIND_HL,                 I"DK")
 			H_C_U(DK_DEFAULT_VALUE_HL,        I"default_value")
@@ -918,7 +922,7 @@ void Hierarchy::establish(void) {
 @h Properties.
 
 @e PROPERTIES_HAP
-@e PROPERTY_NAME_METADATA_HL
+@e PROPERTY_NAME_MD_HL
 @e PROPERTY_ID_HL
 @e PROPERTY_HL
 @e EITHER_OR_GPR_FN_HL
@@ -928,7 +932,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(properties))
 		H_BEGIN_AP(PROPERTIES_HAP,            I"property", I"_property")
-			H_C_U(PROPERTY_NAME_METADATA_HL,  I"^name")
+			H_C_U(PROPERTY_NAME_MD_HL,  I"^name")
 			H_C_U(PROPERTY_ID_HL,             I"property_id")
 			H_C_T(PROPERTY_HL,                I"P")
 			H_F_G(EITHER_OR_GPR_FN_HL,        I"either_or_GPR_fn", I"PRN_PN")
@@ -956,8 +960,8 @@ void Hierarchy::establish(void) {
 @e MEANINGLESS_RR_HL
 
 @e RELATIONS_HAP
-@e RELATION_VALUE_METADATA_HL
-@e RELATION_CREATOR_METADATA_HL
+@e RELATION_VALUE_MD_HL
+@e RELATION_CREATOR_MD_HL
 @e RELATION_ID_HL
 @e RELATION_RECORD_HL
 @e BITMAP_HL
@@ -998,8 +1002,8 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(relations))
 		H_BEGIN_AP(RELATIONS_HAP,             I"relation", I"_relation")
-			H_C_U(RELATION_VALUE_METADATA_HL, I"^value")
-			H_C_U(RELATION_CREATOR_METADATA_HL, I"^creator")
+			H_C_U(RELATION_VALUE_MD_HL, I"^value")
+			H_C_U(RELATION_CREATOR_MD_HL, I"^creator")
 			H_C_U(RELATION_ID_HL,             I"relation_id")
 			H_C_G(RELATION_RECORD_HL,         I"Rel_Record")
 			H_C_U(BITMAP_HL,                  I"as_constant")
@@ -1026,13 +1030,13 @@ void Hierarchy::establish(void) {
 @e RBNO0_INAME_HL
 
 @e OUTCOMES_HAP
-@e OUTCOME_NAME_METADATA_HL
+@e OUTCOME_NAME_MD_HL
 @e OUTCOME_HL
 @e RULEBOOKS_HAP
-@e RULEBOOK_NAME_METADATA_HL
-@e RULEBOOK_PNAME_METADATA_HL
-@e RULEBOOK_VARC_METADATA_HL
-@e RULEBOOK_RUN_FN_METADATA_HL
+@e RULEBOOK_NAME_MD_HL
+@e RULEBOOK_PNAME_MD_HL
+@e RULEBOOK_VARC_MD_HL
+@e RULEBOOK_RUN_FN_MD_HL
 @e RULEBOOK_ID_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
@@ -1042,7 +1046,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(rulebooks))
 		H_BEGIN_AP(OUTCOMES_HAP,              I"rulebook_outcome", I"_outcome")
-			H_C_U(OUTCOME_NAME_METADATA_HL,   I"^name")
+			H_C_U(OUTCOME_NAME_MD_HL,   I"^name")
 			H_C_U(OUTCOME_HL,                 I"outcome")
 			H_C_U(RBNO4_INAME_HL,             I"RBNO4_OUTCOME")
 			H_C_U(RBNO3_INAME_HL,             I"RBNO3_OUTCOME")
@@ -1051,10 +1055,10 @@ void Hierarchy::establish(void) {
 			H_C_U(RBNO0_INAME_HL,             I"RBNO0_OUTCOME")
 		H_END
 		H_BEGIN_AP(RULEBOOKS_HAP,             I"rulebook", I"_rulebook")
-			H_C_U(RULEBOOK_NAME_METADATA_HL,  I"^name")
-			H_C_U(RULEBOOK_PNAME_METADATA_HL, I"^printed_name")
-			H_C_U(RULEBOOK_RUN_FN_METADATA_HL, I"^run_fn")
-			H_C_U(RULEBOOK_VARC_METADATA_HL,  I"^var_creator")
+			H_C_U(RULEBOOK_NAME_MD_HL,  I"^name")
+			H_C_U(RULEBOOK_PNAME_MD_HL, I"^printed_name")
+			H_C_U(RULEBOOK_RUN_FN_MD_HL, I"^run_fn")
+			H_C_U(RULEBOOK_VARC_MD_HL,  I"^var_creator")
 			H_C_U(RULEBOOK_ID_HL,             I"rulebook_id")
 			H_F_U(RUN_FN_HL,                  I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn")
@@ -1064,11 +1068,11 @@ void Hierarchy::establish(void) {
 @h Rules.
 
 @e RULES_HAP
-@e RULE_NAME_METADATA_HL
-@e RULE_PNAME_METADATA_HL
-@e RULE_VALUE_METADATA_HL
-@e RULE_TIMED_METADATA_HL
-@e RULE_TIMED_FOR_METADATA_HL
+@e RULE_NAME_MD_HL
+@e RULE_PNAME_MD_HL
+@e RULE_VALUE_MD_HL
+@e RULE_TIMED_MD_HL
+@e RULE_TIMED_FOR_MD_HL
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -1077,9 +1081,9 @@ void Hierarchy::establish(void) {
 @e AS_CONSTANT_HL
 @e AS_BLOCK_CONSTANT_HL
 @e LAUNCHER_HL
-@e RESP_VALUE_METADATA_HL
-@e RULE_METADATA_HL
-@e MARKER_METADATA_HL
+@e RESP_VALUE_MD_HL
+@e RULE_MD_HL
+@e MARKER_MD_HL
 @e GROUP_HL
 
 @<Establish rules@> =
@@ -1087,19 +1091,19 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
-			H_C_U(RULE_NAME_METADATA_HL,      I"^name")
-			H_C_U(RULE_PNAME_METADATA_HL,     I"^printed_name")
-			H_C_U(RULE_VALUE_METADATA_HL,     I"^value")
-			H_C_U(RULE_TIMED_METADATA_HL,     I"^timed")
-			H_C_U(RULE_TIMED_FOR_METADATA_HL, I"^timed_for")
+			H_C_U(RULE_NAME_MD_HL,      I"^name")
+			H_C_U(RULE_PNAME_MD_HL,     I"^printed_name")
+			H_C_U(RULE_VALUE_MD_HL,     I"^value")
+			H_C_U(RULE_TIMED_MD_HL,     I"^timed")
+			H_C_U(RULE_TIMED_FOR_MD_HL, I"^timed_for")
 			H_F_U(SHELL_FN_HL,                I"shell_fn")
 			H_F_U(RULE_FN_HL,                 I"rule_fn")
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")
 			H_F_S(RESPONDER_FN_HL,            I"responder_fn", I"M")
 			H_BEGIN_AP(RESPONSES_HAP,         I"response", I"_response")
-				H_C_U(RESP_VALUE_METADATA_HL, I"^value")
-				H_C_U(RULE_METADATA_HL,       I"^rule")
-				H_C_U(MARKER_METADATA_HL,     I"^marker")
+				H_C_U(RESP_VALUE_MD_HL, I"^value")
+				H_C_U(RULE_MD_HL,       I"^rule")
+				H_C_U(MARKER_MD_HL,     I"^marker")
 				H_C_U(GROUP_HL,               I"^group")
 				H_C_U(AS_CONSTANT_HL,         I"response_id")
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
@@ -1111,9 +1115,9 @@ void Hierarchy::establish(void) {
 @h Tables.
 
 @e TABLES_HAP
-@e TABLE_NAME_METADATA_HL
-@e TABLE_PNAME_METADATA_HL
-@e TABLE_VALUE_METADATA_HL
+@e TABLE_NAME_MD_HL
+@e TABLE_PNAME_MD_HL
+@e TABLE_VALUE_MD_HL
 @e TABLE_ID_HL
 @e TABLE_DATA_HL
 @e TABLE_COLUMN_USAGES_HAP
@@ -1125,16 +1129,16 @@ void Hierarchy::establish(void) {
 
 @e TABLE_COLUMNS_HAP
 @e TABLE_COLUMN_ID_HL
-@e TABLE_COLUMN_KIND_METADATA_HL
+@e TABLE_COLUMN_KIND_MD_HL
 
 @<Establish tables@> =
 	submodule_identity *tables = Packaging::register_submodule(I"tables");
 
 	H_BEGIN(HierarchyLocations::local_submodule(tables))
 		H_BEGIN_AP(TABLES_HAP,                I"table", I"_table")
-			H_C_U(TABLE_NAME_METADATA_HL,     I"^name")
-			H_C_U(TABLE_PNAME_METADATA_HL,    I"^printed_name")
-			H_C_U(TABLE_VALUE_METADATA_HL,    I"^value")
+			H_C_U(TABLE_NAME_MD_HL,     I"^name")
+			H_C_U(TABLE_PNAME_MD_HL,    I"^printed_name")
+			H_C_U(TABLE_VALUE_MD_HL,    I"^value")
 			H_C_U(TABLE_ID_HL,                I"table_id")
 			H_C_U(TABLE_DATA_HL,              I"table_data")
 			H_BEGIN_AP(TABLE_COLUMN_USAGES_HAP, I"column", I"_table_column_usage")
@@ -1151,16 +1155,16 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
 		H_BEGIN_AP(TABLE_COLUMNS_HAP,         I"table_column", I"_table_column")
 			H_C_U(TABLE_COLUMN_ID_HL,         I"table_column_id")
-			H_C_U(TABLE_COLUMN_KIND_METADATA_HL, I"^column_kind")
+			H_C_U(TABLE_COLUMN_KIND_MD_HL, I"^column_kind")
 		H_END
 	H_END
 
 @h Use options.
 
 @e USE_OPTIONS_HAP
-@e USE_OPTION_METADATA_HL
-@e USE_OPTION_PNAME_METADATA_HL
-@e USE_OPTION_ON_METADATA_HL
+@e USE_OPTION_MD_HL
+@e USE_OPTION_PNAME_MD_HL
+@e USE_OPTION_ON_MD_HL
 @e USE_OPTION_ID_HL
 
 @<Establish use options@> =
@@ -1168,9 +1172,9 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(use_options))
 		H_BEGIN_AP(USE_OPTIONS_HAP,           I"use_option", I"_use_option")
-			H_C_U(USE_OPTION_METADATA_HL,     I"^name")
-			H_C_U(USE_OPTION_PNAME_METADATA_HL, I"^printed_name")
-			H_C_U(USE_OPTION_ON_METADATA_HL,  I"^active")
+			H_C_U(USE_OPTION_MD_HL,     I"^name")
+			H_C_U(USE_OPTION_PNAME_MD_HL, I"^printed_name")
+			H_C_U(USE_OPTION_ON_MD_HL,  I"^active")
 			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
 		H_END
 	H_END
@@ -1178,7 +1182,7 @@ void Hierarchy::establish(void) {
 @h Variables.
 
 @e VARIABLES_HAP
-@e VARIABLE_NAME_METADATA_HL
+@e VARIABLE_NAME_MD_HL
 @e VARIABLE_HL
 
 @<Establish variables@> =
@@ -1186,7 +1190,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(variables))
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
-			H_C_U(VARIABLE_NAME_METADATA_HL,  I"^name")
+			H_C_U(VARIABLE_NAME_MD_HL,  I"^name")
 			H_C_G(VARIABLE_HL,                I"V")
 		H_END
 	H_END
@@ -1423,7 +1427,7 @@ inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
 
 @ There are then some variations on this function. This version adds the wording |W|
 to the name, just to make the Inter code more comprehensible. An example would be
-|ACTIVITY_HL|, declared abover as |H_C_G(ACTIVITY_HL, I"V")|. The resulting name
+|ACTIVITY_VALUE_HL|, declared abover as |H_C_G(ACTIVITY_VALUE_HL, I"V")|. The resulting name
 "generated" (hence the |G| in |H_C_G|) might be, for example, |V1_starting_the_virtual_mach|.
 The number |1| guarantees uniqueness; the (truncated) text following is purely for
 the reader's convenience.

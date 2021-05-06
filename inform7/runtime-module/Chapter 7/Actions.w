@@ -21,7 +21,7 @@ action_compilation_data RTActions::new_data(wording W) {
 	acd.an_base_iname = NULL;
 	acd.an_routine_iname = NULL;
 	acd.an_package = Hierarchy::local_package(ACTIONS_HAP);
-	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_METADATA_HL, W);
+	Hierarchy::apply_metadata_from_wording(acd.an_package, ACTION_NAME_MD_HL, W);
 	acd.variables_id = Hierarchy::make_iname_in(ACTION_SHV_ID_HL, acd.an_package);
 	return acd;
 }
@@ -95,7 +95,7 @@ void RTActions::compile_action_name_var_creators(void) {
 				an->compilation_data.an_package);
 			RTVariables::set_shared_variables_creator(an->action_variables, iname);
 			RTVariables::compile_frame_creator(an->action_variables);
-			inter_name *vc = Hierarchy::make_iname_in(ACTION_VARC_METADATA_HL,
+			inter_name *vc = Hierarchy::make_iname_in(ACTION_VARC_MD_HL,
 				an->compilation_data.an_package);
 			Emit::iname_constant(vc, K_value, iname);
 		}
@@ -111,26 +111,26 @@ void RTActions::compile_metadata(void) {
 		Emit::numeric_constant(an->compilation_data.variables_id, 0);
 		if (Str::get_first_char(RTActions::identifier(an)) == '_')
 			Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-				NO_CODING_METADATA_HL, 1);
-		inter_name *dsc = Hierarchy::make_iname_in(ACTION_DSHARP_METADATA_HL,
+				NO_CODING_MD_HL, 1);
+		inter_name *dsc = Hierarchy::make_iname_in(ACTION_DSHARP_MD_HL,
 			an->compilation_data.an_package);
 		Emit::iname_constant(dsc, K_value, RTActions::double_sharp(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			OUT_OF_WORLD_METADATA_HL, (inter_ti) ActionSemantics::is_out_of_world(an));
+			OUT_OF_WORLD_MD_HL, (inter_ti) ActionSemantics::is_out_of_world(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			REQUIRES_LIGHT_METADATA_HL, (inter_ti) ActionSemantics::requires_light(an));
+			REQUIRES_LIGHT_MD_HL, (inter_ti) ActionSemantics::requires_light(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			CAN_HAVE_NOUN_METADATA_HL, (inter_ti) ActionSemantics::can_have_noun(an));
+			CAN_HAVE_NOUN_MD_HL, (inter_ti) ActionSemantics::can_have_noun(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			CAN_HAVE_SECOND_METADATA_HL, (inter_ti) ActionSemantics::can_have_second(an));
+			CAN_HAVE_SECOND_MD_HL, (inter_ti) ActionSemantics::can_have_second(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			NOUN_ACCESS_METADATA_HL, (inter_ti) ActionSemantics::noun_access(an));
+			NOUN_ACCESS_MD_HL, (inter_ti) ActionSemantics::noun_access(an));
 		Hierarchy::apply_metadata_from_number(an->compilation_data.an_package,
-			SECOND_ACCESS_METADATA_HL, (inter_ti) ActionSemantics::second_access(an));
-		inter_name *kn_iname = Hierarchy::make_iname_in(NOUN_KIND_METADATA_HL,
+			SECOND_ACCESS_MD_HL, (inter_ti) ActionSemantics::second_access(an));
+		inter_name *kn_iname = Hierarchy::make_iname_in(NOUN_KIND_MD_HL,
 			an->compilation_data.an_package);
 		RTKinds::constant_from_strong_id(kn_iname, ActionSemantics::kind_of_noun(an));
-		inter_name *ks_iname = Hierarchy::make_iname_in(SECOND_KIND_METADATA_HL,
+		inter_name *ks_iname = Hierarchy::make_iname_in(SECOND_KIND_MD_HL,
 			an->compilation_data.an_package);
 		RTKinds::constant_from_strong_id(ks_iname, ActionSemantics::kind_of_second(an));
 	}
@@ -186,7 +186,7 @@ void RTActions::compile_functions(void) {
 	inter_name *iname = Hierarchy::derive_iname_in(DEBUG_ACTION_FN_HL,
 		RTActions::base_iname(an), an->compilation_data.an_package);
 	Hierarchy::apply_metadata_from_iname(an->compilation_data.an_package,
-		DEBUG_ACTION_METADATA_HL, iname);
+		DEBUG_ACTION_MD_HL, iname);
 	save = Functions::begin(iname);
 	inter_symbol *n_s = LocalVariables::new_other_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::new_other_as_symbol(I"s");

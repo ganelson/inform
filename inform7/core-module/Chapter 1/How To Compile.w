@@ -206,7 +206,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::compile_metadata)
 	BENCH(RTInstances::compile_metadata)
 	BENCH(RTProperties::compile_metadata)
-	BENCH(RTActivities::activity_var_creators)
+	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
 	BENCH(CompletionModule::compile);

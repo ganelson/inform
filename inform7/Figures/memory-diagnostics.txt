@@ -1,13 +1,13 @@
-Total memory consumption was 301075K = 294 MB
+Total memory consumption was 302698K = 296 MB
 
-63.7% was used for 1497969 objects, in 318974 frames in 240 x 800K = 192000K = 187 MB:
+63.9% was used for 1498004 objects, in 319009 frames in 242 x 800K = 193600K = 189 MB:
 
      9.5%  inter_tree_node_array                    41 x 8192 = 335872 objects, 29558048 bytes
      6.1%  text_stream_array                        3373 x 100 = 337300 objects, 18996736 bytes
      5.4%  linked_list                              29981 objects, 16789360 bytes
      3.3%  parse_node                               129367 objects, 10349360 bytes
-     2.8%  inter_symbol_array                       88 x 1024 = 90112 objects, 8653568 bytes
-     2.4%  verb_conjugation                         160 objects, 7425280 bytes
+     2.7%  inter_symbol_array                       88 x 1024 = 90112 objects, 8653568 bytes
+     2.3%  verb_conjugation                         160 objects, 7425280 bytes
      1.7%  parse_node_annotation_array              345 x 500 = 172500 objects, 5531040 bytes
      1.0%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
      1.0%  map_data                                 670 objects, 3178480 bytes
@@ -45,7 +45,7 @@ Total memory consumption was 301075K = 294 MB
      ----  rule_family_data                         400 objects, 147200 bytes
      ----  index_lexicon_entry                      395 objects, 142200 bytes
      ----  nonterminal                              759 objects, 139656 bytes
-     ----  compilation_subtask                      1664 objects, 133120 bytes
+     ----  compilation_subtask                      1699 objects, 135920 bytes
      ----  hierarchy_location                       845 objects, 128440 bytes
      ----  nascent_array                            1947 objects, 124608 bytes
      ----  documentation_ref                        1274 objects, 112112 bytes
@@ -237,13 +237,13 @@ Total memory consumption was 301075K = 294 MB
      ----  parse_name_notice                        1 object, 40 bytes
      ----  by_routine_bp_data                       1 object, 40 bytes
 
-36.2% was used for memory not allocated for objects:
+36.0% was used for memory not allocated for objects:
 
-    16.8%  text stream storage                      52019788 bytes in 348148 claims
+    16.7%  text stream storage                      52042732 bytes in 348217 claims
      3.6%  dictionary storage                       11245056 bytes in 20157 claims
      ----  sorting                                  880 bytes in 3 claims
      2.3%  source text                              7200000 bytes in 3 claims
-     3.5%  source text details                      10800000 bytes in 2 claims
+     3.4%  source text details                      10800000 bytes in 2 claims
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      0.8%  inter symbols storage                    2648128 bytes in 16173 claims
@@ -256,5 +256,5 @@ Total memory consumption was 301075K = 294 MB
      ----  code generation workspace for objects    9192 bytes in 9 claims
      ----  emitter array storage                    154368 bytes in 2036 claims
 
-19.9% was overhead - 61651520 bytes = 60206K = 58 MB
+20.4% was overhead - 63287120 bytes = 61803K = 60 MB
 

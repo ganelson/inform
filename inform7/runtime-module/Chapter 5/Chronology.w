@@ -287,7 +287,7 @@ void Chronology::ptc_agent(compilation_subtask *t) {
 			"this one? And so on.");
 	}
 	Functions::end(save);
-	inter_name *md_iname = Hierarchy::make_iname_in(PTC_VALUE_METADATA_HL, ptc->ptc_package);
+	inter_name *md_iname = Hierarchy::make_iname_in(PTC_VALUE_MD_HL, ptc->ptc_package);
 	Emit::iname_constant(md_iname, K_value, ptc->ptc_iname);
 }
 
@@ -373,7 +373,7 @@ void Chronology::pta_agent(compilation_subtask *t) {
 	}
 
 	Functions::end(save);
-	inter_name *md_iname = Hierarchy::make_iname_in(PAP_VALUE_METADATA_HL, pta->pta_package);
+	inter_name *md_iname = Hierarchy::make_iname_in(PAP_VALUE_MD_HL, pta->pta_package);
 	Emit::iname_constant(md_iname, K_value, pta->pta_iname);
 }
 

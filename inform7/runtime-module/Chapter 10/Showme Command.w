@@ -41,7 +41,7 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_object(K)) {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_OBJECT_METADATA_HL, 1);
+				KIND_IS_OBJECT_MD_HL, 1);
 			inter_name *iname = Hierarchy::make_iname_in(SHOWME_FN_HL, Kinds::Behaviour::package(K));
 			packaging_state save = Functions::begin(iname);
 			inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
@@ -71,10 +71,10 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 			EmitCode::up();
 			Functions::end(save);
 			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
-				KIND_SHOWME_METADATA_HL, iname);
+				KIND_SHOWME_MD_HL, iname);
  		} else {
 			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
-				KIND_IS_OBJECT_METADATA_HL, 0);
+				KIND_IS_OBJECT_MD_HL, 0);
 		}
 
 @<Make SHOWMEINSTANCEDETAILS@> =
@@ -111,7 +111,7 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 		EmitCode::up();
 		Functions::end(save);
 		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
-			INST_SHOWME_METADATA_HL, iname);
+			INST_SHOWME_MD_HL, iname);
 	}
 
 @

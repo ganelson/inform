@@ -43,7 +43,7 @@ typedef struct rulebook {
 
 =
 rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
-	Hierarchy::apply_metadata_from_wording(R, RULEBOOK_NAME_METADATA_HL, W);
+	Hierarchy::apply_metadata_from_wording(R, RULEBOOK_NAME_MD_HL, W);
 
 	rulebook *B = CREATE(rulebook);
 	Rulebooks::set_std(B);
@@ -210,7 +210,7 @@ or "coordination rulebook":
 		RULEBOOK_MC, Rvalues::from_rulebook(B), Task::language_of_syntax());
 	TEMPORARY_TEXT(PN)
 	WRITE_TO(PN, "%+W rulebook", B->primary_name);
-	Hierarchy::apply_metadata(R, RULEBOOK_PNAME_METADATA_HL, PN);
+	Hierarchy::apply_metadata(R, RULEBOOK_PNAME_MD_HL, PN);
 	DISCARD_TEXT(PN)
 
 @ It can also subsequently be given a further or "alternative" name, and that

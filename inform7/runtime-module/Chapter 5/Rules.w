@@ -41,7 +41,7 @@ void RTRules::prepare_rule(imperative_defn *id, rule *R) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
 	package_request *P = RTRules::package(R);
 	if (Wordings::empty(rfd->constant_name))
-		Hierarchy::apply_metadata_from_wording(P, RULE_NAME_METADATA_HL, Node::get_text(id->at));
+		Hierarchy::apply_metadata_from_wording(P, RULE_NAME_MD_HL, Node::get_text(id->at));
 	CompileImperativeDefn::set_iname(id->body_of_defn, Hierarchy::make_iname_in(RULE_FN_HL, P));
 }
 
@@ -141,7 +141,7 @@ void RTRules::compile_metadata(void) {
 	rule *R;
 	LOOP_OVER(R, rule) {
 		if (Wordings::nonempty(R->name))
-			Hierarchy::apply_metadata_from_wording(R->compilation_data.rule_package, RULE_NAME_METADATA_HL, R->name);
+			Hierarchy::apply_metadata_from_wording(R->compilation_data.rule_package, RULE_NAME_MD_HL, R->name);
 		TEMPORARY_TEXT(PN)
 		if (Wordings::nonempty(R->name)) {
 			TranscodeText::from_text(PN, R->name);
@@ -150,8 +150,8 @@ void RTRules::compile_metadata(void) {
 				Articles::remove_the(
 					Node::get_text(R->defn_as_I7_source->at)));
 		} else WRITE_TO(PN, "%n", RTRules::iname(R));
-		Hierarchy::apply_metadata(R->compilation_data.rule_package, RULE_PNAME_METADATA_HL, PN);
-		Hierarchy::apply_metadata_from_iname(R->compilation_data.rule_package, RULE_VALUE_METADATA_HL,
+		Hierarchy::apply_metadata(R->compilation_data.rule_package, RULE_PNAME_MD_HL, PN);
+		Hierarchy::apply_metadata_from_iname(R->compilation_data.rule_package, RULE_VALUE_MD_HL,
 			RTRules::iname(R));
 		DISCARD_TEXT(PN)
 	}
@@ -542,7 +542,7 @@ rulebook_compilation_data RTRules::new_rulebook_compilation_data(rulebook *rb,
 	rcd.rb_package = R;
 	rcd.rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, R);
 	rcd.rb_id_iname = Hierarchy::make_iname_in(RULEBOOK_ID_HL, R);
-	rcd.rb_run_md_iname = Hierarchy::make_iname_in(RULEBOOK_RUN_FN_METADATA_HL, R);
+	rcd.rb_run_md_iname = Hierarchy::make_iname_in(RULEBOOK_RUN_FN_MD_HL, R);
 	return rcd;
 }
 
@@ -591,7 +591,7 @@ void RTRules::rulebook_var_creators(void) {
 			RTVariables::set_shared_variables_creator(B->my_variables,
 				RTRules::get_stv_creator_iname(B));
 			RTVariables::compile_frame_creator(B->my_variables);
-			inter_name *vc = Hierarchy::make_iname_in(RULEBOOK_VARC_METADATA_HL,
+			inter_name *vc = Hierarchy::make_iname_in(RULEBOOK_VARC_MD_HL,
 				B->compilation_data.rb_package);
 			Emit::iname_constant(vc, K_value,
 				RTVariables::get_shared_variables_creator(B->my_variables));
@@ -611,7 +611,7 @@ void RTRules::rulebook_var_creators(void) {
 @ =
 void RTRules::new_outcome(named_rulebook_outcome *rbno, wording W) {
 	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
-	Hierarchy::apply_metadata_from_wording(R, OUTCOME_NAME_METADATA_HL, W);
+	Hierarchy::apply_metadata_from_wording(R, OUTCOME_NAME_MD_HL, W);
 	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
 	if (<notable-rulebook-outcomes>(W)) {
 		int i = -1;
@@ -946,7 +946,7 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 	EmitCode::down();
 		activity_list *avl = phrcd->avl;
 		if (avl) {
-			RTActivities::emit_activity_list(avl);
+			RTRules::emit_activity_list(avl);
 		} else {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadWhenWhile),
 				"I don't understand the 'when/while' clause",
@@ -986,3 +986,43 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 			EmitCode::up();
 		EmitCode::up();
 	EmitCode::up();
+
+@ =
+void RTRules::emit_activity_list(activity_list *al) {
+	int negate_me = FALSE, downs = 0;
+	if (al->ACL_parity == FALSE) negate_me = TRUE;
+	if (negate_me) { EmitCode::inv(NOT_BIP); EmitCode::down(); downs++; }
+
+	int cl = 0;
+	for (activity_list *k = al; k; k = k->next) cl++;
+
+	int ncl = 0;
+	while (al != NULL) {
+		if (++ncl < cl) {
+			EmitCode::inv(OR_BIP);
+			EmitCode::down();
+			downs++;
+		}
+		if (al->activity != NULL) {
+			EmitCode::call(Hierarchy::find(TESTACTIVITY_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, al->activity->compilation_data.value_iname);
+				if (al->acting_on) {
+					if (Specifications::is_description(al->acting_on)) {
+						EmitCode::val_iname(K_value,
+							Deferrals::function_to_test_description(al->acting_on));
+					} else {
+						EmitCode::val_number(0);
+						CompileValues::to_code_val(al->acting_on);
+					}
+				}
+			EmitCode::up();
+		}
+		else {
+			CompileValues::to_code_val(al->only_when);
+		}
+		al = al->next;
+	}
+
+	while (downs > 0) { EmitCode::up(); downs--; }
+}

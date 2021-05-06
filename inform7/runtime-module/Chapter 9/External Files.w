@@ -52,7 +52,7 @@ void RTExternalFiles::arrays(void) {
 	}
 
 	LOOP_OVER(exf, files_data) {
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FILE_VALUE_METADATA_HL,
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FILE_VALUE_MD_HL,
 			RTInstances::package(exf->as_instance));
 		Emit::iname_constant(md_iname, K_value, exf->compilation_data.exf_iname);
 	}

@@ -138,11 +138,11 @@ void RTVerbs::ConjugateVerb(void) {
 	LOOP_OVER(vf, verb_form)
 		if (RTVerbs::verb_form_is_instance(vf)) {
 			inter_name *md_iname =
-				Hierarchy::make_iname_in(FORM_VALUE_METADATA_HL,
+				Hierarchy::make_iname_in(FORM_VALUE_MD_HL,
 					vf->verb_form_compilation.vf_package);
 			Emit::iname_constant(md_iname, K_value, RTVerbs::form_iname(vf));
 			md_iname =
-				Hierarchy::make_iname_in(FORM_SORTING_METADATA_HL,
+				Hierarchy::make_iname_in(FORM_SORTING_MD_HL,
 					vf->verb_form_compilation.vf_package);
 			Emit::numeric_constant(md_iname, (inter_ti) vf->allocation_id);
 		}
