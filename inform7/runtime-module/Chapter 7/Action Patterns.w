@@ -320,7 +320,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 
 	if (ap->duration) {
 		LOGIF(ACTION_PATTERN_COMPILATION, "As past action\n");
-		Chronology::compile_past_action_pattern(VH, ap->duration, *ap);
+		Chronology::compile_action_history_condition(ap->duration, *ap);
 	} else {
 		kind *kind_of_noun = K_object;
 		kind *kind_of_second = K_object;
@@ -738,38 +738,3 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			CompileValues::to_code_val(APClauses::spec(ap, WHEN_AP_CLAUSE));
 			break;
 	}
-
-@ =
-void RTActionPatterns::emit_past_tense(action_pattern *ap) {
-	int bad_form = FALSE;
-	EmitCode::call(Hierarchy::find(TESTACTIONBITMAP_HL));
-	EmitCode::down();
-	if (APClauses::spec(ap, NOUN_AP_CLAUSE) == NULL)
-		EmitCode::val_number(0);
-	else
-		CompileValues::to_code_val(APClauses::spec(ap, NOUN_AP_CLAUSE));
-	int L = ActionNameLists::length(ap->action_list);
-	if (L == 0)
-		EmitCode::val_number((inter_ti) -1);
-	else {
-		anl_item *item = ActionNameLists::first_item(ap->action_list);
-		if (L >= 2) bad_form = TRUE;
-		if (ActionSemantics::can_be_compiled_in_past_tense(item->action_listed) == FALSE)
-			bad_form = TRUE;
-		EmitCode::val_iname(K_value, RTActions::double_sharp(item->action_listed));
-	}
-	EmitCode::up();
-	if (APClauses::viable_in_past_tense(ap) == FALSE) bad_form = TRUE;
-	if (bad_form)
-		@<Issue too complex PT problem@>;
-}
-
-@<Issue too complex PT problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPTooComplex),
-		"that is too complex a past tense action",
-		"at least for this version of Inform to handle: we may improve "
-		"matters in later releases. The restriction is that the "
-		"actions used in the past tense may take at most one "
-		"object, and that this must be a physical thing (not a "
-		"value, in other words). And no details of where or what "
-		"else was then happening can be specified.");

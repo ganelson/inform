@@ -24,7 +24,7 @@ inter_tree_location_list *relation_nodes = NULL;
 inter_tree_location_list *table_nodes = NULL;
 inter_tree_location_list *table_column_nodes = NULL;
 inter_tree_location_list *table_column_usage_nodes = NULL;
-inter_tree_location_list *past_tense_action_nodes = NULL;
+inter_tree_location_list *action_history_condition_nodes = NULL;
 inter_tree_location_list *past_tense_condition_nodes = NULL;
 inter_tree_location_list *instance_nodes = NULL;
 inter_tree_location_list *scene_nodes = NULL;
@@ -49,7 +49,7 @@ int Synoptic::go(pipeline_step *step) {
 	table_nodes = TreeLists::new();
 	table_column_nodes = TreeLists::new();
 	table_column_usage_nodes = TreeLists::new();
-	past_tense_action_nodes = TreeLists::new();
+	action_history_condition_nodes = TreeLists::new();
 	past_tense_condition_nodes = TreeLists::new();
 	instance_nodes = TreeLists::new();
 	scene_nodes = TreeLists::new();
@@ -116,8 +116,8 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			TreeLists::add(table_column_usage_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_table_column"))
 			TreeLists::add(table_column_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_past_action_pattern"))
-			TreeLists::add(past_tense_action_nodes, P);
+		if (ptype == PackageTypes::get(I, I"_action_history_condition"))
+			TreeLists::add(action_history_condition_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_past_condition"))
 			TreeLists::add(past_tense_condition_nodes, P);
 		if (ptype == PackageTypes::get(I, I"_use_option"))

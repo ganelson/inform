@@ -14,7 +14,7 @@ void CompileConditions::compile(value_holster *VH, parse_node *cond) {
 				Specifications::to_proposition(cond));
 			break;
 		case LOGICAL_TENSE_NT:
-			Chronology::compile_past_tense_condition(VH, cond);
+			Chronology::compile_past_tense_condition(cond);
 			break;
 		case LOGICAL_NOT_NT: @<Compile a logical negation@>; break;
 		case LOGICAL_AND_NT: case LOGICAL_OR_NT: @<Compile a logical operator@>; break;

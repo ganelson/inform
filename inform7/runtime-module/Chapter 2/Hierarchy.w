@@ -437,28 +437,29 @@ void Hierarchy::establish(void) {
 
 @h Chronology.
 
-@e PAST_TENSE_CONDITIONS_HAP
+@e PAST_TENSE_CONDS_HAP
 @e PTC_ID_HL
 @e PTC_VALUE_MD_HL
 @e PTC_FN_HL
-@e PAST_ACTION_PATTERNS_HAP
-@e PAP_ID_HL
-@e PAP_VALUE_MD_HL
-@e PAP_FN_HL
+
+@e ACTION_HISTORY_CONDS_HAP
+@e AHC_ID_HL
+@e AHC_VALUE_MD_HL
+@e AHC_FN_HL
 
 @<Establish chronology@> =
 	submodule_identity *chronology = Packaging::register_submodule(I"chronology");
 
 	H_BEGIN(HierarchyLocations::local_submodule(chronology))
-		H_BEGIN_AP(PAST_TENSE_CONDITIONS_HAP, I"past_condition", I"_past_condition")
+		H_BEGIN_AP(PAST_TENSE_CONDS_HAP, I"past_condition", I"_past_condition")
 			H_C_U(PTC_ID_HL,                  I"ptc_id")
-			H_C_U(PTC_VALUE_MD_HL,      I"^value")
+			H_C_U(PTC_VALUE_MD_HL,            I"^value")
 			H_F_G(PTC_FN_HL,                  I"pcon_fn", I"PCONR")
 		H_END
-		H_BEGIN_AP(PAST_ACTION_PATTERNS_HAP,  I"past_action_pattern", I"_past_action_pattern")
-			H_C_U(PAP_ID_HL,                  I"pap_id")
-			H_C_U(PAP_VALUE_MD_HL,      I"^value")
-			H_F_G(PAP_FN_HL,                  I"pap_fn", I"PAPR")
+		H_BEGIN_AP(ACTION_HISTORY_CONDS_HAP,  I"action_history_condition", I"_action_history_condition")
+			H_C_U(AHC_ID_HL,                  I"ahc_id")
+			H_C_U(AHC_VALUE_MD_HL,            I"^value")
+			H_F_G(AHC_FN_HL,                  I"pap_fn", I"PAPR")
 		H_END
 	H_END
 

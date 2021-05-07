@@ -2,16 +2,19 @@
 
 To compile the main/synoptic/chronology submodule.
 
-@ Before this runs, past tense action and condition packages are scattered all
+@ The purpose of all this is to keep track of the state of things so that it
+will be possible in future to ask questions concerning the past.
+
+Before this runs, past tense action and condition packages are scattered all
 over the Inter tree. Each needs its own set of unique IDs.
 
 =
 void SynopticChronology::compile(inter_tree *I) {
-	if (TreeLists::len(past_tense_action_nodes) > 0) {
-		TreeLists::sort(past_tense_action_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(past_tense_action_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(past_tense_action_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"pap_id");
+	if (TreeLists::len(action_history_condition_nodes) > 0) {
+		TreeLists::sort(action_history_condition_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(action_history_condition_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(action_history_condition_nodes->list[i].node);
+			inter_tree_node *D = Synoptic::get_definition(pack, I"ahc_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
 	}
@@ -40,7 +43,7 @@ void SynopticChronology::compile(inter_tree *I) {
 
 @<Define NO_PAST_TENSE_ACTIONS@> =
 	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_ACTIONS_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(past_tense_action_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(action_history_condition_nodes));
 
 @<Define TIMEDEVENTSTABLE@> =
 	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTSTABLE_HL);
@@ -85,8 +88,8 @@ void SynopticChronology::compile(inter_tree *I) {
 @<Define PASTACTIONSI6ROUTINES@> =
 	inter_name *iname = HierarchyLocations::find(I, PASTACTIONSI6ROUTINES_HL);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<TreeLists::len(past_tense_action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(past_tense_action_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(action_history_condition_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(action_history_condition_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
 		if (fn_s == NULL) internal_error("no pap_fn");
 		Synoptic::symbol_entry(fn_s);
