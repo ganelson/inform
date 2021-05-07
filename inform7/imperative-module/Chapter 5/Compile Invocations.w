@@ -424,7 +424,7 @@ void CompileInvocations::single(value_holster *VH, parse_node *inv,
 			Node::get_modal_verb(inv),
 			Annotations::read_int(inv, say_verb_negated_ANNOT));
 	} else if (Node::get_say_adjective(inv)) {
-		RTAdjectives::emit(Node::get_say_adjective(inv));
+		RTAdjectives::invoke(Node::get_say_adjective(inv));
 	} else {
 		@<Invoke a phrasal invocation@>;
 	}

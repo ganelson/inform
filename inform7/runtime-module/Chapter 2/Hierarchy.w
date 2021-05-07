@@ -389,7 +389,7 @@ void Hierarchy::establish(void) {
 
 @e ADJECTIVES_HAP
 @e ADJECTIVE_HL
-@e ADJECTIVE_MEANINGS_HAP
+@e MEASUREMENTS_HAP
 @e MEASUREMENT_FN_HL
 @e ADJECTIVE_PHRASES_HAP
 @e DEFINITION_FN_HL
@@ -406,7 +406,7 @@ void Hierarchy::establish(void) {
 				H_F_U(TASK_FN_HL,             I"task_fn")
 			H_END
 		H_END
-		H_BEGIN_AP(ADJECTIVE_MEANINGS_HAP,    I"adjective_meaning", I"_adjective_meaning")
+		H_BEGIN_AP(MEASUREMENTS_HAP,          I"meaaurement", I"_meaaurement")
 			H_F_G(MEASUREMENT_FN_HL,          I"measurement_fn", I"MADJ_Test")
 		H_END
 		H_BEGIN_AP(ADJECTIVE_PHRASES_HAP,     I"adjective_phrase", I"_adjective_phrase")

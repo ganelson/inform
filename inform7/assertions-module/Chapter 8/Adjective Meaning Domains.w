@@ -91,6 +91,15 @@ So this is where we determine the domain. Sometimes we allow this to fail
 for timing reasons, sometimes we require that it must not fail:
 
 =
+void AdjectiveMeaningDomains::determine_all(void) {
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		adjective_meaning *am;
+		LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
+			AdjectiveMeaningDomains::determine(am);
+		AdjectiveAmbiguity::sort(adj);
+	}
+}
 void AdjectiveMeaningDomains::determine(adjective_meaning *am) {
 	AdjectiveMeaningDomains::determine_inner(am, FALSE);
 }

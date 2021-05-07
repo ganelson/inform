@@ -93,11 +93,11 @@ void AdjectivalDefinitionFamily::compile(imperative_defn_family *self,
 	imperative_defn *id;
 	LOOP_OVER(id, imperative_defn)
 		if (id->family == adjectival_idf) {
-			RTAdjectives::make_iname(id->body_of_defn);
+			RTAdjectives::make_adjective_phrase_package(id->body_of_defn);
 			CompileImperativeDefn::not_from_phrase(id->body_of_defn, total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL);
 		}
-	RTAdjectives::compile_support_code();
+	RTAdjectives::compile();
 }
 
 @h Implementation details.

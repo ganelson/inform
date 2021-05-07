@@ -448,7 +448,7 @@ void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symb
 				wording W = Feeds::end(id);
 				adjective *aph = Adjectives::declare(W, vc->defined_in);
 				WRITE("\"; %n(prior_named_noun, (prior_named_list >= 2)); print \"",
-					aph->adjective_compilation.aph_iname);
+					aph->adjective_compilation.adaptive_printing_fn_iname);
 			} else {
 				WRITE("%V", words[i]);
 			}

@@ -11,7 +11,7 @@ typedef struct measurement_compilation_data {
 } measurement_compilation_data;
 
 void RTMeasurements::make_iname(measurement_definition *mdef) {
-	package_request *P = Hierarchy::local_package(ADJECTIVE_MEANINGS_HAP);
+	package_request *P = Hierarchy::local_package(MEASUREMENTS_HAP);
 	mdef->compilation_data.mdef_iname = Hierarchy::make_iname_in(MEASUREMENT_FN_HL, P);
 	mdef->compilation_data.property_schema_written = FALSE;
 }

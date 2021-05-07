@@ -198,8 +198,8 @@ negation does not, and so must use those of the original.
 			case NOW_ATOM_FALSE_TASK: task = NOW_ATOM_TRUE_TASK; break;
 		}
 	}
-	inter_name *iname = RTAdjectives::iname(use_adj, task,
-		RTKinds::weak_id_iname(AdjectiveMeaningDomains::get_kind(am)));
+	inter_name *iname = RTAdjectives::task_fn_iname(use_adj, task,
+		AdjectiveMeaningDomains::get_kind(am));
 	Calculus::Schemas::modify(&(am->task_data[T].call_to_support_function),
 		"*=-(%s%n(*1))", negation_operator, iname);
 

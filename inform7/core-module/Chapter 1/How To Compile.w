@@ -208,7 +208,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::ConjugateVerb)
-	BENCH(RTAdjectives::agreements)
 	BENCH(CompletionModule::compile);
 	if (debugging) {
 		BENCH(InternalTests::InternalTestCases_routine)

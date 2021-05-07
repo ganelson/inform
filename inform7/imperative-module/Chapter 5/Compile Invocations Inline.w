@@ -1616,7 +1616,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	}
 	adjective *adj = Adjectives::parse(LW);
 	if (adj) {
-		inter_name *iname = RTAdjectives::iname_of_adjective_test_function(adj);
+		inter_name *iname = RTAdjectives::guess_a_test_function(adj);
 		if (iname)
 			CSIInline::eval_to_iname(iname, prim_cat);
 		else
@@ -1675,7 +1675,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	}
 	adjective *adj = Adjectives::parse(LW);
 	if (adj) {
-		inter_name *iname = RTAdjectives::iname_of_adjective_test_function(adj);
+		inter_name *iname = RTAdjectives::guess_a_test_function(adj);
 		if (iname) {
 			WRITE("%n", iname);
 		} else {
