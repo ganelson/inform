@@ -11,7 +11,6 @@ Chapter 1: Configuration and Control
 	Runtime Module
 
 Chapter 2: Emission
-"Emitting Inter code ready for the code-generator."
 	Hierarchy
 	Noun Identifiers
 	Compilation Units
@@ -44,6 +43,8 @@ Chapter 5: Local Submodules
 	Equations
 	Instances
 	Multimedia
+	Tables
+	Table Columns
 	Rules
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
@@ -53,7 +54,6 @@ Chapter 5: Local Submodules
 	Emit Property Values
 	Instance Counting
 	Relations at Run Time
-	Runtime Support for Tables
 
 Chapter 6: Completion Resources
 	Naming

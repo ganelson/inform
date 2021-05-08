@@ -8,6 +8,12 @@ We must allocate each one a unique ID.
 As this is called, //Synoptic Utilities// has already formed a list |table_nodes|
 of packages of type |_table|.
 
+The runtime code uses a range of unique ID numbers to represent table columns;
+these can't simply be addresses of the data because two uses of columns called
+"population" in different tables need to have the same ID in each context.
+(They need to run from 100 upward because numbers 0 to 99 refer to columns
+by index within the current table: see //assertions: Tables//.)
+
 =
 void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 	if (TreeLists::len(inv->table_nodes) > 0) {

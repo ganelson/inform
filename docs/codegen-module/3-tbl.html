@@ -80,6 +80,13 @@ We must allocate each one a unique ID.
 of packages of type <span class="extract"><span class="extract-syntax">_table</span></span>.
 </p>
 
+<p class="commentary">The runtime code uses a range of unique ID numbers to represent table columns;
+these can't simply be addresses of the data because two uses of columns called
+"population" in different tables need to have the same ID in each context.
+(They need to run from 100 upward because numbers 0 to 99 refer to columns
+by index within the current table: see <a href="../assertions-module/7-tbl.html" class="internal">Tables (in assertions)</a>.)
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SynopticTables::compile</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">SynopticTables::compile</span></span>:<br/>Synoptic Utilities - <a href="3-su.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">tree_inventory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TreeLists::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">table_nodes</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>

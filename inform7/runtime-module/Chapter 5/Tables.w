@@ -1,126 +1,65 @@
-[RTTables::] Runtime Support for Tables.
+[RTTables::] Tables.
 
-To compile run-time data structures holding tables.
+To compile the tables submodule for a compilation unit, which contains
+_table packages containing _table_column_usage subpackages.
 
-@h Columns.
-The run-time code uses a range of unique ID numbers to represent table columns;
-these can't simply be addresses of the data because two uses of columns called
-"population" in different tables need to have the same ID in each context.
-(They need to run from 100 upward because numbers 0 to 99 refer to columns
-by index within the current table: see //assertions: Tables//.)
-
-=
-typedef struct table_column_compilation_data {
-	struct parse_node *where_from;
-	struct package_request *tc_package;
-	struct inter_name *id_iname;
-} table_column_compilation_data;
-
-table_column_compilation_data RTTables::new_tc_compilation_data(table_column *tc) {
-	table_column_compilation_data tccd;
-	tccd.where_from = current_sentence;
-	tccd.tc_package = Hierarchy::local_package_to(TABLE_COLUMNS_HAP, tccd.where_from);
-	tccd.id_iname = Hierarchy::make_iname_in(TABLE_COLUMN_ID_HL, tccd.tc_package);
-	return tccd;
-}
-
-inter_name *RTTables::column_id(table_column *tc) {
-	return tc->compilation_data.id_iname;
-}
-
-void RTTables::compile_table_metadata(void) {
-	table *t;
-	LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE) {
-			Hierarchy::apply_metadata_from_iname(t->compilation_data.table_package, TABLE_VALUE_MD_HL,
-				RTTables::identifier(t));
-		}
-}
-
-void RTTables::compile_table_column_metadata(void) {
-	table_column *tc;
-	LOOP_OVER(tc, table_column) {
-		Emit::numeric_constant(tc->compilation_data.id_iname, 0);
-		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_MD_HL, tc->compilation_data.tc_package);
-		RTKinds::constant_from_strong_id(kind_iname, Tables::Columns::get_kind(tc));
-	}
-}
-
-@ This compiles a function which takes the ID of a column and returns its
-kind as a strong kind ID.
-
-=
-typedef struct table_column_usage_compilation_data {
-	struct package_request *super_package;
-	struct package_request *tcu_package;
-	struct inter_name *tcu_iname; /* for the array holding this at run-time */
-} table_column_usage_compilation_data;
-
-table_column_usage_compilation_data RTTables::new_tcu_compilation_data(table *t) {
-	table_column_usage_compilation_data tcucd;
-	tcucd.super_package = t->compilation_data.table_package;
-	tcucd.tcu_package = NULL;
-	tcucd.tcu_iname = NULL;
-	return tcucd;
-}
-
-package_request *RTTables::tcu_package(table_column_usage *tcu) {
-	if (tcu->compilation_data.tcu_package == NULL)
-		tcu->compilation_data.tcu_package =
-			Hierarchy::package_within(TABLE_COLUMN_USAGES_HAP, tcu->compilation_data.super_package);
-	return tcu->compilation_data.tcu_package;
-}
-
-inter_name *RTTables::tcu_iname(table_column_usage *tcu) {
-	if (tcu->compilation_data.tcu_iname == NULL)
-		tcu->compilation_data.tcu_iname =
-			Hierarchy::make_iname_in(COLUMN_DATA_HL, RTTables::tcu_package(tcu));
-	return tcu->compilation_data.tcu_iname;
-}
-
-@h Tables.
+@h Compilation data for tables.
+Each |table| object contains this data:
 
 =
 typedef struct table_compilation_data {
 	struct package_request *table_package;
 	struct inter_name *table_identifier;
 	struct wording name_for_metadata;
+	struct parse_node *where_created;
 } table_compilation_data;
 
-table_compilation_data RTTables::new_table(parse_node *PN, table *t) {
+table_compilation_data RTTables::new_table(parse_node *PN, table *t, wording W) {
 	table_compilation_data tcd;
-	tcd.table_package = Hierarchy::local_package_to(TABLES_HAP, PN);
+	tcd.table_package = NULL;
 	tcd.table_identifier = NULL;
+	tcd.name_for_metadata = W;
+	tcd.where_created = PN;
 	return tcd;
 }
 
-void RTTables::supply_table_wording(table *t, wording W) {
-	t->compilation_data.name_for_metadata = W;
+package_request *RTTables::package(table *t) {
+	if (t->compilation_data.table_package == NULL)
+		t->compilation_data.table_package =
+			Hierarchy::local_package_to(TABLES_HAP, t->compilation_data.where_created);
+	return t->compilation_data.table_package;
 }
 
 inter_name *RTTables::identifier(table *t) {
 	if (t->compilation_data.table_identifier == NULL)
 		t->compilation_data.table_identifier =
-			Hierarchy::make_iname_in(TABLE_DATA_HL, t->compilation_data.table_package);
+			Hierarchy::make_iname_in(TABLE_DATA_HL, RTTables::package(t));
 	return t->compilation_data.table_identifier;
 }
 
-@
+@h Compilation of tables.
 
 =
 void RTTables::compile(void) {
-	@<Compile the data structures for entry storage@>;
-	@<Compile the blanks bitmap table@>;
-}
-
-@<Compile the data structures for entry storage@> =
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			int blanks_array_hwm = 0; /* the high water mark of storage used in the blanks array */
-			@<Compile the run-time storage for the table@>;
-			@<Compile metadata for the table@>;
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "table '%W'", t->compilation_data.name_for_metadata);
+			Sequence::queue(&RTTables::compilation_agent, STORE_POINTER_table(t), desc);
 		}
+}
+
+void RTTables::compilation_agent(compilation_subtask *ct) {
+	table *t = RETRIEVE_POINTER_table(ct->data);
+	current_sentence = t->table_created_at->source_table;
+	int blanks_array_hwm = 0; /* the high water mark of storage used in the blanks array */
+	@<Compile the run-time storage for the table@>;
+	@<Compile metadata for the table@>;
+	@<Compile the blanks bitmap table@>;
+	Hierarchy::apply_metadata_from_iname(RTTables::package(t), TABLE_VALUE_MD_HL,
+		RTTables::identifier(t));
+}
 
 @<Compile the run-time storage for the table@> =
 	int words_used = 0;
@@ -222,25 +161,29 @@ the values given there.
 @d TB_COLUMN_ALLOCATED		0x0200
 
 @<Write the bitmap and blank-offset words@> =
-	if (Kinds::Behaviour::can_exchange(K)) 						bits += TB_COLUMN_CANEXCHANGE;
+	if (Kinds::Behaviour::can_exchange(K)) 					  bits += TB_COLUMN_CANEXCHANGE;
 	if ((Kinds::Behaviour::uses_signed_comparisons(K)) ||
-		 (Kinds::FloatingPoint::uses_floating_point(K)))		bits += TB_COLUMN_SIGNED;
-	if (Kinds::FloatingPoint::uses_floating_point(K)) 			bits += TB_COLUMN_REAL;
-	if (Kinds::Behaviour::uses_pointer_values(K)) 				bits += TB_COLUMN_ALLOCATED;
+		 (Kinds::FloatingPoint::uses_floating_point(K)))	  bits += TB_COLUMN_SIGNED;
+	if (Kinds::FloatingPoint::uses_floating_point(K)) 		  bits += TB_COLUMN_REAL;
+	if (Kinds::Behaviour::uses_pointer_values(K)) 		      bits += TB_COLUMN_ALLOCATED;
 
-	if ((K_understanding) && (Kinds::eq(K, K_understanding)))   bits = TB_COLUMN_TOPIC;
+	if ((K_understanding) && (Kinds::eq(K, K_understanding))) bits = TB_COLUMN_TOPIC;
 
-	if (RTTables::requires_blanks_bitmap(K) == FALSE) 			bits += TB_COLUMN_NOBLANKBITS;
-	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
-	inter_name *bits_iname = Hierarchy::make_iname_in(COLUMN_BITS_HL, RTTables::tcu_package(&(t->columns[j])));
+	if (RTTables::requires_blanks_bitmap(K) == FALSE) 		  bits += TB_COLUMN_NOBLANKBITS;
+	if (t->preserve_row_order_at_run_time) 					  bits += TB_COLUMN_DONTSORTME;
+
+	inter_name *bits_iname = Hierarchy::make_iname_in(COLUMN_BITS_HL,
+		RTTables::tcu_package(&(t->columns[j])));
 	Emit::numeric_constant(bits_iname, (inter_ti) bits);
 	EmitArrays::iname_entry(bits_iname);
-	inter_name *identity_iname = Hierarchy::make_iname_in(COLUMN_IDENTITY_HL, RTTables::tcu_package(&(t->columns[j])));
-	Emit::iname_constant(identity_iname, K_value, RTTables::column_id(tc));
+	inter_name *identity_iname = Hierarchy::make_iname_in(COLUMN_IDENTITY_HL,
+		RTTables::tcu_package(&(t->columns[j])));
+	Emit::iname_constant(identity_iname, K_value, RTTableColumns::id_iname(tc));
 	if (bits & TB_COLUMN_NOBLANKBITS) {
 		EmitArrays::null_entry();
 	} else {
-		inter_name *blanks_iname = Hierarchy::make_iname_in(COLUMN_BLANKS_HL, RTTables::tcu_package(&(t->columns[j])));
+		inter_name *blanks_iname = Hierarchy::make_iname_in(COLUMN_BLANKS_HL,
+			RTTables::tcu_package(&(t->columns[j])));
 		Emit::numeric_constant(blanks_iname, (inter_ti) blanks_array_hwm);
 		EmitArrays::iname_entry(blanks_iname);
 	}
@@ -298,23 +241,19 @@ case.)
 	else RTKinds::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
-	table *t;
-	LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE) {
-			current_sentence = t->table_created_at->source_table;
-			for (int j=0; j<t->no_columns; j++) {
-				table_column *tc = t->columns[j].column_identity;
-				if (RTTables::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
-					continue;
-				inter_name *iname = Hierarchy::make_iname_in(COLUMN_BLANK_DATA_HL, RTTables::tcu_package(&(t->columns[j])));
-				packaging_state save = EmitArrays::begin_byte(iname, K_number);
-				int current_bit = 1, byte_so_far = 0;
-				@<Compile blank bits for entries from the source text@>;
-				@<Compile blank bits for additional blank rows@>;
-				if (current_bit != 1) @<Ship the current byte of the blanks table@>;
-				EmitArrays::end(save);
-			}
-		}
+	for (int j=0; j<t->no_columns; j++) {
+		table_column *tc = t->columns[j].column_identity;
+		if (RTTables::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
+			continue;
+		inter_name *iname = Hierarchy::make_iname_in(COLUMN_BLANK_DATA_HL,
+			RTTables::tcu_package(&(t->columns[j])));
+		packaging_state save = EmitArrays::begin_byte(iname, K_number);
+		int current_bit = 1, byte_so_far = 0;
+		@<Compile blank bits for entries from the source text@>;
+		@<Compile blank bits for additional blank rows@>;
+		if (current_bit != 1) @<Ship the current byte of the blanks table@>;
+		EmitArrays::end(save);
+	}
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;
@@ -339,13 +278,13 @@ case.)
 	byte_so_far = 0; current_bit = 1;
 
 @<Compile metadata for the table@> =
-	Hierarchy::apply_metadata_from_wording(t->compilation_data.table_package,
+	Hierarchy::apply_metadata_from_wording(RTTables::package(t),
 		TABLE_NAME_MD_HL, t->compilation_data.name_for_metadata);
-	inter_name *iname = Hierarchy::make_iname_in(TABLE_ID_HL, t->compilation_data.table_package);
+	inter_name *iname = Hierarchy::make_iname_in(TABLE_ID_HL, RTTables::package(t));
 	Emit::numeric_constant(iname, 0);
 	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
-	Hierarchy::apply_metadata(t->compilation_data.table_package, TABLE_PNAME_MD_HL, S);
+	Hierarchy::apply_metadata(RTTables::package(t), TABLE_PNAME_MD_HL, S);
 	DISCARD_TEXT(S)
 
 @ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its
@@ -358,4 +297,40 @@ int RTTables::requires_blanks_bitmap(kind *K) {
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
 	return TRUE;
+}
+
+@h Compilation data for table column usages.
+Each |table_column_usage| object contains this data:
+
+=
+typedef struct table_column_usage_compilation_data {
+	struct table *owning_table;
+	struct package_request *tcu_package;
+	struct inter_name *tcu_iname; /* for the array holding this at run-time */
+} table_column_usage_compilation_data;
+
+table_column_usage_compilation_data RTTables::new_tcu_compilation_data(table *t) {
+	table_column_usage_compilation_data tcucd;
+	tcucd.owning_table = t;
+	tcucd.tcu_package = NULL;
+	tcucd.tcu_iname = NULL;
+	return tcucd;
+}
+
+@ And each gives rise to a subpackage of the package for the table it appears in:
+
+=
+package_request *RTTables::tcu_package(table_column_usage *tcu) {
+	if (tcu->compilation_data.tcu_package == NULL)
+		tcu->compilation_data.tcu_package =
+			Hierarchy::package_within(TABLE_COLUMN_USAGES_HAP,
+				RTTables::package(tcu->compilation_data.owning_table));
+	return tcu->compilation_data.tcu_package;
+}
+
+inter_name *RTTables::tcu_iname(table_column_usage *tcu) {
+	if (tcu->compilation_data.tcu_iname == NULL)
+		tcu->compilation_data.tcu_iname =
+			Hierarchy::make_iname_in(COLUMN_DATA_HL, RTTables::tcu_package(tcu));
+	return tcu->compilation_data.tcu_iname;
 }

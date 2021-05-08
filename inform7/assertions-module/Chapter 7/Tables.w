@@ -5,7 +5,7 @@ associative look-up facilities provided at run-time.
 
 @ This is how a table is stored. Note that the limit on columns per table
 must not rise to 100 or beyond because that would break the system of table
-column ID numbers: see //runtime: Runtime Support for Tables//.
+column ID numbers: see //runtime: Tables//.
 
 @d MAX_COLUMNS_PER_TABLE 99
 
@@ -104,11 +104,11 @@ The following makes a blank structure for a table, but it isn't valid until
 some of these fields have been properly filled in.
 
 =
-table *Tables::new_table_structure(parse_node *PN) {
+table *Tables::new_table_structure(parse_node *PN, wording W) {
 	table *t = CREATE(table);
 	t->table_no_text = EMPTY_WORDING;
 	t->table_name_text = EMPTY_WORDING;
-	t->headline_fragment = NULL;
+	t->headline_fragment = Diagrams::new_UNPARSED_NOUN(W);
 	t->blank_rows = 0;
 	t->blank_rows_text = EMPTY_WORDING;
 	t->blank_rows_for_each_text = EMPTY_WORDING;
@@ -124,7 +124,7 @@ table *Tables::new_table_structure(parse_node *PN) {
 	t->disable_block_constant_correction = FALSE;
 	t->no_columns = 0;
 	t->table_created_at = NULL;
-	t->compilation_data = RTTables::new_table(PN, t);
+	t->compilation_data = RTTables::new_table(PN, t, W);
 	Tables::add_table_contribution(t, current_sentence);
 	return t;
 }
@@ -275,12 +275,11 @@ table and then destroy the temporary one made here.
 void Tables::create_table(parse_node *PN) {
 	wording W = Node::get_text(PN);
 	int connection = TABLE_IS_NEW; /* i.e., no connection with existing tables */
-	table *t = Tables::new_table_structure(PN);
 
 	wording HW = Wordings::up_to(W, Wordings::last_word_of_formatted_text(W, FALSE));
 	if (Wordings::length(HW) == 1) @<Reject this lexically malformed table declaration@>;
-	t->headline_fragment = Diagrams::new_UNPARSED_NOUN(HW);
-	RTTables::supply_table_wording(t, HW);
+
+	table *t = Tables::new_table_structure(PN, HW);
 	current_sentence = t->headline_fragment;
 
 	@<Parse the table's header for a name and/or number, and connection to other tables@>;

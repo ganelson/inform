@@ -197,8 +197,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTNaming::compile_small_names);
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
-	BENCH(RTTables::compile_table_metadata)
-	BENCH(RTTables::compile_table_column_metadata)
+	BENCH(RTTableColumns::compile)
 	BENCH(RTKinds::compile_mkdef_functions)
 	BENCH(RTEquations::compile)
 	BENCH(ImperativeDefinitions::compile_first_block)

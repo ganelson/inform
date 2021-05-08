@@ -4,7 +4,7 @@ I've also read Basic Inform by Graham Nelson, which is 7687 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
 I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_GrammarIllFounded
-  >--> You wrote 'Understand "right [spladge]" as "[splodge]"' (source text, line 4):
+  >--> You wrote 'Understand "left [splodge]" as "[spladge]"' (source text, line 3):
     but grammar tokens are not allowed to be defined in terms of themselves,
     either directly or indirectly.
 Inform 7 has finished.

@@ -65,7 +65,7 @@ table_column *Tables::Columns::new_table_column(wording W) {
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc),
 			Task::language_of_syntax());
 	}
-	tc->compilation_data = RTTables::new_tc_compilation_data(tc);
+	tc->compilation_data = RTTableColumns::new_compilation_data(tc);
 	tc->listed_in_predicate = Tables::Relations::make_listed_in_predicate(tc);
 	return tc;
 }
