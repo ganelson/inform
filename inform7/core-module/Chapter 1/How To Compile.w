@@ -149,7 +149,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTKinds::kind_declarations)
 	BENCH(RTProperties::emit)
 	BENCH(RTPropertyValues::allocate_attributes)
-	BENCH(NounIdentifiers::name_all)
+	BENCH(Translations::traverse_for_late_namings)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
 	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world",
 		-1, debugging, sequence_timer);
@@ -194,6 +194,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
 		-1, debugging, sequence_timer);
 	BENCH(InferenceSubjects::emit_all)
+	BENCH(RTNaming::compile_small_names);
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
 	BENCH(RTTables::compile_table_metadata)
@@ -204,7 +205,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::rulebook_var_creators)
 	BENCH(RTRules::compile_rulebooks)
 	BENCH(RTRules::compile_metadata)
-	BENCH(RTInstances::compile_metadata)
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::compile_conjugations)
@@ -221,7 +221,7 @@ so on. Those absolute basics are made here.
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::undertake_queued_tasks)
 	BENCH(RTRelations::compile_defined_relations)
-	BENCH(RTMeasurements::compile_test_functions)
+	BENCH(RTAdjectives::compile_mdef_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 
 @<Generate inter, part 4@> =

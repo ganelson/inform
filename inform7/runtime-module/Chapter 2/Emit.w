@@ -445,7 +445,7 @@ void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
 void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
 	RTProperties::emit_single(P);
 	inter_symbol *prop_s = InterNames::to_symbol(RTProperties::iname(P));
-	inter_symbol *owner_s = InterNames::to_symbol(RTInstances::emitted_iname(I));
+	inter_symbol *owner_s = InterNames::to_symbol(RTInstances::value_iname(I));
 	Produce::guard(Inter::PropertyValue::new(Emit::at(),
 		Emit::symbol_id(prop_s),
 		Emit::symbol_id(owner_s), v1, v2, Emit::baseline(), NULL));

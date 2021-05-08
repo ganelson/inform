@@ -15,7 +15,7 @@ void Figures::start(void) {
 
 int Figures::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTFigures::compile_metadata);
+		BENCH(RTMultimedia::compile_figures);
 	}
 	return FALSE;
 }

@@ -1,6 +1,7 @@
 [RTEquations::] Equations.
 
-To compile a local _equation package for each equation in a compilation unit.
+To compile the equations submodule for a compilation unit, which contains
+_equation packages.
 
 @ Each equation has a distinct runtime identifier, which in fact is a stub
 function returning false; but because these functions are all different,

@@ -18,7 +18,7 @@ void RTPropertyValues::emit_subject(inference_subject *subj) {
 
 	inter_name *iname = NULL;
 	if (K) iname = RTKinds::iname(K);
-	else if (I) iname = RTInstances::emitted_iname(I);
+	else if (I) iname = RTInstances::value_iname(I);
 	else internal_error("bad subject for emission");
 
 	Produce::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);

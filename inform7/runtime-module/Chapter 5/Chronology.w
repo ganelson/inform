@@ -1,8 +1,7 @@
 [Chronology::] Chronology.
 
-To compile a local _past_condition package for each condition referring to things
-happening in the past, and similar _action_history_condition packages for conditions
-referring to actions having occurred before.
+To compile the chronology submodule for a compilation unit, which contains
+_past_condition and _action_history_condition packages.
 
 @h Plugin.
 A little awkwardly, these two features make up the "chronology" plugin. There

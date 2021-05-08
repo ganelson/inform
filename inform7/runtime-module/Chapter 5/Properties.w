@@ -254,7 +254,7 @@ void RTProperties::emit_instance_permissions(instance *I) {
 		property *prn = pp->property_granted;
 		if (Properties::is_either_or(prn))
 			if (prn->compilation_data.store_in_negation) continue;
-		Emit::instance_permission(prn, RTInstances::emitted_iname(I));
+		Emit::instance_permission(prn, RTInstances::value_iname(I));
 	}
 }
 

@@ -18,7 +18,7 @@ void ExternalFiles::start(void) {
 int ExternalFiles::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTExternalFiles::compile);
+		BENCH(RTMultimedia::compile_files);
 	}
 	return FALSE;
 }

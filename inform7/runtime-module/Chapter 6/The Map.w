@@ -26,7 +26,7 @@ int RTMap::compile_model_tables(void) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction)
 		Emit::iname_constant(MAP_DATA(I)->direction_iname, K_object,
-			RTInstances::emitted_iname(I));
+			RTInstances::value_iname(I));
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
 one after another. It looks wasteful of memory, since it is almost always
@@ -37,7 +37,7 @@ at run-time, so we can't know now how many we will need.
 @<Compile the I6 Map-Storage array@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		RTInstances::emitted_iname(I);
+		RTInstances::value_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
 	packaging_state save = EmitArrays::begin(iname, K_object);
 	int words_used = 0;
@@ -57,7 +57,7 @@ at run-time, so we can't know now how many we will need.
 				for (int i=0; i<N; i++) {
 					instance *to = MAP_EXIT(I, i);
 					if (to)
-						EmitArrays::iname_entry(RTInstances::iname(to));
+						EmitArrays::iname_entry(RTInstances::value_iname(to));
 					else
 						EmitArrays::numeric_entry(0);
 				}
@@ -126,8 +126,8 @@ parse_node *RTMap::found_in_for_2_sided(instance *I, instance *R1, instance *R2)
 		Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	packaging_state save = EmitArrays::begin(S, K_value);
-	EmitArrays::iname_entry(RTInstances::iname(R1));
-	EmitArrays::iname_entry(RTInstances::iname(R2));
+	EmitArrays::iname_entry(RTInstances::value_iname(R1));
+	EmitArrays::iname_entry(RTInstances::value_iname(R2));
 	EmitArrays::end(save);
 	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	return Rvalues::from_iname(S);
@@ -170,14 +170,14 @@ void RTMap::write_door_dir_routines(void) {
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, loc_s);
-				EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+				EmitCode::val_iname(K_value, RTInstances::value_iname(notice->R1));
 			EmitCode::up();
 			EmitCode::code();
 			EmitCode::down();
 				EmitCode::inv(RETURN_BIP);
 				EmitCode::down();
 					EmitCode::val_iname(K_value,
-						RTInstances::iname(Map::get_value_of_opposite_property(notice->D1)));
+						RTInstances::value_iname(Map::get_value_of_opposite_property(notice->D1)));
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
@@ -185,7 +185,7 @@ void RTMap::write_door_dir_routines(void) {
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
 			EmitCode::val_iname(K_value,
-				RTInstances::iname(Map::get_value_of_opposite_property(notice->D2)));
+				RTInstances::value_iname(Map::get_value_of_opposite_property(notice->D2)));
 		EmitCode::up();
 
 		Functions::end(save);
@@ -226,20 +226,20 @@ void RTMap::write_door_to_routines(void) {
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, loc_s);
-				EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+				EmitCode::val_iname(K_value, RTInstances::value_iname(notice->R1));
 			EmitCode::up();
 			EmitCode::code();
 			EmitCode::down();
 				EmitCode::inv(RETURN_BIP);
 				EmitCode::down();
-					EmitCode::val_iname(K_value, RTInstances::iname(notice->R2));
+					EmitCode::val_iname(K_value, RTInstances::value_iname(notice->R2));
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
 
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
-			EmitCode::val_iname(K_value, RTInstances::iname(notice->R1));
+			EmitCode::val_iname(K_value, RTInstances::value_iname(notice->R1));
 		EmitCode::up();
 
 		Functions::end(save);

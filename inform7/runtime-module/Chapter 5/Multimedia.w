@@ -1,24 +1,43 @@
-[RTExternalFiles::] External Files.
+[RTMultimedia::] Multimedia.
 
-To compile a local _external_file package for each file in a compilation unit.
+To compile the multimedia submodule for a compilation unit, which contains
+_external_file, _figure and _sound packages.
 
 @ Everything is done here:
 
 =
-void RTExternalFiles::compile(void) {
+void RTMultimedia::compile_files(void) {
 	files_data *exf;
 	LOOP_OVER(exf, files_data) {
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "external file '%W'", exf->name);
-		Sequence::queue(&RTExternalFiles::compilation_agent,
+		Sequence::queue(&RTMultimedia::compilation_agent,
 			STORE_POINTER_files_data(exf), desc);
 	}
 }
 
-@ Via the following agent, which makes a single |_external_file| package:
+void RTMultimedia::compile_figures(void) {
+	figures_data *bf;
+	LOOP_OVER(bf, figures_data) {
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FIGURE_ID_MD_HL,
+			RTInstances::package(bf->as_instance));
+		Emit::numeric_constant(md_iname, (inter_ti) bf->figure_number);
+	}
+}
+
+void RTMultimedia::compile_sounds(void) {
+	sounds_data *bs;
+	LOOP_OVER(bs, sounds_data) {
+		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SOUND_ID_MD_HL,
+			RTInstances::package(bs->as_instance));
+		Emit::numeric_constant(md_iname, (inter_ti) bs->sound_number);
+	}
+}
+
+@ Files are made with the following agent, which makes a single |_external_file| package:
 
 =
-void RTExternalFiles::compilation_agent(compilation_subtask *t) {
+void RTMultimedia::compilation_agent(compilation_subtask *t) {
 	files_data *exf = RETRIEVE_POINTER_files_data(t->data);
 	wording W = exf->name;
 	package_request *P = Hierarchy::local_package_to(EXTERNAL_FILES_HAP, exf->where_created);

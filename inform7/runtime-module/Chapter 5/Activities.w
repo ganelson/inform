@@ -1,6 +1,7 @@
 [RTActivities::] Activities.
 
-To compile a local _activity package for each activity in a compilation unit.
+To compile the activities submodule for a compilation unit, which contains
+_activity packages.
 
 @h Compilation data.
 Each |activity| object contains this data:

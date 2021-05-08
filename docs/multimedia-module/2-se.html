@@ -88,7 +88,7 @@ function togglePopup(material_id) {
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Sounds::production_line</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stage</span><span class="plain-syntax"> == </span><span class="identifier-syntax">INTER1_CSEQ</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTSounds::compile_metadata</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTMultimedia::compile_sounds</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

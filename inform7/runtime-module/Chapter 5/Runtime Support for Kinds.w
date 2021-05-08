@@ -222,7 +222,7 @@ void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
-		inter_name *N = RTInstances::emitted_iname(I);
+		inter_name *N = RTInstances::value_iname(I);
 		Emit::to_value_pair(v1, v2, N);
 		return;
 	}
@@ -966,7 +966,7 @@ inter_name *RTKinds::assure_iname_exists(kind *K) {
 	if (nt) {
 		if (NounIdentifiers::iname_set(nt) == FALSE) {
 			inter_name *iname = RTKinds::constructed_kind_name(K);
-			NounIdentifiers::noun_impose_identifier(nt, iname);
+			NounIdentifiers::set_iname(nt, iname);
 		}
 	}
 	return NounIdentifiers::iname(nt);
@@ -1156,7 +1156,7 @@ but at present this can't happen.
 			LOOP_OVER_INSTANCES(I, K) {
 				EmitCode::inv(CASE_BIP);
 				EmitCode::down();
-					EmitCode::val_iname(K_value, RTInstances::iname(I));
+					EmitCode::val_iname(K_value, RTInstances::value_iname(I));
 					EmitCode::code();
 					EmitCode::down();
 						EmitCode::inv(PRINT_BIP);

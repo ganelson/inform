@@ -34,7 +34,7 @@ inter_name *StoredActionLiterals::default(void) {
 	EmitArrays::iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
 	EmitArrays::numeric_entry(0);
 	EmitArrays::numeric_entry(0);
-	EmitArrays::iname_entry(RTInstances::iname(I_yourself));
+	EmitArrays::iname_entry(RTInstances::value_iname(I_yourself));
 	EmitArrays::numeric_entry(0);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
@@ -76,7 +76,7 @@ inter_name *StoredActionLiterals::small_block(explicit_action *ea) {
 	if (ea->actor) {
 		CompileValues::to_array_entry(ea->actor);
 	} else
-		EmitArrays::iname_entry(RTInstances::iname(I_yourself));
+		EmitArrays::iname_entry(RTInstances::value_iname(I_yourself));
 	EmitArrays::numeric_entry((inter_ti) request_bits);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);

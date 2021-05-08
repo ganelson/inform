@@ -42,13 +42,13 @@ void RTBackdrops::write_found_in_routines(void) {
 			EmitCode::call(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 			EmitCode::down();
 				EmitCode::val_iname(K_object, Hierarchy::find(LOCATION_HL));
-				EmitCode::val_iname(K_object, RTInstances::iname(loc));
+				EmitCode::val_iname(K_object, RTInstances::value_iname(loc));
 			EmitCode::up();
 		} else {
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_object, Hierarchy::find(LOCATION_HL));
-				EmitCode::val_iname(K_object, RTInstances::iname(loc));
+				EmitCode::val_iname(K_object, RTInstances::value_iname(loc));
 			EmitCode::up();
 		}
 			EmitCode::code();

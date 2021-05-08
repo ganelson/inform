@@ -22,7 +22,7 @@ void RTRegions::write_found_in_functions(void) {
 					EmitCode::call(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					EmitCode::down();
 						EmitCode::val_iname(K_object, Hierarchy::find(LOCATION_HL));
-						EmitCode::val_iname(K_object, RTInstances::iname(I));
+						EmitCode::val_iname(K_object, RTInstances::value_iname(I));
 					EmitCode::up();
 				EmitCode::code();
 				EmitCode::down();

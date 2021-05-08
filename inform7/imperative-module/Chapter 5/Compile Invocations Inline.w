@@ -1611,7 +1611,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	}
 	if (<instance-of-object>(LW)) {
 		instance *I = <<rp>>;
-		CSIInline::eval_to_iname(RTInstances::iname(I), prim_cat);
+		CSIInline::eval_to_iname(RTInstances::value_iname(I), prim_cat);
 		return;
 	}
 	adjective *adj = Adjectives::parse(LW);

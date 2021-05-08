@@ -52,14 +52,14 @@ void RTNaming::compile_small_names(void) {
 			EmitCode::down();
 				EmitCode::inv(PROPERTYADDRESS_BIP);
 				EmitCode::down();
-					EmitCode::val_iname(K_value, RTInstances::iname(owner));
+					EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 					EmitCode::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
 				EmitCode::up();
 				EmitCode::code();
 				EmitCode::down();
 					EmitCode::call(porname);
 					EmitCode::down();
-						EmitCode::val_iname(K_value, RTInstances::iname(owner));
+						EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 						EmitCode::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
 						EmitCode::val_number(1);
 					EmitCode::up();
@@ -68,7 +68,7 @@ void RTNaming::compile_small_names(void) {
 				EmitCode::down();
 					EmitCode::call(porname);
 					EmitCode::down();
-						EmitCode::val_iname(K_value, RTInstances::iname(owner));
+						EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 						EmitCode::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
 						EmitCode::val_number(1);
 					EmitCode::up();
@@ -77,7 +77,7 @@ void RTNaming::compile_small_names(void) {
 		} else {
 			EmitCode::inv(PRINTNAME_BIP);
 			EmitCode::down();
-				EmitCode::val_iname(K_value, RTInstances::iname(owner));
+				EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 			EmitCode::up();
 		}
 		EmitCode::inv(PRINT_BIP);

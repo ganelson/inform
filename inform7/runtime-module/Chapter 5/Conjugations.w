@@ -1,7 +1,7 @@
 [RTVerbs::] Conjugations.
 
-To compile local _verb, _modal_verb and _verb_form packages for each verb created
-in a compilation unit, which together make up its conjuugations package.
+To compile the conjugations submodule for a compilation unit, which contains
+_verb, _modal_verb and _verb_form packages.
 
 @h The generic/conjugations package.
 A few constants before we get under way:

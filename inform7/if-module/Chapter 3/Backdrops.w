@@ -197,7 +197,7 @@ int Backdrops::complete_model(int stage) {
 	packaging_state save = EmitArrays::begin(iname, K_value);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf)
-		EmitArrays::iname_entry(RTInstances::iname(Backdrops::get_inferred_location(inf)));
+		EmitArrays::iname_entry(RTInstances::value_iname(Backdrops::get_inferred_location(inf)));
 	EmitArrays::end(save);
 	Produce::annotate_i(iname, INLINE_ARRAY_IANN, 1);
 	val_of_found_in = Rvalues::from_iname(iname);

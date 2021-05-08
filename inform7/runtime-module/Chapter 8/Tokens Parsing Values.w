@@ -269,7 +269,7 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
 							EmitCode::val_symbol(K_value, gprk.instance_s);
-							EmitCode::val_iname(K_value, RTInstances::iname(q));
+							EmitCode::val_iname(K_value, RTInstances::value_iname(q));
 						EmitCode::up();
 						EmitCode::code();
 						EmitCode::down();
@@ -304,7 +304,7 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 				EmitCode::inv(STORE_BIP);
 				EmitCode::down();
 					EmitCode::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
-					EmitCode::val_iname(K_value, RTInstances::iname(q));
+					EmitCode::val_iname(K_value, RTInstances::value_iname(q));
 				EmitCode::up();
 				EmitCode::inv(RETURN_BIP);
 				EmitCode::down();

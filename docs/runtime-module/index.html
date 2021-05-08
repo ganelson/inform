@@ -95,6 +95,11 @@
 							<span class="sectionpurpose">To provide an enforced structure and set of naming conventions for packages and names in the Inter code we generate.</span></p>
 						</li>
 						<li>
+							<p class="sectionentry"><a href="2-ni.html">
+								<spon class="sectiontitle">Noun Identifiers</span></a> -
+							<span class="sectionpurpose">Instances and kinds are both referred to by nouns, and here we create corresponding inames for use in compiled Inter code, and identifiers for use in the index.</span></p>
+						</li>
+						<li>
 							<p class="sectionentry"><a href="2-cu.html">
 								<spon class="sectiontitle">Compilation Units</span></a> -
 							<span class="sectionpurpose">The source text is divided into compilation units, and the material they lead to is similarly divided up.</span></p>
@@ -195,37 +200,42 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Local Resources</span></p>
+						<span class="chaptertitle">Chapter 5: Local Submodules</span></p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="5-act.html">
 								<spon class="sectiontitle">Activities</span></a> -
-							<span class="sectionpurpose">To compile a local _activity package for each activity in a compilation unit.</span></p>
+							<span class="sectionpurpose">To compile the activities submodule for a compilation unit, which contains _activity packages.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-adj.html">
 								<spon class="sectiontitle">Adjectives</span></a> -
-							<span class="sectionpurpose">To compile a local _adjective package for each adjective in a compilation unit, and a local |_adjective_phrase| package for each one given a "Definition:".</span></p>
+							<span class="sectionpurpose">To compile the adjectives submodule for a compilation unit, which contains _adjective, _adjective_phrase and _measurement packages.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-chr.html">
 								<spon class="sectiontitle">Chronology</span></a> -
-							<span class="sectionpurpose">To compile a local _past_condition package for each condition referring to things happening in the past, and similar _action_history_condition packages for conditions referring to actions having occurred before.</span></p>
+							<span class="sectionpurpose">To compile the chronology submodule for a compilation unit, which contains _past_condition and _action_history_condition packages.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-cnj.html">
 								<spon class="sectiontitle">Conjugations</span></a> -
-							<span class="sectionpurpose">To compile local _verb, _modal_verb and _verb_form packages for each verb created in a compilation unit, which together make up its conjuugations package.</span></p>
+							<span class="sectionpurpose">To compile the conjugations submodule for a compilation unit, which contains _verb, _modal_verb and _verb_form packages.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-eqt.html">
 								<spon class="sectiontitle">Equations</span></a> -
-							<span class="sectionpurpose">To compile a local _equation package for each equation in a compilation unit.</span></p>
+							<span class="sectionpurpose">To compile the equations submodule for a compilation unit, which contains _equation packages.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ef.html">
-								<spon class="sectiontitle">External Files</span></a> -
-							<span class="sectionpurpose">To compile a local _external_file package for each file in a compilation unit.</span></p>
+							<p class="sectionentry"><a href="5-ins.html">
+								<spon class="sectiontitle">Instances</span></a> -
+							<span class="sectionpurpose">To compile the instances submodule for a compilation unit, which contains _instance packages.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-mlt.html">
+								<spon class="sectiontitle">Multimedia</span></a> -
+							<span class="sectionpurpose">To compile the multimedia submodule for a compilation unit, which contains _external_file, _figure and _sound packages.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-rls.html">
@@ -258,29 +268,14 @@
 							<span class="sectionpurpose">To compile run-time support for properties.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-msr.html">
-								<spon class="sectiontitle">Measurements</span></a> -
-							<span class="sectionpurpose">To compile run-time support for measurement adjectives.</span></p>
-						</li>
-						<li>
 							<p class="sectionentry"><a href="5-epv.html">
 								<spon class="sectiontitle">Emit Property Values</span></a> -
 							<span class="sectionpurpose">To feed the hierarchy of instances and their property values into Inter.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ins.html">
-								<spon class="sectiontitle">Instances</span></a> -
-							<span class="sectionpurpose">To compile run-time support for instances.</span></p>
-						</li>
-						<li>
 							<p class="sectionentry"><a href="5-ic.html">
 								<spon class="sectiontitle">Instance Counting</span></a> -
 							<span class="sectionpurpose">A plugin which maintains run-time-accessible linked lists of instances of kinds, in order to speed up loops; and instance counts within kinds, in order to speed up relation storage; and the object-kind hierarchy, in order to speed up run-time checking of the type safety of property usage.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-ni.html">
-								<spon class="sectiontitle">Noun Identifiers</span></a> -
-							<span class="sectionpurpose">Nametags provide for a more contextual parsing of nouns, allowing them to be given in an inexact verbal form.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-rart.html">
@@ -419,36 +414,20 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="9"></a>
-						<span class="chaptertitle">Chapter 9: Multimedia</span></p>
+						<span class="chaptertitle">Chapter 9: Testing</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="9-fgr.html">
-								<spon class="sectiontitle">Figures</span></a> -
-							<span class="sectionpurpose"></span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-se.html">
-								<spon class="sectiontitle">Sound Effects</span></a> -
-							<span class="sectionpurpose"></span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="10"></a>
-						<span class="chaptertitle">Chapter 10: Testing</span></p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="10-sc.html">
+							<p class="sectionentry"><a href="9-sc.html">
 								<spon class="sectiontitle">Showme Command</span></a> -
 							<span class="sectionpurpose">A plugin to provide some support for the SHOWME testing command.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="10-ts.html">
+							<p class="sectionentry"><a href="9-ts.html">
 								<spon class="sectiontitle">Test Scripts</span></a> -
 							<span class="sectionpurpose">A rudimentary but useful testing system built in to IF produced by Inform, allowing short sequences of commands to be concisely noted in the source text and tried out in the Inform application using the TEST command.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="10-itc.html">
+							<p class="sectionentry"><a href="9-itc.html">
 								<spon class="sectiontitle">Internal Test Cases</span></a> -
 							<span class="sectionpurpose">Handling requests to compile internal tests.</span></p>
 						</li>

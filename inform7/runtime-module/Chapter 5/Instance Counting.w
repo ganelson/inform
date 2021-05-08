@@ -205,7 +205,7 @@ void PL::Counting::counting_compile_model_tables(void) {
 			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
 			if (next) {
-				Emit::iname_constant(iname, K_object, RTInstances::emitted_iname(next));
+				Emit::iname_constant(iname, K_object, RTInstances::value_iname(next));
 			} else {
 				Emit::iname_constant(iname, K_object, NULL);
 			}

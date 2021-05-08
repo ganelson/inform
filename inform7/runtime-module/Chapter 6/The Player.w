@@ -17,9 +17,9 @@ void RTPlayer::InitialSituation(void) {
 	packaging_state save = EmitArrays::begin(iname, K_value);
 	RTVariables::emit_initial_value(player_VAR);
 	if (start_object == NULL) EmitArrays::numeric_entry(0);
-	else EmitArrays::iname_entry(RTInstances::iname(start_object));
+	else EmitArrays::iname_entry(RTInstances::value_iname(start_object));
 	if (start_room == NULL) EmitArrays::numeric_entry(0);
-	else EmitArrays::iname_entry(RTInstances::iname(start_room));
+	else EmitArrays::iname_entry(RTInstances::value_iname(start_room));
 	RTVariables::emit_initial_value(time_of_day_VAR);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);

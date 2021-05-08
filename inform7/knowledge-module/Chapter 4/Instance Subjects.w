@@ -21,9 +21,7 @@ inference_subject_family *InstanceSubjects::family(void) {
 			NEW_PERMISSION_GRANTED_INFS_MTID, InstanceSubjects::new_permission_granted);
 
 		METHOD_ADD(instances_family,
-			EMIT_ALL_INFS_MTID, RTInstances::emit_all);
-		METHOD_ADD(instances_family,
-			EMIT_ONE_INFS_MTID, RTInstances::emit_one);
+			EMIT_ALL_INFS_MTID, RTInstances::compile_all);
 		METHOD_ADD(instances_family,
 			EMIT_ELEMENT_INFS_MTID, RTInstances::emit_element_of_condition);
 	}

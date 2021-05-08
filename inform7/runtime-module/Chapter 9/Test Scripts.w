@@ -131,10 +131,10 @@ void TestCommand::write_text(void) {
 
 		save = EmitArrays::begin(test->req_iname, K_value);
 		if (test->place == NULL) EmitArrays::numeric_entry(0);
-		else EmitArrays::iname_entry(RTInstances::iname(test->place));
+		else EmitArrays::iname_entry(RTInstances::value_iname(test->place));
 		for (int j=0; j<test->no_possessions; j++) {
 			if (test->possessions[j] == NULL) EmitArrays::numeric_entry(0);
-			else EmitArrays::iname_entry(RTInstances::iname(test->possessions[j]));
+			else EmitArrays::iname_entry(RTInstances::value_iname(test->possessions[j]));
 		}
 		EmitArrays::numeric_entry(0);
 		EmitArrays::end(save);

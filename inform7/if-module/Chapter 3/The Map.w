@@ -958,4 +958,4 @@ why we don't need to compile |door_to| here.
 	instance *backwards = Map::get_value_of_opposite_property(D1);
 	if (backwards)
 		ValueProperties::assert(P_door_dir, Instances::as_subject(I),
-			Rvalues::from_iname(RTInstances::emitted_iname(backwards)), CERTAIN_CE);
+			Rvalues::from_iname(RTInstances::value_iname(backwards)), CERTAIN_CE);

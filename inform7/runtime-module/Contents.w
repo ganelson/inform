@@ -13,6 +13,7 @@ Chapter 1: Configuration and Control
 Chapter 2: Emission
 "Emitting Inter code ready for the code-generator."
 	Hierarchy
+	Noun Identifiers
 	Compilation Units
 	Emit
 	Emit Code
@@ -35,24 +36,22 @@ Chapter 4: Enclosed Resources
 	Stored Action Literals
 	Group Together
 
-Chapter 5: Local Resources
+Chapter 5: Local Submodules
 	Activities
 	Adjectives
 	Chronology
 	Conjugations
 	Equations
-	External Files
+	Instances
+	Multimedia
 	Rules
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
 	Temporary Variables
 	Variables
 	Properties
-	Measurements
 	Emit Property Values
-	Instances
 	Instance Counting
-	Noun Identifiers
 	Relations at Run Time
 	Runtime Support for Tables
 
@@ -83,11 +82,7 @@ Chapter 8: Command Parser
 	General Parsing Routines
 	Looping Over Scope
 
-Chapter 9: Multimedia
-	Figures
-	Sound Effects
-
-Chapter 10: Testing
+Chapter 9: Testing
 	Showme Command
 	Test Scripts
 	Internal Test Cases

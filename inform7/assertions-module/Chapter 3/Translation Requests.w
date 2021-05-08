@@ -184,6 +184,16 @@ wording is to be preferred.
 @e INTER_NAMING_SMFT
 
 =
+void Translations::traverse_for_late_namings(void) {
+	SyntaxTree::traverse(Task::syntax_tree(), Translations::visit_to_name);
+}
+
+void Translations::visit_to_name(parse_node *p) {
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down))
+		MajorNodes::try_special_meaning(INTER_NAMING_SMFT, p->down);
+}
+
+@ =
 int Translations::translates_into_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;

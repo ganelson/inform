@@ -58,7 +58,7 @@ typedef struct noun {
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
-	struct name_compilation_data name_compilation;
+	struct name_compilation_data compilation_data;
 	#endif
 	#ifdef NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK
 	struct name_resolution_data name_resolution;

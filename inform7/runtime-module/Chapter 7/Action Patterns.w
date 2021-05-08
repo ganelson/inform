@@ -659,7 +659,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
+				RTTemporaryVariables::from_iname(RTInstances::value_iname(to_be_present), K_object),
 				APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE), K_object, FALSE);
 			break;
 		}
@@ -668,7 +668,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			EmitCode::call(Hierarchy::find(TESTSCOPE_HL));
 			EmitCode::down();
-				EmitCode::val_iname(K_value, RTInstances::iname(to_be_present));
+				EmitCode::val_iname(K_value, RTInstances::value_iname(to_be_present));
 				EmitCode::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 			EmitCode::up();
 			break;

@@ -15,7 +15,7 @@ void Sounds::start(void) {
 
 int Sounds::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTSounds::compile_metadata);
+		BENCH(RTMultimedia::compile_sounds);
 	}
 	return FALSE;
 }

@@ -45,7 +45,7 @@ a number: all that matters is that the correct integer value is compiled.
 	instance *I = Node::get_constant_instance(value);
 	if (I) {
 		if (Holsters::non_void_context(VH)) {
-			inter_name *N = RTInstances::emitted_iname(I);
+			inter_name *N = RTInstances::value_iname(I);
 			if (N) Emit::holster_iname(VH, N);
 			else internal_error("no iname for instance");
 		}
@@ -115,7 +115,7 @@ kinds of value:
 		} else {
 			instance *I = Rvalues::to_instance(value);
 			if (I) {
-				inter_name *N = RTInstances::emitted_iname(I);
+				inter_name *N = RTInstances::value_iname(I);
 				if (N) Emit::holster_iname(VH, N);
 			}
 			parse_node *NB = Functions::line_being_compiled();

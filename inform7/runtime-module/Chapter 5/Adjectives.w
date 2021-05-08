@@ -1,7 +1,7 @@
 [RTAdjectives::] Adjectives.
 
-To compile a local _adjective package for each adjective in a compilation unit,
-and a local |_adjective_phrase| package for each one given a "Definition:".
+To compile the adjectives submodule for a compilation unit, which contains
+_adjective, _adjective_phrase and _measurement packages.
 
 @h Compilation data.
 Each |adjective| object contains this data:
@@ -469,4 +469,78 @@ int RTAdjectives::support_for_I7_condition(adjective_meaning_family *family,
 			return TRUE;
 	}
 	return FALSE;
+}
+
+@h Measurement packages.
+The following makes |_measurement| packages for each use of a definition such
+as "a container is roomy if its carrying capacity is 20 or more".
+
+=
+typedef struct measurement_compilation_data {
+	struct inter_name *mdef_iname;
+	int property_schema_written; /* I6 schema for testing written yet? */
+} measurement_compilation_data;
+
+measurement_compilation_data RTAdjectives::new_measurement_compilation_data(
+	measurement_definition *mdef) {
+	measurement_compilation_data mcd;
+	package_request *P = Hierarchy::local_package(MEASUREMENTS_HAP);
+	mcd.mdef_iname = Hierarchy::make_iname_in(MEASUREMENT_FN_HL, P);
+	mcd.property_schema_written = FALSE;
+	return mcd;
+}
+
+void RTAdjectives::make_mdef_test_schema(measurement_definition *mdef, int T) {
+	if ((mdef->compilation_data.property_schema_written == FALSE) &&
+		(T == TEST_ATOM_TASK)) {
+		i6_schema *sch = AdjectiveMeanings::make_schema(
+			mdef->headword_as_adjective, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "%n(*1)", mdef->compilation_data.mdef_iname);
+		mdef->compilation_data.property_schema_written = TRUE;
+	}
+}
+
+void RTAdjectives::compile_mdef_test_functions(void) {
+	measurement_definition *mdef;
+	LOOP_OVER(mdef, measurement_definition)
+		if (mdef->compilation_data.property_schema_written) {
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "measurement definition for '%W'", mdef->headword);
+			Sequence::queue(&RTAdjectives::mdef_compilation_agent,
+				STORE_POINTER_measurement_definition(mdef), desc);
+		}
+}
+
+void RTAdjectives::mdef_compilation_agent(compilation_subtask *t) {
+	measurement_definition *mdef = RETRIEVE_POINTER_measurement_definition(t->data);
+	packaging_state save = Functions::begin(mdef->compilation_data.mdef_iname);
+	local_variable *lv = LocalVariables::new_call_parameter(
+		Frames::current_stack_frame(),
+		EMPTY_WORDING,
+		AdjectiveMeaningDomains::get_kind(mdef->headword_as_adjective));
+	parse_node *var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lv);
+	parse_node *evaluated_prop = Lvalues::new_PROPERTY_VALUE(
+		Rvalues::from_property(mdef->prop), var);
+	parse_node *val = NULL;
+	if (<s-literal>(mdef->region_threshold_text)) val = <<rp>>;
+	else internal_error("literal unreadable");
+	pcalc_prop *prop = Atoms::binary_PREDICATE_new(
+		Measurements::weak_comparison_bp(mdef->region_shape),
+		Terms::new_constant(evaluated_prop),
+		Terms::new_constant(val));
+	if (TypecheckPropositions::type_check(prop,
+		TypecheckPropositions::tc_problem_reporting(
+			mdef->region_threshold_text,
+			"be giving the boundary of the definition")) == ALWAYS_MATCH) {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			CompilePropositions::to_test_as_condition(NULL, prop);
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::rtrue();
+			EmitCode::up();
+		EmitCode::up();
+	}
+	EmitCode::rfalse();
+	Functions::end(save);
 }

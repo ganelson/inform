@@ -105,7 +105,7 @@ measurement_definition *Measurements::new(parse_node *q, wording AW, wording THR
 	mdef->name_of_property_to_compare = PRW;
 	mdef->superlative = EMPTY_WORDING;
 	mdef->headword_as_adjective = NULL;
-	RTMeasurements::make_iname(mdef);
+	mdef->compilation_data = RTAdjectives::new_measurement_compilation_data(mdef);
 	return mdef;
 }
 

@@ -64,11 +64,11 @@ instance *Instances::new(wording W, kind *K) {
 	instance *I = CREATE(instance);
 	@<Initialise the instance@>;
 	@<Add the new instance to its enumeration@>;
-	RTInstances::initialise_icd(I);
+	RTInstances::new_compilation_data(I);
 	IXInstances::initialise_iid(I);
 
 	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind %u) (inter %n)\n",
-		I, K, RTInstances::iname(I));
+		I, K, RTInstances::value_iname(I));
 
 	latest_instance = I;
 	PluginCalls::new_named_instance_notify(I);
@@ -360,9 +360,9 @@ void Instances::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 		case '+': @<Write the instance raw@>; break;
 		case '-': @<Write the instance with normalised casing@>; break;
 		case '~': {
-			inter_name *N = RTInstances::iname(I);
-			if (Str::len(I->as_noun->name_compilation.nt_identifier) > 0)
-				WRITE("%S", I->as_noun->name_compilation.nt_identifier);
+			inter_name *N = RTInstances::value_iname(I);
+			if (Str::len(NounIdentifiers::identifier(I->as_noun)) > 0)
+				WRITE("%S", NounIdentifiers::identifier(I->as_noun));
 			else WRITE("%n", N);
 			break;
 		}

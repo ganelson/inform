@@ -192,5 +192,5 @@ void MeasurementAdjectives::prepare_schemas(adjective_meaning_family *family,
 	measurement_definition *mdef =
 		RETRIEVE_POINTER_measurement_definition(am->family_specific_data);
 	if ((mdef->prop) && (mdef->region_threshold_evaluated))
-		RTMeasurements::make_test_schema(mdef, T);
+		RTAdjectives::make_mdef_test_schema(mdef, T);
 }
