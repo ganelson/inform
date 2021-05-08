@@ -256,7 +256,9 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 	if (hl->requirements.any_enclosure) {
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
-	} else if ((P == NULL) || (P->eventual_type != PackageTypes::get(I, hl->requirements.any_package_of_this_type))) {
+	} else if (P == NULL) {
+		internal_error("constant in null package");
+	} else if (P->eventual_type != PackageTypes::get(I, hl->requirements.any_package_of_this_type)) {
 		LOG("AN: %S, FPN: %S\n", hl->access_name, hl->function_package_name);
 		LOG("Have type: $3, required: %S\n", P->eventual_type, hl->requirements.any_package_of_this_type);
 		internal_error("constant in wrong superpackage");

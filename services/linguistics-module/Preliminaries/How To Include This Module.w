@@ -102,6 +102,9 @@ context -- see //Nouns::disambiguate//.
 extensive details of verb parsing to be copied to the debugging log. See
 //VerbPhrases::tracing//.
 
+(*) |VERB_COMPILATION_LINGUISTICS_CALLBACK|, if provided, allows the |compilation_data|
+part of a |verb| to be initialised. See //Verbs::new_verb//.
+
 (*) |VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK| reverses the meaning of a verb:
 in the sense that the reversal of "A knows B" would be "A is known by B",
 or in other words "B knows A". See //VerbMeanings::reverse_VMT//.

@@ -18,7 +18,7 @@ void ExternalFiles::start(void) {
 int ExternalFiles::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(RTExternalFiles::arrays);
+		BENCH(RTExternalFiles::compile);
 	}
 	return FALSE;
 }
@@ -229,8 +229,8 @@ typedef struct files_data {
 	int file_is_binary; /* true or false */
 	int file_ownership; /* one of the |OWNED_BY_*| values above */
 	struct text_stream *IFID_of_owner; /* if we know that */
-	struct external_file_compilation_data compilation_data;
 	struct instance *as_instance;
+	struct parse_node *where_created;
 	CLASS_DEFINITION
 } files_data;
 
@@ -253,7 +253,7 @@ instance *ExternalFiles::files_create(wording W, int binary, int ownership,
 	fd->file_is_binary = binary;
 	fd->file_ownership = ownership;
 	fd->IFID_of_owner = Str::duplicate(ifid_of_file);
-	fd->compilation_data = RTExternalFiles::new_data(W);
+	fd->where_created = current_sentence;
 	fd->as_instance = I;
 	return I;
 }

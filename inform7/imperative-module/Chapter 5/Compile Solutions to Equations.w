@@ -50,7 +50,7 @@ void EquationSolver::compile_solution_inner(wording W, equation *eqn) {
 	@<Identify the symbols in the equation with local variables@>;
 
 	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "Solving %n for '$w'", eqn->eqn_iname, to_solve->name);
+	WRITE_TO(C, "Solving %n for '$w'", eqn->compilation_data.eqn_iname, to_solve->name);
 	EmitCode::comment(C);
 	DISCARD_TEXT(C)
 	EquationSolver::compile_enode(eqn, eqn->parsed_equation);

@@ -9,11 +9,11 @@ As this is called, //Synoptic Utilities// has already formed a list |rulebook_no
 of packages of type |_rulebook|; and similarly for |rule_nodes|.
 
 =
-void SynopticRules::compile(inter_tree *I) {
-	if (TreeLists::len(rulebook_nodes) > 0) {
-		TreeLists::sort(rulebook_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->rulebook_nodes) > 0) {
+		TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
@@ -33,7 +33,7 @@ void SynopticRules::compile(inter_tree *I) {
 
 @<Define NUMBER_RULEBOOKS_CREATED@> =
 	inter_name *iname = HierarchyLocations::find(I, NUMBER_RULEBOOKS_CREATED_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(rulebook_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->rulebook_nodes)));
 
 @<Define RulebookNames array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOKNAMES_HL);
@@ -42,8 +42,8 @@ void SynopticRules::compile(inter_tree *I) {
 		Synoptic::numeric_entry(0);
 		Synoptic::numeric_entry(0);
 	} else {
-		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			Synoptic::textual_entry(name);
 		}
@@ -53,8 +53,8 @@ void SynopticRules::compile(inter_tree *I) {
 @<Define rulebook_var_creators array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOK_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
 		else Synoptic::numeric_entry(0);
@@ -64,8 +64,8 @@ void SynopticRules::compile(inter_tree *I) {
 @<Define rulebooks_array array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOKS_ARRAY_HL);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^run_fn");
 		Synoptic::symbol_entry(fn_s);
 	}
@@ -82,8 +82,8 @@ void SynopticRules::compile(inter_tree *I) {
 		Produce::val_symbol(I, K_value, rb_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(rulebook_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 			inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 			if (vc_s) {
 				Produce::inv_primitive(I, CASE_BIP);
@@ -124,7 +124,7 @@ void SynopticRules::compile(inter_tree *I) {
 			Produce::inv_primitive(I, LT_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, R_s);
-				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) TreeLists::len(rulebook_nodes));
+				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) TreeLists::len(inv->rulebook_nodes));
 			Produce::up(I);
 		Produce::up(I);
 		Produce::code(I);
@@ -178,8 +178,8 @@ void SynopticRules::compile(inter_tree *I) {
 			Produce::val_text(I, I")");
 		Produce::up(I);
 	} else {
-		for (int i=0; i<TreeLists::len(rule_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(rule_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 			if (Str::len(name) == 0) continue;

@@ -19,9 +19,8 @@ typedef struct verb_conjugation {
 	#ifdef LINGUISTICS_MODULE
 	struct verb *vc_conjugates;
 	#endif
-	#ifdef CORE_MODULE
-	struct parse_node *where_vc_created;
-	struct inter_name *vc_iname;
+	#ifdef VC_COMPILATION_LINGUISTICS_CALLBACK
+	struct verb_conjugation_compilation_data compilation_data;
 	#endif
 	int auxiliary_only; /* used only as an auxiliary, e.g. the "have" in "I have gone" */
 	int instance_of_verb; /* defines an instance of kind "verb" at run-time */
@@ -174,8 +173,7 @@ anybody else try this one on.)
 Note that verb form 0 can't be overridden: that was the base text.
 
 @<Override any verb forms with supplied irregularities@> =
-	int k;
-	for (k=1; k<no_overrides; k++)
+	for (int k=1; k<no_overrides; k++)
 		if (WordAssemblages::nonempty(overrides[k]))
 			verb_forms[k] = overrides[k];
 
@@ -190,9 +188,8 @@ Note that verb form 0 can't be overridden: that was the base text.
 	vc->defined_in = nl;
 	vc->auxiliary_only = avo_flag;
 	vc->instance_of_verb = (niv_flag)?FALSE:TRUE;
-	#ifdef CORE_MODULE
-	vc->where_vc_created = current_sentence;
-	vc->vc_iname = NULL;
+	#ifdef VC_COMPILATION_LINGUISTICS_CALLBACK
+	VC_COMPILATION_LINGUISTICS_CALLBACK(vc);
 	#endif
 
 	@<Start by blanking out all the passive and active slots@>;
@@ -291,35 +288,6 @@ and negative senses.
 		Conjugation::error(base_text, tabulation, pr,
 			"unrecognised selector in tabulation row");
 	}
-
-@ This routine is really an interloper from //core//. It provides the run-time
-values representing verbs in story files compiled by Inform.
-
-=
-#ifdef CORE_MODULE
-inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
-	if (vc->vc_iname == NULL) {
-		if (vc->vc_conjugates == NULL) {
-			package_request *R =
-				Hierarchy::local_package_to(MVERBS_HAP, vc->where_vc_created);
-			TEMPORARY_TEXT(ANT)
-			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
-			Hierarchy::apply_metadata(R, MVERB_NAME_MD_HL, ANT);
-			DISCARD_TEXT(ANT)
-			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
-		} else {
-			package_request *R =
-				RTVerbs::package(vc->vc_conjugates, vc->where_vc_created);
-			TEMPORARY_TEXT(ANT)
-			WRITE_TO(ANT, "to %A", &(vc->infinitive));
-			Hierarchy::apply_metadata(R, VERB_NAME_MD_HL, ANT);
-			DISCARD_TEXT(ANT)
-			vc->vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
-		}
-	}
-	return vc->vc_iname;
-}
-#endif
 
 @h Follow instructions.
 That completes the top level of the routine, but it depended on two major

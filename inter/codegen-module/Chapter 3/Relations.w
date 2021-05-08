@@ -9,11 +9,11 @@ As this is called, //Synoptic Utilities// has already formed a list |relation_no
 of packages of type |_relation|.
 
 =
-void SynopticRelations::compile(inter_tree *I, inter_tree_location_list *relation_nodes) {
-	if (TreeLists::len(relation_nodes) > 0) {
-		TreeLists::sort(relation_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(relation_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(relation_nodes->list[i].node);
+void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->relation_nodes) > 0) {
+		TreeLists::sort(inv->relation_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"relation_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
@@ -26,13 +26,13 @@ void SynopticRelations::compile(inter_tree *I, inter_tree_location_list *relatio
 
 @<Define CCOUNT_BINARY_PREDICATE@> =
 	inter_name *iname = HierarchyLocations::find(I, CCOUNT_BINARY_PREDICATE_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(relation_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->relation_nodes)));
 
 @<Define CREATEDYNAMICRELATIONS function@> =
 	inter_name *iname = HierarchyLocations::find(I, CREATEDYNAMICRELATIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(relation_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(relation_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
 		inter_symbol *creator_s = Metadata::read_optional_symbol(pack, I"^creator");
 		if (creator_s) Produce::inv_call(I, creator_s);
 	}
@@ -42,8 +42,8 @@ void SynopticRelations::compile(inter_tree *I, inter_tree_location_list *relatio
 	inter_name *iname = HierarchyLocations::find(I, ITERATERELATIONS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *callback_s = Synoptic::local(I, I"callback", NULL);
-	for (int i=0; i<TreeLists::len(relation_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(relation_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
 		inter_symbol *rel_s = Metadata::read_symbol(pack, I"^value");
 		Produce::inv_primitive(I, INDIRECT1V_BIP);
 		Produce::down(I);

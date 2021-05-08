@@ -9,11 +9,11 @@ As this is called, //Synoptic Utilities// has already formed a list |extension_n
 of packages of type |_module| which derive from extensions.
 
 =
-void SynopticExtensions::compile(inter_tree *I, inter_tree_location_list *extension_nodes) {
-	if (TreeLists::len(extension_nodes) > 0) {
-		TreeLists::sort(extension_nodes, Synoptic::category_order);
-		for (int i=0; i<TreeLists::len(extension_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
+void SynopticExtensions::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->extension_nodes) > 0) {
+		TreeLists::sort(inv->extension_nodes, Synoptic::category_order);
+		for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
 		}
@@ -44,8 +44,8 @@ would violate the CC license.
 @<Define SHOWEXTENSIONVERSIONS function@> =
 	inter_name *iname = HierarchyLocations::find(I, SHOWEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
 		if (modesty == 0) {
 			text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
@@ -63,8 +63,8 @@ would violate the CC license.
 @<Define SHOWFULLEXTENSIONVERSIONS function@> =
 	inter_name *iname = HierarchyLocations::find(I, SHOWFULLEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
 		text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
 		WRITE_TO(credit, "\n");
 		Produce::inv_primitive(I, PRINT_BIP);
@@ -81,8 +81,8 @@ is its extension ID.
 	inter_name *iname = HierarchyLocations::find(I, SHOWONEEXTENSION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
-	for (int i=0; i<TreeLists::len(extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(extension_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
 		text_stream *credit = Metadata::read_textual(pack, I"^credit");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);

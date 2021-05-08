@@ -8,9 +8,9 @@ As this is called, //Synoptic Utilities// has already formed a list |scene_nodes
 of instances having the kind |K_scene|.
 
 =
-void SynopticScenes::compile(inter_tree *I, inter_tree_location_list *scene_nodes) {
-	if (TreeLists::len(scene_nodes) > 0) {
-		TreeLists::sort(scene_nodes, Synoptic::module_order);
+void SynopticScenes::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->scene_nodes) > 0) {
+		TreeLists::sort(inv->scene_nodes, Synoptic::module_order);
 	}
 	@<Define SHOWSCENESTATUS function@>;
 	@<Define DETECTSCENECHANGE function@>;
@@ -19,8 +19,8 @@ void SynopticScenes::compile(inter_tree *I, inter_tree_location_list *scene_node
 @<Define SHOWSCENESTATUS function@> =
 	inter_name *iname = HierarchyLocations::find(I, SHOWSCENESTATUS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(scene_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
 		Produce::inv_call(I, ssf_s);
 	}
@@ -43,8 +43,8 @@ whether any change in status has or has not occurred.
 	inter_symbol *Again_l = Produce::reserve_label(I, I".Again");
 	inter_symbol *CScene_l = Produce::reserve_label(I, I".CScene");
 	Produce::place_label(I, Again_l);
-	for (int i=0; i<TreeLists::len(scene_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(scene_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
 		inter_symbol *scf_s = Metadata::read_symbol(pack, I"^scene_change_fn");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);

@@ -64,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">inflections</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>How To Include This Module</b></li></ul></div>
 <p class="purpose">What to do to make use of the inflections module in a new command-line tool.</p>
 
-<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li><li><a href="P-htitm.html#SP3">&#167;3. Using callbacks</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The inflections module is provided as one of the "services" suite of modules,
 which means that it was built with a view to potential incorporation in
@@ -95,9 +95,20 @@ module:
 <span class="extract"><span class="extract-syntax">InflectionsModule::end()</span></span> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This module has no callback functions to modify its behaviour.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
+functions". This means that the parent might provide a function of its own
+which would answer a question put to it by the module, or take some action
+on behalf of the module: it's a callback in the sense that the parent is
+normally calling the module, but then the module calls the parent back to
+ask for data or action.
 </p>
 
+<p class="commentary">This module has only one callbacks and it is optional:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, allows the <span class="extract"><span class="extract-syntax">compilation_data</span></span>
+part of a <span class="extract"><span class="extract-syntax">verb_conjugation</span></span> to be initialised. See <a href="3-vc.html#SP6" class="internal">Conjugation::conjugate</a>.
+</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-tai.html">2</a></li><li class="progresschapter"><a href="3-lc.html">3</a></li><li class="progresschapter"><a href="4-dl.html">4</a></li><li class="progressnext"><a href="1-im.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -105,12 +105,13 @@ Also as with tables, each can have a number, a name or both.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">examined_already</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">equation_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parsed_equation</span><span class="plain-syntax">; </span><span class="comment-syntax"> and the equation itself (when eventually parsed)</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eqn_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> used at run-time to identify this</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> the symbols used</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">equation_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">equation</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure equation is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The structure equation is accessed in 3/nuor, 5/id, 5/idf, 5/adf, 5/tpf, 5/rf, 5/rcd, 6/rls, 6/rlb, 6/act, 6/sv, 7/tc, 7/tbl and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Each equation is allowed to use one or more symbols. Some may correspond
 to local variables in surrounding code from time to time, but others will
 be constants, and it's better to think of these as placeholders in the
@@ -253,8 +254,6 @@ either case, an equation begins here:
 <span class="plain-syntax">    </span><span class="identifier-syntax">eqn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">symbol_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">eqn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">examined_already</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">RTEquations::new_identifier</span><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">);</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">NO</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">NA</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">anonymous</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-eqt.html#SP8_1_1" class="named-paragraph-link"><span class="named-paragraph">Parse the equation's number and/or name</span><span class="named-paragraph-number">8.1.1</span></a></span><span class="plain-syntax">;</span>
@@ -269,6 +268,8 @@ either case, an equation begins here:
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;text-ending-in-comma&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;text-ending-in-comma&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">eqn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">equation_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">eqn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTEquations::new_compilation_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">eqn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">eqn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

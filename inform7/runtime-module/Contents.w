@@ -35,12 +35,16 @@ Chapter 4: Enclosed Resources
 	Stored Action Literals
 	Group Together
 
-Chapter 5: Miscellany
+Chapter 5: Local Resources
 	Activities
+	Adjectives
+	Chronology
+	Conjugations
+	Equations
+	External Files
 	Rules
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
-	Equations Support
 	Temporary Variables
 	Variables
 	Properties
@@ -48,14 +52,11 @@ Chapter 5: Miscellany
 	Emit Property Values
 	Instances
 	Instance Counting
-	Adjectives
 	Noun Identifiers
-	Verbs at Run Time
 	Relations at Run Time
 	Runtime Support for Tables
-	Chronology
 
-Chapter 6: World Model
+Chapter 6: Completion Resources
 	Naming
 	Bibliographic Data
 	Spatial
@@ -85,7 +86,6 @@ Chapter 8: Command Parser
 Chapter 9: Multimedia
 	Figures
 	Sound Effects
-	External Files
 
 Chapter 10: Testing
 	Showme Command

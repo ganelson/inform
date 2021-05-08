@@ -27,4 +27,15 @@ Import: somepath/inflections
 |InflectionsModule::end()| just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
-@ This module has no callback functions to modify its behaviour.
+@h Using callbacks.
+Shared modules like this one are tweaked in behaviour by defining "callback
+functions". This means that the parent might provide a function of its own
+which would answer a question put to it by the module, or take some action
+on behalf of the module: it's a callback in the sense that the parent is
+normally calling the module, but then the module calls the parent back to
+ask for data or action.
+
+This module has only one callbacks and it is optional:
+
+(*) |VC_COMPILATION_LINGUISTICS_CALLBACK|, if provided, allows the |compilation_data|
+part of a |verb_conjugation| to be initialised. See //Conjugation::conjugate//.

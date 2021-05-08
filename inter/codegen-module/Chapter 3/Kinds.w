@@ -9,17 +9,17 @@ As this is called, //Synoptic Utilities// has already formed a list |kind_nodes|
 of packages of type |_kind|, and similarly for |derived_kind_nodes|.
 
 =
-void SynopticKinds::compile(inter_tree *I) {
-	if (TreeLists::len(kind_nodes) > 0) {
-		TreeLists::sort(kind_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->kind_nodes) > 0) {
+		TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
 			if (weak_s) Inter::Symbols::set_int(weak_s, i+2);
 		}
 	}
-	if (TreeLists::len(derived_kind_nodes) > 0) {
-		TreeLists::sort(derived_kind_nodes, Synoptic::module_order);
+	if (TreeLists::len(inv->derived_kind_nodes) > 0) {
+		TreeLists::sort(inv->derived_kind_nodes, Synoptic::module_order);
 	}
 	@<Define BASE_KIND_HWM@>;	
 	@<Define DEFAULTVALUEFINDER function@>;
@@ -35,14 +35,14 @@ void SynopticKinds::compile(inter_tree *I) {
 
 @<Define BASE_KIND_HWM@> =
 	inter_name *iname = HierarchyLocations::find(I, BASE_KIND_HWM_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(kind_nodes) + 2));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->kind_nodes) + 2));
 
 @<Define DEFAULTVALUEFINDER function@> =
 	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEFINDER_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	for (int i=0; i<TreeLists::len(derived_kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(derived_kind_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->derived_kind_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->derived_kind_nodes->list[i].node);
 		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
 			inter_symbol *rks_s = Synoptic::get_symbol(pack, I"strong_id");
 			inter_symbol *dv_s = Synoptic::get_symbol(pack, I"default_value");
@@ -88,8 +88,8 @@ which have to be given some type-safe value to start out at.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^mkdef_fn")) {
 				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
 				inter_symbol *mkdef_fn_s = Metadata::read_symbol(pack, I"^mkdef_fn");
@@ -134,8 +134,8 @@ which have to be given some type-safe value to start out at.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 				(Metadata::read_optional_symbol(pack, I"^print_fn")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
@@ -193,8 +193,8 @@ unless the two values are genuinely equal.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^cmp_fn")) {
 				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
 				inter_symbol *cmp_fn_s = Metadata::read_symbol(pack, I"^cmp_fn");
@@ -233,8 +233,8 @@ unless the two values are genuinely equal.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
 				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
 				inter_ti domain_size = Metadata::read_numeric(pack, I"^domain_size");
@@ -278,8 +278,8 @@ a kind storing pointers to blocks of data.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
 				Produce::inv_primitive(I, CASE_BIP);
@@ -301,8 +301,8 @@ a kind storing pointers to blocks of data.
 	inter_name *iname = HierarchyLocations::find(I, I7_KIND_NAME_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 		inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
 		if (class_s) {
 			text_stream *pn = Metadata::read_textual(pack, I"^printed_name");
@@ -349,8 +349,8 @@ such a function does, see "BlockValues.i6t".
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
 				inter_symbol *support_s = Metadata::read_symbol(pack, I"^support_fn");
@@ -391,8 +391,8 @@ such a function does, see "BlockValues.i6t".
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
-	for (int i=0; i<TreeLists::len(kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(kind_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
 			inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
 			if (showme_s) {

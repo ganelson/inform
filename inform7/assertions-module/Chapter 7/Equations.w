@@ -17,8 +17,9 @@ typedef struct equation {
 
 	int examined_already;
 	struct equation_node *parsed_equation; /* and the equation itself (when eventually parsed) */
-	struct inter_name *eqn_iname; /* used at run-time to identify this */
 	struct equation_symbol *symbol_list; /* the symbols used */
+	
+	struct equation_compilation_data compilation_data;
 	CLASS_DEFINITION
 } equation;
 
@@ -149,8 +150,6 @@ equation *Equations::new(wording W, int anonymous) {
 	eqn->symbol_list = NULL;
 	eqn->examined_already = FALSE;
 
-	RTEquations::new_identifier(eqn);
-
 	wording NO = EMPTY_WORDING, NA = EMPTY_WORDING;
 	if (anonymous == FALSE) {
 		@<Parse the equation's number and/or name@>;
@@ -165,6 +164,8 @@ equation *Equations::new(wording W, int anonymous) {
 
 	if (<text-ending-in-comma>(W)) W = GET_RW(<text-ending-in-comma>, 1);
 	eqn->equation_text = W;
+	
+	eqn->compilation_data = RTEquations::new_compilation_data(eqn);
 	return eqn;
 }
 

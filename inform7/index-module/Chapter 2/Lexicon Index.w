@@ -460,12 +460,12 @@ void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 				Index::link(OUT, Wordings::first_wn(lex->wording_of_entry));
 			if (lex->part_of_speech == AVERB_LEXE) WRITE(" ... <i>auxiliary verb</i>");
 			else if (lex->part_of_speech == MVERB_LEXE) WRITE(" ... for saying only");
-			else RTVerbs::tabulate_meaning(OUT, lex);
+			else IndexLexicon::tabulate_meanings(OUT, lex);
 			HTML_CLOSE("p");
-			RTVerbs::tabulate(OUT, lex, IS_TENSE, "present");
-			RTVerbs::tabulate(OUT, lex, WAS_TENSE, "past");
-			RTVerbs::tabulate(OUT, lex, HASBEEN_TENSE, "present perfect");
-			RTVerbs::tabulate(OUT, lex, HADBEEN_TENSE, "past perfect");
+			IndexLexicon::tabulate_verbs(OUT, lex, IS_TENSE, "present");
+			IndexLexicon::tabulate_verbs(OUT, lex, WAS_TENSE, "past");
+			IndexLexicon::tabulate_verbs(OUT, lex, HASBEEN_TENSE, "present perfect");
+			IndexLexicon::tabulate_verbs(OUT, lex, HADBEEN_TENSE, "past perfect");
 			DISCARD_TEXT(entry_text)
 		}
 }
@@ -490,4 +490,49 @@ void IndexLexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_ext
 			DISCARD_TEXT(entry_text)
 		}
 	if (verb_count > 0) HTML_CLOSE("p");
+}
+
+@h Index tabulation.
+The following produces the table of verbs in the Phrasebook Index page.
+
+=
+void IndexLexicon::tabulate_verbs(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
+	verb_usage *vu; int f = TRUE;
+	LOOP_OVER(vu, verb_usage)
+		if ((vu->vu_lex_entry == lex) && (VerbUsages::is_used_negatively(vu) == FALSE)
+			 && (VerbUsages::get_tense_used(vu) == tense)) {
+			vocabulary_entry *lastword = WordAssemblages::last_word(&(vu->vu_text));
+			if (f) {
+				HTML::open_indented_p(OUT, 2, "tight");
+				WRITE("<i>%s:</i>&nbsp;", tensename);
+			} else WRITE("; ");
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE("B ");
+			else WRITE("A ");
+			WordAssemblages::index(OUT, &(vu->vu_text));
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE("A");
+			else WRITE("B");
+			f = FALSE;
+		}
+	if (f == FALSE) HTML_CLOSE("p");
+}
+
+void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
+	verb_usage *vu;
+	LOOP_OVER(vu, verb_usage)
+		if (vu->vu_lex_entry == lex) {
+			if (vu->where_vu_created)
+				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
+			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
+			if (bp) RTRelations::index_for_verbs(OUT, bp);
+			return;
+		}
+	preposition *prep;
+	LOOP_OVER(prep, preposition)
+		if (prep->prep_lex_entry == lex) {
+			if (prep->where_prep_created)
+				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
+			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
+			if (bp) RTRelations::index_for_verbs(OUT, bp);
+			return;
+		}
 }

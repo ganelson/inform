@@ -12,135 +12,145 @@ void Synoptic::create_pipeline_stage(void) {
 		Synoptic::go, NO_STAGE_ARG, FALSE);
 }
 
-inter_tree_location_list *text_nodes = NULL;
-inter_tree_location_list *response_nodes = NULL;
-inter_tree_location_list *rulebook_nodes = NULL;
-inter_tree_location_list *rule_nodes = NULL;
-inter_tree_location_list *activity_nodes = NULL;
-inter_tree_location_list *action_nodes = NULL;
-inter_tree_location_list *property_nodes = NULL;
-inter_tree_location_list *extension_nodes = NULL;
-inter_tree_location_list *relation_nodes = NULL;
-inter_tree_location_list *table_nodes = NULL;
-inter_tree_location_list *table_column_nodes = NULL;
-inter_tree_location_list *table_column_usage_nodes = NULL;
-inter_tree_location_list *action_history_condition_nodes = NULL;
-inter_tree_location_list *past_tense_condition_nodes = NULL;
-inter_tree_location_list *instance_nodes = NULL;
-inter_tree_location_list *scene_nodes = NULL;
-inter_tree_location_list *file_nodes = NULL;
-inter_tree_location_list *figure_nodes = NULL;
-inter_tree_location_list *sound_nodes = NULL;
-inter_tree_location_list *use_option_nodes = NULL;
-inter_tree_location_list *verb_form_nodes = NULL;
-inter_tree_location_list *derived_kind_nodes = NULL;
-inter_tree_location_list *kind_nodes = NULL;
+typedef struct tree_inventory {
+	struct inter_tree *of_tree;
+	struct linked_list *items; /* of |tree_inventory_item| */
+	inter_tree_location_list *text_nodes;
+	inter_tree_location_list *module_nodes;
+	inter_tree_location_list *response_nodes;
+	inter_tree_location_list *rulebook_nodes;
+	inter_tree_location_list *rule_nodes;
+	inter_tree_location_list *activity_nodes;
+	inter_tree_location_list *action_nodes;
+	inter_tree_location_list *property_nodes;
+	inter_tree_location_list *extension_nodes;
+	inter_tree_location_list *relation_nodes;
+	inter_tree_location_list *table_nodes;
+	inter_tree_location_list *table_column_nodes;
+	inter_tree_location_list *table_column_usage_nodes;
+	inter_tree_location_list *action_history_condition_nodes;
+	inter_tree_location_list *past_tense_condition_nodes;
+	inter_tree_location_list *instance_nodes;
+	inter_tree_location_list *scene_nodes;
+	inter_tree_location_list *file_nodes;
+	inter_tree_location_list *figure_nodes;
+	inter_tree_location_list *sound_nodes;
+	inter_tree_location_list *use_option_nodes;
+	inter_tree_location_list *verb_form_nodes;
+	inter_tree_location_list *derived_kind_nodes;
+	inter_tree_location_list *kind_nodes;
+	CLASS_DEFINITION
+} tree_inventory;
 
-int Synoptic::go(pipeline_step *step) {
-	text_nodes = TreeLists::new();
-	response_nodes = TreeLists::new();
-	rulebook_nodes = TreeLists::new();
-	rule_nodes = TreeLists::new();
-	activity_nodes = TreeLists::new();
-	action_nodes = TreeLists::new();
-	property_nodes = TreeLists::new();
-	extension_nodes = TreeLists::new();
-	relation_nodes = TreeLists::new();
-	table_nodes = TreeLists::new();
-	table_column_nodes = TreeLists::new();
-	table_column_usage_nodes = TreeLists::new();
-	action_history_condition_nodes = TreeLists::new();
-	past_tense_condition_nodes = TreeLists::new();
-	instance_nodes = TreeLists::new();
-	scene_nodes = TreeLists::new();
-	file_nodes = TreeLists::new();
-	figure_nodes = TreeLists::new();
-	sound_nodes = TreeLists::new();
-	use_option_nodes = TreeLists::new();
-	verb_form_nodes = TreeLists::new();
-	derived_kind_nodes = TreeLists::new();
-	kind_nodes = TreeLists::new();
-	InterTree::traverse(step->repository, Synoptic::visitor, NULL, NULL, 0);
+tree_inventory *Synoptic::new_inventory(inter_tree *I) {
+	tree_inventory *inv = CREATE(tree_inventory);
+	inv->of_tree = I;
+	inv->items = NEW_LINKED_LIST(tree_inventory_item);
+	inv->text_nodes = TreeLists::new();
 
-	SynopticText::alphabetise(step->repository, text_nodes);
-	
-	SynopticActions::compile(step->repository, action_nodes);
-	SynopticActivities::compile(step->repository, activity_nodes);
-	SynopticChronology::compile(step->repository);
-	SynopticExtensions::compile(step->repository, extension_nodes);
-	SynopticInstances::compile(step->repository, instance_nodes);
-	SynopticKinds::compile(step->repository);
-	SynopticMultimedia::compile(step->repository);
-	SynopticProperties::compile(step->repository, property_nodes);
-	SynopticRelations::compile(step->repository, relation_nodes);
-	SynopticResponses::compile(step->repository, response_nodes);
-	SynopticRules::compile(step->repository);
-	SynopticScenes::compile(step->repository, scene_nodes);
-	SynopticTables::compile(step->repository, table_nodes);
-	SynopticUseOptions::compile(step->repository);
-	SynopticVerbs::compile(step->repository);
-	return TRUE;
+	inv->response_nodes = Synoptic::add_inventory_need(inv, I"_response");
+	inv->rulebook_nodes = Synoptic::add_inventory_need(inv, I"_rulebook");
+	inv->rule_nodes = Synoptic::add_inventory_need(inv, I"_rule");
+	inv->activity_nodes = Synoptic::add_inventory_need(inv, I"_activity");
+	inv->action_nodes = Synoptic::add_inventory_need(inv, I"_action");
+	inv->property_nodes = Synoptic::add_inventory_need(inv, I"_property");
+	inv->relation_nodes = Synoptic::add_inventory_need(inv, I"_relation");
+	inv->table_nodes = Synoptic::add_inventory_need(inv, I"_table");
+	inv->table_column_nodes = Synoptic::add_inventory_need(inv, I"_table_column");
+	inv->table_column_usage_nodes = Synoptic::add_inventory_need(inv, I"_table_column_usage");
+	inv->action_history_condition_nodes = Synoptic::add_inventory_need(inv, I"_action_history_condition");
+	inv->past_tense_condition_nodes = Synoptic::add_inventory_need(inv, I"_past_condition");
+	inv->use_option_nodes = Synoptic::add_inventory_need(inv, I"_use_option");
+	inv->verb_form_nodes = Synoptic::add_inventory_need(inv, I"_verb_form");
+	inv->derived_kind_nodes = Synoptic::add_inventory_need(inv, I"_derived_kind");
+	inv->kind_nodes = Synoptic::add_inventory_need(inv, I"_kind");
+	inv->module_nodes = Synoptic::add_inventory_need(inv, I"_module");
+	inv->instance_nodes =  Synoptic::add_inventory_need(inv, I"_instance");
+
+	inv->extension_nodes = TreeLists::new();
+	inv->scene_nodes = TreeLists::new();
+	inv->file_nodes = TreeLists::new();
+	inv->figure_nodes = TreeLists::new();
+	inv->sound_nodes = TreeLists::new();
+	return inv;
+}
+
+typedef struct tree_inventory_item {
+	struct inter_tree_location_list *node_list;
+	struct inter_symbol *required_ptype;
+	CLASS_DEFINITION
+} tree_inventory_item;
+
+inter_tree_location_list *Synoptic::add_inventory_need(tree_inventory *inv, text_stream *pt) {
+	tree_inventory_item *item = CREATE(tree_inventory_item);
+	item->node_list = TreeLists::new();
+	item->required_ptype = PackageTypes::get(inv->of_tree, pt);
+	ADD_TO_LINKED_LIST(item, tree_inventory_item, inv->items);
+	return item->node_list;
+}
+
+void Synoptic::perform_inventory(tree_inventory *inv) {
+	inter_tree *I = inv->of_tree;
+	InterTree::traverse(I, Synoptic::visitor, inv, NULL, 0);
+	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->module_nodes->list[i].node);
+		if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
+			TreeLists::add(inv->extension_nodes, inv->module_nodes->list[i].node);
+	}
+	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+		if (Metadata::exists(pack, I"^is_scene"))
+			TreeLists::add(inv->scene_nodes, inv->instance_nodes->list[i].node);
+		if (Metadata::exists(pack, I"^is_file"))
+			TreeLists::add(inv->file_nodes, inv->instance_nodes->list[i].node);
+		if (Metadata::exists(pack, I"^is_figure"))
+			TreeLists::add(inv->figure_nodes, inv->instance_nodes->list[i].node);
+		if (Metadata::exists(pack, I"^is_sound"))
+			TreeLists::add(inv->sound_nodes, inv->instance_nodes->list[i].node);
+	}
 }
 
 void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	tree_inventory *inv = (tree_inventory *) state;
 	if (P->W.data[ID_IFLD] == CONSTANT_IST) {
 		inter_symbol *con_s =
 			InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 		if (Inter::Symbols::read_annotation(con_s, TEXT_LITERAL_IANN) == 1)
-			TreeLists::add(text_nodes, P);
+			TreeLists::add(inv->text_nodes, P);
 	}
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbol *ptype = Inter::Packages::type(pack);
-		if (ptype == PackageTypes::get(I, I"_response"))
-			TreeLists::add(response_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_rulebook"))
-			TreeLists::add(rulebook_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_rule"))
-			TreeLists::add(rule_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_activity"))
-			TreeLists::add(activity_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_action"))
-			TreeLists::add(action_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_property"))
-			TreeLists::add(property_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_module")) {
-			if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
-				TreeLists::add(extension_nodes, P);
-		}
-		if (ptype == PackageTypes::get(I, I"_relation"))
-			TreeLists::add(relation_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_table"))
-			TreeLists::add(table_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_table_column_usage"))
-			TreeLists::add(table_column_usage_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_table_column"))
-			TreeLists::add(table_column_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_action_history_condition"))
-			TreeLists::add(action_history_condition_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_past_condition"))
-			TreeLists::add(past_tense_condition_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_use_option"))
-			TreeLists::add(use_option_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_verb_form"))
-			TreeLists::add(verb_form_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_kind"))
-			TreeLists::add(kind_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_derived_kind"))
-			TreeLists::add(derived_kind_nodes, P);
-		if (ptype == PackageTypes::get(I, I"_instance")) {
-			TreeLists::add(instance_nodes, P);
-			inter_package *pack = Inter::Package::defined_by_frame(P);
-			if (Metadata::exists(pack, I"^is_scene"))
-				TreeLists::add(scene_nodes, P);
-			if (Metadata::exists(pack, I"^is_file"))
-				TreeLists::add(file_nodes, P);
-			if (Metadata::exists(pack, I"^is_figure"))
-				TreeLists::add(figure_nodes, P);
-			if (Metadata::exists(pack, I"^is_sound"))
-				TreeLists::add(sound_nodes, P);
-		}
+		tree_inventory_item *item;
+		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
+			if (ptype == item->required_ptype) {
+				TreeLists::add(item->node_list, P);
+				break;
+			}
 	}
+}
+
+int Synoptic::go(pipeline_step *step) {
+	tree_inventory *inv = Synoptic::new_inventory(step->repository);
+	Synoptic::perform_inventory(inv);
+
+	SynopticText::compile(step->repository, inv);
+	SynopticActions::compile(step->repository, inv);
+	SynopticActivities::compile(step->repository, inv);
+	SynopticChronology::compile(step->repository, inv);
+	SynopticExtensions::compile(step->repository, inv);
+	SynopticInstances::compile(step->repository, inv);
+	SynopticKinds::compile(step->repository, inv);
+	SynopticMultimedia::compile(step->repository, inv);
+	SynopticProperties::compile(step->repository, inv);
+	SynopticRelations::compile(step->repository, inv);
+	SynopticResponses::compile(step->repository, inv);
+	SynopticRules::compile(step->repository, inv);
+	SynopticScenes::compile(step->repository, inv);
+	SynopticTables::compile(step->repository, inv);
+	SynopticUseOptions::compile(step->repository, inv);
+	SynopticVerbs::compile(step->repository, inv);
+	return TRUE;
 }
 
 @

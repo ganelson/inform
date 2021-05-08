@@ -199,7 +199,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTTables::compile_table_metadata)
 	BENCH(RTTables::compile_table_column_metadata)
 	BENCH(RTKinds::compile_mkdef_functions)
-	BENCH(RTEquations::compile_identifiers)
+	BENCH(RTEquations::compile)
 	BENCH(ImperativeDefinitions::compile_first_block)
 	BENCH(RTRules::rulebook_var_creators)
 	BENCH(RTRules::compile_rulebooks)
@@ -207,7 +207,8 @@ so on. Those absolute basics are made here.
 	BENCH(RTInstances::compile_metadata)
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::compile)
-	BENCH(RTVerbs::ConjugateVerb)
+	BENCH(RTVerbs::compile_conjugations)
+	BENCH(RTVerbs::compile_forms)
 	BENCH(CompletionModule::compile);
 	if (debugging) {
 		BENCH(InternalTests::InternalTestCases_routine)

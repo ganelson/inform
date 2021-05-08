@@ -21,6 +21,8 @@ which use this module:
 @e code_generation_CLASS
 @e generated_segment_CLASS
 @e link_instruction_CLASS
+@e tree_inventory_CLASS
+@e tree_inventory_item_CLASS
 
 =
 DECLARE_CLASS(I6T_intervention)
@@ -34,6 +36,8 @@ DECLARE_CLASS(code_generation_target)
 DECLARE_CLASS(code_generation)
 DECLARE_CLASS(generated_segment)
 DECLARE_CLASS(link_instruction)
+DECLARE_CLASS(tree_inventory)
+DECLARE_CLASS(tree_inventory_item)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -39,6 +39,19 @@ void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
 	WRITE("}");
 }
 
+void VerbUsages::log_all(void) {
+	verb_usage *vu;
+	preposition *prep;
+	LOG("The current S-grammar has the following verb and preposition usages:\n");
+	LOOP_OVER(vu, verb_usage) {
+		VerbUsages::write_usage(DL, vu);
+		LOG("\n");
+	}
+	LOOP_OVER(prep, preposition) {
+		LOG("$p\n", prep);
+	}
+}
+
 @h Search list and tiers.
 A "search list" of verb usages indicates what order the possibilities should be
 checked in. The simpler list is in order of word count:

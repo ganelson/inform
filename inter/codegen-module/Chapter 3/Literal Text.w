@@ -24,16 +24,16 @@ As this is called, //Synoptic Utilities// has already formed a list |text_nodes|
 of constants marked with the |TEXT_LITERAL_IANN| annotation. We take it from there:
 
 =
-void SynopticText::alphabetise(inter_tree *I, inter_tree_location_list *text_nodes) {
-	if (TreeLists::len(text_nodes) > 0) {
-		TreeLists::sort(text_nodes, SynopticText::cmp);
+void SynopticText::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->text_nodes) > 0) {
+		TreeLists::sort(inv->text_nodes, SynopticText::cmp);
 		inter_package *texts_pack = Site::ensure_texts_package(I);
 		inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(texts_pack);
 
 		text_stream *latest_text = NULL;
 		inter_symbol *latest_s = NULL;
-		for (int i=0, j=0; i<TreeLists::len(text_nodes); i++) {
-			inter_tree_node *P = text_nodes->list[i].node;
+		for (int i=0, j=0; i<TreeLists::len(inv->text_nodes); i++) {
+			inter_tree_node *P = inv->text_nodes->list[i].node;
 			inter_package *pack = Inter::Packages::container(P);
 			text_stream *S = SynopticText::text_quoted_here(P);
 			if ((latest_text == NULL) || (Str::ne(S, latest_text)))

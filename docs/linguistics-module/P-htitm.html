@@ -168,6 +168,8 @@ context &mdash; see <a href="2-nns.html#SP14" class="internal">Nouns::disambigua
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">TRACING_LINGUISTICS_CALLBACK</span></span>, if provided, can return <span class="extract"><span class="extract-syntax">TRUE</span></span> to allow
 extensive details of verb parsing to be copied to the debugging log. See
 <a href="4-vp.html#SP3" class="internal">VerbPhrases::tracing</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, allows the <span class="extract"><span class="extract-syntax">compilation_data</span></span>
+part of a <span class="extract"><span class="extract-syntax">verb</span></span> to be initialised. See <a href="3-vrb.html#SP3" class="internal">Verbs::new_verb</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK</span></span> reverses the meaning of a verb:
 in the sense that the reversal of "A knows B" would be "A is known by B",
 or in other words "B knows A". See <a href="3-vm.html#SP2" class="internal">VerbMeanings::reverse_VMT</a>.

@@ -493,7 +493,7 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(conjugations))
-		H_BEGIN_AP(MVERBS_HAP,                I"mverb", I"_modal_verb")
+		H_BEGIN_AP(MVERBS_HAP,                I"modal_verb", I"_modal_verb")
 			H_C_U(MVERB_NAME_MD_HL,     I"^name")
 			H_F_G(MODAL_CONJUGATION_FN_HL,    I"conjugation_fn", I"ConjugateModalVerb")
 		H_END
@@ -511,14 +511,14 @@ void Hierarchy::establish(void) {
 @h Equations.
 
 @e EQUATIONS_HAP
-@e SOLVE_FN_HL
+@e IDENTIFIER_FN_HL
 
 @<Establish equations@> =
 	submodule_identity *equations = Packaging::register_submodule(I"equations");
 
 	H_BEGIN(HierarchyLocations::local_submodule(equations))
 		H_BEGIN_AP(EQUATIONS_HAP,             I"equation", I"_equation")
-			H_F_U(SOLVE_FN_HL,                I"solve_fn")
+			H_F_U(IDENTIFIER_FN_HL,           I"identifier_fn")
 		H_END
 	H_END
 

@@ -16,11 +16,11 @@ of packages of type |_action|.
 @d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
 
 =
-void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_nodes) {
-	if (TreeLists::len(action_nodes) > 0) {
-		TreeLists::sort(action_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(action_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(action_nodes->list[i].node);
+void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->action_nodes) > 0) {
+		TreeLists::sort(inv->action_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 			D = Synoptic::get_optional_definition(pack, I"var_id");
@@ -29,7 +29,7 @@ void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_no
 	}
 	@<Define CCOUNT_ACTION_NAME@>;
 	@<Define AD_RECORDS@>;
-	if (TreeLists::len(action_nodes) > 0) {
+	if (TreeLists::len(inv->action_nodes) > 0) {
 		@<Define ACTIONHAPPENED array@>;
 		@<Define ACTIONCODING array@>;
 		@<Define ACTIONDATA array@>;
@@ -39,16 +39,16 @@ void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_no
 
 @<Define CCOUNT_ACTION_NAME@> =
 	inter_name *iname = HierarchyLocations::find(I, CCOUNT_ACTION_NAME_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(action_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
 
 @<Define AD_RECORDS@> =
 	inter_name *iname = HierarchyLocations::find(I, AD_RECORDS_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(action_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
 
 @<Define ACTIONHAPPENED array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONHAPPENED_HL);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<=(TreeLists::len(action_nodes)/16); i++)
+	for (int i=0; i<=(TreeLists::len(inv->action_nodes)/16); i++)
 		Synoptic::numeric_entry(0);
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
@@ -56,8 +56,8 @@ void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_no
 @<Define ACTIONCODING array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONCODING_HL);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<TreeLists::len(action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(action_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		inter_ti no = Metadata::read_optional_numeric(pack, I"^no_coding");
 		if ((no) || (double_sharp_s == NULL)) Synoptic::numeric_entry(0);
@@ -70,8 +70,8 @@ void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_no
 	inter_name *iname = HierarchyLocations::find(I, ACTIONDATA_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, iname);
-	for (int i=0; i<TreeLists::len(action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(action_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s == NULL) {
 			Synoptic::numeric_entry(0);
@@ -124,8 +124,8 @@ void SynopticActions::compile(inter_tree *I, inter_tree_location_list *action_no
 		Produce::code(I);
 		Produce::down(I);
 
-	for (int i=0; i<TreeLists::len(action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(action_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s) {
 			inter_symbol *debug_fn_s = Metadata::read_symbol(pack, I"^debug_fn");

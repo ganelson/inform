@@ -10,9 +10,9 @@ of packages of type |_instance|.
 This section is a placeholder for now.
 
 =
-void SynopticInstances::compile(inter_tree *I, inter_tree_location_list *instance_nodes) {
-	if (TreeLists::len(instance_nodes) > 0) {
-		TreeLists::sort(instance_nodes, Synoptic::module_order);
+void SynopticInstances::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->instance_nodes) > 0) {
+		TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	}
 	@<Define SHOWMEINSTANCEDETAILS function@>
 }
@@ -23,8 +23,8 @@ void SynopticInstances::compile(inter_tree *I, inter_tree_location_list *instanc
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
-	for (int i=0; i<TreeLists::len(instance_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(instance_nodes->list[i].node);
+	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
 		inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
 		if (showme_s) {
 			Produce::inv_primitive(I, STORE_BIP);

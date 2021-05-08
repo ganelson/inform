@@ -9,11 +9,11 @@ As this is called, //Synoptic Utilities// has already formed a list |property_no
 of packages of type |_activity|.
 
 =
-void SynopticProperties::compile(inter_tree *I, inter_tree_location_list *property_nodes) {
-	if (TreeLists::len(property_nodes) > 0) {
-		TreeLists::sort(property_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(property_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(property_nodes->list[i].node);
+void SynopticProperties::compile(inter_tree *I, tree_inventory *inv) {
+	if (TreeLists::len(inv->property_nodes) > 0) {
+		TreeLists::sort(inv->property_nodes, Synoptic::module_order);
+		for (int i=0; i<TreeLists::len(inv->property_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->property_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"property_id");
 			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
 		}
@@ -23,4 +23,4 @@ void SynopticProperties::compile(inter_tree *I, inter_tree_location_list *proper
 
 @<Define CCOUNT_PROPERTY@> =
 	inter_name *iname = HierarchyLocations::find(I, CCOUNT_PROPERTY_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(property_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->property_nodes)));
