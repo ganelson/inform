@@ -69,6 +69,7 @@ of |inter_ti| variables:
 =
 void Emit::holster_iname(value_holster *VH, inter_name *iname) {
 	if (Holsters::non_void_context(VH)) {
+		if (iname == NULL) internal_error("no iname to holster");
 		inter_ti v1 = 0, v2 = 0;
 		Emit::to_value_pair(&v1, &v2, iname);
 		Holsters::holster_pair(VH, v1, v2);

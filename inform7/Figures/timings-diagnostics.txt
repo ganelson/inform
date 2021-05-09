@@ -1,37 +1,35 @@
 100.0% in inform7 run
-     55.9% in compilation to Inter
-         35.6% in //Sequence::undertake_queued_tasks//
+     56.6% in compilation to Inter
+         38.0% in //Sequence::undertake_queued_tasks//
           5.7% in //InferenceSubjects::emit_all//
-          3.4% in //MajorNodes::pre_pass//
-          3.1% in //MajorNodes::pass_1//
+          3.1% in //MajorNodes::pre_pass//
+          2.9% in //MajorNodes::pass_1//
           1.6% in //ImperativeDefinitions::assess_all//
-          0.6% in //ImperativeDefinitions::compile_first_block//
-          0.6% in //RTRules::compile_rulebooks//
+          0.4% in //ImperativeDefinitions::compile_first_block//
           0.4% in //MajorNodes::pass_2//
           0.4% in //World::stage_V//
-          0.3% in //RTRelations::compile_defined_relations//
+          0.2% in //RTRelations::compile_defined_relations//
           0.1% in //RTActions::compile_functions//
+          0.1% in //RTActions::compile_metadata//
           0.1% in //RTCommandGrammars::compile_all//
-          0.1% in //RTKinds::compile_metadata//
-          0.1% in //RTRules::compile_metadata//
           0.1% in //RTShowmeCommand::compile_SHOWME_details//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          2.5% not specifically accounted for
-     41.7% in running Inter pipeline
-         10.5% in inter step 7/14: consolidate-text
-         10.3% in step preparation
-          8.9% in inter step 2/14: link
-          7.4% in inter step 14/14: generate inform6 -> auto.inf
-          0.8% in inter step 10/14: make-identifiers-unique
-          0.3% in inter step 11/14: reconcile-verbs
-          0.3% in inter step 13/14: eliminate-redundant-operations
+          2.7% not specifically accounted for
+     41.4% in running Inter pipeline
+         10.6% in inter step 7/14: consolidate-text
+         10.5% in step preparation
+          8.7% in inter step 2/14: link
+          7.3% in inter step 14/14: generate inform6 -> auto.inf
+          0.7% in inter step 10/14: make-identifiers-unique
+          0.2% in inter step 11/14: reconcile-verbs
+          0.2% in inter step 13/14: eliminate-redundant-operations
+          0.2% in inter step 6/14: assimilate
+          0.2% in inter step 8/14: resolve-external-symbols
           0.1% in inter step 12/14: eliminate-redundant-labels
           0.1% in inter step 4/14: parse-linked-matter
           0.1% in inter step 5/14: resolve-conditional-compilation
-          0.1% in inter step 6/14: assimilate
-          0.1% in inter step 8/14: resolve-external-symbols
           0.1% in inter step 9/14: inspect-plugs
-          2.0% not specifically accounted for
-      1.8% in supervisor
-      0.5% not specifically accounted for
+          1.7% not specifically accounted for
+      1.6% in supervisor
+      0.3% not specifically accounted for

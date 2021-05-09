@@ -76,11 +76,11 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	Emit::iname_constant(av->compilation_data.value_iname, K_value, iname);
 
 	Hierarchy::apply_metadata_from_iname(pack, ACTIVITY_BEFORE_MD_HL,
-		av->before_rules->compilation_data.rb_id_iname);
+		RTRulebooks::id_iname(av->before_rules));
 	Hierarchy::apply_metadata_from_iname(pack, ACTIVITY_FOR_MD_HL,
-		av->for_rules->compilation_data.rb_id_iname);
+		RTRulebooks::id_iname(av->for_rules));
 	Hierarchy::apply_metadata_from_iname(pack, ACTIVITY_AFTER_MD_HL,
-		av->after_rules->compilation_data.rb_id_iname);
+		RTRulebooks::id_iname(av->after_rules));
 	Hierarchy::apply_metadata_from_number(pack, ACTIVITY_UFA_MD_HL,
 		(inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
 

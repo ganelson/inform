@@ -651,8 +651,7 @@ them by asserting propositions to be true; we act directly.
 	if (governor)
 		Node::set_evaluation(governor,
 			Specifications::from_kind(create_as));
-	package_request *P = Hierarchy::local_package(RULEBOOKS_HAP);
-	rulebook *rb = Rulebooks::new(create_as, W, P);
+	rulebook *rb = Rulebooks::new(create_as, W, NULL);
 
 	val = Rvalues::from_rulebook(rb);
 	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);

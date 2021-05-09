@@ -312,7 +312,7 @@ will be required to pass |<extra-response>|.
 		case NOUN_I6TR: break;
 		case RULE_I6TR:
 			if (global_pass_state.pass == 1)
-				Rules::declare_I6_written_rule(W, Node::get_text(p2));
+				Rules::declare_Inter_rule(W, Node::get_text(p2));
 			if ((global_pass_state.pass == 2) && (p2->down) && (<rule-name>(W)))
 				Translations::plus_responses(p2->down, <<rp>>);
 			break;

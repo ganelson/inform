@@ -223,7 +223,7 @@ kind *Rules::to_kind(rule *R) {
 =
 void Rules::set_imperative_definition(rule *R, imperative_defn *id) {
 	R->defn_as_I7_source = id;
-	RTRules::prepare_rule(id, R);
+	CompileImperativeDefn::set_iname(id->body_of_defn, RTRules::iname(R));
 }
 
 imperative_defn *Rules::get_imperative_definition(rule *R) {
@@ -269,11 +269,10 @@ Here |W| is the rule's name, say "can't reach inside rooms rule", and |FW|
 is wording which should contain just the double-quoted function name.
 
 =
-void Rules::declare_I6_written_rule(wording W, wording FW) {
+void Rules::declare_Inter_rule(wording W, wording FW) {
 	rule *R = Rules::obtain(W, TRUE);
 	R->defn_as_Inter_function = Str::new();
 	WRITE_TO(R->defn_as_Inter_function, "%W", FW);
-	RTRules::define_by_Inter_function(R);
 }
 
 @h Logging.

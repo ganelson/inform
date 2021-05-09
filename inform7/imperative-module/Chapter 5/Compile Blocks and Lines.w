@@ -285,7 +285,7 @@ need bespoke handling:
 			"in the '%3' rulebook, where '%2' doesn't have a meaning.");
 		Problems::issue_problem_end();
 	}
-	RTRules::compile_outcome(nrbo);
+	RTRulebooks::compile_outcome(nrbo);
 
 @ When an "if" node has two children, they are the condition to test and then
 the code block of what to execute if the condition is true:

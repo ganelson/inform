@@ -237,7 +237,7 @@ void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return;
 
 	if (Kinds::eq(K, K_rulebook_outcome)) {
-		Emit::to_value_pair(v1, v2, RTRules::default_outcome_identifier());
+		Emit::to_value_pair(v1, v2, RTRulebooks::default_outcome_iname());
 		return;
 	}
 

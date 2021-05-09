@@ -281,7 +281,7 @@ end actually occurred.)
 	}
 	EmitCode::call(Hierarchy::find(FOLLOWRULEBOOK_HL));
 	EmitCode::down();
-		EmitCode::val_iname(K_value, sc->ends[end].end_rulebook->compilation_data.rb_id_iname);
+		EmitCode::val_iname(K_value, RTRulebooks::id_iname(sc->ends[end].end_rulebook));
 	EmitCode::up();
 	if (end == 1) {
 		EmitCode::call(Hierarchy::find(FOLLOWRULEBOOK_HL));

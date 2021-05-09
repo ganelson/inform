@@ -176,7 +176,7 @@ so on. Those absolute basics are made here.
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTProperties::annotate_attributes)
-	BENCH(RTRules::RulebookOutcomePrintingRule)
+	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 	BENCH(RTKinds::compile_instance_counts)
 
 @ This proceeds in stages.
@@ -201,9 +201,9 @@ so on. Those absolute basics are made here.
 	BENCH(RTKinds::compile_mkdef_functions)
 	BENCH(RTEquations::compile)
 	BENCH(ImperativeDefinitions::compile_first_block)
-	BENCH(RTRules::rulebook_var_creators)
-	BENCH(RTRules::compile_rulebooks)
-	BENCH(RTRules::compile_metadata)
+	BENCH(RTRules::compile)
+	BENCH(RTRulebooks::compile)
+	BENCH(RTRulebooks::compile_nros)
 	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::compile_conjugations)

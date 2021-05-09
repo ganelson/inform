@@ -3,12 +3,6 @@ I've now read your source text, which is 45 words long.
 I've also read Basic Inform by Graham Nelson, which is 7687 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
 I've also read Standard Rules by Graham Nelson, which is 32067 words long.
-Problem__ PM_EquationInsoluble
-  >--> In 'let F be given by m = wibble F' (source text, line 10), you asked to
-    let F be given by the equation 'm = wibble F', but I am unable to rearrange
-    the equation in any simple way so that it sets 'F' equal to something else.
-    Maybe you could write a more explicit equation? (You're certainly better at
-    maths than I am; I can only make easy deductions.)
 Problem__ PM_Unknown
   >--> In the sentence 'decide on N+7' (source text, line 5), I was expecting
     to read a value, but instead found some text that I couldn't understand -
@@ -16,4 +10,10 @@ Problem__ PM_Unknown
     I was trying to match this phrase:
       decide on (n+7 - value) 
     But I didn't recognise 'n+7'.
+Problem__ PM_EquationInsoluble
+  >--> In 'let F be given by m = wibble F' (source text, line 10), you asked to
+    let F be given by the equation 'm = wibble F', but I am unable to rearrange
+    the equation in any simple way so that it sets 'F' equal to something else.
+    Maybe you could write a more explicit equation? (You're certainly better at
+    maths than I am; I can only make easy deductions.)
 Inform 7 has finished.

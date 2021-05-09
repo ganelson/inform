@@ -140,14 +140,13 @@ kinds of value:
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
-		rulebook *rb = Rvalues::to_rulebook(value);
-		Emit::holster_iname(VH, rb->compilation_data.rb_id_iname);
+		rulebook *B = Rvalues::to_rulebook(value);
+		Emit::holster_iname(VH, RTRulebooks::id_iname(B));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_rulebook_outcome)) {
-		named_rulebook_outcome *rbno =
-			Rvalues::to_named_rulebook_outcome(value);
-		Emit::holster_iname(VH, RTRules::outcome_identifier(rbno));
+		named_rulebook_outcome *rbno = Rvalues::to_named_rulebook_outcome(value);
+		Emit::holster_iname(VH, RTRulebooks::nro_iname(rbno));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_table)) {
@@ -289,22 +288,22 @@ compiler, rather than parsed from the source.)
 	}
 
 @<This is a response text@> =
+	rule *R = RTRules::rule_currently_being_compiled();
 	int marker = <<r>>;
-	if ((rule_being_compiled == NULL) ||
-		(Rules::rule_allows_responses(rule_being_compiled) == FALSE)) {
+	if ((R == NULL) || (Rules::rule_allows_responses(R) == FALSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseContextWrong),
 			"lettered responses can only be used in named rules",
 			"not in any of the other contexts in which quoted text can appear.");
 		return;
 	}
-	if (Rules::get_response(rule_being_compiled, marker)) {
+	if (Rules::get_response(R, marker)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseDuplicated),
 			"this duplicates a response letter",
 			"which is not allowed: if a bracketed letter like (A) is used to mark "
 			"some text as a response, then it can only occur once in its rule.");
 		return;
 	}
-	Responses::set_via_source_text(VH, rule_being_compiled, marker, SW);
+	Responses::set_via_source_text(VH, R, marker, SW);
 
 @<This is a text substitution@> =
 	TextSubstitutions::text_substitution_cue(VH, SW);

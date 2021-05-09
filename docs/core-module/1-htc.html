@@ -286,7 +286,7 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Equations::traverse_to_stock</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Tables::traverse_to_stock</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTProperties::annotate_attributes</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::RulebookOutcomePrintingRule</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRulebooks::RulebookOutcomePrintingRule</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_instance_counts</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
@@ -320,9 +320,9 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_mkdef_functions</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTEquations::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ImperativeDefinitions::compile_first_block</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::rulebook_var_creators</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::compile_rulebooks</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::compile_metadata</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::compile</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRulebooks::compile</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRulebooks::compile_nros</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTProperties::compile_metadata</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTActivities::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTVerbs::compile_conjugations</span><span class="plain-syntax">)</span>

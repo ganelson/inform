@@ -8098,7 +8098,7 @@
 <s-table-reference> hits 139/7178 nti 17 constraint DS = {17} extremes [2, infinity)
     English:
         <s-table-column-name> entry 
-          (hits 135/3589) (matched: 'a final response rule entry') constraint DS = {17} extremes [2, infinity)
+          (hits 135/3589) (matched: 'the locale description priority entry') constraint DS = {17} extremes [2, infinity)
         <s-table-column-name> in row <s-value-uncached> of <s-value-uncached> 
           (hits 0/430) constraint DS = {17} extremes [6, infinity)
         <s-table-column-name> listed in <s-value-uncached> 

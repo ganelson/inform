@@ -46,6 +46,7 @@ Chapter 5: Local Submodules
 	Tables
 	Table Columns
 	Rules
+	Rulebooks
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
 	Temporary Variables
@@ -64,7 +65,6 @@ Chapter 6: Completion Resources
 	Regions
 	The Map
 	The Score
-	Timed Rules
 	Scenes
 
 Chapter 7: Actions

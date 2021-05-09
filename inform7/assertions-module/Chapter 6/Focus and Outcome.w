@@ -87,7 +87,7 @@ structures //rulebook_outcome// and //named_rulebook_outcome//.
 =
 typedef struct named_rulebook_outcome {
 	struct noun *name; /* Name in source text */
-	struct inter_name *nro_iname;
+	struct nro_compilation_data compilation_data;
 	CLASS_DEFINITION
 } named_rulebook_outcome;
 
@@ -103,7 +103,7 @@ The answer is that go with B1, supposing that one to be the earliest created
 rulebook.
 
 =
-rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno, id_body *idb) {
+rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *nro, id_body *idb) {
 	if (idb) {
 		rulebook *B;
 		LOOP_OVER(B, rulebook) {
@@ -111,7 +111,7 @@ rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno
 			if (BookingLists::contains_ph(B->contents, idb)) {
 				rulebook_outcome *ro;
 				LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)
-					if (ro->outcome_name == rbno)
+					if (ro->outcome_name == nro)
 						return ro;
 			}
 		}
@@ -119,7 +119,7 @@ rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno
 	return NULL;
 }
 
-@ And this tests whether there is any obstacle to using |rbno| in the body of
+@ And this tests whether there is any obstacle to using |nro| in the body of
 phrase |idb|'s code. If a rule ends "splendidly", then that needs to be a valid
 ending for all of the rulebooks holding it.
 
@@ -127,7 +127,7 @@ This very similar function returns |NULL| if there's no problem, or the rulebook
 causing the difficulty if so.
 
 =
-rulebook *FocusAndOutcome::rulebook_not_supporting(named_rulebook_outcome *rbno, id_body *idb) {
+rulebook *FocusAndOutcome::rulebook_not_supporting(named_rulebook_outcome *nro, id_body *idb) {
 	if (idb) {
 		rulebook *B;
 		LOOP_OVER(B, rulebook) {
@@ -136,7 +136,7 @@ rulebook *FocusAndOutcome::rulebook_not_supporting(named_rulebook_outcome *rbno,
 				int okay = FALSE;
 				rulebook_outcome *ro;
 				LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)
-					if (ro->outcome_name == rbno)
+					if (ro->outcome_name == nro)
 						okay = TRUE;
 				if (okay == FALSE) return B;
 			}
@@ -172,11 +172,11 @@ named_rulebook_outcome *FocusAndOutcome::rbno_by_name(wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome))
 		return Rvalues::to_named_rulebook_outcome(p);
 
-	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
-	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno), Task::language_of_syntax());
-	RTRules::new_outcome(rbno, W);
-	return rbno;
+	named_rulebook_outcome *nro = CREATE(named_rulebook_outcome);
+	nro->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(nro), Task::language_of_syntax());
+	nro->compilation_data = RTRulebooks::new_nro_compilation_data(nro);
+	return nro;
 }
 
 @ Those nouns can be parsed as follows, and form the constant values of the
@@ -212,11 +212,11 @@ void FocusAndOutcome::fresh_outcome(outcomes *outs, wording OW, int koo, int def
 			return;
 		}
 	}
-	named_rulebook_outcome *rbno = FocusAndOutcome::rbno_by_name(OW);
-	if (rbno) {
+	named_rulebook_outcome *nro = FocusAndOutcome::rbno_by_name(OW);
+	if (nro) {
 		rulebook_outcome *ro;
 		LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)
-			if (ro->outcome_name == rbno) {
+			if (ro->outcome_name == nro) {
 				StandardProblems::sentence_problem(Task::syntax_tree(),
 					_p_(PM_DuplicateOutcome),
 					"this duplicates a previous assignment of the same outcome",
@@ -224,14 +224,14 @@ void FocusAndOutcome::fresh_outcome(outcomes *outs, wording OW, int koo, int def
 				return;
 			}
 	}
-	rulebook_outcome *nro = CREATE(rulebook_outcome);
-	nro->outcome_name = rbno;
-	nro->kind_of_outcome = koo;
+	rulebook_outcome *ro = CREATE(rulebook_outcome);
+	ro->outcome_name = nro;
+	ro->kind_of_outcome = koo;
 	if (def) {
-		outs->default_named_outcome = nro;
+		outs->default_named_outcome = ro;
 		outs->default_outcome_declared = TRUE;
 	}
-	ADD_TO_LINKED_LIST(nro, rulebook_outcome, outs->named_outcomes);
+	ADD_TO_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes);
 }
 
 @h Sentences adding outcomes to rulebooks.

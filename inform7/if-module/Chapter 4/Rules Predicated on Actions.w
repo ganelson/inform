@@ -101,6 +101,12 @@ action_name *ActionRules::required_action(id_runtime_context_data *idrcd) {
 	return NULL;
 }
 
+action_name *ActionRules::required_action_for_booking(booking *br) {
+	imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
+	if (id) return ActionRules::required_action(&(id->body_of_defn->runtime_context_data));
+	return NULL;
+}
+
 void ActionRules::suppress_action_testing(id_runtime_context_data *idrcd) {
 	if (idrcd->ap) ActionPatterns::suppress_action_testing(idrcd->ap);
 }

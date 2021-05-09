@@ -776,17 +776,18 @@ might have gone wrong.
 	==> { 1, - };
 
 @h Compilation.
+The actual compilation of rules is done elsewhere; here we simply make sure
+that rule bodies won't be accidentally compiled as if they were phrase bodies.
 
 =
 void RuleFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	rule *R;
 	LOOP_OVER(R, rule) {
-		text_stream *desc = Str::new();
-		WRITE_TO(desc, "compile rule '%W'", R->name);
 		if (R->defn_as_I7_source)
-			R->defn_as_I7_source->body_of_defn->compilation_data.at_least_one_compiled_form_needed = FALSE;
-		Sequence::queue(&RTRules::from_source_text_agent, STORE_POINTER_rule(R), desc);
+			R->defn_as_I7_source->body_of_defn->compilation_data.
+				at_least_one_compiled_form_needed = FALSE;
+		Rules::check_constraints_are_typesafe(R);
 	}
 }
 

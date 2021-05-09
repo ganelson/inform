@@ -24,7 +24,6 @@ void TimedRules::start(void) {
 int TimedRules::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER5_CSEQ) {
 		BENCH(TimedRules::check_for_unused)
-		BENCH(RTTimedRules::annotate_rules)
 	}
 	return FALSE;
 }
@@ -103,6 +102,7 @@ linked_list *TimedRules::get_uses_as_event(imperative_defn *id) {
 int TimedRules::get_timing_of_event(imperative_defn *id) {
 	if (id->family != rule_idf) return NOT_A_TIMED_EVENT;
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	if (RFD_PLUGIN_DATA(timed_rules, rfd) == NULL) return NOT_A_TIMED_EVENT;
 	return RFD_PLUGIN_DATA(timed_rules, rfd)->event_time;
 }
 

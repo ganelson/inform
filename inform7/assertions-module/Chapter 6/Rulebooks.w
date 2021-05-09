@@ -43,8 +43,6 @@ typedef struct rulebook {
 
 =
 rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
-	Hierarchy::apply_metadata_from_wording(R, RULEBOOK_NAME_MD_HL, W);
-
 	rulebook *B = CREATE(rulebook);
 	Rulebooks::set_std(B);
 
@@ -62,9 +60,9 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	@<Work out the focus and outcome@>;
 
-	B->compilation_data =  RTRules::new_rulebook_compilation_data(B, R);
+	B->compilation_data = RTRulebooks::new_compilation_data(B, R);
 
-	B->my_variables = SharedVariables::new_set(B->allocation_id, B->compilation_data.rb_id_iname);
+	B->my_variables = SharedVariables::new_set(B->allocation_id, RTRulebooks::id_iname(B));
 	B->accessible_variables = SharedVariables::new_access_list();
 	SharedVariables::add_set_to_access_list(B->accessible_variables, B->my_variables);
 
@@ -208,10 +206,6 @@ or "coordination rulebook":
 	AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(B), Task::language_of_syntax());
-	TEMPORARY_TEXT(PN)
-	WRITE_TO(PN, "%+W rulebook", B->primary_name);
-	Hierarchy::apply_metadata(R, RULEBOOK_PNAME_MD_HL, PN);
-	DISCARD_TEXT(PN)
 
 @ It can also subsequently be given a further or "alternative" name, and that
 too becomes a proper noun, but is not run through <rulebook-name-construction>

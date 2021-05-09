@@ -237,7 +237,7 @@ void Responses::via_Inter_compilation_agent(compilation_subtask *t) {
 }
 
 @<Compile the response-handler function for this rule@> =
-	inter_name *responder_iname = RTRules::get_handler_definition(resp->the_rule);
+	inter_name *responder_iname = RTRules::response_handler_iname(resp->the_rule);
 	packaging_state save = Functions::begin(responder_iname);
 	inter_symbol *code_s = LocalVariables::new_other_as_symbol(I"code");
 	inter_symbol *val_s = LocalVariables::new_other_as_symbol(I"val");

@@ -171,9 +171,9 @@ void RTActions::compile_functions(void) {
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			EmitCode::call(generic_iname);
 			EmitCode::down();
-				EmitCode::val_iname(K_value, an->check_rules->compilation_data.rb_id_iname);
-				EmitCode::val_iname(K_value, an->carry_out_rules->compilation_data.rb_id_iname);
-				EmitCode::val_iname(K_value, an->report_rules->compilation_data.rb_id_iname);
+				EmitCode::val_iname(K_value, RTRulebooks::id_iname(an->check_rules));
+				EmitCode::val_iname(K_value, RTRulebooks::id_iname(an->carry_out_rules));
+				EmitCode::val_iname(K_value, RTRulebooks::id_iname(an->report_rules));
 			EmitCode::up();
 		EmitCode::up();
 		Functions::end(save);

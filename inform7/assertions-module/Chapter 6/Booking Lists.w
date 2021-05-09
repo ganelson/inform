@@ -305,32 +305,3 @@ int BookingLists::contains_ph(booking_list *L, id_body *idb_to_find) {
 	}
 	return FALSE;
 }
-
-@h Commentary on the contents of a rulebook.
-
-=
-void BookingLists::commentary(booking_list *L) {
-	int t = BookingLists::length(L);
-	int s = 0;
-	LOOP_OVER_BOOKINGS(br, L) {
-		s++;
-		RTRules::compile_comment(RuleBookings::get_rule(br), s, t);
-		if (br->next_booking) {
-			TEMPORARY_TEXT(C)
-			if (br->placement != br->next_booking->placement) {
-				WRITE_TO(C, "--- now the ");
-				switch(br->next_booking->placement) {
-					case FIRST_PLACEMENT:  WRITE_TO(C, "first-placed rules"); break;
-					case MIDDLE_PLACEMENT: WRITE_TO(C, "mid-placed rules"); break;
-					case LAST_PLACEMENT:   WRITE_TO(C, "last-placed rules"); break;
-				}
-				WRITE_TO(C, " ---");
-				EmitCode::comment(C);
-			} else {
-				RuleBookings::comment(C, br);
-				if (Str::len(C) > 0) EmitCode::comment(C);
-			}
-			DISCARD_TEXT(C)
-		}
-	}
-}

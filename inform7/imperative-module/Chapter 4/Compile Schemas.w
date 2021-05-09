@@ -90,6 +90,9 @@ for inline definitions; this is because the range of notation in I6 schemas insi
 the compiler is much smaller.
 
 =
+rule *rule_to_which_this_is_a_response = NULL; /* when a new response is being compiled */
+int response_marker_within_that_rule = -1; /* when a new response is being compiled */
+
 void CompileSchemas::from_schema_token(value_holster *VH,
 	inter_schema_token *t, void *ems_s, int prim_cat) {
 	i6s_emission_state *ems = (i6s_emission_state *) ems_s;
