@@ -46,8 +46,7 @@ shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind 
 	shv->match_wording_text = EMPTY_WORDING;
 	nonlocal_variable *nlv = NonlocalVariables::new(W, K, shv);
 	shv->underlying_var = nlv;
-	RTVariables::set_I6_identifier(nlv, FALSE, RTVariables::shv_rvalue(shv));
-	RTVariables::set_I6_identifier(nlv, TRUE, RTVariables::shv_lvalue(shv));
+	RTVariables::tie_NLV_to_shared_variable(nlv, shv);
 	SharedVariables::add_to_set(shv, set);
 	return shv;
 }
@@ -100,7 +99,6 @@ typedef struct shared_variable_set {
 	int recognition_id;
 	struct inter_name *recognition_iname;
 	struct linked_list *variables; /* of |shared_variable| */
-	struct shared_variable_set_compilation_data compilation_data;
 	CLASS_DEFINITION
 } shared_variable_set;
 
@@ -109,7 +107,6 @@ shared_variable_set *SharedVariables::new_set(int id, inter_name *iname) {
 	set->recognition_id = id;
 	set->recognition_iname = iname;
 	set->variables = NEW_LINKED_LIST(shared_variable);
-	set->compilation_data = RTVariables::new_set_data(set);
 	return set;
 }
 

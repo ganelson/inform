@@ -234,7 +234,7 @@ after the call parameters, and is used only as a scratch variable.
 	Frames::compile_lbv_setup(frame);
 
 	for (int i=0; i<frame->no_formal_parameters_needed; i++) {
-		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
+		nonlocal_variable *nlv = TemporaryVariables::formal_parameter(i);
 		EmitCode::push(RTVariables::iname(nlv));
 	}
 
@@ -264,7 +264,7 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile some teardown code now that the kernel has finished@> =
 	for (int i=frame->no_formal_parameters_needed-1; i>=0; i--) {
-		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
+		nonlocal_variable *nlv = TemporaryVariables::formal_parameter(i);
 		EmitCode::pull(RTVariables::iname(nlv));
 	}
 	Frames::compile_lbv_teardown(frame);

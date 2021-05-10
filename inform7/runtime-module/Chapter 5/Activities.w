@@ -86,8 +86,7 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 
 	if (SharedVariables::set_empty(av->activity_variables) == FALSE) {
 		inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_VARC_FN_HL, pack);
-		RTVariables::set_shared_variables_creator(av->activity_variables, iname);
-		RTVariables::compile_frame_creator(av->activity_variables);
+		RTSharedVariables::compile_creator_fn(av->activity_variables, iname);
 		Hierarchy::apply_metadata_from_iname(pack, ACTIVITY_VAR_CREATOR_MD_HL, iname);
 	}
 	Emit::numeric_constant(av->compilation_data.variables_id, 0);

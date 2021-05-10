@@ -4,10 +4,7 @@
 
 =
 void RTParsing::understood_variable(nonlocal_variable *var) {
-	RTVariables::set_I6_identifier(var, FALSE,
-		RTVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
-	RTVariables::set_I6_identifier(var, TRUE,
-		RTVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
+	RTVariables::store_in_this_iname(var, Hierarchy::find(PARSED_NUMBER_HL));
 }
 
 @ The name property requires special care, partly over I6 eccentricities

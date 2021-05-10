@@ -101,7 +101,7 @@ void RTActionPatterns::compile_pattern_match_clause(value_holster *VH,
 		I6_var_TS = Lvalues::new_actual_NONLOCAL_VARIABLE(I6_global_variable);
 
 	int is_parameter = FALSE;
-	if (I6_global_variable == parameter_object_VAR) is_parameter = TRUE;
+	if (I6_global_variable == NonlocalVariables::parameter_object_variable()) is_parameter = TRUE;
 
 	RTActionPatterns::compile_pattern_match_clause_inner(VH,
 		I6_var_TS, is_parameter, spec, verify_as_kind, adapt_region);
@@ -611,7 +611,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
+				TemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
 				APClauses::spec(ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
@@ -620,7 +620,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
+				TemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
 				APClauses::spec(ap, SECOND_AP_CLAUSE), kind_of_second, FALSE);
 			break;
 		case PLAYER_LOCATION_MATCHES_CPMC:
@@ -641,17 +641,17 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 				APClauses::spec(ap, IN_AP_CLAUSE), K_object, TRUE);
 			break;
 		case PARAMETER_MATCHES_CPMC: {
-			kind *saved_kind = NonlocalVariables::kind(parameter_object_VAR);
-			NonlocalVariables::set_kind(parameter_object_VAR, ap->parameter_kind);
+			kind *saved_kind = NonlocalVariables::kind(NonlocalVariables::parameter_object_variable());
+			NonlocalVariables::set_kind(NonlocalVariables::parameter_object_variable(), ap->parameter_kind);
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				parameter_object_VAR, APClauses::spec(ap, PARAMETRIC_AP_CLAUSE), ap->parameter_kind, FALSE);
-			NonlocalVariables::set_kind(parameter_object_VAR, saved_kind);
+				NonlocalVariables::parameter_object_variable(), APClauses::spec(ap, PARAMETRIC_AP_CLAUSE), ap->parameter_kind, FALSE);
+			NonlocalVariables::set_kind(NonlocalVariables::parameter_object_variable(), saved_kind);
 			break;
 		}
 		case OPTIONAL_CLAUSE_CPMC: {
 			kind *K = SharedVariables::get_kind(apoc->stv_to_match);
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
+				TemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
 				apoc->clause_spec, K, APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT));
 			break;
 		}
@@ -659,7 +659,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_iname(RTInstances::value_iname(to_be_present), K_object),
+				TemporaryVariables::from_iname(RTInstances::value_iname(to_be_present), K_object),
 				APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE), K_object, FALSE);
 			break;
 		}

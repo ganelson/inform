@@ -1115,7 +1115,7 @@ story title).
 @<Check that we're not copying to something the user isn't allowed to change@> =
 	nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(to);
 	if ((nlv) && (NonlocalVariables::must_be_constant(nlv))) return;
-	if (nlv) RTVariables::warn_about_change(nlv);
+	if (nlv) NonlocalVariables::warn_about_change(nlv);
 
 	local_variable *lvar = Lvalues::get_local_variable_if_any(to);
 	if ((lvar) && (LocalVariables::protected(lvar))) return;

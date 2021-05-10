@@ -1,111 +1,110 @@
 [RTVariables::] Variables.
 
-To compile run-time support for nonlocal variables.
+To compile the variables submodule for a compilation unit, which contains
+_variable packages.
 
-@
+@h NVEs.
+While a nonlocal variable, or NLV, looks like a simple storage location from
+the perspective of Inform 7 source text -- the author assumes there's some
+memory cell somewhere with this name -- it can actually be data expressed in
+a range of different ways in Inter code. It might indeed be a global variable,
+but then again it might be an array entry, or even a temporary location on
+a stack; it might even be a constant.
+
+This range of possible expressions is represented by a //nonlocal_variable_emission//,
+or NVE. Each variable in principle has two, a left and a right NVE, though in
+practice they are often the same. The left NVE tells Inform how to compile
+assignments to the variable (i.e., when using it as an lvalue); the right NVE
+how to compile lookups of its value (i.e., as an rvalue).
+
+The NVE structure looks messy, but it's basically a union of four possibilities,
+of which the last is the default:
 
 =
-typedef struct variable_compilation_data {
-	struct inter_name *nlv_iname;
-	int nlv_name_translated; /* has this been given storage as an I6 variable? */
-	struct nonlocal_variable_emission rvalue_nve;
-	struct nonlocal_variable_emission lvalue_nve;
-	struct text_stream *nlv_write_schema; /* or |NULL| to assign to the L-value form */
-	int housed_in_variables_array; /* i.e. |FALSE| if stored elsewhere */
-	int var_is_initialisable_anyway; /* meaningful only if |housed_in_variables_array| is |FALSE| */
-} variable_compilation_data;
-
-variable_compilation_data RTVariables::new_compilation_data(void) {
-	variable_compilation_data data;
-	data.nlv_iname = NULL;
-	data.nlv_name_translated = FALSE;
-	data.rvalue_nve = RTVariables::new_nve();
-	data.lvalue_nve = RTVariables::new_nve();
-	data.nlv_write_schema = NULL;
-	data.housed_in_variables_array = FALSE;
-	data.var_is_initialisable_anyway = FALSE;
-	return data;
-}
-
-void RTVariables::make_initialisable(nonlocal_variable *nlv) {
-	nlv->compilation_data.var_is_initialisable_anyway = TRUE;
-}
-
-int RTVariables::is_initialisable(nonlocal_variable *nlv) {
-	if (nlv->compilation_data.housed_in_variables_array) return TRUE;
-	if (nlv->compilation_data.var_is_initialisable_anyway) return TRUE;
-	return FALSE;
-}
-		
 typedef struct nonlocal_variable_emission {
+	/* access as this Inter constant or global variable */
 	struct inter_name *iname_form;
-	struct text_stream *textual_form;
+
+	/* access as the Inter |nothing| constant */
 	int nothing_form;
-	int shv_ID;
-	struct inter_name *shv_ID_iname;
+
+	/* access as this shared variable on the M-stack */
+	struct inter_name *shv_set_ID;
 	int shv_index;
-	int allow_outside;
+	int allow_access_even_if_does_not_exist;
+
+	/* access as the iname belonging to the NLV itself */
 	int use_own_iname;
 } nonlocal_variable_emission;
 
-nonlocal_variable_emission RTVariables::new_nve(void) {
+@ The following is the default:
+
+=
+nonlocal_variable_emission RTVariables::default_nve(void) {
 	nonlocal_variable_emission nve;
 	nve.iname_form = NULL;
-	nve.textual_form = Str::new();
-	nve.shv_ID = -1;
-	nve.shv_ID_iname = NULL;
-	nve.shv_index = -1;
-	nve.allow_outside = FALSE;
-	nve.use_own_iname = FALSE;
+
 	nve.nothing_form = FALSE;
+
+	nve.shv_set_ID = NULL;
+	nve.shv_index = -1;
+	nve.allow_access_even_if_does_not_exist = FALSE;
+
+	nve.use_own_iname = FALSE;
 	return nve;
 }
 
+@ So where do these NVEs come from?
+
+=
 nonlocal_variable_emission RTVariables::nve_from_nothing(void) {
-	nonlocal_variable_emission nve = RTVariables::new_nve();
-	WRITE_TO(nve.textual_form, "nothing");
+	nonlocal_variable_emission nve = RTVariables::default_nve();
 	nve.nothing_form = TRUE;
 	return nve;
 }
 
 nonlocal_variable_emission RTVariables::nve_from_iname(inter_name *iname) {
-	nonlocal_variable_emission nve = RTVariables::new_nve();
+	nonlocal_variable_emission nve = RTVariables::default_nve();
 	nve.iname_form = iname;
-	WRITE_TO(nve.textual_form, "%n", iname);
 	return nve;
 }
 
-nonlocal_variable_emission RTVariables::nve_from_mstack(int N, int index, int allow_outside) {
-	nonlocal_variable_emission nve = RTVariables::new_nve();
-	if (allow_outside)
-		WRITE_TO(nve.textual_form, "(MStack-->MstVON(%d,%d))", N, index);
-	else
-		WRITE_TO(nve.textual_form, "(MStack-->MstVO(%d,%d))", N, index);
-	nve.shv_ID = N;
+nonlocal_variable_emission RTVariables::nve_from_mstack(inter_name *iname,
+	int index, int allow_access_even_if_does_not_exist) {
+	nonlocal_variable_emission nve = RTVariables::default_nve();
+	nve.shv_set_ID = iname;
 	nve.shv_index = index;
-	nve.allow_outside = allow_outside;
+	nve.allow_access_even_if_does_not_exist = allow_access_even_if_does_not_exist;
 	return nve;
 }
 
-nonlocal_variable_emission RTVariables::nve_from_named_mstack(inter_name *iname,
-	int index, int allow_outside) {
-	nonlocal_variable_emission nve = RTVariables::new_nve();
-	if (allow_outside)
-		WRITE_TO(nve.textual_form, "(MStack-->MstVON(%n,%d))", iname, index);
-	else
-		WRITE_TO(nve.textual_form, "(MStack-->MstVO(%n,%d))", iname, index);
-	nve.shv_ID_iname = iname;
-	nve.shv_index = index;
-	nve.allow_outside = allow_outside;
-	return nve;
-}
-
-nonlocal_variable_emission RTVariables::nve_from_pos(void) {
-	nonlocal_variable_emission nve = RTVariables::new_nve();
+nonlocal_variable_emission RTVariables::nve_from_own_iname(void) {
+	nonlocal_variable_emission nve = RTVariables::default_nve();
 	nve.use_own_iname = TRUE;
 	return nve;
 }
 
+@ As noted above, the left and right NVEs are usually the same:
+
+=
+void RTVariables::set_NVE(nonlocal_variable *nlv, nonlocal_variable_emission nve) {
+	if (nlv == NULL) internal_error("null nlv");
+	nlv->compilation_data.lvalue_nve = nve;
+	nlv->compilation_data.rvalue_nve = nve;
+}
+
+@ This is a particularly useful case, where |iname| can be the iname of a
+constant or a global variable in Inter:
+
+=
+void RTVariables::store_in_this_iname(nonlocal_variable *nlv, inter_name *iname) {
+	RTVariables::set_NVE(nlv, RTVariables::nve_from_iname(iname));
+}
+
+@ And in particular that's how we handle sentences like "Maximum score translates
+into Inter as "MAX_SCORE".":
+
+=
 void RTVariables::identifier_translates(nonlocal_variable *nlv, text_stream *name) {
 	if (nlv->compilation_data.nlv_name_translated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
@@ -115,253 +114,56 @@ void RTVariables::identifier_translates(nonlocal_variable *nlv, text_stream *nam
 	}
 	nlv->compilation_data.nlv_name_translated = TRUE;
 	if (Str::eq(name, I"nothing")) {
-		RTVariables::set_I6_identifier(nlv, FALSE, RTVariables::nve_from_nothing());
-		RTVariables::set_I6_identifier(nlv, TRUE, RTVariables::nve_from_nothing());
+		RTVariables::set_NVE(nlv, RTVariables::nve_from_nothing());
 	} else {
 		inter_name *as_iname = Produce::find_by_name(Emit::tree(), name);
-		RTVariables::set_I6_identifier(nlv, FALSE, RTVariables::nve_from_iname(as_iname));
-		RTVariables::set_I6_identifier(nlv, TRUE, RTVariables::nve_from_iname(as_iname));
+		RTVariables::store_in_this_iname(nlv, as_iname);
 	}
 }
 
-@ In general, the following allows us to set the R-value and L-value forms
-of the variable's storage. An R-value is the form of the variable on the
-right-hand side of an assignment, that is, when we're reading it; an L-value
-is the form used when we're setting it. Often these will be the same, but
-not always.
-
-=
-void RTVariables::set_I6_identifier(nonlocal_variable *nlv, int left, nonlocal_variable_emission nve) {
+void RTVariables::set_NVE_from_existing(nonlocal_variable *nlv, nonlocal_variable *other) {
 	if (nlv == NULL) internal_error("null nlv");
-	if (left) nlv->compilation_data.lvalue_nve = nve; else nlv->compilation_data.rvalue_nve = nve;
-	nlv->compilation_data.housed_in_variables_array = FALSE;
+	if (other == NULL) internal_error("null other");
+	RTVariables::set_NVE(nlv, other->compilation_data.rvalue_nve);
 }
 
-@ Later, when we actually need to know where these are being stored, we assign
-run-time locations to any variable without them:
+@ Left and right NVEs may differ in the case where an NLV is tied to a shared
+variable which lives fleetingly on the M-stack at runtime. The difference is
+essentially that a read of a shared variable (the right NVE) will forgive
+the situation in which that variable does not exist; a write to it (the
+left NVE) will not. See //BasicInformKit: MStack// for more.
 
 =
-text_stream *RTVariables::get_identifier(nonlocal_variable *nlv) {
-	if (Str::len(nlv->compilation_data.rvalue_nve.textual_form) == 0) RTVariables::allocate_storage();
-	if (Str::len(nlv->compilation_data.rvalue_nve.textual_form) == 0) @<Issue a missing meaning problem@>;
-	return nlv->compilation_data.rvalue_nve.textual_form;
+void RTVariables::tie_NLV_to_shared_variable(nonlocal_variable *nlv, shared_variable *shv) {
+	if (nlv == NULL) internal_error("null nlv");
+	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) &&
+		(SharedVariables::get_index(shv) == 0)) {
+		RTVariables::store_in_this_iname(nlv, Hierarchy::find(ACTOR_HL));
+	} else {
+		nlv->compilation_data.lvalue_nve =
+			RTVariables::nve_from_mstack(SharedVariables::get_owner_iname(shv),
+				SharedVariables::get_index(shv), FALSE);
+		nlv->compilation_data.rvalue_nve =
+			RTVariables::nve_from_mstack(SharedVariables::get_owner_iname(shv),
+				SharedVariables::get_index(shv), TRUE);
+	}
 }
 
-@<Issue a missing meaning problem@> =
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, nlv->name);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-	Problems::issue_problem_segment(
-		"The sentence %1 seems to need the value '%2', but that currently "
-		"has no definition.");
-	Problems::issue_problem_end();
-	return I"self";
-
-@ And the allocation is done here. Variables not stored anywhere else are
-marked to be housed in an array, though it's really up to the code-generator
-tp make that decision:
+@ And the following code results from a reference to the NVE.
 
 =
-void RTVariables::allocate_storage(void) {
-	nonlocal_variable *var;
-	LOOP_OVER(var, nonlocal_variable)
-		if (((Str::len(var->compilation_data.lvalue_nve.textual_form) == 0) || (Str::len(var->compilation_data.rvalue_nve.textual_form) == 0)) &&
-			((var->constant_at_run_time == FALSE) || (var->var_is_bibliographic))) {
-			RTVariables::set_I6_identifier(var, FALSE, RTVariables::nve_from_pos());
-			RTVariables::set_I6_identifier(var, TRUE, RTVariables::nve_from_pos());
-			var->compilation_data.housed_in_variables_array = TRUE;
-		}
-}
-
-typedef struct shared_variable_set_compilation_data {
-	struct inter_name *creator_fn_iname;
-} shared_variable_set_compilation_data;
-
-shared_variable_set_compilation_data RTVariables::new_set_data(shared_variable_set *set) {
-	shared_variable_set_compilation_data setcd;
-	setcd.creator_fn_iname = NULL;
-	return setcd;
-}
-
-@ The creator function claims memory to store these variables, and initialises
-them, at runtime. Other parts of Inform creating sets are expected to set this
-function name (and thus specify where in the Inter hierarchy it will go), and
-also to call |RTVariables::compile_frame_creator|.
-
-=
-void RTVariables::set_shared_variables_creator(shared_variable_set *set, inter_name *iname) {
-	set->compilation_data.creator_fn_iname = iname;
-}
-inter_name *RTVariables::get_shared_variables_creator(shared_variable_set *set) {
-	return set->compilation_data.creator_fn_iname;
-}
-
-nonlocal_variable_emission RTVariables::shv_lvalue(shared_variable *shv) {
-	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_index(shv) == 0))
-		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
-	else if (SharedVariables::get_owner_iname(shv))
-		return RTVariables::nve_from_named_mstack(SharedVariables::get_owner_iname(shv), SharedVariables::get_index(shv), FALSE);
-	else
-		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_index(shv), FALSE);
-}
-
-nonlocal_variable_emission RTVariables::shv_rvalue(shared_variable *shv) {
-	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_index(shv) == 0))
-		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
-	else
-		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_index(shv), TRUE);
-}
-
-int RTVariables::compile_frame_creator(shared_variable_set *set) {
-	if (set == NULL) return 0;
-
-	packaging_state save = Functions::begin(RTVariables::get_shared_variables_creator(set));
-	inter_symbol *pos_s = LocalVariables::new_other_as_symbol(I"pos");
-	inter_symbol *state_s = LocalVariables::new_other_as_symbol(I"state");
-
-	EmitCode::inv(IFELSE_BIP);
-	EmitCode::down();
-		EmitCode::inv(EQ_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, state_s);
-			EmitCode::val_number(1);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			@<Compile frame creator if state is set@>;
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			@<Compile frame creator if state is clear@>;
-		EmitCode::up();
-	EmitCode::up();
-
-	int count = LinkedLists::len(set->variables);
-
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_number((inter_ti) count);
-	EmitCode::up();
-
-	Functions::end(save);
-	return count;
-}
-
-@<Compile frame creator if state is set@> =
-	shared_variable *shv;
-	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
-		nonlocal_variable *q = SharedVariables::get_variable(shv);
-		kind *K = NonlocalVariables::kind(q);
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::inv(LOOKUPREF_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-				EmitCode::val_symbol(K_value, pos_s);
-			EmitCode::up();
-			if (Kinds::Behaviour::uses_pointer_values(K))
-				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
-			else
-				RTVariables::emit_initial_value_as_val(q);
-		EmitCode::up();
-
-		EmitCode::inv(POSTINCREMENT_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, pos_s);
-		EmitCode::up();
-	}
-
-@<Compile frame creator if state is clear@> =
-	shared_variable *shv;
-	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
-		nonlocal_variable *q = SharedVariables::get_variable(shv);
-		kind *K = NonlocalVariables::kind(q);
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			EmitCode::call(Hierarchy::find(BLKVALUEFREE_HL));
-			EmitCode::down();
-				EmitCode::inv(LOOKUP_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					EmitCode::val_symbol(K_value, pos_s);
-				EmitCode::up();
-			EmitCode::up();
-		}
-		EmitCode::inv(POSTINCREMENT_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, pos_s);
-		EmitCode::up();
-	}
-
-@ =
-inter_name *RTVariables::iname(nonlocal_variable *nlv) {
-	if (nlv->compilation_data.nlv_iname == NULL) {
-		package_request *R =
-			Hierarchy::local_package_to(VARIABLES_HAP, nlv->nlv_created_at);
-		Hierarchy::apply_metadata_from_wording(R, VARIABLE_NAME_MD_HL, nlv->name);
-		nlv->compilation_data.nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
-	}
-	return nlv->compilation_data.nlv_iname;
-}
-
-@ In extreme cases, it's even possible to set an explicit I6 schema for how
-to change a variable:
-
-=
-void RTVariables::set_write_schema(nonlocal_variable *nlv, text_stream *sch) {
-	nlv->compilation_data.nlv_write_schema = Str::duplicate(sch);
-}
-
-text_stream *RTVariables::get_write_schema(nonlocal_variable *nlv) {
-	RTVariables::warn_about_change(nlv);
-	if (nlv == NULL) return NULL;
-	return nlv->compilation_data.nlv_write_schema;
-}
-
-void RTVariables::warn_about_change(nonlocal_variable *nlv) {
-	#ifdef IF_MODULE
-	if ((score_VAR) && (nlv == score_VAR)) {
-		if ((global_compilation_settings.scoring_option_set == FALSE) ||
-			(global_compilation_settings.scoring_option_set == NOT_APPLICABLE)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(),
-				_p_(PM_CantChangeScore),
-				"this is a story with no scoring",
-				"so it makes no sense to change the 'score' value. You can add "
-				"scoring to the story by including the sentence 'Use scoring.', "
-				"in which case this problem message will go away; or you can "
-				"remove it with 'Use no scoring.' (Until 2011, the default was "
-				"to have scoring, but now it's not to have scoring.)");
-		}
-	}
-	#endif
-}
-
-
-
-void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
-	nonlocal_variable_emission *nve = &(nlv->compilation_data.lvalue_nve);
+void RTVariables::compile_NVE_as_val(nonlocal_variable *nlv, nonlocal_variable_emission *nve) {
 	if (nve->iname_form) {
 		EmitCode::val_iname(K_value, nve->iname_form);
-	} else if (nve->shv_ID_iname) {
+	} else if (nve->shv_set_ID) {
 		EmitCode::inv(LOOKUP_BIP);
 		EmitCode::down();
 			EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
-			if (nve->allow_outside) ex = MSTVON_HL;
+			if (nve->allow_access_even_if_does_not_exist) ex = MSTVON_HL;
 			EmitCode::call(Hierarchy::find(ex));
 			EmitCode::down();
-				EmitCode::val_iname(K_value, nve->shv_ID_iname);
-				EmitCode::val_number((inter_ti) nve->shv_index);
-			EmitCode::up();
-		EmitCode::up();
-	} else if (nve->shv_ID >= 0) {
-		EmitCode::inv(LOOKUP_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-			int ex = MSTVO_HL;
-			if (nve->allow_outside) ex = MSTVON_HL;
-			EmitCode::call(Hierarchy::find(ex));
-			EmitCode::down();
-				EmitCode::val_number((inter_ti) nve->shv_ID);
+				EmitCode::val_iname(K_value, nve->shv_set_ID);
 				EmitCode::val_number((inter_ti) nve->shv_index);
 			EmitCode::up();
 		EmitCode::up();
@@ -374,34 +176,149 @@ void RTVariables::emit_lvalue(nonlocal_variable *nlv) {
 	}
 }
 
-int RTVariables::emit_all(inference_subject_family *f, int ignored) {
+@h Writing without NVEs.
+NVEs are a very flexible way to describe a storage location, but they do assume
+that a write can be performed by a |STORE_BIP| instruction applied to a reference
+to that location -- in other words, by some form of assignment like so:
+= (text)
+	Something = value;
+	(Somewhere-->20) = value;
+=
+And here the term on the left is compiled by wrapping the code produced by
+//RTVariables::compile_NVE_as_val// in a |REF_IST| to make a reference.
+This is all well and good. But suppose the assignment has to be made by
+some function instead?
+= (text)
+	ChangePlayer(value);
+	...
+	ChangePlayer (val) {
+		...
+		player = val;
+		...
+	}
+=
+An NVE cannot express the need to compile an assignment entirely differently.
+So for such cases we provide the ability to set an explicit I6 scheme for
+writing. In such a schema, |*1| means the variable, |*2| the value; so, for
+example, |ChangePlayer(*2)| could be used in the above example.
+
+=
+void RTVariables::set_write_schema(nonlocal_variable *nlv, text_stream *sch) {
+	nlv->compilation_data.nlv_write_schema = Str::duplicate(sch);
+}
+
+text_stream *RTVariables::get_write_schema(nonlocal_variable *nlv) {
+	if (nlv == NULL) return NULL;
+	return nlv->compilation_data.nlv_write_schema;
+}
+
+@h Compilation data.
+Each |nonlocal_variable| object contains this data.
+
+=
+typedef struct variable_compilation_data {
+	struct package_request *nlv_package;
+	struct inter_name *nlv_iname;
+	int hierarchy_location_id;
+	int nlv_name_translated; /* has this been given storage as an I6 variable? */
+	struct nonlocal_variable_emission rvalue_nve;
+	struct nonlocal_variable_emission lvalue_nve;
+	struct text_stream *nlv_write_schema; /* |NULL| for almost all variables */
+	int var_is_initialisable_anyway; /* meaningful only if not stored in own iname */
+} variable_compilation_data;
+
+variable_compilation_data RTVariables::new_compilation_data(void) {
+	variable_compilation_data data;
+	data.nlv_package = NULL;
+	data.hierarchy_location_id = -1;
+	data.nlv_iname = NULL;
+	data.nlv_name_translated = FALSE;
+	data.rvalue_nve = RTVariables::nve_from_own_iname();
+	data.lvalue_nve = RTVariables::nve_from_own_iname();
+	data.nlv_write_schema = NULL;
+	data.var_is_initialisable_anyway = FALSE;
+	return data;
+}
+
+@ This function should be used immediately after a variable is created, or
+(preferably) not at all.
+
+=
+void RTVariables::set_hierarchy_location(nonlocal_variable *nlv, int hl) {
+	nlv->compilation_data.hierarchy_location_id = hl;
+}
+
+package_request *RTVariables::package(nonlocal_variable *nlv) {
+	if (nlv->compilation_data.nlv_package == NULL)
+		nlv->compilation_data.nlv_package =
+			Hierarchy::local_package_to(VARIABLES_HAP,
+				nlv->nlv_created_at);
+	return nlv->compilation_data.nlv_package;
+}
+
+inter_name *RTVariables::iname(nonlocal_variable *nlv) {
+	if (nlv->compilation_data.nlv_iname == NULL) {
+		if (nlv->compilation_data.hierarchy_location_id >= 0)
+			nlv->compilation_data.nlv_iname =
+				Hierarchy::find(nlv->compilation_data.hierarchy_location_id);
+		else
+			nlv->compilation_data.nlv_iname =
+				Hierarchy::make_iname_with_memo(VARIABLE_HL,
+					RTVariables::package(nlv), nlv->name);
+	}
+	return nlv->compilation_data.nlv_iname;
+}
+
+@ Most variables are stored in the default way, and then they are certainly
+initialisable. Those stored in some non-standard way are by default not,
+unless a call to the following has been made:
+
+=
+void RTVariables::make_initialisable(nonlocal_variable *nlv) {
+	nlv->compilation_data.var_is_initialisable_anyway = TRUE;
+}
+
+int RTVariables::stored_in_own_iname(nonlocal_variable *nlv) {
+	if (nlv->compilation_data.lvalue_nve.use_own_iname) return TRUE;
+	return FALSE;
+}
+
+int RTVariables::is_initialisable(nonlocal_variable *nlv) {
+	if (RTVariables::stored_in_own_iname(nlv)) return TRUE;
+	if (nlv->compilation_data.var_is_initialisable_anyway) return TRUE;
+	return FALSE;
+}
+
+@h Compilation.
+
+=
+int RTVariables::compile(inference_subject_family *f, int ignored) {
 	nonlocal_variable *nlv;
-	LOOP_OVER(nlv, nonlocal_variable)
-		if ((nlv->constant_at_run_time == FALSE) ||
-			(nlv->compilation_data.housed_in_variables_array)) {
-
+	LOOP_OVER(nlv, nonlocal_variable) {
+		Hierarchy::apply_metadata_from_wording(
+			RTVariables::package(nlv), VARIABLE_NAME_MD_HL, nlv->name);
+		if ((RTVariables::stored_in_own_iname(nlv)) ||
+			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
+			if (RTVariables::stored_in_own_iname(nlv) == FALSE)
+				Produce::annotate_i(iname, EXPLICIT_VARIABLE_IANN, 1);
 			inter_ti v1 = 0, v2 = 0;
-
-			RTVariables::seek_initial_value(iname, &v1, &v2, nlv);
-
-			text_stream *rvalue = NULL;
-			if (nlv->compilation_data.housed_in_variables_array == FALSE)
-				rvalue = RTVariables::get_identifier(nlv);
-			inter_symbol *v_s = Emit::variable(iname, nlv->nlv_kind, v1, v2);
-			if (rvalue) Produce::annotate_symbol_i(v_s, EXPLICIT_VARIABLE_IANN, 1);
+			RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
+			Emit::variable(iname, nlv->nlv_kind, v1, v2);
 			@<Add any anomalous extras@>;
 		}
+	}
 	return TRUE;
 }
 
-@ Here, an inter routine is compiled which returns the current value of the
+@ Here, an Inter function is compiled which returns the current value of the
 command prompt variable; see //CommandParserKit: Parser//.
 
 @<Add any anomalous extras@> =
-	if (nlv == command_prompt_VAR) {
+	if (nlv == NonlocalVariables::command_prompt_variable()) {
 		inter_name *iname = RTVariables::iname(nlv);
-		inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
+		inter_name *cpt_iname =
+			Hierarchy::make_iname_in(COMMANDPROMPTTEXT_HL, InterNames::location(iname));
 		packaging_state save = Functions::begin(cpt_iname);
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
@@ -411,42 +328,48 @@ command prompt variable; see //CommandParserKit: Parser//.
 		Hierarchy::make_available(cpt_iname);
 	}
 
-@ The following routine compiles the correct initial value for the given
-variable. If it has no known initial value, it is given the initial
-value for its kind where possible: note that this may not be possible
-if the source text says something like
-
->> Thickness is a kind of value. The carpet nap is a thickness that varies.
-
-without specifying any thicknesses: the set of legal thickness values
-is empty, so the carpet nap variable cannot be created in a way
-which makes its kind safe. Hence the error messages.
+@h Initial values.
+Three functions which all compile the initial value of a variable, in different
+ways:
 
 =
-void RTVariables::emit_initial_value(nonlocal_variable *nlv) {
+void RTVariables::initial_value_as_array_entry(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	RTVariables::compile_initial_value_vh(&VH, nlv);
+	RTVariables::holster_initial_value(&VH, nlv);
 	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	EmitArrays::generic_entry(v1, v2);
 }
 
-void RTVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
+void RTVariables::initial_value_as_val(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	RTVariables::compile_initial_value_vh(&VH, nlv);
+	RTVariables::holster_initial_value(&VH, nlv);
 	Holsters::unholster_to_code_val(Emit::tree(), &VH);
 }
 
-void RTVariables::seek_initial_value(inter_name *iname, inter_ti *v1,
+void RTVariables::initial_value_as_pair(inter_name *iname, inter_ti *v1,
 	inter_ti *v2, nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	packaging_state save = Packaging::enter_home_of(iname);
-	RTVariables::compile_initial_value_vh(&VH, nlv);
+	RTVariables::holster_initial_value(&VH, nlv);
 	Holsters::unholster_pair(&VH, v1, v2);
 	Packaging::exit(Emit::tree(), save);
 }
 
-void RTVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable *nlv) {
+@ Which are all powered by the following function.
+
+If the variable has no known initial value, it is given the initial
+value for its kind where possible: but note that this may not be possible
+if the source text says something like
+
+>> Thickness is a kind of value. The carpet nap is a thickness that varies.
+
+without specifying any thicknesses. If that's so, the set of legal thickness
+values is empty, so the "carpet nap" variable cannot be created in a way
+which makes its kind safe.
+
+=
+void RTVariables::holster_initial_value(value_holster *VH, nonlocal_variable *nlv) {
 	parse_node *val =
 		NonlocalVariables::substitute_constants(
 			VariableSubjects::get_initial_value(

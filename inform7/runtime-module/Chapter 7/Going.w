@@ -45,7 +45,8 @@ int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
 			RTActionPatterns::compile_pattern_match_clause(VH,
-				RTTemporaryVariables::from_nve(RTVariables::nve_from_named_mstack(GoingPlugin::id(), 1, TRUE),
+				TemporaryVariables::from_nve(
+					RTVariables::nve_from_mstack(GoingPlugin::id(), 1, TRUE),
 					K_object),
 					somewhere, K_object, FALSE);
 			return TRUE;

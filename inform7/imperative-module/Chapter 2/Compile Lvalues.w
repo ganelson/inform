@@ -54,7 +54,7 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 
 @<Compile a non-local variable specification@> =
 	nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec_found);
-	RTVariables::emit_lvalue(nlv);
+	RTVariables::compile_NVE_as_val(nlv, &(nlv->compilation_data.lvalue_nve));
 	return;
 
 @<Compile a property value specification@> =

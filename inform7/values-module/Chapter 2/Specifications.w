@@ -336,7 +336,7 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 =
 parse_node *Specifications::nothing(void) {
 	return Lvalues::new_actual_NONLOCAL_VARIABLE(
-		RTTemporaryVariables::nothing_pseudo_variable());
+		NonlocalVariables::nothing_pseudo_variable());
 }
 
 @h The Unknown.

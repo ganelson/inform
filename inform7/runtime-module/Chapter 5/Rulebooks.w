@@ -100,8 +100,7 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	Emit::numeric_constant(RTRulebooks::id_iname(B), 0); /* placeholder */
 
 @<Compile shared variables creator function@> =
-	RTVariables::set_shared_variables_creator(B->my_variables, vars_creator_iname);
-	RTVariables::compile_frame_creator(B->my_variables);
+	RTSharedVariables::compile_creator_fn(B->my_variables, vars_creator_iname);
 
 @<Compile run function@> =
 	int action_based = FALSE;

@@ -249,6 +249,7 @@ lantern is bright".
 		asch->schema = NULL;
 		return TRUE;
 	}
+	NonlocalVariables::warn_about_change(nlv);
 	text_stream *exotica = RTVariables::get_write_schema(nlv);
 	if (exotica) {
 		Calculus::Schemas::modify(asch->schema, "%S", exotica);

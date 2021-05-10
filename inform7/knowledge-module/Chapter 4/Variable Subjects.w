@@ -16,7 +16,7 @@ inference_subject_family *VariableSubjects::family(void) {
 		METHOD_ADD(nlv_family, CHECK_MODEL_INFS_MTID, VariableSubjects::check_model);
 		METHOD_ADD(nlv_family, GET_NAME_TEXT_INFS_MTID, VariableSubjects::get_name);
 
-		METHOD_ADD(nlv_family, EMIT_ALL_INFS_MTID, RTVariables::emit_all);
+		METHOD_ADD(nlv_family, EMIT_ALL_INFS_MTID, RTVariables::compile);
 	}
 	return nlv_family;
 }
@@ -157,7 +157,6 @@ messages if these have the wrong kind, so we don't need to.
 =
 void VariableSubjects::check_model(inference_subject_family *family,
 	inference_subject *infs) {
-	RTVariables::allocate_storage(); /* in case this hasn't happened already */
 	nonlocal_variable *nlv = VariableSubjects::to_variable(infs);
 	if (nlv) {
 		@<Verify that externally-stored nonlocals haven't been initialised@>;
@@ -181,13 +180,11 @@ that faraway Inter code said it was.
 		current_sentence = VariableSubjects::origin_of_initial_value(nlv);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, nlv->name);
-		Problems::quote_stream(3, nlv->compilation_data.lvalue_nve.textual_form);
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_InaccessibleVariable));
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2' has a specific initial value, "
-			"but this is a variable which has been translated into an I6 'Global' "
-			"called '%3' at the lowest level of Inform. Any initial value must be "
-			"given in its I6 definition, not here.");
+			"but this is a variable which has been translated into an Inter variable "
+			"defined in a kit. Any initial value must be given there, and not here.");
 		Problems::issue_problem_end();
 	}

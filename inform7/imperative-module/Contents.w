@@ -22,6 +22,7 @@ Chapter 3: Functions
 	Stack Frames
 	Local Variable Slates
 	Local Variables
+	Temporary Variables
 	Local Parking
 	Code Blocks
 	Functions

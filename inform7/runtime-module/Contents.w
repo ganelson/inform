@@ -18,6 +18,7 @@ Chapter 2: Emission
 	Emit Code
 	Emit Arrays
 	Interventions
+	Shared Variables
 
 Chapter 3: Basics
 	Generic Module
@@ -35,7 +36,7 @@ Chapter 4: Enclosed Resources
 	Stored Action Literals
 	Group Together
 
-Chapter 5: Local Submodules
+Chapter 5: Provision Submodules
 	Activities
 	Adjectives
 	Chronology
@@ -47,14 +48,11 @@ Chapter 5: Local Submodules
 	Table Columns
 	Rules
 	Rulebooks
-	Runtime Support for Kinds
-	Literal Patterns at Run Time
-	Temporary Variables
 	Variables
 	Properties
-	Emit Property Values
-	Instance Counting
 	Relations at Run Time
+	Runtime Support for Kinds
+	Literal Patterns at Run Time
 
 Chapter 6: Completion Resources
 	Naming
@@ -66,6 +64,8 @@ Chapter 6: Completion Resources
 	The Map
 	The Score
 	Scenes
+	Emit Property Values
+	Instance Counting
 
 Chapter 7: Actions
 	Actions

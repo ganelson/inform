@@ -1185,14 +1185,16 @@ void Hierarchy::establish(void) {
 @e VARIABLES_HAP
 @e VARIABLE_NAME_MD_HL
 @e VARIABLE_HL
+@e COMMANDPROMPTTEXT_HL
 
 @<Establish variables@> =
 	submodule_identity *variables = Packaging::register_submodule(I"variables");
 
 	H_BEGIN(HierarchyLocations::local_submodule(variables))
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
-			H_C_U(VARIABLE_NAME_MD_HL,  I"^name")
+			H_C_U(VARIABLE_NAME_MD_HL,        I"^name")
 			H_C_G(VARIABLE_HL,                I"V")
+			H_F_T(COMMANDPROMPTTEXT_HL,       I"command_prompt_text_fn", I"CommandPromptText")
 		H_END
 	H_END
 
@@ -1252,10 +1254,8 @@ void Hierarchy::establish(void) {
 @e K_RULEBOOK_OUTCOME_XPACKAGE
 @e K_RESPONSE_XPACKAGE
 @e K_SCENE_XPACKAGE
-@e V_COMMAND_PROMPT_XPACKAGE
 
 @e CAPSHORTNAME_HL
-@e COMMANDPROMPTTEXT_HL
 @e DECIMAL_TOKEN_INNER_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
@@ -1289,10 +1289,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_SOUND_NAME_XPACKAGE))
 		H_F_T(PRINT_SOUND_NAME_HL,            I"print_fn", I"PrintSoundName")
-	H_END
-
-	H_BEGIN(HierarchyLocations::this_exotic_package(V_COMMAND_PROMPT_XPACKAGE))
-		H_F_T(COMMANDPROMPTTEXT_HL,           I"command_prompt_text_fn", I"CommandPromptText")
 	H_END
 
 	H_BEGIN(HierarchyLocations::this_exotic_package(K_EXTERNAL_FILE_XPACKAGE))
@@ -1389,9 +1385,6 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_RULEBOOK_OUTCOME_XPACKAGE: return Kinds::Behaviour::package(K_rulebook_outcome);
 		case K_RESPONSE_XPACKAGE:         return Kinds::Behaviour::package(K_response);
 		case K_SCENE_XPACKAGE:            return Kinds::Behaviour::package(K_scene);
-		case V_COMMAND_PROMPT_XPACKAGE:
-			return InterNames::location(
-				RTVariables::iname(RTTemporaryVariables::command_prompt_variable()));
 	}
 	internal_error("unknown exotic package");
 	return NULL;

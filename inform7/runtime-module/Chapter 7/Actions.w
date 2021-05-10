@@ -93,8 +93,7 @@ void RTActions::compile_action_name_var_creators(void) {
 			(SharedVariables::set_empty(an->action_variables) == FALSE)) {
 			inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL,
 				an->compilation_data.an_package);
-			RTVariables::set_shared_variables_creator(an->action_variables, iname);
-			RTVariables::compile_frame_creator(an->action_variables);
+			RTSharedVariables::compile_creator_fn(an->action_variables, iname);
 			inter_name *vc = Hierarchy::make_iname_in(ACTION_VARC_MD_HL,
 				an->compilation_data.an_package);
 			Emit::iname_constant(vc, K_value, iname);

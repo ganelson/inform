@@ -118,7 +118,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *s
 	nlv->as_subject = VariableSubjects::new(nlv);
 	nlv->compilation_data = RTVariables::new_compilation_data();
 
-	RTTemporaryVariables::new_variable_notify(nlv, W);
+	@<Notice a few special variables@>;
 	PluginCalls::new_variable_notify(nlv);
 	LOGIF(VARIABLE_CREATIONS, "Created nonlocal variable: $Z\n", nlv);
 
@@ -137,6 +137,58 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *s
 		"that varies', because I don't know what the entries have to be - 'L "
 		"is a list of numbers that varies' would be better.");
 	Problems::issue_problem_end();
+
+@ Four oddball cases have special behaviour:
+(*) |Inter_nothing_VAR| is translated not to an Inter variable, but to the
+Inter constant |nothing|.
+(*) |temporary_global_VAR| is translated to an Inter global used as temporary
+storage space, and which has no fixed kind. An author cannot access this
+directly in source text.
+(*) |parameter_object_VAR| is translated to an Inter global used during the
+run of certain rulebooks, and which has no fixed kind. (This could have been
+handled as a rulebook variable, but having it as a global is more efficient.)
+(*) |command_prompt_VAR| is a quite ordinary Inform 7 variable, except that
+it is compiled in an unusual way, to achieve backwards compatibility with
+the code in //CommandParserKit//, which dates back to the era of Inform 1 to 6.
+
+= (early code)
+nonlocal_variable *temporary_global_VAR = NULL;
+nonlocal_variable *Inter_nothing_VAR = NULL; /* the |nothing| constant */
+nonlocal_variable *command_prompt_VAR = NULL; /* the command prompt text */
+nonlocal_variable *parameter_object_VAR = NULL;
+
+@ =
+nonlocal_variable *NonlocalVariables::nothing_pseudo_variable(void) {
+	return Inter_nothing_VAR;
+}
+nonlocal_variable *NonlocalVariables::command_prompt_variable(void) {
+	return command_prompt_VAR;
+}
+nonlocal_variable *NonlocalVariables::parameter_object_variable(void) {
+	return parameter_object_VAR;
+}
+nonlocal_variable *NonlocalVariables::temporary_global_variable(void) {
+	return temporary_global_VAR;
+}
+
+@<Notice a few special variables@> =
+	if (<notable-variables>(W)) {
+		switch (<<r>>) {
+			case 0: temporary_global_VAR = nlv; break;
+			case 1: Inter_nothing_VAR = nlv; break;
+			case 2: command_prompt_VAR = nlv; break;
+			case 3: parameter_object_VAR = nlv; break;
+		}
+	}
+
+@ Inform recognises these special variables by their English names:
+
+=
+<notable-variables> ::=
+	i6-varying-global |
+	i6-nothing-constant |
+	command prompt |
+	parameter-object
 
 @ So much for creation; and here's how we log and write them:
 
@@ -248,6 +300,22 @@ int NonlocalVariables::must_be_constant(nonlocal_variable *nlv) {
 		return TRUE;
 	}
 	return FALSE;
+}
+
+void NonlocalVariables::warn_about_change(nonlocal_variable *nlv) {
+	if ((score_VAR) && (nlv == score_VAR)) {
+		if ((global_compilation_settings.scoring_option_set == FALSE) ||
+			(global_compilation_settings.scoring_option_set == NOT_APPLICABLE)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_CantChangeScore),
+				"this is a story with no scoring",
+				"so it makes no sense to change the 'score' value. You can add "
+				"scoring to the story by including the sentence 'Use scoring.', "
+				"in which case this problem message will go away; or you can "
+				"remove it with 'Use no scoring.' (Until 2011, the default was "
+				"to have scoring, but now it's not to have scoring.)");
+		}
+	}
 }
 
 @ Substitution is the down-side if handling constants as if they were variables.

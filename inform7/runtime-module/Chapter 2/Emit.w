@@ -343,7 +343,7 @@ of a "variable" and define it as a constant:
 =
 void Emit::initial_value_as_constant(inter_name *con_iname, nonlocal_variable *var) {
 	inter_ti v1 = 0, v2 = 0;
-	RTVariables::seek_initial_value(con_iname, &v1, &v2, var);
+	RTVariables::initial_value_as_pair(con_iname, &v1, &v2, var);
 	Emit::named_generic_constant(con_iname, v1, v2);
 }
 
