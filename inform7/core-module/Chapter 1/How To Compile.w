@@ -147,7 +147,6 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",
 		-1, debugging, sequence_timer);
 	BENCH(RTKinds::kind_declarations)
-	BENCH(RTProperties::emit)
 	BENCH(RTPropertyValues::allocate_attributes)
 	BENCH(Translations::traverse_for_late_namings)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
@@ -193,6 +192,7 @@ so on. Those absolute basics are made here.
 @<Generate inter, part 2@> =
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
 		-1, debugging, sequence_timer);
+	BENCH(RTProperties::compile)
 	BENCH(InferenceSubjects::emit_all)
 	BENCH(RTNaming::compile_small_names);
 	BENCH(Tables::complete)
@@ -204,7 +204,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTRules::compile)
 	BENCH(RTRulebooks::compile)
 	BENCH(RTRulebooks::compile_nros)
-	BENCH(RTProperties::compile_metadata)
 	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::compile_conjugations)
 	BENCH(RTVerbs::compile_forms)

@@ -2,6 +2,20 @@
 
 To feed the hierarchy of instances and their property values into Inter.
 
+@h Permissions.
+
+=
+void RTPropertyValues::emit_instance_permissions(instance *I) {
+	inference_subject *subj = Instances::as_subject(I);
+	property_permission *pp;
+	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, subj) {
+		property *prn = pp->property_granted;
+		if (Properties::is_either_or(prn))
+			if (prn->compilation_data.store_in_negation) continue;
+		Emit::instance_permission(prn, RTInstances::value_iname(I));
+	}
+}
+
 @h Emitting the property values.
 The following routine is called on every kind which can have properties,
 and also on every individual instance of those kinds. Superkinds are called
@@ -36,7 +50,7 @@ each one is marked when visited.
 @<Compile the actual object@> =
 	@<Annotate with the spatial depth@>;
 	@<Append any inclusions the source text requested@>;
-	RTProperties::begin_traverse();
+	RTPropertyValues::begin_traverse();
 	@<Emit inferred object properties@>;
 	@<Emit permitted but unspecified object properties@>;
 
@@ -98,7 +112,7 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 	kind *K = KindSubjects::to_kind(know);
 	if (K) R = Kinds::Behaviour::package(K);
 	int storage_cost = 0;
-	if ((RTProperties::visited_in_traverse(prn) == FALSE) &&
+	if ((RTPropertyValues::visited_in_traverse(prn) == FALSE) &&
 		(RTProperties::can_be_compiled(prn))) {
 		if ((Properties::is_either_or(prn)) &&
 			(RTProperties::stored_in_negation(prn)))
@@ -126,6 +140,26 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 	}
 	if (as_I) Emit::instance_propertyvalue(in, as_I, v1, v2);
 	else Emit::propertyvalue(in, as_K, v1, v2);
+
+@ These functions are to help other parts of Inform to visit each property just
+once, when working through some complicated search space. (Visiting an either/or
+property also visits its negation.)
+
+=
+int property_traverse_count = 0;
+void RTPropertyValues::begin_traverse(void) {
+	property_traverse_count++;
+}
+
+int RTPropertyValues::visited_in_traverse(property *prn) {
+	if (prn->compilation_data.visited_on_traverse == property_traverse_count) return TRUE;
+	prn->compilation_data.visited_on_traverse = property_traverse_count;
+	if (Properties::is_either_or(prn)) {
+		property *prnbar = EitherOrProperties::get_negation(prn);
+		if (prnbar) prnbar->compilation_data.visited_on_traverse = property_traverse_count;
+	}
+	return FALSE;
+}
 
 @h Attribute allocation.
 At some later stage the business of deciding which properties are stored

@@ -414,7 +414,7 @@ void Properties::translates(wording W, parse_node *p2) {
 
 	@<Make sure this is a genuine and previously untranslated property@>;
 
-	RTProperties::set_translation(prn, text);
+	Properties::set_translation(prn, text);
 	LOGIF(PROPERTY_TRANSLATIONS, "Property <$Y> translates as <%w>\n", prn, text);
 
 	if (prn->either_or_data)
@@ -546,4 +546,47 @@ property *Properties::property_with_same_name_as(kind *K) {
 void Properties::mark_kind_as_having_same_name_as(kind *K, property *P) {
 	if (K == NULL) return;
 	K->construct->coinciding_property = P;
+}
+
+@h Translated names of properties.
+Some properties named in new source text need to be the same as those
+defined in a kit of Inter code, and "P translates into Inter as N" will
+arrange for that. Such translations can be done with one of two functions:
+
+=
+void Properties::set_translation(property *prn, wchar_t *t) {
+	if (prn == NULL) internal_error("translation set for null property");
+	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
+		Properties::set_translation(EitherOrProperties::get_negation(prn), t);
+		return;
+	}
+	TEMPORARY_TEXT(T)
+	for (int i=0; ((t[i]) && (i<31)); i++) {
+		if ((Characters::isalpha(t[i])) || (Characters::isdigit(t[i])) || (t[i] == '_'))
+			PUT_TO(T, t[i]);
+		else
+			PUT_TO(T, '_');
+	}
+	RTProperties::set_translation_and_make_available(prn, T);
+	DISCARD_TEXT(T)
+}
+
+void Properties::set_translation_from_text(property *prn, text_stream *t) {
+	if (prn == NULL) internal_error("translation set for null property");
+	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
+		Properties::set_translation_from_text(EitherOrProperties::get_negation(prn), t);
+		return;
+	}
+	RTProperties::iname(prn);
+	TEMPORARY_TEXT(T)
+	LOOP_THROUGH_TEXT(pos, t) {
+		wchar_t c = Str::get(pos);
+		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
+			PUT_TO(T, (int) c);
+		else
+			PUT_TO(T, '_');
+	}
+	Str::truncate(T, 31);
+	RTProperties::set_translation(prn, T);
+	DISCARD_TEXT(T)
 }

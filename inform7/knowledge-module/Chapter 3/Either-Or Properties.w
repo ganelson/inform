@@ -85,7 +85,7 @@ property *EitherOrProperties::new_nameless(wchar_t *identifier_text) {
 	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, iname, TRUE);
 	IXProperties::dont_show_in_index(prn);
-	RTProperties::set_translation(prn, identifier_text);
+	Properties::set_translation(prn, identifier_text);
 	EitherOrPropertyAdjectives::create_for_property(prn, EMPTY_WORDING, K_object);
 	prn->Inter_level_only = TRUE;
 	return prn;

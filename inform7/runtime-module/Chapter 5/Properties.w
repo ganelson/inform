@@ -1,19 +1,19 @@
 [RTProperties::] Properties.
 
-To compile run-time support for properties.
+To compile the properties submodule for a compilation unit, which contains
+_property packages.
 
-@
-
-@d UNSET_TABLE_OFFSET -654321
+@h Compilation data.
+Each |property| object contains this data, though in the case of a pair of
+negated either-or properties, only the un-negated case has a meaningful
+set of compilation data.
 
 =
 typedef struct property_compilation_data {
-	int do_not_compile; /* for e.g. the "specification" pseudo-property */
-	int metadata_table_offset; /* position in the |property_metadata| word array at run-time */
 	struct package_request *prop_package; /* where to find: */
 	struct inter_name *prop_iname; /* the identifier we would like to use at run-time for this property */
+	int do_not_compile; /* for e.g. the "specification" pseudo-property */
 	int translated; /* has this been given an explicit translation? */
-	int prn_emitted; /* has this been emitted to Inter yet? */
 	int implemented_as_attribute; /* is this an Inter attribute at run-time? */
 	int store_in_negation; /* this is the dummy half of an either/or pair */
 	int visited_on_traverse; /* for temporary use when compiling objects */
@@ -22,37 +22,43 @@ typedef struct property_compilation_data {
 
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname) {
 	prn->compilation_data.prop_package = pkg;
-	prn->compilation_data.do_not_compile = FALSE;
 	prn->compilation_data.prop_iname = iname;
-	prn->compilation_data.prn_emitted = FALSE;
+	prn->compilation_data.do_not_compile = FALSE;
 	prn->compilation_data.translated = FALSE;
-	prn->compilation_data.metadata_table_offset = UNSET_TABLE_OFFSET;
 	prn->compilation_data.store_in_negation = FALSE;
 	prn->compilation_data.implemented_as_attribute = NOT_APPLICABLE;
 	prn->compilation_data.visited_on_traverse = -1;
 	prn->compilation_data.use_non_typesafe_0 = FALSE;
 }
 
-@ These functions are to help other parts of Inform to visit each property just
-once, when working through some complicated search space. (Visiting an either/or
-property also visits its negation.)
+@ And these are created on demand, though some properties come with a given
+package already supplied:
 
 =
-int property_traverse_count = 0;
-void RTProperties::begin_traverse(void) {
-	property_traverse_count++;
+package_request *RTProperties::package(property *prn) {
+	if (prn == NULL) internal_error("tried to find package for null property");
+	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
+		return RTProperties::package(EitherOrProperties::get_negation(prn));
+	if (prn->compilation_data.prop_package == NULL)
+		prn->compilation_data.prop_package =
+			Hierarchy::local_package_to(PROPERTIES_HAP, prn->where_created);
+	return prn->compilation_data.prop_package;
 }
 
-int RTProperties::visited_in_traverse(property *prn) {
-	if (prn->compilation_data.visited_on_traverse == property_traverse_count) return TRUE;
-	prn->compilation_data.visited_on_traverse = property_traverse_count;
-	if (Properties::is_either_or(prn)) {
-		property *prnbar = EitherOrProperties::get_negation(prn);
-		if (prnbar) prnbar->compilation_data.visited_on_traverse = property_traverse_count;
-	}
-	return FALSE;
+inter_name *RTProperties::iname(property *prn) {
+	if (prn == NULL) internal_error("tried to find iname for null property");
+	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
+		return RTProperties::iname(EitherOrProperties::get_negation(prn));
+	if (prn->compilation_data.prop_iname == NULL)		
+		prn->compilation_data.prop_iname =
+			Hierarchy::make_iname_with_memo(PROPERTY_HL,
+				RTProperties::package(prn), prn->name);
+	return prn->compilation_data.prop_iname;
 }
 
+@ Only a very few pseudo-properties go uncompiled: see //knowledge: Properties//.
+
+=
 void RTProperties::do_not_compile(property *prn) {
 	prn->compilation_data.do_not_compile = TRUE;
 }
@@ -62,78 +68,50 @@ int RTProperties::can_be_compiled(property *prn) {
 	return TRUE;
 }
 
-@ Used to support the run-time storage code: see "Properties of Objects".
+@ When we have a pair of either-or antonyms, as in "A person can be cheery or moody",
+we should store the state as either the |cheery| or the |moody| property. Clearly
+either could equivalently be used: if a person is indeed in good spirits, we
+could represent this either by having a |cheery| property at runtime and storing
+|true| in it, or by having a |moody| one and storing |false| in that.
+
+Calling the function //RTProperties::store_in_negation// establishes that the
+given property is the one we don't use. That is, if you want to use |cheery|,
+call this function on |moody|.
+
+It may seem not to matter, but in fact we sometimes do need to have things one
+particular way around in order to make Inform 7 source text play nicely with
+already-compiled properties in kits. If the |moody| property is defined by a
+kit, we'll have to use that one.
 
 =
-void RTProperties::offset_in_runtime_metadata_table_is(property *prn, int pos) {
-	prn->compilation_data.metadata_table_offset = pos;
-}
-int RTProperties::get_offset_in_runtime_metadata_table(property *prn) {
-	return prn->compilation_data.metadata_table_offset;
-}
-
-@ =
 int RTProperties::stored_in_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
+	if ((prn == NULL) || (prn->either_or_data == NULL))
+		internal_error("non-EO property");
 	return prn->compilation_data.store_in_negation;
 }
 
 void RTProperties::store_in_negation(property *prn) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
-	if (EitherOrProperties::get_negation(prn) == NULL) internal_error("singleton EO cannot store in negation");
+	property *neg = EitherOrProperties::get_negation(prn);
+	if (neg == NULL) internal_error("singleton EO cannot store in negation");
 
 	prn->compilation_data.store_in_negation = TRUE;
-	if (EitherOrProperties::get_negation(prn)) EitherOrProperties::get_negation(prn)->compilation_data.store_in_negation = FALSE;
+	neg->compilation_data.store_in_negation = FALSE;
 }
 
-@h Translated names of properties.
-Some properties have translated names mechanically generated by Inform (indeed
-all properties initially have, as we saw above), but others must have names
-corresponding to those used in the template: these are, we say, "translated".
-The following routine accomplishes that. It is normally used in response to
-explicit requests in the source text (see below), but can also be used by
-plugins to give their favourite properties names which will help their own
-run-time support code to work.
+@ The translation of a property is stored in the translation of its iname:
 
 =
-void RTProperties::set_translation(property *prn, wchar_t *t) {
-	if (prn == NULL) internal_error("translation set for null property");
-	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::set_translation(EitherOrProperties::get_negation(prn), t);
-		return;
-	}
-	TEMPORARY_TEXT(T)
-	for (int i=0; ((t[i]) && (i<31)); i++) {
-		if ((Characters::isalpha(t[i])) || (Characters::isdigit(t[i])) || (t[i] == '_'))
-			PUT_TO(T, t[i]);
-		else
-			PUT_TO(T, '_');
-	}
+void RTProperties::set_translation(property *prn, text_stream *T) {
 	inter_name *iname = RTProperties::iname(prn);
 	Produce::change_translation(iname, T);
-	Hierarchy::make_available(iname);
-	DISCARD_TEXT(T)
 	prn->compilation_data.translated = TRUE;
 }
 
-void RTProperties::set_translation_S(property *prn, text_stream *t) {
-	if (prn == NULL) internal_error("translation set for null property");
-	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::set_translation_S(EitherOrProperties::get_negation(prn), t);
-		return;
-	}
-	RTProperties::iname(prn);
-	TEMPORARY_TEXT(T)
-	LOOP_THROUGH_TEXT(pos, t) {
-		wchar_t c = Str::get(pos);
-		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
-			PUT_TO(T, (int) c);
-		else
-			PUT_TO(T, '_');
-	}
-	Str::truncate(T, 31);
-	Produce::change_translation(prn->compilation_data.prop_iname, T);
-	DISCARD_TEXT(T)
+void RTProperties::set_translation_and_make_available(property *prn, text_stream *T) {
+	inter_name *iname = RTProperties::iname(prn);
+	Produce::change_translation(iname, T);
+	Hierarchy::make_available(iname);
 	prn->compilation_data.translated = TRUE;
 }
 
@@ -146,57 +124,22 @@ text_stream *RTProperties::current_translation(property *prn) {
 	return Produce::get_translation(RTProperties::iname(prn));
 }
 
-@h Emitting to Inter.
+@h Compilation.
 
 =
-inter_name *RTProperties::iname(property *prn) {
-	if (prn == NULL) internal_error("tried to find iname for null property");
-	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
-		return RTProperties::iname(EitherOrProperties::get_negation(prn));
-	if (prn->compilation_data.prop_iname == NULL)		
-		prn->compilation_data.prop_iname =
-			Hierarchy::make_iname_with_memo(PROPERTY_HL, RTProperties::package(prn), prn->name);
-	return prn->compilation_data.prop_iname;
-}
-
-package_request *RTProperties::package(property *prn) {
-	if (prn == NULL) internal_error("tried to find package for null property");
-	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
-		return RTProperties::package(EitherOrProperties::get_negation(prn));
-	if (prn->compilation_data.prop_package == NULL)
-		prn->compilation_data.prop_package = Hierarchy::local_package_to(PROPERTIES_HAP, prn->where_created);
-	return prn->compilation_data.prop_package;
-}
-
-void RTProperties::emit_single(property *prn) {
-	if (prn == NULL) internal_error("tried to find emit single for null property");
-	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::emit_single(EitherOrProperties::get_negation(prn));
-		return;
-	}
-	if (prn->compilation_data.prn_emitted == FALSE) {
-		inter_name *iname = RTProperties::iname(prn);
-
-		kind *K = Properties::kind_of_contents(prn);
-		if (K == NULL) internal_error("kindless property");
-		prn->compilation_data.prn_emitted = TRUE;
-
-		Emit::property(iname, K);
-		if (prn->Inter_level_only) Emit::permission(prn, K_object, NULL);
-		if (prn->compilation_data.translated)
-			Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
-	}
-}
-
-void RTProperties::emit(void) {
+void RTProperties::compile(void) {
 	property *prn;
 	LOOP_OVER(prn, property) {
 		if ((Properties::is_either_or(prn)) &&
 			(prn->compilation_data.store_in_negation)) continue;
 		kind *K = Properties::kind_of_contents(prn);
 		if (K == NULL) internal_error("kindless property");
-		RTProperties::emit_single(prn);
+		inter_name *iname = RTProperties::iname(prn);
+		Emit::property(iname, K);
+		if (prn->Inter_level_only) Emit::permission(prn, K_object, NULL);
+		if (prn->compilation_data.translated)
+			Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
+		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
 		property_permission *pp;
 		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
 			inference_subject *subj = pp->property_owner;
@@ -204,61 +147,14 @@ void RTProperties::emit(void) {
 			kind *K = KindSubjects::to_kind(subj);
 			if (K) Emit::permission(prn, K, RTPropertyValues::annotate_table_storage(pp));
 		}
-	}
-}
-
-void RTProperties::compile_metadata(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if ((Properties::is_either_or(prn)) &&
-			(prn->compilation_data.store_in_negation)) continue;
 		package_request *pack = RTProperties::package(prn);
 		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
-		inter_name *iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
-		Emit::numeric_constant(iname, 0);
+		inter_name *id_iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
+		Emit::numeric_constant(id_iname, 0);
 	}
 }
 
-void RTProperties::emit_default_values(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if ((Properties::is_either_or(prn)) &&
-			(prn->compilation_data.store_in_negation)) continue;
-		kind *K = Properties::kind_of_contents(prn);
-		Emit::ensure_defaultvalue(K);
-	}
-}
-
-void RTProperties::annotate_attributes(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if (Properties::is_either_or(prn)) {
-			if (prn->compilation_data.store_in_negation) continue;
-			Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
-			if (RTProperties::implemented_as_attribute(prn)) {
-				Produce::annotate_i(RTProperties::iname(prn), ATTRIBUTE_IANN, 0);
-			}
-		}
-		if (Wordings::nonempty(prn->name))
-			Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
-		if (prn->Inter_level_only)
-			Produce::annotate_i(RTProperties::iname(prn), RTO_IANN, 0);
-	}
-	RTProperties::emit_default_values();
-}
-
-void RTProperties::emit_instance_permissions(instance *I) {
-	inference_subject *subj = Instances::as_subject(I);
-	property_permission *pp;
-	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, subj) {
-		property *prn = pp->property_granted;
-		if (Properties::is_either_or(prn))
-			if (prn->compilation_data.store_in_negation) continue;
-		Emit::instance_permission(prn, RTInstances::value_iname(I));
-	}
-}
-
-@h Compilation.
+@h Attributes.
 Inform 6 provides "attributes" as a faster-access, more memory-efficient
 form of object properties, stored at run-time in a bitmap rather than as
 key-value pairs in a small dictionary. Because the bitmap is inflexibly sized,
@@ -279,14 +175,29 @@ void RTProperties::implement_as_attribute(property *prn, int state) {
 	if (EitherOrProperties::get_negation(prn)) EitherOrProperties::get_negation(prn)->compilation_data.implemented_as_attribute = state;
 }
 
+void RTProperties::annotate_attributes(void) {
+	property *prn;
+	LOOP_OVER(prn, property) {
+		if (Properties::is_either_or(prn)) {
+			if (prn->compilation_data.store_in_negation) continue;
+			Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
+			if (RTProperties::implemented_as_attribute(prn)) {
+				Produce::annotate_i(RTProperties::iname(prn), ATTRIBUTE_IANN, 0);
+			}
+		}
+		if (Wordings::nonempty(prn->name))
+			Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
+		if (prn->Inter_level_only)
+			Produce::annotate_i(RTProperties::iname(prn), RTO_IANN, 0);
+		kind *K = Properties::kind_of_contents(prn);
+		Emit::ensure_defaultvalue(K);
+	}
+}
+
 @ Otherwise, each either/or property is stored as either |true| or |false|
 in a given cell of memory at run-time -- wastefully since only 1 of the
 16 or 32 bits in that memory word is used, but at least rapidly. The
 following compiles this |true| or |false| value.
-
-(Because of the way the attribute optimisation works, it's very important not to
-change the strings of compiled code here without making a matching change in
-"Properties of Objects".)
 
 =
 void RTProperties::compile_value(value_holster *VH, property *prn, int val) {
@@ -431,7 +342,7 @@ property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_
 	Hierarchy::apply_metadata(R, PROPERTY_NAME_MD_HL, Inter_identifier);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
-	RTProperties::set_translation_S(prn, Inter_identifier);
+	Properties::set_translation_from_text(prn, Inter_identifier);
 	return prn;
 }
 

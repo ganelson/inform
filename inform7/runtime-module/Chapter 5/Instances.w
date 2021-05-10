@@ -77,7 +77,7 @@ using Inter's |INSTANCE_IST| instruction.
 			INSTANCE_IS_EXF_MD_HL, 1);
 
 	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), I->enumeration_index);
-	RTProperties::emit_instance_permissions(I);
+	RTPropertyValues::emit_instance_permissions(I);
 	RTPropertyValues::emit_subject(Instances::as_subject(I));
 
 @h Condition element.
