@@ -1525,6 +1525,10 @@ package_request *Hierarchy::synoptic_package(int hap_id) {
 	return HierarchyLocations::attach_new_package(Emit::tree(), NULL, NULL, hap_id);
 }
 
+package_request *Hierarchy::completion_package(int hap_id) {
+	return HierarchyLocations::attach_new_package(Emit::tree(), NULL, NULL, hap_id);
+}
+
 @ Attachment points do not always have to be at the top level of submodules,
 as the |KIND_HAP| example was. For example:
 = (text as InC)

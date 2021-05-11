@@ -155,8 +155,8 @@ property *P_absent = NULL; /* an I6-only property for backdrops out of play */
 
 int Backdrops::complete_model(int stage) {
 	if (stage == WORLD_STAGE_II) {
-		P_absent = EitherOrProperties::new_nameless(L"absent");
-		RTProperties::implement_as_attribute(P_absent, TRUE);
+		P_absent = EitherOrProperties::new_nameless(I"absent");
+		RTProperties::recommend_storing_as_attribute(P_absent, TRUE);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object) {
 			parse_node *val_of_found_in = NULL;

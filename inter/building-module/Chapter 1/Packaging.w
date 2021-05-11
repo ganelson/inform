@@ -356,10 +356,6 @@ package_request *Packaging::completion_submodule(inter_tree *I, submodule_identi
 	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"completion", I"_module"), sid);
 }
 
-package_request *Packaging::template_submoduleXXXXXX(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"template", I"_module"), sid);
-}
-
 @ Those in turn all make use of this back-end function:
 
 =

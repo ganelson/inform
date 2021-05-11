@@ -132,7 +132,7 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 
 	Holsters::unholster_pair(&VH, &v1, &v2);
 
-	if ((Properties::is_either_or(prn)) && (RTProperties::implemented_as_attribute(prn))) {
+	if ((Properties::is_either_or(prn)) && (RTProperties::recommended_as_attribute(prn))) {
 		if (RTProperties::stored_in_negation(prn)) {
 			in = EitherOrProperties::get_negation(prn);
 			v2 = (inter_ti) (v2)?FALSE:TRUE;
@@ -177,7 +177,7 @@ void RTPropertyValues::allocate_attributes(void) {
 			@<Any either/or property which some value can hold is ineligible@>;
 			@<An either/or property translated to an existing attribute must be chosen@>;
 			@<Otherwise give away attribute slots on a first-come-first-served basis@>;
-			RTProperties::implement_as_attribute(prn, make_attribute);
+			RTProperties::recommend_storing_as_attribute(prn, make_attribute);
 		}
 	}
 }
@@ -215,7 +215,7 @@ void RTPropertyValues::emit_iname_has_property(kind *K, inter_name *N, property 
 	RTPropertyValues::emit_has_property(K, InterNames::to_symbol(N), prn);
 }
 void RTPropertyValues::emit_has_property(kind *K, inter_symbol *S, property *prn) {
-	if (RTProperties::implemented_as_attribute(prn)) {
+	if (RTProperties::recommended_as_attribute(prn)) {
 		if (RTProperties::stored_in_negation(prn)) {
 			EmitCode::inv(NOT_BIP);
 			EmitCode::down();

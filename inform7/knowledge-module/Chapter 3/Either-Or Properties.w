@@ -79,13 +79,10 @@ by asserting propositions to be true; and type-checking of those propositions
 relies on adjectival meanings.
 
 =
-property *EitherOrProperties::new_nameless(wchar_t *identifier_text) {
-	wording W = Feeds::feed_C_string(identifier_text);
-	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
-	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
-	property *prn = Properties::create(EMPTY_WORDING, R, iname, TRUE);
+property *EitherOrProperties::new_nameless(text_stream *identifier_text) {
+	package_request *R = Hierarchy::completion_package(PROPERTIES_HAP);
+	property *prn = Properties::create(EMPTY_WORDING, R, NULL, TRUE, identifier_text);
 	IXProperties::dont_show_in_index(prn);
-	Properties::set_translation(prn, identifier_text);
 	EitherOrPropertyAdjectives::create_for_property(prn, EMPTY_WORDING, K_object);
 	prn->Inter_level_only = TRUE;
 	return prn;

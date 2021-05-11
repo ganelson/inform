@@ -49,7 +49,7 @@ property *Properties::obtain(wording W, int valued) {
 	parse_node *p = Lexicon::retrieve(PROPERTY_MC, W);
 	property *prn;
 	if (p == NULL) {
-		prn = Properties::create(W, NULL, NULL, (valued)?FALSE:TRUE);
+		prn = Properties::create(W, NULL, NULL, (valued)?FALSE:TRUE, NULL);
 		if (valued) ValueProperties::make_setting_bp(prn, W);
 	} else {
 		prn = Rvalues::to_property(p);
@@ -65,7 +65,7 @@ property *Properties::obtain(wording W, int valued) {
 
 =
 property *Properties::create(wording W, package_request *using_package,
-	inter_name *using_iname, int eo) {
+	inter_name *using_iname, int eo, text_stream *translation) {
 	W = Articles::remove_article(W);
 	@<Ensure that the new property name is one we can live with@>;
 	@<See if the property name already has a meaning, which may or may not be okay@>;
@@ -151,7 +151,7 @@ something.
 	prn->where_created = current_sentence;
 	prn->permissions = NEW_LINKED_LIST(property_permission);
 	prn->Inter_level_only = FALSE;
-	RTProperties::initialise_pcd(prn, using_package, using_iname);
+	RTProperties::initialise_pcd(prn, using_package, using_iname, translation);
 	IXProperties::initialise_pid(prn);
 	if (eo) {
 		prn->either_or_data = EitherOrProperties::new_eo_data(prn);
@@ -476,10 +476,21 @@ void Properties::compile_inferred_value(value_holster *VH, inference_subject *in
 		if (Properties::compile_property_value_inner(VH, infs, prn)) return;
 		infs = InferenceSubjects::narrowest_broader_subject(infs);
 	}
-	if (Properties::is_either_or(prn))
-		RTProperties::compile_default_value(VH, prn);
-	else
-		RTProperties::compile_vp_default_value(VH, prn);
+	if (Properties::is_either_or(prn)) {
+		if (Holsters::non_void_context(VH))
+			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+	} else {
+		current_sentence = NULL;
+		if (RTProperties::compile_vp_default_value(VH, prn) == FALSE) {
+			Problems::quote_wording(1, prn->name);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_PropertyUninitialisable));
+			Problems::issue_problem_segment(
+				"I am unable to put any value into the property '%1', because "
+				"it seems to have a kind of value which has no actual values.");
+			Problems::issue_problem_end();
+		}
+	}
 }
 
 @ Here we look for a specific subject's knowledge about our property, and if
@@ -497,11 +508,13 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 			property *inferred_property = PropertyInferences::get_property(inf);
 			if (Properties::is_either_or(prn)) {
 				if (inferred_property == prn) {
-					RTProperties::compile_value(VH, inferred_property, sense);
+					if (Holsters::non_void_context(VH))
+						Holsters::holster_pair(VH, LITERAL_IVAL, (sense)?1:0);
 					return TRUE;
 				}
 				if (inferred_property == EitherOrProperties::get_negation(prn)) {
-					RTProperties::compile_value(VH, inferred_property, sense?FALSE:TRUE);
+					if (Holsters::non_void_context(VH))
+						Holsters::holster_pair(VH, LITERAL_IVAL, (sense)?0:1);
 					return TRUE;
 				}
 			} else {
@@ -509,7 +522,8 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 					if (sense) {
 						parse_node *val = PropertyInferences::get_value(inf);
 						if (val == NULL) internal_error("malformed property inference");
-						RTProperties::compile_vp_value(VH, inferred_property, val);
+						CompileValues::constant_to_holster(VH, val,
+							ValueProperties::kind(inferred_property));
 						return TRUE;
 					} else {
 						internal_error("valued property with negative certainty");

@@ -15,8 +15,8 @@ void PL::Persons::start(void) {
 
 int PL::Persons::IF_complete_model(int stage) {
 	if ((stage == WORLD_STAGE_III) && (K_person)) {
-		property *P_animate = EitherOrProperties::new_nameless(L"animate");
-		RTProperties::implement_as_attribute(P_animate, TRUE);
+		property *P_animate = EitherOrProperties::new_nameless(I"animate");
+		RTProperties::recommend_storing_as_attribute(P_animate, TRUE);
 		property *P_before = ValueProperties::new_nameless(I"before", K_value);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)

@@ -174,7 +174,6 @@ so on. Those absolute basics are made here.
 	BENCH(ImperativeDefinitions::assess_all)
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
-	BENCH(RTProperties::annotate_attributes)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 	BENCH(RTKinds::compile_instance_counts)
 

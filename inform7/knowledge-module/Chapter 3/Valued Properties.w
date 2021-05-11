@@ -89,7 +89,8 @@ the property to have, and one where we just have the text of such a name.
 =
 property *ValueProperties::new_nameless(text_stream *Inter_identifier, kind *K) {
 	if (K == NULL) internal_error("new nameless property without kind");
-	property *prn = RTProperties::make_valued_property_identified_thus(Inter_identifier);
+	property *prn = Properties::create(EMPTY_WORDING,
+		Hierarchy::completion_package(PROPERTIES_HAP), NULL, FALSE, Inter_identifier);
 	IXProperties::dont_show_in_index(prn);
 	@<Initialise this nameless property@>;
 	return prn;
@@ -99,8 +100,7 @@ property *ValueProperties::new_nameless_using(kind *K, package_request *R,
 	inter_name *using) {
 	if (K == NULL) internal_error("new nameless property without kind");
 	package_request *PR = Hierarchy::package_within(KIND_PROPERTIES_HAP, R);
-	property *prn = Properties::create(EMPTY_WORDING, PR, using, FALSE);
-	Properties::set_translation_from_text(prn, InterNames::to_text(using));
+	property *prn = Properties::create(EMPTY_WORDING, PR, using, FALSE, InterNames::to_text(using));
 	@<Initialise this nameless property@>;
 	return prn;
 }

@@ -12,6 +12,7 @@ set of compilation data.
 typedef struct property_compilation_data {
 	struct package_request *prop_package; /* where to find: */
 	struct inter_name *prop_iname; /* the identifier we would like to use at run-time for this property */
+	struct text_stream *translation; /* for the iname */
 	int do_not_compile; /* for e.g. the "specification" pseudo-property */
 	int translated; /* has this been given an explicit translation? */
 	int implemented_as_attribute; /* is this an Inter attribute at run-time? */
@@ -20,9 +21,11 @@ typedef struct property_compilation_data {
 	int use_non_typesafe_0; /* as a default to mean "not set" at run-time */
 } property_compilation_data;
 
-void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname) {
+void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname,
+	text_stream *translation) {
 	prn->compilation_data.prop_package = pkg;
 	prn->compilation_data.prop_iname = iname;
+	prn->compilation_data.translation = Str::duplicate(translation);
 	prn->compilation_data.do_not_compile = FALSE;
 	prn->compilation_data.translated = FALSE;
 	prn->compilation_data.store_in_negation = FALSE;
@@ -49,10 +52,29 @@ inter_name *RTProperties::iname(property *prn) {
 	if (prn == NULL) internal_error("tried to find iname for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
 		return RTProperties::iname(EitherOrProperties::get_negation(prn));
-	if (prn->compilation_data.prop_iname == NULL)		
+	if (prn->compilation_data.prop_iname == NULL) {
+		wording memo = prn->name;
+		if ((Wordings::empty(memo)) &&
+			(Str::len(prn->compilation_data.translation) > 0))
+			memo = Feeds::feed_text(prn->compilation_data.translation);
 		prn->compilation_data.prop_iname =
 			Hierarchy::make_iname_with_memo(PROPERTY_HL,
-				RTProperties::package(prn), prn->name);
+				RTProperties::package(prn), memo);
+		if (Str::len(prn->compilation_data.translation) > 0) {
+			TEMPORARY_TEXT(T)
+			LOOP_THROUGH_TEXT(pos, prn->compilation_data.translation) {
+				wchar_t c = Str::get(pos);
+				if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
+					PUT_TO(T, (int) c);
+				else
+					PUT_TO(T, '_');
+			}
+			Str::truncate(T, 31);
+			Produce::change_translation(prn->compilation_data.prop_iname, T);
+			prn->compilation_data.translated = TRUE;
+			DISCARD_TEXT(T)
+		}
+	}
 	return prn->compilation_data.prop_iname;
 }
 
@@ -134,99 +156,100 @@ void RTProperties::compile(void) {
 			(prn->compilation_data.store_in_negation)) continue;
 		kind *K = Properties::kind_of_contents(prn);
 		if (K == NULL) internal_error("kindless property");
-		inter_name *iname = RTProperties::iname(prn);
-		Emit::property(iname, K);
-		if (prn->Inter_level_only) Emit::permission(prn, K_object, NULL);
-		if (prn->compilation_data.translated)
-			Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
-		property_permission *pp;
-		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
-			inference_subject *subj = pp->property_owner;
-			if (subj == NULL) internal_error("unowned property");
-			kind *K = KindSubjects::to_kind(subj);
-			if (K) Emit::permission(prn, K, RTPropertyValues::annotate_table_storage(pp));
-		}
+		Emit::ensure_defaultvalue(K);
+
 		package_request *pack = RTProperties::package(prn);
-		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
-		inter_name *id_iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
-		Emit::numeric_constant(id_iname, 0);
+		inter_name *iname = RTProperties::iname(prn);
+		@<Declare the property to Inter@>;
+		@<Give it permissions@>;
+		@<Compile the property name metadata@>;
+		@<Compile the property ID@>;
+		@<Annotate the property iname@>;
 	}
 }
 
-@h Attributes.
-Inform 6 provides "attributes" as a faster-access, more memory-efficient
-form of object properties, stored at run-time in a bitmap rather than as
-key-value pairs in a small dictionary. Because the bitmap is inflexibly sized,
-only some of our either/or properties will be able to make use of it. See
-"Properties of Objects" for how these are chosen; the following simply
-keep a flag recording the outcome.
+@<Declare the property to Inter@> =
+	Emit::property(iname, K);
+
+@<Give it permissions@> =
+	property_permission *pp;
+	LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
+		inference_subject *subj = pp->property_owner;
+		if (subj == NULL) internal_error("unowned property");
+		kind *K = KindSubjects::to_kind(subj);
+		if (K) Emit::permission(prn, K, RTPropertyValues::annotate_table_storage(pp));
+	}
+	if (prn->Inter_level_only) Emit::permission(prn, K_object, NULL);
+
+@<Compile the property name metadata@> =
+	if (Wordings::nonempty(prn->name))
+		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
+	else
+		Hierarchy::apply_metadata(pack, PROPERTY_NAME_MD_HL, Produce::get_translation(iname));
+
+@ A unique set of values is imposed here during linking.
+
+@<Compile the property ID@> =
+	inter_name *id_iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
+	Emit::numeric_constant(id_iname, 0); /* a placeholder */
+
+@ These provide hints to the code-generator, but should possibly be done as
+package metadata instead?
+
+@<Annotate the property iname@> =
+	Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
+	if (prn->compilation_data.translated)
+		Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
+	if (Properties::is_either_or(prn)) {
+		Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
+		if (RTProperties::recommended_as_attribute(prn)) {
+			Produce::annotate_i(RTProperties::iname(prn), ATTRIBUTE_IANN, 0);
+		}
+	}
+	if (Wordings::nonempty(prn->name))
+		Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
+	if (prn->Inter_level_only)
+		Produce::annotate_i(RTProperties::iname(prn), RTO_IANN, 0);
+
+@h Recommendations to be attributes.
+The design of Inter tries to abstract details of how properties are stored
+away from us, but we secretly know that on its most likely implementations
+some properties are stored as "attributes". These are memory-efficient flags,
+suitable only for either-or properties.
+
+On those platforms, only a limited number of attribute slots exists. The main
+Inform compiler does not get to decide which either-or properties get to enjoy
+these slots (if indeed they exists); but it can use annotations to provide a
+hint to the code-generator -- basically saying, "if you have an attribute free,
+why not use it on this?"
+
+Inform makes this recommendation only for a few low-level properties which need
+to run quickly and with low memory usage.
 
 =
-int RTProperties::implemented_as_attribute(property *prn) {
+int RTProperties::recommended_as_attribute(property *prn) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	if (prn->compilation_data.implemented_as_attribute == NOT_APPLICABLE) return TRUE;
 	return prn->compilation_data.implemented_as_attribute;
 }
 
-void RTProperties::implement_as_attribute(property *prn, int state) {
+void RTProperties::recommend_storing_as_attribute(property *prn, int state) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	prn->compilation_data.implemented_as_attribute = state;
-	if (EitherOrProperties::get_negation(prn)) EitherOrProperties::get_negation(prn)->compilation_data.implemented_as_attribute = state;
+	if (EitherOrProperties::get_negation(prn))
+		EitherOrProperties::get_negation(prn)->compilation_data.implemented_as_attribute = state;
 }
 
-void RTProperties::annotate_attributes(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if (Properties::is_either_or(prn)) {
-			if (prn->compilation_data.store_in_negation) continue;
-			Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
-			if (RTProperties::implemented_as_attribute(prn)) {
-				Produce::annotate_i(RTProperties::iname(prn), ATTRIBUTE_IANN, 0);
-			}
-		}
-		if (Wordings::nonempty(prn->name))
-			Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
-		if (prn->Inter_level_only)
-			Produce::annotate_i(RTProperties::iname(prn), RTO_IANN, 0);
-		kind *K = Properties::kind_of_contents(prn);
-		Emit::ensure_defaultvalue(K);
-	}
-}
-
-@ Otherwise, each either/or property is stored as either |true| or |false|
-in a given cell of memory at run-time -- wastefully since only 1 of the
-16 or 32 bits in that memory word is used, but at least rapidly. The
-following compiles this |true| or |false| value.
-
-=
-void RTProperties::compile_value(value_holster *VH, property *prn, int val) {
-	if (val) {
-		if (Holsters::non_void_context(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 1);
-	} else {
-		if (Holsters::non_void_context(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
-	}
-}
-
-void RTProperties::compile_default_value(value_holster *VH, property *prn) {
-	if (Holsters::non_void_context(VH))
-		Holsters::holster_pair(VH, LITERAL_IVAL, 0);
-}
-
-@h Value property compilation.
-When we compile the value of a valued property, the following is called.
-In theory the result could depend on the property name; in practice it doesn't.
-(But this would enable us to implement certain properties with different
-storage methods at run-time if we wanted.)
-
+@h Non-typesafe 0.
 When a property is used to store certain forms of relation, it then needs
 to store either a value within one of the domains, or else a null value used
 to mean "this is not set at the moment". Since that null value isn't
 a member of the domain, it follows that the property is breaking type safety
 when it stores it. This means we need to relax typechecking to enable this
 all to work; the following keep a flag to mark that.
+
+None of this has any effect for either-or properties, since 0 is of course
+typesafe for those.
 
 =
 void RTProperties::use_non_typesafe_0(property *prn) {
@@ -239,30 +262,41 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 	return prn->compilation_data.use_non_typesafe_0;
 }
 
-void RTProperties::compile_vp_value(value_holster *VH, property *prn, parse_node *val) {
-	kind *K = ValueProperties::kind(prn);
-	CompileValues::constant_to_holster(VH, val, K);
-}
-
-void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
+int RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 	if (RTProperties::uses_non_typesafe_0(prn)) {
 		if (Holsters::non_void_context(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
-		return;
+		return TRUE;
 	}
 	kind *K = ValueProperties::kind(prn);
-	current_sentence = NULL;
-	if (RTKinds::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
-		Problems::quote_wording(1, prn->name);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyUninitialisable));
-		Problems::issue_problem_segment(
-			"I am unable to put any value into the property '%1', because "
-			"it seems to have a kind of value which has no actual values.");
-		Problems::issue_problem_end();
-	}
+	return RTKinds::compile_default_value_vh(VH, K, prn->name, "property");
 }
 
-@ Now for the methods.
+@h Schemas.
+"Value" properties (those which are not either-or) can be tested or set with
+these schemas, which make use of a kit-defined function called |GProperty|
+and its analogue for writing, |WriteGProperty|:
+
+=
+int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property *prn) {
+	kind *K = Cinders::kind_of_term(asch->pt0);
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
+	Calculus::Schemas::modify(asch->schema,
+		"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
+	return TRUE;
+}
+
+int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property *prn) {
+	kind *K = Cinders::kind_of_term(asch->pt0);
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
+	Calculus::Schemas::modify(asch->schema,
+		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
+	return TRUE;
+}
+
+@ Either-or properties are trickier, though only because they use a different
+pair of functions at runtime for EO properties of objects than for EO properties
+of anything else:
 
 =
 void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn, int T) {
@@ -333,20 +367,8 @@ which would work just as well, but more slowly.
 			RTProperties::iname(prn));
 	}
 
-@
-
-=
-property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_identifier) {
-	wording W = Feeds::feed_text(Inter_identifier);
-	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
-	Hierarchy::apply_metadata(R, PROPERTY_NAME_MD_HL, Inter_identifier);
-	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
-	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
-	Properties::set_translation_from_text(prn, Inter_identifier);
-	return prn;
-}
-
-@
+@ And finally, provision of a property can be tested at runtime with the
+following schemas:
 
 =
 int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
@@ -390,20 +412,3 @@ answer now.
 		Calculus::Schemas::modify(asch->schema, "true");
 	else
 		Calculus::Schemas::modify(asch->schema, "false");
-
-@ =
-int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property *prn) {
-	kind *K = Cinders::kind_of_term(asch->pt0);
-	if (Kinds::Behaviour::is_object(K)) return FALSE;
-	Calculus::Schemas::modify(asch->schema,
-		"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
-	return TRUE;
-}
-
-int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property *prn) {
-	kind *K = Cinders::kind_of_term(asch->pt0);
-	if (Kinds::Behaviour::is_object(K)) return FALSE;
-	Calculus::Schemas::modify(asch->schema,
-		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
-	return TRUE;
-}

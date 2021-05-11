@@ -1068,10 +1068,10 @@ overhead for their storage. That shaves a little time off route-finding in
 extensive maps.
 
 @<Assert room and thing indicator properties@> =
-	P_mark_as_room = EitherOrProperties::new_nameless(L"mark_as_room");
-	RTProperties::implement_as_attribute(P_mark_as_room, TRUE);
-	P_mark_as_thing = EitherOrProperties::new_nameless(L"mark_as_thing");
-	RTProperties::implement_as_attribute(P_mark_as_thing, TRUE);
+	P_mark_as_room = EitherOrProperties::new_nameless(I"mark_as_room");
+	RTProperties::recommend_storing_as_attribute(P_mark_as_room, TRUE);
+	P_mark_as_thing = EitherOrProperties::new_nameless(I"mark_as_thing");
+	RTProperties::recommend_storing_as_attribute(P_mark_as_thing, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_room))
@@ -1083,10 +1083,10 @@ extensive maps.
 	}
 
 @<Assert container and supporter indicator properties@> =
-	P_container = EitherOrProperties::new_nameless(L"container");
-	RTProperties::implement_as_attribute(P_container, TRUE);
-	P_supporter = EitherOrProperties::new_nameless(L"supporter");
-	RTProperties::implement_as_attribute(P_supporter, TRUE);
+	P_container = EitherOrProperties::new_nameless(I"container");
+	RTProperties::recommend_storing_as_attribute(P_container, TRUE);
+	P_supporter = EitherOrProperties::new_nameless(I"supporter");
+	RTProperties::recommend_storing_as_attribute(P_supporter, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_container))
