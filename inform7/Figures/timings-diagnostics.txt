@@ -1,23 +1,22 @@
 100.0% in inform7 run
-     56.1% in compilation to Inter
-         37.2% in //Sequence::undertake_queued_tasks//
-          5.7% in //InferenceSubjects::emit_all//
+     56.3% in compilation to Inter
+         37.5% in //Sequence::undertake_queued_tasks//
+          5.8% in //InferenceSubjects::emit_all//
           3.4% in //MajorNodes::pre_pass//
-          2.8% in //MajorNodes::pass_1//
+          2.9% in //MajorNodes::pass_1//
           1.5% in //ImperativeDefinitions::assess_all//
           0.5% in //ImperativeDefinitions::compile_first_block//
           0.5% in //MajorNodes::pass_2//
           0.5% in //World::stage_V//
+          0.3% in //Sequence::undertake_queued_tasks//
           0.1% in //RTActions::compile_functions//
-          0.1% in //RTActions::compile_metadata//
           0.1% in //RTShowmeCommand::compile_SHOWME_details//
-          0.1% in //Sequence::undertake_queued_tasks//
           0.1% in //Task::make_built_in_kind_constructors//
-          2.9% not specifically accounted for
-     41.8% in running Inter pipeline
-         10.7% in inter step 7/14: consolidate-text
+          2.8% not specifically accounted for
+     41.6% in running Inter pipeline
          10.7% in step preparation
-          9.0% in inter step 2/14: link
+         10.5% in inter step 7/14: consolidate-text
+          8.8% in inter step 2/14: link
           7.1% in inter step 14/14: generate inform6 -> auto.inf
           0.6% in inter step 10/14: make-identifiers-unique
           0.3% in inter step 11/14: reconcile-verbs

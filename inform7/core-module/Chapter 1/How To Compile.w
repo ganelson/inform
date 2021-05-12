@@ -217,7 +217,7 @@ so on. Those absolute basics are made here.
 	BENCH(PhraseRequests::invoke_to_begin)
 	BENCH(Closures::compile_closures)
 	BENCH(Sequence::undertake_queued_tasks)
-	BENCH(RTRelations::compile_defined_relations)
+	BENCH(RTRelations::compile)
 	BENCH(RTAdjectives::compile_mdef_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
 

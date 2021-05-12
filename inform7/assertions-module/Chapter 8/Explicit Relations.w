@@ -10,7 +10,7 @@ there are none.
 
 = (early code)
 bp_family *explicit_bp_family = NULL;
-bp_family *by_routine_bp_family = NULL;
+bp_family *by_function_bp_family = NULL;
 typedef struct explicit_bp_data {
 	int form_of_relation; /* one of the |Relation_*| constants defined below */
 	struct property *i6_storage_property; /* provides run-time storage */
@@ -28,12 +28,12 @@ void ExplicitRelations::start(void) {
 	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, ExplicitRelations::schema);
 	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, ExplicitRelations::describe_for_problems);
 	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, ExplicitRelations::describe_for_index);
-	by_routine_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(by_routine_bp_family, TYPECHECK_BPF_MTID, ExplicitRelations::typecheck);
-	METHOD_ADD(by_routine_bp_family, ASSERT_BPF_MTID, ExplicitRelations::assert);
-	METHOD_ADD(by_routine_bp_family, SCHEMA_BPF_MTID, ExplicitRelations::schema);
-	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, ExplicitRelations::describe_for_problems);
-	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, ExplicitRelations::REL_br_describe_briefly);
+	by_function_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(by_function_bp_family, TYPECHECK_BPF_MTID, ExplicitRelations::typecheck);
+	METHOD_ADD(by_function_bp_family, ASSERT_BPF_MTID, ExplicitRelations::assert);
+	METHOD_ADD(by_function_bp_family, SCHEMA_BPF_MTID, ExplicitRelations::schema);
+	METHOD_ADD(by_function_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, ExplicitRelations::describe_for_problems);
+	METHOD_ADD(by_function_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, ExplicitRelations::REL_br_describe_briefly);
 }
 
 int ExplicitRelations::is_explicit_with_runtime_storage(binary_predicate *bp) {

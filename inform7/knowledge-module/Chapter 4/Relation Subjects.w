@@ -12,8 +12,6 @@ inference_subject_family *RelationSubjects::family(void) {
 		relations_family = InferenceSubjects::new_family();
 		METHOD_ADD(relations_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
 			RelationSubjects::certainty);
-		METHOD_ADD(relations_family, EMIT_ALL_INFS_MTID, RTRelations::emit_all);
-		METHOD_ADD(relations_family, EMIT_ONE_INFS_MTID, RTRelations::emit_one);
 		METHOD_ADD(relations_family, CHECK_MODEL_INFS_MTID, RelationSubjects::check_model);
 		METHOD_ADD(relations_family, COMPLETE_MODEL_INFS_MTID, RelationSubjects::complete_model);
 		METHOD_ADD(relations_family, GET_NAME_TEXT_INFS_MTID, RelationSubjects::get_name);

@@ -42,7 +42,6 @@ void SynopticHierarchy::establish(inter_tree *I) {
 		inter_name *iname = HierarchyLocations::find(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
 		Inter::Connectors::socket(I, Produce::get_translation(iname), S);
-		LOG("Socketed $3\n", S);
 	}
 @d KIT_PROVIDED(id, n)
 		HierarchyLocations::ctr(I, id, n,    Translation::same(),      req);

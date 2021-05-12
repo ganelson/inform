@@ -1,6 +1,6 @@
-Total memory consumption was 301576K = 295 MB
+Total memory consumption was 301578K = 295 MB
 
-63.6% was used for 1495196 objects, in 319468 frames in 240 x 800K = 192000K = 187 MB:
+63.6% was used for 1495199 objects, in 319471 frames in 240 x 800K = 192000K = 187 MB:
 
      9.5%  inter_tree_node_array                    41 x 8192 = 335872 objects, 29558048 bytes
      6.1%  text_stream_array                        3353 x 100 = 335300 objects, 18884096 bytes
@@ -39,9 +39,9 @@ Total memory consumption was 301576K = 295 MB
      0.1%  verb_form                                386 objects, 345856 bytes
      ----  noun                                     2379 objects, 285480 bytes
      ----  inference_subject                        665 objects, 260680 bytes
-     ----  compilation_subtask                      2482 objects, 198560 bytes
+     ----  compilation_subtask                      2487 objects, 198960 bytes
      ----  inter_annotation_array                   1 x 8192 objects, 196640 bytes
-     ----  binary_predicate                         321 objects, 166920 bytes
+     ----  binary_predicate                         321 objects, 169488 bytes
      ----  linguistic_stock_item                    3315 objects, 159120 bytes
      ----  rule_family_data                         400 objects, 147200 bytes
      ----  index_lexicon_entry                      395 objects, 142200 bytes
@@ -103,7 +103,7 @@ Total memory consumption was 301576K = 295 MB
      ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  linked_list_item_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
-     ----  method                                   334 objects, 16032 bytes
+     ----  method                                   332 objects, 15936 bytes
      ----  to_phrase_request                        59 objects, 15576 bytes
      ----  adjective                                137 objects, 14248 bytes
      ----  booking_list                             407 objects, 13024 bytes
@@ -234,12 +234,12 @@ Total memory consumption was 301576K = 295 MB
      ----  star_invention                           1 object, 48 bytes
      ----  kind_template_definition                 1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
-     ----  by_routine_bp_data                       1 object, 40 bytes
+     ----  by_function_bp_data                      1 object, 40 bytes
      ----  parse_name_notice                        1 object, 40 bytes
 
 36.3% was used for memory not allocated for objects:
 
-    16.9%  text stream storage                      52412540 bytes in 346940 claims
+    16.9%  text stream storage                      52414716 bytes in 346948 claims
      3.6%  dictionary storage                       11244032 bytes in 20155 claims
      ----  sorting                                  848 bytes in 3 claims
      2.3%  source text                              7200000 bytes in 3 claims
@@ -256,5 +256,5 @@ Total memory consumption was 301576K = 295 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    154368 bytes in 2036 claims
 
-19.9% was overhead - 61759168 bytes = 60311K = 58 MB
+19.9% was overhead - 61756296 bytes = 60308K = 58 MB
 

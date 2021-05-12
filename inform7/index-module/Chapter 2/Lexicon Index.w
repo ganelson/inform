@@ -523,7 +523,7 @@ void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
 			if (vu->where_vu_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
 			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
-			if (bp) RTRelations::index_for_verbs(OUT, bp);
+			if (bp) IXRelations::index_for_verbs(OUT, bp);
 			return;
 		}
 	preposition *prep;
@@ -532,7 +532,7 @@ void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
 			if (prep->where_prep_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
 			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
-			if (bp) RTRelations::index_for_verbs(OUT, bp);
+			if (bp) IXRelations::index_for_verbs(OUT, bp);
 			return;
 		}
 }

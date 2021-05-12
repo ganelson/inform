@@ -59,6 +59,7 @@ typedef struct bp_compilation_data {
 	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
 	int record_needed; /* we need to compile a small array of details in readable memory */	
 	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
+	struct relation_guard *guarding;
 } bp_compilation_data;
 
 bp_compilation_data RTRelations::new_compilation_data(binary_predicate *bp) {
@@ -69,6 +70,7 @@ bp_compilation_data RTRelations::new_compilation_data(binary_predicate *bp) {
 	bpcd.initialiser_iname = NULL;
 	bpcd.record_needed = FALSE;
 	bpcd.fast_route_finding = FALSE;
+	bpcd.guarding = NULL;
 	return bpcd;
 }
 
@@ -133,6 +135,10 @@ void RTRelations::use_frf(binary_predicate *bp) {
 	bp->reversal->compilation_data.fast_route_finding = TRUE;
 }
 
+void RTRelations::guard(binary_predicate *bp, relation_guard *rg) {
+	bp->compilation_data.guarding = rg;
+}
+
 @h Compilation.
 A few built-in relations will have only a minimal presence at runtime: these.
 
@@ -158,13 +164,27 @@ void RTRelations::compile(void) {
 		if (bp->compilation_data.record_needed) {
 			text_stream *desc = Str::new();
 			WRITE_TO(desc, "relation %A",  &(bp->relation_name));
-			Sequence::queue(&RTRelations::compilation_agent,
-				STORE_POINTER_binary_predicate(bp), desc);
+			Sequence::queue_at(&RTRelations::compilation_agent,
+				STORE_POINTER_binary_predicate(bp), desc, bp->bp_created_at);
+			if (bp->compilation_data.guarding) {
+				text_stream *desc = Str::new();
+				WRITE_TO(desc, "relation guard for %A",  &(bp->relation_name));
+				Sequence::queue_at(&RTRelations::guard_compilation_agent,
+					STORE_POINTER_relation_guard(bp->compilation_data.guarding),
+					desc, bp->bp_created_at);
+			}
 		}
 	}
 }
 
-@ So the following makes a single |_relation| package:
+@ So the following makes a single |_relation| package.
+
+It might seem that this can never be called on a relation which is the wrong
+way round, and in fact it almost never is. But on rare occasions the runtime
+does need to represent the value (i.e. the metadata array) for such a relation --
+for example, because it's possible for the runtime to determine the meaning
+of any verb, and because some verbs can be given a wrong-way-round relation
+as their meanings. See the test case |PronounVariation|.
 
 =
 void RTRelations::compilation_agent(compilation_subtask *t) {
@@ -173,91 +193,122 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	inter_name *handler = NULL;
 
 	if (ExplicitRelations::stored_dynamically(bp) == FALSE)
-		@<Write the relation handler routine for this BP@>;
-	@<Write the relation record for this BP@>;
-
-	if ((ExplicitRelations::stored_dynamically(bp)) && (bp->right_way_round)) {
-		inter_name *iname = Hierarchy::make_iname_in(RELATION_CREATOR_FN_HL, pack);
-		packaging_state save = Functions::begin(iname);
-		LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
-		LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
-
-		EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
-		EmitCode::down();
-			RTKinds::emit_strong_id_as_val(BinaryPredicates::kind(bp));
-			EmitCode::val_iname(K_value, RTRelations::iname(bp));
-		EmitCode::up();
-
-		EmitCode::call(Hierarchy::find(RELATION_TY_NAME_HL));
-		EmitCode::down();
-			EmitCode::val_iname(K_value, RTRelations::iname(bp));
-			TEMPORARY_TEXT(A)
-			WRITE_TO(A, "%A", &(bp->relation_name));
-			EmitCode::val_text(A);
-			DISCARD_TEXT(A)
-		EmitCode::up();
-
-		switch(ExplicitRelations::get_form_of_relation(bp)) {
-			case Relation_OtoO:
-				EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
-			case Relation_OtoV:
-				EmitCode::call(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
-			case Relation_VtoO:
-				EmitCode::call(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
-			case Relation_Sym_OtoO:
-				EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
-			case Relation_Equiv:
-				EmitCode::call(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
-			case Relation_VtoV: break;
-			case Relation_Sym_VtoV:
-				EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_true();
-				EmitCode::up();
-				break;
+		@<Compile the relation handler function@>;
+	if (bp->right_way_round) {
+		if (ExplicitRelations::stored_dynamically(bp)) {
+			@<Compile the initialiser function@>;
+			@<Compile the creator function and its associated metadata@>;
+		} else {
+			int f = ExplicitRelations::get_form_of_relation(bp);
+			if ((f == Relation_VtoV) || (f == Relation_Sym_VtoV))
+				RTRelations::compile_vtov_storage(bp);
 		}
-		EmitCode::inv(INDIRECT0V_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, RTRelations::initialiser_iname(bp));
-		EmitCode::up();
-		Functions::end(save);
-		inter_name *md_iname = Hierarchy::make_iname_in(RELATION_CREATOR_MD_HL, pack);
-		Emit::iname_constant(md_iname, K_value, iname);
+		if (bp->relation_family == by_function_bp_family) {
+			by_function_bp_data *D = RETRIEVE_POINTER_by_function_bp_data(bp->family_specific);
+			RTRelations::compile_function_to_decide(D->bp_by_routine_iname,
+				D->condition_defn_text, bp->term_details[0], bp->term_details[1]);
+		}
 	}
+	@<Compile the metadata array@>;
 }
 
-@<Write the relation record for this BP@> =
+@<Compile the initialiser function@> =
+	packaging_state save = Functions::begin(RTRelations::initialiser_iname(bp));
+	inference *i;
+	inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
+	POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), relation_inf) {
+		parse_node *spec0, *spec1;
+		RelationInferences::get_term_specs(i, &spec0, &spec1);
+		EmitCode::call(rtiname);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, RTRelations::iname(bp));
+			EmitCode::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
+			CompileValues::to_code_val(spec0);
+			CompileValues::to_code_val(spec1);
+		EmitCode::up();
+	}
+	Functions::end(save);
+
+@<Compile the creator function and its associated metadata@> =
+	inter_name *iname = Hierarchy::make_iname_in(RELATION_CREATOR_FN_HL, pack);
+	packaging_state save = Functions::begin(iname);
+	LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
+	LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
+
+	EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
+	EmitCode::down();
+		RTKinds::emit_strong_id_as_val(BinaryPredicates::kind(bp));
+		EmitCode::val_iname(K_value, RTRelations::iname(bp));
+	EmitCode::up();
+
+	EmitCode::call(Hierarchy::find(RELATION_TY_NAME_HL));
+	EmitCode::down();
+		EmitCode::val_iname(K_value, RTRelations::iname(bp));
+		TEMPORARY_TEXT(A)
+		WRITE_TO(A, "%A", &(bp->relation_name));
+		EmitCode::val_text(A);
+		DISCARD_TEXT(A)
+	EmitCode::up();
+
+	switch(ExplicitRelations::get_form_of_relation(bp)) {
+		case Relation_OtoO:
+			EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+		case Relation_OtoV:
+			EmitCode::call(Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+		case Relation_VtoO:
+			EmitCode::call(Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+		case Relation_Sym_OtoO:
+			EmitCode::call(Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+		case Relation_Equiv:
+			EmitCode::call(Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+		case Relation_VtoV: break;
+		case Relation_Sym_VtoV:
+			EmitCode::call(Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTRelations::iname(bp));
+				EmitCode::val_true();
+			EmitCode::up();
+			break;
+	}
+	EmitCode::inv(INDIRECT0V_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, RTRelations::initialiser_iname(bp));
+	EmitCode::up();
+	Functions::end(save);
+	inter_name *md_iname = Hierarchy::make_iname_in(RELATION_CREATOR_MD_HL, pack);
+	Emit::iname_constant(md_iname, K_value, iname);
+
+@<Compile the metadata array@> =
 	inter_name *id_iname = Hierarchy::make_iname_in(RELATION_ID_HL, pack);
 	Emit::numeric_constant(id_iname, 0);
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
@@ -301,23 +352,34 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	}
 	switch(ExplicitRelations::get_form_of_relation(dbp)) {
 		case Relation_Implicit:
-			if ((RTRelations::minimal(bp) == FALSE) && (BinaryPredicates::can_be_made_true_at_runtime(dbp))) {
+			if ((RTRelations::minimal(bp) == FALSE) &&
+				(BinaryPredicates::can_be_made_true_at_runtime(dbp))) {
 				EmitArrays::iname_entry(Hierarchy::find(RELS_ASSERT_TRUE_HL));
 				EmitArrays::iname_entry(Hierarchy::find(RELS_ASSERT_FALSE_HL));
-				EmitArrays::iname_entry(Hierarchy::find(RELS_LOOKUP_ANY_HL)); // Really?
+				EmitArrays::iname_entry(Hierarchy::find(RELS_LOOKUP_ANY_HL));
 			}
 			break;
-		case Relation_OtoO: EmitArrays::iname_entry(Hierarchy::find(RELS_X_UNIQUE_HL)); EmitArrays::iname_entry(Hierarchy::find(RELS_Y_UNIQUE_HL)); @<Throw in the full suite@>; break;
-		case Relation_OtoV: EmitArrays::iname_entry(Hierarchy::find(RELS_X_UNIQUE_HL)); @<Throw in the full suite@>; break;
-		case Relation_VtoO: EmitArrays::iname_entry(Hierarchy::find(RELS_Y_UNIQUE_HL)); @<Throw in the full suite@>; break;
+		case Relation_OtoO:
+			EmitArrays::iname_entry(Hierarchy::find(RELS_X_UNIQUE_HL));
+			EmitArrays::iname_entry(Hierarchy::find(RELS_Y_UNIQUE_HL));
+			@<Throw in the full suite@>; break;
+		case Relation_OtoV: EmitArrays::iname_entry(Hierarchy::find(RELS_X_UNIQUE_HL));
+			@<Throw in the full suite@>; break;
+		case Relation_VtoO: EmitArrays::iname_entry(Hierarchy::find(RELS_Y_UNIQUE_HL));
+			@<Throw in the full suite@>; break;
 		case Relation_Sym_OtoO:
 			EmitArrays::iname_entry(Hierarchy::find(RELS_SYMMETRIC_HL));
 			EmitArrays::iname_entry(Hierarchy::find(RELS_X_UNIQUE_HL));
 			EmitArrays::iname_entry(Hierarchy::find(RELS_Y_UNIQUE_HL));
 			@<Throw in the full suite@>; break;
-		case Relation_Equiv: EmitArrays::iname_entry(Hierarchy::find(RELS_EQUIVALENCE_HL)); @<Throw in the full suite@>; break;
-		case Relation_VtoV: @<Throw in the full suite@>; break;
-		case Relation_Sym_VtoV: EmitArrays::iname_entry(Hierarchy::find(RELS_SYMMETRIC_HL)); @<Throw in the full suite@>; break;
+		case Relation_Equiv:
+			EmitArrays::iname_entry(Hierarchy::find(RELS_EQUIVALENCE_HL));
+			@<Throw in the full suite@>; break;
+		case Relation_VtoV:
+			@<Throw in the full suite@>; break;
+		case Relation_Sym_VtoV:
+			EmitArrays::iname_entry(Hierarchy::find(RELS_SYMMETRIC_HL));
+			@<Throw in the full suite@>; break;
 		default:
 			internal_error("Binary predicate with unknown structural type");
 	}
@@ -335,9 +397,9 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 @<Write the storage field of the relation metadata array@> =
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
-	if (bp->relation_family == by_routine_bp_family) {
-		/* Field 0 is the routine used to test the relation */
-		by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(dbp->family_specific);
+	if (bp->relation_family == by_function_bp_family) {
+		/* Field 0 is the function used to test the relation */
+		by_function_bp_data *D = RETRIEVE_POINTER_by_function_bp_data(dbp->family_specific);
 		EmitArrays::iname_entry(D->bp_by_routine_iname);
 	} else {
 		switch(ExplicitRelations::get_form_of_relation(dbp)) {
@@ -377,7 +439,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 @<Write the handler field of the relation record@> =
 	EmitArrays::iname_entry(handler);
 
-@<Write the relation handler routine for this BP@> =
+@<Compile the relation handler function@> =
 	text_stream *X = I"X", *Y = I"Y";
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) { X = I"Y"; Y = I"X"; dbp = bp->reversal; }
@@ -982,11 +1044,14 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 		}
 	}
 
-@ And now a variation for default values: for example, an anonymous relation
-between numbers and texts.
+@h Default values of relation kinds.
+The following will be called just once for each different relation kind needing
+a default value; for example, |K| might be "relation of texts to numbers". We
+need to compile an array at |iname| which will have the meaning of an empty
+relation of the right kind.
 
 =
-void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
+void RTRelations::default_value_of_relation_kind(inter_name *identifier, kind *K) {
 	packaging_state save = EmitArrays::begin(identifier, K_value);
 	RTKinds::emit_block_value_header(K, FALSE, 8);
 	EmitArrays::null_entry();
@@ -1082,7 +1147,7 @@ the left domain contains objects, the index of a member |I| is stored in
 RI 0; if the right domain does, then in RI 1. If the domain set is an
 enumerated kind of value, no index needs to be stored, because the values
 are already enumerated $1, 2, 3, ..., N$ for some $N$. The actual work in
-this is done by the routine |RTRelations::relation_range| (below).
+this is done by the function |RTRelations::relation_range| (below).
 
 @<Index the left and right domains and calculate their sizes@> =
 	left_count = RTRelations::relation_range(bp, 0);
@@ -1146,7 +1211,7 @@ above: it forces the template layer to generate the cache when first used.
 		v2v_iname = Emit::numeric_constant(iname, 0);
 	}
 
-@ The following routine conveniently determines whether a given INFS is
+@ The following function conveniently determines whether a given INFS is
 within the domain of one of the terms of a relation; the rule is that it
 mustn't itself express a domain (otherwise, e.g., the kind "woman" would
 show up as within the domain of "person" -- we want only instances here,
@@ -1285,7 +1350,7 @@ stored in the |bp->equivalence_partition| field of the BP structure. It is
 then compiled into the storage properties of the I6 objects concerned. For
 instance, if we have |p44_alliance| as the storage property for the "alliance"
 relation, then |O31_Louis.p44_alliance| and |O32_Otto.p44_alliance| will be
-set to the same partition number. The template routines which set and remove
+set to the same partition number. The template functions which set and remove
 alliance then maintain the collective values of the |p44_alliance| property,
 keeping it always a valid partition function for the relation.
 
@@ -1319,7 +1384,7 @@ void RTRelations::equivalence_relation_make_singleton_partitions(binary_predicat
 >> Sophie helps Ryan. Daisy helps Ryan. Owen helps the player.
 
 And it feeds these facts to us one at a time. It tells us that $A(S, R)$
-has to be true by calling the routine below for the helping relation with
+has to be true by calling the function below for the helping relation with
 the ID numbers of Sophie and Ryan as arguments. Sophie is currently in
 class number 23, Ryan in class 25. We merge these two classes so that
 anybody whose class number is 25 is moved down to have class number 23, and
@@ -1364,7 +1429,7 @@ void RTRelations::equivalence_relation_merge_classes(binary_predicate *bp,
 }
 
 @ Once that process has completed, the code which compiles the
-initial state of the I6 object tree calls the following routine to ask it
+initial state of the I6 object tree calls the following function to ask it
 to fill in the (let's say) |p63_helping| property for each person
 in turn.
 
@@ -1406,7 +1471,8 @@ int RTRelations::equivalence_relation_get_class(binary_predicate *bp, int ix) {
 	return partition_array[ix];
 }
 
-@ The following provides for run-time checking to make sure relations are
+@h Relation guards.
+The following provides for run-time checking to make sure relations are
 not used with the wrong kinds of object. (Compile-time checking excludes
 other cases.)
 
@@ -1428,44 +1494,19 @@ typedef struct relation_guard {
 	CLASS_DEFINITION
 } relation_guard;
 
-@h Generating routines to test relations by condition.
-When a relation has to be tested as a condition, we can't simply embed that
-condition as the I6 schema for "test relation": it might very well need
-local variables, the table row-choosing variables, etc., to evaluate. It
-has to be tested in its own context. So we generate a routine called
-|Relation_X|, where |X| is the allocation ID number of the BP, which takes
-two parameters |t_0| and |t_1| and returns true or false according to
-whether or not $R(|t_0|, |t_1|)$.
-
-This is where those routines are compiled.
+@ 
 
 =
-void RTRelations::compile_defined_relations(void) {
-	RTRelations::compile();
-	binary_predicate *bp;
-	LOOP_OVER(bp, binary_predicate)
-		if ((bp->relation_family == by_routine_bp_family) && (bp->right_way_round)) {
-			current_sentence = bp->bp_created_at;
-			TEMPORARY_TEXT(C)
-			WRITE_TO(C, "Routine to decide if %S(t_0, t_1)", BinaryPredicates::get_log_name(bp));
-			Produce::comment(Emit::tree(), C);
-			DISCARD_TEXT(C)
-			by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(bp->family_specific);
-			RTRelations::compile_routine_to_decide(D->bp_by_routine_iname,
-				D->condition_defn_text, bp->term_details[0], bp->term_details[1]);
-		}
-
-	relation_guard *rg;
-	LOOP_OVER(rg, relation_guard) {
-		@<Compile RGuard f0 routine@>;
-		@<Compile RGuard f1 routine@>;
-		@<Compile RGuard T routine@>;
-		@<Compile RGuard MT routine@>;
-		@<Compile RGuard MF routine@>;
-	}
+void RTRelations::guard_compilation_agent(compilation_subtask *t) {
+	relation_guard *rg = RETRIEVE_POINTER_relation_guard(t->data);
+	@<Compile RGuard f0 function@>;
+	@<Compile RGuard f1 function@>;
+	@<Compile RGuard T function@>;
+	@<Compile RGuard MT function@>;
+	@<Compile RGuard MF function@>;
 }
 
-@<Compile RGuard f0 routine@> =
+@<Compile RGuard f0 function@> =
 	if (rg->guard_f0_iname) {
 		packaging_state save = Functions::begin(rg->guard_f0_iname);
 		local_variable *X_lv =
@@ -1504,7 +1545,7 @@ void RTRelations::compile_defined_relations(void) {
 		Functions::end(save);
 	}
 
-@<Compile RGuard f1 routine@> =
+@<Compile RGuard f1 function@> =
 	if (rg->guard_f1_iname) {
 		packaging_state save = Functions::begin(rg->guard_f1_iname);
 		local_variable *X_lv =
@@ -1543,7 +1584,7 @@ void RTRelations::compile_defined_relations(void) {
 		Functions::end(save);
 	}
 
-@<Compile RGuard T routine@> =
+@<Compile RGuard T function@> =
 	if (rg->guard_test_iname) {
 		packaging_state save = Functions::begin(rg->guard_test_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
@@ -1589,7 +1630,7 @@ void RTRelations::compile_defined_relations(void) {
 		Functions::end(save);
 	}
 
-@<Compile RGuard MT routine@> =
+@<Compile RGuard MT function@> =
 	if (rg->guard_make_true_iname) {
 		packaging_state save = Functions::begin(rg->guard_make_true_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
@@ -1645,7 +1686,7 @@ void RTRelations::compile_defined_relations(void) {
 		Functions::end(save);
 	}
 
-@<Compile RGuard MF routine@> =
+@<Compile RGuard MF function@> =
 	if (rg->guard_make_false_iname) {
 		packaging_state save = Functions::begin(rg->guard_make_false_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
@@ -1701,8 +1742,18 @@ void RTRelations::compile_defined_relations(void) {
 		Functions::end(save);
 	}
 
-@ =
-void RTRelations::compile_routine_to_decide(inter_name *rname,
+@h Relations tested by an I7 condition.
+When a relation has to be tested as a condition (in the wording |W|), we can't
+simply embed that condition as the Inter schema for "test relation": it might
+very well need local variables, the table row-choosing variables, etc., to
+evaluate. It has to be tested in its own context. So we generate a function
+which takes two parameters |t_0| and |t_1| and returns true or false according
+to whether or not $R(|t_0|, |t_1|)$.
+
+This is where those functions are compiled.
+
+=
+void RTRelations::compile_function_to_decide(inter_name *rname,
 	wording W, bp_term_details par1, bp_term_details par2) {
 
 	packaging_state save = Functions::begin(rname);
@@ -1718,8 +1769,8 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	if ((spec == NULL) || (Dash::validate_conditional_clause(spec) == FALSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRelationCondition),
 			"the condition defining this relation makes no sense to me",
-			"although the definition was properly formed - it is only "
-			"the part after 'when' which I can't follow.");
+			"although the definition was properly formed - it is only the part after "
+			"'when' which I can't follow.");
 	} else {
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
@@ -1730,8 +1781,8 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	Functions::end(save);
 }
 
-@ The following routine adds the given BP term as a call parameter to the
-routine currently being compiled, deciding that something is an object if
+@ And that needs this, which adds the given BP term as a call parameter to the
+function currently being compiled, deciding that something is an object if
 its kind indications are all blank, but verifying that the value supplied
 matches the specific necessary kind of object if there is one.
 
@@ -1759,88 +1810,5 @@ void RTRelations::add_term_as_call_parameter(stack_frame *phsf,
 				EmitCode::rfalse();
 			EmitCode::up();
 		EmitCode::up();
-	}
-}
-
-@h Indexing relations.
-A brief table of relations appears on the Phrasebook Index page.
-
-=
-void RTRelations::index_table(OUTPUT_STREAM) {
-	binary_predicate *bp;
-	HTML_OPEN("p");
-	HTML::begin_plain_html_table(OUT);
-	HTML::first_html_column(OUT, 0); WRITE("<i>name</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>category</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>relates this...</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>...to this</i>");
-	HTML::end_html_row(OUT);
-	LOOP_OVER(bp, binary_predicate)
-		if (bp->right_way_round) {
-			TEMPORARY_TEXT(type)
-			BinaryPredicateFamilies::describe_for_index(type, bp);
-			if ((Str::len(type) == 0) || (WordAssemblages::nonempty(bp->relation_name) == FALSE)) continue;
-			HTML::first_html_column(OUT, 0);
-			WordAssemblages::index(OUT, &(bp->relation_name));
-			if (bp->bp_created_at) Index::link(OUT, Wordings::first_wn(Node::get_text(bp->bp_created_at)));
-			HTML::next_html_column(OUT, 0);
-			if (Str::len(type) > 0) WRITE("%S", type); else WRITE("--");
-			HTML::next_html_column(OUT, 0);
-			BPTerms::index(OUT, &(bp->term_details[0]));
-			HTML::next_html_column(OUT, 0);
-			BPTerms::index(OUT, &(bp->term_details[1]));
-			HTML::end_html_row(OUT);
-		}
-	HTML::end_html_table(OUT);
-	HTML_CLOSE("p");
-}
-
-@ And a briefer note still for the table of verbs.
-
-=
-void RTRelations::index_for_verbs(OUTPUT_STREAM, binary_predicate *bp) {
-	WRITE(" ... <i>");
-	if (bp == NULL) WRITE("(a meaning internal to Inform)");
-	else {
-		if (bp->right_way_round == FALSE) {
-			bp = bp->reversal;
-			WRITE("reversed ");
-		}
-		WordAssemblages::index(OUT, &(bp->relation_name));
-	}
-	WRITE("</i>");
-}
-
-@ Method functions needed by //knowledge: Relation Subjects//:
-
-=
-int RTRelations::emit_all(inference_subject_family *f, int ignored) {
-	return FALSE;
-}
-
-void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs) {
-	binary_predicate *bp = RelationSubjects::to_bp(infs);
-	if (bp->right_way_round) {
-		if (ExplicitRelations::stored_dynamically(bp)) {
-			packaging_state save = Functions::begin(RTRelations::initialiser_iname(bp));
-			inference *i;
-			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), relation_inf) {
-				parse_node *spec0, *spec1;
-				RelationInferences::get_term_specs(i, &spec0, &spec1);
-				EmitCode::call(rtiname);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTRelations::iname(bp));
-					EmitCode::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
-					CompileValues::to_code_val(spec0);
-					CompileValues::to_code_val(spec1);
-				EmitCode::up();
-			}
-			Functions::end(save);
-		} else {
-			int f = ExplicitRelations::get_form_of_relation(bp);
-			if ((f == Relation_VtoV) || (f == Relation_Sym_VtoV))
-				RTRelations::compile_vtov_storage(bp);
-		}
 	}
 }

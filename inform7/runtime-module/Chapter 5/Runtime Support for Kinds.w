@@ -693,7 +693,7 @@ void RTKinds::compile_structures(void) {
 	if (Kinds::get_construct(K) == CON_phrase) {
 		Closures::compile_default_closure(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_relation) {
-		RTRelations::compile_default_relation(identifier, K);
+		RTRelations::default_value_of_relation_kind(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {
 		ListLiterals::default_large_block(identifier, K);
 	} else {

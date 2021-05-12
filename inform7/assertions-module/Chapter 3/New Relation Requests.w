@@ -318,11 +318,11 @@ kind *RelationRequests::parse_term(wording W, char *side) {
 @
 
 =
-typedef struct by_routine_bp_data {
+typedef struct by_function_bp_data {
 	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
 	struct inter_name *bp_by_routine_iname; /* routine to determine */
 	CLASS_DEFINITION
-} by_routine_bp_data;
+} by_function_bp_data;
 
 typedef struct equivalence_bp_data {
 	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
@@ -389,7 +389,8 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		@<Add in the reducing functions@>;
 	}
 
-	if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) || (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain))) {
+	if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) ||
+		(Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain))) {
 		relation_guard *rg = CREATE(relation_guard);
 		rg->check_L = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) rg->check_L = RR->terms[0].domain;
 		rg->check_R = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain)) rg->check_R = RR->terms[1].domain;
@@ -431,6 +432,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 			rg->guard_make_false_iname = Hierarchy::make_iname_in(GUARD_MAKE_FALSE_INAME_HL, R);
 			bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
 		}
+		RTRelations::guard(bp, rg);
 	}
 
 	LOGIF(RELATION_DEFINITIONS, "Defined the binary predicate:\n$2\n", bp);
@@ -653,14 +655,14 @@ other in groups".
 condition)".
 
 @<Complete as a relation-by-routine BP@> =
-	bp->relation_family = by_routine_bp_family;
-	bp->reversal->relation_family = by_routine_bp_family;
+	bp->relation_family = by_function_bp_family;
+	bp->reversal->relation_family = by_function_bp_family;
 	package_request *P = RTRelations::package(bp);
-	by_routine_bp_data *D = CREATE(by_routine_bp_data);
+	by_function_bp_data *D = CREATE(by_function_bp_data);
 	D->condition_defn_text = RR->CONW;
 	D->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", D->bp_by_routine_iname);
-	bp->family_specific = STORE_POINTER_by_routine_bp_data(D);
+	bp->family_specific = STORE_POINTER_by_function_bp_data(D);
 
 @ The left- and right- local variables above provide us with convenient
 aliases for the entries which will end up in the |bp_term_details|

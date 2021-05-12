@@ -11,7 +11,7 @@
   
   >[1] wear the fedora
   (first taking the fedora)
-  You get the fedora.
+  You take the fedora.
   
   You are now wearing the fedora.
   

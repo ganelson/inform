@@ -615,7 +615,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Rl")) {
-		RTRelations::index_table(OUT);
+		IXRelations::index_table(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vb")) {

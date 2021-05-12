@@ -21,6 +21,7 @@ Chapter 2: Indexing
 	Adjectives
 	Variables
 	Properties
+	Relations
 	Inferences
 	Rules
 	Activities
