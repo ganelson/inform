@@ -160,10 +160,7 @@ void RTVerbs::vc_compilation_agent(compilation_subtask *t) {
 		(vi)?VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
 	inter_name *rel_iname = RTRelations::default_iname();
-	if (meaning) {
-		RTRelations::mark_as_needed(meaning);
-		rel_iname = RTRelations::iname(meaning);
-	}
+	if (meaning) rel_iname = RTRelations::iname(meaning);
 
 			EmitCode::inv(CASE_BIP);
 			EmitCode::down();
@@ -387,10 +384,7 @@ void RTVerbs::vf_compilation_agent(compilation_subtask *t) {
 	verb_meaning *vm = &(vf->list_of_senses->vm);
 	inter_name *rel_iname = RTRelations::default_iname();
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
-	if (meaning) {
-		RTRelations::mark_as_needed(meaning);
-		rel_iname = RTRelations::iname(meaning);
-	}
+	if (meaning) rel_iname = RTRelations::iname(meaning);
 
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();

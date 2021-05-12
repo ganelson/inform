@@ -54,9 +54,9 @@ void RelationSubjects::complete_model(inference_subject_family *family,
 	int domain_size = NUMBER_CREATED(inference_subject);
 	binary_predicate *bp = RelationSubjects::to_bp(infs);
 
-	if (Relations::Explicit::stored_dynamically(bp)) return; /* handled at run-time */
+	if (ExplicitRelations::stored_dynamically(bp)) return; /* handled at run-time */
 
-	if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Equiv) &&
+	if ((ExplicitRelations::get_form_of_relation(bp) == Relation_Equiv) &&
 		(bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
@@ -81,7 +81,7 @@ checking in.
 void RelationSubjects::check_model(inference_subject_family *family,
 	inference_subject *infs) {
 	binary_predicate *bp = RelationSubjects::to_bp(infs);
-	int f = Relations::Explicit::get_form_of_relation(bp);
+	int f = ExplicitRelations::get_form_of_relation(bp);
 	if ((bp->right_way_round) && ((f == Relation_OtoO) || (f == Relation_Sym_OtoO)))
 		RelationSubjects::check_OtoO_relation(bp);
 	if ((bp->right_way_round) && ((f == Relation_OtoV) || (f == Relation_VtoO)))
@@ -97,7 +97,7 @@ void RelationSubjects::check_OtoO_relation(binary_predicate *bp) {
 	inference **right_second = (inference **)
 		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 
-	property *prn = Relations::Explicit::get_i6_storage_property(bp);
+	property *prn = ExplicitRelations::get_i6_storage_property(bp);
 
 	inference_subject *infs;
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
@@ -183,7 +183,7 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 		}
 	}
 
-	if (Relations::Explicit::get_form_of_relation(bp) == Relation_VtoO) {
+	if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO) {
 		LOOP_OVER(infs, inference_subject) {
 			if (left_counts[infs->allocation_id] >= 2) {
 				StandardProblems::infs_contradiction_problem(

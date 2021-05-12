@@ -129,7 +129,6 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_relation) {
 		binary_predicate *bp = Rvalues::to_binary_predicate(value);
-		RTRelations::mark_as_needed(bp);
 		inter_name *N = RTRelations::iname(bp);
 		if (N) Emit::holster_iname(VH, N);
 		return;

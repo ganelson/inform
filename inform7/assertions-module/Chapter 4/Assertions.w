@@ -1190,7 +1190,7 @@ in general.
 @<Certain non-spatial relationships are allowed too@> =
 	binary_predicate *bp = Node::get_relationship(py);
 	if ((bp) && ((SettingPropertyRelations::bp_sets_a_property(bp)) ||
-		(Relations::Explicit::relates_values_not_objects(bp)))) {
+		(ExplicitRelations::relates_values_not_objects(bp)))) {
 		if (global_pass_state.pass == 2) Assertions::Relational::assert_subtree_in_relationship(px, py);
 		return;
 	}

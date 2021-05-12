@@ -1082,10 +1082,10 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 					return K_object;
 				}
 			} else {
-				property *prn = Relations::Explicit::get_i6_storage_property(bp);
+				property *prn = ExplicitRelations::get_i6_storage_property(bp);
 				reverse = FALSE;
 				if (BinaryPredicates::is_the_wrong_way_round(bp)) reverse = TRUE;
-				if (Relations::Explicit::get_form_of_relation(bp) == Relation_VtoO) {
+				if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO) {
 					if (reverse) reverse = FALSE; else reverse = TRUE;
 				}
 				if (prn) {

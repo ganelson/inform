@@ -18,7 +18,7 @@ this would store the property in question and the threshold value.
 The calculus module tries to be blind to the nuances of how these families
 behave differently from each other, and also to the quite complicated issue
 of how to compile supporting code and data structures for use at run-time.
-The |imp| field hides quite a lot of data for that: see //runtime: Relations at Run Time//.
+See //runtime: Relations// for all of that.
 
 @ Each BP has a partner which we call its "reversal".[1] If $B$ is the
 original and $R$ is its reversal, then $B(x, y)$ is true if and only if
@@ -79,7 +79,7 @@ typedef struct binary_predicate {
 	TERM_DOMAIN_CALCULUS_TYPE *knowledge_about_bp; /* in Inform, this is an inference subject */
 
 	#ifdef CORE_MODULE
-	struct bp_runtime_implementation *imp;
+	struct bp_compilation_data compilation_data;
 	#endif
 
 	CLASS_DEFINITION
@@ -233,7 +233,7 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->family_specific = NULL_GENERAL_POINTER;
 
 	#ifdef CORE_MODULE
-	bp->imp = RTRelations::implement(bp);
+	bp->compilation_data = RTRelations::new_compilation_data(bp);
 	#endif
 
 	return bp;
@@ -256,7 +256,7 @@ void BinaryPredicates::log(binary_predicate *bp) {
 	#ifdef CORE_MODULE
 	LOG("BP%d <%S> - %s way round - %s\n",
 		bp->allocation_id, bp->debugging_log_name, bp->right_way_round?"right":"wrong",
-		Relations::Explicit::form_to_text(bp));
+		ExplicitRelations::form_to_text(bp));
 	#endif
 	#ifndef CORE_MODULE
 	LOG("BP%d <%S> - %s way round\n",

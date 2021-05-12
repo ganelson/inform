@@ -39,7 +39,7 @@ int RelationRequests::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 						"this is too long a name for a single relation to have",
 						"and would become unwieldy.");
 				else Node::set_new_relation_here(V->next,
-						Relations::Explicit::make_pair_sketchily(
+						ExplicitRelations::make_pair_sketchily(
 							WordAssemblages::from_wording(RW)));
 				return TRUE;
 			}
@@ -359,8 +359,8 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		ValueProperties::set_stored_relation(prn, bp);
 	}
 	if (dynamic) {
-		Relations::Explicit::store_dynamically(bp);
-		Relations::Explicit::store_dynamically(bpr);
+		ExplicitRelations::store_dynamically(bp);
+		ExplicitRelations::store_dynamically(bpr);
 		RTRelations::initialiser_iname(bp);
 	}
 	RTRelations::mark_as_needed(bp);
@@ -590,7 +590,6 @@ various K".
 
 @<Complete as an asymmetric various-to-various BP@> =
 	ED->form_of_relation = Relation_VtoV;
-	RTRelations::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
 		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,false))",
@@ -619,7 +618,6 @@ to each other".
 
 @<Complete as a symmetric various-to-various BP@> =
 	ED->form_of_relation = Relation_Sym_VtoV;
-	RTRelations::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
 		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,true))",

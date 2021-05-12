@@ -109,7 +109,7 @@ this would store the property in question and the threshold value.
 <p class="commentary">The calculus module tries to be blind to the nuances of how these families
 behave differently from each other, and also to the quite complicated issue
 of how to compile supporting code and data structures for use at run-time.
-The <span class="extract"><span class="extract-syntax">imp</span></span> field hides quite a lot of data for that: see <a href="../runtime-module/4-rart.html" class="internal">Relations at Run Time (in runtime)</a>.
+See <a href="../runtime-module/5-rlt.html" class="internal">Relations (in runtime)</a> for all of that.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Each BP has a partner which we call its "reversal".<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> If \(B\) is the
@@ -178,7 +178,7 @@ by default this adopts the one given in the BP's <span class="extract"><span cla
 <span class="plain-syntax">    </span><span class="constant-syntax">TERM_DOMAIN_CALCULUS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">knowledge_about_bp</span><span class="plain-syntax">; </span><span class="comment-syntax"> in Inform, this is an inference subject</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp_runtime_implementation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">imp</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -338,7 +338,7 @@ Inform finds this convenient. A "make false" can easily be added later.
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">imp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTRelations::implement</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTRelations::new_compilation_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
@@ -361,7 +361,7 @@ Inform finds this convenient. A "make false" can easily be added later.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"BP%d &lt;%S&gt; - %s way round - %s\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">debugging_log_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">right_way_round</span><span class="plain-syntax">?</span><span class="string-syntax">"right"</span><span class="plain-syntax">:</span><span class="string-syntax">"wrong"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Relations::Explicit::form_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ExplicitRelations::form_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"BP%d &lt;%S&gt; - %s way round\n"</span><span class="plain-syntax">,</span>

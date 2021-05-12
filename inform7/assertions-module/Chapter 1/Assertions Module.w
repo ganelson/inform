@@ -26,7 +26,7 @@ void AssertionsModule::start(void) {
 	CreationPredicates::start();
 	Calculus::QuasinumericRelations::start();
 	Relations::Universal::start();
-	Relations::Explicit::start();
+	ExplicitRelations::start();
 	EqualityDetails::start();
 	KindPredicatesRevisited::start();
 	ImperativeDefinitionFamilies::create();

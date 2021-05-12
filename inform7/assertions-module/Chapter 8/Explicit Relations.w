@@ -1,4 +1,4 @@
-[Relations::Explicit::] Explicit Relations.
+[ExplicitRelations::] Explicit Relations.
 
 To draw inferences from the relations created explicitly by the
 source text.
@@ -21,22 +21,22 @@ typedef struct explicit_bp_data {
 } explicit_bp_data;
 
 @ =
-void Relations::Explicit::start(void) {
+void ExplicitRelations::start(void) {
 	explicit_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::typecheck);
-	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::assert);
-	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::schema);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::describe_for_problems);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::describe_for_index);
+	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, ExplicitRelations::typecheck);
+	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, ExplicitRelations::assert);
+	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, ExplicitRelations::schema);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, ExplicitRelations::describe_for_problems);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, ExplicitRelations::describe_for_index);
 	by_routine_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(by_routine_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::typecheck);
-	METHOD_ADD(by_routine_bp_family, ASSERT_BPF_MTID, Relations::Explicit::assert);
-	METHOD_ADD(by_routine_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::schema);
-	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::describe_for_problems);
-	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_br_describe_briefly);
+	METHOD_ADD(by_routine_bp_family, TYPECHECK_BPF_MTID, ExplicitRelations::typecheck);
+	METHOD_ADD(by_routine_bp_family, ASSERT_BPF_MTID, ExplicitRelations::assert);
+	METHOD_ADD(by_routine_bp_family, SCHEMA_BPF_MTID, ExplicitRelations::schema);
+	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, ExplicitRelations::describe_for_problems);
+	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, ExplicitRelations::REL_br_describe_briefly);
 }
 
-int Relations::Explicit::is_explicit_with_runtime_storage(binary_predicate *bp) {
+int ExplicitRelations::is_explicit_with_runtime_storage(binary_predicate *bp) {
 	if (bp->relation_family == explicit_bp_family) return TRUE;
 	return TRUE;
 }
@@ -55,22 +55,22 @@ run-time code supporting relations.
 @d Relation_Equiv		7 /* equivalence relation: "R relates K to each other in groups" */
 
 @ =
-int Relations::Explicit::allow_arbitrary_assertions(binary_predicate *bp) {
-	int f = Relations::Explicit::get_form_of_relation(bp);
+int ExplicitRelations::allow_arbitrary_assertions(binary_predicate *bp) {
+	int f = ExplicitRelations::get_form_of_relation(bp);
 	if (f == Relation_Equiv) return TRUE;
 	if (f == Relation_VtoV) return TRUE;
 	if (f == Relation_Sym_VtoV) return TRUE;
 	return FALSE;
 }
 
-void Relations::Explicit::store_dynamically(binary_predicate *bp) {
+void ExplicitRelations::store_dynamically(binary_predicate *bp) {
 	if (bp->relation_family == explicit_bp_family) {
 		explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 		ED->store_dynamically = TRUE;
 	} else internal_error("not explicit");
 }
 
-int Relations::Explicit::stored_dynamically(binary_predicate *bp) {
+int ExplicitRelations::stored_dynamically(binary_predicate *bp) {
 	if (bp->relation_family == explicit_bp_family) {
 		explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 		return ED->store_dynamically;
@@ -78,7 +78,7 @@ int Relations::Explicit::stored_dynamically(binary_predicate *bp) {
 	return FALSE;
 }
 
-int Relations::Explicit::relates_values_not_objects(binary_predicate *bp) {
+int ExplicitRelations::relates_values_not_objects(binary_predicate *bp) {
 	if (bp->relation_family == explicit_bp_family) {
 		kind *K = BinaryPredicates::kind(bp);
 		kind *K0, *K1;
@@ -97,7 +97,7 @@ then fill in the correct details later. This is where such sketchy pairs are
 made:
 
 =
-binary_predicate *Relations::Explicit::make_pair_sketchily(word_assemblage wa) {
+binary_predicate *ExplicitRelations::make_pair_sketchily(word_assemblage wa) {
 	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
 	binary_predicate *bp =
@@ -118,19 +118,19 @@ binary_predicate *Relations::Explicit::make_pair_sketchily(word_assemblage wa) {
 	return bp;
 }
 
-property *Relations::Explicit::get_i6_storage_property(binary_predicate *bp) {
+property *ExplicitRelations::get_i6_storage_property(binary_predicate *bp) {
 	if (bp->relation_family != explicit_bp_family) return NULL;
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	return ED->i6_storage_property;
 }
 
-int Relations::Explicit::get_form_of_relation(binary_predicate *bp) {
+int ExplicitRelations::get_form_of_relation(binary_predicate *bp) {
 	if (bp->relation_family != explicit_bp_family) return Relation_Implicit;
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	return ED->form_of_relation;
 }
-char *Relations::Explicit::form_to_text(binary_predicate *bp) {
-	switch(Relations::Explicit::get_form_of_relation(bp)) {
+char *ExplicitRelations::form_to_text(binary_predicate *bp) {
+	switch(ExplicitRelations::get_form_of_relation(bp)) {
 		case Relation_OtoO: return "Relation_OtoO";
 		case Relation_OtoV: return "Relation_OtoV";
 		case Relation_VtoO: return "Relation_VtoO";
@@ -145,7 +145,7 @@ char *Relations::Explicit::form_to_text(binary_predicate *bp) {
 @ They typecheck by the default rule only:
 
 =
-int Relations::Explicit::typecheck(bp_family *self, binary_predicate *bp,
+int ExplicitRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -155,26 +155,26 @@ to behave as if $B(y, x)$ had also been asserted whenever $B(x, y)$ has, if
 $x\neq y$.
 
 =
-int Relations::Explicit::assert(bp_family *self, binary_predicate *bp,
+int ExplicitRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 
 	@<Reject non-assertable relations@>;
-	if (Relations::Explicit::stored_dynamically(bp)) {
+	if (ExplicitRelations::stored_dynamically(bp)) {
 		RelationInferences::draw_spec(bp, spec0, spec1);
 		return TRUE;
 	} else {
 		if ((infs0 == NULL) || (infs1 == NULL)) @<Reject relationship with nothing@>;
-		if (Relations::Explicit::allow_arbitrary_assertions(bp)) {
+		if (ExplicitRelations::allow_arbitrary_assertions(bp)) {
 			RelationInferences::draw(bp, infs0, infs1);
-			if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Sym_VtoV) && (infs0 != infs1))
+			if ((ExplicitRelations::get_form_of_relation(bp) == Relation_Sym_VtoV) && (infs0 != infs1))
 				RelationInferences::draw(bp, infs1, infs0);
 			return TRUE;
 		}
-		if (Relations::Explicit::is_explicit_with_runtime_storage(bp)) {
-			Relations::Explicit::infer_property_based_relation(bp, infs1, infs0);
-			if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Sym_OtoO) && (infs0 != infs1))
-				Relations::Explicit::infer_property_based_relation(bp, infs0, infs1);
+		if (ExplicitRelations::is_explicit_with_runtime_storage(bp)) {
+			ExplicitRelations::infer_property_based_relation(bp, infs1, infs0);
+			if ((ExplicitRelations::get_form_of_relation(bp) == Relation_Sym_OtoO) && (infs0 != infs1))
+				ExplicitRelations::infer_property_based_relation(bp, infs0, infs1);
 			return TRUE;
 		}
 	}
@@ -212,30 +212,30 @@ both $R(x,y)$ and $R(x,z)$ will result in contradictory property value
 inferences for $y$ and $z$.
 
 =
-void Relations::Explicit::infer_property_based_relation(binary_predicate *bp,
+void ExplicitRelations::infer_property_based_relation(binary_predicate *bp,
 	inference_subject *infs0, inference_subject *infs1) {
-	if (Relations::Explicit::get_form_of_relation(bp) == Relation_VtoO) {
+	if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO) {
 		inference_subject *swap=infs0; infs0=infs1; infs1=swap;
 	}
-	property *prn = Relations::Explicit::get_i6_storage_property(bp);
+	property *prn = ExplicitRelations::get_i6_storage_property(bp);
 	PropertyInferences::draw(infs0, prn, InferenceSubjects::as_constant(infs1));
 }
 
 @ We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Relations::Explicit::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int ExplicitRelations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @ Problem message text:
 
 =
-int Relations::Explicit::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int ExplicitRelations::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }
-void Relations::Explicit::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
-	switch (Relations::Explicit::get_form_of_relation(bp)) {
+void ExplicitRelations::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+	switch (ExplicitRelations::get_form_of_relation(bp)) {
 		case Relation_OtoO: WRITE("one-to-one"); break;
 		case Relation_OtoV: WRITE("one-to-various"); break;
 		case Relation_VtoO: WRITE("various-to-one"); break;
@@ -245,6 +245,6 @@ void Relations::Explicit::describe_for_index(bp_family *self, OUTPUT_STREAM, bin
 		case Relation_Equiv: WRITE("in groups"); break;
 	}
 }
-void Relations::Explicit::REL_br_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void ExplicitRelations::REL_br_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("defined");
 }

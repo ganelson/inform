@@ -50,7 +50,7 @@ Chapter 5: Provision Submodules
 	Rulebooks
 	Variables
 	Properties
-	Relations at Run Time
+	Relations
 	Runtime Support for Kinds
 	Literal Patterns at Run Time
 
