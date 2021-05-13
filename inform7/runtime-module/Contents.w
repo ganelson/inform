@@ -51,8 +51,8 @@ Chapter 5: Provision Submodules
 	Variables
 	Properties
 	Relations
+	Literal Patterns
 	Runtime Support for Kinds
-	Literal Patterns at Run Time
 
 Chapter 6: Completion Resources
 	Naming

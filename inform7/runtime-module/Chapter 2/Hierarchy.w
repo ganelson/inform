@@ -186,6 +186,7 @@ void Hierarchy::establish(void) {
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
 	@<Establish kinds@>;
+	@<Establish literal patterns@>;
 	@<Establish phrases@>;
 	@<Establish properties@>;
 	@<Establish relations@>;
@@ -887,6 +888,22 @@ void Hierarchy::establish(void) {
 			H_C_U(DK_DEFAULT_VALUE_HL,        I"default_value")
 		H_END
 		H_BEGIN_AP(KIND_PROPERTIES_HAP,       I"property", I"_property")
+		H_END
+	H_END
+
+@h Literal patterns.
+
+@e LITERAL_PATTERNS_HAP
+@e LP_PRINT_FN_HL
+@e LP_PARSE_FN_HL
+
+@<Establish literal patterns@> =
+	submodule_identity *literals = Packaging::register_submodule(I"literal_patterns");
+
+	H_BEGIN(HierarchyLocations::local_submodule(literals))
+		H_BEGIN_AP(LITERAL_PATTERNS_HAP,      I"literal_pattern", I"_literal_pattern")
+			H_F_U(LP_PRINT_FN_HL,             I"print_fn")
+			H_F_U(LP_PARSE_FN_HL,             I"parse_fn")
 		H_END
 	H_END
 

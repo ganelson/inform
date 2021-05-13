@@ -17,6 +17,8 @@ void ParsingPlugin::start(void) {
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
 	PluginManager::plug(NEW_PERMISSION_NOTIFY_PLUG, Visibility::new_permission_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
+	
+	RTLiteralPatterns::enable_parsing();
 }
 
 @ This will also need extensive amounts of run-time code, and the sequence
@@ -36,7 +38,6 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(UnderstandValueTokens::number);
 		BENCH(UnderstandValueTokens::truth_state);
 		BENCH(UnderstandValueTokens::time);
-//		BENCH(UnderstandValueTokens::compile_type_gprs);
 		if (debugging) {
 			BENCH(TestCommand::write_text);
 			BENCH(TestCommand::TestScriptSub_routine);

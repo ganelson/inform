@@ -244,7 +244,26 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 @<Compile body of kind GPR@> =
 	@<Save word number@>;
 	LITERAL_FORMS_LOOP(lp, K) {
-		RTLiteralPatterns::gpr(&gprk, lp);
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk.rv_s);
+			EmitCode::call(RTLiteralPatterns::parse_fn_iname(lp));
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk.rv_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, gprk.rv_s);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 		@<Reset word number@>;
 	}
 

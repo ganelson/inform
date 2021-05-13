@@ -187,6 +187,7 @@ so on. Those absolute basics are made here.
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::compile_metadata)
+	BENCH(RTLiteralPatterns::compile)
 	
 @<Generate inter, part 2@> =
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",

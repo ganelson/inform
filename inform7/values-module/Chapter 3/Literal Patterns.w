@@ -61,8 +61,8 @@ typedef struct literal_pattern {
 	int benchmark; /* is this the benchmark LP for its kind? */
 	int last_resort; /* is this the last possible LP to use when printing a value of the kind? */
 	int marked_for_printing; /* used in compiling printing routines */
-	inter_symbol *jump_label;
 
+	struct literal_pattern_compilation_data compilation_data;
 	CLASS_DEFINITION
 } literal_pattern;
 
@@ -164,7 +164,7 @@ literal_pattern *LiteralPatterns::lp_new(kind *K, wording W) {
 	lp->scaling = Kinds::Scalings::new(TRUE, LP_SCALED_AT, 1, 1.0, 0, 0.0);
 	lp->equivalent_unit = FALSE;
 	lp->benchmark = FALSE;
-	lp->jump_label = NULL;
+	lp->compilation_data = RTLiteralPatterns::new_compilation_data(lp);
 	return lp;
 }
 
