@@ -112,12 +112,12 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 @<Write table row for this kind@> =
 	char *repeat = "cross", *props = "cross", *under = "cross";
 	int shaded = FALSE;
-	if ((Kinds::Behaviour::get_highest_valid_value_as_integer(K) == 0) &&
+	if ((RTKindConstructors::get_highest_valid_value_as_integer(K) == 0) &&
 		(Kinds::Behaviour::indexed_grey_if_empty(K)))
 			shaded = TRUE;
 	if (Deferrals::has_finite_domain(K)) repeat = "tick";
 	if (KindSubjects::has_properties(K)) props = "tick";
-	if (Kinds::Behaviour::offers_I6_GPR(K)) under = "tick";
+	if (RTKindConstructors::offers_I6_GPR(K)) under = "tick";
 	Kinds::Index::begin_chart_row(OUT);
 	Kinds::Index::index_kind_name_cell(OUT, shaded, K);
 	if (priority == 8) { repeat = NULL; props = NULL; under = NULL; }

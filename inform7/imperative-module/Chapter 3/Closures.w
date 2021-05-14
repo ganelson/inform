@@ -117,7 +117,7 @@ The following function is called exactly once for each such kind |K|.
 
 =
 void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) {
-	package_request *P = Kinds::Behaviour::package(K);
+	package_request *P = RTKindConstructors::kind_package(K);
 	inter_name *rname = Hierarchy::make_iname_in(DEFAULT_CLOSURE_FN_HL, P);
 	@<Compile the default function@>;
 	@<Compile its closure@>;

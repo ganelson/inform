@@ -143,7 +143,7 @@ parse_node *RTActions::compile_action_bitmap_property(instance *I) {
 		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, R);
 		N = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	} else {
-		R = Kinds::Behaviour::package(K_object);
+		R = RTKindConstructors::kind_package(K_object);
 		package_request *PR = Hierarchy::package_within(KIND_INLINE_PROPERTIES_HAP, R);
 		N = Hierarchy::make_iname_in(KIND_INLINE_PROPERTY_HL, PR);
 	}
@@ -293,7 +293,7 @@ void RTActions::cat_something2(action_name *an, int n, inter_symbol *n_s, inter_
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	EmitCode::inv(INDIRECT1V_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
+		EmitCode::val_iname(K_value, RTKindConstructors::get_name_of_printing_rule_ACTIONS(K));
 		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 			EmitCode::inv(PLUS_BIP);
 			EmitCode::down();

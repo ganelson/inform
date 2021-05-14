@@ -139,7 +139,7 @@ void InternalTests::InternalTestCases_routine(void) {
 
 				EmitCode::inv(INDIRECT1V_BIP);
 				EmitCode::down();
-					EmitCode::val_iname(K_value, Kinds::Behaviour::get_iname(K));
+					EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
 					CompileValues::to_code_val(spec);
 				EmitCode::up();
 
@@ -284,7 +284,7 @@ void InternalTests::emit_showme(parse_node *spec) {
 			EmitCode::val_number(1);
 		EmitCode::up();
 	} else {
-		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::call(RTKindConstructors::get_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val(spec);
 		EmitCode::up();

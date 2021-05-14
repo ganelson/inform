@@ -61,8 +61,8 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
 			EmitCode::ref_symbol(K_value, v_s);
-			inter_name *gpr_to_ask = Kinds::Behaviour::get_explicit_I6_GPR_iname(R);
-			if (gpr_to_ask == NULL) gpr_to_ask = RTKinds::get_kind_GPR_iname(R);
+			inter_name *gpr_to_ask = RTKindConstructors::get_explicit_I6_GPR_iname(R);
+			if (gpr_to_ask == NULL) gpr_to_ask = RTKindConstructors::get_kind_GPR_iname(R);
 			EmitCode::call(gpr_to_ask);
 		EmitCode::up();
 

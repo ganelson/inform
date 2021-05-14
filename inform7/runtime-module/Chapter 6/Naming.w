@@ -8,7 +8,7 @@ property *RTNaming::cap_short_name_property(void) {
 	if (P_cap_short_name == NULL) {
 		inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
 		P_cap_short_name = ValueProperties::new_nameless_using(
-			K_text, Kinds::Behaviour::package(K_object), property_iname);
+			K_text, RTKindConstructors::kind_package(K_object), property_iname);
 		Hierarchy::make_available(property_iname);
 	}
 	return P_cap_short_name;

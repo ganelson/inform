@@ -173,7 +173,7 @@ void UnderstandValueTokens::agent(compilation_subtask *t) {
 	int next_label = 1, longest;
 	command_grammar *cg;
 	instance *q; literal_pattern *lp;
-			inter_name *iname = RTKinds::get_kind_GPR_iname(K);
+			inter_name *iname = RTKindConstructors::get_kind_GPR_iname(K);
 			packaging_state save = Functions::begin(iname);
 			int need_lf_vars = FALSE;
 			LITERAL_FORMS_LOOP(lp, K) {
@@ -188,7 +188,7 @@ void UnderstandValueTokens::agent(compilation_subtask *t) {
 			Functions::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
+				inter_name *iname = RTKindConstructors::get_instance_GPR_iname(K);
 				packaging_state save = Functions::begin(iname);
 				gpr_kit gprk = UnderstandValueTokens::new_kit();
 				UnderstandValueTokens::add_instance_call(&gprk);
@@ -210,8 +210,8 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) ||
 			(Kinds::Behaviour::is_quasinumerical(K))) {
 			instance *q; literal_pattern *lp;
-			if (Kinds::Behaviour::needs_I6_GPR(K) == FALSE) continue;
-			inter_name *iname = RTKinds::get_kind_GPR_iname(K);
+			if (RTKindConstructors::needs_I6_GPR(K) == FALSE) continue;
+			inter_name *iname = RTKindConstructors::get_kind_GPR_iname(K);
 			packaging_state save = Functions::begin(iname);
 			int need_lf_vars = FALSE;
 			LITERAL_FORMS_LOOP(lp, K) {
@@ -226,7 +226,7 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 			Functions::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
+				inter_name *iname = RTKindConstructors::get_instance_GPR_iname(K);
 				packaging_state save = Functions::begin(iname);
 				gpr_kit gprk = UnderstandValueTokens::new_kit();
 				UnderstandValueTokens::add_instance_call(&gprk);

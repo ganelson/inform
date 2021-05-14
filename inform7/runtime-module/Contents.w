@@ -52,6 +52,7 @@ Chapter 5: Provision Submodules
 	Properties
 	Relations
 	Literal Patterns
+	Kind Constructors
 	Runtime Support for Kinds
 
 Chapter 6: Completion Resources

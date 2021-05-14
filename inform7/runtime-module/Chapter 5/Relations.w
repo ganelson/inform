@@ -1,4 +1,4 @@
-[RTRelations::] Relations at Run Time.
+[RTRelations::] Relations.
 
 To compile the relations submodule for a compilation unit, which contains
 _relation packages.
@@ -1168,8 +1168,8 @@ this is done by the function |RTRelations::relation_range| (below).
 
 	EmitArrays::numeric_entry((inter_ti) left_count);
 	EmitArrays::numeric_entry((inter_ti) right_count);
-	EmitArrays::iname_entry(Kinds::Behaviour::get_iname(left_kind));
-	EmitArrays::iname_entry(Kinds::Behaviour::get_iname(right_kind));
+	EmitArrays::iname_entry(RTKindConstructors::get_iname(left_kind));
+	EmitArrays::iname_entry(RTKindConstructors::get_iname(right_kind));
 
 	EmitArrays::numeric_entry(1); /* Cache broken flag */
 	if ((left_count > 0) && (right_count > 0))

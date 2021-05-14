@@ -583,9 +583,9 @@ void Understand::property_block(property *pr, int level, inference_subject *subj
 		return;
 	}
 	if ((Properties::is_either_or(pr) == FALSE) &&
-		(Str::len(Kinds::Behaviour::get_recognition_only_GPR(ValueProperties::kind(pr))) == 0) &&
+		(Str::len(RTKindConstructors::get_recognition_only_GPR(ValueProperties::kind(pr))) == 0) &&
 		((Kinds::Behaviour::is_object(ValueProperties::kind(pr))) ||
-			(Kinds::Behaviour::request_I6_GPR(ValueProperties::kind(pr)) == FALSE))) {
+			(RTKindConstructors::request_I6_GPR(ValueProperties::kind(pr)) == FALSE))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_BadReferringProperty),
 			"that property is of a kind which I can't recognise in "
@@ -783,7 +783,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 					"make sense.");
 				return;
 			}
-			if (Kinds::Behaviour::request_I6_GPR(K) == FALSE) {
+			if (RTKindConstructors::request_I6_GPR(K) == FALSE) {
 				StandardProblems::sentence_problem(Task::syntax_tree(),
 					_p_(PM_UnderstandAsBadValue),
 					"'understand ... as ...' gives text meaning a value whose kind "

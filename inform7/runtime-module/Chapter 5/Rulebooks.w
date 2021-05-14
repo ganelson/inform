@@ -551,7 +551,7 @@ void RTRulebooks::compile_outcome(named_rulebook_outcome *nro) {
 }
 
 void RTRulebooks::RulebookOutcomePrintingRule(void) {
-	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
+	inter_name *printing_rule_name = RTKindConstructors::get_iname(K_rulebook_outcome);
 	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *rbnov_s = LocalVariables::new_other_as_symbol(I"nro");
 	EmitCode::inv(IFELSE_BIP);

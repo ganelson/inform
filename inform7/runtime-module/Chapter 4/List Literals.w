@@ -146,7 +146,7 @@ int ListLiterals::extent_of_instance_list(kind *K) {
 }
 
 @<Count entries for an enumeration@> =
-	N = Kinds::Behaviour::get_highest_valid_value_as_integer(K);
+	N = RTKindConstructors::get_highest_valid_value_as_integer(K);
 
 @<Count entries for a kind of object@> =
 	N = 0;
@@ -159,16 +159,16 @@ int ListLiterals::extent_of_instance_list(kind *K) {
 inter_name *ListLiterals::get_instance_list(kind *K) {
 	int N = ListLiterals::extent_of_instance_list(K);
 	if (N < 0) return NULL;
-	inter_name *large_block_iname = Kinds::Constructors::list_iname(Kinds::get_construct(K));
+	inter_name *large_block_iname = RTKindConstructors::list_iname(Kinds::get_construct(K));
 	if (large_block_iname == NULL) {
 		large_block_iname =
-			Hierarchy::make_iname_in(INSTANCE_LIST_HL, Kinds::Behaviour::package(K));
+			Hierarchy::make_iname_in(INSTANCE_LIST_HL, RTKindConstructors::kind_package(K));
 		packaging_state save = ListLiterals::begin_large_block(
 			large_block_iname, Kinds::unary_con(CON_list_of, K), N);
 		if (Kinds::Behaviour::is_an_enumeration(K)) @<Compile entries for an enumeration@>;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) @<Compile entries for a kind of object@>;
 		ListLiterals::end_large_block(save);
-		Kinds::Constructors::set_list_iname(Kinds::get_construct(K), large_block_iname);
+		RTKindConstructors::set_list_iname(Kinds::get_construct(K), large_block_iname);
 	}
 	return ListLiterals::small_block(large_block_iname);
 }

@@ -15,7 +15,7 @@ capacity in it to absorb relationships forged at runtime. This is the default
 value of kinds using the "relation of K to L" constructor.
 
 The runtime representation of temporary relations like this one is complex.
-See //Relations at Run Time// and //BasicInformKit: Relations//.
+See //Relations// and //BasicInformKit: Relations//.
 
 =
 inter_name *RelationLiterals::default(kind *K) {

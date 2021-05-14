@@ -65,9 +65,7 @@ typedef struct kind_constructor {
 	struct text_stream *name_in_template_code; /* an Inter identifier */
 	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
-	struct inter_name *con_iname;
-	struct inter_name *list_iname;
-	struct package_request *kc_package;
+	struct kind_constructor_compilation_data compilation_data;
 	#endif
 	int small_block_size; /* if stored as a block value, size in words of the SB */
 
@@ -80,18 +78,6 @@ typedef struct kind_constructor {
 	struct text_stream *loop_domain_schema; /* how to compile a loop over the instances */
 
 	/* J: printing and parsing values at run-time */
-	#ifdef BYTECODE_MODULE
-	struct inter_name *kind_GPR_iname;
-	struct inter_name *instance_GPR_iname;
-	struct inter_name *first_instance_iname;
-	struct inter_name *next_instance_iname;
-	struct inter_name *pr_iname;
-	struct inter_name *inc_iname;
-	struct inter_name *dec_iname;
-	struct inter_name *mkdef_iname;
-	struct inter_name *ranger_iname;
-	struct inter_name *trace_iname;
-	#endif
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
 	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
 	struct command_grammar *understand_as_values; /* used when parsing such values */
@@ -188,18 +174,17 @@ kind_constructor *Kinds::Constructors::new(kind_constructor *super,
 	kind_constructor **pC = FamiliarKinds::known_con(source_name);
 	if (pC) *pC = con;
 
+	int copied = FALSE;
 	if (super == Kinds::get_construct(K_value)) @<Fill in a new constructor@>
-	else @<Copy the new constructor from its superconstructor@>;
+	else { @<Copy the new constructor from its superconstructor@>; copied = TRUE; }
 	con->group = group;
 
-	con->name_in_template_code = Str::new();
+	con->name_in_template_code = Str::duplicate(source_name);
 	#ifdef CORE_MODULE
-	con->con_iname = NULL;
-	con->kc_package = NULL;
-	con->list_iname = NULL;
-	#endif
-	if (Str::len(source_name) > 0) WRITE_TO(con->name_in_template_code, "%S", source_name);
-	#ifdef CORE_MODULE
+	if (copied)
+		RTKindConstructors::restart_copied_compilation_data(con);
+	else
+		con->compilation_data = RTKindConstructors::new_compilation_data(con);
 	KindSubjects::new(con);
 	#endif
 	con->where_defined_in_source_text = current_sentence;
@@ -226,8 +211,7 @@ we apply any defaults set in Neptune files.
 
 	/* B: constructing kinds */
 	con->constructor_arity = 0; /* by default a base constructor */
-	int i;
-	for (i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++) {
+	for (int i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++) {
 		con->variance[i] = COVARIANT;
 		con->tupling[i] = NO_TUPLING;
 	}
@@ -282,23 +266,6 @@ we apply any defaults set in Neptune files.
 	/* J: printing and parsing values at run-time */
 	con->print_identifier = Str::new();
 	con->ACTIONS_identifier = Str::new();
-	#ifdef BYTECODE_MODULE
-	con->kind_GPR_iname = NULL;
-	con->instance_GPR_iname = NULL;
-	con->first_instance_iname = NULL;
-	con->next_instance_iname = NULL;
-	con->pr_iname = NULL;
-	con->inc_iname = NULL;
-	con->dec_iname = NULL;
-	con->mkdef_iname = NULL;
-	con->ranger_iname = NULL;
-	con->trace_iname = NULL;
-	if (Str::len(source_name) == 0) {
-		package_request *R = Kinds::Constructors::package(con);
-		con->pr_iname = Hierarchy::make_iname_in(PRINT_DASH_FN_HL, R);
-		con->trace_iname = con->pr_iname;
-	}
-	#endif
 
 	con->understand_as_values = NULL;
 	con->needs_GPR = FALSE;
@@ -380,85 +347,6 @@ noun *Kinds::Constructors::get_noun(kind_constructor *con) {
 	if (con == NULL) return NULL;
 	return con->dt_tag;
 }
-
-@h Inter identifiers.
-An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
-Neptune file; becomes attached to a constructor here; and finally winds up
-back in Inter code, because we define it as the constant for the weak kind ID
-of the kind which the constructor makes:
-
-=
-#ifdef CORE_MODULE
-void Kinds::Constructors::emit_constants(void) {
-	kind_constructor *con;
-	LOOP_OVER(con, kind_constructor) {
-		Emit::numeric_constant(Kinds::Constructors::iname(con), 0);
-		Hierarchy::make_available(Kinds::Constructors::iname(con));
-	}
-}
-inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
-	return CON_UNKNOWN->con_iname;
-}
-package_request *Kinds::Constructors::package(kind_constructor *con) {
-	if (con->kc_package == NULL) {
-		if (con->where_defined_in_source_text) {
-			con->kc_package = Hierarchy::local_package_to(KIND_HAP,
-				con->where_defined_in_source_text);
-		} else if (con->superkind_set_at) {
-			con->kc_package = Hierarchy::local_package_to(KIND_HAP,
-				con->superkind_set_at);
-		} else {
-			con->kc_package = Hierarchy::synoptic_package(KIND_HAP);
-		}
-		wording W = Kinds::Constructors::get_name(con, FALSE);
-		if (Wordings::nonempty(W))
-			Hierarchy::apply_metadata_from_wording(con->kc_package, KIND_NAME_MD_HL, W);
-		else if (Str::len(con->name_in_template_code) > 0)
-			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_MD_HL,
-				con->name_in_template_code);
-		else
-			Hierarchy::apply_metadata(con->kc_package, KIND_NAME_MD_HL, I"(anonymous kind)");
-	}
-	return con->kc_package;
-}
-inter_name *Kinds::Constructors::iname(kind_constructor *con) {
-	if (con->con_iname == NULL) {
-		if (Str::len(con->name_in_template_code) > 0) {
-			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				con->name_in_template_code, Kinds::Constructors::package(con));
-			Hierarchy::make_available(con->con_iname);
-		} else {
-			TEMPORARY_TEXT(wn)
-			WRITE_TO(wn, "WEAK_ID_%d", con->allocation_id);
-			con->con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				wn, Kinds::Constructors::package(con));
-			DISCARD_TEXT(wn)
-		}
-	}
-	return con->con_iname;
-}
-//void Kinds::Constructors::set_iname(kind_constructor *con, inter_name *iname) {
-//	con->con_iname = iname;
-//}
-inter_name *Kinds::Constructors::list_iname(kind_constructor *con) {
-	return con->list_iname;
-}
-void Kinds::Constructors::set_list_iname(kind_constructor *con, inter_name *iname) {
-	con->list_iname = iname;
-}
-inter_name *Kinds::Constructors::first_instance_iname(kind_constructor *con) {
-	return con->first_instance_iname;
-}
-void Kinds::Constructors::set_first_instance_iname(kind_constructor *con, inter_name *iname) {
-	con->first_instance_iname = iname;
-}
-inter_name *Kinds::Constructors::next_instance_iname(kind_constructor *con) {
-	return con->next_instance_iname;
-}
-void Kinds::Constructors::set_next_instance_iname(kind_constructor *con, inter_name *iname) {
-	con->next_instance_iname = iname;
-}
-#endif
 
 text_stream *Kinds::Constructors::name_in_template_code(kind_constructor *con) {
 	return con->name_in_template_code;

@@ -880,7 +880,7 @@ void UnderstandGeneralTokens::distinguish_visible_property(gpr_kit *gprk, proper
 		EmitCode::up();
 	} else {
 		kind *K = ValueProperties::kind(prn);
-		inter_name *distinguisher = Kinds::Behaviour::get_distinguisher_as_iname(K);
+		inter_name *distinguisher = RTKindConstructors::get_distinguisher_iname(K);
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			if (distinguisher) {
@@ -1022,7 +1022,7 @@ void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			kind *K = ValueProperties::kind(prn);
-			inter_name *recog_gpr = Kinds::Behaviour::get_recognition_only_GPR_as_iname(K);
+			inter_name *recog_gpr = RTKindConstructors::get_recognition_only_GPR_as_iname(K);
 			if (recog_gpr) {
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
@@ -1036,8 +1036,8 @@ void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 					EmitCode::up();
 					EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				EmitCode::up();
-			} else if (Kinds::Behaviour::offers_I6_GPR(K)) {
-				inter_name *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR_iname(K);
+			} else if (RTKindConstructors::offers_I6_GPR(K)) {
+				inter_name *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR_iname(K);
 				if (i6_gpr_name) {
 					EmitCode::inv(AND_BIP);
 					EmitCode::down();
@@ -1059,7 +1059,7 @@ void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
 					EmitCode::inv(EQ_BIP);
 					EmitCode::down();
-						EmitCode::call(RTKinds::get_instance_GPR_iname(K));
+						EmitCode::call(RTKindConstructors::get_instance_GPR_iname(K));
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
@@ -1074,7 +1074,7 @@ void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::call(RTKinds::get_kind_GPR_iname(K));
+							EmitCode::call(RTKindConstructors::get_kind_GPR_iname(K));
 							EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);

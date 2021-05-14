@@ -210,7 +210,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
 	RTKinds::get_default_value(&(dw->v1), &(dw->v2), K);
 	if (dw->v1 != 0) {
-		packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
+		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
 		inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 		Produce::guard(Inter::DefaultValue::new(Emit::at(),
 			Emit::symbol_id(owner_kind), dw->v1, dw->v2, Emit::baseline(), NULL));
@@ -399,7 +399,7 @@ void Emit::property(inter_name *prop_iname, kind *K) {
 }
 
 void Emit::permission(property *prn, kind *K, inter_name *storage_iname) {
-	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
+	packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
 	inter_name *prop_s = RTProperties::iname(prn);
 	inter_symbol *owner_s = Produce::kind_to_symbol(K);
 	inter_symbol *store = (storage_iname)?InterNames::to_symbol(storage_iname):NULL;

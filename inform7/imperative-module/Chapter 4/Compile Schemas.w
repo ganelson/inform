@@ -175,7 +175,7 @@ void CompileSchemas::compile_term_of_token(pcalc_term *pt, int m, kind *cast_to,
 @<Compile comparison function for the kind@> =
 	inter_name *cr;
 	if (pt->term_checked_as_kind)
-		cr = Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind);
+		cr = RTKindConstructors::get_comparison_fn_iname(pt->term_checked_as_kind);
 	else
 		cr = Hierarchy::find(SIGNEDCOMPARE_HL);
 	EmitCode::val_iname(K_value, cr);

@@ -1,18 +1,18 @@
    Temple of Cupid
   Emily will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 34)
+  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 28)
   Kate will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 34)
+  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 28)
   Helen will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 34)
+  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 28)
   Emily will be given chocolates, flowers and a sports car on 14 February.
-  (BV###-->L### 2**6 1 ref = {chocolates, flowers and a sports car} of kind 34)
+  (BV###-->L### 2**6 1 ref = {chocolates, flowers and a sports car} of kind 28)
   Kate will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 34)
+  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 28)
   Helen will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 34)
+  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 28)
   "Q" = list of texts: {"chocolates", "flowers", "a sports car"}
-  (BV###-->L### 2**6 2 refs = {chocolates, flowers and a sports car} of kind 34)
+  (BV###-->L### 2**6 2 refs = {chocolates, flowers and a sports car} of kind 28)
   
   "X" = text: Emily's apple
   (BV### = p"Emily's apple")

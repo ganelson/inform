@@ -40,9 +40,9 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_object(K)) {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_OBJECT_MD_HL, 1);
-			inter_name *iname = Hierarchy::make_iname_in(SHOWME_FN_HL, Kinds::Behaviour::package(K));
+			inter_name *iname = Hierarchy::make_iname_in(SHOWME_FN_HL, RTKindConstructors::kind_package(K));
 			packaging_state save = Functions::begin(iname);
 			inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
 			inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
@@ -70,10 +70,10 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 				EmitCode::up();
 			EmitCode::up();
 			Functions::end(save);
-			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 				KIND_SHOWME_MD_HL, iname);
  		} else {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_OBJECT_MD_HL, 0);
 		}
 
@@ -320,7 +320,7 @@ routine for colours; and the best thing is to print nothing at all.
 @<Compile the SHOWME of the actual value@> =
 	EmitCode::inv(INDIRECT1V_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, Kinds::Behaviour::get_iname(K));
+		EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
 		EmitCode::call(Hierarchy::find(GPROPERTY_HL));
 		EmitCode::down();
 			RTKinds::emit_weak_id_as_val(K_object);

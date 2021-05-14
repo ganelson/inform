@@ -184,7 +184,7 @@ so on. Those absolute basics are made here.
 		4, debugging, sequence_timer);
 	BENCH(RTUseOptions::compile)
 	BENCH(Interventions::make_all)
-	BENCH(Kinds::Constructors::emit_constants)
+	BENCH(RTKindConstructors::emit_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::compile_metadata)
 	BENCH(RTLiteralPatterns::compile)

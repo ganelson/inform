@@ -110,7 +110,7 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 	instance *I = InstanceSubjects::to_instance(know);
 	if (I) R = RTInstances::package(I);
 	kind *K = KindSubjects::to_kind(know);
-	if (K) R = Kinds::Behaviour::package(K);
+	if (K) R = RTKindConstructors::kind_package(K);
 	int storage_cost = 0;
 	if ((RTPropertyValues::visited_in_traverse(prn) == FALSE) &&
 		(RTProperties::can_be_compiled(prn))) {

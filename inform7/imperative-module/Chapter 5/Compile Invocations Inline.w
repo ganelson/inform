@@ -691,21 +691,21 @@ proposition.
 @<Inline command "next-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_inc_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_inc_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "previous-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_dec_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_dec_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "printing-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -715,7 +715,7 @@ proposition.
 	if ((Kinds::eq(K, K_number)) ||
 		(Kinds::eq(K, K_time)))
 		EmitCode::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
-	else if (K) EmitCode::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
+	else if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_ranger_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -1221,7 +1221,7 @@ result would be the same without the optimisation.
 	if (Kinds::eq(K, K_number)) @<Inline say number@>;
 	if (Kinds::eq(K, K_unicode_character)) @<Inline say unicode character@>;
 	if (K) {
-		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::call(RTKindConstructors::get_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
 		EmitCode::up();
@@ -1243,7 +1243,7 @@ result would be the same without the optimisation.
 		EmitCode::up();
 	} else {
 		kind *K = Specifications::to_kind(to_say);
-		EmitCode::call(Kinds::Behaviour::get_iname(K));
+		EmitCode::call(RTKindConstructors::get_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
 		EmitCode::up();

@@ -238,24 +238,6 @@ int Kinds::Behaviour::get_constant_compilation_method(kind *K) {
 	return K->construct->constant_compilation_method;
 }
 
-@ The following is used only when the kind has named instances.
-
-=
-int Kinds::Behaviour::get_highest_valid_value_as_integer(kind *K) {
-	if (K == NULL) return 0;
-	kind_constructor *con = K->construct;
-	#ifdef CORE_MODULE
-	if (con == CON_activity) return NUMBER_CREATED(activity);
-	if (con == Kinds::get_construct(K_equation)) return NUMBER_CREATED(equation);
-	if (con == CON_rule) return NUMBER_CREATED(booking);
-	if (con == CON_rulebook) return NUMBER_CREATED(rulebook);
-	if (con == Kinds::get_construct(K_table)) return NUMBER_CREATED(table) + 1;
-	if (con == Kinds::get_construct(K_use_option)) return NUMBER_CREATED(use_option);
-	if (con == Kinds::get_construct(K_response)) return NUMBER_CREATED(response_message);
-	#endif
-	return con->next_free_value - 1;
-}
-
 @h (G) Performing arithmetic.
 Comparisons made by calling an I6 routine are slower in the VM than using the
 standard |<| or |>| operators for signed comparison, so we use them only if
@@ -275,12 +257,6 @@ text_stream *Kinds::Behaviour::get_comparison_routine(kind *K) {
 	if (Str::eq_wide_string(K->construct->comparison_routine, L"signed")) return NULL;
 	return K->construct->comparison_routine;
 }
-
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_comparison_routine_as_iname(kind *K) {
-	return Produce::find_by_name(Emit::tree(), Kinds::Behaviour::get_comparison_routine(K));
-}
-#endif
 
 @ See "Dimensions.w" for a full account of these ideas. In theory, our
 polymorphic system of arithmetic allows us to add or multiply any kinds
@@ -348,16 +324,6 @@ void Kinds::Behaviour::write_support_routine_name(OUTPUT_STREAM, kind *K) {
 	WRITE("%S_Support", K->construct->name_in_template_code);
 }
 
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_support_routine_as_iname(kind *K) {
-	TEMPORARY_TEXT(N)
-	Kinds::Behaviour::write_support_routine_name(N, K);
-	inter_name *iname = Produce::find_by_name(Emit::tree(), N);
-	DISCARD_TEXT(N)
-	return iname;
-}
-#endif
-
 @h (I) Storing values at run-time.
 Recall that values are stored at run-time either as "word values" -- a
 single I6 word -- or "pointer values" (sometimes "block values"), where
@@ -398,14 +364,6 @@ text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 	return K->construct->distinguishing_routine;
 }
 
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_distinguisher_as_iname(kind *K) {
-	text_stream *N = Kinds::Behaviour::get_distinguisher(K);
-	if (N == NULL) return NULL;
-	return Produce::find_by_name(Emit::tree(), N);
-}
-#endif
-
 @ Can values of this kind be serialised out to a file and read back in again
 by some other Inform story file, or by this one running on a different day?
 
@@ -414,205 +372,6 @@ int Kinds::Behaviour::can_exchange(kind *K) {
 	if (K == NULL) return FALSE;
 	return K->construct->can_exchange;
 }
-
-@h (J) Printing and parsing values at run-time.
-Each kind can provide its own I6 routine to print out a value onto screen,
-in some human-readable format.
-
-=
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_iname(kind *K) {
-	if (K == NULL) {
-		if (K_number) return Kinds::Behaviour::get_iname(K_number);
-		internal_error("null kind has no printing routine");
-	}
-	if (K->construct->pr_iname) return K->construct->pr_iname;
-
-	if (Kinds::eq(K, K_use_option)) {
-		K->construct->pr_iname = Hierarchy::find(PRINT_USE_OPTION_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_table))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_TABLE_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_rulebook_outcome))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_RULEBOOK_OUTCOME_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_response))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_RESPONSE_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_figure_name))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_FIGURE_NAME_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_sound_name))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_SOUND_NAME_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_external_file))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_EXTERNAL_FILE_NAME_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-	if (Kinds::eq(K, K_scene))  {
-		K->construct->pr_iname = Hierarchy::find(PRINT_SCENE_HL);
-		Hierarchy::make_available(K->construct->pr_iname);
-		return K->construct->pr_iname;
-	}
-
-	package_request *R = NULL;
-	int external = TRUE;
-	if ((Kinds::get_construct(K) == CON_rule) ||
-		(Kinds::get_construct(K) == CON_rulebook)) external = TRUE;
-	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		R = Kinds::Behaviour::package(K); external = FALSE;
-	}
-	text_stream *X = K->construct->print_identifier;
-	if (Kinds::Behaviour::is_quasinumerical(K)) {
-		R = Kinds::Behaviour::package(K); external = FALSE;
-	}
-	if (Kinds::eq(K, K_time)) external = TRUE;
-	if (Kinds::eq(K, K_number)) external = TRUE;
-	if (Kinds::eq(K, K_real_number)) external = TRUE;
-	if (Str::len(X) == 0) X = I"DecimalNumber";
-
-	if (R) {
-		if (external) {
-			K->construct->pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
-			inter_name *actual_iname = Produce::find_by_name(Emit::tree(), X);
-			Emit::iname_constant(K->construct->pr_iname, K_value, actual_iname);
-		} else internal_error("internal but unknown kind printing routine");
-	} else {
-		if (external) K->construct->pr_iname = Produce::find_by_name(Emit::tree(), X);
-		else internal_error("internal but unpackaged kind printing routine");
-	}
-	return K->construct->pr_iname;
-}
-package_request *Kinds::Behaviour::package(kind *K) {
-	return Kinds::Constructors::package(K->construct);
-}
-inter_name *Kinds::Behaviour::get_inc_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no inc routine");
-	if (K->construct->inc_iname) return K->construct->inc_iname;
-	package_request *R = Kinds::Behaviour::package(K);
-	K->construct->inc_iname = Hierarchy::make_iname_in(DECREMENT_FN_HL, R);
-	return K->construct->inc_iname;
-}
-inter_name *Kinds::Behaviour::get_dec_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no dec routine");
-	if (K->construct->dec_iname) return K->construct->dec_iname;
-	package_request *R = Kinds::Behaviour::package(K);
-	K->construct->dec_iname = Hierarchy::make_iname_in(INCREMENT_FN_HL, R);
-	return K->construct->dec_iname;
-}
-inter_name *Kinds::Behaviour::get_ranger_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no ranger fn");
-	if (K->construct->ranger_iname) return K->construct->ranger_iname;
-	package_request *R = Kinds::Behaviour::package(K);
-	K->construct->ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
-	return K->construct->ranger_iname;
-}
-inter_name *Kinds::Behaviour::get_mkdef_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no mkdef fn");
-	if (K->construct->mkdef_iname) return K->construct->mkdef_iname;
-	package_request *R = Kinds::Behaviour::package(K);
-	K->construct->mkdef_iname = Hierarchy::make_iname_in(MKDEF_FN_HL, R);
-	return K->construct->mkdef_iname;
-}
-inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
-	if (K == NULL) K = K_number;
-	if (K->construct->trace_iname) return K->construct->trace_iname;
-	if (Str::len(K->construct->ACTIONS_identifier) > 0)
-		K->construct->trace_iname = 
-			Produce::find_by_name(Emit::tree(), K->construct->ACTIONS_identifier);
-	else
-		K->construct->trace_iname =
-			Produce::find_by_name(Emit::tree(), I"DA_Name");
-	return K->construct->trace_iname;
-}
-#endif
-
-@ Moving on to understanding: some kinds can be used as tokens in Understand
-sentences, others can't. Thus "[time]" is a valid Understand token, but
-"[stored action]" is not.
-
-Some kinds provide have a GPR ("general parsing routine", an I6 piece of
-jargon) defined in some Inter kit: if so, this returns the GPR's name; if
-not, it returns |NULL|.
-
-=
-text_stream *Kinds::Behaviour::get_explicit_I6_GPR(kind *K) {
-	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	return K->construct->explicit_GPR_identifier;
-}
-
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
-	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	if (Str::len(K->construct->explicit_GPR_identifier) > 0)
-		return Produce::find_by_name(Emit::tree(), K->construct->explicit_GPR_identifier);
-	return NULL;
-}
-#endif
-
-@ Can the kind have a GPR of any kind in the final code?
-
-=
-int Kinds::Behaviour::offers_I6_GPR(kind *K) {
-	if (K == NULL) return FALSE;
-	return Kinds::Constructors::offers_I6_GPR(K->construct);
-}
-
-@ Request that a GPR be compiled for this kind; the return value tell us whether
-this will be allowed or not.
-
-=
-int Kinds::Behaviour::request_I6_GPR(kind *K) {
-	if (Kinds::Behaviour::offers_I6_GPR(K) == FALSE) return FALSE; /* can't oblige */
-	#ifdef CORE_MODULE
-	if (K->construct->needs_GPR == FALSE) {
-		text_stream *desc = Str::new();
-		WRITE_TO(desc, "GPR for kind %u", K);
-		Sequence::queue(&UnderstandValueTokens::agent, STORE_POINTER_kind(K), desc);
-	}
-	#endif
-	K->construct->needs_GPR = TRUE; /* make note to oblige later */
-	return TRUE;
-}
-
-@ Do we need to compile a GPR of our own for this kind?
-
-=
-int Kinds::Behaviour::needs_I6_GPR(kind *K) {
-	if (K == NULL) return FALSE;
-	return K->construct->needs_GPR;
-}
-
-@ A recognition-only GPR is used for matching specific data in the course of
-parsing names of objects, but not as a grammar token in its own right.
-
-=
-text_stream *Kinds::Behaviour::get_recognition_only_GPR(kind *K) {
-	if (K == NULL) return NULL;
-	return K->construct->recognition_routine;
-}
-
-#ifdef CORE_MODULE
-inter_name *Kinds::Behaviour::get_recognition_only_GPR_as_iname(kind *K) {
-	text_stream *N = Kinds::Behaviour::get_recognition_only_GPR(K);
-	if (N == NULL) return NULL;
-	return Produce::find_by_name(Emit::tree(), N);
-}
-#endif
 
 @h (K) Indexing and documentation.
 

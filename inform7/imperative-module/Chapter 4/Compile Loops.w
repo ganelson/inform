@@ -228,7 +228,7 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		Calculus::Schemas::modify(sch,
 			"for (*1=1: *1<=%d: *1++)",
-				Kinds::Behaviour::get_highest_valid_value_as_integer(K));
+				RTKindConstructors::get_highest_valid_value_as_integer(K));
 		return TRUE;
 	}
 	text_stream *p = K->construct->loop_domain_schema;

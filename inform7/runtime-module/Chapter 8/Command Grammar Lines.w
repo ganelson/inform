@@ -1254,8 +1254,8 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 		if ((K_understanding) &&
 			(Kinds::Behaviour::is_object(K) == FALSE) &&
 			(Kinds::eq(K, K_understanding) == FALSE)) {
-			if (Kinds::Behaviour::offers_I6_GPR(K)) {
-				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
+			if (RTKindConstructors::offers_I6_GPR(K)) {
+				text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
 				if (code_mode) {
 					EmitCode::inv(STORE_BIP);
 					EmitCode::down();
@@ -1266,7 +1266,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							if (Str::len(i6_gpr_name) > 0)
 								EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								EmitCode::val_iname(K_value, RTKinds::get_kind_GPR_iname(K));
+								EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
 						EmitCode::up();
 					EmitCode::up();
 					EmitCode::inv(IF_BIP);
@@ -1287,7 +1287,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 					if (Str::len(i6_gpr_name) > 0)
 						EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 					else
-						EmitArrays::iname_entry(RTKinds::get_kind_GPR_iname(K));
+						EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
 				}
 				return K;
 			}
@@ -1378,8 +1378,8 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 						UnderstandFilterTokens::emit_id(cgt->noun_filter);
 					}
 				} else {
-					if (Kinds::Behaviour::offers_I6_GPR(K)) {
-						text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
+					if (RTKindConstructors::offers_I6_GPR(K)) {
+						text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
 						if (code_mode) {
 							EmitCode::inv(STORE_BIP);
 							EmitCode::down();
@@ -1390,7 +1390,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 									if (Str::len(i6_gpr_name) > 0)
 										EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 									else
-										EmitCode::val_iname(K_value, RTKinds::get_kind_GPR_iname(K));
+										EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
 								EmitCode::up();
 							EmitCode::up();
 							EmitCode::inv(IF_BIP);
@@ -1411,7 +1411,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							if (Str::len(i6_gpr_name) > 0)
 								EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								EmitArrays::iname_entry(RTKinds::get_kind_GPR_iname(K));
+								EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
 						}
 					} else if (Kinds::Behaviour::is_object(K)) {
 						if (code_mode) {

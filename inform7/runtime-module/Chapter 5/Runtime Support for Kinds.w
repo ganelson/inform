@@ -404,10 +404,10 @@ Weak IDs have already appeared:
 
 =
 inter_name *RTKinds::weak_id_iname(kind *K) {
-	if (K == NULL) { return Kinds::Constructors::UNKNOWN_iname(); }
+	if (K == NULL) { return RTKindConstructors::UNKNOWN_iname(); }
 	if (Kinds::Behaviour::is_subkind_of_object(K)) K = K_object;
 	kind_constructor *con = Kinds::get_construct(K);
-	inter_name *iname = Kinds::Constructors::iname(con);
+	inter_name *iname = RTKindConstructors::iname(con);
 	if (iname) return iname;
 	LOG("%u has no weak ID iname\n", K);
 	internal_error("kind has no weak ID iname");
@@ -586,29 +586,6 @@ int RTKinds::precompile_default_value(kind *K) {
 	rks->make_default = TRUE;
 	if (rks->default_requested_here == NULL) rks->default_requested_here = current_sentence;
 	return TRUE;
-}
-
-@ Convenient storage for some names.
-
-=
-inter_name *RTKinds::get_kind_GPR_iname(kind *K) {
-	if (K == NULL) return NULL;
-	kind_constructor *con = Kinds::get_construct(K);
-	if (con->kind_GPR_iname == NULL) {
-		package_request *R = Kinds::Behaviour::package(K);
-		con->kind_GPR_iname = Hierarchy::make_iname_in(GPR_FN_HL, R);
-	}
-	return con->kind_GPR_iname;
-}
-
-inter_name *RTKinds::get_instance_GPR_iname(kind *K) {
-	if (K == NULL) return NULL;
-	kind_constructor *con = Kinds::get_construct(K);
-	if (con->instance_GPR_iname == NULL) {
-		package_request *R = Kinds::Behaviour::package(K);
-		con->instance_GPR_iname = Hierarchy::make_iname_in(INSTANCE_GPR_FN_HL, R);
-	}
-	return con->instance_GPR_iname;
 }
 
 @ At the end of Inform's run, then, we have seen various interesting kinds
@@ -973,7 +950,7 @@ inter_name *RTKinds::assure_iname_exists(kind *K) {
 }
 
 inter_name *RTKinds::constructed_kind_name(kind *K) {
-	package_request *R2 = Kinds::Behaviour::package(K);
+	package_request *R2 = RTKindConstructors::kind_package(K);
 	TEMPORARY_TEXT(KT)
 	Kinds::Textual::write(KT, K);
 	wording W = Feeds::feed_text(KT);
@@ -1033,7 +1010,7 @@ void RTKinds::compile_instance_counts(void) {
 				Str::put(pos, Characters::toupper(Str::get(pos)));
 				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 			}
-			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ICN), Kinds::Behaviour::package(K));
+			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
 			Hierarchy::make_available(iname);
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
@@ -1050,7 +1027,8 @@ void RTKinds::compile_data_type_support_routines(void) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::stored_as(K) == NULL)
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+				inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 				@<Compile I6 printing routine for an enumerated kind@>;
 				@<Compile the A and B routines for an enumerated kind@>;
 				@<Compile random-ranger routine for this kind@>;
@@ -1061,7 +1039,8 @@ void RTKinds::compile_data_type_support_routines(void) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) continue;
 		if (Kinds::eq(K, K_use_option)) {
-			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 			packaging_state save = Functions::begin(printing_rule_name);
 			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 			EmitCode::call(Hierarchy::find(PRINT_USE_OPTION_HL));
@@ -1072,7 +1051,8 @@ void RTKinds::compile_data_type_support_routines(void) {
 			continue;
 		}
 		if (Kinds::eq(K, K_table)) {
-			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 			packaging_state save = Functions::begin(printing_rule_name);
 			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 			EmitCode::call(Hierarchy::find(PRINT_TABLE_HL));
@@ -1083,7 +1063,8 @@ void RTKinds::compile_data_type_support_routines(void) {
 			continue;
 		}
 		if (Kinds::eq(K, K_response)) {
-			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 			packaging_state save = Functions::begin(printing_rule_name);
 			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 			EmitCode::call(Hierarchy::find(PRINT_RESPONSE_HL));
@@ -1094,11 +1075,13 @@ void RTKinds::compile_data_type_support_routines(void) {
 			continue;
 		}
 		if (Kinds::Behaviour::stored_as(K) == NULL) {
-			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
 			if (Kinds::Behaviour::is_quasinumerical(K)) {
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 				@<Compile I6 printing routine for a unit kind@>;
 				@<Compile random-ranger routine for this kind@>;
 			} else {
+LOG("Compiling for %u: %n\n", K, printing_rule_name);
 				@<Compile I6 printing routine for a vacant but named kind@>;
 			}
 		}
@@ -1211,12 +1194,12 @@ to |A_T1_colour(v)|.
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) instance_count++;
 
-	inter_name *iname_i = Kinds::Behaviour::get_inc_iname(K);
+	inter_name *iname_i = RTKindConstructors::get_inc_iname(K);
 	packaging_state save = Functions::begin(iname_i);
 	@<Implement the A routine@>;
 	Functions::end(save);
 
-	inter_name *iname_d = Kinds::Behaviour::get_dec_iname(K);
+	inter_name *iname_d = RTKindConstructors::get_dec_iname(K);
 	save = Functions::begin(iname_d);
 	@<Implement the B routine@>;
 	Functions::end(save);
@@ -1308,7 +1291,7 @@ value, which will probably not be useful.)
 and |b| inclusive.
 
 @<Compile random-ranger routine for this kind@> =
-	inter_name *iname_r = Kinds::Behaviour::get_ranger_iname(K);
+	inter_name *iname_r = RTKindConstructors::get_ranger_iname(K);
 	packaging_state save = Functions::begin(iname_r);
 	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
 	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
@@ -1337,7 +1320,7 @@ and |b| inclusive.
 					if (Kinds::Behaviour::is_quasinumerical(K))
 						EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 					else
-						EmitCode::val_number((inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
+						EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
@@ -1452,52 +1435,52 @@ void RTKinds::compile_metadata(void) {
 	LOOP_OVER_BASE_KINDS(K) {
 		TEMPORARY_TEXT(S)
 		WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
-		Hierarchy::apply_metadata(Kinds::Behaviour::package(K),
+		Hierarchy::apply_metadata(RTKindConstructors::kind_package(K),
 			KIND_PNAME_MD_HL, S);
 		DISCARD_TEXT(S)
-		Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+		Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 			KIND_IS_BASE_MD_HL, 1);
 		if (Kinds::Behaviour::is_object(K)) {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_OBJECT_MD_HL, 1);
 		} else {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_OBJECT_MD_HL, 0);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_SKOO_MD_HL, 1);
 		} else {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_SKOO_MD_HL, 0);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 				KIND_CLASS_MD_HL, RTKinds::I6_classname(K));
 		}
 		if (Kinds::Behaviour::definite(K)) {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_DEF_MD_HL, 1);
 		} else {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_IS_DEF_MD_HL, 0);
 		}		
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_HAS_BV_MD_HL, 1);
 		} else {
-			Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 				KIND_HAS_BV_MD_HL, 0);
 		}		
 		kind_constructor *con = Kinds::get_construct(K);
-		inter_name *weak_iname = Kinds::Constructors::iname(con);
+		inter_name *weak_iname = RTKindConstructors::iname(con);
 		if (weak_iname == NULL) internal_error("no iname for weak ID");
-		Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+		Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 			KIND_WEAK_ID_MD_HL, weak_iname);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			inter_name *sf_iname = Kinds::Behaviour::get_support_routine_as_iname(K);
+			inter_name *sf_iname = RTKindConstructors::get_support_fn_iname(K);
 			if (sf_iname)
-				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 					KIND_SUPPORT_FN_MD_HL, sf_iname);
 			else internal_error("kind with block values but no support function");
 		}
@@ -1505,28 +1488,28 @@ void RTKinds::compile_metadata(void) {
 		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
 			(Kinds::Behaviour::definite(K)) &&
 			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
-			inter_name *cf_iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
+			inter_name *cf_iname = RTKindConstructors::get_comparison_fn_iname(K);
 			if (cf_iname)
-				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 					KIND_CMP_FN_MD_HL, cf_iname);
 			else internal_error("kind with no comparison function");
 		}
 		if (Kinds::Behaviour::definite(K)) {
-			inter_name *mkdef_iname = Kinds::Behaviour::get_mkdef_iname(K);
-			Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(K);
+			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 				KIND_MKDEF_FN_MD_HL, mkdef_iname);
 		}
 		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
-			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
 			if (printing_rule_name)
-				Hierarchy::apply_metadata_from_iname(Kinds::Behaviour::package(K),
+				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
 					KIND_PRINT_FN_MD_HL, printing_rule_name);
 		}
 		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
 			(Kinds::Behaviour::is_an_enumeration(K)))
-				Hierarchy::apply_metadata_from_number(Kinds::Behaviour::package(K),
+				Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
 					KIND_DSIZE_MD_HL,
-					(inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
+					(inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
 	}
 }
 
@@ -1534,7 +1517,7 @@ void RTKinds::compile_mkdef_functions(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::definite(K)) {
-			inter_name *mkdef_iname = Kinds::Behaviour::get_mkdef_iname(K);
+			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(K);
 			packaging_state save = Functions::begin(mkdef_iname);
 			inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
 			EmitCode::inv(RETURN_BIP);

@@ -1390,18 +1390,18 @@ exotic, but which are locations not easily falling into patterns. Here they are:
 =
 package_request *Hierarchy::exotic_package(int x) {
 	switch (x) {
-		case K_OBJECT_XPACKAGE:           return Kinds::Behaviour::package(K_object);
-		case K_NUMBER_XPACKAGE:           return Kinds::Behaviour::package(K_number);
-		case K_TIME_XPACKAGE:             return Kinds::Behaviour::package(K_time);
-		case K_TRUTH_STATE_XPACKAGE:      return Kinds::Behaviour::package(K_truth_state);
-		case K_TABLE_XPACKAGE:            return Kinds::Behaviour::package(K_table);
-		case K_FIGURE_NAME_XPACKAGE:      return Kinds::Behaviour::package(K_figure_name);
-		case K_SOUND_NAME_XPACKAGE:       return Kinds::Behaviour::package(K_sound_name);
-		case K_USE_OPTION_XPACKAGE:       return Kinds::Behaviour::package(K_use_option);
-		case K_EXTERNAL_FILE_XPACKAGE:    return Kinds::Behaviour::package(K_external_file);
-		case K_RULEBOOK_OUTCOME_XPACKAGE: return Kinds::Behaviour::package(K_rulebook_outcome);
-		case K_RESPONSE_XPACKAGE:         return Kinds::Behaviour::package(K_response);
-		case K_SCENE_XPACKAGE:            return Kinds::Behaviour::package(K_scene);
+		case K_OBJECT_XPACKAGE:           return RTKindConstructors::kind_package(K_object);
+		case K_NUMBER_XPACKAGE:           return RTKindConstructors::kind_package(K_number);
+		case K_TIME_XPACKAGE:             return RTKindConstructors::kind_package(K_time);
+		case K_TRUTH_STATE_XPACKAGE:      return RTKindConstructors::kind_package(K_truth_state);
+		case K_TABLE_XPACKAGE:            return RTKindConstructors::kind_package(K_table);
+		case K_FIGURE_NAME_XPACKAGE:      return RTKindConstructors::kind_package(K_figure_name);
+		case K_SOUND_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_sound_name);
+		case K_USE_OPTION_XPACKAGE:       return RTKindConstructors::kind_package(K_use_option);
+		case K_EXTERNAL_FILE_XPACKAGE:    return RTKindConstructors::kind_package(K_external_file);
+		case K_RULEBOOK_OUTCOME_XPACKAGE: return RTKindConstructors::kind_package(K_rulebook_outcome);
+		case K_RESPONSE_XPACKAGE:         return RTKindConstructors::kind_package(K_response);
+		case K_SCENE_XPACKAGE:            return RTKindConstructors::kind_package(K_scene);
 	}
 	internal_error("unknown exotic package");
 	return NULL;
