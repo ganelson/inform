@@ -101,19 +101,19 @@ kind *Latticework::super(kind *K) {
 	kind *S = HIERARCHY_GET_SUPER_KINDS_CALLBACK(K);
 	if (S) return S;
 	#endif
-	if (Kinds::Constructors::compatible(K->construct, K_real_arithmetic_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_real_arithmetic_value->construct, FALSE))
 		return K_real_arithmetic_value;
-	if (Kinds::Constructors::compatible(K->construct, K_enumerated_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_enumerated_value->construct, FALSE))
 		return K_enumerated_value;
-	if (Kinds::Constructors::compatible(K->construct, K_arithmetic_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_arithmetic_value->construct, FALSE))
 		return K_arithmetic_value;
-	if (Kinds::Constructors::compatible(K->construct, K_pointer_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_pointer_value->construct, FALSE))
 		return K_pointer_value;
-	if (Kinds::Constructors::compatible(K->construct, K_understandable_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_understandable_value->construct, FALSE))
 		return K_understandable_value;
-	if (Kinds::Constructors::compatible(K->construct, K_sayable_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_sayable_value->construct, FALSE))
 		return K_sayable_value;
-	if (Kinds::Constructors::compatible(K->construct, K_stored_value->construct, FALSE))
+	if (KindConstructors::compatible(K->construct, K_stored_value->construct, FALSE))
 		return K_stored_value;
 	return K_value;
 }
@@ -143,8 +143,8 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 	if (K1 == NULL) return K2;
 	if (K2 == NULL) return K1;
 	kind_constructor *con = K1->construct;
-	int a1 = Kinds::Constructors::arity(con);
-	int a2 = Kinds::Constructors::arity(K2->construct);
+	int a1 = KindConstructors::arity(con);
+	int a2 = KindConstructors::arity(K2->construct);
 	if ((a1 > 0) || (a2 > 0)) {
 		if (K2->construct != con) return K_value;
 		kind *ka[MAX_KIND_CONSTRUCTION_ARITY];
@@ -323,15 +323,15 @@ and, of course, "value".
 	if ((to == NULL) || (from == NULL)) return NEVER_MATCH;
 
 @<The general case of compatibility@> =
-	int f_a = Kinds::Constructors::arity(from->construct);
-	int t_a = Kinds::Constructors::arity(to->construct);
+	int f_a = KindConstructors::arity(from->construct);
+	int t_a = KindConstructors::arity(to->construct);
 	int arity = (f_a < t_a)?f_a:t_a;
 	int o = ALWAYS_MATCH;
 	if (from->construct != to->construct)
 		o = Latticework::construct_compatible(from, to, allow_casts);
 	int i, this_o = NEVER_MATCH, fallen = FALSE;
 	for (i=0; i<arity; i++) {
-		if (Kinds::Constructors::variance(from->construct, i) == COVARIANT)
+		if (KindConstructors::variance(from->construct, i) == COVARIANT)
 			this_o = Latticework::order_relation(from->kc_args[i], to->kc_args[i], allow_casts);
 		else {
 			this_o = Latticework::order_relation(to->kc_args[i], from->kc_args[i], allow_casts);
@@ -351,7 +351,7 @@ int Latticework::construct_compatible(kind *from, kind *to, int allow_casts) {
 		if (Kinds::eq(K, to)) return ALWAYS_MATCH;
 		K = Latticework::super(K);
 	}
-	if ((allow_casts) && (Kinds::Constructors::find_cast(from->construct, to->construct)))
+	if ((allow_casts) && (KindConstructors::find_cast(from->construct, to->construct)))
 		return ALWAYS_MATCH;
 	K = to;
 	while (K) {

@@ -3,21 +3,6 @@
 To compile I6 material needed at runtime to enable kinds
 to function as they should.
 
-@ In order to be able to give a reasonably complete description of a kind of
-value at run-time, we need to store small data structures describing them,
-and the following keeps track of which ones we need to make:
-
-=
-typedef struct runtime_kind_structure {
-	struct kind *kind_described;
-	struct parse_node *default_requested_here;
-	int make_default;
-	struct package_request *rks_package;
-	struct inter_name *rks_iname;
-	struct inter_name *rks_dv_iname;
-	CLASS_DEFINITION
-} runtime_kind_structure;
-
 @h Kinds as tables.
 
 =
@@ -103,7 +88,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			inter_name *N = ListLiterals::small_block(RTKinds::compile_default_value_inner(K));
+			inter_name *N = ListLiterals::small_block(RTKindIDs::compile_default_value_inner(K));
 			if (N) Emit::holster_iname(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
 			inter_name *N = StoredActionLiterals::default();
@@ -112,7 +97,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			inter_name *N = RelationLiterals::default(K);
 			Emit::holster_iname(VH, N);
 		} else {
-			inter_name *N = RTKinds::compile_default_value_inner(K);
+			inter_name *N = RTKindIDs::compile_default_value_inner(K);
 			if (N) Emit::holster_iname(VH, N);
 		}
 		return TRUE;
@@ -121,7 +106,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 	if ((Kinds::get_construct(K) == CON_list_of) ||
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
-		inter_name *N = RTKinds::compile_default_value_inner(K);
+		inter_name *N = RTKindIDs::compile_default_value_inner(K);
 		if (N) Emit::holster_iname(VH, N);
 		return TRUE;
 	}
@@ -216,7 +201,6 @@ absence of rooms would otherwise result in.
 =
 void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (K == NULL) return;
-	if (K->construct->stored_as) K = K->construct->stored_as;
 
 	if (Kinds::eq(K, K_object)) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
 
@@ -307,14 +291,14 @@ text_stream *RTKinds::interpret_test_equality(kind *left, kind *right) {
 	kind_constructor_comparison_schema *dtcs;
 	for (dtcs = L->first_comparison_schema; dtcs; dtcs = dtcs->next_comparison_schema) {
 		if (Str::len(dtcs->comparator_unparsed) > 0) {
-			dtcs->comparator = Kinds::Constructors::parse(dtcs->comparator_unparsed);
+			dtcs->comparator = KindConstructors::parse(dtcs->comparator_unparsed);
 			Str::clear(dtcs->comparator_unparsed);
 		}
 		if (R == dtcs->comparator) return dtcs->comparison_schema;
 	}
 
-	if (Kinds::Constructors::uses_pointer_values(L)) {
-		if (Kinds::Constructors::allow_word_as_pointer(L, R)) {
+	if (KindConstructors::uses_pointer_values(L)) {
+		if (KindConstructors::allow_word_as_pointer(L, R)) {
 			local_block_value *pall =
 				Frames::allocate_local_block_value(Kinds::base_construction(L));
 			text_stream *promotion = Str::new();
@@ -349,7 +333,7 @@ int RTKinds::cast_possible(kind *from, kind *to) {
 @ =
 int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 	if (RTKinds::cast_possible(from, to)) {
-		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
+		if (Str::len(Kinds::Behaviour::get_identifier(to)) == 0) {
 			return TRUE;
 		}
 		if ((Kinds::FloatingPoint::uses_floating_point(from)) &&
@@ -358,8 +342,8 @@ int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 		}
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "%S_to_%S",
-			Kinds::Behaviour::get_name_in_template_code(from),
-			Kinds::Behaviour::get_name_in_template_code(to));
+			Kinds::Behaviour::get_identifier(from),
+			Kinds::Behaviour::get_identifier(to));
 		inter_name *iname = Produce::find_by_name(Emit::tree(), N);
 		DISCARD_TEXT(N)
 		EmitCode::call(iname);
@@ -372,333 +356,6 @@ int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 	}
 	return FALSE;
 }
-
-@h IDs.
-Sometimes a kind has to be stored as an I6 integer value at run-time. I6 is
-typeless, so some of the routines and data structures in the I6 template need
-these integer values to tell them what they are looking at. For instance, the
-|ActionData| table records the kinds of the noun and second noun to which an
-action applies.
-
-We have two forms of description: strong and weak. Strong IDs really do
-uniquely identify kinds, and thus distinguish "list of lists of texts" from
-"list of numbers". Weak IDs are defined by:
-
-Dogma. If a value $v$ has kind $K$, and we want to use it as a value
-of kind $W$, then
-(a) if $K$ and $W$ have different weak IDs then this is impossible;
-(b) if they have equal weak IDs then run-time code can tell from $v$ alone
-whether this is possible.
-
-For instance, all objects have the same weak ID, but we can distinguish kinds
-like "vehicle" by a test like |(v ofclass K27_vehicle)|; all lists have the
-same weak ID, but the block of data for a list on the heap contains the strong
-ID for the kind of list entries, so we can always find out dynamically what
-sort of list it is.
-
-(Intermediate kinds do not conform to Dogma, but this does not matter,
-because they are made to order and are never assigned to storage objects
-like variables. That's what makes them intermediate.)
-
-Weak IDs have already appeared:
-
-=
-inter_name *RTKinds::weak_id_iname(kind *K) {
-	if (K == NULL) { return RTKindConstructors::UNKNOWN_iname(); }
-	if (Kinds::Behaviour::is_subkind_of_object(K)) K = K_object;
-	kind_constructor *con = Kinds::get_construct(K);
-	inter_name *iname = RTKindConstructors::iname(con);
-	if (iname) return iname;
-	LOG("%u has no weak ID iname\n", K);
-	internal_error("kind has no weak ID iname");
-	return NULL;
-}
-
-@ And the following compiles an easier-on-the-eye form of the weak ID, but
-which might occupy up to 31 characters, the maximum length of an I6 identifier:
-
-=
-void RTKinds::write_weak_id(OUTPUT_STREAM, kind *K) {
-	if (K == NULL) { WRITE("UNKNOWN_TY"); return; }
-	WRITE("%n", RTKinds::weak_id_iname(K));
-}
-
-void RTKinds::emit_weak_id(kind *K) {
-	EmitArrays::iname_entry(RTKinds::weak_id_iname(K));
-}
-
-void RTKinds::emit_weak_id_as_val(kind *K) {
-	if (K == NULL) internal_error("cannot emit null kind as val");
-	EmitCode::val_iname(K_value, RTKinds::weak_id_iname(K));
-}
-
-@ The strong ID is a faithful representation of the |kind| structure,
-so we don't need access to its value for comparison purposes; we just need
-to be able to compile it.
-
-Clearly a single 16-bit integer isn't enough to represent the full range of
-kinds. We could get closer to this if we used a trick like the one attributed to
-Ritchie and Johnson in chapter 6.3 of the Dragon book (Aho, Sethi and Ullman,
-"Compilers", 1986), where lower bits of a word store the base kind for the
-underlying data and upper bits record constructors applied to this.
-
-But instead we exploit the fact that integers and addresses are interchangeable
-in I6. If a strong ID value |t| is in the range $1\leq t<H$, where $H$ is the
-constant |BASE_KIND_HWM|, then it's an ID number in its own right. If not, it's
-a pointer to a small array in memory: |t-->0| is the weak ID; |t-->1| is the
-arity of the construction, which must be greater than 0 since otherwise we
-wouldn't need the pointer; and |t-->2| and subsequent represent strong IDs
-for the kinds constructed on. A simplification is that tuples are converted
-out of their binary-tree structure into a flat list, which means that the
-arity can be arbitrarily large and is not always 1 or 2.
-
-For example, for a base kind like "number", the strong ID is the same as
-the weak ID; both in this case will be equal to the compiled I6 constant |NUMBER_TY|.
-But for a construction like "list of texts", the strong ID is a pointer to
-the array |LIST_OF_TY 1 TEXT_TY|.
-
-@ Strong IDs are a superset of weak IDs for base kinds like "number", but not
-for constructions like "list of numbers", where the strong and weak IDs are
-different values at run-time. The following general code is sufficient to turn a
-strong ID into a weak one:
-= (text as Inform 6)
-	if ((strong >= 0) && (strong < BASE_KIND_HWM)) weak = strong;
-	else weak = strong-->0;
-=
-We must be careful with comparisons because a strong ID may be numerically
-negative if it's a pointer into the upper half of virtual machine memory.
-
-@ In order to make sure each distinct kind has a unique strong ID, we must
-ensure that we always point to the same array every time the same construction
-turns up. This means remembering everything we've seen, using a new structure:
-
-=
-void RTKinds::emit_strong_id(kind *K) {
-	runtime_kind_structure *rks = RTKinds::get_rks(K);
-	if (rks) {
-		EmitArrays::iname_entry(rks->rks_iname);
-	} else {
-		RTKinds::emit_weak_id(K);
-	}
-}
-
-void RTKinds::emit_strong_id_as_val(kind *K) {
-	runtime_kind_structure *rks = RTKinds::get_rks(K);
-	if (rks) {
-		EmitCode::val_iname(K_value, rks->rks_iname);
-	} else {
-		RTKinds::emit_weak_id_as_val(K);
-	}
-}
-
-void RTKinds::constant_from_strong_id(inter_name *iname, kind *K) {
-	runtime_kind_structure *rks = RTKinds::get_rks(K);
-	if (rks) {
-		Emit::iname_constant(iname, K_value, rks->rks_iname);
-		return;
-	}
-	Emit::iname_constant(iname, K_value, RTKinds::weak_id_iname(K));
-}
-
-@ Thus the following routine must return |NULL| if $K$ is a kind whose weak
-ID is the same as its strong ID -- if it's a base kind, in other words --
-and otherwise return a pointer to a unique |runtime_kind_structure| for $K$.
-
-Note that a |CON_TUPLE_ENTRY| node is recursed downwards through, to ensure
-that its leaves are passed through |RTKinds::get_rks|, but no RKS structure is made
-for it -- this is because none is needed, since we're going to roll up
-tuple subtrees into flat arrays. Recall that |CON_TUPLE_ENTRY| nodes are
-"punctuation", not base kinds in their own right. We can never see them
-here except as a result of recursion.
-
-=
-runtime_kind_structure *RTKinds::get_rks(kind *K) {
-	kind *divert = Kinds::Behaviour::stored_as(K);
-	if (divert) K = divert;
-	runtime_kind_structure *rks = NULL;
-	if (K) {
-		int arity = Kinds::arity_of_constructor(K);
-		if (arity > 0) {
-			if (Kinds::get_construct(K) != CON_TUPLE_ENTRY)
-				@<Find or make a runtime kind structure for the kind@>;
-			switch (arity) {
-				case 1: {
-					kind *k = Kinds::unary_construction_material(K);
-					RTKinds::get_rks(k);
-					break;
-				}
-				case 2: {
-					kind *k = NULL, *l = NULL;
-					Kinds::binary_construction_material(K, &k, &l);
-					RTKinds::get_rks(k);
-					RTKinds::get_rks(l);
-					break;
-				}
-			}
-		}
-	}
-	return rks;
-}
-
-@ The following implies a quadratic running time in the number of distinct
-constructed kinds of value seen across the source text, which may become a
-performance problem later on. But at present this number is surprisingly
-small -- often less than 10. On the principle that premature optimisation
-is the root of all evil, I'm leaving it quadratic.
-
-@<Find or make a runtime kind structure for the kind@> =
-	LOOP_OVER(rks, runtime_kind_structure)
-		if (Kinds::eq(K, rks->kind_described))
-			break;
-	if (rks == NULL) @<Create a new runtime kind ID structure@>;
-
-@ The following aims to provide helpful identifiers such as |KD7_list_of_texts|.
-Sometime it succeeds. At all events it must provide unique ones which will
-compile under Inform 6.
-
-@<Create a new runtime kind ID structure@> =
-	rks = CREATE(runtime_kind_structure);
-	rks->kind_described = K;
-	rks->make_default = FALSE;
-	rks->default_requested_here = NULL;
-	rks->rks_package = Hierarchy::local_package(DERIVED_KIND_HAP);
-	TEMPORARY_TEXT(TEMP)
-	Kinds::Textual::write(TEMP, K);
-	wording W = Feeds::feed_text(TEMP);
-	rks->rks_iname = Hierarchy::make_iname_with_memo(DK_KIND_HL, rks->rks_package, W);
-	DISCARD_TEXT(TEMP)
-	rks->rks_dv_iname = Hierarchy::make_iname_in(DK_DEFAULT_VALUE_HL, rks->rks_package);
-
-@ It's convenient to combine this system with one which constructs default
-values for kinds, since both involve tracking constructions uniquely.
-
-=
-inter_name *RTKinds::compile_default_value_inner(kind *K) {
-	RTKinds::precompile_default_value(K);
-	runtime_kind_structure *rks = RTKinds::get_rks(K);
-	if (rks == NULL) return NULL;
-	return rks->rks_dv_iname;
-}
-
-int RTKinds::precompile_default_value(kind *K) {
-	runtime_kind_structure *rks = RTKinds::get_rks(K);
-	if (rks == NULL) return FALSE;
-	rks->make_default = TRUE;
-	if (rks->default_requested_here == NULL) rks->default_requested_here = current_sentence;
-	return TRUE;
-}
-
-@ At the end of Inform's run, then, we have seen various interesting kinds
-of value and compiled pointers to arrays representing them. But we haven't
-compiled the arrays themselves; so we do that now.
-
-Because these are recursive structures -- the array for a strong ID often
-contains references to other strong ID arrays -- it may look as if there's
-a risk of further RKS structures being generated, which might make the loop
-behave oddly. But this doesn't happen because |RTKinds::get_rks| has already
-recursively scanned through for us, so that if we have seen a construction
-$K$, we have also seen its bases.
-
-=
-void RTKinds::compile_structures(void) {
-	runtime_kind_structure *rks;
-	LOOP_OVER(rks, runtime_kind_structure) {
-		kind *K = rks->kind_described;
-		@<Compile the runtime ID structure for this kind@>;
-		if (rks->make_default) @<Compile a constructed default value for this kind@>;
-	}
-	@<Annotate rks package@>;
-	@<Compile the default value finder@>;
-}
-
-@<Compile the runtime ID structure for this kind@> =
-	packaging_state save = EmitArrays::begin(rks->rks_iname, K_value);
-	RTKinds::emit_weak_id(K);
-	@<Compile the list of strong IDs for the bases@>;
-	EmitArrays::end(save);
-
-@<Compile the list of strong IDs for the bases@> =
-	int arity = Kinds::arity_of_constructor(K);
-	if (Kinds::get_construct(K) == CON_phrase) {
-		arity--;
-		kind *X = NULL, *result = NULL;
-		Kinds::binary_construction_material(K, &X, &result);
-		@<Expand out a tuple subtree into a simple array@>;
-		RTKinds::emit_strong_id(result);
-	} else if (Kinds::get_construct(K) == CON_combination) {
-		arity--;
-		kind *X = Kinds::unary_construction_material(K);
-		@<Expand out a tuple subtree into a simple array@>;
-	} else {
-		@<Expand out regular bases@>;
-	}
-
-@<Expand out regular bases@> =
-	EmitArrays::numeric_entry((inter_ti) arity);
-	switch (arity) {
-		case 1: {
-			kind *X = Kinds::unary_construction_material(K);
-			RTKinds::emit_strong_id(X);
-			break;
-		}
-		case 2: {
-			kind *X = NULL, *Y = NULL;
-			Kinds::binary_construction_material(K, &X, &Y);
-			RTKinds::emit_strong_id(X);
-			RTKinds::emit_strong_id(Y);
-			break;
-		}
-	}
-
-@<Expand out a tuple subtree into a simple array@> =
-	while (Kinds::get_construct(X) == CON_TUPLE_ENTRY) {
-		arity++;
-		Kinds::binary_construction_material(X, NULL, &X);
-	}
-	EmitArrays::numeric_entry((inter_ti) arity);
-	X = Kinds::unary_construction_material(K);
-	while (Kinds::get_construct(X) == CON_TUPLE_ENTRY) {
-		arity++;
-		kind *term = NULL;
-		Kinds::binary_construction_material(X, &term, &X);
-		RTKinds::emit_strong_id(term);
-	}
-
-@<Compile a constructed default value for this kind@> =
-	inter_name *identifier = rks->rks_dv_iname;
-	current_sentence = rks->default_requested_here;
-	if (Kinds::get_construct(K) == CON_phrase) {
-		Closures::compile_default_closure(identifier, K);
-	} else if (Kinds::get_construct(K) == CON_relation) {
-		RTRelations::default_value_of_relation_kind(identifier, K);
-	} else if (Kinds::get_construct(K) == CON_list_of) {
-		ListLiterals::default_large_block(identifier, K);
-	} else {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_kind(2, K);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-		Problems::issue_problem_segment(
-			"While working on '%1', I needed to be able to make a default value "
-			"for the kind '%2', but there's no obvious way to make one.");
-		Problems::issue_problem_end();
-	}
-
-@<Annotate rks package@> =
-	runtime_kind_structure *rks;
-	LOOP_OVER(rks, runtime_kind_structure) {
-		inter_name *md_iname = Hierarchy::make_iname_in(DK_NEEDED_MD_HL,
-			rks->rks_package);
-		if (rks->make_default) {
-			Emit::numeric_constant(md_iname, (inter_ti) 1);
-		} else {
-			Emit::numeric_constant(md_iname, (inter_ti) 0);
-		}
-		Emit::iname_constant(Hierarchy::make_iname_in(DK_STRONG_ID_HL,
-			rks->rks_package), K_value, rks->rks_iname);
-	}
-
-@<Compile the default value finder@> =
-	;
 
 @h The heap.
 Texts, lists and other flexibly-sized structures make use of a pool of
@@ -770,7 +427,7 @@ heap_allocation RTKinds::make_heap_allocation(kind *K, int multiplier,
 	total_heap_allocation += (Kinds::Behaviour::get_heap_size_estimate(K) + 8)*multiplier;
 
 	if (Kinds::get_construct(K) == CON_relation)
-		RTKinds::precompile_default_value(K);
+		RTKindIDs::precompile_default_value(K);
 
 	heap_allocation ha;
 	ha.allocated_kind = K;
@@ -784,13 +441,13 @@ void RTKinds::emit_heap_allocation(heap_allocation ha) {
 		EmitCode::call(iname);
 		EmitCode::down();
 		EmitCode::val_number((inter_ti) ha.stack_offset);
-		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
+		RTKindIDs::emit_strong_ID_as_val(ha.allocated_kind);
 		EmitCode::up();
 	} else {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 		EmitCode::call(iname);
 		EmitCode::down();
-		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
+		RTKindIDs::emit_strong_ID_as_val(ha.allocated_kind);
 		EmitCode::up();
 	}
 }
@@ -816,7 +473,7 @@ void RTKinds::emit_block_value_header(kind *K, int individual, int size) {
 		EmitArrays::numeric_entry((inter_ti) (0x100*n + flags));
 	else
 		EmitArrays::numeric_entry((inter_ti) (0x1000000*n + 0x10000*flags));
-	RTKinds::emit_weak_id(K);
+	EmitArrays::iname_entry(RTKindIDs::weak_iname(K));
 
 	EmitArrays::iname_entry(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 }
@@ -1019,525 +676,6 @@ void RTKinds::compile_instance_counts(void) {
 
 	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), SharedVariables::size_of_largest_set());
 	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
-}
-
-void RTKinds::compile_data_type_support_routines(void) {
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-		if (Kinds::Behaviour::stored_as(K) == NULL)
-			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-				@<Compile I6 printing routine for an enumerated kind@>;
-				@<Compile the A and B routines for an enumerated kind@>;
-				@<Compile random-ranger routine for this kind@>;
-			}
-	}
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::is_built_in(K)) continue;
-		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-		if (Kinds::Behaviour::is_an_enumeration(K)) continue;
-		if (Kinds::eq(K, K_use_option)) {
-			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-			packaging_state save = Functions::begin(printing_rule_name);
-			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-			EmitCode::call(Hierarchy::find(PRINT_USE_OPTION_HL));
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, value_s);
-			EmitCode::up();
-			Functions::end(save);
-			continue;
-		}
-		if (Kinds::eq(K, K_table)) {
-			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-			packaging_state save = Functions::begin(printing_rule_name);
-			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-			EmitCode::call(Hierarchy::find(PRINT_TABLE_HL));
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, value_s);
-			EmitCode::up();
-			Functions::end(save);
-			continue;
-		}
-		if (Kinds::eq(K, K_response)) {
-			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-			packaging_state save = Functions::begin(printing_rule_name);
-			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-			EmitCode::call(Hierarchy::find(PRINT_RESPONSE_HL));
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, value_s);
-			EmitCode::up();
-			Functions::end(save);
-			continue;
-		}
-		if (Kinds::Behaviour::stored_as(K) == NULL) {
-			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-			if (Kinds::Behaviour::is_quasinumerical(K)) {
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-				@<Compile I6 printing routine for a unit kind@>;
-				@<Compile random-ranger routine for this kind@>;
-			} else {
-LOG("Compiling for %u: %n\n", K, printing_rule_name);
-				@<Compile I6 printing routine for a vacant but named kind@>;
-			}
-		}
-	}
-
-	@<Compile a suite of I6 routines taking kind IDs as arguments@>;
-}
-
-@ A slightly bogus case first. If the source text declares a kind but never
-gives any enumerated values or literal patterns, then such values will never
-appear at run-time; but we need the printing routine to exist to avoid
-compilation errors.
-
-@<Compile I6 printing routine for a vacant but named kind@> =
-	packaging_state save = Functions::begin(printing_rule_name);
-	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "weak kind ID: %n\n", RTKinds::weak_id_iname(K));
-	EmitCode::comment(C);
-	DISCARD_TEXT(C)
-	EmitCode::inv(PRINT_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, value_s);
-	EmitCode::up();
-	Functions::end(save);
-
-@ A unit is printed back with its earliest-defined literal pattern used as
-notation. If it had no literal patterns, it would come out as decimal numbers,
-but at present this can't happen.
-
-@<Compile I6 printing routine for a unit kind@> =
-	if (LiteralPatterns::list_of_literal_forms(K))
-		RTLiteralPatterns::printing_routine(printing_rule_name,
-			LiteralPatterns::list_of_literal_forms(K));
-	else {
-		packaging_state save = Functions::begin(printing_rule_name);
-		inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, value_s);
-		EmitCode::up();
-		Functions::end(save);
-	}
-
-@<Compile I6 printing routine for an enumerated kind@> =
-	packaging_state save = Functions::begin(printing_rule_name);
-	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
-
-	EmitCode::inv(SWITCH_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, value_s);
-		EmitCode::code();
-		EmitCode::down();
-			instance *I;
-			LOOP_OVER_INSTANCES(I, K) {
-				EmitCode::inv(CASE_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTInstances::value_iname(I));
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(PRINT_BIP);
-						EmitCode::down();
-							TEMPORARY_TEXT(CT)
-							wording NW = Instances::get_name_in_play(I, FALSE);
-							LOOP_THROUGH_WORDING(k, NW) {
-								TranscodeText::from_wide_string(CT, Lexer::word_raw_text(k), CT_RAW);
-								if (k < Wordings::last_wn(NW)) WRITE_TO(CT, " ");
-							}
-							EmitCode::val_text(CT);
-							DISCARD_TEXT(CT)
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-			}
-			EmitCode::inv(DEFAULT_BIP); /* this default case should never be needed, unless the user has blundered at the I6 level: */
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(PRINT_BIP);
-					EmitCode::down();
-						TEMPORARY_TEXT(DT)
-						wording W = Kinds::Behaviour::get_name(K, FALSE);
-						WRITE_TO(DT, "<illegal ");
-						if (Wordings::nonempty(W)) WRITE_TO(DT, "%W", W);
-						else WRITE_TO(DT, "value");
-						WRITE_TO(DT, ">");
-						EmitCode::val_text(DT);
-						DISCARD_TEXT(DT)
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	Functions::end(save);
-
-@ The suite of standard routines provided for enumerative types is a little
-like the one in Ada (|T'Succ|, |T'Pred|, and so on).
-
-If the type is called, say, |T1_colour|, then we have:
-
-(a) |A_T1_colour(v)| advances to the next valid value for the type,
-wrapping around to the first from the last;
-(b) |B_T1_colour(v)| goes back to the previous valid value for the type,
-wrapping around to the last from the first, so that it is the inverse function
-to |A_T1_colour(v)|.
-
-@<Compile the A and B routines for an enumerated kind@> =
-	int instance_count = 0;
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K) instance_count++;
-
-	inter_name *iname_i = RTKindConstructors::get_inc_iname(K);
-	packaging_state save = Functions::begin(iname_i);
-	@<Implement the A routine@>;
-	Functions::end(save);
-
-	inter_name *iname_d = RTKindConstructors::get_dec_iname(K);
-	save = Functions::begin(iname_d);
-	@<Implement the B routine@>;
-	Functions::end(save);
-
-@ There should be a blue historical plaque on the wall here: this was the
-first function ever implemented by emitting Inter code, on 12 November 2017.
-
-@<Implement the A routine@> =
-	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
-	LocalVariables::set_kind(lv_x, K);
-	inter_symbol *x = LocalVariables::declare(lv_x);
-
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-
-	if (instance_count <= 1) {
-		EmitCode::val_symbol(K, x);
-	} else {
-		EmitCode::cast(K_number, K);
-		EmitCode::down();
-			EmitCode::inv(PLUS_BIP);
-			EmitCode::down();
-				EmitCode::inv(MODULO_BIP);
-				EmitCode::down();
-					EmitCode::cast(K, K_number);
-					EmitCode::down();
-						EmitCode::val_symbol(K, x);
-					EmitCode::up();
-					EmitCode::val_number((inter_ti) instance_count);
-				EmitCode::up();
-				EmitCode::val_number(1);
-			EmitCode::up();
-		EmitCode::up();
-	}
-
-	EmitCode::up();
-
-@ And this was the second, a few minutes later.
-
-@<Implement the B routine@> =
-	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
-	LocalVariables::set_kind(lv_x, K);
-	inter_symbol *x = LocalVariables::declare(lv_x);
-
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-
-	if (instance_count <= 1) {
-		EmitCode::val_symbol(K, x);
-	} else {
-		EmitCode::cast(K_number, K);
-		EmitCode::down();
-			EmitCode::inv(PLUS_BIP);
-			EmitCode::down();
-				EmitCode::inv(MODULO_BIP);
-				EmitCode::down();
-
-				if (instance_count > 2) {
-					EmitCode::inv(PLUS_BIP);
-					EmitCode::down();
-						EmitCode::cast(K, K_number);
-						EmitCode::down();
-							EmitCode::val_symbol(K, x);
-						EmitCode::up();
-						EmitCode::val_number((inter_ti) instance_count-2);
-					EmitCode::up();
-				} else {
-					EmitCode::cast(K, K_number);
-					EmitCode::down();
-						EmitCode::val_symbol(K, x);
-					EmitCode::up();
-				}
-
-					EmitCode::val_number((inter_ti) instance_count);
-				EmitCode::up();
-				EmitCode::val_number(1);
-			EmitCode::up();
-		EmitCode::up();
-	}
-
-	EmitCode::up();
-
-@ And here we add:
-
-(a) |R_T1_colour()| returns a uniformly random choice of the valid
-values of the given type. (For a unit, this will be a uniformly random positive
-value, which will probably not be useful.)
-(b) |R_T1_colour(a, b)| returns a uniformly random choice in between |a|
-and |b| inclusive.
-
-@<Compile random-ranger routine for this kind@> =
-	inter_name *iname_r = RTKindConstructors::get_ranger_iname(K);
-	packaging_state save = Functions::begin(iname_r);
-	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
-	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(AND_BIP);
-		EmitCode::down();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, a_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, b_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				EmitCode::inv(RANDOM_BIP);
-				EmitCode::down();
-					if (Kinds::Behaviour::is_quasinumerical(K))
-						EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-					else
-						EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(EQ_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, a_s);
-			EmitCode::val_symbol(K_value, b_s);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, b_s);
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	inter_symbol *smaller = NULL, *larger = NULL;
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(GT_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, a_s);
-			EmitCode::val_symbol(K_value, b_s);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				smaller = b_s; larger = a_s;
-				@<Formula for range@>;
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		smaller = a_s; larger = b_s;
-		@<Formula for range@>;
-	EmitCode::up();
-
-	Functions::end(save);
-
-@<Formula for range@> =
-	EmitCode::inv(PLUS_BIP);
-	EmitCode::down();
-		EmitCode::val_symbol(K_value, smaller);
-		EmitCode::inv(MODULO_BIP);
-		EmitCode::down();
-			EmitCode::inv(RANDOM_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-			EmitCode::up();
-			EmitCode::inv(PLUS_BIP);
-			EmitCode::down();
-				EmitCode::inv(MINUS_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, larger);
-					EmitCode::val_symbol(K_value, smaller);
-				EmitCode::up();
-				EmitCode::val_number(1);
-			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-@h Further runtime support.
-These last routines are synoptic: they take the ID number of the kind as an
-argument, so there is only one of each routine.
-
-@<Compile a suite of I6 routines taking kind IDs as arguments@> =
-	@<Compile PrintKindValuePair@>;
-	@<Compile DefaultValueOfKOV@>;
-	@<Compile KOVComparisonFunction@>;
-	@<Compile KOVDomainSize@>;
-	@<Compile KOVIsBlockValue@>;
-	@<Compile KOVSupportFunction@>;
-	@<Compile I7_KIND_NAME@>;
-
-@<Compile PrintKindValuePair@> =
-	;
-
-@<Compile DefaultValueOfKOV@> =
-	;
-
-@<Compile KOVComparisonFunction@> =
-	;
-
-@<Compile KOVDomainSize@> =
-	;
-
-@<Compile KOVIsBlockValue@> =
-	;
-
-@<Compile KOVSupportFunction@> =
-	;
-
-@<Compile I7_KIND_NAME@> =
-	;
-
-@ Code for printing names of kinds at run-time. This needn't run quickly, and
-making it a routine rather than using an array saves a few bytes of precious
-Z-machine array space.
-
-=
-void RTKinds::compile_metadata(void) {
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K) {
-		TEMPORARY_TEXT(S)
-		WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
-		Hierarchy::apply_metadata(RTKindConstructors::kind_package(K),
-			KIND_PNAME_MD_HL, S);
-		DISCARD_TEXT(S)
-		Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-			KIND_IS_BASE_MD_HL, 1);
-		if (Kinds::Behaviour::is_object(K)) {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_OBJECT_MD_HL, 1);
-		} else {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_OBJECT_MD_HL, 0);
-		}
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_SKOO_MD_HL, 1);
-		} else {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_SKOO_MD_HL, 0);
-		}
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-				KIND_CLASS_MD_HL, RTKinds::I6_classname(K));
-		}
-		if (Kinds::Behaviour::definite(K)) {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_DEF_MD_HL, 1);
-		} else {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_DEF_MD_HL, 0);
-		}		
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_HAS_BV_MD_HL, 1);
-		} else {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_HAS_BV_MD_HL, 0);
-		}		
-		kind_constructor *con = Kinds::get_construct(K);
-		inter_name *weak_iname = RTKindConstructors::iname(con);
-		if (weak_iname == NULL) internal_error("no iname for weak ID");
-		Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-			KIND_WEAK_ID_MD_HL, weak_iname);
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			inter_name *sf_iname = RTKindConstructors::get_support_fn_iname(K);
-			if (sf_iname)
-				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-					KIND_SUPPORT_FN_MD_HL, sf_iname);
-			else internal_error("kind with block values but no support function");
-		}
-
-		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
-			(Kinds::Behaviour::definite(K)) &&
-			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
-			inter_name *cf_iname = RTKindConstructors::get_comparison_fn_iname(K);
-			if (cf_iname)
-				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-					KIND_CMP_FN_MD_HL, cf_iname);
-			else internal_error("kind with no comparison function");
-		}
-		if (Kinds::Behaviour::definite(K)) {
-			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(K);
-			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-				KIND_MKDEF_FN_MD_HL, mkdef_iname);
-		}
-		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
-			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
-			if (printing_rule_name)
-				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-					KIND_PRINT_FN_MD_HL, printing_rule_name);
-		}
-		if ((Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
-			(Kinds::Behaviour::is_an_enumeration(K)))
-				Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-					KIND_DSIZE_MD_HL,
-					(inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
-	}
-}
-
-void RTKinds::compile_mkdef_functions(void) {
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Behaviour::definite(K)) {
-			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(K);
-			packaging_state save = Functions::begin(mkdef_iname);
-			inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				if (Kinds::Behaviour::uses_pointer_values(K)) {
-					inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-					EmitCode::call(iname);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, sk_s);
-					EmitCode::up();
-				} else {
-					if (Kinds::Behaviour::is_subkind_of_object(K))
-						EmitCode::val_false();
-					else
-						RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
-				}
-			EmitCode::up();
-			Functions::end(save);
-		}
-	}
 }
 
 @ =

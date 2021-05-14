@@ -31,7 +31,7 @@ inter_name *RelationLiterals::default(kind *K) {
 
 	EmitArrays::iname_entry(Hierarchy::find(TTF_SUM_HL));
 	EmitArrays::numeric_entry(7);
-	RTKinds::emit_strong_id(K);
+	RTKindIDs::strong_ID_array_entry(K);
 	kind *EK = Kinds::unary_construction_material(K);
 	if (Kinds::Behaviour::uses_pointer_values(EK))
 		EmitArrays::iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));

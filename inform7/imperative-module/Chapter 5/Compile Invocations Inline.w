@@ -722,14 +722,14 @@ proposition.
 @<Inline command "strong-kind"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) RTKinds::emit_strong_id_as_val(K);
+	if (K) RTKindIDs::emit_strong_ID_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "weak-kind"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) RTKinds::emit_weak_id_as_val(K);
+	if (K) RTKindIDs::emit_weak_ID_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 

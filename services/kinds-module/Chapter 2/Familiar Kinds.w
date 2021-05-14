@@ -227,7 +227,7 @@ but are indexed together.
 @ =
 void FamiliarKinds::notice_new_kind(kind *K, wording W) {
 	if (<notable-linguistic-kinds>(W)) {
-		Kinds::Constructors::mark_as_linguistic(K->construct);
+		KindConstructors::mark_as_linguistic(K->construct);
 		switch (<<r>>) {
 			case 0: K_natural_language = K;
 				#ifdef NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK

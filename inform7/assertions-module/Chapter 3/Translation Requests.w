@@ -78,7 +78,7 @@ sense once kinds and instances exist.
 			kind *K = <<rp>>;
 			kind_constructor *KC = Kinds::get_construct(K);
 			if (KC == NULL) internal_error("stuck on kind name");
-			noun *t = Kinds::Constructors::get_noun(KC);
+			noun *t = KindConstructors::get_noun(KC);
 			if (t == NULL) internal_error("further stuck on kind name");
 			Nouns::supply_text(t, OP, L, g, SINGULAR_NUMBER,
 				ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT);

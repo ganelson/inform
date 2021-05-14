@@ -24,7 +24,7 @@ have integer equivalents.
 =
 int Kinds::FloatingPoint::uses_floating_point(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::is_arithmetic_and_real(K->construct);
+	return KindConstructors::is_arithmetic_and_real(K->construct);
 }
 
 @ Inform's equations system has to handle promotion (from int to real) or

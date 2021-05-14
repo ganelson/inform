@@ -8,13 +8,13 @@ to be used in practice.
 =
 wording Kinds::Behaviour::get_name(kind *K, int plural_form) {
 	if (K == NULL) return EMPTY_WORDING;
-	return Kinds::Constructors::get_name(K->construct, plural_form);
+	return KindConstructors::get_name(K->construct, plural_form);
 }
 
 wording Kinds::Behaviour::get_name_in_play(kind *K, int plural_form,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (K == NULL) return EMPTY_WORDING;
-	return Kinds::Constructors::get_name_in_play(K->construct, plural_form, nl);
+	return KindConstructors::get_name_in_play(K->construct, plural_form, nl);
 }
 
 noun *Kinds::Behaviour::get_noun(kind *K) {
@@ -75,8 +75,8 @@ checks that we aren't doing that:
 =
 int Kinds::Behaviour::definite(kind *K) {
 	if (K == NULL) return TRUE;
-	if (Kinds::Constructors::is_definite(K->construct) == FALSE) return FALSE;
-	int i, arity = Kinds::Constructors::arity(K->construct);
+	if (KindConstructors::is_definite(K->construct) == FALSE) return FALSE;
+	int i, arity = KindConstructors::arity(K->construct);
 	for (i=0; i<arity; i++)
 		if (Kinds::Behaviour::definite(K->kc_args[i]) == FALSE)
 			return FALSE;
@@ -87,8 +87,8 @@ int Kinds::Behaviour::semidefinite(kind *K) {
 	if (K == NULL) return TRUE;
 	if (K->construct == CON_KIND_VARIABLE) return TRUE;
 	if (K->construct == CON_NIL) return FALSE;
-	if (Kinds::Constructors::is_definite(K->construct) == FALSE) return FALSE;
-	int i, arity = Kinds::Constructors::arity(K->construct);
+	if (KindConstructors::is_definite(K->construct) == FALSE) return FALSE;
+	int i, arity = KindConstructors::arity(K->construct);
 	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_void))) arity = 1;
 	if (K->construct == CON_phrase) {
 		for (i=0; i<arity; i++)
@@ -107,7 +107,7 @@ int Kinds::Behaviour::involves_var(kind *K, int v) {
 	if (K == NULL) return FALSE;
 	if ((K->construct == CON_KIND_VARIABLE) && (v == K->kind_variable_number))
 		return TRUE;
-	int i, arity = Kinds::Constructors::arity(K->construct);
+	int i, arity = KindConstructors::arity(K->construct);
 	for (i=0; i<arity; i++)
 		if (Kinds::Behaviour::involves_var(K->kc_args[i], v))
 			return TRUE;
@@ -152,7 +152,7 @@ int Kinds::Behaviour::is_uncertainly_defined(kind *K) {
 =
 int Kinds::Behaviour::is_an_enumeration(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::is_enumeration(K->construct);
+	return KindConstructors::is_an_enumeration(K->construct);
 }
 
 @ And here we perform the conversion to a unit. The return value is |TRUE|
@@ -162,21 +162,21 @@ if the kind was already a unit or was successfully converted into one,
 =
 int Kinds::Behaviour::convert_to_unit(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::convert_to_unit(K->construct);
+	return KindConstructors::convert_to_unit(K->construct);
 }
 
 @ And similarly:
 
 =
 void Kinds::Behaviour::convert_to_enumeration(kind *K) {
-	if (K) Kinds::Constructors::convert_to_enumeration(K->construct);
+	if (K) KindConstructors::convert_to_enumeration(K->construct);
 }
 
 @ And similarly to switch from integer to real arithmetic.
 
 =
 void Kinds::Behaviour::convert_to_real(kind *K) {
-	if (K) Kinds::Constructors::convert_to_real(K->construct);
+	if (K) KindConstructors::convert_to_real(K->construct);
 }
 
 @ The instances of an enumeration have the values $1, 2, 3, ..., N$ at
@@ -188,14 +188,6 @@ int Kinds::Behaviour::new_enumerated_value(kind *K) {
 	if (K == NULL) return 0;
 	Kinds::Behaviour::convert_to_enumeration(K);
 	return K->construct->next_free_value++;
-}
-
-@ At present we aren't using named aliases for kinds, but we may in future.
-
-=
-kind *Kinds::Behaviour::stored_as(kind *K) {
-	if (K == NULL) return NULL;
-	return K->construct->stored_as;
 }
 
 @h (B) Constructing kinds.
@@ -246,16 +238,12 @@ we have to.
 =
 int Kinds::Behaviour::uses_signed_comparisons(kind *K) {
 	if (K == NULL) return FALSE;
-	if (Str::eq_wide_string(K->construct->comparison_routine, L"signed")) return TRUE;
-	return FALSE;
+	return KindConstructors::uses_signed_comparisons(K->construct);
 }
 
 text_stream *Kinds::Behaviour::get_comparison_routine(kind *K) {
 	if (K == NULL) return NULL;
-	if (Kinds::FloatingPoint::uses_floating_point(K))
-		return K_real_number->construct->comparison_routine;
-	if (Str::eq_wide_string(K->construct->comparison_routine, L"signed")) return NULL;
-	return K->construct->comparison_routine;
+	return KindConstructors::get_comparison_fn_identifier(K->construct);
 }
 
 @ See "Dimensions.w" for a full account of these ideas. In theory, our
@@ -267,7 +255,7 @@ track of dimensions, and the following routines connect the code in the
 =
 int Kinds::Behaviour::is_quasinumerical(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::is_arithmetic(K->construct);
+	return KindConstructors::is_arithmetic(K->construct);
 }
 
 unit_sequence *Kinds::Behaviour::get_dimensional_form(kind *K) {
@@ -307,21 +295,12 @@ dimensional_rules *Kinds::Behaviour::get_dim_rules(kind *K) {
 	return &(K->construct->dim_rules);
 }
 
-@h (H) Representing this kind at run-time.
+@h (H) An identifier name.
 
 =
-text_stream *Kinds::Behaviour::get_name_in_template_code(kind *K) {
+text_stream *Kinds::Behaviour::get_identifier(kind *K) {
 	if (K == NULL) return I"UNKNOWN_NT";
-	return K->construct->name_in_template_code;
-}
-
-@ Some kinds have a support routine:
-
-=
-void Kinds::Behaviour::write_support_routine_name(OUTPUT_STREAM, kind *K) {
-	if (K == NULL) internal_error("no support name for null kind");
-	if (K->construct->stored_as) K = K->construct->stored_as;
-	WRITE("%S_Support", K->construct->name_in_template_code);
+	return K->construct->explicit_identifier;
 }
 
 @h (I) Storing values at run-time.
@@ -334,7 +313,7 @@ takes depends on its kind:
 =
 int Kinds::Behaviour::uses_pointer_values(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::uses_pointer_values(K->construct);
+	return KindConstructors::uses_pointer_values(K->construct);
 }
 
 @ Exactly how large the small block is:

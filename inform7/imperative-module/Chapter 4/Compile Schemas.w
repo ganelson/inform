@@ -169,13 +169,13 @@ void CompileSchemas::compile_term_of_token(pcalc_term *pt, int m, kind *cast_to,
 }
 
 @<Compile weak ID of the kind of this term@> =
-	RTKinds::emit_weak_id_as_val(pt->term_checked_as_kind);
+	RTKindIDs::emit_weak_ID_as_val(pt->term_checked_as_kind);
 	return;
 
 @<Compile comparison function for the kind@> =
 	inter_name *cr;
 	if (pt->term_checked_as_kind)
-		cr = RTKindConstructors::get_comparison_fn_iname(pt->term_checked_as_kind);
+		cr = RTKindConstructors::get_comparison_fn_iname(pt->term_checked_as_kind->construct);
 	else
 		cr = Hierarchy::find(SIGNEDCOMPARE_HL);
 	EmitCode::val_iname(K_value, cr);

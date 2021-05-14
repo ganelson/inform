@@ -86,7 +86,7 @@ for the underlying function's compilation.
 	inter_name *iname = Closures::iname(cphr);
 	packaging_state save = EmitArrays::begin(iname, K_value);
 
-	RTKinds::emit_strong_id(cphr->cphr_kind);
+	RTKindIDs::strong_ID_array_entry(cphr->cphr_kind);
 
 	inter_name *RS = PhraseRequests::simple_request(idb, ToPhraseFamily::kind(cphr));
 	EmitArrays::iname_entry(RS);
@@ -143,7 +143,7 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
-			RTKinds::emit_strong_id_as_val(result);
+			RTKindIDs::emit_strong_ID_as_val(result);
 			EmitCode::up();
 		} else {
 			if (RTKinds::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
@@ -156,7 +156,7 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 
 @<Compile its closure@> =
 	packaging_state save = EmitArrays::begin(closure_identifier, K_value);
-	RTKinds::emit_strong_id(K);
+	RTKindIDs::strong_ID_array_entry(K);
 	EmitArrays::iname_entry(rname);
 	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);

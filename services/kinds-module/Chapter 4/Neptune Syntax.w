@@ -224,7 +224,7 @@ single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 	if ((do_know == TRUE) && (should_know == FALSE))
 		NeptuneFiles::error(whole_command, I"kind command describes already-known kind", tfp);
 	constructor_described =
-		Kinds::Constructors::new(Kinds::get_construct(K_value), name, NULL, group);
+		KindConstructors::new(Kinds::get_construct(K_value), name, NULL, group);
 	#ifdef NEW_BASE_KINDS_CALLBACK
 	if ((constructor_described != CON_KIND_VARIABLE) &&
 		(constructor_described != CON_INTERMEDIATE)) {

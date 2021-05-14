@@ -264,7 +264,7 @@ specific instance, then it must definitely lie within the domain.
 =
 int AdjectiveMeaningDomains::weak_match(kind *K1, adjective_meaning *am) {
 	kind *K2 = AdjectiveMeaningDomains::get_kind(am);
-	if (RTKinds::weak_id_iname(K1) == RTKinds::weak_id_iname(K2)) return TRUE;
+	if (RTKindIDs::weak_iname(K1) == RTKindIDs::weak_iname(K2)) return TRUE;
 	return FALSE;
 }
 

@@ -62,7 +62,7 @@ using Inter's |INSTANCE_IST| instruction.
 	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL,
 		I->icd.instance_package);
 	kind *K = Instances::to_kind(I);
-	RTKinds::constant_from_strong_id(kn_iname, K);
+	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
 	if ((K_scene) && (Kinds::eq(K, K_scene)))
 		Hierarchy::apply_metadata_from_number(I->icd.instance_package,
 			INSTANCE_IS_SCENE_MD_HL, 1);

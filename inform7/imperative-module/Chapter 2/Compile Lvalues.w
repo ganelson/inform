@@ -76,7 +76,7 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 			EmitCode::call(Hierarchy::find(GPROPERTY_HL));
 			EmitCode::down();
 		}
-		RTKinds::emit_weak_id_as_val(owner_kind);
+		RTKindIDs::emit_weak_ID_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		CompileValues::to_code_val(prop_spec);
 		if (storage_mode != 1) {
@@ -265,8 +265,8 @@ char *CompileLvalues::interpret_store(node_type_t storage_class, kind *left, kin
 		form = DECREASE_BY_WORD;
 		if (Kinds::FloatingPoint::uses_floating_point(left)) form = DECREASE_BY_REAL;
 	}
-	if (Kinds::Constructors::uses_pointer_values(L)) {
-		if (Kinds::Constructors::allow_word_as_pointer(L, R)) {
+	if (KindConstructors::uses_pointer_values(L)) {
+		if (KindConstructors::allow_word_as_pointer(L, R)) {
 			form = STORE_WORD_TO_POINTER;
 			if (inc > 0) form = INCREASE_BY_POINTER;
 			if (inc < 0) form = DECREASE_BY_POINTER;

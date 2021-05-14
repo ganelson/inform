@@ -38,7 +38,7 @@ packaging_state ListLiterals::begin_large_block(inter_name *iname, kind *list_ki
 	int no_entries) {
 	packaging_state save = EmitArrays::begin(iname, K_value);
 	RTKinds::emit_block_value_header(list_kind, TRUE, no_entries + 2);
-	RTKinds::emit_strong_id(Kinds::unary_construction_material(list_kind));
+	RTKindIDs::strong_ID_array_entry(Kinds::unary_construction_material(list_kind));
 	EmitArrays::numeric_entry((inter_ti) no_entries);
 	return save;
 }
@@ -74,7 +74,7 @@ that the empty list of numbers (say) is different from the empty list of texts:
 	                                0
 =
 So each different kind K needs its own large block for making the default value
-of "list of K": see //RTKinds::compile_structures//. This block is easily made:
+of "list of K": see //RTKindIDs::compile_structures//. This block is easily made:
 
 =
 void ListLiterals::default_large_block(inter_name *iname, kind *list_kind) {

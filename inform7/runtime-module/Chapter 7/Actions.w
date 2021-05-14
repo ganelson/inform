@@ -128,10 +128,10 @@ void RTActions::compile_metadata(void) {
 			SECOND_ACCESS_MD_HL, (inter_ti) ActionSemantics::second_access(an));
 		inter_name *kn_iname = Hierarchy::make_iname_in(NOUN_KIND_MD_HL,
 			an->compilation_data.an_package);
-		RTKinds::constant_from_strong_id(kn_iname, ActionSemantics::kind_of_noun(an));
+		RTKindIDs::define_constant_as_strong_id(kn_iname, ActionSemantics::kind_of_noun(an));
 		inter_name *ks_iname = Hierarchy::make_iname_in(SECOND_KIND_MD_HL,
 			an->compilation_data.an_package);
-		RTKinds::constant_from_strong_id(ks_iname, ActionSemantics::kind_of_second(an));
+		RTKindIDs::define_constant_as_strong_id(ks_iname, ActionSemantics::kind_of_second(an));
 	}
 }
 

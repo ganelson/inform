@@ -248,7 +248,7 @@ routine for colours; and the best thing is to print nothing at all.
 				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 				EmitCode::call(iname);
 				EmitCode::down();
-					RTKinds::emit_weak_id_as_val(K_object);
+					RTKindIDs::emit_weak_ID_as_val(K_object);
 					EmitCode::val_symbol(K_value, t_0_s);
 					EmitCode::val_iname(K_value, RTProperties::iname(prn));
 				EmitCode::up();
@@ -280,7 +280,7 @@ routine for colours; and the best thing is to print nothing at all.
 				EmitCode::down();
 					EmitCode::call(Hierarchy::find(GPROPERTY_HL));
 					EmitCode::down();
-						RTKinds::emit_weak_id_as_val(K_object);
+						RTKindIDs::emit_weak_ID_as_val(K_object);
 						EmitCode::val_symbol(K_value, t_0_s);
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
@@ -323,7 +323,7 @@ routine for colours; and the best thing is to print nothing at all.
 		EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
 		EmitCode::call(Hierarchy::find(GPROPERTY_HL));
 		EmitCode::down();
-			RTKinds::emit_weak_id_as_val(K_object);
+			RTKindIDs::emit_weak_ID_as_val(K_object);
 			EmitCode::val_symbol(K_value, t_0_s);
 			EmitCode::val_iname(K_value, RTProperties::iname(prn));
 		EmitCode::up();

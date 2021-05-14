@@ -9,7 +9,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		stc.which_kind_command->text_of_command,
 		stc.boolean_argument, stc.numeric_argument,
 		stc.textual_argument, stc.constructor_argument,
-		con->allocation_id, con->name_in_template_code);
+		con->allocation_id, con->explicit_identifier);
 
 	int tcc = stc.which_kind_command->opcode_number;
 

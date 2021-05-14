@@ -66,7 +66,7 @@ void NeptuneMacros::play_back(kind_macro_definition *macro,
 	kind_constructor *con, text_file_position *tfp) {
 	if (macro == NULL) NeptuneFiles::error(NULL, I"no such kind macro to play back", tfp);
 	LOGIF(KIND_CREATIONS, "Macro %S on %S (%d lines)\n",
-		macro->kind_macro_name, con->name_in_template_code, macro->kind_macro_line_count);
+		macro->kind_macro_name, con->explicit_identifier, macro->kind_macro_line_count);
 	LOG_INDENT;
 	for (int i=0; i<macro->kind_macro_line_count; i++)
 		KindCommands::apply(macro->kind_macro_line[i], con);

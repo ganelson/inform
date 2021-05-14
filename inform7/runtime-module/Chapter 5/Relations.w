@@ -237,7 +237,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 
 	EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
 	EmitCode::down();
-		RTKinds::emit_strong_id_as_val(BinaryPredicates::kind(bp));
+		RTKindIDs::emit_strong_ID_as_val(BinaryPredicates::kind(bp));
 		EmitCode::val_iname(K_value, RTRelations::iname(bp));
 	EmitCode::up();
 
@@ -426,7 +426,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	}
 
 @<Write the kind field of the relation record@> =
-	RTKinds::emit_strong_id(BinaryPredicates::kind(bp));
+	RTKindIDs::strong_ID_array_entry(BinaryPredicates::kind(bp));
 
 @<Write the description field of the relation record@> =
 	TEMPORARY_TEXT(DF)
@@ -950,7 +950,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 		EmitCode::down();
 			EmitCode::call(Hierarchy::find(DEFAULTVALUEOFKOV_HL));
 			EmitCode::down();
-				RTKinds::emit_strong_id_as_val(K);
+				RTKindIDs::emit_strong_ID_as_val(K);
 			EmitCode::up();
 		EmitCode::up();
 	}
@@ -1061,7 +1061,7 @@ void RTRelations::default_value_of_relation_kind(inter_name *identifier, kind *K
 	EmitArrays::text_entry(DVT);
 	EmitArrays::iname_entry(Hierarchy::find(TTF_SUM_HL));
 	EmitArrays::numeric_entry(0);
-	RTKinds::emit_strong_id(K);
+	RTKindIDs::strong_ID_array_entry(K);
 	EmitArrays::iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
 	EmitArrays::text_entry(DVT);
 	DISCARD_TEXT(DVT)

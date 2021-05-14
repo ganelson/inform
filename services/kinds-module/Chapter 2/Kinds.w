@@ -78,13 +78,13 @@ kind *Kinds::base_construction(kind_constructor *con) {
 	if (con == NULL) internal_error("impossible construction");
 	if ((con == CON_KIND_VARIABLE) || (con == CON_INTERMEDIATE))
 		internal_error("forbidden construction");
-	switch (Kinds::Constructors::arity(con)) {
+	switch (KindConstructors::arity(con)) {
 		case 1:
 			if (con == CON_list_of) return Kinds::unary_con(con, NULL);
 			return Kinds::unary_con(con, K_value);
 		case 2: return Kinds::binary_con(con, K_value, K_value);
 	}
-	kind **cache = Kinds::Constructors::cache_location(con);
+	kind **cache = KindConstructors::cache_location(con);
 	if (cache) { if (*cache) return *cache; }
 	kind *K;
 	@<Create a raw kind structure@>;
@@ -142,7 +142,7 @@ practice wasted.
 =
 kind *Kinds::unary_con(kind_constructor *con, kind *X) {
 	kind *K;
-	if (Kinds::Constructors::arity(con) != 1) internal_error("bad unary construction");
+	if (KindConstructors::arity(con) != 1) internal_error("bad unary construction");
 	@<Create a raw kind structure@>;
 	K->construct = con; K->kc_args[0] = X;
 	no_constructed_kinds_created++;
@@ -151,7 +151,7 @@ kind *Kinds::unary_con(kind_constructor *con, kind *X) {
 
 kind *Kinds::binary_con(kind_constructor *con, kind *X, kind *Y) {
 	kind *K;
-	if (Kinds::Constructors::arity(con) != 2) internal_error("bad binary construction");
+	if (KindConstructors::arity(con) != 2) internal_error("bad binary construction");
 	@<Create a raw kind structure@>;
 	K->construct = con; K->kc_args[0] = X; K->kc_args[1] = Y;
 	no_constructed_kinds_created++;
@@ -282,7 +282,7 @@ int Kinds::is_proper_constructor(kind *K) {
 }
 
 int Kinds::arity_of_constructor(kind *K) {
-	if (K) return Kinds::Constructors::arity(K->construct);
+	if (K) return KindConstructors::arity(K->construct);
 	return 0;
 }
 
@@ -353,15 +353,15 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
 			X_after = Kinds::substitute_inner(X, meanings, &tx, contra,
-				Kinds::Constructors::variance(Kinds::get_construct(K), 0));
+				KindConstructors::variance(Kinds::get_construct(K), 0));
 			if (tx) {
 				*changed = TRUE;
 				return Kinds::unary_con(K->construct, X_after);
 			}
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			int vx = Kinds::Constructors::variance(Kinds::get_construct(K), 0);
-			int vy = Kinds::Constructors::variance(Kinds::get_construct(K), 1);
+			int vx = KindConstructors::variance(Kinds::get_construct(K), 0);
+			int vy = KindConstructors::variance(Kinds::get_construct(K), 1);
 			if (Kinds::get_construct(K) == CON_TUPLE_ENTRY) {
 				vx = way_in; vy = way_in;
 			}
@@ -439,14 +439,14 @@ kind *Kinds::new_base(wording W, kind *super) {
 	#endif
 
 	kind *K = Kinds::base_construction(
-		Kinds::Constructors::new(Kinds::get_construct(super), NULL, I"#NEW",
+		KindConstructors::new(Kinds::get_construct(super), NULL, I"#NEW",
 			BASE_CONSTRUCTOR_GRP));
 
 	@<Use the source-text name to attach a noun to the constructor@>;
 
 	FamiliarKinds::notice_new_kind(K, W);
 	#ifdef NEW_BASE_KINDS_CALLBACK
-	NEW_BASE_KINDS_CALLBACK(K, super, Kinds::Behaviour::get_name_in_template_code(K), W);
+	NEW_BASE_KINDS_CALLBACK(K, super, Kinds::Behaviour::get_identifier(K), W);
 	#endif
 
 	Kinds::make_subkind_inner(K, super);
@@ -466,7 +466,7 @@ kind *Kinds::new_base(wording W, kind *super) {
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), NULL);
 	#endif
-	Kinds::Constructors::attach_noun(K->construct, nt);
+	KindConstructors::attach_noun(K->construct, nt);
 
 @h Making subkinds.
 This does not need to be done at creation time.

@@ -47,6 +47,6 @@ void RTTableColumns::compile(void) {
 		Emit::numeric_constant(RTTableColumns::id_iname(tc), 0); /* placeholder value */
 		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_MD_HL,
 			RTTableColumns::package(tc));
-		RTKinds::constant_from_strong_id(kind_iname, Tables::Columns::get_kind(tc));
+		RTKindIDs::define_constant_as_strong_id(kind_iname, Tables::Columns::get_kind(tc));
 	}
 }

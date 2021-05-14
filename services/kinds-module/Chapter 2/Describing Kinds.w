@@ -216,7 +216,7 @@ addition.
 <k-kind-construction> internal {
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor)
-		if (Kinds::Constructors::arity(con) > 0) {
+		if (KindConstructors::arity(con) > 0) {
 			wording X = W;
 			wording Y = EMPTY_WORDING;
 			if (Kinds::Textual::parse_constructor_name(con, &X, &Y))
@@ -239,19 +239,19 @@ unspecified because a short form of the constructor is used (e.g.,
 	kind *KX = K_value, *KY = K_value;
 	if (con->variance[0] == CONTRAVARIANT)
 		KX = K_nil;
-	if ((Kinds::Constructors::arity(con) == 2) && (con->variance[1] == CONTRAVARIANT))
+	if ((KindConstructors::arity(con) == 2) && (con->variance[1] == CONTRAVARIANT))
 		KY = K_nil;
 
 	@<The rule and rulebook constructors default to actions for X@>;
 	if (Wordings::nonempty(X)) {
-		int tupling = Kinds::Constructors::tupling(con, 0);
+		int tupling = KindConstructors::tupling(con, 0);
 		if ((tupling == 0) && (<k-single-term>(X))) KX = <<rp>>;
 		else if ((tupling == 1) && (<k-optional-term>(X))) KX = <<rp>>;
 		else if ((tupling >= 2) && (<k-tupled-term>(X))) KX = <<rp>>;
 		else KX = NULL;
 	}
 	if (Wordings::nonempty(Y)) {
-		int tupling = Kinds::Constructors::tupling(con, 1);
+		int tupling = KindConstructors::tupling(con, 1);
 		if ((tupling == 0) && (<k-single-term>(Y))) KY = <<rp>>;
 		else if ((tupling == 1) && (<k-optional-term>(Y))) KY = <<rp>>;
 		else if ((tupling >= 2) && (<k-tupled-term>(Y))) KY = <<rp>>;
@@ -259,10 +259,10 @@ unspecified because a short form of the constructor is used (e.g.,
 	}
 	@<The relation constructor defaults to Y matching X, if X is specified@>;
 
-	if ((Kinds::Constructors::arity(con) == 1) && (KX)) {
+	if ((KindConstructors::arity(con) == 1) && (KX)) {
 		==> { -, Kinds::unary_con(con, KX) }; return TRUE;
 	}
-	if ((Kinds::Constructors::arity(con) == 2) && (KX) && (KY)) {
+	if ((KindConstructors::arity(con) == 2) && (KX) && (KY)) {
 		==> { -, Kinds::binary_con(con, KX, KY) }; return TRUE;
 	}
 
@@ -327,7 +327,7 @@ and returns |TRUE|.
 int Kinds::Textual::parse_constructor_name(kind_constructor *con, wording *KW, wording *LW) {
 	wording W = *KW;
 	for (int p=1; p<=2; p++) {
-		wording NW = Kinds::Constructors::get_name(con, (p==1)?FALSE:TRUE);
+		wording NW = KindConstructors::get_name(con, (p==1)?FALSE:TRUE);
 		if (Wordings::nonempty(NW)) {
 			int full_length = Wordings::length(NW);
 			int k1 = Wordings::first_wn(NW);
@@ -608,7 +608,7 @@ to miss out on this detail.
 
 @<Write constructor kinds out to the stream@> =
 	kind *first_base = NULL, *second_base = NULL;
-	if (Kinds::Constructors::arity(con) == 1)
+	if (KindConstructors::arity(con) == 1)
 		first_base = Kinds::unary_construction_material(K);
 	else
 		Kinds::binary_construction_material(K, &first_base, &second_base);
@@ -646,7 +646,7 @@ usage.
 	if ((con == CON_property) && (Kinds::eq(first_base, K_value))) k_present = 0;
 	if ((con == CON_table_column) && (Kinds::eq(first_base, K_value))) k_present = 0;
 	if ((con == CON_relation) && (Kinds::eq(first_base, second_base))) l_present = 0;
-	if (Kinds::Constructors::arity(con) == 1) l_present = 0;
+	if (KindConstructors::arity(con) == 1) l_present = 0;
 	else if (Kinds::eq(second_base, K_nil)) l_present = 0;
 	else if (Kinds::eq(second_base, K_void)) l_present = 0;
 	if (choice_from[k_present][l_present] == -1) {
@@ -698,7 +698,7 @@ void Kinds::Textual::desc_base(OUTPUT_STREAM, kind_constructor *con,
 	if (K == K_nil) { WRITE("nothing"); return; }
 	if (K == K_void) { WRITE("nothing"); return; }
 	int pluralised = TRUE;
-	int tupled = Kinds::Constructors::tupling(con, b);
+	int tupled = KindConstructors::tupling(con, b);
 	int bracketed = FALSE;
 	if ((tupled > 1) && (Kinds::get_construct(K) == CON_TUPLE_ENTRY)) {
 		kind *first_base = NULL, *second_base = NULL;

@@ -350,7 +350,7 @@ void Deferrals::call_deferred_fn(pcalc_prop *prop,
 	Cinders::compile_cindered_values(prop, pdef);
 	if (K) {
 		Frames::emit_new_local_value(K);
-		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
+		RTKindIDs::emit_strong_ID_as_val(Kinds::unary_construction_material(K));
 	}
 	EmitCode::up();
 	Deferrals::retrieve_callings_in_other_context(prop);
@@ -487,7 +487,7 @@ int Deferrals::defer_list_of_matches(parse_node *spec, kind *K) {
 		EmitCode::down();
 			Frames::emit_new_local_value(K);
 			CompileValues::to_code_val(spec);
-			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
+			RTKindIDs::emit_strong_ID_as_val(Kinds::unary_construction_material(K));
 		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);

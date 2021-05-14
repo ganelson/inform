@@ -292,7 +292,7 @@ void CompileLoops::through_list(parse_node *spec, local_variable *val_var) {
 							EmitCode::ref_symbol(K_value, val_var_s);
 							EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
 							EmitCode::down();
-								RTKinds::emit_strong_id_as_val(CK);
+								RTKindIDs::emit_strong_ID_as_val(CK);
 							EmitCode::up();
 						EmitCode::up();
 						EmitCode::call(Hierarchy::find(BLKVALUECOPYAZ_HL));

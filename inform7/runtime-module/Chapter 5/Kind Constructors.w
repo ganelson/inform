@@ -3,10 +3,6 @@
 Hmmm.
 
 @h Inter identifiers.
-An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
-Neptune file; becomes attached to a constructor here; and finally winds up
-back in Inter code, because we define it as the constant for the weak kind ID
-of the kind which the constructor makes:
 
 =
 typedef struct kind_constructor_compilation_data {
@@ -14,6 +10,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *list_iname;
 	struct package_request *kc_package;
 	struct inter_name *kind_GPR_iname;
+	int needs_GPR; /* a GPR is actually required to be compiled */
 	struct inter_name *instance_GPR_iname;
 	struct inter_name *first_instance_iname;
 	struct inter_name *next_instance_iname;
@@ -31,6 +28,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.kc_package = NULL;
 	kccd.list_iname = NULL;
 	kccd.kind_GPR_iname = NULL;
+	kccd.needs_GPR = FALSE;
 	kccd.instance_GPR_iname = NULL;
 	kccd.first_instance_iname = NULL;
 	kccd.next_instance_iname = NULL;
@@ -40,30 +38,9 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.mkdef_iname = NULL;
 	kccd.ranger_iname = NULL;
 	kccd.trace_iname = NULL;
-//	if (Str::len(kc->name_in_template_code) == 0) {
-//		package_request *R = RTKindConstructors::package(kc);
-//		kccd.pr_iname = Hierarchy::make_iname_in(PRINT_DASH_FN_HL, R);
-//		kccd.trace_iname = kccd.pr_iname;
-//	}
 	return kccd;
 }
 
-void RTKindConstructors::restart_copied_compilation_data(kind_constructor *kc) {
-	kc->compilation_data.con_iname = NULL;
-	kc->compilation_data.kc_package = NULL;
-	kc->compilation_data.list_iname = NULL;
-}
-
-void RTKindConstructors::emit_constants(void) {
-	kind_constructor *kc;
-	LOOP_OVER(kc, kind_constructor) {
-		Emit::numeric_constant(RTKindConstructors::iname(kc), 0);
-		Hierarchy::make_available(RTKindConstructors::iname(kc));
-	}
-}
-inter_name *RTKindConstructors::UNKNOWN_iname(void) {
-	return CON_UNKNOWN->compilation_data.con_iname;
-}
 package_request *RTKindConstructors::package(kind_constructor *kc) {
 	if (kc->compilation_data.kc_package == NULL) {
 		if (kc->where_defined_in_source_text) {
@@ -75,32 +52,36 @@ package_request *RTKindConstructors::package(kind_constructor *kc) {
 		} else {
 			kc->compilation_data.kc_package = Hierarchy::synoptic_package(KIND_HAP);
 		}
-		wording W = Kinds::Constructors::get_name(kc, FALSE);
+		wording W = KindConstructors::get_name(kc, FALSE);
 		if (Wordings::nonempty(W))
 			Hierarchy::apply_metadata_from_wording(kc->compilation_data.kc_package, KIND_NAME_MD_HL, W);
-		else if (Str::len(kc->name_in_template_code) > 0)
+		else if (Str::len(kc->explicit_identifier) > 0)
 			Hierarchy::apply_metadata(kc->compilation_data.kc_package, KIND_NAME_MD_HL,
-				kc->name_in_template_code);
+				kc->explicit_identifier);
 		else
 			Hierarchy::apply_metadata(kc->compilation_data.kc_package, KIND_NAME_MD_HL, I"(anonymous kind)");
 	}
 	return kc->compilation_data.kc_package;
 }
-inter_name *RTKindConstructors::iname(kind_constructor *kc) {
+
+@ An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
+Neptune file; becomes attached to a constructor here; and finally winds up
+back in Inter code, because we define it as the constant for the weak kind ID
+of the kind which the constructor makes:
+
+=
+inter_name *RTKindConstructors::weak_ID_iname(kind_constructor *kc) {
 	if (kc->compilation_data.con_iname == NULL) {
-		if (Str::len(kc->name_in_template_code) > 0) {
-			kc->compilation_data.con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				kc->name_in_template_code, RTKindConstructors::package(kc));
-			Hierarchy::make_available(kc->compilation_data.con_iname);
-		} else {
-			TEMPORARY_TEXT(wn)
-			WRITE_TO(wn, "WEAK_ID_%d", kc->allocation_id);
-			kc->compilation_data.con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
-				wn, RTKindConstructors::package(kc));
-			DISCARD_TEXT(wn)
-		}
+		kc->compilation_data.con_iname =
+			Hierarchy::make_iname_with_specific_translation(WEAK_ID_HL,
+				RTKindIDs::identifier_for_weak_ID(kc), RTKindConstructors::package(kc));
+		Hierarchy::make_available(kc->compilation_data.con_iname);
 	}
 	return kc->compilation_data.con_iname;
+}
+
+inter_name *RTKindConstructors::UNKNOWN_iname(void) {
+	return CON_UNKNOWN->compilation_data.con_iname;
 }
 
 inter_name *RTKindConstructors::list_iname(kind_constructor *kc) {
@@ -156,12 +137,9 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 		internal_error("null kind has no printing routine");
 	}
 	K = Kinds::weaken(K, K_object);
-	if (K->construct->compilation_data.pr_iname) {
-		if (Kinds::Behaviour::is_subkind_of_object(K)) LOG("I reckon %u --> %n\n", K, K->construct->compilation_data.pr_iname);
+	if (K->construct->compilation_data.pr_iname)
 		return K->construct->compilation_data.pr_iname;
-	}
-	if (Str::len(K->construct->name_in_template_code) == 0) {
-LOG("Making dash fn for %u\n", K);
+	if (Str::len(K->construct->explicit_identifier) == 0) {
 		package_request *R = RTKindConstructors::package(K->construct);
 		K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_DASH_FN_HL, R);
 		return K->construct->compilation_data.pr_iname;
@@ -226,13 +204,11 @@ LOG("Making dash fn for %u\n", K);
 
 	if (R) {
 		if (external) {
-LOG("Making external fn for %u\n", K);
 			K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
 			inter_name *actual_iname = Produce::find_by_name(Emit::tree(), X);
 			Emit::iname_constant(K->construct->compilation_data.pr_iname, K_value, actual_iname);
 		} else internal_error("internal but unknown kind printing routine");
 	} else {
-LOG("Finding external fn for %u\n", K);
 		if (external) K->construct->compilation_data.pr_iname = Produce::find_by_name(Emit::tree(), X);
 		else internal_error("internal but unpackaged kind printing routine");
 	}
@@ -262,18 +238,17 @@ inter_name *RTKindConstructors::get_ranger_iname(kind *K) {
 	K->construct->compilation_data.ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
 	return K->construct->compilation_data.ranger_iname;
 }
-inter_name *RTKindConstructors::get_mkdef_iname(kind *K) {
-	if (K == NULL) internal_error("null kind has no mkdef fn");
-	if (K->construct->compilation_data.mkdef_iname) return K->construct->compilation_data.mkdef_iname;
-	package_request *R = RTKindConstructors::kind_package(K);
-	K->construct->compilation_data.mkdef_iname = Hierarchy::make_iname_in(MKDEF_FN_HL, R);
-	return K->construct->compilation_data.mkdef_iname;
+inter_name *RTKindConstructors::get_mkdef_iname(kind_constructor *kc) {
+	if (kc->compilation_data.mkdef_iname == NULL)
+		kc->compilation_data.mkdef_iname =
+			Hierarchy::make_iname_in(MKDEF_FN_HL, RTKindConstructors::package(kc));
+	return kc->compilation_data.mkdef_iname;
 }
 inter_name *RTKindConstructors::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;
 	if (K->construct->compilation_data.trace_iname)
 		return K->construct->compilation_data.trace_iname;
-	if (Str::len(K->construct->name_in_template_code) == 0) {
+	if (Str::len(K->construct->explicit_identifier) == 0) {
 		K->construct->compilation_data.trace_iname = RTKindConstructors::get_iname(K);
 		return K->construct->compilation_data.trace_iname;
 	}
@@ -300,13 +275,14 @@ inter_name *RTKindConstructors::get_distinguisher_iname(kind *K) {
 	return Produce::find_by_name(Emit::tree(), N);
 }
 
-inter_name *RTKindConstructors::get_comparison_fn_iname(kind *K) {
-	return Produce::find_by_name(Emit::tree(), Kinds::Behaviour::get_comparison_routine(K));
+inter_name *RTKindConstructors::get_comparison_fn_iname(kind_constructor *kc) {
+	return Produce::find_by_name(Emit::tree(),
+		KindConstructors::get_comparison_fn_identifier(kc));
 }
 
-inter_name *RTKindConstructors::get_support_fn_iname(kind *K) {
+inter_name *RTKindConstructors::get_support_fn_iname(kind_constructor *kc) {
 	TEMPORARY_TEXT(N)
-	Kinds::Behaviour::write_support_routine_name(N, K);
+	WRITE_TO(N, "%S_Support", kc->explicit_identifier);
 	inter_name *iname = Produce::find_by_name(Emit::tree(), N);
 	DISCARD_TEXT(N)
 	return iname;
@@ -331,7 +307,7 @@ text_stream *RTKindConstructors::get_explicit_I6_GPR(kind *K) {
 =
 int RTKindConstructors::offers_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::offers_I6_GPR(K->construct);
+	return KindConstructors::offers_I6_GPR(K->construct);
 }
 
 @ Request that a GPR be compiled for this kind; the return value tell us whether
@@ -340,14 +316,12 @@ this will be allowed or not.
 =
 int RTKindConstructors::request_I6_GPR(kind *K) {
 	if (RTKindConstructors::offers_I6_GPR(K) == FALSE) return FALSE; /* can't oblige */
-	#ifdef CORE_MODULE
-	if (K->construct->needs_GPR == FALSE) {
+	if (K->construct->compilation_data.needs_GPR == FALSE) {
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "GPR for kind %u", K);
 		Sequence::queue(&UnderstandValueTokens::agent, STORE_POINTER_kind(K), desc);
 	}
-	#endif
-	K->construct->needs_GPR = TRUE; /* make note to oblige later */
+	K->construct->compilation_data.needs_GPR = TRUE; /* make note to oblige later */
 	return TRUE;
 }
 
@@ -356,7 +330,7 @@ int RTKindConstructors::request_I6_GPR(kind *K) {
 =
 int RTKindConstructors::needs_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	return K->construct->needs_GPR;
+	return K->construct->compilation_data.needs_GPR;
 }
 
 @ A recognition-only GPR is used for matching specific data in the course of
@@ -379,7 +353,11 @@ inter_name *RTKindConstructors::get_recognition_only_GPR_as_iname(kind *K) {
 =
 int RTKindConstructors::get_highest_valid_value_as_integer(kind *K) {
 	if (K == NULL) return 0;
-	kind_constructor *kc = K->construct;
+	return RTKindConstructors::get_highest_valid_value_as_integer_kc(K->construct);
+}
+
+int RTKindConstructors::get_highest_valid_value_as_integer_kc(kind_constructor *kc) {
+	if (kc == NULL) return 0;
 	if (kc == CON_activity) return NUMBER_CREATED(activity);
 	if (kc == Kinds::get_construct(K_equation)) return NUMBER_CREATED(equation);
 	if (kc == CON_rule) return NUMBER_CREATED(booking);
@@ -389,3 +367,487 @@ int RTKindConstructors::get_highest_valid_value_as_integer(kind *K) {
 	if (kc == Kinds::get_construct(K_response)) return NUMBER_CREATED(response_message);
 	return kc->next_free_value - 1;
 }
+
+@h Compilation.
+
+=
+int RTKindConstructors::is_subkind_of_object(kind_constructor *kc) {
+	if (Kinds::Behaviour::is_subkind_of_object(Kinds::base_construction(kc)))
+		return TRUE;
+	return FALSE;
+}
+
+int RTKindConstructors::is_object(kind_constructor *kc) {
+	if (Kinds::Behaviour::is_object(Kinds::base_construction(kc))) return TRUE;
+	return FALSE;
+}
+
+void RTKindConstructors::compile(void) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor) {
+		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
+		
+		package_request *pack = RTKindConstructors::package(kc);
+				
+		Emit::numeric_constant(RTKindConstructors::weak_ID_iname(kc), 0);
+		Hierarchy::make_available(RTKindConstructors::weak_ID_iname(kc));
+
+		TEMPORARY_TEXT(S)
+		WRITE_TO(S, "%+W", KindConstructors::get_name(kc, FALSE));
+		Hierarchy::apply_metadata(pack,
+			KIND_PNAME_MD_HL, S);
+		DISCARD_TEXT(S)
+		Hierarchy::apply_metadata_from_number(pack,
+			KIND_IS_BASE_MD_HL, 1);
+		if (RTKindConstructors::is_object(kc)) {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_OBJECT_MD_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_OBJECT_MD_HL, 0);
+		}
+		if (RTKindConstructors::is_subkind_of_object(kc)) {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_SKOO_MD_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_SKOO_MD_HL, 0);
+		}
+		if (RTKindConstructors::is_subkind_of_object(kc)) {
+			Hierarchy::apply_metadata_from_iname(pack,
+				KIND_CLASS_MD_HL, RTKinds::I6_classname(Kinds::base_construction(kc)));
+		}
+		if (KindConstructors::is_definite(kc)) {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_DEF_MD_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_IS_DEF_MD_HL, 0);
+		}		
+		if (KindConstructors::uses_pointer_values(kc)) {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_HAS_BV_MD_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(pack,
+				KIND_HAS_BV_MD_HL, 0);
+		}		
+		inter_name *weak_iname = RTKindIDs::weak_iname_of_constructor(kc);
+		if (weak_iname == NULL) internal_error("no iname for weak ID");
+		Hierarchy::apply_metadata_from_iname(pack,
+			KIND_WEAK_ID_MD_HL, weak_iname);
+		if (KindConstructors::uses_pointer_values(kc)) {
+			inter_name *sf_iname = RTKindConstructors::get_support_fn_iname(kc);
+			if (sf_iname)
+				Hierarchy::apply_metadata_from_iname(pack,
+					KIND_SUPPORT_FN_MD_HL, sf_iname);
+			else internal_error("kind with block values but no support function");
+		}
+
+		if ((RTKindConstructors::is_subkind_of_object(kc) == FALSE) &&
+			(KindConstructors::is_definite(kc)) &&
+			(KindConstructors::uses_signed_comparisons(kc) == FALSE)) {
+			inter_name *cf_iname = RTKindConstructors::get_comparison_fn_iname(kc);
+			if (cf_iname)
+				Hierarchy::apply_metadata_from_iname(pack,
+					KIND_CMP_FN_MD_HL, cf_iname);
+			else internal_error("kind with no comparison function");
+		}
+		if (Kinds::Behaviour::definite(Kinds::base_construction(kc))) {
+			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(kc);
+			Hierarchy::apply_metadata_from_iname(pack,
+				KIND_MKDEF_FN_MD_HL, mkdef_iname);
+		}
+		if (RTKindConstructors::is_subkind_of_object(kc) == FALSE) {
+			inter_name *printing_rule_name =
+				RTKindConstructors::get_iname(Kinds::base_construction(kc));
+			if (printing_rule_name)
+				Hierarchy::apply_metadata_from_iname(pack,
+					KIND_PRINT_FN_MD_HL, printing_rule_name);
+		}
+		if ((RTKindConstructors::is_subkind_of_object(kc) == FALSE) &&
+			(KindConstructors::is_an_enumeration(kc)))
+				Hierarchy::apply_metadata_from_number(pack,
+					KIND_DSIZE_MD_HL,
+					(inter_ti) RTKindConstructors::get_highest_valid_value_as_integer_kc(kc));
+
+		if (Kinds::Behaviour::definite(Kinds::base_construction(kc))) {
+			inter_name *mkdef_iname = RTKindConstructors::get_mkdef_iname(kc);
+			packaging_state save = Functions::begin(mkdef_iname);
+			inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				if (KindConstructors::uses_pointer_values(kc)) {
+					inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
+					EmitCode::call(iname);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, sk_s);
+					EmitCode::up();
+				} else {
+					if (RTKindConstructors::is_subkind_of_object(kc))
+						EmitCode::val_false();
+					else
+						RTKinds::emit_default_value_as_val(Kinds::base_construction(kc),
+							EMPTY_WORDING, "default value");
+				}
+			EmitCode::up();
+			Functions::end(save);
+		}
+		
+		kind *K = Kinds::base_construction(kc);
+		@<Compile data support functions@>;
+	}
+}
+
+@<Compile data support functions@> =
+	if (Kinds::Behaviour::is_an_enumeration(K)) {
+		inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+		@<Compile I6 printing routine for an enumerated kind@>;
+		@<Compile the A and B routines for an enumerated kind@>;
+		@<Compile random-ranger routine for this kind@>;
+	}
+	if ((Kinds::Behaviour::is_built_in(K) == FALSE) &&
+		(Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
+		(Kinds::Behaviour::is_an_enumeration(K) == FALSE)) {
+		if (Kinds::eq(K, K_use_option)) {
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_USE_OPTION_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
+		if (Kinds::eq(K, K_table)) {
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_TABLE_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
+		if (Kinds::eq(K, K_response)) {
+			inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+			packaging_state save = Functions::begin(printing_rule_name);
+			inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+			EmitCode::call(Hierarchy::find(PRINT_RESPONSE_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, value_s);
+			EmitCode::up();
+			Functions::end(save);
+			continue;
+		}
+		inter_name *printing_rule_name = RTKindConstructors::get_iname(K);
+		if (Kinds::Behaviour::is_quasinumerical(K)) {
+			@<Compile I6 printing routine for a unit kind@>;
+			@<Compile random-ranger routine for this kind@>;
+		} else {
+			@<Compile I6 printing routine for a vacant but named kind@>;
+		}
+	}
+
+@ A slightly bogus case first. If the source text declares a kind but never
+gives any enumerated values or literal patterns, then such values will never
+appear at run-time; but we need the printing routine to exist to avoid
+compilation errors.
+
+@<Compile I6 printing routine for a vacant but named kind@> =
+	packaging_state save = Functions::begin(printing_rule_name);
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+	TEMPORARY_TEXT(C)
+	WRITE_TO(C, "weak kind ID: %n\n", RTKindIDs::weak_iname(K));
+	EmitCode::comment(C);
+	DISCARD_TEXT(C)
+	EmitCode::inv(PRINT_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+	EmitCode::up();
+	Functions::end(save);
+
+@ A unit is printed back with its earliest-defined literal pattern used as
+notation. If it had no literal patterns, it would come out as decimal numbers,
+but at present this can't happen.
+
+@<Compile I6 printing routine for a unit kind@> =
+	if (LiteralPatterns::list_of_literal_forms(K))
+		RTLiteralPatterns::printing_routine(printing_rule_name,
+			LiteralPatterns::list_of_literal_forms(K));
+	else {
+		packaging_state save = Functions::begin(printing_rule_name);
+		inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+		EmitCode::inv(PRINT_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, value_s);
+		EmitCode::up();
+		Functions::end(save);
+	}
+
+@<Compile I6 printing routine for an enumerated kind@> =
+	packaging_state save = Functions::begin(printing_rule_name);
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+
+	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::code();
+		EmitCode::down();
+			instance *I;
+			LOOP_OVER_INSTANCES(I, K) {
+				EmitCode::inv(CASE_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTInstances::value_iname(I));
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(PRINT_BIP);
+						EmitCode::down();
+							TEMPORARY_TEXT(CT)
+							wording NW = Instances::get_name_in_play(I, FALSE);
+							LOOP_THROUGH_WORDING(k, NW) {
+								TranscodeText::from_wide_string(CT, Lexer::word_raw_text(k), CT_RAW);
+								if (k < Wordings::last_wn(NW)) WRITE_TO(CT, " ");
+							}
+							EmitCode::val_text(CT);
+							DISCARD_TEXT(CT)
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			}
+			EmitCode::inv(DEFAULT_BIP); /* this default case should never be needed, unless the user has blundered at the I6 level: */
+			EmitCode::down();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						TEMPORARY_TEXT(DT)
+						wording W = Kinds::Behaviour::get_name(K, FALSE);
+						WRITE_TO(DT, "<illegal ");
+						if (Wordings::nonempty(W)) WRITE_TO(DT, "%W", W);
+						else WRITE_TO(DT, "value");
+						WRITE_TO(DT, ">");
+						EmitCode::val_text(DT);
+						DISCARD_TEXT(DT)
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+
+	Functions::end(save);
+
+@ The suite of standard routines provided for enumerative types is a little
+like the one in Ada (|T'Succ|, |T'Pred|, and so on).
+
+If the type is called, say, |T1_colour|, then we have:
+
+(a) |A_T1_colour(v)| advances to the next valid value for the type,
+wrapping around to the first from the last;
+(b) |B_T1_colour(v)| goes back to the previous valid value for the type,
+wrapping around to the last from the first, so that it is the inverse function
+to |A_T1_colour(v)|.
+
+@<Compile the A and B routines for an enumerated kind@> =
+	int instance_count = 0;
+	instance *I;
+	LOOP_OVER_INSTANCES(I, K) instance_count++;
+
+	inter_name *iname_i = RTKindConstructors::get_inc_iname(K);
+	packaging_state save = Functions::begin(iname_i);
+	@<Implement the A routine@>;
+	Functions::end(save);
+
+	inter_name *iname_d = RTKindConstructors::get_dec_iname(K);
+	save = Functions::begin(iname_d);
+	@<Implement the B routine@>;
+	Functions::end(save);
+
+@ There should be a blue historical plaque on the wall here: this was the
+first function ever implemented by emitting Inter code, on 12 November 2017.
+
+@<Implement the A routine@> =
+	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
+	LocalVariables::set_kind(lv_x, K);
+	inter_symbol *x = LocalVariables::declare(lv_x);
+
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+
+	if (instance_count <= 1) {
+		EmitCode::val_symbol(K, x);
+	} else {
+		EmitCode::cast(K_number, K);
+		EmitCode::down();
+			EmitCode::inv(PLUS_BIP);
+			EmitCode::down();
+				EmitCode::inv(MODULO_BIP);
+				EmitCode::down();
+					EmitCode::cast(K, K_number);
+					EmitCode::down();
+						EmitCode::val_symbol(K, x);
+					EmitCode::up();
+					EmitCode::val_number((inter_ti) instance_count);
+				EmitCode::up();
+				EmitCode::val_number(1);
+			EmitCode::up();
+		EmitCode::up();
+	}
+
+	EmitCode::up();
+
+@ And this was the second, a few minutes later.
+
+@<Implement the B routine@> =
+	local_variable *lv_x = LocalVariables::new_other_parameter(I"x");
+	LocalVariables::set_kind(lv_x, K);
+	inter_symbol *x = LocalVariables::declare(lv_x);
+
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+
+	if (instance_count <= 1) {
+		EmitCode::val_symbol(K, x);
+	} else {
+		EmitCode::cast(K_number, K);
+		EmitCode::down();
+			EmitCode::inv(PLUS_BIP);
+			EmitCode::down();
+				EmitCode::inv(MODULO_BIP);
+				EmitCode::down();
+
+				if (instance_count > 2) {
+					EmitCode::inv(PLUS_BIP);
+					EmitCode::down();
+						EmitCode::cast(K, K_number);
+						EmitCode::down();
+							EmitCode::val_symbol(K, x);
+						EmitCode::up();
+						EmitCode::val_number((inter_ti) instance_count-2);
+					EmitCode::up();
+				} else {
+					EmitCode::cast(K, K_number);
+					EmitCode::down();
+						EmitCode::val_symbol(K, x);
+					EmitCode::up();
+				}
+
+					EmitCode::val_number((inter_ti) instance_count);
+				EmitCode::up();
+				EmitCode::val_number(1);
+			EmitCode::up();
+		EmitCode::up();
+	}
+
+	EmitCode::up();
+
+@ And here we add:
+
+(a) |R_T1_colour()| returns a uniformly random choice of the valid
+values of the given type. (For a unit, this will be a uniformly random positive
+value, which will probably not be useful.)
+(b) |R_T1_colour(a, b)| returns a uniformly random choice in between |a|
+and |b| inclusive.
+
+@<Compile random-ranger routine for this kind@> =
+	inter_name *iname_r = RTKindConstructors::get_ranger_iname(K);
+	packaging_state save = Functions::begin(iname_r);
+	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
+	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
+
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(AND_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, a_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, b_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::inv(RANDOM_BIP);
+				EmitCode::down();
+					if (Kinds::Behaviour::is_quasinumerical(K))
+						EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+					else
+						EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, a_s);
+			EmitCode::val_symbol(K_value, b_s);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, b_s);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+
+	inter_symbol *smaller = NULL, *larger = NULL;
+
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(GT_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, a_s);
+			EmitCode::val_symbol(K_value, b_s);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();
+				smaller = b_s; larger = a_s;
+				@<Formula for range@>;
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		smaller = a_s; larger = b_s;
+		@<Formula for range@>;
+	EmitCode::up();
+
+	Functions::end(save);
+
+@<Formula for range@> =
+	EmitCode::inv(PLUS_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, smaller);
+		EmitCode::inv(MODULO_BIP);
+		EmitCode::down();
+			EmitCode::inv(RANDOM_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+			EmitCode::up();
+			EmitCode::inv(PLUS_BIP);
+			EmitCode::down();
+				EmitCode::inv(MINUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, larger);
+					EmitCode::val_symbol(K_value, smaller);
+				EmitCode::up();
+				EmitCode::val_number(1);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+

@@ -460,7 +460,7 @@ void RTRulebooks::compile_default_outcome(outcomes *outs) {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				EmitCode::call(iname);
 				EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+				RTKindIDs::emit_weak_ID_as_val(K_rulebook_outcome);
 				EmitCode::val_iname(K_value, RTRulebooks::nro_iname(rbo->outcome_name));
 				EmitCode::up();
 				rtrue = TRUE;
@@ -470,7 +470,7 @@ void RTRulebooks::compile_default_outcome(outcomes *outs) {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				EmitCode::call(iname);
 				EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+				RTKindIDs::emit_weak_ID_as_val(K_rulebook_outcome);
 				EmitCode::val_iname(K_value, RTRulebooks::nro_iname(rbo->outcome_name));
 				EmitCode::up();
 				rtrue = TRUE;
@@ -526,7 +526,7 @@ void RTRulebooks::compile_outcome(named_rulebook_outcome *nro) {
 			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
-			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+			RTKindIDs::emit_weak_ID_as_val(K_rulebook_outcome);
 			EmitCode::val_iname(K_value, RTRulebooks::nro_iname(nro));
 			EmitCode::up();
 			EmitCode::rtrue();
@@ -536,7 +536,7 @@ void RTRulebooks::compile_outcome(named_rulebook_outcome *nro) {
 			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
-			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+			RTKindIDs::emit_weak_ID_as_val(K_rulebook_outcome);
 			EmitCode::val_iname(K_value, RTRulebooks::nro_iname(nro));
 			EmitCode::up();
 			EmitCode::rtrue();

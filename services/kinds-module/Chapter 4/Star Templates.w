@@ -190,9 +190,9 @@ not matter, since such things never come into kind definitions.
 void StarTemplates::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor *con,
 	int lower_case) {
 	wording W = EMPTY_WORDING;
-	if (con->dt_tag) W = Kinds::Constructors::get_name(con, FALSE);
+	if (con->dt_tag) W = KindConstructors::get_name(con, FALSE);
 	if (Wordings::nonempty(W)) {
-		if (Kinds::Constructors::arity(con) > 0) {
+		if (KindConstructors::arity(con) > 0) {
 			int full_length = Wordings::length(W);
 			int i, w1 = Wordings::first_wn(W);
 			for (i=0; i<full_length; i++) {

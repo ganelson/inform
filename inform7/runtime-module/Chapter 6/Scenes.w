@@ -240,7 +240,7 @@ end actually occurred.)
 			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
-				RTKinds::emit_weak_id_as_val(K_scene);
+				RTKindIDs::emit_weak_ID_as_val(K_scene);
 				EmitCode::val_number((inter_ti) ix+1);
 				EmitCode::val_iname(K_value, RTProperties::iname(P_recurring));
 			EmitCode::up();

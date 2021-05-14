@@ -299,9 +299,7 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">        </span><span class="constant-syntax">4</span><span class="plain-syntax">, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTUseOptions::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Interventions::make_all</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKindConstructors::emit_constants</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_data_type_support_routines</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_metadata</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKindConstructors::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTLiteralPatterns::compile</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
@@ -317,7 +315,6 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Tables::complete</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTTables::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTTableColumns::compile</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_mkdef_functions</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTEquations::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">ImperativeDefinitions::compile_first_block</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRules::compile</span><span class="plain-syntax">)</span>
@@ -363,7 +360,7 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="1-htc.html#SP9" class="function-link"><span class="function-syntax">Sequence::undertake_queued_tasks</span></a><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="1-htc.html#SP8" class="function-link"><span class="function-syntax">Sequence::allow_no_further_queued_tasks</span></a><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_heap_allocator</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKinds::compile_structures</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKindIDs::compile_structures</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">Rules::check_response_usages</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">LocalParking::compile_array</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTBibliographicData::IFID_text</span><span class="plain-syntax">)</span>

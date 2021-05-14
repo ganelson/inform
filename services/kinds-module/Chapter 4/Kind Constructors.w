@@ -1,4 +1,4 @@
-[Kinds::Constructors::] Kind Constructors.
+[KindConstructors::] Kind Constructors.
 
 The mechanism by which Inform records the characteristics of different
 kinds.
@@ -28,7 +28,6 @@ typedef struct kind_constructor {
 	/* A: how this came into being */
 	int is_incompletely_defined; /* newly defined and ambiguous as yet */
 	struct parse_node *where_defined_in_source_text; /* if so */
-	struct kind *stored_as; /* currently unused: if this is a typedef for some construction */
 
 	/* B: constructing kinds */
 	int constructor_arity; /* 0 for base, 1 for unary, 2 for binary */
@@ -62,7 +61,7 @@ typedef struct kind_constructor {
 	int dimensional_form_fixed; /* whether they are derived */
 
 	/* H: representing this kind at run-time */
-	struct text_stream *name_in_template_code; /* an Inter identifier */
+	struct text_stream *explicit_identifier; /* to become an Inter identifier */
 	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
 	struct kind_constructor_compilation_data compilation_data;
@@ -81,7 +80,6 @@ typedef struct kind_constructor {
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
 	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
 	struct command_grammar *understand_as_values; /* used when parsing such values */
-	int needs_GPR; /* a GPR is actually required to be compiled */
 	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
 	struct text_stream *recognition_routine; /* for recognising an explicit value as preposition */
 
@@ -168,7 +166,7 @@ but will be the constructor for "door" for kinds like this one:
 >> Portal is a kind of door.
 
 =
-kind_constructor *Kinds::Constructors::new(kind_constructor *super,
+kind_constructor *KindConstructors::new(kind_constructor *super,
 	text_stream *source_name, text_stream *initialisation_macro, int group) {
 	kind_constructor *con = CREATE(kind_constructor);
 	kind_constructor **pC = FamiliarKinds::known_con(source_name);
@@ -179,12 +177,9 @@ kind_constructor *Kinds::Constructors::new(kind_constructor *super,
 	else { @<Copy the new constructor from its superconstructor@>; copied = TRUE; }
 	con->group = group;
 
-	con->name_in_template_code = Str::duplicate(source_name);
+	con->explicit_identifier = Str::duplicate(source_name);
 	#ifdef CORE_MODULE
-	if (copied)
-		RTKindConstructors::restart_copied_compilation_data(con);
-	else
-		con->compilation_data = RTKindConstructors::new_compilation_data(con);
+	con->compilation_data = RTKindConstructors::new_compilation_data(con);
 	KindSubjects::new(con);
 	#endif
 	con->where_defined_in_source_text = current_sentence;
@@ -207,7 +202,6 @@ we apply any defaults set in Neptune files.
 	/* A: how this came into being */
 	con->is_incompletely_defined = FALSE;
 	con->where_defined_in_source_text = NULL; /* but will be filled in imminently */
-	con->stored_as = NULL;
 
 	/* B: constructing kinds */
 	con->constructor_arity = 0; /* by default a base constructor */
@@ -251,7 +245,7 @@ we apply any defaults set in Neptune files.
 	Kinds::Dimensions::dim_initialise(&(con->dim_rules));
 
 	/* H: representing this kind at run-time */
-	con->name_in_template_code = Str::new();
+	con->explicit_identifier = Str::new();
 	con->class_number = 0;
 
 	/* I: storing values at run-time */
@@ -268,7 +262,6 @@ we apply any defaults set in Neptune files.
 	con->ACTIONS_identifier = Str::new();
 
 	con->understand_as_values = NULL;
-	con->needs_GPR = FALSE;
 	con->explicit_GPR_identifier = NULL;
 	con->recognition_routine = NULL;
 
@@ -314,19 +307,19 @@ It means that all kinds of object share the same weak ID as "object".
 	con->next_structure = N;
 	con->prev_structure = P;
 	con->cached_kind = NULL; /* otherwise the superkind's cache is used by mistake */
-	con->name_in_template_code = Str::new(); /* otherwise this will be called |OBJECT_TY| by mistake */
+	con->explicit_identifier = Str::new(); /* otherwise this will be called |OBJECT_TY| by mistake */
 
 @h The noun.
 It's a requirement that the following be called soon after the creation
 of the constructor:
 
 =
-void Kinds::Constructors::attach_noun(kind_constructor *con, noun *nt) {
+void KindConstructors::attach_noun(kind_constructor *con, noun *nt) {
 	if ((con == NULL) || (nt == NULL)) internal_error("bad noun attachment");
 	con->dt_tag = nt;
 }
 
-wording Kinds::Constructors::get_name(kind_constructor *con, int plural_form) {
+wording KindConstructors::get_name(kind_constructor *con, int plural_form) {
 	if (con->dt_tag) {
 		noun *nt = con->dt_tag;
 		if (nt) return Nouns::nominative(nt, plural_form);
@@ -334,7 +327,7 @@ wording Kinds::Constructors::get_name(kind_constructor *con, int plural_form) {
 	return EMPTY_WORDING;
 }
 
-wording Kinds::Constructors::get_name_in_play(kind_constructor *con, int plural_form,
+wording KindConstructors::get_name_in_play(kind_constructor *con, int plural_form,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (con->dt_tag) {
 		noun *nt = con->dt_tag;
@@ -343,24 +336,24 @@ wording Kinds::Constructors::get_name_in_play(kind_constructor *con, int plural_
 	return EMPTY_WORDING;
 }
 
-noun *Kinds::Constructors::get_noun(kind_constructor *con) {
+noun *KindConstructors::get_noun(kind_constructor *con) {
 	if (con == NULL) return NULL;
 	return con->dt_tag;
 }
 
-text_stream *Kinds::Constructors::name_in_template_code(kind_constructor *con) {
-	return con->name_in_template_code;
+text_stream *KindConstructors::name_in_template_code(kind_constructor *con) {
+	return con->explicit_identifier;
 }
 
 @ We also need to parse this, occasionally (if we needed this more than a
 small and bounded number of times we'd want a faster method, but we don't):
 
 =
-kind_constructor *Kinds::Constructors::parse(text_stream *sn) {
+kind_constructor *KindConstructors::parse(text_stream *sn) {
 	if (sn == NULL) return NULL;
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor)
-		if (Str::eq(sn, con->name_in_template_code))
+		if (Str::eq(sn, con->explicit_identifier))
 			return con;
 	return NULL;
 }
@@ -370,30 +363,30 @@ Conversions of an existing constructor to make it a unit or enumeration also
 require running macros in the kind interpreter:
 
 =
-int Kinds::Constructors::convert_to_unit(kind_constructor *con) {
+int KindConstructors::convert_to_unit(kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
 		NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#UNIT"), con, NULL);
 		return TRUE;
 	}
-	if (Kinds::Constructors::is_arithmetic(con)) return TRUE; /* i.e., if it succeeded */
+	if (KindConstructors::is_arithmetic(con)) return TRUE; /* i.e., if it succeeded */
 	return FALSE;
 }
 
-int Kinds::Constructors::convert_to_enumeration(kind_constructor *con) {
+int KindConstructors::convert_to_enumeration(kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
 		NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#ENUMERATION"), con, NULL);
 		if (con->linguistic)
 			NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#LINGUISTIC"), con, NULL);
 		return TRUE;
 	}
-	if (Kinds::Constructors::is_enumeration(con)) return TRUE; /* i.e., if it succeeded */
+	if (KindConstructors::is_an_enumeration(con)) return TRUE; /* i.e., if it succeeded */
 	return FALSE;
 }
 
 @ And similarly:
 
 =
-void Kinds::Constructors::convert_to_real(kind_constructor *con) {
+void KindConstructors::convert_to_real(kind_constructor *con) {
 	NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#REAL"), con, NULL);
 }
 
@@ -401,29 +394,29 @@ void Kinds::Constructors::convert_to_real(kind_constructor *con) {
 them tidily off in the index.
 
 =
-void Kinds::Constructors::mark_as_linguistic(kind_constructor *con) {
+void KindConstructors::mark_as_linguistic(kind_constructor *con) {
 	con->linguistic = TRUE;
 }
 
 @h For construction purposes.
 
 =
-kind **Kinds::Constructors::cache_location(kind_constructor *con) {
+kind **KindConstructors::cache_location(kind_constructor *con) {
 	if (con) return &(con->cached_kind);
 	return NULL;
 }
 
-int Kinds::Constructors::arity(kind_constructor *con) {
+int KindConstructors::arity(kind_constructor *con) {
 	if (con == NULL) return 0;
 	if (con->group == PROPER_CONSTRUCTOR_GRP) return con->constructor_arity;
 	return 0;
 }
 
-int Kinds::Constructors::tupling(kind_constructor *con, int b) {
+int KindConstructors::tupling(kind_constructor *con, int b) {
 	return con->tupling[b];
 }
 
-int Kinds::Constructors::variance(kind_constructor *con, int b) {
+int KindConstructors::variance(kind_constructor *con, int b) {
 	return con->variance[b];
 }
 
@@ -432,7 +425,7 @@ The rest of Inform is not encouraged to poke at constructors directly; it
 ought to ask questions about kinds instead (see "Using Kinds"). However:
 
 =
-int Kinds::Constructors::is_definite(kind_constructor *con) {
+int KindConstructors::is_definite(kind_constructor *con) {
 	if ((con->group == BASE_CONSTRUCTOR_GRP) ||
 		(con->group == PROPER_CONSTRUCTOR_GRP))
 			return TRUE;
@@ -441,36 +434,54 @@ int Kinds::Constructors::is_definite(kind_constructor *con) {
 	return FALSE;
 }
 
-int Kinds::Constructors::offers_I6_GPR(kind_constructor *con) {
+int KindConstructors::offers_I6_GPR(kind_constructor *con) {
 	if (con == NULL) return FALSE;
-	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con,
+	if ((KindConstructors::is_definite(con)) &&
+		(KindConstructors::compatible(con,
 			Kinds::get_construct(K_understandable_value), FALSE))) return TRUE;
 	return FALSE;
 }
 
-int Kinds::Constructors::is_arithmetic(kind_constructor *con) {
+int KindConstructors::is_arithmetic(kind_constructor *con) {
 	if (con == NULL) return FALSE;
-	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con,
+	if ((KindConstructors::is_definite(con)) &&
+		(KindConstructors::compatible(con,
 			Kinds::get_construct(K_arithmetic_value), FALSE))) return TRUE;
 	return FALSE;
 }
 
-int Kinds::Constructors::is_arithmetic_and_real(kind_constructor *con) {
+int KindConstructors::is_arithmetic_and_real(kind_constructor *con) {
 	if (con == NULL) return FALSE;
-	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con,
+	if ((KindConstructors::is_definite(con)) &&
+		(KindConstructors::compatible(con,
 			Kinds::get_construct(K_real_arithmetic_value), FALSE))) return TRUE;
 	return FALSE;
 }
 
-int Kinds::Constructors::is_enumeration(kind_constructor *con) {
+int KindConstructors::is_an_enumeration(kind_constructor *con) {
 	if (con == NULL) return FALSE;
-	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con,
+	if ((KindConstructors::is_definite(con)) &&
+		(KindConstructors::compatible(con,
 			Kinds::get_construct(K_enumerated_value), FALSE))) return TRUE;
 	return FALSE;
+}
+
+@ All floating-point kinds use a common comparison function: the one for
+|K_real_number|.
+
+=
+int KindConstructors::uses_signed_comparisons(kind_constructor *kc) {
+	if (kc == NULL) return FALSE;
+	if (Str::eq_wide_string(kc->comparison_routine, L"signed")) return TRUE;
+	return FALSE;
+}
+
+text_stream *KindConstructors::get_comparison_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	if ((KindConstructors::is_arithmetic_and_real(kc)) && (K_real_number))
+		return K_real_number->construct->comparison_routine;
+	if (Str::eq_wide_string(kc->comparison_routine, L"signed")) return NULL;
+	return kc->comparison_routine;
 }
 
 @h Cast and instance lists.
@@ -478,13 +489,13 @@ Each constructor has a list of other constructors (all of the |PROTOCOL_GRP|
 group) which it's an instance of: value, word value, arithmetic value, and so on.
 
 =
-int Kinds::Constructors::find_cast(kind_constructor *from, kind_constructor *to) {
+int KindConstructors::find_cast(kind_constructor *from, kind_constructor *to) {
 	if (to) {
 		kind_constructor_casting_rule *dtcr;
 		for (dtcr = to->first_casting_rule; dtcr; dtcr = dtcr->next_casting_rule) {
 			if (Str::len(dtcr->cast_from_kind_unparsed) > 0) {
 				dtcr->cast_from_kind =
-					Kinds::Constructors::parse(dtcr->cast_from_kind_unparsed);
+					KindConstructors::parse(dtcr->cast_from_kind_unparsed);
 				Str::clear(dtcr->cast_from_kind_unparsed);
 			}
 			if (from == dtcr->cast_from_kind)
@@ -498,16 +509,16 @@ int Kinds::Constructors::find_cast(kind_constructor *from, kind_constructor *to)
 group or |PROPER_CONSTRUCTOR_GRP|) which it can cast to.
 
 =
-int Kinds::Constructors::find_instance(kind_constructor *from, kind_constructor *to) {
+int KindConstructors::find_instance(kind_constructor *from, kind_constructor *to) {
 	kind_constructor_instance *dti;
 	for (dti = from->first_instance_rule; dti; dti = dti->next_instance_rule) {
 		if (Str::len(dti->instance_of_this_unparsed) > 0) {
 			dti->instance_of_this =
-				Kinds::Constructors::parse(dti->instance_of_this_unparsed);
+				KindConstructors::parse(dti->instance_of_this_unparsed);
 			Str::clear(dti->instance_of_this_unparsed);
 		}
 		if (dti->instance_of_this == to) return TRUE;
-		if (Kinds::Constructors::find_instance(dti->instance_of_this, to)) return TRUE;
+		if (KindConstructors::find_instance(dti->instance_of_this, to)) return TRUE;
 	}
 	return FALSE;
 }
@@ -516,30 +527,30 @@ int Kinds::Constructors::find_instance(kind_constructor *from, kind_constructor 
 The following tests if |from| is compatible with |to|.
 
 =
-int Kinds::Constructors::compatible(kind_constructor *from, kind_constructor *to,
+int KindConstructors::compatible(kind_constructor *from, kind_constructor *to,
 	int allow_casts) {
 	if (to == from) return TRUE;
 	if ((to == NULL) || (from == NULL)) return FALSE;
-	if ((allow_casts) && (Kinds::Constructors::find_cast(from, to))) return TRUE;
-	if (Kinds::Constructors::find_instance(from, to)) return TRUE;
+	if ((allow_casts) && (KindConstructors::find_cast(from, to))) return TRUE;
+	if (KindConstructors::find_instance(from, to)) return TRUE;
 	return FALSE;
 }
 
 @ And more elaborately:
 
 =
-int Kinds::Constructors::uses_pointer_values(kind_constructor *con) {
+int KindConstructors::uses_pointer_values(kind_constructor *con) {
 	if (con == NULL) return FALSE;
-	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con, Kinds::get_construct(K_pointer_value), FALSE)))
+	if ((KindConstructors::is_definite(con)) &&
+		(KindConstructors::compatible(con, Kinds::get_construct(K_pointer_value), FALSE)))
 			return TRUE;
 	return FALSE;
 }
 
-int Kinds::Constructors::allow_word_as_pointer(kind_constructor *left,
+int KindConstructors::allow_word_as_pointer(kind_constructor *left,
 	kind_constructor *right) {
-	if (Kinds::Constructors::uses_pointer_values(left) == FALSE) return FALSE;
-	if (Kinds::Constructors::uses_pointer_values(right) == TRUE) return FALSE;
-	if (Kinds::Constructors::compatible(right, left, TRUE)) return TRUE;
+	if (KindConstructors::uses_pointer_values(left) == FALSE) return FALSE;
+	if (KindConstructors::uses_pointer_values(right) == TRUE) return FALSE;
+	if (KindConstructors::compatible(right, left, TRUE)) return TRUE;
 	return FALSE;
 }

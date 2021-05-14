@@ -187,15 +187,15 @@ row.
 	HTML_CLOSE("p");
 	if (Kinds::is_proper_constructor(K)) {
 		HTML::open_indented_p(OUT, 1, "tight");
-		int i, a = Kinds::Constructors::arity(Kinds::get_construct(K));
+		int i, a = KindConstructors::arity(Kinds::get_construct(K));
 		if ((a == 2) &&
-			(Kinds::Constructors::variance(Kinds::get_construct(K), 0) ==
-				Kinds::Constructors::variance(Kinds::get_construct(K), 1)))
+			(KindConstructors::variance(Kinds::get_construct(K), 0) ==
+				KindConstructors::variance(Kinds::get_construct(K), 1)))
 			a = 1;
 		WRITE("<i>");
 		for (i=0; i<a; i++) {
 			if (i > 0) WRITE(", ");
-			if (Kinds::Constructors::variance(Kinds::get_construct(K), i) > 0)
+			if (KindConstructors::variance(Kinds::get_construct(K), i) > 0)
 				WRITE("covariant");
 			else
 				WRITE("contravariant");
