@@ -540,7 +540,7 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	#ifdef CORE_MODULE
 	if (K == NULL) return unchecked_interk;
 	if (K == K_value) return unchecked_interk; /* for error recovery */
-	return InterNames::to_symbol(RTKinds::iname(K));
+	return InterNames::to_symbol(RTKindDeclarations::iname(K));
 	#endif
 	#ifndef CORE_MODULE
 	#ifdef CODEGEN_MODULE

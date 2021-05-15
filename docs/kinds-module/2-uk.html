@@ -404,9 +404,9 @@ takes depends on its kind:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::uses_pointer_values</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::uses_block_values</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP21" class="function-link"><span class="function-syntax">KindConstructors::uses_pointer_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP21" class="function-link"><span class="function-syntax">KindConstructors::uses_block_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Exactly how large the small block is:

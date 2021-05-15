@@ -218,7 +218,7 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		if (PL::Counting::optimise_loop(sch, K) == FALSE)
 			Calculus::Schemas::modify(sch, "objectloop (*1 ofclass %n)",
-				RTKinds::I6_classname(K));
+				RTKindDeclarations::iname(K));
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_object)) {
@@ -255,7 +255,7 @@ void CompileLoops::through_list(parse_node *spec, local_variable *val_var) {
 	kind *CK = Kinds::unary_construction_material(K);
 
 	int pointery = FALSE;
-	if (Kinds::Behaviour::uses_pointer_values(CK)) {
+	if (Kinds::Behaviour::uses_block_values(CK)) {
 		pointery = TRUE;
 		LocalVariableSlates::free_at_end_of_scope(val_var);
 	}

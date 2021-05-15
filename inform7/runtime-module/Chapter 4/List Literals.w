@@ -37,7 +37,7 @@ We make the large block first:
 packaging_state ListLiterals::begin_large_block(inter_name *iname, kind *list_kind,
 	int no_entries) {
 	packaging_state save = EmitArrays::begin(iname, K_value);
-	RTKinds::emit_block_value_header(list_kind, TRUE, no_entries + 2);
+	TheHeap::emit_block_value_header(list_kind, TRUE, no_entries + 2);
 	RTKindIDs::strong_ID_array_entry(Kinds::unary_construction_material(list_kind));
 	EmitArrays::numeric_entry((inter_ti) no_entries);
 	return save;

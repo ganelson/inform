@@ -202,7 +202,7 @@ void Functions::end(packaging_state save) {
 
 @<Compile an outer shell function with the public-facing name@> =
 	int returns_block_value =
-		Kinds::Behaviour::uses_pointer_values(frame->kind_returned);
+		Kinds::Behaviour::uses_block_values(frame->kind_returned);
 
 	inter_package *block_package = Produce::block(Emit::tree(), NULL, public_name);
 	inter_symbol *rv_symbol = NULL;

@@ -84,7 +84,7 @@ void KindPredicatesRevisited::get_schema(up_family *self, int task, unary_predic
 		case TEST_ATOM_TASK:
 			if (Kinds::Behaviour::is_subkind_of_object(up->assert_kind))
 				Calculus::Schemas::modify(asch->schema, "*1 ofclass %n",
-					RTKinds::I6_classname(up->assert_kind));
+					RTKindDeclarations::iname(up->assert_kind));
 			else {
 				if ((Kinds::get_construct(up->assert_kind) == CON_list_of) &&
 					(problem_count == 0)) {

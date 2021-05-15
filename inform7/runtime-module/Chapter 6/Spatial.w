@@ -13,7 +13,7 @@ void RTSpatial::compile_players_holdall(void) {
 		inter_name *iname = Hierarchy::find(RUCKSACK_CLASS_HL);
 		Hierarchy::make_available(iname);
 		Emit::iname_constant(iname, K_value,
-			RTKinds::I6_classname(K_players_holdall));
+			RTKindDeclarations::iname(K_players_holdall));
 	}
 }
 

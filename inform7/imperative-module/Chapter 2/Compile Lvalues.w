@@ -265,7 +265,7 @@ char *CompileLvalues::interpret_store(node_type_t storage_class, kind *left, kin
 		form = DECREASE_BY_WORD;
 		if (Kinds::FloatingPoint::uses_floating_point(left)) form = DECREASE_BY_REAL;
 	}
-	if (KindConstructors::uses_pointer_values(L)) {
+	if (KindConstructors::uses_block_values(L)) {
 		if (KindConstructors::allow_word_as_pointer(L, R)) {
 			form = STORE_WORD_TO_POINTER;
 			if (inc > 0) form = INCREASE_BY_POINTER;

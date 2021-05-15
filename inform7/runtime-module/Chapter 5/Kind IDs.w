@@ -221,26 +221,23 @@ compile under Inform 6.
 	wording W = Feeds::feed_text(TEMP);
 	rks->rks_iname = Hierarchy::make_iname_with_memo(DK_KIND_HL, rks->rks_package, W);
 	DISCARD_TEXT(TEMP)
-	rks->rks_dv_iname = Hierarchy::make_iname_in(DK_DEFAULT_VALUE_HL, rks->rks_package);
+	rks->rks_dv_iname = NULL;
 
 @ It's convenient to combine this system with one which constructs default
 values for kinds, since both involve tracking constructions uniquely.
 
 =
-inter_name *RTKindIDs::compile_default_value_inner(kind *K) {
-	RTKindIDs::precompile_default_value(K);
-	runtime_kind_structure *rks = RTKindIDs::get_rks(K);
-	if (rks == NULL) return NULL;
-	return rks->rks_dv_iname;
-}
-
-int RTKindIDs::precompile_default_value(kind *K) {
-	runtime_kind_structure *rks = RTKindIDs::get_rks(K);
-	if (rks == NULL) return FALSE;
-	rks->make_default = TRUE;
-	if (rks->default_requested_here == NULL)
-		rks->default_requested_here = current_sentence;
-	return TRUE;
+inter_name *RTKindIDs::default_value_from_rks(runtime_kind_structure *rks) {
+	if (rks) {
+		rks->make_default = TRUE;
+		if (rks->default_requested_here == NULL)
+			rks->default_requested_here = current_sentence;
+		if (rks->rks_dv_iname == NULL)
+			rks->rks_dv_iname =
+				Hierarchy::make_iname_in(DK_DEFAULT_VALUE_HL, rks->rks_package);
+		return rks->rks_dv_iname;
+	}
+	return NULL;
 }
 
 @ At the end of Inform's run, then, we have seen various interesting kinds
@@ -350,3 +347,42 @@ void RTKindIDs::compile_structures(void) {
 		Emit::iname_constant(Hierarchy::make_iname_in(DK_STRONG_ID_HL,
 			rks->rks_package), K_value, rks->rks_iname);
 	}
+
+@h Introspection.
+Our runtime code is only capable of very limited introspection: given a
+value known to be some kind of object, it can test what kind that is. This
+is done with Inter's |OFCLASS_BIP| primitive, and note that this refers to
+the kind the way that Inter does -- i.e., by means of the symbol used as
+an identifier in the declaration of that kind.
+
+Testing |X ofclass ID|, where |ID| is either the strong or the weak ID, does
+not work, and in fact there is in general no way to take a value at runtime
+and produce its strong or weak ID. In other words, this works only for
+objects. But it is also only needed for objects.
+
+This function, then, would have |subj| equal to the subject for the kind
+"container" in order to test the condition ${\it container}(x)$. It returns
+|TRUE| if code was required to perform that test, |FALSE| if the test was
+already true and required no code. That will in fact happen if |subj| is
+not a kind of object, because then the typechecker will have proved already
+that the value $x$ has this kind -- in other words, the checking will have
+been done at compile time.
+
+=
+int RTKindIDs::emit_element_of_condition(inference_subject_family *family,
+	inference_subject *subj, inter_symbol *t0_s) {
+	kind *K = KindSubjects::to_kind(subj);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
+		EmitCode::inv(OFCLASS_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, t0_s);
+			EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
+		EmitCode::up();
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_object)) {
+		EmitCode::val_symbol(K_value, t0_s);
+		return TRUE;
+	}
+	return FALSE;
+}

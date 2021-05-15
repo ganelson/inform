@@ -319,7 +319,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	if (ExplicitRelations::stored_dynamically(bp)) {
 		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
-		RTKinds::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
+		TheHeap::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
 		EmitArrays::null_entry();
 		EmitArrays::null_entry();
 		@<Write the name field of the relation record@>;
@@ -1053,7 +1053,7 @@ relation of the right kind.
 =
 void RTRelations::default_value_of_relation_kind(inter_name *identifier, kind *K) {
 	packaging_state save = EmitArrays::begin(identifier, K_value);
-	RTKinds::emit_block_value_header(K, FALSE, 8);
+	TheHeap::emit_block_value_header(K, FALSE, 8);
 	EmitArrays::null_entry();
 	EmitArrays::null_entry();
 	TEMPORARY_TEXT(DVT)
@@ -1519,7 +1519,7 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, X_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_R));
 					EmitCode::up();
 					EmitCode::code();
 					EmitCode::down();
@@ -1558,7 +1558,7 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, X_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_L));
 					EmitCode::up();
 					EmitCode::code();
 					EmitCode::down();
@@ -1602,7 +1602,7 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 						EmitCode::inv(OFCLASS_BIP);
 						EmitCode::down();
 							EmitCode::val_symbol(K_value, L_s);
-							EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+							EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_L));
 						EmitCode::up();
 					downs++;
 				}
@@ -1612,7 +1612,7 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 						EmitCode::inv(OFCLASS_BIP);
 						EmitCode::down();
 							EmitCode::val_symbol(K_value, R_s);
-							EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+							EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_R));
 						EmitCode::up();
 					downs++;
 				}
@@ -1655,14 +1655,14 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, L_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_L));
 					EmitCode::up();
 				}
 				if (rg->check_R) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, R_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_R));
 					EmitCode::up();
 				}
 				for (int i=0; i<downs-1; i++) EmitCode::up();
@@ -1711,14 +1711,14 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, L_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_L));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_L));
 					EmitCode::up();
 				}
 				if (rg->check_R) {
 					EmitCode::inv(OFCLASS_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, R_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(rg->check_R));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(rg->check_R));
 					EmitCode::up();
 				}
 				for (int i=0; i<downs-1; i++) EmitCode::up();
@@ -1802,7 +1802,7 @@ void RTRelations::add_term_as_call_parameter(stack_frame *phsf,
 				EmitCode::inv(OFCLASS_BIP);
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, lv_s);
-					EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+					EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
 				EmitCode::up();
 			EmitCode::up();
 			EmitCode::code();

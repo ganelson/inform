@@ -269,7 +269,7 @@ int RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 		return TRUE;
 	}
 	kind *K = ValueProperties::kind(prn);
-	return RTKinds::compile_default_value_vh(VH, K, prn->name, "property");
+	return DefaultValues::to_holster(VH, K, prn->name, "property");
 }
 
 @h Schemas.

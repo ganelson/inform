@@ -759,7 +759,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 			EmitCode::inv(OBJECTLOOP_BIP);
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk->rv_s);
-				EmitCode::val_iname(K_value, RTKinds::I6_classname(K_object));
+				EmitCode::val_iname(K_value, RTKindDeclarations::iname(K_object));
 				EmitCode::inv(IN_BIP);
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, gprk->rv_s);
@@ -1053,7 +1053,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 					EmitCode::inv(OBJECTLOOPX_BIP);
 					EmitCode::down();
 						EmitCode::ref_symbol(K_value, gprk->rv_s);
-						EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+						EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
 						EmitCode::code();
 						EmitCode::down();
 							EmitCode::inv(IF_BIP);
@@ -1136,7 +1136,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 						EmitCode::inv(OBJECTLOOPX_BIP);
 						EmitCode::down();
 							EmitCode::ref_symbol(K_value, gprk->rv_s);
-							EmitCode::val_iname(K_value, RTKinds::I6_classname(K));
+							EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
 							EmitCode::code();
 							EmitCode::down();
 								EmitCode::inv(IF_BIP);

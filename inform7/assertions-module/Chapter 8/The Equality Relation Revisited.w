@@ -169,7 +169,7 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 		case TEST_ATOM_TASK:
 			if ((st[0]) && (st[1]))
 				Calculus::Schemas::modify(asch->schema, "%S",
-					RTKinds::interpret_test_equality(st[0], st[1]));
+					EqualitySchemas::interpret_equality(st[0], st[1]));
 			else if (problem_count == 0) {
 				LOG("$0 and $0; %u and %u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
@@ -302,7 +302,7 @@ one that's more helpfully specific and return |TRUE|.
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,
 			"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \"",
-			RTKinds::I6_classname(st[0]));
+			RTKindDeclarations::iname(st[0]));
 		Kinds::Textual::write(TEMP, st[0]);
 		WRITE_TO(TEMP, "\");");
 		Calculus::Schemas::append(asch->schema, "%S", TEMP);

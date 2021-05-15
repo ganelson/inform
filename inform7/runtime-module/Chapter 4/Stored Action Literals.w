@@ -30,7 +30,7 @@ The default is "waiting":
 inter_name *StoredActionLiterals::default(void) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
 	packaging_state save = EmitArrays::begin_late(small_block, K_value);
-	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
+	TheHeap::emit_block_value_header(K_stored_action, FALSE, 6);
 	EmitArrays::iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
 	EmitArrays::numeric_entry(0);
 	EmitArrays::numeric_entry(0);
@@ -46,7 +46,7 @@ inter_name *StoredActionLiterals::small_block(explicit_action *ea) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
 	packaging_state save = EmitArrays::begin_late(small_block, K_value);
 
-	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
+	TheHeap::emit_block_value_header(K_stored_action, FALSE, 6);
 	action_name *an = ea->action;
 	EmitArrays::iname_entry(RTActions::double_sharp(an));
 

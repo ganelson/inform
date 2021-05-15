@@ -415,7 +415,7 @@ void RTKindConstructors::compile(void) {
 		}
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
 			Hierarchy::apply_metadata_from_iname(pack,
-				KIND_CLASS_MD_HL, RTKinds::I6_classname(Kinds::base_construction(kc)));
+				KIND_CLASS_MD_HL, RTKindDeclarations::iname(Kinds::base_construction(kc)));
 		}
 		if (KindConstructors::is_definite(kc)) {
 			Hierarchy::apply_metadata_from_number(pack,
@@ -424,7 +424,7 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata_from_number(pack,
 				KIND_IS_DEF_MD_HL, 0);
 		}		
-		if (KindConstructors::uses_pointer_values(kc)) {
+		if (KindConstructors::uses_block_values(kc)) {
 			Hierarchy::apply_metadata_from_number(pack,
 				KIND_HAS_BV_MD_HL, 1);
 		} else {
@@ -435,7 +435,7 @@ void RTKindConstructors::compile(void) {
 		if (weak_iname == NULL) internal_error("no iname for weak ID");
 		Hierarchy::apply_metadata_from_iname(pack,
 			KIND_WEAK_ID_MD_HL, weak_iname);
-		if (KindConstructors::uses_pointer_values(kc)) {
+		if (KindConstructors::uses_block_values(kc)) {
 			inter_name *sf_iname = RTKindConstructors::get_support_fn_iname(kc);
 			if (sf_iname)
 				Hierarchy::apply_metadata_from_iname(pack,
@@ -476,7 +476,7 @@ void RTKindConstructors::compile(void) {
 			inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
 			EmitCode::inv(RETURN_BIP);
 			EmitCode::down();
-				if (KindConstructors::uses_pointer_values(kc)) {
+				if (KindConstructors::uses_block_values(kc)) {
 					inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 					EmitCode::call(iname);
 					EmitCode::down();
@@ -486,7 +486,7 @@ void RTKindConstructors::compile(void) {
 					if (RTKindConstructors::is_subkind_of_object(kc))
 						EmitCode::val_false();
 					else
-						RTKinds::emit_default_value_as_val(Kinds::base_construction(kc),
+						DefaultValues::val(Kinds::base_construction(kc),
 							EMPTY_WORDING, "default value");
 				}
 			EmitCode::up();
@@ -494,6 +494,20 @@ void RTKindConstructors::compile(void) {
 		}
 		
 		kind *K = Kinds::base_construction(kc);
+		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Behaviour::is_object(K))) {
+			TEMPORARY_TEXT(ICN)
+			WRITE_TO(ICN, "ICOUNT_");
+			Kinds::Textual::write(ICN, K);
+			Str::truncate(ICN, 31);
+			LOOP_THROUGH_TEXT(pos, ICN) {
+				Str::put(pos, Characters::toupper(Str::get(pos)));
+				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
+			}
+			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
+			Hierarchy::make_available(iname);
+			DISCARD_TEXT(ICN)
+			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
+		}
 		@<Compile data support functions@>;
 	}
 }

@@ -128,7 +128,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	@<Determine the kind of what to make@>;
 	@<Check that this is a kind where it makes sense to enumerate new values@>;
 	K = Kinds::weaken(K, K_object);
-	if (!(Kinds::Behaviour::is_object(K))) RTKinds::set_defined_by_table(K, t);
+	if (!(Kinds::Behaviour::is_object(K))) RTTables::defines(t, K);
 	t->kind_defined_in_this_table = K;
 	Tables::Columns::set_kind(t->columns[0].column_identity, t, K);
 	@<Create values for this kind as enumerated by names in the first column@>;

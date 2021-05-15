@@ -146,7 +146,7 @@ so on. Those absolute basics are made here.
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",
 		-1, debugging, sequence_timer);
-	BENCH(RTKinds::kind_declarations)
+	BENCH(RTKindDeclarations::declare_base_kinds)
 	BENCH(RTPropertyValues::allocate_attributes)
 	BENCH(Translations::traverse_for_late_namings)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
@@ -175,7 +175,6 @@ so on. Those absolute basics are made here.
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
-	BENCH(RTKinds::compile_instance_counts)
 
 @ This proceeds in stages.
 
@@ -228,7 +227,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(Sequence::undertake_queued_tasks)
 	BENCH(Sequence::allow_no_further_queued_tasks)
-	BENCH(RTKinds::compile_heap_allocator)
+	BENCH(TheHeap::compile_configuration)
 	BENCH(RTKindIDs::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(LocalParking::compile_array)

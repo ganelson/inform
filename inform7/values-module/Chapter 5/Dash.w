@@ -586,7 +586,7 @@ compared are word values.
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
 	if (rv != NEVER_MATCH) {
 		kind *K = Specifications::to_kind(p->down);
-		if ((Kinds::Behaviour::uses_pointer_values(K) == FALSE) &&
+		if ((Kinds::Behaviour::uses_block_values(K) == FALSE) &&
 			(Node::is(p->down, CONSTANT_NT))) {
 			parse_node *val = Node::get_token_to_be_parsed_against(p);
 			if (!(Rvalues::compare_CONSTANT(p->down, val)))

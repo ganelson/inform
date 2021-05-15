@@ -8,6 +8,8 @@ void CompletionModule::compile(void) {
 	@<Version number constant@>;
 	@<Semantic version number constant@>;
 	@<Memory economy metadata@>;
+	@<Frame size@>;
+	@<RNG seed@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -34,3 +36,13 @@ void CompletionModule::compile(void) {
 		Emit::numeric_constant(iname, 1);
 	else
 		Emit::numeric_constant(iname, 0);
+
+@<Frame size@> =	
+	inter_name *iname = Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL);
+	Emit::numeric_constant(iname, (inter_ti) SharedVariables::size_of_largest_set());
+	Hierarchy::make_available(iname);
+
+@<RNG seed@> =
+	inter_name *iname = Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL);
+	Emit::numeric_constant(iname, (inter_ti) Task::rng_seed());
+	Hierarchy::make_available(iname);

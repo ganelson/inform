@@ -112,11 +112,58 @@ void EmitCode::val_symbol(kind *K, inter_symbol *S) {
 	Produce::val_symbol(Emit::tree(), K, S);
 }
 
-@ Whereas this produces a |cast|:
+@h Casts.
+These are value conversions from one kind to another. In some simple cases,
+this can be achieved with an Inter |cast|:
 
 =
 void EmitCode::cast(kind *F, kind *T) {
 	Produce::cast(Emit::tree(), F, T);
+}
+
+@ This allows more complex cases, though:
+
+=
+int EmitCode::cast_possible(kind *F, kind *T) {
+	F = Kinds::weaken(F, K_object);
+	T = Kinds::weaken(T, K_object);
+	if ((T) && (F) && (T->construct != F->construct) &&
+		(Kinds::Behaviour::definite(T)) && (Kinds::Behaviour::definite(F)) &&
+		(Kinds::eq(F, K_object) == FALSE) &&
+		(Kinds::eq(T, K_object) == FALSE) &&
+		(T->construct != CON_property))
+		return TRUE;
+	return FALSE;
+}
+
+@ Casts are in many cases implicit, so that nothing need be done, and the
+followimg simply returns |TRUE| to indicate success. But in a few cases, a
+function call must be inserted, with a name like |SNIPPET_TY_to_TEXT_TY|;
+in such cases, this function must exist in the kits somewhere.
+
+=
+int EmitCode::casting_call(kind *F, kind *T, int *down) {
+	if (EmitCode::cast_possible(F, T)) {
+		if (Str::len(Kinds::Behaviour::get_identifier(T)) == 0) {
+			return TRUE;
+		}
+		if ((Kinds::FloatingPoint::uses_floating_point(F)) &&
+			(Kinds::FloatingPoint::uses_floating_point(T))) {
+			return TRUE;
+		}
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "%S_to_%S",
+			Kinds::Behaviour::get_identifier(F),
+			Kinds::Behaviour::get_identifier(T));
+		inter_name *iname = Produce::find_by_name(Emit::tree(), N);
+		DISCARD_TEXT(N)
+		EmitCode::call(iname);
+		*down = TRUE;
+		EmitCode::down();
+		if (Kinds::Behaviour::uses_block_values(T)) Frames::emit_new_local_value(T);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 @h In reference context.
@@ -187,3 +234,4 @@ void EmitCode::place_label(inter_symbol *lab_s) {
 void EmitCode::lab(inter_symbol *L) {
 	Produce::lab(Emit::tree(), L);
 }
+

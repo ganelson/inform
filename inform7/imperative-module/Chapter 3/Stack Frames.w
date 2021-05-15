@@ -340,7 +340,7 @@ local_block_value *Frames::new_lbv(kind *K, local_block_value *last) {
 	local_block_value *bv = CREATE(local_block_value);
 	if (last == NULL) bv->offset_index = 0;
 	else bv->offset_index = last->offset_past;
-	bv->allocation = RTKinds::make_heap_allocation(K, 0, bv->offset_index);
+	bv->allocation = TheHeap::make_allocation(K, 0, bv->offset_index);
 	bv->offset_past = bv->offset_index + Kinds::Behaviour::get_small_block_size(K);
 	TEMPORARY_TEXT(ref)
 	if (bv->offset_index == 0) {
@@ -376,7 +376,7 @@ void Frames::compile_lbv_setup(stack_frame *frame) {
 	EmitCode::up();
 
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values)
-		RTKinds::emit_heap_allocation(lbv->allocation);
+		TheHeap::emit_allocation(lbv->allocation);
 }
 
 @ Symmetrically, this teardown code is executed when the stack frame is exited.

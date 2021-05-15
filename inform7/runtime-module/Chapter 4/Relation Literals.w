@@ -21,7 +21,7 @@ See //Relations// and //BasicInformKit: Relations//.
 inter_name *RelationLiterals::default(kind *K) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
 	packaging_state save = EmitArrays::begin_late(small_block, K_value);
-	RTKinds::emit_block_value_header(K, FALSE, 34);
+	TheHeap::emit_block_value_header(K, FALSE, 34);
 	EmitArrays::null_entry();
 	EmitArrays::null_entry();
 	TEMPORARY_TEXT(DVT)
@@ -33,7 +33,7 @@ inter_name *RelationLiterals::default(kind *K) {
 	EmitArrays::numeric_entry(7);
 	RTKindIDs::strong_ID_array_entry(K);
 	kind *EK = Kinds::unary_construction_material(K);
-	if (Kinds::Behaviour::uses_pointer_values(EK))
+	if (Kinds::Behaviour::uses_block_values(EK))
 		EmitArrays::iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
 	else
 		EmitArrays::iname_entry(Hierarchy::find(DOUBLEHASHSETRELATIONHANDLER_HL));

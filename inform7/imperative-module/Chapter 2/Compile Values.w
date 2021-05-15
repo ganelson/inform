@@ -148,13 +148,13 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 @<Take care of any freshness@> =	
 	value = NonlocalVariables::substitute_constants(value);
 	kind *K_found = Specifications::to_kind(value);
-	RTKinds::notify_of_use(K_found);
+	CompileValues::note_that_kind_is_used(K_found);
 	int made_fresh = FALSE;
 	if (how == COMPILE_SPEC_AS_FRESH_VALUE) {
 		if (VH->vhmode_wanted == INTER_DATA_VHMODE)
 			internal_error("must compile by reference in INTER_DATA_VHMODE"); 
 		kind *K = Specifications::to_kind(value);
-		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
+		if ((K) && (Kinds::Behaviour::uses_block_values(K))) {
 			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
 			EmitCode::down();
 				Frames::emit_new_local_value(K);
@@ -187,7 +187,7 @@ perform is from literal |K_number| values like |31| to turn them into literal
 =
 parse_node *CompileValues::cast_constant(parse_node *value, kind *K_wanted) {
 	value = NonlocalVariables::substitute_constants(value);
-	RTKinds::notify_of_use(K_wanted);
+	CompileValues::note_that_kind_is_used(K_wanted);
 	value = LiteralReals::promote_number_if_necessary(value, K_wanted);
 	kind *K_found = Specifications::to_kind(value);
 	if ((K_understanding) &&
@@ -204,7 +204,38 @@ parse_node *CompileValues::cast_nonconstant(parse_node *value, kind *K_wanted,
 	int *down) {
 	value = CompileValues::cast_constant(value, K_wanted);
 	kind *K_found = Specifications::to_kind(value);
-	RTKinds::notify_of_use(K_found);
-	RTKinds::emit_cast_call(K_found, K_wanted, down);
+	CompileValues::note_that_kind_is_used(K_found);
+	EmitCode::casting_call(K_found, K_wanted, down);
 	return value;
+}
+
+@ Certain kinds of value cannot be used on every virtual machine; for examole,
+the Z-machine does not support real numbers.
+
+=
+int VM_non_support_problem_issued = FALSE;
+void CompileValues::note_that_kind_is_used(kind *K) {
+	if (CompileValues::target_VM_supports_kind(K) == FALSE) {
+		if (VM_non_support_problem_issued == FALSE) {
+			VM_non_support_problem_issued = TRUE;
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_KindRequiresGlulx));
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_kind(2, K);
+			Problems::issue_problem_segment(
+				"You wrote %1, but with the settings for this project as they are, "
+				"I'm unable to make use of %2. (Try changing to Glulx on the Settings "
+				"panel; that should fix it.)");
+			Problems::issue_problem_end();
+
+		}
+	}
+}
+
+int CompileValues::target_VM_supports_kind(kind *K) {
+	target_vm *VM = Task::vm();
+	if (VM == NULL) internal_error("target VM not set yet");
+	if ((Kinds::FloatingPoint::uses_floating_point(K)) &&
+		(TargetVMs::supports_floating_point(VM) == FALSE)) return FALSE;
+	return TRUE;
 }

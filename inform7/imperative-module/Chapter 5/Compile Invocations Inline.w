@@ -132,7 +132,7 @@ this issue.
 				CodeBlocks::set_scope_to_current_block(lvar);
 			tokens->token_vals[i] =
 				Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
-			if (Kinds::Behaviour::uses_pointer_values(K)) {
+			if (Kinds::Behaviour::uses_block_values(K)) {
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				EmitCode::inv(STORE_BIP);
 				EmitCode::down();
@@ -490,7 +490,7 @@ problem messages are phrased differently if something goes wrong.
 		EmitCode::call(Hierarchy::find(CHECKKINDRETURNED_HL));
 		EmitCode::down();
 			CompileValues::to_fresh_code_val_of_kind(supplied, kind_needed);
-			EmitCode::val_iname(K_value, RTKinds::I6_classname(kind_needed));
+			EmitCode::val_iname(K_value, RTKindDeclarations::iname(kind_needed));
 		EmitCode::up();
 	} else @<Issue a problem for returning a value of the wrong kind@>;
 
@@ -604,7 +604,7 @@ that would be "property name". Instead:
 		EmitCode::val_false();
 	} else {
 		kind *K = ValueProperties::kind(prn);
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
+		if (Kinds::Behaviour::uses_block_values(K)) {
 			EmitCode::val_true();
 		} else {
 			EmitCode::val_false();
@@ -658,9 +658,9 @@ its own when kind variables are in play.
 @<Inline command "new"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_new_local_value(K);
+	if (Kinds::Behaviour::uses_block_values(K)) Frames::emit_new_local_value(K);
 	else if (K == NULL) @<Issue an inline no-such-kind problem@>
-	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
+	else if (DefaultValues::val(K, EMPTY_WORDING, NULL) == FALSE)
 		@<Issue problem for no natural choice@>;
 	return;
 
@@ -1006,13 +1006,13 @@ default values when created, so they are always typesafe anyway.
 	else
 		K = Specifications::to_kind(V);
 
-	if (Kinds::Behaviour::uses_pointer_values(K)) {
+	if (Kinds::Behaviour::uses_block_values(K)) {
 		if (CodeBlocks::inside_a_loop_body()) {
 			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
 			EmitCode::down();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				EmitCode::val_symbol(K_value, lvar_s);
-				RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
+				DefaultValues::val(K, Node::get_text(V), "value");
 			EmitCode::up();
 		}
 	} else {
@@ -1021,7 +1021,7 @@ default values when created, so they are always typesafe anyway.
 		EmitCode::down();
 			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			EmitCode::ref_symbol(K_value, lvar_s);
-			rv = RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
+			rv = DefaultValues::val(K, Node::get_text(V), "value");
 		EmitCode::up();
 
 		if (rv == FALSE) {
@@ -1456,7 +1456,7 @@ especially those involving complicated linguistic propositions.
 		Kinds::binary_construction_material(X, &head, &tail);
 		X = tail;
 		tokens->token_kinds[i-1] = NULL;
-		if ((Kinds::Behaviour::uses_pointer_values(head)) &&
+		if ((Kinds::Behaviour::uses_block_values(head)) &&
 			(Kinds::Behaviour::definite(head)))
 			tokens->token_kinds[i-1] = head;
 	}
@@ -1605,7 +1605,7 @@ void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
 	if (<k-kind>(LW)) {
 		kind *K = <<rp>>;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			CSIInline::eval_to_iname(RTKinds::I6_classname(K), prim_cat);
+			CSIInline::eval_to_iname(RTKindDeclarations::iname(K), prim_cat);
 			return;
 		}
 	}
@@ -1664,7 +1664,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	if (<k-kind>(LW)) {
 		kind *K = <<rp>>;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			WRITE("%n", RTKinds::I6_classname(K));
+			WRITE("%n", RTKindDeclarations::iname(K));
 			return;
 		}
 	}

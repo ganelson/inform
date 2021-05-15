@@ -146,7 +146,7 @@ void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
 						EmitCode::inv(OBJECTLOOP_BIP);
 						EmitCode::down();
 							EmitCode::ref_iname(K_object, Hierarchy::find(NOUN_HL));
-							EmitCode::val_iname(K_value, RTKinds::I6_classname(K_object));
+							EmitCode::val_iname(K_value, RTKindDeclarations::iname(K_object));
 							CompilePropositions::to_test_if_variable_matches(noun_var, nft->the_filter);
 
 							EmitCode::code();

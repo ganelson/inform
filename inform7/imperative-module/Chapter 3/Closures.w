@@ -139,14 +139,14 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
 
-		if (Kinds::Behaviour::uses_pointer_values(result)) {
+		if (Kinds::Behaviour::uses_block_values(result)) {
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
 			RTKindIDs::emit_strong_ID_as_val(result);
 			EmitCode::up();
 		} else {
-			if (RTKinds::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
+			if (DefaultValues::val(result, EMPTY_WORDING, NULL) != TRUE)
 				EmitCode::val_number(0);
 		}
 

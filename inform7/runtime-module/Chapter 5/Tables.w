@@ -165,7 +165,7 @@ the values given there.
 	if ((Kinds::Behaviour::uses_signed_comparisons(K)) ||
 		 (Kinds::FloatingPoint::uses_floating_point(K)))	  bits += TB_COLUMN_SIGNED;
 	if (Kinds::FloatingPoint::uses_floating_point(K)) 		  bits += TB_COLUMN_REAL;
-	if (Kinds::Behaviour::uses_pointer_values(K)) 		      bits += TB_COLUMN_ALLOCATED;
+	if (Kinds::Behaviour::uses_block_values(K)) 		      bits += TB_COLUMN_ALLOCATED;
 
 	if ((K_understanding) && (Kinds::eq(K, K_understanding))) bits = TB_COLUMN_TOPIC;
 
@@ -238,7 +238,7 @@ case.)
 
 @<Write a cell value for a blank cell@> =
 	if (t->fill_in_blanks == FALSE) EmitArrays::iname_entry(Hierarchy::find(TABLE_NOVALUE_HL));
-	else RTKinds::emit_default_value(K, EMPTY_WORDING, "table entry");
+	else DefaultValues::array_entry(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
 	for (int j=0; j<t->no_columns; j++) {
@@ -333,4 +333,17 @@ inter_name *RTTables::tcu_iname(table_column_usage *tcu) {
 		tcu->compilation_data.tcu_iname =
 			Hierarchy::make_iname_in(COLUMN_DATA_HL, RTTables::tcu_package(tcu));
 	return tcu->compilation_data.tcu_iname;
+}
+
+@h Kinds as tables.
+
+=
+table *RTTables::table_defining_this(kind *K) {
+	if (K == NULL) return NULL;
+	return K->construct->named_values_created_with_table;
+}
+
+void RTTables::defines(table *t, kind *K) {
+	if (K == NULL) internal_error("no such kind");
+	K->construct->named_values_created_with_table = t;
 }

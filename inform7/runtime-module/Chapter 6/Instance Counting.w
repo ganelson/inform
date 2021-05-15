@@ -70,7 +70,7 @@ numbered 0.
 
 @d INSTANCE_COUNT(I, K)
 	kind_instance_counts[(I)->allocation_id*max_kind_instance_count +
-		RTKinds::I6_classnumber(K)]
+		Kinds::Behaviour::get_range_number(K)]
 
 =
 int *kind_instance_counts = NULL;
@@ -167,7 +167,7 @@ inter_name *PL::Counting::first_instance(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = RTKindConstructors::first_instance_iname(con);
 	if (iname == NULL) {
-		iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, RTKinds::iname(K), RTKindConstructors::kind_package(K));
+		iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, RTKindDeclarations::iname(K), RTKindConstructors::kind_package(K));
 		RTKindConstructors::set_first_instance_iname(con, iname);
 	}
 	return iname;
@@ -177,14 +177,14 @@ inter_name *PL::Counting::next_instance(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = RTKindConstructors::next_instance_iname(con);
 	if (iname == NULL) {
-		iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, RTKinds::iname(K), RTKindConstructors::kind_package(K));
+		iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, RTKindDeclarations::iname(K), RTKindConstructors::kind_package(K));
 		RTKindConstructors::set_next_instance_iname(con, iname);
 	}
 	return iname;
 }
 
 inter_name *PL::Counting::instance_count_iname(kind *K) {
-	int N = RTKinds::I6_classnumber(K);
+	int N = Kinds::Behaviour::get_range_number(K);
 	if (N == 1) return Hierarchy::make_iname_in(COUNT_INSTANCE_1_HL, RTKindConstructors::kind_package(K));
 	if (N == 2) return Hierarchy::make_iname_in(COUNT_INSTANCE_2_HL, RTKindConstructors::kind_package(K));
 	if (N == 3) return Hierarchy::make_iname_in(COUNT_INSTANCE_3_HL, RTKindConstructors::kind_package(K));
@@ -195,7 +195,7 @@ inter_name *PL::Counting::instance_count_iname(kind *K) {
 	if (N == 8) return Hierarchy::make_iname_in(COUNT_INSTANCE_8_HL, RTKindConstructors::kind_package(K));
 	if (N == 9) return Hierarchy::make_iname_in(COUNT_INSTANCE_9_HL, RTKindConstructors::kind_package(K));
 	if (N == 10) return Hierarchy::make_iname_in(COUNT_INSTANCE_10_HL, RTKindConstructors::kind_package(K));
-	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKinds::iname(K), RTKindConstructors::kind_package(K));
+	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKindDeclarations::iname(K), RTKindConstructors::kind_package(K));
 }
 
 void PL::Counting::counting_compile_model_tables(void) {

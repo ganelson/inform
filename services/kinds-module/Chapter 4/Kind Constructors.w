@@ -539,7 +539,7 @@ int KindConstructors::compatible(kind_constructor *from, kind_constructor *to,
 @ And more elaborately:
 
 =
-int KindConstructors::uses_pointer_values(kind_constructor *con) {
+int KindConstructors::uses_block_values(kind_constructor *con) {
 	if (con == NULL) return FALSE;
 	if ((KindConstructors::is_definite(con)) &&
 		(KindConstructors::compatible(con, Kinds::get_construct(K_pointer_value), FALSE)))
@@ -549,8 +549,8 @@ int KindConstructors::uses_pointer_values(kind_constructor *con) {
 
 int KindConstructors::allow_word_as_pointer(kind_constructor *left,
 	kind_constructor *right) {
-	if (KindConstructors::uses_pointer_values(left) == FALSE) return FALSE;
-	if (KindConstructors::uses_pointer_values(right) == TRUE) return FALSE;
+	if (KindConstructors::uses_block_values(left) == FALSE) return FALSE;
+	if (KindConstructors::uses_block_values(right) == TRUE) return FALSE;
 	if (KindConstructors::compatible(right, left, TRUE)) return TRUE;
 	return FALSE;
 }

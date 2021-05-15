@@ -597,8 +597,8 @@ to abbreviated forms of object names are normally allowed.
 	else if ((Kinds::Behaviour::definite(create_as)) && (Kinds::Behaviour::is_quasinumerical(create_as)))
 		@<Issue a problem for trying to create an instance of a unit@>
 	else if ((Kinds::Behaviour::definite(create_as)) &&
-		(RTKinds::defined_by_table(create_as)) &&
-		(RTKinds::defined_by_table(create_as) != allow_tabular_definitions_from))
+		(RTTables::table_defining_this(create_as)) &&
+		(RTTables::table_defining_this(create_as) != allow_tabular_definitions_from))
 		@<Issue a problem for trying to create an instance of a table-defined kind@>
 	else if ((Kinds::Behaviour::definite(create_as)) && (Kinds::Behaviour::has_named_constant_values(create_as)))
 		@<Create an instance of an enumerated kind@>
@@ -700,7 +700,7 @@ them by asserting propositions to be true; we act directly.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_kind(3, create_as);
-	Problems::quote_table(4, RTKinds::defined_by_table(create_as));
+	Problems::quote_table(4, RTTables::table_defining_this(create_as));
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind2));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "

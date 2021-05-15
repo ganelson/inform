@@ -19,6 +19,9 @@ Chapter 2: Emission
 	Emit Arrays
 	Interventions
 	Shared Variables
+	The Heap
+	Default Values
+	Equality Schemas
 
 Chapter 3: Basics
 	Generic Module
@@ -54,9 +57,9 @@ Chapter 5: Provision Submodules
 	Literal Patterns
 	Kind Constructors
 	Kind IDs
-	Runtime Support for Kinds
 
 Chapter 6: Completion Resources
+	Kind Declarations
 	Naming
 	Bibliographic Data
 	Spatial

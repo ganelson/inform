@@ -176,7 +176,7 @@ void CompileConditions::end(void) {
 			if ((K == NULL) ||
 				(Kinds::Behaviour::is_object(K)) ||
 				(Kinds::Behaviour::definite(K) == FALSE) ||
-				(RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
+				(DefaultValues::val(K, EMPTY_WORDING,
 					"'called' value") != TRUE))
 				EmitCode::val_false();
 		EmitCode::up();

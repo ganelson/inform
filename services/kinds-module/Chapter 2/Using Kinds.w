@@ -311,9 +311,9 @@ are word values, texts and lists are pointer values. Which form a value
 takes depends on its kind:
 
 =
-int Kinds::Behaviour::uses_pointer_values(kind *K) {
+int Kinds::Behaviour::uses_block_values(kind *K) {
 	if (K == NULL) return FALSE;
-	return KindConstructors::uses_pointer_values(K->construct);
+	return KindConstructors::uses_block_values(K->construct);
 }
 
 @ Exactly how large the small block is:

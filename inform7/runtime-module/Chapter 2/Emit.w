@@ -151,10 +151,12 @@ void Emit::rudimentary_kinds(void) {
 	Packaging::exit(Emit::tree(), save);
 }
 
-@ This emits a more general Inter kind, and is used by //Runtime Support for Kinds//.
+@ This emits a more general Inter kind, and is used by //Kind Declarations//.
 Here |idt| is one of the |*_IDT| constants expressing what actual data is held;
 |super| is the superkind, if any; the other three arguments are for kind
 constructors.
+
+@d MAX_KIND_ARITY 128
 
 =
 void Emit::kind(inter_name *iname, inter_ti idt, inter_name *super,
@@ -208,7 +210,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 			return;
 	dw = CREATE(dval_written);
 	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
-	RTKinds::get_default_value(&(dw->v1), &(dw->v2), K);
+	DefaultValues::to_value_pair(&(dw->v1), &(dw->v2), K);
 	if (dw->v1 != 0) {
 		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
 		inter_symbol *owner_kind = Produce::kind_to_symbol(K);

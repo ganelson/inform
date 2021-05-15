@@ -54,8 +54,8 @@ void RTSharedVariables::compile_creator_fn(shared_variable_set *set, inter_name 
 				EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 				EmitCode::val_symbol(K_value, pos_s);
 			EmitCode::up();
-			if (Kinds::Behaviour::uses_pointer_values(K))
-				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
+			if (Kinds::Behaviour::uses_block_values(K))
+				TheHeap::emit_allocation(TheHeap::make_allocation(K, 1, -1));
 			else
 				RTVariables::initial_value_as_val(q);
 		EmitCode::up();
@@ -71,7 +71,7 @@ void RTSharedVariables::compile_creator_fn(shared_variable_set *set, inter_name 
 	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
 		nonlocal_variable *q = SharedVariables::get_variable(shv);
 		kind *K = NonlocalVariables::kind(q);
-		if (Kinds::Behaviour::uses_pointer_values(K)) {
+		if (Kinds::Behaviour::uses_block_values(K)) {
 			EmitCode::call(Hierarchy::find(BLKVALUEFREE_HL));
 			EmitCode::down();
 				EmitCode::inv(LOOKUP_BIP);

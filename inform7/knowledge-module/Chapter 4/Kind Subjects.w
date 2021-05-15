@@ -22,10 +22,9 @@ inference_subject_family *KindSubjects::family(void) {
 		METHOD_ADD(kinds_family, NEW_PERMISSION_GRANTED_INFS_MTID,
 			KindSubjects::new_permission_granted);
 
-		METHOD_ADD(kinds_family, EMIT_ELEMENT_INFS_MTID,
-			RTKinds::emit_element_of_condition);
-		METHOD_ADD(kinds_family, EMIT_ALL_INFS_MTID, RTKinds::emit_all);
-		METHOD_ADD(kinds_family, EMIT_ONE_INFS_MTID, RTKinds::emit_one);
+		METHOD_ADD(kinds_family, EMIT_ELEMENT_INFS_MTID, RTKindIDs::emit_element_of_condition);
+		METHOD_ADD(kinds_family, EMIT_ALL_INFS_MTID, RTPropertyValues::emit_property_values_for_kinds);
+		METHOD_ADD(kinds_family, EMIT_ONE_INFS_MTID, RTPropertyValues::emit_pv_for_one_kind);
 	}
 	return kinds_family;
 }

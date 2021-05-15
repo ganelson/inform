@@ -381,7 +381,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (dynamic) {
 		if (calling_made) @<Issue a problem message since this won't be stored in a property@>;
 		@<Override with dynamic allocation schemata@>;
-		RTKinds::ensure_basic_heap_present();
+		TheHeap::ensure_basic_heap_present();
 	} else {
 		if (provide_prn)
 			Assert::true_about(

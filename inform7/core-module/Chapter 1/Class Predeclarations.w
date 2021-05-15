@@ -192,7 +192,7 @@ DECLARE_CLASS(local_block_value)
 @e door_to_notice_CLASS
 @e dval_written_CLASS
 @e internal_test_case_CLASS
-@e kind_interaction_CLASS
+@e cached_kind_declaration_CLASS
 @e label_namespace_CLASS
 @e group_together_function_CLASS
 @e nascent_array_CLASS
@@ -213,7 +213,7 @@ DECLARE_CLASS(door_dir_notice)
 DECLARE_CLASS(door_to_notice)
 DECLARE_CLASS(dval_written)
 DECLARE_CLASS(internal_test_case)
-DECLARE_CLASS(kind_interaction)
+DECLARE_CLASS(cached_kind_declaration)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(group_together_function)
 DECLARE_CLASS(nascent_array)

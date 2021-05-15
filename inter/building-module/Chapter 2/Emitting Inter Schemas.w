@@ -399,7 +399,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			EmitInterSchemas::emit_inner(I, var_node, VH, sch, opaque_state, REF_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
 			#ifdef CORE_MODULE
-			Produce::val_iname(I, K_value, RTKinds::I6_classname(K_object));
+			Produce::val_iname(I, K_value, RTKindDeclarations::iname(K_object));
 			#endif
 			#ifndef CORE_MODULE
 			Produce::val_symbol(I, K_value, Site::veneer_symbol(I, OBJECT_VSYMB));

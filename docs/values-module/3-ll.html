@@ -164,7 +164,7 @@ They begin with a call to:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_llist_entry</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">list_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ll_package</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Emit::current_enclosure</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RTKinds::ensure_basic_heap_present</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TheHeap::ensure_basic_heap_present</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ll</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

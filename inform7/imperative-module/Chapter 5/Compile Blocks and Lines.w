@@ -363,7 +363,7 @@ one is the "non-pointery" case.
 	local_variable *sw_lv = NULL;
 	inter_symbol *sw_v = NULL;
 	int pointery = FALSE;
-	if (Kinds::Behaviour::uses_pointer_values(switch_kind)) pointery = TRUE;
+	if (Kinds::Behaviour::uses_block_values(switch_kind)) pointery = TRUE;
 
 	LOG("Switch val is $T for kind %u pointery %d\n", switch_val, switch_kind, pointery);
 

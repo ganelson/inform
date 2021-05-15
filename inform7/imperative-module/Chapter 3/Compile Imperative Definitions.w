@@ -104,7 +104,7 @@ value for its return kind: for example, the empty text for |K_text|.
 	EmitCode::down();
 	kind *K = Frames::get_kind_returned();
 	if (K) {
-		if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
+		if (DefaultValues::val(K, EMPTY_WORDING,
 			"value decided by this phrase") != TRUE) {
 			StandardProblems::sentence_problem(Task::syntax_tree(),
 				_p_(PM_DefaultDecideFails),

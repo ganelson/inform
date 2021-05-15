@@ -22,7 +22,7 @@ void RTActionPatterns::emit_try(explicit_action *ea, int store_instead) {
 	int flag_bits = 0;
 	if (Kinds::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
 	if (Kinds::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
-	if (flag_bits > 0) RTKinds::ensure_basic_heap_present();
+	if (flag_bits > 0) TheHeap::ensure_basic_heap_present();
 
 	if (ea->request) flag_bits += 1;
 
