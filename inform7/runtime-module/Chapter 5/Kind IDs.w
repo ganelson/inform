@@ -64,12 +64,10 @@ which might occupy up to 31 characters, the maximum length of an I6 identifier:
 
 =
 void RTKindIDs::write_weak_identifier(OUTPUT_STREAM, kind *K) {
-//	if (K == NULL) { WRITE("UNKNOWN_TY"); return; }
 	WRITE("%n", RTKindIDs::weak_iname(K));
 }
 
 void RTKindIDs::emit_weak_ID_as_val(kind *K) {
-//	if (K == NULL) internal_error("cannot emit null kind as val");
 	EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K));
 }
 
@@ -120,6 +118,7 @@ typedef struct runtime_kind_structure {
 	int make_default;
 	struct package_request *rks_package;
 	struct inter_name *rks_iname;
+	int default_created;
 	struct inter_name *rks_dv_iname;
 	CLASS_DEFINITION
 } runtime_kind_structure;
@@ -221,6 +220,7 @@ compile under Inform 6.
 	wording W = Feeds::feed_text(TEMP);
 	rks->rks_iname = Hierarchy::make_iname_with_memo(DK_KIND_HL, rks->rks_package, W);
 	DISCARD_TEXT(TEMP)
+	rks->default_created = FALSE;
 	rks->rks_dv_iname = NULL;
 
 @ It's convenient to combine this system with one which constructs default
@@ -257,7 +257,6 @@ void RTKindIDs::compile_structures(void) {
 	LOOP_OVER(rks, runtime_kind_structure) {
 		kind *K = rks->kind_described;
 		@<Compile the runtime ID structure for this kind@>;
-		if (rks->make_default) @<Compile a constructed default value for this kind@>;
 	}
 	@<Annotate rks package@>;
 }
@@ -313,25 +312,6 @@ void RTKindIDs::compile_structures(void) {
 		kind *term = NULL;
 		Kinds::binary_construction_material(X, &term, &X);
 		RTKindIDs::strong_ID_array_entry(term);
-	}
-
-@<Compile a constructed default value for this kind@> =
-	inter_name *identifier = rks->rks_dv_iname;
-	current_sentence = rks->default_requested_here;
-	if (Kinds::get_construct(K) == CON_phrase) {
-		Closures::compile_default_closure(identifier, K);
-	} else if (Kinds::get_construct(K) == CON_relation) {
-		RTRelations::default_value_of_relation_kind(identifier, K);
-	} else if (Kinds::get_construct(K) == CON_list_of) {
-		ListLiterals::default_large_block(identifier, K);
-	} else {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_kind(2, K);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-		Problems::issue_problem_segment(
-			"While working on '%1', I needed to be able to make a default value "
-			"for the kind '%2', but there's no obvious way to make one.");
-		Problems::issue_problem_end();
 	}
 
 @<Annotate rks package@> =

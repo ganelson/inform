@@ -116,8 +116,28 @@ which actually arise during compilation.
 The following function is called exactly once for each such kind |K|.
 
 =
+typedef struct default_closure_request {
+	struct inter_name *closure_identifier;
+	struct kind *K;
+	CLASS_DEFINITION
+} default_closure_request;
+
 void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) {
-	package_request *P = RTKindConstructors::kind_package(K);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "default closure for %u", K);
+	default_closure_request	*dcr = CREATE(default_closure_request);
+	dcr->closure_identifier = closure_identifier;
+	dcr->K = K;
+	Sequence::queue(&Closures::compilation_agent, STORE_POINTER_default_closure_request(dcr), desc);
+}
+
+@ And the actual compilation is done here, when we can be certain that no other
+function is being compiled at the same time.
+
+=
+void Closures::compilation_agent(compilation_subtask *t) {
+	default_closure_request	*dcr = RETRIEVE_POINTER_default_closure_request(t->data);
+	package_request *P = RTKindConstructors::kind_package(dcr->K);
 	inter_name *rname = Hierarchy::make_iname_in(DEFAULT_CLOSURE_FN_HL, P);
 	@<Compile the default function@>;
 	@<Compile its closure@>;
@@ -134,7 +154,7 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 	LocalVariables::new_other_parameter(I"g");
 	LocalVariables::new_other_parameter(I"h");
 	kind *result = NULL;
-	Kinds::binary_construction_material(K, NULL, &result);
+	Kinds::binary_construction_material(dcr->K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
@@ -155,11 +175,11 @@ void Closures::compile_default_closure(inter_name *closure_identifier, kind *K) 
 	Functions::end(save);
 
 @<Compile its closure@> =
-	packaging_state save = EmitArrays::begin(closure_identifier, K_value);
-	RTKindIDs::strong_ID_array_entry(K);
+	packaging_state save = EmitArrays::begin(dcr->closure_identifier, K_value);
+	RTKindIDs::strong_ID_array_entry(dcr->K);
 	EmitArrays::iname_entry(rname);
 	TEMPORARY_TEXT(DVT)
-	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
+	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, dcr->K);
 	EmitArrays::text_entry(DVT);
 	DISCARD_TEXT(DVT)
 	EmitArrays::end(save);

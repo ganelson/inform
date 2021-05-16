@@ -226,9 +226,10 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
 		-1, debugging, sequence_timer);
 	BENCH(Sequence::undertake_queued_tasks)
+	BENCH(RTKindIDs::compile_structures)
+	BENCH(Sequence::undertake_queued_tasks)
 	BENCH(Sequence::allow_no_further_queued_tasks)
 	BENCH(TheHeap::compile_configuration)
-	BENCH(RTKindIDs::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(LocalParking::compile_array)
 	BENCH(RTBibliographicData::IFID_text)

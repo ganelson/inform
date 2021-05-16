@@ -469,7 +469,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			case HEX_NUMBER_ISTT: {
 				inter_ti v1 = 0, v2 = 0;
 				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number; }
-				else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
+				else if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE)
 					internal_error("bad number");
 				Produce::val(I, K_value, v1, v2);
 				break;

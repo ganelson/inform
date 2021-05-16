@@ -1,18 +1,17 @@
 [DefaultValues::] Default Values.
 
-To compile I6 material needed at runtime to enable kinds
-to function as they should.
+An unusual feature of Inform is that every kind has a default value, so that
+it is impossible for any variable or property to be uninitialised.
 
-@h Default values.
-When we create a new variable (or other storage object) of a given kind, but
-never say what its value is to be, Inform tries to initialise it to the
-"default value" for that kind.
+@ The following should compile a default value for |K|, and return
 
-The following should compile a default value for $K$, and return
 (a) |TRUE| if it succeeded,
 (b) |FALSE| if it failed (because $K$ had no values or no default could be
 chosen), but no problem message has been issued about this, or
 (c) |NOT_APPLICABLE| if it failed and issued a specific problem message.
+
+The wording |W| and detail |storage_name| are used only to issue those problem
+messages.
 
 =
 int DefaultValues::array_entry(kind *K, wording W, char *storage_name) {
@@ -56,18 +55,21 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 		Problems::quote_text(3, storage_name);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyKind2));
 		Problems::issue_problem_segment(
-			"I am unable to put any value into the %3 %1, which needs to be %2, "
-			"because the world does not contain %2.");
+			"I am unable to put any value into the %3 %1, which needs to be %2, because the "
+			"world does not contain %2.");
 		Problems::issue_problem_end();
 	} else {
 		Problems::quote_kind(2, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyKind));
 		Problems::issue_problem_segment(
-			"I am unable to find %2 to use here, because the world does not "
-			"contain %2.");
+			"I am unable to find %2 to use here, because the world does not contain %2.");
 		Problems::issue_problem_end();
 	}
 	return NOT_APPLICABLE;
+
+@ The remaining problem messages are no longer seen, since better typechecking
+higher up the compiler means that Inform no longer attempts to create variables
+or properties with dubious kinds such as |value|.
 
 @<This is a kind not intended for end users at all@> =
 	if (Wordings::nonempty(W)) {
@@ -75,23 +77,17 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 		Problems::quote_kind(2, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
-			"I am unable to create %1 with the kind of value '%2', "
-			"because this is a kind of value which is not allowed as "
-			"something to be stored in properties, variables and the "
-			"like. (See the Kinds index for which kinds of value "
-			"are available. The ones which aren't available are really "
-			"for internal use by Inform.)");
+			"I am unable to create %1 with the kind of value '%2', because this is a kind "
+			"of value which is not allowed as something to be stored in properties, "
+			"variables and the like.");
 		Problems::issue_problem_end();
 	} else {
 		Problems::quote_kind(1, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
-			"I am unable to create a value of the kind '%1' "
-			"because this is a kind of value which is not allowed as "
-			"something to be stored in properties, variables and the "
-			"like. (See the Kinds index for which kinds of value "
-			"are available. The ones which aren't available are really "
-			"for internal use by Inform.)");
+			"I am unable to create a value of the kind '%1' because this is a kind of value "
+			"which is not allowed as something to be stored in properties, variables and the "
+			"like.");
 		Problems::issue_problem_end();
 	}
 	return NOT_APPLICABLE;
@@ -100,106 +96,177 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 	Problems::quote_wording_as_source(1, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
-		"I am unable to start %1 off with any value, because the "
-		"instructions do not tell me what kind of value it should be "
-		"(a number, a time, some text perhaps?).");
+		"I am unable to start %1 off with any value, because the instructions do not tell "
+		"me what kind of value it should be (a number, a time, some text perhaps?).");
 	Problems::issue_problem_end();
 	return NOT_APPLICABLE;
 
-@ This returns either valid I6 code for the value which is the default for
-$K$, or else |NULL| if $K$ has no values, or no default can be chosen.
+@ The above functions all convert into this one, where the actual choice is made.
+If no choice is possible, the function simply returns leaving |v1| and |v2| unset.
 
-We bend the rules and allow |nothing| as the default value of all kinds of
-objects when the source text is a roomless one used only to rerelease an old
-I6 story file; this effectively suppresses problem messages which the
-absence of rooms would otherwise result in.
+We begin with some special cases where the default value depends on circumstances,
+or has to be constructed in a more elaborate way. For example, the default value
+of "vehicle" will depend on what vehicles have been created in the source text.
+We then turn to the more typical case of kinds whose defaults never change --
+for example, the default value of |K_number| is always 0.
+
+The test case |DefaultValues| may be helpful when tinkering with this.
 
 =
 void DefaultValues::to_value_pair(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (K == NULL) return;
+	@<Constructed kinds stored as block values@>;
+	@<Base kinds stored as block values@>;
+	@<Object@>;
+	@<Kinds which have instances@>;
+	@<Kinds of object which have no instances@>;
+	@<Rulebook outcome@>;
+	@<Action name@>;
+	text_stream *textual_description = K->construct->default_value;
+	if (Str::len(textual_description) > 0)
+		@<Kinds whose default values are set by Neptune files@>;
+}
 
-	if ((Kinds::get_construct(K) == CON_list_of) ||
-		(Kinds::get_construct(K) == CON_phrase) ||
-		(Kinds::get_construct(K) == CON_relation)) {
-		inter_name *DV = NULL;
+@ These cases are special because different default values are needed for
+different constructions with the same constructor: the default phrase
+from numbers to numbers is not the same as the one from texts to numbers,
+for example.
+
+In two cases here we need to compile something, which we stash inside the
+package for the associated //runtime_kind_structure//.
+
+Something to look out for is that when the kind holds block values, stored by
+reference, and when that kind is of values which may change, we need to return
+a fresh copy each time. This applies in particular to lists and relations,
+which are data structures which start out empty but may then grow. So they need
+different pointers each time, to different copies of the empty object. (In
+the case of lists, it's sufficient to return a new small block each time,
+which each wrap the same large block.) Phrases do not have this issue since
+they cannot be modified at runtime.
+
+@<Constructed kinds stored as block values@> =
+	if (Kinds::get_construct(K) == CON_relation) {
+		Emit::to_value_pair(v1, v2, RelationLiterals::default(K));
+		return;
+	}
+	if (Kinds::get_construct(K) == CON_list_of) {
 		runtime_kind_structure *rks = RTKindIDs::get_rks(K);
-		if (rks) DV = RTKindIDs::default_value_from_rks(rks);
-		if (Kinds::get_construct(K) == CON_list_of) {
-			Emit::to_value_pair(v1, v2, ListLiterals::small_block(DV));
-		} else if (Kinds::get_construct(K) == CON_relation) {
-			inter_name *N = RelationLiterals::default(K);
-			Emit::to_value_pair(v1, v2, N);
-		} else if (DV) {
-			Emit::to_value_pair(v1, v2, DV);
+		inter_name *dv = RTKindIDs::default_value_from_rks(rks);
+		if (rks->default_created == FALSE) {
+			rks->default_created = TRUE;
+			ListLiterals::default_large_block(dv, K);
 		}
+		Emit::to_value_pair(v1, v2, ListLiterals::small_block(dv));
+		return;
+	}
+	if (Kinds::get_construct(K) == CON_phrase) {
+		runtime_kind_structure *rks = RTKindIDs::get_rks(K);
+		inter_name *dv = RTKindIDs::default_value_from_rks(rks);
+		if (rks->default_created == FALSE) {
+			rks->default_created = TRUE;
+			Closures::compile_default_closure(dv, K);
+		}
+		Emit::to_value_pair(v1, v2, dv);
 		return;
 	}
 
+@ Text has the same "new one each time" issue as lists and relations have;
+stored action does not. Stored actions, again, cannot be modified at runtime.
+
+@<Base kinds stored as block values@> =
 	if (Kinds::eq(K, K_stored_action)) {
-		inter_name *N = StoredActionLiterals::default();
-		Emit::to_value_pair(v1, v2, N);
+		Emit::to_value_pair(v1, v2, StoredActionLiterals::default());
 		return;
 	}
 	if (Kinds::eq(K, K_text)) {
-		inter_name *N = TextLiterals::default_text();
-		Emit::to_value_pair(v1, v2, N);
+		Emit::to_value_pair(v1, v2, TextLiterals::default_text());
 		return;
 	}
 
+@ The default value of |K_object| is |nothing|, which is represented at runtime
+as the number 0.
+
+@<Object@> =
 	if (Kinds::eq(K, K_object)) {
 		*v1 = LITERAL_IVAL; *v2 = 0;
 		return;
 	}
 
+@ For an enumeration or a subkind of object such as "thing", the default value
+is the first one created. That makes for an interesting edge case when there
+are no instances, as for example if the author writes:
+= (text as Inform 7)
+A postage stamp is a kind of thing.
+The most valued stamp is a postage stamp that varies.
+=
+...but never creates any postage stamps. The following will then fail to
+find any instances...
+
+@<Kinds which have instances@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
 		inter_name *N = RTInstances::value_iname(I);
 		Emit::to_value_pair(v1, v2, N);
 		return;
 	}
+	if (Kinds::Behaviour::is_an_enumeration(K)) return;
 
+@ ...and that will take us here. Ordinarily we just |return|, triggering a
+problem message higher up because we couldn't find a default value.
+
+But we bend the rules and allow |nothing| as the default value of all kinds of
+objects when the source text is a roomless one used only to rerelease an old
+Z-machine story file; this effectively suppresses problem messages which the
+absence of rooms would otherwise result in.
+
+@<Kinds of object which have no instances@> =
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		#ifdef IF_MODULE
 		if (Task::wraps_existing_storyfile()) {
 			*v1 = LITERAL_IVAL; *v2 = 0;
 			return;
-		} /* see above */
-		#endif
+		}
 		return;
 	}
 
-	if (Kinds::Behaviour::is_an_enumeration(K)) return;
+@ Rulebook outcomes are very nearly an enumeration, too, and follow the same
+conventions.
 
+@<Rulebook outcome@> =
 	if (Kinds::eq(K, K_rulebook_outcome)) {
 		Emit::to_value_pair(v1, v2, RTRulebooks::default_outcome_iname());
 		return;
 	}
 
+@ Whereas the default action name is |##Wait|. This is handled as a special
+case to avoid having to parse double-sharp notation below.
+
+@<Action name@> =
 	if (Kinds::eq(K, K_action_name)) {
 		inter_name *wait = RTActions::double_sharp(ActionsPlugin::default_action_name());
 		Emit::to_value_pair(v1, v2, wait);
 		return;
 	}
 
-	text_stream *name = K->construct->default_value;
+@ Now we reach the most general case, where the default value is something fixed
+and specified by a brief textual description taken from a Neptune file.
 
-	if (Str::len(name) == 0) return;
+That description has to be very simple: a literal number, |true|, |false|, or an
+identifier name which the linker will be able to find -- maybe a function name,
+maybe an array, maybe a constant.
 
+This is faster than it looks, but still not fast, and there would be a case to
+cache the result. But if so be careful: it would only be safe to cache the
+|LITERAL_IVAL| results, because only those are the same in all packages. Symbol
+names are not.
+
+@<Kinds whose default values are set by Neptune files@> =
 	inter_ti val1 = 0, val2 = 0;
-	if (Inter::Types::read_I6_decimal(name, &val1, &val2) == TRUE) {
+	if (Inter::Types::read_int_in_I6_notation(textual_description, &val1, &val2) == TRUE) {
 		*v1 = val1; *v2 = val2; return;
 	}
 
-	inter_symbol *S = Produce::seek_symbol(Produce::main_scope(Emit::tree()), name);
-	if (S) {
-		Emit::symbol_to_value_pair(v1, v2, S);
-		return;
-	}
+	if (Str::eq(textual_description, I"true")) { *v1 = LITERAL_IVAL; *v2 = 1; return; }
+	if (Str::eq(textual_description, I"false")) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
 
-	if (Str::eq(name, I"true")) { *v1 = LITERAL_IVAL; *v2 = 1; return; }
-	if (Str::eq(name, I"false")) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
-
-	int hl = Hierarchy::kind_default(Kinds::get_construct(K), name);
-	inter_name *default_iname = Hierarchy::find(hl);
-	Emit::to_value_pair(v1, v2, default_iname);
-}
+	int hl = Hierarchy::kind_default(Kinds::get_construct(K), textual_description);
+	Emit::to_value_pair(v1, v2, Hierarchy::find(hl));

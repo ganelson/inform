@@ -297,7 +297,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	return NULL;
 }
 
-int Inter::Types::read_I6_decimal(text_stream *S, inter_ti *val1, inter_ti *val2) {
+int Inter::Types::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_ti *val2) {
 	int sign = 1, base = 10, from = 0;
 	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
 	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }

@@ -164,6 +164,7 @@ DECLARE_CLASS(value_property_data)
 
 @ //imperative// --
 
+@e default_closure_request_CLASS
 @e invocation_options_CLASS
 @e local_variable_CLASS
 @e action_history_condition_record_CLASS
@@ -175,6 +176,7 @@ DECLARE_CLASS(value_property_data)
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
+DECLARE_CLASS(default_closure_request)
 DECLARE_CLASS(action_history_condition_record)
 DECLARE_CLASS(past_tense_condition_record)
 DECLARE_CLASS(pcalc_prop_deferral)
@@ -190,7 +192,6 @@ DECLARE_CLASS(local_block_value)
 @e definition_CLASS
 @e door_dir_notice_CLASS
 @e door_to_notice_CLASS
-@e dval_written_CLASS
 @e internal_test_case_CLASS
 @e cached_kind_declaration_CLASS
 @e label_namespace_CLASS
@@ -211,7 +212,6 @@ DECLARE_CLASS(compilation_unit)
 DECLARE_CLASS(definition)
 DECLARE_CLASS(door_dir_notice)
 DECLARE_CLASS(door_to_notice)
-DECLARE_CLASS(dval_written)
 DECLARE_CLASS(internal_test_case)
 DECLARE_CLASS(cached_kind_declaration)
 DECLARE_CLASS(label_namespace)

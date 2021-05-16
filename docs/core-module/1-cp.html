@@ -231,7 +231,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><a href="../imperative-module/index.html" class="internal">imperative</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">default_closure_request_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">local_variable_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">action_history_condition_record_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_condition_record_CLASS</span>
@@ -242,6 +243,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">invocation_options</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">local_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">default_closure_request</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_history_condition_record</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">past_tense_condition_record</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_prop_deferral</span><span class="plain-syntax">)</span>
@@ -258,7 +260,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">definition_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">door_dir_notice_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">door_to_notice_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">dval_written_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">internal_test_case_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">cached_kind_declaration_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">label_namespace_CLASS</span>
@@ -279,7 +280,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">definition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">door_dir_notice</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">door_to_notice</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">dval_written</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">internal_test_case</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">cached_kind_declaration</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">label_namespace</span><span class="plain-syntax">)</span>
