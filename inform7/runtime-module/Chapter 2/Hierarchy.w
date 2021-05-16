@@ -311,6 +311,9 @@ void Hierarchy::establish(void) {
 @e ACTION_SHV_ID_HL
 @e ACTION_STV_CREATOR_FN_HL
 
+@e NAMED_ACTION_PATTERNS_HAP
+@e NAP_FN_HL
+
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
 
@@ -341,6 +344,14 @@ void Hierarchy::establish(void) {
 			H_PKG(REPORT_RB_HL,               I"report_rb", I"_rulebook")
 			H_C_U(ACTION_SHV_ID_HL,           I"var_id")
 			H_F_U(ACTION_STV_CREATOR_FN_HL,   I"stv_creator_fn")
+		H_END
+	H_END
+
+	submodule_identity *naps = Packaging::register_submodule(I"named_action_patterns");
+
+	H_BEGIN(HierarchyLocations::local_submodule(naps))
+		H_BEGIN_AP(NAMED_ACTION_PATTERNS_HAP, I"named_action_pattern", I"_named_action_pattern")
+			H_F_U(NAP_FN_HL,                  I"nap_fn")
 		H_END
 	H_END
 
@@ -552,8 +563,6 @@ void Hierarchy::establish(void) {
 @e LOOP_OVER_SCOPE_FN_HL
 @e MISTAKES_HAP
 @e MISTAKE_FN_HL
-@e NAMED_ACTION_PATTERNS_HAP
-@e NAP_FN_HL
 @e NAMED_TOKENS_HAP
 @e NO_VERB_VERB_DEFINED_HL
 @e PARSE_LINE_FN_HL
@@ -625,9 +634,6 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(MISTAKES_HAP,              I"mistake", I"_mistake")
 			H_F_G(MISTAKE_FN_HL,              I"mistake_fn", I"Mistake_Token")
-		H_END
-		H_BEGIN_AP(NAMED_ACTION_PATTERNS_HAP, I"named_action_pattern", I"_named_action_pattern")
-			H_F_G(NAP_FN_HL,                  I"nap_fn", I"NAP")
 		H_END
 		H_BEGIN_AP(NAMED_TOKENS_HAP,          I"named_token", I"_named_token")
 			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
@@ -784,7 +790,6 @@ void Hierarchy::establish(void) {
 @e KIND_SUPPORT_FN_MD_HL
 @e KIND_MKDEF_FN_MD_HL
 @e KIND_DSIZE_MD_HL
-@e KIND_CLASS_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
@@ -822,6 +827,9 @@ void Hierarchy::establish(void) {
 @e DK_KIND_HL
 @e DK_DEFAULT_VALUE_HL
 
+@e KIND_USAGE_HAP
+@e KIND_CLASS_HL
+
 @<Establish kinds@> =
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
 
@@ -849,7 +857,6 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_SUPPORT_FN_MD_HL, I"^support_fn")
 			H_C_U(KIND_MKDEF_FN_MD_HL,  I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_MD_HL,     I"^domain_size")
-			H_C_G(KIND_CLASS_HL,              I"K")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
@@ -877,6 +884,7 @@ void Hierarchy::establish(void) {
 			H_C_T(COUNT_INSTANCE_9_HL,        I"IK9_Count")
 			H_C_T(COUNT_INSTANCE_10_HL,       I"IK10_Count")
 			H_C_S(COUNT_INSTANCE_HL,          I"_Count")
+			H_C_G(KIND_CLASS_HL,              I"K")
 			H_BEGIN_AP(KIND_INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(KIND_INLINE_PROPERTY_HL, I"inline")
 			H_END
@@ -888,6 +896,11 @@ void Hierarchy::establish(void) {
 			H_C_U(DK_DEFAULT_VALUE_HL,        I"default_value")
 		H_END
 		H_BEGIN_AP(KIND_PROPERTIES_HAP,       I"property", I"_property")
+		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::completion_submodule(I, kinds))
+		H_BEGIN_AP(KIND_USAGE_HAP,            I"kind_usage", I"_kind_usage")
 		H_END
 	H_END
 

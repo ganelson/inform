@@ -19,7 +19,8 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *dec_iname;
 	struct inter_name *mkdef_iname;
 	struct inter_name *ranger_iname;
-	struct inter_name *trace_iname;
+	struct inter_name *debug_print_fn_iname;
+	struct package_request *usage_package;
 } kind_constructor_compilation_data;
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
@@ -37,7 +38,8 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.dec_iname = NULL;
 	kccd.mkdef_iname = NULL;
 	kccd.ranger_iname = NULL;
-	kccd.trace_iname = NULL;
+	kccd.debug_print_fn_iname = NULL;
+	kccd.usage_package = NULL;
 	return kccd;
 }
 
@@ -62,6 +64,13 @@ package_request *RTKindConstructors::package(kind_constructor *kc) {
 			Hierarchy::apply_metadata(kc->compilation_data.kc_package, KIND_NAME_MD_HL, I"(anonymous kind)");
 	}
 	return kc->compilation_data.kc_package;
+}
+
+package_request *RTKindConstructors::usage_package(kind_constructor *kc) {
+	if (kc->compilation_data.usage_package == NULL)
+		kc->compilation_data.usage_package =
+			Hierarchy::completion_package(KIND_USAGE_HAP);
+	return kc->compilation_data.usage_package;
 }
 
 @ An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
@@ -244,22 +253,22 @@ inter_name *RTKindConstructors::get_mkdef_iname(kind_constructor *kc) {
 			Hierarchy::make_iname_in(MKDEF_FN_HL, RTKindConstructors::package(kc));
 	return kc->compilation_data.mkdef_iname;
 }
-inter_name *RTKindConstructors::get_name_of_printing_rule_ACTIONS(kind *K) {
+inter_name *RTKindConstructors::get_debug_print_fn_iname(kind *K) {
 	if (K == NULL) K = K_number;
-	if (K->construct->compilation_data.trace_iname)
-		return K->construct->compilation_data.trace_iname;
+	if (K->construct->compilation_data.debug_print_fn_iname)
+		return K->construct->compilation_data.debug_print_fn_iname;
 	if (Str::len(K->construct->explicit_identifier) == 0) {
-		K->construct->compilation_data.trace_iname = RTKindConstructors::get_iname(K);
-		return K->construct->compilation_data.trace_iname;
+		K->construct->compilation_data.debug_print_fn_iname = RTKindConstructors::get_iname(K);
+		return K->construct->compilation_data.debug_print_fn_iname;
 	}
 
 	if (Str::len(K->construct->ACTIONS_identifier) > 0)
-		K->construct->compilation_data.trace_iname = 
+		K->construct->compilation_data.debug_print_fn_iname = 
 			Produce::find_by_name(Emit::tree(), K->construct->ACTIONS_identifier);
 	else
-		K->construct->compilation_data.trace_iname =
+		K->construct->compilation_data.debug_print_fn_iname =
 			Produce::find_by_name(Emit::tree(), I"DA_Name");
-	return K->construct->compilation_data.trace_iname;
+	return K->construct->compilation_data.debug_print_fn_iname;
 }
 
 inter_name *RTKindConstructors::get_explicit_I6_GPR_iname(kind *K) {
@@ -508,6 +517,24 @@ void RTKindConstructors::compile(void) {
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
 		}
+		if (Kinds::Behaviour::is_object(K)) {
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
+				KIND_IS_OBJECT_MD_HL, 1);
+		} else {
+			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
+				KIND_IS_OBJECT_MD_HL, 0);
+		}
+
+		if (Kinds::Behaviour::is_object(K)) {
+			if (RTShowmeCommand::needed_for_kind(K)) {
+				inter_name *iname = Hierarchy::make_iname_in(SHOWME_FN_HL,
+					RTKindConstructors::kind_package(K));
+				RTShowmeCommand::compile_kind_showme_fn(iname, K);
+				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
+					KIND_SHOWME_MD_HL, iname);
+			}
+		}
+
 		@<Compile data support functions@>;
 	}
 }

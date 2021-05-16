@@ -25,11 +25,15 @@ action variable clauses.
 @e WHEN_AP_CLAUSE
 @e TAIL_AP_CLAUSE
 
+@ There is no significance to the IDs returned by this function except that
+they must all be different from each other and from all of the |*_AP_CLAUSE|
+values.
+
 =
 int APClauses::clause_ID_for_action_variable(shared_variable *stv) {
 	int D = -1;
 	PluginCalls::divert_AP_clause_ID(stv, &D); if (D >= 0) return D;
-	int oid = SharedVariables::get_owner_id(stv);
+	int oid = 1 + stv->owner->allocation_id;
 	int off = SharedVariables::get_index(stv);
 	return 1000*oid + off;
 }

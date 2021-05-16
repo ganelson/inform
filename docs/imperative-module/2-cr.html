@@ -246,7 +246,7 @@ kinds of value:
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_of_constant</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_text</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><a href="2-cr.html#SP2" class="function-link"><span class="function-syntax">CompileRvalues::text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-cr.html#SP3" class="function-link"><span class="function-syntax">CompileRvalues::text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
@@ -335,7 +335,36 @@ contexts by using a tilde: <span class="extract"><span class="extract-syntax">~a
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Texts can be compiled in four different ways, so the following splits into
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The actions plugin provides other kinds with idiosyncratic compilation needs,
+if it is enabled.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CompileRvalues::action_kinds</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">value</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Holsters::non_void_context</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"action in void context"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_action_name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTActions::double_sharp</span><span class="plain-syntax">(</span><span class="identifier-syntax">ARvalues::to_action_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Emit::holster_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_description_of_action</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_constant_action_pattern</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RTActionPatterns::compile_pattern_match</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_stored_action</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">explicit_action</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ea</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_constant_explicit_action</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cv.html#SP1" class="function-link"><span class="function-syntax">CompileValues::compiling_in_constant_mode</span></a><span class="plain-syntax">()) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">RTActionPatterns::as_stored_action</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">ea</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">RTActionPatterns::emit_try</span><span class="plain-syntax">(</span><span class="identifier-syntax">ea</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Texts can be compiled in four different ways, so the following splits into
 four cases. Note that responses take the form
 </p>
 
@@ -349,32 +378,32 @@ four cases. Note that responses take the form
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompileRvalues::text</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CompileRvalues::text</span></span>:<br/><a href="2-cr.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">str</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Holsters::non_void_context</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"text in void context"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="identifier-syntax">explicit_literal_ANNOT</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">This is an explicit text</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">This is an explicit text</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unescaped</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_unescaped_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"text without wording"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">) &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="function-syntax">&lt;response-letter&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::last_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">)-1)))) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">This is a response text</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">This is a response text</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">unescaped</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Vocabulary::test_flags</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">), </span><span class="identifier-syntax">TEXTWITHSUBS_MC</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph">This is a text substitution</span><span class="named-paragraph-number">2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">This is a text substitution</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unescaped</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP2_4" class="named-paragraph-link"><span class="named-paragraph">This is an unescaped text literal</span><span class="named-paragraph-number">2.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">This is an unescaped text literal</span><span class="named-paragraph-number">3.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP2_5" class="named-paragraph-link"><span class="named-paragraph">This is a regular text literal</span><span class="named-paragraph-number">2.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-cr.html#SP3_5" class="named-paragraph-link"><span class="named-paragraph">This is a regular text literal</span><span class="named-paragraph-number">3.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Not explicit in the sense of an advisory sticker on an Eminem CD: explicit
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>Not explicit in the sense of an advisory sticker on an Eminem CD: explicit
 in providing a text stream for its content, rather than a wording from the
 source text. (This usually means it has been manufactured somewhere in the
 compiler, rather than parsed from the source.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is an explicit text</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is an explicit text</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -388,8 +417,8 @@ compiler, rather than parsed from the source.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">Holsters::holster_pair</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a response text</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a response text</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -410,30 +439,30 @@ compiler, rather than parsed from the source.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Responses::set_via_source_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">marker</span><span class="plain-syntax">, </span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a text substitution</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a text substitution</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TextSubstitutions::text_substitution_cue</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is an unescaped text literal</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is an unescaped text literal</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TextLiterals::to_value_unescaped</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Emit::holster_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">val_iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a regular text literal</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_5" class="paragraph-anchor"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a regular text literal</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TextLiterals::to_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Emit::holster_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">val_iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP2">&#167;2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-cr.html#SP3">&#167;3</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-cv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cv.html">cv</a></li><li class="progresscurrent">cr</li><li class="progresssection"><a href="2-cl.html">cl</a></li><li class="progresssection"><a href="2-cc.html">cc</a></li><li class="progresschapter"><a href="3-sf.html">3</a></li><li class="progresschapter"><a href="4-cs.html">4</a></li><li class="progresschapter"><a href="5-cbal.html">5</a></li><li class="progressnext"><a href="2-cl.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

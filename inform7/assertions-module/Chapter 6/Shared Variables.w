@@ -30,13 +30,15 @@ typedef struct shared_variable {
 	struct parse_node *assigned_at; /* sentence creating the variable */
 	struct nonlocal_variable *underlying_var; /* the variable in question */
 	struct wording match_wording_text; /* matching text (relevant for action variables only) */
+	int is_actor; /* set only for the special "actor" variable */
 	CLASS_DEFINITION
 } shared_variable;
 
 @ And it can only be created within a set:
 
 =
-shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind *K) {
+shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind *K,
+	int is_actor) {
 	shared_variable *shv = CREATE(shared_variable);
 	W = Articles::remove_the(W);
 	shv->name = W;
@@ -46,6 +48,7 @@ shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind 
 	shv->match_wording_text = EMPTY_WORDING;
 	nonlocal_variable *nlv = NonlocalVariables::new(W, K, shv);
 	shv->underlying_var = nlv;
+	shv->is_actor = is_actor;
 	RTVariables::tie_NLV_to_shared_variable(nlv, shv);
 	SharedVariables::add_to_set(shv, set);
 	return shv;
@@ -54,10 +57,6 @@ shared_variable *SharedVariables::new(shared_variable_set *set, wording W, kind 
 @ Some miscellaneous access functions:
 
 =
-int SharedVariables::get_owner_id(shared_variable *shv) {
-	return shv->owner->recognition_id;
-}
-
 inter_name *SharedVariables::get_owner_iname(shared_variable *shv) {
 	return shv->owner->recognition_iname;
 }
@@ -76,6 +75,11 @@ nonlocal_variable *SharedVariables::get_variable(shared_variable *shv) {
 	return shv->underlying_var;
 }
 
+int SharedVariables::is_actor(shared_variable *shv) {
+	if (shv == NULL) return FALSE;
+	return shv->is_actor;
+}
+
 @ The match text associated with a shared variable is used in parsing action
 patterns: see //if: Action Name Lists//. But for most shared variables, this
 text remains empty.
@@ -90,27 +94,25 @@ wording SharedVariables::get_matching_text(shared_variable *shv) {
 }
 
 @h Sets.
-Sets are identified at run-time by an ID number, the "recognition ID", which
-must be unique to that set and also small enough to be stored in what might
-only be a 16-bit unsigned integer.
+Sets are identified by an identifier which will be defined during linking so
+that it is unique among all variable sets in the executable.
 
 =
 typedef struct shared_variable_set {
-	int recognition_id;
 	struct inter_name *recognition_iname;
 	struct linked_list *variables; /* of |shared_variable| */
 	CLASS_DEFINITION
 } shared_variable_set;
 
-shared_variable_set *SharedVariables::new_set(int id, inter_name *iname) {
+shared_variable_set *SharedVariables::new_set(inter_name *iname) {
 	shared_variable_set *set = CREATE(shared_variable_set);
-	set->recognition_id = id;
 	set->recognition_iname = iname;
 	set->variables = NEW_LINKED_LIST(shared_variable);
 	return set;
 }
 
 int SharedVariables::set_empty(shared_variable_set *set) {
+	if (set == NULL) return TRUE;
 	if (LinkedLists::len(set->variables) == 0) return TRUE;
 	return FALSE;
 }

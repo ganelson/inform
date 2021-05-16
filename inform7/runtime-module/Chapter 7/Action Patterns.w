@@ -583,7 +583,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			RTActionPatterns::compile_pattern_match_clause(VH, Inter_actor_VAR, APClauses::spec(ap, ACTOR_AP_CLAUSE), K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
-			RTActions::emit_anl(ap->action_list);
+			RTActionPatterns::compile_action_name_test(ap->action_list);
 			break;
 		case NOUN_EXISTS_CPMC:
 			EmitCode::val_iname(K_object, Hierarchy::find(NOUN_HL));
@@ -738,3 +738,49 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			CompileValues::to_code_val(APClauses::spec(ap, WHEN_AP_CLAUSE));
 			break;
 	}
+
+@
+
+=
+void RTActionPatterns::compile_action_name_test(action_name_list *head) {
+	int C = ActionNameLists::length(head);
+	if (C == 0) return;
+	LOGIF(ACTION_PATTERN_COMPILATION, "Emitting action name list: $L", head);
+
+	int neg = ActionNameLists::itemwise_negated(head);
+	if (neg) { EmitCode::inv(NOT_BIP); EmitCode::down(); }
+
+	int N = 0, downs = 0;
+	LOOP_THROUGH_ANL(L, head) {
+		N++;
+		if (N < C) { EmitCode::inv(OR_BIP); EmitCode::down(); downs++; }
+		if (L->item.nap_listed) {
+			EmitCode::inv(INDIRECT0_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTNamedActionPatterns::test_fn_iname(L->item.nap_listed));
+			EmitCode::up();
+		} else {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(ACTION_HL));
+				EmitCode::val_iname(K_value, RTActions::double_sharp(L->item.action_listed));
+			EmitCode::up();
+		}
+	}
+	while (downs > 0) { EmitCode::up(); downs--; }
+
+	if (neg) EmitCode::up();
+}
+
+@ =
+int RTActionPatterns::is_an_action_variable(parse_node *spec) {
+	nonlocal_variable *nlv;
+	if (spec == NULL) return FALSE;
+	if (Lvalues::get_storage_form(spec) != NONLOCAL_VARIABLE_NT) return FALSE;
+	nlv = Node::get_constant_nonlocal_variable(spec);
+	if (nlv == Inter_noun_VAR) return TRUE;
+	if (nlv == Inter_second_noun_VAR) return TRUE;
+	if (nlv == Inter_actor_VAR) return TRUE;
+	return FALSE;
+}
+

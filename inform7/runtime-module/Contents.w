@@ -22,6 +22,8 @@ Chapter 2: Emission
 	The Heap
 	Default Values
 	Equality Schemas
+	Kind Declarations
+	Showme Command
 
 Chapter 3: Basics
 	Generic Module
@@ -57,11 +59,14 @@ Chapter 5: Provision Submodules
 	Literal Patterns
 	Kind Constructors
 	Kind IDs
+	Actions
+	Named Action Patterns
 
 Chapter 6: Completion Resources
-	Kind Declarations
-	Naming
 	Bibliographic Data
+
+Chapter 7: Still Unsorted
+	Naming
 	Spatial
 	The Player
 	Backdrops
@@ -71,14 +76,8 @@ Chapter 6: Completion Resources
 	Scenes
 	Emit Property Values
 	Instance Counting
-
-Chapter 7: Actions
-	Actions
-	Named Action Patterns
 	Action Patterns
 	Going
-
-Chapter 8: Command Parser
 	Parsing
 	Command Grammars
 	Command Grammar Lines
@@ -86,8 +85,5 @@ Chapter 8: Command Parser
 	Tokens Parsing Values
 	General Parsing Routines
 	Looping Over Scope
-
-Chapter 9: Testing
-	Showme Command
 	Test Scripts
 	Internal Test Cases

@@ -30,7 +30,7 @@ void CompileAtoms::code_to_perform(int task, pcalc_prop *atom) {
 	int uses_av = FALSE;
 	for (int i=0; i<atom->arity; i++) {
 		parse_node *operand = Terms::constant_underlying(&(atom->terms[i]));
-		if (RTActions::is_an_action_variable(operand)) uses_av = TRUE;
+		if (RTActionPatterns::is_an_action_variable(operand)) uses_av = TRUE;
 	}
 	if ((uses_av) && (Frames::used_for_past_tense()) && (problem_count == 0)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),

@@ -97,7 +97,7 @@ sequence in which declarations are made here.
 
 =
 inter_name *RTKindDeclarations::create_iname(kind *K) {
-	package_request *R = RTKindConstructors::kind_package(K);
+	package_request *R = RTKindConstructors::package(K->construct);
 	TEMPORARY_TEXT(KT)
 	Kinds::Textual::write(KT, K);
 	wording W = Feeds::feed_text(KT);

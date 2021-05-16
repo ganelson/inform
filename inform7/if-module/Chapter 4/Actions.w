@@ -54,8 +54,7 @@ action_name *Actions::act_new(wording W) {
 	an->check_rules =      Actions::new_rulebook(an, CHECK_RB_HL);
 	an->carry_out_rules =  Actions::new_rulebook(an, CARRY_OUT_RB_HL);
 	an->report_rules =     Actions::new_rulebook(an, REPORT_RB_HL);
-	an->action_variables =
-		SharedVariables::new_set(RTActions::action_variable_set_ID(an), an->compilation_data.variables_id);
+	an->action_variables = SharedVariables::new_set(RTActions::variables_id(an));
 
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
 	return an;
@@ -71,7 +70,8 @@ rulebook *Actions::new_rulebook(action_name *an, int RB) {
 	int prefix_length = Wordings::length(W) -
 		Wordings::length(ActionNameNames::tensed(an, IS_TENSE));
 	rulebook *R = Rulebooks::new_automatic(W, K_action_name, NO_OUTCOME,
-		TRUE, FALSE, FALSE, prefix_length, RTActions::rulebook_package(an, RB));
+		TRUE, FALSE, FALSE, prefix_length,
+		Hierarchy::make_package_in(RB, RTActions::package(an)));
 	return R;
 }
 

@@ -84,8 +84,7 @@ activity *Activities::new(kind *K, wording W) {
 
 	@<Make proper nouns for the activity name@>;
 
-	av->activity_variables = SharedVariables::new_set(10000+av->allocation_id,
-		av->compilation_data.variables_id);
+	av->activity_variables = SharedVariables::new_set(av->compilation_data.variables_id);
 
 	av->before_rules = Activities::make_rulebook(av, 0, future_action_flag);
 	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);
@@ -211,7 +210,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 	@<The specification must be just a kind@>;
 	@<That kind must be definite@>;
 
-	SharedVariables::new(av->activity_variables, VW, Specifications::to_kind(spec));
+	SharedVariables::new(av->activity_variables, VW, Specifications::to_kind(spec), FALSE);
 }
 
 @<The name of the variable must be fortunate@> =

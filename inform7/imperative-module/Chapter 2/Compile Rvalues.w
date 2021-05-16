@@ -240,6 +240,34 @@ contexts by using a tilde: |~attr|.
 		}
 	}
 
+@ The actions plugin provides other kinds with idiosyncratic compilation needs,
+if it is enabled.
+
+=
+int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) {
+	if (Holsters::non_void_context(VH) == FALSE) internal_error("action in void context");
+	if (Kinds::eq(K, K_action_name)) {
+		inter_name *N = RTActions::double_sharp(ARvalues::to_action_name(value));
+		Emit::holster_iname(VH, N);
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_description_of_action)) {
+		action_pattern *ap = Node::get_constant_action_pattern(value);
+		RTActionPatterns::compile_pattern_match(VH, ap, FALSE);
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_stored_action)) {
+		explicit_action *ea = Node::get_constant_explicit_action(value);
+		if (CompileValues::compiling_in_constant_mode()) {
+			RTActionPatterns::as_stored_action(VH, ea);
+		} else {
+			RTActionPatterns::emit_try(ea, TRUE);
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
 @ Texts can be compiled in four different ways, so the following splits into
 four cases. Note that responses take the form
 = (text)

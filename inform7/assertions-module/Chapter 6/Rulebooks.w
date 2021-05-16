@@ -62,7 +62,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	B->compilation_data = RTRulebooks::new_compilation_data(B, R);
 
-	B->my_variables = SharedVariables::new_set(B->allocation_id, RTRulebooks::id_iname(B));
+	B->my_variables = SharedVariables::new_set(RTRulebooks::id_iname(B));
 	B->accessible_variables = SharedVariables::new_access_list();
 	SharedVariables::add_set_to_access_list(B->accessible_variables, B->my_variables);
 
@@ -352,7 +352,11 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	@<In fact, its description has to be a kind@>;
 	@<And a definite one at that@>;
 
-	SharedVariables::new(B->my_variables, W, K);
+	int is_actor = FALSE;
+	if ((B->allocation_id == ACTION_PROCESSING_RB) &&
+		(SharedVariables::set_empty(B->my_variables)))
+		is_actor = TRUE;
+	SharedVariables::new(B->my_variables, W, K, is_actor);
 }
 
 @<The variable has to have a name@> =

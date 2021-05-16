@@ -379,3 +379,25 @@ void RTPropertyValues::check_kind_can_have_property(kind *K) {
 		"in any case, so nothing is lost. Sorry for the inconvenience, all "
 		"the same; there are good implementation reasons.");
 	Problems::issue_problem_end();
+
+@
+
+=
+parse_node *RTPropertyValues::compile_action_bitmap_property(instance *I) {
+	package_request *R = NULL;
+	inter_name *N = NULL;
+	if (I) {
+		R = RTInstances::package(I);
+		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, R);
+		N = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
+	} else {
+		R = RTKindConstructors::kind_package(K_object);
+		package_request *PR = Hierarchy::package_within(KIND_INLINE_PROPERTIES_HAP, R);
+		N = Hierarchy::make_iname_in(KIND_INLINE_PROPERTY_HL, PR);
+	}
+	packaging_state save = EmitArrays::begin(N, K_number);
+	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+	Produce::annotate_i(N, INLINE_ARRAY_IANN, 1);
+	return Rvalues::from_iname(N);
+}

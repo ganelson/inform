@@ -176,7 +176,7 @@ void ActionVariables::new(action_name *an, kind *K, wording NW, wording MW) {
 		SharedVariables::add_set_to_access_list(
 			all_nonempty_stacked_action_vars, an->action_variables);
 
-	shared_variable *stv = SharedVariables::new(an->action_variables, NW, K);
+	shared_variable *stv = SharedVariables::new(an->action_variables, NW, K, FALSE);
 	if (Wordings::nonempty(MW))
 		SharedVariables::set_matching_text(stv, MW);
 

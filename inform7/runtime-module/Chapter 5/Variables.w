@@ -136,8 +136,7 @@ left NVE) will not. See //BasicInformKit: MStack// for more.
 =
 void RTVariables::tie_NLV_to_shared_variable(nonlocal_variable *nlv, shared_variable *shv) {
 	if (nlv == NULL) internal_error("null nlv");
-	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) &&
-		(SharedVariables::get_index(shv) == 0)) {
+	if (SharedVariables::is_actor(shv)) {
 		RTVariables::store_in_this_iname(nlv, Hierarchy::find(ACTOR_HL));
 	} else {
 		nlv->compilation_data.lvalue_nve =

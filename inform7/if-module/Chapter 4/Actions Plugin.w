@@ -34,7 +34,7 @@ void ActionsPlugin::start(void) {
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
 	PluginManager::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
-	PluginManager::plug(COMPILE_CONSTANT_PLUG, RTActions::actions_compile_constant);
+	PluginManager::plug(COMPILE_CONSTANT_PLUG, CompileRvalues::action_kinds);
 	PluginManager::plug(COMPILE_CONDITION_PLUG, AConditions::compile_condition);
 	PluginManager::plug(CREATION_PLUG, ActionsNodes::creation);
 	PluginManager::plug(UNUSUAL_PROPERTY_VALUE_PLUG, ActionsNodes::unusual_property_value_node);
@@ -55,10 +55,8 @@ void ActionsPlugin::start(void) {
 
 int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
+		BENCH(RTActions::compile);
 		BENCH(RTNamedActionPatterns::compile);
-		BENCH(RTActions::compile_action_name_var_creators);
-		BENCH(RTActions::compile_metadata);
-		BENCH(RTActions::compile_functions);
 	}
 	return FALSE;
 }
@@ -139,7 +137,7 @@ int ActionsPlugin::complete_model(int stage) {
 	if ((K_room == NULL) ||
 		(InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE)) {
 		instance *I = InstanceSubjects::to_instance(subj);
-		parse_node *S = RTActions::compile_action_bitmap_property(I);
+		parse_node *S = RTPropertyValues::compile_action_bitmap_property(I);
 		ValueProperties::assert(P_action_bitmap, subj, S, CERTAIN_CE);
 	}
 

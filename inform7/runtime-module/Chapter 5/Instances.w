@@ -53,28 +53,33 @@ int RTInstances::compile_all(inference_subject_family *family, int ignored) {
 using Inter's |INSTANCE_IST| instruction.
 
 @<Compile a package for I@> =
-	Hierarchy::apply_metadata_from_wording(I->icd.instance_package,
-		INSTANCE_NAME_MD_HL,
+	package_request *pack = I->icd.instance_package;
+	Hierarchy::apply_metadata_from_wording(pack, INSTANCE_NAME_MD_HL,
 		Nouns::nominative(I->as_noun, FALSE));
-	Hierarchy::apply_metadata_from_iname(I->icd.instance_package,
-		INSTANCE_VALUE_MD_HL,
-		I->icd.instance_iname);
-	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL,
-		I->icd.instance_package);
+	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->icd.instance_iname);
+	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL, pack);
 	kind *K = Instances::to_kind(I);
 	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
 	if ((K_scene) && (Kinds::eq(K, K_scene)))
-		Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SCENE_MD_HL, 1);
 	if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
-		Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SOUND_MD_HL, 1);
 	if ((K_figure_name) && (Kinds::eq(K, K_figure_name)))
-		Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_FIGURE_MD_HL, 1);
 	if ((K_external_file) && (Kinds::eq(K, K_external_file)))
-		Hierarchy::apply_metadata_from_number(I->icd.instance_package,
+		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_EXF_MD_HL, 1);
+
+	if (RTShowmeCommand::needed_for_instance(I)) {
+		inter_name *iname = Hierarchy::make_iname_in(INST_SHOWME_FN_HL,
+			RTInstances::package(I));
+		RTShowmeCommand::compile_instance_showme_fn(iname, I);
+		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
+			INST_SHOWME_MD_HL, iname);
+	}
 
 	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), I->enumeration_index);
 	RTPropertyValues::emit_instance_permissions(I);

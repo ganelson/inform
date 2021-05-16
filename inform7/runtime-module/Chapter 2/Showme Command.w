@@ -7,20 +7,36 @@ This doesn't in fact do anything, except to provide one service when it's
 plugged in.
 
 =
+int SHOWME_is_active = FALSE;
 void RTShowmeCommand::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, RTShowmeCommand::production_line);
+	SHOWME_is_active = TRUE;
 }
 
-int RTShowmeCommand::production_line(int stage, int debugging,
-	stopwatch_timer *sequence_timer) {
-	if (stage == INTER5_CSEQ) {
-		BENCH(RTShowmeCommand::compile_SHOWME_details)
-	}
+int RTShowmeCommand::needed_for_kind(kind *K) {
+	if (SHOWME_is_active == FALSE) return FALSE;
+	inference_subject *subj = KindSubjects::from_kind(K);
+	property *prn;
+	LOOP_OVER(prn, property)
+		if (RTShowmeCommand::is_property_worth_SHOWME(subj, prn, NULL, NULL))
+			return TRUE;
+	return FALSE;
+}
+
+int RTShowmeCommand::needed_for_instance(instance *I) {
+	if (SHOWME_is_active == FALSE) return FALSE;
+	inference_subject *subj = Instances::as_subject(I);
+	property *prn;
+	LOOP_OVER(prn, property)
+		if (RTShowmeCommand::is_property_worth_SHOWME(subj, prn, NULL, NULL))
+			return TRUE;
 	return FALSE;
 }
 
 @h Support for the SHOWME command.
-And here is the one service. We must compile I6 code which looks at the
+And here is the one service. We must provide Inter functions, one for a
+(property-owning) kind and one for an instance, which print out useful
+diagnostic data about the current state of those properties.
+
 object in the local variable |t_0| and prints out useful diagnostic data
 about its current state. We get to use a local variable |na|, which stands
 for "number of attributes", though that's really I6-speak: what we mean
@@ -31,93 +47,81 @@ We will show either/or properties first, on their own line, and then value
 properties.
 
 =
-void RTShowmeCommand::compile_SHOWME_details(void) {
-	@<Make SHOWMEKINDDETAILS@>;
-	@<Make SHOWMEINSTANCEDETAILS@>;
+void RTShowmeCommand::compile_kind_showme_fn(inter_name *iname, kind *K) {
+	packaging_state save = Functions::begin(iname);
+	inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
+	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
+	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
+	EmitCode::inv(IFDEBUG_BIP);
+	EmitCode::down();
+		EmitCode::code();
+		EmitCode::down();		
+			EmitCode::inv(IFELSE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, which_s);
+				EmitCode::code();
+				EmitCode::down();
+					RTShowmeCommand::compile_SHOWME_type_subj(TRUE,
+						KindSubjects::from_kind(K), t_0_s, na_s);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					RTShowmeCommand::compile_SHOWME_type_subj(FALSE,
+						KindSubjects::from_kind(K), t_0_s, na_s);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();		
+				EmitCode::val_symbol(K_value, na_s);
+			EmitCode::up();		
+		EmitCode::up();
+	EmitCode::up();
+	Functions::end(save);
 }
 
-@<Make SHOWMEKINDDETAILS@> =
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Behaviour::is_object(K)) {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_OBJECT_MD_HL, 1);
-			inter_name *iname = Hierarchy::make_iname_in(SHOWME_FN_HL, RTKindConstructors::kind_package(K));
-			packaging_state save = Functions::begin(iname);
-			inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
-			inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
-			inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
-			EmitCode::inv(IFDEBUG_BIP);
-			EmitCode::down();
-				EmitCode::code();
-				EmitCode::down();		
-					EmitCode::inv(IFELSE_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, which_s);
-						EmitCode::code();
-						EmitCode::down();
-							RTShowmeCommand::compile_SHOWME_type_subj(TRUE, KindSubjects::from_kind(K), t_0_s, na_s);
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-							RTShowmeCommand::compile_SHOWME_type_subj(FALSE, KindSubjects::from_kind(K), t_0_s, na_s);
-						EmitCode::up();
-					EmitCode::up();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();		
-						EmitCode::val_symbol(K_value, na_s);
-					EmitCode::up();		
-				EmitCode::up();
-			EmitCode::up();
-			Functions::end(save);
-			Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
-				KIND_SHOWME_MD_HL, iname);
- 		} else {
-			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),
-				KIND_IS_OBJECT_MD_HL, 0);
-		}
-
-@<Make SHOWMEINSTANCEDETAILS@> =
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object) {
-		inference_subject *subj = Instances::as_subject(I);
-		inter_name *iname = Hierarchy::make_iname_in(INST_SHOWME_FN_HL,
-			RTInstances::package(I));
-		packaging_state save = Functions::begin(iname);
-		inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
-		inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
-		inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
-		EmitCode::inv(IFDEBUG_BIP);
-		EmitCode::down();
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::inv(IFELSE_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, which_s);
-					EmitCode::code();
-					EmitCode::down();
-						RTShowmeCommand::compile_SHOWME_type_subj(TRUE, subj, t_0_s, na_s);
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						RTShowmeCommand::compile_SHOWME_type_subj(FALSE, subj, t_0_s, na_s);
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(RETURN_BIP);
-				EmitCode::down();		
-					EmitCode::val_symbol(K_value, na_s);
-				EmitCode::up();		
-			EmitCode::up();
-		EmitCode::up();
-		Functions::end(save);
-		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
-			INST_SHOWME_MD_HL, iname);
-	}
-
-@
+@ And almost exactly similarly:
 
 =
-void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
+void RTShowmeCommand::compile_instance_showme_fn(inter_name *iname, instance *I) {
+	inference_subject *subj = Instances::as_subject(I);
+	packaging_state save = Functions::begin(iname);
+	inter_symbol *which_s = LocalVariables::new_other_as_symbol(I"which");
+	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
+	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
+	EmitCode::inv(IFDEBUG_BIP);
+	EmitCode::down();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(IFELSE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, which_s);
+				EmitCode::code();
+				EmitCode::down();
+					RTShowmeCommand::compile_SHOWME_type_subj(TRUE, subj, t_0_s, na_s);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					RTShowmeCommand::compile_SHOWME_type_subj(FALSE, subj, t_0_s, na_s);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(RETURN_BIP);
+			EmitCode::down();		
+				EmitCode::val_symbol(K_value, na_s);
+			EmitCode::up();		
+		EmitCode::up();
+	EmitCode::up();
+	Functions::end(save);
+}
+
+@ Those call the following once each, with |val| set to |TRUE| to show value
+properties, |FALSE| to show either/or.
+
+The local variable |t_0| is the property owner, and |na_s| is a count of the
+number of annotations made, which is used to keep the punctuation straight.
+
+=
+void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj,
+	inter_symbol *t_0_s, inter_symbol *na_s) {
 	@<Skip if this object's definition has nothing to offer SHOWME@>;
 
 	EmitCode::inv(IF_BIP);
@@ -142,7 +146,7 @@ void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj,
 				todo = TRUE;
 	if (todo == FALSE) return;
 
-@ In the code running at this point, |na| holds the number of either/or
+@ In the code running at this point, |na_s| holds the number of either/or
 properties listed since the last time it was zeroed. If it's positive, we
 need either a semicolon or a line break. If we're about to work on another
 definition contributing either/or properties, the former; otherwise the
@@ -183,21 +187,24 @@ second of just one from "person".
 		if (Properties::is_value_property(prn) == val)
 			RTShowmeCommand::compile_property_SHOWME(subj, prn, t_0_s, na_s);
 
-@ We actually use the same routine for both testing and compiling:
+@ We actually use the same function for both testing and compiling:
 
 =
-int RTShowmeCommand::is_property_worth_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
+int RTShowmeCommand::is_property_worth_SHOWME(inference_subject *subj, property *prn,
+	inter_symbol *t_0_s, inter_symbol *na_s) {
 	return RTShowmeCommand::SHOWME_primitive(subj, prn, FALSE, t_0_s, na_s);
 }
 
-void RTShowmeCommand::compile_property_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
+void RTShowmeCommand::compile_property_SHOWME(inference_subject *subj, property *prn,
+	inter_symbol *t_0_s, inter_symbol *na_s) {
 	RTShowmeCommand::SHOWME_primitive(subj, prn, TRUE, t_0_s, na_s);
 }
 
 @ So here goes.
 
 =
-int RTShowmeCommand::SHOWME_primitive(inference_subject *subj, property *prn, int comp, inter_symbol *t_0_s, inter_symbol *na_s) {
+int RTShowmeCommand::SHOWME_primitive(inference_subject *subj, property *prn, int comp,
+	inter_symbol *t_0_s, inter_symbol *na_s) {
 	if (IXProperties::is_shown_in_index(prn) == FALSE) return FALSE;
 	if (RTProperties::can_be_compiled(prn) == FALSE) return FALSE;
 
@@ -329,7 +336,7 @@ routine for colours; and the best thing is to print nothing at all.
 		EmitCode::up();
 	EmitCode::up();
 
-@ The I6 template code is allowed to bar certain either/or properties using
+@ Code in the kits is allowed to bar certain either/or properties using
 |AllowInShowme|; it typically uses this to block distracting temporary-workspace
 properties like "marked for listing" whose values have no significance
 turn by turn.
