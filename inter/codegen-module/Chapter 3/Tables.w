@@ -50,6 +50,7 @@ void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 	@<Define PRINT_TABLE function@>;
 	@<Define TC_KOV function@>;
 	@<Define TB_BLANKS array@>;
+	@<Define RANKING_TABLE constant@>;
 }
 
 @<Define TABLEOFTABLES array@> =
@@ -175,3 +176,18 @@ void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 	Synoptic::numeric_entry(0);
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
+
+@<Define RANKING_TABLE constant@> =
+	inter_name *iname = HierarchyLocations::find(I, RANKING_TABLE_HL);
+	int found = FALSE;
+	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^ranking_table")) {
+			inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
+			Produce::symbol_constant(I, iname, K_value, value_s);
+			found = TRUE;
+			break;
+		}
+	}
+	if (found == FALSE) Produce::numeric_constant(I, iname, K_value, 0);

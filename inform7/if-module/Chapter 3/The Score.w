@@ -17,9 +17,6 @@ int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequenc
 	if (stage == MODEL_CSEQ) {
 		BENCH(TheScore::max_score_and_ranking_table);
 	}
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTTheScore::support);
-	}
 	return FALSE;
 }
 

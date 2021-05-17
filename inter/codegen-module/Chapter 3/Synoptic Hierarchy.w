@@ -238,6 +238,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 @e PRINT_TABLE_HL
 @e TABLEOFTABLES_HL
 @e TB_BLANKS_HL
+@e RANKING_TABLE_HL
 
 @e TC_KOV_HL
 
@@ -246,6 +247,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 		SYN_FUNCT(PRINT_TABLE_HL,                 I"print_fn", I"PrintTableName")
 		SYN_CONST(TABLEOFTABLES_HL,               I"TableOfTables")
 		SYN_CONST(TB_BLANKS_HL,                   I"TB_Blanks")
+		SYN_CONST(RANKING_TABLE_HL,               I"RANKING_TABLE")
 
 	SYN_SUBMD(I"table_columns")
 		SYN_FUNCT(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")

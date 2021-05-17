@@ -33,8 +33,7 @@ test_scenario *TestCommand::new_scenario(wording XW) {
     		Problems::quote_source(2, current_sentence);
     		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TestDuplicate));
 			Problems::issue_problem_segment(
-				"Two test scripts have been set up with the same name: "
-				"%1 and %2.");
+				"Two test scripts have been set up with the same name: %1 and %2.");
 			Problems::issue_problem_end();
 			return test;
     	}

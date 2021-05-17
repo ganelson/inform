@@ -72,7 +72,6 @@ Chapter 7: Still Unsorted
 	Backdrops
 	Regions
 	The Map
-	The Score
 	Scenes
 	Emit Property Values
 	Instance Counting

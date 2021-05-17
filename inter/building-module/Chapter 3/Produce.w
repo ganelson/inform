@@ -572,3 +572,18 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	Packaging::exit(I, save);
 	return con_iname;
 }
+
+inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind *K,
+	inter_symbol *val_s) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	inter_ti v1 = 0, v2 = 0;
+	inter_package *pack = Inter::Bookmarks::package(Packaging::at(I));
+	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, val_s, &v1, &v2);
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(I),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
+		InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), Produce::kind_to_symbol(K)),
+		v1, v2, Produce::baseline(Packaging::at(I)), NULL));
+	Packaging::exit(I, save);
+	return con_iname;
+}

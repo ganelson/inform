@@ -734,11 +734,9 @@ void Hierarchy::establish(void) {
 @e START_TIME_INIS_HL
 @e DONE_INIS_HL
 
-@e INITIAL_MAX_SCORE_HL
 @e NO_DIRECTIONS_HL
 @e MAP_STORAGE_HL
 @e INITIALSITUATION_HL
-@e RANKING_TABLE_HL
 @e RUCKSACK_CLASS_HL
 
 @e DIRECTIONS_HAP
@@ -756,11 +754,9 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, interactive_fiction))
-		H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
-		H_C_T(RANKING_TABLE_HL,               I"RANKING_TABLE")
 		H_C_T(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
 		H_BEGIN_AP(DIRECTIONS_HAP,            I"direction", I"_direction")
 			H_C_G(DIRECTION_HL,               I"DirectionObject")
@@ -1149,6 +1145,7 @@ void Hierarchy::establish(void) {
 @e TABLE_NAME_MD_HL
 @e TABLE_PNAME_MD_HL
 @e TABLE_VALUE_MD_HL
+@e RANKING_TABLE_MD_HL
 @e TABLE_ID_HL
 @e TABLE_DATA_HL
 @e TABLE_COLUMN_USAGES_HAP
@@ -1167,16 +1164,17 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(tables))
 		H_BEGIN_AP(TABLES_HAP,                I"table", I"_table")
-			H_C_U(TABLE_NAME_MD_HL,     I"^name")
-			H_C_U(TABLE_PNAME_MD_HL,    I"^printed_name")
-			H_C_U(TABLE_VALUE_MD_HL,    I"^value")
+			H_C_U(TABLE_NAME_MD_HL,           I"^name")
+			H_C_U(TABLE_PNAME_MD_HL,          I"^printed_name")
+			H_C_U(TABLE_VALUE_MD_HL,          I"^value")
+			H_C_U(RANKING_TABLE_MD_HL,        I"^ranking_table")
 			H_C_U(TABLE_ID_HL,                I"table_id")
 			H_C_U(TABLE_DATA_HL,              I"table_data")
 			H_BEGIN_AP(TABLE_COLUMN_USAGES_HAP, I"column", I"_table_column_usage")
 				H_C_U(COLUMN_DATA_HL,         I"column_data")
 				H_C_U(COLUMN_IDENTITY_HL,     I"column_identity")
 				H_C_U(COLUMN_BITS_HL,         I"column_bits")
-				H_C_U(COLUMN_BLANKS_HL,        I"column_blanks")
+				H_C_U(COLUMN_BLANKS_HL,       I"column_blanks")
 				H_C_U(COLUMN_BLANK_DATA_HL,   I"^column_blank_data")
 			H_END
 		H_END
@@ -1216,6 +1214,7 @@ void Hierarchy::establish(void) {
 @e VARIABLE_NAME_MD_HL
 @e VARIABLE_HL
 @e COMMANDPROMPTTEXT_HL
+@e INITIAL_MAX_SCORE_HL
 
 @<Establish variables@> =
 	submodule_identity *variables = Packaging::register_submodule(I"variables");
@@ -1225,6 +1224,7 @@ void Hierarchy::establish(void) {
 			H_C_U(VARIABLE_NAME_MD_HL,        I"^name")
 			H_C_G(VARIABLE_HL,                I"V")
 			H_F_T(COMMANDPROMPTTEXT_HL,       I"command_prompt_text_fn", I"CommandPromptText")
+			H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
 		H_END
 	H_END
 

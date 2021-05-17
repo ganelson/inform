@@ -156,7 +156,8 @@ void InternalTests::InternalTestCases_routine(void) {
 				Equations::internal_test(itc->text_supplying_the_case);
 				break;
 			case VERB_INTT:
-				Conjugation::test(OUT, itc->text_supplying_the_case, Projects::get_language_of_play(Task::project()));
+				Conjugation::test(OUT, itc->text_supplying_the_case,
+					Projects::get_language_of_play(Task::project()));
 				break;
 			case ADJECTIVE_INTT:
 				Adjectives::test_adjective(OUT, itc->text_supplying_the_case);
@@ -385,7 +386,8 @@ void InternalTests::log_poset(int n) {
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			LOOP_OVER_BASE_KINDS(C)
-				if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, C)) && (Kinds::conforms_to(A, C) == FALSE))
+				if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, C)) &&
+					(Kinds::conforms_to(A, C) == FALSE))
 					LOG("Transitivity violated: %u, %u, %u\n", A, B, C);
 
 @<Check the maximum function@> =

@@ -306,6 +306,16 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 			Emit::variable(iname, nlv->nlv_kind, v1, v2);
 			@<Add any anomalous extras@>;
 		}
+		if (nlv == max_score_VAR) {
+			inter_name *iname = Hierarchy::make_iname_in(INITIAL_MAX_SCORE_HL,
+				RTVariables::package(nlv));
+			Hierarchy::make_available(iname);
+			if (VariableSubjects::has_initial_value_set(max_score_VAR)) {
+				Emit::initial_value_as_constant(iname, max_score_VAR);
+			} else {
+				Emit::numeric_constant(iname, 0);
+			}
+		}
 	}
 	return TRUE;
 }

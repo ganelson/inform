@@ -59,6 +59,8 @@ void RTTables::compilation_agent(compilation_subtask *ct) {
 	@<Compile the blanks bitmap table@>;
 	Hierarchy::apply_metadata_from_iname(RTTables::package(t), TABLE_VALUE_MD_HL,
 		RTTables::identifier(t));
+	if (t == TheScore::ranking_table())
+		Hierarchy::apply_metadata_from_number(RTTables::package(t), RANKING_TABLE_MD_HL, 1);
 }
 
 @<Compile the run-time storage for the table@> =
