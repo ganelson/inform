@@ -31,6 +31,7 @@ void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
 	@<Define I7_KIND_NAME function@>;
 	@<Define KOVSUPPORTFUNCTION function@>;
 	@<Define SHOWMEKINDDETAILS function@>;
+	@<Define RUCKSACK_CLASS constant@>;
 }
 
 @<Define BASE_KIND_HWM@> =
@@ -414,3 +415,25 @@ such a function does, see "BlockValues.i6t".
 		Produce::val_symbol(I, K_value, na_s);
 	Produce::up(I);		
 	Synoptic::end_function(I, iname);
+
+@ This goes right back to a curious feature of Inform 1, in 1993. To enable
+the use of player's holdalls, we must declare a constant |RUCKSACK_CLASS| to
+tell some code in |WorldModelKit| to use possessions with this Inter class as
+the rucksack pro tem. This is all a bit of a hack, and isn't really fully
+general: only the player has the benefit of a "player's holdall" (hence the
+name), with other actors oblivious.
+
+@<Define RUCKSACK_CLASS constant@> =
+	inter_name *iname = HierarchyLocations::find(I, RUCKSACK_CLASS_HL);
+	int found = FALSE;
+	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^rucksack_class")) {
+			inter_symbol *value_s = Metadata::read_symbol(pack, I"^object_class");
+			Produce::symbol_constant(I, iname, K_value, value_s);
+			found = TRUE;
+			break;
+		}
+	}
+	if (found == FALSE) Produce::numeric_constant(I, iname, K_value, 0);

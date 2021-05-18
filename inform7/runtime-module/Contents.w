@@ -24,6 +24,7 @@ Chapter 2: Emission
 	Equality Schemas
 	Kind Declarations
 	Showme Command
+	Here, Nowhere and Everywhere
 
 Chapter 3: Basics
 	Generic Module
@@ -48,6 +49,8 @@ Chapter 5: Provision Submodules
 	Conjugations
 	Equations
 	Instances
+	Backdrop Instances
+	Region Instances
 	Multimedia
 	Tables
 	Table Columns
@@ -64,13 +67,10 @@ Chapter 5: Provision Submodules
 
 Chapter 6: Completion Resources
 	Bibliographic Data
+	The Player
 
 Chapter 7: Still Unsorted
 	Naming
-	Spatial
-	The Player
-	Backdrops
-	Regions
 	The Map
 	Scenes
 	Emit Property Values

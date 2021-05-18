@@ -21,15 +21,6 @@ void Regions::start(void) {
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
 	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
 	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXRegions::add_to_World_index);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Regions::production_line);
-}
-
-int Regions::production_line(int stage, int debugging,
-	stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTRegions::write_found_in_functions);
-	}
-	return FALSE;
 }
 
 @ There is one kind of interest: "region", of course. It is recognised by the English
@@ -238,7 +229,7 @@ int Regions::complete_model(int stage) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
-			inter_name *iname = RTRegions::found_in_iname(I);
+			inter_name *iname = RTRegionInstances::found_in_iname(I);
 			ValueProperties::assert(P_regional_found_in, Instances::as_subject(I),
 				Rvalues::from_iname(iname), CERTAIN_CE);
 		}

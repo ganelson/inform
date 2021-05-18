@@ -737,7 +737,6 @@ void Hierarchy::establish(void) {
 @e NO_DIRECTIONS_HL
 @e MAP_STORAGE_HL
 @e INITIALSITUATION_HL
-@e RUCKSACK_CLASS_HL
 
 @e DIRECTIONS_HAP
 @e DIRECTION_HL
@@ -757,7 +756,6 @@ void Hierarchy::establish(void) {
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
-		H_C_T(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
 		H_BEGIN_AP(DIRECTIONS_HAP,            I"direction", I"_direction")
 			H_C_G(DIRECTION_HL,               I"DirectionObject")
 		H_END
@@ -786,6 +784,7 @@ void Hierarchy::establish(void) {
 @e KIND_SUPPORT_FN_MD_HL
 @e KIND_MKDEF_FN_MD_HL
 @e KIND_DSIZE_MD_HL
+@e RUCKSACK_CLASS_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
@@ -853,6 +852,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_SUPPORT_FN_MD_HL, I"^support_fn")
 			H_C_U(KIND_MKDEF_FN_MD_HL,  I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_MD_HL,     I"^domain_size")
+			H_C_U(RUCKSACK_CLASS_MD_HL, I"^rucksack_class")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)

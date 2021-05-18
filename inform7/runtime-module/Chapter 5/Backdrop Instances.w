@@ -1,38 +1,36 @@
-[RTBackdrops::] Backdrops.
+[RTBackdropInstances::] Backdrop Instances.
 
-@ Just one array will do us:
+Some additions to an _instance package for instances of the kind "backdrop".
+
+@h Compilation data.
+This additional data is present only if the "backdrops" plugin is active:
 
 =
-typedef struct backdrop_found_in_notice {
-	struct instance *backdrop;
-	struct inter_name *found_in_routine_iname;
-	int many_places;
-	CLASS_DEFINITION
-} backdrop_found_in_notice;
-
-parse_node *RTBackdrops::found_in_val(instance *I, int many) {
-	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
-	notice->backdrop = I;
-	package_request *R = RTInstances::package(I);
-	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
-	notice->many_places = many;
-	return Rvalues::from_iname(notice->found_in_routine_iname);
+inter_name *RTBackdropInstances::found_in_val(instance *I, int many) {
+	if (BACKDROPS_DATA(I)->found_in_fn_iname == NULL)
+		BACKDROPS_DATA(I)->found_in_fn_iname =
+			Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, RTInstances::package(I));
+	BACKDROPS_DATA(I)->many_places = many;
+	return BACKDROPS_DATA(I)->found_in_fn_iname;
 }
 
-@ =
-void RTBackdrops::write_found_in_routines(void) {
-	backdrop_found_in_notice *notice;
-	LOOP_OVER(notice, backdrop_found_in_notice) {
-		instance *I = notice->backdrop;
-		if (notice->many_places)
+@h Compilation.
+We add a |found_in| function to test whether the given backdrop is found in
+the current |location| or not.
+
+=
+void RTBackdropInstances::compile_extra(instance *I) {
+	if ((K_backdrop) && (Instances::of_kind(I, K_backdrop)) &&
+		(BACKDROPS_DATA(I)->found_in_fn_iname)) {
+		if (BACKDROPS_DATA(I)->many_places)
 			@<The object is found in many rooms or in whole regions@>
 		else
-			@<The object is found nowhere@>;
+			@<The object is found nowhere@>;		
 	}
 }
 
 @<The object is found in many rooms or in whole regions@> =
-	packaging_state save = Functions::begin(notice->found_in_routine_iname);
+	packaging_state save = Functions::begin(BACKDROPS_DATA(I)->found_in_fn_iname);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
 		instance *loc = Backdrops::get_inferred_location(inf);
@@ -62,6 +60,6 @@ void RTBackdrops::write_found_in_routines(void) {
 	Functions::end(save);
 
 @<The object is found nowhere@> =
-	packaging_state save = Functions::begin(notice->found_in_routine_iname);
+	packaging_state save = Functions::begin(BACKDROPS_DATA(I)->found_in_fn_iname);
 	EmitCode::rfalse();
 	Functions::end(save);

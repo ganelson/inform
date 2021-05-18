@@ -16,7 +16,6 @@ regions, and so on.
 void Spatial::start(void) {
 	SpatialInferences::create();
 
-	PluginManager::plug(PRODUCTION_LINE_PLUG,  Spatial::production_line);
 	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Spatial::create_inference_subjects);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Spatial::new_base_kind_notify);
 	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Spatial::act_on_special_NPs);
@@ -30,13 +29,6 @@ void Spatial::start(void) {
 	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
 	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXSpatial::add_to_World_index);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
-}
-
-int Spatial::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTSpatial::compile_players_holdall);
-	}
-	return FALSE;
 }
 
 @h Kinds of interest.

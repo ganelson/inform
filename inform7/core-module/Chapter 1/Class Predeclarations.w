@@ -186,7 +186,7 @@ DECLARE_CLASS(local_block_value)
 @ //runtime// --
 
 @e adjective_iname_holder_CLASS
-@e backdrop_found_in_notice_CLASS
+@e backdrops_data_CLASS
 @e box_quotation_CLASS
 @e compilation_unit_CLASS
 @e definition_CLASS
@@ -206,7 +206,7 @@ DECLARE_CLASS(local_block_value)
 
 =
 DECLARE_CLASS(adjective_iname_holder)
-DECLARE_CLASS(backdrop_found_in_notice)
+DECLARE_CLASS(backdrops_data)
 DECLARE_CLASS(box_quotation)
 DECLARE_CLASS(compilation_unit)
 DECLARE_CLASS(definition)

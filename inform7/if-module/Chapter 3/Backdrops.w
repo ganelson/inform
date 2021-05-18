@@ -13,17 +13,31 @@ inferences to avoid piling up bogus inconsistencies.
 void Backdrops::start(void) {
 	Backdrops::create_inference_families();
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Backdrops::new_base_kind_notify);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Backdrops::new_subject_notify);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Backdrops::new_property_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, Backdrops::complete_model);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Backdrops::intervene_in_assertion);
-	PluginManager::plug(PRODUCTION_LINE_PLUG,  Backdrops::production_line);
 }
 
-int Backdrops::production_line(int stage, int debugging,
-	stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTBackdrops::write_found_in_routines);
-	}
+@h Instances.
+Every inference subject contains a pointer to its own unique copy of the
+following minimal structure, though it will only be relevant for instances of
+"backdrop":
+
+@d BACKDROPS_DATA(I) PLUGIN_DATA_ON_INSTANCE(backdrops, I)
+
+=
+typedef struct backdrops_data {
+	struct inter_name *found_in_fn_iname;
+	int many_places;
+	CLASS_DEFINITION
+} backdrops_data;
+
+int Backdrops::new_subject_notify(inference_subject *subj) {
+	backdrops_data *bd = CREATE(backdrops_data);
+	bd->found_in_fn_iname = NULL;
+	bd->many_places = FALSE;
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(backdrops, subj, bd);
 	return FALSE;
 }
 
@@ -203,7 +217,7 @@ int Backdrops::complete_model(int stage) {
 	val_of_found_in = Rvalues::from_iname(iname);
 
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
-	val_of_found_in = RTBackdrops::found_in_val(I, TRUE);
+	val_of_found_in = Rvalues::from_iname(RTBackdropInstances::found_in_val(I, TRUE));
 
 @ |absent| is an I6-only attribute which marks a backdrop has having been removed
 from the world model. It's not sufficient for an object's |found_in| always to
@@ -211,7 +225,7 @@ say no to the question "are you in the current location?"; the I6 template
 code, derived from the old I6 library, requires |absent| to be set. So:
 
 @<The object is found nowhere, so give it a stub found-in property and mark it absent@> =
-	val_of_found_in = RTBackdrops::found_in_val(I, FALSE);
+	val_of_found_in = Rvalues::from_iname(RTBackdropInstances::found_in_val(I, FALSE));
 	EitherOrProperties::assert(
 		P_absent, Instances::as_subject(I), TRUE, CERTAIN_CE);
 

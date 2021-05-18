@@ -85,6 +85,9 @@ using Inter's |INSTANCE_IST| instruction.
 	RTPropertyValues::emit_instance_permissions(I);
 	RTPropertyValues::emit_subject(Instances::as_subject(I));
 
+	RTRegionInstances::compile_extra(I);
+	RTBackdropInstances::compile_extra(I);
+
 @h Condition element.
 This compiles a test of whether or not |t0_s| is equal to an instance.
 

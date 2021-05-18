@@ -535,6 +535,9 @@ void RTKindConstructors::compile(void) {
 			}
 		}
 
+		if (Kinds::eq(K, K_players_holdall))
+			Hierarchy::apply_metadata_from_number(pack, RUCKSACK_CLASS_MD_HL, 1);
+
 		@<Compile data support functions@>;
 	}
 }
