@@ -1,154 +1,93 @@
-
-
-
-Welcome
-An Interactive Fiction
-Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
-
-Laboratory
 1. 0mm
 Kind of value: length scaled at k=1000
-Prints as: 0m
 
 2. 1mm
 Kind of value: length scaled at k=1000
-Prints as: 1mm
 
 3. 9mm
 Kind of value: length scaled at k=1000
-Prints as: 9mm
 
 4. 10mm
 Kind of value: length scaled at k=1000
-Prints as: 1cm
 
 5. 11mm
 Kind of value: length scaled at k=1000
-Prints as: 1.1cm
 
 6. 0cm
 Kind of value: length scaled at k=1000
-Prints as: 0m
 
 7. 1cm
 Kind of value: length scaled at k=1000
-Prints as: 1cm
 
 8. 97cm
 Kind of value: length scaled at k=1000
-Prints as: 97cm
 
 9. 100cm
 Kind of value: length scaled at k=1000
-Prints as: 1m
 
 10. 101cm
 Kind of value: length scaled at k=1000
-Prints as: 1.01m
 
 11. 0m
 Kind of value: length scaled at k=1000
-Prints as: 0m
 
 12. 1m
 Kind of value: length scaled at k=1000
-Prints as: 1m
 
 13. 97m
 Kind of value: length scaled at k=1000
-Prints as: 97m
 
 14. 999m
 Kind of value: length scaled at k=1000
-Prints as: 999m
 
 15. 1000m
 Kind of value: length scaled at k=1000
-Prints as: 1km
 
 16. 1001m
 Kind of value: length scaled at k=1000
-Prints as: 1.001km
 
 17. 0km
 Kind of value: length scaled at k=1000
-Prints as: 0m
 
 18. 1km
 Kind of value: length scaled at k=1000
-Prints as: 1km
 
 19. 26km
 Kind of value: length scaled at k=1000
-Prints as: 26km
 
 20. 1m times 1m
 Kind of value: area scaled at k=10000
-Prints as: 1 sq m
 
 21. 1m times 8
 Kind of value: length scaled at k=1000
-Prints as: 8m
 
 22. 1cm times 27m
 Kind of value: area scaled at k=10000
-Prints as: 2700 sq cm
 
 23. 1 sq m divided by 20cm
 Kind of value: length scaled at k=1000
-Prints as: 5m
 
 24. 1m divided by 8
 Kind of value: length scaled at k=1000
-Prints as: 12.5cm
 
 25. 1m divided by 8cm
 Kind of value: number scaled at k=1
-Prints as: 12
 
 26. (5mm times 8cm) times 172mm
 Kind of value: volume scaled at k=1000000
-Prints as: 68cc
 
 27. 0.5cm
 Kind of value: length scaled at k=1000
-Prints as: 5mm
 
 28. -0.5cm
 Kind of value: length scaled at k=1000
-Prints as: -5mm
 
 29. 0.271km
 Kind of value: length scaled at k=1000
-Prints as: 271m
 
 30. 0.000321km
 Kind of value: length scaled at k=1000
-Prints as: 32.1cm
 
 31. 51.82m
 Kind of value: length scaled at k=1000
-Prints as: 51.82m
 
-
->(Testing.)
-
->[1] measure 1.6cm
-You measure out 1.6cm.
-
->[2] measure 1.62cm
-I didn't understand that sentence.
-
->[3] measure 1.62km
-You measure out 1.62km.
-
->[4] measure 20mm
-You measure out 2cm.
-
->[5] measure 2mm
-You measure out 2mm.
-
->[6] measure 25.0321km
-You measure out 25.0321km.
-
->Are you sure you want to quit? 

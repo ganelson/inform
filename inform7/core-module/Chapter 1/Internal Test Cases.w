@@ -5,7 +5,10 @@ Handling requests to compile internal tests.
 @ To exercise some of these, run the //intest// test group |:internal| through
 Inform. The current roster is as follows:
 
+@e NO_INTT from 0 /* not a test: used for error recovery */
 @e HEADLINE_INTT
+@e SCENARIO_INTT
+
 @e SENTENCE_INTT
 @e DESCRIPTION_INTT
 @e DIMENSIONS_INTT
@@ -25,37 +28,59 @@ Inform. The current roster is as follows:
 only and may change at any time without notice.
 
 =
-<internal-test-case-name> ::=
-	headline |     ==> { HEADLINE_INTT, - }
-	sentence |     ==> { SENTENCE_INTT, - }
-	description |  ==> { DESCRIPTION_INTT, - }
-	dimensions |   ==> { DIMENSIONS_INTT, - }
-	evaluation |   ==> { EVALUATION_INTT, - }
-	equation |     ==> { EQUATION_INTT, - }
-	verb |         ==> { VERB_INTT, - }
-	adjective |    ==> { ADJECTIVE_INTT, - }
-	participle |   ==> { ING_INTT, - }
-	kind |         ==> { KIND_INTT, - }
-	map |          ==> { MAP_INTT, - }
-	dash |         ==> { DASH_INTT, - }
-	dashlog |      ==> { DASHLOG_INTT, - }
-	refinery |     ==> { REFINER_INTT, - }
-	pattern        ==> { PATTERN_INTT, - }
+<internal-test-case-name> internal {
+	internal_test *it;
+	LOOP_OVER(it, internal_test)
+		if (Wordings::match(W, it->test_name)) {
+			==> { it->itc_code, it };
+			return TRUE;
+		}
+	return FALSE;
+}
+
+void InternalTests::begin(void) {
+	InternalTests::make_test_available(I"sentence", SENTENCE_INTT);
+	InternalTests::make_test_available(I"description", DESCRIPTION_INTT);
+	InternalTests::make_test_available(I"dimensions", DIMENSIONS_INTT);
+	InternalTests::make_test_available(I"evaluation", EVALUATION_INTT);
+	InternalTests::make_test_available(I"equation", EQUATION_INTT);
+	InternalTests::make_test_available(I"verb", VERB_INTT);
+	InternalTests::make_test_available(I"adjective", ADJECTIVE_INTT);
+	InternalTests::make_test_available(I"participle", ING_INTT);
+	InternalTests::make_test_available(I"kind", KIND_INTT);
+	InternalTests::make_test_available(I"map", MAP_INTT);
+	InternalTests::make_test_available(I"dash", DASH_INTT);
+	InternalTests::make_test_available(I"dashlog", DASHLOG_INTT);
+	InternalTests::make_test_available(I"refinery", REFINER_INTT);
+	InternalTests::make_test_available(I"pattern", PATTERN_INTT);
+}
 
 @ Each request to run one of the above generates an //internal_test_case// object:
 
 =
-typedef struct internal_test_case {
+typedef struct internal_test {
+	struct wording test_name;
 	int itc_code; /* one of the |*_INTT| values */
+	CLASS_DEFINITION
+} internal_test;
+
+typedef struct internal_test_case {
+	struct internal_test *which_method;
 	struct wording text_supplying_the_case;
 	struct parse_node *itc_defined_at;
 	CLASS_DEFINITION
 } internal_test_case;
 
+void InternalTests::make_test_available(text_stream *name, int code) {
+	internal_test *it = CREATE(internal_test);
+	it->test_name = Feeds::feed_text(name);
+	it->itc_code = code;
+}
+
 @ =
-internal_test_case *InternalTests::new(int code, wording W) {
+internal_test_case *InternalTests::new(internal_test *it, wording W) {
 	internal_test_case *itc = CREATE(internal_test_case);
-	itc->itc_code = code;
+	itc->which_method = it;
 	itc->text_supplying_the_case = W;
 	itc->itc_defined_at = current_sentence;
 	return itc;
@@ -68,44 +93,31 @@ void InternalTests::set_file(filename *F) {
 
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
-void InternalTests::InternalTestCases_routine(void) {
-	text_stream OUTFILE_struct; text_stream *OUTFILE = &OUTFILE_struct;
+int InternalTests::run(void) {
+	if (NUMBER_CREATED(internal_test_case) == 0) return 0;
+	text_stream OUTFILE_struct;
+	text_stream *OUT = &OUTFILE_struct;
 	if (internal_test_output_file) {
-		if (STREAM_OPEN_TO_FILE(OUTFILE, internal_test_output_file, UTF8_ENC) == FALSE)
+		if (STREAM_OPEN_TO_FILE(OUT, internal_test_output_file, UTF8_ENC) == FALSE)
 			Problems::fatal_on_file("Can't open file to write internal test results to",
 				internal_test_output_file);
+	} else {
+		internal_error("internal test cases can only be used with -test-output set");
 	}
 
-	inter_name *iname = Hierarchy::find(INTERNALTESTCASES_HL);
-	packaging_state save = Functions::begin(iname);
-	internal_test_case *itc; int n = 0;
+	internal_test_case *itc; int no_in_group = 0;
 	LOOP_OVER(itc, internal_test_case) {
-		n++;
-		if (itc->itc_code == HEADLINE_INTT) {
-			n = 0;
-			EmitCode::inv(STYLEBOLD_BIP);
-			TEMPORARY_TEXT(T)
-			WRITE_TO(T, "\n%+W\n", itc->text_supplying_the_case);
-			EmitCode::inv(PRINT_BIP);
-			EmitCode::down();
-				EmitCode::val_text(T);
-			EmitCode::up();
-			DISCARD_TEXT(T)
-			EmitCode::inv(STYLEROMAN_BIP);
+		no_in_group++;
+		if (itc->which_method == NULL) {
+			no_in_group = 0;
+			WRITE("\n%+W\n", itc->text_supplying_the_case);
 			continue;
 		}
-		TEMPORARY_TEXT(C)
-		WRITE_TO(C, "%d. %+W\n", n, itc->text_supplying_the_case);
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(C);
-		EmitCode::up();
-		DISCARD_TEXT(C)
+		WRITE("%d. %+W\n", no_in_group, itc->text_supplying_the_case);
 
-		TEMPORARY_TEXT(OUT)
 		itc_save_OUT = OUT;
 		current_sentence = itc->itc_defined_at;
-		switch (itc->itc_code) {
+		switch (itc->which_method->itc_code) {
 			case SENTENCE_INTT: {
 				int SV_not_SN = TRUE;
 				@<Perform an internal test of the sentence converter@>;
@@ -125,26 +137,13 @@ void InternalTests::InternalTestCases_routine(void) {
 				else spec = Specifications::new_UNKNOWN(itc->text_supplying_the_case);
 				Dash::check_value(spec, NULL);
 				kind *K = Specifications::to_kind(spec);
-				WRITE("Kind of value: ");
 				@<Begin reporting on the internal test case@>;
+				LOG("Kind of value: ");
 				Kinds::Textual::log(K);
 				if (Kinds::Behaviour::is_quasinumerical(K))
 					LOG(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
+				LOG("\n");
 				@<End reporting on the internal test case@>;
-				WRITE("\nPrints as: ");
-				EmitCode::inv(PRINT_BIP);
-				EmitCode::down();
-					EmitCode::val_text(OUT);
-				EmitCode::up();
-
-				EmitCode::inv(INDIRECT1V_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
-					CompileValues::to_code_val(spec);
-				EmitCode::up();
-
-				Str::clear(OUT);
-				WRITE("\n");
 				break;
 			}
 			case DIMENSIONS_INTT:
@@ -174,13 +173,11 @@ void InternalTests::InternalTestCases_routine(void) {
 								itc->text_supplying_the_case))));
 				@<End reporting on the internal test case@>;
 				break;
-			#ifdef IF_MODULE
 			case MAP_INTT:
 				@<Begin reporting on the internal test case@>;
 				PL::SpatialMap::log_spatial_layout();
 				@<End reporting on the internal test case@>;
 				break;
-			#endif
 			case DASH_INTT:
 				@<Begin reporting on the internal test case@>;
 				Dash::experiment(itc->text_supplying_the_case, FALSE);
@@ -194,16 +191,9 @@ void InternalTests::InternalTestCases_routine(void) {
 				break;
 		}
 		WRITE("\n");
-		EmitCode::inv(PRINT_BIP);
-		EmitCode::down();
-			EmitCode::val_text(OUT);
-		EmitCode::up();
-		if (internal_test_output_file) WRITE_TO(OUTFILE, "%S", OUT);
-		DISCARD_TEXT(OUT)
 	}
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-	if (internal_test_output_file) STREAM_CLOSE(OUTFILE);
+	STREAM_CLOSE(OUT);
+	return NUMBER_CREATED(internal_test_case);
 }
 
 void InternalTests::begin_internal_reporting(void) {
@@ -258,43 +248,6 @@ void InternalTests::end_internal_reporting(void) {
 @<End reporting on the internal test case@> =
 	Streams::disable_debugging(DL); // Streams::disable_I6_escapes(DL);
 	DL = itc_save_DL;
-
-@ =
-void InternalTests::emit_showme(parse_node *spec) {
-	TEMPORARY_TEXT(OUT)
-	itc_save_OUT = OUT;
-	if (Node::is(spec, PROPERTY_VALUE_NT))
-		spec = Lvalues::underlying_property(spec);
-	kind *K = Specifications::to_kind(spec);
-	if (Node::is(spec, CONSTANT_NT) == FALSE)
-		WRITE("\"%+W\" = ", Node::get_text(spec));
-	@<Begin reporting on the internal test case@>;
-	Kinds::Textual::log(K);
-	@<End reporting on the internal test case@>;
-	WRITE(": ");
-	EmitCode::inv(PRINT_BIP);
-	EmitCode::down();
-		EmitCode::val_text(OUT);
-	EmitCode::up();
-	DISCARD_TEXT(OUT)
-
-	if (Kinds::get_construct(K) == CON_list_of) {
-		EmitCode::call(Hierarchy::find(LIST_OF_TY_SAY_HL));
-		EmitCode::down();
-			CompileValues::to_code_val(spec);
-			EmitCode::val_number(1);
-		EmitCode::up();
-	} else {
-		EmitCode::call(RTKindConstructors::get_iname(K));
-		EmitCode::down();
-			CompileValues::to_code_val(spec);
-		EmitCode::up();
-	}
-	EmitCode::inv(PRINT_BIP);
-	EmitCode::down();
-		EmitCode::val_text(I"\n");
-	EmitCode::up();
-}
 
 @<Perform an internal test of the sentence converter@> =
 	parse_node *p = NULL;
@@ -432,8 +385,7 @@ void InternalTests::log_poset(int n) {
 		Kinds::binary_con(CON_TUPLE_ENTRY, K_object, K_void), K_door);
 	tests[10] = Kinds::binary_con(CON_phrase,
 		Kinds::binary_con(CON_TUPLE_ENTRY, K_object, K_void), K_object);
-	int i, j;
-	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
+	for (int i=0; i<SIZE_OF_GRAB_BAG; i++) for (int j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
 		if (Kinds::conforms_to(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
 		if (Kinds::conforms_to(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
 		kind *M = Latticework::join(tests[i], tests[j]);

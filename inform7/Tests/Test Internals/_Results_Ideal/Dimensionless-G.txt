@@ -1,58 +1,36 @@
-
-
-
-Welcome
-An Interactive Fiction
-Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
-
-Laboratory
 1. 2 radian
 Kind of value: angle scaled at k=1
-Prints as: 2 radian
 
 2. 4 steradian
 Kind of value: solid angle scaled at k=1
-Prints as: 4 steradian
 
 3. 6
 Kind of value: number scaled at k=1
-Prints as: 6
 
 4. 2 radian + 2 radian
 Kind of value: angle scaled at k=1
-Prints as: 4 radian
 
 5. 4 steradian + 4 steradian
 Kind of value: solid angle scaled at k=1
-Prints as: 8 steradian
 
 6. 6 + 6
 Kind of value: number scaled at k=1
-Prints as: 12
 
 7. 2 radian times 2 radian
 Kind of value: angle scaled at k=1
-Prints as: 4 radian
 
 8. 4 steradian times 4 steradian
 Kind of value: solid angle scaled at k=1
-Prints as: 16 steradian
 
 9. 6 times 6
 Kind of value: number scaled at k=1
-Prints as: 36
 
 10. 6 times 2 radian
 Kind of value: angle scaled at k=1
-Prints as: 12 radian
 
 11. 4 steradian times 6
 Kind of value: solid angle scaled at k=1
-Prints as: 24 steradian
 
 12. 2 radian times 4 steradian
 Kind of value: number scaled at k=1
-Prints as: 8
 
-
->Are you sure you want to quit? 

@@ -192,6 +192,7 @@ DECLARE_CLASS(local_block_value)
 @e definition_CLASS
 @e door_dir_notice_CLASS
 @e door_to_notice_CLASS
+@e internal_test_CLASS
 @e internal_test_case_CLASS
 @e cached_kind_declaration_CLASS
 @e label_namespace_CLASS
@@ -212,6 +213,7 @@ DECLARE_CLASS(compilation_unit)
 DECLARE_CLASS(definition)
 DECLARE_CLASS(door_dir_notice)
 DECLARE_CLASS(door_to_notice)
+DECLARE_CLASS(internal_test)
 DECLARE_CLASS(internal_test_case)
 DECLARE_CLASS(cached_kind_declaration)
 DECLARE_CLASS(label_namespace)

@@ -45,6 +45,7 @@ int Sequence::carry_out(int debugging) {
 	@<Tables and grammar@>;
 	@<Augment model world with low-level properties@>;
 	@<Phrases and rules@>;
+	@<Run any internal tests@>;
 	@<Generate inter, part 1@>
 	@<Generate inter, part 2@>
 	@<Generate inter, part 3@>
@@ -176,6 +177,12 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 
+@<Run any internal tests@> =
+	if (debugging) {
+		int tests_run = InternalTests::run();
+		if (tests_run > 0) exit(0);
+	}
+
 @ This proceeds in stages.
 
 @<Generate inter, part 1@> =
@@ -203,9 +210,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTVerbs::compile_conjugations)
 	BENCH(RTVerbs::compile_forms)
 	BENCH(CompletionModule::compile);
-	if (debugging) {
-		BENCH(InternalTests::InternalTestCases_routine)
-	}
 
 @<Generate inter, part 3@> =
 	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",

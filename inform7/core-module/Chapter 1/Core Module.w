@@ -27,6 +27,7 @@ void CoreModule::start(void) {
 	Writers::register_writer_I('B', &CoreModule::writer);
 	CorePreform::set_core_internal_NTIs();
 	CoreSyntax::declare_annotations();
+	InternalTests::begin();
 }
 void CoreModule::end(void) {
 }

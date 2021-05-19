@@ -1,0 +1,166 @@
+1. looking
+looking: <action-based: looking>
+
+2. looking or waiting
+looking or waiting: <action-based: waiting / looking>
+
+3. looking or taking
+looking or taking: <action-based: taking / looking>
+
+4. taking the counter
+taking the counter: <action-based: taking * noun: 'geiger counter'>
+
+5. putting the counter on the bench
+putting the counter on the bench: <action-based: putting it on * noun: 'geiger counter' second: 'bench'>
+
+6. putting the counter on something
+putting the counter on something: <action-based: putting it on * noun: 'geiger counter' second: << thing(x) >>>
+
+7. putting a thing on something
+putting a thing on something: <action-based: putting it on * noun: << thing(x) >> second: << thing(x) >>>
+
+8. putting a thing on a supporter
+putting a thing on a supporter: <action-based: putting it on * noun: << thing(x) >> second: << supporter(x) >>>
+
+9. Hans taking the counter
+hans taking the counter: <action-based: taking * actor: 'hans' noun: 'geiger counter'>
+
+10. Hans trying taking the counter
+hans trying taking the counter: <action-based: taking * actor: 'hans' noun: 'geiger counter'>
+
+11. asking Hans to try taking the counter
+asking hans to try taking the counter: <action-based: taking * actor: 'hans'[request] noun: 'geiger counter'>
+
+12. somebody taking the counter
+somebody taking the counter: <action-based: taking * actor: << person(x) >> noun: 'geiger counter'>
+
+13. an actor taking the counter
+an actor taking the counter: <action-based: taking * actor: <null-parse-node>[not-player] noun: 'geiger counter'>
+
+14. examining the counter is nosy behaviour
+examining the counter is nosy behaviour: <action-based: nosy behaviour>
+
+15. looking is nosy behaviour
+looking is nosy behaviour: <action-based: nosy behaviour>
+
+16. nosy behaviour
+nosy behaviour: <action-based: nosy behaviour>
+
+17. looking in the presence of Hans
+looking in the presence of hans: <action-based: looking * in-presence: 'hans'>
+
+18. arfle barfle gloop
+arfle barfle gloop: failed to parse
+
+19. looking the counter
+looking the counter: failed to parse
+
+20. taking ~~ doing something
+taking ~~ doing something: left is more specific
+
+21. doing something ~~ doing something other than taking
+doing something ~~ doing something other than taking: right is more specific
+
+22. taking ~~ taking a thing
+taking ~~ taking a thing: right is more specific
+
+23. taking the counter ~~ taking a thing
+taking the counter ~~ taking a thing: left is more specific
+
+24. taking or dropping the counter ~~ taking the counter
+taking or dropping the counter ~~ taking the counter: right is more specific
+
+25. list looking
+Action name list for: looking
+(1). +0 looking
+
+
+26. list looking in the Laboratory
+Action name list for: looking in the laboratory
+(1). +0 looking [in: the laboratory]
+
+
+27. list looking in the Laboratory in the presence of Hans
+Action name list for: looking in the laboratory in the presence of hans
+(1). +0 looking [in: the laboratory] [in-presence: hans]
+(2). +0 looking [in: the laboratory in the presence of hans]
+
+
+28. list dropping in the Laboratory in the presence of Hans
+Action name list for: dropping in the laboratory in the presence of hans
+(1). +0 dropping [in: the laboratory] [in-presence: hans]
+(2). +0 dropping [in: the laboratory in the presence of hans]
+(3). +0 dropping [noun: in the laboratory] [in: the presence of hans] [in-presence: hans]
+(4). +0 dropping [noun: in the laboratory] [in-presence: hans]
+(5). +0 dropping [noun: in the laboratory in the presence of hans]
+
+
+29. list looking or taking inventory in the Laboratory in the presence of Hans
+Action name list for: looking or taking inventory in the laboratory in the presence of hans
+(1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+(2). +2 taking inventory [in: the laboratory in the presence of hans]
+(3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+(4). +2 taking [noun: inventory] [in: the laboratory in the presence of hans]
+(5). +2 taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
+(6). +2 taking [noun: inventory in the laboratory] [in-presence: hans]
+(7). +2 taking [noun: inventory in the laboratory in the presence of hans]
+(8). +0 looking
+
+
+30. list looking or taking inventory in the presence of Hans in the Laboratory
+Action name list for: looking or taking inventory in the presence of hans in the laboratory
+(1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+(2). +2 taking inventory [in-presence: hans in the laboratory]
+(3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+(4). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+(5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+(6). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(7). +0 looking
+
+
+31. list looking in in in in in in in in in in in in in in in in in in in in
+Action name list for: looking in in in in in in in in in in in in in in in in in in in in
+(1). +0 looking [in: in in in in in in in in in in in in in in in in in in in]
+
+
+32. list going from the Laboratory to the Castle
+Action name list for: going from the laboratory to the castle
+(1). +0 going [going-from{'room gone from'(var)room}: the laboratory] [going-to{'room gone to'(var)object}: the castle]
+(2). +0 going [going-from{'room gone from'(var)room}: the laboratory to the castle]
+(3). +0 going [noun: from the laboratory] [going-to{'room gone to'(var)object}: the castle]
+(4). +0 going [noun: from the laboratory to the castle]
+
+
+33. list listening
+Action name list for: listening
+(1). +0 listening to
+
+
+34. list listening in the presence of Hans
+Action name list for: listening in the presence of hans
+(1). +0 listening to [in: the presence of hans] [in-presence: hans]
+(2). +0 listening to [in-presence: hans]
+
+
+35. list gluttony
+Action name list for: gluttony
+(1). +0 gluttony
+
+
+36. list gluttony in the Laboratory
+Action name list for: gluttony in the laboratory
+(1). +0 gluttony [in: the laboratory]
+
+
+37. experimental looking
+experimental looking: <action-based: looking>
+
+38. experimental taking inventory
+experimental taking inventory: <action-based: taking inventory>
+
+39. experimental looking in the Laboratory
+experimental looking in the laboratory: <action-based: looking * in: 'radiation laboratory'>
+
+40. experimental gluttony in the Laboratory
+experimental gluttony in the laboratory: <action-based: gluttony * in: 'radiation laboratory'>
+

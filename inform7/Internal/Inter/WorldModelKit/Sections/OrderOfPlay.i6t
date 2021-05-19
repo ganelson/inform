@@ -24,7 +24,6 @@ Global IterationsOfTurnSequence;
 [ Main;
 	#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;
 	FollowRulebook(STARTUP_RB);
-	#ifdef DEBUG; InternalTestCases(); #endif;
 	while (true) {
 		while (deadflag == false) {
 			EarlyInTurnSequence = true;

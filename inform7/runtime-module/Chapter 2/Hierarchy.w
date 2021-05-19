@@ -591,7 +591,6 @@ void Hierarchy::establish(void) {
 @e VERB_DIRECTIVE_SPECIAL_HL
 @e VERB_DIRECTIVE_TOPIC_HL
 @e TESTSCRIPTSUB_HL
-@e INTERNALTESTCASES_HL
 @e COMMANDS_HAP
 @e VERB_DECLARATION_ARRAY_HL
 @e MISTAKEACTION_HL
@@ -655,7 +654,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, grammar))
 		H_F_T(TESTSCRIPTSUB_HL,               I"TestScriptSub_fn", I"TestScriptSub")
-		H_F_T(INTERNALTESTCASES_HL,           I"run_tests_fn", I"InternalTestCases")
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
 		H_END
