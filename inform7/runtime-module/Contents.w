@@ -25,6 +25,7 @@ Chapter 2: Emission
 	Kind Declarations
 	Showme Command
 	Here, Nowhere and Everywhere
+	Short Names
 
 Chapter 3: Basics
 	Generic Module
@@ -70,7 +71,6 @@ Chapter 6: Completion Resources
 	The Player
 
 Chapter 7: Still Unsorted
-	Naming
 	The Map
 	Scenes
 	Emit Property Values

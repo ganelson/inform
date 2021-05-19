@@ -191,7 +191,6 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(RTProperties::compile)
 	BENCH(InferenceSubjects::emit_all)
-	BENCH(RTNaming::compile_small_names);
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
 	BENCH(RTTableColumns::compile)

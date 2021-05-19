@@ -18,7 +18,7 @@ void Naming::start(void) {
 
 int Naming::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER5_CSEQ) {
-		BENCH(RTNaming::compile_cap_short_name);
+		BENCH(ShortNames::compile_cap_short_name);
 	}
 	return FALSE;
 }
@@ -272,7 +272,7 @@ actually means it's rarely needed.)
 		else set_csn = FALSE;
 	}
 	if (set_csn) {
-		property *prn = RTNaming::cap_short_name_property();
+		property *prn = ShortNames::cap_short_name_property();
 		if (faux)
 			ValueProperties::assert(prn, subj,
 				Rvalues::from_iname(faux), CERTAIN_CE);
@@ -303,10 +303,10 @@ must become "Cleopatra's nose", or at least several bug-reporters thought
 so. These routines allow that to happen.
 
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
-	faux = RTNaming::iname_for_short_name_fn(I, subj, FALSE);
+	faux = ShortNames::iname_for_short_name_fn(I, subj, FALSE);
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
-	faux = RTNaming::iname_for_short_name_fn(I, subj, TRUE);
+	faux = ShortNames::iname_for_short_name_fn(I, subj, TRUE);
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary
 to pluralise them at run-time in practice, so it would carry an unnecessary cost
