@@ -689,6 +689,7 @@ void Hierarchy::establish(void) {
 @e TSD_DOOR_TO_FN_HL
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
+@e DIRECTION_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = Packaging::register_submodule(I"instances");
@@ -721,6 +722,7 @@ void Hierarchy::establish(void) {
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,     I"inline")
 			H_END
+			H_C_G(DIRECTION_HL,               I"DirectionObject")
 		H_END
 	H_END
 
@@ -735,9 +737,6 @@ void Hierarchy::establish(void) {
 @e NO_DIRECTIONS_HL
 @e MAP_STORAGE_HL
 @e INITIALSITUATION_HL
-
-@e DIRECTIONS_HAP
-@e DIRECTION_HL
 
 @<Establish int-fiction@> =
 	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
@@ -754,9 +753,6 @@ void Hierarchy::establish(void) {
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
-		H_BEGIN_AP(DIRECTIONS_HAP,            I"direction", I"_direction")
-			H_C_G(DIRECTION_HL,               I"DirectionObject")
-		H_END
 	H_END
 
 @h Kinds.

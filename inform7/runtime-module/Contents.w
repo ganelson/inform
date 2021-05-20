@@ -51,6 +51,7 @@ Chapter 5: Provision Submodules
 	Equations
 	Instances
 	Backdrop Instances
+	Door Instances
 	Region Instances
 	Multimedia
 	Tables
@@ -69,9 +70,9 @@ Chapter 5: Provision Submodules
 Chapter 6: Completion Resources
 	Bibliographic Data
 	The Player
+	The Map
 
 Chapter 7: Still Unsorted
-	The Map
 	Scenes
 	Emit Property Values
 	Instance Counting

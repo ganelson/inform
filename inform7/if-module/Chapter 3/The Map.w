@@ -33,8 +33,6 @@ void Map::start(void) {
 int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
 		BENCH(RTMap::compile_model_tables);
-		BENCH(RTMap::write_door_dir_routines);
-		BENCH(RTMap::write_door_to_routines);
 	}
 	return FALSE;
 }
@@ -319,8 +317,6 @@ int Map::set_kind_notify(instance *I, kind *k) {
 
 @<Assign the object a direction number and a mapped-D-of relation@> =
 	registered_directions++;
-	inter_name *dname = RTMap::new_direction_iname();
-	MAP_DATA(I)->direction_iname = dname;
 	MapRelations::make_mapped_predicate(I);
 
 @h Map data on instances.
@@ -926,21 +922,21 @@ trust that there is nothing surprising here.
 @ Here |found_in| is a two-entry list.
 
 @<Assert found-in for a two-sided door@> =
-	parse_node *val = RTMap::found_in_for_2_sided(I, R1, R2);
+	parse_node *val = RTDoors::found_in_for_2_sided(I, R1, R2);
 	Map::set_found_in(I, val);
 
 @ Here |door_dir| is a routine looking at the current location and returning
 always the way to the other room -- the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
-	parse_node *val = RTMap::door_dir_for_2_sided(I, R1, D1, D2);
+	parse_node *val = RTDoors::door_dir_for_2_sided(I, R1, D1, D2);
 	ValueProperties::assert(P_door_dir, Instances::as_subject(I), val, CERTAIN_CE);
 
 @ Here |door_to| is a routine looking at the current location and returning
 always the other room -- the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
-	parse_node *val = RTMap::door_to_for_2_sided(I, R1, R2);
+	parse_node *val = RTDoors::door_to_for_2_sided(I, R1, R2);
 	ValueProperties::assert(P_door_to, Instances::as_subject(I), val, CERTAIN_CE);
 
 @ The reversal of direction here looks peculiar, but is correct. Suppose
