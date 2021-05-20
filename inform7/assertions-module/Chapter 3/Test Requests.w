@@ -35,6 +35,11 @@ int TestRequests::test_with_SMF(int task, parse_node *V, wording *NPs) {
 @ The subject phrase is often just "me", as in, "Test me with...", but in fact
 it can generate a range of possibilities.
 
+@e NO_INTT from 0 /* used for error recovery */
+@e HEADLINE_INTT
+@e SCENARIO_INTT
+@e TEST_INTT
+
 =
 <test-sentence-subject> ::=
 	<internal-test-case-name> ( internal ) |  ==> { pass 1 }
@@ -43,6 +48,15 @@ it can generate a range of possibilities.
 	<quoted-text> |                           ==> @<Issue PM_TestQuoted problem@>
 	###	|                                     ==> { SCENARIO_INTT, - }
 	...                                       ==> @<Issue PM_TestMultiWord problem@>
+
+<internal-test-case-name> internal {
+	internal_test *it = InternalTests::by_name(W);
+	if (it) {
+		==> { TEST_INTT, it };
+		return TRUE;
+	}
+	return FALSE;
+}
 
 @<Issue PM_UnknownInternalTest problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownInternalTest),

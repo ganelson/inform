@@ -22,6 +22,8 @@ void IFModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	@<Register this module's direct memory usage@>;
+	InternalTests::make_test_available(I"pattern",
+		&ParseClauses::perform_pattern_internal_test, TRUE);
 	ReleaseInstructions::start();
 	WherePredicates::start();
 	SpatialRelations::start();

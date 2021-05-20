@@ -2912,7 +2912,8 @@ The internal test case "map" produces a list of spatial coordinates for
 rooms:
 
 =
-void PL::SpatialMap::log_spatial_layout(void) {
+void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
 	PL::SpatialMap::establish_benchmark_room();
 	PL::EPSMap::traverse_for_map_parameters(1);
 	PL::SpatialMap::establish_spatial_coordinates();

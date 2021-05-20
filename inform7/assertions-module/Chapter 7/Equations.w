@@ -1848,7 +1848,10 @@ This is a little like those "advise all parties" law exam questions: we
 parse the equation, then rearrange to solve it for each variable in turn.
 
 =
-void Equations::internal_test(wording E) {
+
+void Equations::perform_equation_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	wording E = itc->text_supplying_the_case;
 	wording WH = EMPTY_WORDING;
 	if (<equation-where>(E)) {
 		E = GET_RW(<equation-where>, 1);
@@ -1857,7 +1860,6 @@ void Equations::internal_test(wording E) {
 	equation *eqn = Equations::new(E, TRUE);
 	Equations::set_wherewithal(eqn, WH);
 	Equations::examine(eqn);
-	InternalTests::begin_internal_reporting();
 	Equations::log_equation_parsed(eqn);
 	equation_symbol *ev;
 	for (ev = eqn->symbol_list; ev; ev = ev->next) {
@@ -1868,7 +1870,6 @@ void Equations::internal_test(wording E) {
 			Equations::log_equation_parsed(eqn);
 		}
 	}
-	InternalTests::end_internal_reporting();
 }
 
 @h Indexing and logging.

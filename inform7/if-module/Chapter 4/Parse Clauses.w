@@ -299,3 +299,83 @@ look like syllepses.
 				APClauses::set_spec(ap, c->clause_ID, c->evaluation);
 		}
 	return ap;
+
+@h Internal test.
+This is an all-singing, all-dancing way to test Level 7 and, along with it, the
+action name list parser. In effect, there's a cutesy mini-language for what you
+can express in the test wording.
+
+=
+void ParseClauses::perform_pattern_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
+	<perform-ap-test>(itc->text_supplying_the_case);
+	ParseActionPatterns::restore_mode(saved);
+}
+
+@ The mini-language is interpreted: to parse it is to run it. Notably, it also
+enables named action patterns to be created, so that we can then parse them
+back again:
+
+=
+<perform-ap-test> ::=
+	list {...} |                  ==> { -, - }; ActionNameLists::test_list(WR[1]);
+	<test-ap> |                   ==> @<Write textual AP test result@>
+	<test-ap> ~~ <test-ap> |      ==> @<Write comparison AP test result@>
+	...                           ==> @<Write failure@>
+
+<test-ap> ::=
+	<test-ap> is {...} |          ==> @<Make a named action pattern@>
+	<test-register> = <test-ap> | ==> { -, ParseClauses::set_reg(R[1], RP[2]) }
+	<action-pattern> |            ==> { pass 1 }
+	<test-register> |             ==> { -, ParseClauses::read_reg(R[1]) }
+	experimental {...}            ==> { -, ParseClauses::ap_seven(WR[1]) }
+
+<test-register> ::=
+	r1 | r2 | r3 | r4 | r5
+
+@<Write textual AP test result@> =
+	LOG("%W: $A\n", W, RP[1]);
+
+@<Write comparison AP test result@> =
+	int rv = ActionPatterns::compare_specificity(RP[1], RP[2]);
+	int rv_converse = ActionPatterns::compare_specificity(RP[2], RP[1]);
+	LOG("%W: ", W);
+	if (rv > 0) LOG("left is more specific\n");
+	if (rv < 0) LOG("right is more specific\n");
+	if (rv == 0) LOG("equally specific\n");
+	if (rv_converse != -1*rv) LOG("*** Not antisymmetric ***\n");
+
+@<Write failure@> =
+	LOG("%W: failed to parse\n", W);
+
+@<Make a named action pattern@> =
+	wording W = GET_RW(<test-ap>, 1);
+	named_action_pattern *nap = NamedActionPatterns::add(RP[1], W);
+	action_pattern *new_ap = ActionPatterns::new(W);
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	entry->item.nap_listed = nap;
+	new_ap->action_list = ActionNameLists::new_list(entry, ANL_POSITIVE);
+	==> { -, new_ap };
+
+@ This mini-language has a set of 5 "registers", which are really variables,
+for stashing test results for use in subsequent tests:
+
+=
+int ap_test_register_initialised = FALSE;
+action_pattern *ap_test_register[5];
+
+action_pattern *ParseClauses::read_reg(int r) {
+	if ((r < 0) || (r >= 5)) internal_error("bad AP register");
+	if (ap_test_register_initialised == FALSE) {
+		ap_test_register_initialised = TRUE;
+		for (int i=0; i<5; i++) ap_test_register[i] = NULL;
+	}
+	return ap_test_register[r];
+}
+
+action_pattern *ParseClauses::set_reg(int r, action_pattern *ap) {
+	ParseClauses::read_reg(r);
+	ap_test_register[r] = ap;
+	return ParseClauses::read_reg(r);
+}

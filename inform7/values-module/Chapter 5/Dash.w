@@ -3470,11 +3470,53 @@ int Dash::compatible_with_description(parse_node *from_spec, parse_node *to_spec
 	return result;
 }
 
+@h Ambiguous alternatives.
 
-@ =
-void Dash::experiment(wording W, int full) {
+@d AMBIGUITY_JOIN_SYNTAX_CALLBACK Dash::ambiguity_join
+
+=
+int Dash::ambiguity_join(parse_node *existing, parse_node *reading) {
+	if ((Specifications::is_phrasal(reading)) &&
+		(Node::get_type(reading) == Node::get_type(existing))) {
+		Dash::add_pr_inv(existing, reading);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+void Dash::add_pr_inv(parse_node *E, parse_node *reading) {
+	for (parse_node *N = reading->down->down, *next_N = (N)?(N->next_alternative):NULL; N;
+		N = next_N, next_N = (N)?(N->next_alternative):NULL)
+		Dash::add_single_pr_inv(E, N);
+}
+
+void Dash::add_single_pr_inv(parse_node *E, parse_node *N) {
+	E = E->down->down;
+	if (Invocations::same_phrase_and_tokens(E, N)) return;
+	while ((E) && (E->next_alternative)) {
+		E = E->next_alternative;
+		if (Invocations::same_phrase_and_tokens(E, N)) return;
+	}
+	E->next_alternative = N; N->next_alternative = NULL;
+}
+
+@h Internal testing.
+
+=
+void Dash::perform_dash_internal_test(OUTPUT_STREAM, struct internal_test_case *itc) {
+	int full = FALSE;
+	wording W = itc->text_supplying_the_case;
+	@<Perform a Dash internal test@>;
+}
+
+void Dash::perform_dashlog_internal_test(OUTPUT_STREAM, struct internal_test_case *itc) {
+	int full = TRUE;
+	wording W = itc->text_supplying_the_case;
+	@<Perform a Dash internal test@>;
+}
+
+@<Perform a Dash internal test@> =
 	kind *K = NULL;
-	LOG("Beginning Dashperiment:\n");
 	parse_node *test_tree = NULL, *last_alt = NULL;
 	<s-value-uncached>->multiplicitous = TRUE;
 	<s-value-uncached>->ins.watched = TRUE;
@@ -3513,34 +3555,3 @@ void Dash::experiment(wording W, int full) {
 		if (full) Dash::tracing_phrases(NULL);
 		LOG("$m\n", test_tree);
 	}
-}
-
-@
-
-@d AMBIGUITY_JOIN_SYNTAX_CALLBACK Dash::ambiguity_join
-
-=
-int Dash::ambiguity_join(parse_node *existing, parse_node *reading) {
-	if ((Specifications::is_phrasal(reading)) &&
-		(Node::get_type(reading) == Node::get_type(existing))) {
-		Dash::add_pr_inv(existing, reading);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-void Dash::add_pr_inv(parse_node *E, parse_node *reading) {
-	for (parse_node *N = reading->down->down, *next_N = (N)?(N->next_alternative):NULL; N;
-		N = next_N, next_N = (N)?(N->next_alternative):NULL)
-		Dash::add_single_pr_inv(E, N);
-}
-
-void Dash::add_single_pr_inv(parse_node *E, parse_node *N) {
-	E = E->down->down;
-	if (Invocations::same_phrase_and_tokens(E, N)) return;
-	while ((E) && (E->next_alternative)) {
-		E = E->next_alternative;
-		if (Invocations::same_phrase_and_tokens(E, N)) return;
-	}
-	E->next_alternative = N; N->next_alternative = NULL;
-}

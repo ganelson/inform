@@ -2,68 +2,35 @@
 
 Handling requests to compile internal tests.
 
-@ To exercise some of these, run the //intest// test group |:internal| through
-Inform. The current roster is as follows:
+@ Partly because it is not written in a class-oriented programming language,
+and partly because it is a complex and very interconnected program, Inform
+does not really have unit tests in the usual sense of that term. It's hard
+to test individual components with fake data, other than in the course of a
+full run of the compiler, in which case you may as well carry out an
+end-to-end test anyway.
 
-@e NO_INTT from 0 /* not a test: used for error recovery */
-@e HEADLINE_INTT
-@e SCENARIO_INTT
+But Inform does have a mechanism for "internal tests". These involve running
+the top half of the compiler more or less as normal, and then making a sharp
+turn to perform some test, printing the output to a file, and -- since there
+is no point continuing -- stopping the compiler there.
 
-@e SENTENCE_INTT
-@e DESCRIPTION_INTT
-@e DIMENSIONS_INTT
-@e EVALUATION_INTT
-@e EQUATION_INTT
-@e VERB_INTT
-@e ADJECTIVE_INTT
-@e ING_INTT
-@e KIND_INTT
-@e MAP_INTT
-@e DASH_INTT
-@e DASHLOG_INTT
-@e REFINER_INTT
-@e PATTERN_INTT
+Such internal tests are performed only if the source text instructs it, which is
+done with a special, intentionally undocumented, and subject-to-change-without-notice,
+syntax like so:
+= (text as Inform 7)
+Test pattern (internal) with putting the counter on the bench.
+=
+Internal tests are identified by name -- here, "pattern" -- and are marked
+|(internal)|. Optionally, they can supply some text to give them variation, as
+here: "putting the counter on the bench".
 
-@ The following are the names of the internal test cases, which are in English
-only and may change at any time without notice.
+The Inform test group |:internal| runs a set of these.
+
+@ Each request of the "Test X (internal)" sort generates an //internal_test_case//
+object. See //assertions: Test Requests// for how sentences like the above are
+parsed; that's the code which calls us here.
 
 =
-<internal-test-case-name> internal {
-	internal_test *it;
-	LOOP_OVER(it, internal_test)
-		if (Wordings::match(W, it->test_name)) {
-			==> { it->itc_code, it };
-			return TRUE;
-		}
-	return FALSE;
-}
-
-void InternalTests::begin(void) {
-	InternalTests::make_test_available(I"sentence", SENTENCE_INTT);
-	InternalTests::make_test_available(I"description", DESCRIPTION_INTT);
-	InternalTests::make_test_available(I"dimensions", DIMENSIONS_INTT);
-	InternalTests::make_test_available(I"evaluation", EVALUATION_INTT);
-	InternalTests::make_test_available(I"equation", EQUATION_INTT);
-	InternalTests::make_test_available(I"verb", VERB_INTT);
-	InternalTests::make_test_available(I"adjective", ADJECTIVE_INTT);
-	InternalTests::make_test_available(I"participle", ING_INTT);
-	InternalTests::make_test_available(I"kind", KIND_INTT);
-	InternalTests::make_test_available(I"map", MAP_INTT);
-	InternalTests::make_test_available(I"dash", DASH_INTT);
-	InternalTests::make_test_available(I"dashlog", DASHLOG_INTT);
-	InternalTests::make_test_available(I"refinery", REFINER_INTT);
-	InternalTests::make_test_available(I"pattern", PATTERN_INTT);
-}
-
-@ Each request to run one of the above generates an //internal_test_case// object:
-
-=
-typedef struct internal_test {
-	struct wording test_name;
-	int itc_code; /* one of the |*_INTT| values */
-	CLASS_DEFINITION
-} internal_test;
-
 typedef struct internal_test_case {
 	struct internal_test *which_method;
 	struct wording text_supplying_the_case;
@@ -71,13 +38,6 @@ typedef struct internal_test_case {
 	CLASS_DEFINITION
 } internal_test_case;
 
-void InternalTests::make_test_available(text_stream *name, int code) {
-	internal_test *it = CREATE(internal_test);
-	it->test_name = Feeds::feed_text(name);
-	it->itc_code = code;
-}
-
-@ =
 internal_test_case *InternalTests::new(internal_test *it, wording W) {
 	internal_test_case *itc = CREATE(internal_test_case);
 	itc->which_method = it;
@@ -86,13 +46,61 @@ internal_test_case *InternalTests::new(internal_test *it, wording W) {
 	return itc;
 }
 
+@ Each differently-named test, such as "pattern", corresponds to one of these:
+
+=
+typedef struct internal_test {
+	struct wording test_name;
+	void (*perform)(struct text_stream *, struct internal_test_case *);
+	int via_log;
+	CLASS_DEFINITION
+} internal_test;
+
+@ Inform modules wanting to provide internal tests should call the following
+when they start up:
+
+=
+void InternalTests::make_test_available(text_stream *name,
+	void (*perform)(struct text_stream *, struct internal_test_case *), int log) {
+	internal_test *it = CREATE(internal_test);
+	it->test_name = Feeds::feed_text(name);
+	it->perform = perform;
+	it->via_log = log;
+}
+
+@ This is slow, but almost never used, so there is no point speeding it up:
+
+=
+internal_test *InternalTests::by_name(wording W) {
+	internal_test *it;
+	LOOP_OVER(it, internal_test)
+		if (Wordings::match(W, it->test_name))
+			return it;
+	return NULL;
+}
+
+@ The output from a test is written to a file, and this is its filename, which
+is set at the command like with |-test-output|. (The Intest script for testing
+|inform7| shows how this works in practice.)
+
+It's a deliberate policy choice to run internal texts this way -- i.e., with
+the correct textual output stored in the Inform repository, and open to view --
+rather than just as code which is either silent (for a pass) or fails assertions
+(for a fail). It's much harder to check that such tests are themselves correctly
+written.
+
+=
 filename *internal_test_output_file = NULL;
 void InternalTests::set_file(filename *F) {
 	 internal_test_output_file = F;
 }
 
-text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
+@ And now we run the tests, returning the number actually run -- which for
+end users of Inform, not concerned with compiler maintenance, will always be 0.
+Output from the tests is spooled together, and divided up with textual labels
+for convenience of reading.
 
+=
 int InternalTests::run(void) {
 	if (NUMBER_CREATED(internal_test_case) == 0) return 0;
 	text_stream OUTFILE_struct;
@@ -111,171 +119,99 @@ int InternalTests::run(void) {
 		if (itc->which_method == NULL) {
 			no_in_group = 0;
 			WRITE("\n%+W\n", itc->text_supplying_the_case);
-			continue;
+		} else {
+			WRITE("%d. %+W\n", no_in_group, itc->text_supplying_the_case);
+			@<Run the individual test case@>;
+			WRITE("\n");
 		}
-		WRITE("%d. %+W\n", no_in_group, itc->text_supplying_the_case);
-
-		itc_save_OUT = OUT;
-		current_sentence = itc->itc_defined_at;
-		switch (itc->which_method->itc_code) {
-			case SENTENCE_INTT: {
-				int SV_not_SN = TRUE;
-				@<Perform an internal test of the sentence converter@>;
-				break;
-			}
-			case DESCRIPTION_INTT: {
-				int SV_not_SN = FALSE;
-				@<Perform an internal test of the sentence converter@>;
-				break;
-			}
-			case PATTERN_INTT:
-				@<Perform an internal test of the action pattern parser@>;
-				break;
-			case EVALUATION_INTT: {
-				parse_node *spec = NULL;
-				if (<s-value>(itc->text_supplying_the_case)) spec = <<rp>>;
-				else spec = Specifications::new_UNKNOWN(itc->text_supplying_the_case);
-				Dash::check_value(spec, NULL);
-				kind *K = Specifications::to_kind(spec);
-				@<Begin reporting on the internal test case@>;
-				LOG("Kind of value: ");
-				Kinds::Textual::log(K);
-				if (Kinds::Behaviour::is_quasinumerical(K))
-					LOG(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
-				LOG("\n");
-				@<End reporting on the internal test case@>;
-				break;
-			}
-			case DIMENSIONS_INTT:
-				@<Begin reporting on the internal test case@>;
-				Kinds::Dimensions::log_unit_analysis();
-				@<End reporting on the internal test case@>;
-				break;
-			case EQUATION_INTT:
-				Equations::internal_test(itc->text_supplying_the_case);
-				break;
-			case VERB_INTT:
-				Conjugation::test(OUT, itc->text_supplying_the_case,
-					Projects::get_language_of_play(Task::project()));
-				break;
-			case ADJECTIVE_INTT:
-				Adjectives::test_adjective(OUT, itc->text_supplying_the_case);
-				break;
-			case ING_INTT:
-				Conjugation::test_participle(OUT, itc->text_supplying_the_case);
-				break;
-			case KIND_INTT:
-				@<Begin reporting on the internal test case@>;
-				InternalTests::log_poset(
-					Vocabulary::get_literal_number_value(
-						Lexer::word(
-							Wordings::first_wn(
-								itc->text_supplying_the_case))));
-				@<End reporting on the internal test case@>;
-				break;
-			case MAP_INTT:
-				@<Begin reporting on the internal test case@>;
-				PL::SpatialMap::log_spatial_layout();
-				@<End reporting on the internal test case@>;
-				break;
-			case DASH_INTT:
-				@<Begin reporting on the internal test case@>;
-				Dash::experiment(itc->text_supplying_the_case, FALSE);
-				@<End reporting on the internal test case@>;
-				break;
-			case DASHLOG_INTT:
-				Dash::experiment(itc->text_supplying_the_case, TRUE);
-				break;
-			case REFINER_INTT:
-				@<Perform an internal test of the refinery@>;
-				break;
-		}
-		WRITE("\n");
 	}
 	STREAM_CLOSE(OUT);
 	return NUMBER_CREATED(internal_test_case);
 }
 
-void InternalTests::begin_internal_reporting(void) {
-	@<Begin reporting on the internal test case@>;
-}
+@ Some tests find it more convenient to write their output to the debugging
+log, not to an arbitrary file like |OUT|. For those (identified as |via_log|),
+we temporarily wire the two streams together, so that for a brief period
+|OUT| actually is the debugging log. This is a hack, but it'll do fine for
+testing purposes.
 
-void InternalTests::end_internal_reporting(void) {
-	@<End reporting on the internal test case@>;
-}
-
-@<Perform an internal test of the sentence converter@> =
-	parse_node *p = NULL;
-	pcalc_prop *prop = NULL;
-	int tc = FALSE;
-
-	if (SV_not_SN) {
-		if (<s-sentence>(itc->text_supplying_the_case)) p = <<rp>>;
-	} else {
-		if (<s-descriptive-np>(itc->text_supplying_the_case)) p = <<rp>>;
+@<Run the individual test case@> =
+	text_stream *itc_save_DL = DL;
+	current_sentence = itc->itc_defined_at;
+	if (itc->which_method->via_log) {
+		DL = OUT;
+		Streams::enable_debugging(DL);
+		Streams::enable_I6_escapes(DL);
 	}
-	if (p) {
-		prop = Specifications::to_proposition(p);
-		tc = TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
+	if (itc->which_method->perform)
+		(*(itc->which_method->perform))(OUT, itc);
+	else
+		internal_error("no test performance function");
+	if (itc->which_method->via_log) {
+		Streams::disable_I6_escapes(DL);
+		Streams::disable_debugging(DL);
+		DL = itc_save_DL;
 	}
-	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
-	if (p == NULL) LOG("Failed: not a condition");
-	else {
-		LOG("$D\n", prop);
-		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
-		TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_problem_logging());
-	}
-	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
 
-@<Perform an internal test of the refinery@> =
-	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
-	wording W = itc->text_supplying_the_case;
-	parse_node *p = Node::new(SENTENCE_NT); Node::set_text(p, W);
-	Classifying::sentence(p);
-	LOG("Classification:\n$T", p);
-	if ((p->down) && (p->down->next) && (p->down->next->next)) {
-		parse_node *px = p->down->next;
-		parse_node *py = px->next;
-		Refiner::refine_coupling(px, py, TRUE);
-		LOG("After creation:\n$T", p);
-	}
-	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
-
-@<Begin reporting on the internal test case@> =
-	itc_save_DL = DL; DL = itc_save_OUT;
-	Streams::enable_debugging(DL); // Streams::enable_I6_escapes(DL);
-
-@<End reporting on the internal test case@> =
-	Streams::disable_debugging(DL); // Streams::disable_I6_escapes(DL);
-	DL = itc_save_DL;
-
-@<Perform an internal test of the sentence converter@> =
-	parse_node *p = NULL;
-	pcalc_prop *prop = NULL;
-	int tc = FALSE;
-
-	if (SV_not_SN) {
-		if (<s-sentence>(itc->text_supplying_the_case)) p = <<rp>>;
-	} else {
-		if (<s-descriptive-np>(itc->text_supplying_the_case)) p = <<rp>>;
-	}
-	if (p) {
-		prop = Specifications::to_proposition(p);
-		tc = TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_no_problem_reporting());
-	}
-	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
-	if (p == NULL) LOG("Failed: not a condition");
-	else {
-		LOG("$D\n", prop);
-		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
-		TypecheckPropositions::type_check(prop, TypecheckPropositions::tc_problem_logging());
-	}
-	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
-
-@ And here's a test of the kinds system (though in practice test cases for the
-//kinds-test// tool probably now does a better job):
+@h Some internal tests for services modules.
+As noted above, each module of the main Inform compiler can register its own
+internal tests. But service modules like //syntax// or //linguistics// have
+no access to the function //InternalTests::make_test_available//, so we will
+call it for them.
 
 =
+void InternalTests::begin(void) {
+	InternalTests::make_test_available(I"adjective",
+		&InternalTests::perform_adjective_internal_test, FALSE);
+	InternalTests::make_test_available(I"dimensions",
+		&InternalTests::perform_dimensions_internal_test, TRUE);
+	InternalTests::make_test_available(I"kind",
+		&InternalTests::perform_kind_internal_test, TRUE);
+	InternalTests::make_test_available(I"participle",
+		&InternalTests::perform_ing_internal_test, FALSE);
+	InternalTests::make_test_available(I"verb",
+		&InternalTests::perform_verb_internal_test, FALSE);
+}
+
+void InternalTests::perform_dimensions_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	Kinds::Dimensions::log_unit_analysis();
+}
+
+void InternalTests::perform_verb_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	Conjugation::test(OUT, itc->text_supplying_the_case,
+		Projects::get_language_of_play(Task::project()));
+}
+
+void InternalTests::perform_adjective_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	Adjectives::test_adjective(OUT, itc->text_supplying_the_case);
+}
+
+void InternalTests::perform_ing_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	Conjugation::test_participle(OUT, itc->text_supplying_the_case);
+}
+
+@ And here's a set of six tests of the kinds system. This is quite old code,
+written before the //kinds-test// tool was created, which performs much fuller
+unit-testing of the //kinds// module. So we probably don't need these tests any
+longer, but they are still in the test suite and do no harm there. They do tend
+to be brittle tests in the sense that they will "fail" if a new built-in base
+kind is added to //BasicInformKit//, say: but if so, just rebless the new output
+and carry on regardless.
+
+=
+void InternalTests::perform_kind_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	InternalTests::log_poset(
+		Vocabulary::get_literal_number_value(
+			Lexer::word(
+				Wordings::first_wn(
+					itc->text_supplying_the_case))));
+}
+
 void InternalTests::log_poset(int n) {
 	switch (n) {
 		case 1: @<Display the subkind relation of base kinds@>; break;
@@ -334,7 +270,8 @@ void InternalTests::log_poset(int n) {
 			LOG("Reflexivity violated: %u\n", A);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, A)) && (Kinds::eq(A, B) == FALSE))
+			if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, A)) &&
+				(Kinds::eq(A, B) == FALSE))
 				LOG("Antisymmetry violated: %u, %u\n", A, B);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
@@ -369,7 +306,6 @@ void InternalTests::log_poset(int n) {
 @d SIZE_OF_GRAB_BAG 11
 
 @<Some miscellaneous tests with a grab bag of kinds@> =
-	#ifdef IF_MODULE
 	kind *tests[SIZE_OF_GRAB_BAG];
 	tests[0] = K_number;
 	tests[1] = K_container;
@@ -391,65 +327,3 @@ void InternalTests::log_poset(int n) {
 		kind *M = Latticework::join(tests[i], tests[j]);
 		if (Kinds::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
 	}
-	#endif
-
-@
-
-= (early code)
-int ap_test_register_initialised = FALSE;
-action_pattern *ap_test_register[10];
-
-@ =
-action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
-	named_action_pattern *nap = NamedActionPatterns::add(ap, W);
-	action_pattern *new_ap = ActionPatterns::new(W);
-	anl_entry *entry = ActionNameLists::new_entry_at(W);
-	entry->item.nap_listed = nap;
-	new_ap->action_list = ActionNameLists::new_list(entry, ANL_POSITIVE);
-	return new_ap;
-}
-
-@
-
-=
-<perform-ap-test> ::=
-	list {...} |                  ==> { -, - }; ActionNameLists::test_list(WR[1]);
-	<test-ap> |                   ==> @<Write textual AP test result@>
-	<test-ap> ~~ <test-ap> |      ==> @<Write comparison AP test result@>
-	...                           ==> @<Write failure@>
-
-<test-ap> ::=
-	<test-ap> is {...} |          ==> { -, InternalTests::ap_of_nap(RP[1], WR[1]) }
-	<test-register> = <test-ap> | ==> { -, (ap_test_register[R[1]] = RP[2]) }
-	<action-pattern> |            ==> { pass 1 }
-	<test-register> |             ==> { -, ap_test_register[R[1]] }
-	experimental {...}            ==> { -, ParseClauses::ap_seven(WR[1]) }
-
-<test-register> ::=
-	r1 | r2 | r3 | r4 | r5
-
-@<Write textual AP test result@> =
-	LOG("%W: $A\n", W, RP[1]);
-
-@<Write comparison AP test result@> =
-	int rv = ActionPatterns::compare_specificity(RP[1], RP[2]);
-	int rv_converse = ActionPatterns::compare_specificity(RP[2], RP[1]);
-	LOG("%W: ", W);
-	if (rv > 0) LOG("left is more specific\n");
-	if (rv < 0) LOG("right is more specific\n");
-	if (rv == 0) LOG("equally specific\n");
-	if (rv_converse != -1*rv) LOG("*** Not antisymmetric ***\n");
-
-@<Write failure@> =
-	LOG("%W: failed to parse\n", W);
-
-@<Perform an internal test of the action pattern parser@> =
-	if (ap_test_register_initialised == FALSE) {
-		ap_test_register_initialised = TRUE;
-		for (int i=0; i<10; i++) ap_test_register[i] = NULL;
-	}
-	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
-	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
-	<perform-ap-test>(itc->text_supplying_the_case);
-	ParseActionPatterns::restore_mode(saved);
-	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;

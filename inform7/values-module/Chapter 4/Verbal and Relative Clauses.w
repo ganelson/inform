@@ -408,3 +408,41 @@ void SPVerb::throw_past_problem(int desc) {
 				"was open'. Only the main verb can be in the past tense.");
 	}
 }
+
+@h Internal test for sentence parsing.
+
+=
+void SPVerb::perform_sentence_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	int SV_not_SN = TRUE;
+	@<Perform an internal test of the sentence converter@>;
+}
+
+void SPVerb::perform_description_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	int SV_not_SN = FALSE;
+	@<Perform an internal test of the sentence converter@>;
+}
+
+@<Perform an internal test of the sentence converter@> =
+	parse_node *p = NULL;
+	pcalc_prop *prop = NULL;
+	int tc = FALSE;
+
+	if (SV_not_SN) {
+		if (<s-sentence>(itc->text_supplying_the_case)) p = <<rp>>;
+	} else {
+		if (<s-descriptive-np>(itc->text_supplying_the_case)) p = <<rp>>;
+	}
+	if (p) {
+		prop = Specifications::to_proposition(p);
+		tc = TypecheckPropositions::type_check(prop,
+			TypecheckPropositions::tc_no_problem_reporting());
+	}
+	if (p == NULL) LOG("Failed: not a condition");
+	else {
+		LOG("$D\n", prop);
+		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
+		TypecheckPropositions::type_check(prop,
+			TypecheckPropositions::tc_problem_logging());
+	}

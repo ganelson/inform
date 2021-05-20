@@ -350,3 +350,18 @@ parse_node *Specifications::new_UNKNOWN(wording W) {
 	return Node::new_with_words(UNKNOWN_NT, W);
 }
 
+@h The evaluation internal test.
+
+=
+void Specifications::perform_evaluation_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	parse_node *spec = NULL;
+	if (<s-value>(itc->text_supplying_the_case)) spec = <<rp>>;
+	else spec = Specifications::new_UNKNOWN(itc->text_supplying_the_case);
+	Dash::check_value(spec, NULL);
+	kind *K = Specifications::to_kind(spec);
+	WRITE("Kind of value: %u", K);
+	if (Kinds::Behaviour::is_quasinumerical(K))
+		WRITE(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
+	WRITE("\n");
+}

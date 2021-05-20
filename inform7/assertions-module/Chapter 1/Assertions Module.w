@@ -41,6 +41,11 @@ void AssertionsModule::start(void) {
 	Log::declare_aspect(NOUN_RESOLUTION_DA, L"noun resolution", FALSE, FALSE);
 	Log::declare_aspect(PRONOUNS_DA, L"pronouns", FALSE, FALSE);
 	Log::declare_aspect(RELATION_DEFINITIONS_DA, L"relation definitions", FALSE, FALSE);
+
+	InternalTests::make_test_available(I"refinery",
+		&Classifying::perform_refinery_internal_test, TRUE);
+	InternalTests::make_test_available(I"equation",
+		&Equations::perform_equation_internal_test, TRUE);
 }
 void AssertionsModule::end(void) {
 }

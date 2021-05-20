@@ -288,12 +288,16 @@ so on. Those absolute basics are made here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTRulebooks::RulebookOutcomePrintingRule</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_9" class="paragraph-anchor"></a><b>&#167;2.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run any internal tests</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_9" class="paragraph-anchor"></a><b>&#167;2.9.  </b>See <a href="1-itc.html" class="internal">Internal Test Cases</a> for an explanation of the alarming-looking <span class="extract"><span class="extract-syntax">exit</span></span>
+here, which only happens when special runs are made for compiler testing.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run any internal tests</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">debugging</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tests_run</span><span class="plain-syntax"> = </span><a href="1-itc.html#SP4" class="function-link"><span class="function-syntax">InternalTests::run</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tests_run</span><span class="plain-syntax"> = </span><a href="1-itc.html#SP7" class="function-link"><span class="function-syntax">InternalTests::run</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tests_run</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">exit</span><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    }</span>
 </pre>

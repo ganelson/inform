@@ -177,6 +177,9 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 
+@ See //Internal Test Cases// for an explanation of the alarming-looking |exit|
+here, which only happens when special runs are made for compiler testing.
+
 @<Run any internal tests@> =
 	if (debugging) {
 		int tests_run = InternalTests::run();

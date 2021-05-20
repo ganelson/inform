@@ -300,3 +300,20 @@ int Classifying::allow_of(wording XW, wording YW) {
 	if ((<allow-of-x>(XW)) && (<allow-of-y>(YW))) return TRUE;
 	return FALSE;
 }
+
+@h The refinery internal test.
+
+=
+void Classifying::perform_refinery_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	wording W = itc->text_supplying_the_case;
+	parse_node *p = Node::new(SENTENCE_NT); Node::set_text(p, W);
+	Classifying::sentence(p);
+	LOG("Classification:\n$T", p);
+	if ((p->down) && (p->down->next) && (p->down->next->next)) {
+		parse_node *px = p->down->next;
+		parse_node *py = px->next;
+		Refiner::refine_coupling(px, py, TRUE);
+		LOG("After creation:\n$T", p);
+	}
+}

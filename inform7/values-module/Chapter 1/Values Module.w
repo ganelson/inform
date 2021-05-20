@@ -34,6 +34,17 @@ void ValuesModule::start(void) {
 	REGISTER_WRITER('O', Instances::log);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);
+
+	InternalTests::make_test_available(I"evaluation",
+		&Specifications::perform_evaluation_internal_test, FALSE);
+	InternalTests::make_test_available(I"dash",
+		&Dash::perform_dash_internal_test, TRUE);
+	InternalTests::make_test_available(I"dashlog",
+		&Dash::perform_dashlog_internal_test, FALSE);
+	InternalTests::make_test_available(I"sentence",
+		&SPVerb::perform_sentence_internal_test, TRUE);
+	InternalTests::make_test_available(I"description",
+		&SPVerb::perform_description_internal_test, TRUE);
 }
 void ValuesModule::end(void) {
 }

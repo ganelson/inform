@@ -26,6 +26,8 @@ void IndexModule::start(void) {
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
 	Memory::reason_name(TYPE_TABLES_MREASON, "tables of details of the kinds of values");
 	Memory::reason_name(DOC_FRAGMENT_MREASON, "documentation fragments");
+
+	InternalTests::make_test_available(I"map", &PL::SpatialMap::perform_map_internal_test, TRUE);
 }
 void IndexModule::end(void) {
 }
