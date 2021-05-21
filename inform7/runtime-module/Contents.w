@@ -53,6 +53,7 @@ Chapter 5: Provision Submodules
 	Backdrop Instances
 	Door Instances
 	Region Instances
+	Scene Instances
 	Multimedia
 	Tables
 	Table Columns
@@ -73,7 +74,6 @@ Chapter 6: Completion Resources
 	The Map
 
 Chapter 7: Still Unsorted
-	Scenes
 	Emit Property Values
 	Instance Counting
 	Action Patterns

@@ -87,6 +87,7 @@ using Inter's |INSTANCE_IST| instruction.
 
 	RTRegionInstances::compile_extra(I);
 	RTBackdropInstances::compile_extra(I);
+	RTScenes::compile_extra(I);
 
 @h Condition element.
 This compiles a test of whether or not |t0_s| is equal to an instance.

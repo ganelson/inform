@@ -5,29 +5,17 @@ A plugin to support named periods of time during an interactive story.
 @h Introduction.
 Scenes are periods of time during play: at any given moment, several may be
 going on, or none. They are started and stopped when certain conditions are
-met, or by virtue of having been anchored together. All of this takes compiler
-support: unlike most of the plugins in the if module, this one code-generates
-to non-trivial functions as well as tables of data.
+met, or by virtue of having been anchored together.
 
 =
 void Scenes::start(void) {
 	Scenes::declare_annotations();
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Scenes::production_line);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Scenes::new_property_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Scenes::new_named_instance_notify);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
 	PluginManager::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
 	PluginManager::plug(NEW_RCD_NOTIFY_PLUG, Scenes::new_rcd);
-}
-
-int Scenes::production_line(int stage, int debugging,
-	stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(RTScenes::compile_change_functions);
-		BENCH(RTScenes::compile_show_status_functions);
-	}
-	return FALSE;
 }
 
 @ This plugin needs one extra syntax tree annotation:

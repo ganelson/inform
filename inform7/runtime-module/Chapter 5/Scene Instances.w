@@ -1,56 +1,73 @@
-[RTScenes::] Scenes.
+[RTScenes::] Scene Instances.
 
-Compiling code to manage scene changes at run-time.
+Some additions to an _instance package for instances of the kind "backdrop".
 
-@ At run-time, we need to store information about the current state of each
+@h Compilation.
+We add a |found_in| function to test whether the given backdrop is found in
+the current |location| or not.
+
+=
+void RTScenes::compile_extra(instance *I) {
+	if ((K_scene) && (Instances::of_kind(I, K_scene))) {
+		scene *sc = Scenes::from_named_constant(I);
+		if (sc == NULL) internal_error("sceneless");
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "scene change fn for "); Instances::write(desc, I);
+		Sequence::queue(&RTScenes::change_compilation_agent, STORE_POINTER_scene(sc), desc);
+		text_stream *desc2 = Str::new();
+		WRITE_TO(desc2, "scene status fn for "); Instances::write(desc, I);
+		Sequence::queue(&RTScenes::status_compilation_agent, STORE_POINTER_scene(sc), desc2);
+	}
+}
+
+@h Runtime data.
+Each scene has an associated function which runs once per turn to decide whether
+or not a scene change has happened, and to take action if so.
+
+At runtime, we need to store information about the current state of each
 scene: whether it is currently playing or not, when the last change occurred,
-and so on. This data is stored in I6 arrays as follows:
+and so on. This data is stored in arrays which are indexed by scene ID number,
+a number at runtime which agrees with the allocation ID at compile-time for the
+|scene| structure: i.e, it counts upwards from 0 in creation order.
 
-First, each scene has a unique ID number, used as an index |X| to these arrays.
-This ID number is what is stored as an I6 value for the kind of value |scene|,
-and it agrees with the allocation ID for the I7 scene structure.
+The arrays are:
 
-|scene_status-->X| is 0 if the scene is not playing, but may do so in future;
+(*) |scene_status-->X| is 0 if the scene is not playing, but may do so in future;
 1 if the scene is playing; or 2 if the scene is not playing and will never
 play again.
 
-|scene_started-->X| is the value of |the_time| when the scene last started,
+(*) |scene_started-->X| is the value of |the_time| when the scene last started,
 or 0 if it has never started.
 
-|scene_ended-->X| is the value of |the_time| when the scene last ended,
+(*) |scene_ended-->X| is the value of |the_time| when the scene last ended,
 or 0 if it has never ended. (The "starting" end does not count as ending
 for this purpose.)
 
-|scene_endings-->X| is a bitmap recording which ends have been used,
+(*) |scene_endings-->X| is a bitmap recording which ends have been used,
 including bit 1 which records whether the scene has started.
 
-|scene_latest_ending-->X| holds the end number of the most recent ending
+(*) |scene_latest_ending-->X| holds the end number of the most recent ending
 (or 0 if the scene has never ended).
 
-@h Scene-changing machinery at run-time.
+@h Scene change functions.
 So what are scenes for? Well, they have two uses. One is that the end
 rulebooks are run when ends occur, which is a convenient way to time events.
 The following generates the necessary code to (a) detect when a scene end
-occurs, and (b) act upon it. This is all handled by the following Inter
-function.
-
-There is no significance to the return value.
+occurs, and (b) act upon it.
 
 =
-void RTScenes::compile_change_functions(void) {
-	scene *sc;
-	LOOP_OVER(sc, scene) {
-		inter_name *iname = 
-			Hierarchy::make_iname_in(SCENE_CHANGE_FN_HL, RTInstances::package(sc->as_instance));
-		packaging_state save = Functions::begin(iname);
-		inter_symbol *ch_s =
-			LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
-		@<Compile code detecting the ends of a specific scene@>;
-		EmitCode::rfalse();
-		Functions::end(save);
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SCF_MD_HL, RTInstances::package(sc->as_instance));
-		Emit::iname_constant(md_iname, K_value, iname);		
-	}
+void RTScenes::change_compilation_agent(compilation_subtask *t) {
+	scene *sc = (scene *) RETRIEVE_POINTER_scene(t->data);
+	package_request *pack = RTInstances::package(sc->as_instance);
+	inter_name *iname = Hierarchy::make_iname_in(SCENE_CHANGE_FN_HL, pack);
+	packaging_state save = Functions::begin(iname);
+	inter_symbol *ch_s =
+		LocalVariables::new_internal_commented_as_symbol(I"ch", I"flag: change made");
+	@<Compile code detecting the ends of a specific scene@>;
+	EmitCode::rfalse();
+	Functions::end(save);
+	inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SCF_MD_HL, pack);
+	Emit::iname_constant(md_iname, K_value, iname);			
 }
 
 @ Recall that ends numbered 1, 2, 3, ... are all ways for the scene to end,
@@ -141,9 +158,8 @@ void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s) {
 		LOG("Condition: $P\n", S);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadCondition),
 			"'begins when' and 'ends when' must be followed by a condition",
-			"which this does not seem to be, or else 'when play begins', "
-			"'when play ends', 'when S begins', or 'when S ends', where "
-			"S is the name of any scene.");
+			"which this does not seem to be, or else 'when play begins', 'when play ends', "
+			"'when S begins', or 'when S ends', where S is the name of any scene.");
 		return;
 	}
 
@@ -183,7 +199,7 @@ for this purpose.
 void RTScenes::compile_scene_end(scene *sc, int end) {
 	scene *sc2;
 	LOOP_OVER(sc2, scene) sc2->marker = 0;
-	RTScenes::compile_scene_end_dash(sc, end);
+	RTScenes::compile_scene_end_r(sc, end);
 }
 
 @ The semantics of scene ending are trickier than they look, because of the
@@ -195,7 +211,7 @@ those for end 1, because they're more specialised, so they have a right to
 take effect first.
 
 =
-void RTScenes::compile_scene_end_dash(scene *sc, int end) {
+void RTScenes::compile_scene_end_r(scene *sc, int end) {
 	int ix = sc->allocation_id;
 	sc->marker++;
 	if (end >= 2) {
@@ -353,7 +369,7 @@ end actually occurred.)
 		EmitCode::up();
 	EmitCode::up();
 
-@ In general, the marker count is used to ensure that |RTScenes::compile_scene_end_dash|
+@ In general, the marker count is used to ensure that |RTScenes::compile_scene_end_r|
 never calls itself for a scene it has been called with before on this round.
 This prevents Inform locking up generating infinite amounts of code. However,
 one exception is allowed, in very limited circumstances. Suppose we want to
@@ -373,7 +389,8 @@ This is allowed; it's a case where the "tolerance" below is raised.
 			int other_end;
 			for (other_end = 0; other_end < other_scene->no_ends; other_end++) {
 				scene_connector *scon;
-				for (scon = other_scene->ends[other_end].anchor_connectors; scon; scon = scon->next) {
+				for (scon = other_scene->ends[other_end].anchor_connectors; scon;
+					scon = scon->next) {
 					if ((scon->connect_to == sc) && (scon->end == end)) {
 						EmitCode::inv(IF_BIP);
 						EmitCode::down();
@@ -381,7 +398,8 @@ This is allowed; it's a case where the "tolerance" below is raised.
 							EmitCode::down();
 								EmitCode::inv(LOOKUP_BIP);
 								EmitCode::down();
-									EmitCode::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
+									EmitCode::val_iname(K_value,
+										Hierarchy::find(SCENE_STATUS_HL));
 									EmitCode::val_number((inter_ti) other_scene->allocation_id);
 								EmitCode::up();
 								if (other_end >= 1)
@@ -391,7 +409,7 @@ This is allowed; it's a case where the "tolerance" below is raised.
 							EmitCode::up();
 							EmitCode::code();
 							EmitCode::down();
-								RTScenes::compile_scene_end_dash(other_scene, other_end);
+								RTScenes::compile_scene_end_r(other_scene, other_end);
 							EmitCode::up();
 						EmitCode::up();
 					}
@@ -404,47 +422,46 @@ This is allowed; it's a case where the "tolerance" below is raised.
 As we've seen, when the SCENES command has been typed, Inform prints a notice
 out at run-time when any scene end occurs. It also prints a run-down of the
 scene status at the moment the command is typed, and the following code is
-what handles this.
+what handles this for the scene in question.
 
 =
-void RTScenes::compile_show_status_functions(void) {
-	scene *sc;
-	LOOP_OVER(sc, scene) {
-		inter_name *iname = 
-			Hierarchy::make_iname_in(SCENE_STATUS_FN_HL, RTInstances::package(sc->as_instance));
-		packaging_state save = Functions::begin(iname);
-		EmitCode::inv(IFDEBUG_BIP);
+void RTScenes::status_compilation_agent(compilation_subtask *t) {
+	scene *sc = (scene *) RETRIEVE_POINTER_scene(t->data);
+	inter_name *iname = Hierarchy::make_iname_in(SCENE_STATUS_FN_HL,
+		RTInstances::package(sc->as_instance));
+	packaging_state save = Functions::begin(iname);
+	EmitCode::inv(IFDEBUG_BIP);
+	EmitCode::down();
+		EmitCode::code();
 		EmitCode::down();
-			EmitCode::code();
-			EmitCode::down();
-				wording NW = Instances::get_name(sc->as_instance, FALSE);
+			wording NW = Instances::get_name(sc->as_instance, FALSE);
 
-				EmitCode::inv(IFELSE_BIP);
+			EmitCode::inv(IFELSE_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
-					EmitCode::inv(EQ_BIP);
+					EmitCode::inv(LOOKUP_BIP);
 					EmitCode::down();
-						EmitCode::inv(LOOKUP_BIP);
-						EmitCode::down();
-							EmitCode::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
-							EmitCode::val_number((inter_ti) sc->allocation_id);
-						EmitCode::up();
-						EmitCode::val_number(1);
+						EmitCode::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
+						EmitCode::val_number((inter_ti) sc->allocation_id);
 					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						@<Show status of this running scene@>;
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						@<Show status of this non-running scene@>;
-					EmitCode::up();
+					EmitCode::val_number(1);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					@<Show status of this running scene@>;
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					@<Show status of this non-running scene@>;
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
-		Functions::end(save);
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SSF_MD_HL, RTInstances::package(sc->as_instance));
-		Emit::iname_constant(md_iname, K_value, iname);		
-	}
+	EmitCode::up();
+	Functions::end(save);
+	inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SSF_MD_HL,
+		RTInstances::package(sc->as_instance));
+	Emit::iname_constant(md_iname, K_value, iname);		
 }
 
 @<Show status of this running scene@> =
@@ -545,7 +562,7 @@ This is where we compile Inter code to test that a scene matching this is
 actually running:
 
 =
-void RTScenes::emit_during_clause(parse_node *spec) {
+void RTScenes::compile_during_clause(parse_node *spec) {
 	int stuck = TRUE;
 	if (K_scene == NULL) { EmitCode::val_true(); return; }
 	if (Rvalues::is_rvalue(spec)) {
@@ -565,7 +582,8 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 			stuck = FALSE;
 		}
 	} else {
-		if (Dash::check_value(spec, Kinds::unary_con(CON_description, K_scene)) == ALWAYS_MATCH) {
+		if (Dash::check_value(spec, Kinds::unary_con(CON_description, K_scene)) ==
+			ALWAYS_MATCH) {
 			parse_node *desc = Descriptions::to_rvalue(spec);
 			if (desc) {
 				EmitCode::call(Hierarchy::find(DURINGSCENEMATCHING_HL));
@@ -580,8 +598,8 @@ void RTScenes::emit_during_clause(parse_node *spec) {
 		EmitCode::val_true();
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_ScenesBadDuring),
-			"'during' must be followed by the name of a scene or of a "
-			"description which applies to a single scene",
+			"'during' must be followed by the name of a scene or of a description which "
+			"applies to a single scene",
 			"such as 'during Station Arrival' or 'during a recurring scene'.");
 		return;
 	}

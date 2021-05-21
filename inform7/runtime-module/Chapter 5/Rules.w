@@ -428,7 +428,7 @@ int RTRules::actions_compile_test_tail(id_body *idb, rule *R) {
 @<Compile a scene test head@> =
 	EmitCode::inv(IFELSE_BIP);
 	EmitCode::down();
-		RTScenes::emit_during_clause(Scenes::get_rcd_spec(phrcd));
+		RTScenes::compile_during_clause(Scenes::get_rcd_spec(phrcd));
 		EmitCode::code();
 		EmitCode::down();
 
