@@ -300,10 +300,10 @@ sets the |parsed_number| global to the value matched.
 @<Compile the parse function@> =
 	inter_name *iname = RTLiteralPatterns::parse_fn_iname(lp);
 	packaging_state save = Functions::begin(iname);
-	gpr_kit gprk = UnderstandValueTokens::new_kit();
-	UnderstandValueTokens::add_original(&gprk);
-	UnderstandValueTokens::add_standard_set(&gprk);
-	UnderstandValueTokens::add_lp_vars(&gprk);
+	gpr_kit gprk = GPRs::new_kit();
+	GPRs::add_original_var(&gprk);
+	GPRs::add_standard_vars(&gprk);
+	GPRs::add_LP_vars(&gprk);
 	inter_symbol *succeeded_label = EmitCode::reserve_label(I".Succeeded");
 	inter_symbol *failed_label = EmitCode::reserve_label(I".Failed");
 	@<Match the literal pattern@>;

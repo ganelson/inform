@@ -270,7 +270,6 @@ DECLARE_CLASS(rubric_holder)
 @e noun_filter_token_CLASS
 @e parentage_here_inference_data_CLASS
 @e parentage_inference_data_CLASS
-@e parse_name_notice_CLASS
 @e parsing_data_CLASS
 @e parsing_pp_data_CLASS
 @e part_of_inference_data_CLASS
@@ -307,7 +306,6 @@ DECLARE_CLASS(named_action_pattern_entry)
 DECLARE_CLASS(noun_filter_token)
 DECLARE_CLASS(parentage_here_inference_data)
 DECLARE_CLASS(parentage_inference_data)
-DECLARE_CLASS(parse_name_notice)
 DECLARE_CLASS(parsing_data)
 DECLARE_CLASS(parsing_pp_data)
 DECLARE_CLASS(part_of_inference_data)

@@ -26,6 +26,7 @@ Chapter 2: Emission
 	Showme Command
 	Here, Nowhere and Everywhere
 	Short Names
+	General Parsing Routines
 
 Chapter 3: Basics
 	Generic Module
@@ -74,15 +75,15 @@ Chapter 6: Completion Resources
 	Bibliographic Data
 	The Player
 	The Map
+	Name Properties
+	Parse Name Properties
 
 Chapter 7: Still Unsorted
 	Emit Property Values
 	Instance Counting
 	Action Patterns
 	Going
-	Parsing
 	Command Grammars
 	Command Grammar Lines
 	Noun Filter Tokens
 	Tokens Parsing Values
-	General Parsing Routines

@@ -430,7 +430,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 			EmitCode::up();
 			break;
 		case CG_IS_SUBJECT:
-			UnderstandGeneralTokens::after_gl_failed(gprk, fail_label, cgl->pluralised);
+			ParseName::compile_reset_code_after_failed_line(gprk, fail_label, cgl->pluralised);
 			break;
 		case CG_IS_VALUE:
 			EmitCode::inv(STORE_BIP);
@@ -620,9 +620,9 @@ void RTCommandGrammarLines::compile_slash_gprs(void) {
 	slash_gpr *sgpr;
 	LOOP_OVER(sgpr, slash_gpr) {
 		packaging_state save = Functions::begin(sgpr->sgpr_iname);
-		gpr_kit gprk = UnderstandValueTokens::new_kit();
-		UnderstandValueTokens::add_original(&gprk);
-		UnderstandValueTokens::add_standard_set(&gprk);
+		gpr_kit gprk = GPRs::new_kit();
+		GPRs::add_original_var(&gprk);
+		GPRs::add_standard_vars(&gprk);
 
 		RTCommandGrammarLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
 		EmitCode::inv(RETURN_BIP);

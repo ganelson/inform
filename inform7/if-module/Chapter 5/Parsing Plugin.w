@@ -31,7 +31,6 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(Understand::traverse);
 	}
 	if (stage == INTER2_CSEQ) {
-		BENCH(UnderstandGeneralTokens::write_parse_name_routines);
 		BENCH(RTCommandGrammarLines::MistakeActionSub_routine);
 		BENCH(CommandGrammars::prepare);
 		BENCH(RTCommandGrammars::compile_conditions);
@@ -60,13 +59,15 @@ and in particular, to every object instance and every kind of object.
 
 =
 typedef struct parsing_data {
-	struct command_grammar *understand_as_this_object; /* grammar for parsing the name at run-time */
+	struct command_grammar *understand_as_this_subject; /* grammar for parsing the name at run-time */
+	struct parsing_compilation_data compilation_data;
 	CLASS_DEFINITION
 } parsing_data;
 
 parsing_data *ParsingPlugin::new_data(inference_subject *subj) {
 	parsing_data *pd = CREATE(parsing_data);
-	pd->understand_as_this_object = NULL;
+	pd->understand_as_this_subject = NULL;
+	pd->compilation_data = Name::new_compilation_data(subj);
 	return pd;
 }
 
@@ -130,7 +131,7 @@ int ParsingPlugin::new_variable_notify(nonlocal_variable *var) {
 		switch (<<r>>) {
 			case 0:
 				if (Kinds::eq(<<rp>>, NonlocalVariables::kind(var))) {
-					RTParsing::understood_variable(var);
+					RTVariables::understood_variable(var);
 					NonlocalVariables::allow_to_be_zero(var);
 				}
 				break;
@@ -154,7 +155,7 @@ property *P_name = NULL;
 property *ParsingPlugin::name_property(void) {
 	if (P_name == NULL) {
 		P_name = ValueProperties::new_nameless(I"name", K_text);
-		Hierarchy::make_available(RTParsing::name_iname());
+		Hierarchy::make_available(RTProperties::iname(P_name));
 	}
 	return P_name;
 }
@@ -203,14 +204,14 @@ int ParsingPlugin::complete_model(int stage) {
 				Projects::get_language_of_play(Task::project()));
 		}
 		ValueProperties::assert(ParsingPlugin::name_property(), Instances::as_subject(I),
-			RTParsing::name_property_array(I, W, PW, from_kind), CERTAIN_CE);
+			Name::name_property_array(I, W, PW, from_kind), CERTAIN_CE);
 	}
 
 @ We attach numbered parse name routines as properties for any object
 where grammar has specified a need. (By default, this will not happen.)
 
 @<Assert the Inter parse-name property@> =
-	inter_name *S = UnderstandGeneralTokens::compile_parse_name_property(subj);
+	inter_name *S = ParseName::compile_if_needed(subj);
 	if (S)
 		ValueProperties::assert(P_parse_name, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);

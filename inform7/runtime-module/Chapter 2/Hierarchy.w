@@ -571,7 +571,6 @@ void Hierarchy::establish(void) {
 @e NOUN_FILTER_FN_HL
 @e PARSE_NAMES_HAP
 @e PARSE_NAME_FN_HL
-@e PARSE_NAME_DASH_FN_HL
 @e SCOPE_FILTERS_HAP
 @e SCOPE_FILTER_FN_HL
 @e SLASH_TOKENS_HAP
@@ -591,6 +590,10 @@ void Hierarchy::establish(void) {
 @e VERB_DIRECTIVE_SLASH_HL
 @e VERB_DIRECTIVE_SPECIAL_HL
 @e VERB_DIRECTIVE_TOPIC_HL
+
+@e OBJECT_NOUNS_HAP
+@e NAME_ARRAY_HL
+
 @e COMMANDS_HAP
 @e VERB_DECLARATION_ARRAY_HL
 @e MISTAKEACTION_HL
@@ -643,8 +646,6 @@ void Hierarchy::establish(void) {
 			H_F_G(SCOPE_FILTER_FN_HL,         I"filter_fn", I"Scope_Filter")
 		H_END
 		H_BEGIN_AP(PARSE_NAMES_HAP,           I"parse_name", I"_parse_name")
-			H_F_G(PARSE_NAME_FN_HL,           I"parse_name_fn", I"Parse_Name_GV")
-			H_F_G(PARSE_NAME_DASH_FN_HL,      I"parse_name_fn", I"PN_for_S")
 		H_END
 		H_BEGIN_AP(SLASH_TOKENS_HAP,          I"slash_token", I"_slash_token")
 			H_F_G(SLASH_FN_HL,                I"slash_fn", I"SlashGPR")
@@ -652,6 +653,10 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, grammar))
+		H_BEGIN_AP(OBJECT_NOUNS_HAP,          I"object_noun", I"_object_noun")
+			H_F_G(NAME_ARRAY_HL,              I"name_array", I"name_array")
+			H_F_G(PARSE_NAME_FN_HL,           I"parse_name_fn", I"parse_name")
+		H_END
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
 		H_END

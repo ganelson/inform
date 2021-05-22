@@ -101,6 +101,10 @@ void RTVariables::store_in_this_iname(nonlocal_variable *nlv, inter_name *iname)
 	RTVariables::set_NVE(nlv, RTVariables::nve_from_iname(iname));
 }
 
+void RTVariables::understood_variable(nonlocal_variable *nlv) {
+	RTVariables::store_in_this_iname(nlv, Hierarchy::find(PARSED_NUMBER_HL));
+}
+
 @ And in particular that's how we handle sentences like "Maximum score translates
 into Inter as "MAX_SCORE".":
 

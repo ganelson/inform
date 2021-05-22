@@ -163,18 +163,16 @@ kinds of value:
 		CompileRvalues::text(VH, value);
 		return;
 	}
-	#ifdef IF_MODULE
 	if ((K_understanding) && (Kinds::eq(kind_of_constant, K_understanding))) {
 		if (Wordings::empty(Node::get_text(value)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_ti v1 = 0, v2 = 0;
-		RTParsing::compile_understanding(&v1, &v2, Node::get_text(value));
+		CompileRvalues::compile_understanding(&v1, &v2, Node::get_text(value));
 		if (Holsters::non_void_context(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 		}
 		return;
 	}
-	#endif
 	if (Kinds::eq(kind_of_constant, K_use_option)) {
 		use_option *uo = Rvalues::to_use_option(value);
 		Emit::holster_iname(VH, RTUseOptions::uo_iname(uo));
@@ -342,3 +340,35 @@ compiler, rather than parsed from the source.)
 @<This is a regular text literal@> =
 	inter_name *val_iname = TextLiterals::to_value(SW);
 	Emit::holster_iname(VH, val_iname);
+
+@ Values for "understanding" refer to command grammar. We cache them as they
+occur in the source text because they can compile to a fairly large slice of
+code, and we don't want to repeat that:
+
+=
+typedef struct cached_understanding {
+	struct wording understanding_text; /* word range of the understanding text */
+	struct inter_name *cu_iname; /* function to test this */
+	CLASS_DEFINITION
+} cached_understanding;
+
+void CompileRvalues::compile_understanding(inter_ti *val1, inter_ti *val2, wording W) {
+	if (<subject-pronoun>(W)) {
+		*val1 = LITERAL_IVAL; *val2 = 0;
+	} else {
+		cached_understanding *cu;
+		LOOP_OVER(cu, cached_understanding)
+			if (Wordings::match(cu->understanding_text, W)) {
+				Emit::to_value_pair(val1, val2, cu->cu_iname);
+				return;
+			}
+		command_grammar *cg = Understand::consultation(W);
+		inter_name *iname = RTCommandGrammars::consult_iname(cg);
+		if (iname) {
+			cu = CREATE(cached_understanding);
+			cu->understanding_text = W;
+			cu->cu_iname = iname;
+			Emit::to_value_pair(val1, val2, iname);
+		}
+	}
+}

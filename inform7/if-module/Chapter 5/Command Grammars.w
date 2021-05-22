@@ -302,10 +302,10 @@ in any case for those.
 
 =
 command_grammar *CommandGrammars::for_subject(inference_subject *subj) {
-	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object != NULL)
-		return PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
+	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject != NULL)
+		return PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject;
 	command_grammar *cg = CommandGrammars::cg_new(CG_IS_SUBJECT);
-	PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object = cg;
+	PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject = cg;
 	cg->subj_understood = subj;
 	return cg;
 }

@@ -204,7 +204,7 @@ used to define new kinds; in this case it doesn't matter what we write, but
 		if (bits & TB_COLUMN_TOPIC) {
 			inter_ti v1 = 0, v2 = 0;
 			wording W = Node::get_text(cell);
-			RTParsing::compile_understanding(&v1, &v2, W);
+			CompileRvalues::compile_understanding(&v1, &v2, W);
 			EmitArrays::generic_entry(v1, v2);
 		} else {
 		#endif

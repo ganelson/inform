@@ -209,19 +209,19 @@ specified for all things. (This mimics I6 class-to-instance inheritance.)
 void RTCommandGrammars::cg_compile_parse_name_lines(gpr_kit *gprk, command_grammar *cg) {
 	inference_subject *subj = cg->subj_understood;
 
-	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object != cg)
+	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject != cg)
 		internal_error("link between subject and CG broken");
 
 	LOGIF(GRAMMAR, "Parse_name content for $j:\n", subj);
-	RTCommandGrammars::cg_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object);
+	RTCommandGrammars::cg_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject);
 
 	inference_subject *infs;
 	for (infs = InferenceSubjects::narrowest_broader_subject(subj);
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		if (PARSING_DATA_FOR_SUBJ(infs))
-			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object) {
+			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject) {
 				LOGIF(GRAMMAR, "And parse_name content inherited from $j:\n", infs);
-				RTCommandGrammars::cg_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object);
+				RTCommandGrammars::cg_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
 			}
 	}
 }
@@ -259,7 +259,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 	RTCommandGrammarLines::reset_labels();
 	switch(cg->cg_is) {
 		case CG_IS_COMMAND: {
-			package_request *PR = Hierarchy::synoptic_package(COMMANDS_HAP);
+			package_request *PR = Hierarchy::completion_package(COMMANDS_HAP);
 			inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
 			packaging_state save = RTCommandGrammars::cg_compile_Verb_directive_header(cg, array_iname);
 			RTCommandGrammars::cg_compile_lines(NULL, cg);
@@ -267,11 +267,11 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			break;
 		}
 		case CG_IS_TOKEN: {
-			gpr_kit gprk = UnderstandValueTokens::new_kit();
+			gpr_kit gprk = GPRs::new_kit();
 			if (cg->compilation_data.cg_token_iname == NULL) internal_error("cg token not ready");
 			packaging_state save = Functions::begin(cg->compilation_data.cg_token_iname);
-			UnderstandValueTokens::add_original(&gprk);
-			UnderstandValueTokens::add_standard_set(&gprk);
+			GPRs::add_original_var(&gprk);
+			GPRs::add_standard_vars(&gprk);
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk.original_wn_s);
@@ -291,12 +291,12 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			break;
 		}
 		case CG_IS_CONSULT: {
-			gpr_kit gprk = UnderstandValueTokens::new_kit();
-			inter_name *iname = UnderstandGeneralTokens::consult_iname(cg);
+			gpr_kit gprk = GPRs::new_kit();
+			inter_name *iname = RTCommandGrammars::consult_iname(cg);
 			packaging_state save = Functions::begin(iname);
-			UnderstandValueTokens::add_range_calls(&gprk);
-			UnderstandValueTokens::add_original(&gprk);
-			UnderstandValueTokens::add_standard_set(&gprk);
+			GPRs::add_range_vars(&gprk);
+			GPRs::add_original_var(&gprk);
+			GPRs::add_standard_vars(&gprk);
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
@@ -320,25 +320,17 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			Functions::end(save);
 			break;
 		}
-		case CG_IS_SUBJECT: {
-			gpr_kit gprk = UnderstandValueTokens::new_kit();
-			packaging_state save = Emit::new_packaging_state();
-			if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk, cg->subj_understood, cg, NULL)) {
-				RTCommandGrammars::cg_compile_parse_name_lines(&gprk, cg);
-				UnderstandGeneralTokens::compile_parse_name_tail(&gprk);
-				Functions::end(save);
-			}
+		case CG_IS_SUBJECT:
 			break;
-		}
 		case CG_IS_VALUE:
 			internal_error("iv");
 			break;
 		case CG_IS_PROPERTY_NAME: {
-			gpr_kit gprk = UnderstandValueTokens::new_kit();
+			gpr_kit gprk = GPRs::new_kit();
 			if (cg->compilation_data.cg_prn_iname == NULL) internal_error("PRN PN not ready");
 			packaging_state save = Functions::begin(cg->compilation_data.cg_prn_iname);
-			UnderstandValueTokens::add_original(&gprk);
-			UnderstandValueTokens::add_standard_set(&gprk);
+			GPRs::add_original_var(&gprk);
+			GPRs::add_standard_vars(&gprk);
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk.original_wn_s);
@@ -372,4 +364,23 @@ void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
 
 void RTCommandGrammars::emit_determination_type(determination_type *gty) {
 	CompileValues::to_code_val(gty->term[0].what);
+}
+
+@ These are used to parse an explicit range of words (such as traditionally
+found in the CONSULT command) at run time, and they are not I6 grammar
+tokens, and do not appear in |Verb| declarations: otherwise, such
+routines are very similar to GPRs.
+
+First, we need to look after a pointer to the CG used to hold the grammar
+being matched against the snippet of words.
+
+=
+inter_name *RTCommandGrammars::consult_iname(command_grammar *cg) {
+	if (cg == NULL) return NULL;
+	if (cg->compilation_data.cg_consult_iname == NULL) {
+		current_sentence = cg->where_cg_created;
+		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
+		cg->compilation_data.cg_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
+	}
+	return cg->compilation_data.cg_consult_iname;
 }
