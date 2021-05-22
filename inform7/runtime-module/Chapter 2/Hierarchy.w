@@ -562,8 +562,6 @@ void Hierarchy::establish(void) {
 @e TEST_NAME_MD_HL
 @e TEST_LENGTH_MD_HL
 @e REQUIREMENTS_HL
-@e LOOP_OVER_SCOPES_HAP
-@e LOOP_OVER_SCOPE_FN_HL
 @e MISTAKES_HAP
 @e MISTAKE_FN_HL
 @e NAMED_TOKENS_HAP
@@ -631,9 +629,6 @@ void Hierarchy::establish(void) {
 			H_C_U(TEST_LENGTH_MD_HL,          I"^length")
 			H_C_U(SCRIPT_HL,                  I"script")
 			H_C_U(REQUIREMENTS_HL,            I"requirements")
-		H_END
-		H_BEGIN_AP(LOOP_OVER_SCOPES_HAP,      I"loop_over_scope", I"_loop_over_scope")
-			H_F_G(LOOP_OVER_SCOPE_FN_HL,      I"loop_over_scope_fn", I"LOS")
 		H_END
 		H_BEGIN_AP(MISTAKES_HAP,              I"mistake", I"_mistake")
 			H_F_G(MISTAKE_FN_HL,              I"mistake_fn", I"Mistake_Token")
@@ -1242,6 +1237,8 @@ void Hierarchy::establish(void) {
 @e BOX_QUOTATION_FN_HL
 @e GROUPS_TOGETHER_HAP
 @e GROUP_TOGETHER_FN_HL
+@e LOOPS_OVER_SCOPE_HAP
+@e LOOP_OVER_SCOPE_FN_HL
 
 @<Establish enclosed matter@> =
 	H_BEGIN(HierarchyLocations::any_enclosure())
@@ -1263,6 +1260,9 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(GROUPS_TOGETHER_HAP,       I"group_together", I"_group_together")
 			H_F_U(GROUP_TOGETHER_FN_HL,       I"group_together_fn")
+		H_END
+		H_BEGIN_AP(LOOPS_OVER_SCOPE_HAP,      I"loop_over_scope", I"_loop_over_scope")
+			H_F_G(LOOP_OVER_SCOPE_FN_HL,      I"loop_over_scope_fn", I"LOS")
 		H_END
 		H_C_U(RTP_HL,                         I"rtp")
 	H_END

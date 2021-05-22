@@ -42,6 +42,7 @@ Chapter 4: Enclosed Resources
 	Relation Literals
 	Stored Action Literals
 	Group Together
+	Looping Over Scope
 
 Chapter 5: Provision Submodules
 	Activities
@@ -85,4 +86,3 @@ Chapter 7: Still Unsorted
 	Noun Filter Tokens
 	Tokens Parsing Values
 	General Parsing Routines
-	Looping Over Scope
