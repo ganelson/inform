@@ -24,6 +24,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 	@<Establish rules@>;
 	@<Establish scenes@>;
 	@<Establish tables@>;
+	@<Establish tests@>;
 	@<Establish use options@>;
 	@<Establish kit-defined resources@>;
 }
@@ -253,6 +254,14 @@ void SynopticHierarchy::establish(inter_tree *I) {
 
 	SYN_SUBMD(I"table_columns")
 		SYN_FUNCT(TC_KOV_HL,                      I"weak_kind_ID_of_column_entry_fn", I"TC_KOV")
+
+@h Tests.
+
+@e TESTSCRIPTSUB_HL
+
+@<Establish tests@> =
+	SYN_SUBMD(I"tests")
+		SYN_FUNCT(TESTSCRIPTSUB_HL,               I"test_fn", I"TestScriptSub")
 
 @h Use options.
 

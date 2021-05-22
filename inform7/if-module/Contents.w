@@ -63,3 +63,4 @@ Chapter 5: Command Parser
 	Command Grammar Tokens
 	Determination Types
 	Property Visibility
+	Test Scripts

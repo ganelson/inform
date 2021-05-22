@@ -44,6 +44,7 @@ Chapter 3: Synoptic Module
 	Multimedia
 	Use Options
 	Verbs
+	Tests
 
 Chapter 4: Inter to Final Code
 	Code Generation

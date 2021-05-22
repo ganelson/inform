@@ -558,6 +558,9 @@ void Hierarchy::establish(void) {
 @e CONSULT_FN_HL
 @e TESTS_HAP
 @e SCRIPT_HL
+@e TEST_MD_HL
+@e TEST_NAME_MD_HL
+@e TEST_LENGTH_MD_HL
 @e REQUIREMENTS_HL
 @e LOOP_OVER_SCOPES_HAP
 @e LOOP_OVER_SCOPE_FN_HL
@@ -590,7 +593,6 @@ void Hierarchy::establish(void) {
 @e VERB_DIRECTIVE_SLASH_HL
 @e VERB_DIRECTIVE_SPECIAL_HL
 @e VERB_DIRECTIVE_TOPIC_HL
-@e TESTSCRIPTSUB_HL
 @e COMMANDS_HAP
 @e VERB_DECLARATION_ARRAY_HL
 @e MISTAKEACTION_HL
@@ -625,6 +627,8 @@ void Hierarchy::establish(void) {
 			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
 		H_END
 		H_BEGIN_AP(TESTS_HAP,                 I"test", I"_test")
+			H_C_U(TEST_NAME_MD_HL,            I"^name")
+			H_C_U(TEST_LENGTH_MD_HL,          I"^length")
 			H_C_U(SCRIPT_HL,                  I"script")
 			H_C_U(REQUIREMENTS_HL,            I"requirements")
 		H_END
@@ -653,7 +657,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, grammar))
-		H_F_T(TESTSCRIPTSUB_HL,               I"TestScriptSub_fn", I"TestScriptSub")
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
 		H_END

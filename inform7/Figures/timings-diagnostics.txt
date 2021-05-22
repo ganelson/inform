@@ -1,25 +1,25 @@
 100.0% in inform7 run
-     56.5% in compilation to Inter
-         38.0% in //Sequence::undertake_queued_tasks//
+     55.6% in compilation to Inter
+         37.2% in //Sequence::undertake_queued_tasks//
           5.9% in //InferenceSubjects::emit_all//
-          3.4% in //MajorNodes::pre_pass//
+          3.5% in //MajorNodes::pre_pass//
           2.8% in //MajorNodes::pass_1//
           1.6% in //ImperativeDefinitions::assess_all//
-          0.4% in //ImperativeDefinitions::compile_first_block//
-          0.4% in //MajorNodes::pass_2//
-          0.4% in //RTKindConstructors::compile//
-          0.4% in //World::stage_V//
+          0.5% in //MajorNodes::pass_2//
+          0.5% in //RTKindConstructors::compile//
+          0.5% in //World::stage_V//
+          0.3% in //ImperativeDefinitions::compile_first_block//
           0.3% in //Sequence::undertake_queued_tasks//
           0.1% in //RTCommandGrammars::compile_all//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          1.8% not specifically accounted for
-     41.3% in running Inter pipeline
-         10.4% in inter step 7/14: consolidate-text
-         10.4% in step preparation
-          8.9% in inter step 2/14: link
+          1.7% not specifically accounted for
+     42.1% in running Inter pipeline
+         10.9% in inter step 7/14: consolidate-text
+         10.6% in step preparation
+          9.1% in inter step 2/14: link
           6.9% in inter step 14/14: generate inform6 -> auto.inf
-          0.8% in inter step 10/14: make-identifiers-unique
+          0.6% in inter step 10/14: make-identifiers-unique
           0.3% in inter step 11/14: reconcile-verbs
           0.3% in inter step 13/14: eliminate-redundant-operations
           0.3% in inter step 6/14: assimilate

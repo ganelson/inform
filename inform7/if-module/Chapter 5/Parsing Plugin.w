@@ -39,10 +39,7 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(UnderstandValueTokens::truth_state);
 		BENCH(UnderstandValueTokens::time);
 		if (debugging) {
-			BENCH(TestCommand::write_text);
-			BENCH(TestCommand::TestScriptSub_routine);
-		} else {
-			BENCH(TestCommand::TestScriptSub_stub_routine);
+			BENCH(RTTestCommand::compile);
 		}
 	}
 	if (stage == INTER3_CSEQ) {

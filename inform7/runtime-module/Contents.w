@@ -67,6 +67,7 @@ Chapter 5: Provision Submodules
 	Kind IDs
 	Actions
 	Named Action Patterns
+	Test Scripts
 
 Chapter 6: Completion Resources
 	Bibliographic Data
@@ -85,4 +86,3 @@ Chapter 7: Still Unsorted
 	Tokens Parsing Values
 	General Parsing Routines
 	Looping Over Scope
-	Test Scripts
