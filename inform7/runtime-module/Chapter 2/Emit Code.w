@@ -112,6 +112,66 @@ void EmitCode::val_symbol(kind *K, inter_symbol *S) {
 	Produce::val_symbol(Emit::tree(), K, S);
 }
 
+@h Either/or property testing.
+This compiles code for the test |N has prn|, that is, compiles a condition
+which is true if the value of |prn| for |N| is |true|, and correspondingly
+false for |false|.
+
+The preferred way to do this is to use the pair of functions |GetEitherOrProperty|
+or |SetEitherOrProperty|, defined in //BasicInformKit//, because that way
+suitable runtime problems are generated for mistaken accesses. But if we
+want the fastest possible access and know that it will be valid, we can use
+the following.
+
+=
+void EmitCode::test_if_iname_has_property(kind *K, inter_name *N, property *prn) {
+	EmitCode::test_if_symbol_has_property(K, InterNames::to_symbol(N), prn);
+}
+void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *prn) {
+	if (RTProperties::recommended_as_attribute(prn)) {
+		if (RTProperties::stored_in_negation(prn)) {
+			EmitCode::inv(NOT_BIP);
+			EmitCode::down();
+				EmitCode::inv(HAS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K, S);
+					EmitCode::val_iname(K_value,
+						RTProperties::iname(EitherOrProperties::get_negation(prn)));
+				EmitCode::up();
+			EmitCode::up();
+		} else {
+			EmitCode::inv(HAS_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K, S);
+				EmitCode::val_iname(K_value, RTProperties::iname(prn));
+			EmitCode::up();
+		}
+	} else {
+		if (RTProperties::stored_in_negation(prn)) {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K, S);
+					EmitCode::val_iname(K_value,
+						RTProperties::iname(EitherOrProperties::get_negation(prn)));
+				EmitCode::up();
+				EmitCode::val_false();
+			EmitCode::up();
+		} else {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K, S);
+					EmitCode::val_iname(K_value, RTProperties::iname(prn));
+				EmitCode::up();
+				EmitCode::val_true();
+			EmitCode::up();
+		}
+	}
+}
+
 @h Casts.
 These are value conversions from one kind to another. In some simple cases,
 this can be achieved with an Inter |cast|:

@@ -136,8 +136,7 @@ int ActionsPlugin::complete_model(int stage) {
 @<Assert the Inter action-bitmap property@> =
 	if ((K_room == NULL) ||
 		(InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE)) {
-		instance *I = InstanceSubjects::to_instance(subj);
-		parse_node *S = RTPropertyValues::compile_action_bitmap_property(I);
+		parse_node *S = RTActionBitmaps::compile_action_bitmap_property(subj);
 		ValueProperties::assert(P_action_bitmap, subj, S, CERTAIN_CE);
 	}
 

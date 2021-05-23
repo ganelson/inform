@@ -76,11 +76,13 @@ Chapter 6: Completion Resources
 	Bibliographic Data
 	The Player
 	The Map
+	Property Permissions
+	Property Values
 	Name Properties
 	Parse Name Properties
+	Action Bitmap Property
 
 Chapter 7: Still Unsorted
-	Emit Property Values
 	Action Patterns
 	Going
 	Command Grammars

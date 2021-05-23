@@ -30,6 +30,7 @@ typedef struct property_permission {
 	struct general_pointer pp_storage_data; /* how we'll compile this at run-time */
 	void *plugin_pp[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
 
+	struct property_permission_compilation_data compilation_data;
 	CLASS_DEFINITION
 } property_permission;
 
@@ -95,7 +96,8 @@ property_permission *PropertyPermissions::grant(inference_subject *infs, propert
 	new_pp->property_owner = infs;
 	new_pp->property_granted = prn;
 	new_pp->where_granted = current_sentence;
-	new_pp->pp_storage_data = InferenceSubjects::new_permission_granted(infs);
+	new_pp->compilation_data = RTPropertyPermissions::new_compilation_data(new_pp);
+	InferenceSubjects::new_permission_granted(infs, new_pp);
 
 @<Add the new permission to the owner's list@> =
 	linked_list *L = InferenceSubjects::get_permissions(infs);

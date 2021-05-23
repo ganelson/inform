@@ -22,6 +22,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *ranger_iname;
 	struct inter_name *debug_print_fn_iname;
 	struct package_request *usage_package;
+	int declaration_sequence_number;
 } kind_constructor_compilation_data;
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
@@ -42,6 +43,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.ranger_iname = NULL;
 	kccd.debug_print_fn_iname = NULL;
 	kccd.usage_package = NULL;
+	kccd.declaration_sequence_number = -1;
 	return kccd;
 }
 
@@ -427,6 +429,7 @@ int RTKindConstructors::is_object(kind_constructor *kc) {
 }
 
 void RTKindConstructors::compile(void) {
+	RTKindConstructors::assign_declaration_sequence_numbers();
 	kind_constructor *kc;
 	LOOP_OVER(kc, kind_constructor) {
 		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
@@ -574,6 +577,54 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata_from_number(pack, RUCKSACK_CLASS_MD_HL, 1);
 
 		@<Compile data support functions@>;
+		
+		if (kc->compilation_data.declaration_sequence_number >= 0)
+			Produce::annotate_i(RTKindDeclarations::iname(K), DECLARATION_ORDER_IANN,
+				(inter_ti) kc->compilation_data.declaration_sequence_number);
+	}
+}
+
+@
+
+=
+inter_ti kind_sequence_counter = 0;
+
+void RTKindConstructors::assign_declaration_sequence_numbers(void) {
+	int N = 0;
+	RTKindConstructors::assign_dsn_r(&N, KindSubjects::from_kind(K_object));
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor) {
+		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
+		kind *K = Kinds::base_construction(kc);
+		if ((RTKindDeclarations::base_represented_in_Inter(K)) &&
+			(KindSubjects::has_properties(K)) &&
+			(Kinds::Behaviour::is_object(K) == FALSE))
+			K->construct->compilation_data.declaration_sequence_number = N++;
+	}
+}
+
+void RTKindConstructors::assign_dsn_r(int *N, inference_subject *within) {
+	kind *K = KindSubjects::to_kind(within);
+	K->construct->compilation_data.declaration_sequence_number = (*N)++;
+	inference_subject *subj;
+	LOOP_OVER(subj, inference_subject)
+		if ((InferenceSubjects::narrowest_broader_subject(subj) == within) &&
+			(InferenceSubjects::is_a_kind_of_object(subj)))
+			RTKindConstructors::assign_dsn_r(N, subj);
+}
+
+@
+
+=
+void RTKindConstructors::compile_permissions(void) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor) {
+		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
+		kind *K = Kinds::base_construction(kc);
+		if (RTKindDeclarations::base_represented_in_Inter(K)) {
+			RTPropertyPermissions::emit_kind_permissions(K);
+			RTPropertyValues::compile_values_for_kind(K);
+		}
 	}
 }
 

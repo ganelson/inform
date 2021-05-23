@@ -148,7 +148,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",
 		-1, debugging, sequence_timer);
 	BENCH(RTKindDeclarations::declare_base_kinds)
-	BENCH(RTPropertyValues::allocate_attributes)
+	BENCH(RTProperties::allocate_attributes)
 	BENCH(Translations::traverse_for_late_namings)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
 	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world",
@@ -200,6 +200,7 @@ here, which only happens when special runs are made for compiler testing.
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
 		-1, debugging, sequence_timer);
 	BENCH(RTProperties::compile)
+	BENCH(RTKindConstructors::compile_permissions)
 	BENCH(InferenceSubjects::emit_all)
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)

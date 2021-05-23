@@ -23,8 +23,6 @@ inference_subject_family *KindSubjects::family(void) {
 			KindSubjects::new_permission_granted);
 
 		METHOD_ADD(kinds_family, EMIT_ELEMENT_INFS_MTID, RTKindIDs::emit_element_of_condition);
-		METHOD_ADD(kinds_family, EMIT_ALL_INFS_MTID, RTPropertyValues::emit_property_values_for_kinds);
-		METHOD_ADD(kinds_family, EMIT_ONE_INFS_MTID, RTPropertyValues::emit_pv_for_one_kind);
 	}
 	return kinds_family;
 }
@@ -113,9 +111,8 @@ concerning our kind.
 
 =
 void KindSubjects::new_permission_granted(inference_subject_family *f,
-	inference_subject *from, general_pointer *G) {
-	*G = STORE_POINTER_property_of_value_storage(
-		RTPropertyValues::get_storage());
+	inference_subject *from, property_permission *pp) {
+	RTPropertyPermissions::new_storage(pp);
 }
 
 @ When a property value comes along which might have an adjectival use -- say,

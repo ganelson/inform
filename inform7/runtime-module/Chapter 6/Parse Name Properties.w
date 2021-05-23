@@ -765,10 +765,10 @@ void ParseName::distinguish_visible_property(gpr_kit *kit, property *prn) {
 		EmitCode::down();
 			EmitCode::inv(AND_BIP);
 			EmitCode::down();
-				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
+				EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
 				EmitCode::inv(NOT_BIP);
 				EmitCode::down();
-					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
+					EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
 				EmitCode::up();
 			EmitCode::up();
 			EmitCode::code();
@@ -781,10 +781,10 @@ void ParseName::distinguish_visible_property(gpr_kit *kit, property *prn) {
 		EmitCode::down();
 			EmitCode::inv(AND_BIP);
 			EmitCode::down();
-				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
+				EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
 				EmitCode::inv(NOT_BIP);
 				EmitCode::down();
-					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
+					EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
 				EmitCode::up();
 			EmitCode::up();
 			EmitCode::code();
@@ -1048,7 +1048,7 @@ void ParseName::parse_visible_either_or(gpr_kit *kit, property *prn, int visibil
 		int j = 0; LOOP_THROUGH_WORDING(i, W) j++;
 		int ands = 0;
 		if (j > 0) { EmitCode::inv(AND_BIP); EmitCode::down(); ands++; }
-		RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
+		EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 		int k = 0;
 		LOOP_THROUGH_WORDING(i, W) {
 			if (k < j-1) { EmitCode::inv(AND_BIP); EmitCode::down(); ands++; }
@@ -1076,7 +1076,7 @@ void ParseName::parse_visible_either_or(gpr_kit *kit, property *prn, int visibil
 		EmitCode::down();
 			EmitCode::inv(AND_BIP);
 			EmitCode::down();
-				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
+				EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
 					EmitCode::call(cg->compilation_data.cg_prn_iname);

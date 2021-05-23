@@ -10,53 +10,71 @@ Each |instance| object contains this data:
 typedef struct instance_compilation_data {
 	struct package_request *instance_package;
 	struct inter_name *instance_iname;
+	int declaration_sequence_number;
 } instance_compilation_data;
 
-void RTInstances::new_compilation_data(instance *I) {
-	I->icd.instance_package = Hierarchy::local_package(INSTANCES_HAP);
+instance_compilation_data RTInstances::new_compilation_data(instance *I) {
+	instance_compilation_data icd;
+	icd.instance_package = Hierarchy::local_package(INSTANCES_HAP);
 	wording W = Nouns::nominative(I->as_noun, FALSE);
-	I->icd.instance_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL,
-		I->icd.instance_package, W);
-	NounIdentifiers::set_iname(I->as_noun, I->icd.instance_iname);
+	icd.instance_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL,
+		icd.instance_package, W);
+	icd.declaration_sequence_number = -1;
+	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
+	return icd;
 }
 
 inter_name *RTInstances::value_iname(instance *I) {
 	if (I == NULL) return NULL;
-	return I->icd.instance_iname;
+	return I->compilation_data.instance_iname;
 }
 
 package_request *RTInstances::package(instance *I) {
-	return I->icd.instance_package;
+	return I->compilation_data.instance_package;
 }
 
 @h Compilation.
-Instances form one of the families of inference subjects, so their compilation
-is triggered from there rather than as a step in //core: How To Compile//.
-
-In particular, the following method call on their family generates everything
-necessary. It looks tricky only because we need to compile instances in a
-set order: objects in containment-tree traversal order, then non-objects in
-more or less any order.
 
 =
 int RTInstances::compile_all(inference_subject_family *family, int ignored) {
+	@<Number instances in declaration order@>;
 	instance *I;
-	LOOP_THROUGH_INSTANCE_ORDERING(I)
-		@<Compile a package for I@>;
-	LOOP_OVER(I, instance)
-		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
-			@<Compile a package for I@>;
+	LOOP_OVER(I, instance) {
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "instance "); Instances::write(desc, I);
+		Sequence::queue(&RTInstances::compilation_agent, STORE_POINTER_instance(I), desc);
+	}
 	return TRUE;
 }
+
+@ The code here assigns each instance |I| a sequence number in such a way that
+the object instances come out in a well-founded order spatially -- that is,
+so that each object X is followed immediately by its children (i.e., the
+objects inside or on top of it).
+
+This will be used to annotate the Inter tree so that the declaration order
+can be recovered in code-generation, when it would otherwise be lost as
+the various instances scatter all over the tree.
+
+@<Number instances in declaration order@> =
+	instance *I;
+	int n = 0;
+	LOOP_THROUGH_INSTANCE_ORDERING(I)
+		I->compilation_data.declaration_sequence_number = n++;
+	LOOP_OVER(I, instance)
+		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
+			I->compilation_data.declaration_sequence_number = n++;
 
 @ This is really all metadata except for the actual instance declaration,
 using Inter's |INSTANCE_IST| instruction.
 
-@<Compile a package for I@> =
-	package_request *pack = I->icd.instance_package;
+=
+void RTInstances::compilation_agent(compilation_subtask *t) {
+	instance *I = RETRIEVE_POINTER_instance(t->data);
+	package_request *pack = I->compilation_data.instance_package;
 	Hierarchy::apply_metadata_from_wording(pack, INSTANCE_NAME_MD_HL,
 		Nouns::nominative(I->as_noun, FALSE));
-	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->icd.instance_iname);
+	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
 	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL, pack);
 	kind *K = Instances::to_kind(I);
 	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
@@ -82,12 +100,22 @@ using Inter's |INSTANCE_IST| instruction.
 	}
 
 	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), I->enumeration_index);
-	RTPropertyValues::emit_instance_permissions(I);
-	RTPropertyValues::emit_subject(Instances::as_subject(I));
+	if (I->compilation_data.declaration_sequence_number >= 0)
+		Produce::annotate_i(RTInstances::value_iname(I), DECLARATION_ORDER_IANN,
+			(inter_ti) I->compilation_data.declaration_sequence_number);
+	RTPropertyPermissions::compile_permissions_for_instance(I);
+	RTPropertyValues::compile_values_for_instance(I);
+
+	if (Kinds::Behaviour::is_object(Instances::to_kind(I))) {
+		int AC = Spatial::get_definition_depth(I);
+		if (AC > 0) Produce::annotate_i(RTInstances::value_iname(I), ARROW_COUNT_IANN,
+			(inter_ti) AC);
+	}
 
 	RTRegionInstances::compile_extra(I);
 	RTBackdropInstances::compile_extra(I);
 	RTScenes::compile_extra(I);
+}
 
 @h Condition element.
 This compiles a test of whether or not |t0_s| is equal to an instance.

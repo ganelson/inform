@@ -127,8 +127,8 @@ a go-between.
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InstanceSubjects::new_permission_granted</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">G</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">G</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STORE_POINTER_property_of_value_storage</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTPropertyValues::get_storage</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">property_permission</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pp</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RTPropertyPermissions::new_storage</span><span class="plain-syntax">(</span><span class="identifier-syntax">pp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InstanceSubjects::make_adj_const_domain</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">family</span><span class="plain-syntax">,</span>

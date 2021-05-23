@@ -404,20 +404,18 @@ int InferenceSubjects::get_default_certainty(inference_subject *infs) {
 
 @ In general property permissions work just as well whatever subject is getting
 the new property, but the following is called to give the subject a chance to
-react. It should return a general pointer to any extra data it wants to attach
-to the permission, or |NULL_GENERAL_POINTER| if it has nothing to add.
+react: for example by adding some runtime storage data.
 
 @e NEW_PERMISSION_GRANTED_INFS_MTID
 
 =
 VOID_METHOD_TYPE(NEW_PERMISSION_GRANTED_INFS_MTID, inference_subject_family *f,
-	inference_subject *infs, general_pointer *G)
+	inference_subject *infs, property_permission *pp)
 
-general_pointer InferenceSubjects::new_permission_granted(inference_subject *infs) {
+void InferenceSubjects::new_permission_granted(inference_subject *infs,
+	property_permission *pp) {
 	if (infs == NULL) internal_error("null INFS");
-	general_pointer G = NULL_GENERAL_POINTER;
-	VOID_METHOD_CALL(infs->infs_family, NEW_PERMISSION_GRANTED_INFS_MTID, infs, &G);
-	return G;
+	VOID_METHOD_CALL(infs->infs_family, NEW_PERMISSION_GRANTED_INFS_MTID, infs, pp);
 }
 
 @ Suppose there is an instance, such as "green", belonging to a kind of

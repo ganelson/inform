@@ -358,7 +358,7 @@ turn by turn.
 			} else {
 				EmitCode::val_number(0);
 			}
-			RTPropertyValues::emit_has_property(K_value, t_0_s, prn);
+			EmitCode::test_if_symbol_has_property(K_value, t_0_s, prn);
 		EmitCode::up();
 		EmitCode::code();
 		EmitCode::down();

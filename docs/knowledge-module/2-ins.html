@@ -127,11 +127,11 @@ hierarchy. See <a href="2-ins.html#SP10" class="internal">Instances::to_kind</a>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">enumeration_index</span><span class="plain-syntax">; </span><span class="comment-syntax"> within each non-object kind, instances are counted from 1</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_index_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">iid</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../index-module/2-ins.html" class="internal">Instances (in index)</a>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">icd</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../runtime-module/5-ins.html" class="internal">Instances (in runtime)</a>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../runtime-module/5-ins.html" class="internal">Instances (in runtime)</a>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">instance</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure instance is accessed in 2/iaa, 2/pfi, 2/nv, 3/ep, 3/epa and here.</li></ul>
+<ul class="endnotetexts"><li>The structure instance is accessed in 2/iaa, 2/pfi, 2/nv, 3/prp, 3/ep, 3/epa, 3/msr, 4/pp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We record the one most recently made:
 </p>
 
@@ -190,6 +190,7 @@ more specific than "object", we nevertheless make it just "object" for now.
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_subject</span><span class="plain-syntax"> = </span><a href="4-is2.html#SP1" class="function-link"><span class="function-syntax">InstanceSubjects::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-pfi.html#SP1" class="function-link"><span class="function-syntax">InstancesPreform::create_as_noun</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-ins.html#SP11" class="function-link"><span class="function-syntax">Instances::set_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTInstances::new_compilation_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ins.html#SP4">&#167;4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>The values in an enumerated kind such as our perpetual "colour" example
@@ -204,7 +205,7 @@ the same object may be thing number 17 but vehicle number 3 &mdash; and secondly
 because we won't know the exact kind of objects until much later on; for now
 the only thing we are sure of is that they are indeed objects. Enumeration
 for objects within kinds is certainly useful, but it's harder to do and will
-be done later on: see <a href="../runtime-module/7-ic.html" class="internal">Instance Counting (in runtime)</a>.
+be done later on: see <a href="../runtime-module/2-ic.html" class="internal">Instance Counting (in runtime)</a>.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the new instance to its enumeration</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>

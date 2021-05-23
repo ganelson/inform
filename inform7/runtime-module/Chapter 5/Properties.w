@@ -161,7 +161,6 @@ void RTProperties::compile(void) {
 		package_request *pack = RTProperties::package(prn);
 		inter_name *iname = RTProperties::iname(prn);
 		@<Declare the property to Inter@>;
-		@<Give it permissions@>;
 		@<Compile the property name metadata@>;
 		@<Compile the property ID@>;
 		@<Annotate the property iname@>;
@@ -170,16 +169,6 @@ void RTProperties::compile(void) {
 
 @<Declare the property to Inter@> =
 	Emit::property(iname, K);
-
-@<Give it permissions@> =
-	property_permission *pp;
-	LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
-		inference_subject *subj = pp->property_owner;
-		if (subj == NULL) internal_error("unowned property");
-		kind *K = KindSubjects::to_kind(subj);
-		if (K) Emit::permission(prn, K, RTPropertyValues::annotate_table_storage(pp));
-	}
-	if (prn->Inter_level_only) Emit::permission(prn, K_object, NULL);
 
 @<Compile the property name metadata@> =
 	if (Wordings::nonempty(prn->name))
@@ -223,7 +212,7 @@ these slots (if indeed they exists); but it can use annotations to provide a
 hint to the code-generator -- basically saying, "if you have an attribute free,
 why not use it on this?"
 
-Inform makes this recommendation only for a few low-level properties which need
+Inform makes this recommendation explicitly for a few properties which need
 to run quickly and with low memory usage.
 
 =
@@ -239,6 +228,45 @@ void RTProperties::recommend_storing_as_attribute(property *prn, int state) {
 	if (EitherOrProperties::get_negation(prn))
 		EitherOrProperties::get_negation(prn)->compilation_data.implemented_as_attribute = state;
 }
+
+@ Once any special cases have been given attribute slots, the remaining slots
+are then handed out as follows.
+
+=
+void RTProperties::allocate_attributes(void) {
+	int slots_given_away = 0;
+	property *prn;
+	LOOP_OVER(prn, property) {
+		if ((Properties::is_either_or(prn)) &&
+			(RTProperties::stored_in_negation(prn) == FALSE)) {
+			int make_attribute = NOT_APPLICABLE;
+			@<Any either/or property which some value can hold is ineligible@>;
+			@<An either/or property translated to an existing attribute must be chosen@>;
+			@<Otherwise give away attribute slots on a first-come-first-served basis@>;
+			RTProperties::recommend_storing_as_attribute(prn, make_attribute);
+		}
+	}
+}
+
+@<Any either/or property which some value can hold is ineligible@> =
+	property_permission *pp;
+	LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
+		inference_subject *infs = PropertyPermissions::get_subject(pp);
+		if ((InferenceSubjects::is_an_object(infs) == FALSE) &&
+			(InferenceSubjects::is_a_kind_of_object(infs) == FALSE))
+			make_attribute = FALSE;
+	}
+
+@<An either/or property translated to an existing attribute must be chosen@> =
+	if (RTProperties::has_been_translated(prn)) make_attribute = TRUE;
+
+@<Otherwise give away attribute slots on a first-come-first-served basis@> =
+	if (make_attribute == NOT_APPLICABLE) {
+		if (slots_given_away++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
+			make_attribute = TRUE;
+		else
+			make_attribute = FALSE;
+	}
 
 @h Non-typesafe 0.
 When a property is used to store certain forms of relation, it then needs

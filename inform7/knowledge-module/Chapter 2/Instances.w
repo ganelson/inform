@@ -42,7 +42,7 @@ typedef struct instance {
 	int enumeration_index; /* within each non-object kind, instances are counted from 1 */
 
 	struct instance_index_data iid; /* see //index: Instances// */
-	struct instance_compilation_data icd; /* see //runtime: Instances// */
+	struct instance_compilation_data compilation_data; /* see //runtime: Instances// */
 	CLASS_DEFINITION
 } instance;
 
@@ -94,6 +94,7 @@ more specific than "object", we nevertheless make it just "object" for now.
 	I->as_subject = InstanceSubjects::new(I, K);
 	InstancesPreform::create_as_noun(I, K, W);
 	Instances::set_kind(I, K);
+	I->compilation_data = RTInstances::new_compilation_data(I);
 
 @ The values in an enumerated kind such as our perpetual "colour" example
 are numbered 1, 2, 3, ..., in order of creation. This is where we assign
