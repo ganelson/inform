@@ -22,6 +22,7 @@ Chapter 2: Emission
 	The Heap
 	Default Values
 	Equality Schemas
+	Instance Counting
 	Kind Declarations
 	Showme Command
 	Here, Nowhere and Everywhere
@@ -80,7 +81,6 @@ Chapter 6: Completion Resources
 
 Chapter 7: Still Unsorted
 	Emit Property Values
-	Instance Counting
 	Action Patterns
 	Going
 	Command Grammars

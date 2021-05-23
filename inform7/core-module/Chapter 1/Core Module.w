@@ -20,7 +20,7 @@ void CoreModule::start(void) {
 	core_plugin = PluginManager::new(NULL, I"core", NULL);
 	PluginManager::make_permanently_active(core_plugin);
 	naming_plugin = PluginManager::new(&Naming::start, I"naming", core_plugin);
-	counting_plugin = PluginManager::new(&PL::Counting::start, I"instance counting", core_plugin);
+	counting_plugin = PluginManager::new(&InstanceCounting::start, I"instance counting", core_plugin);
 
 	Log::declare_aspect(TASK_QUEUE_DA, L"task queue", FALSE, FALSE);
 

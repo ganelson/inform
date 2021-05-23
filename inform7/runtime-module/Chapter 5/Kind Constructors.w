@@ -14,6 +14,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *instance_GPR_iname;
 	struct inter_name *first_instance_iname;
 	struct inter_name *next_instance_iname;
+	struct inter_name *instance_count_iname;
 	struct inter_name *pr_iname;
 	struct inter_name *inc_iname;
 	struct inter_name *dec_iname;
@@ -33,6 +34,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.instance_GPR_iname = NULL;
 	kccd.first_instance_iname = NULL;
 	kccd.next_instance_iname = NULL;
+	kccd.instance_count_iname = NULL;
 	kccd.pr_iname = NULL;
 	kccd.inc_iname = NULL;
 	kccd.dec_iname = NULL;
@@ -99,17 +101,50 @@ inter_name *RTKindConstructors::list_iname(kind_constructor *kc) {
 void RTKindConstructors::set_list_iname(kind_constructor *kc, inter_name *iname) {
 	kc->compilation_data.list_iname = iname;
 }
-inter_name *RTKindConstructors::first_instance_iname(kind_constructor *kc) {
+
+inter_name *RTKindConstructors::first_instance_iname(kind *K) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.first_instance_iname == NULL)
+		kc->compilation_data.first_instance_iname =
+			Hierarchy::derive_iname_in(FIRST_INSTANCE_HL,
+				RTKindDeclarations::iname(K), RTKindConstructors::package(kc));
 	return kc->compilation_data.first_instance_iname;
 }
-void RTKindConstructors::set_first_instance_iname(kind_constructor *kc, inter_name *iname) {
-	kc->compilation_data.first_instance_iname = iname;
-}
-inter_name *RTKindConstructors::next_instance_iname(kind_constructor *kc) {
+
+inter_name *RTKindConstructors::next_instance_iname(kind *K) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.next_instance_iname == NULL)
+		kc->compilation_data.next_instance_iname =
+			Hierarchy::derive_iname_in(NEXT_INSTANCE_HL,
+				RTKindDeclarations::iname(K), RTKindConstructors::package(kc));
 	return kc->compilation_data.next_instance_iname;
 }
-void RTKindConstructors::set_next_instance_iname(kind_constructor *kc, inter_name *iname) {
-	kc->compilation_data.next_instance_iname = iname;
+
+inter_name *RTKindConstructors::instance_count_iname(kind *K) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.instance_count_iname == NULL) {
+		int N = Kinds::Behaviour::get_range_number(K), hl = -1;
+		switch (N) {
+			case 1: hl = COUNT_INSTANCE_1_HL; break;
+			case 2: hl = COUNT_INSTANCE_2_HL; break;
+			case 3: hl = COUNT_INSTANCE_3_HL; break;
+			case 4: hl = COUNT_INSTANCE_4_HL; break;
+			case 5: hl = COUNT_INSTANCE_5_HL; break;
+			case 6: hl = COUNT_INSTANCE_6_HL; break;
+			case 7: hl = COUNT_INSTANCE_7_HL; break;
+			case 8: hl = COUNT_INSTANCE_8_HL; break;
+			case 9: hl = COUNT_INSTANCE_9_HL; break;
+			case 10: hl = COUNT_INSTANCE_10_HL; break;
+		}
+		if (hl == -1)
+			kc->compilation_data.instance_count_iname =
+				Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKindDeclarations::iname(K),
+					RTKindConstructors::kind_package(K));
+		else
+			kc->compilation_data.instance_count_iname =
+				Hierarchy::make_iname_in(hl, RTKindConstructors::kind_package(K));
+	}
+	return kc->compilation_data.instance_count_iname;
 }
 
 @ Convenient storage for some names.

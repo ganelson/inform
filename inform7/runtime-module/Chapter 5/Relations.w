@@ -1160,10 +1160,10 @@ this is done by the function |RTRelations::relation_range| (below).
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 
 	if ((Kinds::Behaviour::is_subkind_of_object(left_kind)) && (left_count > 0)) {
-		EmitArrays::iname_entry(PL::Counting::instance_count_property_symbol(left_kind));
+		EmitArrays::iname_entry(InstanceCounting::IK_count_property(left_kind));
 	} else EmitArrays::numeric_entry(0);
 	if ((Kinds::Behaviour::is_subkind_of_object(right_kind)) && (right_count > 0)) {
-		EmitArrays::iname_entry(PL::Counting::instance_count_property_symbol(right_kind));
+		EmitArrays::iname_entry(InstanceCounting::IK_count_property(right_kind));
 	} else EmitArrays::numeric_entry(0);
 
 	EmitArrays::numeric_entry((inter_ti) left_count);

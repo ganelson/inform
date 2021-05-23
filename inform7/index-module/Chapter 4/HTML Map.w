@@ -893,7 +893,7 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 		WRITE_TO(tool_tip, "title=\"");
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
-			if (PL::Counting::instance_count(I, K_direction) == exit) {
+			if (InstanceCounting::IK_count(I, K_direction) == exit) {
 				WRITE_TO(tool_tip, "%+I", I);
 				break;
 			}

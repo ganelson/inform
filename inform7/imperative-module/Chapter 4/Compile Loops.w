@@ -216,7 +216,7 @@ performance.
 int CompileLoops::schema(i6_schema *sch, kind *K) {
 	if (K == NULL) return FALSE;
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		if (PL::Counting::optimise_loop(sch, K) == FALSE)
+		if (InstanceCounting::optimise_loop(sch, K) == FALSE)
 			Calculus::Schemas::modify(sch, "objectloop (*1 ofclass %n)",
 				RTKindDeclarations::iname(K));
 		return TRUE;

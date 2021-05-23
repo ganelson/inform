@@ -186,8 +186,8 @@ one copy of this than to have to construct it frequently at runtime.
 not in creation order, as a simple |LOOP_OVER_INSTANCES| would have done.
 
 @<Compile entries for a kind of object@> =
-	instance *I = PL::Counting::next_instance_of(NULL, K);
+	instance *I = InstanceCounting::next_in_IK_sequence(NULL, K);
 	while (I) {
 		EmitArrays::iname_entry(RTInstances::value_iname(I));
-		I = PL::Counting::next_instance_of(I, K);
+		I = InstanceCounting::next_in_IK_sequence(I, K);
 	}
