@@ -62,7 +62,7 @@ void RTNamedActionPatterns::compilation_agent(compilation_subtask *t) {
 		current_sentence = nape->where_decided;
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			RTActionPatterns::emit_pattern_match(ap, TRUE);
+			RTActionPatterns::compile_pattern_match_actorless(ap);
 			EmitCode::code();
 			EmitCode::down();
 				EmitCode::rtrue();

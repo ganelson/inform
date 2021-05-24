@@ -1,4 +1,4 @@
-[RTGoing::] Going.
+[RTGoing::] Matching Going Action Patterns.
 
 Tweaks to compiling APs for the going action.
 
@@ -25,7 +25,7 @@ int RTGoing::set_pattern_match_requirements(action_pattern *ap, int *cpm, int ne
 	return FALSE;
 }
 
-int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap, int cpmc) {
+int RTGoing::compile_pattern_match_clause(action_pattern *ap, int cpmc) {
 	switch (cpmc) {
 		case NOWHERE_CPMC:
 			EmitCode::inv(EQ_BIP);
@@ -44,7 +44,7 @@ int RTGoing::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
 			return TRUE;
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
-			RTActionPatterns::compile_pattern_match_clause(VH,
+			RTActionPatterns::compile_pattern_match_clause(
 				TemporaryVariables::from_nve(
 					RTVariables::nve_from_mstack(GoingPlugin::id(), 1, TRUE),
 					K_object),

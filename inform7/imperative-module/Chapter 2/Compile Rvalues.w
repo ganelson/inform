@@ -251,15 +251,15 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 	}
 	if (Kinds::eq(K, K_description_of_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(value);
-		RTActionPatterns::compile_pattern_match(VH, ap, FALSE);
+		RTActionPatterns::compile_pattern_match(ap);
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(value);
 		if (CompileValues::compiling_in_constant_mode()) {
-			RTActionPatterns::as_stored_action(VH, ea);
+			Emit::holster_iname(VH, StoredActionLiterals::small_block(ea));
 		} else {
-			RTActionPatterns::emit_try(ea, TRUE);
+			RTActionTries::compile_try(ea, TRUE);
 		}
 		return TRUE;
 	}

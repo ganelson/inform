@@ -443,7 +443,7 @@ int RTRules::actions_compile_test_tail(id_body *idb, rule *R) {
 @<Compile an action test head@> =
 	EmitCode::inv(IFELSE_BIP);
 	EmitCode::down();
-		RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
+		RTActionPatterns::compile_pattern_match_actorless(ActionRules::get_ap(phrcd));
 		EmitCode::code();
 		EmitCode::down();
 
@@ -460,9 +460,9 @@ int RTRules::actions_compile_test_tail(id_body *idb, rule *R) {
 	EmitCode::inv(IFELSE_BIP);
 	EmitCode::down();
 		if (ActionRules::get_never_test_actor(phrcd))
-			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
+			RTActionPatterns::compile_pattern_match_actorless(ActionRules::get_ap(phrcd));
 		else
-			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), FALSE);
+			RTActionPatterns::compile_pattern_match(ActionRules::get_ap(phrcd));
 		EmitCode::code();
 		EmitCode::down();
 

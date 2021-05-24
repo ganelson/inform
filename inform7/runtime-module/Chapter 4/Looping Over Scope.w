@@ -54,10 +54,9 @@ void LoopingOverScope::compilation_agent(compilation_subtask *t) {
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		CompileConditions::begin();
-		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
 			parse_node *lv_sp = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, it_lv);
-			RTActionPatterns::compile_pattern_match_clause_inner(&VH,
+			RTActionPatterns::compile_pattern_match_clause_inner(
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
 			EmitCode::val_false();

@@ -744,7 +744,7 @@ previously by a <span class="extract"><span class="extract-syntax">PARSE_AP_CLAU
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ACT_ON_ANL_ENTRY_OPTIONS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry_options</span><span class="plain-syntax">, </span><span class="identifier-syntax">fail</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>Called from <a href="../runtime-module/7-ap.html" class="internal">Action Patterns (in runtime)</a> when assembling the requirement
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>Called from <a href="../runtime-module/7-map.html" class="internal">Matching Action Patterns (in runtime)</a> when assembling the requirement
 clauses for compiling a mattern match; this gives plugins a chance to act
 extra stipulations, which are not explicit in clauses already in the pattern.
 </p>
@@ -757,16 +757,15 @@ extra stipulations, which are not explicit in clauses already in the pattern.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpm</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed_apoc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>Called from <a href="../runtime-module/7-ap.html" class="internal">Action Patterns (in runtime)</a> when compiling any additional
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>Called from <a href="../runtime-module/7-map.html" class="internal">Matching Action Patterns (in runtime)</a> when compiling any additional
 requirements set by <span class="extract"><span class="extract-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span></span>.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_PATTERN_MATCH_CLAUSE_PLUG</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_pattern_match_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_PATTERN_MATCH_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_pattern_match_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_PATTERN_MATCH_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. Influencing index. </b>Called from <a href="../index-module/2-ipw.html" class="internal">Index Physical World (in index)</a> to add something (if it wishes)

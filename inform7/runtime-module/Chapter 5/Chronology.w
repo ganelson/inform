@@ -396,7 +396,7 @@ void Chronology::ahcr_agent(compilation_subtask *t) {
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		ActionPatterns::convert_to_present_tense(&(ahcr->historic_action)); /* prevent recursion */
-		RTActionPatterns::emit_pattern_match(&(ahcr->historic_action), FALSE);
+		RTActionPatterns::compile_pattern_match(&(ahcr->historic_action));
 		EmitCode::code();
 		EmitCode::down();
 			EmitCode::rtrue();

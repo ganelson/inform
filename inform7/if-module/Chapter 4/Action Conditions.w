@@ -76,7 +76,7 @@ action_pattern *AConditions::pattern_from_action_TEST_VALUE(parse_node *spec) {
 int AConditions::compile_condition(value_holster *VH, parse_node *spec) {
 	if (AConditions::is_action_TEST_VALUE(spec)) {
 		action_pattern *ap = AConditions::pattern_from_action_TEST_VALUE(spec);
-		RTActionPatterns::compile_pattern_match(VH, ap, FALSE);
+		RTActionPatterns::compile_pattern_match(ap);
 		return TRUE;
 	}
 	return FALSE;
