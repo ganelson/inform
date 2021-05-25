@@ -363,7 +363,7 @@ void CompileRvalues::compile_understanding(inter_ti *val1, inter_ti *val2, wordi
 				return;
 			}
 		command_grammar *cg = Understand::consultation(W);
-		inter_name *iname = RTCommandGrammars::consult_iname(cg);
+		inter_name *iname = RTCommandGrammars::get_consult_fn_iname(cg);
 		if (iname) {
 			cu = CREATE(cached_understanding);
 			cu->understanding_text = W;

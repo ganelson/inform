@@ -554,8 +554,6 @@ void Hierarchy::establish(void) {
 
 @e COND_TOKENS_HAP
 @e CONDITIONAL_TOKEN_FN_HL
-@e CONSULT_TOKENS_HAP
-@e CONSULT_FN_HL
 @e TESTS_HAP
 @e SCRIPT_HL
 @e TEST_MD_HL
@@ -564,9 +562,7 @@ void Hierarchy::establish(void) {
 @e REQUIREMENTS_HL
 @e MISTAKES_HAP
 @e MISTAKE_FN_HL
-@e NAMED_TOKENS_HAP
 @e NO_VERB_VERB_DEFINED_HL
-@e PARSE_LINE_FN_HL
 @e NOUN_FILTERS_HAP
 @e NOUN_FILTER_FN_HL
 @e PARSE_NAMES_HAP
@@ -599,6 +595,11 @@ void Hierarchy::establish(void) {
 @e MISTAKEACTION_HL
 @e MISTAKEACTIONSUB_HL
 
+@e COMMAND_GRAMMARS_HAP
+@e PROPERTY_GPR_FN_HL
+@e PARSE_LINE_FN_HL
+@e CONSULT_FN_HL
+
 @<Establish grammar@> =
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
 
@@ -624,9 +625,6 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(COND_TOKENS_HAP,           I"conditional_token", I"_conditional_token")
 			H_F_G(CONDITIONAL_TOKEN_FN_HL,    I"conditional_token_fn", I"Cond_Token")
 		H_END
-		H_BEGIN_AP(CONSULT_TOKENS_HAP,        I"consult_token", I"_consult_token")
-			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
-		H_END
 		H_BEGIN_AP(TESTS_HAP,                 I"test", I"_test")
 			H_C_U(TEST_NAME_MD_HL,            I"^name")
 			H_C_U(TEST_LENGTH_MD_HL,          I"^length")
@@ -635,9 +633,6 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(MISTAKES_HAP,              I"mistake", I"_mistake")
 			H_F_G(MISTAKE_FN_HL,              I"mistake_fn", I"Mistake_Token")
-		H_END
-		H_BEGIN_AP(NAMED_TOKENS_HAP,          I"named_token", I"_named_token")
-			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
 		H_END
 		H_BEGIN_AP(NOUN_FILTERS_HAP,          I"noun_filter", I"_noun_filter")
 			H_F_G(NOUN_FILTER_FN_HL,          I"filter_fn", I"Noun_Filter")
@@ -659,6 +654,11 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
+		H_END
+		H_BEGIN_AP(COMMAND_GRAMMARS_HAP,      I"command_grammar", I"_command_grammar")
+			H_F_G(PROPERTY_GPR_FN_HL,         I"either_or_GPR_fn", I"PRN_PN")
+			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
+			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
 		H_END
 		H_F_T(MISTAKEACTIONSUB_HL,            I"MistakeActionSub_fn", I"MistakeActionSub")
 		H_C_T(NO_VERB_VERB_DEFINED_HL,        I"NO_VERB_VERB_DEFINED")
@@ -949,7 +949,6 @@ void Hierarchy::establish(void) {
 @e PROPERTY_NAME_MD_HL
 @e PROPERTY_ID_HL
 @e PROPERTY_HL
-@e EITHER_OR_GPR_FN_HL
 
 @<Establish properties@> =
 	submodule_identity *properties = Packaging::register_submodule(I"properties");
@@ -959,7 +958,6 @@ void Hierarchy::establish(void) {
 			H_C_U(PROPERTY_NAME_MD_HL,  I"^name")
 			H_C_U(PROPERTY_ID_HL,             I"property_id")
 			H_C_T(PROPERTY_HL,                I"P")
-			H_F_G(EITHER_OR_GPR_FN_HL,        I"either_or_GPR_fn", I"PRN_PN")
 		H_END
 	H_END
 

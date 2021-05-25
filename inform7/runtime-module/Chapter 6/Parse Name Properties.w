@@ -1070,7 +1070,6 @@ void ParseName::parse_visible_either_or(gpr_kit *kit, property *prn, int visibil
 		EmitCode::up();
 	EmitCode::up();
 	if (cg) {
-		if (cg->compilation_data.cg_prn_iname == NULL) internal_error("no PRN iname");
 		@<Begin a PVP test@>;
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
@@ -1079,7 +1078,7 @@ void ParseName::parse_visible_either_or(gpr_kit *kit, property *prn, int visibil
 				EmitCode::test_if_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
-					EmitCode::call(cg->compilation_data.cg_prn_iname);
+					EmitCode::call(RTCommandGrammars::get_property_GPR_fn_iname(cg));
 					EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				EmitCode::up();
 			EmitCode::up();

@@ -96,7 +96,7 @@ inter_name *MistakeAction_iname = NULL;
 int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line *cgl) {
 	if (cgl->mistaken) {
 		if (MistakeAction_iname == NULL) internal_error("no MistakeAction yet");
-		EmitArrays::iname_entry(VERB_DIRECTIVE_RESULT_iname);
+		EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_RESULT_HL));
 		EmitArrays::iname_entry(MistakeAction_iname);
 		return TRUE;
 	}
@@ -305,7 +305,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 	token_values = 0;
 	for (i=0; i<2; i++) token_value_kinds[i] = NULL;
 
-	if (code_mode == FALSE) EmitArrays::iname_entry(VERB_DIRECTIVE_DIVIDER_iname);
+	if (code_mode == FALSE) EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_DIVIDER_HL));
 
 	inter_symbol *fail_label = NULL;
 
@@ -350,7 +350,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 	switch (cg_is) {
 		case CG_IS_COMMAND:
 			if (RTCommandGrammarLines::cgl_compile_result_of_mistake(gprk, cgl)) break;
-			EmitArrays::iname_entry(VERB_DIRECTIVE_RESULT_iname);
+			EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_RESULT_HL));
 			EmitArrays::iname_entry(RTActions::double_sharp(cgl->resulting_action));
 
 			if (cgl->reversed) {
@@ -364,7 +364,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 				kind *swap = token_value_kinds[0];
 				token_value_kinds[0] = token_value_kinds[1];
 				token_value_kinds[1] = swap;
-				EmitArrays::iname_entry(VERB_DIRECTIVE_REVERSE_iname);
+				EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_REVERSE_HL));
 			}
 
 			ActionSemantics::check_valid_application(cgl->resulting_action, token_values,
@@ -558,6 +558,10 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
 			EmitArrays::iname_entry(sgpr->sgpr_iname);
 			last_token_in_lexeme = TRUE;
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "slash GPR %d", sgpr->allocation_id);
+			Sequence::queue(&RTCommandGrammarLines::slash_GPR_agent,
+				STORE_POINTER_slash_gpr(sgpr), desc);
 		} else {
 			kind *grammar_token_kind =
 				RTCommandGrammarLines::compile_token(gprk, cgt, code_mode, jump_on_fail, consult_mode);
@@ -594,7 +598,8 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 					@<Jump to end of group@>;
 				}
 			} else {
-				if (last_token_in_lexeme == FALSE) EmitArrays::iname_entry(VERB_DIRECTIVE_SLASH_iname);
+				if (last_token_in_lexeme == FALSE)
+					EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_SLASH_HL));
 			}
 		}
 
@@ -616,21 +621,19 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 	EmitCode::up();
 
 @ =
-void RTCommandGrammarLines::compile_slash_gprs(void) {
-	slash_gpr *sgpr;
-	LOOP_OVER(sgpr, slash_gpr) {
-		packaging_state save = Functions::begin(sgpr->sgpr_iname);
-		gpr_kit gprk = GPRs::new_kit();
-		GPRs::add_original_var(&gprk);
-		GPRs::add_standard_vars(&gprk);
+void RTCommandGrammarLines::slash_GPR_agent(compilation_subtask *t) {
+	slash_gpr *sgpr = RETRIEVE_POINTER_slash_gpr(t->data);
+	packaging_state save = Functions::begin(sgpr->sgpr_iname);
+	gpr_kit gprk = GPRs::new_kit();
+	GPRs::add_original_var(&gprk);
+	GPRs::add_standard_vars(&gprk);
 
-		RTCommandGrammarLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
-		EmitCode::inv(RETURN_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		EmitCode::up();
-		Functions::end(save);
-	}
+	RTCommandGrammarLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+	EmitCode::up();
+	Functions::end(save);
 }
 
 @ This function looks through a CGL list and marks to suppress all those
@@ -1453,7 +1456,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
 								EmitCode::down();
 									EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-									EmitCode::val_iname(K_value, RTCommandGrammars::i6_token_as_iname(cg));
+									EmitCode::val_iname(K_value, RTCommandGrammars::get_cg_token_iname(cg));
 								EmitCode::up();
 							EmitCode::up();
 							EmitCode::inv(IF_BIP);
@@ -1483,7 +1486,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								EmitCode::up();
 							EmitCode::up();
 						} else {
-							EmitArrays::iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
+							EmitArrays::iname_entry(RTCommandGrammars::get_cg_token_iname(cg));
 						}
 						K = CommandGrammars::get_kind_matched(cg);
 					} else

@@ -82,7 +82,7 @@ command_grammar *CommandGrammars::cg_new(int cg_is) {
 	cg->where_cg_created = current_sentence;
 	cg->slashed = FALSE;
 	cg->determined = FALSE;
-	cg->compilation_data = RTCommandGrammars::new_compilation_data();
+	cg->compilation_data = RTCommandGrammars::new_compilation_data(cg);
 	return cg;
 }
 
@@ -252,7 +252,6 @@ command_grammar *CommandGrammars::new_named_token(wording W) {
 	if (cg == NULL) {
 		cg = CommandGrammars::cg_new(CG_IS_TOKEN);
 		cg->token_name = W;
-		RTCommandGrammars::new_CG_IS_TOKEN(cg, W);
 	}
 	return cg;
 }
@@ -397,7 +396,6 @@ command_grammar *CommandGrammars::for_prn(property *prn) {
 	command_grammar *cg = CommandGrammars::cg_new(CG_IS_PROPERTY_NAME);
 	EitherOrProperties::set_parsing_grammar(prn, cg);
 	cg->prn_understood = prn;
-	RTCommandGrammars::new_CG_IS_PROPERTY_NAME(cg, prn);
 	return cg;
 }
 
