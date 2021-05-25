@@ -30,7 +30,7 @@ void CompileAtoms::code_to_perform(int task, pcalc_prop *atom) {
 	int uses_av = FALSE;
 	for (int i=0; i<atom->arity; i++) {
 		parse_node *operand = Terms::constant_underlying(&(atom->terms[i]));
-		if (RTActionPatterns::is_an_action_variable(operand)) uses_av = TRUE;
+		if (CompileAtoms::is_an_action_variable(operand)) uses_av = TRUE;
 	}
 	if ((uses_av) && (Frames::used_for_past_tense()) && (problem_count == 0)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
@@ -118,3 +118,18 @@ before we can proceed.
 			internal_error("contraction of predicate applied to equality");
 	}
 	if (bp_to_assert == NULL) bp_to_assert = bp;
+
+@ The action variables will exist only if the actions plugin is active, and
+are just |actor|, |noun| and |second| at runtime:
+
+=
+int CompileAtoms::is_an_action_variable(parse_node *spec) {
+	nonlocal_variable *nlv;
+	if (spec == NULL) return FALSE;
+	if (Lvalues::get_storage_form(spec) != NONLOCAL_VARIABLE_NT) return FALSE;
+	nlv = Node::get_constant_nonlocal_variable(spec);
+	if (nlv == Inter_noun_VAR) return TRUE;
+	if (nlv == Inter_second_noun_VAR) return TRUE;
+	if (nlv == Inter_actor_VAR) return TRUE;
+	return FALSE;
+}

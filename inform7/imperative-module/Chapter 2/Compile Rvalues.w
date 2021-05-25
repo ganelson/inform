@@ -259,7 +259,7 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 		if (CompileValues::compiling_in_constant_mode()) {
 			Emit::holster_iname(VH, StoredActionLiterals::small_block(ea));
 		} else {
-			RTActionTries::compile_try(ea, TRUE);
+			CompileRvalues::compile_explicit_action(ea, TRUE);
 		}
 		return TRUE;
 	}
@@ -371,4 +371,67 @@ void CompileRvalues::compile_understanding(inter_ti *val1, inter_ti *val2, wordi
 			Emit::to_value_pair(val1, val2, iname);
 		}
 	}
+}
+
+@ Explicit actions can be compiled either as a "try" invocation or as the
+constant value of a stored action. Either way it calls the runtime function
+|TryAction|, for which see //WorldModelKit//; this function takes five
+arguments, plus an optional sixth for where to store rather than process the
+action.
+
+=
+void CompileRvalues::compile_explicit_action(explicit_action *ea, int as_value) {
+	parse_node *n = ea->first_noun; /* the noun */
+	parse_node *s = ea->second_noun; /* the second noun */
+	parse_node *a = ea->actor; /* the actor */
+
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(n, K_understanding)) &&
+		(<subject-pronoun>(Node::get_text(n)) == FALSE))
+		n = Rvalues::from_wording(Node::get_text(n));
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(s, K_understanding)) &&
+		(<subject-pronoun>(Node::get_text(s)) == FALSE))
+		s = Rvalues::from_wording(Node::get_text(s));
+
+	action_name *an = ea->action;
+
+	int flag_bits = 0;
+	if (Kinds::eq(Specifications::to_kind(n), K_text)) flag_bits += 16;
+	if (Kinds::eq(Specifications::to_kind(s), K_text)) flag_bits += 32;
+	if (flag_bits > 0) TheHeap::ensure_basic_heap_present();
+
+	if (ea->request) flag_bits += 1;
+
+	EmitCode::call(Hierarchy::find(TRYACTION_HL));
+	EmitCode::down();
+		EmitCode::val_number((inter_ti) flag_bits);
+		if (a) CompileRvalues::compile_ea_parameter(a, K_object);
+		else EmitCode::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+		EmitCode::val_iname(K_action_name, RTActions::double_sharp(an));
+		if (n) CompileRvalues::compile_ea_parameter(n, ActionSemantics::kind_of_noun(an));
+		else EmitCode::val_number(0);
+		if (s) CompileRvalues::compile_ea_parameter(s, ActionSemantics::kind_of_second(an));
+		else EmitCode::val_number(0);
+		if (as_value) {
+			EmitCode::call(Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
+			EmitCode::down();
+				Frames::emit_new_local_value(K_stored_action);
+			EmitCode::up();
+		}
+	EmitCode::up();
+}
+
+@ Which requires the following. Note that if the action expects to see a
+|K_understanding|, then we typecheck in a way which will not cause an unwanted
+silent cast to |K_text|; but type-safety is not violated.
+
+=
+void CompileRvalues::compile_ea_parameter(parse_node *term, kind *required_kind) {
+	if ((K_understanding) && (Kinds::eq(required_kind, K_understanding))) {
+		kind *K = Specifications::to_kind(term);
+		if ((Kinds::compatible(K, K_understanding)) ||
+			(Kinds::compatible(K, K_text)))
+			required_kind = NULL;
+	}
+	if (Dash::check_value(term, required_kind))
+		CompileValues::to_code_val_of_kind(term, K_object);
 }

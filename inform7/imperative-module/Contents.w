@@ -16,6 +16,8 @@ Chapter 2: Values
 	Compile Rvalues
 	Compile Lvalues
 	Compile Conditions
+	Matching Action Patterns
+	Matching Going Action Patterns
 
 Chapter 3: Functions
 "Managing the compilation of Inter functions."

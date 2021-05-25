@@ -535,7 +535,7 @@ problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(supplied);
-		RTActionTries::compile_try(ea, FALSE);
+		CompileRvalues::compile_explicit_action(ea, FALSE);
 	} else {
 		EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		EmitCode::down();
@@ -569,7 +569,7 @@ problem messages are phrased differently if something goes wrong.
 		EmitCode::down();
 			EmitCode::val_true();
 		EmitCode::up();
-		RTActionTries::compile_try(ea, FALSE);
+		CompileRvalues::compile_explicit_action(ea, FALSE);
 		EmitCode::call(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
 		EmitCode::inv(PULL_BIP);
 		EmitCode::down();

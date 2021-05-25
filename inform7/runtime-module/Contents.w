@@ -82,10 +82,7 @@ Chapter 6: Completion Resources
 	Parse Name Properties
 	Action Bitmap Property
 
-Chapter 7: Still Unsorted
-	Action Tries
-	Matching Action Patterns
-	Matching Going Action Patterns
+Chapter 7: Command Grammar
 	Command Grammars
 	Command Grammar Lines
 	Noun Filter Tokens
