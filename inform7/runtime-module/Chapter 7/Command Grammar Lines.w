@@ -11,12 +11,36 @@ typedef struct cg_line_compilation_data {
 	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
 } cg_line_compilation_data;
 
-cg_line_compilation_data RTCommandGrammarLines::new_cd(cg_line *cg) {
+cg_line_compilation_data RTCommandGrammarLines::new_compilation_data(cg_line *cg) {
 	cg_line_compilation_data cglcd;
 	cglcd.suppress_compilation = FALSE;
 	cglcd.cond_token_iname = NULL;
 	cglcd.mistake_iname = NULL;
 	return cglcd;
+}
+
+inter_name *RTCommandGrammarLines::get_cond_token_iname(cg_line *cgl) {
+	if (cgl->compilation_data.cond_token_iname == NULL)
+		cgl->compilation_data.cond_token_iname =
+			Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL,
+				Hierarchy::completion_package(COND_TOKENS_HAP));
+	return cgl->compilation_data.cond_token_iname;
+}
+
+inter_name *RTCommandGrammarLines::get_mistake_iname(cg_line *cgl) {
+	if (cgl->compilation_data.mistake_iname == NULL)
+		cgl->compilation_data.mistake_iname =
+			Hierarchy::make_iname_in(MISTAKE_FN_HL,
+				Hierarchy::completion_package(MISTAKES_HAP));
+	return cgl->compilation_data.mistake_iname;
+}
+
+void RTCommandGrammarLines::compile_extras(void) {
+	cg_line *cgl;
+	LOOP_OVER(cgl, cg_line) {
+		RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cgl);
+		RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cgl);
+	}
 }
 
 @ These are grammar lines used in command CGs for commands which are accepted
@@ -40,16 +64,9 @@ I6 parsing is guaranteed to be the one set during the line causing
 the mistake.
 
 =
-void RTCommandGrammarLines::set_mistake(cg_line *cgl, wording MW) {
-	if (cgl->compilation_data.mistake_iname == NULL) {
-		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
-		cgl->compilation_data.mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
-	}
-}
-
 void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 	if (cgl->mistaken) {
-		packaging_state save = Functions::begin(cgl->compilation_data.mistake_iname);
+		packaging_state save = Functions::begin(RTCommandGrammarLines::get_mistake_iname(cgl));
 
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
@@ -84,9 +101,9 @@ void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 
 void RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
 	if (cgl->mistaken) {
-		if (cg_is == CG_IS_COMMAND) {
-			EmitArrays::iname_entry(cgl->compilation_data.mistake_iname);
-		} else
+		if (cg_is == CG_IS_COMMAND)
+			EmitArrays::iname_entry(RTCommandGrammarLines::get_mistake_iname(cgl));
+		else
 			internal_error("CGLs may only be mistaken in command grammar");
 	}
 }
@@ -166,10 +183,7 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 	if (CGLines::conditional(cgl)) {
 		current_sentence = cgl->where_grammar_specified;
 
-		package_request *PR = Hierarchy::local_package(COND_TOKENS_HAP);
-		cgl->compilation_data.cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
-
-		packaging_state save = Functions::begin(cgl->compilation_data.cond_token_iname);
+		packaging_state save = Functions::begin(RTCommandGrammarLines::get_cond_token_iname(cgl));
 
 		parse_node *spec = CGLines::get_understand_cond(cgl);
 		pcalc_prop *prop = cgl->understand_when_prop;
@@ -207,15 +221,14 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk, cg_line *cgl,
 	int cg_is, inter_symbol *current_label) {
 	if (CGLines::conditional(cgl)) {
-		if (cgl->compilation_data.cond_token_iname == NULL) internal_error("CGL cond token not ready");
 		if (cg_is == CG_IS_COMMAND) {
-			EmitArrays::iname_entry(cgl->compilation_data.cond_token_iname);
+			EmitArrays::iname_entry(RTCommandGrammarLines::get_cond_token_iname(cgl));
 		} else {
 			EmitCode::inv(IF_BIP);
 			EmitCode::down();
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
-					EmitCode::call(cgl->compilation_data.cond_token_iname);
+					EmitCode::call(RTCommandGrammarLines::get_cond_token_iname(cgl));
 					EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				EmitCode::up();
 				EmitCode::code();
@@ -337,7 +350,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, gprk->instance_s);
-				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
+				CompileValues::to_code_val(cgl->cgl_type.term[0].what);
 			EmitCode::up();
 			EmitCode::code();
 			EmitCode::down();
@@ -436,7 +449,7 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
-				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
+				CompileValues::to_code_val(cgl->cgl_type.term[0].what);
 			EmitCode::up();
 			EmitCode::inv(RETURN_BIP);
 			EmitCode::down();

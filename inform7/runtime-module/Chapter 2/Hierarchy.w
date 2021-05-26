@@ -562,7 +562,6 @@ void Hierarchy::establish(void) {
 @e REQUIREMENTS_HL
 @e MISTAKES_HAP
 @e MISTAKE_FN_HL
-@e NO_VERB_VERB_DEFINED_HL
 @e NOUN_FILTERS_HAP
 @e NOUN_FILTER_FN_HL
 @e PARSE_NAMES_HAP
@@ -599,6 +598,7 @@ void Hierarchy::establish(void) {
 @e PROPERTY_GPR_FN_HL
 @e PARSE_LINE_FN_HL
 @e CONSULT_FN_HL
+@e NO_VERB_VERB_DEFINED_HL
 
 @<Establish grammar@> =
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
@@ -622,9 +622,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(grammar))
-		H_BEGIN_AP(COND_TOKENS_HAP,           I"conditional_token", I"_conditional_token")
-			H_F_G(CONDITIONAL_TOKEN_FN_HL,    I"conditional_token_fn", I"Cond_Token")
-		H_END
 		H_BEGIN_AP(TESTS_HAP,                 I"test", I"_test")
 			H_C_U(TEST_NAME_MD_HL,            I"^name")
 			H_C_U(TEST_LENGTH_MD_HL,          I"^length")
@@ -654,14 +651,17 @@ void Hierarchy::establish(void) {
 		H_END
 		H_BEGIN_AP(COMMANDS_HAP,              I"command", I"_command")
 			H_F_G(VERB_DECLARATION_ARRAY_HL,  NULL, I"GV_Grammar")
+			H_C_T(NO_VERB_VERB_DEFINED_HL,    I"NO_VERB_VERB_DEFINED")
 		H_END
 		H_BEGIN_AP(COMMAND_GRAMMARS_HAP,      I"command_grammar", I"_command_grammar")
 			H_F_G(PROPERTY_GPR_FN_HL,         I"either_or_GPR_fn", I"PRN_PN")
 			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
 			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
 		H_END
+		H_BEGIN_AP(COND_TOKENS_HAP,           I"conditional_token", I"_conditional_token")
+			H_F_G(CONDITIONAL_TOKEN_FN_HL,    I"conditional_token_fn", I"Cond_Token")
+		H_END
 		H_F_T(MISTAKEACTIONSUB_HL,            I"MistakeActionSub_fn", I"MistakeActionSub")
-		H_C_T(NO_VERB_VERB_DEFINED_HL,        I"NO_VERB_VERB_DEFINED")
 	H_END
 
 @h Instances.

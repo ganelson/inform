@@ -580,6 +580,7 @@ void Rules::check_response_usages(void) {
 	if (c == 0) WRITE_TO(offers, "no lettered responses at all");
 	TEMPORARY_TEXT(letter)
 	PUT_TO(letter, 'A'+l);
+	current_sentence = R->responses[l].used;
 	Problems::quote_source(1, R->responses[l].used);
 	Problems::quote_wording(2, R->name);
 	Problems::quote_stream(3, letter);

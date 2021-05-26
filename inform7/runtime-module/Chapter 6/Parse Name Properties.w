@@ -70,7 +70,7 @@ void ParseName::parser_agent(compilation_subtask *t) {
 	gpr_kit kit = GPRs::new_kit();
 	packaging_state save = Functions::begin(Name::get_parse_name_fn_iname(subj));
 	ParseName::compile_head(&kit, subj, TRUE);
-	RTCommandGrammars::cg_compile_parse_name_lines(&kit, cg);
+	RTCommandGrammars::compile_for_subject_GPR(&kit, cg);
 	ParseName::compile_tail(&kit);
 	Functions::end(save);
 }

@@ -166,8 +166,8 @@ command_grammar *CommandGrammars::for_command_verb_creating(wording W) {
 	cg = CommandGrammars::cg_new(CG_IS_COMMAND);
 	cg->command = W;
 	if (Wordings::empty(W)) {
-		RTCommandGrammars::create_no_verb_verb(cg);
 		LOGIF(GRAMMAR, "CG%d is the no verb verb\n", cg->allocation_id);
+		global_compilation_settings.no_verb_verb_exists = TRUE;
 	} else {
 		LOGIF(GRAMMAR, "CG%d is the command verb %W\n", cg->allocation_id, W);
 	}

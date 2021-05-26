@@ -66,7 +66,7 @@ cg_line *CGLines::new(wording W, action_name *ac,
 	cgl->mistaken = FALSE;
 	cgl->mistake_response_text = EMPTY_WORDING;
 
-	cgl->compilation_data = RTCommandGrammarLines::new_cd(cgl);
+	cgl->compilation_data = RTCommandGrammarLines::new_compilation_data(cgl);
 	cgl->indexing_data = CommandsIndex::new_id(cgl);
 
 	if (ac) Actions::add_gl(ac, cgl);
@@ -237,7 +237,6 @@ but only in order to print nicely worded rejections.
 void CGLines::set_mistake(cg_line *cgl, wording MW) {
 	cgl->mistaken = TRUE;
 	cgl->mistake_response_text = MW;
-	RTCommandGrammarLines::set_mistake(cgl, MW);
 }
 
 @h Single word optimisation.
