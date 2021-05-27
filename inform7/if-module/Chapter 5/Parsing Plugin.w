@@ -31,7 +31,6 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(Understand::traverse);
 	}
 	if (stage == INTER2_CSEQ) {
-		BENCH(RTCommandGrammarLines::MistakeActionSub_routine);
 		BENCH(CommandGrammars::prepare);
 		BENCH(UnderstandValueTokens::number);
 		BENCH(UnderstandValueTokens::truth_state);
@@ -45,9 +44,9 @@ int ParsingPlugin::production_line(int stage, int debugging,
 	}
 	if (stage == INTER4_CSEQ) {
 		BENCH(CommandGrammars::prepare);
+		BENCH(RTCommandGrammarLines::MistakeActionSub);
 		BENCH(RTCommandGrammars::compile_all);
 		BENCH(UnderstandFilterTokens::compile);
-		BENCH(RTCommandGrammarLines::compile_extras);
 	}
 	return FALSE;
 }

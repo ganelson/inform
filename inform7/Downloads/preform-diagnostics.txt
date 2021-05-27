@@ -7714,7 +7714,7 @@
 
 <s-condition> internal hits 1093/2190 nti 7 constraint (none) extremes [1, infinity)
 
-<s-non-action-condition> internal hits 4/8 nti 8 constraint (none) extremes [1, infinity)
+<s-non-action-condition> internal hits 8/16 nti 8 constraint (none) extremes [1, infinity)
 
 <s-type-expression> internal hits 1962/5224 nti 9 constraint (none) extremes [1, infinity)
 
@@ -9526,10 +9526,10 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<understand-condition> hits 4/8 nti 26 constraint (none) extremes [1, infinity)
+<understand-condition> hits 8/16 nti 26 constraint (none) extremes [1, infinity)
     English:
         <s-non-action-condition> 
-          (hits 4/4) (matched: 'the player is not yourself') constraint (none) extremes [1, infinity)
+          (hits 8/8) (matched: 'the player is not yourself') constraint (none) extremes [1, infinity)
         <s-condition> 
           constraint (none) extremes [1, infinity)
         {...} 

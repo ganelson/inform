@@ -1,13 +1,15 @@
 [RTCommandGrammarLines::] Command Grammar Lines.
 
-Runtime support for CGLs.
+Compiling lines of command parser grammar.
 
-@
+@h Compilation data.
+Each |cg_line| object contains this data:
 
 =
 typedef struct cg_line_compilation_data {
 	int suppress_compilation; /* has been compiled in a single I6 grammar token already? */
 	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
+	int cond_token_compiled;
 	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
 } cg_line_compilation_data;
 
@@ -15,10 +17,12 @@ cg_line_compilation_data RTCommandGrammarLines::new_compilation_data(cg_line *cg
 	cg_line_compilation_data cglcd;
 	cglcd.suppress_compilation = FALSE;
 	cglcd.cond_token_iname = NULL;
+	cglcd.cond_token_compiled = FALSE;
 	cglcd.mistake_iname = NULL;
 	return cglcd;
 }
 
+@ =
 inter_name *RTCommandGrammarLines::get_cond_token_iname(cg_line *cgl) {
 	if (cgl->compilation_data.cond_token_iname == NULL)
 		cgl->compilation_data.cond_token_iname =
@@ -35,92 +39,82 @@ inter_name *RTCommandGrammarLines::get_mistake_iname(cg_line *cgl) {
 	return cgl->compilation_data.mistake_iname;
 }
 
-void RTCommandGrammarLines::compile_extras(void) {
-	cg_line *cgl;
-	LOOP_OVER(cgl, cg_line) {
-		RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cgl);
-		RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cgl);
-	}
-}
-
-@ These are grammar lines used in command CGs for commands which are accepted
-but only in order to print nicely worded rejections. A number of schemes
-were tried for this, for instance producing parser errors and setting |pe|
-to some high value, but the method now used is for a mistaken line to
-produce a successful parse at the I6 level, resulting in the (I6 only)
-action |##MistakeAction|. The tricky part is to send information to the
-I6 action routine |MistakeActionSub| indicating what the mistake was,
-exactly: we do this by including, in the I6 grammar, a token which
-matches empty text and returns a "preposition", so that it has no
-direct result, but which also sets a special global variable as a
-side-effect. Thus a mistaken line "act [thing]" comes out as something
-like:
-
-|* Mistake_Token_12 'act' noun -> MistakeAction|
-
-Since the I6 parser accepts the first command which matches, and since
+@h Compilation.
+"Mistaken" lines are command which can be matched, but only in order to
+print nicely worded rejections. A number of implementations were tried for
+this, for instance producing parser errors and setting |pe| to some high
+value, but the method now used is for a mistaken line to produce a successful
+parse but result in the (fake) action |##MistakeAction|. The hard part is to
+send information to the processing function for that action, |MistakeActionSub|,
+indicating what the mistake was, exactly. We do this by beginning the line
+with an additional token matching the empty text (and thus, always matching)
+but with the side-effect of setting a special global variable. Thus a mistaken
+line |act [thing]| comes out as something like:
+= (text)
+* Mistake_Token_12 'act' noun -> MistakeAction
+=
+Since the command parser accepts the first command which matches, and since
 none of this can be recursive, the value of this variable at the end of
-I6 parsing is guaranteed to be the one set during the line causing
-the mistake.
+command parsing is guaranteed to be the one set during the line causing the
+mistake.
+
+The following compiles a simple GPR to perform this "match":
 
 =
-void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
-	if (cgl->mistaken) {
-		packaging_state save = Functions::begin(RTCommandGrammarLines::get_mistake_iname(cgl));
+void RTCommandGrammarLines::mistake_agent(compilation_subtask *t) {
+	cg_line *cgl = RETRIEVE_POINTER_cg_line(t->data);
+	packaging_state save = Functions::begin(RTCommandGrammarLines::get_mistake_iname(cgl));
 
-		EmitCode::inv(IF_BIP);
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NE_BIP);
 		EmitCode::down();
-			EmitCode::inv(NE_BIP);
+			EmitCode::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+			EmitCode::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(RETURN_BIP);
 			EmitCode::down();
-				EmitCode::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-				EmitCode::val_iname(K_object, Hierarchy::find(PLAYER_HL));
-			EmitCode::up();
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::inv(RETURN_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-				EmitCode::up();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 			EmitCode::up();
 		EmitCode::up();
+	EmitCode::up();
 
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-			EmitCode::val_number((inter_ti) (100 + cgl->allocation_id));
-		EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
+		EmitCode::val_number((inter_ti) (100 + cgl->allocation_id));
+	EmitCode::up();
 
-		EmitCode::inv(RETURN_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		EmitCode::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+	EmitCode::up();
 
-		Functions::end(save);
-	}
+	Functions::end(save);
 }
 
 void RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
 	if (cgl->mistaken) {
-		if (cg_is == CG_IS_COMMAND)
-			EmitArrays::iname_entry(RTCommandGrammarLines::get_mistake_iname(cgl));
-		else
-			internal_error("CGLs may only be mistaken in command grammar");
+		EmitArrays::iname_entry(RTCommandGrammarLines::get_mistake_iname(cgl));
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "mistake token %d", 100 + cgl->allocation_id);
+		Sequence::queue(&RTCommandGrammarLines::mistake_agent, STORE_POINTER_cg_line(cgl), desc);
 	}
 }
 
-inter_name *MistakeAction_iname = NULL;
-
+int MistakeActionSub_written = FALSE;
 int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line *cgl) {
 	if (cgl->mistaken) {
-		if (MistakeAction_iname == NULL) internal_error("no MistakeAction yet");
 		EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_RESULT_HL));
-		EmitArrays::iname_entry(MistakeAction_iname);
+		EmitArrays::iname_entry(Hierarchy::find(MISTAKEACTION_HL));
 		return TRUE;
 	}
 	return FALSE;
 }
 
-void RTCommandGrammarLines::MistakeActionSub_routine(void) {
+void RTCommandGrammarLines::MistakeActionSub(void) {
 	inter_name *iname = Hierarchy::find(MISTAKEACTIONSUB_HL);
 	packaging_state save = Functions::begin(iname);
 
@@ -173,49 +167,48 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 
 	Functions::end(save);
 	
-	MistakeAction_iname = Hierarchy::find(MISTAKEACTION_HL);
-	Emit::unchecked_numeric_constant(MistakeAction_iname, 10000);
-	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
-	Hierarchy::make_available(MistakeAction_iname);
+	inter_name *ma_iname = Hierarchy::find(MISTAKEACTION_HL);
+	Emit::unchecked_numeric_constant(ma_iname, 10000);
+	Produce::annotate_i(ma_iname, ACTION_IANN, 1);
+	Hierarchy::make_available(ma_iname);
 }
 
-void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) {
-	if (CGLines::conditional(cgl)) {
-		current_sentence = cgl->where_grammar_specified;
+void RTCommandGrammarLines::cond_agent(compilation_subtask *t) {
+	cg_line *cgl = RETRIEVE_POINTER_cg_line(t->data);
+	current_sentence = cgl->where_grammar_specified;
 
-		packaging_state save = Functions::begin(RTCommandGrammarLines::get_cond_token_iname(cgl));
+	packaging_state save = Functions::begin(RTCommandGrammarLines::get_cond_token_iname(cgl));
 
-		parse_node *spec = CGLines::get_understand_cond(cgl);
-		pcalc_prop *prop = cgl->understand_when_prop;
+	parse_node *spec = CGLines::get_understand_cond(cgl);
+	pcalc_prop *prop = cgl->understand_when_prop;
 
-		if ((spec) || (prop)) {
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				if ((spec) && (prop)) {
-					EmitCode::inv(AND_BIP);
-					EmitCode::down();
-				}
-				if (spec) CompileValues::to_code_val_of_kind(spec, K_truth_state);
-				if (prop) CompilePropositions::to_test_as_condition(Rvalues::new_self_object_constant(), prop);
-				if ((spec) && (prop)) {
-					EmitCode::up();
-				}
-				EmitCode::code();
+	if ((spec) || (prop)) {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			if ((spec) && (prop)) {
+				EmitCode::inv(AND_BIP);
 				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-					EmitCode::up();
+			}
+			if (spec) CompileValues::to_code_val_of_kind(spec, K_truth_state);
+			if (prop) CompilePropositions::to_test_as_condition(Rvalues::new_self_object_constant(), prop);
+			if ((spec) && (prop)) {
+				EmitCode::up();
+			}
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				EmitCode::up();
 			EmitCode::up();
-		}
-		EmitCode::inv(RETURN_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 		EmitCode::up();
-
-		Functions::end(save);
 	}
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+	EmitCode::up();
+
+	Functions::end(save);
 }
 
 void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk, cg_line *cgl,
@@ -239,6 +232,12 @@ void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk,
 					EmitCode::up();
 				EmitCode::up();
 			EmitCode::up();
+		}
+		if (cgl->compilation_data.cond_token_compiled == FALSE) {
+			cgl->compilation_data.cond_token_compiled = TRUE;
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "conditional token %W", Node::get_text(CGLines::get_understand_cond(cgl)));
+			Sequence::queue(&RTCommandGrammarLines::cond_agent, STORE_POINTER_cg_line(cgl), desc);
 		}
 	}
 }
