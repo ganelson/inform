@@ -8,4 +8,7 @@ Problem__ PM_BadWhen
     text, line 3): but the condition after 'when' makes no sense to me,
     although otherwise this worked - it is only the part after 'when' which I
     can't follow.
+Problem__ PM_BadWhen
+  >--> You wrote 'Understand "sculpture" as the statue when hell freezes over' (source
+    text, line 3): again, the condition after 'when' makes no sense to me.
 Inform 7 has finished.

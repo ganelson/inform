@@ -182,7 +182,6 @@ void RTCommandGrammars::token_agent(compilation_subtask *t) {
 	if (CGLines::list_length(cg) == 0) return;
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
-	RTCommandGrammarLines::reset_labels();
 	gpr_kit kit = GPRs::new_kit();
 	inter_name *iname = RTCommandGrammars::get_cg_token_iname(cg);
 	packaging_state save = Functions::begin(iname);
@@ -198,7 +197,7 @@ void RTCommandGrammars::token_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::cg_compile_lines(&kit, cg);
+	RTCommandGrammars::compile_general(&kit, cg, NULL);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -214,7 +213,6 @@ void RTCommandGrammars::command_agent(compilation_subtask *t) {
 	if (CGLines::list_length(cg) == 0) return;
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
-	RTCommandGrammarLines::reset_labels();
 	package_request *PR = Hierarchy::completion_package(COMMANDS_HAP);
 	inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
 	packaging_state save = EmitArrays::begin_late_verb(array_iname, K_value);
@@ -232,7 +230,7 @@ void RTCommandGrammars::command_agent(compilation_subtask *t) {
 			DISCARD_TEXT(WD)
 		}
 	}
-	RTCommandGrammars::cg_compile_lines(NULL, cg);
+	RTCommandGrammars::compile_general(NULL, cg, NULL);
 	EmitArrays::end(save);
 
 	if (Wordings::empty(cg->command)) {
@@ -249,7 +247,6 @@ void RTCommandGrammars::consult_agent(compilation_subtask *t) {
 	if (CGLines::list_length(cg) == 0) return;
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
-	RTCommandGrammarLines::reset_labels();
 	gpr_kit kit = GPRs::new_kit();
 	inter_name *iname = RTCommandGrammars::get_consult_fn_iname(cg);
 	packaging_state save = Functions::begin(iname);
@@ -271,7 +268,7 @@ void RTCommandGrammars::consult_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::cg_compile_lines(&kit, cg);
+	RTCommandGrammars::compile_general(&kit, cg, NULL);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -287,7 +284,6 @@ void RTCommandGrammars::property_agent(compilation_subtask *t) {
 	if (CGLines::list_length(cg) == 0) return;
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
-	RTCommandGrammarLines::reset_labels();
 	gpr_kit kit = GPRs::new_kit();
 	inter_name *iname = RTCommandGrammars::get_property_GPR_fn_iname(cg);
 	packaging_state save = Functions::begin(iname);
@@ -303,7 +299,7 @@ void RTCommandGrammars::property_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::cg_compile_lines(&kit, cg);
+	RTCommandGrammars::compile_general(&kit, cg, NULL);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -323,8 +319,7 @@ void RTCommandGrammars::compile_for_value_GPR(gpr_kit *kit, command_grammar *cg)
 	if (CGLines::list_length(cg) > 0) {
 		LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 		current_sentence = cg->where_cg_created;
-		RTCommandGrammarLines::reset_labels();
-		RTCommandGrammars::cg_compile_lines(kit, cg);
+		RTCommandGrammars::compile_general(kit, cg, NULL);
 	}
 }
 
@@ -343,16 +338,17 @@ takes priority; its immediate kind has next priority, and so on up the
 hierarchy.
 
 =
+command_grammar_compilation *last_cgc = NULL;
 void RTCommandGrammars::compile_for_subject_GPR(gpr_kit *kit, command_grammar *cg) {
 	if (cg->cg_is != CG_IS_SUBJECT) internal_error("not CG_IS_SUBJECT");
-
 	inference_subject *subj = cg->subj_understood;
 	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject != cg)
 		internal_error("link between subject and CG broken");
 
+//	command_grammar_compilation cgc = RTCommandGrammarLines::new_cgc();
 	LOGIF(GRAMMAR, "Parse_name content for $j:\n", subj);
-	RTCommandGrammars::cg_compile_lines(kit,
-		PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject);
+	RTCommandGrammars::compile_general(kit,
+		PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject, last_cgc);
 
 	inference_subject *infs;
 	for (infs = InferenceSubjects::narrowest_broader_subject(subj);
@@ -360,19 +356,47 @@ void RTCommandGrammars::compile_for_subject_GPR(gpr_kit *kit, command_grammar *c
 		if (PARSING_DATA_FOR_SUBJ(infs))
 			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject) {
 				LOGIF(GRAMMAR, "And parse_name content inherited from $j:\n", infs);
-				RTCommandGrammars::cg_compile_lines(kit,
-					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
+				RTCommandGrammars::compile_general(kit,
+					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject, last_cgc);
 			}
 	}
 }
 
 @h Compiling all grammars.
-And so all of the above functions ultimately funnel down to this one:
+And so all of the above functions ultimately funnel down to this one.
+
+At this level we compile the list of CGLs in sorted order: this is what the
+sorting was all for. In certain cases, we skip any CGLs marked as "one word":
+these are cases arising from, e.g., "Understand "frog" as the toad.",
+where we noticed that the CGL was a single word and included it in the |name|
+property instead. This is faster and more flexible, besides writing tidier
+code.
+
+The need for this is not immediately obvious. After all, shouldn't we have
+simply deleted the CGL in the first place, rather than leaving it in but
+marking it? The answer is no, because of the way inheritance works differently
+for the |name| property as opposed to |parse_name| functions.
 
 =
-void RTCommandGrammars::cg_compile_lines(gpr_kit *kit, command_grammar *cg) {
+void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg,
+	command_grammar_compilation *cgc) {
 	CommandsIndex::list_assert_ownership(cg);
 	CommandGrammars::sort_command_grammar(cg);
-	RTCommandGrammarLines::sorted_line_list_compile(kit,
-		cg->cg_is, cg, CommandGrammars::cg_is_genuinely_verbal(cg));
+	
+	command_grammar_compilation new_cgc;
+	if (cgc == NULL) {
+		new_cgc = RTCommandGrammarLines::new_cgc();
+		cgc = &new_cgc;
+	}
+
+	last_cgc = cgc;
+	LOG_INDENT;
+	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
+		if (cgl->compilation_data.suppress_compilation == FALSE) {
+			cgc->current_grammar_block++;
+			RTCommandGrammarLines::compile_cg_line(kit, cgl, cg->cg_is,
+				CommandGrammars::cg_is_genuinely_verbal(cg), cgc);
+		}
+	LOG_OUTDENT;
+//	last_cgc = NULL;
 }

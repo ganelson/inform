@@ -85,5 +85,6 @@ Chapter 6: Completion Resources
 Chapter 7: Command Grammar
 	Command Grammars
 	Command Grammar Lines
+	Command Grammar Tokens
 	Noun Filter Tokens
 	Tokens Parsing Values

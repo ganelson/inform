@@ -8,4 +8,8 @@ Problem__ PM_WhenAction
     text, line 5): but the condition after 'when' involves the current action,
     but this can never work, because when Inform is still trying to understand
     a command, the current action isn't yet decided on.
+Problem__ PM_WhenAction
+  >--> You wrote 'Understand "mumble [thing]" as mumbling when taking' (source
+    text, line 5): again, the condition after 'when' involves the current
+    action.
 Inform 7 has finished.
