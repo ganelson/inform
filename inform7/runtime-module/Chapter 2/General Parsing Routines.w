@@ -37,7 +37,7 @@ Since GPRs are needed for several different purposes, we provide a general
 API for compiling them, based around the idea of a "GPR kit" -- slogan, it's
 everything you need to compile your own GPR.
 
-This is not an elegant structure. It simply keeps track of the many local
+This is not an elegant structure. It mainly keeps track of the many local
 variables needed inside GPRs, which tend to be large, wrangly functions:
 
 =
@@ -69,6 +69,11 @@ typedef struct gpr_kit {
 	inter_symbol *w_s;
 	inter_symbol *wpos_s;
 	inter_symbol *x_s;
+	
+	inter_symbol *fail_label;
+	int label_count;
+	int current_grammar_block;
+	int GV_IS_VALUE_instance_mode;
 } gpr_kit;
 
 @ The idea is to create a new kit which is initially empty:
@@ -103,6 +108,11 @@ gpr_kit GPRs::new_kit(void) {
 	kit.w_s = NULL;
 	kit.wpos_s = NULL;
 	kit.x_s = NULL;
+	
+	kit.fail_label = NULL;
+	kit.label_count = 0;
+	kit.current_grammar_block = 0;
+	kit.GV_IS_VALUE_instance_mode = FALSE;
 	return kit;
 }
 
@@ -174,4 +184,15 @@ void GPRs::add_parse_name_vars(gpr_kit *kit) {
 		I"value of n recorded during pass 1");
 	kit->pass2_n_s = LocalVariables::new_internal_commented_as_symbol(I"pass2_n",
 		I"value of n recorded during pass 2");
+}
+
+void GPRs::begin_line(gpr_kit *kit) {
+	if (kit) kit->label_count++;
+	if (kit) {
+		TEMPORARY_TEXT(L)
+		WRITE_TO(L, ".Fail_%d", kit->label_count);
+		kit->fail_label = EmitCode::reserve_label(L);
+		DISCARD_TEXT(L)
+		kit->current_grammar_block++;
+	}
 }

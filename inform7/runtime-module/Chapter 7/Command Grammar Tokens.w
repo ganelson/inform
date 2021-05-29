@@ -2,20 +2,13 @@
 
 Compiling single command parser tokens.
 
-@ In code mode, we compile a test that the token matches, jumping to the
-failure label if it doesn't, and setting the local variable |rv| to a suitable
-GPR return value if it does match and produces an outcome. We are allowed to
-use the local |w| for temporary storage, but nothing else.
-
-In array mode, used for CG_IS_COMMAND grammars, we compile a suitable array
-entry for the token.
+@ 
 
 =
 int ol_loop_counter = 0;
-kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode,
+void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode,
 	inter_symbol *failure_label, int consult_mode) {
 
-	command_grammar *cg;
 	if (CGTokens::is_literal(cgt)) @<Handle a literal word token@>;
 
 	binary_predicate *bp = cgt->token_relation;
@@ -26,277 +19,25 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 
 	if (Specifications::is_kind_like(spec)) {
 		kind *K = Node::get_kind_of_value(spec);
-		if ((K_understanding) &&
-			(Kinds::Behaviour::is_object(K) == FALSE) &&
-			(Kinds::eq(K, K_understanding) == FALSE)) {
-			if (RTKindConstructors::offers_I6_GPR(K)) {
-				text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
-				if (code_mode) {
-					EmitCode::inv(STORE_BIP);
-					EmitCode::down();
-						EmitCode::ref_symbol(K_value, gprk->w_s);
-						EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-						EmitCode::down();
-							EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-							if (Str::len(i6_gpr_name) > 0)
-								EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
-							else
-								EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
-						EmitCode::up();
-					EmitCode::up();
-					EmitCode::inv(IF_BIP);
-					EmitCode::down();
-						EmitCode::inv(NE_BIP);
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, gprk->w_s);
-							EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-						EmitCode::up();
-						@<Then jump to our doom@>;
-					EmitCode::up();
-					EmitCode::inv(STORE_BIP);
-					EmitCode::down();
-						EmitCode::ref_symbol(K_value, gprk->rv_s);
-						EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-					EmitCode::up();
-				} else {
-					if (Str::len(i6_gpr_name) > 0)
-						EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
-					else
-						EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
-				}
-				return K;
-			}
-			/* internal_error("Let an invalid type token through"); */
-		}
+		if ((K) && (Kinds::Behaviour::is_object(K) == FALSE) &&
+			(Kinds::eq(K, K_understanding) == FALSE) &&
+			(RTKindConstructors::offers_I6_GPR(K)))
+			@<Handle a kind token which is not an object@>;
 	}
 
-	if (Descriptions::is_complex(spec)) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, CGTokens::text(cgt));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OverComplexToken));
-		Problems::issue_problem_segment(
-			"The grammar you give in %1 contains a token "
-			"which is just too complicated - %2. %PFor instance, a "
-			"token using subordinate clauses - such as '[a person who "
-			"can see the player]' will probably not be allowed.");
-		Problems::issue_problem_end();
-		return K_object;
-	} else {
-		kind *K = NULL;
-		if (CGTokens::is_I6_parser_token(cgt)) {
-			inter_name *i6_token_iname = RTCommandGrammars::iname_for_I6_parser_token(cgt);
-			K = Descriptions::explicit_kind(cgt->what_token_describes);
-			if (code_mode) {
-				if ((consult_mode) && (CGTokens::is_topic(cgt))) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextTokenRestricted),
-						"the '[text]' token is not allowed with 'matches' "
-						"or in table columns",
-						"as it is just too complicated to sort out: a "
-						"'[text]' is supposed to extract a snippet from "
-						"the player's command, but here we already have "
-						"a snippet, and don't want to snip it further.");
-				}
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->w_s);
-					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
-						EmitCode::val_iname(K_value, i6_token_iname);
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(EQ_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-					EmitCode::up();
-					@<Then jump to our doom@>;
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::up();
-			} else {
-				EmitArrays::iname_entry(i6_token_iname);
-			}
-		} else {
-			if (Specifications::is_description(spec)) {
-				K = Specifications::to_kind(spec);
-				if (Descriptions::is_qualified(spec)) {
- 					if (code_mode) {
-		 				EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_symbol(K_value, gprk->w_s);
-							EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-							EmitCode::down();
-								UnderstandFilterTokens::compile_id(cgt->noun_filter);
-							EmitCode::up();
-						EmitCode::up();
-						EmitCode::inv(IF_BIP);
-						EmitCode::down();
-							EmitCode::inv(EQ_BIP);
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, gprk->w_s);
-								EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-							EmitCode::up();
-							@<Then jump to our doom@>;
-						EmitCode::up();
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_symbol(K_value, gprk->rv_s);
-							EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::up();
-					} else {
-						UnderstandFilterTokens::emit_id(cgt->noun_filter);
-					}
-				} else {
-					if (RTKindConstructors::offers_I6_GPR(K)) {
-						text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
-						if (code_mode) {
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->w_s);
-								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-								EmitCode::down();
-									EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-									if (Str::len(i6_gpr_name) > 0)
-										EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
-									else
-										EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(NE_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-								EmitCode::up();
-								@<Then jump to our doom@>;
-							EmitCode::up();
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->rv_s);
-								EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-							EmitCode::up();
-						} else {
-							if (Str::len(i6_gpr_name) > 0)
-								EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
-							else
-								EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
-						}
-					} else if (Kinds::Behaviour::is_object(K)) {
-						if (code_mode) {
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->w_s);
-								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-								EmitCode::down();
-									UnderstandFilterTokens::compile_id(cgt->noun_filter);
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(EQ_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-								EmitCode::up();
-								@<Then jump to our doom@>;
-							EmitCode::up();
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->rv_s);
-								EmitCode::val_symbol(K_value, gprk->w_s);
-							EmitCode::up();
-						} else {
-							UnderstandFilterTokens::emit_id(cgt->noun_filter);
-						}
-						K = K_object;
-					} else internal_error("no token for description");
-				}
-			} else {
-					if (cgt->defined_by) {
-						cg = cgt->defined_by;
-						if (code_mode) {
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->w_s);
-								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-								EmitCode::down();
-									EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-									EmitCode::val_iname(K_value, RTCommandGrammars::get_cg_token_iname(cg));
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(EQ_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-								EmitCode::up();
-								@<Then jump to our doom@>;
-							EmitCode::up();
+	if (CGTokens::is_I6_parser_token(cgt))
+		@<Handle a built-in token@>;
 
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(NE_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
-								EmitCode::up();
-								EmitCode::code();
-								EmitCode::down();
-									EmitCode::inv(STORE_BIP);
-									EmitCode::down();
-										EmitCode::ref_symbol(K_value, gprk->rv_s);
-										EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::up();
-								EmitCode::up();
-							EmitCode::up();
-						} else {
-							EmitArrays::iname_entry(RTCommandGrammars::get_cg_token_iname(cg));
-						}
-						K = CommandGrammars::get_kind_matched(cg);
-					} else
-				if (Node::is(spec, CONSTANT_NT)) {
-					if (Rvalues::is_object(spec)) {
-						if (code_mode) {
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->w_s);
-								EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-								EmitCode::down();
-									UnderstandFilterTokens::compile_id(cgt->noun_filter);
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(EQ_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->w_s);
-									EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-								EmitCode::up();
-								@<Then jump to our doom@>;
-							EmitCode::up();
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->rv_s);
-								EmitCode::val_symbol(K_value, gprk->w_s);
-							EmitCode::up();
-						} else {
-							UnderstandFilterTokens::emit_id(cgt->noun_filter);
-						}
-						K = K_object;
-					}
-				} else K = K_object;
-			}
-		}
-		return K;
-	}
+	if (Specifications::is_description(spec))
+		@<Handle a description token@>;
+
+	if (cgt->defined_by)
+		@<Handle an indirection through another grammar@>;
+
+	if ((Node::is(spec, CONSTANT_NT)) && (Rvalues::is_object(spec)))
+		@<Handle a constant object name token@>;
+
+	internal_error("unimplemented token");
 }
 
 @<Handle a literal word token@> =
@@ -320,7 +61,7 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 		EmitArrays::dword_entry(WT);
 		DISCARD_TEXT(WT)
 	}
-	return NULL;
+	return;
 
 @<Handle a relation token@> =
 	EmitCode::call(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
@@ -546,16 +287,6 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 			EmitCode::ref_symbol(K_value, gprk->rv_s);
 			EmitCode::val_number(0);
 		EmitCode::up();
-	} else if (bp == R_equality) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, CGTokens::text(cgt));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedByEquality));
-		Problems::issue_problem_segment(
-			"The grammar you give in %1 contains a token %2 which would "
-			"create a circularity. To follow this, I'd have to compute "
-			"forever.");
-		Problems::issue_problem_end();
-		return K_object;
 	} else if ((BinaryPredicates::get_reversal(bp) == R_containment) ||
 		(BinaryPredicates::get_reversal(bp) == R_support) ||
 		(BinaryPredicates::get_reversal(bp) == a_has_b_predicate) ||
@@ -695,17 +426,6 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 								else
 									CompileSchemas::from_terms_in_val_context(i6s, &self_term, &rv_term);
 				continue_loop_on_fail = TRUE;
-			} else {
-				Problems::quote_source(1, current_sentence);
-				Problems::quote_wording(2, CGTokens::text(cgt));
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation));
-				Problems::issue_problem_segment(
-					"The grammar you give in %1 contains a token "
-					"which relates things to values - %2. At present, "
-					"this is not allowed: only relations between kinds "
-					"of object can be used in 'Understand' tokens.");
-				Problems::issue_problem_end();
-				return K_object;
 			}
 		} else {
 			property *prn = ExplicitRelations::get_i6_storage_property(bp);
@@ -744,21 +464,6 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 					continue_loop_on_fail = FALSE;
 				} else {
 					kind *K = BinaryPredicates::term_kind(bp, 1);
-					if (Kinds::Behaviour::is_object(K) == FALSE) {
-						Problems::quote_source(1, current_sentence);
-						Problems::quote_wording(2, CGTokens::text(cgt));
-						Problems::quote_kind(3, K);
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation2));
-						Problems::issue_problem_segment(
-							"The grammar you give in %1 contains a token "
-							"which relates things to values - %2. (It would "
-							"need to match the name of %3, which isn't a kind "
-							"of thing.) At present, this is not allowed: only "
-							"relations between kinds of object can be used in "
-							"'Understand' tokens.");
-						Problems::issue_problem_end();
-						return K_object;
-					}
 					EmitCode::inv(OBJECTLOOPX_BIP);
 					EmitCode::down();
 						EmitCode::ref_symbol(K_value, gprk->rv_s);
@@ -788,17 +493,6 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 									EmitCode::up();
 					continue_loop_on_fail = TRUE;
 				}
-			} else {
-				LOG("Trouble with: $2\n", bp);
-				LOG("Whose reversal is: $2\n", BinaryPredicates::get_reversal(bp));
-				Problems::quote_source(1, current_sentence);
-				Problems::quote_wording(2, CGTokens::text(cgt));
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarTokenCowardice));
-				Problems::issue_problem_segment(
-					"The grammar you give in %1 contains a token "
-					"which uses a relation I'm unable to test - %2.");
-				Problems::issue_problem_end();
-				return K_object;
 			}
 		}
 
@@ -869,7 +563,243 @@ kind *RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mod
 				EmitCode::val_number(0);
 			EmitCode::up();
 		}
-		return NULL;
+		return;
+
+@<Handle a kind token which is not an object@> =
+	text_stream *GPR_fn_iname = RTKindConstructors::get_explicit_I6_GPR(K);
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+				if (Str::len(GPR_fn_iname) > 0)
+					EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), GPR_fn_iname));
+				else
+					EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(NE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->rv_s);
+			EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+		EmitCode::up();
+	} else {
+		if (Str::len(GPR_fn_iname) > 0)
+			EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), GPR_fn_iname));
+		else
+			EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
+	}
+	return;
+
+@<Handle a built-in token@> =
+	inter_name *i6_token_iname = RTCommandGrammars::iname_for_I6_parser_token(cgt);
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
+				EmitCode::val_iname(K_value, i6_token_iname);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->rv_s);
+			EmitCode::val_symbol(K_value, gprk->w_s);
+		EmitCode::up();
+	} else {
+		EmitArrays::iname_entry(i6_token_iname);
+	}
+	return;
+
+@<Handle a description token@> =
+	if (Descriptions::is_qualified(spec)) {
+		if (code_mode) {
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->w_s);
+				EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+				EmitCode::down();
+					UnderstandFilterTokens::compile_id(cgt->noun_filter);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+				EmitCode::up();
+				@<Then jump to our doom@>;
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk->rv_s);
+				EmitCode::val_symbol(K_value, gprk->w_s);
+			EmitCode::up();
+		} else {
+			UnderstandFilterTokens::emit_id(cgt->noun_filter);
+		}
+	} else {
+		kind *K = Specifications::to_kind(spec);
+		if (RTKindConstructors::offers_I6_GPR(K)) {
+			text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
+			if (code_mode) {
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->w_s);
+					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+						if (Str::len(i6_gpr_name) > 0)
+							EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
+						else
+							EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(NE_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+					EmitCode::up();
+					@<Then jump to our doom@>;
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+				EmitCode::up();
+			} else {
+				if (Str::len(i6_gpr_name) > 0)
+					EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
+				else
+					EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
+			}
+		} else if (Kinds::Behaviour::is_object(K)) {
+			if (code_mode) {
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->w_s);
+					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+					EmitCode::down();
+						UnderstandFilterTokens::compile_id(cgt->noun_filter);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+					EmitCode::up();
+					@<Then jump to our doom@>;
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::up();
+			} else {
+				UnderstandFilterTokens::emit_id(cgt->noun_filter);
+			}
+		} else internal_error("no token for description");
+	}
+	return;
+
+@<Handle an indirection through another grammar@> =
+	command_grammar *cg = cgt->defined_by;
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+				EmitCode::val_iname(K_value, RTCommandGrammars::get_cg_token_iname(cg));
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(NE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk->rv_s);
+					EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	} else {
+		EmitArrays::iname_entry(RTCommandGrammars::get_cg_token_iname(cg));
+	}
+	return;
+
+@<Handle a constant object name token@> =
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+			EmitCode::down();
+				UnderstandFilterTokens::compile_id(cgt->noun_filter);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk->rv_s);
+			EmitCode::val_symbol(K_value, gprk->w_s);
+		EmitCode::up();
+	} else {
+		UnderstandFilterTokens::emit_id(cgt->noun_filter);
+	}
+	return;
 
 @<Then jump to our doom@> =
 	EmitCode::code();

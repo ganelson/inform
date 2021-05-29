@@ -335,8 +335,7 @@ until one of them works (if it ever does). That code is compiled in
 compile code which will safely restore the situation after each failure of a line.
 
 =
-void ParseName::compile_reset_code_after_failed_line(gpr_kit *kit, inter_symbol *label,
-	int pluralised) {
+void ParseName::compile_reset_code_after_failed_line(gpr_kit *kit, int pluralised) {
 	if (pluralised) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
@@ -356,7 +355,7 @@ void ParseName::compile_reset_code_after_failed_line(gpr_kit *kit, inter_symbol 
 	EmitCode::up();
 	EmitCode::inv(CONTINUE_BIP);
 
-	EmitCode::place_label(label);
+	EmitCode::place_label(kit->fail_label);
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));

@@ -10,11 +10,4 @@ Problem__ PM_GrammarValueRelation2
     need to match the name of a temperature, which isn't a kind of thing.) At
     present, this is not allowed: only relations between kinds of object can be
     used in 'Understand' tokens.
-Problem__ PM_GrammarValueRelation2
-  >--> The grammar you give in 'Understand "[something related by
-    possibilizing]" as a thing' (source text, line 13) contains a token which
-    relates things to values - something related by possibilizing. (It would
-    need to match the name of a temperature, which isn't a kind of thing.) At
-    present, this is not allowed: only relations between kinds of object can be
-    used in 'Understand' tokens.
 Inform 7 has finished.

@@ -197,7 +197,7 @@ void RTCommandGrammars::token_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::compile_general(&kit, cg, NULL);
+	RTCommandGrammars::compile_general(&kit, cg);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -230,7 +230,7 @@ void RTCommandGrammars::command_agent(compilation_subtask *t) {
 			DISCARD_TEXT(WD)
 		}
 	}
-	RTCommandGrammars::compile_general(NULL, cg, NULL);
+	RTCommandGrammars::compile_general(NULL, cg);
 	EmitArrays::end(save);
 
 	if (Wordings::empty(cg->command)) {
@@ -268,7 +268,7 @@ void RTCommandGrammars::consult_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::compile_general(&kit, cg, NULL);
+	RTCommandGrammars::compile_general(&kit, cg);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -299,7 +299,7 @@ void RTCommandGrammars::property_agent(compilation_subtask *t) {
 		EmitCode::ref_symbol(K_value, kit.rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	RTCommandGrammars::compile_general(&kit, cg, NULL);
+	RTCommandGrammars::compile_general(&kit, cg);
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -319,7 +319,7 @@ void RTCommandGrammars::compile_for_value_GPR(gpr_kit *kit, command_grammar *cg)
 	if (CGLines::list_length(cg) > 0) {
 		LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 		current_sentence = cg->where_cg_created;
-		RTCommandGrammars::compile_general(kit, cg, NULL);
+		RTCommandGrammars::compile_general(kit, cg);
 	}
 }
 
@@ -338,17 +338,15 @@ takes priority; its immediate kind has next priority, and so on up the
 hierarchy.
 
 =
-command_grammar_compilation *last_cgc = NULL;
 void RTCommandGrammars::compile_for_subject_GPR(gpr_kit *kit, command_grammar *cg) {
 	if (cg->cg_is != CG_IS_SUBJECT) internal_error("not CG_IS_SUBJECT");
 	inference_subject *subj = cg->subj_understood;
 	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject != cg)
 		internal_error("link between subject and CG broken");
 
-//	command_grammar_compilation cgc = RTCommandGrammarLines::new_cgc();
 	LOGIF(GRAMMAR, "Parse_name content for $j:\n", subj);
 	RTCommandGrammars::compile_general(kit,
-		PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject, last_cgc);
+		PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_subject);
 
 	inference_subject *infs;
 	for (infs = InferenceSubjects::narrowest_broader_subject(subj);
@@ -357,7 +355,7 @@ void RTCommandGrammars::compile_for_subject_GPR(gpr_kit *kit, command_grammar *c
 			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject) {
 				LOGIF(GRAMMAR, "And parse_name content inherited from $j:\n", infs);
 				RTCommandGrammars::compile_general(kit,
-					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject, last_cgc);
+					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
 			}
 	}
 }
@@ -378,25 +376,14 @@ marking it? The answer is no, because of the way inheritance works differently
 for the |name| property as opposed to |parse_name| functions.
 
 =
-void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg,
-	command_grammar_compilation *cgc) {
+void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
 	CommandsIndex::list_assert_ownership(cg);
 	CommandGrammars::sort_command_grammar(cg);
 	
-	command_grammar_compilation new_cgc;
-	if (cgc == NULL) {
-		new_cgc = RTCommandGrammarLines::new_cgc();
-		cgc = &new_cgc;
-	}
-
-	last_cgc = cgc;
 	LOG_INDENT;
 	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
-		if (cgl->compilation_data.suppress_compilation == FALSE) {
-			cgc->current_grammar_block++;
+		if (cgl->compilation_data.suppress_compilation == FALSE)
 			RTCommandGrammarLines::compile_cg_line(kit, cgl, cg->cg_is,
-				CommandGrammars::cg_is_genuinely_verbal(cg), cgc);
-		}
+				CommandGrammars::cg_is_genuinely_verbal(cg));
 	LOG_OUTDENT;
-//	last_cgc = NULL;
 }

@@ -546,3 +546,129 @@ int CGTokens::score_bonus(cg_token *cgt) {
 	}
 	return 1;
 }
+
+@h Verification.
+This function checks that it's okay to compile the given token, and returns the
+kind of value produced, if any is, or |NULL| if it isn't. The kind returned is
+not significant if a problem is generated.
+
+=
+kind *CGTokens::verify_and_find_kind(cg_token *cgt, int code_mode, int consult_mode) {
+	if (CGTokens::is_literal(cgt)) return NULL;
+
+	if (cgt->token_relation) {
+		CGTokens::verify_relation_token(cgt->token_relation, CGTokens::text(cgt));
+		return NULL;
+	}
+
+	if (cgt->defined_by) return CommandGrammars::get_kind_matched(cgt->defined_by);
+
+	parse_node *spec = cgt->what_token_describes;
+	if (Node::is(spec, CONSTANT_NT)) {
+		if (Rvalues::is_object(spec)) return K_object;
+		return Rvalues::to_kind(spec);
+	}
+
+	if (Descriptions::is_complex(spec)) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, CGTokens::text(cgt));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OverComplexToken));
+		Problems::issue_problem_segment(
+			"The grammar you give in %1 contains a token which is just too complicated - "
+			"%2. %PFor instance, a token using subordinate clauses - such as '[a person "
+			"who can see the player]' will probably not be allowed.");
+		Problems::issue_problem_end();
+	}
+
+	if ((consult_mode) && (CGTokens::is_topic(cgt)))
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TextTokenRestricted),
+			"the '[text]' token is not allowed with 'matches' or in table columns",
+			"as it is just too complicated to sort out: a '[text]' is supposed to "
+			"extract a snippet from the player's command, but here we already have "
+			"a snippet, and don't want to snip it further.");
+
+	if (Specifications::is_description(spec)) return Specifications::to_kind(spec);
+
+	return NULL;
+}
+
+@ Relational tokens are the hardest to cope with at runtime, not least because
+Inform has so many different implementations for different relations, and not every
+relation can legally be used. The following function polices that -- either
+doing nothing (okay) or issuing exactly one problem message (not okay).
+
+=
+void CGTokens::verify_relation_token(binary_predicate *bp, wording W) {
+	if (bp == R_equality) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, W);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedByEquality));
+		Problems::issue_problem_segment(
+			"The grammar you give in %1 contains a token %2 which would create a circularity. "
+			"To follow this, I'd have to compute forever.");
+		Problems::issue_problem_end();
+		return;
+	}
+
+	if ((bp == R_containment) || (BinaryPredicates::get_reversal(bp) == R_containment) ||
+		(bp == R_support) || (BinaryPredicates::get_reversal(bp) == R_support) ||
+		(bp == a_has_b_predicate) || (BinaryPredicates::get_reversal(bp) == a_has_b_predicate) ||
+		(bp == R_wearing) || (BinaryPredicates::get_reversal(bp) == R_wearing) ||
+		(bp == R_carrying) || (BinaryPredicates::get_reversal(bp) == R_carrying) ||
+		(bp == R_incorporation) || (BinaryPredicates::get_reversal(bp) == R_incorporation))		
+		return;
+
+	if ((BinaryPredicates::get_test_function(bp)) ||
+		(BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp)))) {
+		kind *K = BinaryPredicates::term_kind(bp, 1);
+		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, W);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_GrammarValueRelation));
+			Problems::issue_problem_segment(
+				"The grammar you give in %1 contains a token which relates things to values "
+				"- %2. At present, this is not allowed: only relations between kinds of "
+				"object can be used in 'Understand' tokens.");
+			Problems::issue_problem_end();
+		}
+		return;
+	}
+		
+	property *prn = ExplicitRelations::get_i6_storage_property(bp);
+	int reverse = FALSE;
+	if (BinaryPredicates::is_the_wrong_way_round(bp)) reverse = TRUE;
+	if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO)
+		reverse = (reverse)?FALSE:TRUE;
+	if (prn) {
+		if (reverse == FALSE) {
+			kind *K = BinaryPredicates::term_kind(bp, 1);
+			if (Kinds::Behaviour::is_object(K) == FALSE) {
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, W);
+				Problems::quote_kind(3, K);
+				StandardProblems::handmade_problem(Task::syntax_tree(),
+					_p_(PM_GrammarValueRelation2));
+				Problems::issue_problem_segment(
+					"The grammar you give in %1 contains a token which relates things "
+					"to values - %2. (It would need to match the name of %3, which isn't "
+					"a kind of thing.) At present, this is not allowed: only relations "
+					"between kinds of object can be used in 'Understand' tokens.");
+				Problems::issue_problem_end();
+			}
+		}
+		return;
+	}
+
+	LOG("Trouble with: $2\n", bp);
+	LOG("Whose reversal is: $2\n", BinaryPredicates::get_reversal(bp));
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, W);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_GrammarTokenCowardice));
+	Problems::issue_problem_segment(
+		"The grammar you give in %1 contains a token which uses a relation I'm unable "
+		"to test - %2.");
+	Problems::issue_problem_end();
+}

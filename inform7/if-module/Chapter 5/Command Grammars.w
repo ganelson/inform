@@ -309,17 +309,6 @@ command_grammar *CommandGrammars::for_subject(inference_subject *subj) {
 	return cg;
 }
 
-@ This is an optimisation to store grammar more efficiently if it turns out
-that the names given to the subject are all single words. It saves a few bytes
-at run-time, and is just a little faster for the command parser then.
-
-=
-void CommandGrammars::take_out_one_word_grammar(command_grammar *cg) {
-	if (cg->cg_is != CG_IS_SUBJECT)
-		internal_error("One-word optimisation applies only to objects");
-	RTCommandGrammarLines::list_take_out_one_word_grammar(cg);
-}
-
 @h The CG_IS_VALUE form.
 This is used to store names for, say, particular numbers, or enumeration
 values. The following examples both involve |CG_IS_VALUE| grammars:

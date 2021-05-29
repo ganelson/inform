@@ -8,9 +8,4 @@ Problem__ PM_RelatedByEquality
     as a person' (source text, line 5) contains a token something related by
     equality which would create a circularity. To follow this, I'd have to
     compute forever.
-Problem__ PM_RelatedByEquality
-  >--> The grammar you give in 'Understand "[something related by equality]'s"
-    as a person' (source text, line 5) contains a token something related by
-    equality which would create a circularity. To follow this, I'd have to
-    compute forever.
 Inform 7 has finished.

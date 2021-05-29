@@ -96,7 +96,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 		}
 
 	if (PARSING_DATA(I)->understand_as_this_subject)
-		CommandGrammars::take_out_one_word_grammar(
+		RTCommandGrammarLines::list_take_out_one_word_grammar(
 			PARSING_DATA(I)->understand_as_this_subject);
 
 	inference_subject *infs;
@@ -104,7 +104,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		if (PARSING_DATA_FOR_SUBJ(infs)) {
 			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject)
-				CommandGrammars::take_out_one_word_grammar(
+				RTCommandGrammarLines::list_take_out_one_word_grammar(
 					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
 		}
 	}

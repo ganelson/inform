@@ -381,6 +381,7 @@ affect how the list will be arranged when it is compiled.
 void CGLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $g\n", cgl);
 	LOG_INDENT;
+	int initial_problem_count = problem_count;
 	current_sentence = cgl->where_grammar_specified;
 	cgl->understanding_sort_bonus = 0;
 	cgl->general_sort_bonus = 0;
@@ -394,20 +395,7 @@ void CGLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
 
 	int multiples = 0;
 	@<Make the actual calculations@>;
-
-	if (multiples > 1)
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleMultiples),
-			"there can be at most one token in any line which can match multiple things",
-			"so you'll have to remove one of the 'things' tokens and make it a 'something' "
-			"instead.");
-
-	if ((cg->cg_is != CG_IS_COMMAND) &&
-		(DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) >= 2))
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
-			"there can be at most one varying part in the definition of a named token",
-			"so 'Understand \"button [a number]\" as \"[button indication]\"' is allowed "
-			"but 'Understand \"button [a number] on [something]\" as \"[button "
-			"indication]\"' is not.");
+	@<Check for a variety of problems@>;
 
 	LOG_OUTDENT;
 	if (Log::aspect_switched_on(GRAMMAR_CONSTRUCTION_DA)) {
@@ -481,6 +469,81 @@ which parses to a |K_understanding| match.
 		if (usb_contribution >= 0) usb_contribution = -1; /* very unlikely to happen */
 		usb_contribution = CGL_SCORE_BUMP*usb_contribution + (line_length-1-pos);
 		cgl->understanding_sort_bonus += usb_contribution;
+	}
+
+@ If none of these problems occurs, then the grammar can legally be compiled.
+
+@<Check for a variety of problems@> =
+	if (multiples > 1)
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleMultiples),
+			"there can be at most one token in any line which can match multiple things",
+			"so you'll have to remove one of the 'things' tokens and make it a 'something' "
+			"instead.");
+
+	if ((cg->cg_is != CG_IS_COMMAND) &&
+		(DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) >= 2))
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
+			"there can be at most one varying part in the definition of a named token",
+			"so 'Understand \"button [a number]\" as \"[button indication]\"' is allowed "
+			"but 'Understand \"button [a number] on [something]\" as \"[button "
+			"indication]\"' is not.");
+
+	if ((cgl->reversed) &&
+		(DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) < 2)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
+			"you can't use a 'reversed' action when you supply fewer than two values for "
+			"it to apply to",
+			"since reversal is the process of exchanging them.");
+	}
+	if ((cgl->tokens) && (cgl->tokens->slash_class != 0) &&
+		(CommandGrammars::cg_is_genuinely_verbal(cg))) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
+			"at present you're not allowed to use a / between command words at the "
+			"start of a line",
+			"so 'put/interpose/insert [something]' is out.");
+		return;
+	}
+
+	for (cg_token *cgt = first; cgt; cgt = cgt->next_token) {
+		if ((CGTokens::is_topic(cgt)) && (cgt->next_token) &&
+			(CGTokens::is_literal(cgt->next_token) == FALSE)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
+				"a '[text]' token must either match the end of some text, or be followed "
+				"by definitely known wording",
+				"since otherwise the run-time parser isn't good enough to make sense of "
+				"things.");
+		}
+		if ((cgt->token_relation) && (cg->cg_is != CG_IS_SUBJECT) && (problem_count == 0)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_GrammarObjectlessRelation),
+				"a grammar token in an 'Understand...' can only be based on a relation if it "
+				"is to understand the name of a room or thing",
+				"since otherwise there is nothing for the relation to be with.");
+		}
+	}
+
+	if (initial_problem_count == problem_count) {
+		int token_values = 0;
+		kind *token_value_kinds[2];
+		for (int i=0; i<2; i++) token_value_kinds[i] = NULL;
+		for (cg_token *token = cgl->tokens; token; token = token->next_token) {
+			int code_mode = TRUE; if (cg->cg_is == CG_IS_COMMAND) code_mode = FALSE;
+			int consult_mode = (cg->cg_is == CG_IS_CONSULT)?TRUE:FALSE;
+			kind *K = CGTokens::verify_and_find_kind(token, code_mode, consult_mode);
+			if (K) {
+				if (token_values == 2) internal_error("too many value-producing tokens");
+				token_value_kinds[token_values++] = K;
+			}
+		}
+		if (cgl->reversed) {
+			kind *swap = token_value_kinds[0];
+			token_value_kinds[0] = token_value_kinds[1];
+			token_value_kinds[1] = swap;
+		}
+		if (initial_problem_count == problem_count)
+			if ((cg->cg_is == CG_IS_COMMAND) && (cgl->mistaken == FALSE))
+				ActionSemantics::check_valid_application(cgl->resulting_action,
+					token_values, token_value_kinds);
 	}
 
 @h Sorting the lines in a grammar.

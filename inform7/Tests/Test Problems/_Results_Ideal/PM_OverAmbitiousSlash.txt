@@ -8,4 +8,9 @@ Problem__ PM_OverAmbitiousSlash
     text, line 3): but the slash '/' can only be used between single literal
     words, so 'underneath/under/beneath' is allowed but 'beneath/[florid ways
     to say under]/under' isn't.
+Problem__ PM_GrammarMismatchesAction
+  >--> The grammar you give in 'Understand "bibble sculpture/[number]" as
+    taking' (source text, line 3) is not compatible with the Taking action
+    (defined as 'applying to one thing') - the thing you suggest this action
+    should act on is not an object at all.
 Inform 7 has finished.

@@ -8,9 +8,4 @@ Problem__ PM_GrammarTokenCowardice
     room-containment]" as a thing' (source text, line 2) contains a token which
     uses a relation I'm unable to test - something related by reversed
     room-containment.
-Problem__ PM_GrammarTokenCowardice
-  >--> The grammar you give in 'Understand "in [something related by reversed
-    room-containment]" as a thing' (source text, line 2) contains a token which
-    uses a relation I'm unable to test - something related by reversed
-    room-containment.
 Inform 7 has finished.

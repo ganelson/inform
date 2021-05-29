@@ -3,11 +3,12 @@
 Compiling lines of command parser grammar.
 
 @h Compilation data.
-Each |cg_line| object contains this data:
+Each |cg_line| object contains this data, though except for the |suppress_compilation|
+flag, most of it is rarely used:
 
 =
 typedef struct cg_line_compilation_data {
-	int suppress_compilation; /* has been compiled in a single I6 grammar token already? */
+	int suppress_compilation; /* has been compiled in a single grammar token already? */
 	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
 	int cond_token_compiled;
 	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
@@ -22,7 +23,36 @@ cg_line_compilation_data RTCommandGrammarLines::new_compilation_data(cg_line *cg
 	return cglcd;
 }
 
-@ =
+@ So this is where some lines in a command grammar's list are flagged to be
+suppressed.
+
+It's called when the |name| property array is being compiled, and what it
+does is to notice when a line contains just a single word, and if so, compile
+that as an extra entry for the |name| array, then mark it to be skipped when
+a |parse_name| function is being compiled. Effectively, then, it moves this
+content from |parse_name| to |name|, an optimisation which is just a little
+faster for the command parser to deal with, and saves a few bytes at runtime.
+
+=
+void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
+	if (cg->cg_is != CG_IS_SUBJECT)
+		internal_error("One-word optimisation applies only to CG_IS_SUBJECT");
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
+		int wn = CGLines::cgl_contains_single_unconditional_word(cgl);
+		if (wn >= 0) {
+			TEMPORARY_TEXT(content)
+			WRITE_TO(content, "%w", Lexer::word_text(wn));
+			EmitArrays::dword_entry(content);
+			DISCARD_TEXT(content)
+			cgl->compilation_data.suppress_compilation = TRUE;
+		}
+	}
+}
+
+@ These inames are used only by two special forms of CG line: see below. For the
+great majority of lines, both will remain |NULL|.
+
+=
 inter_name *RTCommandGrammarLines::get_cond_token_iname(cg_line *cgl) {
 	if (cgl->compilation_data.cond_token_iname == NULL)
 		cgl->compilation_data.cond_token_iname =
@@ -40,75 +70,47 @@ inter_name *RTCommandGrammarLines::get_mistake_iname(cg_line *cgl) {
 }
 
 @h Compilation.
-The following apparently global variables are used to provide a persistent
-state for the routine below, but are not accessed elsewhere. The label
-counter is reset at the start of each CG's compilation, though this is a
-purely cosmetic effect.
+Some grammar lines compile as a run of array entries (those for CG_IS_COMMAND),
+and others are compiled into code which matches them.
 
-=
-typedef struct command_grammar_compilation {
-	int current_grammar_block;
-	int current_label;
-	int GV_IS_VALUE_instance_mode;
-} command_grammar_compilation;
-
-int next_cg_block_id = 1;
-command_grammar_compilation RTCommandGrammarLines::new_cgc(void) {
-	command_grammar_compilation cgc;
-	cgc.current_label = 1;
-//	cgc.current_grammar_block = next_cg_block_id++;
-	cgc.current_grammar_block = 0;
-	cgc.GV_IS_VALUE_instance_mode = FALSE;
-	return cgc;
-}
-
-@ As fancy as the following routine may look, it contains very little.
-What complexity there is comes from the fact that command CGs are compiled
-very differently to all others (most grammars are compiled in "code mode",
-generating procedural I6 statements, but command CGs are compiled to lines
-in |Verb| directives) and that CGLs resulting in actions (i.e., CGLs in
-command CGs) have not yet been type-checked, whereas all others have.
+"Genuinely verbal" grammar is grammar beginning with a command verb; that will
+be most, but not all, CG_IS_COMMAND grammars, and no others.
 
 =
 void RTCommandGrammarLines::compile_cg_line(gpr_kit *kit, cg_line *cgl, int cg_is,
-	int genuinely_verbal, command_grammar_compilation *cgc) {
+	int genuinely_verbal) {
+	LOGIF(GRAMMAR, "Compiling grammar line: $g\n", cgl);
+
 	current_sentence = cgl->where_grammar_specified;
-	int code_mode = TRUE; if (cg_is == CG_IS_COMMAND) code_mode = FALSE;
-	LOGIF(GRAMMAR, "Compiling grammar line: $g (%s)\n", cgl, (code_mode)?"code":"array");
+	GPRs::begin_line(kit);
 
-//	if (cg_is == CG_IS_COMMAND) code_mode = FALSE; else code_mode = TRUE;
-//	if (cg_is == CG_IS_CONSULT) consult_mode = TRUE; else consult_mode = FALSE;
+	if (cg_is == CG_IS_COMMAND) @<Compile CG_IS_COMMAND line-starting material@>;
+	if (cg_is == CG_IS_VALUE) @<Compile CG_IS_VALUE line-starting material@>;
+	if (CGLines::conditional(cgl))
+		RTCommandGrammarLines::cgl_compile_extra_token_for_condition(kit, cgl, cg_is);
+	if (cgl->mistaken)
+		RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cgl, cg_is);
 
-	inter_symbol *fail_label = NULL;
-	if (kit) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".Fail_%d", cgc->current_label);
-		fail_label = EmitCode::reserve_label(L);
-		DISCARD_TEXT(L)
-	}
+	cg_token *token_from = NULL, *token_to = NULL;
+	@<Find the token range@>;
 
-	int token_values = 0;
-	kind *token_value_kinds[2];
-	for (int i=0; i<2; i++) token_value_kinds[i] = NULL;
+	if (problem_count == 0)
+		RTCommandGrammarLines::compile_token_range(kit, token_from, token_to,
+			cg_is, NULL);
 
-	if (code_mode == FALSE) EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_DIVIDER_HL));
+	if (cg_is == CG_IS_COMMAND) @<Compile CG_IS_COMMAND line-ending material@>;
+	if ((cg_is == CG_IS_PROPERTY_NAME) || (cg_is == CG_IS_TOKEN))
+		@<Compile CG_IS_PROPERTY_NAME or CG_IS_TOKEN line-ending material@>;
+	if (cg_is == CG_IS_CONSULT) @<Compile CG_IS_CONSULT line-ending material@>;
+	if (cg_is == CG_IS_SUBJECT) @<Compile CG_IS_SUBJECT line-ending material@>;
+	if (cg_is == CG_IS_VALUE) @<Compile CG_IS_VALUE line-ending material@>;
+}
 
-	RTCommandGrammarLines::cgl_compile_extra_token_for_condition(kit, cgl, cg_is, fail_label);
-	RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cgl, cg_is);
+@<Compile CG_IS_COMMAND line-starting material@> =
+	EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_DIVIDER_HL));
 
-	cg_token *cgt = cgl->tokens;
-	if ((genuinely_verbal) && (cgt)) {
-		if (cgt->slash_class != 0) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
-				"at present you're not allowed to use a / between command "
-				"words at the start of a line",
-				"so 'put/interpose/insert [something]' is out.");
-			return;
-		}
-		cgt = cgt->next_token; /* skip command word: the |Verb| header contains it already */
-	}
-
-	if ((cg_is == CG_IS_VALUE) && (cgc->GV_IS_VALUE_instance_mode)) {
+@<Compile CG_IS_VALUE line-starting material@> =
+	if (kit->GV_IS_VALUE_instance_mode) {
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
@@ -120,329 +122,102 @@ void RTCommandGrammarLines::compile_cg_line(gpr_kit *kit, cg_line *cgl, int cg_i
 			EmitCode::down();
 	}
 
-	cg_token *cgt_from = cgt, *cgt_to = cgt_from;
-	for (; cgt; cgt = cgt->next_token) cgt_to = cgt;
-	RTCommandGrammarLines::compile_token_line(kit, code_mode, cgt_from, cgt_to, cg_is, &token_values, token_value_kinds, NULL, fail_label, cgc);
+@<Find the token range@> =
+	cg_token *token = cgl->tokens;
+	if ((genuinely_verbal) && (token)) token = token->next_token; /* skip command word */
+	token_from = token; token_to = token;
+	for (; token; token = token->next_token) token_to = token;
 
-	switch (cg_is) {
-		case CG_IS_COMMAND:
-			if (RTCommandGrammarLines::cgl_compile_result_of_mistake(kit, cgl)) break;
-			EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_RESULT_HL));
-			EmitArrays::iname_entry(RTActions::double_sharp(cgl->resulting_action));
+@<Compile CG_IS_COMMAND line-ending material@> =
+	if (RTCommandGrammarLines::cgl_compile_result_of_mistake(kit, cgl) == FALSE) {
+		EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_RESULT_HL));
+		EmitArrays::iname_entry(RTActions::double_sharp(cgl->resulting_action));
+		if (cgl->reversed) {
+			EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_REVERSE_HL));
+		}
+	}
 
-			if (cgl->reversed) {
-				if (token_values < 2) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
-						"you can't use a 'reversed' action when you supply fewer "
-						"than two values for it to apply to",
-						"since reversal is the process of exchanging them.");
-					return;
-				}
-				kind *swap = token_value_kinds[0];
-				token_value_kinds[0] = token_value_kinds[1];
-				token_value_kinds[1] = swap;
-				EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_REVERSE_HL));
-			}
+@<Compile CG_IS_PROPERTY_NAME or CG_IS_TOKEN line-ending material@> =
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, kit->rv_s);
+	EmitCode::up();
+	EmitCode::place_label(kit->fail_label);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::val_symbol(K_value, kit->original_wn_s);
+	EmitCode::up();
 
-			ActionSemantics::check_valid_application(cgl->resulting_action, token_values,
-				token_value_kinds);
-			break;
-		case CG_IS_PROPERTY_NAME:
-		case CG_IS_TOKEN:
+@<Compile CG_IS_CONSULT line-ending material@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(OR_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, kit->range_words_s);
+				EmitCode::val_number(0);
+			EmitCode::up();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::inv(MINUS_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, kit->range_from_s);
+				EmitCode::up();
+				EmitCode::val_symbol(K_value, kit->range_words_s);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
 			EmitCode::inv(RETURN_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, kit->rv_s);
 			EmitCode::up();
-			EmitCode::place_label(fail_label);
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, kit->rv_s);
-				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::val_symbol(K_value, kit->original_wn_s);
-			EmitCode::up();
-			break;
-		case CG_IS_CONSULT:
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(OR_BIP);
-				EmitCode::down();
-					EmitCode::inv(EQ_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, kit->range_words_s);
-						EmitCode::val_number(0);
-					EmitCode::up();
-					EmitCode::inv(EQ_BIP);
-					EmitCode::down();
-						EmitCode::inv(MINUS_BIP);
-						EmitCode::down();
-							EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-							EmitCode::val_symbol(K_value, kit->range_from_s);
-						EmitCode::up();
-						EmitCode::val_symbol(K_value, kit->range_words_s);
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(RETURN_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, kit->rv_s);
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-
-			EmitCode::place_label(fail_label);
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, kit->rv_s);
-				EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::val_symbol(K_value, kit->original_wn_s);
-			EmitCode::up();
-			break;
-		case CG_IS_SUBJECT:
-			ParseName::compile_reset_code_after_failed_line(kit, fail_label, cgl->pluralised);
-			break;
-		case CG_IS_VALUE:
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
-				CompileValues::to_code_val(cgl->cgl_type.term[0].what);
-			EmitCode::up();
-			EmitCode::inv(RETURN_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
-			EmitCode::up();
-			EmitCode::place_label(fail_label);
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::val_symbol(K_value, kit->original_wn_s);
-			EmitCode::up();
-			break;
-	}
-
-	if ((cg_is == CG_IS_VALUE) && (cgc->GV_IS_VALUE_instance_mode)) {
-			EmitCode::up();
 		EmitCode::up();
-	}
-
-	cgc->current_label++;
-}
-
-@ =
-typedef struct slash_gpr {
-	struct cg_token *first_choice;
-	struct cg_token *last_choice;
-	struct inter_name *sgpr_iname;
-	CLASS_DEFINITION
-} slash_gpr;
-
-@ =
-void RTCommandGrammarLines::compile_token_line(gpr_kit *kit, int code_mode, cg_token *cgt, cg_token *cgt_to, int cg_is,
-	int *token_values, kind **token_value_kinds, inter_symbol *group_wn_s, inter_symbol *fail_label, command_grammar_compilation *cgc) {
-	int lexeme_equivalence_class = 0;
-	int alternative_number = 0;
-	int empty_text_allowed_in_lexeme = FALSE;
-	inter_symbol *next_reserved_label = NULL;
-	inter_symbol *eog_reserved_label = NULL;
-	LOGIF(GRAMMAR_CONSTRUCTION, "Compiling token range $c -> $c\n", cgt, cgt_to);
-	LOG_INDENT;
-	for (; cgt; cgt = cgt->next_token) {
-		LOGIF(GRAMMAR_CONSTRUCTION, "Compiling token $c\n", cgt);
-		if ((CGTokens::is_topic(cgt)) && (cgt->next_token) &&
-			(CGTokens::is_literal(cgt->next_token) == FALSE)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
-				"a '[text]' token must either match the end of some text, or "
-				"be followed by definitely known wording",
-				"since otherwise the run-time parser isn't good enough to "
-				"make sense of things.");
-		}
-
-		if ((cgt->token_relation) && (cg_is != CG_IS_SUBJECT)) {
-			if (problem_count == 0)
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
-				"a grammar token in an 'Understand...' can only be based "
-				"on a relation if it is to understand the name of a room or thing",
-				"since otherwise there is nothing for the relation to be with.");
-			continue;
-		}
-
-		int first_token_in_lexeme = FALSE, last_token_in_lexeme = FALSE;
-
-		if (cgt->slash_class != 0) { /* in a multi-token lexeme */
-			if ((cgt->next_token == NULL) ||
-				(cgt->next_token->slash_class != cgt->slash_class))
-				last_token_in_lexeme = TRUE;
-			if (cgt->slash_class != lexeme_equivalence_class) {
-				first_token_in_lexeme = TRUE;
-				empty_text_allowed_in_lexeme = cgt->slash_dash_dash;
-			}
-			lexeme_equivalence_class = cgt->slash_class;
-			if (first_token_in_lexeme) alternative_number = 1;
-			else alternative_number++;
-		} else { /* in a single-token lexeme */
-			lexeme_equivalence_class = 0;
-			first_token_in_lexeme = TRUE;
-			last_token_in_lexeme = TRUE;
-			empty_text_allowed_in_lexeme = FALSE;
-			alternative_number = 1;
-		}
-
-		inter_symbol *jump_on_fail = fail_label;
-
-		if (lexeme_equivalence_class > 0) {
-			if (code_mode) {
-				if (first_token_in_lexeme) {
-					EmitCode::inv(STORE_BIP);
-					EmitCode::down();
-						EmitCode::ref_symbol(K_value, kit->group_wn_s);
-						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::up();
-				}
-				if (next_reserved_label) EmitCode::place_label(next_reserved_label);
-				TEMPORARY_TEXT(L)
-				WRITE_TO(L, ".group_%d_%d_%d", cgc->current_grammar_block,
-					lexeme_equivalence_class, alternative_number+1);
-				next_reserved_label = EmitCode::reserve_label(L);
-				DISCARD_TEXT(L)
-
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::val_symbol(K_value, kit->group_wn_s);
-				EmitCode::up();
-
-				if ((last_token_in_lexeme == FALSE) || (empty_text_allowed_in_lexeme)) {
-					jump_on_fail = next_reserved_label;
-				}
-			}
-		}
-
-		if ((empty_text_allowed_in_lexeme) && (code_mode == FALSE)) {
-			slash_gpr *sgpr = CREATE(slash_gpr);
-			sgpr->first_choice = cgt;
-			while ((cgt->next_token) &&
-					(cgt->next_token->slash_class ==
-					cgt->slash_class)) cgt = cgt->next_token;
-			sgpr->last_choice = cgt;
-			package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
-			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
-			EmitArrays::iname_entry(sgpr->sgpr_iname);
-			last_token_in_lexeme = TRUE;
-			text_stream *desc = Str::new();
-			WRITE_TO(desc, "slash GPR %d", sgpr->allocation_id);
-			Sequence::queue(&RTCommandGrammarLines::slash_GPR_agent,
-				STORE_POINTER_slash_gpr(sgpr), desc);
-		} else {
-			int consult_mode = (cg_is == CG_IS_CONSULT)?TRUE:FALSE;
-			kind *grammar_token_kind =
-				RTCommandGrammarTokens::compile(kit, cgt, code_mode, jump_on_fail, consult_mode);
-			if (grammar_token_kind) {
-				if (token_values) {
-					if (*token_values == 2) {
-						internal_error(
-							"There can be at most two value-producing tokens and this "
-							"should have been detected earlier.");
-						return;
-					}
-					token_value_kinds[(*token_values)++] = grammar_token_kind;
-				}
-			}
-		}
-
-		if (lexeme_equivalence_class > 0) {
-			if (code_mode) {
-				if (last_token_in_lexeme) {
-					if (empty_text_allowed_in_lexeme) {
-						@<Jump to end of group@>;
-						if (next_reserved_label)
-							EmitCode::place_label(next_reserved_label);
-						next_reserved_label = NULL;
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-							EmitCode::val_symbol(K_value, kit->group_wn_s);
-						EmitCode::up();
-					}
-					if (eog_reserved_label) EmitCode::place_label(eog_reserved_label);
-					eog_reserved_label = NULL;
-				} else {
-					@<Jump to end of group@>;
-				}
-			} else {
-				if (last_token_in_lexeme == FALSE)
-					EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_SLASH_HL));
-			}
-		}
-
-		if (cgt == cgt_to) break;
-	}
-	LOG_OUTDENT;
-}
-
-@<Jump to end of group@> =
-	if (eog_reserved_label == NULL) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".group_%d_%d_end",
-			cgc->current_grammar_block, lexeme_equivalence_class);
-		eog_reserved_label = EmitCode::reserve_label(L);
-	}
-	EmitCode::inv(JUMP_BIP);
-	EmitCode::down();
-		EmitCode::lab(eog_reserved_label);
 	EmitCode::up();
 
-@ =
-void RTCommandGrammarLines::slash_GPR_agent(compilation_subtask *t) {
-	slash_gpr *sgpr = RETRIEVE_POINTER_slash_gpr(t->data);
-	packaging_state save = Functions::begin(sgpr->sgpr_iname);
-	gpr_kit kit = GPRs::new_kit();
-	GPRs::add_original_var(&kit);
-	GPRs::add_standard_vars(&kit);
-	command_grammar_compilation cgc = RTCommandGrammarLines::new_cgc();
-
-	RTCommandGrammarLines::compile_token_line(&kit, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, NULL, NULL, kit.group_wn_s, NULL, &cgc);
-
-
-
-	EmitCode::inv(RETURN_BIP);
+	EmitCode::place_label(kit->fail_label);
+	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 	EmitCode::up();
-	Functions::end(save);
-}
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::val_symbol(K_value, kit->original_wn_s);
+	EmitCode::up();
 
-@ This function looks through a CGL list and marks to suppress all those
-CGLs consisting only of single unconditional words, which means they
-will not be compiled into a |parse_name| routine (or anywhere else).
-If the |of| file handle is set, then the words in question are emitted as
-a stream of dictionary words. In practice, this is done when
-compiling the |name| property, so that a single scan achieves both
-the transfer into |name| and the exclusion from |parse_name| of
-affected CGLs.
+@<Compile CG_IS_SUBJECT line-ending material@> =
+	ParseName::compile_reset_code_after_failed_line(kit, cgl->pluralised);
 
-=
-void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
-	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
-		int wn = CGLines::cgl_contains_single_unconditional_word(cgl);
-		if (wn >= 0) {
-			TEMPORARY_TEXT(content)
-			WRITE_TO(content, "%w", Lexer::word_text(wn));
-			EmitArrays::dword_entry(content);
-			DISCARD_TEXT(content)
-			cgl->compilation_data.suppress_compilation = TRUE;
-		}
+@<Compile CG_IS_VALUE line-ending material@> =
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
+		CompileValues::to_code_val(cgl->cgl_type.term[0].what);
+	EmitCode::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
+	EmitCode::up();
+	EmitCode::place_label(kit->fail_label);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::val_symbol(K_value, kit->original_wn_s);
+	EmitCode::up();
+
+	if (kit->GV_IS_VALUE_instance_mode) {
+		EmitCode::up(); EmitCode::up();
 	}
-}
-
-
 
 @h Mistaken grammar lines.
 "Mistaken" lines are command which can be matched, but only in order to
@@ -467,12 +242,10 @@ The following compiles a simple GPR to perform this "match":
 
 =
 void RTCommandGrammarLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
-	if (cgl->mistaken) {
-		EmitArrays::iname_entry(RTCommandGrammarLines::get_mistake_iname(cgl));
-		text_stream *desc = Str::new();
-		WRITE_TO(desc, "mistake token %d", 100 + cgl->allocation_id);
-		Sequence::queue(&RTCommandGrammarLines::mistake_agent, STORE_POINTER_cg_line(cgl), desc);
-	}
+	EmitArrays::iname_entry(RTCommandGrammarLines::get_mistake_iname(cgl));
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "mistake token %d", 100 + cgl->allocation_id);
+	Sequence::queue(&RTCommandGrammarLines::mistake_agent, STORE_POINTER_cg_line(cgl), desc);
 }
 void RTCommandGrammarLines::mistake_agent(compilation_subtask *t) {
 	cg_line *cgl = RETRIEVE_POINTER_cg_line(t->data);
@@ -604,33 +377,31 @@ because of |parse_name| inheritance with CG_IS_SUBJECT grammars.
 
 =
 void RTCommandGrammarLines::cgl_compile_extra_token_for_condition(gpr_kit *kit, cg_line *cgl,
-	int cg_is, inter_symbol *current_label) {
-	if (CGLines::conditional(cgl)) {
-		if (cg_is == CG_IS_COMMAND) {
-			EmitArrays::iname_entry(RTCommandGrammarLines::get_cond_token_iname(cgl));
-		} else {
-			EmitCode::inv(IF_BIP);
+	int cg_is) {
+	if (cg_is == CG_IS_COMMAND) {
+		EmitArrays::iname_entry(RTCommandGrammarLines::get_cond_token_iname(cgl));
+	} else {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
+				EmitCode::call(RTCommandGrammarLines::get_cond_token_iname(cgl));
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(JUMP_BIP);
 				EmitCode::down();
-					EmitCode::call(RTCommandGrammarLines::get_cond_token_iname(cgl));
-					EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-				EmitCode::up();
-				EmitCode::code();
-				EmitCode::down();
-					EmitCode::inv(JUMP_BIP);
-					EmitCode::down();
-						EmitCode::lab(current_label);
-					EmitCode::up();
+					EmitCode::lab(kit->fail_label);
 				EmitCode::up();
 			EmitCode::up();
-		}
-		if (cgl->compilation_data.cond_token_compiled == FALSE) {
-			cgl->compilation_data.cond_token_compiled = TRUE;
-			text_stream *desc = Str::new();
-			WRITE_TO(desc, "conditional token %W", Node::get_text(CGLines::get_understand_cond(cgl)));
-			Sequence::queue(&RTCommandGrammarLines::cond_agent, STORE_POINTER_cg_line(cgl), desc);
-		}
+		EmitCode::up();
+	}
+	if (cgl->compilation_data.cond_token_compiled == FALSE) {
+		cgl->compilation_data.cond_token_compiled = TRUE;
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "conditional token %W", Node::get_text(CGLines::get_understand_cond(cgl)));
+		Sequence::queue(&RTCommandGrammarLines::cond_agent, STORE_POINTER_cg_line(cgl), desc);
 	}
 }
 
@@ -675,3 +446,180 @@ void RTCommandGrammarLines::cond_agent(compilation_subtask *t) {
 
 	Functions::end(save);
 }
+
+@h Slash GPRs.
+These are functions which match exactly one of the tokens in the given range;
+so, for example, |fish/fowl/duck/drake| could be handled by a slash GPR.
+
+=
+typedef struct slash_gpr {
+	struct cg_token *first_choice;
+	struct cg_token *last_choice;
+	struct inter_name *sgpr_iname;
+	CLASS_DEFINITION
+} slash_gpr;
+
+@ =
+inter_name *RTCommandGrammarLines::slash(cg_token *from_token, cg_token *to_token) {
+	slash_gpr *sgpr = CREATE(slash_gpr);
+	sgpr->first_choice = from_token;
+	sgpr->last_choice = to_token;
+	package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
+	sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "slash GPR %d", sgpr->allocation_id);
+	Sequence::queue(&RTCommandGrammarLines::slash_GPR_agent, STORE_POINTER_slash_gpr(sgpr), desc);
+	return sgpr->sgpr_iname;
+}
+
+void RTCommandGrammarLines::slash_GPR_agent(compilation_subtask *t) {
+	slash_gpr *sgpr = RETRIEVE_POINTER_slash_gpr(t->data);
+	packaging_state save = Functions::begin(sgpr->sgpr_iname);
+	gpr_kit kit = GPRs::new_kit();
+	GPRs::add_original_var(&kit);
+	GPRs::add_standard_vars(&kit);
+	RTCommandGrammarLines::compile_token_range(&kit,
+		sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, kit.group_wn_s);
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
+	EmitCode::up();
+	Functions::end(save);
+}
+
+@h Compiling token ranges.
+This all looks festooned with complexity, but in fact it's almost the same as
+looping through the tokens in sequence and calling //RTCommandGrammarTokens::compile//
+on each in turn. The complications come from "slash classes", i.e., the ability
+to specify a disjunction like |A/B/C/D|: this looks like a range of 4 tokens.
+
+=
+void RTCommandGrammarLines::compile_token_range(gpr_kit *kit,
+	cg_token *token_from, cg_token *token_to, int cg_is, inter_symbol *group_wn_s) {
+	int code_mode = TRUE; if (cg_is == CG_IS_COMMAND) code_mode = FALSE;
+	int slash_equivalence_class = 0;
+	int alternative_number = 0;
+	int empty_text_allowed_in_class = FALSE;
+	inter_symbol *next_reserved_label = NULL;
+	inter_symbol *eog_reserved_label = NULL;
+	LOGIF(GRAMMAR_CONSTRUCTION, "Compiling token range $c -> $c\n", token_from, token_to);
+	LOG_INDENT;
+	for (cg_token *token = token_from;
+		((token) && (token != token_to->next_token));
+		token = token->next_token) {
+		LOGIF(GRAMMAR_CONSTRUCTION, "Compiling token $c\n", token);
+		int first_token_in_class = TRUE, last_token_in_class = TRUE;
+
+		if (token->slash_class != 0) @<This token is part of a slashed class@>
+		else @<This token is not part of a class@>;
+		if (first_token_in_class) alternative_number = 1;
+		else alternative_number++;
+
+		inter_symbol *jump_on_fail = NULL;
+		if (kit) jump_on_fail = kit->fail_label;
+
+		if (slash_equivalence_class > 0) @<Pretoken matter within a slash-class@>;
+
+		if ((empty_text_allowed_in_class) && (code_mode == FALSE)) {
+			@<Absorb the whole slash-class as a GPR@>;
+		} else {
+			int consult_mode = (cg_is == CG_IS_CONSULT)?TRUE:FALSE;
+			if (problem_count == 0)
+				RTCommandGrammarTokens::compile(kit, token, code_mode,
+					jump_on_fail, consult_mode);
+		}
+
+		if (slash_equivalence_class > 0) @<Posttoken matter within a slash-class@>;
+	}
+	LOG_OUTDENT;
+}
+
+@<This token is part of a slashed class@> =
+	first_token_in_class = FALSE;
+	last_token_in_class = FALSE;
+	if ((token->next_token == NULL) ||
+		(token->next_token->slash_class != token->slash_class))
+		last_token_in_class = TRUE;
+	if (token->slash_class != slash_equivalence_class) {
+		first_token_in_class = TRUE;
+		empty_text_allowed_in_class = token->slash_dash_dash;
+	}
+	slash_equivalence_class = token->slash_class;
+
+@<This token is not part of a class@> =
+	slash_equivalence_class = 0;
+	empty_text_allowed_in_class = FALSE;
+
+@<Pretoken matter within a slash-class@> =
+	if (code_mode) {
+		if (first_token_in_class) {
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, kit->group_wn_s);
+				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::up();
+		}
+		if (next_reserved_label) EmitCode::place_label(next_reserved_label);
+		TEMPORARY_TEXT(L)
+		WRITE_TO(L, ".class_%d_%d_%d", kit->current_grammar_block,
+			slash_equivalence_class, alternative_number+1);
+		next_reserved_label = EmitCode::reserve_label(L);
+		DISCARD_TEXT(L)
+
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::val_symbol(K_value, kit->group_wn_s);
+		EmitCode::up();
+
+		if ((last_token_in_class == FALSE) || (empty_text_allowed_in_class)) {
+			jump_on_fail = next_reserved_label;
+		}
+	}
+
+@<Absorb the whole slash-class as a GPR@> =
+	struct cg_token *first_choice = token;
+	struct cg_token *last_choice = token;
+	while ((token->next_token) &&
+			(token->next_token->slash_class == token->slash_class))
+		token = token->next_token;
+	last_choice = token;
+	inter_name *iname = RTCommandGrammarLines::slash(first_choice, last_choice);
+	EmitArrays::iname_entry(iname);
+	last_token_in_class = TRUE;
+
+@<Posttoken matter within a slash-class@> =
+	if (code_mode) {
+		if (last_token_in_class) {
+			if (empty_text_allowed_in_class) {
+				@<Jump to end of class@>;
+				if (next_reserved_label)
+					EmitCode::place_label(next_reserved_label);
+				next_reserved_label = NULL;
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, kit->group_wn_s);
+				EmitCode::up();
+			}
+			if (eog_reserved_label) EmitCode::place_label(eog_reserved_label);
+			eog_reserved_label = NULL;
+		} else {
+			@<Jump to end of class@>;
+		}
+	} else {
+		if (last_token_in_class == FALSE)
+			EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_SLASH_HL));
+	}
+
+@<Jump to end of class@> =
+	if (eog_reserved_label == NULL) {
+		TEMPORARY_TEXT(L)
+		WRITE_TO(L, ".class_%d_%d_end",
+			kit->current_grammar_block, slash_equivalence_class);
+		eog_reserved_label = EmitCode::reserve_label(L);
+	}
+	EmitCode::inv(JUMP_BIP);
+	EmitCode::down();
+		EmitCode::lab(eog_reserved_label);
+	EmitCode::up();

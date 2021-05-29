@@ -77,7 +77,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#5">Chapter 5: Command Parser</a></li><li><b>Command Grammars</b></li></ul></div>
 <p class="purpose">The possible command text following a command verb, or referring to a single concept or object, is gathered into a "command grammar".</p>
 
-<ul class="toc"><li><a href="5-cg.html#SP5">&#167;5. The CG_IS_COMMAND form</a></li><li><a href="5-cg.html#SP11">&#167;11. The CG_IS_TOKEN form</a></li><li><a href="5-cg.html#SP13">&#167;13. The CG_IS_SUBJECT form</a></li><li><a href="5-cg.html#SP15">&#167;15. The CG_IS_VALUE form</a></li><li><a href="5-cg.html#SP16">&#167;16. The CG_IS_CONSULT form</a></li><li><a href="5-cg.html#SP17">&#167;17. The CG_IS_PROPERTY_NAME form</a></li><li><a href="5-cg.html#SP18">&#167;18. The list of grammar lines</a></li><li><a href="5-cg.html#SP20">&#167;20. Slashing and determining</a></li><li><a href="5-cg.html#SP22">&#167;22. Sorting</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-cg.html#SP5">&#167;5. The CG_IS_COMMAND form</a></li><li><a href="5-cg.html#SP11">&#167;11. The CG_IS_TOKEN form</a></li><li><a href="5-cg.html#SP13">&#167;13. The CG_IS_SUBJECT form</a></li><li><a href="5-cg.html#SP14">&#167;14. The CG_IS_VALUE form</a></li><li><a href="5-cg.html#SP15">&#167;15. The CG_IS_CONSULT form</a></li><li><a href="5-cg.html#SP16">&#167;16. The CG_IS_PROPERTY_NAME form</a></li><li><a href="5-cg.html#SP17">&#167;17. The list of grammar lines</a></li><li><a href="5-cg.html#SP19">&#167;19. Slashing and determining</a></li><li><a href="5-cg.html#SP21">&#167;21. Sorting</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Command grammars, or CGs, are used in six excitingly different ways:
 </p>
@@ -149,7 +149,7 @@ form, so this is not as bloated a structure as it looks.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::cg_new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::cg_new</span></span>:<br/><a href="5-cg.html#SP7">&#167;7</a>, <a href="5-cg.html#SP11">&#167;11</a>, <a href="5-cg.html#SP13">&#167;13</a>, <a href="5-cg.html#SP15">&#167;15</a>, <a href="5-cg.html#SP16">&#167;16</a>, <a href="5-cg.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::cg_new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::cg_new</span></span>:<br/><a href="5-cg.html#SP7">&#167;7</a>, <a href="5-cg.html#SP11">&#167;11</a>, <a href="5-cg.html#SP13">&#167;13</a>, <a href="5-cg.html#SP14">&#167;14</a>, <a href="5-cg.html#SP15">&#167;15</a>, <a href="5-cg.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cg</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
@@ -214,7 +214,7 @@ do in fact start with the invisible "no verb verb".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::cg_is_genuinely_verbal</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::cg_is_genuinely_verbal</span></span>:<br/>Command Grammar Lines - <a href="5-cgl.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::cg_is_genuinely_verbal</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::cg_is_genuinely_verbal</span></span>:<br/>Command Grammar Lines - <a href="5-cgl.html#SP16">&#167;16</a>, <a href="5-cgl.html#SP16_2">&#167;16.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> == </span><span class="constant-syntax">CG_IS_COMMAND</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -405,19 +405,7 @@ in any case for those.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>This is an optimisation to store grammar more efficiently if it turns out
-that the names given to the subject are all single words. It saves a few bytes
-at run-time, and is just a little faster for the command parser then.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::take_out_one_word_grammar</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> != </span><span class="constant-syntax">CG_IS_SUBJECT</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"One-word optimisation applies only to objects"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RTCommandGrammarLines::list_take_out_one_word_grammar</span><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. The CG_IS_VALUE form. </b>This is used to store names for, say, particular numbers, or enumeration
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The CG_IS_VALUE form. </b>This is used to store names for, say, particular numbers, or enumeration
 values. The following examples both involve <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span> grammars:
 </p>
 
@@ -435,8 +423,8 @@ different numbers, for example; the <span class="extract"><span class="extract-s
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::for_kind</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::for_kind</span></span>:<br/>Understand Sentences - <a href="5-us.html#SP19_11">&#167;19.11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cannot get CG for null kind"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cg.html#SP15" class="function-link"><span class="function-syntax">CommandGrammars::get_parsing_grammar</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-cg.html#SP15" class="function-link"><span class="function-syntax">CommandGrammars::get_parsing_grammar</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cg.html#SP14" class="function-link"><span class="function-syntax">CommandGrammars::get_parsing_grammar</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-cg.html#SP14" class="function-link"><span class="function-syntax">CommandGrammars::get_parsing_grammar</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax"> = </span><a href="5-cg.html#SP4" class="function-link"><span class="function-syntax">CommandGrammars::cg_new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">CG_IS_VALUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cannot set CG for K_object"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
@@ -452,7 +440,7 @@ different numbers, for example; the <span class="extract"><span class="extract-s
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">understand_as_values</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. The CG_IS_CONSULT form. </b>Consultation grammars<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> are used to handle topics of conversation and other
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. The CG_IS_CONSULT form. </b>Consultation grammars<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> are used to handle topics of conversation and other
 free-form textual parts of commands typed by the player: the player can legally
 type ASK JETHRO ABOUT ... and put almost anything after ABOUT, and we need ways
 to parse that material.
@@ -462,8 +450,8 @@ to parse that material.
 almost anything &mdash; maybe Jethro knows about WHEAT PRICES, the HARVEST and
 QUANTUM CHROMODYNAMICS (he has hidden depths) &mdash; there is no obvious data
 structure in Inform to attach such a grammar to. Instead, code wishing to
-create a new consultation should first call <a href="5-cg.html#SP16" class="internal">CommandGrammars::prepare_consultation_cg</a>,
-then access the current one being made using <a href="5-cg.html#SP16" class="internal">CommandGrammars::get_consultation_cg</a>.
+create a new consultation should first call <a href="5-cg.html#SP15" class="internal">CommandGrammars::prepare_consultation_cg</a>,
+then access the current one being made using <a href="5-cg.html#SP15" class="internal">CommandGrammars::get_consultation_cg</a>.
 Note that exactly one consultation can be made at a time.
 </p>
 
@@ -483,7 +471,7 @@ in which players consulted a biographical dictionary of the Meldrew family.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">consultation_gv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. The CG_IS_PROPERTY_NAME form. </b>A few properties can be recognised by adjectives in the player's commands.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. The CG_IS_PROPERTY_NAME form. </b>A few properties can be recognised by adjectives in the player's commands.
 For example, we might allow OPEN or CLOSED in connection with doors. If so,
 we may want to allow synonyms or other ways to express this, and so a
 property value used adjectivally like this can be given a CG.
@@ -499,7 +487,7 @@ property value used adjectivally like this can be given a CG.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. The list of grammar lines. </b>Every CG has a list of CGLs: indeed, this list is the point of the grammar. Here
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. The list of grammar lines. </b>Every CG has a list of CGLs: indeed, this list is the point of the grammar. Here
 we test this for emptiness, and provide for adding to it. In general removals
 are not possible, but see <a href="5-cg.html#SP10" class="internal">CommandGrammars::remove_action</a> above.
 </p>
@@ -526,16 +514,16 @@ are not possible, but see <a href="5-cg.html#SP10" class="internal">CommandGramm
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>As noted above, some CGs are used to refer to objects or values: others not.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>As noted above, some CGs are used to refer to objects or values: others not.
 This returns the kind if so, or <span class="extract"><span class="extract-syntax">NULL</span></span> if not.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::get_kind_matched</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::get_kind_matched</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::get_kind_matched</span></span>:<br/>Command Grammar Tokens - <a href="5-cgt.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::get_single_kind</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_type</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Slashing and determining. </b>CGs are created and then gradually accumulate grammar lines in response to the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Slashing and determining. </b>CGs are created and then gradually accumulate grammar lines in response to the
 stream of "Understand... as..." sentences. Once all of that is done, we have to
 make sense of it all, which we do in two phases: "slashing" and "determining".
 </p>
@@ -545,7 +533,7 @@ the buck down to <a href="5-cgl.html" class="internal">Command Grammar Lines</a>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::prepare</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::prepare</span></span>:<br/>Parsing Plugin - <a href="5-pp.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandGrammars::prepare</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::prepare</span></span>:<br/>Parsing Plugin - <a href="5-pp.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::new_stage</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Slashing command grammar"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax">)</span>
@@ -556,10 +544,10 @@ the buck down to <a href="5-cgl.html" class="internal">Command Grammar Lines</a>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::new_stage</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Determining command grammar"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="5-cg.html#SP21" class="function-link"><span class="function-syntax">CommandGrammars::determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-cg.html#SP20" class="function-link"><span class="function-syntax">CommandGrammars::determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Determining is more involved, and is also recursive. What we are doing is
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Determining is more involved, and is also recursive. What we are doing is
 trying to work values a CG can produce, in terms of what value it refers to &mdash;
 if any. For <span class="extract"><span class="extract-syntax">CG_IS_COMMAND</span></span> grammars, for example, it will be <span class="extract"><span class="extract-syntax">NULL</span></span>, but
 for <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span>, it might for example be a description meaning "any value
@@ -573,10 +561,10 @@ recurses back here.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::determine</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::determine</span></span>:<br/><a href="5-cg.html#SP20">&#167;20</a><br/>Command Grammar Tokens - <a href="5-cgt.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandGrammars::determine</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">CommandGrammars::determine</span></span>:<br/><a href="5-cg.html#SP19">&#167;19</a><br/>Command Grammar Tokens - <a href="5-cgt.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_cg_created</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP21_1" class="named-paragraph-link"><span class="named-paragraph">If this CG produces a value we have determined already, return that</span><span class="named-paragraph-number">21.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP21_2" class="named-paragraph-link"><span class="named-paragraph">If recursion went impossibly deep, the CG grammar must be ill-founded</span><span class="named-paragraph-number">21.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_1" class="named-paragraph-link"><span class="named-paragraph">If this CG produces a value we have determined already, return that</span><span class="named-paragraph-number">20.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_2" class="named-paragraph-link"><span class="named-paragraph">If recursion went impossibly deep, the CG grammar must be ill-founded</span><span class="named-paragraph-number">20.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Determining $G\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG_INDENT</span><span class="plain-syntax">;</span>
@@ -584,20 +572,20 @@ recurses back here.
 <span class="plain-syntax">        </span><a href="5-cgl.html#SP16" class="function-link"><span class="function-syntax">CGLines::cgl_determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG_OUTDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP21_3" class="named-paragraph-link"><span class="named-paragraph">Take the union of the single-term results of each line</span><span class="named-paragraph-number">21.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_3" class="named-paragraph-link"><span class="named-paragraph">Take the union of the single-term results of each line</span><span class="named-paragraph-number">20.3</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP21_4" class="named-paragraph-link"><span class="named-paragraph">Cache the answer so that we need not determine it again</span><span class="named-paragraph-number">21.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_4" class="named-paragraph-link"><span class="named-paragraph">Cache the answer so that we need not determine it again</span><span class="named-paragraph-number">20.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21_1" class="paragraph-anchor"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If this CG produces a value we have determined already, return that</span><span class="named-paragraph-number">21.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If this CG produces a value we have determined already, return that</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">determined</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::get_single_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_type</span><span class="plain-syntax">));</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP21">&#167;21</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21_2" class="paragraph-anchor"></a><b>&#167;21.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If recursion went impossibly deep, the CG grammar must be ill-founded</span><span class="named-paragraph-number">21.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP20">&#167;20</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If recursion went impossibly deep, the CG grammar must be ill-founded</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -608,12 +596,12 @@ recurses back here.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP21">&#167;21</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21_3" class="paragraph-anchor"></a><b>&#167;21.3.  </b>The "union" referred to below is the widest possible description which
+<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP20">&#167;20</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3.  </b>The "union" referred to below is the widest possible description which
 matches the single term of the determination type of each CGL in the list.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take the union of the single-term results of each line</span><span class="named-paragraph-number">21.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take the union of the single-term results of each line</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -638,15 +626,15 @@ matches the single term of the determination type of each CGL in the list.
 <span class="plain-syntax">                    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; </span><span class="comment-syntax"> here </span><span class="extract"><span class="extract-syntax">spec_union</span></span><span class="comment-syntax"> was already wide enough</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP21_3_1" class="named-paragraph-link"><span class="named-paragraph">It is now evident that the lines have incompatible determination types</span><span class="named-paragraph-number">21.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-cg.html#SP20_3_1" class="named-paragraph-link"><span class="named-paragraph">It is now evident that the lines have incompatible determination types</span><span class="named-paragraph-number">20.3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">; </span><span class="comment-syntax"> to prevent the problem being repeated for the same grammar</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG_OUTDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Result is $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP21">&#167;21</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21_3_1" class="paragraph-anchor"></a><b>&#167;21.3.1.  </b>In some CGs, it doesn't matter if the lines do different things: for example,
+<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP20">&#167;20</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP20_3_1" class="paragraph-anchor"></a><b>&#167;20.3.1.  </b>In some CGs, it doesn't matter if the lines do different things: for example,
 in the CG_IS_COMMAND for the command verb TAKE, "inventory" (void determination
 type) and "[things]" (single term determination type) can happily co-exist.
 </p>
@@ -658,7 +646,7 @@ CGL describing the number 17, and another describing 22. There's no good way to
 take the union of those numbers.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">It is now evident that the lines have incompatible determination types</span><span class="named-paragraph-number">21.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">It is now evident that the lines have incompatible determination types</span><span class="named-paragraph-number">20.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -675,16 +663,16 @@ take the union of those numbers.
 <span class="plain-syntax">        </span><span class="string-syntax">"way it doesn't."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP21_3">&#167;21.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21_4" class="paragraph-anchor"></a><b>&#167;21.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Cache the answer so that we need not determine it again</span><span class="named-paragraph-number">21.4</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP20_3">&#167;20.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP20_4" class="paragraph-anchor"></a><b>&#167;20.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Cache the answer so that we need not determine it again</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">determined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::set_single_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_type</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP21">&#167;21</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Sorting. </b>The list of lines in a CG needs to be sorted into order before compilation,
+<ul class="endnotetexts"><li>This code is used in <a href="5-cg.html#SP20">&#167;20</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Sorting. </b>The list of lines in a CG needs to be sorted into order before compilation,
 to ensure that the player's commands are interpreted correctly whatever order
 in which the designer wrote the "Understand... as..." sentences setting it up.
 </p>
