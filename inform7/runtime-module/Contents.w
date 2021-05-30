@@ -86,5 +86,5 @@ Chapter 7: Command Grammar
 	Command Grammars
 	Command Grammar Lines
 	Command Grammar Tokens
+	Kind GPRs
 	Noun Filter Tokens
-	Tokens Parsing Values

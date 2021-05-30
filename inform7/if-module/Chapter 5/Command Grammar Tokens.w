@@ -459,11 +459,11 @@ parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 			break;
 		case ANY_STUFF_GTC:
 			@<Make sure the result is a description with one free variable@>;
-			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, TRUE, FALSE);
+			cgt->noun_filter = NounFilterTokens::new(result, TRUE, FALSE);
 			break;
 		case ANY_THINGS_GTC:
 			@<Make sure the result is a description with one free variable@>;
-			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, TRUE, TRUE);
+			cgt->noun_filter = NounFilterTokens::new(result, TRUE, TRUE);
 			break;
 		case RELATED_GTC:
 			cgt->token_relation = Rvalues::to_binary_predicate(result);
@@ -473,7 +473,7 @@ parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 			break;
 		case STUFF_GTC:
 			@<Make sure the result is a description with one free variable@>;
-			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, FALSE, FALSE);
+			cgt->noun_filter = NounFilterTokens::new(result, FALSE, FALSE);
 			break;
 		default:
 			Node::set_text(result, CGTokens::text(cgt));

@@ -32,21 +32,17 @@ int ParsingPlugin::production_line(int stage, int debugging,
 	}
 	if (stage == INTER2_CSEQ) {
 		BENCH(CommandGrammars::prepare);
-		BENCH(UnderstandValueTokens::number);
-		BENCH(UnderstandValueTokens::truth_state);
-		BENCH(UnderstandValueTokens::time);
+		BENCH(KindGPRs::number);
+		BENCH(KindGPRs::truth_state);
+		BENCH(KindGPRs::time);
 		if (debugging) {
 			BENCH(RTTestCommand::compile);
 		}
-	}
-	if (stage == INTER3_CSEQ) {
-		BENCH(UnderstandFilterTokens::compile);
 	}
 	if (stage == INTER4_CSEQ) {
 		BENCH(CommandGrammars::prepare);
 		BENCH(RTCommandGrammarLines::MistakeActionSub);
 		BENCH(RTCommandGrammars::compile_all);
-		BENCH(UnderstandFilterTokens::compile);
 	}
 	return FALSE;
 }

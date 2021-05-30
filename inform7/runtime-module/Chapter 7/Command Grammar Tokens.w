@@ -2,11 +2,15 @@
 
 Compiling single command parser tokens.
 
-@ 
+@ This section is a single function to compile a general token. Each of the
+"handle..." paragraphs is a complete implementation ending with a |return|.
+In code mode, we compile code to test for a match and jump to a given
+|failure_label| if not, allowing execution to flow through if a match is made;
+in array mode, we compile a single array entry to represent the token.
 
 =
 int ol_loop_counter = 0;
-void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode,
+void RTCommandGrammarTokens::compile(gpr_kit *kit, cg_token *cgt, int code_mode,
 	inter_symbol *failure_label, int consult_mode) {
 
 	if (CGTokens::is_literal(cgt)) @<Handle a literal word token@>;
@@ -16,14 +20,6 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 
 	parse_node *spec = cgt->what_token_describes;
 	if (cgt->defined_by) spec = ParsingPlugin::rvalue_from_command_grammar(cgt->defined_by);
-
-	if (Specifications::is_kind_like(spec)) {
-		kind *K = Node::get_kind_of_value(spec);
-		if ((K) && (Kinds::Behaviour::is_object(K) == FALSE) &&
-			(Kinds::eq(K, K_understanding) == FALSE) &&
-			(RTKindConstructors::offers_I6_GPR(K)))
-			@<Handle a kind token which is not an object@>;
-	}
 
 	if (CGTokens::is_I6_parser_token(cgt))
 		@<Handle a built-in token@>;
@@ -39,6 +35,8 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 
 	internal_error("unimplemented token");
 }
+
+@ The easiest case: matching a single literal word.
 
 @<Handle a literal word token@> =
 	int wn = Wordings::first_wn(CGTokens::text(cgt));
@@ -63,551 +61,658 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 	}
 	return;
 
+@<Then jump to our doom@> =
+	EmitCode::code();
+	EmitCode::down();
+		@<Jump to our doom@>;
+	EmitCode::up();
+
+@<Jump to our doom@> =
+	EmitCode::inv(JUMP_BIP);
+	EmitCode::down();
+		EmitCode::lab(failure_label);
+	EmitCode::up();
+
+@ Relation tokens allow, say, "[something related by containment]" to be part
+of the grammar for the name of an object. This means that parsing the name of
+object X may involve looking for the names of other objects P, Q, R, ... which
+are related to X; that may well mean performing a loop, and can be quite slow.
+Any such loop must be made as efficiently as possible.
+
+In general, these tokens appear in grammar which matches the name of an object.
+Such grammar forms part of a |parse_name| function, which is why we are always
+in code mode here, so that there is no array mode implementation to worry about.
+
+There are hand-coded implementations for interactive fiction relations
+involving the world model, and then there's a more general implementation for
+other relations. For some relations, there's an extra test performed before
+the main test (and both must pass, to make a match); for other relations,
+there is only the main test.
+
+In all of this code, the |self| pseudo-variable is set to the object X.
+
 @<Handle a relation token@> =
 	EmitCode::call(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
-		EmitCode::ref_symbol(K_value, gprk->w_s);
+		EmitCode::ref_symbol(K_value, kit->w_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
 	EmitCode::up();
 	if (bp == R_containment) {
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(NOT_BIP);
-			EmitCode::down();
-				EmitCode::inv(HAS_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-					EmitCode::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
-				EmitCode::up();
-			EmitCode::up();
-			@<Then jump to our doom@>;
-		EmitCode::up();
+		@<Extra test for a containment relation token@>;
 	}
 	if (bp == R_support) {
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(NOT_BIP);
-			EmitCode::down();
-				EmitCode::inv(HAS_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-					EmitCode::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
-				EmitCode::up();
-			EmitCode::up();
-			@<Then jump to our doom@>;
-		EmitCode::up();
+		@<Extra test for a support relation token@>;
 	}
-	if ((bp == a_has_b_predicate) || (bp == R_wearing) ||
-		(bp == R_carrying)) {
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(NOT_BIP);
-			EmitCode::down();
-				EmitCode::inv(HAS_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-					EmitCode::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
-				EmitCode::up();
-			EmitCode::up();
-			@<Then jump to our doom@>;
-		EmitCode::up();
+	if ((bp == a_has_b_predicate) || (bp == R_wearing) || (bp == R_carrying)) {
+		@<Extra test for a having, wearing or carrying relation token@>;
 	}
 	if ((bp == R_containment) ||
 		(bp == R_support) ||
 		(bp == a_has_b_predicate) ||
 		(bp == R_wearing) ||
 		(bp == R_carrying)) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-		inter_symbol *exit_label = EmitCode::reserve_label(L);
-		DISCARD_TEXT(L)
-
-		EmitCode::inv(OBJECTLOOP_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_iname(K_value, RTKindDeclarations::iname(K_object));
-			EmitCode::inv(IN_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->rv_s);
-				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-			EmitCode::up();
-			EmitCode::code();
-			EmitCode::down();
-				if (bp == R_carrying) {
-					EmitCode::inv(IF_BIP);
-					EmitCode::down();
-						EmitCode::inv(HAS_BIP);
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, gprk->rv_s);
-							EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-							EmitCode::inv(CONTINUE_BIP);
-						EmitCode::up();
-					EmitCode::up();
-				}
-				if (bp == R_wearing) {
-					EmitCode::inv(IF_BIP);
-					EmitCode::down();
-						EmitCode::inv(NOT_BIP);
-						EmitCode::down();
-							EmitCode::inv(HAS_BIP);
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, gprk->rv_s);
-								EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
-							EmitCode::up();
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-							EmitCode::inv(CONTINUE_BIP);
-						EmitCode::up();
-					EmitCode::up();
-				}
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::inv(PLUS_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, gprk->rv_s);
-							EmitCode::val_true();
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(GT_BIP);
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-						EmitCode::val_symbol(K_value, gprk->w_s);
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(JUMP_BIP);
-						EmitCode::down();
-							EmitCode::lab(exit_label);
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
-		@<Jump to our doom@>;
-		EmitCode::place_label(exit_label);
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
+		@<Main test for a possessive relation token@>;
 	} else if (bp == R_incorporation) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-		inter_symbol *exit_label = EmitCode::reserve_label(L);
-		DISCARD_TEXT(L)
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::inv(PROPERTYVALUE_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-				EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(WHILE_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, gprk->rv_s);
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::inv(PLUS_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, gprk->rv_s);
-							EmitCode::val_true();
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(GT_BIP);
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-						EmitCode::val_symbol(K_value, gprk->w_s);
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(JUMP_BIP);
-						EmitCode::down();
-							EmitCode::lab(exit_label);
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::inv(PROPERTYVALUE_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->rv_s);
-						EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
-					EmitCode::up();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
-		@<Jump to our doom@>;
-		EmitCode::place_label(exit_label);
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
+		@<Main test for an incorporation relation token@>;
 	} else if ((BinaryPredicates::get_reversal(bp) == R_containment) ||
 		(BinaryPredicates::get_reversal(bp) == R_support) ||
 		(BinaryPredicates::get_reversal(bp) == a_has_b_predicate) ||
 		(BinaryPredicates::get_reversal(bp) == R_wearing) ||
 		(BinaryPredicates::get_reversal(bp) == R_carrying)) {
 		if (BinaryPredicates::get_reversal(bp) == R_carrying) {
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(HAS_BIP);
-				EmitCode::down();
-					EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-					EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
-				EmitCode::up();
-				@<Then jump to our doom@>;
-			EmitCode::up();
+			@<Extra test for a reverse carrying relation token@>;
 		}
 		if (BinaryPredicates::get_reversal(bp) == R_wearing) {
-			EmitCode::inv(IF_BIP);
+			@<Extra test for a reverse wearing relation token@>;
+		}
+		@<Main test for a reverse possessive relation token@>;
+	} else if (BinaryPredicates::get_reversal(bp) == R_incorporation) {
+		@<Main test for a reverse incorporation relation token@>;
+	} else {
+	    @<Main test for a more general relation token@>;
+	}
+	return;
+
+@ Here P, Q, R, ... would be objects inside X. This is consistent with the
+world model only if X is a container, so we check that.
+
+@<Extra test for a containment relation token@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
+			EmitCode::inv(HAS_BIP);
 			EmitCode::down();
-				EmitCode::inv(NOT_BIP);
+				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
+			EmitCode::up();
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ Here P, Q, R, ... would be objects on top of X. This is consistent with the
+world model only if X is a supporter, so we check that.
+
+@<Extra test for a support relation token@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
+			EmitCode::inv(HAS_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
+			EmitCode::up();
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ Here P, Q, R, ... would be objects carried by X or worn by X. (The having
+relation means either one.) This is consistent with the world model only if X
+is a person, so we check that.
+
+@<Extra test for a having, wearing or carrying relation token@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
+			EmitCode::inv(HAS_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
+			EmitCode::up();
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ And this is the main test for any of those relationships, i.e., where for
+whatever reason the objects P, Q, R, ... are children of X in the object tree.
+We call |TryGivenObject(P)|, then |TryGivenObject(Q)|, and so on, until one
+of them succeeds or until all of them have failed.
+
+That being so, the most efficient way to loop through P, Q, R, ... is with an
+|OBJECTLOOP_BIP| construct, which is optimised for exactly this.
+
+The local variable |rv| is used temporarily as a loop variable, but set back
+to 0 after the loop finishes (win or lose). It would be cleaner to use a new
+local variable here; but |parse_name| functions are desperately short of locals
+because of the absolute cap on the number of those in the Z-machine VM. So we
+recycle.
+
+@<Main test for a possessive relation token@> =
+	TEMPORARY_TEXT(L)
+	WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
+	inter_symbol *success_label = EmitCode::reserve_label(L);
+	DISCARD_TEXT(L)
+
+	EmitCode::inv(OBJECTLOOP_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_iname(K_value, RTKindDeclarations::iname(K_object));
+		EmitCode::inv(IN_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, kit->rv_s);
+			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			if (bp == R_carrying) {
+				EmitCode::inv(IF_BIP);
 				EmitCode::down();
 					EmitCode::inv(HAS_BIP);
 					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_symbol(K_value, kit->rv_s);
 						EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
 					EmitCode::up();
-				EmitCode::up();
-				@<Then jump to our doom@>;
-			EmitCode::up();
-		}
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::call_symbol(Emit::get_veneer_symbol(PARENT_VSYMB));
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-			EmitCode::up();
-		EmitCode::up();
-
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-			EmitCode::val_symbol(K_value, gprk->w_s);
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-			EmitCode::inv(PLUS_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, gprk->rv_s);
-					EmitCode::val_true();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::val_symbol(K_value, gprk->w_s);
-			EmitCode::up();
-			@<Then jump to our doom@>;
-		EmitCode::up();
-	} else if (BinaryPredicates::get_reversal(bp) == R_incorporation) {
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::inv(PROPERTYVALUE_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-				EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-			EmitCode::val_symbol(K_value, gprk->w_s);
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-			EmitCode::inv(PLUS_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, gprk->rv_s);
-					EmitCode::val_true();
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::val_symbol(K_value, gprk->w_s);
-			EmitCode::up();
-			@<Then jump to our doom@>;
-		EmitCode::up();
-	} else {
-		i6_schema *i6s;
-		int reverse = FALSE;
-		int continue_loop_on_fail = TRUE;
-
-		i6s = BinaryPredicates::get_test_function(bp);
-		LOGIF(GRAMMAR_CONSTRUCTION, "Read I6s $i from $2\n", i6s, bp);
-		if ((i6s == NULL) && (BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp)))) {
-			reverse = TRUE;
-			i6s = BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp));
-			LOGIF(GRAMMAR_CONSTRUCTION, "But read I6s $i from reversal\n", i6s);
-		}
-
-		if (i6s) {
-			kind *K = BinaryPredicates::term_kind(bp, 1);
-			if (Kinds::Behaviour::is_subkind_of_object(K)) {
-				LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is %u\n", K);
-				EmitCode::inv(OBJECTLOOPX_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
 					EmitCode::code();
 					EmitCode::down();
-						EmitCode::inv(IF_BIP);
-						EmitCode::down();
-							EmitCode::inv(EQ_BIP);
-							EmitCode::down();
-								pcalc_term rv_term = Terms::new_constant(
-									Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, gprk->rv_lv));
-								pcalc_term self_term = Terms::new_constant(
-									Rvalues::new_self_object_constant());
-								if (reverse)
-									CompileSchemas::from_terms_in_val_context(i6s, &rv_term, &self_term);
-								else
-									CompileSchemas::from_terms_in_val_context(i6s, &self_term, &rv_term);
-				continue_loop_on_fail = TRUE;
+						EmitCode::inv(CONTINUE_BIP);
+					EmitCode::up();
+				EmitCode::up();
 			}
-		} else {
-			property *prn = ExplicitRelations::get_i6_storage_property(bp);
-			reverse = FALSE;
-			if (BinaryPredicates::is_the_wrong_way_round(bp)) reverse = TRUE;
-			if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO) {
-				if (reverse) reverse = FALSE; else reverse = TRUE;
+			if (bp == R_wearing) {
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(NOT_BIP);
+					EmitCode::down();
+						EmitCode::inv(HAS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, kit->rv_s);
+							EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(CONTINUE_BIP);
+					EmitCode::up();
+				EmitCode::up();
 			}
-			if (prn) {
-				if (reverse) {
-					EmitCode::inv(IF_BIP);
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, kit->w_s);
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::inv(PLUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, kit->w_s);
+					EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
 					EmitCode::down();
-						EmitCode::inv(PROVIDES_BIP);
-						EmitCode::down();
-							EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-							EmitCode::val_iname(K_value, RTProperties::iname(prn));
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-
-							EmitCode::inv(STORE_BIP);
-							EmitCode::down();
-								EmitCode::ref_symbol(K_value, gprk->rv_s);
-								EmitCode::inv(PROPERTYVALUE_BIP);
-								EmitCode::down();
-									EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-									EmitCode::val_iname(K_value, RTProperties::iname(prn));
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(EQ_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk->rv_s);
-
-					continue_loop_on_fail = FALSE;
-				} else {
-					kind *K = BinaryPredicates::term_kind(bp, 1);
-					EmitCode::inv(OBJECTLOOPX_BIP);
-					EmitCode::down();
-						EmitCode::ref_symbol(K_value, gprk->rv_s);
-						EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
-						EmitCode::code();
-						EmitCode::down();
-							EmitCode::inv(IF_BIP);
-							EmitCode::down();
-								EmitCode::inv(EQ_BIP);
-								EmitCode::down();
-									EmitCode::inv(AND_BIP);
-									EmitCode::down();
-										EmitCode::inv(PROVIDES_BIP);
-										EmitCode::down();
-											EmitCode::val_symbol(K_value, gprk->rv_s);
-											EmitCode::val_iname(K_value, RTProperties::iname(prn));
-										EmitCode::up();
-										EmitCode::inv(EQ_BIP);
-										EmitCode::down();
-											EmitCode::inv(PROPERTYVALUE_BIP);
-											EmitCode::down();
-												EmitCode::val_symbol(K_value, gprk->rv_s);
-												EmitCode::val_iname(K_value, RTProperties::iname(prn));
-											EmitCode::up();
-											EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
-										EmitCode::up();
-									EmitCode::up();
-					continue_loop_on_fail = TRUE;
-				}
-			}
-		}
-
-							EmitCode::val_false();
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-							if (continue_loop_on_fail == FALSE) {
-								@<Jump to our doom@>;
-							} else {
-								EmitCode::inv(CONTINUE_BIP);
-							}
-						EmitCode::up();
+						EmitCode::val_symbol(K_value, kit->rv_s);
+						EmitCode::val_true();
 					EmitCode::up();
-
-					EmitCode::inv(STORE_BIP);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(GT_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(JUMP_BIP);
 					EmitCode::down();
-						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-						EmitCode::val_symbol(K_value, gprk->w_s);
+						EmitCode::lab(success_label);
 					EmitCode::up();
-					EmitCode::inv(STORE_BIP);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
+	@<Jump to our doom@>;
+	EmitCode::place_label(success_label);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
+
+@ Here P, Q, R, ..., are component parts of the object X, and this is not
+represented using the VM's object tree but instead with oddball properties.
+So we need a completely different implementation, using a |WHILE_BIP|
+construct to work through P, Q, R, ... Again, though, we use |rv| as a
+temporary loop counter, and we call |TryGivenObject(P)|, then |TryGivenObject(Q)|,
+and so on until one of them matches.
+
+@<Main test for an incorporation relation token@> =
+	TEMPORARY_TEXT(L)
+	WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
+	inter_symbol *success_label = EmitCode::reserve_label(L);
+	DISCARD_TEXT(L)
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::inv(PROPERTYVALUE_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+			EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(WHILE_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, kit->rv_s);
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::val_symbol(K_value, kit->w_s);
+			EmitCode::up();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::inv(PLUS_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, kit->w_s);
+					EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
 					EmitCode::down();
-						EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-						EmitCode::inv(PLUS_BIP);
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, gprk->w_s);
-							EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, gprk->rv_s);
-								EmitCode::val_true();
-							EmitCode::up();
-						EmitCode::up();
+						EmitCode::val_symbol(K_value, kit->rv_s);
+						EmitCode::val_true();
 					EmitCode::up();
-
-					TEMPORARY_TEXT(L)
-					WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
-					inter_symbol *exit_label = EmitCode::reserve_label(L);
-					DISCARD_TEXT(L)
-
-					EmitCode::inv(IF_BIP);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(GT_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(JUMP_BIP);
 					EmitCode::down();
-						EmitCode::inv(GT_BIP);
-						EmitCode::down();
-							EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-							EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::up();
-						EmitCode::code();
-						EmitCode::down();
-							EmitCode::inv(JUMP_BIP);
-							EmitCode::down();
-								EmitCode::lab(exit_label);
-							EmitCode::up();
-						EmitCode::up();
+						EmitCode::lab(success_label);
 					EmitCode::up();
-
 				EmitCode::up();
 			EmitCode::up();
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
-				EmitCode::ref_symbol(K_value, gprk->rv_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-			@<Jump to our doom@>;
-			EmitCode::place_label(exit_label);
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, gprk->rv_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-		}
-		return;
-
-@<Handle a kind token which is not an object@> =
-	text_stream *GPR_fn_iname = RTKindConstructors::get_explicit_I6_GPR(K);
-	if (code_mode) {
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->w_s);
-			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-				if (Str::len(GPR_fn_iname) > 0)
-					EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), GPR_fn_iname));
-				else
-					EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
+				EmitCode::ref_symbol(K_value, kit->rv_s);
+				EmitCode::inv(PROPERTYVALUE_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, kit->rv_s);
+					EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
+				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
+	@<Jump to our doom@>;
+	EmitCode::place_label(success_label);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
+
+@ That might seem to complete our work on the special IF world model relations...
+but no, we're only halfway, because now we need to handle their reversals.
+
+However, the reversals are easier and execute more quickly, because whereas X
+can potentially carry many possible things P, Q, R, ..., it can only be carried
+by at most one: P.
+
+For this to be consistent in the world model, X must not have the "worn" property --
+because then, of course, it would be worn by P and not carried by P:
+
+@<Extra test for a reverse carrying relation token@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(HAS_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+			EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ Similarly, for X to be worn by P, X must have the "worn" property:
+
+@<Extra test for a reverse wearing relation token@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NOT_BIP);
+		EmitCode::down();
+			EmitCode::inv(HAS_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
+			EmitCode::up();
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ And in all cases (except incorporation) P must be the object-tree parent of X:
+
+@<Main test for a reverse possessive relation token@> =
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::call_symbol(Emit::get_veneer_symbol(PARENT_VSYMB));
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+		EmitCode::up();
+	EmitCode::up();
+
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::val_symbol(K_value, kit->w_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::inv(PLUS_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, kit->w_s);
+			EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, kit->rv_s);
+				EmitCode::val_true();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::val_symbol(K_value, kit->w_s);
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ So that just leaves incorporation, where the idea is the same, but where
+properties rather than the object tree implement the relation.
+
+@<Main test for a reverse incorporation relation token@> =
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit->rv_s);
+		EmitCode::inv(PROPERTYVALUE_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+			EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::val_symbol(K_value, kit->w_s);
+	EmitCode::up();
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+		EmitCode::inv(PLUS_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, kit->w_s);
+			EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, kit->rv_s);
+				EmitCode::val_true();
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+			EmitCode::val_symbol(K_value, kit->w_s);
+		EmitCode::up();
+		@<Then jump to our doom@>;
+	EmitCode::up();
+
+@ And now we really have disposed of the IF cases, and can turn to a general
+relation. Here X will relate to some collection P, Q, R, ... of possibilities,
+and we loop through them. There are three different implementations of the
+loop head, which manages the "through them" part, and then a common implementation
+of what to do in the loop -- i.e., test the possibility and jump to |success_label|
+if it works.
+
+@<Main test for a more general relation token@> =
+	TEMPORARY_TEXT(L)
+	WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
+	inter_symbol *success_label = EmitCode::reserve_label(L);
+	DISCARD_TEXT(L)
+
+	if ((BinaryPredicates::get_test_function(bp)) ||
+		(BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp))))
+		@<Main test for a general relation by schema@>;
+	if (ExplicitRelations::get_i6_storage_property(bp))
+		@<Main test for a general relation by property@>;
+	internal_error("unimplemented relation token");
+
+@<Main test for a general relation by schema@> =
+	i6_schema *i6s;
+	int reverse = FALSE;
+	i6s = BinaryPredicates::get_test_function(bp);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Read I6s $i from $2\n", i6s, bp);
+	if ((i6s == NULL) &&
+		(BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp)))) {
+		reverse = TRUE;
+		i6s = BinaryPredicates::get_test_function(BinaryPredicates::get_reversal(bp));
+		LOGIF(GRAMMAR_CONSTRUCTION, "But read I6s $i from reversal\n", i6s);
+	}
+	if (i6s) @<Open a general relation search loop using a schema@>;
+
+@<Open a general relation search loop using a schema@> =
+	kind *K = BinaryPredicates::term_kind(bp, 1);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
+		LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is %u\n", K);
+		EmitCode::inv(OBJECTLOOPX_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						pcalc_term rv_term = Terms::new_constant(
+							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, kit->rv_lv));
+						pcalc_term self_term = Terms::new_constant(
+							Rvalues::new_self_object_constant());
+						if (reverse)
+							CompileSchemas::from_terms_in_val_context(i6s, &rv_term, &self_term);
+						else
+							CompileSchemas::from_terms_in_val_context(i6s, &self_term, &rv_term);
+						EmitCode::val_false();
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(CONTINUE_BIP);
+					EmitCode::up();
+				EmitCode::up();
+		@<Conclude the general relation search loop@>;
+	} else internal_error("unimplemented for non-objects");
+	return;
+
+@<Main test for a general relation by property@> =
+	property *prn = ExplicitRelations::get_i6_storage_property(bp);
+	int reverse = FALSE;
+	if (BinaryPredicates::is_the_wrong_way_round(bp)) reverse = TRUE;
+	if (ExplicitRelations::get_form_of_relation(bp) == Relation_VtoO) {
+		if (reverse) reverse = FALSE; else reverse = TRUE;
+	}
+	if (prn) {
+		if (reverse) @<Open a general relation search loop using a reversed property@>
+		else @<Open a general relation search loop using a forwards property@>;
+	}
+
+@<Open a general relation search loop using a reversed property@> =
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			EmitCode::inv(NE_BIP);
+			EmitCode::inv(PROVIDES_BIP);
 			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+				EmitCode::val_iname(K_value, RTProperties::iname(prn));
 			EmitCode::up();
-			@<Then jump to our doom@>;
+			EmitCode::code();
+			EmitCode::down();
+
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, kit->rv_s);
+					EmitCode::inv(PROPERTYVALUE_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+						EmitCode::val_iname(K_value, RTProperties::iname(prn));
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, kit->rv_s);
+						EmitCode::val_false();
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						@<Jump to our doom@>;
+					EmitCode::up();
+				EmitCode::up();
+
+		@<Conclude the general relation search loop@>;
+		return;
+
+@<Open a general relation search loop using a forwards property@> =
+		kind *K = BinaryPredicates::term_kind(bp, 1);
+		EmitCode::inv(OBJECTLOOPX_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_iname(K_value, RTKindDeclarations::iname(K));
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::inv(AND_BIP);
+						EmitCode::down();
+							EmitCode::inv(PROVIDES_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, kit->rv_s);
+								EmitCode::val_iname(K_value, RTProperties::iname(prn));
+							EmitCode::up();
+							EmitCode::inv(EQ_BIP);
+							EmitCode::down();
+								EmitCode::inv(PROPERTYVALUE_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, kit->rv_s);
+									EmitCode::val_iname(K_value, RTProperties::iname(prn));
+								EmitCode::up();
+								EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
+							EmitCode::up();
+						EmitCode::up();
+						EmitCode::val_false();
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(CONTINUE_BIP);
+					EmitCode::up();
+				EmitCode::up();
+
+		@<Conclude the general relation search loop@>;
+		return;
+
+@ Those three general relation searches all share the same loop-end code:
+
+@<Conclude the general relation search loop@> =
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::up();
+
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::inv(PLUS_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, kit->w_s);
+						EmitCode::call(Hierarchy::find(TRYGIVENOBJECT_HL));
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, kit->rv_s);
+							EmitCode::val_true();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(GT_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::val_symbol(K_value, kit->w_s);
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(JUMP_BIP);
+						EmitCode::down();
+							EmitCode::lab(success_label);
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+
+			EmitCode::up();
 		EmitCode::up();
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_number(0);
 		EmitCode::up();
-	} else {
-		if (Str::len(GPR_fn_iname) > 0)
-			EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), GPR_fn_iname));
-		else
-			EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
-	}
-	return;
+		@<Jump to our doom@>;
+		EmitCode::place_label(success_label);
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_number(0);
+		EmitCode::up();
+
+@ And this is one of the specially-worded convenience tokens like "[things]":
 
 @<Handle a built-in token@> =
 	inter_name *i6_token_iname = RTCommandGrammars::iname_for_I6_parser_token(cgt);
 	if (code_mode) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::ref_symbol(K_value, kit->w_s);
 			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(ELEMENTARY_TT_HL));
@@ -618,123 +723,135 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_symbol(K_value, kit->w_s);
 				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 			EmitCode::up();
 			@<Then jump to our doom@>;
 		EmitCode::up();
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_symbol(K_value, gprk->w_s);
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_symbol(K_value, kit->w_s);
 		EmitCode::up();
 	} else {
 		EmitArrays::iname_entry(i6_token_iname);
 	}
 	return;
 
+@ This is for a token like "[an open door]" which describes a range of values.
+The possibilities are, fortunately, much constrained by what typechecking allowed.
+
 @<Handle a description token@> =
-	if (Descriptions::is_qualified(spec)) {
-		if (code_mode) {
-			EmitCode::inv(STORE_BIP);
+	if (Descriptions::is_qualified(spec)) @<Handle a qualified description token@>;
+
+	kind *K = Specifications::to_kind(spec);
+	if (Kinds::Behaviour::is_object(K)) @<Handle an unqualified common noun object token@>;
+	if (K) @<Handle an unqualified common noun non-object token@>;
+
+	internal_error("unimplemented description token");
+	return;
+
+@ For "[an open door]", say, where adjectives qualify the noun: there is no
+option but to create a noun-filter token.
+
+@<Handle a qualified description token@> =
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->w_s);
+			NounFilterTokens::function_and_filter(cgt->noun_filter);
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::ref_symbol(K_value, gprk->w_s);
-				EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-				EmitCode::down();
-					UnderstandFilterTokens::compile_id(cgt->noun_filter);
-				EmitCode::up();
+				EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 			EmitCode::up();
-			EmitCode::inv(IF_BIP);
-			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, gprk->w_s);
-					EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-				EmitCode::up();
-				@<Then jump to our doom@>;
-			EmitCode::up();
-			EmitCode::inv(STORE_BIP);
-			EmitCode::down();
-				EmitCode::ref_symbol(K_value, gprk->rv_s);
-				EmitCode::val_symbol(K_value, gprk->w_s);
-			EmitCode::up();
-		} else {
-			UnderstandFilterTokens::emit_id(cgt->noun_filter);
-		}
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_symbol(K_value, kit->w_s);
+		EmitCode::up();
 	} else {
-		kind *K = Specifications::to_kind(spec);
-		if (RTKindConstructors::offers_I6_GPR(K)) {
-			text_stream *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR(K);
-			if (code_mode) {
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->w_s);
-					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
-						if (Str::len(i6_gpr_name) > 0)
-							EmitCode::val_iname(K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
-						else
-							EmitCode::val_iname(K_value, RTKindConstructors::get_kind_GPR_iname(K));
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(NE_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-					EmitCode::up();
-					@<Then jump to our doom@>;
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
-				EmitCode::up();
-			} else {
-				if (Str::len(i6_gpr_name) > 0)
-					EmitArrays::iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
-				else
-					EmitArrays::iname_entry(RTKindConstructors::get_kind_GPR_iname(K));
-			}
-		} else if (Kinds::Behaviour::is_object(K)) {
-			if (code_mode) {
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->w_s);
-					EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-					EmitCode::down();
-						UnderstandFilterTokens::compile_id(cgt->noun_filter);
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(EQ_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk->w_s);
-						EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-					EmitCode::up();
-					@<Then jump to our doom@>;
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::val_symbol(K_value, gprk->w_s);
-				EmitCode::up();
-			} else {
-				UnderstandFilterTokens::emit_id(cgt->noun_filter);
-			}
-		} else internal_error("no token for description");
+		NounFilterTokens::array_entry(cgt->noun_filter);
 	}
 	return;
+
+@ For "[door]", say, where there is just a common noun and it is a kind of
+object, we again use a noun-filter token:
+
+@<Handle an unqualified common noun object token@> =
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->w_s);
+			NounFilterTokens::function_and_filter(cgt->noun_filter);
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_symbol(K_value, kit->w_s);
+		EmitCode::up();
+	} else {
+		NounFilterTokens::array_entry(cgt->noun_filter);
+	}
+	return;
+
+@ Here we have a token like "[number]", say.
+
+@<Handle an unqualified common noun non-object token@> =
+	inter_name *GPR = RTKindConstructors::get_exp_kind_GPR_iname(K);
+	if (code_mode) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->w_s);
+			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
+				EmitCode::val_iname(K_value, GPR);
+			EmitCode::up();
+		EmitCode::up();
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(NE_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, kit->w_s);
+				EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+			EmitCode::up();
+			@<Then jump to our doom@>;
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
+		EmitCode::up();
+	} else {
+		EmitArrays::iname_entry(GPR);
+	}
+	return;
+
+@ This is for a token like "[dingbats]", where that has itself been given a
+grammar ("Understand "flower" as "[dingbats]"."). All we need do is to call
+that token's own GPR.
 
 @<Handle an indirection through another grammar@> =
 	command_grammar *cg = cgt->defined_by;
 	if (code_mode) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->w_s);
+			EmitCode::ref_symbol(K_value, kit->w_s);
 			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(GPR_TT_HL));
@@ -745,7 +862,7 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_symbol(K_value, kit->w_s);
 				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 			EmitCode::up();
 			@<Then jump to our doom@>;
@@ -755,15 +872,15 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 		EmitCode::down();
 			EmitCode::inv(NE_BIP);
 			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_symbol(K_value, kit->w_s);
 				EmitCode::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
 			EmitCode::up();
 			EmitCode::code();
 			EmitCode::down();
 				EmitCode::inv(STORE_BIP);
 				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk->rv_s);
-					EmitCode::val_symbol(K_value, gprk->w_s);
+					EmitCode::ref_symbol(K_value, kit->rv_s);
+					EmitCode::val_symbol(K_value, kit->w_s);
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
@@ -776,39 +893,24 @@ void RTCommandGrammarTokens::compile(gpr_kit *gprk, cg_token *cgt, int code_mode
 	if (code_mode) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->w_s);
-			EmitCode::call(Hierarchy::find(PARSETOKENSTOPPED_HL));
-			EmitCode::down();
-				UnderstandFilterTokens::compile_id(cgt->noun_filter);
-			EmitCode::up();
+			EmitCode::ref_symbol(K_value, kit->w_s);
+			NounFilterTokens::function_and_filter(cgt->noun_filter);
 		EmitCode::up();
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk->w_s);
+				EmitCode::val_symbol(K_value, kit->w_s);
 				EmitCode::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 			EmitCode::up();
 			@<Then jump to our doom@>;
 		EmitCode::up();
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::ref_symbol(K_value, gprk->rv_s);
-			EmitCode::val_symbol(K_value, gprk->w_s);
+			EmitCode::ref_symbol(K_value, kit->rv_s);
+			EmitCode::val_symbol(K_value, kit->w_s);
 		EmitCode::up();
 	} else {
-		UnderstandFilterTokens::emit_id(cgt->noun_filter);
+		NounFilterTokens::array_entry(cgt->noun_filter);
 	}
 	return;
-
-@<Then jump to our doom@> =
-	EmitCode::code();
-	EmitCode::down();
-		@<Jump to our doom@>;
-	EmitCode::up();
-
-@<Jump to our doom@> =
-	EmitCode::inv(JUMP_BIP);
-	EmitCode::down();
-		EmitCode::lab(failure_label);
-	EmitCode::up();

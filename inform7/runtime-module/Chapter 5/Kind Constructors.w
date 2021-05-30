@@ -163,6 +163,17 @@ inter_name *RTKindConstructors::get_kind_GPR_iname(kind *K) {
 	return kc->compilation_data.kind_GPR_iname;
 }
 
+inter_name *RTKindConstructors::get_exp_kind_GPR_iname(kind *K) {
+	inter_name *GPR = NULL;
+	text_stream *GPR_fn_identifier = RTKindConstructors::get_explicit_I6_GPR(K);
+	LOG("Looking for %u: %S\n", K, GPR_fn_identifier);
+	if (Str::len(GPR_fn_identifier) > 0)
+		GPR = Produce::find_by_name(Emit::tree(), GPR_fn_identifier);
+	else
+		GPR = RTKindConstructors::get_kind_GPR_iname(K);
+	return GPR;
+}
+
 inter_name *RTKindConstructors::get_instance_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *kc = Kinds::get_construct(K);
@@ -365,18 +376,16 @@ int RTKindConstructors::request_I6_GPR(kind *K) {
 	if (K->construct->compilation_data.needs_GPR == FALSE) {
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "GPR for kind %u", K);
-		Sequence::queue(&UnderstandValueTokens::agent, STORE_POINTER_kind(K), desc);
+		if (Kinds::Behaviour::is_an_enumeration(K)) {
+			K->construct->compilation_data.needs_GPR = TRUE;
+			Sequence::queue(&KindGPRs::enumeration_agent, STORE_POINTER_kind(K), desc);
+		} else if (Kinds::Behaviour::is_quasinumerical(K)) {
+			K->construct->compilation_data.needs_GPR = TRUE;
+			Sequence::queue(&KindGPRs::quasinumerical_agent, STORE_POINTER_kind(K), desc);
+		}
+		return TRUE;
 	}
-	K->construct->compilation_data.needs_GPR = TRUE; /* make note to oblige later */
 	return TRUE;
-}
-
-@ Do we need to compile a GPR of our own for this kind?
-
-=
-int RTKindConstructors::needs_I6_GPR(kind *K) {
-	if (K == NULL) return FALSE;
-	return K->construct->compilation_data.needs_GPR;
 }
 
 @ A recognition-only GPR is used for matching specific data in the course of
