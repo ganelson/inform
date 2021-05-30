@@ -78,8 +78,6 @@ Chapter 6: Completion Resources
 	The Map
 	Property Permissions
 	Property Values
-	Name Properties
-	Parse Name Properties
 	Action Bitmap Property
 
 Chapter 7: Command Grammar
@@ -88,3 +86,5 @@ Chapter 7: Command Grammar
 	Command Grammar Tokens
 	Kind GPRs
 	Noun Filter Tokens
+	Name Properties
+	Parse Name Properties

@@ -1,5 +1,8 @@
 [RTTestCommand::] Test Scripts.
 
+To compile the tests submodule for a compilation unit, which contains
+_test packages.
+
 @h Compilation data.
 Each |test_scenario| object contains this data:
 

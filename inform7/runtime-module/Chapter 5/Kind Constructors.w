@@ -1,6 +1,6 @@
 [RTKindConstructors::] Kind Constructors.
 
-Hmmm.
+Each kind constructor has an Inter package of resources.
 
 @h Inter identifiers.
 

@@ -1,5 +1,7 @@
 [Name::] Name Properties.
 
+Small arrays of dictionary words which are values of the name property for objects.
+
 @ In the runtime command parser, the names of objects are parsed as nouns using
 the values of two properties: |name|, a simple array of dictionary words, and
 |parse_name|, a GPR function. These properties can be assigned either to single

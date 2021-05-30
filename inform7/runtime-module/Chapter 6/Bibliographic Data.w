@@ -1,5 +1,7 @@
 [RTBibliographicData::] Bibliographic Data.
 
+Recording bibliographic data, such as title and authorship, in Inter.
+
 @ Bibliographic data is significant at run-time because the kits contain
 code to print out the "banner" at the start of play, which is a sort of
 title page. So they need to know the title, and so on.

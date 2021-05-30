@@ -1,9 +1,8 @@
 [RTPlayer::] The Player.
 
-@ A special Inter array holds enough details about the initial situation of
-the player for |WorldModelKit| to get things started.
+Providing for the player and her initial situation, that is, at the start of play.
 
-=
+@ =
 void RTPlayer::compile_generic_constants(void) {
 	RTPlayer::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
 	RTPlayer::InitialSituation_define(START_OBJECT_INIS_HL, 1);
