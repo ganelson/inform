@@ -1776,8 +1776,10 @@ extensions).
 		if (Wordings::nonempty(NW)) {
 			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(NW)));
-			Index::DocReferences::doc_mark_used(pds,
-				Wordings::first_wn(Node::get_text(inv)));
+			if (Log::aspect_switched_on(PHRASE_USAGE_DA)) {
+				Index::DocReferences::doc_mark_used(pds,
+					Wordings::first_wn(Node::get_text(inv)));
+			}
 			DISCARD_TEXT(pds)
 		}
 	}

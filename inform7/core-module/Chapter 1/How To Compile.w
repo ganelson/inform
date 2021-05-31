@@ -245,7 +245,7 @@ here, which only happens when special runs are made for compiler testing.
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
 		-1, debugging, sequence_timer);
 	BENCH(Hierarchy::log);
-	BENCH(InterpretIndex::produce_index);
+	BENCH(Task::produce_index);
 
 @ We will define just one of the above steps here, because it works in a way
 which breaks the pattern of doing everything just once. For one thing, it's

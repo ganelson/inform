@@ -147,7 +147,7 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 			WRITE("Click on the speech-bubble icons to see the responses, "
 				"or here to see all of them:");
 			WRITE("&nbsp;");
-			Index::extra_link_with(OUT, 2000000, "responses");
+			Index::extra_all_link_with(OUT, NUMBER_CREATED(rule), "responses");
 			WRITE("%d", resp_count);
 		}
 		HTML_CLOSE("p");

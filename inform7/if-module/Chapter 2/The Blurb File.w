@@ -68,7 +68,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where to write its report to@> =
 	WRITE("status \"%f\" \"%f\"\n\n",
-		Supervisor::file_from_installation(CBLORB_REPORT_MODEL_IRES),
+		InstalledFiles::filename(CBLORB_REPORT_MODEL_IRES),
 		Task::cblorb_report_file());
 
 @<Tell Inblorb where the project and release folders are@> =
@@ -98,14 +98,14 @@ released along with the work.
 		WRITE("picture %d \"%f\"\n", rel->cover_picture_number, large);
 	} else {
 		WRITE("cover \"%f\"\n",
-			Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
 		WRITE("picture %d \"%f\"\n", 1,
-			Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
 		if (rel->release_website) {
 			WRITE("release file \"%f\"\n",
-				Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+				InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
 			WRITE("release file \"%f\"\n",
-				Supervisor::file_from_installation(SMALL_DEFAULT_COVER_ART_IRES));
+				InstalledFiles::filename(SMALL_DEFAULT_COVER_ART_IRES));
 		}
 	}
 
@@ -179,11 +179,11 @@ own credits.
 	}
 	if (rel->release_booklet) {
 		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n",
-			Supervisor::file_from_installation(INTRO_BOOKLET_IRES));
+			InstalledFiles::filename(INTRO_BOOKLET_IRES));
 	}
 	if (rel->release_postcard) {
 		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n",
-			Supervisor::file_from_installation(INTRO_POSTCARD_IRES));
+			InstalledFiles::filename(INTRO_POSTCARD_IRES));
 		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
 			"and designed by Lea Albaugh.\"\n");
 	}

@@ -316,51 +316,14 @@ which holds the mini-website of the Index for a project.
 The main index files (|Phrasebook.html| and so on) live at the top level,
 details on actions live in the subfolder |Details|: see below.
 
+@d PATH_INDEX_CALLBACK Task::index_path
+
 =
 pathname *Task::index_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	pathname *P = Pathnames::down(inform7_task->build, I"Index");
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
-}
-
-@ An oddity in the Index folder is an XML file recording where the headings
-are in the source text: this is for the benefit of the user interface
-application, if it wants it, but is not linked to or used by the HTML of
-the index as seen by the user.
-
-=
-filename *Task::xml_headings_file(void) {
-	return Filenames::in(Task::index_path(), I"Headings.xml");
-}
-
-@ Within the Index is a deeper level, into the weeds as it were, called
-|Details|.
-
-=
-pathname *Task::index_details_path(void) {
-	pathname *P = Pathnames::down(Task::index_path(), I"Details");
-	if (Pathnames::create_in_file_system(P)) return P;
-	return NULL;
-}
-
-@ And the following routine determines the filename for a page in this
-mini-website. Filenames down in the |Details| area have the form
-|N_S| where |N| is an integer supplied and |S| the leafname; for instance,
-|21_A.html| provides details page number 21 about actions, derived from the
-leafname |A.html|.
-
-=
-filename *Task::index_file(text_stream *leafname, int sub) {
-	if (sub >= 0) {
-		TEMPORARY_TEXT(full_leafname)
-		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
-		filename *F = Filenames::in(Task::index_details_path(), full_leafname);
-		DISCARD_TEXT(full_leafname)
-		return F;
-	} else {
-		return Filenames::in(Task::index_path(), leafname);
-	}
 }
 
 @ That's it for the project folder, but other project-related stuff is in
@@ -446,3 +409,16 @@ pathname *Task::released_sounds_path(void) {
 pathname *Task::released_interpreter_path(void) {
 	return Pathnames::down(Task::release_path(), I"interpreter");
 }
+
+@ And so, finally, the following triggers the indexing process.
+
+=
+void Task::produce_index(void) {
+	inform_project *project = Task::project();
+	InterpretIndex::interpret_indext(
+		Filenames::in(
+			Languages::path_to_bundle(
+				Projects::get_language_of_index(project)),
+			Projects::index_structure(project)));
+}
+

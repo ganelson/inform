@@ -24,6 +24,9 @@ which use this module:
 @e tree_inventory_CLASS
 @e tree_inventory_item_CLASS
 
+@e index_page_CLASS
+@e index_element_CLASS
+
 =
 DECLARE_CLASS(I6T_intervention)
 DECLARE_CLASS(codegen_pipeline)
@@ -38,6 +41,9 @@ DECLARE_CLASS(generated_segment)
 DECLARE_CLASS(link_instruction)
 DECLARE_CLASS(tree_inventory)
 DECLARE_CLASS(tree_inventory_item)
+
+DECLARE_CLASS(index_element)
+DECLARE_CLASS(index_page)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

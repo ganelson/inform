@@ -16,3 +16,5 @@ Chapter 2: Intranet
 	Source Links
 	Paste Buttons
 	Documentation Renderer
+	Installed Files
+	Documentation References

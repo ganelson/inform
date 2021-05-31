@@ -618,7 +618,7 @@ int PluginCalls::act_on_ANL_entry_options(anl_entry *entry, int entry_options, i
 	PLUGINS_CALL(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, entry, entry_options, fail);
 }
 
-@ Called from //runtime: Matching Action Patterns// when assembling the requirement
+@ Called from //imperative: Matching Action Patterns// when assembling the requirement
 clauses for compiling a mattern match; this gives plugins a chance to act
 extra stipulations, which are not explicit in clauses already in the pattern.
 
@@ -630,7 +630,7 @@ int PluginCalls::set_pattern_match_requirements(action_pattern *ap, int *cpm,
 	PLUGINS_CALL(SET_PATTERN_MATCH_REQUIREMENTS_PLUG, ap, cpm, needed, needed_apoc);
 }
 
-@ Called from //runtime: Matching Action Patterns// when compiling any additional
+@ Called from //imperative: Matching Action Patterns// when compiling any additional
 requirements set by |SET_PATTERN_MATCH_REQUIREMENTS_PLUG|.
 
 @e COMPILE_PATTERN_MATCH_CLAUSE_PLUG

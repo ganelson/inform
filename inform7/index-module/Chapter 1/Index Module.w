@@ -14,7 +14,6 @@ which use this module:
 @e INDEX_SORTING_MREASON
 @e MAP_INDEX_MREASON
 @e TYPE_TABLES_MREASON
-@e DOC_FRAGMENT_MREASON
 
 =
 COMPILE_WRITER(heading *, IndexHeadings::log)
@@ -25,7 +24,6 @@ void IndexModule::start(void) {
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
 	Memory::reason_name(TYPE_TABLES_MREASON, "tables of details of the kinds of values");
-	Memory::reason_name(DOC_FRAGMENT_MREASON, "documentation fragments");
 
 	InternalTests::make_test_available(I"map", &PL::SpatialMap::perform_map_internal_test, TRUE);
 }

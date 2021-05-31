@@ -83,10 +83,10 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 
 @<Write the actual extension documentation page@> =
 	HTML::header(OUT, I"Extension",
-		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
-		Supervisor::file_from_installation(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
+		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
+		InstalledFiles::filename(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
 	HTML::incorporate_HTML(OUT,
-		Supervisor::file_from_installation(EXTENSION_DOCUMENTATION_MODEL_IRES));
+		InstalledFiles::filename(EXTENSION_DOCUMENTATION_MODEL_IRES));
 	@<Write documentation for a specific extension into the page@>;
 	HTML::footer(OUT);
 

@@ -13,7 +13,7 @@ void InterpretIndex::disable_or_enable_index(int which) {
 
 void InterpretIndex::interpret_indext(filename *indext_file) {
 	if (do_not_generate_index == FALSE)
-		InterpretIndex::interpreter_shared(Task::syntax_tree(), indext_file);
+		InterpretIndex::interpreter_shared(indext_file);
 }
 
 @h Implementation.
@@ -24,7 +24,7 @@ In kind or indexing mode, there is in fact no output, and the interpreter
 is run only to call other functions.
 
 =
-void InterpretIndex::interpreter_shared(parse_node_tree *T, filename *index_structure) {
+void InterpretIndex::interpreter_shared(filename *index_structure) {
 	text_stream *OUT = NULL;
 	FILE *Input_File = NULL;
 	int col = 1, cr;
@@ -54,16 +54,6 @@ void InterpretIndex::interpreter_shared(parse_node_tree *T, filename *index_stru
 					goto NewCharacter;
 				}
 			}
-			if (cr == '(') {
-				@<Read next character from I6T stream@>;
-				if (cr == '+') {
-					@<Read up to the next plus close-bracket as an I7 expression@>;
-					continue;
-				} else { /* otherwise the open bracket was a literal */
-					if (OUT) PUT_TO(OUT, '(');
-					goto NewCharacter;
-				}
-			}
 			if (OUT) PUT_TO(OUT, cr);
 		}
 	} while (cr != EOF);
@@ -82,9 +72,7 @@ file.
 		Input_File = Filenames::fopen(index_structure, "r");
 		if (Input_File == NULL) {
 			LOG("Filename was %f\n", index_structure);
-			StandardProblems::unlocated_problem(Task::syntax_tree(),
-				_p_(BelievedImpossible), /* or anyway not usefully testable */
-				"I couldn't open the template file for the index.");
+			internal_error("unable to open template file for the index");
 		}
 	}
 
@@ -132,32 +120,6 @@ be the empty string: see above). The argument must not include |}|.
 		if (com_mode) PUT_TO(command, cr);
 		else PUT_TO(argument, cr);
 	}
-
-@ I7 expressions can be included in I6T code exactly as in inline invocation
-definitions: thus
-= (text)
-	Constant FROG_CL = (+ pond-dwelling amphibian +);
-=
-will expand "pond-dwelling amphibian" into the I6 translation of the kind
-of object with this name. Because of this syntax, one has to watch out for
-I6 code like so:
-= (text as Inform 6)
-	if (++counter_of_some_kind > 0) ...
-=
-which can trigger an unwanted |(+|.
-
-@<Read up to the next plus close-bracket as an I7 expression@> =
-	TEMPORARY_TEXT(i7_exp)
-	while (TRUE) {
-		@<Read next character from I6T stream@>;
-		if (cr == EOF) break;
-		if ((cr == ')') && (Str::get_last_char(i7_exp) == '+')) {
-			Str::delete_last_character(i7_exp); break; }
-		PUT_TO(i7_exp, cr);
-	}
-	wording W = Feeds::feed_text(i7_exp);
-	CSIInline::eval_bracket_plus_to_text(OUT, W);
-	DISCARD_TEXT(i7_exp)
 
 @h Indexing commands.
 Commands in a |.indext| file are skipped when Inform has been called with a 
@@ -211,17 +173,3 @@ time.) |{-index:name}| opens the index file called |name|.
 		Regexp::dispose_of(&mr);
 		continue;
 	}
-
-@h Indexing.
-And so, finally, the following triggers the indexing process.
-
-=
-void InterpretIndex::produce_index(void) {
-	inform_project *project = Task::project();
-	InterpretIndex::interpret_indext(
-		Filenames::in(
-			Languages::path_to_bundle(
-				Projects::get_language_of_index(project)),
-			Projects::index_structure(project)));
-}
-

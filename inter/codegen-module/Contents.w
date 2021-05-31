@@ -59,3 +59,7 @@ Chapter 5: Final Code
 	Final Binary Inter
 	Final Inventory
 	Final Inform 6
+
+Chapter 6: Index
+	Index Interpreter
+	Index File Services

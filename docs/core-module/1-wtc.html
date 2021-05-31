@@ -225,12 +225,12 @@ rough stages. Twenty is plenty.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::project</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Task::project</span></span>:<br/>Internal Test Cases - <a href="1-itc.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::project</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Task::project</span></span>:<br/><a href="1-wtc.html#SP17">&#167;17</a><br/>Internal Test Cases - <a href="1-itc.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::vm</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Task::vm</span></span>:<br/><a href="1-wtc.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::vm</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Task::vm</span></span>:<br/><a href="1-wtc.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">for_vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -405,57 +405,17 @@ which holds the mini-website of the Index for a project.
 details on actions live in the subfolder <span class="extract"><span class="extract-syntax">Details</span></span>: see below.
 </p>
 
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PATH_INDEX_CALLBACK</span><span class="plain-syntax"> </span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a>
+</pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::index_path</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Task::index_path</span></span>:<br/><a href="1-wtc.html#SP14">&#167;14</a>, <a href="1-wtc.html#SP15">&#167;15</a>, <a href="1-wtc.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::index_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">build</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Index"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Pathnames::create_in_file_system</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>An oddity in the Index folder is an XML file recording where the headings
-are in the source text: this is for the benefit of the user interface
-application, if it wants it, but is not linked to or used by the HTML of
-the index as seen by the user.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::xml_headings_file</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Headings.xml"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Within the Index is a deeper level, into the weeds as it were, called
-<span class="extract"><span class="extract-syntax">Details</span></span>.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::index_details_path</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Task::index_details_path</span></span>:<br/><a href="1-wtc.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Details"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Pathnames::create_in_file_system</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And the following routine determines the filename for a page in this
-mini-website. Filenames down in the <span class="extract"><span class="extract-syntax">Details</span></span> area have the form
-<span class="extract"><span class="extract-syntax">N_S</span></span> where <span class="extract"><span class="extract-syntax">N</span></span> is an integer supplied and <span class="extract"><span class="extract-syntax">S</span></span> the leafname; for instance,
-<span class="extract"><span class="extract-syntax">21_A.html</span></span> provides details page number 21 about actions, derived from the
-leafname <span class="extract"><span class="extract-syntax">A.html</span></span>.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::index_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sub</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sub</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">full_leafname</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">full_leafname</span><span class="plain-syntax">, </span><span class="string-syntax">"%d_%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP15" class="function-link"><span class="function-syntax">Task::index_details_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">full_leafname</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">full_leafname</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>That's it for the project folder, but other project-related stuff is in
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>That's it for the project folder, but other project-related stuff is in
 the materials folder, which we turn to next.
 </p>
 
@@ -493,7 +453,7 @@ level of materuals.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">existing_storyfile</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Materials is also where cover art lives: it could have either the file
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Materials is also where cover art lives: it could have either the file
 extension <span class="extract"><span class="extract-syntax">.jpg</span></span> or <span class="extract"><span class="extract-syntax">.png</span></span>, and we generate both sets of filenames, even
 though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
@@ -524,7 +484,7 @@ and Sounds, if any, live: in their own subfolders.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">materials</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
 is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
@@ -536,13 +496,26 @@ it can all be generated again.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">materials</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Release"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_figures_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Figures"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP16" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Figures"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_sounds_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP16" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_interpreter_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"interpreter"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP16" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"interpreter"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>And so, finally, the following triggers the indexing process.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::produce_index</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Task::produce_index</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_15">&#167;2.15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::project</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">InterpretIndex::interpret_indext</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Languages::path_to_bundle</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Projects::get_language_of_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Projects::index_structure</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

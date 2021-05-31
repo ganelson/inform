@@ -62,22 +62,79 @@ void Index::new_segment(text_stream *abb, text_stream *title, text_stream *expla
 	ie->explanatory_note = Str::duplicate(explanation);
 }
 
+@ ...
+
+=
+pathname *Index::path(void) {
+	#ifdef PATH_INDEX_CALLBACK
+	return PATH_INDEX_CALLBACK();
+	#endif
+	#ifndef PATH_INDEX_CALLBACK
+	return NULL;
+	#endif
+}
+
+@ An oddity in the Index folder is an XML file recording where the headings
+are in the source text: this is for the benefit of the user interface
+application, if it wants it, but is not linked to or used by the HTML of
+the index as seen by the user.
+
+=
+filename *Index::xml_headings_file(void) {
+	return Filenames::in(Index::path(), I"Headings.xml");
+}
+
+@ Within the Index is a deeper level, into the weeds as it were, called
+|Details|.
+
+=
+pathname *Index::index_details_path(void) {
+	pathname *P = Pathnames::down(Index::path(), I"Details");
+	if (Pathnames::create_in_file_system(P)) return P;
+	return NULL;
+}
+
+@ And the following routine determines the filename for a page in this
+mini-website. Filenames down in the |Details| area have the form
+|N_S| where |N| is an integer supplied and |S| the leafname; for instance,
+|21_A.html| provides details page number 21 about actions, derived from the
+leafname |A.html|.
+
+=
+filename *Index::index_filename(text_stream *leafname, int sub) {
+	if (sub >= 0) {
+		TEMPORARY_TEXT(full_leafname)
+		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
+		filename *F = Filenames::in(Index::index_details_path(), full_leafname);
+		DISCARD_TEXT(full_leafname)
+		return F;
+	} else {
+		return Filenames::in(Index::path(), leafname);
+	}
+}
+
 int index_file_counter = 0;
 text_stream *ifl = NULL; /* Current destination of index text */
 text_stream index_file_struct; /* The current index file being written */
 text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int sub, text_stream *explanation) {
-	filename *F = Task::index_file(index_leaf, sub);
+	filename *F = Index::index_filename(index_leaf, sub);
 	if (ifl) Index::close_index_file();
-	if (STREAM_OPEN_TO_FILE(&index_file_struct, F, UTF8_ENC) == FALSE)
+	if (STREAM_OPEN_TO_FILE(&index_file_struct, F, UTF8_ENC) == FALSE) {
+		#ifdef CORE_MODULE
 		Problems::fatal_on_file("Can't open index file", F);
+		#endif
+		#ifndef CORE_MODULE
+		Errors::fatal_with_file("can't open index file", F);
+		#endif
+	}
 	ifl = &index_file_struct;
 	text_stream *OUT = ifl;
 
 	@<Set the current index page@>;
 
 	HTML::header(OUT, title,
-		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
-		Supervisor::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
+		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
+		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 	index_file_counter++;
 	if (Str::get_first_char(title) == '<') {
 		Index::index_banner_line(OUT, 1, I"^", I"Details",
@@ -573,6 +630,7 @@ void Index::disable_or_enable_census(int which) {
 }
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
+	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"C")) {
 		IndexHeadings::index(OUT);
 		IndexExtensions::index(OUT);
@@ -602,7 +660,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"In")) {
-		Index::innards(OUT, Supervisor::current_vm());
+		IXActivities::innards(OUT, Supervisor::current_vm());
 		return;
 	}
 
@@ -698,6 +756,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		#endif
 		return;
 	}
+	#endif
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }
 
@@ -781,6 +840,7 @@ void Index::link_to(OUTPUT_STREAM, int wn, int nonbreaking_space) {
 }
 
 void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
+	#ifdef SUPERVISOR_MODULE
 	inform_extension *E = Extensions::corresponding_to(sl.file_of_origin);
 	if (E) {
 		if (Extensions::is_standard(E) == FALSE) {
@@ -791,6 +851,7 @@ void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_
 		}
 		return;
 	}
+	#endif
 	SourceLinks::link(OUT, sl, nonbreaking_space);
 }
 
@@ -846,14 +907,16 @@ void Index::extra_link(OUTPUT_STREAM, int id) {
 	WRITE("&nbsp;");
 }
 
+void Index::extra_all_link_with(OUTPUT_STREAM, int nr, char *icon) {
+	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showAllResp(%d); return false;\"", nr);
+	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%s.png", icon);
+	HTML_CLOSE("a");
+	WRITE("&nbsp;");
+}
+
 void Index::extra_link_with(OUTPUT_STREAM, int id, char *icon) {
-	if (id == 2000000) {
-		HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showAllResp(%d); return false;\"", NUMBER_CREATED(rule));
-		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%s.png", icon);
-	} else {
-		HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\"", id, id);
-		HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/%s.png", id, icon);
-	}
+	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\"", id, id);
+	HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/%s.png", id, icon);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
 }
@@ -913,60 +976,4 @@ void Index::dequote(OUTPUT_STREAM, wchar_t *p) {
 			default: PUT_TO(OUT, c); break;
 		}
 	}
-}
-
-@h Describing the current VM.
-
-=
-void Index::innards(OUTPUT_STREAM, target_vm *VM) {
-	Index::index_VM(OUT, VM);
-	NewUseOptions::index(OUT);
-	HTML_OPEN("p");
-	Index::extra_link(OUT, 3);
-	WRITE("See some technicalities for Inform maintainers only");
-	HTML_CLOSE("p");
-	Index::extra_div_open(OUT, 3, 2, "e0e0e0");
-	Index::show_configuration(OUT);
-	@<Add some paste buttons for the debugging log@>;
-	Index::extra_div_close(OUT, "e0e0e0");
-}
-
-@ The index provides some hidden paste icons for these:
-
-@<Add some paste buttons for the debugging log@> =
-	HTML_OPEN("p");
-	WRITE("Debugging log:");
-	HTML_CLOSE("p");
-	HTML_OPEN("p");
-	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
-		debugging_aspect *da = &(the_debugging_aspects[i]);
-		if (Str::len(da->unhyphenated_name) > 0) {
-			TEMPORARY_TEXT(is)
-			WRITE_TO(is, "Include %S in the debugging log.", da->unhyphenated_name);
-			PasteButtons::paste_text(OUT, is);
-			WRITE("&nbsp;%S", is);
-			DISCARD_TEXT(is)
-			HTML_TAG("br");
-		}
-	}
-	HTML_CLOSE("p");
-
-@ =
-void Index::index_VM(OUTPUT_STREAM, target_vm *VM) {
-	if (VM == NULL) internal_error("target VM not set yet");
-	Index::anchor(OUT, I"STORYFILE");
-	HTML_OPEN("p"); WRITE("Story file format: ");
-	ExtensionIndex::plot_icon(OUT, VM);
-	TargetVMs::write(OUT, VM);
-	HTML_CLOSE("p");
-}
-
-@ =
-void Index::show_configuration(OUTPUT_STREAM) {
-	HTML_OPEN("p");
-	Index::anchor(OUT, I"CONFIG");
-	WRITE("Inform language definition:\n");
-	PluginManager::list_plugins(OUT, "Included", TRUE);
-	PluginManager::list_plugins(OUT, "Excluded", FALSE);
-	HTML_CLOSE("p");
 }

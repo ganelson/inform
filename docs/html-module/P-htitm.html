@@ -64,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">html</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>How To Include This Module</b></li></ul></div>
 <p class="purpose">What to do to make use of the html module in a new command-line tool.</p>
 
-<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li><li><a href="P-htitm.html#SP3">&#167;3. Callback function</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The html module provided as one of the "services" suite of modules, which means
 that it was built with a view to potential incorporation in multiple tools.
@@ -92,6 +92,12 @@ module:
 <ul class="items"><li>&#9679; The parent must call <span class="extract"><span class="extract-syntax">HTMLModule::start()</span></span> just after it starts up, and
 <span class="extract"><span class="extract-syntax">HTMLModule::end()</span></span> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Callback function. </b>The user must define one callback function:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">INSTALLED_FILES_HTML_CALLBACK</span></span> should return the pathname of a directory
+in which miscellaneous installed resources such as CSS files can be found.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-hm.html">1</a></li><li class="progresschapter"><a href="2-sl.html">2</a></li><li class="progressnext"><a href="1-hm.html">&#10095;</a></li></ul></div>

@@ -65,7 +65,7 @@ void Index::DocReferences::read_xrefs(void) {
 	if (xrefs_read == FALSE) {
 		xrefs_read = TRUE;
 		TextFiles::read(
-			Supervisor::file_from_installation(DOCUMENTATION_XREFS_IRES), TRUE,
+			InstalledFiles::filename(DOCUMENTATION_XREFS_IRES), TRUE,
 			NULL, FALSE, Index::DocReferences::read_xrefs_helper, NULL, NULL);
 	}
 }
@@ -176,25 +176,25 @@ built-in documented phrase has a symbol. Every time Inform successfully uses
 such a phrase, it increments the usage count by calling the following:
 
 =
+#ifdef CORE_MODULE
 void Index::DocReferences::doc_mark_used(text_stream *symb, int at_word) {
-	if (Log::aspect_switched_on(PHRASE_USAGE_DA)) {
-		Index::DocReferences::read_xrefs();
-		documentation_ref *dr;
-		LOOP_OVER(dr, documentation_ref) {
-			if (Str::eq(dr->doc_symbol, symb)) {
-				if (at_word >= 0) {
-					source_file *pos = Lexer::file_of_origin(at_word);
-					inform_extension *loc = Extensions::corresponding_to(pos);
-					if (loc == NULL) dr->usage_count++;
-					else if (Extensions::is_standard(loc)) dr->sr_usage_count++;
-					else dr->ext_usage_count++;
-				} else dr->sr_usage_count++;
-				return;
-			}
+	Index::DocReferences::read_xrefs();
+	documentation_ref *dr;
+	LOOP_OVER(dr, documentation_ref) {
+		if (Str::eq(dr->doc_symbol, symb)) {
+			if (at_word >= 0) {
+				source_file *pos = Lexer::file_of_origin(at_word);
+				inform_extension *loc = Extensions::corresponding_to(pos);
+				if (loc == NULL) dr->usage_count++;
+				else if (Extensions::is_standard(loc)) dr->sr_usage_count++;
+				else dr->ext_usage_count++;
+			} else dr->sr_usage_count++;
+			return;
 		}
-		internal_error("unable to update usage count");
 	}
+	internal_error("unable to update usage count");
 }
+#endif
 
 @ The following dumps the result. This is not useful for a single run,
 especially, but to be accumulated over a whole corpus of source texts, e.g.:
@@ -204,12 +204,12 @@ especially, but to be accumulated over a whole corpus of source texts, e.g.:
 
 =
 void Index::DocReferences::log_statistics(void) {
-	LOGIF(PHRASE_USAGE, "The following shows how often each built-in phrase was used:\n");
+	LOG("The following shows how often each built-in phrase was used:\n");
 	Index::DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::begins_with_wide_string(dr->doc_symbol, L"ph"))
-			LOGIF(PHRASE_USAGE, "USAGE: %S %d %d %d\n", dr->doc_symbol,
+			LOG("USAGE: %S %d %d %d\n", dr->doc_symbol,
 				dr->usage_count, dr->sr_usage_count, dr->ext_usage_count);
 }
 
@@ -282,7 +282,7 @@ void Index::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 
 @<Load in the documentation fragments file@> =
 	FILE *FRAGMENTS = Filenames::fopen(
-		Supervisor::file_from_installation(DOCUMENTATION_SNIPPETS_IRES), "r");
+		InstalledFiles::filename(DOCUMENTATION_SNIPPETS_IRES), "r");
 	if (FRAGMENTS) {
 		char *p = Memory::malloc(MAX_EXTENT_OF_FRAGMENTS, DOC_FRAGMENT_MREASON);
 		@<Scan the file into memory, translating from UTF-8@>;

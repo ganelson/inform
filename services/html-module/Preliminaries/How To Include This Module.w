@@ -24,3 +24,9 @@ Import: somepath/html
 (*) The parent must call |HTMLModule::start()| just after it starts up, and
 |HTMLModule::end()| just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
+
+@h Callback function.
+The user must define one callback function:
+
+(*) |INSTALLED_FILES_HTML_CALLBACK| should return the pathname of a directory
+in which miscellaneous installed resources such as CSS files can be found.

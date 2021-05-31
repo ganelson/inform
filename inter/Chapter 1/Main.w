@@ -17,6 +17,7 @@ filename *output_binarily = NULL;
 dictionary *pipeline_vars = NULL;
 filename *pipeline_as_file = NULL;
 text_stream *pipeline_as_text = NULL;
+pathname *internal_path = NULL;
 
 void Main::add_pipeline_variable(text_stream *name, text_stream *value) {
 	Str::copy(Dictionaries::create_text(pipeline_vars, name), value);
@@ -62,6 +63,7 @@ int main(int argc, char **argv) {
 @<Begin with an empty file list and variables dictionary@> =
 	inter_file_list = NEW_LINKED_LIST(filename);
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
+	internal_path = Pathnames::from_text(I"inform7/Internal");
 
 @ This pipeline is supplied built in to the installation of |inter|. In fact,
 it only ever writes the binary form of the code it produces, so only |*out|
@@ -137,6 +139,7 @@ form, which would be written to |*outt|.
 @e DOMAIN_CLSW
 @e ARCHITECTURE_CLSW
 @e ASSIMILATE_CLSW
+@e INTERNAL_CLSW
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
@@ -155,6 +158,8 @@ form, which would be written to |*outt|.
 		L"set pipeline variable X (in form name=value)");
 	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
 		L"specify folder to read/write inter files from/to");
+	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
+		L"specify folder of internal Inform resources");
 	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
 		L"generate Inter with architecture X");
 	CommandLine::declare_switch(ASSIMILATE_CLSW, L"assimilate", 2,
@@ -174,6 +179,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case PIPELINE_VARIABLE_CLSW: @<Add a pipeline variable to the dictionary@>; break;
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); break;
 		case ASSIMILATE_CLSW: kit_to_assimilate = Pathnames::from_text(arg); break;
+		case INTERNAL_CLSW: internal_path = Pathnames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
 			if (CodeGen::Architecture::set(arg) == FALSE)
 				Errors::fatal("no such -architecture");
@@ -209,3 +215,12 @@ global constant meaning "any kind at all", and that also must exist.
 = (early code)
 typedef void kind;
 kind *K_value = NULL;
+
+@ This is where the //html// module can find CSS files and similar resources:
+
+@d INSTALLED_FILES_HTML_CALLBACK Main::internal_path
+
+=
+pathname *Main::internal_path(void) {
+	return internal_path;
+}

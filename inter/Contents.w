@@ -8,6 +8,7 @@ Version Name: Axion
 
 Import: foundation
 Import: services/words
+Import: services/html
 Import: services/arch
 Import: bytecode
 Import: building

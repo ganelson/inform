@@ -16,8 +16,8 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) return;
 
 	HTML::header(OUT, I"Extensions",
-		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
-		Supervisor::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
+		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
+		InstalledFiles::filename(JAVASCRIPT_FOR_EXTENSIONS_IRES));
 	@<Write the body of the HTML@>;
 	STREAM_CLOSE(OUT);
 	HTML::footer(OUT);

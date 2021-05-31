@@ -154,7 +154,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"status \"%f\" \"%f\"\n\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">CBLORB_REPORT_MODEL_IRES</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">CBLORB_REPORT_MODEL_IRES</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Task::cblorb_report_file</span><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tbf.html#SP1_2">&#167;1.2</a>.</li></ul>
@@ -197,14 +197,14 @@ released along with the work.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"picture %d \"%f\"\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">rel</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cover_picture_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">large</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"cover \"%f\"\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"picture %d \"%f\"\n"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rel</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">release_website</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"release file \"%f\"\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"release file \"%f\"\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">SMALL_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">SMALL_DEFAULT_COVER_ART_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -292,11 +292,11 @@ own credits.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rel</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">release_booklet</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"auxiliary \"%f\" \"Introduction to IF\" \"--\"\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTRO_BOOKLET_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTRO_BOOKLET_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rel</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">release_postcard</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"auxiliary \"%f\" \"IF Postcard\" \"--\"\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTRO_POSTCARD_IRES</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTRO_POSTCARD_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"and designed by Lea Albaugh.\"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
