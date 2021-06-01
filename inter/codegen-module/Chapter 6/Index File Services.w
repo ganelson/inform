@@ -3,6 +3,19 @@
 To provide routines to help build the various HTML index files,
 none of which are actually created in this section.
 
+@
+
+=
+inter_tree *indexing_tree = NULL;
+
+void Index::set_tree(inter_tree *I) {
+	indexing_tree = I;
+}
+
+inter_tree *Index::get_tree(void) {
+	return indexing_tree;
+}
+
 @ If only we had an index file, we could look it up under "index file"...
 
 The Index of a project is a set of HTML files describing its milieu: the
@@ -129,7 +142,7 @@ text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int s
 	}
 	ifl = &index_file_struct;
 	text_stream *OUT = ifl;
-
+LOG("Index: %f\n", F);
 	@<Set the current index page@>;
 
 	HTML::header(OUT, title,
@@ -629,7 +642,18 @@ void Index::disable_or_enable_census(int which) {
 	do_not_update_census = which;
 }
 
+void Index::test_card(OUTPUT_STREAM, wording W) {
+	TEMPORARY_TEXT(elt)
+	WRITE_TO(elt, "%+W", W);
+	Index::index_actual_element(OUT, elt);
+	DISCARD_TEXT(elt)
+}
+
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
+	if (Str::eq_wide_string(elt, L"Cd")) {
+		CardElement::Library_Card(OUT);
+		return;
+	}
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"C")) {
 		IndexHeadings::index(OUT);
@@ -651,12 +675,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Tb")) {
 		Tables::index(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Cd")) {
-		#ifdef IF_MODULE
-		IXBibliographicData::Library_Card(OUT);
-		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"In")) {

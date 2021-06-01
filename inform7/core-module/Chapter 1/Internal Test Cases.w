@@ -53,6 +53,7 @@ typedef struct internal_test {
 	struct wording test_name;
 	void (*perform)(struct text_stream *, struct internal_test_case *);
 	int via_log;
+	int at_stage;
 	CLASS_DEFINITION
 } internal_test;
 
@@ -66,6 +67,16 @@ void InternalTests::make_test_available(text_stream *name,
 	it->test_name = Feeds::feed_text(name);
 	it->perform = perform;
 	it->via_log = log;
+	it->at_stage = 1;
+}
+
+void InternalTests::make_late_test_available(text_stream *name,
+	void (*perform)(struct text_stream *, struct internal_test_case *), int log) {
+	internal_test *it = CREATE(internal_test);
+	it->test_name = Feeds::feed_text(name);
+	it->perform = perform;
+	it->via_log = log;
+	it->at_stage = 2;
 }
 
 @ This is slow, but almost never used, so there is no point speeding it up:
@@ -101,8 +112,14 @@ Output from the tests is spooled together, and divided up with textual labels
 for convenience of reading.
 
 =
-int InternalTests::run(void) {
-	if (NUMBER_CREATED(internal_test_case) == 0) return 0;
+int InternalTests::run(int stage) {
+	linked_list *L = NEW_LINKED_LIST(internal_test_case);
+	internal_test_case *itc;
+	LOOP_OVER(itc, internal_test_case)
+		if (itc->which_method->at_stage == stage)
+			ADD_TO_LINKED_LIST(itc, internal_test_case, L);
+		
+	if (LinkedLists::len(L) == 0) return 0;
 	text_stream OUTFILE_struct;
 	text_stream *OUT = &OUTFILE_struct;
 	if (internal_test_output_file) {
@@ -113,8 +130,8 @@ int InternalTests::run(void) {
 		internal_error("internal test cases can only be used with -test-output set");
 	}
 
-	internal_test_case *itc; int no_in_group = 0;
-	LOOP_OVER(itc, internal_test_case) {
+	int no_in_group = 0, no_run = 0;
+	LOOP_OVER_LINKED_LIST(itc, internal_test_case, L) {
 		no_in_group++;
 		if (itc->which_method == NULL) {
 			no_in_group = 0;
@@ -124,9 +141,10 @@ int InternalTests::run(void) {
 			@<Run the individual test case@>;
 			WRITE("\n");
 		}
+		no_run++;
 	}
 	STREAM_CLOSE(OUT);
-	return NUMBER_CREATED(internal_test_case);
+	return no_run;
 }
 
 @ Some tests find it more convenient to write their output to the debugging
@@ -171,6 +189,8 @@ void InternalTests::begin(void) {
 		&InternalTests::perform_ing_internal_test, FALSE);
 	InternalTests::make_test_available(I"verb",
 		&InternalTests::perform_verb_internal_test, FALSE);
+	InternalTests::make_late_test_available(I"index",
+		&InternalTests::perform_index_internal_test, FALSE);
 }
 
 void InternalTests::perform_dimensions_internal_test(OUTPUT_STREAM,
@@ -192,6 +212,11 @@ void InternalTests::perform_adjective_internal_test(OUTPUT_STREAM,
 void InternalTests::perform_ing_internal_test(OUTPUT_STREAM,
 	struct internal_test_case *itc) {
 	Conjugation::test_participle(OUT, itc->text_supplying_the_case);
+}
+
+void InternalTests::perform_index_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	Index::test_card(OUT, itc->text_supplying_the_case);
 }
 
 @ And here's a set of six tests of the kinds system. This is quite old code,

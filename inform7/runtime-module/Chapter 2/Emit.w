@@ -20,6 +20,7 @@ inter_tree *main_emission_tree = NULL;
 
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
+	Index::set_tree(main_emission_tree);
 	Packaging::outside_all_packages(main_emission_tree);
 	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic", I"_module")->the_package);
 	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic", I"_module")->the_package);
@@ -344,6 +345,15 @@ void Emit::initial_value_as_constant(inter_name *con_iname, nonlocal_variable *v
 	inter_ti v1 = 0, v2 = 0;
 	RTVariables::initial_value_as_pair(con_iname, &v1, &v2, var);
 	Emit::named_generic_constant(con_iname, v1, v2);
+}
+
+void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *var) {
+	wording W = NonlocalVariables::initial_value_as_plain_text(var);
+	TEMPORARY_TEXT(CONTENT)
+	BibliographicData::compile_bibliographic_text(CONTENT,
+		Lexer::word_text(Wordings::first_wn(W)), XML_BIBTEXT_MODE);
+	Emit::text_constant(con_iname, CONTENT);
+	DISCARD_TEXT(CONTENT)
 }
 
 @ The above make use of this:

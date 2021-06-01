@@ -62,6 +62,14 @@ This handles the special meaning "The story is episode...".
 int episode_number = -1; /* for a work which is part of a numbered series */
 wchar_t *series_name = NULL;
 
+int BibliographicData::episode_number(void) {
+	return episode_number;
+}
+
+wchar_t *BibliographicData::series_name(void) {
+	return series_name;
+}
+
 int BibliographicData::episode_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;

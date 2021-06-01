@@ -435,6 +435,19 @@ void Hierarchy::establish(void) {
 @e RELEASE_HL
 @e SERIAL_HL
 
+@e IFID_MD_HL
+@e STORY_MD_HL
+@e HEADLINE_MD_HL
+@e GENRE_MD_HL
+@e AUTHOR_MD_HL
+@e RELEASE_MD_HL
+@e SERIAL_MD_HL
+@e LANGUAGE_MD_HL
+@e DESCRIPTION_MD_HL
+@e EPISODE_NUMBER_MD_HL
+@e SERIES_NAME_MD_HL
+@e YEAR_MD_HL
+
 @<Establish bibliographic@> =
 	submodule_identity *bibliographic = Packaging::register_submodule(I"bibliographic");
 
@@ -445,6 +458,18 @@ void Hierarchy::establish(void) {
 		H_D_T(STORY_AUTHOR_HL,                I"Author_datum", I"Story_Author")
 		H_D_T(RELEASE_HL,                     I"Release_datum", I"Release")
 		H_D_T(SERIAL_HL,                      I"Serial_datum", I"Serial")
+		H_C_T(IFID_MD_HL,                     I"^IFID")
+		H_C_T(STORY_MD_HL,                    I"^title")
+		H_C_T(HEADLINE_MD_HL,                 I"^headline")
+		H_C_T(GENRE_MD_HL,                    I"^genre")
+		H_C_T(AUTHOR_MD_HL,                   I"^author")
+		H_C_T(RELEASE_MD_HL,                  I"^release")
+		H_C_T(SERIAL_MD_HL,                   I"^serial")
+		H_C_T(LANGUAGE_MD_HL,                 I"^language")
+		H_C_T(DESCRIPTION_MD_HL,              I"^description")
+		H_C_T(EPISODE_NUMBER_MD_HL,           I"^episode")
+		H_C_T(SERIES_NAME_MD_HL,              I"^series")
+		H_C_T(YEAR_MD_HL,                     I"^year")
 	H_END
 
 @h Chronology.

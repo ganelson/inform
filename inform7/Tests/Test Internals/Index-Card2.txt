@@ -1,0 +1,13 @@
+Pemberley is a room.
+
+The story title is "Mansfield Perk". 
+The story author is "José Aüsten". 
+The story headline is "An Interactive Romance & <More>". 
+The story genre is "Romance". 
+The release number is 7. 
+The story description is "In Miss Austen's new interactive novella, Miss Henrietta Pollifax is adopted by the tempestuous landowner Sir Tankerley Mordant, and must make a new life for herself on the rugged moors." 
+The story creation year is 2005.
+
+The story is episode 2 of "Dukes and Dioramas".
+
+Test index (internal) with Cd.

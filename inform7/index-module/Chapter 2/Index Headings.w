@@ -55,7 +55,17 @@ int headings_indexed = 0;
 void IndexHeadings::index(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
 	HTML_OPEN("p");
-	WRITE("<b>"); IXBibliographicData::contents_heading(OUT); WRITE("</b>");
+	WRITE("<b>");
+	if ((story_title_VAR == NULL) || (story_author_VAR == NULL))
+		WRITE("Contents");
+	else {
+//		IXBibliographicData::index_variable(OUT, story_title_VAR,
+//			I"Untitled");
+		WRITE(" by ");
+//		IXBibliographicData::index_variable(OUT, story_author_VAR,
+//			I"Anonymous");
+	}	
+	WRITE("</b>");
 	HTML_CLOSE("p");
 	#endif
 	HTML_OPEN("p");

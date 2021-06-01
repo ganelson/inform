@@ -321,7 +321,7 @@ details on actions live in the subfolder |Details|: see below.
 =
 pathname *Task::index_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	pathname *P = Pathnames::down(inform7_task->build, I"Index");
+	pathname *P = Pathnames::down(inform7_task->path, I"Index");
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
 }
