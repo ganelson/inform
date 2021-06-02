@@ -15,12 +15,12 @@ void IXBackdrops::index_object_further(OUTPUT_STREAM, instance *loc, int depth,
 	if (loc) {
 		LOOP_OVER_BACKDROPS_IN(bd, loc, inf) {
 			if (++discoveries == 1) @<Insert fore-matter@>;
-			Data::Objects::index(OUT, bd, NULL, depth+1, details);
+			IXPhysicalWorld::index(OUT, bd, NULL, depth+1, details);
 		}
 	} else {
 		LOOP_OVER_BACKDROPS_EVERYWHERE(bd, inf) {
 			if (++discoveries == 1) @<Insert fore-matter@>;
-			Data::Objects::index(OUT, bd, NULL, depth+1, details);
+			IXPhysicalWorld::index(OUT, bd, NULL, depth+1, details);
 		}
 	}
 	if (discoveries > 0) @<Insert after-matter@>;

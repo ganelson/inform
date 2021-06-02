@@ -1,4 +1,4 @@
-[IndexHeadings::] Index Headings.
+[IXContents::] Contents Element.
 
 To produce the index contents listing and the XML headings file.
 
@@ -7,7 +7,7 @@ Finally, three ways to describe the run of headings: to the debugging log,
 to the index of the project, and to a freestanding XML file.
 
 =
-void IndexHeadings::log(heading *h) {
+void IXContents::log(heading *h) {
 	if (h==NULL) { LOG("<null heading>\n"); return; }
 	heading *pseud = NameResolution::pseudo_heading();
 	if (h == pseud) { LOG("<pseudo_heading>\n"); return; }
@@ -24,22 +24,22 @@ void IndexHeadings::log(heading *h) {
 surreptitiously check that it is correctly formed at the same time.
 
 =
-void IndexHeadings::log_all_headings(void) {
+void IXContents::log_all_headings(void) {
 	heading *h;
 	parse_node_tree *T = Task::syntax_tree();
 	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) LOG("$H\n", h);
 	LOG("\n");
-	IndexHeadings::log_headings_recursively(NameResolution::pseudo_heading(), 0);
+	IXContents::log_headings_recursively(NameResolution::pseudo_heading(), 0);
 }
 
-void IndexHeadings::log_headings_recursively(heading *h, int depth) {
+void IXContents::log_headings_recursively(heading *h, int depth) {
 	int i;
 	if (h==NULL) return;
 	for (i=0; i<depth; i++) LOG("  ");
 	LOG("$H\n", h);
 	if (depth-1 != h->indentation) LOG("*** indentation should be %d ***\n", depth-1);
-	IndexHeadings::log_headings_recursively(h->child_heading, depth+1);
-	IndexHeadings::log_headings_recursively(h->next_heading, depth);
+	IXContents::log_headings_recursively(h->child_heading, depth+1);
+	IXContents::log_headings_recursively(h->next_heading, depth);
 }
 
 @h The index.
@@ -51,8 +51,13 @@ typedef struct contents_entry {
 	CLASS_DEFINITION
 } contents_entry;
 
+void IXContents::render(OUTPUT_STREAM) {
+	IXContents::index(OUT);
+	IXContents::index_extensions(OUT);
+}
+
 int headings_indexed = 0;
-void IndexHeadings::index(OUTPUT_STREAM) {
+void IXContents::index(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
 	HTML_OPEN("p");
 	WRITE("<b>");
@@ -71,7 +76,7 @@ void IndexHeadings::index(OUTPUT_STREAM) {
 	HTML_OPEN("p");
 	WRITE("CONTENTS");
 	HTML_CLOSE("p");
-	IndexHeadings::index_heading_recursively(OUT,
+	IXContents::index_heading_recursively(OUT,
 		NameResolution::pseudo_heading()->child_heading);
 	contents_entry *ce;
 	int min_positive_level = 10;
@@ -138,7 +143,7 @@ File (0) ones -- and which are not within any extensions -- so, are in the
 primary source text written by the user.
 
 =
-void IndexHeadings::index_heading_recursively(OUTPUT_STREAM, heading *h) {
+void IXContents::index_heading_recursively(OUTPUT_STREAM, heading *h) {
 	if (h == NULL) return;
 	int show_heading = TRUE;
 	heading *next = h->child_heading;
@@ -162,8 +167,8 @@ void IndexHeadings::index_heading_recursively(OUTPUT_STREAM, heading *h) {
 		headings_indexed++;
 	}
 
-	IndexHeadings::index_heading_recursively(OUT, h->child_heading);
-	IndexHeadings::index_heading_recursively(OUT, h->next_heading);
+	IXContents::index_heading_recursively(OUT, h->child_heading);
+	IXContents::index_heading_recursively(OUT, h->next_heading);
 }
 
 @ We skip any objects or kinds without names (i.e., whose |creator| is null).
@@ -197,16 +202,16 @@ is not included.) A special key, the only non-numerical one, called "Application
 Version", contains the Inform build number in its usual form: "4Q34", for instance.
 
 =
-void IndexHeadings::write_as_xml(void) {
+void IXContents::write_as_xml(void) {
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	filename *F = Index::xml_headings_file();
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
 		Problems::fatal_on_file("Can't open headings file", F);
-	IndexHeadings::write_headings_as_xml_inner(xf);
+	IXContents::write_headings_as_xml_inner(xf);
 	STREAM_CLOSE(xf);
 }
 
-void IndexHeadings::write_headings_as_xml_inner(OUTPUT_STREAM) {
+void IXContents::write_headings_as_xml_inner(OUTPUT_STREAM) {
 	heading *h;
 	@<Write DTD indication for XML headings file@>;
 	WRITE("<plist version=\"1.0\"><dict>\n");
@@ -249,3 +254,81 @@ but should this arise then the best recourse is to ignore the heading.
 		WRITE("<key>Title</key><string>--</string>\n");
 	WRITE("<key>Level</key><integer>%d</integer>\n", h->level);
 	WRITE("<key>Indentation</key><integer>%d</integer>\n", h->indentation);
+
+@h Indexing extensions in the Contents index.
+The routine below places a list of extensions used in the Contents index,
+giving only minimal entries about them.
+
+=
+void IXContents::index_extensions(OUTPUT_STREAM) {
+	HTML_OPEN("p"); WRITE("EXTENSIONS"); HTML_CLOSE("p");
+	IXContents::index_extensions_from(OUT, NULL);
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		if (Extensions::is_standard(E) == FALSE)
+			IXContents::index_extensions_from(OUT, E);
+	LOOP_OVER(E, inform_extension)
+		if (Extensions::is_standard(E))
+			IXContents::index_extensions_from(OUT, E);
+	HTML_OPEN("p"); HTML_CLOSE("p");
+}
+
+void IXContents::index_extensions_from(OUTPUT_STREAM, inform_extension *from) {
+	int show_head = TRUE;
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension) {
+		inform_extension *owner = NULL;
+		parse_node *N = Extensions::get_inclusion_sentence(from);
+		if (Wordings::nonempty(Node::get_text(N))) {
+			source_location sl = Wordings::location(Node::get_text(N));
+			if (sl.file_of_origin == NULL) owner = NULL;
+			else owner = Extensions::corresponding_to(
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(N))));
+		}
+		if (owner != from) continue;
+		if (show_head) {
+			HTML::open_indented_p(OUT, 2, "hanging");
+			HTML::begin_colour(OUT, I"808080");
+			WRITE("Included ");
+			if (Extensions::is_standard(from)) WRITE("automatically by Inform");
+			else if (from == NULL) WRITE("from the source text");
+			else {
+				WRITE("by the extension %S", from->as_copy->edition->work->title);
+			}
+			show_head = FALSE;
+			HTML::end_colour(OUT);
+			HTML_CLOSE("p");
+		}
+		HTML_OPEN_WITH("ul", "class=\"leaders\"");
+		HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
+		HTML_OPEN("span");
+		WRITE("%S ", E->as_copy->edition->work->title);
+		Works::begin_extension_link(OUT, E->as_copy->edition->work, NULL);
+		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
+		Works::end_extension_link(OUT, E->as_copy->edition->work);
+		if (Extensions::is_standard(E) == FALSE) { /* give author and inclusion links, but not for SR */
+			WRITE(" by %X", E->as_copy->edition->work->author_name);
+		}
+		if (VersionNumbers::is_null(E->as_copy->edition->version) == FALSE) {
+			WRITE(" ");
+			HTML_OPEN_WITH("span", "class=\"smaller\"");
+			semantic_version_number V = E->as_copy->edition->version;
+			WRITE("version %v", &V);
+			HTML_CLOSE("span");
+		}
+		if (Str::len(E->extra_credit_as_lexed) > 0) {
+			WRITE(" ");
+			HTML_OPEN_WITH("span", "class=\"smaller\"");
+			WRITE("(%S)", E->extra_credit_as_lexed);
+			HTML_CLOSE("span");
+		}
+		HTML_CLOSE("span");
+		HTML_OPEN("span");
+		WRITE("%d words", TextFromFiles::total_word_count(E->read_into_file));
+		if (from == NULL) Index::link(OUT, Wordings::first_wn(Node::get_text(Extensions::get_inclusion_sentence(E))));
+		HTML_CLOSE("span");
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
+		WRITE("\n");
+	}
+}

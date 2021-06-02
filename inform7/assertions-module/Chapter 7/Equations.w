@@ -1872,7 +1872,7 @@ void Equations::perform_equation_internal_test(OUTPUT_STREAM,
 	}
 }
 
-@h Indexing and logging.
+@h Logging.
 And finally:
 
 =
@@ -1883,29 +1883,4 @@ void Equations::log(equation *eqn) {
 void Equations::log_equation_parsed(equation *eqn) {
 	if (eqn == NULL) LOG("<null>\n");
 	else Equations::log_equation_node(eqn->parsed_equation);
-}
-
-void Equations::index(OUTPUT_STREAM) {
-	int ec = 0; equation *eqn;
-	LOOP_OVER(eqn, equation) { ec++; }
-	if (ec == 0) return;
-	HTML_OPEN("p"); WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
-	Index::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
-	HTML_CLOSE("p");
-	HTML_OPEN("p");
-	int N = 0;
-	LOOP_OVER(eqn, equation) {
-		int mw = Wordings::last_wn(eqn->equation_no_text);
-		if (Wordings::last_wn(eqn->equation_name_text) > mw)
-			mw = Wordings::last_wn(eqn->equation_name_text);
-		if (mw >= 0) {
-			WRITE("%+W", Wordings::up_to(Node::get_text(eqn->equation_created_at), mw));
-			Index::link(OUT, Wordings::first_wn(Node::get_text(eqn->equation_created_at)));
-			WRITE(" (%+W)", eqn->equation_text);
-			HTML_TAG("br");
-			N++;
-		}
-	}
-	if (N == 0) WRITE("<i>None</i>.\n");
-	HTML_CLOSE("p");
 }

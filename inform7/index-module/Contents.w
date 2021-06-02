@@ -10,13 +10,13 @@ Chapter 1: Starting Up
 Chapter 2: Indexing
 "Utility routines for generating index pages."
 	Lexicon Index
-	Index Physical World
+	Map Element
 	Kinds Index
 	Index Extensions
-	Index Headings
+	Contents Element
 	Instances
 	Adjectives
-	Variables
+	Variables Element
 	Properties
 	Relations Element
 	Inferences
@@ -28,6 +28,7 @@ Chapter 2: Indexing
 	Events Element
 	Rules for Scenes Element
 	Behaviour Element
+	Arithmetic Element
 
 Chapter 3: Indexing for Plugins
 	Figures Element

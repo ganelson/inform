@@ -18240,7 +18240,7 @@ ROOT_NT
                                                     TEST_VALUE_NT'locking'
                                                         CONSTANT_NT'locking' {kind: described action} {action pattern: <action-based: locking it with>}
                                                     TEST_VALUE_NT'unlocking something with something which is on a keychain wh'
-                                                        CONSTANT_NT'unlocking something with something which is on a keychain wh' {kind: described action} {action pattern: <action-based: unlocking it with * noun: << kind=thing(x) >> second: << kind=thing_c(x) ^ kind=keychain(<SupporterOf(*1) : x>) ^ ('the actor' == <CarrierOf(*1) : <SupporterOf(*1) : x>>) >>>}
+                                                        CONSTANT_NT'unlocking something with something which is on a keychain wh' {kind: described action} {action pattern: <action-based: unlocking it with * noun: << kind=thing(x) ^ kind=object(x) >> second: << kind=thing_c(x) ^ kind=keychain(<SupporterOf(*1) : x>) ^ ('the actor' == <CarrierOf(*1) : <SupporterOf(*1) : x>>) ^ kind=object(x) >>>}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'continue the action' {unit: 4} {indent: 2}
                                             INVOCATION_NT'continue the action' {phrase invoked: <no-inter-name>}

@@ -12,8 +12,25 @@ void InterpretIndex::disable_or_enable_index(int which) {
 }
 
 void InterpretIndex::interpret_indext(filename *indext_file) {
-	if (do_not_generate_index == FALSE)
+	if (do_not_generate_index == FALSE) {
 		InterpretIndex::interpreter_shared(indext_file);
+		InterpretIndex::update_extension_index();
+	}
+}
+
+@ Similarly, the census update for indexing purposes.
+
+=
+int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
+void InterpretIndex::disable_or_enable_census(int which) {
+	do_not_update_census = which;
+}
+
+void InterpretIndex::update_extension_index(void) {
+	#ifdef CORE_MODULE
+	if (do_not_update_census == FALSE)
+		ExtensionWebsite::index_after_compilation(Task::project());
+	#endif
 }
 
 @h Implementation.

@@ -75,7 +75,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::eq(Latticework::super(K), K_object))
-			Data::Objects::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
+			IXPhysicalWorld::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
 
 @ An atypical row:
 
@@ -237,7 +237,7 @@ is made, so that the following sentence can't have an empty list in it.
 
 @<Index possible values of an enumerated kind@> =
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		Data::Objects::index_instances(OUT, K, 1);
+		IXPhysicalWorld::index_instances(OUT, K, 1);
 	}
 
 @ Explanations:

@@ -1,4 +1,4 @@
-[IXVariables::] Variables.
+[IXVariables::] Variables Element.
 
 To index variables.
 
@@ -16,7 +16,7 @@ the following:
 @ And here is the indexing code:
 
 =
-void IXVariables::index_all(OUTPUT_STREAM) {
+void IXVariables::render(OUTPUT_STREAM) {
 	nonlocal_variable *nlv;
 	heading *definition_area, *current_area = NULL;
 	HTML_OPEN("p");
@@ -30,6 +30,7 @@ void IXVariables::index_all(OUTPUT_STREAM) {
 				@<Index a regular variable@>;
 		}
 	HTML_CLOSE("p");
+	IXVariables::index_equations(OUT);
 }
 
 @<Index a K understood variable@> =
@@ -75,4 +76,29 @@ void IXVariables::index_stv_set(OUTPUT_STREAM, shared_variable_set *set) {
 			IXVariables::index_one(OUT, stv->underlying_var);
 			HTML_CLOSE("p");
 		}
+}
+
+void IXVariables::index_equations(OUTPUT_STREAM) {
+	int ec = 0; equation *eqn;
+	LOOP_OVER(eqn, equation) { ec++; }
+	if (ec == 0) return;
+	HTML_OPEN("p"); WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
+	Index::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	int N = 0;
+	LOOP_OVER(eqn, equation) {
+		int mw = Wordings::last_wn(eqn->equation_no_text);
+		if (Wordings::last_wn(eqn->equation_name_text) > mw)
+			mw = Wordings::last_wn(eqn->equation_name_text);
+		if (mw >= 0) {
+			WRITE("%+W", Wordings::up_to(Node::get_text(eqn->equation_created_at), mw));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(eqn->equation_created_at)));
+			WRITE(" (%+W)", eqn->equation_text);
+			HTML_TAG("br");
+			N++;
+		}
+	}
+	if (N == 0) WRITE("<i>None</i>.\n");
+	HTML_CLOSE("p");
 }

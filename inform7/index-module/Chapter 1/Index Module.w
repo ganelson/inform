@@ -16,10 +16,10 @@ which use this module:
 @e TYPE_TABLES_MREASON
 
 =
-COMPILE_WRITER(heading *, IndexHeadings::log)
+COMPILE_WRITER(heading *, IXContents::log)
 
 void IndexModule::start(void) {
-	REGISTER_WRITER('H', IndexHeadings::log);
+	REGISTER_WRITER('H', IXContents::log);
 	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");

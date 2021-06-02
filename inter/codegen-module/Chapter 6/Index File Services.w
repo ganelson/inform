@@ -637,11 +637,6 @@ to show, hide and colour things:
 			i, current_index_page->allocation_id+1, i);
 
 @ =
-int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
-void Index::disable_or_enable_census(int which) {
-	do_not_update_census = which;
-}
-
 void Index::test_card(OUTPUT_STREAM, wording W) {
 	TEMPORARY_TEXT(elt)
 	WRITE_TO(elt, "%+W", W);
@@ -687,20 +682,23 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		IXFigures::render(OUT);
 		return;
 	}
-
-
+	if (Str::eq_wide_string(elt, L"Ar")) {
+		IXArithmetic::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Mp")) {
+		IXPhysicalWorld::render(OUT);
+		return;
+	}
 	if (Str::eq_wide_string(elt, L"C")) {
-		IndexHeadings::index(OUT);
-		IndexExtensions::index(OUT);
-		if (do_not_update_census == FALSE)
-			ExtensionWebsite::index_after_compilation(Task::project());
+		IXContents::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vl")) {
-		IXVariables::index_all(OUT);
-		Equations::index(OUT);
+		IXVariables::render(OUT);
 		return;
 	}
+
 
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);
@@ -716,24 +714,16 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 
 	if (Str::eq_wide_string(elt, L"Ch")) {
-		Data::Objects::page_Kinds(OUT);
+		@<Assign each kind of object a corresponding documentation symbol@>;
+		Kinds::Index::index_kinds(OUT, 1);
 		Kinds::Index::index_kinds(OUT, 2);
 		return;
 	}
-	if (Str::eq_wide_string(elt, L"Ar")) {
-		Kinds::Dimensions::index_dimensional_rules(OUT);
-		return;
-	}
 
-	if (Str::eq_wide_string(elt, L"Mp")) {
-		Data::Objects::page_World(OUT);
-		return;
-	}
 	if (Str::eq_wide_string(elt, L"Gz")) {
 		IndexLexicon::index_common_nouns(OUT);
 		return;
 	}
-
 
 	if (Str::eq_wide_string(elt, L"St")) {
 		IXRules::Rules_page(OUT, 1);
@@ -763,6 +753,25 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	#endif
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }
+
+@ The following code looks at each kind of object, takes the first word
+of its name, prefixes "kind" and looks to see if there is a documentation
+symbol of that name: if there is, it attaches it to the relevant field of
+the kind.
+
+@<Assign each kind of object a corresponding documentation symbol@> =
+	kind *K;
+	LOOP_OVER_BASE_KINDS(K)
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			wording W = Kinds::Behaviour::get_name(K, FALSE);
+			if (Wordings::nonempty(W)) {
+				TEMPORARY_TEXT(temp)
+				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
+				if (Index::DocReferences::validate_if_possible(temp))
+					Kinds::Behaviour::set_documentation_reference(K, temp);
+				DISCARD_TEXT(temp)
+			}
+		}
 
 @ =
 void Index::explain(OUTPUT_STREAM, text_stream *explanation) {

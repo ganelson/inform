@@ -641,7 +641,7 @@ int PluginCalls::compile_pattern_match_clause(action_pattern *ap, int cpmc) {
 }
 
 @h Influencing index.
-Called from //index: Index Physical World// to add something (if it wishes)
+Called from //index: Map Element// to add something (if it wishes)
 to the index description of an instance in the spatial model. For example,
 the regions plugin uses this to put colour chips next to names of regions.
 
@@ -652,7 +652,7 @@ int PluginCalls::add_to_World_index(OUTPUT_STREAM, instance *O) {
 	PLUGINS_CALL(ADD_TO_WORLD_INDEX_PLUG, OUT, O);
 }
 
-@ Called from //index: Index Physical World// to add something (if it wishes)
+@ Called from //index: Map Element// to add something (if it wishes)
 to the textual description of an instance in the spatial model. For example,
 the mapping plugin uses this to say where a door leads.
 

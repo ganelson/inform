@@ -222,10 +222,10 @@ and produce an internal error if not.
 	if (c != nouns_placed_under_headings) {
 		LOG("Reordering failed from $H\n", h);
 		LOG("%d nouns under headings, %d in ordering\n", nouns_placed_under_headings, c);
-		IndexHeadings::log_all_headings();
+		IXContents::log_all_headings();
 		LOG("Making fresh tree:\n");
 		NameResolution::make_the_tree();
-		IndexHeadings::log_all_headings();
+		IXContents::log_all_headings();
 		internal_error_tree_unsafe("reordering of nouns failed");
 	}
 

@@ -17,7 +17,7 @@ int IXMap::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 		if ((A) && (B)) WRITE(" - <i>door to ");
 		else WRITE(" - <i>one-sided door to ");
 		instance *X = A;
-		if (A == Data::Objects::room_being_indexed()) X = B;
+		if (A == IXPhysicalWorld::room_being_indexed()) X = B;
 		if (X == NULL) {
 			parse_node *S = PropertyInferences::value_of(
 				Instances::as_subject(O), P_other_side);

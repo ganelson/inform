@@ -1,36 +1,9 @@
-[Data::Objects::] Index Physical World.
+[IXPhysicalWorld::] Map Element.
 
 This section masterminds the creation of the World and Kinds index
 pages, though it delegates much of the work elsewhere. Though it does belong
 to core Inform, these indexes will look pretty sparse if the spatial Plugins
 aren't plugged in.
-
-@h The Kinds page.
-
-=
-void Data::Objects::page_Kinds(OUTPUT_STREAM) {
-	@<Assign each kind of object a corresponding documentation symbol@>;
-	Kinds::Index::index_kinds(OUT, 1);
-}
-
-@ The following routine looks at each kind of object, takes the first word
-of its name, prefixes "kind" and looks to see if there is a documentation
-symbol of that name: if there is, it attaches it to the relevant field of
-the kind.
-
-@<Assign each kind of object a corresponding documentation symbol@> =
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			wording W = Kinds::Behaviour::get_name(K, FALSE);
-			if (Wordings::nonempty(W)) {
-				TEMPORARY_TEXT(temp)
-				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
-				if (Index::DocReferences::validate_if_possible(temp))
-					Kinds::Behaviour::set_documentation_reference(K, temp);
-				DISCARD_TEXT(temp)
-			}
-		}
 
 @h The World page.
 This section belongs to the core of Inform, so it must work whatever plugins
@@ -39,8 +12,7 @@ instance) Spatial.
 
 =
 int suppress_panel_changes = FALSE;
-void Data::Objects::page_World(OUTPUT_STREAM) {
-	#ifdef IF_MODULE
+void IXPhysicalWorld::render(OUTPUT_STREAM) {
 	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
 	if (PluginManager::active(map_plugin) == FALSE) return; /* in this case there is no model world */
 
@@ -59,7 +31,6 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 	@<Give room details within each region in turn in the World index@>;
 	@<Give room details for rooms outside any region in the World index@>;
 	@<Give details of everything still unmentioned in the World index@>;
-	#endif
 }
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
@@ -123,7 +94,7 @@ will be things which are offstage (and their contents and any parts thereof):
 				WRITE("<b>Nowhere (that is, initially not in any room):</b>");
 				HTML_TAG("br");
 			}
-			Data::Objects::index(OUT, I, NULL, 2, FALSE);
+			IXPhysicalWorld::index(OUT, I, NULL, 2, FALSE);
 		}
 	suppress_panel_changes = FALSE;
 
@@ -146,11 +117,11 @@ int tabulating_kinds_index = FALSE;
 instance *indexing_room = NULL;
 int xtras_count = 0;
 
-instance *Data::Objects::room_being_indexed(void) {
+instance *IXPhysicalWorld::room_being_indexed(void) {
 	return indexing_room;
 }
 
-void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int details) {
+void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int details) {
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	noun *nt = NULL;
 	if (I) {
@@ -279,7 +250,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 		kind *K2;
 		LOOP_OVER_BASE_KINDS(K2)
 			if (Kinds::eq(Latticework::super(K2), K))
-				Data::Objects::index(OUT, NULL, K2, depth+1, details);
+				IXPhysicalWorld::index(OUT, NULL, K2, depth+1, details);
 	} else {
 		#ifdef IF_MODULE
 		IXSpatial::index_object_further(OUT, I, depth, details);
@@ -292,7 +263,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	else IXInferences::index(OUT, KindSubjects::from_kind(K), TRUE);
 	if (K) {
 		HTML_CLOSE("p");
-		Data::Objects::index_instances(OUT, K, depth);
+		IXPhysicalWorld::index_instances(OUT, K, depth);
 	}
 
 @<Add the chain of kinds@> =
@@ -322,7 +293,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	IXInferences::index_specific(OUT, Instances::as_subject(I));
 
 @ =
-void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
+void IXPhysicalWorld::index_instances(OUTPUT_STREAM, kind *K, int depth) {
 	HTML::open_indented_p(OUT, depth, "tight");
 	int c = 0;
 	instance *I;

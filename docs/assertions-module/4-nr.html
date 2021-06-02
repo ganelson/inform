@@ -335,10 +335,10 @@ and produce an internal error if not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="identifier-syntax">nouns_placed_under_headings</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Reordering failed from $H\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%d nouns under headings, %d in ordering\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">nouns_placed_under_headings</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IndexHeadings::log_all_headings</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IXContents::log_all_headings</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Making fresh tree:\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="4-nr.html#SP7" class="function-link"><span class="function-syntax">NameResolution::make_the_tree</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IndexHeadings::log_all_headings</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IXContents::log_all_headings</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error_tree_unsafe</span><span class="plain-syntax">(</span><span class="string-syntax">"reordering of nouns failed"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
