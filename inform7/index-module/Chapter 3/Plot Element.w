@@ -1,4 +1,4 @@
-[IXScenes::] Scenes.
+[IXScenes::] Plot Element.
 
 Parallel to the World index of space is the Scenes index of time,
 and in this section we render it as HTML.
@@ -11,7 +11,7 @@ with a notation which takes a little bit of on-screen explanation, but
 seems natural enough to learn in practice.
 
 =
-void IXScenes::index(OUTPUT_STREAM) {
+void IXScenes::render(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(scene);
 	scene **sorted = Memory::calloc(nr, sizeof(scene *), INDEX_SORTING_MREASON);
 	@<Sort the scenes@>;
@@ -21,11 +21,6 @@ void IXScenes::index(OUTPUT_STREAM) {
 	@<Give details of each scene in turn@>;
 
 	Memory::I7_array_free(sorted, INDEX_SORTING_MREASON, nr, sizeof(scene *));
-}
-
-void IXScenes::index_rules(OUTPUT_STREAM) {
-	IXRules::index_scene(OUT); /* rules in generic scene-ending rulebooks */
-	@<Show the generic scene-change rules@>;
 }
 
 @ As usual, we sort with the C library's |qsort|.
@@ -81,15 +76,6 @@ about and created but never made use of.)
 		"or subsequent time because the scene can begin in more than one way</i>.");
 	HTML_CLOSE("p");
 
-@<Show the generic scene-change rules@> =
-	HTML_OPEN("p");
-	Index::anchor(OUT, I"SRULES");
-	WRITE("<b>General rules applying to scene changes</b>");
-	HTML_CLOSE("p");
-	IXRules::index_rules_box(OUT, "When a scene begins", EMPTY_WORDING, NULL,
-		Rulebooks::std(WHEN_SCENE_BEGINS_RB), NULL, NULL, 1, FALSE);
-	IXRules::index_rules_box(OUT, "When a scene ends", EMPTY_WORDING, NULL,
-		Rulebooks::std(WHEN_SCENE_ENDS_RB), NULL, NULL, 1, FALSE);
 
 @<Give details of each scene in turn@> =
 	Index::anchor(OUT, I"SDETAILS");

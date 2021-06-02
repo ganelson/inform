@@ -170,32 +170,6 @@ void IXActions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) {
 	WRITE(" ");
 }
 
-void IXActions::index_named_patterns(OUTPUT_STREAM) {
-	named_action_pattern *nap;
-	int num_naps = NUMBER_CREATED(named_action_pattern);
-
-	if (num_naps == 0) {
-		HTML_OPEN("p");
-		WRITE("No names for kinds of action have yet been defined.");
-		HTML_CLOSE("p");
-	}
-
-	LOOP_OVER(nap, named_action_pattern) {
-		HTML_OPEN("p"); WRITE("<b>%+W</b>", Nouns::nominative_singular(nap->as_noun));
-		Index::link(OUT, Wordings::first_wn(nap->text_of_declaration));
-		HTML_TAG("br");
-		WRITE("&nbsp;&nbsp;<i>defined as any of the following acts:</i>\n");
-		named_action_pattern_entry *nape;
-		LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns) {
-			action_pattern *ap = nape->behaviour;
-			HTML_TAG("br");
-			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%+W", ap->text_of_pattern);
-			Index::link(OUT, Wordings::first_wn(ap->text_of_pattern));
-		}
-		HTML_CLOSE("p");
-	}
-}
-
 void IXActions::index_named_patterns_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	named_action_pattern *nap;
 	int kc = 0;

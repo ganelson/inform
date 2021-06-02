@@ -1,11 +1,11 @@
-[IXRelations::] Relations.
+[IXRelations::] Relations Element.
 
 To index relations.
 
 @ A brief table of relations appears on the Phrasebook Index page.
 
 =
-void IXRelations::index_table(OUTPUT_STREAM) {
+void IXRelations::render(OUTPUT_STREAM) {
 	binary_predicate *bp;
 	HTML_OPEN("p");
 	HTML::begin_plain_html_table(OUT);
@@ -32,20 +32,4 @@ void IXRelations::index_table(OUTPUT_STREAM) {
 		}
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
-}
-
-@ And a briefer note still for the table of verbs.
-
-=
-void IXRelations::index_for_verbs(OUTPUT_STREAM, binary_predicate *bp) {
-	WRITE(" ... <i>");
-	if (bp == NULL) WRITE("(a meaning internal to Inform)");
-	else {
-		if (bp->right_way_round == FALSE) {
-			bp = bp->reversal;
-			WRITE("reversed ");
-		}
-		WordAssemblages::index(OUT, &(bp->relation_name));
-	}
-	WRITE("</i>");
 }

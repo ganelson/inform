@@ -18,22 +18,25 @@ Chapter 2: Indexing
 	Adjectives
 	Variables
 	Properties
-	Relations
+	Relations Element
 	Inferences
 	Rules
 	Activities
 	Phrasebook Index
+	Tables Element
+	Innards Element
+	Events Element
+	Rules for Scenes Element
+	Behaviour Element
 
 Chapter 3: Indexing for Plugins
-	Figures
-	Sound Effects
-	External Files
+	Figures Element
 	Spatial
 	The Player
 	Backdrops
 	Regions
 	The Map
-	Scenes
+	Plot Element
 	Actions
 	Commands Index
 

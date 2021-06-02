@@ -651,10 +651,44 @@ void Index::test_card(OUTPUT_STREAM, wording W) {
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"Cd")) {
-		CardElement::Library_Card(OUT);
+		CardElement::render(OUT);
 		return;
 	}
 	#ifdef CORE_MODULE
+	if (Str::eq_wide_string(elt, L"Tb")) {
+		IXTables::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"In")) {
+		IXInnards::render(OUT, Supervisor::current_vm());
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Rl")) {
+		IXRelations::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Ev")) {
+		IXEvents::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"RS")) {
+		IXRulesForScenes::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Pl")) {
+		IXScenes::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Bh")) {
+		IXBehaviour::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"Fi")) {
+		IXFigures::render(OUT);
+		return;
+	}
+
+
 	if (Str::eq_wide_string(elt, L"C")) {
 		IndexHeadings::index(OUT);
 		IndexExtensions::index(OUT);
@@ -667,20 +701,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		Equations::index(OUT);
 		return;
 	}
-	if (Str::eq_wide_string(elt, L"Fi")) {
-		IXFigures::index_all(OUT);
-		IXSounds::index_all(OUT);
-		IXExternalFiles::index_all(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Tb")) {
-		Tables::index(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"In")) {
-		IXActivities::innards(OUT, Supervisor::current_vm());
-		return;
-	}
 
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);
@@ -688,10 +708,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Lx")) {
 		IndexLexicon::index(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Rl")) {
-		IXRelations::index_table(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vb")) {
@@ -718,22 +734,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 
-	if (Str::eq_wide_string(elt, L"Pl")) {
-		#ifdef IF_MODULE
-		IXScenes::index(OUT);
-		#endif
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Ev")) {
-		IXRules::index_timed_rules(OUT); /* rules which happen at set times of day */
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"RS")) {
-		#ifdef IF_MODULE
-		IXScenes::index_rules(OUT);
-		#endif
-		return;
-	}
 
 	if (Str::eq_wide_string(elt, L"St")) {
 		IXRules::Rules_page(OUT, 1);
@@ -745,33 +745,19 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 
 	if (Str::eq_wide_string(elt, L"A1")) {
-		#ifdef IF_MODULE
 		CommandsIndex::page(OUT);
-		#endif
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Bh")) {
-		#ifdef IF_MODULE
-		IXActions::index_named_patterns(OUT);
-		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Cm")) {
-		#ifdef IF_MODULE
 		CommandsIndex::commands(OUT);
-		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"To")) {
-		#ifdef IF_MODULE
 		CommandsIndex::tokens(OUT);
-		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"A2")) {
-		#ifdef IF_MODULE
 		CommandsIndex::alphabetical(OUT);
-		#endif
 		return;
 	}
 	#endif
