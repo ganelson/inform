@@ -1,0 +1,509 @@
+1. Rl
+<p><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+            <i>name</i>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <i>category</i>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <i>relates this...</i>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <i>...to this</i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            leading-through&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            one-to-various&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            lock-fitting&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            one-to-various&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping north&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping northeast&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping northwest&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping south&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping southeast&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping southwest&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping east&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping west&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping up&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping down&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping inside&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            mapping outside&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            map&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/door
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            guidance&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            one-to-various&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            person&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            vehicle
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            equality&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            equality&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            value
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            possession&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            person&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            provision&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            provision&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            property
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            containment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            container/room&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            support&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            supporter&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            incorporation&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            enclosure&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            object&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            object
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            carrying&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            person&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            holding&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            person&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            wearing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            person&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            visibility&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            touchability&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            concealment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            room-containment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            adjacency&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            regional-containment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            region&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            room/region
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            numerically-greater-than&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            numeric&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            numerically-less-than&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            numeric&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            numerically-greater-than-or-equal-to&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            numeric&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            numerically-less-than-or-equal-to&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            numeric&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            arithmetic value
+        </td>
+    </tr>
+</table>
+</p>
+

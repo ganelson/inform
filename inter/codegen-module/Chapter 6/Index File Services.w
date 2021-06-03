@@ -645,10 +645,19 @@ void Index::test_card(OUTPUT_STREAM, wording W) {
 }
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
+	if (Str::eq_wide_string(elt, L"Bh")) {
+		BehaviourElement::render(OUT);
+		return;
+	}
 	if (Str::eq_wide_string(elt, L"Cd")) {
 		CardElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Rl")) {
+		IXRelations::render(OUT);
+		return;
+	}
+
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Tb")) {
 		IXTables::render(OUT);
@@ -656,10 +665,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"In")) {
 		IXInnards::render(OUT, Supervisor::current_vm());
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Rl")) {
-		IXRelations::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Ev")) {
@@ -672,10 +677,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Pl")) {
 		IXScenes::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Bh")) {
-		IXBehaviour::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Fi")) {

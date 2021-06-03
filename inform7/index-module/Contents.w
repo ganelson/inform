@@ -18,7 +18,6 @@ Chapter 2: Indexing
 	Adjectives
 	Variables Element
 	Properties
-	Relations Element
 	Inferences
 	Rules
 	Activities
@@ -27,7 +26,6 @@ Chapter 2: Indexing
 	Innards Element
 	Events Element
 	Rules for Scenes Element
-	Behaviour Element
 	Arithmetic Element
 
 Chapter 3: Indexing for Plugins

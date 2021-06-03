@@ -40,6 +40,7 @@ typedef struct tree_inventory {
 	inter_tree_location_list *derived_kind_nodes;
 	inter_tree_location_list *kind_nodes;
 	inter_tree_location_list *test_nodes;
+	inter_tree_location_list *named_action_pattern_nodes;
 	CLASS_DEFINITION
 } tree_inventory;
 
@@ -66,8 +67,9 @@ tree_inventory *Synoptic::new_inventory(inter_tree *I) {
 	inv->derived_kind_nodes = Synoptic::add_inventory_need(inv, I"_derived_kind");
 	inv->kind_nodes = Synoptic::add_inventory_need(inv, I"_kind");
 	inv->module_nodes = Synoptic::add_inventory_need(inv, I"_module");
-	inv->instance_nodes =  Synoptic::add_inventory_need(inv, I"_instance");
-	inv->test_nodes =  Synoptic::add_inventory_need(inv, I"_test");
+	inv->instance_nodes = Synoptic::add_inventory_need(inv, I"_instance");
+	inv->test_nodes = Synoptic::add_inventory_need(inv, I"_test");
+	inv->named_action_pattern_nodes = Synoptic::add_inventory_need(inv, I"_named_action_pattern");
 
 	inv->extension_nodes = TreeLists::new();
 	inv->scene_nodes = TreeLists::new();
@@ -132,9 +134,18 @@ void Synoptic::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	}
 }
 
+tree_inventory *cached_inventory = NULL;
+inter_tree *cache_is_for = NULL;
+tree_inventory *Synoptic::inv(inter_tree *I) {
+	if (cache_is_for == I) return cached_inventory;
+	cache_is_for = I;
+	cached_inventory = Synoptic::new_inventory(I);
+	Synoptic::perform_inventory(cached_inventory);
+	return cached_inventory;
+}
+
 int Synoptic::go(pipeline_step *step) {
-	tree_inventory *inv = Synoptic::new_inventory(step->repository);
-	Synoptic::perform_inventory(inv);
+	tree_inventory *inv = Synoptic::inv(step->repository);
 
 	SynopticText::compile(step->repository, inv);
 	SynopticActions::compile(step->repository, inv);

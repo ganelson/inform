@@ -174,7 +174,48 @@ void RTRelations::compile(void) {
 					desc, bp->bp_created_at);
 			}
 		}
+		if (bp->right_way_round) {
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "relation metadata for %A",  &(bp->relation_name));
+			Sequence::queue_at(&RTRelations::metadata_agent,
+				STORE_POINTER_binary_predicate(bp), desc, bp->bp_created_at);
+		}
 	}
+}
+
+@ Metadata packages need to be made even when a relation has no array-like
+existence at runtime, for the sake of the index.
+
+=
+void RTRelations::metadata_agent(compilation_subtask *t) {
+	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(t->data);
+	package_request *pack = RTRelations::package(bp);
+	inter_name *id_iname = Hierarchy::make_iname_in(RELATION_ID_HL, pack);
+	Emit::numeric_constant(id_iname, 0);
+	if (bp->compilation_data.record_needed) {
+		inter_name *md_iname = Hierarchy::make_iname_in(RELATION_VALUE_MD_HL, pack);
+		Emit::iname_constant(md_iname, K_value, RTRelations::iname(bp));
+	}
+	TEMPORARY_TEXT(desc)
+	BinaryPredicateFamilies::describe_for_index(desc, bp);
+	if (Str::len(desc) > 0)
+		Hierarchy::apply_metadata(pack, RELATION_DESCRIPTION_MD_HL, desc);
+	DISCARD_TEXT(desc)
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%A", &(bp->relation_name));
+	if (Str::len(name) > 0)
+		Hierarchy::apply_metadata(pack, RELATION_NAME_MD_HL, name);
+	DISCARD_TEXT(name)
+	for (int i=0; i<2; i++) {
+		TEMPORARY_TEXT(details)
+		BPTerms::index(details, &(bp->term_details[i]));
+		if (Str::len(details) > 0)
+			Hierarchy::apply_metadata(pack,
+				(i==0)?RELATION_TERM0_MD_HL:RELATION_TERM1_MD_HL, details);
+		DISCARD_TEXT(details)
+	}
+	Hierarchy::apply_metadata_from_number(pack, RELATION_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(bp->bp_created_at)));
 }
 
 @ So the following makes a single |_relation| package.
@@ -309,12 +350,6 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	Emit::iname_constant(md_iname, K_value, iname);
 
 @<Compile the metadata array@> =
-	inter_name *id_iname = Hierarchy::make_iname_in(RELATION_ID_HL, pack);
-	Emit::numeric_constant(id_iname, 0);
-	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
-	inter_name *md_iname = Hierarchy::make_iname_in(RELATION_VALUE_MD_HL, pack);
-	Emit::iname_constant(md_iname, K_value, RTRelations::iname(bp));
-	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
 	packaging_state save = EmitArrays::begin(RTRelations::iname(bp), K_value);
 	if (ExplicitRelations::stored_dynamically(bp)) {
 		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */

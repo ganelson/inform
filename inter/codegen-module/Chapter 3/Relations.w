@@ -44,12 +44,14 @@ void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
 	inter_symbol *callback_s = Synoptic::local(I, I"callback", NULL);
 	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
-		inter_symbol *rel_s = Metadata::read_symbol(pack, I"^value");
-		Produce::inv_primitive(I, INDIRECT1V_BIP);
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, callback_s);
-			Produce::val_symbol(I, K_value, rel_s);
-		Produce::up(I);
+		inter_symbol *rel_s = Metadata::read_optional_symbol(pack, I"^value");
+		if (rel_s) {
+			Produce::inv_primitive(I, INDIRECT1V_BIP);
+			Produce::down(I);
+				Produce::val_symbol(I, K_value, callback_s);
+				Produce::val_symbol(I, K_value, rel_s);
+			Produce::up(I);
+		}
 	}
 	Synoptic::end_function(I, iname);
 

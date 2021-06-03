@@ -71,4 +71,22 @@ void RTNamedActionPatterns::compilation_agent(compilation_subtask *t) {
 	}
 	EmitCode::rfalse();
 	Functions::end(save);
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "%+W", Nouns::nominative_singular(nap->as_noun));
+	Hierarchy::apply_metadata(RTNamedActionPatterns::package(nap), NAP_NAME_MD_HL, T);	
+	DISCARD_TEXT(T)
+	Hierarchy::apply_metadata_from_number(RTNamedActionPatterns::package(nap),
+		NAP_AT_MD_HL, (inter_ti) Wordings::first_wn(nap->text_of_declaration));
+	LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns) {
+		action_pattern *ap = nape->behaviour;
+		package_request *R =
+			Hierarchy::package_within(NAMED_ACTION_ENTRIES_HAP,
+				RTNamedActionPatterns::package(nap));
+		TEMPORARY_TEXT(T)
+		WRITE_TO(T, "%+W", ap->text_of_pattern);
+		Hierarchy::apply_metadata(R, NAPE_TEXT_MD_HL, T);	
+		DISCARD_TEXT(T)
+		Hierarchy::apply_metadata_from_number(R, NAPE_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(ap->text_of_pattern));
+	}
 }

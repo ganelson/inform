@@ -313,6 +313,11 @@ void Hierarchy::establish(void) {
 
 @e NAMED_ACTION_PATTERNS_HAP
 @e NAP_FN_HL
+@e NAP_NAME_MD_HL
+@e NAP_AT_MD_HL
+@e NAMED_ACTION_ENTRIES_HAP
+@e NAPE_TEXT_MD_HL
+@e NAPE_AT_MD_HL
 
 @<Establish actions@> =
 	submodule_identity *actions = Packaging::register_submodule(I"actions");
@@ -352,6 +357,12 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(naps))
 		H_BEGIN_AP(NAMED_ACTION_PATTERNS_HAP, I"named_action_pattern", I"_named_action_pattern")
 			H_F_U(NAP_FN_HL,                  I"nap_fn")
+			H_C_U(NAP_NAME_MD_HL,             I"^name")
+			H_C_U(NAP_AT_MD_HL,               I"^at")
+			H_BEGIN_AP(NAMED_ACTION_ENTRIES_HAP, I"named_action_pattern_entry", I"_named_action_pattern_entry")
+				H_C_U(NAPE_TEXT_MD_HL,         I"^text")
+				H_C_U(NAPE_AT_MD_HL,           I"^at")
+			H_END
 		H_END
 	H_END
 
@@ -1007,6 +1018,11 @@ void Hierarchy::establish(void) {
 @e MEANINGLESS_RR_HL
 
 @e RELATIONS_HAP
+@e RELATION_NAME_MD_HL
+@e RELATION_DESCRIPTION_MD_HL
+@e RELATION_AT_MD_HL
+@e RELATION_TERM0_MD_HL
+@e RELATION_TERM1_MD_HL
 @e RELATION_VALUE_MD_HL
 @e RELATION_CREATOR_MD_HL
 @e RELATION_ID_HL
@@ -1049,8 +1065,13 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(relations))
 		H_BEGIN_AP(RELATIONS_HAP,             I"relation", I"_relation")
-			H_C_U(RELATION_VALUE_MD_HL, I"^value")
-			H_C_U(RELATION_CREATOR_MD_HL, I"^creator")
+			H_C_U(RELATION_NAME_MD_HL,        I"^name")
+			H_C_U(RELATION_AT_MD_HL,          I"^at")
+			H_C_U(RELATION_DESCRIPTION_MD_HL, I"^description")
+			H_C_U(RELATION_TERM0_MD_HL,       I"^term0")
+			H_C_U(RELATION_TERM1_MD_HL,       I"^term1")
+			H_C_U(RELATION_VALUE_MD_HL,       I"^value")
+			H_C_U(RELATION_CREATOR_MD_HL,     I"^creator")
 			H_C_U(RELATION_ID_HL,             I"relation_id")
 			H_C_G(RELATION_RECORD_HL,         I"Rel_Record")
 			H_C_U(BITMAP_HL,                  I"as_constant")

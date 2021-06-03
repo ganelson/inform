@@ -64,3 +64,5 @@ Chapter 6: Index
 	Index Interpreter
 	Index File Services
 	Card Element
+	Behaviour Element
+	Relations Element

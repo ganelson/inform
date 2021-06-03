@@ -1,0 +1,11 @@
+1. Bh
+<p><b>living dangerously</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><br>
+&nbsp;&nbsp;<i>defined as any of the following acts:</i>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Taking something&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Examining a vehicle&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p><b>sheer rudeness</b>&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a><br>
+&nbsp;&nbsp;<i>defined as any of the following acts:</i>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Eating something&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+

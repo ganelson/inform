@@ -1,0 +1,5 @@
+Home is a room.
+
+Guidance relates one person to various vehicles.
+
+Test index (internal) with Rl.
