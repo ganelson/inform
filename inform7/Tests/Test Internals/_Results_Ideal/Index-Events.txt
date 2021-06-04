@@ -1,0 +1,7 @@
+1. Ev
+<p><i>Events with no specific time</i></p>
+<p class="tightin2">At the time when the clock strikes midnight&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> (where triggered: &nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a>)</p>
+<p><i>Timetable</i></p>
+<p class="in2">At 11:32 AM&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="in2">At 7:12 AM (this is the dawn greeting rule)&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+

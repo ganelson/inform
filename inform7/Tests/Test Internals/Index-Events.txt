@@ -1,0 +1,12 @@
+Home is a room.
+
+At 11:32 AM: say "Goodness!".
+
+At 7:12 AM (this is the dawn greeting rule): say "Hello!".
+
+At the time when the clock strikes midnight: say "Oh!"
+
+After looking:
+	the clock strikes midnight in 18 minutes from now.
+
+Test index (internal) with Ev.
