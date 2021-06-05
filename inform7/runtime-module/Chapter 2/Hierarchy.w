@@ -1214,6 +1214,12 @@ void Hierarchy::establish(void) {
 @e TABLE_PNAME_MD_HL
 @e TABLE_VALUE_MD_HL
 @e RANKING_TABLE_MD_HL
+@e TABLE_ROWS_MD_HL
+@e TABLE_BLANK_ROWS_MD_HL
+@e TABLE_BLANK_ROWS_FOR_MD_HL
+@e TABLE_DEFINES_MD_HL
+@e TABLE_DEFINES_TEXT_MD_HL
+@e TABLE_DEFINES_AT_MD_HL
 @e TABLE_ID_HL
 @e TABLE_DATA_HL
 @e TABLE_COLUMN_USAGES_HAP
@@ -1222,9 +1228,13 @@ void Hierarchy::establish(void) {
 @e COLUMN_BITS_HL
 @e COLUMN_BLANKS_HL
 @e COLUMN_BLANK_DATA_HL
+@e TABLE_CONTRIBUTION_HAP
+@e TABLE_CONTRIBUTION_AT_MD_HL
 
 @e TABLE_COLUMNS_HAP
 @e TABLE_COLUMN_ID_HL
+@e TABLE_COLUMN_NAME_MD_HL
+@e TABLE_COLUMN_CONTENTS_MD_HL
 @e TABLE_COLUMN_KIND_MD_HL
 
 @<Establish tables@> =
@@ -1236,6 +1246,12 @@ void Hierarchy::establish(void) {
 			H_C_U(TABLE_PNAME_MD_HL,          I"^printed_name")
 			H_C_U(TABLE_VALUE_MD_HL,          I"^value")
 			H_C_U(RANKING_TABLE_MD_HL,        I"^ranking_table")
+			H_C_U(TABLE_ROWS_MD_HL,           I"^rows")
+			H_C_U(TABLE_BLANK_ROWS_MD_HL,     I"^blank_rows")
+			H_C_U(TABLE_BLANK_ROWS_FOR_MD_HL, I"^blank_rows_for_each")
+			H_C_U(TABLE_DEFINES_MD_HL,        I"^defines")
+			H_C_U(TABLE_DEFINES_TEXT_MD_HL,   I"^defines_text")
+			H_C_U(TABLE_DEFINES_AT_MD_HL,     I"^defines_at")
 			H_C_U(TABLE_ID_HL,                I"table_id")
 			H_C_U(TABLE_DATA_HL,              I"table_data")
 			H_BEGIN_AP(TABLE_COLUMN_USAGES_HAP, I"column", I"_table_column_usage")
@@ -1245,6 +1261,9 @@ void Hierarchy::establish(void) {
 				H_C_U(COLUMN_BLANKS_HL,       I"column_blanks")
 				H_C_U(COLUMN_BLANK_DATA_HL,   I"^column_blank_data")
 			H_END
+			H_BEGIN_AP(TABLE_CONTRIBUTION_HAP, I"contribution", I"_table_contribution")
+				H_C_U(TABLE_CONTRIBUTION_AT_MD_HL, I"^at")
+			H_END
 		H_END
 	H_END
 
@@ -1252,7 +1271,9 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
 		H_BEGIN_AP(TABLE_COLUMNS_HAP,         I"table_column", I"_table_column")
 			H_C_U(TABLE_COLUMN_ID_HL,         I"table_column_id")
-			H_C_U(TABLE_COLUMN_KIND_MD_HL, I"^column_kind")
+			H_C_U(TABLE_COLUMN_NAME_MD_HL,    I"^name")
+			H_C_U(TABLE_COLUMN_CONTENTS_MD_HL, I"^contents")
+			H_C_U(TABLE_COLUMN_KIND_MD_HL,    I"^column_kind")
 		H_END
 	H_END
 

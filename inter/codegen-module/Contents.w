@@ -68,3 +68,4 @@ Chapter 6: Index
 	Relations Element
 	Events Element
 	Figures Element
+	Tables Element

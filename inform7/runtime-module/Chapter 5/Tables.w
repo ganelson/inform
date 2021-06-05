@@ -288,6 +288,29 @@ case.)
 	WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
 	Hierarchy::apply_metadata(RTTables::package(t), TABLE_PNAME_MD_HL, S);
 	DISCARD_TEXT(S)
+	for (table_contribution *tc = t->table_created_at; tc; tc = tc->next) {
+		package_request *R =
+			Hierarchy::package_within(TABLE_CONTRIBUTION_HAP,
+				RTTables::package(t));
+		Hierarchy::apply_metadata_from_number(R, TABLE_CONTRIBUTION_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(Node::get_text(tc->source_table)));
+	}
+	Hierarchy::apply_metadata_from_number(RTTables::package(t),
+		TABLE_ROWS_MD_HL, (inter_ti) Tables::get_no_rows(t));
+	Hierarchy::apply_metadata_from_number(RTTables::package(t),
+		TABLE_BLANK_ROWS_MD_HL, (inter_ti) t->blank_rows);
+	if (Wordings::nonempty(t->blank_rows_for_each_text))
+		Hierarchy::apply_metadata_from_raw_wording(RTTables::package(t),
+			TABLE_BLANK_ROWS_FOR_MD_HL, t->blank_rows_for_each_text);
+	if (t->first_column_by_definition) {
+		Hierarchy::apply_metadata_from_number(RTTables::package(t),
+			TABLE_DEFINES_MD_HL, 1);
+		Hierarchy::apply_metadata_from_raw_wording(RTTables::package(t),
+			TABLE_DEFINES_TEXT_MD_HL, Node::get_text(t->where_used_to_define));
+		Hierarchy::apply_metadata_from_number(RTTables::package(t),
+			TABLE_DEFINES_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(Node::get_text(t->where_used_to_define)));
+	}
 
 @ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its
 improbability, be valid for this kind. If we can prove that it is not, we

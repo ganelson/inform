@@ -22,7 +22,6 @@ Chapter 2: Indexing
 	Rules
 	Activities
 	Phrasebook Index
-	Tables Element
 	Innards Element
 	Rules for Scenes Element
 	Arithmetic Element

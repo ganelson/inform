@@ -44,9 +44,15 @@ to the column-ID constant, and let the linker choose a value for that.
 void RTTableColumns::compile(void) {
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
+		package_request *pack = RTTableColumns::package(tc);
 		Emit::numeric_constant(RTTableColumns::id_iname(tc), 0); /* placeholder value */
-		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_MD_HL,
-			RTTableColumns::package(tc));
+		inter_name *kind_iname = Hierarchy::make_iname_in(TABLE_COLUMN_KIND_MD_HL, pack);
 		RTKindIDs::define_constant_as_strong_id(kind_iname, Tables::Columns::get_kind(tc));
+		Hierarchy::apply_metadata_from_raw_wording(pack,
+			TABLE_COLUMN_NAME_MD_HL, Nouns::nominative_singular(tc->name));
+		TEMPORARY_TEXT(conts)
+		Kinds::Textual::write_plural(conts, Tables::Columns::get_kind(tc));
+		Hierarchy::apply_metadata(pack, TABLE_COLUMN_CONTENTS_MD_HL, conts);
+		DISCARD_TEXT(conts)
 	}
 }

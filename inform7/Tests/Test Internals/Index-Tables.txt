@@ -1,0 +1,38 @@
+Home is a room.
+
+A dynasty is a kind of value. The dynasties are Stuart, Hanover, Saxe-Coburg-Gotha
+and Windsor.
+
+Table 4 - Recent Monarchs
+Name			Accession	Family
+"Anne"			1702		Stuart
+"George I"		1714		Hanover
+"George II"		1720		Hanover
+"George III"	1760		Hanover
+"George IV"		1820		Hanover
+"William IV"	1830		Hanover
+"Victoria"		1837		Hanover
+"Edward VII"	1901		Saxe-Coburg-Gotha
+"George V"		1910		Windsor
+"Edward VIII"	1936		Windsor
+"George VI"		1936		Windsor
+"Elizabeth II"	1952		Windsor
+
+Table 2.1 - Selected Elements
+Element		Symbol	Atomic number	Atomic weight	Mystery
+"Hydrogen"	"H"		1				1				{ 2, 3, 6, 7 }
+"Iron"		"Fe"	26				56				--
+"Zinc"		"Zn"	30				65				{ 34, 151 }
+"Uranium"	"U"		92				238				{ -4 }
+with 3 blank rows
+
+A jersey is a kind of thing. A jersey is wearable. Some jerseys in the Home are defined by the Table of Honorary Jerseys.
+
+Table of Honorary Jerseys
+jersey				year established	citation
+a yellow jersey		1919				"race leader"
+a polkadot jersey	1933				"King of the Mountains"
+a green jersey		1953				"highest point scorer on sprints"
+a white jersey		1975				"best cyclist aged 25 or less"
+
+Test index (internal) with Tb.

@@ -142,7 +142,6 @@ text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int s
 	}
 	ifl = &index_file_struct;
 	text_stream *OUT = ifl;
-LOG("Index: %f\n", F);
 	@<Set the current index page@>;
 
 	HTML::header(OUT, title,
@@ -665,12 +664,12 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		FiguresElement::render(OUT);
 		return;
 	}
-
-	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Tb")) {
-		IXTables::render(OUT);
+		TablesElement::render(OUT);
 		return;
 	}
+
+	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"In")) {
 		IXInnards::render(OUT, Supervisor::current_vm());
 		return;

@@ -1,0 +1,230 @@
+1. Tb
+<table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <b>Table of Honorary Jerseys</b>&nbsp;<a href="source:story.ni#line31"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <i><span class="smaller">4 definitions</span></i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Some jerseys in the Home&nbsp;<a href="source:story.ni#line29"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <i>names</i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;<i>sets</i> citation&nbsp;<a href="javascript:pasteCode('citation')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            texts property
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;<i>sets</i> jersey&nbsp;<a href="javascript:pasteCode('jersey')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            objects property
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <b>Table 4 - Recent Monarchs</b>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <i><span class="smaller">3 columns x 12 rows</span></i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Name&nbsp;<a href="javascript:pasteCode('Name entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of texts
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Accession&nbsp;<a href="javascript:pasteCode('Accession entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of numbers
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Family&nbsp;<a href="javascript:pasteCode('Family entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of dynasties
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <b>Table 2.1 - Selected Elements</b>&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="padding-top: 3px;" align="left" valign="top">
+            <i><span class="smaller">5 columns x 7 rows (3 blank)</span></i>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Element&nbsp;<a href="javascript:pasteCode('Element entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of texts
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Symbol&nbsp;<a href="javascript:pasteCode('Symbol entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of texts
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Atomic number&nbsp;<a href="javascript:pasteCode('Atomic number entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of numbers
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 4:&nbsp;&nbsp;Atomic weight&nbsp;<a href="javascript:pasteCode('Atomic weight entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of numbers
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;col 5:&nbsp;&nbsp;Mystery&nbsp;<a href="javascript:pasteCode('Mystery entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            of lists of numbers
+        </td>
+    </tr>
+</table>
+<p><a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;Show tables inside extensions too</p>
+<div id="extra2" style="display: none;">
+    <p class="in1"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+        <tr>
+            <td width="8">
+                <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+            </td>
+            <td>
+
+            </td>
+            <td width="8">
+                <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+            </td>
+        </tr>
+        <tr>
+            <td width="8">
+
+            </td>
+            <td>
+                <p><i>Standard Rules</i></p>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="padding-top: 3px;" align="left" valign="top">
+                            <b>Table of Final Question Options</b>&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="padding-top: 3px;" align="left" valign="top">
+                            <i><span class="smaller">5 columns x 5 rows</span></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;final question wording&nbsp;<a href="javascript:pasteCode('final question wording entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of texts
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;only if victorious&nbsp;<a href="javascript:pasteCode('only if victorious entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of truth states
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 3:&nbsp;&nbsp;topic&nbsp;<a href="javascript:pasteCode('topic entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of topics
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 4:&nbsp;&nbsp;final response rule&nbsp;<a href="javascript:pasteCode('final response rule entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of rules
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 5:&nbsp;&nbsp;final response activity&nbsp;<a href="javascript:pasteCode('final response activity entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of activities on objects
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 3px;" align="left" valign="top">
+                            <b>Table of Locale Priorities</b>&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="padding-top: 3px;" align="left" valign="top">
+                            <i><span class="smaller">2 columns x 6 rows (5 blank, one for each thing)</span></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;notable-object&nbsp;<a href="javascript:pasteCode('notable-object entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of objects
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">
+                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;locale description priority&nbsp;<a href="javascript:pasteCode('locale description priority entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left" valign="top">
+                            of numbers
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+            <td width="8">
+
+            </td>
+        </tr>
+        <tr>
+            <td width="8">
+                <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+            </td>
+            <td>
+
+            </td>
+            <td width="8">
+                <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+            </td>
+        </tr>
+    </table>
+    </p>
+</div>
+
