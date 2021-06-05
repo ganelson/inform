@@ -661,6 +661,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		EventsElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Fi")) {
+		FiguresElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Tb")) {
@@ -677,10 +681,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Pl")) {
 		IXScenes::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Fi")) {
-		IXFigures::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Ar")) {

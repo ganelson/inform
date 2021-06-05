@@ -67,3 +67,4 @@ Chapter 6: Index
 	Behaviour Element
 	Relations Element
 	Events Element
+	Figures Element

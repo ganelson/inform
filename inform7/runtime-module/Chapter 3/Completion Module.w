@@ -10,6 +10,7 @@ void CompletionModule::compile(void) {
 	@<Memory economy metadata@>;
 	@<Frame size@>;
 	@<RNG seed@>;
+	@<Max indexed thumbnails@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -46,3 +47,8 @@ void CompletionModule::compile(void) {
 	inter_name *iname = Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL);
 	Emit::numeric_constant(iname, (inter_ti) Task::rng_seed());
 	Hierarchy::make_available(iname);
+
+@<Max indexed thumbnails@> =
+	inter_name *iname = Hierarchy::find(MAX_INDEXED_FIGURES_HL);
+	Emit::numeric_constant(iname,
+		(inter_ti) global_compilation_settings.index_figure_thumbnails);

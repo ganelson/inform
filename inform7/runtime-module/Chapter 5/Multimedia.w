@@ -19,18 +19,22 @@ void RTMultimedia::compile_files(void) {
 void RTMultimedia::compile_figures(void) {
 	figures_data *bf;
 	LOOP_OVER(bf, figures_data) {
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FIGURE_ID_MD_HL,
-			RTInstances::package(bf->as_instance));
-		Emit::numeric_constant(md_iname, (inter_ti) bf->figure_number);
+		package_request *pack = RTInstances::package(bf->as_instance);
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_FIGURE_ID_MD_HL,
+			(inter_ti) bf->figure_number);
+		Hierarchy::apply_metadata_from_filename(pack, INSTANCE_FIGURE_FILENAME_MD_HL,
+			bf->filename_of_image_file);
 	}
 }
 
 void RTMultimedia::compile_sounds(void) {
 	sounds_data *bs;
 	LOOP_OVER(bs, sounds_data) {
-		inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_SOUND_ID_MD_HL,
-			RTInstances::package(bs->as_instance));
-		Emit::numeric_constant(md_iname, (inter_ti) bs->sound_number);
+		package_request *pack = RTInstances::package(bs->as_instance);
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_SOUND_ID_MD_HL,
+			(inter_ti) bs->sound_number);
+		Hierarchy::apply_metadata_from_filename(pack, INSTANCE_SOUND_FILENAME_MD_HL,
+			bs->filename_of_sound_file);
 	}
 }
 
@@ -81,10 +85,21 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 	}
 	EmitArrays::end(save);
 
-@ At runtime, an external file is represented by a pointer to its metadata
-array.
-
 @<Make the value metadata@> =
-	inter_name *md_iname = Hierarchy::make_iname_in(INSTANCE_FILE_VALUE_MD_HL,
-		RTInstances::package(exf->as_instance));
-	Emit::iname_constant(md_iname, K_value, exf_iname);
+	package_request *pack = RTInstances::package(exf->as_instance);
+	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_FILE_VALUE_MD_HL, exf_iname);
+	Hierarchy::apply_metadata_from_raw_wording(pack, INSTANCE_LEAFNAME_MD_HL,
+		Wordings::one_word(exf->unextended_filename));
+	Hierarchy::apply_metadata_from_number(pack, INSTANCE_FILE_IS_BINARY_MD_HL,
+		(inter_ti) exf->file_is_binary);
+	switch (exf->file_ownership) {
+		case OWNED_BY_THIS_PROJECT:
+			Hierarchy::apply_metadata_from_number(pack, INSTANCE_FILE_OWNED_MD_HL, 1);
+			break;
+		case OWNED_BY_ANOTHER_PROJECT:
+			Hierarchy::apply_metadata_from_number(pack, INSTANCE_FILE_OWNED_BY_OTHER_MD_HL, 1);
+			break;
+		case OWNED_BY_SPECIFIC_PROJECT:
+			Hierarchy::apply_metadata(pack, INSTANCE_FILE_OWNER_MD_HL, exf->IFID_of_owner);
+			break;
+	}

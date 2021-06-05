@@ -28,7 +28,6 @@ Chapter 2: Indexing
 	Arithmetic Element
 
 Chapter 3: Indexing for Plugins
-	Figures Element
 	Spatial
 	The Player
 	Backdrops

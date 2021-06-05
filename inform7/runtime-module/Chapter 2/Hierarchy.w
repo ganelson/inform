@@ -213,6 +213,7 @@ void Hierarchy::establish(void) {
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
 @e MEMORY_ECONOMY_MD_HL
+@e MAX_INDEXED_FIGURES_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
 @e KIT_CONFIGURATION_BITMAP_HL
@@ -250,12 +251,13 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
 		H_C_T(I7_FULL_VERSION_NUMBER_HL,      I"I7_FULL_VERSION_NUMBER")
-		H_C_T(MEMORY_ECONOMY_MD_HL,     I"^memory_economy")
+		H_C_T(MEMORY_ECONOMY_MD_HL,           I"^memory_economy")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
 		H_C_T(KIT_CONFIGURATION_LOOKMODE_HL,  I"KIT_CONFIGURATION_LOOKMODE")
 		H_C_T(LOCALPARKING_HL,                I"LocalParking")
 		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
+		H_C_T(MAX_INDEXED_FIGURES_HL,         I"^max_indexed_figures")
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
 	H_END
@@ -704,14 +706,22 @@ void Hierarchy::establish(void) {
 
 @e INSTANCES_HAP
 @e INSTANCE_NAME_MD_HL
+@e INSTANCE_AT_MD_HL
 @e INSTANCE_VALUE_MD_HL
 @e INSTANCE_KIND_MD_HL
 @e INSTANCE_IS_SCENE_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
+@e INSTANCE_FILE_IS_BINARY_MD_HL
+@e INSTANCE_FILE_OWNED_MD_HL
+@e INSTANCE_FILE_OWNED_BY_OTHER_MD_HL
+@e INSTANCE_FILE_OWNER_MD_HL
+@e INSTANCE_LEAFNAME_MD_HL
 @e INSTANCE_IS_FIGURE_MD_HL
 @e INSTANCE_FIGURE_ID_MD_HL
+@e INSTANCE_FIGURE_FILENAME_MD_HL
 @e INSTANCE_IS_SOUND_MD_HL
+@e INSTANCE_SOUND_FILENAME_MD_HL
 @e INSTANCE_SOUND_ID_MD_HL
 @e INSTANCE_SSF_MD_HL
 @e INSTANCE_SCF_MD_HL
@@ -736,6 +746,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
 			H_C_U(INSTANCE_NAME_MD_HL,  I"^name")
+			H_C_U(INSTANCE_AT_MD_HL,  I"^at")
 			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
 			H_C_U(INSTANCE_KIND_MD_HL,  I"^kind")
 			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
@@ -743,9 +754,16 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_SCF_MD_HL,   I"^scene_change_fn")
 			H_C_U(INSTANCE_IS_EXF_MD_HL, I"^is_file")
 			H_C_U(INSTANCE_FILE_VALUE_MD_HL, I"^file_value")
+			H_C_U(INSTANCE_FILE_OWNED_MD_HL, I"^file_owned")
+			H_C_U(INSTANCE_FILE_OWNED_BY_OTHER_MD_HL, I"^file_owned_by_other")
+			H_C_U(INSTANCE_FILE_OWNER_MD_HL, I"^file_owner")
+			H_C_U(INSTANCE_FILE_IS_BINARY_MD_HL, I"^is_binary")
+			H_C_U(INSTANCE_LEAFNAME_MD_HL, I"^leafname")
 			H_C_U(INSTANCE_IS_FIGURE_MD_HL, I"^is_figure")
+			H_C_U(INSTANCE_FIGURE_FILENAME_MD_HL, I"^filename")
 			H_C_U(INSTANCE_FIGURE_ID_MD_HL, I"^resource_id")
 			H_C_U(INSTANCE_IS_SOUND_MD_HL, I"^is_sound")
+			H_C_U(INSTANCE_SOUND_FILENAME_MD_HL, I"^filename")
 			H_C_U(INSTANCE_SOUND_ID_MD_HL, I"^resource_id")
 			H_C_U(INST_SHOWME_MD_HL,    I"^showme_fn")
 			H_C_U(INSTANCE_HL,                I"I")
@@ -1674,4 +1692,11 @@ void Hierarchy::apply_metadata_from_raw_wording(package_request *P, int id, word
 	WRITE_TO(ANT, "%+W", W);
 	Hierarchy::apply_metadata(P, id, ANT);
 	DISCARD_TEXT(ANT)
+}
+
+void Hierarchy::apply_metadata_from_filename(package_request *P, int id, filename *F) {
+	TEMPORARY_TEXT(as_text)
+	WRITE_TO(as_text, "%f", F);
+	Hierarchy::apply_metadata(P, id, as_text);
+	DISCARD_TEXT(as_text)
 }

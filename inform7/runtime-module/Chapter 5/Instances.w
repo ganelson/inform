@@ -74,6 +74,8 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	package_request *pack = I->compilation_data.instance_package;
 	Hierarchy::apply_metadata_from_wording(pack, INSTANCE_NAME_MD_HL,
 		Nouns::nominative(I->as_noun, FALSE));
+	Hierarchy::apply_metadata_from_number(pack, INSTANCE_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(I->creating_sentence)));
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
 	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL, pack);
 	kind *K = Instances::to_kind(I);
