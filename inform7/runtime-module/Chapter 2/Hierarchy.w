@@ -1137,10 +1137,14 @@ void Hierarchy::establish(void) {
 
 @e RULES_HAP
 @e RULE_NAME_MD_HL
+@e RULE_PREAMBLE_MD_HL
 @e RULE_PNAME_MD_HL
+@e RULE_AT_MD_HL
 @e RULE_VALUE_MD_HL
 @e RULE_TIMED_MD_HL
 @e RULE_TIMED_FOR_MD_HL
+@e TIMED_RULE_TRIGGER_HAP
+@e RULE_USED_AT_MD_HL
 @e SHELL_FN_HL
 @e RULE_FN_HL
 @e EXTERIOR_RULE_HL
@@ -1160,10 +1164,15 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
 			H_C_U(RULE_NAME_MD_HL,      I"^name")
+			H_C_U(RULE_PREAMBLE_MD_HL,  I"^preamble")
 			H_C_U(RULE_PNAME_MD_HL,     I"^printed_name")
+			H_C_U(RULE_AT_MD_HL,        I"^at")			
 			H_C_U(RULE_VALUE_MD_HL,     I"^value")
 			H_C_U(RULE_TIMED_MD_HL,     I"^timed")
 			H_C_U(RULE_TIMED_FOR_MD_HL, I"^timed_for")
+			H_BEGIN_AP(TIMED_RULE_TRIGGER_HAP, I"timed_rule_trigger", I"_timed_rule_trigger")
+				H_C_U(RULE_USED_AT_MD_HL, I"^used_at")
+			H_END
 			H_F_U(SHELL_FN_HL,                I"shell_fn")
 			H_F_U(RULE_FN_HL,                 I"rule_fn")
 			H_C_U(EXTERIOR_RULE_HL,           I"exterior_rule")

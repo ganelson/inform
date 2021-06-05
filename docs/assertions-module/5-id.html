@@ -78,7 +78,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#5">Chapter 5: Imperative Code</a></li><li><b>Imperative Definitions</b></li></ul></div>
 <p class="purpose">Each IMPERATIVE node in the syntax tree makes a definition using imperative code.</p>
 
-<ul class="toc"><li><a href="5-id.html#SP1">&#167;1. The head</a></li><li><a href="5-id.html#SP7">&#167;7. The body</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-id.html#SP1">&#167;1. The head</a></li><li><a href="5-id.html#SP6">&#167;6. The body</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The head. </b>Inform has several features &mdash; most obviously rules and "To ..." phrases &mdash;
 where something is created with top-level syntax with a shape like so:
@@ -152,15 +152,7 @@ find out which family the definition belongs to, on the basis of that text.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And similarly:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitions::index_preamble</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">log_text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>IDs are happened early on in Inform's run, at a time when many nouns have
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>IDs are happened early on in Inform's run, at a time when many nouns have
 not been created, so no very detailed parsing of the preamble is possible.
 This second stage, called "assessment", takes place later and makes a more
 detailed look possible.
@@ -169,13 +161,13 @@ detailed look possible.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitions::assess_all</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Step 1 - Assess</span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP5_2" class="named-paragraph-link"><span class="named-paragraph">Step 2 - Register</span><span class="named-paragraph-number">5.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph">Step 3 - Make the runtime context data</span><span class="named-paragraph-number">5.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP5_4" class="named-paragraph-link"><span class="named-paragraph">Step 4 - Complete</span><span class="named-paragraph-number">5.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Step 1 - Assess</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Step 2 - Register</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Step 3 - Make the runtime context data</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Step 4 - Complete</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 1 - Assess</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 1 - Assess</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -194,16 +186,16 @@ detailed look possible.
 <span class="plain-syntax">                </span><span class="string-syntax">"there doesn't seem to be any definition here"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"so I can't see what this rule or phrase would do."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax"> = </span><a href="5-id.html#SP7" class="function-link"><span class="function-syntax">ImperativeDefinitions::new_body</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="5-id.html#SP10" class="function-link"><span class="function-syntax">ImperativeDefinitions::detect_inline</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax"> = </span><a href="5-id.html#SP6" class="function-link"><span class="function-syntax">ImperativeDefinitions::new_body</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="5-id.html#SP9" class="function-link"><span class="function-syntax">ImperativeDefinitions::detect_inline</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="5-idf.html#SP5" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::given_body</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">CompileImperativeDefn::initialise_stack_frame</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 2 - Register</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 2 - Register</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -213,8 +205,8 @@ detailed look possible.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 3 - Make the runtime context data</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 3 - Make the runtime context data</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -224,8 +216,8 @@ detailed look possible.
 <span class="plain-syntax">            </span><a href="5-idf.html#SP7" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::to_phrcd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 4 - Complete</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step 4 - Complete</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -235,8 +227,8 @@ detailed look possible.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Whatever is defined probably wants to compile the body of the definition
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Whatever is defined probably wants to compile the body of the definition
 into at least one (and perhaps more than one) Inter function:
 </p>
 
@@ -244,7 +236,7 @@ into at least one (and perhaps more than one) Inter function:
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitions::compile_first_block</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph">Count up the scale of the task</span><span class="named-paragraph-number">6.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Count up the scale of the task</span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">idf</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compile_last</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
@@ -256,7 +248,7 @@ into at least one (and perhaps more than one) Inter function:
 <span class="plain-syntax">                &amp;</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Count up the scale of the task</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Count up the scale of the task</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -266,8 +258,8 @@ into at least one (and perhaps more than one) Inter function:
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="identifier-syntax">at_least_one_compiled_form_needed</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">++;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The body. </b>During assessment, then, each <a href="5-id.html#SP1" class="internal">imperative_defn</a> is given a body, which
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP5">&#167;5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The body. </b>During assessment, then, each <a href="5-id.html#SP1" class="internal">imperative_defn</a> is given a body, which
 is one of these. It reoresents the body of the definition &mdash; that is, the
 Inform 7 source text written underneath the heading.
 </p>
@@ -281,7 +273,7 @@ Inform 7 source text written underneath the heading.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">id_body</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">id_body</span><span class="plain-syntax"> *</span><span class="function-syntax">ImperativeDefinitions::new_body</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitions::new_body</span></span>:<br/><a href="5-id.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">id_body</span><span class="plain-syntax"> *</span><span class="function-syntax">ImperativeDefinitions::new_body</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitions::new_body</span></span>:<br/><a href="5-id.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_CREATIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Creating body: &lt;%W&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">log_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">body</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">id_body</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">body</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">head_of_defn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
@@ -292,7 +284,7 @@ Inform 7 source text written underneath the heading.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure id_body is accessed in 3/nuor, 5/idf, 5/adf, 5/tpf, 5/ptd, 5/po, 5/rf, 5/rcd, 6/rls, 6/rb, 6/rlb, 6/fao, 6/act, 7/tc, 7/tbl, 7/eqt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Definition bodies can be written in two different ways. In one way, the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Definition bodies can be written in two different ways. In one way, the
 body is a list of instructions to follow. For example:
 </p>
 
@@ -343,7 +335,7 @@ bodies of "To decide if..." phrases. This is the <span class="extract"><span cla
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Or perhaps to more than one, if the kinds are given indefinitely, so
 that the definition is a prototype rather than a specific function.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following Preform detects an inline body. Note that the lexer takes
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The following Preform detects an inline body. Note that the lexer takes
 text like <span class="extract"><span class="extract-syntax">(- rtrue; -)</span></span> and converts it into just two words, the marker
 <span class="extract"><span class="extract-syntax">(-</span></span> and then the inline matter all as a single word: here, <span class="extract"><span class="extract-syntax">rtrue; </span></span>.
 </p>
@@ -354,10 +346,10 @@ text like <span class="extract"><span class="extract-syntax">(- rtrue; -)</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">decide</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">if</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">only</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { DECIDES_CONDITION_MOR, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">decide</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">only</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">     </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { DECIDES_VALUE_MOR, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { DONT_KNOW_MOR, - }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TailAfterInline problem</span><span class="named-paragraph-number">9.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TailAfterInline problem</span><span class="named-paragraph-number">8.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TailAfterInline problem</span><span class="named-paragraph-number">9.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TailAfterInline problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -367,11 +359,11 @@ text like <span class="extract"><span class="extract-syntax">(- rtrue; -)</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"Inform 6. Here, there seems to be something extra after the '-)'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> </span><span class="identifier-syntax">nonterminal</span><span class="plain-syntax"> };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP8">&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitions::detect_inline</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitions::detect_inline</span></span>:<br/><a href="5-id.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitions::detect_inline</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitions::detect_inline</span></span>:<br/><a href="5-id.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">mor</span><span class="plain-syntax"> = </span><span class="constant-syntax">DONT_KNOW_MOR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp;</span>
@@ -381,16 +373,16 @@ text like <span class="extract"><span class="extract-syntax">(- rtrue; -)</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wide::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax">)) &gt;= </span><span class="constant-syntax">MAX_INLINE_DEFN_LENGTH</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP10_2" class="named-paragraph-link"><span class="named-paragraph">Forbid overly long inline definitions</span><span class="named-paragraph-number">10.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Forbid overly long inline definitions</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-idf.html#SP11" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::allows_inline</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Inline is for To... phrases only</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-id.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Inline is for To... phrases only</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">id_body</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="5-ptd.html#SP23" class="function-link"><span class="function-syntax">IDTypeData::make_inline</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">idb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type_data</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CompileImperativeDefn::make_inline</span><span class="plain-syntax">(</span><span class="identifier-syntax">idb</span><span class="plain-syntax">, </span><span class="identifier-syntax">inline_wn</span><span class="plain-syntax">, </span><span class="identifier-syntax">mor</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inline is for To... phrases only</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inline is for To... phrases only</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -398,8 +390,8 @@ text like <span class="extract"><span class="extract-syntax">(- rtrue; -)</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"only 'to...' phrases can be given inline Inform 6 definitions"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and in particular rules and adjective definitions can't."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>It is not clear that this restriction is needed any longer &mdash; the compiler
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>It is not clear that this restriction is needed any longer &mdash; the compiler
 works fine if it is removed &mdash; but it keeps us on the side of sanity. Long
 inline definitions would be very inefficient &mdash; those should use code in an
 Inter kit instead.
@@ -407,7 +399,7 @@ Inter kit instead.
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_INLINE_DEFN_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Forbid overly long inline definitions</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Forbid overly long inline definitions</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,8 +409,8 @@ Inter kit instead.
 <span class="plain-syntax">        </span><span class="string-syntax">"will need either to write the phrase definition in Inform 7, or to call an I6 routine "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which you define elsewhere with an 'Include ...'."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>That completes the process of creation. Here's how we log them:
+<ul class="endnotetexts"><li>This code is used in <a href="5-id.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>That completes the process of creation. Here's how we log them:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

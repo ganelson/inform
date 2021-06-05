@@ -209,7 +209,15 @@ void RTRules::compilation_agent(compilation_subtask *t) {
 	if (Wordings::nonempty(W))
 		Hierarchy::apply_metadata_from_wording(P, RULE_NAME_MD_HL, W);
 	Hierarchy::apply_metadata(P, RULE_PNAME_MD_HL, PN);
+	if ((R->defn_as_I7_source) &&
+		(Wordings::nonempty(Node::get_text(R->defn_as_I7_source->at))))
+		Hierarchy::apply_metadata_from_number(P, RULE_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(Node::get_text(R->defn_as_I7_source->at)));
 	DISCARD_TEXT(PN)
+	if ((R->defn_as_I7_source) &&
+		(Wordings::nonempty(R->defn_as_I7_source->log_text)))
+		Hierarchy::apply_metadata_from_raw_wording(P, RULE_PREAMBLE_MD_HL, 
+			R->defn_as_I7_source->log_text);
 
 @<Compile the value metadata@> =
 	Hierarchy::apply_metadata_from_iname(P, RULE_VALUE_MD_HL, RTRules::iname(R));
@@ -252,6 +260,30 @@ about the shell:
 		}
 		Functions::end(save);
 	}
+
+@ Since it hasn't been collected yet when the rule package is first made, this
+usage data has to be added to the package much later on:
+
+=
+void RTRules::annotate_timed_rules_with_usage(void) {
+	rule *R;
+	LOOP_OVER(R, rule) {
+		imperative_defn *id = R->defn_as_I7_source;
+		if (id) {
+			int t = TimedRules::get_timing_of_event(id);
+			if (t != NOT_A_TIMED_EVENT) {
+				linked_list *L = TimedRules::get_uses_as_event(id);
+				parse_node *p;
+				LOOP_OVER_LINKED_LIST(p, parse_node, L) {
+					package_request *TP =
+						Hierarchy::package_within(TIMED_RULE_TRIGGER_HAP, RTRules::package(R));
+					Hierarchy::apply_metadata_from_number(TP, RULE_USED_AT_MD_HL,
+						(inter_ti) Wordings::first_wn(Node::get_text(p)));
+				}
+			}
+		}
+	}
+}
 
 @ The following, then, compiles code to test if the "applicability constraints"
 have been violated. This is used not only in shell functions around kit-defined

@@ -23,6 +23,7 @@ void TimedRules::start(void) {
 
 int TimedRules::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER5_CSEQ) {
+		BENCH(RTRules::annotate_timed_rules_with_usage)
 		BENCH(TimedRules::check_for_unused)
 	}
 	return FALSE;

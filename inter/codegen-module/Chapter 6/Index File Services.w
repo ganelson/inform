@@ -657,6 +657,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		IXRelations::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Ev")) {
+		EventsElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Tb")) {
@@ -665,10 +669,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"In")) {
 		IXInnards::render(OUT, Supervisor::current_vm());
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Ev")) {
-		IXEvents::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"RS")) {

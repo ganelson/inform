@@ -66,3 +66,4 @@ Chapter 6: Index
 	Card Element
 	Behaviour Element
 	Relations Element
+	Events Element

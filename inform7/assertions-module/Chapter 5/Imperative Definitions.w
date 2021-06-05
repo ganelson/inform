@@ -66,13 +66,6 @@ void ImperativeDefinitions::write_comment_describing(imperative_defn *id) {
 	DISCARD_TEXT(C)
 }
 
-@ And similarly:
-
-=
-void ImperativeDefinitions::index_preamble(OUTPUT_STREAM, imperative_defn *id) {
-	WRITE("%+W", id->log_text);
-}
-
 @ IDs are happened early on in Inform's run, at a time when many nouns have
 not been created, so no very detailed parsing of the preamble is possible.
 This second stage, called "assessment", takes place later and makes a more

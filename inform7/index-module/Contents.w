@@ -24,7 +24,6 @@ Chapter 2: Indexing
 	Phrasebook Index
 	Tables Element
 	Innards Element
-	Events Element
 	Rules for Scenes Element
 	Arithmetic Element
 
