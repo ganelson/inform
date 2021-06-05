@@ -115,7 +115,7 @@ will divide according to these units.
 	BENCH(Hierarchy::establish)
 	BENCH(GenericModule::compile);
 	BENCH(NameResolution::make_the_tree)
-	BENCH(IXContents::write_as_xml)
+	BENCH(Task::write_XML_headings_file)
 	BENCH(CompilationUnits::determine)
 
 @ Most of the conceptual infrastructure in Inform is created by Inform source

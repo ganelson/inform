@@ -2,46 +2,6 @@
 
 To produce the index contents listing and the XML headings file.
 
-@h The debugging log.
-Finally, three ways to describe the run of headings: to the debugging log,
-to the index of the project, and to a freestanding XML file.
-
-=
-void IXContents::log(heading *h) {
-	if (h==NULL) { LOG("<null heading>\n"); return; }
-	heading *pseud = NameResolution::pseudo_heading();
-	if (h == pseud) { LOG("<pseudo_heading>\n"); return; }
-	LOG("H%d ", h->allocation_id);
-	if (h->start_location.file_of_origin)
-		LOG("<%f, line %d>",
-			TextFromFiles::get_filename(h->start_location.file_of_origin),
-			h->start_location.line_number);
-	else LOG("<nowhere>");
-	LOG(" level:%d indentation:%d", h->level, h->indentation);
-}
-
-@ And here we log the whole heading tree by recursing through it, and
-surreptitiously check that it is correctly formed at the same time.
-
-=
-void IXContents::log_all_headings(void) {
-	heading *h;
-	parse_node_tree *T = Task::syntax_tree();
-	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) LOG("$H\n", h);
-	LOG("\n");
-	IXContents::log_headings_recursively(NameResolution::pseudo_heading(), 0);
-}
-
-void IXContents::log_headings_recursively(heading *h, int depth) {
-	int i;
-	if (h==NULL) return;
-	for (i=0; i<depth; i++) LOG("  ");
-	LOG("$H\n", h);
-	if (depth-1 != h->indentation) LOG("*** indentation should be %d ***\n", depth-1);
-	IXContents::log_headings_recursively(h->child_heading, depth+1);
-	IXContents::log_headings_recursively(h->next_heading, depth);
-}
-
 @h The index.
 
 =
@@ -189,71 +149,6 @@ in practice strews distractingly many orange berries across the page.
 		}
 	}
 	if (c > 0) { HTML::end_colour(OUT); HTML_CLOSE("p"); }
-
-@h The XML file.
-This is provided as a convenience to the application using Inform, which may want
-to have a pull-down menu or similar gadget allowing the user to jump to a given
-heading. This tells the interface where every heading is, thus saving it from
-having to parse the source.
-
-The property list contains a single dictionary, whose keys are the numbers
-0, 1, 2, ..., $n-1$, where there are $n$ headings in all. (The pseudo-heading
-is not included.) A special key, the only non-numerical one, called "Application
-Version", contains the Inform build number in its usual form: "4Q34", for instance.
-
-=
-void IXContents::write_as_xml(void) {
-	text_stream xf_struct; text_stream *xf = &xf_struct;
-	filename *F = Index::xml_headings_file();
-	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::fatal_on_file("Can't open headings file", F);
-	IXContents::write_headings_as_xml_inner(xf);
-	STREAM_CLOSE(xf);
-}
-
-void IXContents::write_headings_as_xml_inner(OUTPUT_STREAM) {
-	heading *h;
-	@<Write DTD indication for XML headings file@>;
-	WRITE("<plist version=\"1.0\"><dict>\n");
-	INDENT;
-	WRITE("<key>Application Version</key><string>%B (build %B)</string>\n", FALSE, TRUE);
-	parse_node_tree *T = Task::syntax_tree();
-	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
-		WRITE("<key>%d</key><dict>\n", h->allocation_id);
-		INDENT;
-		@<Write the dictionary of properties for a single heading@>;
-		OUTDENT;
-		WRITE("</dict>\n");
-	}
-	OUTDENT;
-	WRITE("</dict></plist>\n");
-}
-
-@ We use a convenient Apple DTD:
-
-@<Write DTD indication for XML headings file@> =
-	WRITE("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-		"<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
-		"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
-
-@ Note that a level of 0, and a title of |--|, signifies a File (0) level
-heading: external tools can probably ignore such records. Similarly, it is
-unlikely that they will ever see a record without a "Filename" key --
-this would mean a heading arising from text created internally within Inform,
-which will only happen if someone has done something funny with |.i6t| files --
-but should this arise then the best recourse is to ignore the heading.
-
-@<Write the dictionary of properties for a single heading@> =
-	if (h->start_location.file_of_origin)
-		WRITE("<key>Filename</key><string>%f</string>\n",
-			TextFromFiles::get_filename(h->start_location.file_of_origin));
-	WRITE("<key>Line</key><integer>%d</integer>\n", h->start_location.line_number);
-	if (Wordings::nonempty(h->heading_text))
-		WRITE("<key>Title</key><string>%+W</string>\n", h->heading_text);
-	else
-		WRITE("<key>Title</key><string>--</string>\n");
-	WRITE("<key>Level</key><integer>%d</integer>\n", h->level);
-	WRITE("<key>Indentation</key><integer>%d</integer>\n", h->indentation);
 
 @h Indexing extensions in the Contents index.
 The routine below places a list of extensions used in the Contents index,

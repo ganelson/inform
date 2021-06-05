@@ -711,3 +711,67 @@ void Headings::suppress_dependencies(parse_node *pn) {
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnequalHeadingInPlaceOf_SYNERROR);
 	CopyErrors::supply_node(CE, h->sentence_declaring);
 	Copies::attach_error(C, CE);
+
+@h The XML file.
+This is provided as a convenience to the application using Inform, which may want
+to have a pull-down menu or similar gadget allowing the user to jump to a given
+heading. This tells the interface where every heading is, thus saving it from
+having to parse the source.
+
+The property list contains a single dictionary, whose keys are the numbers
+0, 1, 2, ..., $n-1$, where there are $n$ headings in all.
+
+A special key, the only non-numerical one, called "Application Version", contains
+the Inform build number.
+
+=
+void Headings::write_as_XML(parse_node_tree *T, filename *F) {
+	text_stream xf_struct; text_stream *OUT = &xf_struct;
+	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) {
+		#ifdef CORE_MODULE
+		Problems::fatal_on_file("Can't open headings file", F);
+		#endif
+		#ifndef CORE_MODULE
+		Errors::fatal_with_file("can't open headings file", F);
+		#endif
+	}
+	heading *h;
+	@<Write DTD indication for XML headings file@>;
+	WRITE("<plist version=\"1.0\"><dict>\n");
+	INDENT;
+	WRITE("<key>Application Version</key><string>%B (build %B)</string>\n", FALSE, TRUE);
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
+		WRITE("<key>%d</key><dict>\n", h->allocation_id);
+		INDENT;
+		@<Write the dictionary of properties for a single heading@>;
+		OUTDENT;
+		WRITE("</dict>\n");
+	}
+	OUTDENT;
+	WRITE("</dict></plist>\n");
+	STREAM_CLOSE(OUT);
+}
+
+@ We use a convenient Apple DTD:
+
+@<Write DTD indication for XML headings file@> =
+	WRITE("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		"<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
+		"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
+
+@ Note that a level of 0, and a title of |--|, signifies a File (0) level
+heading: external tools can probably ignore such records. Similarly, it is
+unlikely that they will ever see a record without a "Filename" key, but they
+are optional all the same.
+
+@<Write the dictionary of properties for a single heading@> =
+	if (h->start_location.file_of_origin)
+		WRITE("<key>Filename</key><string>%f</string>\n",
+			TextFromFiles::get_filename(h->start_location.file_of_origin));
+	WRITE("<key>Line</key><integer>%d</integer>\n", h->start_location.line_number);
+	if (Wordings::nonempty(h->heading_text))
+		WRITE("<key>Title</key><string>%+W</string>\n", h->heading_text);
+	else
+		WRITE("<key>Title</key><string>--</string>\n");
+	WRITE("<key>Level</key><integer>%d</integer>\n", h->level);
+	WRITE("<key>Indentation</key><integer>%d</integer>\n", h->indentation);

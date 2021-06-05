@@ -222,10 +222,10 @@ and produce an internal error if not.
 	if (c != nouns_placed_under_headings) {
 		LOG("Reordering failed from $H\n", h);
 		LOG("%d nouns under headings, %d in ordering\n", nouns_placed_under_headings, c);
-		IXContents::log_all_headings();
+		NameResolution::log_all_headings();
 		LOG("Making fresh tree:\n");
 		NameResolution::make_the_tree();
-		IXContents::log_all_headings();
+		NameResolution::log_all_headings();
 		internal_error_tree_unsafe("reordering of nouns failed");
 	}
 
@@ -339,4 +339,42 @@ noun_usage *NameResolution::choose_highest_scoring_noun(parse_node *p, int commo
 		if (nu->noun_used == nt) return nu;
 	}
 	return NULL; /* should never in fact happen */
+}
+
+@h The debugging log.
+This is really just for checking the correctness of the code above.
+
+=
+void NameResolution::log_headings(heading *h) {
+	if (h==NULL) { LOG("<null heading>\n"); return; }
+	heading *pseud = NameResolution::pseudo_heading();
+	if (h == pseud) { LOG("<pseudo_heading>\n"); return; }
+	LOG("H%d ", h->allocation_id);
+	if (h->start_location.file_of_origin)
+		LOG("<%f, line %d>",
+			TextFromFiles::get_filename(h->start_location.file_of_origin),
+			h->start_location.line_number);
+	else LOG("<nowhere>");
+	LOG(" level:%d indentation:%d", h->level, h->indentation);
+}
+
+@ And here we log the whole heading tree by recursing through it, and
+surreptitiously check that it is correctly formed at the same time.
+
+=
+void NameResolution::log_all_headings(void) {
+	heading *h;
+	parse_node_tree *T = Task::syntax_tree();
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) LOG("$H\n", h);
+	LOG("\n");
+	NameResolution::log_heading_recursively(NameResolution::pseudo_heading(), 0);
+}
+
+void NameResolution::log_heading_recursively(heading *h, int depth) {
+	if (h == NULL) return;
+	for (int i=0; i<depth; i++) LOG("  ");
+	LOG("$H\n", h);
+	if (depth-1 != h->indentation) LOG("*** indentation should be %d ***\n", depth-1);
+	NameResolution::log_heading_recursively(h->child_heading, depth+1);
+	NameResolution::log_heading_recursively(h->next_heading, depth);
 }

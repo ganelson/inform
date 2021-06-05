@@ -326,6 +326,14 @@ pathname *Task::index_path(void) {
 	return NULL;
 }
 
+@ The XML file of headings is written by the supervisor, but only if we ask
+it to, and this is where:
+
+=
+void Task::write_XML_headings_file(void) {
+	Headings::write_as_XML(Task::syntax_tree(), Index::xml_headings_file());
+}
+
 @ That's it for the project folder, but other project-related stuff is in
 the materials folder, which we turn to next.
 

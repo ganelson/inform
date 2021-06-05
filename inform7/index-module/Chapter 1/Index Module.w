@@ -10,17 +10,12 @@ which use this module:
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-@e PHRASE_USAGE_DA
 @e INDEX_SORTING_MREASON
 @e MAP_INDEX_MREASON
 @e TYPE_TABLES_MREASON
 
 =
-COMPILE_WRITER(heading *, IXContents::log)
-
 void IndexModule::start(void) {
-	REGISTER_WRITER('H', IXContents::log);
-	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
 	Memory::reason_name(TYPE_TABLES_MREASON, "tables of details of the kinds of values");

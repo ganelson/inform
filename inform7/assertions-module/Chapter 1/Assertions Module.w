@@ -18,6 +18,7 @@ which use this module:
 @e RELATION_DEFINITIONS_DA
 
 =
+COMPILE_WRITER(heading *, NameResolution::log_headings)
 COMPILE_WRITER(table *, Tables::log)
 COMPILE_WRITER(table_column *, Tables::Columns::log)
 
@@ -34,6 +35,10 @@ void AssertionsModule::start(void) {
 	AdjectivesByCondition::start();
 	AdjectivesByInterFunction::start();
 	AdjectivesByInterCondition::start();
+
+	REGISTER_WRITER('H', NameResolution::log_headings);
+	REGISTER_WRITER('B', Tables::log);
+	REGISTER_WRITER('C', Tables::Columns::log);
 
 	Log::declare_aspect(ASSEMBLIES_DA, L"assemblies", FALSE, FALSE);
 	Log::declare_aspect(ASSERTIONS_DA, L"assertions", FALSE, TRUE);
