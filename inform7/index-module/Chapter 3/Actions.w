@@ -124,7 +124,7 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 		HTML_CLOSE("p");
 		if (SharedVariables::set_empty(an->action_variables) == FALSE) {
 			HTML_OPEN("p"); WRITE("<b>Named values belonging to this action</b>\n"); HTML_CLOSE("p");
-			IXVariables::index_stv_set(OUT, an->action_variables);
+			IXActions::index_stv_set(OUT, an->action_variables);
 		}
 
 		HTML_OPEN("p"); WRITE("<b>Rules controlling this action</b>"); HTML_CLOSE("p");
@@ -156,6 +156,30 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 		Index::detail_link(OUT, "A", an->allocation_id, (on_details_page)?FALSE:TRUE);
 	}
 	return f;
+}
+
+void IXActions::index_stv_set(OUTPUT_STREAM, shared_variable_set *set) {
+	shared_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, shared_variable, set->variables)
+		if (stv->underlying_var) {
+			HTML::open_indented_p(OUT, 2, "tight");
+			IXActions::index_one(OUT, stv->underlying_var);
+			HTML_CLOSE("p");
+		}
+}
+
+void IXActions::index_one(OUTPUT_STREAM, nonlocal_variable *nlv) {
+	WRITE("%+W", nlv->name);
+	Index::link(OUT, Wordings::first_wn(nlv->name));
+	if (Wordings::nonempty(nlv->var_documentation_symbol)) {
+		TEMPORARY_TEXT(ixt)
+		WRITE_TO(ixt, "%+W", Wordings::one_word(Wordings::first_wn(nlv->var_documentation_symbol)));
+		Index::DocReferences::link(OUT, ixt);
+		DISCARD_TEXT(ixt)
+	}
+	WRITE(" - <i>");
+	Kinds::Textual::write(OUT, nlv->nlv_kind);
+	WRITE("</i>");
 }
 
 void IXActions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) {

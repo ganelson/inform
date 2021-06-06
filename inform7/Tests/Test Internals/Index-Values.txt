@@ -1,0 +1,8 @@
+Home is a room.
+
+A dynasty is a kind of value. The dynasties are Stuart, Hanover, Saxe-Coburg-Gotha
+and Windsor. The royal family is a dynasty that varies.
+
+Understand "admire [dynasty]" as a mistake.
+
+Test index (internal) with Vl.

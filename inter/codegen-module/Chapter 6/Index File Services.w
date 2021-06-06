@@ -668,6 +668,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		TablesElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Vl")) {
+		ValuesElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"In")) {
@@ -692,10 +696,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"C")) {
 		IXContents::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Vl")) {
-		IXVariables::render(OUT);
 		return;
 	}
 

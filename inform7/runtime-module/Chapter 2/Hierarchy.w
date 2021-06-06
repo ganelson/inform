@@ -562,12 +562,18 @@ void Hierarchy::establish(void) {
 
 @e EQUATIONS_HAP
 @e IDENTIFIER_FN_HL
+@e EQUATION_NAME_MD_HL
+@e EQUATION_TEXT_MD_HL
+@e EQUATION_AT_MD_HL
 
 @<Establish equations@> =
 	submodule_identity *equations = Packaging::register_submodule(I"equations");
 
 	H_BEGIN(HierarchyLocations::local_submodule(equations))
 		H_BEGIN_AP(EQUATIONS_HAP,             I"equation", I"_equation")
+			H_C_U(EQUATION_NAME_MD_HL,        I"^name")
+			H_C_U(EQUATION_TEXT_MD_HL,        I"^text")
+			H_C_U(EQUATION_AT_MD_HL,          I"^at")
 			H_F_U(IDENTIFIER_FN_HL,           I"identifier_fn")
 		H_END
 	H_END
@@ -1301,6 +1307,11 @@ void Hierarchy::establish(void) {
 
 @e VARIABLES_HAP
 @e VARIABLE_NAME_MD_HL
+@e VARIABLE_AT_MD_HL
+@e VARIABLE_INDEXABLE_MD_HL
+@e VARIABLE_UNDERSTOOD_MD_HL
+@e VARIABLE_CONTENTS_MD_HL
+@e VARIABLE_DOCUMENTATION_MD_HL
 @e VARIABLE_HL
 @e COMMANDPROMPTTEXT_HL
 @e INITIAL_MAX_SCORE_HL
@@ -1311,9 +1322,14 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(variables))
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
 			H_C_U(VARIABLE_NAME_MD_HL,        I"^name")
+			H_C_U(VARIABLE_AT_MD_HL,          I"^at")
+			H_C_U(VARIABLE_INDEXABLE_MD_HL,   I"^indexable")
+			H_C_U(VARIABLE_UNDERSTOOD_MD_HL,  I"^understood")
+			H_C_U(VARIABLE_CONTENTS_MD_HL,    I"^contents")
+			H_C_U(VARIABLE_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_G(VARIABLE_HL,                I"V")
 			H_F_T(COMMANDPROMPTTEXT_HL,       I"command_prompt_text_fn", I"CommandPromptText")
-			H_C_T(INITIAL_MAX_SCORE_HL,           I"INITIAL_MAX_SCORE")
+			H_C_T(INITIAL_MAX_SCORE_HL,       I"INITIAL_MAX_SCORE")
 		H_END
 	H_END
 

@@ -1,0 +1,54 @@
+1. Vl
+<p><a name=NAMES></a></p>
+<p><b>Miscellaneous Definitions</b><br>
+language of play&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Basic%20Inform.html' title="Basic Inform by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>natural language</i><br>
+parameter-object&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Basic%20Inform.html' title="Basic Inform by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+</p>
+<p><b>Grammatical definitions</b><br>
+story tense&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>grammatical tense</i><br>
+story viewpoint&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>narrative viewpoint</i><br>
+</p>
+<p><b>Situation</b><br>
+player&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>person</i><br>
+location&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc63.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+score&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc136.html><img border=0 src=inform:/doc_images/help.png></a> - <i>number</i><br>
+last notified score&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>number</i><br>
+maximum score&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>number</i><br>
+turn count&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>number</i><br>
+time of day&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc140.html><img border=0 src=inform:/doc_images/help.png></a> - <i>time</i><br>
+darkness witnessed&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>truth state</i><br>
+</p>
+<p><b>Current action</b><br>
+noun&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc107.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+second noun&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+person asked&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc179.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+reason the action failed&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc181.html><img border=0 src=inform:/doc_images/help.png></a> - <i>rule</i><br>
+item described&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+</p>
+<p><b>Used when ruling on accessibility</b><br>
+person reaching&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc194.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+container in question&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+supporter in question&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+particular possession&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc295.html><img border=0 src=inform:/doc_images/help.png></a> - <i>thing</i><br>
+</p>
+<p><b>Used when understanding typed commands</b><br>
+player's command&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc319.html><img border=0 src=inform:/doc_images/help.png></a> - <i>snippet</i><br>
+matched text&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>snippet</i><br>
+<i>kind</i> understood - <i>value</i><br>
+current item from the multiple object list&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+</p>
+<p><b>Presentation on screen</b><br>
+command prompt&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc117.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
+left hand status line&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;<a href=inform:/doc118.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
+right hand status line&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>text</i><br>
+listing group size&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>number</i><br>
+</p>
+<p><b>Language generation</b><br>
+prior named object&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>object</i><br>
+</p>
+<p><b>Command parser errors</b><br>
+latest parser error&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>command parser error</i><br>
+</p>
+<p>royal family&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> - <i>dynasty</i><br>
+</p>
+

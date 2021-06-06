@@ -16,7 +16,6 @@ Chapter 2: Indexing
 	Contents Element
 	Instances
 	Adjectives
-	Variables Element
 	Properties
 	Inferences
 	Rules

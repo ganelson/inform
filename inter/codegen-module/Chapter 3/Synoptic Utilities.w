@@ -41,6 +41,8 @@ typedef struct tree_inventory {
 	inter_tree_location_list *kind_nodes;
 	inter_tree_location_list *test_nodes;
 	inter_tree_location_list *named_action_pattern_nodes;
+	inter_tree_location_list *variable_nodes;
+	inter_tree_location_list *equation_nodes;
 	CLASS_DEFINITION
 } tree_inventory;
 
@@ -70,6 +72,8 @@ tree_inventory *Synoptic::new_inventory(inter_tree *I) {
 	inv->instance_nodes = Synoptic::add_inventory_need(inv, I"_instance");
 	inv->test_nodes = Synoptic::add_inventory_need(inv, I"_test");
 	inv->named_action_pattern_nodes = Synoptic::add_inventory_need(inv, I"_named_action_pattern");
+	inv->variable_nodes = Synoptic::add_inventory_need(inv, I"_variable");
+	inv->equation_nodes = Synoptic::add_inventory_need(inv, I"_equation");
 
 	inv->extension_nodes = TreeLists::new();
 	inv->scene_nodes = TreeLists::new();

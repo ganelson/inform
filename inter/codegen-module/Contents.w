@@ -69,3 +69,4 @@ Chapter 6: Index
 	Events Element
 	Figures Element
 	Tables Element
+	Values Element

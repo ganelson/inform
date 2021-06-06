@@ -293,13 +293,36 @@ int RTVariables::is_initialisable(nonlocal_variable *nlv) {
 }
 
 @h Compilation.
+For the sake of the index, we recognise variables with "K understood" names
+and mark them with metadata; this doesn't make them behave any differently in
+compiled code, of course.
+
+=
+<value-understood-variable-name> ::=
+	<k-kind> understood
+
+@
 
 =
 int RTVariables::compile(inference_subject_family *f, int ignored) {
 	nonlocal_variable *nlv;
 	LOOP_OVER(nlv, nonlocal_variable) {
-		Hierarchy::apply_metadata_from_wording(
-			RTVariables::package(nlv), VARIABLE_NAME_MD_HL, nlv->name);
+		package_request *pack = RTVariables::package(nlv);
+		Hierarchy::apply_metadata_from_wording(pack, VARIABLE_NAME_MD_HL, nlv->name);
+		if ((Wordings::first_wn(nlv->name) >= 0) && (NonlocalVariables::is_global(nlv))) {
+			Hierarchy::apply_metadata_from_number(pack, VARIABLE_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(nlv->name));
+			Hierarchy::apply_metadata_from_number(pack, VARIABLE_INDEXABLE_MD_HL, 1);
+			if (<value-understood-variable-name>(nlv->name))
+				Hierarchy::apply_metadata_from_number(pack, VARIABLE_UNDERSTOOD_MD_HL, 1);
+			if (Wordings::nonempty(nlv->var_documentation_symbol))
+				Hierarchy::apply_metadata_from_raw_wording(pack, VARIABLE_DOCUMENTATION_MD_HL,
+					Wordings::one_word(Wordings::first_wn(nlv->var_documentation_symbol)));
+			TEMPORARY_TEXT(contents)
+			Kinds::Textual::write(contents, nlv->nlv_kind);
+			Hierarchy::apply_metadata(pack, VARIABLE_CONTENTS_MD_HL, contents);
+			DISCARD_TEXT(contents)
+		}
 		if ((RTVariables::stored_in_own_iname(nlv)) ||
 			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
@@ -311,8 +334,7 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 			@<Add any anomalous extras@>;
 		}
 		if (nlv == max_score_VAR) {
-			inter_name *iname = Hierarchy::make_iname_in(INITIAL_MAX_SCORE_HL,
-				RTVariables::package(nlv));
+			inter_name *iname = Hierarchy::make_iname_in(INITIAL_MAX_SCORE_HL, pack);
 			Hierarchy::make_available(iname);
 			if (VariableSubjects::has_initial_value_set(max_score_VAR)) {
 				Emit::initial_value_as_constant(iname, max_score_VAR);
