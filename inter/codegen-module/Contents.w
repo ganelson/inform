@@ -63,6 +63,7 @@ Chapter 5: Final Code
 Chapter 6: Index
 	Index Interpreter
 	Index File Services
+	Contents Element
 	Card Element
 	Behaviour Element
 	Relations Element

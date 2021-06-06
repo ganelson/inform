@@ -203,6 +203,8 @@ void Hierarchy::establish(void) {
 
 @h Basics.
 
+@e BOGUS_HAP from 0
+
 @e NULL_HL
 @e WORD_HIGHBIT_HL
 @e WORD_NEXTTOHIGHBIT_HL
@@ -228,6 +230,19 @@ void Hierarchy::establish(void) {
 @e INDIV_PROP_START_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e SUBMAIN_HL
+@e HEADINGS_HAP
+@e HEADING_INDEXABLE_MD_HL
+@e HEADING_TEXT_MD_HL
+@e HEADING_PARTS_MD_HL
+@e HEADING_PART1_MD_HL
+@e HEADING_PART2_MD_HL
+@e HEADING_PART3_MD_HL
+@e HEADING_AT_MD_HL
+@e HEADING_LEVEL_MD_HL
+@e HEADING_INDENTATION_MD_HL
+@e HEADING_WORD_COUNT_MD_HL
+@e HEADING_SUMMARY_MD_HL
+@e HEADING_ID_HL
 
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
@@ -260,32 +275,59 @@ void Hierarchy::establish(void) {
 		H_C_T(MAX_INDEXED_FIGURES_HL,         I"^max_indexed_figures")
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
+		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
+			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
+			H_C_U(HEADING_TEXT_MD_HL,         I"^text")
+			H_C_U(HEADING_PARTS_MD_HL,         I"^parts")
+			H_C_U(HEADING_PART1_MD_HL,         I"^part1")
+			H_C_U(HEADING_PART2_MD_HL,         I"^part2")
+			H_C_U(HEADING_PART3_MD_HL,         I"^part3")
+			H_C_U(HEADING_AT_MD_HL,           I"^at")
+			H_C_U(HEADING_LEVEL_MD_HL,        I"^level")
+			H_C_U(HEADING_INDENTATION_MD_HL,  I"^indentation")
+			H_C_U(HEADING_WORD_COUNT_MD_HL,   I"^word_count")
+			H_C_U(HEADING_SUMMARY_MD_HL,      I"^summary")
+			H_C_U(HEADING_ID_HL,              I"id")
+		H_END
 	H_END
 
 @h Modules.
 
 @e EXT_CATEGORY_MD_HL
+@e EXT_AT_MD_HL
 @e EXT_TITLE_MD_HL
 @e EXT_AUTHOR_MD_HL
 @e EXT_VERSION_MD_HL
 @e EXT_CREDIT_MD_HL
+@e EXT_EXTRA_CREDIT_MD_HL
 @e EXT_MODESTY_MD_HL
+@e EXT_WORD_COUNT_MD_HL
+@e EXT_INCLUDED_AT_MD_HL
+@e EXT_INCLUDED_BY_MD_HL
+@e EXT_AUTO_INCLUDED_MD_HL
+@e EXT_STANDARD_MD_HL
 @e EXTENSION_ID_HL
 
 @<Establish modules@> =
 	H_BEGIN(HierarchyLocations::any_package_of_type(I"_module"))
 		H_C_U(EXT_CATEGORY_MD_HL,       I"^category")
+		H_C_U(EXT_AT_MD_HL,             I"^at")
 		H_C_U(EXT_TITLE_MD_HL,          I"^title")
 		H_C_U(EXT_AUTHOR_MD_HL,         I"^author")
 		H_C_U(EXT_VERSION_MD_HL,        I"^version")
 		H_C_U(EXT_CREDIT_MD_HL,         I"^credit")
+		H_C_U(EXT_EXTRA_CREDIT_MD_HL,   I"^extra_credit")
 		H_C_U(EXT_MODESTY_MD_HL,        I"^modesty")
-		H_C_U(EXTENSION_ID_HL,                I"extension_id")
+		H_C_U(EXT_WORD_COUNT_MD_HL,     I"^word_count")
+		H_C_U(EXT_INCLUDED_AT_MD_HL,    I"^included_at")
+		H_C_U(EXT_INCLUDED_BY_MD_HL,    I"^included_by")
+		H_C_U(EXT_AUTO_INCLUDED_MD_HL,  I"^auto_included")
+		H_C_U(EXT_STANDARD_MD_HL,       I"^standard")
+		H_C_U(EXTENSION_ID_HL,          I"extension_id")
 	H_END
 
 @h Actions.
 
-@e BOGUS_HAP from 0
 @e ACTIONS_HAP
 @e ACTION_NAME_MD_HL
 @e ACTION_VARC_MD_HL
@@ -1308,6 +1350,7 @@ void Hierarchy::establish(void) {
 @e VARIABLES_HAP
 @e VARIABLE_NAME_MD_HL
 @e VARIABLE_AT_MD_HL
+@e VARIABLE_HEADING_MD_HL
 @e VARIABLE_INDEXABLE_MD_HL
 @e VARIABLE_UNDERSTOOD_MD_HL
 @e VARIABLE_CONTENTS_MD_HL
@@ -1323,6 +1366,7 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
 			H_C_U(VARIABLE_NAME_MD_HL,        I"^name")
 			H_C_U(VARIABLE_AT_MD_HL,          I"^at")
+			H_C_U(VARIABLE_HEADING_MD_HL,     I"^heading")
 			H_C_U(VARIABLE_INDEXABLE_MD_HL,   I"^indexable")
 			H_C_U(VARIABLE_UNDERSTOOD_MD_HL,  I"^understood")
 			H_C_U(VARIABLE_CONTENTS_MD_HL,    I"^contents")
@@ -1736,4 +1780,8 @@ void Hierarchy::apply_metadata_from_filename(package_request *P, int id, filenam
 	WRITE_TO(as_text, "%f", F);
 	Hierarchy::apply_metadata(P, id, as_text);
 	DISCARD_TEXT(as_text)
+}
+
+void Hierarchy::apply_metadata_from_heading(package_request *P, int id, heading *h) {
+	Hierarchy::apply_metadata_from_iname(P, id, CompletionModule::heading_id(h));
 }

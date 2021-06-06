@@ -13,7 +13,6 @@ Chapter 2: Indexing
 	Map Element
 	Kinds Index
 	Index Extensions
-	Contents Element
 	Instances
 	Adjectives
 	Properties

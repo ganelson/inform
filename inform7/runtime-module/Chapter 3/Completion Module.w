@@ -11,6 +11,7 @@ void CompletionModule::compile(void) {
 	@<Frame size@>;
 	@<RNG seed@>;
 	@<Max indexed thumbnails@>;
+	@<Headings@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -52,3 +53,167 @@ void CompletionModule::compile(void) {
 	inter_name *iname = Hierarchy::find(MAX_INDEXED_FIGURES_HL);
 	Emit::numeric_constant(iname,
 		(inter_ti) global_compilation_settings.index_figure_thumbnails);
+
+@ =
+typedef struct heading_compilation_data {
+	struct package_request *heading_package;
+	struct inter_name *heading_ID;
+	CLASS_DEFINITION
+} heading_compilation_data;
+
+heading_compilation_data CompletionModule::new_compilation_data(heading *h) {
+	heading_compilation_data hcd;
+	hcd.heading_package = NULL;
+	hcd.heading_ID = NULL;
+	return hcd;
+}
+
+int CompletionModule::has_heading_id(heading *h) {
+	if (h == NULL) return FALSE;
+	if (h->compilation_data.heading_ID == NULL) return FALSE;
+	return TRUE;
+}
+
+inter_name *CompletionModule::heading_id(heading *h) {
+	if (h->compilation_data.heading_ID == NULL) internal_error("heading ID not ready");
+	return h->compilation_data.heading_ID;
+}
+
+typedef struct contents_entry {
+	struct heading *heading_entered;
+	struct contents_entry *next;
+	CLASS_DEFINITION
+} contents_entry;
+
+@<Headings@> =
+	CompletionModule::index_heading_recursively(
+		NameResolution::pseudo_heading()->child_heading);
+	contents_entry *ce;
+	int min_positive_level = 10;
+	LOOP_OVER(ce, contents_entry)
+		if ((ce->heading_entered->level > 0) &&
+			(ce->heading_entered->level < min_positive_level))
+			min_positive_level = ce->heading_entered->level;
+	
+	LOOP_OVER(ce, contents_entry) {
+		heading *h = ce->heading_entered;
+		package_request *pack = Hierarchy::completion_package(HEADINGS_HAP);
+		@<Write the details@>;
+		Hierarchy::apply_metadata_from_number(pack, HEADING_INDEXABLE_MD_HL, 1);
+		contents_entry *next_ce = NEXT_OBJECT(ce, contents_entry);
+		if (h->level != 0)
+			while ((next_ce) && (next_ce->heading_entered->level > ce->heading_entered->level))
+				next_ce = NEXT_OBJECT(next_ce, contents_entry);
+		int start_word = Wordings::first_wn(Node::get_text(ce->heading_entered->sentence_declaring));
+		int end_word = (next_ce)?(Wordings::first_wn(Node::get_text(next_ce->heading_entered->sentence_declaring)))
+			: (TextFromFiles::last_lexed_word(FIRST_OBJECT(source_file)));
+
+		int N = 0;
+		for (int i = start_word; i < end_word; i++)
+			N += TextFromFiles::word_count(i);
+		Hierarchy::apply_metadata_from_number(pack, HEADING_WORD_COUNT_MD_HL,
+			(inter_ti) N);
+		TEMPORARY_TEXT(OUT)
+		@<Summarise all the objects and kinds created under the given heading@>;
+		if (Str::len(OUT) > 0)
+			Hierarchy::apply_metadata(pack, HEADING_SUMMARY_MD_HL, OUT);
+		DISCARD_TEXT(OUT)
+	}
+	heading *h;
+	LOOP_OVER(h, heading) {
+		if (h->compilation_data.heading_package == NULL) {
+			package_request *pack = Hierarchy::completion_package(HEADINGS_HAP);
+			@<Write the details@>;
+			Hierarchy::apply_metadata_from_number(pack, HEADING_INDEXABLE_MD_HL, 0);
+		}
+	}
+
+@<Write the details@> =
+	h->compilation_data.heading_package = pack;
+	h->compilation_data.heading_ID = Hierarchy::make_iname_in(HEADING_ID_HL, pack);
+	Emit::numeric_constant(h->compilation_data.heading_ID, 561);
+	if (h->level == 0) {
+		if (NUMBER_CREATED(contents_entry) == 1)
+			Hierarchy::apply_metadata(pack, HEADING_TEXT_MD_HL, I"Source text");
+		else
+			Hierarchy::apply_metadata(pack, HEADING_TEXT_MD_HL, I"Preamble");
+	} else {
+		wording NW = Node::get_text(h->sentence_declaring);
+		Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_TEXT_MD_HL, NW);
+		Hierarchy::apply_metadata_from_number(pack, HEADING_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(NW));
+		<heading-name-hyphenated>(NW);
+		Hierarchy::apply_metadata_from_number(pack, HEADING_PARTS_MD_HL,
+			(inter_ti) <<r>>);
+		switch (<<r>>) {
+			case 1: {
+				wording B = GET_RW(<heading-name-hyphenated>, 1);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART1_MD_HL, B);
+				break;
+			}
+			case 2: {
+				wording B = GET_RW(<heading-name-hyphenated>, 1);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART1_MD_HL, B);
+				wording C = GET_RW(<heading-name-hyphenated>, 2);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART2_MD_HL, C);
+				break;
+			}
+			case 3: {
+				wording B = GET_RW(<heading-name-hyphenated>, 1);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART1_MD_HL, B);
+				wording C = GET_RW(<heading-name-hyphenated>, 2);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART2_MD_HL, C);
+				wording D = GET_RW(<heading-name-hyphenated>, 3);
+				Hierarchy::apply_metadata_from_raw_wording(pack, HEADING_PART3_MD_HL, D);
+				break;
+			}
+		}
+	}
+	Hierarchy::apply_metadata_from_number(pack, HEADING_LEVEL_MD_HL,
+		(inter_ti) h->level);
+	Hierarchy::apply_metadata_from_number(pack, HEADING_INDENTATION_MD_HL,
+		(inter_ti) h->indentation);
+
+@<Summarise all the objects and kinds created under the given heading@> =
+	int c = 0;
+	noun *nt;
+	LOOP_OVER_NOUNS_UNDER(nt, h) {
+		wording W = Nouns::nominative(nt, FALSE);
+		if (Wordings::nonempty(W)) {
+			if (c++ > 0) WRITE(", ");
+			WRITE("%+W", W);
+		}
+	}
+
+@ We index only headings of level 1 and up -- so, not the pseudo-heading or the
+File (0) ones -- and which are not within any extensions -- so, are in the
+primary source text written by the user.
+
+=
+void CompletionModule::index_heading_recursively(heading *h) {
+	if (h == NULL) return;
+	int show_heading = TRUE;
+	heading *next = h->child_heading;
+	if (next == NULL) next = h->next_heading;
+	if ((next) &&
+		(Extensions::corresponding_to(next->start_location.file_of_origin)))
+		next = NULL;
+	if (h->level == 0) {
+		show_heading = FALSE;
+		if ((headings_indexed == 0) &&
+			((next == NULL) ||
+				(Wordings::first_wn(Node::get_text(next->sentence_declaring)) !=
+					Wordings::first_wn(Node::get_text(h->sentence_declaring)))))
+			show_heading = TRUE;
+	}
+	if (Extensions::corresponding_to(h->start_location.file_of_origin))
+		show_heading = FALSE;
+	if (show_heading) {
+		contents_entry *ce = CREATE(contents_entry);
+		ce->heading_entered = h;
+		headings_indexed++;
+	}
+
+	CompletionModule::index_heading_recursively(h->child_heading);
+	CompletionModule::index_heading_recursively(h->next_heading);
+}

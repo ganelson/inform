@@ -5,4 +5,8 @@ and Windsor. The royal family is a dynasty that varies.
 
 Understand "admire [dynasty]" as a mistake.
 
+Equation - Newton's Second Law
+	F=ma
+where F is a number, m is a number, a is an number.
+
 Test index (internal) with Vl.

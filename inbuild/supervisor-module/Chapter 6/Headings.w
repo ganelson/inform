@@ -154,6 +154,9 @@ typedef struct heading {
 	struct heading *parent_heading;
 	struct heading *child_heading;
 	struct heading *next_heading;
+	#ifdef CORE_MODULE
+	struct heading_compilation_data compilation_data;
+	#endif
 	CLASS_DEFINITION
 } heading;
 
@@ -177,6 +180,9 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 	h->heading_text = EMPTY_WORDING;
 	h->indentation = Headings::indent_from(T->headings, level);
 	ADD_TO_LINKED_LIST(h, heading, T->headings->subordinates);
+	#ifdef CORE_MODULE
+	h->compilation_data = CompletionModule::new_compilation_data(h);
+	#endif
 	return h;
 }
 

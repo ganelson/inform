@@ -25,3 +25,10 @@ void RuntimeModule::start(void) {
 }
 void RuntimeModule::end(void) {
 }
+
+@
+
+@e contents_entry_CLASS
+
+=
+DECLARE_CLASS(contents_entry)

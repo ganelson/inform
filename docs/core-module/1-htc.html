@@ -323,6 +323,7 @@ here, which only happens when special runs are made for compiler testing.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::advance_stage_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INTER2_CSEQ</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Generating inter (2)"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        -1, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">CompletionModule::compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTProperties::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTKindConstructors::compile_permissions</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">InferenceSubjects::emit_all</span><span class="plain-syntax">)</span>
@@ -337,7 +338,7 @@ here, which only happens when special runs are made for compiler testing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTActivities::compile</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTVerbs::compile_conjugations</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTVerbs::compile_forms</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">CompletionModule::compile</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><span class="identifier-syntax">CompilationUnits::complete_metadata</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_12" class="paragraph-anchor"></a><b>&#167;2.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate inter, part 3</span><span class="named-paragraph-number">2.12</span></span><span class="comment-syntax"> =</span>

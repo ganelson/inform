@@ -312,7 +312,11 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 		if ((Wordings::first_wn(nlv->name) >= 0) && (NonlocalVariables::is_global(nlv))) {
 			Hierarchy::apply_metadata_from_number(pack, VARIABLE_AT_MD_HL,
 				(inter_ti) Wordings::first_wn(nlv->name));
-			Hierarchy::apply_metadata_from_number(pack, VARIABLE_INDEXABLE_MD_HL, 1);
+			heading *h = Headings::of_wording(nlv->name);
+			if (CompletionModule::has_heading_id(h))
+				Hierarchy::apply_metadata_from_heading(pack, VARIABLE_HEADING_MD_HL, h);
+			Hierarchy::apply_metadata_from_number(pack, VARIABLE_INDEXABLE_MD_HL,
+				((h) && (h->index_definitions_made_under_this))?1:0);
 			if (<value-understood-variable-name>(nlv->name))
 				Hierarchy::apply_metadata_from_number(pack, VARIABLE_UNDERSTOOD_MD_HL, 1);
 			if (Wordings::nonempty(nlv->var_documentation_symbol))

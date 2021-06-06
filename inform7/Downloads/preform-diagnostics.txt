@@ -9758,12 +9758,12 @@
         {<heading-name-hyphenated>} 
           constraint (none) extremes [1, infinity)
 
-<heading-name-hyphenated> nti 13 constraint (none) extremes [1, infinity)
+<heading-name-hyphenated> hits 191/382 nti 13 constraint (none) extremes [1, infinity)
     English:
         {...} - {...} - {...} 
-          constraint DS = {13} extremes [5, infinity)
+          (hits 17/142) (matched long text) constraint DS = {13} extremes [5, infinity)
         {...} - {...} 
-          constraint DS = {13} extremes [3, infinity)
+          (hits 174/174) (matched long text) constraint DS = {13} extremes [3, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
 

@@ -695,7 +695,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"C")) {
-		IXContents::render(OUT);
+		ContentsElement::render(OUT);
 		return;
 	}
 
@@ -989,4 +989,23 @@ void Index::dequote(OUTPUT_STREAM, wchar_t *p) {
 			default: PUT_TO(OUT, c); break;
 		}
 	}
+}
+
+@
+
+=
+void Index::show_definition_area(OUTPUT_STREAM, inter_package *heading_pack,
+	int show_if_unhyphenated) {
+	inter_ti parts = Metadata::read_optional_numeric(heading_pack, I"^parts");
+	if ((parts == 1) && (show_if_unhyphenated == FALSE)) return;
+	HTML_OPEN("b");
+	switch (parts) {
+		case 1: WRITE("%S", Metadata::read_optional_textual(heading_pack, I"^part1")); break;
+		case 2: WRITE("%S", Metadata::read_optional_textual(heading_pack, I"^part2")); break;
+		case 3: WRITE("%S - %S",
+			Metadata::read_optional_textual(heading_pack, I"^part2"),
+			Metadata::read_optional_textual(heading_pack, I"^part3")); break;
+	}
+	HTML_CLOSE("b");
+	HTML_TAG("br");
 }

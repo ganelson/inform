@@ -15,7 +15,7 @@ void ValuesElement::render(OUTPUT_STREAM) {
 }
 
 @<Index the variables@> =
-//	heading *definition_area, *current_area = NULL;
+	inter_symbol *definition_area = NULL, *current_area = NULL;
 	HTML_OPEN("p");
 	Index::anchor(OUT, I"NAMES");
 	int understood_note_given = FALSE;
@@ -38,16 +38,16 @@ void ValuesElement::render(OUTPUT_STREAM) {
 	}
 
 @<Index a regular variable@> =
-/*	definition_area = Headings::of_wording(nlv->name);
-	if (Headings::indexed(definition_area) == FALSE) continue;
+	definition_area = Metadata::read_optional_symbol(pack, I"^heading");
+	if (definition_area == NULL) continue;
 	if (definition_area != current_area) {
-		wording W = Headings::get_text(definition_area);
+		inter_package *heading_pack = Inter::Packages::container(definition_area->definition);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
-		if (Wordings::nonempty(W)) Phrases::Index::index_definition_area(OUT, W, FALSE);
+		Index::show_definition_area(OUT, heading_pack, FALSE);
 	}
 	current_area = definition_area;
-*/
+
 	text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 	WRITE("%S", name);
 	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
@@ -69,9 +69,9 @@ void ValuesElement::render(OUTPUT_STREAM) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->equation_nodes->list[i].node);
 			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			if (at > 0) {
-	//			WRITE("%+W", Wordings::up_to(Node::get_text(eqn->equation_created_at), mw));
+				WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));
 				Index::link(OUT, at);
-	//			WRITE(" (%+W)", eqn->equation_text);
+				WRITE(" (%S)", Metadata::read_optional_textual(pack, I"^text"));
 				HTML_TAG("br");
 				N++;
 			}

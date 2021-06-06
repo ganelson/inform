@@ -199,6 +199,7 @@ here, which only happens when special runs are made for compiler testing.
 @<Generate inter, part 2@> =
 	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
 		-1, debugging, sequence_timer);
+	BENCH(CompletionModule::compile);
 	BENCH(RTProperties::compile)
 	BENCH(RTKindConstructors::compile_permissions)
 	BENCH(InferenceSubjects::emit_all)
@@ -213,7 +214,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTActivities::compile)
 	BENCH(RTVerbs::compile_conjugations)
 	BENCH(RTVerbs::compile_forms)
-	BENCH(CompletionModule::compile);
+	BENCH(CompilationUnits::complete_metadata);
 
 @<Generate inter, part 3@> =
 	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",

@@ -13,6 +13,8 @@ own sub-hierarchy, a |module_package|.
 typedef struct compilation_unit {
 	struct module_package *to_module;
 	struct parse_node *head_node;
+	struct inter_name *extension_id;
+	struct inform_extension *extension;
 	CLASS_DEFINITION
 } compilation_unit;
 
@@ -53,6 +55,7 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	TEMPORARY_TEXT(pname)
 	@<Compose a name for the unit package this will lead to@>;
 	module_package *M = Packaging::get_unit(Emit::tree(), pname, I"_module");
+	inter_name *id_iname = NULL;
 	@<Give M a category@>;
 	if (ext) @<Give M metadata indicating the source extension@>;
 	DISCARD_TEXT(pname)
@@ -60,6 +63,8 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	compilation_unit *C = CREATE(compilation_unit);
 	C->head_node = p;
 	C->to_module = M;
+	C->extension = ext;
+	C->extension_id = id_iname;
 	CompilationUnits::join(p, C);
 
 @<Give M a category@> =
@@ -81,8 +86,8 @@ and author; together with any "extra credit" asked for by the extension.
 	WRITE_TO(V, "%v", &N);
 	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_MD_HL, V);
 	DISCARD_TEXT(V)
-	inter_name *iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->the_package);
-	Emit::numeric_constant(iname, 0);
+	id_iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->the_package);
+	Emit::numeric_constant(id_iname, 0);
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%S", ext->as_copy->edition->work->raw_title);
 	if (VersionNumbers::is_null(N) == FALSE) WRITE_TO(C, " version %v", &N);
@@ -91,16 +96,21 @@ and author; together with any "extra credit" asked for by the extension.
 		WRITE_TO(C, " (%S)", ext->extra_credit_as_lexed);
 	Hierarchy::apply_metadata(M->the_package, EXT_CREDIT_MD_HL, C);
 	DISCARD_TEXT(C)
+	if (Str::len(ext->extra_credit_as_lexed) > 0)
+		Hierarchy::apply_metadata(M->the_package, EXT_EXTRA_CREDIT_MD_HL,
+			ext->extra_credit_as_lexed);
 	TEMPORARY_TEXT(the_author_name)
 	WRITE_TO(the_author_name, "%S", ext->as_copy->edition->work->author_name);
 	int self_penned = FALSE;
 	if (BibliographicData::story_author_is(the_author_name)) self_penned = TRUE;
 	inter_ti modesty = 1;
-	if ((ext->authorial_modesty == FALSE) &&      /* if (1) extension doesn't ask to be modest */
+	if ((ext->authorial_modesty == FALSE) &&     /* if (1) extension doesn't ask to be modest */
 		((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
 			(self_penned == FALSE)))             /*     (2b) didn't write this extension */
 		modesty = 0;
 	Hierarchy::apply_metadata_from_number(M->the_package, EXT_MODESTY_MD_HL, modesty);
+	Hierarchy::apply_metadata_from_number(M->the_package, EXT_WORD_COUNT_MD_HL,
+		(inter_ti) TextFromFiles::total_word_count(ext->read_into_file));
 	DISCARD_TEXT(the_author_name)
 
 @ Here we must find a unique name, valid as an Inter identifier: the code
@@ -117,6 +127,46 @@ compiled from the compilation unit will go into a package of that name.
 			else
 				Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
+
+@ For timing reasons, this second round of metadata -- which provides
+cross-references between the compilation unit modules, to show which ones
+caused which other ones to be included -- can only be written later. (It's
+used only for indexing.)
+
+=
+void CompilationUnits::complete_metadata(void) {
+	compilation_unit *C;
+	LOOP_OVER(C, compilation_unit) {
+		inform_extension *ext = C->extension;
+		if (ext) {
+			package_request *pack = C->to_module->the_package;
+			Hierarchy::apply_metadata_from_number(pack, EXT_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(ext->body_text));
+			parse_node *inc = Extensions::get_inclusion_sentence(ext);
+			if (Wordings::nonempty(Node::get_text(inc))) {
+				Hierarchy::apply_metadata_from_number(pack, EXT_INCLUDED_AT_MD_HL,
+					(inter_ti) Wordings::first_wn(Node::get_text(inc)));
+				inform_extension *owner = NULL;
+				source_location sl = Wordings::location(Node::get_text(inc));
+				if (sl.file_of_origin == NULL) owner = NULL;
+				else owner = Extensions::corresponding_to(
+					Lexer::file_of_origin(Wordings::first_wn(Node::get_text(inc))));
+				if (owner) {
+					compilation_unit *owner_C;
+					LOOP_OVER(owner_C, compilation_unit)
+						if (owner_C->extension == owner)
+							Hierarchy::apply_metadata_from_iname(pack,
+								EXT_INCLUDED_BY_MD_HL, owner_C->extension_id);
+				} else {
+					if (Lexer::word_location(Wordings::first_wn(Node::get_text(inc))).file_of_origin == NULL)
+						Hierarchy::apply_metadata_from_number(pack, EXT_AUTO_INCLUDED_MD_HL, 1);
+				}
+			}
+			if (Extensions::is_standard(ext))
+				Hierarchy::apply_metadata_from_number(pack, EXT_STANDARD_MD_HL, 1);
+		}
+	}
+}
 
 @h What unit a node belongs to.
 We are going to need to determine, for any node |p|, which compilation unit it

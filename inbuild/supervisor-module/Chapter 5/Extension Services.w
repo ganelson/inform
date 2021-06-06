@@ -25,6 +25,7 @@ typedef struct inform_extension {
 	struct inform_project *read_into_project; /* If any */
 	struct parse_node_tree *syntax_tree;
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
+	int auto_included;
 	struct linked_list *search_list; /* of |inbuild_nest| */	
 	int word_count; /* or 0 if this hasn't been read (yet) */
 	struct text_stream *last_usage_date; /* perhaps on a previous run */
@@ -53,6 +54,9 @@ void Extensions::scan(inbuild_copy *C) {
 	DISCARD_TEXT(claimed_author_name)
 	DISCARD_TEXT(claimed_title)
 	DISCARD_TEXT(reqs)
+
+	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
+	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
 }
 
 @<Initialise the extension docket@> =
@@ -60,8 +64,6 @@ void Extensions::scan(inbuild_copy *C) {
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
 	E->standard = FALSE;
-	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
-	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
 	E->rubric_as_lexed = Str::new();
@@ -71,6 +73,7 @@ void Extensions::scan(inbuild_copy *C) {
 	E->read_into_project = NULL;
 	E->syntax_tree = SyntaxTree::new();
 	E->inclusion_sentence = NULL;
+	E->auto_included = FALSE;
 	E->search_list = NEW_LINKED_LIST(inbuild_nest);
 	E->has_historically_been_used = FALSE;
 	E->word_count = 0;
