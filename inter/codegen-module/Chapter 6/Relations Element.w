@@ -1,11 +1,11 @@
-[IXRelations::] Relations Element.
+[RelationsElement::] Relations Element.
 
 To write the Relations element (Rl) in the index.
 
 @ A big table of relations.
 
 =
-void IXRelations::render(OUTPUT_STREAM) {
+void RelationsElement::render(OUTPUT_STREAM) {
 	inter_tree *I = Index::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->relation_nodes, Synoptic::module_order);

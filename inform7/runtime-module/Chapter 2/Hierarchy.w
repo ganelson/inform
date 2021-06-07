@@ -1167,13 +1167,21 @@ void Hierarchy::establish(void) {
 @e OUTCOME_NAME_MD_HL
 @e OUTCOME_HL
 @e RULEBOOKS_HAP
+@e RULEBOOK_AT_MD_HL
 @e RULEBOOK_NAME_MD_HL
 @e RULEBOOK_PNAME_MD_HL
 @e RULEBOOK_VARC_MD_HL
+@e RULEBOOK_INDEX_ID_MD_HL
 @e RULEBOOK_RUN_FN_MD_HL
 @e RULEBOOK_ID_HL
+@e RULEBOOK_FOCUS_MD_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
+@e RULEBOOK_ENTRIES_HAP
+@e RULE_ENTRY_MD_HL
+@e TOOLTIP_TEXT_MD_HL
+@e NEXT_RULE_SPECIFICITY_MD_HL
+@e LAW_APPLIED_MD_HL
 
 @<Establish rulebooks@> =
 	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
@@ -1189,13 +1197,22 @@ void Hierarchy::establish(void) {
 			H_C_U(RBNO0_INAME_HL,             I"RBNO0_OUTCOME")
 		H_END
 		H_BEGIN_AP(RULEBOOKS_HAP,             I"rulebook", I"_rulebook")
+			H_C_U(RULEBOOK_AT_MD_HL,  I"^at")
 			H_C_U(RULEBOOK_NAME_MD_HL,  I"^name")
 			H_C_U(RULEBOOK_PNAME_MD_HL, I"^printed_name")
 			H_C_U(RULEBOOK_RUN_FN_MD_HL, I"^run_fn")
 			H_C_U(RULEBOOK_VARC_MD_HL,  I"^var_creator")
+			H_C_U(RULEBOOK_INDEX_ID_MD_HL,  I"^index_id")
+			H_C_U(RULEBOOK_FOCUS_MD_HL,  I"^focus")
 			H_C_U(RULEBOOK_ID_HL,             I"rulebook_id")
 			H_F_U(RUN_FN_HL,                  I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn")
+			H_BEGIN_AP(RULEBOOK_ENTRIES_HAP,  I"entry", I"_rulebook_entry")
+				H_C_U(RULE_ENTRY_MD_HL,       I"^rule")
+				H_C_U(TOOLTIP_TEXT_MD_HL,       I"^tooltip")
+				H_C_U(NEXT_RULE_SPECIFICITY_MD_HL, I"^specificity")
+				H_C_U(LAW_APPLIED_MD_HL,       I"^law")
+			H_END
 		H_END
 	H_END
 

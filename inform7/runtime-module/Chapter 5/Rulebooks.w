@@ -95,6 +95,35 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_iname(P, RULEBOOK_RUN_FN_MD_HL, run_fn_iname);
 	if (vars_creator_iname)
 		Hierarchy::apply_metadata_from_iname(P, RULEBOOK_VARC_MD_HL, vars_creator_iname);
+	text_stream *marker = NULL;
+	if (B == Rulebooks::std(SCENE_CHANGING_RB)) marker = I"scene_changing";
+	if (B == Rulebooks::std(WHEN_SCENE_BEGINS_RB)) marker = I"when_scene_begins";
+	if (B == Rulebooks::std(WHEN_SCENE_ENDS_RB)) marker = I"when_scene_ends";
+	if (marker) Hierarchy::apply_metadata(P, RULEBOOK_INDEX_ID_MD_HL, marker);
+	TEMPORARY_TEXT(FOCUS)
+	if ((Rulebooks::get_focus_kind(B)) &&
+		(Kinds::eq(Rulebooks::get_focus_kind(B), K_action_name) == FALSE)) {
+		Kinds::Textual::write_articled(FOCUS, Rulebooks::get_focus_kind(B));
+		WRITE_TO(FOCUS, " based ");
+	}
+	WRITE_TO(FOCUS, "rulebook");
+	Hierarchy::apply_metadata(P, RULEBOOK_FOCUS_MD_HL, PN);
+	DISCARD_TEXT(FOCUS)
+	Hierarchy::apply_metadata_from_number(P, RULEBOOK_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(B->primary_name));
+	booking_list *L = B->contents;
+	LOOP_OVER_BOOKINGS(br, L) {
+		package_request *EP =
+			Hierarchy::package_within(RULEBOOK_ENTRIES_HAP, P);
+		Hierarchy::apply_metadata_from_iname(EP, RULE_ENTRY_MD_HL,
+			RTRules::iname(RuleBookings::get_rule(br)));
+		Hierarchy::apply_metadata(EP, TOOLTIP_TEXT_MD_HL,
+			br->commentary.tooltip_text);
+		Hierarchy::apply_metadata_from_number(EP, NEXT_RULE_SPECIFICITY_MD_HL,
+			(inter_ti) (br->commentary.next_rule_specificity+1));
+		Hierarchy::apply_metadata(EP, LAW_APPLIED_MD_HL,
+			br->commentary.law_applied);
+	}
 
 @<Compile rulebook ID constant@> =
 	Emit::numeric_constant(RTRulebooks::id_iname(B), 0); /* placeholder */

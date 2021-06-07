@@ -653,7 +653,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Rl")) {
-		IXRelations::render(OUT);
+		RelationsElement::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Ev")) {
@@ -679,7 +679,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"RS")) {
-		IXRulesForScenes::render(OUT);
+		RulesForScenesElement::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Pl")) {

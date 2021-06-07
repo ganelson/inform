@@ -71,3 +71,4 @@ Chapter 6: Index
 	Figures Element
 	Tables Element
 	Values Element
+	Rules for Scenes Element

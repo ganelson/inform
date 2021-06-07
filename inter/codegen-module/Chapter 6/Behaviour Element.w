@@ -31,9 +31,9 @@ void BehaviourElement::render(OUTPUT_STREAM) {
 					inter_package *entry = Inter::Package::defined_by_frame(C);
 					if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_named_action_pattern_entry")) {
 						text_stream *text = Metadata::read_optional_textual(entry, I"^text");
-						int at = (int) Metadata::read_optional_numeric(entry, I"^at");
 						HTML_TAG("br");
 						WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%S", text);
+						int at = (int) Metadata::read_optional_numeric(entry, I"^at");
 						Index::link(OUT, at);
 					}
 				}

@@ -21,7 +21,6 @@ Chapter 2: Indexing
 	Activities
 	Phrasebook Index
 	Innards Element
-	Rules for Scenes Element
 	Arithmetic Element
 
 Chapter 3: Indexing for Plugins
