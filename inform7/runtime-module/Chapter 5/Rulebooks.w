@@ -111,19 +111,88 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	DISCARD_TEXT(FOCUS)
 	Hierarchy::apply_metadata_from_number(P, RULEBOOK_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(B->primary_name));
+	Hierarchy::apply_metadata_from_number(P, RULEBOOK_AUTOMATIC_MD_HL,
+		(inter_ti) B->automatically_generated);
 	booking_list *L = B->contents;
 	LOOP_OVER_BOOKINGS(br, L) {
 		package_request *EP =
 			Hierarchy::package_within(RULEBOOK_ENTRIES_HAP, P);
 		Hierarchy::apply_metadata_from_iname(EP, RULE_ENTRY_MD_HL,
-			RTRules::iname(RuleBookings::get_rule(br)));
+			RTRules::anchor_iname(RuleBookings::get_rule(br)));
 		Hierarchy::apply_metadata(EP, TOOLTIP_TEXT_MD_HL,
 			br->commentary.tooltip_text);
 		Hierarchy::apply_metadata_from_number(EP, NEXT_RULE_SPECIFICITY_MD_HL,
 			(inter_ti) (br->commentary.next_rule_specificity+1));
 		Hierarchy::apply_metadata(EP, LAW_APPLIED_MD_HL,
 			br->commentary.law_applied);
+		rule *R = RuleBookings::get_rule(br);
+		Hierarchy::apply_metadata_from_raw_wording(EP, BRULE_NAME_MD_HL,
+			R->name);
+		Hierarchy::apply_metadata_from_raw_wording(EP, RULE_INDEX_NAME_MD_HL,
+			R->indexing_data.italicised_text);
+		if (R->defn_as_I7_source) {
+			parse_node *pn = R->defn_as_I7_source->at->down;
+			if ((pn) && (Wordings::nonempty(Node::get_text(pn)))) {
+				TEMPORARY_TEXT(OUT)
+				WRITE("%+W", Node::get_text(pn));
+				if (pn->next) WRITE("; ...");
+				Hierarchy::apply_metadata(EP, RULE_FIRST_LINE_MD_HL, OUT);
+				DISCARD_TEXT(OUT)
+			}
+			if (global_compilation_settings.number_rules_in_index)
+				Hierarchy::apply_metadata_from_number(EP, RULE_INDEX_NUMBER_MD_HL,
+					(inter_ti) (2 + R->defn_as_I7_source->allocation_id));
+			parse_node *apn = R->defn_as_I7_source->at;
+			if ((apn) && (Wordings::nonempty(Node::get_text(apn))))
+				Hierarchy::apply_metadata_from_number(EP, BRULE_AT_MD_HL,
+					(inter_ti) Wordings::first_wn(Node::get_text(apn)));
+		} else {
+			if (global_compilation_settings.number_rules_in_index)
+				Hierarchy::apply_metadata_from_number(EP, RULE_INDEX_NUMBER_MD_HL, 1);
+		}
+		imperative_defn *id = Rules::get_imperative_definition(R);
+		if (id) {
+			id_body *idb = id->body_of_defn;
+			id_runtime_context_data *phrcd = &(idb->runtime_context_data);
+			scene *during_scene = Scenes::rcd_scene(phrcd);
+			if (during_scene) Hierarchy::apply_metadata_from_iname(EP, RULE_DURING_MD_HL,
+				RTInstances::value_iname(during_scene->as_instance));
+		}
 	}
+	placement_affecting *npl = B->indexing_data.placement_list;
+	while (npl) {
+		package_request *EP =
+			Hierarchy::package_within(RULEBOOK_PLACEMENTS_HAP, P);
+		Hierarchy::apply_metadata_from_raw_wording(EP, PLACEMENT_TEXT_MD_HL,
+			Node::get_text(npl->placement_sentence));
+		Hierarchy::apply_metadata_from_number(EP, PLACEMENT_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(Node::get_text(npl->placement_sentence)));
+		npl = npl->next;
+	}
+	outcomes *outs = &(B->my_outcomes);
+	rulebook_outcome *ro;
+	LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes) {
+		named_rulebook_outcome *rbno = ro->outcome_name;
+		package_request *EP =
+			Hierarchy::package_within(RULEBOOK_OUTCOMES_HAP, P);
+		Hierarchy::apply_metadata_from_raw_wording(EP, OUTCOME_TEXT_MD_HL,
+			Nouns::nominative_singular(rbno->name));
+		if (outs->default_named_outcome == ro)
+			Hierarchy::apply_metadata_from_number(EP, OUTCOME_IS_DEFAULT_MD_HL, 1);
+		if (ro->kind_of_outcome == SUCCESS_OUTCOME)
+			Hierarchy::apply_metadata_from_number(EP, OUTCOME_SUCCEEDS_MD_HL, 1);
+		if (ro->kind_of_outcome == FAILURE_OUTCOME)
+			Hierarchy::apply_metadata_from_number(EP, OUTCOME_FAILS_MD_HL, 1);
+	}
+	if ((outs->default_named_outcome == NULL) &&
+		(outs->default_rule_outcome != NO_OUTCOME)) {
+		if (outs->default_rule_outcome == SUCCESS_OUTCOME)
+			Hierarchy::apply_metadata_from_number(P, RULEBOOK_DEFAULT_SUCCEEDS_MD_HL, 1);
+		else
+			Hierarchy::apply_metadata_from_number(P, RULEBOOK_DEFAULT_FAILS_MD_HL, 1);
+	}
+
+
 
 @<Compile rulebook ID constant@> =
 	Emit::numeric_constant(RTRulebooks::id_iname(B), 0); /* placeholder */

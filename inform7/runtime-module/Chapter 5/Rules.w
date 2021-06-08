@@ -19,6 +19,7 @@ In these cases, |foreign_iname| is set and |local_iname| is null.
 =
 typedef struct rule_compilation_data {
 	struct package_request *rule_package;
+	struct inter_name *anchor_iname; /* for cross-references to the package */
 	struct inter_name *local_iname; /* if the defining function is inside the package  */
 	struct inter_name *foreign_iname; /* if it is outside */
 	struct inter_name *foreign_response_handler_iname; /* in which case this produces its response texts */
@@ -32,6 +33,7 @@ is null.
 =
 rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	rule_compilation_data rcd;
+	rcd.anchor_iname = NULL;
 	rcd.local_iname = NULL;
 	rcd.foreign_iname = NULL;
 	rcd.foreign_response_handler_iname = NULL;
@@ -49,6 +51,13 @@ package_request *RTRules::package(rule *R) {
 		R->compilation_data.rule_package = Hierarchy::local_package_to(RULES_HAP,
 			R->compilation_data.where_declared);
 	return R->compilation_data.rule_package;
+}
+
+inter_name *RTRules::anchor_iname(rule *R) {
+	if (R->compilation_data.anchor_iname == NULL)
+		R->compilation_data.anchor_iname =
+			Hierarchy::make_iname_in(RULE_ANCHOR_HL, RTRules::package(R));
+	return R->compilation_data.anchor_iname;
 }
 
 @ But by the time the inames are needed, we will know whether the rule is local
@@ -220,7 +229,17 @@ void RTRules::compilation_agent(compilation_subtask *t) {
 			R->defn_as_I7_source->log_text);
 
 @<Compile the value metadata@> =
+	Emit::numeric_constant(RTRules::anchor_iname(R), 1105);
 	Hierarchy::apply_metadata_from_iname(P, RULE_VALUE_MD_HL, RTRules::iname(R));
+	applicability_constraint *acl;
+	LOOP_OVER_LINKED_LIST(acl, applicability_constraint, R->applicability_constraints) {
+		package_request *EP =
+			Hierarchy::package_within(RULE_APPLICABILITY_CONDITIONS_HAP, P);
+		Hierarchy::apply_metadata_from_raw_wording(EP, AC_TEXT_MD_HL,
+			Node::get_text(acl->where_imposed));
+		Hierarchy::apply_metadata_from_number(EP, AC_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(Node::get_text(acl->where_imposed)));
+	}
 
 @<Compile resources for a local rule@> =
 	imperative_defn *id = R->defn_as_I7_source;

@@ -63,6 +63,7 @@ Chapter 5: Final Code
 Chapter 6: Index
 	Index Interpreter
 	Index File Services
+	Index Rules
 	Contents Element
 	Card Element
 	Behaviour Element
@@ -72,3 +73,4 @@ Chapter 6: Index
 	Tables Element
 	Values Element
 	Rules for Scenes Element
+	Extras Element

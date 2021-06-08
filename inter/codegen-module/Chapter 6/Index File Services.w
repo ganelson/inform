@@ -672,14 +672,14 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		ValuesElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"RS")) {
+		RulesForScenesElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"In")) {
 		IXInnards::render(OUT, Supervisor::current_vm());
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"RS")) {
-		RulesForScenesElement::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Pl")) {
@@ -730,7 +730,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Xt")) {
-		IXRules::Rules_page(OUT, 2);
+		ExtrasElement::render(OUT);
 		return;
 	}
 

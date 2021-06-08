@@ -218,13 +218,6 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		@<Index the segment for the action processing rulebooks@>;
 		@<Index the segment for the responses@>;
 	} else {
-		if (IXRules::noteworthy_rulebooks(NULL) > 0)
-			@<Index the segment for new rulebooks and activities@>;
-		inform_extension *E;
-		LOOP_OVER(E, inform_extension)
-			if (Extensions::is_standard(E) == FALSE)
-				if (IXRules::noteworthy_rulebooks(E) > 0)
-					@<Index the segment for the rulebooks in this extension@>;
 	}
 }
 
@@ -364,53 +357,7 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 	IXActivities::index_by_number(OUT, CHOOSING_NOTABLE_LOCALE_OBJ_ACT, 1);
 	IXActivities::index_by_number(OUT, PRINTING_LOCALE_PARAGRAPH_ACT, 1);
 
-@<Index the segment for new rulebooks and activities@> =
-	HTML_OPEN("p"); WRITE("<b>From the source text</b>"); HTML_CLOSE("p");
-	inform_extension *E = NULL; /* that is, not in an extension at all */
-	@<Index rulebooks occurring in this part of the source text@>;
-
-@<Index the segment for the rulebooks in this extension@> =
-	HTML_OPEN("p"); WRITE("<b>From the extension ");
-	Works::write_to_HTML_file(OUT, E->as_copy->edition->work, FALSE);
-	WRITE("</b>"); HTML_CLOSE("p");
-	@<Index rulebooks occurring in this part of the source text@>;
-
-@<Index rulebooks occurring in this part of the source text@> =
-	activity *av;
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
-		if (rb->automatically_generated) continue;
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E))
-			IXRules::index_rules_box(OUT, NULL, rb->primary_name, NULL, rb, NULL, NULL, 1, TRUE);
-	}
-	LOOP_OVER(av, activity) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E))
-			IXActivities::index(OUT, av, 1);
-	}
-
 @ =
-int IXRules::noteworthy_rulebooks(inform_extension *E) {
-	int nb = 0;
-	activity *av;
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
-		if (rb->automatically_generated) continue;
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E)) nb++;
-	}
-	LOOP_OVER(av, activity) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E)) nb++;
-	}
-	return nb;
-}
-
 int unique_xtra_no = 0;
 void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream *doc_link,
 	rulebook *rb, activity *av, char *text, int indent, int hide_behind_plus) {

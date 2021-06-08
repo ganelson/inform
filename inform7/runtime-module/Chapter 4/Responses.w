@@ -46,6 +46,7 @@ typedef struct response_message {
 	struct inter_name *value_md_iname;
 	struct inter_name *rule_md_iname;
 	struct inter_name *marker_md_iname;
+	struct inter_name *index_text_md_iname;
 	struct inter_name *group_md_iname;
 	int launcher_compiled;
 	int via_Inter_routine_compiled; /* if responding to a rule defined by Inter code */
@@ -79,6 +80,7 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	resp->value_md_iname = Hierarchy::make_iname_in(RESP_VALUE_MD_HL, PR);
 	resp->rule_md_iname = Hierarchy::make_iname_in(RULE_MD_HL, PR);
 	resp->marker_md_iname = Hierarchy::make_iname_in(MARKER_MD_HL, PR);
+	resp->index_text_md_iname = Hierarchy::make_iname_in(INDEX_TEXT_MD_HL, PR);
 	resp->group_md_iname = Hierarchy::make_iname_in(GROUP_HL, PR);
 
 	Rules::set_response(R, marker, resp);
@@ -181,6 +183,10 @@ void Responses::compilation_agent(compilation_subtask *t) {
 	Emit::iname_constant(resp->value_md_iname, K_value, ts_value_iname);
 	Emit::iname_constant(resp->rule_md_iname, K_value, RTRules::iname(resp->the_rule));
 	Emit::numeric_constant(resp->marker_md_iname, (inter_ti) resp->the_marker);
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "%+W", resp->the_ts->unsubstituted_text);
+	Emit::text_constant(resp->index_text_md_iname, T);
+	DISCARD_TEXT(T)
 	inform_extension *E = Extensions::corresponding_to(
 		Lexer::file_of_origin(Wordings::first_wn(resp->the_rule->name)));
 	TEMPORARY_TEXT(QT)

@@ -1182,6 +1182,23 @@ void Hierarchy::establish(void) {
 @e TOOLTIP_TEXT_MD_HL
 @e NEXT_RULE_SPECIFICITY_MD_HL
 @e LAW_APPLIED_MD_HL
+@e BRULE_NAME_MD_HL
+@e RULE_INDEX_NAME_MD_HL
+@e RULE_FIRST_LINE_MD_HL
+@e RULE_INDEX_NUMBER_MD_HL
+@e BRULE_AT_MD_HL
+@e RULE_DURING_MD_HL
+@e RULEBOOK_PLACEMENTS_HAP
+@e PLACEMENT_TEXT_MD_HL
+@e PLACEMENT_AT_MD_HL
+@e RULEBOOK_AUTOMATIC_MD_HL
+@e RULEBOOK_DEFAULT_SUCCEEDS_MD_HL
+@e RULEBOOK_DEFAULT_FAILS_MD_HL
+@e RULEBOOK_OUTCOMES_HAP
+@e OUTCOME_TEXT_MD_HL
+@e OUTCOME_SUCCEEDS_MD_HL
+@e OUTCOME_FAILS_MD_HL
+@e OUTCOME_IS_DEFAULT_MD_HL
 
 @<Establish rulebooks@> =
 	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
@@ -1212,6 +1229,25 @@ void Hierarchy::establish(void) {
 				H_C_U(TOOLTIP_TEXT_MD_HL,       I"^tooltip")
 				H_C_U(NEXT_RULE_SPECIFICITY_MD_HL, I"^specificity")
 				H_C_U(LAW_APPLIED_MD_HL,       I"^law")
+				H_C_U(BRULE_NAME_MD_HL,       I"^name")
+				H_C_U(RULE_INDEX_NAME_MD_HL,       I"^index_name")
+				H_C_U(RULE_FIRST_LINE_MD_HL,       I"^first_line")
+				H_C_U(RULE_INDEX_NUMBER_MD_HL,       I"^index_number")
+				H_C_U(BRULE_AT_MD_HL,       I"^at")
+				H_C_U(RULE_DURING_MD_HL,       I"^during")
+			H_END
+			H_BEGIN_AP(RULEBOOK_PLACEMENTS_HAP,  I"placement", I"_rulebook_placement")
+				H_C_U(PLACEMENT_TEXT_MD_HL,       I"^text")
+				H_C_U(PLACEMENT_AT_MD_HL,       I"^at")
+			H_END
+			H_C_U(RULEBOOK_AUTOMATIC_MD_HL,  I"^automatically_generated")
+			H_C_U(RULEBOOK_DEFAULT_SUCCEEDS_MD_HL,  I"^default_succeeds")
+			H_C_U(RULEBOOK_DEFAULT_FAILS_MD_HL,  I"^default_fails")
+			H_BEGIN_AP(RULEBOOK_OUTCOMES_HAP,  I"outcome", I"_rulebook_outcome")
+				H_C_U(OUTCOME_TEXT_MD_HL,       I"^text")
+				H_C_U(OUTCOME_SUCCEEDS_MD_HL,       I"^succeeds")
+				H_C_U(OUTCOME_FAILS_MD_HL,       I"^fails")
+				H_C_U(OUTCOME_IS_DEFAULT_MD_HL,       I"^is_default")
 			H_END
 		H_END
 	H_END
@@ -1219,6 +1255,7 @@ void Hierarchy::establish(void) {
 @h Rules.
 
 @e RULES_HAP
+@e RULE_ANCHOR_HL
 @e RULE_NAME_MD_HL
 @e RULE_PREAMBLE_MD_HL
 @e RULE_PNAME_MD_HL
@@ -1239,13 +1276,18 @@ void Hierarchy::establish(void) {
 @e RESP_VALUE_MD_HL
 @e RULE_MD_HL
 @e MARKER_MD_HL
+@e INDEX_TEXT_MD_HL
 @e GROUP_HL
+@e RULE_APPLICABILITY_CONDITIONS_HAP
+@e AC_TEXT_MD_HL
+@e AC_AT_MD_HL
 
 @<Establish rules@> =
 	submodule_identity *rules = Packaging::register_submodule(I"rules");
 
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
+			H_C_U(RULE_ANCHOR_HL,      I"anchor")
 			H_C_U(RULE_NAME_MD_HL,      I"^name")
 			H_C_U(RULE_PREAMBLE_MD_HL,  I"^preamble")
 			H_C_U(RULE_PNAME_MD_HL,     I"^printed_name")
@@ -1264,10 +1306,15 @@ void Hierarchy::establish(void) {
 				H_C_U(RESP_VALUE_MD_HL, I"^value")
 				H_C_U(RULE_MD_HL,       I"^rule")
 				H_C_U(MARKER_MD_HL,     I"^marker")
+				H_C_U(INDEX_TEXT_MD_HL,     I"^index_text")
 				H_C_U(GROUP_HL,               I"^group")
 				H_C_U(AS_CONSTANT_HL,         I"response_id")
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
 				H_F_U(LAUNCHER_HL,            I"launcher")
+			H_END
+			H_BEGIN_AP(RULE_APPLICABILITY_CONDITIONS_HAP, I"applicability_condition", I"_applicability_condition")
+				H_C_U(AC_TEXT_MD_HL, I"^text")
+				H_C_U(AC_AT_MD_HL, I"^at")
 			H_END
 		H_END
 	H_END
