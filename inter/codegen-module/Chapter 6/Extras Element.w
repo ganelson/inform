@@ -42,8 +42,7 @@ void ExtrasElement::render(OUTPUT_STREAM) {
 			inter_package *pack =
 				Inter::Package::defined_by_frame(inv->activity_nodes->list[j].node);
 			if (c++ == 0) @<Heading for these@>;
-			WRITE("<p>ACTIVITY</p>");
-			IndexRules::index_activity(OUT, pack, 1);
+			IndexRules::index_activity(OUT, I, pack, 1);
 		}
 	}
 

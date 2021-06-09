@@ -17607,41 +17607,41 @@ ROOT_NT
                                     CONSTANT_NT'", who is now cured (but could easily be reinfected)."' {kind: text}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 4}
             INCLUSION_NT'include locksmith by emily short' {unit: 4}
-                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 4}
-                    BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 4}
-                    SENTENCE_NT'Implicit handling of doors and containers so that lock manip' {unit: 4} {classified}
-                    SENTENCE_NT'use authorial modesty' {unit: 4} {classified}
+                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 3}
+                    BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 3}
+                    SENTENCE_NT'Implicit handling of doors and containers so that lock manip' {unit: 3} {classified}
+                    SENTENCE_NT'use authorial modesty' {unit: 3} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                         UNPARSED_NOUN_NT'authorial modesty'
-                    SENTENCE_NT'to open is a verb' {unit: 4} {classified}
+                    SENTENCE_NT'to open is a verb' {unit: 3} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-verb}
                         UNPARSED_NOUN_NT'to open'
-                    SENTENCE_NT'to lack is a verb' {unit: 4} {classified}
+                    SENTENCE_NT'to lack is a verb' {unit: 3} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-verb}
                         UNPARSED_NOUN_NT'to lack'
-                    SENTENCE_NT'to fit is a verb' {unit: 4} {classified}
+                    SENTENCE_NT'to fit is a verb' {unit: 3} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-verb}
                         UNPARSED_NOUN_NT'to fit'
-                    SENTENCE_NT'to lock is a verb' {unit: 4} {classified}
+                    SENTENCE_NT'to lock is a verb' {unit: 3} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-verb}
                         UNPARSED_NOUN_NT'to lock'
-                    SENTENCE_NT'to unlock is a verb' {unit: 4} {classified}
+                    SENTENCE_NT'to unlock is a verb' {unit: 3} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-verb}
                         UNPARSED_NOUN_NT'to unlock'
-                    HEADING_NT'volume 1 - automatic locking and unlocking with necessary ac' {heading 1} {under: H1'volume 1 - automatic locking and unlocking with necessary actions'} {unit: 4}
-                        SENTENCE_NT'use sequential action translates as (-  Constant SEQUENTIAL_' {unit: 4} {classified}
+                    HEADING_NT'volume 1 - automatic locking and unlocking with necessary ac' {heading 1} {under: H1'volume 1 - automatic locking and unlocking with necessary actions'} {unit: 3}
+                        SENTENCE_NT'use sequential action translates as (-  Constant SEQUENTIAL_' {unit: 3} {classified}
                             VERB_NT'translates as' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: as} {special meaning: use-translates}
                             UNPARSED_NOUN_NT'sequential action'
                             UNPARSED_NOUN_NT'(-  Constant SEQUENTIAL_ACTION; '
-                        IMPERATIVE_NT'before going through a closed door ( called the blocking doo' {unit: 4} {imperative definition: 862}
+                        IMPERATIVE_NT'before going through a closed door ( called the blocking doo' {unit: 3} {imperative definition: 862}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'try opening the blocking door' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'try opening the blocking door' {unit: 3} {indent: 2}
                                             INVOCATION_NT'try opening the blocking door' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'opening the blocking door' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action-based: opening * noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
@@ -17651,27 +17651,27 @@ ROOT_NT
                                                 INVOCATION_NT'"(first opening [the blocking door])[command clarification b' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"(first opening [the blocking door])[command clarification b' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"(first opening [the blocking door])[command clarification b' {kind: text}
-                                        INVOCATION_LIST_NT'silently try opening the blocking door' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'silently try opening the blocking door' {unit: 3} {indent: 2}
                                             INVOCATION_NT'silently try opening the blocking door' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'opening the blocking door' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action-based: opening * noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the blocking door is closed' {unit: 4} {indent: 1} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the blocking door is closed' {unit: 3} {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the blocking door is closed' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'blocking door is closed'
                                                 TEST_PROPOSITION_NT'blocking door is closed' {proposition: << closed('blocking door') >>} {term: 'blocking door'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before locking an open thing ( called the door ajar ) with s' {unit: 4} {imperative definition: 863}
+                        IMPERATIVE_NT'before locking an open thing ( called the door ajar ) with s' {unit: 3} {imperative definition: 863}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'try closing the door ajar' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'try closing the door ajar' {unit: 3} {indent: 2}
                                             INVOCATION_NT'try closing the door ajar' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
@@ -17681,27 +17681,27 @@ ROOT_NT
                                                 INVOCATION_NT'"(first closing [the door ajar])[command clarification break' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"(first closing [the door ajar])[command clarification break' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"(first closing [the door ajar])[command clarification break' {kind: text}
-                                        INVOCATION_LIST_NT'silently try closing the door ajar' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'silently try closing the door ajar' {unit: 3} {indent: 2}
                                             INVOCATION_NT'silently try closing the door ajar' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 4} {indent: 1} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 3} {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'door ajar is open'
                                                 TEST_PROPOSITION_NT'door ajar is open' {proposition: << open('door ajar') >>} {term: 'door ajar'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before locking keylessly an open thing ( called the door aja' {unit: 4} {imperative definition: 864}
+                        IMPERATIVE_NT'before locking keylessly an open thing ( called the door aja' {unit: 3} {imperative definition: 864}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'try closing the door ajar' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'try closing the door ajar' {unit: 3} {indent: 2}
                                             INVOCATION_NT'try closing the door ajar' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
@@ -17711,27 +17711,27 @@ ROOT_NT
                                                 INVOCATION_NT'"(first closing [the door ajar])[command clarification break' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"(first closing [the door ajar])[command clarification break' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"(first closing [the door ajar])[command clarification break' {kind: text}
-                                        INVOCATION_LIST_NT'silently try closing the door ajar' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'silently try closing the door ajar' {unit: 3} {indent: 2}
                                             INVOCATION_NT'silently try closing the door ajar' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 4} {indent: 1} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 3} {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'door ajar is open'
                                                 TEST_PROPOSITION_NT'door ajar is open' {proposition: << open('door ajar') >>} {term: 'door ajar'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before opening a locked thing ( called the sealed chest ) ( ' {unit: 4} {imperative definition: 865}
+                        IMPERATIVE_NT'before opening a locked thing ( called the sealed chest ) ( ' {unit: 3} {imperative definition: 865}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'try unlocking keylessly the sealed chest' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'try unlocking keylessly the sealed chest' {unit: 3} {indent: 2}
                                             INVOCATION_NT'try unlocking keylessly the sealed chest' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'unlocking keylessly the sealed chest' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
@@ -17741,87 +17741,87 @@ ROOT_NT
                                                 INVOCATION_NT'"(first unlocking [the sealed chest])[command clarification ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"(first unlocking [the sealed chest])[command clarification ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"(first unlocking [the sealed chest])[command clarification ' {kind: text}
-                                        INVOCATION_LIST_NT'silently try unlocking keylessly the sealed chest' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'silently try unlocking keylessly the sealed chest' {unit: 3} {indent: 2}
                                             INVOCATION_NT'silently try unlocking keylessly the sealed chest' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'unlocking keylessly the sealed chest' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the sealed chest is locked' {unit: 4} {indent: 1} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the sealed chest is locked' {unit: 3} {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the sealed chest is locked' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sealed chest is locked'
                                                 TEST_PROPOSITION_NT'sealed chest is locked' {proposition: << locked('sealed chest') >>} {term: 'sealed chest'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying going through a closed door ( called t' {unit: 4} {imperative definition: 866}
+                        IMPERATIVE_NT'before someone trying going through a closed door ( called t' {unit: 3} {imperative definition: 866}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'try the person asked trying opening the blocking door' {unit: 4}
+                                INVOCATION_LIST_NT'try the person asked trying opening the blocking door' {unit: 3}
                                     INVOCATION_NT'try the person asked trying opening the blocking door' {phrase invoked: <no-inter-name>}
                                         RVALUE_CONTEXT_NT'person asked trying opening the blocking door' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                             CONSTANT_NT'person asked trying opening the blocking door' {kind: action} {explicit action: <action-based: opening * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the blocking door is closed' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the blocking door is closed' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the blocking door is closed' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'blocking door is closed'
                                                 TEST_PROPOSITION_NT'blocking door is closed' {proposition: << closed('blocking door') >>} {term: 'blocking door'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying locking an open thing ( called the doo' {unit: 4} {imperative definition: 867}
+                        IMPERATIVE_NT'before someone trying locking an open thing ( called the doo' {unit: 3} {imperative definition: 867}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 4}
+                                INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 3}
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: <no-inter-name>}
                                         RVALUE_CONTEXT_NT'person asked trying closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                             CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'door ajar is open'
                                                 TEST_PROPOSITION_NT'door ajar is open' {proposition: << open('door ajar') >>} {term: 'door ajar'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying locking keylessly an open thing ( call' {unit: 4} {imperative definition: 868}
+                        IMPERATIVE_NT'before someone trying locking keylessly an open thing ( call' {unit: 3} {imperative definition: 868}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 4}
+                                INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 3}
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: <no-inter-name>}
                                         RVALUE_CONTEXT_NT'person asked trying closing the door ajar' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                             CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the door ajar is open' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'door ajar is open'
                                                 TEST_PROPOSITION_NT'door ajar is open' {proposition: << open('door ajar') >>} {term: 'door ajar'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying opening a locked thing ( called the se' {unit: 4} {imperative definition: 869}
+                        IMPERATIVE_NT'before someone trying opening a locked thing ( called the se' {unit: 3} {imperative definition: 869}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'try the person asked trying unlocking keylessly the sealed c' {unit: 4}
+                                INVOCATION_LIST_NT'try the person asked trying unlocking keylessly the sealed c' {unit: 3}
                                     INVOCATION_NT'try the person asked trying unlocking keylessly the sealed c' {phrase invoked: <no-inter-name>}
                                         RVALUE_CONTEXT_NT'person asked trying unlocking keylessly the sealed chest' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                             CONSTANT_NT'person asked trying unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the sealed chest is locked' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the sealed chest is locked' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the sealed chest is locked' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sealed chest is locked'
                                                 TEST_PROPOSITION_NT'sealed chest is locked' {proposition: << locked('sealed chest') >>} {term: 'sealed chest'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                    HEADING_NT'volume 2 - default locking and unlocking' {heading 1} {under: H1'volume 2 - default locking and unlocking'} {unit: 4}
-                        HEADING_NT'part 1 - the matching key rule' {heading 3} {under: H3'part 1 - the matching key rule'} {unit: 4}
-                            IMPERATIVE_NT'this is the need a matching key rule' {unit: 4} {imperative definition: 870}
+                    HEADING_NT'volume 2 - default locking and unlocking' {heading 1} {under: H1'volume 2 - default locking and unlocking'} {unit: 3}
+                        HEADING_NT'part 1 - the matching key rule' {heading 3} {under: H3'part 1 - the matching key rule'} {unit: 3}
+                            IMPERATIVE_NT'this is the need a matching key rule' {unit: 3} {imperative definition: 870}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT {control structure: IF}
-                                        INVOCATION_LIST_NT'if the person asked encloses something ( called item ) which' {colon_block_command} {unit: 4} {indent: 1}
+                                        INVOCATION_LIST_NT'if the person asked encloses something ( called item ) which' {colon_block_command} {unit: 3} {indent: 1}
                                             INVOCATION_NT'if the person asked encloses something ( called item ) which' {phrase invoked: <no-inter-name>}
                                                 CONDITION_CONTEXT_NT'person asked encloses something ( called item ) which unlock'
                                                     TEST_PROPOSITION_NT'person asked encloses something ( called item ) which unlock' {proposition: << kind=thing_c(<(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) ^ called='item':thing(<(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) ^ encloses('person asked', <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'person asked'}
                                         CODE_BLOCK_NT
-                                            INVOCATION_LIST_NT'now the second noun is the item' {unit: 4} {indent: 2} {control structure: NOW}
+                                            INVOCATION_LIST_NT'now the second noun is the item' {unit: 3} {indent: 2} {control structure: NOW}
                                                 CONDITION_CONTEXT_NT'the second noun is the item'
-                                            INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 4} {indent: 2}
+                                            INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3} {indent: 2}
                                                 INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
                                                     RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                         CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule}{meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
@@ -17832,15 +17832,15 @@ ROOT_NT
                                                         CONDITION_CONTEXT_NT'a visible passkey ( called item ) unbolts the noun'
                                                             TEST_PROPOSITION_NT'a visible passkey ( called item ) unbolts the noun' {proposition: << kind=passkey(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) ^ visible(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) ^ called='item':passkey(<(QUOTED_INAME_0_00000113(*1)) : 'the noun'>) >>} {term: x}
                                                 CODE_BLOCK_NT
-                                                    INVOCATION_LIST_NT'now the second noun is the item' {unit: 4} {indent: 2} {control structure: NOW}
+                                                    INVOCATION_LIST_NT'now the second noun is the item' {unit: 3} {indent: 2} {control structure: NOW}
                                                         CONDITION_CONTEXT_NT'the second noun is the item'
-                                                    INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 4} {indent: 2}
+                                                    INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3} {indent: 2}
                                                         INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
                                                             RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                                 CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule}{meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
                                                 CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                                     CODE_BLOCK_NT {control structure: IF}
-                                                        INVOCATION_LIST_NT'if the player is the person asked' {unit: 4} {indent: 2} {colon_block_command}
+                                                        INVOCATION_LIST_NT'if the player is the person asked' {unit: 3} {indent: 2} {colon_block_command}
                                                             INVOCATION_NT'if the player is the person asked' {phrase invoked: <no-inter-name>}
                                                                 CONDITION_CONTEXT_NT'player is the person asked'
                                                                     TEST_PROPOSITION_NT'player is the person asked' {proposition: << ('player' == 'the person asked') >>} {term: 'player'}
@@ -17850,104 +17850,104 @@ ROOT_NT
                                                                     INVOCATION_NT'key-refusal for noun' {phrase invoked: <no-inter-name>}
                                                                         RVALUE_CONTEXT_NT'noun' {token to be parsed against: TEST_VALUE_NT'an object'} {required: object}
                                                                             NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
-                                                    INVOCATION_LIST_NT'stop the action' {unit: 4} {indent: 2}
+                                                    INVOCATION_LIST_NT'stop the action' {unit: 3} {indent: 2}
                                                         INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                            IMPERATIVE_NT'to say key-refusal for ( locked-thing - an object )' {unit: 4} {imperative definition: 871}
+                            IMPERATIVE_NT'to say key-refusal for ( locked-thing - an object )' {unit: 3} {imperative definition: 871}
                                 CODE_BLOCK_NT
-                                    INVOCATION_LIST_NT'carry out the refusing keys activity with the locked-thing' {unit: 4}
+                                    INVOCATION_LIST_NT'carry out the refusing keys activity with the locked-thing' {unit: 3}
                                         INVOCATION_NT'carry out the refusing keys activity with the locked-thing' {phrase invoked: <no-inter-name>} {kind variable declarations: K=object}
                                             RVALUE_CONTEXT_NT'refusing keys' {token to be parsed against: TEST_VALUE_NT} {required: activity}
                                                 CONSTANT_NT'refusing keys' {kind: activity on objects} {activity: refusing keys}{meaning: {refusing keys = ACTIVITY_MC}}
                                             RVALUE_CONTEXT_NT'locked-thing' {token to be parsed against: TEST_VALUE_NT} {required: value}
                                                 LOCAL_VARIABLE_NT'locked-thing' {local: LV"locked-thing"-object object}
-                            SENTENCE_NT'refusing keys of something is an activity' {unit: 4} {classified}
+                            SENTENCE_NT'refusing keys of something is an activity' {unit: 3} {classified}
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                                 UNPARSED_NOUN_NT'refusing keys of something'
                                 UNPARSED_NOUN_NT'an activity'
-                            IMPERATIVE_NT'rule for refusing keys of something ( called locked-thing ) ' {unit: 4} {imperative definition: 872}
+                            IMPERATIVE_NT'rule for refusing keys of something ( called locked-thing ) ' {unit: 3} {imperative definition: 872}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT'say "[We] [lack] a key that fits [the locked-thing]." ( a )' {control structure: SAY}
                                         INVOCATION_LIST_SAY_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )'
                                             INVOCATION_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                 RVALUE_CONTEXT_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                     CONSTANT_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {kind: text}
-                            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 873}
-                            DEFN_CONT_NT'a thing is key-accessible' {unit: 4}
+                            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 873}
+                            DEFN_CONT_NT'a thing is key-accessible' {unit: 3}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT {control structure: IF}
-                                        INVOCATION_LIST_NT'if the person asked carries it' {unit: 4} {colon_block_command}
+                                        INVOCATION_LIST_NT'if the person asked carries it' {unit: 3} {colon_block_command}
                                             INVOCATION_NT'if the person asked carries it' {phrase invoked: <no-inter-name>}
                                                 CONDITION_CONTEXT_NT'person asked carries it'
                                                     TEST_PROPOSITION_NT'person asked carries it' {proposition: << ('person asked' == <CarrierOf(*1) : 'it'>) >>} {term: 'person asked'}
                                         CODE_BLOCK_NT
-                                            INVOCATION_LIST_NT'yes' {unit: 4} {results_from_splitting} {indent: 1}
+                                            INVOCATION_LIST_NT'yes' {unit: 3} {results_from_splitting} {indent: 1}
                                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
                                     CODE_BLOCK_NT {control structure: IF}
-                                        INVOCATION_LIST_NT'if it is on a keychain which is carried by the person asked' {unit: 4} {colon_block_command}
+                                        INVOCATION_LIST_NT'if it is on a keychain which is carried by the person asked' {unit: 3} {colon_block_command}
                                             INVOCATION_NT'if it is on a keychain which is carried by the person asked' {phrase invoked: <no-inter-name>}
                                                 CONDITION_CONTEXT_NT'it is on a keychain which is carried by the person asked'
                                                     TEST_PROPOSITION_NT'it is on a keychain which is carried by the person asked' {proposition: << kind=keychain(<SupporterOf(*1) : 'it'>) ^ ('the person asked' == <CarrierOf(*1) : <SupporterOf(*1) : 'it'>>) >>} {term: 'it'}
                                         CODE_BLOCK_NT
-                                            INVOCATION_LIST_NT'yes' {unit: 4} {results_from_splitting} {indent: 1}
+                                            INVOCATION_LIST_NT'yes' {unit: 3} {results_from_splitting} {indent: 1}
                                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
-                                    INVOCATION_LIST_NT'no' {unit: 4}
+                                    INVOCATION_LIST_NT'no' {unit: 3}
                                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
-                        HEADING_NT'part 2 - unlocking' {heading 3} {under: H3'part 2 - unlocking'} {unit: 4}
-                            HEADING_NT'section 1 - regular unlocking' {heading 5} {under: H5'section 1 - regular unlocking'} {unit: 4}
-                                SENTENCE_NT'understand the command unlock as something new' {unit: 4} {classified}
+                        HEADING_NT'part 2 - unlocking' {heading 3} {under: H3'part 2 - unlocking'} {unit: 3}
+                            HEADING_NT'section 1 - regular unlocking' {heading 5} {under: H5'section 1 - regular unlocking'} {unit: 3}
+                                SENTENCE_NT'understand the command unlock as something new' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'the command unlock'
                                     UNPARSED_NOUN_NT'something new'
                                 SENTENCE_NT'understand "unlock
-                                [something] with [something]" as unlockin' {unit: 4} {classified}
+                                [something] with [something]" as unlockin' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock
                                     [something] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
                                 SENTENCE_NT'understand "unlock [a
-                                locked lockable thing] with [something' {unit: 4} {classified}
+                                locked lockable thing] with [something' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock [a
                                     locked lockable thing] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                SENTENCE_NT'understand "unlock [a lockable thing] with [something]" as u' {unit: 4} {classified}
+                                SENTENCE_NT'understand "unlock [a lockable thing] with [something]" as u' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock [a lockable thing] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                SENTENCE_NT'understand the commands open and uncover and unwrap as somet' {unit: 4} {classified}
+                                SENTENCE_NT'understand the commands open and uncover and unwrap as somet' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'the commands open and uncover and unwrap'
                                     UNPARSED_NOUN_NT'something new'
-                                SENTENCE_NT'understand "open [something]" or "uncover [something]" or "u' {unit: 4} {classified}
+                                SENTENCE_NT'understand "open [something]" or "uncover [something]" or "u' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"open [something]" or "uncover [something]" or "unwrap [some'
                                     UNPARSED_NOUN_NT'opening'
-                                SENTENCE_NT'understand "open [something] with [something]" as unlocking ' {unit: 4} {classified}
+                                SENTENCE_NT'understand "open [something] with [something]" as unlocking ' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"open [something] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                SENTENCE_NT'understand "open [a locked lockable thing] with [something]"' {unit: 4} {classified}
+                                SENTENCE_NT'understand "open [a locked lockable thing] with [something]"' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"open [a locked lockable thing] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                SENTENCE_NT'understand "open [a lockable thing] with [something]" as unl' {unit: 4} {classified}
+                                SENTENCE_NT'understand "open [a lockable thing] with [something]" as unl' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"open [a lockable thing] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                IMPERATIVE_NT'check unlocking it with ( this is the must be able to reach ' {unit: 4} {imperative definition: 874}
+                                IMPERATIVE_NT'check unlocking it with ( this is the must be able to reach ' {unit: 3} {imperative definition: 874}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
                                             INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule}{meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
-                                SENTENCE_NT'the right second rule is listed instead of the can't unlock ' {unit: 4} {classified}
+                                SENTENCE_NT'the right second rule is listed instead of the can't unlock ' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                                     UNPARSED_NOUN_NT'the right second rule'
                                     UNPARSED_NOUN_NT'instead of the can't unlock without the correct key rule in '
-                                IMPERATIVE_NT'this is the right second rule' {unit: 4} {imperative definition: 875}
+                                IMPERATIVE_NT'this is the right second rule' {unit: 3} {imperative definition: 875}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the second noun does not unlock the noun' {colon_block_command} {unit: 4} {indent: 1}
+                                            INVOCATION_LIST_NT'if the second noun does not unlock the noun' {colon_block_command} {unit: 3} {indent: 1}
                                                 INVOCATION_NT'if the second noun does not unlock the noun' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'second noun does not unlock the noun'
                                                         TEST_PROPOSITION_NT'second noun does not unlock the noun' {proposition: << NOT< ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) NOT> >>} {term: 'second noun'}
@@ -17958,59 +17958,59 @@ ROOT_NT
                                                             RVALUE_CONTEXT_NT'"[The second noun] [do not fit] [the noun]." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                 CONSTANT_NT'"[The second noun] [do not fit] [the noun]." ( a )' {kind: text}
                                                 CODE_BLOCK_NT {control structure: INS}
-                            HEADING_NT'section 2 - keylessly' {heading 5} {under: H5'section 2 - keylessly'} {unit: 4}
-                                SENTENCE_NT'understand "unlock [something]" as unlocking keylessly' {unit: 4} {classified}
+                            HEADING_NT'section 2 - keylessly' {heading 5} {under: H5'section 2 - keylessly'} {unit: 3}
+                                SENTENCE_NT'understand "unlock [something]" as unlocking keylessly' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock [something]"'
                                     UNPARSED_NOUN_NT'unlocking keylessly'
                                 SENTENCE_NT'understand "unlock [a
-                                locked lockable thing]" as unlocking k' {unit: 4} {classified}
+                                locked lockable thing]" as unlocking k' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock [a
                                     locked lockable thing]"'
                                     UNPARSED_NOUN_NT'unlocking keylessly'
                                 SENTENCE_NT'understand "unlock [a lockable
-                                thing]" as unlocking keylessl' {unit: 4} {classified}
+                                thing]" as unlocking keylessl' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"unlock [a lockable
                                     thing]"'
                                     UNPARSED_NOUN_NT'unlocking keylessly'
-                                SENTENCE_NT'unlocking keylessly is an action applying to one thing' {unit: 4} {classified}
+                                SENTENCE_NT'unlocking keylessly is an action applying to one thing' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                                     UNPARSED_NOUN_NT'unlocking keylessly'
                                     UNPARSED_NOUN_NT'applying to one thing'
-                                SENTENCE_NT'the unlocking keylessly action has an object called the key ' {unit: 4} {classified}
+                                SENTENCE_NT'the unlocking keylessly action has an object called the key ' {unit: 3} {classified}
                                     VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                                     PROPER_NOUN_NT'unlocking keylessly action' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'unlocking keylessly action' {kind: action name} {action name: unlocking keylessly}{meaning: {unlocking keylessly action = MISCELLANEOUS_MC}}}
                                     ALLOWED_NT {refined}
                                         PROPERTYCALLED_NT'called'
                                             UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
                                             UNPARSED_NOUN_NT'key unlocked with' {definite 'the' n/m/f s/p nom/acc}
-                                IMPERATIVE_NT'check an actor unlocking keylessly ( this is the check keyle' {unit: 4} {imperative definition: 876}
+                                IMPERATIVE_NT'check an actor unlocking keylessly ( this is the check keyle' {unit: 3} {imperative definition: 876}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the can't unlock without a lock rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the can't unlock without a lock rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't unlock without a lock rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'can't unlock without a lock rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'can't unlock without a lock rule' {kind: rule} {rule: can't unlock without a lock rule}{meaning: {can't unlock without a lock rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'abide by the can't unlock what's already unlocked rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the can't unlock what's already unlocked rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't unlock what's already unlocked rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'can't unlock what's already unlocked rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'can't unlock what's already unlocked rule' {kind: rule} {rule: can't unlock what's already unlocked rule}{meaning: {can't unlock what's already unlocked rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'abide by the need a matching key rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the need a matching key rule' {unit: 3}
                                             INVOCATION_NT'abide by the need a matching key rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'need a matching key rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'need a matching key rule' {kind: rule} {rule: need a matching key rule}{meaning: {need a matching key rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'now the key unlocked with is the second noun' {unit: 4} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the key unlocked with is the second noun' {unit: 3} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the key unlocked with is the second noun'
-                                IMPERATIVE_NT'carry out an actor unlocking keylessly ( this is the standar' {unit: 4} {imperative definition: 877}
+                                IMPERATIVE_NT'carry out an actor unlocking keylessly ( this is the standar' {unit: 3} {imperative definition: 877}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                            INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                                 INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'sequential action option is active'
                                                         TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'do nothing' {unit: 4} {indent: 2}
+                                                INVOCATION_LIST_NT'do nothing' {unit: 3} {indent: 2}
                                                     INVOCATION_NT'do nothing' {phrase invoked: <no-inter-name>}
                                             CODE_BLOCK_NT'otherwise' {control structure: O}
                                                 CODE_BLOCK_NT {control structure: IF}
@@ -18024,101 +18024,101 @@ ROOT_NT
                                                                 INVOCATION_NT'"(with [the key unlocked with])[command clarification break]' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                                     RVALUE_CONTEXT_NT'"(with [the key unlocked with])[command clarification break]' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                         CONSTANT_NT'"(with [the key unlocked with])[command clarification break]' {kind: text}
-                                        INVOCATION_LIST_NT'try the person asked unlocking the noun with the key unlocke' {unit: 4} {indent: 1}
+                                        INVOCATION_LIST_NT'try the person asked unlocking the noun with the key unlocke' {unit: 3} {indent: 1}
                                             INVOCATION_NT'try the person asked unlocking the noun with the key unlocke' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'person asked unlocking the noun with the key unlocked with' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'person asked unlocking the noun with the key unlocked with' {kind: action} {explicit action: <action-based: unlocking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key unlocked with' {nonlocal: 'key unlocked with'(var)object}>}
-                        HEADING_NT'part 3 - locking' {heading 3} {under: H3'part 3 - locking'} {unit: 4}
-                            HEADING_NT'section 1 - regular locking' {heading 5} {under: H5'section 1 - regular locking'} {unit: 4}
-                                SENTENCE_NT'understand the command lock as something new' {unit: 4} {classified}
+                        HEADING_NT'part 3 - locking' {heading 3} {under: H3'part 3 - locking'} {unit: 3}
+                            HEADING_NT'section 1 - regular locking' {heading 5} {under: H5'section 1 - regular locking'} {unit: 3}
+                                SENTENCE_NT'understand the command lock as something new' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'the command lock'
                                     UNPARSED_NOUN_NT'something new'
                                 SENTENCE_NT'understand "lock [something]
-                                with [something]" as locking it' {unit: 4} {classified}
+                                with [something]" as locking it' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [something]
                                     with [something]"'
                                     UNPARSED_NOUN_NT'locking it with'
                                 SENTENCE_NT'understand "lock [an unlocked lockable
-                                thing] with [somethin' {unit: 4} {classified}
+                                thing] with [somethin' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [an unlocked lockable
                                     thing] with [something]"'
                                     UNPARSED_NOUN_NT'locking it with'
                                 SENTENCE_NT'understand "lock [a lockable
-                                thing] with [something]" as loc' {unit: 4} {classified}
+                                thing] with [something]" as loc' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [a lockable
                                     thing] with [something]"'
                                     UNPARSED_NOUN_NT'locking it with'
-                                IMPERATIVE_NT'check locking it with' {unit: 4} {imperative definition: 878}
+                                IMPERATIVE_NT'check locking it with' {unit: 3} {imperative definition: 878}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
                                             INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule}{meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
-                                SENTENCE_NT'the right second rule is listed instead of the can't lock wi' {unit: 4} {classified}
+                                SENTENCE_NT'the right second rule is listed instead of the can't lock wi' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                                     UNPARSED_NOUN_NT'the right second rule'
                                     UNPARSED_NOUN_NT'instead of the can't lock without the correct key rule in th'
-                            HEADING_NT'section 2 - keylessly' {heading 5} {under: H5'section 2 - keylessly'} {unit: 4}
-                                SENTENCE_NT'understand "lock [something]" as locking keylessly' {unit: 4} {classified}
+                            HEADING_NT'section 2 - keylessly' {heading 5} {under: H5'section 2 - keylessly'} {unit: 3}
+                                SENTENCE_NT'understand "lock [something]" as locking keylessly' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [something]"'
                                     UNPARSED_NOUN_NT'locking keylessly'
                                 SENTENCE_NT'understand "lock [an
-                                unlocked lockable thing]" as locking ke' {unit: 4} {classified}
+                                unlocked lockable thing]" as locking ke' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [an
                                     unlocked lockable thing]"'
                                     UNPARSED_NOUN_NT'locking keylessly'
                                 SENTENCE_NT'understand "lock [a lockable
-                                thing]" as locking keylessly' {unit: 4} {classified}
+                                thing]" as locking keylessly' {unit: 3} {classified}
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"lock [a lockable
                                     thing]"'
                                     UNPARSED_NOUN_NT'locking keylessly'
-                                SENTENCE_NT'locking keylessly is an action applying to one thing' {unit: 4} {classified}
+                                SENTENCE_NT'locking keylessly is an action applying to one thing' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                                     UNPARSED_NOUN_NT'locking keylessly'
                                     UNPARSED_NOUN_NT'applying to one thing'
-                                SENTENCE_NT'the locking keylessly action has an object called the key lo' {unit: 4} {classified}
+                                SENTENCE_NT'the locking keylessly action has an object called the key lo' {unit: 3} {classified}
                                     VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                                     PROPER_NOUN_NT'locking keylessly action' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'locking keylessly action' {kind: action name} {action name: locking keylessly}{meaning: {locking keylessly action = MISCELLANEOUS_MC}}}
                                     ALLOWED_NT {refined}
                                         PROPERTYCALLED_NT'called'
                                             UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
                                             UNPARSED_NOUN_NT'key locked with' {definite 'the' n/m/f s/p nom/acc}
-                                IMPERATIVE_NT'check an actor locking keylessly ( this is the check keyless' {unit: 4} {imperative definition: 879}
+                                IMPERATIVE_NT'check an actor locking keylessly ( this is the check keyless' {unit: 3} {imperative definition: 879}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the can't lock without a lock rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the can't lock without a lock rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't lock without a lock rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'can't lock without a lock rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'can't lock without a lock rule' {kind: rule} {rule: can't lock without a lock rule}{meaning: {can't lock without a lock rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'abide by the can't lock what's already locked rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the can't lock what's already locked rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't lock what's already locked rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'can't lock what's already locked rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'can't lock what's already locked rule' {kind: rule} {rule: can't lock what's already locked rule}{meaning: {can't lock what's already locked rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'abide by the can't lock what's open rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the can't lock what's open rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't lock what's open rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'can't lock what's open rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'can't lock what's open rule' {kind: rule} {rule: can't lock what's open rule}{meaning: {can't lock what's open rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'abide by the need a matching key rule' {unit: 4}
+                                        INVOCATION_LIST_NT'abide by the need a matching key rule' {unit: 3}
                                             INVOCATION_NT'abide by the need a matching key rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'need a matching key rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'need a matching key rule' {kind: rule} {rule: need a matching key rule}{meaning: {need a matching key rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'now the key locked with is the second noun' {unit: 4} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the key locked with is the second noun' {unit: 3} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the key locked with is the second noun'
-                                IMPERATIVE_NT'carry out an actor locking keylessly ( this is the standard ' {unit: 4} {imperative definition: 880}
+                                IMPERATIVE_NT'carry out an actor locking keylessly ( this is the standard ' {unit: 3} {imperative definition: 880}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                            INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                                 INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'sequential action option is active'
                                                         TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'do nothing' {unit: 4} {indent: 2}
+                                                INVOCATION_LIST_NT'do nothing' {unit: 3} {indent: 2}
                                                     INVOCATION_NT'do nothing' {phrase invoked: <no-inter-name>}
                                             CODE_BLOCK_NT'otherwise' {control structure: O}
                                                 CODE_BLOCK_NT {control structure: IF}
@@ -18132,18 +18132,18 @@ ROOT_NT
                                                                 INVOCATION_NT'"(with [the key locked with])[command clarification break]" ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                                     RVALUE_CONTEXT_NT'"(with [the key locked with])[command clarification break]" ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                         CONSTANT_NT'"(with [the key locked with])[command clarification break]" ' {kind: text}
-                                        INVOCATION_LIST_NT'try the person asked locking the noun with the key locked wi' {unit: 4} {indent: 1}
+                                        INVOCATION_LIST_NT'try the person asked locking the noun with the key locked wi' {unit: 3} {indent: 1}
                                             INVOCATION_NT'try the person asked locking the noun with the key locked wi' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'person asked locking the noun with the key locked with' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                     CONSTANT_NT'person asked locking the noun with the key locked with' {kind: action} {explicit action: <action-based: locking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key locked with' {nonlocal: 'key locked with'(var)object}>}
-                    HEADING_NT'volume 3 - the passkey kind , needed only if you want keys t' {heading 1} {under: H1'volume 3 - the passkey kind , needed only if you want keys to name themselves'} {unit: 4}
-                        SENTENCE_NT'a passkey is a kind of thing' {unit: 4} {classified}
+                    HEADING_NT'volume 3 - the passkey kind , needed only if you want keys t' {heading 1} {under: H1'volume 3 - the passkey kind , needed only if you want keys to name themselves'} {unit: 3}
+                        SENTENCE_NT'a passkey is a kind of thing' {unit: 3} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                             COMMON_NOUN_NT'passkey' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=passkey(x) >>} {refers: infs'passkey'} {eval: TEST_VALUE_NT} {created here}
                             KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                                 COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
                         SENTENCE_NT'the specification of a passkey is A kind of key
-                        whose invent' {unit: 4} {classified} {interpretation of subject: infs'passkey'}
+                        whose invent' {unit: 3} {classified} {interpretation of subject: infs'passkey'}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                             X_OF_Y_NT'specification of a passkey' {definite 'the' n/m/f s/p nom/acc} {refined}
                                 COMMON_NOUN_NT'passkey' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'passkey'} {creation: << kind=passkey(x) >>} {eval: TEST_VALUE_NT}
@@ -18151,89 +18151,89 @@ ROOT_NT
                             PROPER_NOUN_NT'A kind of key
                             whose inventory listing changes to reflect the' {refined} {eval: CONSTANT_NT'A kind of key
                             whose inventory listing changes to reflect the' {kind: text}}
-                        IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 881}
-                        SENTENCE_NT'unbolting relates one passkey to various things' {unit: 4} {classified}
+                        IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 881}
+                        SENTENCE_NT'unbolting relates one passkey to various things' {unit: 3} {classified}
                             VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
                             UNPARSED_NOUN_NT'unbolting' {new relation: unbolting}
                             UNPARSED_NOUN_NT'one passkey'
                             UNPARSED_NOUN_NT'various things'
-                        SENTENCE_NT'the verb to unbolt means the unbolting relation' {unit: 4} {classified}
+                        SENTENCE_NT'the verb to unbolt means the unbolting relation' {unit: 3} {classified}
                             VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                             UNPARSED_NOUN_NT'to unbolt'
                             UNPARSED_NOUN_NT'unbolting relation' {definite 'the' n/m/f s/p nom/acc}
-                        IMPERATIVE_NT'after printing the name of an identified passkey ( called th' {unit: 4} {imperative definition: 882}
+                        IMPERATIVE_NT'after printing the name of an identified passkey ( called th' {unit: 3} {imperative definition: 882}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'now the prior named object is the item' {unit: 4} {control structure: NOW}
+                                INVOCATION_LIST_NT'now the prior named object is the item' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the prior named object is the item'
                                 CODE_BLOCK_NT'say " (which [open] [the list of things unbolted by the item' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'" (which [open] [the list of things unbolted by the item])" '
                                         INVOCATION_NT'" (which [open] [the list of things unbolted by the item])" ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'" (which [open] [the list of things unbolted by the item])" ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'" (which [open] [the list of things unbolted by the item])" ' {kind: text}
-                        IMPERATIVE_NT'after examining an identified passkey ( this is the passkey ' {unit: 4} {imperative definition: 883}
+                        IMPERATIVE_NT'after examining an identified passkey ( this is the passkey ' {unit: 3} {imperative definition: 883}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "[The noun] [unlock] [the list of things unbolted by the' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"[The noun] [unlock] [the list of things unbolted by the nou'
                                         INVOCATION_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {kind: text}
-                        IMPERATIVE_NT'carry out unlocking something with a passkey ( this is the s' {unit: 4} {imperative definition: 884}
+                        IMPERATIVE_NT'carry out unlocking something with a passkey ( this is the s' {unit: 3} {imperative definition: 884}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the second noun unlocks the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun unlocks the noun'
                                                 TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {results_from_splitting} {indent: 1} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'report someone trying unlocking something with a passkey ( t' {unit: 4} {imperative definition: 885}
+                        IMPERATIVE_NT'report someone trying unlocking something with a passkey ( t' {unit: 3} {imperative definition: 885}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {control structure: NOW}
+                                INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'carry out locking something with a passkey ( this is the sta' {unit: 4} {imperative definition: 886}
+                        IMPERATIVE_NT'carry out locking something with a passkey ( this is the sta' {unit: 3} {imperative definition: 886}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the second noun unlocks the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun unlocks the noun'
                                                 TEST_PROPOSITION_NT'second noun unlocks the noun' {proposition: << ('second noun' == <(QUOTED_INAME_0_00000063(*1)) : 'the noun'>) >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {results_from_splitting} {indent: 1} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'report someone trying locking something with a passkey ( thi' {unit: 4} {imperative definition: 887}
+                        IMPERATIVE_NT'report someone trying locking something with a passkey ( thi' {unit: 3} {imperative definition: 887}
                             CODE_BLOCK_NT
-                                INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 4} {control structure: NOW}
+                                INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                    HEADING_NT'volume 4 - the keychain kind , needed only if you want a key' {heading 1} {under: H1'volume 4 - the keychain kind , needed only if you want a keychain'} {unit: 4}
-                        SENTENCE_NT'a keychain is a kind of supporter that is portable' {unit: 4} {classified}
+                    HEADING_NT'volume 4 - the keychain kind , needed only if you want a key' {heading 1} {under: H1'volume 4 - the keychain kind , needed only if you want a keychain'} {unit: 3}
+                        SENTENCE_NT'a keychain is a kind of supporter that is portable' {unit: 3} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                             COMMON_NOUN_NT'keychain' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=keychain(x) >>} {refers: infs'keychain'} {eval: TEST_VALUE_NT} {created here}
                             KIND_NT'kind of supporter that is portable' {refined} {refers: infs'supporter'}
                                 WITH_NT'supporter that is portable' {refined} {refers: infs'supporter'} {creation: << kind=supporter(x) ^ portable(x) >>} {eval: TEST_VALUE_NT}
                                     COMMON_NOUN_NT'supporter that is portable' {refined} {refers: infs'supporter'} {creation: << kind=supporter(x) ^ portable(x) >>} {eval: TEST_VALUE_NT}
                                     ADJECTIVE_NT {predicate: portable} {creation: << kind=supporter(x) ^ portable(x) >>}
-                        SENTENCE_NT'the specification of a keychain is A keychain which can hold' {unit: 4} {classified} {interpretation of subject: infs'keychain'}
+                        SENTENCE_NT'the specification of a keychain is A keychain which can hold' {unit: 3} {classified} {interpretation of subject: infs'keychain'}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                             X_OF_Y_NT'specification of a keychain' {definite 'the' n/m/f s/p nom/acc} {refined}
                                 COMMON_NOUN_NT'keychain' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'keychain'} {creation: << kind=keychain(x) >>} {eval: TEST_VALUE_NT}
                                 PROPER_NOUN_NT'specification' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'specification'=text}}
                             PROPER_NOUN_NT'A keychain which can hold the player's keys without forcing ' {refined} {eval: CONSTANT_NT'A keychain which can hold the player's keys without forcing ' {kind: text}}
-                        IMPERATIVE_NT'instead of putting something which is not a passkey on a key' {unit: 4} {imperative definition: 888}
+                        IMPERATIVE_NT'instead of putting something which is not a passkey on a key' {unit: 3} {imperative definition: 888}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "[The noun] [are] not a key." ( a )' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"[The noun] [are] not a key." ( a )'
                                         INVOCATION_NT'"[The noun] [are] not a key." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'"[The noun] [are] not a key." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'"[The noun] [are] not a key." ( a )' {kind: text}
-                        SENTENCE_NT'the keychain-aware carrying requirements rule is listed inst' {unit: 4} {classified}
+                        SENTENCE_NT'the keychain-aware carrying requirements rule is listed inst' {unit: 3} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the keychain-aware carrying requirements rule'
                             UNPARSED_NOUN_NT'instead of the carrying requirements rule in the action-proc'
-                        IMPERATIVE_NT'this is the keychain-aware carrying requirements rule' {unit: 4} {imperative definition: 889}
+                        IMPERATIVE_NT'this is the keychain-aware carrying requirements rule' {unit: 3} {imperative definition: 889}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if locking or unlocking something with something which is on' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if locking or unlocking something with something which is on' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if locking or unlocking something with something which is on' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'locking or unlocking something with something which is on a '
                                                 LOGICAL_OR_NT'locking or unlocking something with something which is on a '
@@ -18242,158 +18242,158 @@ ROOT_NT
                                                     TEST_VALUE_NT'unlocking something with something which is on a keychain wh'
                                                         CONSTANT_NT'unlocking something with something which is on a keychain wh' {kind: described action} {action pattern: <action-based: unlocking it with * noun: << kind=thing(x) ^ kind=object(x) >> second: << kind=thing_c(x) ^ kind=keychain(<SupporterOf(*1) : x>) ^ ('the actor' == <CarrierOf(*1) : <SupporterOf(*1) : x>>) ^ kind=object(x) >>>}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'continue the action' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'continue the action' {unit: 3} {indent: 2}
                                             INVOCATION_NT'continue the action' {phrase invoked: <no-inter-name>}
-                                INVOCATION_LIST_NT'abide by the carrying requirements rule' {unit: 4} {indent: 1}
+                                INVOCATION_LIST_NT'abide by the carrying requirements rule' {unit: 3} {indent: 1}
                                     INVOCATION_NT'abide by the carrying requirements rule' {phrase invoked: <no-inter-name>}
                                         RVALUE_CONTEXT_NT'carrying requirements rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                             CONSTANT_NT'carrying requirements rule' {kind: rule} {rule: carrying requirements rule}{meaning: {carrying requirements rule = MISCELLANEOUS_MC}}
-                        SENTENCE_NT'understand "put [passkey] on [keychain]" as putting it on' {unit: 4} {classified}
+                        SENTENCE_NT'understand "put [passkey] on [keychain]" as putting it on' {unit: 3} {classified}
                             VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                             UNPARSED_NOUN_NT'"put [passkey] on [keychain]"'
                             UNPARSED_NOUN_NT'putting it on'
-                        IMPERATIVE_NT'rule for deciding whether all includes passkeys which are on' {unit: 4} {imperative definition: 890}
+                        IMPERATIVE_NT'rule for deciding whether all includes passkeys which are on' {unit: 3} {imperative definition: 890}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the second noun is not a keychain' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the second noun is not a keychain' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the second noun is not a keychain' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun is not a keychain'
                                                 TEST_PROPOSITION_NT'second noun is not a keychain' {proposition: << NOT< kind=keychain('second noun') NOT> >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'it does not' {unit: 4} {results_from_splitting} {indent: 1}
-                    HEADING_NT'volume 5 - support materials' {heading 1} {under: H1'volume 5 - support materials'} {unit: 4}
-                        IMPERATIVE_NT'this is the noun autotaking rule' {unit: 4} {imperative definition: 891}
+                                        INVOCATION_LIST_NT'it does not' {unit: 3} {results_from_splitting} {indent: 1}
+                    HEADING_NT'volume 5 - support materials' {heading 1} {under: H1'volume 5 - support materials'} {unit: 3}
+                        IMPERATIVE_NT'this is the noun autotaking rule' {unit: 3} {imperative definition: 891}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the player is the person asked' {colon_block_command} {unit: 4} {indent: 2}
+                                            INVOCATION_LIST_NT'if the player is the person asked' {colon_block_command} {unit: 3} {indent: 2}
                                                 INVOCATION_NT'if the player is the person asked' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'player is the person asked'
                                                         TEST_PROPOSITION_NT'player is the person asked' {proposition: << ('player' == 'the person asked') >>} {term: 'player'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'try taking the noun' {unit: 4} {indent: 3}
+                                                INVOCATION_LIST_NT'try taking the noun' {unit: 3} {indent: 3}
                                                     INVOCATION_NT'try taking the noun' {phrase invoked: <no-inter-name>}
                                                         RVALUE_CONTEXT_NT'taking the noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                             CONSTANT_NT'taking the noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
-                                                INVOCATION_LIST_NT'try the person asked trying taking the noun' {unit: 4} {indent: 3}
+                                                INVOCATION_LIST_NT'try the person asked trying taking the noun' {unit: 3} {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the noun' {phrase invoked: <no-inter-name>}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                             CONSTANT_NT'person asked trying taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
-                                        INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {unit: 3} {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun' {phrase invoked: <no-inter-name>} {kind variable declarations: K=object}
                                                 RVALUE_CONTEXT_NT'implicitly taking' {token to be parsed against: TEST_VALUE_NT} {required: activity}
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects} {activity: implicitly taking}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'noun' {token to be parsed against: TEST_VALUE_NT} {required: value}
                                                     NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
-                        IMPERATIVE_NT'this is the second noun autotaking rule' {unit: 4} {imperative definition: 892}
+                        IMPERATIVE_NT'this is the second noun autotaking rule' {unit: 3} {imperative definition: 892}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if sequential action option is active' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'sequential action option is active'
                                                 TEST_PROPOSITION_NT'sequential action option is active' {proposition: << active('sequential action option') >>} {term: 'sequential action option'}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the player is the person asked' {colon_block_command} {unit: 4} {indent: 2}
+                                            INVOCATION_LIST_NT'if the player is the person asked' {colon_block_command} {unit: 3} {indent: 2}
                                                 INVOCATION_NT'if the player is the person asked' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'player is the person asked'
                                                         TEST_PROPOSITION_NT'player is the person asked' {proposition: << ('player' == 'the person asked') >>} {term: 'player'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'try taking the second noun' {unit: 4} {indent: 3}
+                                                INVOCATION_LIST_NT'try taking the second noun' {unit: 3} {indent: 3}
                                                     INVOCATION_NT'try taking the second noun' {phrase invoked: <no-inter-name>}
                                                         RVALUE_CONTEXT_NT'taking the second noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                             CONSTANT_NT'taking the second noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
-                                                INVOCATION_LIST_NT'try the person asked trying taking the second noun' {unit: 4} {indent: 3}
+                                                INVOCATION_LIST_NT'try the person asked trying taking the second noun' {unit: 3} {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the second noun' {phrase invoked: <no-inter-name>}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the second noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                                             CONSTANT_NT'person asked trying taking the second noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
-                                        INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou' {unit: 3} {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the second nou' {phrase invoked: <no-inter-name>} {kind variable declarations: K=object}
                                                 RVALUE_CONTEXT_NT'implicitly taking' {token to be parsed against: TEST_VALUE_NT} {required: activity}
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects} {activity: implicitly taking}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'second noun' {token to be parsed against: TEST_VALUE_NT} {required: value}
                                                     NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}
-                        IMPERATIVE_NT'this is the must hold the noun rule' {unit: 4} {imperative definition: 893}
+                        IMPERATIVE_NT'this is the must hold the noun rule' {unit: 3} {imperative definition: 893}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the person asked does not have the noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the person asked does not have the noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the person asked does not have the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'person asked does not have the noun'
                                                 TEST_PROPOSITION_NT'person asked does not have the noun' {proposition: << NOT< ('person asked' == <OwnerOf(*1) : 'the noun'>) NOT> >>} {term: 'person asked'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'follow the noun autotaking rule' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'follow the noun autotaking rule' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'follow the noun autotaking rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'noun autotaking rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'noun autotaking rule' {kind: rule} {rule: noun autotaking rule}{meaning: {noun autotaking rule = MISCELLANEOUS_MC}}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the person asked does not have the noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the person asked does not have the noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the person asked does not have the noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'person asked does not have the noun'
                                                 TEST_PROPOSITION_NT'person asked does not have the noun' {proposition: << NOT< ('person asked' == <OwnerOf(*1) : 'the noun'>) NOT> >>} {term: 'person asked'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                                INVOCATION_LIST_NT'make no decision' {unit: 4}
+                                INVOCATION_LIST_NT'make no decision' {unit: 3}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must hold the second noun rule' {unit: 4} {imperative definition: 894}
+                        IMPERATIVE_NT'this is the must hold the second noun rule' {unit: 3} {imperative definition: 894}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the person asked does not have the second noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the person asked does not have the second noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the person asked does not have the second noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'person asked does not have the second noun'
                                                 TEST_PROPOSITION_NT'person asked does not have the second noun' {proposition: << NOT< ('person asked' == <OwnerOf(*1) : 'the second noun'>) NOT> >>} {term: 'person asked'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'follow the second noun autotaking rule' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'follow the second noun autotaking rule' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'follow the second noun autotaking rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'second noun autotaking rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'second noun autotaking rule' {kind: rule} {rule: second noun autotaking rule}{meaning: {second noun autotaking rule = MISCELLANEOUS_MC}}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the person asked does not have the second noun' {unit: 4} {colon_block_command}
+                                    INVOCATION_LIST_NT'if the person asked does not have the second noun' {unit: 3} {colon_block_command}
                                         INVOCATION_NT'if the person asked does not have the second noun' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'person asked does not have the second noun'
                                                 TEST_PROPOSITION_NT'person asked does not have the second noun' {proposition: << NOT< ('person asked' == <OwnerOf(*1) : 'the second noun'>) NOT> >>} {term: 'person asked'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {results_from_splitting} {indent: 1}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                                INVOCATION_LIST_NT'make no decision' {unit: 4}
+                                INVOCATION_LIST_NT'make no decision' {unit: 3}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the noun rule' {unit: 4} {imperative definition: 895}
+                        IMPERATIVE_NT'this is the must have accessible the noun rule' {unit: 3} {imperative definition: 895}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if the noun is not key-accessible' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'noun is not key-accessible'
                                                 TEST_PROPOSITION_NT'noun is not key-accessible' {proposition: << NOT< key-accessible('noun') NOT> >>} {term: 'noun'}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the noun is on a keychain ( called the containing keychai' {unit: 4} {indent: 2} {colon_block_command}
+                                            INVOCATION_LIST_NT'if the noun is on a keychain ( called the containing keychai' {unit: 3} {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the noun is on a keychain ( called the containing keychai' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'noun is on a keychain ( called the containing keychain )'
                                                         TEST_PROPOSITION_NT'noun is on a keychain ( called the containing keychain )' {proposition: << kind=keychain(<SupporterOf(*1) : 'noun'>) ^ called='containing keychain':keychain(<SupporterOf(*1) : 'noun'>) >>} {term: 'noun'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'now the noun is the containing keychain' {unit: 4} {results_from_splitting} {indent: 3} {control structure: NOW}
+                                                INVOCATION_LIST_NT'now the noun is the containing keychain' {unit: 3} {results_from_splitting} {indent: 3} {control structure: NOW}
                                                     CONDITION_CONTEXT_NT'the noun is the containing keychain'
-                                        INVOCATION_LIST_NT'follow the noun autotaking rule' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'follow the noun autotaking rule' {unit: 3} {indent: 2}
                                             INVOCATION_NT'follow the noun autotaking rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'noun autotaking rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'noun autotaking rule' {kind: rule} {rule: noun autotaking rule}{meaning: {noun autotaking rule = MISCELLANEOUS_MC}}
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if the noun is not key-accessible' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'noun is not key-accessible'
                                                 TEST_PROPOSITION_NT'noun is not key-accessible' {proposition: << NOT< key-accessible('noun') NOT> >>} {term: 'noun'}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the player is the person asked' {unit: 4} {indent: 2} {colon_block_command}
+                                            INVOCATION_LIST_NT'if the player is the person asked' {unit: 3} {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the player is the person asked' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'player is the person asked'
                                                         TEST_PROPOSITION_NT'player is the person asked' {proposition: << ('player' == 'the person asked') >>} {term: 'player'}
@@ -18403,46 +18403,46 @@ ROOT_NT
                                                         INVOCATION_NT'"Without holding [the noun], [we] [can] do nothing." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                             RVALUE_CONTEXT_NT'"Without holding [the noun], [we] [can] do nothing." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                 CONSTANT_NT'"Without holding [the noun], [we] [can] do nothing." ( a )' {kind: text}
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                                INVOCATION_LIST_NT'make no decision' {unit: 4} {indent: 1}
+                                INVOCATION_LIST_NT'make no decision' {unit: 3} {indent: 1}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the second noun rule' {unit: 4} {imperative definition: 896}
+                        IMPERATIVE_NT'this is the must have accessible the second noun rule' {unit: 3} {imperative definition: 896}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if the second noun is not key-accessible' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun is not key-accessible'
                                                 TEST_PROPOSITION_NT'second noun is not key-accessible' {proposition: << NOT< key-accessible('second noun') NOT> >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'let the held second noun be the second noun' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'let the held second noun be the second noun' {unit: 3} {indent: 2}
                                             INVOCATION_NT'let the held second noun be the second noun' {phrase invoked: <no-inter-name>}
                                                 NEW_LOCAL_CONTEXT_NT'held second noun' {token to be parsed against: TEST_VALUE_NT} {required: value} {new var: object}
                                                     UNKNOWN_NT'held second noun'
                                                 RVALUE_CONTEXT_NT'second noun' {token to be parsed against: TEST_VALUE_NT'value'} {required: value}
                                                     NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the second noun is on a keychain ( called the containing ' {unit: 4} {indent: 2} {colon_block_command}
+                                            INVOCATION_LIST_NT'if the second noun is on a keychain ( called the containing ' {unit: 3} {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the second noun is on a keychain ( called the containing ' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'second noun is on a keychain ( called the containing keychai'
                                                         TEST_PROPOSITION_NT'second noun is on a keychain ( called the containing keychai' {proposition: << kind=keychain(<SupporterOf(*1) : 'second noun'>) ^ called='containing keychain':keychain(<SupporterOf(*1) : 'second noun'>) >>} {term: 'second noun'}
                                             CODE_BLOCK_NT
-                                                INVOCATION_LIST_NT'now the second noun is the containing keychain' {unit: 4} {results_from_splitting} {indent: 3} {control structure: NOW}
+                                                INVOCATION_LIST_NT'now the second noun is the containing keychain' {unit: 3} {results_from_splitting} {indent: 3} {control structure: NOW}
                                                     CONDITION_CONTEXT_NT'the second noun is the containing keychain'
-                                        INVOCATION_LIST_NT'follow the second noun autotaking rule' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'follow the second noun autotaking rule' {unit: 3} {indent: 2}
                                             INVOCATION_NT'follow the second noun autotaking rule' {phrase invoked: <no-inter-name>}
                                                 RVALUE_CONTEXT_NT'second noun autotaking rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                                     CONSTANT_NT'second noun autotaking rule' {kind: rule} {rule: second noun autotaking rule}{meaning: {second noun autotaking rule = MISCELLANEOUS_MC}}
-                                        INVOCATION_LIST_NT'now the second noun is the held second noun' {unit: 4} {indent: 2} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the second noun is the held second noun' {unit: 3} {indent: 2} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun is the held second noun'
                                 CODE_BLOCK_NT {control structure: IF}
-                                    INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'if the second noun is not key-accessible' {phrase invoked: <no-inter-name>}
                                             CONDITION_CONTEXT_NT'second noun is not key-accessible'
                                                 TEST_PROPOSITION_NT'second noun is not key-accessible' {proposition: << NOT< key-accessible('second noun') NOT> >>} {term: 'second noun'}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
-                                            INVOCATION_LIST_NT'if the player is the person asked' {unit: 4} {indent: 2} {colon_block_command}
+                                            INVOCATION_LIST_NT'if the player is the person asked' {unit: 3} {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the player is the person asked' {phrase invoked: <no-inter-name>}
                                                     CONDITION_CONTEXT_NT'player is the person asked'
                                                         TEST_PROPOSITION_NT'player is the person asked' {proposition: << ('player' == 'the person asked') >>} {term: 'player'}
@@ -18452,44 +18452,44 @@ ROOT_NT
                                                         INVOCATION_NT'"Without holding [the second noun], [we] [can] do nothing." ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                             RVALUE_CONTEXT_NT'"Without holding [the second noun], [we] [can] do nothing." ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                                 CONSTANT_NT'"Without holding [the second noun], [we] [can] do nothing." ' {kind: text}
-                                        INVOCATION_LIST_NT'stop the action' {unit: 4} {indent: 2}
+                                        INVOCATION_LIST_NT'stop the action' {unit: 3} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                                INVOCATION_LIST_NT'make no decision' {unit: 4} {indent: 1}
+                                INVOCATION_LIST_NT'make no decision' {unit: 3} {indent: 1}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                    HEADING_NT'volume 6 - unlocking all - not for release' {heading 1} {under: H1'volume 6 - unlocking all - not for release'} {unit: 4}
-                        SENTENCE_NT'understand "unlockall" as universal unlocking' {unit: 4} {classified}
+                    HEADING_NT'volume 6 - unlocking all - not for release' {heading 1} {under: H1'volume 6 - unlocking all - not for release'} {unit: 3}
+                        SENTENCE_NT'understand "unlockall" as universal unlocking' {unit: 3} {classified}
                             VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                             UNPARSED_NOUN_NT'"unlockall"'
                             UNPARSED_NOUN_NT'universal unlocking'
-                        SENTENCE_NT'universal unlocking is an action applying to nothing' {unit: 4} {classified}
+                        SENTENCE_NT'universal unlocking is an action applying to nothing' {unit: 3} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'universal unlocking'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        IMPERATIVE_NT'carry out universal unlocking ( this is the lock debugging r' {unit: 4} {imperative definition: 897}
+                        IMPERATIVE_NT'carry out universal unlocking ( this is the lock debugging r' {unit: 3} {imperative definition: 897}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: RPT}
-                                    INVOCATION_LIST_NT'repeat with item running through locked things' {colon_block_command} {unit: 4} {indent: 1}
+                                    INVOCATION_LIST_NT'repeat with item running through locked things' {colon_block_command} {unit: 3} {indent: 1}
                                         INVOCATION_NT'repeat with item running through locked things' {phrase invoked: <no-inter-name>} {kind variable declarations: K=thing}
                                             NEW_LOCAL_CONTEXT_NT'item' {token to be parsed against: TEST_VALUE_NT} {required: K} {new var: thing}
                                                 UNKNOWN_NT'item'
                                             RVALUE_CONTEXT_NT'locked things' {token to be parsed against: TEST_VALUE_NT} {required: description of values}
                                                 CONSTANT_NT'locked things' {kind: description of things} {proposition: << kind=thing(x) ^ locked(x) >>}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'now the item is unlocked' {unit: 4} {indent: 2} {control structure: NOW}
+                                        INVOCATION_LIST_NT'now the item is unlocked' {unit: 3} {indent: 2} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the item is unlocked'
                                         CODE_BLOCK_NT'say "Unlocking [the item]." ( a )' {control structure: SAY}
                                             INVOCATION_LIST_SAY_NT'"Unlocking [the item]." ( a )'
                                                 INVOCATION_NT'"Unlocking [the item]." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"Unlocking [the item]." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"Unlocking [the item]." ( a )' {kind: text}
-                        IMPERATIVE_NT'report universal unlocking ( this is the report universal un' {unit: 4} {imperative definition: 898}
+                        IMPERATIVE_NT'report universal unlocking ( this is the report universal un' {unit: 3} {imperative definition: 898}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "A loud stereophonic click assures you that everything i' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"A loud stereophonic click assures you that everything in th'
                                         INVOCATION_NT'"A loud stereophonic click assures you that everything in th' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'"A loud stereophonic click assures you that everything in th' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'"A loud stereophonic click assures you that everything in th' {kind: text}
-                        ENDHERE_NT'locksmith' {unit: 4}
+                        ENDHERE_NT'locksmith' {unit: 3}
             SENTENCE_NT'understand "go to/toward/into [any room]" as going toward' {unit: 4} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"go to/toward/into [any room]"'

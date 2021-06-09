@@ -177,9 +177,11 @@ The annotations propagates downwards thus:
 
 =
 void CompilationUnits::join(parse_node *p, compilation_unit *C) {
-	Node::set_unit(p, C);
-	for (parse_node *d = p->down; d; d = d->next)
-		CompilationUnits::join(d, C);
+	if (Node::get_unit(p) == NULL) {
+		Node::set_unit(p, C);
+		for (parse_node *d = p->down; d; d = d->next)
+			CompilationUnits::join(d, C);
+	}
 }
 
 @ Nodes are sometimes added later, so that it may be necessary to mark them

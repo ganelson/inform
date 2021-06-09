@@ -14,6 +14,15 @@ inter_package *IndexRules::find_rulebook(tree_inventory *inv, text_stream *marke
 	return NULL;
 }
 
+inter_package *IndexRules::find_activity(tree_inventory *inv, text_stream *marker) {
+	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		if (Str::eq(marker, Metadata::read_optional_textual(pack, I"^index_id")))
+			return pack;
+	}
+	return NULL;
+}
+
 typedef struct ix_rule_context {
 	struct inter_package *action_context;
 	struct inter_symbol *scene_context;
@@ -54,7 +63,7 @@ int IndexRules::phrase_fits_rule_context(inter_package *entry, ix_rule_context r
 	return TRUE;
 }
 
-int RS_unique_xtra_no = 0;
+int RS_unique_xtra_no = 77777;
 void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 	text_stream *titling_text, text_stream *doc_link,
 	inter_package *rb_pack, char *text, int indent, int hide_behind_plus) {
@@ -451,25 +460,39 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 }
 
 @ =
-/* void IndexRules::activity_rules_box(OUTPUT_STREAM, char *titling_text, wording W, text_stream *doc_link,
-	inter_package *rb_pack, activity *av, char *text, int indent, int hide_behind_plus) {
-	if (rb_pack == NULL) return;
+void IndexRules::index_activity(OUTPUT_STREAM, inter_tree *I, inter_package *pack, int indent) {
+	int empty = (int) Metadata::read_optional_numeric(pack, I"^empty");
+/*	if (av->indexing_data.activity_indexed) return;
+	av->indexing_data.activity_indexed = TRUE;
+	if (av->indexing_data.cross_references) empty = FALSE;
+*/
 
-	int xtra_no = 0;
-	if (rb) xtra_no = rb->allocation_id;
-	else if (av) xtra_no = NUMBER_CREATED(rulebook) + av->allocation_id;
-	else xtra_no = NUMBER_CREATED(rulebook) + NUMBER_CREATED(activity) + RS_unique_xtra_no++;
+	text_stream *text = NULL;
+	text_stream *doc_link = Metadata::read_optional_textual(pack, I"^documentation");
+	if (empty) text = I"There are no rules before, for or after this activity.";
+	IndexRules::activity_rules_box(OUT, I, doc_link, pack, text, indent, TRUE);
+}
 
-	char *col = "e0e0e0";
-	if (av) col = "e8e0c0";
+@ =
+void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *doc_link,
+	inter_package *av_pack, text_stream *text, int indent, int hide_behind_plus) {
 
-	int n = 0;
-	if (rb) n = Rulebooks::no_rules(rb);
-	if (av) n = IXActivities::no_rules(av);
+	int xtra_no = RS_unique_xtra_no++;
+
+	char *col = "e8e0c0";
+
+	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
+	inter_symbol *for_s = Metadata::read_symbol(av_pack, I"^for_rulebook");
+	inter_symbol *after_s = Metadata::read_symbol(av_pack, I"^after_rulebook");
+	inter_package *before_pack = Inter::Packages::container(before_s->definition);
+	inter_package *for_pack = Inter::Packages::container(for_s->definition);
+	inter_package *after_pack = Inter::Packages::container(after_s->definition);
+
+	int n = IndexRules::no_rules(I, before_pack) + IndexRules::no_rules(I, for_pack) + IndexRules::no_rules(I, after_pack);
 
 	TEMPORARY_TEXT(textual_name)
-	if (titling_text) WRITE_TO(textual_name, "%s", titling_text);
-	else if (Wordings::nonempty(W)) WRITE_TO(textual_name, "%+W", W);
+	text_stream *name = Metadata::read_optional_textual(av_pack, I"^name");
+	if (Str::len(name) > 0) WRITE_TO(textual_name, "%S", name);
 	else WRITE_TO(textual_name, "nameless");
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
@@ -479,7 +502,7 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 		Index::extra_link(OUT, xtra_no);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
 		WRITE("%S", textual_name);
-		@<Write the titling line of an index rules box@>;
+		@<Write the titling line of an activity rules box@>;
 		WRITE(" (%d rule%s)", n, (n==1)?"":"s");
 		if (n == 0) HTML::end_colour(OUT);
 		HTML_CLOSE("p");
@@ -493,7 +516,6 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
 
-
 	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("<b>%S</b>", textual_name);
 	@<Write the titling line of an activity rules box@>;
@@ -502,43 +524,47 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 	HTML::next_html_column_right_justified(OUT, 0);
 
 	HTML::open_indented_p(OUT, 1, "tight");
-	if (av) {
-		TEMPORARY_TEXT(skeleton)
-		WRITE_TO(skeleton, "Before %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>b</i> ");
-		Str::clear(skeleton);
-		WRITE_TO(skeleton, "Rule for %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>f</i> ");
-		Str::clear(skeleton);
-		WRITE_TO(skeleton, "After %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>a</i>");
-		DISCARD_TEXT(skeleton)
-	} else {
-		PasteButtons::paste_text(OUT, textual_name);
-		WRITE("&nbsp;<i>name</i>");
-	}
+
+	TEMPORARY_TEXT(skeleton)
+	WRITE_TO(skeleton, "Before %S:", textual_name);
+	PasteButtons::paste_text(OUT, skeleton);
+	WRITE("&nbsp;<i>b</i> ");
+	Str::clear(skeleton);
+	WRITE_TO(skeleton, "Rule for %S:", textual_name);
+	PasteButtons::paste_text(OUT, skeleton);
+	WRITE("&nbsp;<i>f</i> ");
+	Str::clear(skeleton);
+	WRITE_TO(skeleton, "After %S:", textual_name);
+	PasteButtons::paste_text(OUT, skeleton);
+	WRITE("&nbsp;<i>a</i>");
+	DISCARD_TEXT(skeleton)
+
 	HTML_CLOSE("p");
 	DISCARD_TEXT(textual_name)
 
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	if ((rb) && (Rulebooks::is_empty(rb)))
-		text = "There are no rules in this rulebook.";
-	if (text) {
-		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%s", text); HTML_CLOSE("p");
-	} else {
-		if (rb) {
-			int ignore_me = 0;
-			IXRules::index_rulebook(OUT, rb, "",
-				IndexRules::no_rule_context(), &ignore_me);
+	int ignore_me = 0;
+	IndexRules::index_rulebook(OUT, I, before_pack, I"before", IndexRules::no_rule_context(), &ignore_me);
+	IndexRules::index_rulebook(OUT, I, for_pack, I"for", IndexRules::no_rule_context(), &ignore_me);
+	IndexRules::index_rulebook(OUT, I, after_pack, I"after", IndexRules::no_rule_context(), &ignore_me);
+
+	inter_symbol *wanted = PackageTypes::get(I, I"_activity_xref");
+	inter_tree_node *D = Inter::Packages::definition(av_pack);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *entry = Inter::Package::defined_by_frame(C);
+			if (Inter::Packages::type(entry) == wanted) {	
+				HTML::open_indented_p(OUT, 2, "tight");
+				WRITE("NB: %S", Metadata::read_optional_textual(entry, I"^text"));
+				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
+				if (at > 0) Index::link(OUT, at);
+				HTML_CLOSE("p");
+			}
 		}
-		if (av) IXActivities::index_details(OUT, av);
 	}
+
 	if (hide_behind_plus) {
 		Index::extra_div_close(OUT, col);
 	} else {
@@ -546,41 +572,9 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 		HTML_CLOSE("p");
 	}
 }
-*/
 
 @<Write the titling line of an activity rules box@> =
 	if (Str::len(doc_link) > 0) Index::DocReferences::link(OUT, doc_link);
-	WRITE(" ... ");
-	if (av) WRITE(" activity"); else {
-		if ((rb) && (Rulebooks::get_focus_kind(rb)) &&
-			(Kinds::eq(Rulebooks::get_focus_kind(rb), K_action_name) == FALSE)) {
-			WRITE(" ");
-			Kinds::Textual::write_articled(OUT, Rulebooks::get_focus_kind(rb));
-			WRITE(" based");
-		}
-		WRITE(" rulebook");
-	}
-	int wn = -1;
-	if (rb) wn = Wordings::first_wn(rb->primary_name);
-	else if (av) wn = Wordings::first_wn(av->name);
-	if (wn >= 0) Index::link(OUT, wn);
-
-@ =
-void IndexRules::index_activity(OUTPUT_STREAM, inter_package *pack, int indent) {
-/*	int empty = TRUE;
-	char *text = NULL;
-	if (av->indexing_data.activity_indexed) return;
-	av->indexing_data.activity_indexed = TRUE;
-	if (Rulebooks::is_empty(av->before_rules) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->for_rules) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->after_rules) == FALSE) empty = FALSE;
-	if (av->indexing_data.cross_references) empty = FALSE;
-	TEMPORARY_TEXT(doc_link)
-	if (Wordings::nonempty(av->indexing_data.av_documentation_symbol))
-		WRITE_TO(doc_link, "%+W", Wordings::one_word(Wordings::first_wn(av->indexing_data.av_documentation_symbol)));
-	if (empty) text = "There are no rules before, for or after this activity.";
-	IXRules::index_rules_box(OUT, NULL, av->name, doc_link,
-		NULL, av, text, indent, TRUE);
-	DISCARD_TEXT(doc_link)
-*/
-}
+	WRITE(" ... activity");
+	int at = (int) Metadata::read_optional_numeric(av_pack, I"^at");
+	if (at > 0) Index::link(OUT, at);

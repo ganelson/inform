@@ -74,3 +74,4 @@ Chapter 6: Index
 	Values Element
 	Rules for Scenes Element
 	Extras Element
+	Standards Element

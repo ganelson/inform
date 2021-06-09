@@ -352,7 +352,6 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.haps_indexed_by_id[hap_id] == NULL))
 		internal_error("invalid HAP request");
 	hierarchy_attachment_point *hap = I->site.haps_indexed_by_id[hap_id];
-
 	if (hap->requirements.must_be_main_source_text) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.any_submodule_package_of_this_identity) {

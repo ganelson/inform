@@ -415,17 +415,24 @@ void Hierarchy::establish(void) {
 @e ACTIVITIES_HAP
 
 @e ACTIVITY_NAME_MD_HL
+@e ACTIVITY_AT_MD_HL
 @e ACTIVITY_VAR_CREATOR_MD_HL
 @e ACTIVITY_BEFORE_MD_HL
 @e ACTIVITY_FOR_MD_HL
 @e ACTIVITY_AFTER_MD_HL
 @e ACTIVITY_UFA_MD_HL
+@e ACTIVITY_INDEX_ID_MD_HL
+@e ACTIVITY_DOCUMENTATION_MD_HL
+@e ACTIVITY_XREFS_HAP
+@e XREF_TEXT_MD_HL
+@e XREF_AT_MD_HL
 
 @e ACTIVITY_ID_HL
 @e ACTIVITY_VALUE_HL
 @e ACTIVITY_BEFORE_RB_HL
 @e ACTIVITY_FOR_RB_HL
 @e ACTIVITY_AFTER_RB_HL
+@e ACTIVITY_EMPTY_MD_HL
 @e ACTIVITY_SHV_ID_HL
 @e ACTIVITY_VARC_FN_HL
 
@@ -436,12 +443,19 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
 
 			H_C_U(ACTIVITY_NAME_MD_HL,        I"^name")
+			H_C_U(ACTIVITY_AT_MD_HL,          I"^at")
 			H_C_U(ACTIVITY_BEFORE_MD_HL,      I"^before_rulebook")
 			H_C_U(ACTIVITY_FOR_MD_HL,         I"^for_rulebook")
 			H_C_U(ACTIVITY_AFTER_MD_HL,       I"^after_rulebook")
+			H_C_U(ACTIVITY_EMPTY_MD_HL,       I"^empty")
 			H_C_U(ACTIVITY_UFA_MD_HL,         I"^used_by_future")
 			H_C_U(ACTIVITY_VAR_CREATOR_MD_HL, I"^var_creator")
-
+			H_C_U(ACTIVITY_DOCUMENTATION_MD_HL, I"^documentation")
+			H_C_U(ACTIVITY_INDEX_ID_MD_HL,    I"^index_id")
+			H_BEGIN_AP(ACTIVITY_XREFS_HAP,    I"activity_xref", I"_activity_xref")
+				H_C_U(XREF_TEXT_MD_HL,        I"^text")
+				H_C_U(XREF_AT_MD_HL,          I"^at")
+			H_END
 			H_C_U(ACTIVITY_ID_HL,             I"activity_id")
 			H_C_G(ACTIVITY_VALUE_HL,          I"V")
 			H_PKG(ACTIVITY_BEFORE_RB_HL,      I"before_rb", I"_rulebook")

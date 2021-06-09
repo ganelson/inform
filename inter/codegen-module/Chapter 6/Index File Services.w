@@ -676,6 +676,14 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		RulesForScenesElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Xt")) {
+		ExtrasElement::render(OUT);
+		return;
+	}
+	if (Str::eq_wide_string(elt, L"St")) {
+		StandardsElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"In")) {
@@ -722,15 +730,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 
 	if (Str::eq_wide_string(elt, L"Gz")) {
 		IndexLexicon::index_common_nouns(OUT);
-		return;
-	}
-
-	if (Str::eq_wide_string(elt, L"St")) {
-		IXRules::Rules_page(OUT, 1);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Xt")) {
-		ExtrasElement::render(OUT);
 		return;
 	}
 
