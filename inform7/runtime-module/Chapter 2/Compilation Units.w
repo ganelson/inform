@@ -152,11 +152,10 @@ void CompilationUnits::complete_metadata(void) {
 				else owner = Extensions::corresponding_to(
 					Lexer::file_of_origin(Wordings::first_wn(Node::get_text(inc))));
 				if (owner) {
-					compilation_unit *owner_C;
-					LOOP_OVER(owner_C, compilation_unit)
-						if (owner_C->extension == owner)
-							Hierarchy::apply_metadata_from_iname(pack,
-								EXT_INCLUDED_BY_MD_HL, owner_C->extension_id);
+					inter_name *owner_id = CompilationUnits::extension_id(owner);
+					if (owner_id)
+						Hierarchy::apply_metadata_from_iname(pack,
+							EXT_INCLUDED_BY_MD_HL, owner_id);
 				} else {
 					if (Lexer::word_location(Wordings::first_wn(Node::get_text(inc))).file_of_origin == NULL)
 						Hierarchy::apply_metadata_from_number(pack, EXT_AUTO_INCLUDED_MD_HL, 1);
@@ -166,6 +165,17 @@ void CompilationUnits::complete_metadata(void) {
 				Hierarchy::apply_metadata_from_number(pack, EXT_STANDARD_MD_HL, 1);
 		}
 	}
+}
+
+@ This is in principle slow, and in practice fast, and anyway little used.
+
+=
+inter_name *CompilationUnits::extension_id(inform_extension *owner) {
+	compilation_unit *owner_C;
+	LOOP_OVER(owner_C, compilation_unit)
+		if (owner_C->extension == owner)
+			return owner_C->extension_id;
+	return NULL;
 }
 
 @h What unit a node belongs to.

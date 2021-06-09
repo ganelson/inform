@@ -75,3 +75,4 @@ Chapter 6: Index
 	Rules for Scenes Element
 	Extras Element
 	Standards Element
+	Innards Element

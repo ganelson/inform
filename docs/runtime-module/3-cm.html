@@ -78,11 +78,14 @@ function togglePopup(material_id) {
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompletionModule::compile</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Version number constant</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Semantic version number constant</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Memory economy metadata</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Frame size</span><span class="named-paragraph-number">1.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">RNG seed</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Max indexed thumbnails</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_8" class="named-paragraph-link"><span class="named-paragraph">Headings</span><span class="named-paragraph-number">1.8</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Virtual machine metadata</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Plugin usage</span><span class="named-paragraph-number">1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Memory economy metadata</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Frame size</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_7" class="named-paragraph-link"><span class="named-paragraph">RNG seed</span><span class="named-paragraph-number">1.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_8" class="named-paragraph-link"><span class="named-paragraph">Max indexed thumbnails</span><span class="named-paragraph-number">1.8</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_11" class="named-paragraph-link"><span class="named-paragraph">Headings</span><span class="named-paragraph-number">1.11</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_9" class="named-paragraph-link"><span class="named-paragraph">Debugging log aspects</span><span class="named-paragraph-number">1.9</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>So, for example, these might be <span class="extract"><span class="extract-syntax">10.1.0</span></span> and <span class="extract"><span class="extract-syntax">10.1.0-alpha.1+6R84</span></span> respectively.
@@ -112,7 +115,45 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">svn</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Memory economy metadata</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Virtual machine metadata</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Supervisor::current_vm</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">VM</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"target VM not set yet"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">vm</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">icon</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ExtensionIndex::plot_icon</span><span class="plain-syntax">(</span><span class="identifier-syntax">icon</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TargetVMs::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">vm</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">VM_MD_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-emt.html#SP10" class="function-link"><span class="function-syntax">Emit::text_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">vm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">VM</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">VM_image</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">VM_ICON_MD_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-emt.html#SP10" class="function-link"><span class="function-syntax">Emit::text_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">VM_image</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">vm</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">icon</span><span class="plain-syntax">)</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Plugin usage</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inc</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">exc</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::list_plugins</span><span class="plain-syntax">(</span><span class="identifier-syntax">inc</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::list_plugins</span><span class="plain-syntax">(</span><span class="identifier-syntax">exc</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LANGUAGE_ELEMENTS_USED_MD_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-emt.html#SP10" class="function-link"><span class="function-syntax">Emit::text_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">inc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">exc</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP11" class="function-link"><span class="function-syntax">Hierarchy::find</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LANGUAGE_ELEMENTS_NOT_USED_MD_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-emt.html#SP10" class="function-link"><span class="function-syntax">Emit::text_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">exc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inc</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">exc</span><span class="plain-syntax">)</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Memory economy metadata</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -123,7 +164,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><a href="2-emt.html#SP9" class="function-link"><span class="function-syntax">Emit::numeric_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Frame size</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Frame size</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -132,7 +173,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="2-hrr.html#SP17" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">RNG seed</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">RNG seed</span><span class="named-paragraph-number">1.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -141,7 +182,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="2-hrr.html#SP17" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Max indexed thumbnails</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_8" class="paragraph-anchor"></a><b>&#167;1.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Max indexed thumbnails</span><span class="named-paragraph-number">1.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -150,7 +191,23 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">global_compilation_settings</span><span class="plain-syntax">.</span><span class="identifier-syntax">index_figure_thumbnails</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP1_9" class="paragraph-anchor"></a><b>&#167;1.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Debugging log aspects</span><span class="named-paragraph-number">1.9</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">unhyphenated_name</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP20" class="function-link"><span class="function-syntax">Hierarchy::completion_package</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DEBUGGING_ASPECTS_HAP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">DEBUGGING_ASPECT_NAME_MD_HL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">unhyphenated_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">DEBUGGING_ASPECT_USED_MD_HL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_10" class="paragraph-anchor"></a><b>&#167;1.10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">heading_compilation_data</span><span class="plain-syntax"> {</span>
@@ -184,7 +241,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">} </span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure heading_compilation_data is private to this section.</li><li>The structure contents_entry is accessed in 2/cu, 4/ts, 5/act, 5/si, 5/tbl, 5/rls, 5/rlb, 5/lp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_8" class="paragraph-anchor"></a><b>&#167;1.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Headings</span><span class="named-paragraph-number">1.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_11" class="paragraph-anchor"></a><b>&#167;1.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Headings</span><span class="named-paragraph-number">1.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -200,7 +257,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ce</span><span class="plain-syntax">, </span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">heading</span><span class="plain-syntax"> *</span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ce</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heading_entered</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP20" class="function-link"><span class="function-syntax">Hierarchy::completion_package</span></a><span class="plain-syntax">(</span><span class="constant-syntax">HEADINGS_HAP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_8_1" class="named-paragraph-link"><span class="named-paragraph">Write the details</span><span class="named-paragraph-number">1.8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_11_1" class="named-paragraph-link"><span class="named-paragraph">Write the details</span><span class="named-paragraph-number">1.11.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">HEADING_INDEXABLE_MD_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_ce</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEXT_OBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ce</span><span class="plain-syntax">, </span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">level</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
@@ -216,7 +273,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">HEADING_WORD_COUNT_MD_HL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_8_2" class="named-paragraph-link"><span class="named-paragraph">Summarise all the objects and kinds created under the given heading</span><span class="named-paragraph-number">1.8.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_11_2" class="named-paragraph-link"><span class="named-paragraph">Summarise all the objects and kinds created under the given heading</span><span class="named-paragraph-number">1.11.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">HEADING_SUMMARY_MD_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">)</span>
@@ -225,13 +282,13 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">h</span><span class="plain-syntax">, </span><span class="identifier-syntax">heading</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">heading_package</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP20" class="function-link"><span class="function-syntax">Hierarchy::completion_package</span></a><span class="plain-syntax">(</span><span class="constant-syntax">HEADINGS_HAP</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_8_1" class="named-paragraph-link"><span class="named-paragraph">Write the details</span><span class="named-paragraph-number">1.8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-cm.html#SP1_11_1" class="named-paragraph-link"><span class="named-paragraph">Write the details</span><span class="named-paragraph-number">1.11.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">HEADING_INDEXABLE_MD_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_8_1" class="paragraph-anchor"></a><b>&#167;1.8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the details</span><span class="named-paragraph-number">1.8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_11_1" class="paragraph-anchor"></a><b>&#167;1.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the details</span><span class="named-paragraph-number">1.11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -280,8 +337,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="2-hrr.html#SP23" class="function-link"><span class="function-syntax">Hierarchy::apply_metadata_from_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">HEADING_INDENTATION_MD_HL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">indentation</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1_8">&#167;1.8</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_8_2" class="paragraph-anchor"></a><b>&#167;1.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Summarise all the objects and kinds created under the given heading</span><span class="named-paragraph-number">1.8.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1_11">&#167;1.11</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_11_2" class="paragraph-anchor"></a><b>&#167;1.11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Summarise all the objects and kinds created under the given heading</span><span class="named-paragraph-number">1.11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -295,14 +352,14 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1_8">&#167;1.8</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cm.html#SP1_11">&#167;1.11</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We index only headings of level 1 and up &mdash; so, not the pseudo-heading or the
 File (0) ones &mdash; and which are not within any extensions &mdash; so, are in the
 primary source text written by the user.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompletionModule::index_heading_recursively</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompletionModule::index_heading_recursively</span></span>:<br/><a href="3-cm.html#SP1_8">&#167;1.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">heading</span><span class="plain-syntax"> *</span><span class="identifier-syntax">h</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompletionModule::index_heading_recursively</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CompletionModule::index_heading_recursively</span></span>:<br/><a href="3-cm.html#SP1_11">&#167;1.11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">heading</span><span class="plain-syntax"> *</span><span class="identifier-syntax">h</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">show_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">heading</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">child_heading</span><span class="plain-syntax">;</span>

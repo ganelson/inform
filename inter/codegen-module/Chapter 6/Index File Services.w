@@ -684,12 +684,16 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		StandardsElement::render(OUT);
 		return;
 	}
-
-	#ifdef CORE_MODULE
-	if (Str::eq_wide_string(elt, L"In")) {
-		IXInnards::render(OUT, Supervisor::current_vm());
+	if (Str::eq_wide_string(elt, L"C")) {
+		ContentsElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"In")) {
+		InnardsElement::render(OUT);
+		return;
+	}
+
+	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Pl")) {
 		IXScenes::render(OUT);
 		return;
@@ -702,11 +706,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		IXPhysicalWorld::render(OUT);
 		return;
 	}
-	if (Str::eq_wide_string(elt, L"C")) {
-		ContentsElement::render(OUT);
-		return;
-	}
-
 
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);

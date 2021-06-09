@@ -46,17 +46,14 @@ int PluginManager::active(plugin *P) {
 	return P->active;
 }
 
-void PluginManager::list_plugins(OUTPUT_STREAM, char *label, int state) {
+void PluginManager::list_plugins(OUTPUT_STREAM, int state) {
 	plugin *P;
 	int c = 0;
-	WRITE("%s: ", label);
 	LOOP_OVER(P, plugin) if (P->active == state) {
 		if (c > 0) WRITE(", ");
 		WRITE("%S", P->textual_name);
 		c++;
 	}
-	if (c == 0) WRITE("<i>none</i>");
-	WRITE(".\n");
 }
 
 @ In the code above, plugins are set up as inactive by default -- even "core",

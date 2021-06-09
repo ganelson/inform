@@ -31,12 +31,31 @@ void RTUseOptions::compile(void) {
 		inter_name *set_iname = Hierarchy::make_iname_in(USE_OPTION_ON_MD_HL, R);
 		Emit::numeric_constant(set_iname, set);
 		Emit::numeric_constant(uo->compilation_data.uo_value, (inter_ti) 0);
+		Hierarchy::apply_metadata_from_raw_wording(R, USE_OPTION_MD_HL, uo->name);
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "%W option", uo->name);
 		if (uo->minimum_setting_value > 0)
 			WRITE_TO(N, " [%d]", uo->minimum_setting_value);
 		Hierarchy::apply_metadata(R, USE_OPTION_PNAME_MD_HL, N);
 		DISCARD_TEXT(N)
+		Hierarchy::apply_metadata_from_number(R, SOURCE_FILE_SCOPED_MD_HL,
+			(inter_ti) uo->source_file_scoped);
+		if (uo->where_used)
+			Hierarchy::apply_metadata_from_number(R, USE_OPTION_USED_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(Node::get_text(uo->where_used)));
+		source_file *sf = (uo->where_used)?
+			(Lexer::file_of_origin(Wordings::first_wn(Node::get_text(uo->where_used)))):NULL;
+		inform_extension *efo = (sf)?(Extensions::corresponding_to(sf)):NULL;
+		if ((sf) && (efo == NULL))
+			Hierarchy::apply_metadata_from_number(R, USED_IN_SOURCE_TEXT_MD_HL, 1);
+		else if (sf == NULL)
+			Hierarchy::apply_metadata_from_number(R, USED_IN_OPTIONS_MD_HL, 1);
+		else if (efo)
+			Hierarchy::apply_metadata_from_iname(R, USED_IN_EXTENSION_MD_HL,
+				CompilationUnits::extension_id(efo));
+		if (uo->minimum_setting_value >= 0)
+			Hierarchy::apply_metadata_from_number(R, USE_OPTION_MINIMUM_MD_HL,
+				(inter_ti) uo->minimum_setting_value);
 	}
 
 	@<Compile pragmas from use options which set these@>;

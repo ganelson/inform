@@ -7,11 +7,14 @@ into a playable work.
 void CompletionModule::compile(void) {
 	@<Version number constant@>;
 	@<Semantic version number constant@>;
+	@<Virtual machine metadata@>;
+	@<Plugin usage@>;
 	@<Memory economy metadata@>;
 	@<Frame size@>;
 	@<RNG seed@>;
 	@<Max indexed thumbnails@>;
 	@<Headings@>;
+	@<Debugging log aspects@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -31,6 +34,36 @@ void CompletionModule::compile(void) {
 	Emit::text_constant(iname, svn);
 	Hierarchy::make_available(iname);
 	DISCARD_TEXT(svn)
+
+@<Virtual machine metadata@> =
+	target_vm *VM = Supervisor::current_vm();
+	if (VM == NULL) internal_error("target VM not set yet");
+	TEMPORARY_TEXT(vm)
+	TEMPORARY_TEXT(icon)
+	ExtensionIndex::plot_icon(icon, VM);
+	TargetVMs::write(vm, VM);
+	inter_name *iname = Hierarchy::find(VM_MD_HL);
+	Emit::text_constant(iname, vm);
+	if (Str::len(VM->VM_image) > 0) {
+		inter_name *iname = Hierarchy::find(VM_ICON_MD_HL);
+		Emit::text_constant(iname, VM->VM_image);
+	}
+	DISCARD_TEXT(vm)
+	DISCARD_TEXT(icon)
+
+@<Plugin usage@> =
+	TEMPORARY_TEXT(inc)
+	TEMPORARY_TEXT(exc)
+	PluginManager::list_plugins(inc, TRUE);
+	PluginManager::list_plugins(exc, FALSE);
+	inter_name *iname = Hierarchy::find(LANGUAGE_ELEMENTS_USED_MD_HL);
+	Emit::text_constant(iname, inc);
+	if (Str::len(exc) > 0) {
+		inter_name *iname = Hierarchy::find(LANGUAGE_ELEMENTS_NOT_USED_MD_HL);
+		Emit::text_constant(iname, exc);
+	}
+	DISCARD_TEXT(inc)
+	DISCARD_TEXT(exc)
 
 @<Memory economy metadata@> =	
 	inter_name *iname = Hierarchy::find(MEMORY_ECONOMY_MD_HL);
@@ -53,6 +86,18 @@ void CompletionModule::compile(void) {
 	inter_name *iname = Hierarchy::find(MAX_INDEXED_FIGURES_HL);
 	Emit::numeric_constant(iname,
 		(inter_ti) global_compilation_settings.index_figure_thumbnails);
+
+@<Debugging log aspects@> =
+	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
+		debugging_aspect *da = &(the_debugging_aspects[i]);
+		if (Str::len(da->unhyphenated_name) > 0) {
+			package_request *pack = Hierarchy::completion_package(DEBUGGING_ASPECTS_HAP);
+			Hierarchy::apply_metadata(pack, DEBUGGING_ASPECT_NAME_MD_HL,
+				da->unhyphenated_name);
+			Hierarchy::apply_metadata_from_number(pack, DEBUGGING_ASPECT_USED_MD_HL,
+				(inter_ti) Log::aspect_switched_on(i));
+		}
+	}
 
 @ =
 typedef struct heading_compilation_data {

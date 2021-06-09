@@ -133,22 +133,6 @@ void NewUseOptions::set(use_option *uo, int min_setting, source_file *from) {
 		uo->minimum_setting_value, from);
 }
 
-@ And this is what the rest of Inform calls to find out whether a particular
-pragma is set:
-
-=
-int NewUseOptions::uo_set_from(use_option *uo, int category, inform_extension *E) {
-	source_file *sf = (uo->where_used)?
-		(Lexer::file_of_origin(Wordings::first_wn(Node::get_text(uo->where_used)))):NULL;
-	inform_extension *efo = (sf)?(Extensions::corresponding_to(sf)):NULL;
-	switch (category) {
-		case 1: if ((sf) && (efo == NULL)) return TRUE; break;
-		case 2: if (sf == NULL) return TRUE; break;
-		case 3: if ((sf) && (efo == E)) return TRUE; break;
-	}
-	return FALSE;
-}
-
 @ We can also meddle with the I6 memory settings which will be used to finish
 compiling the story file. We need this because we have no practical way to
 predict when our code will break I6's limits: the only reasonable way it can

@@ -425,8 +425,10 @@ void Projects::activate_elements(inform_project *project) {
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
-	PluginManager::list_plugins(DL, "Included", TRUE);
-	PluginManager::list_plugins(DL, "Excluded", FALSE);
+	LOG("Included: "); PluginManager::list_plugins(DL, TRUE);
+	LOG("\n");
+	LOG("Excluded: "); PluginManager::list_plugins(DL, FALSE);
+	LOG("\n");
 }
 #endif
 

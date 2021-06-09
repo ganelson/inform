@@ -214,6 +214,10 @@ void Hierarchy::establish(void) {
 @e MIN_NEGATIVE_NUMBER_HL
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
+@e VM_MD_HL
+@e VM_ICON_MD_HL
+@e LANGUAGE_ELEMENTS_USED_MD_HL
+@e LANGUAGE_ELEMENTS_NOT_USED_MD_HL
 @e MEMORY_ECONOMY_MD_HL
 @e MAX_INDEXED_FIGURES_HL
 @e NO_TEST_SCENARIOS_HL
@@ -243,6 +247,9 @@ void Hierarchy::establish(void) {
 @e HEADING_WORD_COUNT_MD_HL
 @e HEADING_SUMMARY_MD_HL
 @e HEADING_ID_HL
+@e DEBUGGING_ASPECTS_HAP
+@e DEBUGGING_ASPECT_NAME_MD_HL
+@e DEBUGGING_ASPECT_USED_MD_HL
 
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
@@ -266,6 +273,10 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
 		H_C_T(I7_FULL_VERSION_NUMBER_HL,      I"I7_FULL_VERSION_NUMBER")
+		H_C_T(VM_MD_HL,                       I"^virtual_machine")
+		H_C_T(VM_ICON_MD_HL,                  I"^virtual_machine_icon")
+		H_C_T(LANGUAGE_ELEMENTS_USED_MD_HL,   I"^language_elements_used")
+		H_C_T(LANGUAGE_ELEMENTS_NOT_USED_MD_HL, I"^language_elements_not_used")
 		H_C_T(MEMORY_ECONOMY_MD_HL,           I"^memory_economy")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
 		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
@@ -288,6 +299,10 @@ void Hierarchy::establish(void) {
 			H_C_U(HEADING_WORD_COUNT_MD_HL,   I"^word_count")
 			H_C_U(HEADING_SUMMARY_MD_HL,      I"^summary")
 			H_C_U(HEADING_ID_HL,              I"id")
+		H_END
+		H_BEGIN_AP(DEBUGGING_ASPECTS_HAP,     I"debugging_aspect", I"_debugging_aspect")
+			H_C_U(DEBUGGING_ASPECT_NAME_MD_HL, I"^name")
+			H_C_U(DEBUGGING_ASPECT_USED_MD_HL, I"^used")
 		H_END
 	H_END
 
@@ -1409,6 +1424,12 @@ void Hierarchy::establish(void) {
 @e USE_OPTION_MD_HL
 @e USE_OPTION_PNAME_MD_HL
 @e USE_OPTION_ON_MD_HL
+@e USE_OPTION_USED_AT_MD_HL
+@e SOURCE_FILE_SCOPED_MD_HL
+@e USED_IN_SOURCE_TEXT_MD_HL
+@e USED_IN_OPTIONS_MD_HL
+@e USED_IN_EXTENSION_MD_HL
+@e USE_OPTION_MINIMUM_MD_HL
 @e USE_OPTION_ID_HL
 
 @<Establish use options@> =
@@ -1416,9 +1437,15 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(use_options))
 		H_BEGIN_AP(USE_OPTIONS_HAP,           I"use_option", I"_use_option")
-			H_C_U(USE_OPTION_MD_HL,     I"^name")
-			H_C_U(USE_OPTION_PNAME_MD_HL, I"^printed_name")
-			H_C_U(USE_OPTION_ON_MD_HL,  I"^active")
+			H_C_U(USE_OPTION_MD_HL,           I"^name")
+			H_C_U(USE_OPTION_USED_AT_MD_HL,   I"^at")
+			H_C_U(USE_OPTION_PNAME_MD_HL,     I"^printed_name")
+			H_C_U(USE_OPTION_ON_MD_HL,        I"^active")
+			H_C_U(SOURCE_FILE_SCOPED_MD_HL,   I"^source_file_scoped")
+			H_C_U(USED_IN_SOURCE_TEXT_MD_HL,  I"^used_in_source_text")
+			H_C_U(USED_IN_OPTIONS_MD_HL,      I"^used_in_options")
+			H_C_U(USED_IN_EXTENSION_MD_HL,    I"^used_in_extension")
+			H_C_U(USE_OPTION_MINIMUM_MD_HL,   I"^minimum")
 			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
 		H_END
 	H_END
