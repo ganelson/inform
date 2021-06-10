@@ -26,6 +26,7 @@ which use this module:
 
 @e index_page_CLASS
 @e index_element_CLASS
+@e index_tlexicon_entry_CLASS
 
 =
 DECLARE_CLASS(I6T_intervention)
@@ -44,6 +45,7 @@ DECLARE_CLASS(tree_inventory_item)
 
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
+DECLARE_CLASS(index_tlexicon_entry)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

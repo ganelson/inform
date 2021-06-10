@@ -64,6 +64,7 @@ Chapter 6: Index
 	Index Interpreter
 	Index File Services
 	Index Rules
+	Lexicon
 	Contents Element
 	Card Element
 	Behaviour Element
