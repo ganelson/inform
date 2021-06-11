@@ -22,9 +22,7 @@ will vary depending on the verb it's coupled with.
 =
 typedef struct preposition {
 	struct word_assemblage prep_text;
-	#ifdef CORE_MODULE
-	struct index_lexicon_entry *prep_lex_entry; /* for use when indexing */
-	#endif
+	struct verb_conjugation *prep_lex_entry; /* for use when indexing */
 	struct parse_node *where_prep_created; /* for use if problem messages needed */
 	int allow_unexpected_upper_case; /* for preps like "in Cahoots With" */
 	struct linguistic_stock_item *in_stock;
@@ -79,10 +77,10 @@ preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_
 	prep->where_prep_created = where;
 	prep->allow_unexpected_upper_case = unexpected_upper_casing_used;
 	Prepositions::mark_as_preposition(WordAssemblages::first_word(&wa));
-
 	#ifdef CORE_MODULE
-	prep->prep_lex_entry = IndexLexicon::new_main_verb(wa, PREP_LEXE);
+	IndexLexicon::new_main_verb(wa, PREP_LEXE);
 	#endif
+	prep->prep_lex_entry = current_main_verb;
 	prep->in_stock = Stock::new(prepositions_category, STORE_POINTER_preposition(prep));
 	LOGIF(VERB_FORMS, "New preposition: $p\n", prep);
 

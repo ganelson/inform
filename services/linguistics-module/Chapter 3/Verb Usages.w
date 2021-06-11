@@ -23,9 +23,7 @@ typedef struct verb_usage {
 
 	struct linguistic_stock_item *in_stock;
 
-	#ifdef CORE_MODULE
-	struct index_lexicon_entry *vu_lex_entry; 	/* for use when indexing */
-	#endif
+	struct verb_conjugation *vu_lex_entry; 	/* for use when indexing */
 	CLASS_DEFINITION
 } verb_usage;
 
@@ -96,6 +94,8 @@ verb_usage_tier *first_search_tier = NULL; /* head of linked list of tiers */
 Here we create a single verb usage; note that the empty text cannot be used.
 
 =
+verb_conjugation *current_main_verb = NULL;
+
 verb_usage *VerbUsages::new(word_assemblage wa, int unexpected_upper_casing_used,
 	grammatical_usage *usage, parse_node *where) {
 	if (WordAssemblages::nonempty(wa) == FALSE) return NULL;
@@ -103,9 +103,7 @@ verb_usage *VerbUsages::new(word_assemblage wa, int unexpected_upper_casing_used
 	VerbUsages::mark_as_verb(WordAssemblages::first_word(&wa));
 	verb_usage *vu = CREATE(verb_usage);
 	vu->vu_text = wa;
-	#ifdef CORE_MODULE
 	vu->vu_lex_entry = current_main_verb;
-	#endif
 	vu->where_vu_created = where;
 	vu->usage = usage;
 	vu->vu_allow_unexpected_upper_case = unexpected_upper_casing_used;
@@ -154,8 +152,10 @@ void VerbUsages::register_all_usages_of_verb(verb *vi,
 	int unexpected_upper_casing_used, int priority, parse_node *where) {
 	verb_conjugation *vc = vi->conjugation;
 	if (vc == NULL) return;
+	current_main_verb = vc;
 	#ifdef CORE_MODULE
 	IndexLexicon::new_main_verb(vc->infinitive, VERB_LEXE);
+LOG("Well, I see your %A\n", vc->infinitive);
 	#endif
 
 	VerbUsages::register_voices_of_verb(vc, ACTIVE_VOICE, vi,

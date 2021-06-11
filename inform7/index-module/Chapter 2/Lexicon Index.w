@@ -45,7 +45,6 @@ typedef struct index_lexicon_entry {
 
 = (early code)
 index_lexicon_entry *sorted_lexicon = NULL; /* head of list in lexicographic order */
-index_lexicon_entry *current_main_verb = NULL; /* when parsing verb declarations */
 
 @ Lexicon entries are created by the following routine:
 
@@ -81,7 +80,6 @@ index_lexicon_entry *IndexLexicon::new_main_verb(word_assemblage infinitive, int
 	lex->part_of_speech = part;
 	lex->category = "verb";
 	lex->verb_defined_at = current_sentence;
-	current_main_verb = lex;
 	return lex;
 }
 
@@ -497,7 +495,7 @@ The following produces the table of verbs in the Phrasebook Index page.
 
 =
 void IndexLexicon::tabulate_verbs(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
-	verb_usage *vu; int f = TRUE;
+/*	verb_usage *vu; int f = TRUE;
 	LOOP_OVER(vu, verb_usage)
 		if ((vu->vu_lex_entry == lex) && (VerbUsages::is_used_negatively(vu) == FALSE)
 			 && (VerbUsages::get_tense_used(vu) == tense)) {
@@ -514,10 +512,11 @@ void IndexLexicon::tabulate_verbs(OUTPUT_STREAM, index_lexicon_entry *lex, int t
 			f = FALSE;
 		}
 	if (f == FALSE) HTML_CLOSE("p");
+*/
 }
 
 void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
-	verb_usage *vu;
+/*	verb_usage *vu;
 	LOOP_OVER(vu, verb_usage)
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
@@ -535,6 +534,7 @@ void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
 			if (bp) IndexLexicon::show_relation(OUT, bp);
 			return;
 		}
+*/
 }
 
 void IndexLexicon::show_relation(OUTPUT_STREAM, binary_predicate *bp) {

@@ -87,6 +87,12 @@ inter_name *RTVerbs::conjugation_fn_iname(verb_conjugation *vc) {
 				&(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
 			Hierarchy::apply_metadata(R, MVERB_NAME_MD_HL, ANT);
 			DISCARD_TEXT(ANT)
+			TEMPORARY_TEXT(INFT)
+			WRITE_TO(INFT, "%A", &(vc->infinitive));
+			Hierarchy::apply_metadata(R, MVERB_INFINITIVE_MD_HL, INFT);
+			DISCARD_TEXT(INFT)
+			Hierarchy::apply_metadata_from_number(R, MVERB_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(Node::get_text(vc->compilation_data.where_vc_created)));
 			vc->compilation_data.vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
 			package_request *R =
@@ -95,10 +101,63 @@ inter_name *RTVerbs::conjugation_fn_iname(verb_conjugation *vc) {
 			WRITE_TO(ANT, "to %A", &(vc->infinitive));
 			Hierarchy::apply_metadata(R, VERB_NAME_MD_HL, ANT);
 			DISCARD_TEXT(ANT)
+			TEMPORARY_TEXT(INFT)
+			WRITE_TO(INFT, "%A", &(vc->infinitive));
+			Hierarchy::apply_metadata(R, VERB_INFINITIVE_MD_HL, INFT);
+			if ((vc->vc_conjugates == NULL) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb))
+				Hierarchy::apply_metadata_from_number(R, VERB_MEANINGLESS_MD_HL, 1);
+			else
+				Hierarchy::apply_metadata_from_number(R, VERB_MEANINGLESS_MD_HL, 0);
+			DISCARD_TEXT(INFT)
+			TEMPORARY_TEXT(MEANING)
+			RTVerbs::show_meaning(MEANING, vc);
+			if (Str::len(MEANING) > 0) Hierarchy::apply_metadata(R, VERB_MEANING_MD_HL, INFT);
+			DISCARD_TEXT(MEANING)
+// VERB_PRESENT_MD_HL
+// VERB_PAST_MD_HL
+// VERB_PRESENT_PERFECT_MD_HL
+// VERB_PAST_PERFECT_MD_HL
+
+			Hierarchy::apply_metadata_from_number(R, VERB_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(Node::get_text(vc->compilation_data.where_vc_created)));
 			vc->compilation_data.vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
 		}
 	}
 	return vc->compilation_data.vc_iname;
+}
+
+void RTVerbs::show_meaning(OUTPUT_STREAM, verb_conjugation *vc) {
+	verb_usage *vu;
+	LOOP_OVER(vu, verb_usage)
+		if (vu->vu_lex_entry == vc) {
+			if (vu->where_vu_created)
+				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
+			binary_predicate *bp =
+				VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
+			if (bp) RTVerbs::show_relation(OUT, bp);
+			return;
+		}
+	preposition *prep;
+	LOOP_OVER(prep, preposition)
+		if (prep->prep_lex_entry == vc) {
+			if (prep->where_prep_created)
+				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
+			binary_predicate *bp =
+				VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
+			if (bp) RTVerbs::show_relation(OUT, bp);
+			return;
+		}
+}
+
+void RTVerbs::show_relation(OUTPUT_STREAM, binary_predicate *bp) {
+	if (bp == NULL) WRITE("(a meaning internal to Inform)");
+	else {
+		if (bp->right_way_round == FALSE) {
+			bp = bp->reversal;
+			WRITE("reversed ");
+		}
+		WordAssemblages::index(OUT, &(bp->relation_name));
+	}
 }
 
 @h Compilation.

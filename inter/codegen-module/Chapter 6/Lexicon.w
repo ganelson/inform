@@ -16,7 +16,6 @@ umbrella, the "lexicon entry" structure:
 @d VERB_TLEXE 5 /* an ordinary verb */
 @d ABLE_VERB_TLEXE 6 /* a "to be able to..." verb */
 @d PREP_TLEXE 7 /* a "to be upon..." sort of verb */
-@d AVERB_TLEXE 8 /* an auxiliary verb */
 @d MVERB_TLEXE 9 /* a meaningless verb */
 @d MISCELLANEOUS_TLEXE 10 /* a connective, article or determiner */
 
@@ -25,14 +24,13 @@ any collation of up to 5 vocabulary entries.
 
 =
 typedef struct index_tlexicon_entry {
-	struct wording wording_of_entry; /* either the text of the entry, or empty, in which case... */
-	struct word_assemblage text_of_entry;
-
+	struct text_stream *lemma;
 	int part_of_speech; /* one of those above */
 	char *category; /* textual description of said, e.g., |"adjective"| */
 	struct general_pointer entry_refers_to; /* depending on which part of speech */
 	struct parse_node *verb_defined_at; /* sentence where defined (verbs only) */
 	char *gloss_note; /* gloss on the definition, or |NULL| if none is provided */
+	struct inter_package *lex_package;
 
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
 	struct index_tlexicon_entry *sorted_next; /* next in lexicographic order */
@@ -43,56 +41,42 @@ typedef struct index_tlexicon_entry {
 
 = (early code)
 index_tlexicon_entry *sorted_tlexicon = NULL; /* head of list in lexicographic order */
-index_tlexicon_entry *current_tmain_verb = NULL; /* when parsing verb declarations */
 
 @ Lexicon entries are created by the following routine:
 
 =
-index_tlexicon_entry *TempLexicon::lexicon_new_entry(wording W) {
+index_tlexicon_entry *TempLexicon::lexicon_new_entry(text_stream *lemma) {
 	index_tlexicon_entry *lex = CREATE(index_tlexicon_entry);
-	lex->wording_of_entry = W;
-	lex->text_of_entry = WordAssemblages::lit_0();
+	lex->lemma = Str::duplicate(lemma);
 	lex->part_of_speech = MISCELLANEOUS_TLEXE;
 	lex->entry_refers_to = NULL_GENERAL_POINTER;
 	lex->category = NULL; lex->gloss_note = NULL; lex->verb_defined_at = NULL;
 	lex->reduced_to_lower_case = Str::new();
+	lex->lex_package = NULL;
 	return lex;
 }
 
-@ The next two routines provide higher-level creators for lexicon entries.
-The |current_tmain_verb| setting is used to ensure that inflected forms of the
-same verb are grouped together in the verbs table.
+@ 
 
 =
-index_tlexicon_entry *TempLexicon::new_entry_with_details(wording W, int pos,
-	word_assemblage wa, char *category, char *gloss) {
-	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(W);
+index_tlexicon_entry *TempLexicon::new_entry_with_details(text_stream *lemma, int pos,
+	char *category, char *gloss) {
+	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(lemma);
 	lex->part_of_speech = pos;
-	lex->text_of_entry = wa;
+	lex->lemma = lemma;
 	lex->category = category; lex->gloss_note = gloss;
 	return lex;
 }
 
-index_tlexicon_entry *TempLexicon::new_main_verb(word_assemblage infinitive, int part) {
-	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(EMPTY_WORDING);
-	lex->text_of_entry = infinitive;
+index_tlexicon_entry *TempLexicon::new_main_verb(text_stream *infinitive, int part,
+	inter_package *pack) {
+	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(NULL);
+	lex->lemma = infinitive;
 	lex->part_of_speech = part;
 	lex->category = "verb";
+	lex->lex_package = pack;
 //	lex->verb_defined_at = current_sentence;
-	current_tmain_verb = lex;
 	return lex;
-}
-
-@ As we've seen, a lexicon entry's text can be either a word range or a
-collection of vocabulary words, and it's therefore convenient to have a utility
-routine which extracts the name in plain text from either source.
-
-=
-void TempLexicon::lexicon_copy_to_stream(index_tlexicon_entry *lex, text_stream *text) {
-	if (Wordings::nonempty(lex->wording_of_entry))
-		WRITE_TO(text, "%+W", lex->wording_of_entry);
-	else
-		WRITE_TO(text, "%A", &(lex->text_of_entry));
 }
 
 @h Producing the lexicon.
@@ -348,8 +332,8 @@ source text: so any single link would be potentially misleading.
 			Index::below_link_numbered(OUT, 10000+verb_count++);
 			break;
 	}
-	if ((lex->part_of_speech != ADJECTIVAL_PHRASE_TLEXE) && (Wordings::nonempty(lex->wording_of_entry)))
-		Index::link(OUT, Wordings::first_wn(lex->wording_of_entry));
+	if ((lex->part_of_speech != ADJECTIVAL_PHRASE_TLEXE) && (Wordings::nonempty(lex->lemma)))
+		Index::link(OUT, Wordings::first_wn(lex->lemma));
 
 @<Definition of noun entry@> =
 	kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
@@ -451,13 +435,11 @@ void TempLexicon::index_verbs(OUTPUT_STREAM) {
 			TempLexicon::lexicon_copy_to_stream(lex, entry_text);
 			if (lex->part_of_speech == VERB_TLEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == MVERB_TLEXE) WRITE("To <b>%S</b>", entry_text);
-			else if (lex->part_of_speech == AVERB_TLEXE) WRITE("<b>%S</b>", entry_text);
 			else if (lex->part_of_speech == PREP_TLEXE) WRITE("To be <b>%S</b>", entry_text);
 			else WRITE("To be able to <b>%S</b>", entry_text);
-			if (Wordings::nonempty(lex->wording_of_entry))
-				Index::link(OUT, Wordings::first_wn(lex->wording_of_entry));
-			if (lex->part_of_speech == AVERB_TLEXE) WRITE(" ... <i>auxiliary verb</i>");
-			else if (lex->part_of_speech == MVERB_TLEXE) WRITE(" ... for saying only");
+			if (Wordings::nonempty(lex->lemma))
+				Index::link(OUT, Wordings::first_wn(lex->lemma));
+			if (lex->part_of_speech == MVERB_TLEXE) WRITE(" ... for saying only");
 			else TempLexicon::tabulate_meanings(OUT, lex);
 			HTML_CLOSE("p");
 			TempLexicon::tabulate_verbs(OUT, lex, IS_TENSE, "present");
@@ -518,28 +500,6 @@ void TempLexicon::tabulate_verbs(OUTPUT_STREAM, index_tlexicon_entry *lex, int t
 */
 }
 
-void TempLexicon::tabulate_meanings(OUTPUT_STREAM, index_tlexicon_entry *lex) {
-/*	verb_usage *vu;
-	LOOP_OVER(vu, verb_usage)
-		if (vu->vu_lex_entry == lex) {
-			if (vu->where_vu_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
-			if (bp) TempLexicon::show_relation(OUT, bp);
-			return;
-		}
-	preposition *prep;
-	LOOP_OVER(prep, preposition)
-		if (prep->prep_lex_entry == lex) {
-			if (prep->where_prep_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
-			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
-			if (bp) TempLexicon::show_relation(OUT, bp);
-			return;
-		}
-*/
-}
-
 void TempLexicon::show_relation(OUTPUT_STREAM, inter_package *bp) {
 /*
 	WRITE(" ... <i>");
@@ -554,3 +514,59 @@ void TempLexicon::show_relation(OUTPUT_STREAM, inter_package *bp) {
 	WRITE("</i>");
 */
 }
+
+inter_tree *tree_stored_by_lexicon = NULL;
+void TempLexicon::stock(inter_tree *I) {
+	if (I == tree_stored_by_lexicon) return;
+	tree_stored_by_lexicon = I;
+	tree_inventory *inv = Synoptic::inv(I);
+	TreeLists::sort(inv->verb_nodes, Synoptic::module_order);
+	for (int i=0; i<TreeLists::len(inv->verb_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_nodes->list[i].node);
+		if (Metadata::read_numeric(pack, I"^meaningless"))
+			TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
+		else
+			TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
+	}
+//	for (int i=0; i<TreeLists::len(inv->modal_verb_nodes); i++) {
+//		inter_package *pack = Inter::Package::defined_by_frame(inv->modal_verb_nodes->list[i].node);
+//		TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
+//	}
+	@<Create lower-case forms of all lexicon entries dash@>;
+	@<Sort the lexicon into alphabetical order dash@>;
+}
+
+@ Before we can sort the lexicon, we need to turn its disparate forms of name
+into a single, canonical, lower-case representation.
+
+@<Create lower-case forms of all lexicon entries dash@> =
+	index_tlexicon_entry *lex;
+	LOOP_OVER(lex, index_tlexicon_entry) {
+		Str::copy(lex->reduced_to_lower_case, lex->lemma);
+		LOOP_THROUGH_TEXT(pos, lex->reduced_to_lower_case)
+			Str::put(pos, Characters::tolower(Str::get(pos)));
+LOG("Spotted %S\n", lex->lemma);
+	}
+
+@ The lexicon is sorted by insertion sort, which is not ideally fast, but
+which is convenient when dealing with linked lists: there are unlikely to be
+more than 1000 or so entries, so the speed penalty for insertion rather
+than (say) quicksort is not great.
+
+@<Sort the lexicon into alphabetical order dash@> =
+	index_tlexicon_entry *lex;
+	LOOP_OVER(lex, index_tlexicon_entry) {
+		index_tlexicon_entry *lex2, *last_lex;
+		if (sorted_tlexicon == NULL) {
+			sorted_tlexicon = lex; lex->sorted_next = NULL; continue;
+		}
+		for (last_lex = NULL, lex2 = sorted_tlexicon; lex2;
+			last_lex = lex2, lex2 = lex2->sorted_next)
+			if (Str::cmp(lex->reduced_to_lower_case, lex2->reduced_to_lower_case) < 0) {
+				if (last_lex == NULL) sorted_tlexicon = lex;
+				else last_lex->sorted_next = lex;
+				lex->sorted_next = lex2; goto Inserted;
+			}
+		last_lex->sorted_next = lex; lex->sorted_next = NULL;
+		Inserted: ;
+	}

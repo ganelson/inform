@@ -77,3 +77,4 @@ Chapter 6: Index
 	Extras Element
 	Standards Element
 	Innards Element
+	Verbs Element

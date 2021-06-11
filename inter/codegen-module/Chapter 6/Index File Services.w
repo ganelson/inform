@@ -692,6 +692,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		InnardsElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Vb")) {
+		VerbsElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Pl")) {
@@ -706,7 +710,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		IXPhysicalWorld::render(OUT);
 		return;
 	}
-
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);
 		return;
@@ -715,23 +718,16 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		IndexLexicon::index(OUT);
 		return;
 	}
-	if (Str::eq_wide_string(elt, L"Vb")) {
-		IndexLexicon::index_verbs(OUT);
-		return;
-	}
-
 	if (Str::eq_wide_string(elt, L"Ch")) {
 		@<Assign each kind of object a corresponding documentation symbol@>;
 		Kinds::Index::index_kinds(OUT, 1);
 		Kinds::Index::index_kinds(OUT, 2);
 		return;
 	}
-
 	if (Str::eq_wide_string(elt, L"Gz")) {
 		IndexLexicon::index_common_nouns(OUT);
 		return;
 	}
-
 	if (Str::eq_wide_string(elt, L"A1")) {
 		CommandsIndex::page(OUT);
 		return;

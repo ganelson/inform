@@ -593,9 +593,19 @@ void Hierarchy::establish(void) {
 
 @e MVERBS_HAP
 @e MVERB_NAME_MD_HL
+@e MVERB_AT_MD_HL
+@e MVERB_INFINITIVE_MD_HL
 @e MODAL_CONJUGATION_FN_HL
 @e VERBS_HAP
 @e VERB_NAME_MD_HL
+@e VERB_AT_MD_HL
+@e VERB_INFINITIVE_MD_HL
+@e VERB_MEANING_MD_HL
+@e VERB_MEANINGLESS_MD_HL
+@e VERB_PRESENT_MD_HL
+@e VERB_PAST_MD_HL
+@e VERB_PRESENT_PERFECT_MD_HL
+@e VERB_PAST_PERFECT_MD_HL
 @e NONMODAL_CONJUGATION_FN_HL
 @e VERB_FORMS_HAP
 @e FORM_VALUE_MD_HL
@@ -616,15 +626,25 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(conjugations))
 		H_BEGIN_AP(MVERBS_HAP,                I"modal_verb", I"_modal_verb")
 			H_C_U(MVERB_NAME_MD_HL,     I"^name")
+			H_C_U(MVERB_AT_MD_HL,      I"^at")
+			H_C_U(MVERB_INFINITIVE_MD_HL,      I"^infinitive")
 			H_F_G(MODAL_CONJUGATION_FN_HL,    I"conjugation_fn", I"ConjugateModalVerb")
 		H_END
 		H_BEGIN_AP(VERBS_HAP,                 I"verb", I"_verb")
-			H_C_U(VERB_NAME_MD_HL,      I"^name")
-			H_F_G(NONMODAL_CONJUGATION_FN_HL, I"conjugation_fn", I"ConjugateVerb")
-			H_BEGIN_AP(VERB_FORMS_HAP,        I"form", I"_verb_form")
-				H_C_U(FORM_VALUE_MD_HL, I"^verb_value")
-				H_C_U(FORM_SORTING_MD_HL, I"^verb_sorting")
-				H_F_U(FORM_FN_HL,             I"form_fn")
+			H_C_U(VERB_NAME_MD_HL,             I"^name")
+			H_C_U(VERB_AT_MD_HL,               I"^at")
+			H_C_U(VERB_INFINITIVE_MD_HL,       I"^infinitive")
+			H_C_U(VERB_MEANING_MD_HL,          I"^meaning")
+			H_C_U(VERB_MEANINGLESS_MD_HL,      I"^meaningless")
+			H_C_U(VERB_PRESENT_MD_HL,          I"^present")
+			H_C_U(VERB_PAST_MD_HL,             I"^past")
+			H_C_U(VERB_PRESENT_PERFECT_MD_HL,  I"^present_perfect")
+			H_C_U(VERB_PAST_PERFECT_MD_HL,     I"^past_perfect")
+			H_F_G(NONMODAL_CONJUGATION_FN_HL,  I"conjugation_fn", I"ConjugateVerb")
+			H_BEGIN_AP(VERB_FORMS_HAP,         I"form", I"_verb_form")
+				H_C_U(FORM_VALUE_MD_HL,        I"^verb_value")
+				H_C_U(FORM_SORTING_MD_HL,      I"^verb_sorting")
+				H_F_U(FORM_FN_HL,              I"form_fn")
 			H_END
 		H_END
 	H_END
