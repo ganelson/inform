@@ -951,6 +951,9 @@ void Hierarchy::establish(void) {
 @e KIND_DSIZE_MD_HL
 @e KIND_DOCUMENTATION_MD_HL
 @e RUCKSACK_CLASS_MD_HL
+@e MIN_VAL_INDEX_MD_HL
+@e MAX_VAL_INDEX_MD_HL
+@e DIMENSIONS_INDEX_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
@@ -991,6 +994,15 @@ void Hierarchy::establish(void) {
 @e KIND_USAGE_HAP
 @e KIND_CLASS_HL
 
+@e MULTIPLICATION_RULE_HAP
+@e SET_AT_MD_HL
+@e LEFT_OPERAND_MD_HL
+@e RIGHT_OPERAND_MD_HL
+@e RESULT_MD_HL
+@e LEFT_OPERAND_BM_MD_HL
+@e RIGHT_OPERAND_BM_MD_HL
+@e RESULT_BM_MD_HL
+
 @<Establish kinds@> =
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
 
@@ -1021,6 +1033,9 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_MKDEF_FN_MD_HL,  I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_MD_HL,     I"^domain_size")
 			H_C_U(RUCKSACK_CLASS_MD_HL, I"^rucksack_class")
+			H_C_U(MIN_VAL_INDEX_MD_HL, I"^min_value")
+			H_C_U(MAX_VAL_INDEX_MD_HL, I"^max_value")
+			H_C_U(DIMENSIONS_INDEX_MD_HL, I"^dimensions")
 			H_C_U(KIND_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
@@ -1055,7 +1070,7 @@ void Hierarchy::establish(void) {
 			H_END
 		H_END
 		H_BEGIN_AP(DERIVED_KIND_HAP,          I"derived_kind", I"_derived_kind")
-			H_C_U(DK_NEEDED_MD_HL,      I"^default_value_needed")
+			H_C_U(DK_NEEDED_MD_HL,            I"^default_value_needed")
 			H_C_U(DK_STRONG_ID_HL,            I"strong_id")
 			H_C_G(DK_KIND_HL,                 I"DK")
 			H_C_U(DK_DEFAULT_VALUE_HL,        I"default_value")
@@ -1066,6 +1081,15 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, kinds))
 		H_BEGIN_AP(KIND_USAGE_HAP,            I"kind_usage", I"_kind_usage")
+		H_END
+		H_BEGIN_AP(MULTIPLICATION_RULE_HAP,   I"multiplication_rule", I"_multiplication_rule")
+			H_C_U(SET_AT_MD_HL,               I"^at")
+			H_C_U(LEFT_OPERAND_MD_HL,         I"^left_operand")
+			H_C_U(RIGHT_OPERAND_MD_HL,        I"^right_operand")
+			H_C_U(RESULT_MD_HL,               I"^result")
+			H_C_U(LEFT_OPERAND_BM_MD_HL,      I"^left_operand_benchmark")
+			H_C_U(RIGHT_OPERAND_BM_MD_HL,     I"^right_operand_benchmark")
+			H_C_U(RESULT_BM_MD_HL,            I"^result_benchmark")
 		H_END
 	H_END
 

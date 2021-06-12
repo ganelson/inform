@@ -19,7 +19,6 @@ Chapter 2: Indexing
 	Rules
 	Activities
 	Phrasebook Index
-	Arithmetic Element
 
 Chapter 3: Indexing for Plugins
 	Spatial

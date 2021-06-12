@@ -644,74 +644,26 @@ void Index::test_card(OUTPUT_STREAM, wording W) {
 }
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
-	if (Str::eq_wide_string(elt, L"Bh")) {
-		BehaviourElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Cd")) {
-		CardElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Rl")) {
-		RelationsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Ev")) {
-		EventsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Fi")) {
-		FiguresElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Tb")) {
-		TablesElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Vl")) {
-		ValuesElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"RS")) {
-		RulesForScenesElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Xt")) {
-		ExtrasElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"St")) {
-		StandardsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"C")) {
-		ContentsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"In")) {
-		InnardsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Vb")) {
-		VerbsElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Gz")) {
-		GazetteerElement::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Lx")) {
-		LexiconElement::render(OUT);
-		return;
-	}
+	if (Str::eq_wide_string(elt, L"Ar")) { ArithmeticElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Tb")) { TablesElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT); return; }
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Pl")) {
 		IXScenes::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Ar")) {
-		IXArithmetic::render(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Mp")) {

@@ -80,3 +80,4 @@ Chapter 6: Index
 	Verbs Element
 	Gazetteer Element
 	Lexicon Element
+	Arithmetic Element

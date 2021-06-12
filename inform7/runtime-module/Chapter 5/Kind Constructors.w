@@ -596,8 +596,82 @@ void RTKindConstructors::compile(void) {
 		if (kc->compilation_data.declaration_sequence_number >= 0)
 			Produce::annotate_i(RTKindDeclarations::iname(K), DECLARATION_ORDER_IANN,
 				(inter_ti) kc->compilation_data.declaration_sequence_number);
+
+		if ((Kinds::Behaviour::is_quasinumerical(K)) && (Kinds::is_intermediate(K) == FALSE)) {
+			TEMPORARY_TEXT(OUT)
+			@<Index the minimum positive value for a quasinumerical kind@>;
+			Hierarchy::apply_metadata(pack, MIN_VAL_INDEX_MD_HL, OUT);
+			Str::clear(OUT);
+			@<Index the maximum positive value for a quasinumerical kind@>;
+			Hierarchy::apply_metadata(pack, MAX_VAL_INDEX_MD_HL, OUT);
+			Str::clear(OUT);
+			@<Index the dimensions for a quasinumerical kind@>;
+			Hierarchy::apply_metadata(pack, DIMENSIONS_INDEX_MD_HL, OUT);
+			DISCARD_TEXT(OUT)
+		}
+
 	}
+	@<Compile multiplication rules for the index@>;
 }
+
+@<Index the minimum positive value for a quasinumerical kind@> =
+	if (Kinds::eq(K, K_number)) WRITE("1");
+	else {
+		text_stream *p = Kinds::Behaviour::get_index_minimum_value(K);
+		if (Str::len(p) > 0) WRITE("%S", p);
+		else LiteralPatterns::index_value(OUT,
+			LiteralPatterns::list_of_literal_forms(K), 1);
+	}
+
+@<Index the maximum positive value for a quasinumerical kind@> =
+	if (Kinds::eq(K, K_number)) {
+		if (TargetVMs::is_16_bit(Task::vm())) WRITE("32767");
+		else WRITE("2147483647");
+	} else {
+		text_stream *p = Kinds::Behaviour::get_index_maximum_value(K);
+		if (Str::len(p) > 0) WRITE("%S", p);
+		else {
+			if (TargetVMs::is_16_bit(Task::vm()))
+				LiteralPatterns::index_value(OUT,
+					LiteralPatterns::list_of_literal_forms(K), 32767);
+			else
+				LiteralPatterns::index_value(OUT,
+					LiteralPatterns::list_of_literal_forms(K), 2147483647);
+		}
+	}
+
+@<Index the dimensions for a quasinumerical kind@> =
+	if (Kinds::Dimensions::dimensionless(K) == FALSE) {
+		unit_sequence *deriv = Kinds::Behaviour::get_dimensional_form(K);
+		Kinds::Dimensions::index_unit_sequence(OUT, deriv, TRUE);
+	}
+
+@<Compile multiplication rules for the index@> =
+	kind *L, *R, *O;
+	int wn;
+	LOOP_OVER_MULTIPLICATIONS(L, R, O, wn) {
+		package_request *pack = Hierarchy::completion_package(MULTIPLICATION_RULE_HAP);
+		if (wn >= 0) Hierarchy::apply_metadata_from_number(pack, SET_AT_MD_HL, (inter_ti) wn);
+		TEMPORARY_TEXT(OUT)
+		WRITE_TO(OUT, "%u", L);
+		Hierarchy::apply_metadata(pack, LEFT_OPERAND_MD_HL, OUT);
+		Str::clear(OUT);
+		WRITE_TO(OUT, "%u", R);
+		Hierarchy::apply_metadata(pack, RIGHT_OPERAND_MD_HL, OUT);
+		Str::clear(OUT);
+		WRITE_TO(OUT, "%u", O);
+		Hierarchy::apply_metadata(pack, RESULT_MD_HL, OUT);
+		Str::clear(OUT);
+		LiteralPatterns::index_benchmark_value(OUT, L);
+		Hierarchy::apply_metadata(pack, LEFT_OPERAND_BM_MD_HL, OUT);
+		Str::clear(OUT);
+		LiteralPatterns::index_benchmark_value(OUT, R);
+		Hierarchy::apply_metadata(pack, RIGHT_OPERAND_BM_MD_HL, OUT);
+		Str::clear(OUT);
+		LiteralPatterns::index_benchmark_value(OUT, O);
+		Hierarchy::apply_metadata(pack, RESULT_BM_MD_HL, OUT);
+		DISCARD_TEXT(OUT)
+	}
 
 @
 
