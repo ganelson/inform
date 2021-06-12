@@ -111,13 +111,12 @@ inter_name *RTVerbs::conjugation_fn_iname(verb_conjugation *vc) {
 			DISCARD_TEXT(INFT)
 			TEMPORARY_TEXT(MEANING)
 			RTVerbs::show_meaning(MEANING, vc);
-			if (Str::len(MEANING) > 0) Hierarchy::apply_metadata(R, VERB_MEANING_MD_HL, INFT);
+			if (Str::len(MEANING) > 0) Hierarchy::apply_metadata(R, VERB_MEANING_MD_HL, MEANING);
 			DISCARD_TEXT(MEANING)
-// VERB_PRESENT_MD_HL
-// VERB_PAST_MD_HL
-// VERB_PRESENT_PERFECT_MD_HL
-// VERB_PAST_PERFECT_MD_HL
-
+			RTVerbs::tabulate_usages(R, vc, IS_TENSE, VERB_PRESENT_MD_HL);
+			RTVerbs::tabulate_usages(R, vc, WAS_TENSE, VERB_PAST_MD_HL);
+			RTVerbs::tabulate_usages(R, vc, HASBEEN_TENSE, VERB_PRESENT_PERFECT_MD_HL);
+			RTVerbs::tabulate_usages(R, vc, HADBEEN_TENSE, VERB_PAST_PERFECT_MD_HL);
 			Hierarchy::apply_metadata_from_number(R, VERB_AT_MD_HL,
 				(inter_ti) Wordings::first_wn(Node::get_text(vc->compilation_data.where_vc_created)));
 			vc->compilation_data.vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
@@ -160,6 +159,24 @@ void RTVerbs::show_relation(OUTPUT_STREAM, binary_predicate *bp) {
 	}
 }
 
+void RTVerbs::tabulate_usages(package_request *R, verb_conjugation *vc, int tense, int hl) {
+	TEMPORARY_TEXT(USAGES)
+	verb_usage *vu; int c = 0;
+	LOOP_OVER(vu, verb_usage)
+		if ((vu->vu_lex_entry == vc) && (VerbUsages::is_used_negatively(vu) == FALSE)
+			 && (VerbUsages::get_tense_used(vu) == tense)) {
+			vocabulary_entry *lastword = WordAssemblages::last_word(&(vu->vu_text));
+			if (c++ > 0) WRITE_TO(USAGES, "; ");
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE_TO(USAGES, "B ");
+			else WRITE_TO(USAGES, "A ");
+			WordAssemblages::index(USAGES, &(vu->vu_text));
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE_TO(USAGES, "A");
+			else WRITE_TO(USAGES, "B");
+		}
+	if (Str::len(USAGES) > 0) Hierarchy::apply_metadata(R, hl, USAGES);
+	DISCARD_TEXT(USAGES)
+}
+
 @h Compilation.
 
 =
@@ -171,6 +188,25 @@ void RTVerbs::compile_conjugations(void) {
 		Sequence::queue(&RTVerbs::vc_compilation_agent,
 			STORE_POINTER_verb_conjugation(vc), desc);
 	}
+	preposition *prep;
+	LOOP_OVER(prep, preposition) {
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "preposition '%A'", &(prep->prep_text));
+		Sequence::queue(&RTVerbs::prep_compilation_agent,
+			STORE_POINTER_preposition(prep), desc);
+	}
+}
+
+void RTVerbs::prep_compilation_agent(compilation_subtask *t) {
+	preposition *prep = RETRIEVE_POINTER_preposition(t->data);
+	package_request *pack = Hierarchy::local_package_to(PREPOSITIONS_HAP,
+		prep->where_prep_created);	
+	TEMPORARY_TEXT(ANT)
+	WRITE_TO(ANT, "%A", &(prep->prep_text));
+	Hierarchy::apply_metadata(pack, PREPOSITION_NAME_MD_HL, ANT);
+	DISCARD_TEXT(ANT)
+	Hierarchy::apply_metadata_from_number(pack, PREPOSITION_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(prep->where_prep_created)));
 }
 
 void RTVerbs::vc_compilation_agent(compilation_subtask *t) {

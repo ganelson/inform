@@ -16,8 +16,7 @@ void VerbsElement::render(OUTPUT_STREAM) {
 	for (index_tlexicon_entry *lex = sorted_tlexicon; lex; lex = lex->sorted_next)
 		if ((lex->part_of_speech == VERB_TLEXE) ||
 			(lex->part_of_speech == MVERB_TLEXE) ||
-			(lex->part_of_speech == PREP_TLEXE) ||
-			(lex->part_of_speech == ABLE_VERB_TLEXE)) {
+			(lex->part_of_speech == PREP_TLEXE)) {
 			text_stream *entry_text = lex->lemma;
 			HTML_OPEN_WITH("p", "class=\"hang\"");
 			Index::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */

@@ -39,6 +39,7 @@ typedef struct tree_inventory {
 	inter_tree_location_list *verb_nodes;
 	inter_tree_location_list *modal_verb_nodes;
 	inter_tree_location_list *verb_form_nodes;
+	inter_tree_location_list *preposition_nodes;
 	inter_tree_location_list *derived_kind_nodes;
 	inter_tree_location_list *kind_nodes;
 	inter_tree_location_list *test_nodes;
@@ -71,6 +72,7 @@ tree_inventory *Synoptic::new_inventory(inter_tree *I) {
 	inv->verb_nodes = Synoptic::add_inventory_need(inv, I"_verb");
 	inv->modal_verb_nodes = Synoptic::add_inventory_need(inv, I"_modal_verb");
 	inv->verb_form_nodes = Synoptic::add_inventory_need(inv, I"_verb_form");
+	inv->preposition_nodes = Synoptic::add_inventory_need(inv, I"_preposition");
 	inv->derived_kind_nodes = Synoptic::add_inventory_need(inv, I"_derived_kind");
 	inv->kind_nodes = Synoptic::add_inventory_need(inv, I"_kind");
 	inv->module_nodes = Synoptic::add_inventory_need(inv, I"_module");

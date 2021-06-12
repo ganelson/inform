@@ -155,7 +155,6 @@ void VerbUsages::register_all_usages_of_verb(verb *vi,
 	current_main_verb = vc;
 	#ifdef CORE_MODULE
 	IndexLexicon::new_main_verb(vc->infinitive, VERB_LEXE);
-LOG("Well, I see your %A\n", vc->infinitive);
 	#endif
 
 	VerbUsages::register_voices_of_verb(vc, ACTIVE_VOICE, vi,

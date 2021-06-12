@@ -429,46 +429,7 @@ of value.
 	WRITE("</i>");
 
 @h The table of verbs.
-This is used in two different ways: firstly, at the foot of the lexicon --
-
-=
-void IndexLexicon::index_verbs(OUTPUT_STREAM) {
-	HTML_OPEN("p"); HTML_CLOSE("p"); /* for spacing */
-	HTML_OPEN("p"); WRITE("Verbs listed as \"for saying only\" are values of the kind \"verb\" "
-		"and can be used in adaptive text, but they have no meaning to Inform, so "
-		"they can't be used in sentences about what's in the story.");
-	HTML_CLOSE("p");
-	index_lexicon_entry *lex = sorted_lexicon;
-	int verb_count = 0;
-	for (lex = sorted_lexicon; lex; lex = lex->sorted_next)
-		if ((lex->part_of_speech == VERB_LEXE) ||
-			(lex->part_of_speech == MVERB_LEXE) ||
-			(lex->part_of_speech == PREP_LEXE) ||
-			(lex->part_of_speech == ABLE_VERB_LEXE)) {
-			TEMPORARY_TEXT(entry_text)
-			HTML_OPEN_WITH("p", "class=\"hang\"");
-			Index::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */
-			IndexLexicon::lexicon_copy_to_stream(lex, entry_text);
-			if (lex->part_of_speech == VERB_LEXE) WRITE("To <b>%S</b>", entry_text);
-			else if (lex->part_of_speech == MVERB_LEXE) WRITE("To <b>%S</b>", entry_text);
-			else if (lex->part_of_speech == AVERB_LEXE) WRITE("<b>%S</b>", entry_text);
-			else if (lex->part_of_speech == PREP_LEXE) WRITE("To be <b>%S</b>", entry_text);
-			else WRITE("To be able to <b>%S</b>", entry_text);
-			if (Wordings::nonempty(lex->wording_of_entry))
-				Index::link(OUT, Wordings::first_wn(lex->wording_of_entry));
-			if (lex->part_of_speech == AVERB_LEXE) WRITE(" ... <i>auxiliary verb</i>");
-			else if (lex->part_of_speech == MVERB_LEXE) WRITE(" ... for saying only");
-			else IndexLexicon::tabulate_meanings(OUT, lex);
-			HTML_CLOSE("p");
-			IndexLexicon::tabulate_verbs(OUT, lex, IS_TENSE, "present");
-			IndexLexicon::tabulate_verbs(OUT, lex, WAS_TENSE, "past");
-			IndexLexicon::tabulate_verbs(OUT, lex, HASBEEN_TENSE, "present perfect");
-			IndexLexicon::tabulate_verbs(OUT, lex, HADBEEN_TENSE, "past perfect");
-			DISCARD_TEXT(entry_text)
-		}
-}
-
-@ -- and secondly, in the documentation for extensions, where we want to
+In the documentation for extensions, where we want to
 be able to print out a table of just those verbs created in that extension.
 
 =
@@ -488,64 +449,4 @@ void IndexLexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_ext
 			DISCARD_TEXT(entry_text)
 		}
 	if (verb_count > 0) HTML_CLOSE("p");
-}
-
-@h Index tabulation.
-The following produces the table of verbs in the Phrasebook Index page.
-
-=
-void IndexLexicon::tabulate_verbs(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
-/*	verb_usage *vu; int f = TRUE;
-	LOOP_OVER(vu, verb_usage)
-		if ((vu->vu_lex_entry == lex) && (VerbUsages::is_used_negatively(vu) == FALSE)
-			 && (VerbUsages::get_tense_used(vu) == tense)) {
-			vocabulary_entry *lastword = WordAssemblages::last_word(&(vu->vu_text));
-			if (f) {
-				HTML::open_indented_p(OUT, 2, "tight");
-				WRITE("<i>%s:</i>&nbsp;", tensename);
-			} else WRITE("; ");
-			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE("B ");
-			else WRITE("A ");
-			WordAssemblages::index(OUT, &(vu->vu_text));
-			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE("A");
-			else WRITE("B");
-			f = FALSE;
-		}
-	if (f == FALSE) HTML_CLOSE("p");
-*/
-}
-
-void IndexLexicon::tabulate_meanings(OUTPUT_STREAM, index_lexicon_entry *lex) {
-/*	verb_usage *vu;
-	LOOP_OVER(vu, verb_usage)
-		if (vu->vu_lex_entry == lex) {
-			if (vu->where_vu_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
-			if (bp) IndexLexicon::show_relation(OUT, bp);
-			return;
-		}
-	preposition *prep;
-	LOOP_OVER(prep, preposition)
-		if (prep->prep_lex_entry == lex) {
-			if (prep->where_prep_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
-			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
-			if (bp) IndexLexicon::show_relation(OUT, bp);
-			return;
-		}
-*/
-}
-
-void IndexLexicon::show_relation(OUTPUT_STREAM, binary_predicate *bp) {
-	WRITE(" ... <i>");
-	if (bp == NULL) WRITE("(a meaning internal to Inform)");
-	else {
-		if (bp->right_way_round == FALSE) {
-			bp = bp->reversal;
-			WRITE("reversed ");
-		}
-		WordAssemblages::index(OUT, &(bp->relation_name));
-	}
-	WRITE("</i>");
 }

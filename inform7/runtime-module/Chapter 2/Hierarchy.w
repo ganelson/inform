@@ -612,6 +612,9 @@ void Hierarchy::establish(void) {
 @e FORM_SORTING_MD_HL
 @e FORM_FN_HL
 @e CONJUGATION_FN_HL
+@e PREPOSITIONS_HAP
+@e PREPOSITION_NAME_MD_HL
+@e PREPOSITION_AT_MD_HL
 
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
@@ -646,6 +649,10 @@ void Hierarchy::establish(void) {
 				H_C_U(FORM_SORTING_MD_HL,      I"^verb_sorting")
 				H_F_U(FORM_FN_HL,              I"form_fn")
 			H_END
+		H_END
+		H_BEGIN_AP(PREPOSITIONS_HAP,                 I"preposition", I"_preposition")
+			H_C_U(PREPOSITION_NAME_MD_HL,             I"^text")
+			H_C_U(PREPOSITION_AT_MD_HL,               I"^at")
 		H_END
 	H_END
 
