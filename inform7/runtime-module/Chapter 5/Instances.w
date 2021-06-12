@@ -79,7 +79,14 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
 	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL, pack);
 	kind *K = Instances::to_kind(I);
+	TEMPORARY_TEXT(IK)
+	WRITE_TO(IK, "%u", K);
+	Hierarchy::apply_metadata(pack, INSTANCE_INDEX_KIND_MD_HL, IK);
+	DISCARD_TEXT(IK)
 	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
+	if (Kinds::Behaviour::is_subkind_of_object(K))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_OBJECT_MD_HL, 1);
 	if ((K_scene) && (Kinds::eq(K, K_scene)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SCENE_MD_HL, 1);

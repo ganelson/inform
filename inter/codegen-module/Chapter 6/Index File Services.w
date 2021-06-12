@@ -696,6 +696,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		VerbsElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Gz")) {
+		GazetteerElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Pl")) {
@@ -722,10 +726,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		@<Assign each kind of object a corresponding documentation symbol@>;
 		Kinds::Index::index_kinds(OUT, 1);
 		Kinds::Index::index_kinds(OUT, 2);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Gz")) {
-		IndexLexicon::index_common_nouns(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"A1")) {

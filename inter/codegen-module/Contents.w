@@ -78,3 +78,4 @@ Chapter 6: Index
 	Standards Element
 	Innards Element
 	Verbs Element
+	Gazetteer Element

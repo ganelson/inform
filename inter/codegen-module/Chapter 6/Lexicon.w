@@ -30,7 +30,7 @@ typedef struct index_tlexicon_entry {
 	struct parse_node *verb_defined_at; /* sentence where defined (verbs only) */
 	char *gloss_note; /* gloss on the definition, or |NULL| if none is provided */
 	struct inter_package *lex_package;
-
+	int link_to; /* word number in source text */
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
 	struct index_tlexicon_entry *sorted_next; /* next in lexicographic order */
 	CLASS_DEFINITION
@@ -52,6 +52,7 @@ index_tlexicon_entry *TempLexicon::lexicon_new_entry(text_stream *lemma) {
 	lex->category = NULL; lex->gloss_note = NULL; lex->verb_defined_at = NULL;
 	lex->reduced_to_lower_case = Str::new();
 	lex->lex_package = NULL;
+	lex->link_to = 0;
 	return lex;
 }
 
@@ -95,7 +96,7 @@ it doesn't yet contain nouns or adjectives.
 	@<Create lower-case forms of all lexicon entries@>;
 	@<Sort the lexicon into alphabetical order@>;
 
-	int common_nouns_only = FALSE;
+	int proper_nouns_only = FALSE;
 	Index::anchor(OUT, I"LEXICON");
 	@<Explanatory head-note at the top of the lexicon@>;
 	@<Main body of the lexicon@>;
@@ -106,7 +107,7 @@ only, for the foot of the World index.
 
 =
 @<TempLexicon::index_common_nouns@> =
-	int common_nouns_only = TRUE;
+	int proper_nouns_only = TRUE;
 	@<Main body of the lexicon@>;
 }
 
@@ -254,21 +255,22 @@ explanation of what it is: for instance,
 
 In a few cases, there is a further textual gloss to add.
 
-@<Main body of the lexicon@> =
+=
+void TempLexicon::listing(OUTPUT_STREAM, int proper_nouns_only) {
 	index_tlexicon_entry *lex;
 	wchar_t current_initial_letter = '?';
-	int verb_count = 0, entry_count = 0, c;
+	int verb_count = 0, proper_noun_count = 0, c;
 	for (lex = sorted_tlexicon; lex; lex = lex->sorted_next)
 		if (lex->part_of_speech == PROPER_NOUN_TLEXE)
-			entry_count++;
-	if (common_nouns_only) {
+			proper_noun_count++;
+	if (proper_nouns_only) {
 		HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 		HTML::first_html_column(OUT, 0);
 	}
 	for (c = 0, lex = sorted_tlexicon; lex; lex = lex->sorted_next) {
-		if (common_nouns_only) { if (lex->part_of_speech != PROPER_NOUN_TLEXE) continue; }
+		if (proper_nouns_only) { if (lex->part_of_speech != PROPER_NOUN_TLEXE) continue; }
 		else { if (lex->part_of_speech == PROPER_NOUN_TLEXE) continue; }
-		if ((common_nouns_only) && (c == entry_count/2)) HTML::next_html_column(OUT, 0);
+		if ((proper_nouns_only) && (c == proper_noun_count/2)) HTML::next_html_column(OUT, 0);
 		if (current_initial_letter != Str::get_first_char(lex->reduced_to_lower_case)) {
 			if (c > 0) { HTML_OPEN("p"); HTML_CLOSE("p"); }
 			current_initial_letter = Str::get_first_char(lex->reduced_to_lower_case);
@@ -280,19 +282,20 @@ In a few cases, there is a further textual gloss to add.
 		@<Icon with link to documentation, source or verb table, if any@>;
 
 		switch(lex->part_of_speech) {
-			case ADJECTIVAL_PHRASE_TLEXE:
-				@<Definition of adjectival phrase entry@>; break;
-			case ENUMERATED_CONSTANT_TLEXE:
-				@<Definition of enumerated instance entry@>; break;
+//			case ADJECTIVAL_PHRASE_TLEXE:
+//				Definition of adjectival phrase entry@>; break;
+//			case ENUMERATED_CONSTANT_TLEXE:
+//				Definition of enumerated instance entry@>; break;
 			case PROPER_NOUN_TLEXE:
 				@<Definition of proper noun entry@>; break;
-			case NOUN_TLEXE:
-				@<Definition of noun entry@>; break;
+//			case NOUN_TLEXE:
+//				Definition of noun entry@>; break;
 		}
 		if (lex->gloss_note) WRITE(" <i>%s</i>", lex->gloss_note);
 		HTML_CLOSE("p");
 	}
-	if (common_nouns_only) { HTML::end_html_row(OUT); HTML::end_html_table(OUT); }
+	if (proper_nouns_only) { HTML::end_html_row(OUT); HTML::end_html_table(OUT); }
+}
 
 @ In traditional dictionary fashion, we present the text in what may not be
 the most normal ordering, in order to place the alphabetically important
@@ -302,7 +305,7 @@ treachery amongst the" in "Doctor Who: The Completely Useless
 Encyclopaedia", eds. Howarth and Lyons (1996).)
 
 @<Text of the actual lexicon entry@> =
-	TempLexicon::lexicon_copy_to_stream(lex, OUT);
+	WRITE("%S", lex->lemma);
 	if (lex->part_of_speech == PREP_TLEXE) WRITE(", to be");
 
 @ Main lexicon entries to do with verbs link further down the index page
@@ -319,9 +322,9 @@ source text: so any single link would be potentially misleading.
 @<Icon with link to documentation, source or verb table, if any@> =
 	switch(lex->part_of_speech) {
 		case NOUN_TLEXE: {
-			kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
-			if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
-				Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
+//			kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
+//			if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
+//				Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
 			break;
 		}
 		case VERB_TLEXE:
@@ -329,8 +332,8 @@ source text: so any single link would be potentially misleading.
 			Index::below_link_numbered(OUT, 10000+verb_count++);
 			break;
 	}
-	if ((lex->part_of_speech != ADJECTIVAL_PHRASE_TLEXE) && (Wordings::nonempty(lex->lemma)))
-		Index::link(OUT, Wordings::first_wn(lex->lemma));
+	if ((lex->part_of_speech != ADJECTIVAL_PHRASE_TLEXE) && (lex->link_to > 0))
+		Index::link(OUT, lex->link_to);
 
 @<Definition of noun entry@> =
 	kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
@@ -352,20 +355,9 @@ source text: so any single link would be potentially misleading.
 @ Simply the name of an instance.
 
 @<Definition of proper noun entry@> =
-	instance *I = RETRIEVE_POINTER_instance(lex->entry_refers_to);
-	kind *K = Instances::to_kind(I);
-	int define_noun = TRUE;
-	#ifdef IF_MODULE
-	if (Kinds::eq(K, K_thing)) define_noun = FALSE;
-	#endif
-	if (define_noun) {
-		wording W = Kinds::Behaviour::get_name(K, FALSE);
-		if (Wordings::nonempty(W)) {
-			@<Begin definition text@>;
-			WRITE("%+W", W);
-			@<End definition text@>;
-		}
-	}
+	@<Begin definition text@>;
+	WRITE("%S", Metadata::read_textual(lex->lex_package, I"^index_kind"));
+	@<End definition text@>;
 
 @ As mentioned above, an adjectival phrase can be multiply defined in
 different contexts. We want to quote all of those.
@@ -403,7 +395,7 @@ of value.
 
 @<Begin definition text@> =
 	WRITE(" ... <i>");
-	if ((common_nouns_only == FALSE) && (lex->category))
+	if ((proper_nouns_only == FALSE) && (lex->category))
 		WRITE("%s", lex->category);
 
 @<End definition text@> =
@@ -445,15 +437,29 @@ void TempLexicon::stock(inter_tree *I) {
 	TreeLists::sort(inv->verb_nodes, Synoptic::module_order);
 	for (int i=0; i<TreeLists::len(inv->verb_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_nodes->list[i].node);
+		index_tlexicon_entry *lex;
 		if (Metadata::read_numeric(pack, I"^meaningless"))
-			TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
+			lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
 		else
-			TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
+			lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
+		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 	for (int i=0; i<TreeLists::len(inv->preposition_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->preposition_nodes->list[i].node);
-		TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
+		index_tlexicon_entry *lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
+		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
+	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
+			index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"));
+			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
+			lex->part_of_speech = PROPER_NOUN_TLEXE;
+			lex->category = "noun";
+			lex->lex_package = pack;
+		}
+	}
+
 	@<Create lower-case forms of all lexicon entries dash@>;
 	@<Sort the lexicon into alphabetical order dash@>;
 }

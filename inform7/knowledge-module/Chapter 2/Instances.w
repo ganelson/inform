@@ -64,7 +64,6 @@ instance *Instances::new(wording W, kind *K) {
 	instance *I = CREATE(instance);
 	@<Initialise the instance@>;
 	@<Add the new instance to its enumeration@>;
-	RTInstances::new_compilation_data(I);
 	IXInstances::initialise_iid(I);
 
 	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind %u) (inter %n)\n",

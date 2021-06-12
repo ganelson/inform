@@ -813,6 +813,8 @@ void Hierarchy::establish(void) {
 @e INSTANCE_AT_MD_HL
 @e INSTANCE_VALUE_MD_HL
 @e INSTANCE_KIND_MD_HL
+@e INSTANCE_INDEX_KIND_MD_HL
+@e INSTANCE_IS_OBJECT_MD_HL
 @e INSTANCE_IS_SCENE_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
@@ -853,6 +855,8 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_AT_MD_HL,  I"^at")
 			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
 			H_C_U(INSTANCE_KIND_MD_HL,  I"^kind")
+			H_C_U(INSTANCE_INDEX_KIND_MD_HL,  I"^index_kind")
+			H_C_U(INSTANCE_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
 			H_C_U(INSTANCE_SSF_MD_HL,   I"^scene_status_fn")
 			H_C_U(INSTANCE_SCF_MD_HL,   I"^scene_change_fn")
