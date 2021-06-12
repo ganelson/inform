@@ -485,6 +485,8 @@ void Hierarchy::establish(void) {
 
 @e ADJECTIVES_HAP
 @e ADJECTIVE_HL
+@e ADJECTIVE_TEXT_MD_HL
+@e ADJECTIVE_INDEX_MD_HL
 @e MEASUREMENTS_HAP
 @e MEASUREMENT_FN_HL
 @e ADJECTIVE_PHRASES_HAP
@@ -498,6 +500,8 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(adjectives))
 		H_BEGIN_AP(ADJECTIVES_HAP,            I"adjective", I"_adjective")
 			H_C_U(ADJECTIVE_HL,               I"adjective")
+			H_C_U(ADJECTIVE_TEXT_MD_HL,       I"^text")
+			H_C_U(ADJECTIVE_INDEX_MD_HL,      I"^index_entry")
 			H_BEGIN_AP(ADJECTIVE_TASKS_HAP,   I"adjective_task", I"_adjective_task")
 				H_F_U(TASK_FN_HL,             I"task_fn")
 			H_END
@@ -929,12 +933,14 @@ void Hierarchy::establish(void) {
 
 @e KIND_HAP
 @e KIND_NAME_MD_HL
+@e KIND_AT_MD_HL
 @e KIND_CLASS_MD_HL
 @e KIND_PNAME_MD_HL
 @e KIND_SHOWME_MD_HL
 @e KIND_IS_BASE_MD_HL
 @e KIND_IS_DEF_MD_HL
 @e KIND_IS_OBJECT_MD_HL
+@e INDEX_SUPERKIND_MD_HL
 @e KIND_IS_SKOO_MD_HL
 @e KIND_HAS_BV_MD_HL
 @e KIND_WEAK_ID_MD_HL
@@ -943,6 +949,7 @@ void Hierarchy::establish(void) {
 @e KIND_SUPPORT_FN_MD_HL
 @e KIND_MKDEF_FN_MD_HL
 @e KIND_DSIZE_MD_HL
+@e KIND_DOCUMENTATION_MD_HL
 @e RUCKSACK_CLASS_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
@@ -997,6 +1004,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
 			H_C_U(KIND_NAME_MD_HL,      I"^name")
+			H_C_U(KIND_AT_MD_HL,      I"^at")
 			H_C_U(KIND_CLASS_MD_HL,     I"^object_class")
 			H_C_U(KIND_PNAME_MD_HL,     I"^printed_name")
 			H_C_U(KIND_SHOWME_MD_HL,    I"^showme_fn")
@@ -1004,6 +1012,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_IS_DEF_MD_HL,    I"^is_definite")
 			H_C_U(KIND_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(KIND_IS_SKOO_MD_HL,   I"^is_subkind_of_object")
+			H_C_U(INDEX_SUPERKIND_MD_HL, I"^index_superkind")
 			H_C_U(KIND_HAS_BV_MD_HL,    I"^has_block_values")
 			H_C_U(KIND_WEAK_ID_MD_HL,   I"^weak_id")
 			H_C_U(KIND_CMP_FN_MD_HL,    I"^cmp_fn")
@@ -1012,6 +1021,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_MKDEF_FN_MD_HL,  I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_MD_HL,     I"^domain_size")
 			H_C_U(RUCKSACK_CLASS_MD_HL, I"^rucksack_class")
+			H_C_U(KIND_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)

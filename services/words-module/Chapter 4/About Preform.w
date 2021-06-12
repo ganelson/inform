@@ -278,9 +278,6 @@ be put to other uses besides parsing source text. For these other uses, see
 (*) Specifying replacements of one set of words by another -- see
 //PreformUtilities::find_corresponding_word//.
 
-(*) Specifying miscellaneous entries for the lexicon in the Inform index -- see
-//PreformUtilities::enter_lexicon//.
-
 (*) Saying how to build a trie which will detect patterns in a single word and
 then modify it -- see //PreformUtilities::define_trie//.
 

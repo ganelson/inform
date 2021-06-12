@@ -66,6 +66,9 @@ package_request *RTKindConstructors::package(kind_constructor *kc) {
 				kc->explicit_identifier);
 		else
 			Hierarchy::apply_metadata(kc->compilation_data.kc_package, KIND_NAME_MD_HL, I"(anonymous kind)");
+		if (kc->where_defined_in_source_text)
+			Hierarchy::apply_metadata_from_number(kc->compilation_data.kc_package, KIND_AT_MD_HL,
+				(inter_ti) Wordings::first_wn(Node::get_text(kc->where_defined_in_source_text)));
 	}
 	return kc->compilation_data.kc_package;
 }
@@ -442,7 +445,8 @@ void RTKindConstructors::compile(void) {
 	kind_constructor *kc;
 	LOOP_OVER(kc, kind_constructor) {
 		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
-		
+		kind *K = Kinds::base_construction(kc);
+	
 		package_request *pack = RTKindConstructors::package(kc);
 				
 		Emit::numeric_constant(RTKindConstructors::weak_ID_iname(kc), 0);
@@ -456,19 +460,22 @@ void RTKindConstructors::compile(void) {
 		Hierarchy::apply_metadata_from_number(pack,
 			KIND_IS_BASE_MD_HL, 1);
 		if (RTKindConstructors::is_object(kc)) {
-			Hierarchy::apply_metadata_from_number(pack,
-				KIND_IS_OBJECT_MD_HL, 1);
+			Hierarchy::apply_metadata_from_number(pack, KIND_IS_OBJECT_MD_HL, 1);
 		} else {
-			Hierarchy::apply_metadata_from_number(pack,
-				KIND_IS_OBJECT_MD_HL, 0);
+			Hierarchy::apply_metadata_from_number(pack, KIND_IS_OBJECT_MD_HL, 0);
 		}
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
-			Hierarchy::apply_metadata_from_number(pack,
-				KIND_IS_SKOO_MD_HL, 1);
+			Hierarchy::apply_metadata_from_number(pack, KIND_IS_SKOO_MD_HL, 1);
+			TEMPORARY_TEXT(SK)
+			WRITE_TO(SK, "%u", Latticework::super(K));
+			Hierarchy::apply_metadata(pack, INDEX_SUPERKIND_MD_HL, SK);
+			DISCARD_TEXT(SK)
 		} else {
-			Hierarchy::apply_metadata_from_number(pack,
-				KIND_IS_SKOO_MD_HL, 0);
+			Hierarchy::apply_metadata_from_number(pack, KIND_IS_SKOO_MD_HL, 0);
 		}
+		text_stream *DR = Kinds::Behaviour::get_documentation_reference(K);
+		if (Str::len(DR) > 0)
+			Hierarchy::apply_metadata(pack, KIND_DOCUMENTATION_MD_HL, DR);
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
 			Hierarchy::apply_metadata_from_iname(pack,
 				KIND_CLASS_MD_HL, RTKindDeclarations::iname(Kinds::base_construction(kc)));
@@ -549,7 +556,6 @@ void RTKindConstructors::compile(void) {
 			Functions::end(save);
 		}
 		
-		kind *K = Kinds::base_construction(kc);
 		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Behaviour::is_object(K))) {
 			TEMPORARY_TEXT(ICN)
 			WRITE_TO(ICN, "ICOUNT_");

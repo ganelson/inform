@@ -120,10 +120,22 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 	CommandsIndex::index_for_extension(OUT, E->read_into_file, E);
 	#endif
 
-@ Verbs (this one we delegate):
+@ Verbs:
 
 @<Document and dictionary the verbs made in extension@> =
-	IndexLexicon::list_verbs_in_file(OUT, E->read_into_file, E);
+	int verb_count = 0;
+	verb_conjugation *vc;
+	LOOP_OVER(vc, verb_conjugation)
+		if (Lexer::file_of_origin(Wordings::first_wn(
+			Node::get_text(vc->compilation_data.where_vc_created))) == E->read_into_file) {
+			TEMPORARY_TEXT(entry_text)
+			WRITE_TO(entry_text, "%A", &(vc->infinitive));
+			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
+			WRITE("to <b>%S</b>", entry_text);
+			ExtensionDictionary::new_entry(I"verb", E, entry_text);
+			DISCARD_TEXT(entry_text)
+		}
+	if (verb_count > 0) HTML_CLOSE("p");
 
 @ Adjectival phrases:
 

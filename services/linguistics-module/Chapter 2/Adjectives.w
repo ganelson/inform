@@ -70,7 +70,7 @@ adjective *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	ADJECTIVE_MEANING_LINGUISTICS_CALLBACK(adj);
 	#endif
 	#ifdef ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK
-	ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK(adj);
+	ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK(adj, W);
 	#endif
 	@<Register the new adjective with the lexicon module@>;
 	adj->in_stock = Stock::new(adjectives_category, STORE_POINTER_adjective(adj));

@@ -9,7 +9,6 @@ Chapter 1: Starting Up
 
 Chapter 2: Indexing
 "Utility routines for generating index pages."
-	Lexicon Index
 	Map Element
 	Kinds Index
 	Index Extensions

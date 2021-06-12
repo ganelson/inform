@@ -79,22 +79,6 @@ vocabulary_entry *PreformUtilities::find_corresponding_word(vocabulary_entry *ve
 	return ve; /* no change, in other words */
 }
 
-@h Lexicon entry.
-This is only a convenience for putting particles into the Lexicon:
-
-=
-#ifdef CORE_MODULE
-void PreformUtilities::enter_lexicon(nonterminal *nt, int pos, char *category, char *gloss) {
-	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl)
-		for (production *pr = pl->first_pr; pr; pr = pr->next_pr)
-			for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt)
-				for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken)
-					if (alt->ve_pt)
-						IndexLexicon::new_entry_with_details(EMPTY_WORDING, pos,
-							WordAssemblages::lit_1(alt->ve_pt), category, gloss);
-}
-#endif
-
 @h Making tries.
 Properly speaking, we make "avinues". Note that we expect to make a different
 avinue for each natural language; this matters so that we can pluralise words

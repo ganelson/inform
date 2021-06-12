@@ -77,9 +77,6 @@ preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_
 	prep->where_prep_created = where;
 	prep->allow_unexpected_upper_case = unexpected_upper_casing_used;
 	Prepositions::mark_as_preposition(WordAssemblages::first_word(&wa));
-	#ifdef CORE_MODULE
-	IndexLexicon::new_main_verb(wa, PREP_LEXE);
-	#endif
 	prep->prep_lex_entry = current_main_verb;
 	prep->in_stock = Stock::new(prepositions_category, STORE_POINTER_preposition(prep));
 	LOGIF(VERB_FORMS, "New preposition: $p\n", prep);

@@ -700,6 +700,10 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		GazetteerElement::render(OUT);
 		return;
 	}
+	if (Str::eq_wide_string(elt, L"Lx")) {
+		LexiconElement::render(OUT);
+		return;
+	}
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Pl")) {
@@ -716,10 +720,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Lx")) {
-		IndexLexicon::index(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Ch")) {

@@ -11,6 +11,7 @@ typedef struct adjective_compilation_data {
 	struct inter_name *adaptive_printing_fn_iname;
 	struct package_request *aph_package;
 	struct linked_list *held_inames[NO_ATOM_TASKS + 1]; /* of |adjective_iname_holder| */
+	struct wording index_wording;
 } adjective_compilation_data;
 
 typedef struct adjective_iname_holder {
@@ -24,12 +25,13 @@ typedef struct adjective_iname_holder {
 @d ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK RTAdjectives::initialise_compilation_data
 
 =
-void RTAdjectives::initialise_compilation_data(adjective *adj) {
+void RTAdjectives::initialise_compilation_data(adjective *adj, wording W) {
 	adj->adjective_compilation.aph_package = Hierarchy::local_package(ADJECTIVES_HAP);
 	adj->adjective_compilation.adaptive_printing_fn_iname =
 		Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
 	for (int i=1; i<=NO_ATOM_TASKS; i++)
 		adj->adjective_compilation.held_inames[i] = NEW_LINKED_LIST(adjective_iname_holder);
+	adj->adjective_compilation.index_wording = W;
 }
 
 @ An adjective can be defined in multiple senses -- "empty" for containers does
@@ -113,6 +115,25 @@ void RTAdjectives::compilation_agent(compilation_subtask *t) {
 		}
 	}
 	RTAdjectives::compile_adaptive_printing_fn(adj);
+	Hierarchy::apply_metadata_from_raw_wording(adj->adjective_compilation.aph_package,
+		ADJECTIVE_TEXT_MD_HL, adj->adjective_compilation.index_wording); 
+	TEMPORARY_TEXT(ENTRY)
+	int ac = 0;
+	adjective_meaning *am;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
+		ac++;
+	int nc = ac;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order) {
+		ac--;
+		if (nc > 1) {
+			WRITE_TO(ENTRY, "%d. ", nc-ac);
+		}
+		IXAdjectives::print(ENTRY, am);
+		if (ac >= 1) WRITE_TO(ENTRY, "; ");
+	}
+	Hierarchy::apply_metadata(adj->adjective_compilation.aph_package,
+		ADJECTIVE_INDEX_MD_HL, ENTRY); 
+	DISCARD_TEXT(ENTRY)
 }
 
 @<Compile adjective definition for this kind@> =

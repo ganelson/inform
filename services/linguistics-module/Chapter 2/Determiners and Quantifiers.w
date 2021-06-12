@@ -339,11 +339,6 @@ determiner *Quantifiers::det_new(int not, int pr, int num, quantifier *quant, ch
 	det->quantifier_meant = quant;
 	if (quant == NULL) internal_error("created meaningless quantifier");
 	det->index_text = text;
-	#ifdef CORE_MODULE
-	if (text)
-		IndexLexicon::new_entry_with_details(
-			EMPTY_WORDING, MISCELLANEOUS_LEXE, wa, "determiner", text);
-	#endif
 	det->in_stock = Stock::new(determiners_category, STORE_POINTER_determiner(det));
 	return det;
 }

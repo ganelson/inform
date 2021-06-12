@@ -153,9 +153,6 @@ void VerbUsages::register_all_usages_of_verb(verb *vi,
 	verb_conjugation *vc = vi->conjugation;
 	if (vc == NULL) return;
 	current_main_verb = vc;
-	#ifdef CORE_MODULE
-	IndexLexicon::new_main_verb(vc->infinitive, VERB_LEXE);
-	#endif
 
 	VerbUsages::register_voices_of_verb(vc, ACTIVE_VOICE, vi,
 		unexpected_upper_casing_used, priority, where);

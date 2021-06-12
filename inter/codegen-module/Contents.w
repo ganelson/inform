@@ -79,3 +79,4 @@ Chapter 6: Index
 	Innards Element
 	Verbs Element
 	Gazetteer Element
+	Lexicon Element
