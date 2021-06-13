@@ -90,6 +90,9 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_page_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_element_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_tlexicon_entry_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_scene_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_end_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_connector_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">I6T_intervention</span><span class="plain-syntax">)</span>
@@ -109,6 +112,9 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_element</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_page</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_tlexicon_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_scene</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_end</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_connector</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
@@ -126,12 +132,14 @@ which use this module:
 <p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CODE_GENERATION_MREASON</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">SCENE_SORTING_MREASON</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_GENERATION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"code generation workspace for objects"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">SCENE_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"scene index sorting"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>

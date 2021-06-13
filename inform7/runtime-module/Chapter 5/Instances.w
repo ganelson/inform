@@ -87,9 +87,6 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if (Kinds::Behaviour::is_subkind_of_object(K))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_OBJECT_MD_HL, 1);
-	if ((K_scene) && (Kinds::eq(K, K_scene)))
-		Hierarchy::apply_metadata_from_number(pack,
-			INSTANCE_IS_SCENE_MD_HL, 1);
 	if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SOUND_MD_HL, 1);

@@ -27,6 +27,9 @@ which use this module:
 @e index_page_CLASS
 @e index_element_CLASS
 @e index_tlexicon_entry_CLASS
+@e simplified_scene_CLASS
+@e simplified_end_CLASS
+@e simplified_connector_CLASS
 
 =
 DECLARE_CLASS(I6T_intervention)
@@ -46,6 +49,9 @@ DECLARE_CLASS(tree_inventory_item)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
 DECLARE_CLASS(index_tlexicon_entry)
+DECLARE_CLASS(simplified_scene)
+DECLARE_CLASS(simplified_end)
+DECLARE_CLASS(simplified_connector)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
@@ -62,9 +68,11 @@ void CodegenModule::end(void) {
 @
 
 @e CODE_GENERATION_MREASON
+@e SCENE_SORTING_MREASON
 
 @<Register this module's memory allocation reasons@> =
 	Memory::reason_name(CODE_GENERATION_MREASON, "code generation workspace for objects");
+	Memory::reason_name(SCENE_SORTING_MREASON, "scene index sorting");
 
 @<Register this module's stream writers@> =
 	;

@@ -149,7 +149,7 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_raw_wording(EP, RULE_INDEX_NAME_MD_HL,
 			R->indexing_data.italicised_text);
 		if (R->defn_as_I7_source) {
-			parse_node *pn = R->defn_as_I7_source->at->down;
+			parse_node *pn = R->defn_as_I7_source->at->down->down;
 			if ((pn) && (Wordings::nonempty(Node::get_text(pn)))) {
 				TEMPORARY_TEXT(OUT)
 				WRITE("%+W", Node::get_text(pn));

@@ -660,12 +660,9 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT); return; }
 
 	#ifdef CORE_MODULE
-	if (Str::eq_wide_string(elt, L"Pl")) {
-		IXScenes::render(OUT);
-		return;
-	}
 	if (Str::eq_wide_string(elt, L"Mp")) {
 		IXPhysicalWorld::render(OUT);
 		return;

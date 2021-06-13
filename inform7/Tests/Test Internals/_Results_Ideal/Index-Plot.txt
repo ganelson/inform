@@ -1,0 +1,41 @@
+1. Pl
+<p class="tightin1"><img border=0 src=inform:/scene_icons/WPB.png>&nbsp;&nbsp;entire game&nbsp;<a href=#A0><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/Recurring.png></p>
+<p class="tightin1"><img border=0 src=inform:/scene_icons/WPB.png>&nbsp;&nbsp;railway meeting&nbsp;<a href=#A3><img border=0 src=inform:/doc_images/Below.png></a></p>
+<p class="tightin1"><img border=0 src=inform:/scene_icons/Simul.png>&nbsp;&nbsp;luggage trouble&nbsp;<a href=#A2><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/ENever.png></p>
+<p class="tightin1"><img border=0 src=inform:/scene_icons/WPB.png>&nbsp;&nbsp;train wait&nbsp;<a href=#A5><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/ENever.png>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/Recurring.png></p>
+<p class="tightin2"><img border=0 src=inform:/scene_icons/Segue.png>&nbsp;&nbsp;train stop&nbsp;<a href=#A4><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/ENever.png>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/Recurring.png></p>
+<p class="tightin3"><img border=0 src=inform:/scene_icons/Segue.png>&nbsp;&nbsp;<i>train wait</i></p>
+<p class="tightin1"><img border=0 src=inform:/scene_icons/WhenC.png>&nbsp;&nbsp;arrival&nbsp;<a href=#A1><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;<img border=0 src=inform:/scene_icons/ENever.png></p>
+<p>Legend: <img border=0 src=inform:/scene_icons/WPB.png>&nbsp;<i>Begins when play begins</i>; <img border=0 src=inform:/scene_icons/WhenC.png>&nbsp;<i>can begin whenever some condition holds</i>; <img border=0 src=inform:/scene_icons/Segue.png>&nbsp;<i>follows when a previous scene ends</i>; <img border=0 src=inform:/scene_icons/Simul.png>&nbsp;<i>begins simultaneously</i>; <img border=0 src=inform:/scene_icons/WNever.png>&nbsp;<i>never begins</i>; <img border=0 src=inform:/scene_icons/ENever.png>&nbsp;<i>never ends</i>; <img border=0 src=inform:/scene_icons/Recurring.png>&nbsp;<i>recurring (can happen more than once)</i>. <i>Scene names are italicised when and if they appear for a second or subsequent time because the scene can begin in more than one way</i>.</p>
+<a name=SDETAILS></a><hr>
+<p class="hangingin1"><a name=A0></a><b>The <i>entire game</i> scene</b>&nbsp;&nbsp;<i>recurring</i></p>
+<p class="tightin1">The Entire Game scene is built-in. It is going on whenever play is going on. (It is recurring so that if the story ends, but then resumes, it too will end but then begin again.)</p>
+<p class="hangingin1"><i>Begins when:</i> the story has not ended</p>
+<p class="hangingin1"><i>Ends when:</i> the story has ended</p>
+<hr>
+<p class="hangingin1"><a name=A1></a><b>The <i>arrival</i> scene</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Begins when:</i> the player is in the Hypothesis Junction&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>What happens:</i></p>
+<p class="hangingin2">&nbsp;&nbsp;&nbsp;&nbsp;(say "There's a flourish of trumpets.")&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+</p>
+<p class="hangingin1"><i>Ends when:</i> <b>never</b></p>
+<hr>
+<p class="hangingin1"><a name=A2></a><b>The <i>luggage trouble</i> scene</b>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Begins when:</i> <b>railway meeting</b> <i>begins</i>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Ends when:</i> <b>never</b></p>
+<hr>
+<p class="hangingin1"><a name=A3></a><b>The <i>railway meeting</i> scene</b>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Begins when:</i> <b>play begins</b></p>
+<p class="hangingin1"><i>Ends when:</i> <b>luggage trouble</b> <i>ends</i>&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Ends happily when:</i> the time of day is 11:00 PM&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Ends wisely but sadly when:</i> the player is in the Waiting Room&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<hr>
+<p class="hangingin1"><a name=A4></a><b>The <i>train stop</i> scene</b>&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;<i>recurring</i></p>
+<p class="hangingin1"><i>Begins when:</i> <b>train wait</b> <i>ends</i>&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Ends when:</i> <b>never</b></p>
+<hr>
+<p class="hangingin1"><a name=A5></a><b>The <i>train wait</i> scene</b>&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;&nbsp;<i>recurring</i></p>
+<p class="hangingin1"><i>Begins when:</i> <b>play begins</b><br>
+<i>or when:</i> <b>train stop</b> <i>ends</i>&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin1"><i>Ends when:</i> <b>never</b></p>
+

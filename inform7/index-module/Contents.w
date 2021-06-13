@@ -26,7 +26,6 @@ Chapter 3: Indexing for Plugins
 	Backdrops
 	Regions
 	The Map
-	Plot Element
 	Actions
 	Commands Index
 

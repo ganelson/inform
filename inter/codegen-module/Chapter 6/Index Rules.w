@@ -25,7 +25,7 @@ inter_package *IndexRules::find_activity(tree_inventory *inv, text_stream *marke
 
 typedef struct ix_rule_context {
 	struct inter_package *action_context;
-	struct inter_symbol *scene_context;
+	struct simplified_scene *scene_context;
 } ix_rule_context;
 
 ix_rule_context IndexRules::action_context(inter_package *an) {
@@ -34,7 +34,7 @@ ix_rule_context IndexRules::action_context(inter_package *an) {
 	rc.scene_context = NULL;
 	return rc;
 }
-ix_rule_context IndexRules::scene_context(inter_symbol *s) {
+ix_rule_context IndexRules::scene_context(simplified_scene *s) {
 	ix_rule_context rc;
 	rc.action_context = NULL;
 	rc.scene_context = s;
@@ -58,7 +58,8 @@ int IndexRules::phrase_fits_rule_context(inter_package *entry, ix_rule_context r
 	}
 	if (rc.scene_context) {
 		inter_symbol *scene_symbol = Metadata::read_optional_symbol(entry, I"^during");
-		if (scene_symbol != rc.scene_context) return FALSE;
+		if (scene_symbol == NULL) return FALSE;
+		if (Inter::Packages::container(scene_symbol->definition) != rc.scene_context->pack) return FALSE;
 	}
 	return TRUE;
 }
@@ -270,10 +271,8 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 
 @<Index the italicised text to do with the rule@> =
 	WRITE("<i>%S", italicised_text);
-	if (rc.scene_context) {
-		inter_package *scene_pack = Inter::Packages::container(rc.scene_context->definition);
-		WRITE(" during %S", Metadata::read_optional_textual(scene_pack, I"^name"));
-	}
+	if (rc.scene_context)
+		WRITE(" during %S", PlotElement::scene_name(rc.scene_context));
 	WRITE("</i>&nbsp;&nbsp;");
 
 @

@@ -1,0 +1,23 @@
+Hypothesis Junction is a room. The Waiting Room is east of Hypothesis Junction.
+
+Arrival is a scene. "There's a flourish of trumpets."
+
+When Arrival begins: say "There's a flourish of trumpets."
+
+Arrival begins when the player is in the Hypothesis Junction for the third turn.
+
+Luggage Trouble is a scene. Luggage Trouble begins when Railway Meeting begins.
+
+Railway Meeting is a scene. Railway Meeting begins when play begins.
+
+Railway Meeting ends when Luggage Trouble ends.
+
+Train Stop is a recurring scene. Train Wait is a recurring scene.
+Train Wait begins when play begins.
+Train Stop begins when Train Wait ends.
+Train Wait begins when Train Stop ends.
+
+Railway Meeting ends happily when the time of day is 11:00 PM.
+Railway Meeting ends wisely but sadly when the player is in the Waiting Room.
+
+Test index (internal) with Pl.

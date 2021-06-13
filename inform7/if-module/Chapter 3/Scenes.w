@@ -111,8 +111,6 @@ triumphantly", for instance, might be ends 2 and 3). Each end has a condition
 which can cause it, or can be "anchored" to any number of ends of other
 scenes -- to express which, the //scene_connector// structure is used.
 
-@d MAX_SCENE_ENDS 32 /* this must exceed 31 */
-
 =
 typedef struct scene {
 	struct instance *as_instance; /* the constant for the name of the scene */
@@ -200,6 +198,12 @@ scene *Scenes::from_named_constant(instance *I) {
 	kind *K = Instances::to_kind(I);
 	if (Kinds::eq(K, K_scene)) return PLUGIN_DATA_ON_SUBJECT(scenes, I->as_subject);
 	return NULL;
+}
+
+int Scenes::is_entire_game(instance *I) {
+	if ((SC_entire_game) && (Scenes::from_named_constant(I) == SC_entire_game))
+		return TRUE;
+	return FALSE;
 }
 
 @h Creating and parsing ends.

@@ -81,3 +81,4 @@ Chapter 6: Index
 	Gazetteer Element
 	Lexicon Element
 	Arithmetic Element
+	Plot Element

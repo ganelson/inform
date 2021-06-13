@@ -10,13 +10,50 @@ the current |location| or not.
 void RTScenes::compile_extra(instance *I) {
 	if ((K_scene) && (Instances::of_kind(I, K_scene))) {
 		scene *sc = Scenes::from_named_constant(I);
-		if (sc == NULL) internal_error("sceneless");
+		package_request *pack = RTInstances::package(I);
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_SCENE_MD_HL, 1);
+		if (Scenes::is_entire_game(I))
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_IS_ENTIRE_GAME_MD_HL, 1);
+		if (sc->start_of_play)
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_SCENE_STARTS_MD_HL, 1);
+		else if (sc->ends[0].anchor_condition)
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL, 1);
+		inference_subject *subj = Instances::as_subject(sc->as_instance);
+		if (PropertyInferences::either_or_state(subj, P_recurring) > UNKNOWN_CE)
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_SCENE_RECURS_MD_HL, 1);
+		int ways_to_end = 0;
+		for (int e=1; e<sc->no_ends; e++) {
+			if (sc->ends[e].anchor_connectors) ways_to_end++;
+			if (sc->ends[e].anchor_condition) ways_to_end++;
+		}
+		if (ways_to_end == 0)
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_SCENE_NEVER_ENDS_MD_HL, 1);
+
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "scene change fn for "); Instances::write(desc, I);
 		Sequence::queue(&RTScenes::change_compilation_agent, STORE_POINTER_scene(sc), desc);
 		text_stream *desc2 = Str::new();
 		WRITE_TO(desc2, "scene status fn for "); Instances::write(desc, I);
 		Sequence::queue(&RTScenes::status_compilation_agent, STORE_POINTER_scene(sc), desc2);
+
+		for (int e=0; e<sc->no_ends; e++) {
+			package_request *EP = Hierarchy::package_within(SCENE_ENDS_HAP, pack);
+			Hierarchy::apply_metadata_from_raw_wording(EP, SCENE_END_NAME_MD_HL, sc->ends[e].end_names);
+			Hierarchy::apply_metadata_from_number(EP, SCENE_END_AT_MD_HL, (inter_ti) Wordings::first_wn(Node::get_text(sc->ends[e].anchor_condition_set)));
+			Hierarchy::apply_metadata_from_raw_wording(EP, SCENE_END_CONDITION_MD_HL, Node::get_text(sc->ends[e].anchor_condition));
+			Hierarchy::apply_metadata_from_iname(EP, SCENE_END_RULEBOOK_MD_HL, RTRulebooks::id_iname(sc->ends[e].end_rulebook));
+			for (scene_connector *scon = sc->ends[e].anchor_connectors; scon; scon=scon->next) {
+				package_request *CP = Hierarchy::package_within(SCENE_CONNECTORS_HAP, EP);
+				Hierarchy::apply_metadata_from_iname(CP, SCENE_CONNECTOR_TO_MD_HL, RTInstances::value_iname(scon->connect_to->as_instance));
+				Hierarchy::apply_metadata_from_number(CP, SCENE_CONNECTOR_END_MD_HL, (inter_ti) scon->end);
+				Hierarchy::apply_metadata_from_number(CP, SCENE_CONNECTOR_AT_MD_HL, (inter_ti) Wordings::first_wn(Node::get_text(scon->where_said)));
+			}
+		}
 	}
 }
 
