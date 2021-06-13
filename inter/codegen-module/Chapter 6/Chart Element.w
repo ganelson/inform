@@ -140,21 +140,16 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 @ And then a typical row:
 
 @<Write table row for this kind@> =
-	#ifdef CORE_MODULE
-	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 	char *repeat = "cross", *props = "cross", *under = "cross";
 	int shaded = FALSE;
-	if ((RTKindConstructors::get_highest_valid_value_as_integer(K) == 0) &&
-		(Kinds::Behaviour::indexed_grey_if_empty(K)))
-			shaded = TRUE;
-	if (Deferrals::has_finite_domain(K)) repeat = "tick";
-	if (KindSubjects::has_properties(K)) props = "tick";
-	if (RTKindConstructors::offers_I6_GPR(K)) under = "tick";
-	ChartElement::begin_chart_row(OUT);
-	ChartElement::index_kind_name_cell(OUT, shaded, K);
+	if (Metadata::read_optional_numeric(pack, I"^shaded_in_index")) shaded = TRUE;
+	if (Metadata::read_optional_numeric(pack, I"^finite_domain")) repeat = "tick";
+	if (Metadata::read_optional_numeric(pack, I"^has_properties")) props = "tick";
+	if (Metadata::read_optional_numeric(pack, I"^understandable")) under = "tick";
 	if (priority == 8) { repeat = NULL; props = NULL; under = NULL; }
-	ChartElement::end_chart_row(OUT, shaded, K, repeat, props, under);
-	#endif
+	ChartElement::begin_chart_row(OUT);
+	ChartElement::index_kind_name_cell(OUT, shaded, pack);
+	ChartElement::end_chart_row(OUT, shaded, pack, repeat, props, under);
 
 @ Note the named anchors here, which must match those linked from the titling
 row.
@@ -333,32 +328,61 @@ a kind which can have enumerated values but doesn't at the moment --
 for instance, the sound effects row is shaded if there are none.
 
 =
-#ifdef CORE_MODULE
-int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, kind *K) {
+int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package *pack) {
 	if (shaded) HTML::begin_colour(OUT, I"808080");
+	#ifdef CORE_MODULE
+	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 	ChartElement::index_kind(OUT, K, FALSE, TRUE);
-	if (Kinds::Behaviour::is_quasinumerical(K)) {
+	#endif
+	if (Metadata::read_optional_numeric(pack, I"^is_quasinumerical")) {
 		WRITE("&nbsp;");
 		HTML_OPEN_WITH("a", "href=\"Kinds.html?segment2\"");
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/calc1.png");
 		HTML_CLOSE("a");
 	}
-	if (Kinds::Behaviour::get_documentation_reference(K))
-		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
-	int i = Instances::count(K);
+	text_stream *doc_ref = Metadata::read_optional_textual(pack, I"^documentation");
+	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref);
+	int i = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (i >= 1) WRITE(" [%d]", i);
-	Index::below_link_numbered(OUT, Kinds::get_construct(K)->allocation_id); /* a grey see below icon leading to an anchor on pass 2 */
+	Index::below_link_numbered(OUT, (int) Metadata::read_optional_numeric(pack, I"^cheat_code")); /* a grey see below icon leading to an anchor on pass 2 */
 	if (shaded) HTML::end_colour(OUT);
 	return shaded;
 }
-#endif
 
 @ Finally we close the name cell, add the remaining cells, and close out the
 whole row.
 
 =
+void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, inter_package *pack,
+	char *tick1, char *tick2, char *tick3) {
+	if (tick1) HTML::next_html_column(OUT, 0);
+	else HTML::next_html_column_spanning(OUT, 0, 4);
+	if (shaded) HTML::begin_colour(OUT, I"808080");
+	WRITE("%S", Metadata::read_optional_textual(pack, I"^index_default"));
+	if (shaded) HTML::end_colour(OUT);
+	if (tick1) {
+		HTML::next_html_column_centred(OUT, 0);
+		if (tick1)
+			HTML_TAG_WITH("img",
+				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
+				tick1, shaded?"grey":"", tick1);
+		HTML::next_html_column_centred(OUT, 0);
+		if (tick2)
+			HTML_TAG_WITH("img",
+				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
+				tick2, shaded?"grey":"", tick2);
+		HTML::next_html_column_centred(OUT, 0);
+		if (tick3)
+			HTML_TAG_WITH("img",
+				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
+				tick3, shaded?"grey":"", tick3);
+	}
+	HTML::end_html_row(OUT);
+}
+
+
 #ifdef CORE_MODULE
-void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
+void ChartElement::old_end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
 	char *tick1, char *tick2, char *tick3) {
 	if (tick1) HTML::next_html_column(OUT, 0);
 	else HTML::next_html_column_spanning(OUT, 0, 4);

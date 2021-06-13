@@ -167,7 +167,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 
 @<End the object citation line@> =
 	if (tabulating_kinds_index)
-		ChartElement::end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
+		ChartElement::old_end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
 	else {
 		if (details) HTML_CLOSE("p");
 	}

@@ -458,6 +458,8 @@ void RTKindConstructors::compile(void) {
 		DISCARD_TEXT(S)
 		Hierarchy::apply_metadata_from_number(pack,
 			KIND_IS_BASE_MD_HL, 1);
+		if (KindConstructors::is_arithmetic(kc))
+			Hierarchy::apply_metadata_from_number(pack, KIND_IS_QUASINUMERICAL_MD_HL, 1);
 		if (RTKindConstructors::is_object(kc)) {
 			Hierarchy::apply_metadata_from_number(pack, KIND_IS_OBJECT_MD_HL, 1);
 		} else {
@@ -625,9 +627,51 @@ void RTKindConstructors::compile(void) {
 		}
 		Hierarchy::apply_metadata_from_number(pack, CHEAT_CODE_MD_HL,
 			(inter_ti) kc->allocation_id);
+
+		if ((RTKindConstructors::get_highest_valid_value_as_integer(K) == 0) &&
+			(Kinds::Behaviour::indexed_grey_if_empty(K)))
+			Hierarchy::apply_metadata_from_number(pack, KIND_SHADED_MD_HL, 1);
+		if (Deferrals::has_finite_domain(K))
+			Hierarchy::apply_metadata_from_number(pack, KIND_FINITE_DOMAIN_MD_HL, 1);
+		if (KindSubjects::has_properties(K))
+			Hierarchy::apply_metadata_from_number(pack, KIND_HAS_PROPERTIES_MD_HL, 1);
+		if (RTKindConstructors::offers_I6_GPR(K))
+			Hierarchy::apply_metadata_from_number(pack, KIND_UNDERSTANDABLE_MD_HL, 1);
+		if (Instances::count(K) > 0)
+			Hierarchy::apply_metadata_from_number(pack, KIND_INSTANCE_COUNT_MD_HL,
+				(inter_ti) Instances::count(K));
+		TEMPORARY_TEXT(IDV)
+		int found = FALSE;
+		instance *inst;
+		LOOP_OVER_INSTANCES(inst, K) {
+			IXInstances::index_name(IDV, inst);
+			found = TRUE;
+			break;
+		}
+		if (found == FALSE) {
+			text_stream *p = Kinds::Behaviour::get_index_default_value(K);
+			if (Str::eq_wide_string(p, L"<0-in-literal-pattern>"))
+				@<Index the constant 0 but use the default literal pattern@>
+			else if (Str::eq_wide_string(p, L"<first-constant>"))
+				WRITE_TO(IDV, "--");
+			else WRITE_TO(IDV, "%S", p);
+		}
+		Hierarchy::apply_metadata(pack, KIND_INDEX_DEFAULT_MD_HL, IDV);
+		DISCARD_TEXT(IDV)
 	}
 	@<Compile multiplication rules for the index@>;
 }
+
+@ For every quasinumeric kind the default value is 0, but we don't want to
+index just "0" because that means 0-as-a-number: we want it to come out
+as "0 kg", "0 hectares", or whatever is appropriate.
+
+@<Index the constant 0 but use the default literal pattern@> =
+	if (LiteralPatterns::list_of_literal_forms(K))
+		LiteralPatterns::index_value(IDV,
+			LiteralPatterns::list_of_literal_forms(K), 0);
+	else
+		WRITE_TO(IDV, "--");
 
 @<Index the minimum positive value for a quasinumerical kind@> =
 	if (Kinds::eq(K, K_number)) WRITE("1");

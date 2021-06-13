@@ -969,6 +969,7 @@ void Hierarchy::establish(void) {
 @e KIND_PNAME_MD_HL
 @e KIND_SHOWME_MD_HL
 @e KIND_IS_BASE_MD_HL
+@e KIND_IS_QUASINUMERICAL_MD_HL
 @e KIND_IS_DEF_MD_HL
 @e KIND_IS_OBJECT_MD_HL
 @e INDEX_SUPERKIND_MD_HL
@@ -987,6 +988,12 @@ void Hierarchy::establish(void) {
 @e MIN_VAL_INDEX_MD_HL
 @e MAX_VAL_INDEX_MD_HL
 @e DIMENSIONS_INDEX_MD_HL
+@e KIND_SHADED_MD_HL
+@e KIND_FINITE_DOMAIN_MD_HL
+@e KIND_HAS_PROPERTIES_MD_HL
+@e KIND_UNDERSTANDABLE_MD_HL
+@e KIND_INDEX_DEFAULT_MD_HL
+@e KIND_INSTANCE_COUNT_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
@@ -1055,6 +1062,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_PNAME_MD_HL,     I"^printed_name")
 			H_C_U(KIND_SHOWME_MD_HL,    I"^showme_fn")
 			H_C_U(KIND_IS_BASE_MD_HL,   I"^is_base")
+			H_C_U(KIND_IS_QUASINUMERICAL_MD_HL,   I"^is_quasinumerical")
 			H_C_U(KIND_IS_DEF_MD_HL,    I"^is_definite")
 			H_C_U(KIND_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(KIND_IS_SKOO_MD_HL,   I"^is_subkind_of_object")
@@ -1073,6 +1081,12 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_U(KIND_INDEX_PRIORITY_MD_HL, I"^index_priority")
 			H_C_U(SUPERKIND_MD_HL, I"^superkind")
+			H_C_U(KIND_SHADED_MD_HL, I"^shaded_in_index")
+			H_C_U(KIND_FINITE_DOMAIN_MD_HL, I"^finite_domain")
+			H_C_U(KIND_HAS_PROPERTIES_MD_HL, I"^has_properties")
+			H_C_U(KIND_UNDERSTANDABLE_MD_HL, I"^understandable")
+			H_C_U(KIND_INDEX_DEFAULT_MD_HL, I"^index_default")
+			H_C_U(KIND_INSTANCE_COUNT_MD_HL, I"^instance_count")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
