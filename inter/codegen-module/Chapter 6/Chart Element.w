@@ -208,8 +208,8 @@ row.
 @<Write heading for the detailed index entry for this kind@> =
 	HTML::open_indented_p(OUT, 1, "halftight");
 	Index::anchor_numbered(OUT, Kinds::get_construct(K)->allocation_id); /* ...the anchor to which the grey icon in the table led */
-	WRITE("<b>"); ChartElement::index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
-	WRITE(" (<i>plural</i> "); ChartElement::index_kind(OUT, K, TRUE, FALSE); WRITE(")");
+	WRITE("<b>"); ChartElement::old_index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
+	WRITE(" (<i>plural</i> "); ChartElement::old_index_kind(OUT, K, TRUE, FALSE); WRITE(")");
 	if (Kinds::Behaviour::get_documentation_reference(K))
 		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K)); /* blue help icon, if any */
 	HTML_CLOSE("p");
@@ -254,7 +254,7 @@ row.
 			 && (Kinds::eq(K2, K_pointer_value) == FALSE)
 			 && (Kinds::eq(K2, K_stored_value) == FALSE)) {
 			if (f) WRITE(", ");
-			ChartElement::index_kind(OUT, K2, FALSE, TRUE);
+			ChartElement::old_index_kind(OUT, K2, FALSE, TRUE);
 			f = TRUE;
 		}
 	}
@@ -330,10 +330,7 @@ for instance, the sound effects row is shaded if there are none.
 =
 int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package *pack) {
 	if (shaded) HTML::begin_colour(OUT, I"808080");
-	#ifdef CORE_MODULE
-	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
-	ChartElement::index_kind(OUT, K, FALSE, TRUE);
-	#endif
+	ChartElement::index_kind(OUT, pack, FALSE, TRUE);
 	if (Metadata::read_optional_numeric(pack, I"^is_quasinumerical")) {
 		WRITE("&nbsp;");
 		HTML_OPEN_WITH("a", "href=\"Kinds.html?segment2\"");
@@ -441,8 +438,18 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 @h Indexing kind names.
 
 =
+void ChartElement::index_kind(OUTPUT_STREAM, inter_package *pack, int plural, int with_links) {
+	if (pack == NULL) return;
+	text_stream *key = (plural)?I"^index_plural":I"^index_singular";
+	WRITE("%S", Metadata::read_optional_textual(pack, key));
+	if (with_links) {
+		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
+		if (at > 0) Index::link(OUT, at);
+	}
+}
+
 #ifdef CORE_MODULE
-void ChartElement::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links) {
+void ChartElement::old_index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links) {
 	if (K == NULL) return;
 	wording W = Kinds::Behaviour::get_name(K, plural);
 	if (Wordings::nonempty(W)) {

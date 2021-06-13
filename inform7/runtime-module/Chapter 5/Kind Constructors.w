@@ -658,6 +658,16 @@ void RTKindConstructors::compile(void) {
 		}
 		Hierarchy::apply_metadata(pack, KIND_INDEX_DEFAULT_MD_HL, IDV);
 		DISCARD_TEXT(IDV)
+		
+		TEMPORARY_TEXT(SN)
+		RTKindConstructors::index_name(SN, K, FALSE);
+		if (Str::len(SN) > 0) Hierarchy::apply_metadata(pack, KIND_INDEX_SINGULAR_MD_HL, SN);
+		DISCARD_TEXT(SN)
+		
+		TEMPORARY_TEXT(PN)
+		RTKindConstructors::index_name(PN, K, TRUE);
+		if (Str::len(PN) > 0) Hierarchy::apply_metadata(pack, KIND_INDEX_PLURAL_MD_HL, PN);
+		DISCARD_TEXT(PN)
 	}
 	@<Compile multiplication rules for the index@>;
 }
@@ -731,6 +741,46 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 		Hierarchy::apply_metadata(pack, RESULT_BM_MD_HL, OUT);
 		DISCARD_TEXT(OUT)
 	}
+
+@
+
+=
+void RTKindConstructors::index_name(OUTPUT_STREAM, kind *K, int plural) {
+	wording W = Kinds::Behaviour::get_name(K, plural);
+	if (Wordings::nonempty(W)) {
+		if (Kinds::is_proper_constructor(K)) {
+			@<Index the constructor text@>;
+		} else {
+			WRITE("%W", W);
+		}
+	}
+}
+
+@<Index the constructor text@> =
+	int length = Wordings::length(W), w1 = Wordings::first_wn(W), tinted = TRUE;
+	int i, first_stroke = -1, last_stroke = -1;
+	for (i=0; i<length; i++) {
+		if (Lexer::word(w1+i) == STROKE_V) {
+			if (first_stroke == -1) first_stroke = i;
+			last_stroke = i;
+		}
+	}
+	int from = 0, to = length-1;
+	if (last_stroke >= 0) from = last_stroke+1; else tinted = FALSE;
+	if (tinted) HTML::begin_colour(OUT, I"808080");
+	for (i=from; i<=to; i++) {
+		int j, untinted = FALSE;
+		for (j=0; j<first_stroke; j++)
+			if (Lexer::word(w1+j) == Lexer::word(w1+i))
+				untinted = TRUE;
+		if (untinted) HTML::end_colour(OUT);
+		if (i>from) WRITE(" ");
+		if (Lexer::word(w1+i) == CAPITAL_K_V) WRITE("K");
+		else if (Lexer::word(w1+i) == CAPITAL_L_V) WRITE("L");
+		else WRITE("%V", Lexer::word(w1+i));
+		if (untinted) HTML::begin_colour(OUT, I"808080");
+	}
+	if (tinted) HTML::end_colour(OUT);
 
 @
 

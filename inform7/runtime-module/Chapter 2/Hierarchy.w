@@ -967,6 +967,8 @@ void Hierarchy::establish(void) {
 @e KIND_AT_MD_HL
 @e KIND_CLASS_MD_HL
 @e KIND_PNAME_MD_HL
+@e KIND_INDEX_SINGULAR_MD_HL
+@e KIND_INDEX_PLURAL_MD_HL
 @e KIND_SHOWME_MD_HL
 @e KIND_IS_BASE_MD_HL
 @e KIND_IS_QUASINUMERICAL_MD_HL
@@ -1060,6 +1062,8 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_AT_MD_HL,      I"^at")
 			H_C_U(KIND_CLASS_MD_HL,     I"^object_class")
 			H_C_U(KIND_PNAME_MD_HL,     I"^printed_name")
+			H_C_U(KIND_INDEX_SINGULAR_MD_HL,     I"^index_singular")
+			H_C_U(KIND_INDEX_PLURAL_MD_HL,     I"^index_plural")
 			H_C_U(KIND_SHOWME_MD_HL,    I"^showme_fn")
 			H_C_U(KIND_IS_BASE_MD_HL,   I"^is_base")
 			H_C_U(KIND_IS_QUASINUMERICAL_MD_HL,   I"^is_quasinumerical")
