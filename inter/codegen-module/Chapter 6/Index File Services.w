@@ -648,11 +648,13 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Ch")) { ChartElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT); return; }
@@ -660,7 +662,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT); return; }
-	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT); return; }
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Mp")) {
@@ -669,12 +670,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Ph")) {
 		Phrases::Index::index_page_Phrasebook(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Ch")) {
-		@<Assign each kind of object a corresponding documentation symbol@>;
-		Kinds::Index::index_kinds(OUT, 1);
-		Kinds::Index::index_kinds(OUT, 2);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"A1")) {
@@ -696,25 +691,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	#endif
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }
-
-@ The following code looks at each kind of object, takes the first word
-of its name, prefixes "kind" and looks to see if there is a documentation
-symbol of that name: if there is, it attaches it to the relevant field of
-the kind.
-
-@<Assign each kind of object a corresponding documentation symbol@> =
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			wording W = Kinds::Behaviour::get_name(K, FALSE);
-			if (Wordings::nonempty(W)) {
-				TEMPORARY_TEXT(temp)
-				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
-				if (Index::DocReferences::validate_if_possible(temp))
-					Kinds::Behaviour::set_documentation_reference(K, temp);
-				DISCARD_TEXT(temp)
-			}
-		}
 
 @ =
 void Index::explain(OUTPUT_STREAM, text_stream *explanation) {

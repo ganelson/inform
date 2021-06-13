@@ -181,7 +181,7 @@ so on. Those absolute basics are made here.
 here, which only happens when special runs are made for compiler testing.
 
 @<Run any internal tests@> =
-	if (debugging) {
+	if ((debugging) && (problem_count == 0)) {
 		int tests_run = InternalTests::run(1);
 		if (tests_run > 0) exit(0);
 	}
@@ -246,7 +246,7 @@ here, which only happens when special runs are made for compiler testing.
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
 		-1, debugging, sequence_timer);
 	BENCH(Hierarchy::log);
-	if (debugging) {
+	if ((debugging) && (problem_count == 0)) {
 		int tests_run = InternalTests::run(2);
 		if (tests_run > 0) exit(0);
 	}

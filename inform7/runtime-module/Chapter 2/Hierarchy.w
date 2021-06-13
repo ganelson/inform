@@ -962,6 +962,7 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_STRING_HL
 
 @e KIND_HAP
+@e CHEAT_CODE_MD_HL
 @e KIND_NAME_MD_HL
 @e KIND_AT_MD_HL
 @e KIND_CLASS_MD_HL
@@ -980,6 +981,8 @@ void Hierarchy::establish(void) {
 @e KIND_MKDEF_FN_MD_HL
 @e KIND_DSIZE_MD_HL
 @e KIND_DOCUMENTATION_MD_HL
+@e KIND_INDEX_PRIORITY_MD_HL
+@e SUPERKIND_MD_HL
 @e RUCKSACK_CLASS_MD_HL
 @e MIN_VAL_INDEX_MD_HL
 @e MAX_VAL_INDEX_MD_HL
@@ -1045,6 +1048,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
+			H_C_U(CHEAT_CODE_MD_HL,      I"^cheat_code")
 			H_C_U(KIND_NAME_MD_HL,      I"^name")
 			H_C_U(KIND_AT_MD_HL,      I"^at")
 			H_C_U(KIND_CLASS_MD_HL,     I"^object_class")
@@ -1067,6 +1071,8 @@ void Hierarchy::establish(void) {
 			H_C_U(MAX_VAL_INDEX_MD_HL, I"^max_value")
 			H_C_U(DIMENSIONS_INDEX_MD_HL, I"^dimensions")
 			H_C_U(KIND_DOCUMENTATION_MD_HL, I"^documentation")
+			H_C_U(KIND_INDEX_PRIORITY_MD_HL, I"^index_priority")
+			H_C_U(SUPERKIND_MD_HL, I"^superkind")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)

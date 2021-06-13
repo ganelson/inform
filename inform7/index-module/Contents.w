@@ -10,7 +10,6 @@ Chapter 1: Starting Up
 Chapter 2: Indexing
 "Utility routines for generating index pages."
 	Map Element
-	Kinds Index
 	Index Extensions
 	Instances
 	Adjectives

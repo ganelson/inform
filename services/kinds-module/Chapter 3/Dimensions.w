@@ -591,15 +591,14 @@ void Kinds::Dimensions::index_unit_sequence(OUTPUT_STREAM, unit_sequence *deriv,
 	if (deriv == NULL) return;
 	if (deriv->no_unit_pairs == 0) { WRITE("dimensionless"); return; }
 
-	int j;
-	for (j=0; j<deriv->no_unit_pairs; j++) {
+	for (int j=0; j<deriv->no_unit_pairs; j++) {
 		kind *fundamental = deriv->unit_pairs[j].fund_unit;
 		int power = deriv->unit_pairs[j].power;
 		if (briefly) {
 			if (j>0) WRITE(".");
 			WRITE("(");
-			#ifdef CORE_MODULE
-			Kinds::Index::index_kind(OUT, fundamental, FALSE, FALSE);
+			#ifdef CODEGEN_MODULE
+			ChartElement::index_kind(OUT, fundamental, FALSE, FALSE);
 			#else
 			Kinds::Textual::write(OUT, fundamental);
 			#endif

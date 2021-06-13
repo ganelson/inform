@@ -113,7 +113,6 @@ table of Kinds.
 @d MAX_OBJECT_INDEX_DEPTH 10000
 
 =
-int tabulating_kinds_index = FALSE;
 instance *indexing_room = NULL;
 int xtras_count = 0;
 
@@ -156,7 +155,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 }
 
 @<Begin the object citation line@> =
-	if (tabulating_kinds_index) Kinds::Index::begin_chart_row(OUT);
+	if (tabulating_kinds_index) ChartElement::begin_chart_row(OUT);
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
 		if ((K) || (I != indexing_room)) Index::anchor(OUT, NounIdentifiers::identifier(nt));
@@ -168,7 +167,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 
 @<End the object citation line@> =
 	if (tabulating_kinds_index)
-		Kinds::Index::end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
+		ChartElement::end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
 	else {
 		if (details) HTML_CLOSE("p");
 	}

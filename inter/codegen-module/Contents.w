@@ -82,3 +82,4 @@ Chapter 6: Index
 	Lexicon Element
 	Arithmetic Element
 	Plot Element
+	Chart Element

@@ -446,7 +446,6 @@ void RTKindConstructors::compile(void) {
 	LOOP_OVER(kc, kind_constructor) {
 		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
 		kind *K = Kinds::base_construction(kc);
-	
 		package_request *pack = RTKindConstructors::package(kc);
 				
 		Emit::numeric_constant(RTKindConstructors::weak_ID_iname(kc), 0);
@@ -465,17 +464,32 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata_from_number(pack, KIND_IS_OBJECT_MD_HL, 0);
 		}
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
+			kind *super_K = Latticework::super(K);
 			Hierarchy::apply_metadata_from_number(pack, KIND_IS_SKOO_MD_HL, 1);
 			TEMPORARY_TEXT(SK)
-			WRITE_TO(SK, "%u", Latticework::super(K));
+			WRITE_TO(SK, "%u", super_K);
 			Hierarchy::apply_metadata(pack, INDEX_SUPERKIND_MD_HL, SK);
 			DISCARD_TEXT(SK)
+			Hierarchy::apply_metadata_from_iname(pack, SUPERKIND_MD_HL,
+				RTKindConstructors::weak_ID_iname(super_K->construct));
 		} else {
 			Hierarchy::apply_metadata_from_number(pack, KIND_IS_SKOO_MD_HL, 0);
+		}
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			wording W = Kinds::Behaviour::get_name(K, FALSE);
+			if (Wordings::nonempty(W)) {
+				TEMPORARY_TEXT(temp)
+				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
+				if (Index::DocReferences::validate_if_possible(temp))
+					Kinds::Behaviour::set_documentation_reference(K, temp);
+				DISCARD_TEXT(temp)
+			}
 		}
 		text_stream *DR = Kinds::Behaviour::get_documentation_reference(K);
 		if (Str::len(DR) > 0)
 			Hierarchy::apply_metadata(pack, KIND_DOCUMENTATION_MD_HL, DR);
+		Hierarchy::apply_metadata_from_number(pack, KIND_INDEX_PRIORITY_MD_HL,
+			(inter_ti) Kinds::Behaviour::get_index_priority(K));
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
 			Hierarchy::apply_metadata_from_iname(pack,
 				KIND_CLASS_MD_HL, RTKindDeclarations::iname(Kinds::base_construction(kc)));
@@ -609,7 +623,8 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata(pack, DIMENSIONS_INDEX_MD_HL, OUT);
 			DISCARD_TEXT(OUT)
 		}
-
+		Hierarchy::apply_metadata_from_number(pack, CHEAT_CODE_MD_HL,
+			(inter_ti) kc->allocation_id);
 	}
 	@<Compile multiplication rules for the index@>;
 }

@@ -1,0 +1,9 @@
+Home is a room.
+
+A dynasty is a kind of value. The dynasties are Stuart, Hanover, Saxe-Coburg-Gotha
+and Windsor.
+
+A mystic portal is a kind of door. The Great Gates of Kiev are a mystic portal.
+East of Kiev is Home.
+
+Test index (internal) with Ch.

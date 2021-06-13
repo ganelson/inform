@@ -1,7 +1,19 @@
-[Kinds::Index::] Kinds Index.
+[ChartElement::] Chart Element.
 
-To produce most of the Kinds page in the Index for a project: the
-chart at the top, and the detailed entries below.
+To write the Chart element (Ch) in the index.
+
+@
+
+=
+int tabulating_kinds_index = FALSE;
+
+void ChartElement::render(OUTPUT_STREAM) {
+	inter_tree *I = Index::get_tree();
+	tree_inventory *inv = Synoptic::inv(I);
+	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
+	ChartElement::index_kinds(OUT, inv, 1);
+	ChartElement::index_kinds(OUT, inv, 2);
+}
 
 @h Indexing the kinds.
 The Kinds page of the index opens with a table summarising the hierarchy of
@@ -17,8 +29,10 @@ with misleading entries. Remaining kinds are grouped together in
 together, the enumerative ones, and so on. A lower priority number puts you
 higher up, but kinds with priority 0 do not appear in the index at all.
 
+@d LOWEST_INDEX_PRIORITY 100
+
 =
-void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
+void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 	int priority;
 	if (pass == 1) {
 		HTML_OPEN("p"); HTML_CLOSE("p");
@@ -31,23 +45,30 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 	}
 
 	for (priority = 1; priority <= LOWEST_INDEX_PRIORITY; priority++) {
-		kind *K;
-		LOOP_OVER_BASE_KINDS(K) {
-			if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
-			if (priority == Kinds::Behaviour::get_index_priority(K)) {
-				if ((priority == 8) || (Kinds::Behaviour::definite(K))) {
+		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
+				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == 0) &&
+				(priority == (int) Metadata::read_optional_numeric(pack, I"^index_priority"))) {
+				if ((priority == 8) || (Metadata::read_optional_numeric(pack, I"^is_definite"))) {
 					switch (pass) {
 						case 1: @<Write table row for this kind@>; break;
-						case 2:
+						case 2: {
+							#ifdef CORE_MODULE
+							kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 							@<Write heading for the detailed index entry for this kind@>;
 							HTML::open_indented_p(OUT, 1, "tight");
 							@<Index kinds of kinds matched by this kind@>;
 							@<Index explanatory text supplied for a kind@>;
 							@<Index literal patterns which can specify this kind@>;
 							@<Index possible values of an enumerated kind@>;
-							HTML_CLOSE("p"); break;
+							HTML_CLOSE("p");
+							#endif
+							break;
+						}
 					}
-					if (Kinds::eq(K, K_object)) @<Recurse to index subkinds of object@>;
+					if (Str::eq(Metadata::read_textual(pack, I"^printed_name"), I"object"))
+						@<Recurse to index subkinds of object@>;
 				}
 			}
 		}
@@ -72,20 +93,29 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 }
 
 @<Recurse to index subkinds of object@> =
-	kind *K;
-	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::eq(Latticework::super(K), K_object))
-			IXPhysicalWorld::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
+	for (int j=0; j<TreeLists::len(inv->kind_nodes); j++) {
+		inter_package *inner_pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[j].node);
+		if ((Metadata::read_optional_numeric(inner_pack, I"^is_base")) &&
+			(Metadata::read_optional_numeric(inner_pack, I"^is_subkind_of_object"))) {
+			inter_symbol *super_weak = Metadata::read_optional_symbol(inner_pack, I"^superkind");
+			if ((super_weak) && (Inter::Packages::container(super_weak->definition) == pack)) {
+				#ifdef CORE_MODULE
+				kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(inner_pack, I"^cheat_code"));
+				IXPhysicalWorld::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
+				#endif
+			}
+		}
+	}
 
 @ An atypical row:
 
 @<Add a titling row to the chart of kinds@> =
 	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
 	WRITE("<b>basic kinds</b>");
-	Kinds::Index::index_kind_col_head(OUT, "default value", "default");
-	Kinds::Index::index_kind_col_head(OUT, "repeat", "repeat");
-	Kinds::Index::index_kind_col_head(OUT, "props", "props");
-	Kinds::Index::index_kind_col_head(OUT, "under", "under");
+	ChartElement::index_kind_col_head(OUT, "default value", "default");
+	ChartElement::index_kind_col_head(OUT, "repeat", "repeat");
+	ChartElement::index_kind_col_head(OUT, "props", "props");
+	ChartElement::index_kind_col_head(OUT, "under", "under");
 	HTML::end_html_row(OUT);
 
 @ And another:
@@ -93,10 +123,10 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 @<Add a second titling row to the chart of kinds@> =
 	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
 	WRITE("<b>making new kinds from old</b>");
-	Kinds::Index::index_kind_col_head(OUT, "default value", "default");
-	Kinds::Index::index_kind_col_head(OUT, "", NULL);
-	Kinds::Index::index_kind_col_head(OUT, "", NULL);
-	Kinds::Index::index_kind_col_head(OUT, "", NULL);
+	ChartElement::index_kind_col_head(OUT, "default value", "default");
+	ChartElement::index_kind_col_head(OUT, "", NULL);
+	ChartElement::index_kind_col_head(OUT, "", NULL);
+	ChartElement::index_kind_col_head(OUT, "", NULL);
 	HTML::end_html_row(OUT);
 
 @ A dotty row:
@@ -110,6 +140,8 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 @ And then a typical row:
 
 @<Write table row for this kind@> =
+	#ifdef CORE_MODULE
+	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 	char *repeat = "cross", *props = "cross", *under = "cross";
 	int shaded = FALSE;
 	if ((RTKindConstructors::get_highest_valid_value_as_integer(K) == 0) &&
@@ -118,10 +150,11 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 	if (Deferrals::has_finite_domain(K)) repeat = "tick";
 	if (KindSubjects::has_properties(K)) props = "tick";
 	if (RTKindConstructors::offers_I6_GPR(K)) under = "tick";
-	Kinds::Index::begin_chart_row(OUT);
-	Kinds::Index::index_kind_name_cell(OUT, shaded, K);
+	ChartElement::begin_chart_row(OUT);
+	ChartElement::index_kind_name_cell(OUT, shaded, K);
 	if (priority == 8) { repeat = NULL; props = NULL; under = NULL; }
-	Kinds::Index::end_chart_row(OUT, shaded, K, repeat, props, under);
+	ChartElement::end_chart_row(OUT, shaded, K, repeat, props, under);
+	#endif
 
 @ Note the named anchors here, which must match those linked from the titling
 row.
@@ -180,8 +213,8 @@ row.
 @<Write heading for the detailed index entry for this kind@> =
 	HTML::open_indented_p(OUT, 1, "halftight");
 	Index::anchor_numbered(OUT, Kinds::get_construct(K)->allocation_id); /* ...the anchor to which the grey icon in the table led */
-	WRITE("<b>"); Kinds::Index::index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
-	WRITE(" (<i>plural</i> "); Kinds::Index::index_kind(OUT, K, TRUE, FALSE); WRITE(")");
+	WRITE("<b>"); ChartElement::index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
+	WRITE(" (<i>plural</i> "); ChartElement::index_kind(OUT, K, TRUE, FALSE); WRITE(")");
 	if (Kinds::Behaviour::get_documentation_reference(K))
 		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K)); /* blue help icon, if any */
 	HTML_CLOSE("p");
@@ -226,7 +259,7 @@ row.
 			 && (Kinds::eq(K2, K_pointer_value) == FALSE)
 			 && (Kinds::eq(K2, K_stored_value) == FALSE)) {
 			if (f) WRITE(", ");
-			Kinds::Index::index_kind(OUT, K2, FALSE, TRUE);
+			ChartElement::index_kind(OUT, K2, FALSE, TRUE);
 			f = TRUE;
 		}
 	}
@@ -268,7 +301,7 @@ First, here's the table cell for the heading at the top of a column: the
 link is to the part of the rubric explaining what goes into the column.
 
 =
-void Kinds::Index::index_kind_col_head(OUTPUT_STREAM, char *name, char *anchor) {
+void ChartElement::index_kind_col_head(OUTPUT_STREAM, char *name, char *anchor) {
 	HTML::next_html_column_nowrap(OUT, 0);
 	WRITE("<i>%s</i>&nbsp;", name);
 	if (anchor) {
@@ -283,7 +316,7 @@ is called --
 
 =
 int striper = FALSE;
-void Kinds::Index::begin_chart_row(OUTPUT_STREAM) {
+void ChartElement::begin_chart_row(OUTPUT_STREAM) {
 	char *col = NULL;
 	if (striper) col = "#f0f0ff";
 	striper = striper?FALSE:TRUE;
@@ -300,9 +333,10 @@ a kind which can have enumerated values but doesn't at the moment --
 for instance, the sound effects row is shaded if there are none.
 
 =
-int Kinds::Index::index_kind_name_cell(OUTPUT_STREAM, int shaded, kind *K) {
+#ifdef CORE_MODULE
+int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, kind *K) {
 	if (shaded) HTML::begin_colour(OUT, I"808080");
-	Kinds::Index::index_kind(OUT, K, FALSE, TRUE);
+	ChartElement::index_kind(OUT, K, FALSE, TRUE);
 	if (Kinds::Behaviour::is_quasinumerical(K)) {
 		WRITE("&nbsp;");
 		HTML_OPEN_WITH("a", "href=\"Kinds.html?segment2\"");
@@ -317,12 +351,14 @@ int Kinds::Index::index_kind_name_cell(OUTPUT_STREAM, int shaded, kind *K) {
 	if (shaded) HTML::end_colour(OUT);
 	return shaded;
 }
+#endif
 
 @ Finally we close the name cell, add the remaining cells, and close out the
 whole row.
 
 =
-void Kinds::Index::end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
+#ifdef CORE_MODULE
+void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
 	char *tick1, char *tick2, char *tick3) {
 	if (tick1) HTML::next_html_column(OUT, 0);
 	else HTML::next_html_column_spanning(OUT, 0, 4);
@@ -348,6 +384,7 @@ void Kinds::Index::end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
 	}
 	HTML::end_html_row(OUT);
 }
+#endif
 
 @<Index the default value entry in the kind chart@> =
 	int found = FALSE;
@@ -380,7 +417,8 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 @h Indexing kind names.
 
 =
-void Kinds::Index::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links) {
+#ifdef CORE_MODULE
+void ChartElement::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links) {
 	if (K == NULL) return;
 	wording W = Kinds::Behaviour::get_name(K, plural);
 	if (Wordings::nonempty(W)) {
@@ -397,6 +435,7 @@ void Kinds::Index::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links
 		}
 	}
 }
+#endif
 
 @<Index the constructor text@> =
 	int length = Wordings::length(W), w1 = Wordings::first_wn(W), tinted = TRUE;
@@ -423,3 +462,17 @@ void Kinds::Index::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links
 		if (untinted) HTML::begin_colour(OUT, I"808080");
 	}
 	if (tinted) HTML::end_colour(OUT);
+
+@
+
+=
+#ifdef CORE_MODULE
+kind *ChartElement::cheat(int id) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor)
+		if (kc->allocation_id == id)
+			return Kinds::base_construction(kc);
+	internal_error("oops");
+	return NULL;
+}
+#endif

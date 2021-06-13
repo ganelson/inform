@@ -180,7 +180,7 @@ void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 		} else {
 			if (ActionSemantics::noun_access(an) == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
 			if (ActionSemantics::noun_access(an) == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, ActionSemantics::kind_of_noun(an), FALSE, FALSE);
+			WRITE("<b>"); ChartElement::index_kind(OUT, ActionSemantics::kind_of_noun(an), FALSE, FALSE);
 			WRITE("</b>");
 		}
 
@@ -190,7 +190,7 @@ void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 		} else {
 			if (ActionSemantics::second_access(an) == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
 			if (ActionSemantics::second_access(an) == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, ActionSemantics::kind_of_second(an), FALSE, FALSE);
+			WRITE("<b>"); ChartElement::index_kind(OUT, ActionSemantics::kind_of_second(an), FALSE, FALSE);
 			WRITE("</b>");
 		}
 		HTML::end_html_row(OUT);

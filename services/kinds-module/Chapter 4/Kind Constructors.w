@@ -193,7 +193,7 @@ kind_constructor *KindConstructors::new(kind_constructor *super,
 we need to initialise the entire data structure; but note that, having done so,
 we apply any defaults set in Neptune files.
 
-@d LOWEST_INDEX_PRIORITY 100
+@default LOWEST_INDEX_PRIORITY 100
 
 @<Fill in a new constructor@> =
 	con->dt_tag = NULL;
@@ -280,7 +280,7 @@ we apply any defaults set in Neptune files.
 	kind_macro_definition *set_defaults = NULL;
 	switch (group) {
 		case PUNCTUATION_GRP: set_defaults = NeptuneMacros::parse_name(I"#PUNCTUATION"); break;
-		case PROTOCOL_GRP:set_defaults = NeptuneMacros::parse_name(I"#PROTOCOL"); break;
+		case PROTOCOL_GRP: set_defaults = NeptuneMacros::parse_name(I"#PROTOCOL"); break;
 		case BASE_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#BASE"); break;
 		case PROPER_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#CONSTRUCTOR"); break;
 	}
