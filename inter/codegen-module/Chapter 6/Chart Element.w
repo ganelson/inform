@@ -101,7 +101,7 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 			if ((super_weak) && (Inter::Packages::container(super_weak->definition) == pack)) {
 				#ifdef CORE_MODULE
 				kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(inner_pack, I"^cheat_code"));
-				IXPhysicalWorld::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
+				ChartElement::index_object_kind(OUT, K, 2, pass);
 				#endif
 			}
 		}
@@ -265,7 +265,7 @@ is made, so that the following sentence can't have an empty list in it.
 
 @<Index possible values of an enumerated kind@> =
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		IXPhysicalWorld::index_instances(OUT, K, 1);
+		ChartElement::index_instances(OUT, K, 1);
 	}
 
 @ Explanations:
@@ -505,5 +505,132 @@ kind *ChartElement::cheat(int id) {
 			return Kinds::base_construction(kc);
 	internal_error("oops");
 	return NULL;
+}
+#endif
+
+#ifdef CORE_MODULE
+void ChartElement::index_object_kind(OUTPUT_STREAM, kind *K, int depth, int pass) {
+	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
+	noun *nt = Kinds::Behaviour::get_noun(K);
+	if (nt == NULL) internal_error("no noun to index");
+	int shaded = FALSE;
+	@<Begin the object citation line@>;
+	@<Index the name part of the object citation@>;
+	@<Index the link icons part of the object citation@>;
+	@<End the object citation line@>;
+	if (pass == 2) @<Add a subsidiary paragraph of details about this object@>;
+	@<Recurse the index citation for the object as necessary@>;
+}
+#endif
+
+@<Begin the object citation line@> =
+	if (pass == 1) ChartElement::begin_chart_row(OUT);
+	if (pass == 2) {
+		HTML::open_indented_p(OUT, depth, "halftight");
+		Index::anchor(OUT, NounIdentifiers::identifier(nt));
+	}
+
+@<End the object citation line@> =
+	if (pass == 1)
+		ChartElement::old_end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
+	else {
+		if (pass == 2) HTML_CLOSE("p");
+	}
+
+@<Index the name part of the object citation@> =
+	if (pass == 1) {
+		int c = Instances::count(K);
+		if ((c == 0) && (pass == 1)) shaded = TRUE;
+		if (shaded) HTML::begin_colour(OUT, I"808080");
+		@<Quote the name of the object being indexed@>;
+		if (shaded) HTML::end_colour(OUT);
+		if ((pass == 1) && (c > 0)) WRITE(" [%d]", c);
+	} else {
+		@<Quote the name of the object being indexed@>;
+	}
+
+@<Quote the name of the object being indexed@> =
+	wording W = Nouns::nominative_in_language(nt, FALSE, Projects::get_language_of_play(Task::project()));
+	if (Wordings::empty(W)) {
+		WRITE("nameless");
+	} else {
+		if (pass == 2) WRITE("<b>");
+		WRITE("%+W", W);
+		if (pass == 2) WRITE("</b>");
+		if (pass == 2) @<Elaborate the name of the object being indexed@>;
+	}
+
+@<Elaborate the name of the object being indexed@> =
+	wording PW = Nouns::nominative_in_language(nt, TRUE, Projects::get_language_of_play(Task::project()));
+	if (Wordings::nonempty(PW)) WRITE(" (<i>plural</i> %+W)", PW);
+
+@<Index the link icons part of the object citation@> =
+	parse_node *C = NULL;
+	if (K) C = Kinds::Behaviour::get_creating_sentence(K);
+	if (C) Index::link(OUT, Wordings::first_wn(Node::get_text(C)));
+	if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
+		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
+	if ((pass == 1) && (K)) Index::below_link(OUT, NounIdentifiers::identifier(nt));
+
+@ This either recurses down through subkinds or through the spatial hierarchy.
+
+@<Recurse the index citation for the object as necessary@> =
+	if (K) {
+		kind *K2;
+		LOOP_OVER_BASE_KINDS(K2)
+			if (Kinds::eq(Latticework::super(K2), K))
+				ChartElement::index_object_kind(OUT, K2, depth+1, pass);
+	}
+
+@<Add a subsidiary paragraph of details about this object@> =
+	HTML::open_indented_p(OUT, depth, "tight");
+	IXInferences::index(OUT, KindSubjects::from_kind(K), TRUE);
+	if (K) {
+		HTML_CLOSE("p");
+		ChartElement::index_instances(OUT, K, depth);
+	}
+
+@ =
+#ifdef CORE_MODULE
+int ii_xtras = 900000;
+
+void ChartElement::index_instances(OUTPUT_STREAM, kind *K, int depth) {
+	HTML::open_indented_p(OUT, depth, "tight");
+	int c = 0;
+	instance *I;
+	LOOP_OVER_INSTANCES(I, K) c++;
+	if (c >= 10) {
+		int xtra = ii_xtras++;
+		Index::extra_link(OUT, xtra);
+		HTML::begin_colour(OUT, I"808080");
+		WRITE("%d ", c);
+		wording PW = Kinds::Behaviour::get_name(K, TRUE);
+		if (Wordings::nonempty(PW)) WRITE("%+W", PW);
+		else WRITE("instances");
+		HTML::end_colour(OUT);
+		HTML_CLOSE("p");
+		Index::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		c = 0;
+		LOOP_OVER_INSTANCES(I, K) {
+			if (c > 0) WRITE(", "); c++;
+			HTML::begin_colour(OUT, I"808080");
+			IXInstances::index_name(OUT, I);
+			HTML::end_colour(OUT);
+			parse_node *at = Instances::get_creating_sentence(I);
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+		}
+		Index::extra_div_close(OUT, "e0e0e0");
+	} else {
+		c = 0;
+		LOOP_OVER_INSTANCES(I, K) {
+			if (c > 0) WRITE(", "); c++;
+			HTML::begin_colour(OUT, I"808080");
+			IXInstances::index_name(OUT, I);
+			HTML::end_colour(OUT);
+			parse_node *at = Instances::get_creating_sentence(I);
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+		}
+		HTML_CLOSE("p");
+	}
 }
 #endif

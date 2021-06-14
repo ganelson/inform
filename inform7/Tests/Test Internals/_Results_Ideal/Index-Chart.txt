@@ -1028,8 +1028,8 @@ and southwest, for instance; down and up.<br>
 <i>Usually</i> unmarked for listing <i>not</i> marked for listing.<br>
 <i>Can have</i> opposite (<i>direction</i>).<br>
 </p>
-<p class="tightin2"><a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
-<div id="extra0" style="display: none;">
+<p class="tightin2"><a href="#" onclick="showExtra('extra900000', 'plus900000'); return false;"><img border=0 id="plus900000" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
+<div id="extra900000" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">
@@ -1119,8 +1119,8 @@ Like a scene in a play: a period of time which is usually tied to events in the 
 </p>
 <p class="halftightin1"><a name=A67></a><b>command parser error</b> (<i>plural</i> command parser errors)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
-<p class="tightin1"><a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
-<div id="extra1" style="display: none;">
+<p class="tightin1"><a href="#" onclick="showExtra('extra900001', 'plus900001'); return false;"><img border=0 id="plus900001" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
+<div id="extra900001" style="display: none;">
     <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">

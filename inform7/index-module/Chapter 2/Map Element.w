@@ -120,6 +120,10 @@ instance *IXPhysicalWorld::room_being_indexed(void) {
 	return indexing_room;
 }
 
+void IXPhysicalWorld::set_room_being_indexed(instance *I) {
+	indexing_room = I;
+}
+
 void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int details) {
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	noun *nt = NULL;
