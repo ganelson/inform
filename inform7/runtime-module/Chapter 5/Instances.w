@@ -72,7 +72,7 @@ using Inter's |INSTANCE_IST| instruction.
 void RTInstances::compilation_agent(compilation_subtask *t) {
 	instance *I = RETRIEVE_POINTER_instance(t->data);
 	package_request *pack = I->compilation_data.instance_package;
-	Hierarchy::apply_metadata_from_wording(pack, INSTANCE_NAME_MD_HL,
+	Hierarchy::apply_metadata_from_raw_wording(pack, INSTANCE_NAME_MD_HL,
 		Nouns::nominative(I->as_noun, FALSE));
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(I->creating_sentence)));
@@ -84,6 +84,8 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata(pack, INSTANCE_INDEX_KIND_MD_HL, IK);
 	DISCARD_TEXT(IK)
 	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
+	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_KIND_XREF_MD_HL,
+		RTKindConstructors::xref_iname(K->construct));
 	if (Kinds::Behaviour::is_subkind_of_object(K))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_OBJECT_MD_HL, 1);

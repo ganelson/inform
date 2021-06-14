@@ -71,7 +71,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            room [1]&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            room [1]&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K1_room><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Home&nbsp;
@@ -88,7 +88,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            thing [2]&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            thing [2]&nbsp;<a href=#K2_thing><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             yourself&nbsp;
@@ -105,7 +105,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            door [1]&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            door [1]&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K4_door><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Great Gates of Kiev&nbsp;
@@ -122,7 +122,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            mystic portal [1]&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mystic portal [1]&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;<a href=#K16_mystic_portal><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Great Gates of Kiev&nbsp;
@@ -139,7 +139,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">container</span>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">container</span>&nbsp;<a href=#K5_container><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -156,7 +156,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">vehicle</span>&nbsp;<a href=inform:/doc41.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">vehicle</span>&nbsp;<a href=inform:/doc41.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K14_vehicle><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -173,7 +173,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">player's holdall</span>&nbsp;<a href=inform:/doc46.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">player's holdall</span>&nbsp;<a href=inform:/doc46.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K15_player_s_holdall><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -190,7 +190,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">supporter</span>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">supporter</span>&nbsp;<a href=#K6_supporter><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -207,7 +207,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">backdrop</span>&nbsp;<a href=inform:/doc34.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">backdrop</span>&nbsp;<a href=inform:/doc34.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K7_backdrop><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -224,7 +224,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            person [1]&nbsp;<a href=inform:/doc42.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            person [1]&nbsp;<a href=inform:/doc42.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K8_person><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             yourself&nbsp;
@@ -241,7 +241,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">man</span>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">man</span>&nbsp;<a href=#K10_man><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -258,7 +258,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">woman</span>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">woman</span>&nbsp;<a href=#K11_woman><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -275,7 +275,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">animal</span>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">animal</span>&nbsp;<a href=#K12_animal><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -292,7 +292,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">device</span>&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">device</span>&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K13_device><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -309,7 +309,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            direction [12]&nbsp;<a href=inform:/doc51.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            direction [12]&nbsp;<a href=inform:/doc51.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K3_direction><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             north&nbsp;
@@ -326,7 +326,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#808080">region</span>&nbsp;<a href=inform:/doc29.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color:#808080">region</span>&nbsp;<a href=inform:/doc29.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K9_region><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span style="color:#808080">nothing</span>&nbsp;
@@ -905,7 +905,7 @@ Objects are values intended to simulate physical things: places, people, things,
 <i>Usually not</i> ambiguously plural.<br>
 <i>Can have</i> printed name (<i>text</i>), printed plural name (<i>text</i>), indefinite article (<i>text</i>), list grouping key (<i>text</i>).<br>
 </p>
-<p class="halftightin2"><a name=></a><b>room</b> (<i>plural</i> rooms)&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K1_room></a><b>room</b> (<i>plural</i> rooms)&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents geographical locations, both indoor
 and outdoor, which are not necessarily areas in a building. A player in one
 room is mostly unable to sense, or interact with, anything in a different room.
@@ -914,7 +914,7 @@ Rooms are arranged in a map.<br>
 <i>Can have</i> description (<i>text</i>), map region (<i>object</i>).<br>
 </p>
 <p class="tightin2"><span style="color:#808080">Home</span>&nbsp;<a href="source:story.ni#line1"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-<p class="halftightin2"><a name=></a><b>thing</b> (<i>plural</i> things)</p>
+<p class="halftightin2"><a name=K2_thing></a><b>thing</b> (<i>plural</i> things)</p>
 <p class="tightin2">Represents anything interactive in the model
 world that is not a room. People, pieces of scenery, furniture, doors and
 mislaid umbrellas might all be examples, and so might more surprising things
@@ -923,8 +923,8 @@ like the sound of birdsong or a shaft of sunlight.<br>
 <i>Usually not</i> scenery, wearable, pushable between rooms, handled.<br>
 <i>Can have</i> description (<i>text</i>), initial appearance (<i>text</i>), matching key (<i>object</i>).<br>
 </p>
-<p class="tightin2"><span style="color:#808080">yourself</span>, <span style="color:#808080">Great Gates of Kiev</span>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-<p class="halftightin3"><a name=></a><b>door</b> (<i>plural</i> doors)&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin2"></p>
+<p class="halftightin3"><a name=K4_door></a><b>door</b> (<i>plural</i> doors)&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents a conduit joining two rooms, most
 often a door or gate but sometimes a plank bridge, a slide or a hatchway.
 Usually visible and operable from both sides (for instance if you write
@@ -937,11 +937,11 @@ the long slide. Through the long slide is the cellar.').<br>
 <i>Never</i> pushable between rooms.<br>
 <i>Can have</i> other side (<i>object</i>).<br>
 </p>
-<p class="tightin3"><span style="color:#808080">Great Gates of Kiev</span>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-<p class="halftightin4"><a name=></a><b>mystic portal</b> (<i>plural</i> mystic portals)&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="tightin3"></p>
+<p class="halftightin4"><a name=K16_mystic_portal></a><b>mystic portal</b> (<i>plural</i> mystic portals)&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 <p class="tightin4"></p>
 <p class="tightin4"><span style="color:#808080">Great Gates of Kiev</span>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-<p class="halftightin3"><a name=></a><b>container</b> (<i>plural</i> containers)</p>
+<p class="halftightin3"><a name=K5_container></a><b>container</b> (<i>plural</i> containers)</p>
 <p class="tightin3">Represents something into which portable
 things can be put, such as a teachest or a handbag. Something with a really
 large immobile interior, such as the Albert Hall, had better be a room
@@ -951,7 +951,7 @@ instead.<br>
 <i>Can have</i> carrying capacity (<i>number</i>).<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin4"><a name=></a><b>vehicle</b> (<i>plural</i> vehicles)&nbsp;<a href=inform:/doc41.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin4"><a name=K14_vehicle></a><b>vehicle</b> (<i>plural</i> vehicles)&nbsp;<a href=inform:/doc41.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin4">Represents a container large enough for
 a person to enter, and which can then move between rooms at the driver's
 instruction. (If a supporter is needed instead, try the extension
@@ -960,7 +960,7 @@ Rideable Vehicles by Graham Nelson.)<br>
 <i>Usually</i> fixed in place <i>not</i> portable.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin4"><a name=></a><b>player's holdall</b> (<i>plural</i> player's holdalls)&nbsp;<a href=inform:/doc46.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin4"><a name=K15_player_s_holdall></a><b>player's holdall</b> (<i>plural</i> player's holdalls)&nbsp;<a href=inform:/doc46.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin4">Represents a container which the
 player can carry around as a sort of rucksack, into which spare items are
 automatically stowed away.<br>
@@ -968,7 +968,7 @@ automatically stowed away.<br>
 <i>Usually</i> openable <i>not</i> unopenable.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin3"><a name=></a><b>supporter</b> (<i>plural</i> supporters)</p>
+<p class="halftightin3"><a name=K6_supporter></a><b>supporter</b> (<i>plural</i> supporters)</p>
 <p class="tightin3">Represents a surface on which things can be
 placed, such as a table.<br>
 <i>Always</i> transparent <i>not</i> opaque.<br>
@@ -977,7 +977,7 @@ placed, such as a table.<br>
 <i>Can have</i> carrying capacity (<i>number</i>).<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin3"><a name=></a><b>backdrop</b> (<i>plural</i> backdrops)&nbsp;<a href=inform:/doc34.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K7_backdrop></a><b>backdrop</b> (<i>plural</i> backdrops)&nbsp;<a href=inform:/doc34.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents an aspect of the landscape
 or architecture which extends across more than one room: for instance,
 a stream, the sky or a long carpet.<br>
@@ -986,7 +986,7 @@ a stream, the sky or a long carpet.<br>
 <i>Never</i> pushable between rooms.<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin3"><a name=></a><b>person</b> (<i>plural</i> people)&nbsp;<a href=inform:/doc42.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K8_person></a><b>person</b> (<i>plural</i> people)&nbsp;<a href=inform:/doc42.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Despite the name, not necessarily a human
 being, but anything animate enough to envisage having a conversation with, or
 bartering with.<br>
@@ -996,31 +996,31 @@ bartering with.<br>
 <i>Can have</i> carrying capacity (<i>number</i>).<br>
 </p>
 <p class="tightin3"><span style="color:#808080">yourself</span></p>
-<p class="halftightin4"><a name=></a><b>man</b> (<i>plural</i> men)</p>
+<p class="halftightin4"><a name=K10_man></a><b>man</b> (<i>plural</i> men)</p>
 <p class="tightin4">Represents a man or boy.<br>
 <i>Always</i> male <i>not</i> female.<br>
 <i>Never</i> neuter.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin4"><a name=></a><b>woman</b> (<i>plural</i> women)</p>
+<p class="halftightin4"><a name=K11_woman></a><b>woman</b> (<i>plural</i> women)</p>
 <p class="tightin4">Represents a woman or girl.<br>
 <i>Always</i> female <i>not</i> male.<br>
 <i>Never</i> neuter.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin4"><a name=></a><b>animal</b> (<i>plural</i> animals)</p>
+<p class="halftightin4"><a name=K12_animal></a><b>animal</b> (<i>plural</i> animals)</p>
 <p class="tightin4">Represents an animal, or at any rate a
 non-human living creature reasonably large and possible to interact with: a
 giant Venus fly-trap might qualify, but not a patch of lichen.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin3"><a name=></a><b>device</b> (<i>plural</i> devices)&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K13_device></a><b>device</b> (<i>plural</i> devices)&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents a machine or contrivance of some
 kind which can be switched on or off.<br>
 <i>Usually</i> switched off <i>not</i> switched on.<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin2"><a name=></a><b>direction</b> (<i>plural</i> directions)&nbsp;<a href=inform:/doc51.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K3_direction></a><b>direction</b> (<i>plural</i> directions)&nbsp;<a href=inform:/doc51.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents a direction of movement, such
 as northeast or down. They always occur in opposite, matched pairs: northeast
 and southwest, for instance; down and up.<br>
@@ -1067,7 +1067,7 @@ and southwest, for instance; down and up.<br>
     </table>
     </p>
 </div>
-<p class="halftightin2"><a name=></a><b>region</b> (<i>plural</i> regions)&nbsp;<a href=inform:/doc29.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K9_region></a><b>region</b> (<i>plural</i> regions)&nbsp;<a href=inform:/doc29.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents a broader area than a single
 room, and allows rules to apply to a whole geographical territory. Each
 region can contain many rooms, and regions can even be inside each other,

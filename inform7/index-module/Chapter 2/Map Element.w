@@ -110,7 +110,7 @@ If |details| is set, a whole paragraph of details follows; otherwise there is
 just a line, which in |tabulating_kinds_index| mode comes out as a row in the
 table of Kinds.
 
-@d MAX_OBJECT_INDEX_DEPTH 10000
+@default MAX_OBJECT_INDEX_DEPTH 10000
 
 =
 instance *indexing_room = NULL;

@@ -817,6 +817,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_AT_MD_HL
 @e INSTANCE_VALUE_MD_HL
 @e INSTANCE_KIND_MD_HL
+@e INSTANCE_KIND_XREF_MD_HL
 @e INSTANCE_INDEX_KIND_MD_HL
 @e INSTANCE_IS_OBJECT_MD_HL
 @e INSTANCE_IS_SCENE_MD_HL
@@ -873,6 +874,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_AT_MD_HL,  I"^at")
 			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
 			H_C_U(INSTANCE_KIND_MD_HL,  I"^kind")
+			H_C_U(INSTANCE_KIND_XREF_MD_HL,  I"^kind_xref")
 			H_C_U(INSTANCE_INDEX_KIND_MD_HL,  I"^index_kind")
 			H_C_U(INSTANCE_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
@@ -999,6 +1001,7 @@ void Hierarchy::establish(void) {
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
+@e KIND_XREF_SYMBOL_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
 @e PRINT_FN_HL
@@ -1094,6 +1097,7 @@ void Hierarchy::establish(void) {
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
+			H_C_U(KIND_XREF_SYMBOL_HL,        I"kind_ref")
 			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
 			H_F_U(DECREMENT_FN_HL,            I"decrement_fn")
 			H_F_U(INCREMENT_FN_HL,            I"increment_fn")

@@ -6,6 +6,7 @@ Each kind constructor has an Inter package of resources.
 
 =
 typedef struct kind_constructor_compilation_data {
+	struct inter_name *xref_iname;
 	struct inter_name *con_iname;
 	struct inter_name *list_iname;
 	struct package_request *kc_package;
@@ -27,6 +28,7 @@ typedef struct kind_constructor_compilation_data {
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
 	kind_constructor_compilation_data kccd;
+	kccd.xref_iname = NULL;
 	kccd.con_iname = NULL;
 	kccd.kc_package = NULL;
 	kccd.list_iname = NULL;
@@ -78,6 +80,13 @@ package_request *RTKindConstructors::usage_package(kind_constructor *kc) {
 		kc->compilation_data.usage_package =
 			Hierarchy::completion_package(KIND_USAGE_HAP);
 	return kc->compilation_data.usage_package;
+}
+
+inter_name *RTKindConstructors::xref_iname(kind_constructor *kc) {
+	if (kc->compilation_data.xref_iname == NULL)
+		kc->compilation_data.xref_iname =
+			Hierarchy::make_iname_in(KIND_XREF_SYMBOL_HL, RTKindConstructors::package(kc));
+	return kc->compilation_data.xref_iname;
 }
 
 @ An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
@@ -447,7 +456,9 @@ void RTKindConstructors::compile(void) {
 		if ((kc == CON_KIND_VARIABLE) || (kc == CON_INTERMEDIATE)) continue;
 		kind *K = Kinds::base_construction(kc);
 		package_request *pack = RTKindConstructors::package(kc);
-				
+
+		Emit::numeric_constant(RTKindConstructors::xref_iname(kc), 561);	
+			
 		Emit::numeric_constant(RTKindConstructors::weak_ID_iname(kc), 0);
 		Hierarchy::make_available(RTKindConstructors::weak_ID_iname(kc));
 
