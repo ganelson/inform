@@ -55,16 +55,16 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 					switch (pass) {
 						case 1: @<Write table row for this kind@>; break;
 						case 2: {
-							#ifdef CORE_MODULE
-							kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 							@<Write heading for the detailed index entry for this kind@>;
 							HTML::open_indented_p(OUT, 1, "tight");
+							#ifdef CORE_MODULE
+							kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 							@<Index kinds of kinds matched by this kind@>;
 							@<Index explanatory text supplied for a kind@>;
 							@<Index literal patterns which can specify this kind@>;
+							#endif
 							@<Index possible values of an enumerated kind@>;
 							HTML_CLOSE("p");
-							#endif
 							break;
 						}
 					}
@@ -196,29 +196,16 @@ row.
 
 @<Write heading for the detailed index entry for this kind@> =
 	HTML::open_indented_p(OUT, 1, "halftight");
-	Index::anchor_numbered(OUT, Kinds::get_construct(K)->allocation_id); /* ...the anchor to which the grey icon in the table led */
-	WRITE("<b>"); ChartElement::old_index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
-	WRITE(" (<i>plural</i> "); ChartElement::old_index_kind(OUT, K, TRUE, FALSE); WRITE(")");
-	if (Kinds::Behaviour::get_documentation_reference(K))
-		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K)); /* blue help icon, if any */
+	Index::anchor_numbered(OUT, i); /* ...the anchor to which the grey icon in the table led */
+	WRITE("<b>"); ChartElement::index_kind(OUT, pack, FALSE, TRUE); WRITE("</b>");
+	WRITE(" (<i>plural</i> "); ChartElement::index_kind(OUT, pack, TRUE, FALSE); WRITE(")");
+	text_stream *doc_ref = Metadata::read_optional_textual(pack, I"^documentation");
+	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
 	HTML_CLOSE("p");
-	if (Kinds::is_proper_constructor(K)) {
+	text_stream *variance =  Metadata::read_optional_textual(pack, I"^variance");
+	if (Str::len(variance) > 0) {
 		HTML::open_indented_p(OUT, 1, "tight");
-		int i, a = KindConstructors::arity(Kinds::get_construct(K));
-		if ((a == 2) &&
-			(KindConstructors::variance(Kinds::get_construct(K), 0) ==
-				KindConstructors::variance(Kinds::get_construct(K), 1)))
-			a = 1;
-		WRITE("<i>");
-		for (i=0; i<a; i++) {
-			if (i > 0) WRITE(", ");
-			if (KindConstructors::variance(Kinds::get_construct(K), i) > 0)
-				WRITE("covariant");
-			else
-				WRITE("contravariant");
-			if (a > 1) WRITE(" in %c", 'K'+i);
-		}
-		WRITE("&nbsp;");
+		WRITE("<i>%S&nbsp;", variance);
 		HTML_OPEN_WITH("a", "href=#contra>");
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/shelp.png");
 		HTML_CLOSE("a");
@@ -249,18 +236,15 @@ row.
 	}
 	HTML_TAG("br");
 
-@ Note that an enumerated kind only becomes so when its first possible value
-is made, so that the following sentence can't have an empty list in it.
-
 @<Index possible values of an enumerated kind@> =
-	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		ChartElement::index_instances(OUT, inv, pack, 1);
-	}
+	if (Str::ne(Metadata::read_textual(pack, I"^printed_name"), I"object"))
+		if (Metadata::read_optional_numeric(pack, I"^instance_count") > 0)
+			ChartElement::index_instances(OUT, inv, pack, 1);
 
 @ Explanations:
 
 @<Index explanatory text supplied for a kind@> =
-	text_stream *explanation = Kinds::Behaviour::get_specification_text(K);
+	text_stream *explanation = Metadata::read_optional_textual(pack, I"^specification");
 	if (Str::len(explanation) > 0) {
 		WRITE("%S", explanation);
 		HTML_TAG("br");

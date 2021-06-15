@@ -467,6 +467,11 @@ void RTKindConstructors::compile(void) {
 		Hierarchy::apply_metadata(pack,
 			KIND_PNAME_MD_HL, S);
 		DISCARD_TEXT(S)
+
+		text_stream *explanation = Kinds::Behaviour::get_specification_text(K);
+		if (Str::len(explanation) > 0)
+			Hierarchy::apply_metadata(pack, KIND_SPECIFICATION_MD_HL, explanation);
+
 		Hierarchy::apply_metadata_from_number(pack,
 			KIND_IS_BASE_MD_HL, 1);
 		if (KindConstructors::is_arithmetic(kc))
@@ -501,6 +506,26 @@ void RTKindConstructors::compile(void) {
 		text_stream *DR = Kinds::Behaviour::get_documentation_reference(K);
 		if (Str::len(DR) > 0)
 			Hierarchy::apply_metadata(pack, KIND_DOCUMENTATION_MD_HL, DR);
+		if (Kinds::is_proper_constructor(K)) {
+			TEMPORARY_TEXT(CONS)
+			int i, a = KindConstructors::arity(Kinds::get_construct(K));
+			if ((a == 2) &&
+				(KindConstructors::variance(Kinds::get_construct(K), 0) ==
+					KindConstructors::variance(Kinds::get_construct(K), 1)))
+				a = 1;
+			for (i=0; i<a; i++) {
+				if (i > 0) WRITE_TO(CONS, ", ");
+				if (KindConstructors::variance(Kinds::get_construct(K), i) > 0)
+					WRITE_TO(CONS, "covariant");
+				else
+					WRITE_TO(CONS, "contravariant");
+				if (a > 1) WRITE_TO(CONS, " in %c", 'K'+i);
+			}
+			Hierarchy::apply_metadata(pack, KIND_INDEX_VARIANCE_MD_HL, CONS);
+			DISCARD_TEXT(CONS)	
+		}
+		
+
 		Hierarchy::apply_metadata_from_number(pack, KIND_INDEX_PRIORITY_MD_HL,
 			(inter_ti) Kinds::Behaviour::get_index_priority(K));
 		if (RTKindConstructors::is_subkind_of_object(kc)) {
