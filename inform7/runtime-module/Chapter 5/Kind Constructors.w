@@ -704,6 +704,26 @@ void RTKindConstructors::compile(void) {
 		RTKindConstructors::index_name(PN, K, TRUE);
 		if (Str::len(PN) > 0) Hierarchy::apply_metadata(pack, KIND_INDEX_PLURAL_MD_HL, PN);
 		DISCARD_TEXT(PN)
+
+		kind *K2;
+		LOOP_OVER_BASE_KINDS(K2) {
+			if ((Kinds::Behaviour::is_kind_of_kind(K2)) && (Kinds::conforms_to(K, K2))
+				 && (Kinds::eq(K2, K_pointer_value) == FALSE)
+				 && (Kinds::eq(K2, K_stored_value) == FALSE)) {
+				package_request *R =
+					Hierarchy::package_within(KIND_CONFORMANCE_HAP, pack);
+				Hierarchy::apply_metadata_from_iname(R, CONFORMED_TO_MD_HL,
+					RTKindConstructors::xref_iname(K2->construct));
+				LOG("Well, made conf %u to %u\n", K, K2);
+			}
+		}
+
+		if (LiteralPatterns::list_of_literal_forms(K)) {
+			TEMPORARY_TEXT(LF)
+			LiteralPatterns::index_all(LF, K);
+			Hierarchy::apply_metadata(pack, KIND_INDEX_NOTATION_MD_HL, LF);
+			DISCARD_TEXT(LF)
+		}
 	}
 	@<Compile multiplication rules for the index@>;
 }

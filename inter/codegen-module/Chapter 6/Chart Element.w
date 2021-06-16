@@ -57,12 +57,9 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 						case 2: {
 							@<Write heading for the detailed index entry for this kind@>;
 							HTML::open_indented_p(OUT, 1, "tight");
-							#ifdef CORE_MODULE
-							kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
 							@<Index kinds of kinds matched by this kind@>;
 							@<Index explanatory text supplied for a kind@>;
 							@<Index literal patterns which can specify this kind@>;
-							#endif
 							@<Index possible values of an enumerated kind@>;
 							HTML_CLOSE("p");
 							break;
@@ -214,24 +211,30 @@ row.
 	}
 
 @<Index literal patterns which can specify this kind@> =
-	if (LiteralPatterns::list_of_literal_forms(K)) {
-		LiteralPatterns::index_all(OUT, K);
+	text_stream *notation = Metadata::read_optional_textual(pack, I"^notation");
+	if (Str::len(notation) > 0) {
+		WRITE("%S", notation);
 		HTML_TAG("br");
 	}
-
-@ Which kinds of kinds we match:
 
 @<Index kinds of kinds matched by this kind@> =
 	int f = FALSE;
 	WRITE("<i>Matches:</i> ");
-	kind *K2;
-	LOOP_OVER_BASE_KINDS(K2) {
-		if ((Kinds::Behaviour::is_kind_of_kind(K2)) && (Kinds::conforms_to(K, K2))
-			 && (Kinds::eq(K2, K_pointer_value) == FALSE)
-			 && (Kinds::eq(K2, K_stored_value) == FALSE)) {
-			if (f) WRITE(", ");
-			ChartElement::old_index_kind(OUT, K2, FALSE, TRUE);
-			f = TRUE;
+LOG("Looking for conformance\n");
+	inter_symbol *wanted = PackageTypes::get(inv->of_tree, I"_conformance");
+	inter_tree_node *D = Inter::Packages::definition(pack);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *entry = Inter::Package::defined_by_frame(C);
+			if (Inter::Packages::type(entry) == wanted) {
+LOG("Found conformance\n");
+				inter_symbol *xref = Metadata::read_optional_symbol(entry, I"^conformed_to");
+LOG("Found $3\n", xref);
+				inter_package *other = Inter::Packages::container(xref->definition);
+				if (f) WRITE(", ");
+				ChartElement::index_kind(OUT, other, FALSE, TRUE);
+				f = TRUE;
+			}
 		}
 	}
 	HTML_TAG("br");
@@ -240,8 +243,6 @@ row.
 	if (Str::ne(Metadata::read_textual(pack, I"^printed_name"), I"object"))
 		if (Metadata::read_optional_numeric(pack, I"^instance_count") > 0)
 			ChartElement::index_instances(OUT, inv, pack, 1);
-
-@ Explanations:
 
 @<Index explanatory text supplied for a kind@> =
 	text_stream *explanation = Metadata::read_optional_textual(pack, I"^specification");
@@ -472,17 +473,6 @@ void ChartElement::old_index_kind(OUTPUT_STREAM, kind *K, int plural, int with_l
 @d MAX_OBJECT_INDEX_DEPTH 10000
 
 =
-#ifdef CORE_MODULE
-kind *ChartElement::cheat(int id) {
-	kind_constructor *kc;
-	LOOP_OVER(kc, kind_constructor)
-		if (kc->allocation_id == id)
-			return Kinds::base_construction(kc);
-	internal_error("oops");
-	return NULL;
-}
-#endif
-
 void ChartElement::index_subkinds(OUTPUT_STREAM, tree_inventory *inv, inter_package *pack, int depth, int pass) {
 	for (int j=0; j<TreeLists::len(inv->kind_nodes); j++) {
 		inter_package *inner_pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[j].node);
@@ -594,6 +584,17 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	}
 
 @ =
+#ifdef CORE_MODULE
+kind *ChartElement::cheat(int id) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor)
+		if (kc->allocation_id == id)
+			return Kinds::base_construction(kc);
+	internal_error("oops");
+	return NULL;
+}
+#endif
+
 void ChartElement::index_inferences(OUTPUT_STREAM, inter_package *pack, int brief) {
 	#ifdef CORE_MODULE
 	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));

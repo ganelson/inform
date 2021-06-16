@@ -993,6 +993,7 @@ void Hierarchy::establish(void) {
 @e RUCKSACK_CLASS_MD_HL
 @e MIN_VAL_INDEX_MD_HL
 @e MAX_VAL_INDEX_MD_HL
+@e KIND_INDEX_NOTATION_MD_HL
 @e DIMENSIONS_INDEX_MD_HL
 @e KIND_SHADED_MD_HL
 @e KIND_FINITE_DOMAIN_MD_HL
@@ -1031,6 +1032,9 @@ void Hierarchy::establish(void) {
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
 @e KIND_PROPERTIES_HAP
+
+@e KIND_CONFORMANCE_HAP
+@e CONFORMED_TO_MD_HL
 
 @e DERIVED_KIND_HAP
 @e DK_NEEDED_MD_HL
@@ -1088,6 +1092,7 @@ void Hierarchy::establish(void) {
 			H_C_U(RUCKSACK_CLASS_MD_HL, I"^rucksack_class")
 			H_C_U(MIN_VAL_INDEX_MD_HL, I"^min_value")
 			H_C_U(MAX_VAL_INDEX_MD_HL, I"^max_value")
+			H_C_U(KIND_INDEX_NOTATION_MD_HL, I"^notation")
 			H_C_U(DIMENSIONS_INDEX_MD_HL, I"^dimensions")
 			H_C_U(KIND_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_U(KIND_INDEX_PRIORITY_MD_HL, I"^index_priority")
@@ -1129,6 +1134,9 @@ void Hierarchy::establish(void) {
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_BEGIN_AP(KIND_INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(KIND_INLINE_PROPERTY_HL, I"inline")
+			H_END
+			H_BEGIN_AP(KIND_CONFORMANCE_HAP,          I"conformance", I"_conformance")
+				H_C_U(CONFORMED_TO_MD_HL,         I"^conformed_to")
 			H_END
 		H_END
 		H_BEGIN_AP(DERIVED_KIND_HAP,          I"derived_kind", I"_derived_kind")

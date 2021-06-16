@@ -1,25 +1,26 @@
 100.0% in inform7 run
-     53.6% in compilation to Inter
-         39.5% in //Sequence::undertake_queued_tasks//
-          3.7% in //MajorNodes::pre_pass//
-          2.8% in //MajorNodes::pass_1//
-          1.5% in //ImperativeDefinitions::assess_all//
-          1.0% in //RTKindConstructors::compile//
-          0.5% in //MajorNodes::pass_2//
-          0.5% in //Sequence::undertake_queued_tasks//
-          0.5% in //World::stage_V//
-          0.3% in //ImperativeDefinitions::compile_first_block//
-          0.1% in //CompletionModule::compile//
+     53.9% in compilation to Inter
+         39.4% in //Sequence::undertake_queued_tasks//
+          3.9% in //MajorNodes::pre_pass//
+          2.9% in //MajorNodes::pass_1//
+          1.4% in //ImperativeDefinitions::assess_all//
+          1.1% in //RTKindConstructors::compile//
+          0.4% in //ImperativeDefinitions::compile_first_block//
+          0.4% in //MajorNodes::pass_2//
+          0.4% in //World::stage_V//
+          0.3% in //CompletionModule::compile//
+          0.3% in //Sequence::undertake_queued_tasks//
           0.1% in //InferenceSubjects::emit_all//
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Sequence::undertake_queued_tasks//
           0.1% in //Task::make_built_in_kind_constructors//
-          2.2% not specifically accounted for
-     44.1% in running Inter pipeline
-         11.0% in inter step 7/14: consolidate-text
-         10.9% in step preparation
-          9.1% in inter step 2/14: link
-          7.3% in inter step 14/14: generate inform6 -> auto.inf
+          0.1% in //World::stages_II_and_III//
+          2.0% not specifically accounted for
+     43.7% in running Inter pipeline
+         10.8% in inter step 7/14: consolidate-text
+         10.7% in step preparation
+          8.9% in inter step 2/14: link
+          7.4% in inter step 14/14: generate inform6 -> auto.inf
           1.1% in inter step 10/14: make-identifiers-unique
           0.3% in inter step 11/14: reconcile-verbs
           0.3% in inter step 13/14: eliminate-redundant-operations
@@ -29,6 +30,6 @@
           0.1% in inter step 5/14: resolve-conditional-compilation
           0.1% in inter step 8/14: resolve-external-symbols
           0.1% in inter step 9/14: inspect-plugs
-          2.6% not specifically accounted for
-      1.7% in supervisor
-      0.6% not specifically accounted for
+          2.8% not specifically accounted for
+      1.9% in supervisor
+      0.4% not specifically accounted for
