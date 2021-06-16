@@ -36,12 +36,12 @@ void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int 
 	if (SPATIAL_DATA(I)->incorp_tree_child != NULL) {
 		instance *I2 = SPATIAL_DATA(I)->incorp_tree_child;
 		while (I2 != NULL) {
-			IXPhysicalWorld::index(OUT, I2, NULL, depth+1, details);
+			IXPhysicalWorld::index(OUT, I2, depth+1, details);
 			I2 = SPATIAL_DATA(I2)->incorp_tree_sibling;
 		}
 	}
 	if (SPATIAL_DATA(I)->object_tree_child)
-		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_child, NULL, depth+1, details);
+		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_child, depth+1, details);
 	if ((Spatial::object_is_a_room(I)) &&
 		(Map::instance_is_a_door(I) == FALSE)) {
 		instance *I2;
@@ -49,8 +49,8 @@ void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int 
 			if ((Map::instance_is_a_door(I2)) && (Spatial::progenitor(I2) != I)) {
 				instance *A = NULL, *B = NULL;
 				Map::get_door_data(I2, &A, &B);
-				if (A == I) IXPhysicalWorld::index(OUT, I2, NULL, depth+1, details);
-				if (B == I) IXPhysicalWorld::index(OUT, I2, NULL, depth+1, details);
+				if (A == I) IXPhysicalWorld::index(OUT, I2, depth+1, details);
+				if (B == I) IXPhysicalWorld::index(OUT, I2, depth+1, details);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int 
 	IXBackdrops::index_object_further(OUT, I, depth, details, 0);
 
 	if (SPATIAL_DATA(I)->object_tree_sibling)
-		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_sibling, NULL, depth, details);
+		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_sibling, depth, details);
 }
 
 @ And also:

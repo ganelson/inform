@@ -94,7 +94,7 @@ will be things which are offstage (and their contents and any parts thereof):
 				WRITE("<b>Nowhere (that is, initially not in any room):</b>");
 				HTML_TAG("br");
 			}
-			IXPhysicalWorld::index(OUT, I, NULL, 2, FALSE);
+			IXPhysicalWorld::index(OUT, I, 2, FALSE);
 		}
 	suppress_panel_changes = FALSE;
 
@@ -103,12 +103,6 @@ will be things which are offstage (and their contents and any parts thereof):
 	unruly = TRUE;
 
 @h Indexing individual objects.
-Rather ingeniously, the following routine is used both to index instance objects,
-in the World index, and to index kinds of object, as rows in the table on the
-Kinds index. The point of doing both together is to ensure a consistent layout.
-If |details| is set, a whole paragraph of details follows; otherwise there is
-just a line, which in |tabulating_kinds_index| mode comes out as a row in the
-table of Kinds.
 
 @default MAX_OBJECT_INDEX_DEPTH 10000
 
@@ -124,7 +118,7 @@ void IXPhysicalWorld::set_room_being_indexed(instance *I) {
 	indexing_room = I;
 }
 
-void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int details) {
+void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) {
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	noun *nt = NULL;
 	if (I) {
@@ -135,9 +129,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 		#endif
 		nt = Instances::get_noun(I);
 	}
-	if (K) nt = Kinds::Behaviour::get_noun(K);
 	if (nt == NULL) internal_error("no noun to index");
-	int shaded = FALSE;
 	@<Begin the object citation line@>;
 	int xtra = -1;
 	if (I) xtra = xtras_count++;
@@ -159,10 +151,9 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 }
 
 @<Begin the object citation line@> =
-	if (tabulating_kinds_index) ChartElement::begin_chart_row(OUT);
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		if ((K) || (I != indexing_room)) Index::anchor(OUT, NounIdentifiers::identifier(nt));
+		if (I != indexing_room) Index::anchor(OUT, NounIdentifiers::identifier(nt));
 	} else {
 		#ifdef IF_MODULE
 		if (I) IXSpatial::index_spatial_relationship(OUT, I);
@@ -170,23 +161,10 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 	}
 
 @<End the object citation line@> =
-	if (tabulating_kinds_index)
-		ChartElement::old_end_chart_row(OUT, shaded, K, "tick", "tick", "tick");
-	else {
-		if (details) HTML_CLOSE("p");
-	}
+	if (details) HTML_CLOSE("p");
 
 @<Index the name part of the object citation@> =
-	if (tabulating_kinds_index) {
-		int c = Instances::count(K);
-		if ((c == 0) && (details == FALSE)) shaded = TRUE;
-		if (shaded) HTML::begin_colour(OUT, I"808080");
-		@<Quote the name of the object being indexed@>;
-		if (shaded) HTML::end_colour(OUT);
-		if ((details == FALSE) && (c > 0)) WRITE(" [%d]", c);
-	} else {
-		@<Quote the name of the object being indexed@>;
-	}
+	@<Quote the name of the object being indexed@>;
 
 @<Quote the name of the object being indexed@> =
 	wording W = Nouns::nominative_in_language(nt, FALSE, Projects::get_language_of_play(Task::project()));
@@ -237,37 +215,19 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 	}
 
 @<Index the link icons part of the object citation@> =
-	parse_node *C = NULL;
-	if (K) C = Kinds::Behaviour::get_creating_sentence(K);
-	if (I) C = Instances::get_creating_sentence(I);
+	parse_node *C = Instances::get_creating_sentence(I);
 	if (C) Index::link(OUT, Wordings::first_wn(Node::get_text(C)));
-	if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
-		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
-	if ((details == FALSE) && (K))
-		Index::below_link(OUT, NounIdentifiers::identifier(nt));
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 
 @<Recurse the index citation for the object as necessary@> =
-	if (K) {
-		kind *K2;
-		LOOP_OVER_BASE_KINDS(K2)
-			if (Kinds::eq(Latticework::super(K2), K))
-				IXPhysicalWorld::index(OUT, NULL, K2, depth+1, details);
-	} else {
-		#ifdef IF_MODULE
-		IXSpatial::index_object_further(OUT, I, depth, details);
-		#endif
-	}
+	#ifdef IF_MODULE
+	IXSpatial::index_object_further(OUT, I, depth, details);
+	#endif
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
-	if (I) IXInferences::index(OUT, Instances::as_subject(I), TRUE);
-	else IXInferences::index(OUT, KindSubjects::from_kind(K), TRUE);
-	if (K) {
-		HTML_CLOSE("p");
-		IXPhysicalWorld::index_instances(OUT, K, depth);
-	}
+	IXInferences::index(OUT, Instances::as_subject(I), TRUE);
 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
@@ -294,44 +254,3 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int 
 
 @<Add the catalogue of specific properties@> =
 	IXInferences::index_specific(OUT, Instances::as_subject(I));
-
-@ =
-void IXPhysicalWorld::index_instances(OUTPUT_STREAM, kind *K, int depth) {
-	HTML::open_indented_p(OUT, depth, "tight");
-	int c = 0;
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K) c++;
-	if (c >= 10) {
-		int xtra = xtras_count++;
-		Index::extra_link(OUT, xtra);
-		HTML::begin_colour(OUT, I"808080");
-		WRITE("%d ", c);
-		wording PW = Kinds::Behaviour::get_name(K, TRUE);
-		if (Wordings::nonempty(PW)) WRITE("%+W", PW);
-		else WRITE("instances");
-		HTML::end_colour(OUT);
-		HTML_CLOSE("p");
-		Index::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
-		c = 0;
-		LOOP_OVER_INSTANCES(I, K) {
-			if (c > 0) WRITE(", "); c++;
-			HTML::begin_colour(OUT, I"808080");
-			IXInstances::index_name(OUT, I);
-			HTML::end_colour(OUT);
-			parse_node *at = Instances::get_creating_sentence(I);
-			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
-		}
-		Index::extra_div_close(OUT, "e0e0e0");
-	} else {
-		c = 0;
-		LOOP_OVER_INSTANCES(I, K) {
-			if (c > 0) WRITE(", "); c++;
-			HTML::begin_colour(OUT, I"808080");
-			IXInstances::index_name(OUT, I);
-			HTML::end_colour(OUT);
-			parse_node *at = Instances::get_creating_sentence(I);
-			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
-		}
-		HTML_CLOSE("p");
-	}
-}

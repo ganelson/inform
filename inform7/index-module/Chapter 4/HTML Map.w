@@ -557,7 +557,7 @@ void PL::HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, instance *R) {
 	HTML::next_html_column(OUT, 0);
 	WRITE("&nbsp;");
 	HTML::next_html_column(OUT, 0);
-	IXPhysicalWorld::index(OUT, R, NULL, 1, FALSE);
+	IXPhysicalWorld::index(OUT, R, 1, FALSE);
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");

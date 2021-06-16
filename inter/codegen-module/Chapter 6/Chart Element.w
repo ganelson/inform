@@ -5,8 +5,6 @@ To write the Chart element (Ch) in the index.
 @
 
 =
-int tabulating_kinds_index = FALSE;
-
 void ChartElement::render(OUTPUT_STREAM) {
 	inter_tree *I = Index::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
@@ -37,7 +35,6 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 	int priority;
 	if (pass == 1) {
 		HTML_OPEN("p"); HTML_CLOSE("p");
-		tabulating_kinds_index = TRUE;
 		HTML::begin_wide_html_table(OUT);
 		@<Add a dotty row to the chart of kinds@>;
 		@<Add a titling row to the chart of kinds@>;
@@ -84,7 +81,6 @@ void ChartElement::index_kinds(OUTPUT_STREAM, tree_inventory *inv, int pass) {
 	if (pass == 1) {
 		@<Add a dotty row to the chart of kinds@>;
 		HTML::end_html_table(OUT);
-		tabulating_kinds_index = FALSE;
 	} else {
 		@<Explain about covariance and contravariance@>;
 	}
@@ -220,16 +216,13 @@ row.
 @<Index kinds of kinds matched by this kind@> =
 	int f = FALSE;
 	WRITE("<i>Matches:</i> ");
-LOG("Looking for conformance\n");
 	inter_symbol *wanted = PackageTypes::get(inv->of_tree, I"_conformance");
 	inter_tree_node *D = Inter::Packages::definition(pack);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *entry = Inter::Package::defined_by_frame(C);
 			if (Inter::Packages::type(entry) == wanted) {
-LOG("Found conformance\n");
 				inter_symbol *xref = Metadata::read_optional_symbol(entry, I"^conformed_to");
-LOG("Found $3\n", xref);
 				inter_package *other = Inter::Packages::container(xref->definition);
 				if (f) WRITE(", ");
 				ChartElement::index_kind(OUT, other, FALSE, TRUE);
@@ -351,64 +344,6 @@ void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, inter_package *pack,
 	HTML::end_html_row(OUT);
 }
 
-
-#ifdef CORE_MODULE
-void ChartElement::old_end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
-	char *tick1, char *tick2, char *tick3) {
-	if (tick1) HTML::next_html_column(OUT, 0);
-	else HTML::next_html_column_spanning(OUT, 0, 4);
-	if (shaded) HTML::begin_colour(OUT, I"808080");
-	@<Index the default value entry in the kind chart@>;
-	if (shaded) HTML::end_colour(OUT);
-	if (tick1) {
-		HTML::next_html_column_centred(OUT, 0);
-		if (tick1)
-			HTML_TAG_WITH("img",
-				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
-				tick1, shaded?"grey":"", tick1);
-		HTML::next_html_column_centred(OUT, 0);
-		if (tick2)
-			HTML_TAG_WITH("img",
-				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
-				tick2, shaded?"grey":"", tick2);
-		HTML::next_html_column_centred(OUT, 0);
-		if (tick3)
-			HTML_TAG_WITH("img",
-				"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png",
-				tick3, shaded?"grey":"", tick3);
-	}
-	HTML::end_html_row(OUT);
-}
-#endif
-
-@<Index the default value entry in the kind chart@> =
-	int found = FALSE;
-	instance *inst;
-	LOOP_OVER_INSTANCES(inst, K) {
-		IXInstances::index_name(OUT, inst);
-		found = TRUE;
-		break;
-	}
-	if (found == FALSE) {
-		text_stream *p = Kinds::Behaviour::get_index_default_value(K);
-		if (Str::eq_wide_string(p, L"<0-in-literal-pattern>"))
-			@<Index the constant 0 but use the default literal pattern@>
-		else if (Str::eq_wide_string(p, L"<first-constant>"))
-			WRITE("--");
-		else WRITE("%S", p);
-	}
-
-@ For every quasinumeric kind the default value is 0, but we don't want to
-index just "0" because that means 0-as-a-number: we want it to come out
-as "0 kg", "0 hectares", or whatever is appropriate.
-
-@<Index the constant 0 but use the default literal pattern@> =
-	if (LiteralPatterns::list_of_literal_forms(K))
-		LiteralPatterns::index_value(OUT,
-			LiteralPatterns::list_of_literal_forms(K), 0);
-	else
-		WRITE("--");
-
 @h Indexing kind names.
 
 =
@@ -421,52 +356,6 @@ void ChartElement::index_kind(OUTPUT_STREAM, inter_package *pack, int plural, in
 		if (at > 0) Index::link(OUT, at);
 	}
 }
-
-#ifdef CORE_MODULE
-void ChartElement::old_index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links) {
-	if (K == NULL) return;
-	wording W = Kinds::Behaviour::get_name(K, plural);
-	if (Wordings::nonempty(W)) {
-		if (Kinds::is_proper_constructor(K)) {
-			@<Index the constructor text@>;
-		} else {
-			WRITE("%W", W);
-			if (with_links) {
-				int wn = Wordings::first_wn(W);
-				if (Kinds::Behaviour::get_creating_sentence(K))
-					wn = Wordings::first_wn(Node::get_text(Kinds::Behaviour::get_creating_sentence(K)));
-				Index::link(OUT, wn);
-			}
-		}
-	}
-}
-#endif
-
-@<Index the constructor text@> =
-	int length = Wordings::length(W), w1 = Wordings::first_wn(W), tinted = TRUE;
-	int i, first_stroke = -1, last_stroke = -1;
-	for (i=0; i<length; i++) {
-		if (Lexer::word(w1+i) == STROKE_V) {
-			if (first_stroke == -1) first_stroke = i;
-			last_stroke = i;
-		}
-	}
-	int from = 0, to = length-1;
-	if (last_stroke >= 0) from = last_stroke+1; else tinted = FALSE;
-	if (tinted) HTML::begin_colour(OUT, I"808080");
-	for (i=from; i<=to; i++) {
-		int j, untinted = FALSE;
-		for (j=0; j<first_stroke; j++)
-			if (Lexer::word(w1+j) == Lexer::word(w1+i))
-				untinted = TRUE;
-		if (untinted) HTML::end_colour(OUT);
-		if (i>from) WRITE(" ");
-		if (Lexer::word(w1+i) == CAPITAL_K_V) WRITE("K");
-		else if (Lexer::word(w1+i) == CAPITAL_L_V) WRITE("L");
-		else WRITE("%V", Lexer::word(w1+i));
-		if (untinted) HTML::begin_colour(OUT, I"808080");
-	}
-	if (tinted) HTML::end_colour(OUT);
 
 @
 

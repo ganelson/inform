@@ -598,7 +598,7 @@ void Kinds::Dimensions::index_unit_sequence(OUTPUT_STREAM, unit_sequence *deriv,
 			if (j>0) WRITE(".");
 			WRITE("(");
 			#ifdef CODEGEN_MODULE
-			ChartElement::old_index_kind(OUT, fundamental, FALSE, FALSE);
+			Kinds::Textual::write_as_HTML(OUT, fundamental);
 			#else
 			Kinds::Textual::write(OUT, fundamental);
 			#endif

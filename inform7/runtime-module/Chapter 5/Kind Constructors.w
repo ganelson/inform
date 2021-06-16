@@ -714,7 +714,6 @@ void RTKindConstructors::compile(void) {
 					Hierarchy::package_within(KIND_CONFORMANCE_HAP, pack);
 				Hierarchy::apply_metadata_from_iname(R, CONFORMED_TO_MD_HL,
 					RTKindConstructors::xref_iname(K2->construct));
-				LOG("Well, made conf %u to %u\n", K, K2);
 			}
 		}
 
