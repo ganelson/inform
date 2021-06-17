@@ -1188,6 +1188,12 @@ void Hierarchy::establish(void) {
 @e PHRASE_FN_HL
 @e LABEL_STORAGES_HAP
 @e LABEL_ASSOCIATED_STORAGE_HL
+@e PHRASEBOOK_SUPER_HEADING_HAP
+@e PHRASEBOOK_SUPER_HEADING_TEXT_MD_HL
+@e PHRASEBOOK_HEADING_HAP
+@e PHRASEBOOK_HEADING_TEXT_MD_HL
+@e PHRASEBOOK_ENTRY_HAP
+@e PHRASEBOOK_ENTRY_TEXT_MD_HL
 
 @<Establish phrases@> =
 	submodule_identity *phrases = Packaging::register_submodule(I"phrases");
@@ -1206,6 +1212,18 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::any_enclosure())
 		H_BEGIN_AP(LABEL_STORAGES_HAP,        I"label_storage", I"_label_storage")
 			H_C_U(LABEL_ASSOCIATED_STORAGE_HL, I"label_associated_storage")
+		H_END
+	H_END
+
+	H_BEGIN(HierarchyLocations::completion_submodule(I, phrases))
+		H_BEGIN_AP(PHRASEBOOK_SUPER_HEADING_HAP,    I"phrasebook_super_heading", I"_phrasebook_super_heading")
+			H_C_U(PHRASEBOOK_SUPER_HEADING_TEXT_MD_HL, I"^text")
+			H_BEGIN_AP(PHRASEBOOK_HEADING_HAP,    I"phrasebook_heading", I"_phrasebook_heading")
+				H_C_U(PHRASEBOOK_HEADING_TEXT_MD_HL, I"^text")
+				H_BEGIN_AP(PHRASEBOOK_ENTRY_HAP,    I"phrasebook_entry", I"_phrasebook_entry")
+					H_C_U(PHRASEBOOK_ENTRY_TEXT_MD_HL, I"^text")
+				H_END
+			H_END
 		H_END
 	H_END
 

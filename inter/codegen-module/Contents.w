@@ -83,3 +83,4 @@ Chapter 6: Index
 	Arithmetic Element
 	Plot Element
 	Chart Element
+	Phrasebook Element

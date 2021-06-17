@@ -61,7 +61,7 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 			HTML_OPEN("p");
 			wording W = Headings::get_text(definition_area);
 			if (Wordings::nonempty(W)) {
-				Phrases::Index::index_definition_area(OUT, W, TRUE);
+				RTPhrasebook::index_definition_area(OUT, W, TRUE);
 			} else if (*ext == NULL) {
 				WRITE("<b>");
 				WRITE("New actions");

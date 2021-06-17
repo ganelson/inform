@@ -17,7 +17,6 @@ Chapter 2: Indexing
 	Inferences
 	Rules
 	Activities
-	Phrasebook Index
 
 Chapter 3: Indexing for Plugins
 	Spatial

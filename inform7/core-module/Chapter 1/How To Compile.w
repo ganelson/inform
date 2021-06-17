@@ -225,6 +225,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTRelations::compile)
 	BENCH(RTAdjectives::compile_mdef_test_functions)
 	BENCH(Sequence::undertake_queued_tasks)
+	BENCH(RTPhrasebook::compile_entries);
 
 @<Generate inter, part 4@> =
 	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
