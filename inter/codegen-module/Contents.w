@@ -84,3 +84,4 @@ Chapter 6: Index
 	Plot Element
 	Chart Element
 	Phrasebook Element
+	Tokens Element

@@ -386,4 +386,18 @@ void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
 			RTCommandGrammarLines::compile_cg_line(kit, cgl, cg->cg_is,
 				CommandGrammars::cg_is_genuinely_verbal(cg));
 	LOG_OUTDENT;
+	
+	package_request *pack = RTCommandGrammars::package(cg);
+	int hl = -1;
+	if (cg->cg_is == CG_IS_COMMAND) hl = CG_IS_COMMAND_MD_HL;
+	if (cg->cg_is == CG_IS_TOKEN) hl = CG_IS_TOKEN_MD_HL;
+	if (cg->cg_is == CG_IS_SUBJECT) hl = CG_IS_SUBJECT_MD_HL;
+	if (cg->cg_is == CG_IS_VALUE) hl = CG_IS_VALUE_MD_HL;
+	if (cg->cg_is == CG_IS_CONSULT) hl = CG_IS_CONSULT_MD_HL;
+	if (cg->cg_is == CG_IS_PROPERTY_NAME) hl = CG_IS_PROPERTY_NAME_MD_HL;
+	if (hl >= 0) Hierarchy::apply_metadata_from_number(pack, hl, 1);	
+	Hierarchy::apply_metadata_from_number(pack, CG_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(cg->where_cg_created)));
+	if (cg->cg_is == CG_IS_TOKEN)
+		Hierarchy::apply_metadata_from_raw_wording(pack, CG_NAME_MD_HL, cg->token_name);
 }

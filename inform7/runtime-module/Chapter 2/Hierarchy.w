@@ -741,6 +741,14 @@ void Hierarchy::establish(void) {
 @e MISTAKEACTIONSUB_HL
 
 @e COMMAND_GRAMMARS_HAP
+@e CG_IS_COMMAND_MD_HL
+@e CG_IS_TOKEN_MD_HL
+@e CG_IS_SUBJECT_MD_HL
+@e CG_IS_VALUE_MD_HL
+@e CG_IS_CONSULT_MD_HL
+@e CG_IS_PROPERTY_NAME_MD_HL
+@e CG_AT_MD_HL
+@e CG_NAME_MD_HL
 @e PROPERTY_GPR_FN_HL
 @e PARSE_LINE_FN_HL
 @e CONSULT_FN_HL
@@ -800,6 +808,14 @@ void Hierarchy::establish(void) {
 			H_C_T(NO_VERB_VERB_DEFINED_HL,    I"NO_VERB_VERB_DEFINED")
 		H_END
 		H_BEGIN_AP(COMMAND_GRAMMARS_HAP,      I"command_grammar", I"_command_grammar")
+			H_C_U(CG_IS_COMMAND_MD_HL,                I"^is_command")
+			H_C_U(CG_IS_TOKEN_MD_HL,                I"^is_token")
+			H_C_U(CG_IS_SUBJECT_MD_HL,                I"^is_subject")
+			H_C_U(CG_IS_VALUE_MD_HL,                I"^is_value")
+			H_C_U(CG_IS_CONSULT_MD_HL,                I"^is_consult")
+			H_C_U(CG_IS_PROPERTY_NAME_MD_HL,                I"^is_property_name")
+			H_C_U(CG_AT_MD_HL,                I"^at")
+			H_C_U(CG_NAME_MD_HL,              I"^name")
 			H_F_G(PROPERTY_GPR_FN_HL,         I"either_or_GPR_fn", I"PRN_PN")
 			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
 			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
