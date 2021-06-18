@@ -400,4 +400,19 @@ void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
 		(inter_ti) Wordings::first_wn(Node::get_text(cg->where_cg_created)));
 	if (cg->cg_is == CG_IS_TOKEN)
 		Hierarchy::apply_metadata_from_raw_wording(pack, CG_NAME_MD_HL, cg->token_name);
+	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
+		if (cgl->indexing_data.belongs_to_cg) {
+			package_request *line = Hierarchy::package_within(CG_LINES_HAP, pack);
+			wording VW = CommandGrammars::get_verb_text(cgl->indexing_data.belongs_to_cg);
+			if (Wordings::nonempty(VW))
+				Hierarchy::apply_metadata_from_wording(line, CG_TRUE_VERB_MD_HL, VW);
+			TEMPORARY_TEXT(text)
+			WRITE_TO(text, "%w", Lexer::word_text(cgl->original_text));
+			Hierarchy::apply_metadata(line, CG_LINE_TEXT_MD_HL, text);
+			DISCARD_TEXT(text)
+			Hierarchy::apply_metadata_from_number(line, CG_LINE_AT_MD_HL,
+				(inter_ti) cgl->original_text);
+			if (cgl->reversed) 
+				Hierarchy::apply_metadata_from_number(line, CG_LINE_REVERSED_MD_HL, 1);
+		}
 }

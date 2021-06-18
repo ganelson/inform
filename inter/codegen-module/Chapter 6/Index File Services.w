@@ -678,10 +678,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		CommandsIndex::commands(OUT);
 		return;
 	}
-	if (Str::eq_wide_string(elt, L"To")) {
-		CommandsIndex::tokens(OUT);
-		return;
-	}
 	if (Str::eq_wide_string(elt, L"A2")) {
 		CommandsIndex::alphabetical(OUT);
 		return;

@@ -1,0 +1,21 @@
+1. To
+<p>In addition to the tokens listed below, any description of an object or value can be used: for example, "[number]" matches text like 127 or  SIX, and "[open door]" matches the name of any nearby door which is currently open.</p>
+<p>Names of objects are normally understood only when they are within sight, but writing 'any' lifts this restriction. So "[any person]" allows every name of a person, wherever they happen to be.</p>
+<p class="tightin1">"[anybody]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
+<p class="tightin1">"[anyone]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
+<p class="tightin1">"[anything]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[thing]"</p>
+<p class="tightin1">"[other things]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[somebody]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
+<p class="tightin1">"[someone]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[something]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[thing]"</p>
+<p class="tightin1">"[something preferably held]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[text]"&nbsp;<a href=inform:/doc269.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things inside]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things preferably held]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[wobbly]"&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin2">= &quot;that darned [container]&quot;&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin2">or &quot;my [container]&quot;&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="tightin1">"[fish fish]"&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+<p class="hangingin2">= &quot;your [container]&quot;&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+

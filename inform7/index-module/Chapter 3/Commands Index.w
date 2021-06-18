@@ -252,21 +252,6 @@ void CommandsIndex::detail_pages(void) {
 	}
 }
 
-void CommandsIndex::tokens(OUTPUT_STREAM) {
-	HTML_OPEN("p");
-	WRITE("In addition to the tokens listed below, any description of an object "
-		"or value can be used: for example, \"[number]\" matches text like 127 or "
-		" SIX, and \"[open door]\" matches the name of any nearby door which is "
-		"currently open.");
-	HTML_CLOSE("p");
-	HTML_OPEN("p");
-	WRITE("Names of objects are normally understood only when they are within "
-		"sight, but writing 'any' lifts this restriction. So \"[any person]\" allows "
-		"every name of a person, wherever they happen to be.");
-	HTML_CLOSE("p");
-	CommandsIndex::index_tokens(OUT);
-}
-
 void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	action_name *an;
 	int kc = 0;
@@ -310,40 +295,6 @@ void CommandsIndex::index_alias(OUTPUT_STREAM, command_grammar *cg, text_stream 
 }
 
 @ =
-void CommandsIndex::index_tokens(OUTPUT_STREAM) {
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anybody", NULL, NULL, I"someone_token", "same as \"[someone]\"");
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anyone", NULL, NULL, I"someone_token", "same as \"[someone]\"");
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anything", NULL, NULL, I"things_token", "same as \"[thing]\"");
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "other things", NULL, NULL, I"things_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "somebody", NULL, NULL, I"someone_token", "same as \"[someone]\"");
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "someone", NULL, NULL, I"someone_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "something", NULL, NULL, I"things_token", "same as \"[thing]\"");
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "something preferably held", NULL, NULL, I"things_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "text", NULL, NULL, I"text_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things", NULL, NULL, I"things_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things inside", NULL, NULL, I"things_token", NULL);
-	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things preferably held", NULL, NULL, I"things_token", NULL);
-	command_grammar *cg;
-	LOOP_OVER(cg, command_grammar)
-		if (cg->cg_is == CG_IS_TOKEN)
-			CommandsIndex::index_tokens_for(OUT, cg->token_name, NULL,
-				cg->where_cg_created, cg, NULL, NULL);
-}
-
-void CommandsIndex::index_tokens_for(OUTPUT_STREAM, wording W, char *special, parse_node *where,
-	command_grammar *defns, text_stream *help, char *explanation) {
-	HTML::open_indented_p(OUT, 1, "tight");
-	WRITE("\"[");
-	if (special) WRITE("%s", special); else WRITE("%+W", W);
-	WRITE("]\"");
-	if (where) Index::link(OUT, Wordings::first_wn(Node::get_text(where)));
-	if (Str::len(help) > 0) Index::DocReferences::link(OUT, help);
-	if (explanation) WRITE(" - %s", explanation);
-	HTML_CLOSE("p");
-	if (defns) CommandsIndex::index_list_for_token(OUT, defns);
-}
-
-
 void CommandsIndex::index_command_aliases(OUTPUT_STREAM, command_grammar *cg) {
 	if (cg == NULL) return;
 	int i, n = cg->no_aliased_commands;

@@ -1,0 +1,9 @@
+Home is a room.
+
+Understand "my [container]" as "[wobbly]".
+
+Understand "that darned [container]" as "[wobbly]".
+
+Understand "your [container]" as "[fish fish]".
+
+Test index (internal) with To.

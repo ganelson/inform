@@ -753,6 +753,11 @@ void Hierarchy::establish(void) {
 @e PARSE_LINE_FN_HL
 @e CONSULT_FN_HL
 @e NO_VERB_VERB_DEFINED_HL
+@e CG_LINES_HAP
+@e CG_LINE_TEXT_MD_HL
+@e CG_LINE_AT_MD_HL
+@e CG_LINE_REVERSED_MD_HL
+@e CG_TRUE_VERB_MD_HL
 
 @<Establish grammar@> =
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
@@ -819,6 +824,12 @@ void Hierarchy::establish(void) {
 			H_F_G(PROPERTY_GPR_FN_HL,         I"either_or_GPR_fn", I"PRN_PN")
 			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
 			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
+			H_BEGIN_AP(CG_LINES_HAP,    	  I"cg_line", I"_cg_line")
+				H_C_U(CG_LINE_TEXT_MD_HL,                I"^text")
+				H_C_U(CG_LINE_AT_MD_HL,                I"^at")
+				H_C_U(CG_TRUE_VERB_MD_HL,                I"^true_verb")
+				H_C_U(CG_LINE_REVERSED_MD_HL,                I"^reversed")
+			H_END
 		H_END
 		H_BEGIN_AP(COND_TOKENS_HAP,           I"conditional_token", I"_conditional_token")
 			H_F_G(CONDITIONAL_TOKEN_FN_HL,    I"conditional_token_fn", I"Cond_Token")
