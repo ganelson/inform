@@ -649,21 +649,22 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Ch")) { ChartElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Cm")) { CommandsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"Ph")) { PhrasebookElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Tb")) { TablesElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"To")) { TokensElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT); return; }
-	if (Str::eq_wide_string(elt, L"Ph")) { PhrasebookElement::render(OUT); return; }
-	if (Str::eq_wide_string(elt, L"To")) { TokensElement::render(OUT); return; }
 
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Mp")) {
@@ -672,10 +673,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"A1")) {
 		CommandsIndex::page(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"Cm")) {
-		CommandsIndex::commands(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"A2")) {

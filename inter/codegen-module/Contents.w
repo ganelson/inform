@@ -85,3 +85,4 @@ Chapter 6: Index
 	Chart Element
 	Phrasebook Element
 	Tokens Element
+	Commands Element

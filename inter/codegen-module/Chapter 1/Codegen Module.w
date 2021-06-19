@@ -30,6 +30,7 @@ which use this module:
 @e simplified_scene_CLASS
 @e simplified_end_CLASS
 @e simplified_connector_CLASS
+@e command_index_entry_CLASS
 
 =
 DECLARE_CLASS(I6T_intervention)
@@ -52,6 +53,7 @@ DECLARE_CLASS(index_tlexicon_entry)
 DECLARE_CLASS(simplified_scene)
 DECLARE_CLASS(simplified_end)
 DECLARE_CLASS(simplified_connector)
+DECLARE_CLASS(command_index_entry)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

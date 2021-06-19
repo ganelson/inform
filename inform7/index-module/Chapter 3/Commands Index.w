@@ -2,48 +2,7 @@
 
 To construct the index of command verbs.
 
-@ The following modest structure is used for the indexing of command verbs,
-and is too deeply boring to comment upon. These are the headwords of commands
-which can be typed at run-time, like QUIT or INVENTORY. For indexing purposes,
-we divide these headwords into five "natures":
-
-@d NORMAL_COMMAND 1
-@d ALIAS_COMMAND 2
-@d OUT_OF_WORLD_COMMAND 3
-@d TESTING_COMMAND 4
-@d BARE_DIRECTION_COMMAND 5
-
-=
-typedef struct command_index_entry {
-	int nature; /* one of the above values */
-	struct text_stream *command_headword; /* text of command headword, such as "REMOVE" */
-	struct command_grammar *cg_indexed; /* ...leading to... */
-	struct command_index_entry *next_alphabetically; /* next in linked list */
-	CLASS_DEFINITION
-} command_index_entry;
-
-command_index_entry *sorted_command_index = NULL; /* in alphabetical order of |text| */
-
 @ =
-void CommandsIndex::index_meta_verb(char *t) {
-	command_index_entry *vie;
-	vie = CREATE(command_index_entry);
-	vie->command_headword = Str::new();
-	WRITE_TO(vie->command_headword, "%s", t);
-	vie->nature = OUT_OF_WORLD_COMMAND;
-	vie->cg_indexed = NULL;
-	vie->next_alphabetically = NULL;
-}
-
-void CommandsIndex::test_verb(text_stream *t) {
-	command_index_entry *vie;
-	vie = CREATE(command_index_entry);
-	vie->command_headword = Str::duplicate(t);
-	vie->nature = TESTING_COMMAND;
-	vie->cg_indexed = NULL;
-	vie->next_alphabetically = NULL;
-}
-
 void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *trueverb, wording W) {
 	int i = 1;
 	if ((p[0] == 0) || (p[1] == 0)) return;
@@ -67,17 +26,6 @@ void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *true
 	}
 }
 
-command_index_entry *CommandsIndex::vie_new_from(OUTPUT_STREAM, wchar_t *headword, command_grammar *cg, int nature) {
-	command_index_entry *vie;
-	vie = CREATE(command_index_entry);
-	vie->command_headword = Str::new();
-	WRITE_TO(vie->command_headword, "%w", headword);
-	vie->nature = nature;
-	vie->cg_indexed = cg;
-	vie->next_alphabetically = NULL;
-	return vie;
-}
-
 void CommandsIndex::commands(OUTPUT_STREAM) {
 	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
 	command_grammar *cg;
@@ -86,11 +34,7 @@ void CommandsIndex::commands(OUTPUT_STREAM) {
 	LOOP_OVER(cg, command_grammar)
 		CommandsIndex::make_command_index_entries(OUT, cg);
 
-	vie = CREATE(command_index_entry);
-	vie->command_headword = I"0";
-	vie->nature = BARE_DIRECTION_COMMAND;
-	vie->cg_indexed = NULL;
-	vie->next_alphabetically = NULL;
+	CommandsElement::direction_verb();
 
 	LOOP_OVER(vie, command_index_entry) {
 		if (list_start == NULL) { list_start = vie; continue; }
@@ -273,17 +217,6 @@ to process; the other two routines act upon any such entries once they are
 needed.
 
 =
-void CommandsIndex::make_command_index_entries(OUTPUT_STREAM, command_grammar *cg) {
-	if ((cg->cg_is == CG_IS_COMMAND) && (cg->first_line)) {
-		if (Wordings::empty(cg->command))
-			CommandsIndex::vie_new_from(OUT, L"0", cg, NORMAL_COMMAND);
-		else
-			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(cg->command)), cg, NORMAL_COMMAND);
-		for (int i=0; i<cg->no_aliased_commands; i++)
-			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(cg->aliased_command[i])), cg, ALIAS_COMMAND);
-	}
-}
-
 void CommandsIndex::index_alias(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
 	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%N&quot;",
 		headword, Wordings::first_wn(cg->command));
