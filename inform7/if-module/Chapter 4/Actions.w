@@ -24,7 +24,6 @@ typedef struct action_name {
 	struct cg_line *command_parser_grammar_producing_this; /* if any */
 
 	struct action_compilation_data compilation_data;
-	struct action_indexing_data indexing_data;
 	CLASS_DEFINITION
 } action_name;
 
@@ -49,7 +48,6 @@ action_name *Actions::act_new(wording W) {
 	an->command_parser_grammar_producing_this = NULL;
 
 	an->compilation_data = RTActions::new_data(W);
-	an->indexing_data = IXActions::new_data();
 	
 	an->check_rules =      Actions::new_rulebook(an, CHECK_RB_HL);
 	an->carry_out_rules =  Actions::new_rulebook(an, CARRY_OUT_RB_HL);
@@ -209,7 +207,7 @@ void Actions::add_gl(action_name *an, cg_line *cgl) {
 	if (an->command_parser_grammar_producing_this == NULL)
 		an->command_parser_grammar_producing_this = cgl;
 	else
-		CommandsIndex::list_with_action_add(
+		RTCommandGrammarLines::list_with_action_add(
 			an->command_parser_grammar_producing_this, cgl);
 }
 

@@ -377,7 +377,7 @@ for the |name| property as opposed to |parse_name| functions.
 
 =
 void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
-	CommandsIndex::list_assert_ownership(cg);
+	RTCommandGrammarLines::list_assert_ownership(cg);
 	CommandGrammars::sort_command_grammar(cg);
 	
 	LOG_INDENT;
@@ -409,9 +409,21 @@ void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
 		}
 	}
 	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
-		if (cgl->indexing_data.belongs_to_cg) {
+		if (cgl->compilation_data.belongs_to_cg) {
 			package_request *line = Hierarchy::package_within(CG_LINES_HAP, pack);
-			wording VW = CommandGrammars::get_verb_text(cgl->indexing_data.belongs_to_cg);
+			cgl->compilation_data.metadata_package = line;
+			cgl->compilation_data.xref_iname =
+				Hierarchy::make_iname_in(CG_XREF_SYMBOL_HL, line);
+			Emit::numeric_constant(cgl->compilation_data.xref_iname, 561);
+			
+			if (cgl->resulting_action) {
+				package_request *R = Hierarchy::package_within(CG_LINES_PRODUCING_HAP,
+					RTActions::package(cgl->resulting_action));
+				Hierarchy::apply_metadata_from_iname(R, CG_LINE_PRODUCING_MD_HL,
+					cgl->compilation_data.xref_iname);
+			}
+
+			wording VW = CommandGrammars::get_verb_text(cgl->compilation_data.belongs_to_cg);
 			if (cgl->resulting_action)
 				Hierarchy::apply_metadata_from_iname(line, CG_ACTION_MD_HL,
 					RTActions::double_sharp(cgl->resulting_action));

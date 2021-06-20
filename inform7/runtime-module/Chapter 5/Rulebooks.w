@@ -108,9 +108,13 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	if (B == Rulebooks::std(DOES_THE_PLAYER_MEAN_RB)) marker = I"does_the_player_mean";
 	if (B == Rulebooks::std(PERSUASION_RB)) marker = I"persuasion";
 	if (B == Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB)) marker = I"unsuccessful_attempt_by";
+	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) marker = I"setting_action_variables";
 	if (B == Rulebooks::std(BEFORE_RB)) marker = I"before";
 	if (B == Rulebooks::std(INSTEAD_RB)) marker = I"instead";
 	if (B == Rulebooks::std(AFTER_RB)) marker = I"after";
+	if (B == Rulebooks::std(CHECK_RB)) marker = I"check";
+	if (B == Rulebooks::std(CARRY_OUT_RB)) marker = I"carry_out";
+	if (B == Rulebooks::std(REPORT_RB)) marker = I"report";
 	if (B == Rulebooks::std(ACTION_PROCESSING_RB)) marker = I"action_processing";
 	if (B == Rulebooks::std(SPECIFIC_ACTION_PROCESSING_RB)) marker = I"specific_action_processing";
 	if (B == Rulebooks::std(PLAYERS_ACTION_AWARENESS_RB)) marker = I"players_action_awareness";
@@ -175,6 +179,14 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 			scene *during_scene = Scenes::rcd_scene(phrcd);
 			if (during_scene) Hierarchy::apply_metadata_from_iname(EP, RULE_DURING_MD_HL,
 				RTInstances::value_iname(during_scene->as_instance));
+			action_name *an;
+			LOOP_OVER(an, action_name) {
+				if (ActionRules::within_action_context(phrcd, an)) {
+					package_request *RP = Hierarchy::package_within(RULE_ACTION_RELEVANCES_HAP, EP);
+					Hierarchy::apply_metadata_from_iname(RP, RULE_ACTION_RELEVANCE_MD_HL,
+						RTActions::double_sharp(an));
+				}
+			}
 		}
 	}
 	placement_affecting *npl = B->indexing_data.placement_list;

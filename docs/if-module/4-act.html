@@ -96,7 +96,6 @@ kind <span class="extract"><span class="extract-syntax">K_action_name</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax">; </span><span class="comment-syntax"> if any</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_indexing_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">indexing_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">action_name</span><span class="plain-syntax">;</span>
 </pre>
@@ -124,7 +123,6 @@ which had not actually been done since around 2008.
 <span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTActions::new_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">IXActions::new_data</span><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">check_rules</span><span class="plain-syntax"> =      </span><a href="4-act.html#SP3" class="function-link"><span class="function-syntax">Actions::new_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">CHECK_RB_HL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">carry_out_rules</span><span class="plain-syntax"> =  </span><a href="4-act.html#SP3" class="function-link"><span class="function-syntax">Actions::new_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">CARRY_OUT_RB_HL</span><span class="plain-syntax">);</span>
@@ -293,7 +291,7 @@ our concern here:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CommandsIndex::list_with_action_add</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RTCommandGrammarLines::list_with_action_add</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">an</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command_parser_grammar_producing_this</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 

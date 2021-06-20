@@ -223,11 +223,11 @@ void ActionSemantics::check_valid_application(action_name *an, int nouns_supplie
 
 @<Issue an action usage problem@> =
 	Problems::quote_source(1, current_sentence);
-	if (an->indexing_data.designers_specification == NULL)
+	if (an->compilation_data.designers_specification == NULL)
 		Problems::quote_text(2, "<none given>");
 	else
 		Problems::quote_wording(2,
-			Node::get_text(an->indexing_data.designers_specification));
+			Node::get_text(an->compilation_data.designers_specification));
 	Problems::quote_wording(3, ActionNameNames::tensed(an, IS_TENSE));
 	Problems::quote_text(4, failed_on);
 	StandardProblems::handmade_problem(Task::syntax_tree(),

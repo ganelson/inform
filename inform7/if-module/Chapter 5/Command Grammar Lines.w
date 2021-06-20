@@ -38,7 +38,6 @@ typedef struct cg_line {
 	int mistaken; /* |CG_IS_COMMAND|: is this understood as a mistake? */
 	struct wording mistake_response_text; /* if so, reply thus */
 
-	struct cg_line_indexing_data indexing_data;
 	struct cg_line_compilation_data compilation_data;
 	CLASS_DEFINITION
 } cg_line;
@@ -67,7 +66,6 @@ cg_line *CGLines::new(wording W, action_name *ac,
 	cgl->mistake_response_text = EMPTY_WORDING;
 
 	cgl->compilation_data = RTCommandGrammarLines::new_compilation_data(cgl);
-	cgl->indexing_data = CommandsIndex::new_id(cgl);
 
 	if (ac) Actions::add_gl(ac, cgl);
 	return cgl;

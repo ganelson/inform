@@ -48,13 +48,23 @@ ix_rule_context IndexRules::no_rule_context(void) {
 	return rc;
 }
 
-int IndexRules::phrase_fits_rule_context(inter_package *entry, ix_rule_context rc) {
+int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *entry, ix_rule_context rc) {
 	if (entry == NULL) return FALSE;
 	if (rc.action_context) {
-/*				
-	if (ActionRules::within_action_context(phrcd, rc.action_context) == FALSE)
-		return FALSE;
-*/
+		int passes = FALSE;
+		inter_symbol *wanted = PackageTypes::get(I, I"_relevant_action");
+		inter_tree_node *D = Inter::Packages::definition(entry);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *rel_pack = Inter::Package::defined_by_frame(C);
+				if (Inter::Packages::type(rel_pack) == wanted) {
+					inter_symbol *act_ds = Metadata::read_symbol(rel_pack, I"^action");
+					if (Inter::Packages::container(act_ds->definition) == rc.action_context)
+						passes = TRUE;
+				}
+			}
+		}
+		if (passes == FALSE) return FALSE;
 	}
 	if (rc.scene_context) {
 		inter_symbol *scene_symbol = Metadata::read_optional_symbol(entry, I"^during");
@@ -140,8 +150,13 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 	if (at > 0) Index::link(OUT, at);
 
 @ =
-int IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
-	int suppress_outcome = FALSE, t = 0;
+void IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
+	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, resp_count);
+	if (t > 0) HTML_CLOSE("p");
+}
+
+int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
+	int suppress_outcome = FALSE, t = initial_t;
 	if (rb_pack == NULL) return 0;
 	if (Str::len(billing) > 0) {
 		if (rc.action_context) suppress_outcome = TRUE;
@@ -161,7 +176,7 @@ int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, ix_
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *entry = Inter::Package::defined_by_frame(C);
 				if (Inter::Packages::type(entry) == wanted)
-					if (IndexRules::phrase_fits_rule_context(entry, rc))
+					if (IndexRules::phrase_fits_rule_context(I, entry, rc))
 						return FALSE;
 			}
 		}
@@ -185,8 +200,7 @@ int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
 	return N;
 }
 
-int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I,
-	inter_package *rb_pack,
+int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
 	ix_rule_context rc, text_stream *billing, int *resp_count) {
 	inter_package *prev = NULL;
 	int count = 0;
@@ -196,8 +210,9 @@ int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I,
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *entry = Inter::Package::defined_by_frame(C);
 			if (Inter::Packages::type(entry) == wanted) {
-				if (IndexRules::phrase_fits_rule_context(entry, rc)) {
-					count++;
+				if (IndexRules::phrase_fits_rule_context(I, entry, rc)) {
+					if (count++ == 0) HTML::open_indented_p(OUT, 2, "indent");
+					else WRITE("<br>");
 					IndexRules::br_start_index_line(OUT, prev, billing);
 					*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc);
 				}
@@ -205,6 +220,7 @@ int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I,
 			}
 		}
 	}
+	if (count > 0) HTML_CLOSE("p");
 	return count;
 }
 
@@ -219,11 +235,10 @@ void IndexRules::list_resume_indexed_links(void) {
 }
 
 void IndexRules::br_start_index_line(OUTPUT_STREAM, inter_package *prev, text_stream *billing) {
-	HTML::open_indented_p(OUT, 2, "hanging");
 	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
 	WRITE("%S", billing);
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
+//	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
 }
 
 @ And here's how the index links (if wanted) are chosen and plotted:
@@ -262,9 +277,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 		@<Index some text extracted from the first line of the otherwise anonymous rule@>;
 	@<Index a link to the first line of the rule's definition@>;
 	@<Index the small type rule numbering@>;
-	HTML_CLOSE("p");
 	@<Index any applicability conditions@>;
-	HTML_CLOSE("p");
 	@<Index any response texts in the rule@>;
 	return no_responses_indexed;
 }

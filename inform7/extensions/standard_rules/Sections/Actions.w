@@ -900,7 +900,7 @@ entering works for either containers or supporters, exiting is purely for
 getting oneself out of containers: if the actor is on top of a supporter
 instead, an exiting action is converted to the getting off action."
 
-Setting action variables for exiting:
+Setting action variables for exiting (this is the standard set exiting variables rule):
 	now the container exited from is the holder of the actor.
 
 @ Check.

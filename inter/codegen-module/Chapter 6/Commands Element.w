@@ -177,7 +177,7 @@ void CommandsElement::cgl_index_normal(OUTPUT_STREAM, inter_package *cgl, text_s
 	if (an_s == NULL) return;
 	inter_package *an = Inter::Packages::container(an_s->definition);
 	int oow = (int) Metadata::read_optional_numeric(an, I"^out_of_world");
-	Index::anchor(OUT, headword);
+	if (Str::len(headword) > 0) Index::anchor(OUT, headword);
 	if (oow) HTML::begin_colour(OUT, I"800000");
 	WRITE("&quot;");
 	TokensElement::verb_definition(OUT, Metadata::read_optional_textual(cgl, I"^text"),
@@ -187,7 +187,7 @@ void CommandsElement::cgl_index_normal(OUTPUT_STREAM, inter_package *cgl, text_s
 	if (at > 0) Index::link(OUT, at);
 	
 	WRITE(" - <i>%S", Metadata::read_textual(an, I"^name"));
-	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
+	Index::detail_link(OUT, "A", (int) Metadata::read_numeric(an, I"action_id"), TRUE);
 	if (Metadata::read_optional_numeric(cgl, I"^reversed"))
 		WRITE(" <i>reversed</i>");
 	WRITE("</i>");

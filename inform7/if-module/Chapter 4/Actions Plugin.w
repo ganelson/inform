@@ -102,7 +102,7 @@ a "specification" text as one, and have to make their own arrangements:
 =
 int ActionsPlugin::actions_offered_specification(parse_node *owner, wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(owner, K_action_name)) {
-		IXActions::actions_set_specification_text(
+		RTActions::actions_set_specification_text(
 			ARvalues::to_action_name(owner), Wordings::first_wn(W));
 		return TRUE;
 	}
@@ -208,7 +208,7 @@ new action, and the OP can include a wide range of details about it.
 	if ((V->next) && (V->next->next))
 		if (<action-sentence-subject>(Node::get_text(V->next))) {
 			an_being_parsed = <<rp>>;
-			an_being_parsed->indexing_data.designers_specification = V->next->next;
+			an_being_parsed->compilation_data.designers_specification = V->next->next;
 			ActionsPlugin::clear_clauses();
 			<action-sentence-object>(Node::get_text(V->next->next));
 		}

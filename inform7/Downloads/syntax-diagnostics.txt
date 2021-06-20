@@ -10738,7 +10738,7 @@ ROOT_NT
                             PROPER_NOUN_NT'Whereas the going action allows
                             people to move from one loca' {refined} {eval: CONSTANT_NT'Whereas the going action allows
                             people to move from one loca' {kind: text}}
-                        IMPERATIVE_NT'setting action variables for exiting' {unit: 2} {imperative definition: 506}
+                        IMPERATIVE_NT'setting action variables for exiting ( this is the standard ' {unit: 2} {imperative definition: 506}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'now the container exited from is the holder of the actor' {unit: 2} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the container exited from is the holder of the actor'

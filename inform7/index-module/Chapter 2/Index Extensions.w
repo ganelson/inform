@@ -110,14 +110,26 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 
 @<Document and dictionary the kinds of action made in extension@> =
 	#ifdef IF_MODULE
-	IXActions::index_named_patterns_for_extension(OUT, E->read_into_file, E);
+	named_action_pattern *nap;
+	int kc = 0;
+	LOOP_OVER(nap, named_action_pattern)
+		if (Lexer::file_of_origin(Wordings::first_wn(nap->text_of_declaration)) == E->read_into_file)
+			kc = IndexExtensions::document_headword(OUT, kc, E, "Kinds of action", I"kind of action",
+				nap->text_of_declaration);
+	if (kc != 0) HTML_CLOSE("p");
 	#endif
 
 @ Actions:
 
 @<Document and dictionary the actions made in extension@> =
 	#ifdef IF_MODULE
-	CommandsIndex::index_for_extension(OUT, E->read_into_file, E);
+	action_name *an;
+	int kc = 0;
+	LOOP_OVER(an, action_name)
+		if (Lexer::file_of_origin(Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE))) == E->read_into_file)
+			kc = IndexExtensions::document_headword(OUT, kc, E, "Actions", I"action",
+				ActionNameNames::tensed(an, IS_TENSE));
+	if (kc != 0) HTML_CLOSE("p");
 	#endif
 
 @ Verbs:

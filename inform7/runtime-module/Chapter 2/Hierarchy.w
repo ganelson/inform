@@ -345,6 +345,9 @@ void Hierarchy::establish(void) {
 
 @e ACTIONS_HAP
 @e ACTION_NAME_MD_HL
+@e ACTION_DISPLAY_NAME_MD_HL
+@e ACTION_PAST_NAME_MD_HL
+@e ACTION_AT_MD_HL
 @e ACTION_VARC_MD_HL
 @e DEBUG_ACTION_MD_HL
 @e ACTION_DSHARP_MD_HL
@@ -357,6 +360,13 @@ void Hierarchy::establish(void) {
 @e SECOND_ACCESS_MD_HL
 @e NOUN_KIND_MD_HL
 @e SECOND_KIND_MD_HL
+@e ACTION_CHECK_MD_HL 
+@e ACTION_CARRY_OUT_MD_HL
+@e ACTION_REPORT_MD_HL
+@e ACTION_INDEX_HEADING_MD_HL
+@e ACTION_INDEX_SUBHEADING_MD_HL
+@e ACTION_SPECIFICATION_MD_HL
+@e ACTION_DESCRIPTION_MD_HL
 @e ACTION_ID_HL
 @e ACTION_BASE_NAME_HL
 @e WAIT_HL
@@ -369,7 +379,13 @@ void Hierarchy::establish(void) {
 @e REPORT_RB_HL
 @e ACTION_SHV_ID_HL
 @e ACTION_STV_CREATOR_FN_HL
-
+@e CG_LINES_PRODUCING_HAP
+@e CG_LINE_PRODUCING_MD_HL
+@e ACTION_VARIABLES_HAP
+@e ACTION_VAR_NAME_MD_HL
+@e ACTION_VAR_AT_MD_HL
+@e ACTION_VAR_DOCUMENTATION_MD_HL
+@e ACTION_VAR_KIND_MD_HL
 @e NAMED_ACTION_PATTERNS_HAP
 @e NAP_FN_HL
 @e NAP_NAME_MD_HL
@@ -384,6 +400,9 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::local_submodule(actions))
 		H_BEGIN_AP(ACTIONS_HAP,               I"action", I"_action")
 			H_C_U(ACTION_NAME_MD_HL,    I"^name")
+			H_C_U(ACTION_DISPLAY_NAME_MD_HL,    I"^display_name")
+			H_C_U(ACTION_PAST_NAME_MD_HL,    I"^past_name")
+			H_C_U(ACTION_AT_MD_HL,    I"^at")
 			H_C_U(ACTION_VARC_MD_HL,    I"^var_creator")
 			H_C_U(DEBUG_ACTION_MD_HL,   I"^debug_fn")
 			H_C_U(ACTION_DSHARP_MD_HL,  I"^double_sharp")
@@ -396,6 +415,13 @@ void Hierarchy::establish(void) {
 			H_C_U(SECOND_ACCESS_MD_HL,  I"^second_access")
 			H_C_U(NOUN_KIND_MD_HL,      I"^noun_kind")
 			H_C_U(SECOND_KIND_MD_HL,    I"^second_kind")
+			H_C_U(ACTION_CHECK_MD_HL,      I"^check_rulebook")
+			H_C_U(ACTION_CARRY_OUT_MD_HL,         I"^carry_out_rulebook")
+			H_C_U(ACTION_REPORT_MD_HL,       I"^report_rulebook")
+			H_C_U(ACTION_INDEX_HEADING_MD_HL,    I"^index_heading")
+			H_C_U(ACTION_INDEX_SUBHEADING_MD_HL,    I"^index_subheading")
+			H_C_U(ACTION_SPECIFICATION_MD_HL,    I"^specification")
+			H_C_U(ACTION_DESCRIPTION_MD_HL,    I"^description")
 			H_C_U(ACTION_ID_HL,               I"action_id")
 			H_C_U(ACTION_BASE_NAME_HL,        I"A")
 			H_C_T(WAIT_HL,                    I"Wait")
@@ -408,6 +434,15 @@ void Hierarchy::establish(void) {
 			H_PKG(REPORT_RB_HL,               I"report_rb", I"_rulebook")
 			H_C_U(ACTION_SHV_ID_HL,           I"var_id")
 			H_F_U(ACTION_STV_CREATOR_FN_HL,   I"stv_creator_fn")
+			H_BEGIN_AP(CG_LINES_PRODUCING_HAP, I"cg_line", I"_cg_line")
+				H_C_U(CG_LINE_PRODUCING_MD_HL,    I"^line")
+			H_END
+			H_BEGIN_AP(ACTION_VARIABLES_HAP, I"action_variable", I"_shared_variable")
+				H_C_U(ACTION_VAR_NAME_MD_HL,    I"^name")
+				H_C_U(ACTION_VAR_AT_MD_HL,    I"^at")
+				H_C_U(ACTION_VAR_DOCUMENTATION_MD_HL,    I"^documentation")
+				H_C_U(ACTION_VAR_KIND_MD_HL,    I"^kind")
+			H_END
 		H_END
 	H_END
 
@@ -757,6 +792,7 @@ void Hierarchy::establish(void) {
 @e CG_COMMAND_ALIASES_HAP
 @e CG_ALIAS_MD_HL
 @e CG_LINES_HAP
+@e CG_XREF_SYMBOL_HL
 @e CG_LINE_TEXT_MD_HL
 @e CG_LINE_AT_MD_HL
 @e CG_ACTION_MD_HL
@@ -833,6 +869,7 @@ void Hierarchy::establish(void) {
 				H_C_U(CG_ALIAS_MD_HL,                I"^alias")
 			H_END
 			H_BEGIN_AP(CG_LINES_HAP,    	  I"cg_line", I"_cg_line")
+				H_C_U(CG_XREF_SYMBOL_HL,        I"line_ref")
 				H_C_U(CG_LINE_TEXT_MD_HL,                I"^text")
 				H_C_U(CG_LINE_AT_MD_HL,                I"^at")
 				H_C_U(CG_ACTION_MD_HL,                I"^action")
@@ -1406,6 +1443,8 @@ void Hierarchy::establish(void) {
 @e RULE_INDEX_NUMBER_MD_HL
 @e BRULE_AT_MD_HL
 @e RULE_DURING_MD_HL
+@e RULE_ACTION_RELEVANCES_HAP
+@e RULE_ACTION_RELEVANCE_MD_HL
 @e RULEBOOK_PLACEMENTS_HAP
 @e PLACEMENT_TEXT_MD_HL
 @e PLACEMENT_AT_MD_HL
@@ -1453,6 +1492,9 @@ void Hierarchy::establish(void) {
 				H_C_U(RULE_INDEX_NUMBER_MD_HL,       I"^index_number")
 				H_C_U(BRULE_AT_MD_HL,       I"^at")
 				H_C_U(RULE_DURING_MD_HL,       I"^during")
+				H_BEGIN_AP(RULE_ACTION_RELEVANCES_HAP,  I"relevant_action", I"_relevant_action")
+					H_C_U(RULE_ACTION_RELEVANCE_MD_HL, I"^action")
+				H_END
 			H_END
 			H_BEGIN_AP(RULEBOOK_PLACEMENTS_HAP,  I"placement", I"_rulebook_placement")
 				H_C_U(PLACEMENT_TEXT_MD_HL,       I"^text")

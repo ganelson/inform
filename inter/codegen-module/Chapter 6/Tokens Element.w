@@ -91,10 +91,6 @@ void TokensElement::verb_definition(OUTPUT_STREAM, text_stream *T, text_stream *
 	if (Str::len(trueverb) > 0) {
 		if (Str::eq_wide_string(trueverb, L"0") == FALSE) {
 			WRITE("%S", trueverb);
-/*			if (Wordings::nonempty(W))
-				CommandsIndex::index_command_aliases(OUT,
-					CommandGrammars::for_command_verb(W));
-*/
 			for (i=1; Str::get_at(T, i+1); i++) if (Str::get_at(T, i) == ' ') break;
 			for (; Str::get_at(T, i+1); i++) if (Str::get_at(T, i) != ' ') break;
 			if (Str::get_at(T, i+1)) WRITE(" ");

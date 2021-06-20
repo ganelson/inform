@@ -17,6 +17,8 @@ typedef struct action_compilation_data {
 	struct inter_name *an_processing_fn_iname; /* e.g., |TakeSub| */
 	struct inter_name *variables_id; /* for the shared variables set */
 	struct parse_node *where_created;
+	int an_specification_text_word; /* description used in index */
+	struct parse_node *designers_specification; /* where created */
 } action_compilation_data;
 
 action_compilation_data RTActions::new_data(wording W) {
@@ -30,6 +32,8 @@ action_compilation_data RTActions::new_data(wording W) {
 	acd.an_package = NULL;
 	acd.variables_id = NULL;
 	acd.where_created = current_sentence;
+	acd.designers_specification = NULL;
+	acd.an_specification_text_word = -1;
 	return acd;
 }
 
@@ -128,6 +132,10 @@ inter_name *RTActions::Sub(action_name *an) {
 	return an->compilation_data.an_processing_fn_iname;
 }
 
+void RTActions::actions_set_specification_text(action_name *an, int wn) {
+	an->compilation_data.an_specification_text_word = wn;
+}
+
 @h Compilation.
 
 =
@@ -165,6 +173,10 @@ void RTActions::compilation_agent(compilation_subtask *t) {
 @<Compile miscellaneous metadata@> =
 	Hierarchy::apply_metadata_from_wording(pack, ACTION_NAME_MD_HL,
 		an->compilation_data.metadata_name);
+	Hierarchy::apply_metadata_from_raw_wording(pack, ACTION_PAST_NAME_MD_HL,
+		an->naming_data.past_name);
+	Hierarchy::apply_metadata_from_number(pack, ACTION_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(an->compilation_data.metadata_name));
 	Emit::numeric_constant(RTActions::variables_id(an), 0);
 	if (Str::get_first_char(RTActions::identifier(an)) == '_')
 		Hierarchy::apply_metadata_from_number(pack, NO_CODING_MD_HL, 1);
@@ -186,6 +198,69 @@ void RTActions::compilation_agent(compilation_subtask *t) {
 	RTKindIDs::define_constant_as_strong_id(kn_iname, ActionSemantics::kind_of_noun(an));
 	inter_name *ks_iname = Hierarchy::make_iname_in(SECOND_KIND_MD_HL, pack);
 	RTKindIDs::define_constant_as_strong_id(ks_iname, ActionSemantics::kind_of_second(an));
+	wording SW = Node::get_text(an->compilation_data.designers_specification);
+	if (Wordings::nonempty(SW))
+		Hierarchy::apply_metadata_from_wording(pack, ACTION_SPECIFICATION_MD_HL, SW);
+	if (an->compilation_data.an_specification_text_word >= 0)
+		Hierarchy::apply_metadata_from_wording(pack, ACTION_DESCRIPTION_MD_HL, Wordings::one_word(an->compilation_data.an_specification_text_word));
+
+	heading *definition_area = Headings::of_wording(ActionNameNames::tensed(an, IS_TENSE));
+	inform_extension *this_extension =
+		Headings::get_extension_containing(definition_area);
+	if (this_extension == NULL) {
+		Hierarchy::apply_metadata(pack,
+			ACTION_INDEX_HEADING_MD_HL, I"Defined in the source");
+	} else if (Extensions::is_standard(this_extension)) {
+		TEMPORARY_TEXT(credit)
+		WRITE_TO(credit, "From the extension ");
+		Extensions::write_name_to_file(this_extension, credit);
+		Hierarchy::apply_metadata(pack, ACTION_INDEX_HEADING_MD_HL, credit);
+		DISCARD_TEXT(credit)
+	} else {
+		TEMPORARY_TEXT(credit)
+		WRITE_TO(credit, "From the extension ");
+		Extensions::write_name_to_file(this_extension, credit);
+		WRITE_TO(credit, " by ");
+		Extensions::write_author_to_file(this_extension, credit);
+		Hierarchy::apply_metadata(pack, ACTION_INDEX_HEADING_MD_HL, credit);
+		DISCARD_TEXT(credit)
+	}
+	TEMPORARY_TEXT(subh)
+	wording W = Headings::get_text(definition_area);
+	if ((this_extension) && (Extensions::is_standard(this_extension) == FALSE)) {
+		WRITE_TO(subh, "Miscellaneous");
+	} else if (Wordings::nonempty(W)) {
+		RTPhrasebook::index_definition_area(subh, W, TRUE);
+	} else {
+		WRITE_TO(subh, "New actions");
+	}
+	Hierarchy::apply_metadata(pack, ACTION_INDEX_SUBHEADING_MD_HL, subh);
+	DISCARD_TEXT(subh)
+
+	TEMPORARY_TEXT(disp)
+	int j = Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE));
+	int somethings = 0;
+	while (j <= Wordings::last_wn(ActionNameNames::tensed(an, IS_TENSE))) {
+		if (<object-pronoun>(Wordings::one_word(j))) {
+			RTActions::print_something(disp, an, somethings++);
+		} else {
+			WRITE_TO(disp, "%+W ", Wordings::one_word(j));
+		}
+		j++;
+	}
+	if (somethings < ActionSemantics::max_parameters(an))
+		RTActions::print_something(disp, an, somethings++);
+	Hierarchy::apply_metadata(pack, ACTION_DISPLAY_NAME_MD_HL, disp);
+	DISCARD_TEXT(disp)
+	
+	RTActions::write_shared_variable_metadata(pack, an->action_variables);
+
+	Hierarchy::apply_metadata_from_iname(pack, ACTION_CHECK_MD_HL,
+		RTRulebooks::id_iname(an->check_rules));
+	Hierarchy::apply_metadata_from_iname(pack, ACTION_CARRY_OUT_MD_HL,
+		RTRulebooks::id_iname(an->carry_out_rules));
+	Hierarchy::apply_metadata_from_iname(pack, ACTION_REPORT_MD_HL,
+		RTRulebooks::id_iname(an->report_rules));
 
 @<Compile creator function for shared variables@> =
 	inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL, pack);
@@ -303,7 +378,7 @@ the function is attached to.
 		EmitCode::up();
 	}
 
-@ And that uses these two little utilities:
+@ And that uses these little utilities:
 
 =
 void RTActions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
@@ -339,4 +414,38 @@ void RTActions::print_noun_or_second(action_name *an, int n, inter_symbol *n_s, 
 			EmitCode::val_symbol(K_value, var);
 		}
 	EmitCode::up();
+}
+
+void RTActions::print_something(OUTPUT_STREAM, action_name *an, int argc) {
+	kind *K = NULL; /* redundant assignment to appease |gcc -O2| */
+	HTML::begin_colour(OUT, I"000080");
+	if (argc == 0) K = ActionSemantics::kind_of_noun(an);
+	if (argc == 1) K = ActionSemantics::kind_of_second(an);
+	if (Kinds::Behaviour::is_object(K)) WRITE("something");
+	else if ((K_understanding) && (Kinds::eq(K, K_understanding))) WRITE("some text");
+	else Kinds::Textual::write(OUT, K);
+	HTML::end_colour(OUT);
+	WRITE(" ");
+}
+
+void RTActions::write_shared_variable_metadata(package_request *R, shared_variable_set *set) {
+	shared_variable *shv;
+	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
+		nonlocal_variable *nlv = SharedVariables::get_variable(shv);
+		package_request *sv = Hierarchy::package_within(ACTION_VARIABLES_HAP, R);
+
+		Hierarchy::apply_metadata_from_raw_wording(sv, ACTION_VAR_NAME_MD_HL, nlv->name);
+		Hierarchy::apply_metadata_from_number(sv, ACTION_VAR_AT_MD_HL,
+			(inter_ti) Wordings::first_wn(nlv->name));
+		if (Wordings::nonempty(nlv->var_documentation_symbol)) {
+			TEMPORARY_TEXT(ixt)
+			WRITE_TO(ixt, "%+W", Wordings::one_word(Wordings::first_wn(nlv->var_documentation_symbol)));
+			Hierarchy::apply_metadata(sv, ACTION_VAR_DOCUMENTATION_MD_HL, ixt);
+			DISCARD_TEXT(ixt)
+		}
+		TEMPORARY_TEXT(vk)
+		Kinds::Textual::write(vk, nlv->nlv_kind);
+		Hierarchy::apply_metadata(sv, ACTION_VAR_KIND_MD_HL, vk);
+		DISCARD_TEXT(vk)
+	}
 }

@@ -220,7 +220,6 @@ above, it may as well go here.
 void RTPhrasebook::index_definition_area(OUTPUT_STREAM, wording W, int show_if_unhyphenated) {
 	<heading-name-hyphenated>(W);
 	if ((<<r>> == 1) && (show_if_unhyphenated == FALSE)) return;
-	HTML_OPEN("b");
 	switch (<<r>>) {
 		case 1: WRITE("%+W", W); break;
 		case 2: {
@@ -234,8 +233,6 @@ void RTPhrasebook::index_definition_area(OUTPUT_STREAM, wording W, int show_if_u
 			break;
 		}
 	}
-	HTML_CLOSE("b");
-	HTML_TAG("br");
 }
 
 @ Writing type data in the Phrasebook index:

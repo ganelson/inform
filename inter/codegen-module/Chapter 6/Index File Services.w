@@ -719,7 +719,7 @@ calling |Index::complete| below.
 void Index::complete(void) {
 	if (ifl) Index::close_index_file();
 	#ifdef IF_MODULE
-	CommandsIndex::detail_pages();
+	GroupedElement::detail_pages();
 	#endif
 }
 

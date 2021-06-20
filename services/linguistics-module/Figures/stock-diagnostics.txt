@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2379 items
+noun: 2380 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3315
+total in all categories: 3316
 
 adjective: 'even'
 adjective: 'odd'
@@ -422,6 +422,7 @@ noun: proper: 'implicitly pass through other barriers rule'
 noun: proper: 'standard entering rule'
 noun: proper: 'standard report entering rule'
 noun: proper: 'describe contents entered into rule'
+noun: proper: 'standard set exiting variables rule'
 noun: proper: 'convert exit into go out rule'
 noun: proper: 'can't exit when not inside anything rule'
 noun: proper: 'can't exit closed containers rule'

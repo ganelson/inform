@@ -24,8 +24,6 @@ Chapter 3: Indexing for Plugins
 	Backdrops
 	Regions
 	The Map
-	Actions
-	Commands Index
 
 Chapter 4: Visualising Space
 	Spatial Geometry

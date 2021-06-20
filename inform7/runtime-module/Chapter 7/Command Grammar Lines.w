@@ -8,18 +8,26 @@ flag, most of it is rarely used:
 
 =
 typedef struct cg_line_compilation_data {
+	struct package_request *metadata_package;
+	struct inter_name *xref_iname;
 	int suppress_compilation; /* has been compiled in a single grammar token already? */
 	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
 	int cond_token_compiled;
 	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
+	struct cg_line *next_with_action; /* used when indexing actions */
+	struct command_grammar *belongs_to_cg; /* similarly, used only in indexing */
 } cg_line_compilation_data;
 
 cg_line_compilation_data RTCommandGrammarLines::new_compilation_data(cg_line *cg) {
 	cg_line_compilation_data cglcd;
+	cglcd.metadata_package = NULL;
+	cglcd.xref_iname = NULL;
 	cglcd.suppress_compilation = FALSE;
 	cglcd.cond_token_iname = NULL;
 	cglcd.cond_token_compiled = FALSE;
 	cglcd.mistake_iname = NULL;
+	cglcd.belongs_to_cg = NULL;
+	cglcd.next_with_action = NULL;
 	return cglcd;
 }
 
@@ -67,6 +75,34 @@ inter_name *RTCommandGrammarLines::get_mistake_iname(cg_line *cgl) {
 			Hierarchy::make_iname_in(MISTAKE_FN_HL,
 				Hierarchy::completion_package(MISTAKES_HAP));
 	return cgl->compilation_data.mistake_iname;
+}
+
+@ Grammar lines are typically indexed twice: the other time is when all
+grammar lines belonging to a given action are tabulated. Special linked
+lists are kept for this purpose, and this is where we unravel them and
+print to the index. The question of sorted vs unsorted is meaningless
+here, since the CGLs appearing in such a list will typically belong to
+several different CGs. (As it happens, they appear in order of creation,
+i.e., in source text order.)
+
+Tiresomely, all of this means that we need to store "uphill" pointers
+in CGLs: back up to the CGs that own them. The following routine does
+this for a whole list of CGLs:
+
+=
+void RTCommandGrammarLines::list_assert_ownership(command_grammar *cg) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
+		cgl->compilation_data.belongs_to_cg = cg;
+}
+
+@ And this routine accumulates the per-action lists of CGLs:
+
+=
+void RTCommandGrammarLines::list_with_action_add(cg_line *list_head, cg_line *cgl) {
+	if (list_head == NULL) internal_error("tried to add to null action list");
+	while (list_head->compilation_data.next_with_action)
+		list_head = list_head->compilation_data.next_with_action;
+	list_head->compilation_data.next_with_action = cgl;
 }
 
 @h Compilation.
