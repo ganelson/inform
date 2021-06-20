@@ -400,10 +400,21 @@ void RTCommandGrammars::compile_general(gpr_kit *kit, command_grammar *cg) {
 		(inter_ti) Wordings::first_wn(Node::get_text(cg->where_cg_created)));
 	if (cg->cg_is == CG_IS_TOKEN)
 		Hierarchy::apply_metadata_from_raw_wording(pack, CG_NAME_MD_HL, cg->token_name);
+	if (cg->cg_is == CG_IS_COMMAND) {
+		if (Wordings::nonempty(cg->command))
+			Hierarchy::apply_metadata_from_wording(pack, CG_COMMAND_MD_HL, cg->command);
+		for (int i=0; i<cg->no_aliased_commands; i++) {
+			package_request *alias = Hierarchy::package_within(CG_COMMAND_ALIASES_HAP, pack);
+			Hierarchy::apply_metadata_from_wording(alias, CG_ALIAS_MD_HL, cg->aliased_command[i]);
+		}
+	}
 	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
 		if (cgl->indexing_data.belongs_to_cg) {
 			package_request *line = Hierarchy::package_within(CG_LINES_HAP, pack);
 			wording VW = CommandGrammars::get_verb_text(cgl->indexing_data.belongs_to_cg);
+			if (cgl->resulting_action)
+				Hierarchy::apply_metadata_from_iname(line, CG_ACTION_MD_HL,
+					RTActions::double_sharp(cgl->resulting_action));
 			if (Wordings::nonempty(VW))
 				Hierarchy::apply_metadata_from_wording(line, CG_TRUE_VERB_MD_HL, VW);
 			TEMPORARY_TEXT(text)

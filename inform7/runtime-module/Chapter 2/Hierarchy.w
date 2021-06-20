@@ -749,13 +749,17 @@ void Hierarchy::establish(void) {
 @e CG_IS_PROPERTY_NAME_MD_HL
 @e CG_AT_MD_HL
 @e CG_NAME_MD_HL
+@e CG_COMMAND_MD_HL
 @e PROPERTY_GPR_FN_HL
 @e PARSE_LINE_FN_HL
 @e CONSULT_FN_HL
 @e NO_VERB_VERB_DEFINED_HL
+@e CG_COMMAND_ALIASES_HAP
+@e CG_ALIAS_MD_HL
 @e CG_LINES_HAP
 @e CG_LINE_TEXT_MD_HL
 @e CG_LINE_AT_MD_HL
+@e CG_ACTION_MD_HL
 @e CG_LINE_REVERSED_MD_HL
 @e CG_TRUE_VERB_MD_HL
 
@@ -821,12 +825,17 @@ void Hierarchy::establish(void) {
 			H_C_U(CG_IS_PROPERTY_NAME_MD_HL,                I"^is_property_name")
 			H_C_U(CG_AT_MD_HL,                I"^at")
 			H_C_U(CG_NAME_MD_HL,              I"^name")
+			H_C_U(CG_COMMAND_MD_HL,              I"^command")
 			H_F_G(PROPERTY_GPR_FN_HL,         I"either_or_GPR_fn", I"PRN_PN")
 			H_F_G(PARSE_LINE_FN_HL,           I"parse_line_fn", I"GPR_Line")
 			H_F_G(CONSULT_FN_HL,              I"consult_fn", I"Consult_Grammar")
+			H_BEGIN_AP(CG_COMMAND_ALIASES_HAP,    	  I"cg_alias", I"_cg_alias")
+				H_C_U(CG_ALIAS_MD_HL,                I"^alias")
+			H_END
 			H_BEGIN_AP(CG_LINES_HAP,    	  I"cg_line", I"_cg_line")
 				H_C_U(CG_LINE_TEXT_MD_HL,                I"^text")
 				H_C_U(CG_LINE_AT_MD_HL,                I"^at")
+				H_C_U(CG_ACTION_MD_HL,                I"^action")
 				H_C_U(CG_TRUE_VERB_MD_HL,                I"^true_verb")
 				H_C_U(CG_LINE_REVERSED_MD_HL,                I"^reversed")
 			H_END

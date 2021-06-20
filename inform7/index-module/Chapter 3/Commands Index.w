@@ -26,68 +26,6 @@ void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *true
 	}
 }
 
-void CommandsIndex::commands(OUTPUT_STREAM) {
-	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
-	command_grammar *cg;
-	int head_letter;
-
-	LOOP_OVER(cg, command_grammar)
-		CommandsIndex::make_command_index_entries(OUT, cg);
-
-	CommandsElement::direction_verb();
-
-	LOOP_OVER(vie, command_index_entry) {
-		if (list_start == NULL) { list_start = vie; continue; }
-		vie2 = list_start;
-		last_vie2 = NULL;
-		while (vie2 && (Str::cmp(vie->command_headword, vie2->command_headword) > 0)) {
-			last_vie2 = vie2;
-			vie2 = vie2->next_alphabetically;
-		}
-		if (last_vie2 == NULL) {
-			vie->next_alphabetically = list_start; list_start = vie;
-		} else {
-			last_vie2->next_alphabetically = vie; vie->next_alphabetically = vie2;
-		}
-	}
-
-	for (vie = list_start, head_letter = 0; vie; vie = vie->next_alphabetically) {
-		command_grammar *cg;
-		if (Str::get_first_char(vie->command_headword) != head_letter) {
-			if (head_letter) HTML_TAG("br");
-			head_letter = Str::get_first_char(vie->command_headword);
-		}
-		cg = vie->cg_indexed;
-		switch (vie->nature) {
-			case NORMAL_COMMAND:
-				CommandsIndex::index_normal(OUT, cg, vie->command_headword);
-				break;
-			case ALIAS_COMMAND:
-				CommandsIndex::index_alias(OUT, cg, vie->command_headword);
-				break;
-			case OUT_OF_WORLD_COMMAND:
-				HTML::begin_colour(OUT, I"800000");
-				WRITE("&quot;%S&quot;, <i>a command for controlling play</i>",
-					vie->command_headword);
-				HTML::end_colour(OUT);
-				HTML_TAG("br");
-				break;
-			case TESTING_COMMAND:
-				HTML::begin_colour(OUT, I"800000");
-				WRITE("&quot;%S&quot;, <i>a testing command not available "
-					"in the final game</i>",
-					vie->command_headword);
-				HTML::end_colour(OUT);
-				HTML_TAG("br");
-				break;
-			case BARE_DIRECTION_COMMAND:
-				WRITE("&quot;[direction]&quot; - <i>Going</i>");
-				HTML_TAG("br");
-				break;
-		}
-	}
-}
-
 void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(action_name);
 	action_name **sorted = Memory::calloc(nr, sizeof(action_name *), INDEX_SORTING_MREASON);
@@ -217,17 +155,6 @@ to process; the other two routines act upon any such entries once they are
 needed.
 
 =
-void CommandsIndex::index_alias(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
-	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%N&quot;",
-		headword, Wordings::first_wn(cg->command));
-	TEMPORARY_TEXT(link)
-	WRITE_TO(link, "%N", Wordings::first_wn(cg->command));
-	Index::below_link(OUT, link);
-	DISCARD_TEXT(link)
-	HTML_TAG("br");
-}
-
-@ =
 void CommandsIndex::index_command_aliases(OUTPUT_STREAM, command_grammar *cg) {
 	if (cg == NULL) return;
 	int i, n = cg->no_aliased_commands;
@@ -246,40 +173,6 @@ cg_line_indexing_data CommandsIndex::new_id(cg_line *cg) {
 	cglid.belongs_to_cg = NULL;
 	cglid.next_with_action = NULL;
 	return cglid;
-}
-
-@h Indexing by grammar.
-This is the more obvious form of indexing: we show the grammar lines which
-make up an individual CGL. (For instance, this is used in the Actions index
-to show the grammar for an individual command word, by calling the routine
-below for that command word's CG.) Such an index list is done in sorted
-order, so that the order of appearance in the index corresponds to the
-order of parsing -- this is what the reader of the index is interested in.
-
-=
-void CommandsIndex::index_normal(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
-	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
-		CommandsIndex::cgl_index_normal(OUT, cgl, headword);
-}
-
-void CommandsIndex::cgl_index_normal(OUTPUT_STREAM, cg_line *cgl, text_stream *headword) {
-	action_name *an = cgl->resulting_action;
-	if (an == NULL) return;
-	Index::anchor(OUT, headword);
-	if (ActionSemantics::is_out_of_world(an))
-		HTML::begin_colour(OUT, I"800000");
-	WRITE("&quot;");
-	CommandsIndex::verb_definition(OUT, Lexer::word_text(cgl->original_text),
-		headword, EMPTY_WORDING);
-	WRITE("&quot;");
-	Index::link(OUT, cgl->original_text);
-	WRITE(" - <i>%+W", ActionNameNames::tensed(an, IS_TENSE));
-	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
-	if (cgl->reversed) WRITE(" (reversed)");
-	WRITE("</i>");
-	if (ActionSemantics::is_out_of_world(an))
-		HTML::end_colour(OUT);
-	HTML_TAG("br");
 }
 
 @h Indexing by action.

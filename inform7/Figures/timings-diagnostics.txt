@@ -1,11 +1,11 @@
 100.0% in inform7 run
-     55.9% in compilation to Inter
-         39.4% in //Sequence::undertake_queued_tasks//
+     55.7% in compilation to Inter
+         39.1% in //Sequence::undertake_queued_tasks//
           3.7% in //MajorNodes::pre_pass//
           2.8% in //MajorNodes::pass_1//
-          2.1% in //RTPhrasebook::compile_entries//
+          2.2% in //RTPhrasebook::compile_entries//
           1.5% in //ImperativeDefinitions::assess_all//
-          1.0% in //RTKindConstructors::compile//
+          1.1% in //RTKindConstructors::compile//
           0.4% in //ImperativeDefinitions::compile_first_block//
           0.4% in //MajorNodes::pass_2//
           0.4% in //Sequence::undertake_queued_tasks//
@@ -17,12 +17,12 @@
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
           1.9% not specifically accounted for
-     41.8% in running Inter pipeline
-         11.1% in step preparation
-         10.3% in inter step 7/14: consolidate-text
+     42.1% in running Inter pipeline
+         10.9% in step preparation
+         10.2% in inter step 7/14: consolidate-text
           8.6% in inter step 2/14: link
-          7.0% in inter step 14/14: generate inform6 -> auto.inf
-          1.0% in inter step 10/14: make-identifiers-unique
+          7.1% in inter step 14/14: generate inform6 -> auto.inf
+          1.2% in inter step 10/14: make-identifiers-unique
           0.3% in inter step 11/14: reconcile-verbs
           0.3% in inter step 13/14: eliminate-redundant-operations
           0.3% in inter step 6/14: assimilate
@@ -31,6 +31,6 @@
           0.1% in inter step 4/14: parse-linked-matter
           0.1% in inter step 5/14: resolve-conditional-compilation
           0.1% in inter step 9/14: inspect-plugs
-          1.7% not specifically accounted for
+          2.0% not specifically accounted for
       1.7% in supervisor
-      0.5% not specifically accounted for
+      0.4% not specifically accounted for
