@@ -86,3 +86,5 @@ Chapter 6: Index
 	Phrasebook Element
 	Tokens Element
 	Commands Element
+	Grouped Element
+	Alphabetic Element

@@ -231,28 +231,3 @@ int CommandsIndex::index_list_with_action(OUTPUT_STREAM, cg_line *cgl) {
 	}
 	return said_something;
 }
-
-@ And the same, but more simply:
-
-=
-void CommandsIndex::index_list_for_token(OUTPUT_STREAM, command_grammar *cg) {
-	int k = 0;
-	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
-		if (cgl->indexing_data.belongs_to_cg) {
-			wording VW = CommandGrammars::get_verb_text(cgl->indexing_data.belongs_to_cg);
-			TEMPORARY_TEXT(trueverb)
-			if (Wordings::nonempty(VW))
-				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
-			HTML::open_indented_p(OUT, 2, "hanging");
-			if (k++ == 0) WRITE("="); else WRITE("or");
-			WRITE(" &quot;");
-			CommandsIndex::verb_definition(OUT,
-				Lexer::word_text(cgl->original_text), trueverb, EMPTY_WORDING);
-			WRITE("&quot;");
-			Index::link(OUT, cgl->original_text);
-			if (cgl->reversed) WRITE(" <i>reversed</i>");
-			HTML_CLOSE("p");
-			DISCARD_TEXT(trueverb)
-		}	
-}
-

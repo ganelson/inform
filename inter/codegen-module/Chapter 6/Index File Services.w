@@ -644,6 +644,8 @@ void Index::test_card(OUTPUT_STREAM, wording W) {
 }
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
+	if (Str::eq_wide_string(elt, L"A1")) { GroupedElement::render(OUT); return; }
+	if (Str::eq_wide_string(elt, L"A2")) { AlphabeticElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Ar")) { ArithmeticElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT); return; }
 	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT); return; }
@@ -669,14 +671,6 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	#ifdef CORE_MODULE
 	if (Str::eq_wide_string(elt, L"Mp")) {
 		IXPhysicalWorld::render(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"A1")) {
-		CommandsIndex::page(OUT);
-		return;
-	}
-	if (Str::eq_wide_string(elt, L"A2")) {
-		CommandsIndex::alphabetical(OUT);
 		return;
 	}
 	#endif
