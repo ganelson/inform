@@ -43,7 +43,6 @@ typedef struct rule {
 	int allows_responses; /* was this rule explicitly named when created? */
 	struct rule_response responses[26]; /* responses (A), (B), ... */
 
-	struct rule_indexing_data indexing_data;
 	struct rule_compilation_data compilation_data;
 	CLASS_DEFINITION
 } rule;
@@ -86,7 +85,6 @@ rule *Rules::obtain(wording W, int allow_responses) {
 	for (int l=0; l<26; l++) R->responses[l] = Rules::new_rule_response();
 
 	R->compilation_data = RTRules::new_compilation_data(R);
-	R->indexing_data = IXRules::new_indexing_data(R);
 
 	if ((Wordings::nonempty(W)) && (Rules::vet_name(W))) {
 		R->name = W;

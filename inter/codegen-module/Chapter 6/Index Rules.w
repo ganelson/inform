@@ -474,9 +474,9 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 @ =
 void IndexRules::index_activity(OUTPUT_STREAM, inter_tree *I, inter_package *pack, int indent) {
 	int empty = (int) Metadata::read_optional_numeric(pack, I"^empty");
-/*	if (av->indexing_data.activity_indexed) return;
-	av->indexing_data.activity_indexed = TRUE;
-	if (av->indexing_data.cross_references) empty = FALSE;
+/*	if (av->compilation_data.activity_indexed) return;
+	av->compilation_data.activity_indexed = TRUE;
+	if (av->compilation_data.cross_references) empty = FALSE;
 */
 
 	text_stream *text = NULL;

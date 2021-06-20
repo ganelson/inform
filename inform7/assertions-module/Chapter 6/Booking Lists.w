@@ -269,15 +269,6 @@ int BookingLists::length(booking_list *L) {
 	return n;
 }
 
-int BookingLists::is_contextually_empty(booking_list *L, rule_context rc) {
-	LOOP_OVER_BOOKINGS(br, L) {
-		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
-		if ((id) && (IXRules::phrase_fits_rule_context(id->body_of_defn, rc)))
-			return FALSE;
-	}
-	return TRUE;
-}
-
 booking *BookingLists::first(booking_list *L) {
 	LOOP_OVER_BOOKINGS(br, L) return br;
 	return NULL;

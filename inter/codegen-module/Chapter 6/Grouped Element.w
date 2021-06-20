@@ -207,10 +207,10 @@ void GroupedElement::index_stv_set(OUTPUT_STREAM, inter_tree *I, inter_package *
 
 void GroupedElement::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an, inter_package *rb,
 	text_stream *key, text_stream *desc, int *resp_count) {
-//	IXRules::list_suppress_indexed_links();
+	IndexRules::list_suppress_indexed_links();
 	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree, IndexRules::find_rulebook(inv, key), desc,
 		IndexRules::action_context(an), resp_count);
 	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc, IndexRules::no_rule_context(), resp_count);
-//	IXRules::list_resume_indexed_links();
 	if (t > 0) HTML_CLOSE("p");
+	IndexRules::list_resume_indexed_links();
 }

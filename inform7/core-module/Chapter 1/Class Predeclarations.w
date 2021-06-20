@@ -40,7 +40,6 @@ DECLARE_CLASS(compile_task_data)
 @e implication_CLASS
 @e named_rulebook_outcome_CLASS
 @e phrase_option_CLASS
-@e placement_affecting_CLASS
 @e relation_guard_CLASS
 @e rule_CLASS
 @e rule_family_data_CLASS
@@ -74,7 +73,6 @@ DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(named_rulebook_outcome)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS(relation_guard)
 DECLARE_CLASS(rule_family_data)
 DECLARE_CLASS(rule)

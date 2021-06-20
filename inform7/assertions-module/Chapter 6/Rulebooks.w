@@ -35,7 +35,6 @@ typedef struct rulebook {
 	struct shared_variable_access_list *accessible_variables; /* and which can be named here */
 
 	struct rulebook_compilation_data compilation_data;
-	struct rulebook_indexing_data indexing_data;
 	CLASS_DEFINITION
 } rulebook;
 
@@ -65,8 +64,6 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	B->my_variables = SharedVariables::new_set(RTRulebooks::id_iname(B));
 	B->accessible_variables = SharedVariables::new_access_list();
 	SharedVariables::add_set_to_access_list(B->accessible_variables, B->my_variables);
-
-	B->indexing_data =  IXRules::new_rulebook_indexing_data(B);
 
 	@<Make proper nouns so that the rulebook can be a constant value@>;
 	return B;
@@ -272,11 +269,6 @@ int Rulebooks::requires_specific_action(rulebook *B) {
 int Rulebooks::is_empty(rulebook *B) {
 	if (B == NULL) return TRUE;
 	return BookingLists::is_empty_of_i7_rules(B->contents);
-}
-
-int Rulebooks::is_contextually_empty(rulebook *B, rule_context rc) {
-	if (B == NULL) return TRUE;
-	return BookingLists::is_contextually_empty(B->contents, rc);
 }
 
 int Rulebooks::no_rules(rulebook *B) {

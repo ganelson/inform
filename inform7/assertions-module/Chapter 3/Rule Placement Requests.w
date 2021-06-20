@@ -333,7 +333,7 @@ void RulePlacement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense)
 	Rules::set_kind_from(given_rule, given_rulebook);
 	if (relative_rule) {
 		LOGIF(RULE_ATTACHMENTS, "Relative to which = %W\n", relative_rule->name);
-		IXRules::affected_by_placement(given_rulebook, current_sentence);
+		RTRulebooks::affected_by_placement(given_rulebook, current_sentence);
 		if (Rulebooks::rule_in_rulebook(relative_rule, given_rulebook) == FALSE)
 			@<Issue PM_PlaceWithMissingRule problem@>;
 	}
@@ -380,7 +380,7 @@ void RulePlacement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense)
 	return;
 
 @<Detach only from this rulebook@> =
-	IXRules::affected_by_placement(given_rulebook, current_sentence);
+	RTRulebooks::affected_by_placement(given_rulebook, current_sentence);
 	Rulebooks::detach_rule(given_rulebook, given_rule);
 	return;
 

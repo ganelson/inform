@@ -11,6 +11,7 @@ typedef struct rulebook_compilation_data {
 	struct package_request *rb_package;
 	struct inter_name *rb_id_iname;
 	struct inter_name *vars_creator_fn_iname;
+	struct linked_list *placement_list; /* of |parse_node| */
 	struct parse_node *where_declared;
 } rulebook_compilation_data;
 
@@ -24,6 +25,7 @@ rulebook_compilation_data RTRulebooks::new_compilation_data(rulebook *B,
 	rcd.rb_package = P;
 	rcd.vars_creator_fn_iname = NULL;
 	rcd.rb_id_iname = NULL;
+	rcd.placement_list = NEW_LINKED_LIST(parse_node);
 	rcd.where_declared = current_sentence;
 	return rcd;
 }
@@ -55,6 +57,11 @@ inter_name *RTRulebooks::get_vars_creator_iname(rulebook *B) {
 		B->compilation_data.vars_creator_fn_iname =
 			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, RTRulebooks::package(B));
 	return B->compilation_data.vars_creator_fn_iname;
+}
+
+@ =
+void RTRulebooks::affected_by_placement(rulebook *rb, parse_node *where) {
+	ADD_TO_LINKED_LIST(where, parse_node, rb->compilation_data.placement_list);
 }
 
 @h Compilation.
@@ -151,7 +158,7 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_raw_wording(EP, BRULE_NAME_MD_HL,
 			R->name);
 		Hierarchy::apply_metadata_from_raw_wording(EP, RULE_INDEX_NAME_MD_HL,
-			R->indexing_data.italicised_text);
+			R->compilation_data.italicised_text);
 		if (R->defn_as_I7_source) {
 			parse_node *pn = R->defn_as_I7_source->at->down->down;
 			if ((pn) && (Wordings::nonempty(Node::get_text(pn)))) {
@@ -189,15 +196,14 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 			}
 		}
 	}
-	placement_affecting *npl = B->indexing_data.placement_list;
-	while (npl) {
+	parse_node *sentence;
+	LOOP_OVER_LINKED_LIST(sentence, parse_node, B->compilation_data.placement_list) {
 		package_request *EP =
 			Hierarchy::package_within(RULEBOOK_PLACEMENTS_HAP, P);
 		Hierarchy::apply_metadata_from_raw_wording(EP, PLACEMENT_TEXT_MD_HL,
-			Node::get_text(npl->placement_sentence));
+			Node::get_text(sentence));
 		Hierarchy::apply_metadata_from_number(EP, PLACEMENT_AT_MD_HL,
-			(inter_ti) Wordings::first_wn(Node::get_text(npl->placement_sentence)));
-		npl = npl->next;
+			(inter_ti) Wordings::first_wn(Node::get_text(sentence)));
 	}
 	outcomes *outs = &(B->my_outcomes);
 	rulebook_outcome *ro;

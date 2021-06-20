@@ -11,16 +11,27 @@ typedef struct activity_compilation_data {
 	struct package_request *av_package; /* its |_activity| package */
 	struct inter_name *value_iname;     /* an identifier for a constant identifying this */
 	struct inter_name *variables_id;    /* ID for the shared variables set, if any */
+	int activity_indexed; /* has this been indexed yet? */
+	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
+	struct activity_crossref *cross_references;
 } activity_compilation_data;
+
+typedef struct activity_crossref {
+	struct id_body *rule_dependent;
+	struct activity_crossref *next;
+} activity_crossref;
 
 @ Which is created, long before compilation time, thus:
 
 =
-activity_compilation_data RTActivities::new_compilation_data(activity *av) {
+activity_compilation_data RTActivities::new_compilation_data(activity *av, wording doc) {
 	activity_compilation_data acd;
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	acd.value_iname = Hierarchy::make_iname_with_memo(ACTIVITY_VALUE_HL, acd.av_package, av->name);
 	acd.variables_id = Hierarchy::make_iname_in(ACTIVITY_SHV_ID_HL, acd.av_package);
+	acd.activity_indexed = FALSE;
+	acd.av_documentation_symbol = doc;
+	acd.cross_references = NULL;
 	return acd;
 }
 
@@ -43,6 +54,18 @@ package_request *RTActivities::rulebook_package(activity *av, int N) {
 	}
 	internal_error("bad activity rulebook");
 	return NULL;
+}
+
+@ =
+void RTActivities::annotate_list_for_cross_references(activity_list *avl, id_body *idb) {
+	for (; avl; avl = avl->next)
+		if (avl->activity) {
+			activity *av = avl->activity;
+			activity_crossref *acr = CREATE(activity_crossref);
+			acr->next = av->compilation_data.cross_references;
+			av->compilation_data.cross_references = acr;
+			acr->rule_dependent = idb;
+		}
 }
 
 @h Compilation.
@@ -92,9 +115,9 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	if (Rulebooks::is_empty(av->after_rules) == FALSE) empty = FALSE;
 	Hierarchy::apply_metadata_from_number(pack, ACTIVITY_EMPTY_MD_HL,
 		(inter_ti) empty);
-	if (Wordings::nonempty(av->indexing_data.av_documentation_symbol))
+	if (Wordings::nonempty(av->compilation_data.av_documentation_symbol))
 		Hierarchy::apply_metadata_from_raw_wording(pack, ACTIVITY_DOCUMENTATION_MD_HL,
-			Wordings::one_word(Wordings::first_wn(av->indexing_data.av_documentation_symbol)));
+			Wordings::one_word(Wordings::first_wn(av->compilation_data.av_documentation_symbol)));
 	
 	if (SharedVariables::set_empty(av->activity_variables) == FALSE) {
 		inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_VARC_FN_HL, pack);
@@ -104,7 +127,7 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	Emit::numeric_constant(av->compilation_data.variables_id, 0);
 
 	activity_crossref *acr;
-	for (acr = av->indexing_data.cross_references; acr; acr = acr->next) {
+	for (acr = av->compilation_data.cross_references; acr; acr = acr->next) {
 		id_body *idb = acr->rule_dependent;
 		if ((ImperativeDefinitions::body_at(idb)) &&
 			(Wordings::nonempty(Node::get_text(ImperativeDefinitions::body_at(idb))))) {

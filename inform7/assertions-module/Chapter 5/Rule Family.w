@@ -394,7 +394,7 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 			IX = rfd->whenwhile;
 		}
 	}
-	IXRules::set_italicised_index_text(R, IX);
+	RTRules::set_italicised_index_text(R, IX);
 
 @ This is to do with named outcomes of rules, whereby certain outcomes are
 normally limited to the use of rules in particular rulebooks.

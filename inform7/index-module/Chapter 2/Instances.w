@@ -95,31 +95,3 @@ void IXInstances::index_usages(OUTPUT_STREAM, instance *I) {
 	}
 	if (k > 0) HTML_CLOSE("p");
 }
-
-@h Adjectival usage.
-
-=
-int IXInstances::as_adjective(OUTPUT_STREAM, instance *I) {
-	property *P = Properties::property_with_same_name_as(Instances::to_kind(I));
-	if (ConditionsOfSubjects::of_what(P) == NULL) {
-		if (Properties::get_permissions(P)) {
-			WRITE("(of "); IXProperties::index_permissions(OUT, P); WRITE(") ");
-		}
-		WRITE("having this %+W", P->name);
-	} else {
-		WRITE("a condition which is otherwise ");
-		kind *K = Instances::to_kind(I);
-		int no_alts = Instances::count(K) - 1, i = 0;
-		instance *alt;
-		LOOP_OVER_INSTANCES(alt, K)
-			if (alt != I) {
-				WRITE("</i>");
-				WRITE("%+W", Instances::get_name(alt, FALSE));
-				WRITE("<i>");
-				i++;
-				if (i == no_alts-1) WRITE(" or ");
-				else if (i < no_alts) WRITE(", ");
-			}
-	}
-	return TRUE;
-}

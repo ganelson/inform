@@ -24,6 +24,7 @@ typedef struct rule_compilation_data {
 	struct inter_name *foreign_iname; /* if it is outside */
 	struct inter_name *foreign_response_handler_iname; /* in which case this produces its response texts */
 	struct inter_name *shell_fn_around_foreign_iname; /* and this tests its applicability constraints */
+	struct wording italicised_text; /* when indexing a rulebook */
 	struct parse_node *where_declared;
 } rule_compilation_data;
 
@@ -39,6 +40,7 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	rcd.foreign_response_handler_iname = NULL;
 	rcd.shell_fn_around_foreign_iname = NULL;
 	rcd.rule_package = NULL;
+	rcd.italicised_text = EMPTY_WORDING;
 	rcd.where_declared = current_sentence;
 	return rcd;
 }
@@ -166,6 +168,13 @@ inter_name *RTRules::iname(rule *R) {
 	}
 	internal_error("rule is undefined and has no iname");
 	return NULL;
+}
+
+@
+
+=
+void RTRules::set_italicised_index_text(rule *R, wording W) {
+	R->compilation_data.italicised_text = W;
 }
 
 @h Compilation.
@@ -566,7 +575,7 @@ int RTRules::actions_compile_test_tail(id_body *idb, rule *R) {
 		EmitCode::code();
 		EmitCode::down();
 
-		IXActivities::annotate_list_for_cross_references(avl, idb);
+		RTActivities::annotate_list_for_cross_references(avl, idb);
 		tests++;
 
 @<Compile an activity or explicit condition test tail@> =

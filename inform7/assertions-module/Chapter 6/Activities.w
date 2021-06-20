@@ -14,7 +14,6 @@ typedef struct activity {
 	struct rulebook *after_rules;
 	struct kind *activity_on_what_kind; /* or null */
 	struct shared_variable_set *activity_variables; /* activity variables owned here */
-	struct activity_indexing_data indexing_data;
 	struct activity_compilation_data compilation_data;
 	CLASS_DEFINITION
 } activity;
@@ -77,7 +76,7 @@ activity *Activities::new(kind *K, wording W) {
 
 	activity *av = CREATE(activity);
 	av->name = W;
-	av->compilation_data = RTActivities::new_compilation_data(av);
+	av->compilation_data = RTActivities::new_compilation_data(av, doc_symbol);
 	av->activity_on_what_kind = on_kind;
 
 	LOGIF(ACTIVITY_CREATIONS, "Created activity '%W'\n", av->name);
@@ -90,7 +89,6 @@ activity *Activities::new(kind *K, wording W) {
 	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);
 	av->after_rules = Activities::make_rulebook(av, 2, future_action_flag);
 
-	av->indexing_data = IXActivities::new_indexing_data(av, doc_symbol);
 	Activities::set_std(av);
 	return av;
 }
