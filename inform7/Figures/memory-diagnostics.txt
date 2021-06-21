@@ -1,6 +1,6 @@
 Total memory consumption was 390036K = 381 MB
 
-60.7% was used for 1970150 objects, in 370591 frames in 296 x 800K = 236800K = 231 MB:
+60.7% was used for 1970149 objects, in 370590 frames in 296 x 800K = 236800K = 231 MB:
 
     10.2%  inter_tree_node_array                    57 x 8192 = 466944 objects, 41092896 bytes
      7.0%  text_stream_array                        5028 x 100 = 502800 objects, 28317696 bytes
@@ -175,8 +175,8 @@ Total memory consumption was 390036K = 381 MB
      ----  target_vm                                6 objects, 816 bytes
      ----  generated_segment                        25 objects, 800 bytes
      ----  inter_data_type                          14 objects, 784 bytes
-     ----  internal_test                            15 objects, 720 bytes
      ----  inform_language                          6 objects, 672 bytes
+     ----  internal_test                            14 objects, 672 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  inter_warehouse_room                     10 objects, 640 bytes
      ----  I6T_intervention                         8 objects, 640 bytes
@@ -236,7 +236,7 @@ Total memory consumption was 390036K = 381 MB
 
 39.2% was used for memory not allocated for objects:
 
-    20.3%  text stream storage                      81158328 bytes in 520337 claims
+    20.3%  text stream storage                      81158124 bytes in 520335 claims
      4.5%  dictionary storage                       18112512 bytes in 33152 claims
      ----  sorting                                  728 bytes in 3 claims
      1.8%  source text                              7200000 bytes in 3 claims
@@ -254,5 +254,5 @@ Total memory consumption was 390036K = 381 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    154432 bytes in 2037 claims
 
-18.6% was overhead - 74593440 bytes = 72845K = 71 MB
+18.6% was overhead - 74593488 bytes = 72845K = 71 MB
 
