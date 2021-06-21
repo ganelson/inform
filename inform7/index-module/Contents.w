@@ -22,7 +22,6 @@ Chapter 3: Indexing for Plugins
 	The Map
 
 Chapter 4: Visualising Space
-	Spatial Geometry
 	Spatial Map
 	HTML Map
-	EPS Map
+	Render EPS Map

@@ -118,7 +118,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_62 style="text-decoration: none"><span style="color:#000000"><b>Al</b></span></a></span>
+                                                <span style="color:#000000"><a href=#wo_13 style="text-decoration: none"><span style="color:#000000"><b>Al</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -220,7 +220,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_63 style="text-decoration: none"><span style="color:#000000">Bt</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_14 style="text-decoration: none"><span style="color:#000000">Bt</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -406,7 +406,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_66 style="text-decoration: none"><span style="color:#000000">Ep</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_17 style="text-decoration: none"><span style="color:#000000">Ep</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -592,7 +592,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_64 style="text-decoration: none"><span style="color:#000000">Gm</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_15 style="text-decoration: none"><span style="color:#000000">Gm</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -694,7 +694,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_65 style="text-decoration: none"><span style="color:#000000">Dl</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_16 style="text-decoration: none"><span style="color:#000000">Dl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -820,7 +820,7 @@
 <!--WORLD WRITE MAP ENDS-->
 <a name=MDETAILS></a>
 
-<p><a name=></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_13><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1018,7 +1018,7 @@
 <hr>
 
 
-<p><a name=></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_14><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1173,7 +1173,7 @@
 <hr>
 
 
-<p><a name=></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_15><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1328,7 +1328,7 @@
 <hr>
 
 
-<p><a name=></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_16><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -1484,7 +1484,7 @@
 <hr>
 
 
-<p><a name=></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_17><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 

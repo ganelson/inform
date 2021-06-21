@@ -6,25 +6,21 @@ to core Inform, these indexes will look pretty sparse if the spatial Plugins
 aren't plugged in.
 
 @h The World page.
-This section belongs to the core of Inform, so it must work whatever plugins
-are present, but the World index will look pretty sketchy without (for
-instance) Spatial.
 
 =
 int suppress_panel_changes = FALSE;
 void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
 	if (PluginManager::active(map_plugin) == FALSE) return; /* in this case there is no model world */
-
-	PL::SpatialMap::establish_benchmark_room();
-	PL::EPSMap::traverse_for_map_parameters(1);
+	IXInstances::make_faux();
+	EPSMap::traverse_for_map_parameters(1);
 	PL::SpatialMap::establish_spatial_coordinates();
 	if (test_only) {
 		PL::SpatialMap::perform_map_internal_test(OUT);
 	} else {
 		PL::HTMLMap::render_map_as_HTML(OUT);
 		PL::HTMLMap::add_region_key(OUT);
-		PL::EPSMap::render_map_as_EPS();
+		RenderEPSMap::render_map_as_EPS();
 
 		IXBackdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
 
@@ -38,22 +34,21 @@ void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 }
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
+	faux_instance *I;
+	LOOP_OVER_OBJECTS(I)
 		if ((IXSpatial::no_detail_index(I))
-			|| (Map::instance_is_a_direction(I)))
+			|| (IXInstances::is_a_direction(I)))
 			IXInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =
-	instance *reg;
-	LOOP_OVER_INSTANCES(reg, K_object)
-		if (Regions::object_is_a_region(reg)) {
+	faux_instance *reg;
+	LOOP_OVER_OBJECTS(reg)
+		if (IXInstances::is_a_region(reg)) {
 			int subheaded = FALSE;
 			IXInstances::increment_indexing_count(reg);
-			instance *rm;
-			LOOP_OVER_INSTANCES(rm, K_object)
-				if ((Spatial::object_is_a_room(rm)) &&
-					(Regions::enclosing(rm) == reg)) {
+			faux_instance *rm;
+			LOOP_OVER_ROOMS(rm)
+				if (IXInstances::region_of(rm) == reg) {
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
 						@<Index the name and super-region of the region@>;
@@ -67,16 +62,15 @@ void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 		}
 
 @<Index the name and super-region of the region@> =
-	WRITE("<b>The <i>%+W</i> region", Instances::get_name(reg, FALSE));
-	instance *within = Regions::enclosing(reg);
-	if (within) WRITE(" within the <i>%+W</i> region", Instances::get_name(within, FALSE));
+	WRITE("<b>The <i>%+W</i> region", IXInstances::get_name(reg));
+	faux_instance *within = IXInstances::region_of(reg);
+	if (within) WRITE(" within the <i>%+W</i> region", IXInstances::get_name(within));
 	WRITE("</b>");
 
 @<Give room details for rooms outside any region in the World index@> =
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
-		if ((Spatial::object_is_a_room(I)) &&
-			(IXInstances::indexed_yet(I) == FALSE)) {
+	faux_instance *I;
+	LOOP_OVER_ROOMS(I)
+		if (IXInstances::indexed_yet(I) == FALSE) {
 			@<Start a new details panel on the World index@>;
 			PL::HTMLMap::render_single_room_as_HTML(OUT, I);
 		}
@@ -88,10 +82,10 @@ will be things which are offstage (and their contents and any parts thereof):
 
 @<Give details of everything still unmentioned in the World index@> =
 	int out_of_play_count = 0;
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
+	faux_instance *I;
+	LOOP_OVER_OBJECTS(I)
 		if ((IXInstances::indexed_yet(I) == FALSE) &&
-			(Spatial::progenitor(I) == NULL)) {
+			(IXInstances::progenitor(I) == NULL)) {
 			@<Start a new details panel on the World index@>;
 			if (++out_of_play_count == 1) {
 				suppress_panel_changes = TRUE;
@@ -111,29 +105,24 @@ will be things which are offstage (and their contents and any parts thereof):
 @default MAX_OBJECT_INDEX_DEPTH 10000
 
 =
-instance *indexing_room = NULL;
+faux_instance *indexing_room = NULL;
 int xtras_count = 0;
 
-instance *IXPhysicalWorld::room_being_indexed(void) {
+faux_instance *IXPhysicalWorld::room_being_indexed(void) {
 	return indexing_room;
 }
 
-void IXPhysicalWorld::set_room_being_indexed(instance *I) {
+void IXPhysicalWorld::set_room_being_indexed(faux_instance *I) {
 	indexing_room = I;
 }
 
-void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) {
+void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) {
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
-	noun *nt = NULL;
 	if (I) {
-		if (depth > NUMBER_CREATED(instance) + 1) return; /* to recover from errors */
+		if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
 		IXInstances::increment_indexing_count(I);
-		#ifdef IF_MODULE
-		if (Instances::of_kind(I, K_room)) indexing_room = I;
-		#endif
-		nt = Instances::get_noun(I);
+		if (IXInstances::is_a_room(I)) indexing_room = I;
 	}
-	if (nt == NULL) internal_error("no noun to index");
 	@<Begin the object citation line@>;
 	int xtra = -1;
 	if (I) xtra = xtras_count++;
@@ -157,7 +146,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) 
 @<Begin the object citation line@> =
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		if (I != indexing_room) Index::anchor(OUT, NounIdentifiers::identifier(nt));
+		if (I != indexing_room) Index::anchor(OUT, I->anchor_text);
 	} else {
 		#ifdef IF_MODULE
 		if (I) IXSpatial::index_spatial_relationship(OUT, I);
@@ -171,56 +160,37 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) 
 	@<Quote the name of the object being indexed@>;
 
 @<Quote the name of the object being indexed@> =
-	wording W = Nouns::nominative_in_language(nt, FALSE, Projects::get_language_of_play(Task::project()));
-	if ((Wordings::empty(W)) && (I)) {
-		kind *IK = Instances::to_kind(I);
-		W = Kinds::Behaviour::get_name_in_play(IK, FALSE, Projects::get_language_of_play(Task::project()));
-	}
-	if (Wordings::empty(W)) {
+	TEMPORARY_TEXT(name)
+	IXInstances::write_name(name, I);
+	if ((Str::len(name) == 0) && (I)) IXInstances::write_kind(name, I);
+	if (Str::len(name) == 0) {
 		WRITE("nameless");
 	} else {
 		int embolden = details;
-		#ifdef IF_MODULE
-		if (Spatial::object_is_a_room(I)) embolden = TRUE;
-		#endif
+		if (IXInstances::is_a_room(I)) embolden = TRUE;
 		if (embolden) WRITE("<b>");
-		WRITE("%+W", W);
+		WRITE("%S", name);
 		if (embolden) WRITE("</b>");
 		if (details) @<Elaborate the name of the object being indexed@>;
 	}
 
 @<Elaborate the name of the object being indexed@> =
 	if (I) {
-		kind *k = Instances::to_kind(I);
-		if (Kinds::Behaviour::is_subkind_of_object(k)) {
-			wording W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Task::project()));
-			if (Wordings::nonempty(W)) {
-				WRITE(", a kind of %+W", W);
-			}
-		}
+		WRITE(", a kind of ");
+		IXInstances::write_kind(OUT, I);
 	}
-	wording PW = Nouns::nominative_in_language(nt, TRUE, Projects::get_language_of_play(Task::project()));
-	if (Wordings::nonempty(PW)) WRITE(" (<i>plural</i> %+W)", PW);
 
 @<Index the kind attribution part of the object citation@> =
 	if (PluginCalls::annotate_in_World_index(OUT, I) == FALSE) {
-		kind *k = Instances::to_kind(I);
-		if (k) {
-			#ifdef IF_MODULE
-			wording W = Kinds::Behaviour::get_name(k, FALSE);
-			if ((Wordings::nonempty(W)) &&
-				(Kinds::eq(k, K_object) == FALSE) &&
-				(Kinds::eq(k, K_thing) == FALSE) &&
-				(Kinds::eq(k, K_room) == FALSE)) {
-				WRITE(" - <i>%+W</i>", W);
-			}
-			#endif
+		if (I->specify_kind) {
+			WRITE(" - <i>");
+			IXInstances::write_kind(OUT, I);
+			WRITE("</i>");
 		}
 	}
 
 @<Index the link icons part of the object citation@> =
-	parse_node *C = Instances::get_creating_sentence(I);
-	if (C) Index::link(OUT, Wordings::first_wn(Node::get_text(C)));
+	if (I->created_at > 0) Index::link(OUT, I->created_at);
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 
@@ -231,41 +201,27 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) 
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
-	IXInferences::index(OUT, Instances::as_subject(I), TRUE);
+	IXInferences::index(OUT, IXInstances::as_subject(I), TRUE);
 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
-	kind *IK = Instances::to_kind(I);
-	int i = 0;
-	while ((IK != K_object) && (IK)) {
-		i++;
-		IK = Latticework::super(IK);
-	}
-	int j;
-	for (j=i-1; j>=0; j--) {
-		int k; IK = Instances::to_kind(I);
-		for (k=0; k<j; k++) IK = Latticework::super(IK);
-		if (j != i-1) WRITE(" &gt; ");
-		wording W = Kinds::Behaviour::get_name(IK, FALSE);
-		WRITE("%+W", W);
-	}
-	parse_node *P = Instances::get_kind_set_sentence(I);
-	if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
+	IXInstances::write_kind_chain(OUT, I);
+	if (I->kind_set_at > 0) Index::link(OUT, I->kind_set_at);
 	WRITE(" &gt; <b>");
-	PL::SpatialMap::write_name(OUT, I);
+	IXInstances::write_name(OUT, I);
 	WRITE("</b>");
 	HTML_CLOSE("p");
 
 @<Add the catalogue of specific properties@> =
-	IXInferences::index_specific(OUT, Instances::as_subject(I));
+	IXInferences::index_specific(OUT, IXInstances::as_subject(I));
 
 @
 
 =
-void IXPhysicalWorld::index_usages(OUTPUT_STREAM, instance *I) {
+void IXPhysicalWorld::index_usages(OUTPUT_STREAM, faux_instance *I) {
 	int k = 0;
 	parse_node *at;
-	LOOP_OVER_LINKED_LIST(at, parse_node, I->compilation_data.usages) {
+	LOOP_OVER_LINKED_LIST(at, parse_node, I->usages) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(Node::get_text(at)));
 		if (Projects::draws_from_source_file(Task::project(), sf)) {
 			k++;

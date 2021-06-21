@@ -87,7 +87,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#3">Chapter 3: Space and Time</a></li><li><b>The Map</b></li></ul></div>
 <p class="purpose">A plugin to provide a geographical model, linking rooms and doors together in oppositely-paired directions.</p>
 
-<ul class="toc"><li><a href="3-tm.html#SP1">&#167;1. Introduction</a></li><li><a href="3-tm.html#SP4">&#167;4. The direction inference</a></li><li><a href="3-tm.html#SP7">&#167;7. Special kinds</a></li><li><a href="3-tm.html#SP11">&#167;11. Spotting directions and doors</a></li><li><a href="3-tm.html#SP13">&#167;13. Directions and their numbers</a></li><li><a href="3-tm.html#SP18">&#167;18. Map data on instances</a></li><li><a href="3-tm.html#SP25">&#167;25. The exits array</a></li><li><a href="3-tm.html#SP26">&#167;26. Door connectivity</a></li><li><a href="3-tm.html#SP28">&#167;28. Linguistic extras</a></li><li><a href="3-tm.html#SP31">&#167;31. The map-connector</a></li><li><a href="3-tm.html#SP33">&#167;33. Model completion</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-tm.html#SP1">&#167;1. Introduction</a></li><li><a href="3-tm.html#SP4">&#167;4. The direction inference</a></li><li><a href="3-tm.html#SP7">&#167;7. Special kinds</a></li><li><a href="3-tm.html#SP12">&#167;12. Spotting directions and doors</a></li><li><a href="3-tm.html#SP14">&#167;14. Directions and their numbers</a></li><li><a href="3-tm.html#SP19">&#167;19. Map data on instances</a></li><li><a href="3-tm.html#SP26">&#167;26. The exits array</a></li><li><a href="3-tm.html#SP27">&#167;27. Door connectivity</a></li><li><a href="3-tm.html#SP28">&#167;28. Linguistic extras</a></li><li><a href="3-tm.html#SP31">&#167;31. The map-connector</a></li><li><a href="3-tm.html#SP33">&#167;33. Model completion</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>The map is a complicated data structure, both because it amounts to a
 ternary relation (though being implemented by many binary ones) and because
@@ -103,12 +103,12 @@ quite specific problem messages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP2" class="function-link"><span class="function-syntax">Map::make_special_meanings</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_ASSERTION_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP3" class="function-link"><span class="function-syntax">Map::look_for_direction_creation</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_BASE_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP9" class="function-link"><span class="function-syntax">Map::new_base_kind_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_SUBJECT_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP19" class="function-link"><span class="function-syntax">Map::new_subject_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">SET_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP17" class="function-link"><span class="function-syntax">Map::set_kind_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">SET_SUBKIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP10" class="function-link"><span class="function-syntax">Map::set_subkind_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_SUBJECT_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP20" class="function-link"><span class="function-syntax">Map::new_subject_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">SET_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP18" class="function-link"><span class="function-syntax">Map::set_kind_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">SET_SUBKIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP11" class="function-link"><span class="function-syntax">Map::set_subkind_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACT_ON_SPECIAL_NPS_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP29" class="function-link"><span class="function-syntax">Map::act_on_special_NPs</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPLETE_MODEL_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP33" class="function-link"><span class="function-syntax">Map::complete_model</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_PROPERTY_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP22" class="function-link"><span class="function-syntax">Map::new_property_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_PROPERTY_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP23" class="function-link"><span class="function-syntax">Map::new_property_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">INFERENCE_DRAWN_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP27" class="function-link"><span class="function-syntax">Map::inference_drawn</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTERVENE_IN_ASSERTION_PLUG</span><span class="plain-syntax">, </span><a href="3-tm.html#SP30" class="function-link"><span class="function-syntax">Map::intervene_in_assertion</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">ADD_TO_WORLD_INDEX_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">IXMap::add_to_World_index</span><span class="plain-syntax">);</span>
@@ -124,12 +124,12 @@ quite specific problem messages.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This special sentence is used as a hint in making map documents; it has no
-effect on the world model itself, and so is dealt with elsewhere, in <a href="../index-module/4-em.html" class="internal">EPS Map (in index)</a>.
+effect on the world model itself, and so is dealt with elsewhere, in <a href="../runtime-module/2-em.html" class="internal">EPS Map (in runtime)</a>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::make_special_meanings</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Map::make_special_meanings</span></span>:<br/><a href="3-tm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><span class="identifier-syntax">PL::EPSMap::index_map_with_SMF</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"index-map-with"</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><span class="identifier-syntax">EPSMap::index_map_with_SMF</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"index-map-with"</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -229,7 +229,7 @@ but different destinations in the same direction are different in content.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">CI_IDENTICAL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Map::get_map_references</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Map::get_map_references</span></span>:<br/><a href="3-tm.html#SP25">&#167;25</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_3">&#167;33.3</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Map::get_map_references</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Map::get_map_references</span></span>:<br/><a href="3-tm.html#SP26">&#167;26</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_3">&#167;33.3</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> **</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> **</span><span class="identifier-syntax">infs2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">i</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">family</span><span class="plain-syntax"> != </span><span class="identifier-syntax">direction_inf</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"not a direction inf"</span><span class="plain-syntax">);</span>
@@ -267,7 +267,15 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Direction needs to be an abstract object, not a thing or a room, so:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::object_is_a_direction</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Direction needs to be an abstract object, not a thing or a room, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -312,7 +320,7 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Spotting directions and doors. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Spotting directions and doors. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::subject_is_a_direction</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Map::subject_is_a_direction</span></span>:<br/><a href="3-tm.html#SP30">&#167;30</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
@@ -327,11 +335,11 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::subject_is_a_door</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">InstanceSubjects::to_object_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 
@@ -342,7 +350,7 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Directions and their numbers. </b>Directions play a special role because sentences like "east of the treehouse
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Directions and their numbers. </b>Directions play a special role because sentences like "east of the treehouse
 is the garden" are parsed differently from sentences like "the nearby place
 property of the treehouse is the garden".
 </p>
@@ -354,7 +362,7 @@ realised this:
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_WORDS_IN_DIRECTION</span><span class="plain-syntax"> (</span><span class="identifier-syntax">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain-syntax"> - </span><span class="constant-syntax">4</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>When a new direction comes into existence (i.e., not when the underlying
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>When a new direction comes into existence (i.e., not when the underlying
 instance <span class="extract"><span class="extract-syntax">I</span></span> is created, but when its kind is realised to be "direction"),
 we will assign it a number:
 </p>
@@ -366,7 +374,7 @@ we will assign it a number:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">registered_directions</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>"Up" and "down" are not really special among possible direction instances, but
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>"Up" and "down" are not really special among possible direction instances, but
 they have linguistic features not shared by lateral directions. "Above the
 garden is the treehouse", for instance, does not directly refer to either
 direction, but implies both.
@@ -376,7 +384,7 @@ direction, but implies both.
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I_up</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I_down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>These are recognised by their English names when defined by the Standard Rules.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>These are recognised by their English names when defined by the Standard Rules.
 (So there is no need to translate this to other languages.)
 </p>
 
@@ -386,7 +394,7 @@ direction, but implies both.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">down</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b></p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::set_kind_notify</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Map::set_kind_notify</span></span>:<br/><a href="3-tm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
@@ -394,7 +402,7 @@ direction, but implies both.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((!(</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">kw</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">))) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">IW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP17_1" class="named-paragraph-link"><span class="named-paragraph">Vet the direction name for acceptability</span><span class="named-paragraph-number">17.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP18_1" class="named-paragraph-link"><span class="named-paragraph">Vet the direction name for acceptability</span><span class="named-paragraph-number">18.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-map-directions&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">IW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">I_up</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -402,12 +410,12 @@ direction, but implies both.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Naming::object_takes_definite_article</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP17_2" class="named-paragraph-link"><span class="named-paragraph">Assign the object a direction number and a mapped-D-of relation</span><span class="named-paragraph-number">17.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP18_2" class="named-paragraph-link"><span class="named-paragraph">Assign the object a direction number and a mapped-D-of relation</span><span class="named-paragraph-number">18.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Vet the direction name for acceptability</span><span class="named-paragraph-number">17.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Vet the direction name for acceptability</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -424,16 +432,16 @@ direction, but implies both.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_2" class="paragraph-anchor"></a><b>&#167;17.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assign the object a direction number and a mapped-D-of relation</span><span class="named-paragraph-number">17.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP18_2" class="paragraph-anchor"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assign the object a direction number and a mapped-D-of relation</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">registered_directions</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><a href="3-mcr.html#SP3" class="function-link"><span class="function-syntax">MapRelations::make_mapped_predicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Map data on instances. </b>We will use quite a lot of temporary work-space to put all of this together,
+<ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Map data on instances. </b>We will use quite a lot of temporary work-space to put all of this together,
 but the details can be ignored. If we expected very large numbers of instances
 then it would be worth economising here, but profiling suggests that it really
 isn't.
@@ -457,14 +465,6 @@ isn't.
 <span class="plain-syntax">    </span><span class="comment-syntax"> these are meaningful for rooms only, and are used in making the World index</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exits</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_DIRECTIONS</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exits_set_at</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_DIRECTIONS</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spatial_relationship</span><span class="plain-syntax">[12];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_lengths</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_DIRECTIONS</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lock_exits</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_DIRECTIONS</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vector</span><span class="plain-syntax"> </span><span class="identifier-syntax">position</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vector</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved_gridpos</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cooled</span><span class="plain-syntax">, </span><span class="identifier-syntax">shifted</span><span class="plain-syntax">, </span><span class="identifier-syntax">zone</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">connected_submap</span><span class="plain-syntax"> *</span><span class="identifier-syntax">submap</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_room_in_submap</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">world_index_colour</span><span class="plain-syntax">; </span><span class="comment-syntax"> an HTML colour for the room square (rooms only)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">world_index_text_colour</span><span class="plain-syntax">; </span><span class="comment-syntax"> an HTML colour for the room text (rooms only)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">map_parameter_scope</span><span class="plain-syntax"> </span><span class="identifier-syntax">local_map_parameters</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary: used in EPS mapping</span>
@@ -474,7 +474,7 @@ isn't.
 <span class="plain-syntax">} </span><span class="reserved-syntax">map_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure map_data is accessed in 3/mcr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b></p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::new_subject_notify</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Map::new_subject_notify</span></span>:<br/><a href="3-tm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
@@ -491,12 +491,14 @@ isn't.
 <span class="plain-syntax">        </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">exits</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">PL::SpatialMap::initialise_mapping_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">world_index_colour</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">world_index_text_colour</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">EPSMap::prepare_map_parameter_scope</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">local_map_parameters</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ATTACH_PLUGIN_DATA_TO_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">map</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="identifier-syntax">md</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Special properties.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Special properties.
 These are property names to do with mapping which Inform provides special
 support for. Two are visible to I7 authors, and the others are low-level
 properties needed for the run-time implementation.
@@ -512,7 +514,7 @@ properties needed for the run-time implementation.
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_room_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> Inter only: workspace for path-finding through the map</span>
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_found_in</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> Inter only: needed for multiply-present objects</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>We recognise these by their English names when they are defined by the
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>We recognise these by their English names when they are defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
@@ -522,7 +524,7 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">other</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">side</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Map::new_property_notify</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Map::new_property_notify</span></span>:<br/><a href="3-tm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
@@ -535,13 +537,13 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>The following is used also by <a href="3-bck.html" class="internal">Backdrops</a>, since both plugins use a
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>The following is used also by <a href="3-bck.html" class="internal">Backdrops</a>, since both plugins use a
 shared Inter-level property at run-time. But this function will work even if
 the map plugin is inactive; so you can still have backdrops without a map.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Map::set_found_in</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Map::set_found_in</span></span>:<br/><a href="3-tm.html#SP33_8_1">&#167;33.8.1</a><br/>Backdrops - <a href="3-bck.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Map::set_found_in</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Map::set_found_in</span></span>:<br/><a href="3-tm.html#SP33_8_1">&#167;33.8.1</a><br/>Backdrops - <a href="3-bck.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P_found_in</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P_found_in</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ValueProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"found_in"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
@@ -551,7 +553,7 @@ the map plugin is inactive; so you can still have backdrops without a map.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ValueProperties::assert</span><span class="plain-syntax">(</span><span class="identifier-syntax">P_found_in</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>This utility returns the "opposite" property for a direction, which is
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>This utility returns the "opposite" property for a direction, which is
 always another direction: for example, the opposite of northwest is southeast.
 </p>
 
@@ -563,7 +565,7 @@ always another direction: for example, the opposite of northwest is southeast.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. The exits array. </b>The bulk of the map is stored in the arrays called <span class="extract"><span class="extract-syntax">exits</span></span>, which hold the
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. The exits array. </b>The bulk of the map is stored in the arrays called <span class="extract"><span class="extract-syntax">exits</span></span>, which hold the
 map connections fanning out from each room. The direction numbers carefully
 noted above are keys into these arrays.
 </p>
@@ -605,21 +607,14 @@ contains quite crunchy algorithms, has the fastest possible access to the layout
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Door connectivity. </b>We've seen how most of the map is represented, in the <span class="extract"><span class="extract-syntax">exits</span></span> arrays. The
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Door connectivity. </b>We've seen how most of the map is represented, in the <span class="extract"><span class="extract-syntax">exits</span></span> arrays. The
 missing information has to do with doors. If east of the Carousel Room is
 the oak door, then <span class="extract"><span class="extract-syntax">Map_Storage</span></span> reveals only that fact, and not what's on
 the other side of the door. This will eventually be compiled into the
-<span class="extract"><span class="extract-syntax">door_to</span></span> property for the oak door object. In the mean time, every door
-object has four pieces of data attached:
+<span class="extract"><span class="extract-syntax">door_to</span></span> property for the oak door object.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Map::get_door_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">door</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> **</span><span class="identifier-syntax">c1</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> **</span><span class="identifier-syntax">c2</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c1</span><span class="plain-syntax">) *</span><span class="identifier-syntax">c1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">door</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c2</span><span class="plain-syntax">) *</span><span class="identifier-syntax">c2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">door</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_b</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>We would like to deduce from a sentence like
+<p class="commentary">We would like to deduce from a sentence like
 </p>
 
 <blockquote>
@@ -706,8 +701,8 @@ because, of course, that does set its kind.
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">) == </span><span class="identifier-syntax">COMMON_NOUN_NT</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP11" class="function-link"><span class="function-syntax">Map::subject_is_a_direction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">left_object</span><span class="plain-syntax">)) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><a href="3-tm.html#SP11" class="function-link"><span class="function-syntax">Map::subject_is_a_direction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">right_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::subject_is_a_direction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">left_object</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">            (</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::subject_is_a_direction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">right_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Assertions::Creator::convert_instance_to_nounphrase</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
@@ -752,7 +747,7 @@ pairs.
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">forwards_dir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InstanceSubjects::to_object_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">i_dir</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">forwards_dir</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unknown direction"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reverse_dir</span><span class="plain-syntax"> = </span><a href="3-tm.html#SP24" class="function-link"><span class="function-syntax">Map::get_value_of_opposite_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">forwards_dir</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reverse_dir</span><span class="plain-syntax"> = </span><a href="3-tm.html#SP25" class="function-link"><span class="function-syntax">Map::get_value_of_opposite_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">forwards_dir</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">go_from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">forwards_dir</span><span class="plain-syntax">);</span>
@@ -817,7 +812,7 @@ the map as might be thought.
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP33_7" class="named-paragraph-link"><span class="named-paragraph">Place any one-sided door inside the room which connects to it</span><span class="named-paragraph-number">33.7</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP33_8" class="named-paragraph-link"><span class="named-paragraph">Assert found-in, door-to and door-dir properties for doors</span><span class="named-paragraph-number">33.8</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><a href="3-tm.html#SP25" class="function-link"><span class="function-syntax">Map::build_exits_array</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">: </span><a href="3-tm.html#SP26" class="function-link"><span class="function-syntax">Map::build_exits_array</span></a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -859,7 +854,7 @@ checks that various mapping impossibilities do not occur.
 <span class="plain-syntax">            </span><a href="3-tm.html#SP6" class="function-link"><span class="function-syntax">Map::get_map_references</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InstanceSubjects::to_object_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">to</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">                (</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">                (</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">StandardProblems::contradiction_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadMapCell</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">),</span>
@@ -867,7 +862,7 @@ checks that various mapping impossibilities do not occur.
 <span class="plain-syntax">                    </span><span class="string-syntax">"appears to be something which can be reached via a map "</span>
 <span class="plain-syntax">                    </span><span class="string-syntax">"connection, but it seems to be neither a room nor a door"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                    </span><span class="string-syntax">"and these are the only possibilities allowed by Inform."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">StandardProblems::object_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DoorToNonRoom</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">I</span><span class="plain-syntax">,</span>
@@ -884,7 +879,7 @@ checks that various mapping impossibilities do not occur.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">connections_in</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where</span><span class="plain-syntax">[3];</span>
@@ -979,7 +974,7 @@ from which there's no way back.)
 <span class="plain-syntax">                </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="3-tm.html#SP6" class="function-link"><span class="function-syntax">Map::get_map_references</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InstanceSubjects::to_object_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exit1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exit2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_b</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I</span><span class="plain-syntax"> != </span><span class="identifier-syntax">exit1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">exit2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
@@ -1019,7 +1014,7 @@ from which there's no way back.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_b</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">PropertyInferences::value_of</span><span class="plain-syntax">(</span>
@@ -1047,7 +1042,7 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">) != </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">) != </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_b</span><span class="plain-syntax">))</span>
@@ -1068,7 +1063,7 @@ to them.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_b</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="3-sm.html#SP28" class="function-link"><span class="function-syntax">Spatial::set_progenitor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
@@ -1091,7 +1086,7 @@ trust that there is nothing surprising here.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP12" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-tm.html#SP13" class="function-link"><span class="function-syntax">Map::instance_is_a_door</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EitherOrProperties::assert</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">P_door</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAP_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">map_connection_a</span><span class="plain-syntax">;</span>
@@ -1116,7 +1111,7 @@ trust that there is nothing surprising here.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTDoors::found_in_for_2_sided</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">R1</span><span class="plain-syntax">, </span><span class="identifier-syntax">R2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="3-tm.html#SP23" class="function-link"><span class="function-syntax">Map::set_found_in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-tm.html#SP24" class="function-link"><span class="function-syntax">Map::set_found_in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP33_8">&#167;33.8</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP33_8_2" class="paragraph-anchor"></a><b>&#167;33.8.2.  </b>Here <span class="extract"><span class="extract-syntax">door_dir</span></span> is a routine looking at the current location and returning
@@ -1160,7 +1155,7 @@ why we don't need to compile <span class="extract"><span class="extract-syntax">
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">backwards</span><span class="plain-syntax"> = </span><a href="3-tm.html#SP24" class="function-link"><span class="function-syntax">Map::get_value_of_opposite_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">backwards</span><span class="plain-syntax"> = </span><a href="3-tm.html#SP25" class="function-link"><span class="function-syntax">Map::get_value_of_opposite_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">backwards</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ValueProperties::assert</span><span class="plain-syntax">(</span><span class="identifier-syntax">P_door_dir</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Rvalues::from_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTInstances::value_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">backwards</span><span class="plain-syntax">)), </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>

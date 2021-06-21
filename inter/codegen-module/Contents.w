@@ -88,3 +88,4 @@ Chapter 6: Index
 	Commands Element
 	Grouped Element
 	Alphabetic Element
+	Spatial Geometry

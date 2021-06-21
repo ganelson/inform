@@ -38,11 +38,11 @@ int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_tim
 }
 
 @ This special sentence is used as a hint in making map documents; it has no
-effect on the world model itself, and so is dealt with elsewhere, in //index: EPS Map//.
+effect on the world model itself, and so is dealt with elsewhere, in //runtime: EPS Map//.
 
 =
 int Map::make_special_meanings(void) {
-	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF, I"index-map-with", 4);
+	SpecialMeanings::declare(EPSMap::index_map_with_SMF, I"index-map-with", 4);
 	return FALSE;
 }
 
@@ -171,6 +171,12 @@ int Map::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	return FALSE;
 }
 
+@ =
+int Map::object_is_a_direction(instance *I) {
+	if ((K_direction) && (I) && (Instances::of_kind(I, K_direction))) return TRUE;
+	return FALSE;
+}
+
 @ Direction needs to be an abstract object, not a thing or a room, so:
 
 =
@@ -270,7 +276,7 @@ they have linguistic features not shared by lateral directions. "Above the
 garden is the treehouse", for instance, does not directly refer to either
 direction, but implies both.
 
-=
+= (early code)
 instance *I_up = NULL;
 instance *I_down = NULL;
 
@@ -343,14 +349,6 @@ typedef struct map_data {
 	/* these are meaningful for rooms only, and are used in making the World index */
 	struct instance *exits[MAX_DIRECTIONS];
 	struct parse_node *exits_set_at[MAX_DIRECTIONS];
-	struct instance *spatial_relationship[12];
-	int exit_lengths[MAX_DIRECTIONS];
-	struct instance *lock_exits[MAX_DIRECTIONS];
-	struct vector position;
-	struct vector saved_gridpos;
-	int cooled, shifted, zone;
-	struct connected_submap *submap;
-	struct instance *next_room_in_submap;
 	wchar_t *world_index_colour; /* an HTML colour for the room square (rooms only) */
 	wchar_t *world_index_text_colour; /* an HTML colour for the room text (rooms only) */
 	struct map_parameter_scope local_map_parameters; /* temporary: used in EPS mapping */
@@ -374,7 +372,9 @@ int Map::new_subject_notify(inference_subject *subj) {
 		md->exits[i] = NULL;
 	}
 
-	PL::SpatialMap::initialise_mapping_data(md);
+	md->world_index_colour = NULL;
+	md->world_index_text_colour = NULL;
+	EPSMap::prepare_map_parameter_scope(&(md->local_map_parameters));
 	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, md);
 	return FALSE;
 }
@@ -485,16 +485,9 @@ We've seen how most of the map is represented, in the |exits| arrays. The
 missing information has to do with doors. If east of the Carousel Room is
 the oak door, then |Map_Storage| reveals only that fact, and not what's on
 the other side of the door. This will eventually be compiled into the
-|door_to| property for the oak door object. In the mean time, every door
-object has four pieces of data attached:
+|door_to| property for the oak door object.
 
-=
-void Map::get_door_data(instance *door, instance **c1, instance **c2) {
-	if (c1) *c1 = MAP_DATA(door)->map_connection_a;
-	if (c2) *c2 = MAP_DATA(door)->map_connection_b;
-}
-
-@ We would like to deduce from a sentence like
+We would like to deduce from a sentence like
 
 >> The other side of the iron door is the Black Holding Area.
 

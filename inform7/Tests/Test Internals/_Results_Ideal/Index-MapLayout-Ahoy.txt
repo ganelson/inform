@@ -1,0 +1,8 @@
+1. MT
+Map component 0: extent (0...1, -1...1, 0...0): population 4
+  0,   0,   0:   Fish Room  (benchmark)
+  0,   1,   0:   Spirit Room
+  1,   0,   0:   After Powder Magazine
+  1,  -1,   0:   Bread Room
+
+

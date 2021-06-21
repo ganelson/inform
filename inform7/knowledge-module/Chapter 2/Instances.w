@@ -41,7 +41,6 @@ typedef struct instance {
 
 	int enumeration_index; /* within each non-object kind, instances are counted from 1 */
 
-	struct instance_index_data iid; /* see //index: Instances// */
 	struct instance_compilation_data compilation_data; /* see //runtime: Instances// */
 	CLASS_DEFINITION
 } instance;
@@ -64,7 +63,6 @@ instance *Instances::new(wording W, kind *K) {
 	instance *I = CREATE(instance);
 	@<Initialise the instance@>;
 	@<Add the new instance to its enumeration@>;
-	IXInstances::initialise_iid(I);
 
 	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind %u) (inter %n)\n",
 		I, K, RTInstances::value_iname(I));

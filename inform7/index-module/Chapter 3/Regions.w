@@ -5,10 +5,10 @@ Indexing the player's initial position.
 @ 
 
 =
-int IXRegions::add_to_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_room))) {
-		instance *R = Regions::enclosing(O);
-		if (R) PL::HTMLMap::colour_chip(OUT, O, R, REGIONS_DATA(O)->in_region_set_at);
+int IXRegions::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
+	if ((O) && (IXInstances::is_a_room(O))) {
+		faux_instance *R = IXInstances::region_of(O);
+		if (R) PL::HTMLMap::colour_chip(OUT, O, R, O->region_set_at);
 	}
 	return FALSE;
 }

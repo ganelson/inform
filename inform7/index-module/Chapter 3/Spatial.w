@@ -3,18 +3,15 @@
 Indexing functions for the spatial structure of the world model.
 
 @ =
-void IXSpatial::index_spatial_relationship(OUTPUT_STREAM, instance *I) {
+void IXSpatial::index_spatial_relationship(OUTPUT_STREAM, faux_instance *I) {
 	char *rel = NULL;
-	instance *P = Spatial::progenitor(I);
+	faux_instance *P = IXInstances::progenitor(I);
 	if (P) {
 		/* we could set |rel| to "in" here, but the index omits that for clarity */
-		if (Instances::of_kind(P, K_supporter)) rel = "on";
-		if (Instances::of_kind(P, K_person)) rel = "carried";
-		if (SPATIAL_DATA(I)->part_flag) rel = "part";
-		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
-			if (PropertyInferences::get_property(inf) == P_worn)
-				rel = "worn";
+		if (IXInstances::is_a_supporter(P)) rel = "on";
+		if (IXInstances::is_a_person(P)) rel = "carried";
+		if (I->is_a_part) rel = "part";
+		if (I->is_worn) rel = "worn";
 	}
 	if (rel) WRITE("<i>%s</i> ", rel);
 }
@@ -23,32 +20,32 @@ void IXSpatial::index_spatial_relationship(OUTPUT_STREAM, instance *I) {
 it already turns up under its owner.
 
 =
-int IXSpatial::no_detail_index(instance *I) {
-	if (SPATIAL_DATA(I)->incorp_tree_parent != NULL) return TRUE;
+int IXSpatial::no_detail_index(faux_instance *I) {
+	if (I->is_a_part) return TRUE;
 	return FALSE;
 }
 
 @ In the World index, we recurse to show the contents and parts:
 
 =
-void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int details) {
-	if (depth > NUMBER_CREATED(instance) + 1) return; /* to recover from errors */
-	if (SPATIAL_DATA(I)->incorp_tree_child != NULL) {
-		instance *I2 = SPATIAL_DATA(I)->incorp_tree_child;
-		while (I2 != NULL) {
+void IXSpatial::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth, int details) {
+	if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
+	if (IXInstances::incorp_child(I)) {
+		faux_instance *I2 = IXInstances::incorp_child(I);
+		while (I2) {
 			IXPhysicalWorld::index(OUT, I2, depth+1, details);
-			I2 = SPATIAL_DATA(I2)->incorp_tree_sibling;
+			I2 = IXInstances::incorp_sibling(I2);
 		}
 	}
-	if (SPATIAL_DATA(I)->object_tree_child)
-		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_child, depth+1, details);
-	if ((Spatial::object_is_a_room(I)) &&
-		(Map::instance_is_a_door(I) == FALSE)) {
-		instance *I2;
-		LOOP_OVER_INSTANCES(I2, K_object) {
-			if ((Map::instance_is_a_door(I2)) && (Spatial::progenitor(I2) != I)) {
-				instance *A = NULL, *B = NULL;
-				Map::get_door_data(I2, &A, &B);
+	if (IXInstances::child(I))
+		IXPhysicalWorld::index(OUT, IXInstances::child(I), depth+1, details);
+	if ((IXInstances::is_a_room(I)) &&
+		(IXInstances::is_a_door(I) == FALSE)) {
+		faux_instance *I2;
+		LOOP_OVER_OBJECTS(I2) {
+			if ((IXInstances::is_a_door(I2)) && (IXInstances::progenitor(I2) != I)) {
+				faux_instance *A = NULL, *B = NULL;
+				IXInstances::get_door_data(I2, &A, &B);
 				if (A == I) IXPhysicalWorld::index(OUT, I2, depth+1, details);
 				if (B == I) IXPhysicalWorld::index(OUT, I2, depth+1, details);
 			}
@@ -57,31 +54,28 @@ void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int 
 	IXPlayer::index_object_further(OUT, I, depth, details);
 	IXBackdrops::index_object_further(OUT, I, depth, details, 0);
 
-	if (SPATIAL_DATA(I)->object_tree_sibling)
-		IXPhysicalWorld::index(OUT, SPATIAL_DATA(I)->object_tree_sibling, depth, details);
+	if (IXInstances::sibling(I))
+		IXPhysicalWorld::index(OUT, IXInstances::sibling(I), depth, details);
 }
 
 @ And also:
 
 =
-int IXSpatial::add_to_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_thing))) {
+int IXSpatial::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
+	if ((O) && (IXInstances::is_a_thing(O))) {
 		HTML::open_indented_p(OUT, 1, "tight");
-		instance *P = Spatial::progenitor(O);
+		faux_instance *P = IXInstances::progenitor(O);
 		if (P) {
 			WRITE("<i>initial location:</i> ");
 			char *rel = "in";
-			if (Instances::of_kind(P, K_supporter)) rel = "on";
-			if (Instances::of_kind(P, K_person)) rel = "carried by";
-			if (SPATIAL_DATA(O)->part_flag) rel = "part of";
-			inference *inf;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(O), property_inf)
-				if (PropertyInferences::get_property(inf) == P_worn)
-					rel = "worn by";
+			if (IXInstances::is_a_supporter(P)) rel = "on";
+			if (IXInstances::is_a_person(P)) rel = "carried by";
+			if (O->is_a_part) rel = "part of";
+			if (O->is_worn) rel = "worn by";
 			WRITE("%s ", rel);
-			PL::SpatialMap::write_name(OUT, P);
-			parse_node *at = SPATIAL_DATA(O)->progenitor_set_at;
-			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+			IXInstances::write_name(OUT, P);
+			int at = O->progenitor_set_at;
+			if (at) Index::link(OUT, at);
 
 		}
 		HTML_CLOSE("p");

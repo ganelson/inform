@@ -116,19 +116,6 @@ int Backdrops::assert_relations(binary_predicate *relation,
 	return FALSE;
 }
 
-@ For indexing purposes, the following loops are useful:
-
-@d LOOP_OVER_BACKDROPS_IN(B, P, I)
-	LOOP_OVER_INSTANCES(B, K_object)
-		if (Backdrops::object_is_a_backdrop(B))
-			POSITIVE_KNOWLEDGE_LOOP(I, Instances::as_subject(B), found_in_inf)
-				if (Backdrops::get_inferred_location(I) == P)
-
-@d LOOP_OVER_BACKDROPS_EVERYWHERE(B, I)
-	LOOP_OVER_INSTANCES(B, K_object)
-		if (Backdrops::object_is_a_backdrop(B))
-			POSITIVE_KNOWLEDGE_LOOP(I, Instances::as_subject(B), found_everywhere_inf)
-
 @h Everywhere.
 Here we defines a form of noun phrase special to Backdrops (because a backdrop
 can be said to be "everywhere", which nothing else can).

@@ -64,8 +64,8 @@ as the "heat", a term to be explained later.
 
 =
 typedef struct connected_submap {
-	struct instance *first_room_in_submap; /* double-headed linked list of rooms */
-	struct instance *last_room_in_submap;
+	struct faux_instance *first_room_in_submap; /* double-headed linked list of rooms */
+	struct faux_instance *last_room_in_submap;
 	struct cuboid bounds;
 	int heat; /* current penalty score for bad placement of rooms */
 	int positioned; /* already placed within the global map grid? */
@@ -85,19 +85,18 @@ cuboid Universe;
 This is usually the room in which the player begins.
 
 =
-instance *benchmark_room = NULL;
+int PL::SpatialMap::benchmark_level(void) {
+	if (faux_benchmark == NULL) return 0;
+	return Room_position(faux_benchmark).z;
+}
 
 @ We are going to be iterating through the set of rooms often. Looping over
 all rooms can afford to be fairly slow, but it's essential in order to keep
 the running time down that we loop through submaps with overhead no worse
 than the number of rooms in the submap; this is why we keep the linked list.
 
-@d LOOP_OVER_ROOMS(R)
-	LOOP_OVER_INSTANCES(R, K_object)
-		if (Spatial::object_is_a_room(R))
-
 @d LOOP_OVER_SUBMAP(R, sub)
-	for (R = sub->first_room_in_submap; R; R = MAP_DATA(R)->next_room_in_submap)
+	for (R = sub->first_room_in_submap; R; R = R->next_room_in_submap)
 
 @ These algorithms are trying to do something computationally expensive, so
 it's useful to keep track of how much time they cost. The unit of currency
@@ -149,57 +148,35 @@ void PL::SpatialMap::establish_spatial_coordinates(void) {
 	spatial_coordinates_established = TRUE;
 }
 
-@h Mapping data attached to each room.
-The $(x, y, z)$ position, and the submap, are straightforward enough;
-during our calculations $(x, y, z)$ are relative coordinates to other rooms
-in the same submap, but they are ultimately replaced with absolute
-coordinates, once the submaps have themselves been placed in space.
-
-The colour and mapping parameters are used for plotting purposes, so we
-won't need them in this section.
-
-=
-void PL::SpatialMap::initialise_mapping_data(map_data *md) {
-	md->world_index_colour = NULL;
-	md->world_index_text_colour = NULL;
-	md->position = Zero_vector;
-	md->saved_gridpos = Zero_vector;
-	md->submap = NULL;
-	md->next_room_in_submap = NULL;
-	int i;
-	for (i=0; i<MAX_DIRECTIONS; i++) md->lock_exits[i] = NULL;
-	PL::EPSMap::prepare_map_parameter_scope(&(md->local_map_parameters));
-}
-
 @ To make the code less cumbersome to read, all access to the position
 will be using the following:
 
-@d Room_position(R) MAP_DATA(R)->position
+@d Room_position(R) R->fimd.position
 
 =
-void PL::SpatialMap::set_room_position(instance *R, vector P) {
+void PL::SpatialMap::set_room_position(faux_instance *R, vector P) {
 	vector O = Room_position(R);
-	MAP_DATA(R)->position = P;
-	if (MAP_DATA(R)->submap) PL::SpatialMap::move_room_within_submap(MAP_DATA(R)->submap, O, P);
+	R->fimd.position = P;
+	if (R->fimd.submap) PL::SpatialMap::move_room_within_submap(R->fimd.submap, O, P);
 }
 
-void PL::SpatialMap::set_room_position_breaking_cache(instance *R, vector P) {
-	MAP_DATA(R)->position = P;
+void PL::SpatialMap::set_room_position_breaking_cache(faux_instance *R, vector P) {
+	R->fimd.position = P;
 }
 
 @ Locking is a way to influence the algorithm in this section by forcing a
 given exit to be locked in place, forbidding it to be distorted.
 
 =
-void PL::SpatialMap::lock_exit_in_place(instance *I, int exit, instance *I2) {
+void PL::SpatialMap::lock_exit_in_place(faux_instance *I, int exit, faux_instance *I2) {
 	PL::SpatialMap::lock_one_exit(I2, exit, I);
 	PL::SpatialMap::lock_one_exit(I, PL::SpatialMap::opposite(exit), I2);
 }
 
-void PL::SpatialMap::lock_one_exit(instance *F, int exit, instance *T) {
+void PL::SpatialMap::lock_one_exit(faux_instance *F, int exit, faux_instance *T) {
 	LOGIF(SPATIAL_MAP, "Mapping clue: put $O to the %s of $O\n",
 		T, PL::SpatialMap::usual_Inform_direction_name(exit), F);
-	MAP_DATA(F)->lock_exits[exit] = T;
+	F->fimd.lock_exits[exit] = T;
 }
 
 @h Page directions.
@@ -217,9 +194,10 @@ won't be shown on the index at all. The initial setup is for the 12 standard
 story directions to correspond exactly to the 12 page directions, then, and
 for any subsequent story directions to be unshown:
 
-=
+= (early code)
 int story_dir_to_page_dir[MAX_DIRECTIONS];
 
+@ =
 void PL::SpatialMap::initialise_page_directions(void) {
 	int N = Map::number_of_directions();
 	for (int i=0; i<N; i++)
@@ -234,16 +212,12 @@ When we read this, we associate direction object 13, say (the starboard
 direction) with page direction 6:
 
 =
-void PL::SpatialMap::map_direction_as_if(instance *I, instance *I2) {
-	story_dir_to_page_dir[MAP_DATA(I)->direction_index] = MAP_DATA(I2)->direction_index;
-}
-
-instance *PL::SpatialMap::mapped_as_if(instance *I) {
-	int i = MAP_DATA(I)->direction_index;
+faux_instance *PL::SpatialMap::mapped_as_if(faux_instance *I) {
+	int i = I->direction_index;
 	if (story_dir_to_page_dir[i] == i) return NULL;
-	instance *D;
-	LOOP_OVER_INSTANCES(D, K_direction)
-		if (MAP_DATA(D)->direction_index == story_dir_to_page_dir[i])
+	faux_instance *D;
+	LOOP_OVER_DIRECTIONS(D)
+		if (D->direction_index == story_dir_to_page_dir[i])
 			return D;
 	return NULL;
 }
@@ -354,7 +328,7 @@ int PL::SpatialMap::direction_is_along_lattice(int story_direction) {
 @ For speed, we don't call these functions when looping through directions;
 we use these hard-wired macros instead.
 
-@d LOOP_OVER_DIRECTIONS(i)
+@d LOOP_OVER_DIRECTION_NUMBERS(i)
 	for (i=0; i<12; i++)
 
 @d LOOP_OVER_STORY_DIRECTIONS(i)
@@ -436,39 +410,25 @@ char *PL::SpatialMap::usual_Inform_direction_name(int story_direction) {
 	return "<none>";
 }
 
-@h Benchmark room.
-
-=
-void PL::SpatialMap::establish_benchmark_room(void) {
-	if (benchmark_room == NULL) {
-		benchmark_room = Player::get_start_room();
-		if (benchmark_room == NULL) {
-			instance *R;
-			LOOP_OVER_ROOMS(R) { benchmark_room = R; return; }
-			internal_error("no room exists in mapping");
-		}
-	}
-}
-
 @h Map reading.
-The map is read in the first instance by the |PL::SpatialMap::room_exit|
+The map is read in the first faux_instance by the |PL::SpatialMap::room_exit|
 routine below, which works out what room the exit leads to, perhaps via a
 door, which we take a note of if asked to do so.
 
 =
-instance *PL::SpatialMap::room_exit(instance *origin, int dir_num, instance **via) {
+faux_instance *PL::SpatialMap::room_exit(faux_instance *origin, int dir_num, faux_instance **via) {
 	if (via) *via = NULL;
-	if ((origin == NULL) || (Spatial::object_is_a_room(origin) == FALSE) ||
+	if ((origin == NULL) || (IXInstances::is_a_room(origin) == FALSE) ||
 		(dir_num < 0) || (dir_num >= MAX_DIRECTIONS)) return NULL;
-	instance *ultimate_destination = NULL;
-	instance *immediate_destination = MAP_EXIT(origin, dir_num);
+	faux_instance *ultimate_destination = NULL;
+	faux_instance *immediate_destination = origin->fimd.exits[dir_num];
 	if (immediate_destination) {
-		if (Spatial::object_is_a_room(immediate_destination))
+		if (IXInstances::is_a_room(immediate_destination))
 			ultimate_destination = immediate_destination;
-		if (Map::instance_is_a_door(immediate_destination)) {
+		if (IXInstances::is_a_door(immediate_destination)) {
 			if (via) *via = immediate_destination;
-			instance *A = NULL, *B = NULL;
-			Map::get_door_data(immediate_destination, &A, &B);
+			faux_instance *A = NULL, *B = NULL;
+			IXInstances::get_door_data(immediate_destination, &A, &B);
 			if (A == origin) ultimate_destination = B;
 			if (B == origin) ultimate_destination = A;
 		}
@@ -476,11 +436,11 @@ instance *PL::SpatialMap::room_exit(instance *origin, int dir_num, instance **vi
 	return ultimate_destination;
 }
 
-instance *PL::SpatialMap::room_exit_as_indexed(instance *origin, int dir_num, instance **via) {
+faux_instance *PL::SpatialMap::room_exit_as_indexed(faux_instance *origin, int dir_num, faux_instance **via) {
 	int j;
 	for (j=0; j<MAX_DIRECTIONS; j++) {
 		if (story_dir_to_page_dir[j] == dir_num) {
-			instance *I = PL::SpatialMap::room_exit(origin, j, via);
+			faux_instance *I = PL::SpatialMap::room_exit(origin, j, via);
 			if (I) return I;
 		}
 	}
@@ -496,21 +456,16 @@ adjudication.
 As can be seen, step (1) runs in $O(R)$ time, where $R$ is the number of rooms.
 
 @<(1) Create the spatial relationship arrays@> =
-	instance *R;
-	LOOP_OVER_ROOMS(R) {
-		int i;
-		LOOP_OVER_DIRECTIONS(i)
-			MAP_DATA(R)->spatial_relationship[i] = NULL;
-	}
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
 		int i;
 		LOOP_OVER_LATTICE_DIRECTIONS(i) {
-			instance *T = PL::SpatialMap::room_exit_as_indexed(R, i, NULL);
+			faux_instance *T = PL::SpatialMap::room_exit_as_indexed(R, i, NULL);
 			if (T) @<Consider this Inform map connection for a spatial relationship@>;
 		}
 	}
 
-@ We first find a spread of nearly opposite directions: for instance, if |i|
+@ We first find a spread of nearly opposite directions: for faux_instance, if |i|
 is northeast, then |back| is SW, |cw| is W, |cwcw| is NW, |ccw| is S, |ccwccw|
 is SE. We also find the |backstep|, the room you get to if trying to go back
 from the destination in the |back| direction; which in a nicely arranged
@@ -530,7 +485,7 @@ position the rooms.)
 	int ccw = PL::SpatialMap::rotate_direction(back, -1); /* counterclockwise once */
 	int ccwccw = PL::SpatialMap::rotate_direction(ccw, -1); /* counterclockwise twice */
 
-	instance *backstep = PL::SpatialMap::room_exit_as_indexed(T, back, NULL);
+	faux_instance *backstep = PL::SpatialMap::room_exit_as_indexed(T, back, NULL);
 
 	@<Average out a pair of 2-way connections which each bend@>;
 	@<Turn a straightforward 2-way connection into a spatial relationship@>;
@@ -616,9 +571,9 @@ room (the case where |backstep| is not null here).
 pairs of directions:
 
 =
-void PL::SpatialMap::form_spatial_relationship(instance *R, int dir, instance *T) {
-	MAP_DATA(R)->spatial_relationship[dir] = T;
-	MAP_DATA(T)->spatial_relationship[PL::SpatialMap::opposite(dir)] = R;
+void PL::SpatialMap::form_spatial_relationship(faux_instance *R, int dir, faux_instance *T) {
+	R->fimd.spatial_relationship[dir] = T;
+	T->fimd.spatial_relationship[PL::SpatialMap::opposite(dir)] = R;
 }
 
 @ The spatial relationships arrays are read only by the following. Note
@@ -632,30 +587,30 @@ from one submap to another.
 boundaries, and will be needed when we place submaps on the global grid.
 
 =
-instance *PL::SpatialMap::read_smap(instance *from, int dir) {
+faux_instance *PL::SpatialMap::read_smap(faux_instance *from, int dir) {
 	if (from == NULL) internal_error("tried to read smap at null room");
 	drognas_spent++;
-	instance *to = MAP_DATA(from)->spatial_relationship[dir];
+	faux_instance *to = from->fimd.spatial_relationship[dir];
 	if ((partitioned_into_components) && (to) &&
-		(MAP_DATA(from)->submap != MAP_DATA(to)->submap))
+		(from->fimd.submap != to->fimd.submap))
 			to = NULL;
 	return to;
 }
 
-instance *PL::SpatialMap::read_smap_cross(instance *from, int dir) {
+faux_instance *PL::SpatialMap::read_smap_cross(faux_instance *from, int dir) {
 	if (from == NULL) internal_error("tried to read smap at null room");
 	drognas_spent++;
-	instance *to = PL::SpatialMap::room_exit(from, dir, NULL);
+	faux_instance *to = PL::SpatialMap::room_exit(from, dir, NULL);
 	return to;
 }
 
 @ While we're at it:
 
 =
-instance *PL::SpatialMap::read_slock(instance *from, int dir) {
+faux_instance *PL::SpatialMap::read_slock(faux_instance *from, int dir) {
 	if (from == NULL) internal_error("tried to read slock at null room");
 	drognas_spent++;
-	return MAP_DATA(from)->lock_exits[dir];
+	return from->fimd.lock_exits[dir];
 }
 
 @h Submap construction.
@@ -685,16 +640,16 @@ Because we keep a double-ended linked list to hold membership, adding a
 room to a submap takes constant time with respect to the number of rooms $R$.
 
 =
-void PL::SpatialMap::add_room_to_submap(instance *R, connected_submap *sub) {
+void PL::SpatialMap::add_room_to_submap(faux_instance *R, connected_submap *sub) {
 	if (sub->last_room_in_submap == NULL) {
 		sub->last_room_in_submap = R;
 		sub->first_room_in_submap = R;
 	} else {
-		MAP_DATA(sub->last_room_in_submap)->next_room_in_submap = R;
+		sub->last_room_in_submap->next_room_in_submap = R;
 		sub->last_room_in_submap = R;
 	}
-	MAP_DATA(R)->submap = sub;
-	MAP_DATA(R)->next_room_in_submap = NULL;
+	R->fimd.submap = sub;
+	R->next_room_in_submap = NULL;
 	PL::SpatialMap::add_room_to_cache(sub, Room_position(R), 1);
 }
 
@@ -820,7 +775,7 @@ have to change the contents of the cache at all.
 
 =
 void PL::SpatialMap::move_component(connected_submap *sub, vector D) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub)
 		PL::SpatialMap::set_room_position_breaking_cache(R, Geometry::vec_plus(Room_position(R), D));
 	Geometry::cuboid_translate(&(sub->bounds), D);
@@ -840,13 +795,13 @@ since its rooms have all moved out.
 =
 void PL::SpatialMap::create_submaps_from_zones(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		if (MAP_DATA(R)->zone == Z1_number)
+		if (R->fimd.zone == Z1_number)
 			PL::SpatialMap::add_room_to_submap(R, Zone1);
-		else if (MAP_DATA(R)->zone == Z2_number)
+		else if (R->fimd.zone == Z2_number)
 			PL::SpatialMap::add_room_to_submap(R, Zone2);
-		MAP_DATA(R)->zone = 0;
+		R->fimd.zone = 0;
 	}
 	PL::SpatialMap::empty_submap(sub);
 }
@@ -857,15 +812,15 @@ reverse process exactly.
 =
 void PL::SpatialMap::create_zones_from_submaps(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		if (MAP_DATA(R)->submap == Zone1) {
+		if (R->fimd.submap == Zone1) {
 			PL::SpatialMap::add_room_to_submap(R, sub);
-			MAP_DATA(R)->zone = Z1_number;
+			R->fimd.zone = Z1_number;
 		}
-		if (MAP_DATA(R)->submap == Zone2) {
+		if (R->fimd.submap == Zone2) {
 			PL::SpatialMap::add_room_to_submap(R, sub);
-			MAP_DATA(R)->zone = Z2_number;
+			R->fimd.zone = Z2_number;
 		}
 	}
 }
@@ -880,10 +835,10 @@ We ensure that the first-created component is the one containing the
 benchmark room.
 
 @<(2) Partition the set of rooms into component submaps@> =
-	PL::SpatialMap::create_map_component_around(benchmark_room);
-	instance *R;
+	PL::SpatialMap::create_map_component_around(faux_benchmark);
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
-		if (MAP_DATA(R)->submap == NULL)
+		if (R->fimd.submap == NULL)
 			PL::SpatialMap::create_map_component_around(R);
 
 @ The following grows a component outwards from |at|, so that it also includes
@@ -895,19 +850,19 @@ doesn't depend on $R$, the number of rooms. It is called exactly once for
 each room, so phase (2) has running time $O(R)$.
 
 =
-void PL::SpatialMap::create_map_component_around(instance *at) {
-	if (MAP_DATA(at)->submap == NULL) PL::SpatialMap::add_room_to_submap(at, PL::SpatialMap::new_submap());
+void PL::SpatialMap::create_map_component_around(faux_instance *at) {
+	if (at->fimd.submap == NULL) PL::SpatialMap::add_room_to_submap(at, PL::SpatialMap::new_submap());
 
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *locked_to = PL::SpatialMap::read_slock(at, i);
-		if ((locked_to) && (MAP_DATA(locked_to)->submap != MAP_DATA(at)->submap)) {
-			PL::SpatialMap::add_room_to_submap(locked_to, MAP_DATA(at)->submap);
+		faux_instance *locked_to = PL::SpatialMap::read_slock(at, i);
+		if ((locked_to) && (locked_to->fimd.submap != at->fimd.submap)) {
+			PL::SpatialMap::add_room_to_submap(locked_to, at->fimd.submap);
 			PL::SpatialMap::create_map_component_around(locked_to);
 		}
-		instance *dest = PL::SpatialMap::read_smap(at, i);
-		if ((dest) && (MAP_DATA(dest)->submap != MAP_DATA(at)->submap)) {
-			PL::SpatialMap::add_room_to_submap(dest, MAP_DATA(at)->submap);
+		faux_instance *dest = PL::SpatialMap::read_smap(at, i);
+		if ((dest) && (dest->fimd.submap != at->fimd.submap)) {
+			PL::SpatialMap::add_room_to_submap(dest, at->fimd.submap);
 			PL::SpatialMap::create_map_component_around(dest);
 		}
 	}
@@ -917,11 +872,11 @@ void PL::SpatialMap::create_map_component_around(instance *at) {
 Positions are just 3-vectors, so:
 
 =
-void PL::SpatialMap::translate_room(instance *R, vector D) {
+void PL::SpatialMap::translate_room(faux_instance *R, vector D) {
 	PL::SpatialMap::set_room_position(R, Geometry::vec_plus(Room_position(R), D));
 }
 
-void PL::SpatialMap::move_room_to(instance *R, vector P) {
+void PL::SpatialMap::move_room_to(faux_instance *R, vector P) {
 	PL::SpatialMap::set_room_position(R, P);
 	PL::SpatialMap::move_anything_locked_to(R);
 }
@@ -937,20 +892,20 @@ it moves anything locked to R (and anything locked to that, and so on) to
 corresponding positions.
 
 =
-void PL::SpatialMap::move_anything_locked_to(instance *R) {
-	connected_submap *sub = MAP_DATA(R)->submap;
-	instance *R2;
+void PL::SpatialMap::move_anything_locked_to(faux_instance *R) {
+	connected_submap *sub = R->fimd.submap;
+	faux_instance *R2;
 	LOOP_OVER_SUBMAP(R2, sub)
-		MAP_DATA(R2)->shifted = FALSE;
+		R2->fimd.shifted = FALSE;
 	PL::SpatialMap::move_anything_locked_to_r(R);
 }
 
-void PL::SpatialMap::move_anything_locked_to_r(instance *R) {
-	if (MAP_DATA(R)->shifted) return;
-	MAP_DATA(R)->shifted = TRUE;
+void PL::SpatialMap::move_anything_locked_to_r(faux_instance *R) {
+	if (R->fimd.shifted) return;
+	R->fimd.shifted = TRUE;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *F = PL::SpatialMap::read_slock(R, i);
+		faux_instance *F = PL::SpatialMap::read_slock(R, i);
 		if (F) {
 			vector D = PL::SpatialMap::direction_as_vector(i);
 			PL::SpatialMap::set_room_position(F, Geometry::vec_plus(Room_position(R), D));
@@ -965,9 +920,9 @@ slightly. This runs in $O(R)$ time.
 
 =
 void PL::SpatialMap::lock_positions_in_submap(connected_submap *sub) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub)
-		MAP_DATA(R)->shifted = FALSE;
+		R->fimd.shifted = FALSE;
 	LOOP_OVER_SUBMAP(R, sub)
 		PL::SpatialMap::move_anything_locked_to_r(R);
 }
@@ -1013,14 +968,14 @@ can have it. Initially, all SRs have length 1.
 
 =
 void PL::SpatialMap::establish_natural_lengths(connected_submap *sub) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) {
 		int i;
 		LOOP_OVER_LATTICE_DIRECTIONS(i) {
 			if (PL::SpatialMap::read_smap(R, i))
-				MAP_DATA(R)->exit_lengths[i] = 1;
+				R->fimd.exit_lengths[i] = 1;
 			else
-				MAP_DATA(R)->exit_lengths[i] = -1;
+				R->fimd.exit_lengths[i] = -1;
 		}
 	}
 }
@@ -1065,7 +1020,7 @@ smaller than $R$.)
 int PL::SpatialMap::find_submap_heat(connected_submap *sub) {
 	int heat = 0;
 	sub->bounds = Geometry::empty_cuboid();
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) {
 		heat = PL::SpatialMap::heat_sum(heat, PL::SpatialMap::find_room_heat(R));
 		Geometry::adjust_cuboid(&(sub->bounds), Room_position(R));
@@ -1086,7 +1041,7 @@ int PL::SpatialMap::find_submap_heat(connected_submap *sub) {
 in constant time.
 
 =
-int PL::SpatialMap::find_room_heat(instance *R) {
+int PL::SpatialMap::find_room_heat(faux_instance *R) {
 	int i, h = 0;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) h += PL::SpatialMap::find_exit_heat(R, i);
 	return h;
@@ -1113,10 +1068,10 @@ This too runs in constant time.
 @d ANGULAR_MULTIPLIER 50
 
 =
-int PL::SpatialMap::find_exit_heat(instance *from, int exit) {
+int PL::SpatialMap::find_exit_heat(faux_instance *from, int exit) {
 	drognas_spent++;
 
-	instance *to = PL::SpatialMap::read_smap(from, exit);
+	faux_instance *to = PL::SpatialMap::read_smap(from, exit);
 	if (to == NULL) return 0; /* if there's no exit this way, there's no heat */
 
 	if (from == to) return 0; /* an exit from a room to itself doesn't show on the map */
@@ -1137,7 +1092,7 @@ int PL::SpatialMap::find_exit_heat(instance *from, int exit) {
 		int n = 1;
 		P = Geometry::vec_plus(P, E);
 		while ((n++ < 20) && (Geometry::vec_eq(P, Room_position(to)) == FALSE)) {
-			if (PL::SpatialMap::occupied_in_submap(MAP_DATA(from)->submap, P) > 0)
+			if (PL::SpatialMap::occupied_in_submap(from->fimd.submap, P) > 0)
 				overlying_penalty += OVERLYING_HEAT;
 			P = Geometry::vec_plus(P, E);
 		}
@@ -1150,10 +1105,10 @@ the destination room lies along a multiple of the exit vector from the
 origin. In effect, it tests whether |angular_distortion| is zero.
 
 =
-int PL::SpatialMap::exit_aligned(instance *from, int exit) {
+int PL::SpatialMap::exit_aligned(faux_instance *from, int exit) {
 	drognas_spent++;
 
-	instance *to = PL::SpatialMap::read_smap(from, exit);
+	faux_instance *to = PL::SpatialMap::read_smap(from, exit);
 	if (to == NULL) return TRUE; /* at any rate, not misaligned */
 	if (from == to) return TRUE; /* ditto */
 	if (PL::SpatialMap::direction_is_along_lattice(exit) == FALSE) return TRUE; /* IN, OUT are always aligned */
@@ -1187,7 +1142,7 @@ void PL::SpatialMap::position_submap(connected_submap *sub) {
 		sub->allocation_id, sub->heat);
 	if (sub->heat == 0) LOGIF(SPATIAL_MAP, ": nothing to do");
 	if (Log::aspect_switched_on(SPATIAL_MAP_DA)) {
-		instance *R; int n = 0;
+		faux_instance *R; int n = 0;
 		LOOP_OVER_SUBMAP(R, sub) {
 			if ((n++) % 8 == 0) LOG("\n    ");
 			LOG(" $O", R);
@@ -1219,8 +1174,8 @@ no good cutpoint.
 
 @<Attempt to divide the current submap in two@> =
 	int Z1_number = unique_Z_number++, Z2_number = unique_Z_number++;
-	instance *div_F1 = NULL, *div_T1 = NULL; int div_dir1 = -1;
-	instance *div_F2 = NULL, *div_T2 = NULL; int div_dir2 = -1;
+	faux_instance *div_F1 = NULL, *div_T1 = NULL; int div_dir1 = -1;
+	faux_instance *div_F2 = NULL, *div_T2 = NULL; int div_dir2 = -1;
 	int initial_spending = drognas_spent;
 	int found = PL::SpatialMap::work_out_optimal_cutpoint(sub, &div_F1, &div_T1, &div_dir1,
 		&div_F2, &div_T2, &div_dir2);
@@ -1261,10 +1216,10 @@ dividing at one relationship F1-to-T1 or at two, F1-to-T1 and F2-to-T2.
 	if (div_F2) {
 		int predivision_spending = drognas_spent;
 		PL::SpatialMap::divide_into_zones_twocut(div_F1, div_T1, div_F2, div_T2, Z1_number, Z2_number);
-		instance *R;
+		faux_instance *R;
 		LOOP_OVER_SUBMAP(R, sub) {
-			if (MAP_DATA(R)->zone == Z1_number) Z1_count++;
-			if (MAP_DATA(R)->zone == Z2_number) Z2_count++;
+			if (R->fimd.zone == Z1_number) Z1_count++;
+			if (R->fimd.zone == Z2_number) Z2_count++;
 		}
 		LOGIF(SPATIAL_MAP, "Making a double cut: $O %s to $O and $O %s to $O at cost %d\n",
 			div_F1, PL::SpatialMap::usual_Inform_direction_name(div_dir1), div_T1,
@@ -1329,7 +1284,7 @@ We therefore cap the length once we have reduced below the collision penalty.
 	vector Axis = PL::SpatialMap::direction_as_vector(div_dir1);
 
 	int worst_case_length = 0;
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) worst_case_length++;
 	worst_case_length--;
 
@@ -1361,13 +1316,13 @@ Because there can never be locks across zone boundaries, this process
 can't break a lock between two rooms.
 
 @<Displace zone 2 relative to zone 1@> =
-	MAP_DATA(div_F1)->exit_lengths[div_dir1] = L;
+	div_F1->fimd.exit_lengths[div_dir1] = L;
 	vector D = Geometry::vec_plus(
 		Geometry::vec_scale(L, Axis),
 		Geometry::vec_minus(Room_position(div_F1), Room_position(div_T1)));
-	instance *Z2;
+	faux_instance *Z2;
 	LOOP_OVER_SUBMAP(Z2, sub)
-		if (MAP_DATA(Z2)->zone == Z2_number)
+		if (Z2->fimd.zone == Z2_number)
 			PL::SpatialMap::translate_room(Z2, D);
 
 @h Finding how to divide.
@@ -1404,7 +1359,7 @@ usually succeed in practice, and are guaranteed to find at least one double
 cut if any exists.
 
 The guarantees are void in a small number of cases where locks have been
-applied: for instance, if the entire submap is locked together, nothing can
+applied: for faux_instance, if the entire submap is locked together, nothing can
 ever be cut. Should that happen, the user will find that the map-maker may
 run slowly; it's his own fault.
 
@@ -1417,21 +1372,21 @@ run slowly; it's his own fault.
 
 =
 int PL::SpatialMap::work_out_optimal_cutpoint(connected_submap *sub,
-	instance **from, instance **to, int *way,
-	instance **from2, instance **to2, int *way2) {
-	instance *first = NULL; int size = 0;
+	faux_instance **from, faux_instance **to, int *way,
+	faux_instance **from2, faux_instance **to2, int *way2) {
+	faux_instance *first = NULL; int size = 0;
 
 	@<Find the size of and first room in the submap, and give all rooms generation 0@>;
-	MAP_DATA(first)->zone = 1;
+	first->fimd.zone = 1;
 
 	int best_spread[EXPLORATION_RECORDS];
-	instance *best_from1[EXPLORATION_RECORDS], *best_to1[EXPLORATION_RECORDS];
+	faux_instance *best_from1[EXPLORATION_RECORDS], *best_to1[EXPLORATION_RECORDS];
 	int best_dir1[EXPLORATION_RECORDS];
-	instance *best_from2[EXPLORATION_RECORDS], *best_to2[EXPLORATION_RECORDS];
+	faux_instance *best_from2[EXPLORATION_RECORDS], *best_to2[EXPLORATION_RECORDS];
 	int best_dir2[EXPLORATION_RECORDS];
 
 	int outer_contact_generation[CLIPBOARD_SIZE], outer_contact_dir[CLIPBOARD_SIZE];
-	instance *outer_contact_from[CLIPBOARD_SIZE], *outer_contact_to[CLIPBOARD_SIZE];
+	faux_instance *outer_contact_from[CLIPBOARD_SIZE], *outer_contact_to[CLIPBOARD_SIZE];
 	@<Initialise all this cutpoint search workspace@>;
 
 	PL::SpatialMap::assign_generation_count(first, NULL, size,
@@ -1445,9 +1400,9 @@ int PL::SpatialMap::work_out_optimal_cutpoint(connected_submap *sub,
 }
 
 @<Find the size of and first room in the submap, and give all rooms generation 0@> =
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) {
-		MAP_DATA(R)->zone = 0; /* i.e., not yet given a generation */
+		R->fimd.zone = 0; /* i.e., not yet given a generation */
 		size++;
 		if (first == NULL) first = R;
 	}
@@ -1510,18 +1465,18 @@ and |from| is the one we've just come from, or |NULL| if this is the opening
 call; |size| is the number of rooms in the submap.
 
 =
-int PL::SpatialMap::assign_generation_count(instance *at, instance *from, int size,
+int PL::SpatialMap::assign_generation_count(faux_instance *at, faux_instance *from, int size,
 	int *best_spread,
-	instance **best_from1, instance **best_to1, int *best_dir1,
-	instance **best_from2, instance **best_to2, int *best_dir2,
+	faux_instance **best_from1, faux_instance **best_to1, int *best_dir1,
+	faux_instance **best_from2, faux_instance **best_to2, int *best_dir2,
 	int *contact_generation,
-	instance **contact_from, instance **contact_to, int *contact_dir) {
+	faux_instance **contact_from, faux_instance **contact_to, int *contact_dir) {
 	int rooms_visited = 0;
-	int generation = MAP_DATA(at)->zone, i;
+	int generation = at->fimd.zone, i;
 	LOG_INDENT;
 	int locking_to_neighbours = TRUE;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_slock(at, i);
+		faux_instance *T = PL::SpatialMap::read_slock(at, i);
 		if (T) {
 			@<Exclude generating this way if we don't need to@>;
 			@<Actually generate this way@>;
@@ -1529,7 +1484,7 @@ int PL::SpatialMap::assign_generation_count(instance *at, instance *from, int si
 	}
 	locking_to_neighbours = FALSE;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_smap(at, i);
+		faux_instance *T = PL::SpatialMap::read_smap(at, i);
 		if (T) {
 			@<Exclude generating this way if we don't need to@>;
 			@<Actually generate this way@>;
@@ -1551,12 +1506,12 @@ is called at most once on each room.
 
 @<Exclude generating this way if we don't need to@> =
 	if ((T == at) || (T == from)) continue;
-	int T_generation = MAP_DATA(T)->zone;
+	int T_generation = T->fimd.zone;
 	if (T_generation >= generation) continue;
 	if ((T_generation > 0) && (T_generation < generation)) {
 		int observed_generation = T_generation;
-		instance *observed_from = at;
-		instance *observed_to = T;
+		faux_instance *observed_from = at;
+		faux_instance *observed_to = T;
 		int observed_dir = i;
 		@<Contact hasss been made@>;
 		continue;
@@ -1587,10 +1542,10 @@ there, maybe just a broom cupboard.
 
 @<Actually generate this way@> =
 	int inner_contact_generation[CLIPBOARD_SIZE], inner_contact_dir[CLIPBOARD_SIZE];
-	instance *inner_contact_from[CLIPBOARD_SIZE], *inner_contact_to[CLIPBOARD_SIZE];
+	faux_instance *inner_contact_from[CLIPBOARD_SIZE], *inner_contact_to[CLIPBOARD_SIZE];
 	@<Give the new team of explorers a fresh clipboard@>;
 
-	MAP_DATA(T)->zone = generation + 1;
+	T->fimd.zone = generation + 1;
 	int rooms_explored_in_the_beyond = PL::SpatialMap::assign_generation_count(T, at, size,
 		best_spread,
 		best_from1, best_to1, best_dir1,
@@ -1625,8 +1580,8 @@ clipboard only if they are contacts to places we know about, too.
 	for (j = 0; j < CLIPBOARD_SIZE; j++) {
 		int observed_generation = inner_contact_generation[j];
 		if ((observed_generation > 0) && (observed_generation < generation)) {
-			instance *observed_from = inner_contact_from[j];
-			instance *observed_to = inner_contact_to[j];
+			faux_instance *observed_from = inner_contact_from[j];
+			faux_instance *observed_to = inner_contact_to[j];
 			int observed_dir = inner_contact_dir[j];
 			@<Contact hasss been made@>;
 		}
@@ -1725,21 +1680,21 @@ relationships not being cut; if this results in R2 being hit by the flood
 from R1, or vice versa, then we're in the |FALSE| case.
 
 =
-int PL::SpatialMap::divide_into_zones_onecut(connected_submap *sub, instance *R1, instance *R2,
+int PL::SpatialMap::divide_into_zones_onecut(connected_submap *sub, faux_instance *R1, faux_instance *R2,
 	int *Z1_count, int *Z2_count, int Z1, int Z2) {
 	if (R1 == R2) internal_error("can't divide");
-	instance *R;
-	LOOP_OVER_SUBMAP(R, sub) MAP_DATA(R)->zone = 0;
-	MAP_DATA(R1)->zone = Z1; MAP_DATA(R2)->zone = Z2;
+	faux_instance *R;
+	LOOP_OVER_SUBMAP(R, sub) R->fimd.zone = 0;
+	R1->fimd.zone = Z1; R2->fimd.zone = Z2;
 	*Z1_count = 0; *Z2_count = 0;
 	int contacts = 0;
 	*Z1_count = PL::SpatialMap::divide_into_zones_onecut_r(R1, NULL, R1, R2, &contacts);
 	if (contacts > 0) return FALSE;
 	*Z2_count = PL::SpatialMap::divide_into_zones_onecut_r(R2, NULL, R2, R1, &contacts);
 	LOOP_OVER_SUBMAP(R, sub)
-		if (MAP_DATA(R)->zone == 0)
-			MAP_DATA(R)->zone = Z1;
-	if ((MAP_DATA(R1)->zone == Z1) && (MAP_DATA(R2)->zone == Z2) &&
+		if (R->fimd.zone == 0)
+			R->fimd.zone = Z1;
+	if ((R1->fimd.zone == Z1) && (R2->fimd.zone == Z2) &&
 		((*Z1_count) > 1) && ((*Z2_count) > 1)) return TRUE;
 	return FALSE;
 }
@@ -1754,28 +1709,28 @@ impinging on the foreign zone, because that means there's no way to divide
 our original component into two disjoint connected zones.
 
 =
-int PL::SpatialMap::divide_into_zones_onecut_r(instance *at, instance *from,
-	instance *our_capital, instance *foreign_capital, int *borders) {
+int PL::SpatialMap::divide_into_zones_onecut_r(faux_instance *at, faux_instance *from,
+	faux_instance *our_capital, faux_instance *foreign_capital, int *borders) {
 	int rooms_visited = 0;
-	int our_zone = MAP_DATA(at)->zone, i;
+	int our_zone = at->fimd.zone, i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_slock(at, i);
+		faux_instance *T = PL::SpatialMap::read_slock(at, i);
 		if (T) @<Consider whether to spread the zone to room T@>;
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_smap(at, i);
+		faux_instance *T = PL::SpatialMap::read_smap(at, i);
 		if (T) @<Consider whether to spread the zone to room T@>;
 	}
 	return rooms_visited + 1;
 }
 
 @<Consider whether to spread the zone to room T@> =
-	int T_zone = MAP_DATA(T)->zone, foreign_zone = MAP_DATA(foreign_capital)->zone;
+	int T_zone = T->fimd.zone, foreign_zone = foreign_capital->fimd.zone;
 	if (T_zone == our_zone) continue;
 	if ((at == our_capital) && (T == foreign_capital)) continue;
 	if ((at == foreign_capital) && (T == our_capital)) continue;
 	if (T_zone == foreign_zone) { (*borders)++; continue; }
-	MAP_DATA(T)->zone = our_zone;
+	T->fimd.zone = our_zone;
 	rooms_visited +=
 		PL::SpatialMap::divide_into_zones_onecut_r(T, at, our_capital, foreign_capital, borders);
 
@@ -1784,37 +1739,37 @@ This is more or less the same, but simpler, since it can't determine whether
 we've chosen the cuts correctly, so doesn't even try.
 
 =
-void PL::SpatialMap::divide_into_zones_twocut(instance *div_F1, instance *div_T1,
-	instance *other_F, instance *div_T2, int Z1, int Z2) {
-	connected_submap *sub = MAP_DATA(div_F1)->submap;
-	instance *R;
-	LOOP_OVER_SUBMAP(R, sub) MAP_DATA(R)->zone = 0;
-	MAP_DATA(div_F1)->zone = Z1; MAP_DATA(div_T1)->zone = Z2;
+void PL::SpatialMap::divide_into_zones_twocut(faux_instance *div_F1, faux_instance *div_T1,
+	faux_instance *other_F, faux_instance *div_T2, int Z1, int Z2) {
+	connected_submap *sub = div_F1->fimd.submap;
+	faux_instance *R;
+	LOOP_OVER_SUBMAP(R, sub) R->fimd.zone = 0;
+	div_F1->fimd.zone = Z1; div_T1->fimd.zone = Z2;
 	PL::SpatialMap::divide_into_zones_twocut_r(div_F1, div_F1, div_T1, other_F, div_T2);
 	PL::SpatialMap::divide_into_zones_twocut_r(div_T1, div_F1, div_T1, other_F, div_T2);
 }
 
 @ =
-void PL::SpatialMap::divide_into_zones_twocut_r(instance *at, instance *not_X1, instance *not_Y1,
-	instance *not_X2, instance *not_Y2) {
-	int Z = MAP_DATA(at)->zone, i;
+void PL::SpatialMap::divide_into_zones_twocut_r(faux_instance *at, faux_instance *not_X1, faux_instance *not_Y1,
+	faux_instance *not_X2, faux_instance *not_Y2) {
+	int Z = at->fimd.zone, i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_slock(at, i);
+		faux_instance *T = PL::SpatialMap::read_slock(at, i);
 		if (T) @<Consider once again whether to spread the zone to room T@>;
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_smap(at, i);
+		faux_instance *T = PL::SpatialMap::read_smap(at, i);
 		if (T) @<Consider once again whether to spread the zone to room T@>;
 	}
 }
 
 @<Consider once again whether to spread the zone to room T@> =
-	if ((T != at) && (MAP_DATA(T)->zone == 0)) {
+	if ((T != at) && (T->fimd.zone == 0)) {
 		if (((at == not_X1) && (T == not_Y1)) || ((at == not_Y1) && (T == not_X1)))
 			continue;
 		if (((at == not_X2) && (T == not_Y2)) || ((at == not_Y2) && (T == not_X2)))
 			continue;
-		MAP_DATA(T)->zone = Z;
+		T->fimd.zone = Z;
 		PL::SpatialMap::divide_into_zones_twocut_r(T, not_X1, not_Y1, not_X2, not_Y2);
 	}
 
@@ -1834,15 +1789,15 @@ time.
 
 =
 void PL::SpatialMap::save_component_positions(connected_submap *sub) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub)
-		MAP_DATA(R)->saved_gridpos = Room_position(R);
+		R->fimd.saved_gridpos = Room_position(R);
 }
 
 void PL::SpatialMap::restore_component_positions(connected_submap *sub) {
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub)
-		PL::SpatialMap::set_room_position(R, MAP_DATA(R)->saved_gridpos);
+		PL::SpatialMap::set_room_position(R, R->fimd.saved_gridpos);
 }
 
 @h The cooling tactic.
@@ -1867,7 +1822,7 @@ Another virtue is that cooling alone works in many easy cases. If there are
 no locks, and no multiple exits between pairs of rooms A to B, then cooling
 is guaranteed to find a perfect (heat 0) grid positioning if one exists.
 There are plenty of Inform projects for which that happens: "Bronze",
-for instance, has a single component of 55 rooms, and one round of cooling
+for faux_instance, has a single component of 55 rooms, and one round of cooling
 reduces this to absolute zero.
 
 =
@@ -1879,8 +1834,8 @@ void PL::SpatialMap::cool_submap(connected_submap *sub) {
 	int rounds = 0;
 	while (TRUE) {
 		LOGIF(SPATIAL_MAP, "Cooling round %d.\n", ++rounds);
-		instance *R;
-		LOOP_OVER_SUBMAP(R, sub) MAP_DATA(R)->cooled = FALSE;
+		faux_instance *R;
+		LOOP_OVER_SUBMAP(R, sub) R->fimd.cooled = FALSE;
 		PL::SpatialMap::save_component_positions(sub);
 		LOOP_OVER_SUBMAP(R, sub) PL::SpatialMap::cool_component_from(sub, R);
 		PL::SpatialMap::find_submap_heat(sub);
@@ -1909,12 +1864,12 @@ Since the map likely contains circular routes, rooms are flagged so that they
 can only be cooled once in a given round.
 
 =
-void PL::SpatialMap::cool_component_from(connected_submap *sub, instance *R) {
-	if (MAP_DATA(R)->cooled) return;
-	MAP_DATA(R)->cooled = TRUE;
+void PL::SpatialMap::cool_component_from(connected_submap *sub, faux_instance *R) {
+	if (R->fimd.cooled) return;
+	R->fimd.cooled = TRUE;
 
 	int exit_heats[MAX_DIRECTIONS];
-	instance *exit_rooms[MAX_DIRECTIONS];
+	faux_instance *exit_rooms[MAX_DIRECTIONS];
 	@<Find the exits from this room and their current heats@>;
 	@<Iteratively cool as many exits as possible@>;
 }
@@ -1987,19 +1942,19 @@ hotter, since the destination room falls out of alignment with its other
 neighbours.)
 
 =
-instance *saved_to; vector Saved_position;
+faux_instance *saved_to; vector Saved_position;
 void PL::SpatialMap::undo_cool_exit(void) {
 	PL::SpatialMap::move_room_to(saved_to, Saved_position);
 	LOGIF(SPATIAL_MAP_WORKINGS, "Undoing move of $O\n", saved_to);
 }
 
-void PL::SpatialMap::cool_exit(instance *R, int exit) {
-	instance *to = PL::SpatialMap::read_smap(R, exit);
+void PL::SpatialMap::cool_exit(faux_instance *R, int exit) {
+	faux_instance *to = PL::SpatialMap::read_smap(R, exit);
 	saved_to = to; Saved_position = Room_position(to);
 
 	vector D = PL::SpatialMap::direction_as_vector(exit);
 
-	int length = MAP_DATA(R)->exit_lengths[exit];
+	int length = R->fimd.exit_lengths[exit];
 	vector N = Geometry::vec_plus(Room_position(R), Geometry::vec_scale(length, D));
 
 	if (Geometry::vec_eq(Room_position(to), N)) return;
@@ -2023,11 +1978,11 @@ so it's really "only" $O(S^2)$. Still, this is why we don't want to quench
 on large connected submaps.
 
 =
-void PL::SpatialMap::quench_submap(connected_submap *sub, instance *avoid1, instance *avoid2) {
+void PL::SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1, faux_instance *avoid2) {
 	int initial_heat = PL::SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Quenching submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
-	instance *R;
+	faux_instance *R;
 	int heat = sub->heat, last_heat = sub->heat + 1, rounds = 0;
 	while (heat < last_heat) {
 		LOGIF(SPATIAL_MAP, "Quenching round %d begins with heat at %d.\n", ++rounds, heat);
@@ -2049,7 +2004,7 @@ void PL::SpatialMap::quench_submap(connected_submap *sub, instance *avoid1, inst
 }
 
 @<Attempt to quench this heated link@> =
-	instance *T = PL::SpatialMap::read_smap(R, i);
+	faux_instance *T = PL::SpatialMap::read_smap(R, i);
 	if ((T == avoid1) && (R == avoid2)) continue;
 	if ((T == avoid2) && (R == avoid1)) continue;
 	LOGIF(SPATIAL_MAP_WORKINGS, "Quenching $O %s to $O.\n",
@@ -2080,7 +2035,7 @@ void PL::SpatialMap::diffuse_submap(connected_submap *sub) {
 	int initial_heat = PL::SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Diffusing submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
-	instance *R;
+	faux_instance *R;
 	int heat = sub->heat, last_heat = sub->heat + 1, rounds = 0;
 	while (heat < last_heat) {
 		LOGIF(SPATIAL_MAP, "Diffusion round %d with heat at %d.\n", ++rounds, heat);
@@ -2089,7 +2044,7 @@ void PL::SpatialMap::diffuse_submap(connected_submap *sub) {
 		LOOP_OVER_SUBMAP(R, sub) {
 			int i;
 			LOOP_OVER_LATTICE_DIRECTIONS(i) {
-				instance *T = PL::SpatialMap::read_smap(R, i);
+				faux_instance *T = PL::SpatialMap::read_smap(R, i);
 				if (T)
 					@<Try diffusion along this link@>;
 			}
@@ -2110,7 +2065,7 @@ the grid. So we move not only the room but also a whole clump of nearby
 rooms whose exits are cold (or which are locked to each other).
 
 @<Try diffusion along this link@> =
-	int L = MAP_DATA(R)->exit_lengths[i];
+	int L = R->fimd.exit_lengths[i];
 	if (L > -1) {
 		LOGIF(SPATIAL_MAP_WORKINGS, "Lengthening $O %s to $O to %d.\n",
 			R, PL::SpatialMap::find_icon_label(i), T, L+1);
@@ -2118,20 +2073,20 @@ rooms whose exits are cold (or which are locked to each other).
 		PL::SpatialMap::save_component_positions(sub);
 
 		vector O = Room_position(R);
-		MAP_DATA(R)->exit_lengths[i] = L+1;
+		R->fimd.exit_lengths[i] = L+1;
 		PL::SpatialMap::cool_exit(R, i);
 		vector D = Geometry::vec_minus(Room_position(R), O);
-		instance *S;
-		LOOP_OVER_SUBMAP(S, sub) MAP_DATA(S)->zone = 1;
+		faux_instance *S;
+		LOOP_OVER_SUBMAP(S, sub) S->fimd.zone = 1;
 		PL::SpatialMap::diffuse_across(R, T);
 		LOOP_OVER_SUBMAP(S, sub)
-			if ((MAP_DATA(S)->zone == 2) && (S != R))
+			if ((S->fimd.zone == 2) && (S != R))
 				PL::SpatialMap::translate_room(S, D);
 		PL::SpatialMap::find_submap_heat(sub);
 
 		if (sub->heat >= heat) {
 			PL::SpatialMap::restore_component_positions(sub);
-			MAP_DATA(R)->exit_lengths[i] = L;
+			R->fimd.exit_lengths[i] = L;
 			PL::SpatialMap::find_submap_heat(sub);
 			LOGIF(SPATIAL_MAP_WORKINGS, "Lengthening left heat undecreased at %d.\n", sub->heat);
 			LOG_OUTDENT;
@@ -2148,16 +2103,16 @@ except that it's forbidden to including |avoiding| (the room we are trying
 to lengthen away from).
 
 =
-void PL::SpatialMap::diffuse_across(instance *at, instance *avoiding) {
-	MAP_DATA(at)->zone = 2;
+void PL::SpatialMap::diffuse_across(faux_instance *at, faux_instance *avoiding) {
+	at->fimd.zone = 2;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_slock(at, i);
-		if ((T) && (MAP_DATA(T)->zone == 1)) PL::SpatialMap::diffuse_across(T, avoiding);
+		faux_instance *T = PL::SpatialMap::read_slock(at, i);
+		if ((T) && (T->fimd.zone == 1)) PL::SpatialMap::diffuse_across(T, avoiding);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_smap(at, i);
-		if ((T) && (MAP_DATA(T)->zone == 1) && (T != avoiding) &&
+		faux_instance *T = PL::SpatialMap::read_smap(at, i);
+		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
 			(PL::SpatialMap::find_exit_heat(at, i) == 0))
 			PL::SpatialMap::diffuse_across(T, avoiding);
 	}
@@ -2183,7 +2138,7 @@ void PL::SpatialMap::radiate_submap(connected_submap *sub) {
 	int initial_heat = PL::SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Radiating submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
-	instance *R;
+	faux_instance *R;
 	int heat = sub->heat, last_heat = sub->heat + 1, rounds = 0;
 	while (heat < last_heat) {
 		LOGIF(SPATIAL_MAP, "Radiation round %d with heat at %d.\n", ++rounds, heat);
@@ -2192,7 +2147,7 @@ void PL::SpatialMap::radiate_submap(connected_submap *sub) {
 		LOOP_OVER_SUBMAP(R, sub) {
 			int i;
 			LOOP_OVER_LATTICE_DIRECTIONS(i) {
-				instance *T = PL::SpatialMap::read_smap(R, i);
+				faux_instance *T = PL::SpatialMap::read_smap(R, i);
 				if (T) {
 					if (PL::SpatialMap::exit_aligned(R, i) == FALSE)
 						@<Attempt to radiate from this misaligned link@>;
@@ -2242,11 +2197,11 @@ are only three or four viable new positions for R.
 @<Radiation is geometrically possible here@> =
 	LOGIF(SPATIAL_MAP_WORKINGS, "Aligned at offset %d, %d, %d\n", D.x, D.y, D.z);
 	PL::SpatialMap::save_component_positions(sub);
-	instance *S;
-	LOOP_OVER_SUBMAP(S, sub) MAP_DATA(S)->zone = 1;
+	faux_instance *S;
+	LOOP_OVER_SUBMAP(S, sub) S->fimd.zone = 1;
 	PL::SpatialMap::radiate_across(R, T, j);
 	LOOP_OVER_SUBMAP(S, sub)
-		if ((MAP_DATA(S)->zone == 2) && (S != R)) {
+		if ((S->fimd.zone == 2) && (S != R)) {
 			LOGIF(SPATIAL_MAP_WORKINGS, "Comoving $O\n", S);
 			PL::SpatialMap::translate_room(S, D);
 		}
@@ -2276,17 +2231,17 @@ become aligned.)
 It follows that radiation can never increase the number of unaligned links.
 
 =
-void PL::SpatialMap::radiate_across(instance *at, instance *avoiding, int not_this_way) {
-	MAP_DATA(at)->zone = 2;
+void PL::SpatialMap::radiate_across(faux_instance *at, faux_instance *avoiding, int not_this_way) {
+	at->fimd.zone = 2;
 	int i, not_this_way_either = PL::SpatialMap::opposite(not_this_way);
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_slock(at, i);
-		if ((T) && (MAP_DATA(T)->zone == 1))
+		faux_instance *T = PL::SpatialMap::read_slock(at, i);
+		if ((T) && (T->fimd.zone == 1))
 			PL::SpatialMap::radiate_across(T, avoiding, not_this_way);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		instance *T = PL::SpatialMap::read_smap(at, i);
-		if ((T) && (MAP_DATA(T)->zone == 1) && (T != avoiding) &&
+		faux_instance *T = PL::SpatialMap::read_smap(at, i);
+		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
 			(i != not_this_way) && (i != not_this_way_either))
 			PL::SpatialMap::radiate_across(T, avoiding, not_this_way);
 	}
@@ -2310,7 +2265,7 @@ void PL::SpatialMap::explode_submap(connected_submap *sub) {
 	int keep_trying = TRUE, moves = 0;
 	while (keep_trying) {
 		keep_trying = FALSE;
-		instance *R;
+		faux_instance *R;
 		LOOP_OVER_SUBMAP(R, sub) {
 			vector At = Room_position(R);
 			if (PL::SpatialMap::occupied_in_submap(sub, At) >= 2) {
@@ -2349,7 +2304,7 @@ Having cooled and diffused each component, we now treat them as rigid
 bodies, but still have to establish their spatial relationship to each
 other. We ensure that the components do not overlap by the crude method of
 making their bounding cuboids disjoint, even though this will often mean
-that there is wasted space on the page. (Thus we do not, for instance, use
+that there is wasted space on the page. (Thus we do not, for faux_instance, use
 the trick adopted by the British Ordnance Survey in mapping the outlying
 island of St Kilda on an inset square of what would otherwise be empty
 ocean on OS18 "Sound of Harris", despite its being separated by about
@@ -2405,7 +2360,7 @@ predecessor, with the same baseline, and on the level of the benchmark room.
 		sub->allocation_id, sub->bounds.population);
 	PL::SpatialMap::move_component(sub,
 		Geometry::vec(x_max, box.corner0.y - sub->bounds.corner0.y,
-			Room_position(benchmark_room).z - sub->bounds.corner0.z));
+			PL::SpatialMap::benchmark_level() - sub->bounds.corner0.z));
 
 @ The drill square is a way to place large numbers of single-room components,
 such as exist in IF works where rooms are being plaited together live during
@@ -2420,7 +2375,7 @@ one big component.
 		sub->allocation_id, sub->bounds.population);
 	if (drill_square_side == 0) {
 		Drill_square_O =
-			Geometry::vec(box.corner1.x + 1, box.corner0.y, Room_position(benchmark_room).z);
+			Geometry::vec(box.corner1.x + 1, box.corner0.y, PL::SpatialMap::benchmark_level());
 		Drill_square_At = Drill_square_O;
 		connected_submap *sing;
 		int N = 0;
@@ -2447,11 +2402,11 @@ with.
 @<Use the optimised inset strategy to place this component@> =
 	LOGIF(SPATIAL_MAP, "Component %d (size %d): optimised inset strategy\n",
 		sub->allocation_id, sub->bounds.population);
-	instance *outer = NULL, *inner = NULL;
+	faux_instance *outer = NULL, *inner = NULL;
 	PL::SpatialMap::find_link_to_placed_components(sub, &outer, &inner);
 	vector Best_offset =
 		Geometry::vec(x_max, box.corner0.y - sub->bounds.corner0.y,
-			Room_position(benchmark_room).z - sub->bounds.corner0.z);
+			PL::SpatialMap::benchmark_level() - sub->bounds.corner0.z);
 	if ((outer) && (inner)) {
 		int dx = 0, dy = 0, dz = 0, min_s = FUSION_POINT;
 		for (dx = -MAX_OFFSET; dx <= MAX_OFFSET; dx++)
@@ -2495,11 +2450,11 @@ int PL::SpatialMap::compare_components(const void *ent1, const void *ent2) {
 	int d = mc2->bounds.population - mc1->bounds.population;
 	if (d != 0) return d;
 	if (mc1->bounds.population == 1) {
-		instance *R1 = mc1->first_room_in_submap;
-		instance *R2 = mc2->first_room_in_submap;
+		faux_instance *R1 = mc1->first_room_in_submap;
+		faux_instance *R2 = mc2->first_room_in_submap;
 		if ((R1) && (R2)) { /* which should always happen, but just in case of an error */
-			instance *reg1 = Regions::enclosing(R1);
-			instance *reg2 = Regions::enclosing(R2);
+			faux_instance *reg1 = IXInstances::region_of(R1);
+			faux_instance *reg2 = IXInstances::region_of(R2);
 			if ((reg1) && (reg2 == NULL)) return -1;
 			if ((reg1 == NULL) && (reg2)) return 1;
 			if (reg1) {
@@ -2536,7 +2491,7 @@ int PL::SpatialMap::find_component_placement_heat(connected_submap *sub) {
 	connected_submap *other;
 	LOOP_OVER(other, connected_submap)
 		if (other->positioned) {
-			instance *R;
+			faux_instance *R;
 			LOOP_OVER_SUBMAP(R, sub)
 				if (PL::SpatialMap::occupied_in_submap(other, Room_position(R)))
 					return FUSION_POINT;
@@ -2556,7 +2511,7 @@ int PL::SpatialMap::find_cross_component_heat(connected_submap *sub) {
 }
 
 void PL::SpatialMap::find_link_to_placed_components(connected_submap *sub,
-	instance **outer, instance **inner) {
+	faux_instance **outer, faux_instance **inner) {
 	PL::SpatialMap::cross_component_links(sub, outer, inner, NULL, TRUE);
 }
 
@@ -2577,31 +2532,31 @@ There can't be any lattice connections to other components, because two
 rooms connected that way are by definition in the same component.
 
 =
-int PL::SpatialMap::cross_component_links(connected_submap *sub, instance **outer, instance **inner,
+int PL::SpatialMap::cross_component_links(connected_submap *sub, faux_instance **outer, faux_instance **inner,
 	int *heat, int posnd) {
 	int no_links = 0;
 	if (heat) *heat = 0;
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) {
 		int d;
 		LOOP_OVER_NONLATTICE_DIRECTIONS(d) {
-			instance *R2 = PL::SpatialMap::read_smap_cross(R, d);
-			if ((R2) && (MAP_DATA(R2)->submap != sub)) {
-				if ((posnd == FALSE) || (MAP_DATA(R2)->submap->positioned)) {
+			faux_instance *R2 = PL::SpatialMap::read_smap_cross(R, d);
+			if ((R2) && (R2->fimd.submap != sub)) {
+				if ((posnd == FALSE) || (R2->fimd.submap->positioned)) {
 					no_links++;
 					if (inner) *inner = R; if (outer) *outer = R2;
 					if (heat) *heat = PL::SpatialMap::heat_sum(*heat, PL::SpatialMap::find_cross_link_heat(R, R2, d));
 				}
 			}
 		}
-		instance *S;
+		faux_instance *S;
 		LOOP_OVER_ROOMS(S) {
-			if (MAP_DATA(S)->submap == sub) continue;
-			if ((posnd) && (MAP_DATA(S)->submap->positioned == FALSE)) continue;
+			if (S->fimd.submap == sub) continue;
+			if ((posnd) && (S->fimd.submap->positioned == FALSE)) continue;
 			int d;
 			LOOP_OVER_NONLATTICE_DIRECTIONS(d) {
-				instance *R2 = PL::SpatialMap::read_smap_cross(S, d);
-				if ((R2) && (MAP_DATA(R2)->submap == sub)) {
+				faux_instance *R2 = PL::SpatialMap::read_smap_cross(S, d);
+				if ((R2) && (R2->fimd.submap == sub)) {
 					no_links++;
 					if (outer) *outer = S; if (inner) *inner = R2;
 					if (heat) *heat = PL::SpatialMap::heat_sum(*heat, PL::SpatialMap::find_cross_link_heat(S, R2, d));
@@ -2620,15 +2575,15 @@ running time in check.
 
 @<Look for van der Waals forces@> =
 	if (sub->bounds.population == 1) {
-		instance *R = sub->first_room_in_submap;
+		faux_instance *R = sub->first_room_in_submap;
 		if (R) { /* which should always happen, but just in case of an error */
-			instance *reg = Regions::enclosing(R);
+			faux_instance *reg = IXInstances::region_of(R);
 			if (reg) {
-				instance *S, *closest_S = NULL;
+				faux_instance *S, *closest_S = NULL;
 				int closest = 0;
 				LOOP_OVER_ROOMS(S)
-					if ((S != R) && (Regions::enclosing(S) == reg))
-						if ((posnd == FALSE) || (MAP_DATA(S)->submap->positioned)) {
+					if ((S != R) && (IXInstances::region_of(S) == reg))
+						if ((posnd == FALSE) || (S->fimd.submap->positioned)) {
 							int diff = 2*(R->allocation_id - S->allocation_id);
 							if (diff < 0) diff = 1-diff;
 							if ((closest_S == NULL) || (diff < closest)) {
@@ -2652,7 +2607,7 @@ It also gives preference to the green jagged arrow directions when placing
 insets -- this makes the map line up elegantly.
 
 =
-int PL::SpatialMap::find_cross_link_heat(instance *R, instance *S, int dir) {
+int PL::SpatialMap::find_cross_link_heat(faux_instance *R, faux_instance *S, int dir) {
 	if ((R == NULL) || (S == NULL)) internal_error("bad room distance");
 	return PL::SpatialMap::component_metric(Room_position(R), Room_position(S), dir);
 }
@@ -2681,7 +2636,7 @@ Short and sweet. We make |Universe| the minimal-sized cuboid containing each roo
 
 @<(5) Find the universal bounding cuboid@> =
 	Universe = Geometry::empty_cuboid();
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		Geometry::adjust_cuboid(&Universe, Room_position(R));
 
@@ -2690,13 +2645,13 @@ We need to avoid what might be an infinite loop in awkward cases where
 locking means that blank planes are inevitable.
 
 @<(6) Remove any blank lateral planes@> =
-	int safety_count = NUMBER_CREATED(instance);
+	int safety_count = NUMBER_CREATED(faux_instance);
 	while (safety_count-- >= 0) {
 		int blank_z = 0, blank_plane_found = FALSE;
 		int z;
 		for (z = Universe.corner1.z - 1; z >= Universe.corner0.z + 1; z--) {
 			int occupied = FALSE;
-			instance *R;
+			faux_instance *R;
 			LOOP_OVER_ROOMS(R)
 				if (Room_position(R).z == z) occupied = TRUE;
 			if (occupied == FALSE) {
@@ -2705,7 +2660,7 @@ locking means that blank planes are inevitable.
 			}
 		}
 		if (blank_plane_found == FALSE) break;
-		instance *R;
+		faux_instance *R;
 		LOOP_OVER_ROOMS(R)
 			if (Room_position(R).z > blank_z)
 				PL::SpatialMap::translate_room(R, D_vector);
@@ -2720,12 +2675,12 @@ can make use of the following:
 =
 void PL::SpatialMap::log_precis_of_map(void) {
 	LOG("[Precis of source text giving map layout follows.]\n\n");
-	instance *R;
-	LOOP_OVER_INSTANCES(R, K_object) MAP_DATA(R)->zone = 1;
-	LOOP_OVER_INSTANCES(R, K_object) {
+	faux_instance *R;
+	LOOP_OVER_OBJECTS(R) R->fimd.zone = 1;
+	LOOP_OVER_OBJECTS(R) {
 		@<Declare the regions and doors in the precis@>;
 		@<Declare the rooms in the precis, starting with the start room@>;
-		MAP_DATA(R)->zone = 0;
+		R->fimd.zone = 0;
 	}
 	@<Declare the map connections in the precis@>;
 	SyntaxTree::traverse(Task::syntax_tree(), PL::SpatialMap::visit_to_transcribe);
@@ -2733,59 +2688,57 @@ void PL::SpatialMap::log_precis_of_map(void) {
 }
 
 @<Declare the regions and doors in the precis@> =
-	if ((Instances::of_kind(R, K_direction)) &&
-		(MAP_DATA(R)->direction_index >= 12)) {
-		wording W = Instances::get_name(R, FALSE);
-		wording OW = Instances::get_name(Map::get_value_of_opposite_property(R), FALSE);
+	if ((IXInstances::is_a_direction(R)) &&
+		(R->direction_index >= 12)) {
+		wording W = IXInstances::get_name(R);
+		wording OW = IXInstances::get_name(IXInstances::opposite_direction(R));
 		LOG("%+W is a direction. The opposite of %+W is %+W.\n", W, W, OW);
 	}
-	if (Instances::of_kind(R, K_region)) {
-		wording W = Instances::get_name(R, FALSE);
+	if (IXInstances::is_a_region(R)) {
+		wording W = IXInstances::get_name(R);
 		LOG("%+W is a region.\n", W);
 	}
-	if (Instances::of_kind(R, K_door)) {
-		wording W = Instances::get_name(R, FALSE);
+	if (IXInstances::is_a_door(R)) {
+		wording W = IXInstances::get_name(R);
 		LOG("%+W is a door.\n", W);
-		parse_node *S = PropertyInferences::value_of(
-			Instances::as_subject(R), P_other_side);
-		instance *X = Rvalues::to_object_instance(S);
+		faux_instance *X = IXInstances::other_side_of_door(R);
 		if (X) {
-			wording XW = Instances::get_name(X, FALSE);
+			wording XW = IXInstances::get_name(X);
 			LOG("The other side of %+W is %+W.\n", W, XW);
 		}
 	}
 
 @<Declare the rooms in the precis, starting with the start room@> =
-	if (Instances::of_kind(R, K_room)) {
-		wording RW = Instances::get_name(R, FALSE);
+	if (IXInstances::is_a_room(R)) {
+		wording RW = IXInstances::get_name(R);
 		LOG("%+W is a room.\n", RW);
-		instance *reg = Regions::enclosing(R);
+		faux_instance *reg = IXInstances::region_of(R);
 		if (reg) {
-			wording RGW = Instances::get_name(reg, FALSE);
-			if (MAP_DATA(reg)->zone == 1) {
+			wording RGW = IXInstances::get_name(reg);
+			if (reg->fimd.zone == 1) {
 				LOG("%+W is a region.\n", RGW);
-				MAP_DATA(reg)->zone = 0;
+				reg->fimd.zone = 0;
 			}
 			LOG("%+W is in %+W.\n", RW, RGW);
 		}
-		instance *start = Player::get_start_room();
+		faux_instance *start = IXInstances::start_room();
 		if (R == start) {
 			LOG("The player is in %+W.\n", RW);
 		}
 	}
 
 @<Declare the map connections in the precis@> =
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		wording RW = Instances::get_name(R, FALSE);
+		wording RW = IXInstances::get_name(R);
 		int i;
 		LOOP_OVER_STORY_DIRECTIONS(i) {
-			instance *D = NULL;
-			instance *S = PL::SpatialMap::room_exit(R, i, &D);
+			faux_instance *D = NULL;
+			faux_instance *S = PL::SpatialMap::room_exit(R, i, &D);
 			if ((S) || (D)) {
 				wording OW = EMPTY_WORDING;
-				if (D) OW = Instances::get_name(D, FALSE);
-				else OW = Instances::get_name(S, FALSE);
+				if (D) OW = IXInstances::get_name(D);
+				else OW = IXInstances::get_name(S);
 				if (i < 12) {
 					char *n = PL::SpatialMap::usual_Inform_direction_name(i);
 					int opp = PL::SpatialMap::opposite(i);
@@ -2794,15 +2747,15 @@ void PL::SpatialMap::log_precis_of_map(void) {
 						LOG("%s of %+W is nowhere.\n",
 							PL::SpatialMap::usual_Inform_direction_name(opp), OW);
 				} else {
-					instance *dir;
-					LOOP_OVER_INSTANCES(dir, K_direction)
-						if (MAP_DATA(dir)->direction_index == i) {
-							wording DW = Instances::get_name(dir, FALSE);
+					faux_instance *dir;
+					LOOP_OVER_DIRECTIONS(dir)
+						if (dir->direction_index == i) {
+							wording DW = IXInstances::get_name(dir);
 							LOG("%+W is %W of %+W.\n", OW, DW, RW);
-							instance *opp = Map::get_value_of_opposite_property(dir);
-							int od = MAP_DATA(opp)->direction_index;
+							faux_instance *opp = IXInstances::opposite_direction(dir);
+							int od = opp->direction_index;
 							if ((S) && (PL::SpatialMap::room_exit(S, od, NULL) == NULL)) {
-								wording OPW = Instances::get_name(dir, FALSE);
+								wording OPW = IXInstances::get_name(dir);
 								LOG("%W of %+W is nowhere.\n", OPW, OW);
 							}
 						}
@@ -2825,15 +2778,15 @@ void PL::SpatialMap::visit_to_transcribe(parse_node *p) {
 @ Rather similar code is used for details on the World index.
 
 =
-void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
-	wording RW = Instances::get_name(R, FALSE); /* name of the origin room */
-	instance *dir;
-	LOOP_OVER_INSTANCES(dir, K_direction) {
-		int i = MAP_DATA(dir)->direction_index;
-		instance *opp = Map::get_value_of_opposite_property(dir);
-		int od = opp?(MAP_DATA(opp)->direction_index):(-1);
-		instance *D = NULL;
-		instance *S = PL::SpatialMap::room_exit(R, i, &D);
+void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
+	wording RW = IXInstances::get_name(R); /* name of the origin room */
+	faux_instance *dir;
+	LOOP_OVER_DIRECTIONS(dir) {
+		int i = dir->direction_index;
+		faux_instance *opp = IXInstances::opposite_direction(dir);
+		int od = opp?(opp->direction_index):(-1);
+		faux_instance *D = NULL;
+		faux_instance *S = PL::SpatialMap::room_exit(R, i, &D);
 		if ((S) || (D)) {
 			HTML::open_indented_p(OUT, 1, "tight");
 			char *icon = "e_arrow";
@@ -2841,46 +2794,46 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 			else if (D) icon = "e_arrow_door_blocked";
 			HTML_TAG_WITH("img", "border=0 src=inform:/map_icons/%s.png", icon);
 			WRITE("&nbsp;");
-			PL::SpatialMap::write_name(OUT, dir);
+			IXInstances::write_name(OUT, dir);
 			WRITE(" to ");
 			if (S) {
-				PL::SpatialMap::write_name(OUT, S);
+				IXInstances::write_name(OUT, S);
 				if (D) {
 					WRITE(" via ");
-					PL::SpatialMap::write_name(OUT, D);
+					IXInstances::write_name(OUT, D);
 				}
 			} else {
-				PL::SpatialMap::write_name(OUT, D);
+				IXInstances::write_name(OUT, D);
 				WRITE(" (a door)");
 			}
-			if (S) {
-				instance *B = opp?(PL::SpatialMap::room_exit(S, od, NULL)):NULL;
+			if ((S) && (opp)) {
+				faux_instance *B = PL::SpatialMap::room_exit(S, od, NULL);
 				if (B == NULL) {
 					WRITE(" (but ");
-					PL::SpatialMap::write_name(OUT, opp);
+					IXInstances::write_name(OUT, opp);
 					WRITE(" from ");
-					PL::SpatialMap::write_name(OUT, S);
+					IXInstances::write_name(OUT, S);
 					WRITE(" is nowhere)");
 				} else if (B != R) {
 					WRITE(" (but ");
-					PL::SpatialMap::write_name(OUT, opp);
+					IXInstances::write_name(OUT, opp);
 					WRITE(" from ");
-					PL::SpatialMap::write_name(OUT, S);
+					IXInstances::write_name(OUT, S);
 					WRITE(" is ");
-					PL::SpatialMap::write_name(OUT, B);
+					IXInstances::write_name(OUT, B);
 					WRITE(")");
 				}
 			}
-			parse_node *at = MAP_DATA(R)->exits_set_at[i];
-			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+			int at = R->fimd.exits_set_at[i];
+			if (at > 0) Index::link(OUT, at);
 			HTML_CLOSE("p");
 		}
 	}
 	int k = 0;
-	LOOP_OVER_INSTANCES(dir, K_direction) {
-		int i = MAP_DATA(dir)->direction_index;
+	LOOP_OVER_DIRECTIONS(dir) {
+		int i = dir->direction_index;
 		if (PL::SpatialMap::room_exit(R, i, NULL)) continue;
-		wording DW = Instances::get_name(dir, FALSE); /* name of the direction */
+		wording DW = IXInstances::get_name(dir); /* name of the direction */
 		k++;
 		if (k == 1) {
 			HTML::open_indented_p(OUT, 1, "hanging");
@@ -2907,13 +2860,6 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 	if (k>0) HTML_CLOSE("p");
 }
 
-@h Naming.
-
-=
-void PL::SpatialMap::write_name(OUTPUT_STREAM, instance *I) {
-	Instances::write_name(OUT, I);
-}
-
 @h Unit testing.
 
 =
@@ -2926,14 +2872,14 @@ void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 			sub->bounds.corner0.y, sub->bounds.corner1.y,
 			sub->bounds.corner0.z, sub->bounds.corner1.z,
 			sub->bounds.population);
-		instance *R;
+		faux_instance *R;
 		LOOP_OVER_SUBMAP(R, sub) {
 			WRITE("%3d, %3d, %3d:   ",
 				Room_position(R).x,
 				Room_position(R).y,
 				Room_position(R).z);
-			PL::SpatialMap::write_name(OUT, R);
-			if (R == benchmark_room) WRITE("  (benchmark)");
+			IXInstances::write_name(OUT, R);
+			if (R == faux_benchmark) WRITE("  (benchmark)");
 			WRITE("\n");
 		}
 		WRITE("\n");

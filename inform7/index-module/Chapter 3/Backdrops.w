@@ -7,21 +7,21 @@ adds backdrop contents to a room called |loc|, or lists backdrops which are
 "everywhere" if |loc| is |NULL|.
 
 =
-void IXBackdrops::index_object_further(OUTPUT_STREAM, instance *loc, int depth,
+void IXBackdrops::index_object_further(OUTPUT_STREAM, faux_instance *loc, int depth,
 	int details, int how) {
 	int discoveries = 0;
-	instance *bd;
-	inference *inf;
+	faux_instance *bd;
 	if (loc) {
-		LOOP_OVER_BACKDROPS_IN(bd, loc, inf) {
+		LOOP_OVER_LINKED_LIST(bd, faux_instance, loc->backdrop_presences) {
 			if (++discoveries == 1) @<Insert fore-matter@>;
 			IXPhysicalWorld::index(OUT, bd, depth+1, details);
 		}
 	} else {
-		LOOP_OVER_BACKDROPS_EVERYWHERE(bd, inf) {
-			if (++discoveries == 1) @<Insert fore-matter@>;
-			IXPhysicalWorld::index(OUT, bd, depth+1, details);
-		}
+		LOOP_OVER_BACKDROPS(bd)
+			if (bd->is_everywhere) {
+				if (++discoveries == 1) @<Insert fore-matter@>;
+				IXPhysicalWorld::index(OUT, bd, depth+1, details);
+			}
 	}
 	if (discoveries > 0) @<Insert after-matter@>;
 }

@@ -136,7 +136,7 @@
                 <table border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td style="padding-top: 3px;" align="left" valign="top">
-                            <b>Table of Final Question Options</b>&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>Table of Final Question Options</b>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td style="padding-top: 3px;" align="left" valign="top">
                             <i><span class="smaller">5 columns x 5 rows</span></i>
@@ -184,7 +184,7 @@
                     </tr>
                     <tr>
                         <td style="padding-top: 3px;" align="left" valign="top">
-                            <b>Table of Locale Priorities</b>&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>Table of Locale Priorities</b>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td style="padding-top: 3px;" align="left" valign="top">
                             <i><span class="smaller">2 columns x 6 rows (5 blank, one for each thing)</span></i>

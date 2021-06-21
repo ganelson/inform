@@ -14,7 +14,11 @@ which use this module:
 @e MAP_INDEX_MREASON
 @e TYPE_TABLES_MREASON
 
+@e faux_instance_CLASS
+
 =
+DECLARE_CLASS(faux_instance)
+
 void IndexModule::start(void) {
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");

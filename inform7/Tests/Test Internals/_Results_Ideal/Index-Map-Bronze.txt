@@ -196,7 +196,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Records Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_101 style="text-decoration: none"><span style="color:#000000">RR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_52 style="text-decoration: none"><span style="color:#000000">RR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -251,7 +251,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Upper Bulb">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#20B2AA">
-                                                <span style="color:#000000"><a href=#wo_98 style="text-decoration: none"><span style="color:#000000">UB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_49 style="text-decoration: none"><span style="color:#000000">UB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -306,7 +306,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gallery of Still Life">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_128 style="text-decoration: none"><span style="color:#000000">GS</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_79 style="text-decoration: none"><span style="color:#000000">GS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -361,7 +361,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="White Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span style="color:#000000"><a href=#wo_129 style="text-decoration: none"><span style="color:#000000">WG</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_80 style="text-decoration: none"><span style="color:#000000">WG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -416,7 +416,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Bellroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span style="color:#000000"><a href=#wo_136 style="text-decoration: none"><span style="color:#000000">Bl</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_87 style="text-decoration: none"><span style="color:#000000">Bl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -471,7 +471,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Apothecary">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D02090">
-                                                <span style="color:#000000"><a href=#wo_137 style="text-decoration: none"><span style="color:#000000">Ap</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_88 style="text-decoration: none"><span style="color:#000000">Ap</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -766,7 +766,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Smoke-Damaged Chamber">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_99 style="text-decoration: none"><span style="color:#000000">SC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_50 style="text-decoration: none"><span style="color:#000000">SC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -821,7 +821,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Lie Library">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_107 style="text-decoration: none"><span style="color:#000000">LL</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_58 style="text-decoration: none"><span style="color:#000000">LL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -923,7 +923,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Upstairs Helical Staircase">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_94 style="text-decoration: none"><span style="color:#000000">UH</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_45 style="text-decoration: none"><span style="color:#000000">UH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -978,7 +978,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Private Parlor">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_130 style="text-decoration: none"><span style="color:#000000">PP</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_81 style="text-decoration: none"><span style="color:#000000">PP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1033,7 +1033,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Guest Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_132 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_83 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1328,7 +1328,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Burnt Frame">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_100 style="text-decoration: none"><span style="color:#000000">BF</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_51 style="text-decoration: none"><span style="color:#000000">BF</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1383,7 +1383,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Black Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_105 style="text-decoration: none"><span style="color:#000000">BG</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_56 style="text-decoration: none"><span style="color:#000000">BG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1485,7 +1485,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Green Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_131 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_82 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1540,7 +1540,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Crystal Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_134 style="text-decoration: none"><span style="color:#000000">CB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_85 style="text-decoration: none"><span style="color:#000000">CB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1595,7 +1595,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Empty Bedroom">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_133 style="text-decoration: none"><span style="color:#000000">EB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_84 style="text-decoration: none"><span style="color:#000000">EB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1937,7 +1937,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Armory">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_106 style="text-decoration: none"><span style="color:#000000">Ar</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_57 style="text-decoration: none"><span style="color:#000000">Ar</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2086,7 +2086,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gilded Balcony">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFDEAD">
-                                                <span style="color:#000000"><a href=#wo_135 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_86 style="text-decoration: none"><span style="color:#000000">GB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2669,7 +2669,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Rose Garden">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span style="color:#000000"><a href=#wo_110 style="text-decoration: none"><span style="color:#000000">RG</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_61 style="text-decoration: none"><span style="color:#000000">RG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3011,7 +3011,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Translation Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_104 style="text-decoration: none"><span style="color:#000000">TR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_55 style="text-decoration: none"><span style="color:#000000">TR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3066,7 +3066,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Lower Bulb">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#20B2AA">
-                                                <span style="color:#000000"><a href=#wo_97 style="text-decoration: none"><span style="color:#000000">LB</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_48 style="text-decoration: none"><span style="color:#000000">LB</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3121,7 +3121,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="State Rotunda">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_95 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_46 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3176,7 +3176,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Parliamentary Chambers">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_102 style="text-decoration: none"><span style="color:#000000">PC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_53 style="text-decoration: none"><span style="color:#000000">PC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3231,7 +3231,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Cloister Walk">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span style="color:#000000"><a href=#wo_108 style="text-decoration: none"><span style="color:#000000">CW</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_59 style="text-decoration: none"><span style="color:#000000">CW</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3286,7 +3286,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Walk's End">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span style="color:#000000"><a href=#wo_109 style="text-decoration: none"><span style="color:#000000">WE</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_60 style="text-decoration: none"><span style="color:#000000">WE</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3581,7 +3581,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Servant Quarters">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_126 style="text-decoration: none"><span style="color:#000000">SQ</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_77 style="text-decoration: none"><span style="color:#000000">SQ</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3636,7 +3636,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Law Library">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#8470FF">
-                                                <span style="color:#000000"><a href=#wo_96 style="text-decoration: none"><span style="color:#000000">LL</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_47 style="text-decoration: none"><span style="color:#000000">LL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3691,7 +3691,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Central Courtyard">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_92 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_43 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3746,7 +3746,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Ground Floor Helical Staircase">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_93 style="text-decoration: none"><span style="color:#000000">GF</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_44 style="text-decoration: none"><span style="color:#000000">GF</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3801,7 +3801,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Treasure Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span style="color:#000000"><a href=#wo_88 style="text-decoration: none"><span style="color:#000000">TR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_39 style="text-decoration: none"><span style="color:#000000">TR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3856,7 +3856,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Scrying Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#F08080">
-                                                <span style="color:#000000"><a href=#wo_111 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_62 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4151,7 +4151,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Enormous Kitchen">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_125 style="text-decoration: none"><span style="color:#000000">EK</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_76 style="text-decoration: none"><span style="color:#000000">EK</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4206,7 +4206,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Great Dining Hall">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_103 style="text-decoration: none"><span style="color:#000000">GD</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_54 style="text-decoration: none"><span style="color:#000000">GD</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4261,7 +4261,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Entrance Hall">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_84 style="text-decoration: none"><span style="color:#000000">EH</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_35 style="text-decoration: none"><span style="color:#000000">EH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4316,7 +4316,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Scarlet Gallery">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span style="color:#000000"><a href=#wo_85 style="text-decoration: none"><span style="color:#000000">SG</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_36 style="text-decoration: none"><span style="color:#000000">SG</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4371,7 +4371,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gallery of Historical Paintings">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span style="color:#000000"><a href=#wo_87 style="text-decoration: none"><span style="color:#000000">GH</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_38 style="text-decoration: none"><span style="color:#000000">GH</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4426,7 +4426,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Maze Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span style="color:#000000"><a href=#wo_89 style="text-decoration: none"><span style="color:#000000">MR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_40 style="text-decoration: none"><span style="color:#000000">MR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4768,7 +4768,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Guard Tower">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#FFB6C1">
-                                                <span style="color:#000000"><a href=#wo_127 style="text-decoration: none"><span style="color:#000000">GT</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_78 style="text-decoration: none"><span style="color:#000000">GT</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4823,7 +4823,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Drawbridge">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#98FB98">
-                                                <span style="color:#000000"><a href=#wo_83 style="text-decoration: none"><span style="color:#000000"><b>Dr</b></span></a></span>
+                                                <span style="color:#000000"><a href=#wo_34 style="text-decoration: none"><span style="color:#000000"><b>Dr</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -4925,7 +4925,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Scarlet Tower">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#E0FFFF">
-                                                <span style="color:#000000"><a href=#wo_86 style="text-decoration: none"><span style="color:#000000">ST</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_37 style="text-decoration: none"><span style="color:#000000">ST</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5508,7 +5508,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Rooted Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_122 style="text-decoration: none"><span style="color:#000000">RR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_73 style="text-decoration: none"><span style="color:#000000">RR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5897,7 +5897,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Virgin's End">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_113 style="text-decoration: none"><span style="color:#000000">VE</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_64 style="text-decoration: none"><span style="color:#000000">VE</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -5952,7 +5952,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Lucrezia's Study">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_121 style="text-decoration: none"><span style="color:#000000">LS</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_72 style="text-decoration: none"><span style="color:#000000">LS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6007,7 +6007,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Tight Passage">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_120 style="text-decoration: none"><span style="color:#000000">TP</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_71 style="text-decoration: none"><span style="color:#000000">TP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6062,7 +6062,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Bell Castings">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_123 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_74 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6117,7 +6117,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Wax Supply">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_124 style="text-decoration: none"><span style="color:#000000">WS</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_75 style="text-decoration: none"><span style="color:#000000">WS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6412,7 +6412,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Apprentice's Workshop">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_116 style="text-decoration: none"><span style="color:#000000">AW</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_67 style="text-decoration: none"><span style="color:#000000">AW</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6467,7 +6467,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Central Crypt">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_112 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_63 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6522,7 +6522,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Father's Regret">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_114 style="text-decoration: none"><span style="color:#000000">FR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_65 style="text-decoration: none"><span style="color:#000000">FR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -6624,7 +6624,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Zoo">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_91 style="text-decoration: none"><span style="color:#000000">Zo</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_42 style="text-decoration: none"><span style="color:#000000">Zo</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7013,7 +7013,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Debtor's Paradise">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_115 style="text-decoration: none"><span style="color:#000000">DP</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_66 style="text-decoration: none"><span style="color:#000000">DP</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7115,7 +7115,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Rocky Chamber">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_117 style="text-decoration: none"><span style="color:#000000">RC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_68 style="text-decoration: none"><span style="color:#000000">RC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7217,7 +7217,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Bear Corridor">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#ADD8E6">
-                                                <span style="color:#000000"><a href=#wo_90 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_41 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -7612,7 +7612,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Press Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_119 style="text-decoration: none"><span style="color:#000000">PR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_70 style="text-decoration: none"><span style="color:#000000">PR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -8142,7 +8142,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Dank Room">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#DDA0DD">
-                                                <span style="color:#000000"><a href=#wo_118 style="text-decoration: none"><span style="color:#000000">DR</span></a></span>
+                                                <span style="color:#000000"><a href=#wo_69 style="text-decoration: none"><span style="color:#000000">DR</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -8539,7 +8539,7 @@
             <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Drawbridge">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#98FB98">
-                        <span style="color:#000000"><a href=#wo_83 style="text-decoration: none"><span style="color:#000000"><b>Dr</b></span></a></span>
+                        <span style="color:#000000"><a href=#wo_34 style="text-decoration: none"><span style="color:#000000"><b>Dr</b></span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8560,7 +8560,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Bear Corridor">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#ADD8E6">
-                        <span style="color:#000000"><a href=#wo_90 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
+                        <span style="color:#000000"><a href=#wo_41 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8581,7 +8581,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Central Crypt">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#DDA0DD">
-                        <span style="color:#000000"><a href=#wo_112 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
+                        <span style="color:#000000"><a href=#wo_63 style="text-decoration: none"><span style="color:#000000">CC</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8602,7 +8602,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Lower Bulb">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#20B2AA">
-                        <span style="color:#000000"><a href=#wo_97 style="text-decoration: none"><span style="color:#000000">LB</span></a></span>
+                        <span style="color:#000000"><a href=#wo_48 style="text-decoration: none"><span style="color:#000000">LB</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8623,7 +8623,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="State Rotunda">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#8470FF">
-                        <span style="color:#000000"><a href=#wo_95 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
+                        <span style="color:#000000"><a href=#wo_46 style="text-decoration: none"><span style="color:#000000">SR</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8644,7 +8644,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Upstairs Helical Staircase">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#FFDEAD">
-                        <span style="color:#000000"><a href=#wo_94 style="text-decoration: none"><span style="color:#000000">UH</span></a></span>
+                        <span style="color:#000000"><a href=#wo_45 style="text-decoration: none"><span style="color:#000000">UH</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8665,7 +8665,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="White Gallery">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#D02090">
-                        <span style="color:#000000"><a href=#wo_129 style="text-decoration: none"><span style="color:#000000">WG</span></a></span>
+                        <span style="color:#000000"><a href=#wo_80 style="text-decoration: none"><span style="color:#000000">WG</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8686,7 +8686,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Scarlet Gallery">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#E0FFFF">
-                        <span style="color:#000000"><a href=#wo_85 style="text-decoration: none"><span style="color:#000000">SG</span></a></span>
+                        <span style="color:#000000"><a href=#wo_36 style="text-decoration: none"><span style="color:#000000">SG</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8707,7 +8707,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Cloister Walk">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#F08080">
-                        <span style="color:#000000"><a href=#wo_108 style="text-decoration: none"><span style="color:#000000">CW</span></a></span>
+                        <span style="color:#000000"><a href=#wo_59 style="text-decoration: none"><span style="color:#000000">CW</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8728,7 +8728,7 @@
             <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Entrance Hall">
                 <tr>
                     <td valign="middle" align="center" bgcolor="#FFB6C1">
-                        <span style="color:#000000"><a href=#wo_84 style="text-decoration: none"><span style="color:#000000">EH</span></a></span>
+                        <span style="color:#000000"><a href=#wo_35 style="text-decoration: none"><span style="color:#000000">EH</span></a></span>
                     </td>
                 </tr>
             </table>
@@ -8745,7 +8745,7 @@
 <hr>
 <a name=MDETAILS></a><b>The <i>Great Outdoors</i> region</b><p>
 
-<p><a name=></a><a name=wo_83><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_34><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -8993,7 +8993,7 @@
 <hr>
 <b>The <i>Basement</i> region</b><p>
 
-<p><a name=></a><a name=wo_90><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_41><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9156,7 +9156,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_91><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_42><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9320,7 +9320,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_117><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_68><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9483,7 +9483,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_120><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_71><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9689,7 +9689,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_121><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_72><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -9893,7 +9893,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_122><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_73><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10057,7 +10057,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_123><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_74><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10220,7 +10220,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_124><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_75><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10384,7 +10384,7 @@
 <hr>
 <b>The <i>Haunted Area</i> region</b><p>
 
-<p><a name=></a><a name=wo_112><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10592,7 +10592,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_113><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10756,7 +10756,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_114><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -10922,7 +10922,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_115><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11129,7 +11129,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_116><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_67><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11336,7 +11336,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_118><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_69><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11541,7 +11541,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_119><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_70><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11704,7 +11704,7 @@
 <hr>
 <b>The <i>Hourglass</i> region</b><p>
 
-<p><a name=></a><a name=wo_97><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_48><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -11911,7 +11911,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_98><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_49><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12161,7 +12161,7 @@
 <hr>
 <b>The <i>State Rooms</i> region</b><p>
 
-<p><a name=></a><a name=wo_95><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_46><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12326,7 +12326,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_96><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_47><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12533,7 +12533,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_99><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_50><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12739,7 +12739,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_100><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_51><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -12902,7 +12902,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_101><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_52><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13064,7 +13064,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_102><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_53><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13227,7 +13227,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_104><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_55><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13389,7 +13389,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_105><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_56><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13553,7 +13553,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_106><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_57><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13715,7 +13715,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_107><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_58><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -13878,7 +13878,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_128><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_79><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14084,7 +14084,7 @@
 <hr>
 <b>The <i>Apartments</i> region</b><p>
 
-<p><a name=></a><a name=wo_94><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_45><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14289,7 +14289,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_130><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_81><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14498,7 +14498,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_131><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_82><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14660,7 +14660,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_132><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_83><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14822,7 +14822,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_133><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_84><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -14984,7 +14984,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_134><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_85><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15147,7 +15147,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_135><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_86><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15310,7 +15310,7 @@
 <hr>
 <b>The <i>Stinky</i> region</b><p>
 
-<p><a name=></a><a name=wo_129><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_80><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15515,7 +15515,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_136><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_87><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15721,7 +15721,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_137><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_88><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -15884,7 +15884,7 @@
 <hr>
 <b>The <i>Old Castle</i> region</b><p>
 
-<p><a name=></a><a name=wo_85><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_36><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16049,7 +16049,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_86><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_37><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16211,7 +16211,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_87><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_38><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16374,7 +16374,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_88><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_39><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16579,7 +16579,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_89><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_40><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16743,7 +16743,7 @@
 <hr>
 <b>The <i>Enclosed</i> region</b><p>
 
-<p><a name=></a><a name=wo_108><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_59><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -16907,7 +16907,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_109><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_60><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -17071,7 +17071,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_110><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_61><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -17235,7 +17235,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_111><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -17441,7 +17441,7 @@
 <hr>
 <b>The <i>Main Castle</i> region</b><p>
 
-<p><a name=></a><a name=wo_84><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_35><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -17649,7 +17649,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_92><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_43><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -17813,7 +17813,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_93><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_44><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -18018,7 +18018,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_103><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_54><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -18182,7 +18182,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_125><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_76><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -18345,7 +18345,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_126><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_77><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 
@@ -18550,7 +18550,7 @@
 </p>
 
 
-<p><a name=></a><a name=wo_127><table border="0" cellspacing="0" cellpadding="0">
+<p><a name=></a><a name=wo_78><table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" valign="top">
 

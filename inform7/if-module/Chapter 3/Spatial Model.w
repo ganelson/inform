@@ -456,6 +456,7 @@ int Spatial::IF_complete_model(int stage) {
 		case 2: Spatial::spatial_stage_II(); break;
 		case 3: Spatial::spatial_stage_III(); break;
 		case 4: Spatial::spatial_stage_IV(); break;
+		case 5: Spatial::spatial_stage_V(); break;
 	}
 	return FALSE;
 }
@@ -1157,7 +1158,7 @@ int Spatial::get_definition_depth(instance *I) {
 	return 0;
 }
 
-@ At last, Stage IV. We're all done except for a little checking of the
+@ By Stage IV we're nearly all done, except for a little checking of the
 degenerate case where Inform is just binding up an existing story file, so
 that there's really no spatial model at all -- the world is, or should be,
 empty.
@@ -1180,4 +1181,26 @@ int Spatial::spatial_stage_IV(void) {
 			}
 	}
 	return FALSE;
+}
+
+@ At last Stage V, where the only remaining task is to set the benchmark room.
+It's where the player begins, or if the player begins out of play for some
+reason, it's the first-created room. (The benchmark is used only in indexing.)
+
+=
+instance *benchmark_room = NULL;
+int Spatial::spatial_stage_V(void) {
+	benchmark_room = Player::get_start_room();
+	if (benchmark_room == NULL) {
+		instance *R;
+		LOOP_OVER_INSTANCES(R, K_room) {
+			benchmark_room = R;
+			break;
+		}
+	}
+	return FALSE;
+}
+
+instance *Spatial::get_benchmark_room(void) {
+	return benchmark_room;
 }

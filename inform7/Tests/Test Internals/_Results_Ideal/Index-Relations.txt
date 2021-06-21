@@ -16,7 +16,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            leading-through&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            leading-through&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             one-to-various&nbsp;&nbsp;&nbsp;&nbsp;
@@ -30,7 +30,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            lock-fitting&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            lock-fitting&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             one-to-various&nbsp;&nbsp;&nbsp;&nbsp;
@@ -44,7 +44,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping north&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping north&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -58,7 +58,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping northeast&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping northeast&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping northwest&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping northwest&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -86,7 +86,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping south&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping south&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -100,7 +100,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping southeast&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping southeast&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -114,7 +114,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping southwest&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping southwest&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -128,7 +128,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping east&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping east&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -142,7 +142,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping west&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping west&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -156,7 +156,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping up&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping up&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -170,7 +170,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping down&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping down&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -184,7 +184,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping inside&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping inside&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;
@@ -198,7 +198,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            mapping outside&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Standard%20Rules.html' title="Standard Rules by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            mapping outside&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             map&nbsp;&nbsp;&nbsp;&nbsp;

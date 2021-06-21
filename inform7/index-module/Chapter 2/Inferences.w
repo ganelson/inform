@@ -78,7 +78,7 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 }
 
 @h Indexing properties of a specific subject.
-This only tells about specific property settings for a given instance.
+This only tells about specific property settings for a given faux_instance.
 
 =
 void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {

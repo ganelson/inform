@@ -24,7 +24,7 @@ this icon position, and has the same indexing as the icon grid.
 @d ICON_GRID_POS(P, i1, i2) (25*ROOM_GRID_POS(P) + 5*(i1) + (i2))
 
 =
-instance **room_grid = NULL;
+faux_instance **room_grid = NULL;
 int *icon_grid = NULL, *exit_grid = NULL;
 
 void PL::HTMLMap::calculate_map_grid(void) {
@@ -37,8 +37,8 @@ void PL::HTMLMap::calculate_map_grid(void) {
 @<Allocate the three mapping grids@> =
 	int size_needed = Geometry::cuboid_volume(Universe), x;
 
-	room_grid = (instance **)
-		(Memory::calloc(size_needed, sizeof(instance *), MAP_INDEX_MREASON));
+	room_grid = (faux_instance **)
+		(Memory::calloc(size_needed, sizeof(faux_instance *), MAP_INDEX_MREASON));
 	for (x=0; x<size_needed; x++) room_grid[x] = NULL;
 
 	icon_grid = (int *)
@@ -51,18 +51,18 @@ void PL::HTMLMap::calculate_map_grid(void) {
 	}
 
 @<Populate the room grid@> =
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		room_grid[ROOM_GRID_POS(Room_position(R))] = R;
 
 @<Populate the icon and exit grids@> =
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
 		int exit;
 		LOOP_OVER_STORY_DIRECTIONS(exit)
 			if (PL::SpatialMap::direction_is_mappable(exit)) {
-				instance *D = NULL; /* door which the exit passes through, if it does */
-				instance *T = PL::SpatialMap::room_exit(R, exit, &D); /* target at the other end */
+				faux_instance *D = NULL; /* door which the exit passes through, if it does */
+				faux_instance *T = PL::SpatialMap::room_exit(R, exit, &D); /* target at the other end */
 				if ((T) || (D))
 					@<Fill in the grid-square for this exit of room R@>;
 			}
@@ -147,13 +147,13 @@ is east from B to K. If so, we get both the fading and aligned bits.
 
 @<Set the fading bit if another room lies where the target ought to be@> =
 	vector Farend = Geometry::vec_plus(Room_position(R), E);
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		if ((R != T) && (Geometry::vec_eq(Room_position(R), Farend)))
 			bitmap |= FADING_MAPBIT;
 
 @<Apply the remaining nuance bits to the icon grid@> =
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		icon_grid[ICON_GRID_POS(Room_position(R), 2, 2)] = OCCUPIED_MAPBIT;
 
@@ -174,10 +174,10 @@ adjacent icons representing the same exit. Thus the east side icon of
 one room may need to be married up with the west side icon of the
 adjacent room, and so on. The four by four cornices diagonally in
 between rooms require special care. To plot a northeast exit blocked by
-a 2-sided door, for instance, requires all four icons to be plotted, but
+a 2-sided door, for faux_instance, requires all four icons to be plotted, but
 we need to be careful in case the two icons not occupied by the exit are
 needed for something else (if a northwest exit crossed over it, for
-instance).
+faux_instance).
 
 Here $P$ is the position of the room we're looking at, and $D$ an offset
 vector to one of its eight neighbouring cell positions on the map. If
@@ -420,24 +420,24 @@ from each other.)
 		L"Medium Spring Green", L"Medium Turquoise", L"Medium Violet Red",
 		L"Light Golden Rod Yellow" };
 
-	instance *RG;
+	faux_instance *RG;
 	int regc = 0;
-	LOOP_OVER_INSTANCES(RG, K_region)
-		if (MAP_DATA(RG)->world_index_colour == NULL)
-			MAP_DATA(RG)->world_index_colour =
+	LOOP_OVER_REGIONS(RG)
+		if (RG->fimd.colour == NULL)
+			RG->fimd.colour =
 				HTML::translate_colour_name(
 					some_map_colours[(regc++) % NO_REGION_COLOURS]);
 
 @<Choose a map colour for each room, based on its region membership@> =
 	wchar_t *default_room_col = HTML::translate_colour_name(L"Light Grey");
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
-		if (MAP_DATA(R)->world_index_colour == NULL) {
-			instance *reg = Regions::enclosing(R);
+		if (R->fimd.colour == NULL) {
+			faux_instance *reg = IXInstances::region_of(R);
 			if (reg)
-				MAP_DATA(R)->world_index_colour = MAP_DATA(reg)->world_index_colour;
+				R->fimd.colour = reg->fimd.colour;
 			else
-				MAP_DATA(R)->world_index_colour = default_room_col;
+				R->fimd.colour = default_room_col;
 		}
 
 @<Draw an HTML map for the whole Universe of rooms@> =
@@ -464,7 +464,7 @@ from each other.)
 
 @<Draw this level of the map@> =
 	int y_max = -1000000000, y_min = 1000000000; /* assuming there are fewer than 1 billion rooms */
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		if (Room_position(R).z == z) {
 			if (Room_position(R).y < y_min) y_min = Room_position(R).y;
@@ -485,16 +485,16 @@ from each other.)
 	HTML_CLOSE("td"); HTML_CLOSE("tr");
 
 @<Add a paragraph describing how non-standard directions are mapped@> =
-	instance *D; int k = 0;
-	LOOP_OVER_INSTANCES(D, K_direction) {
-		instance *A = PL::SpatialMap::mapped_as_if(D);
+	faux_instance *D; int k = 0;
+	LOOP_OVER_DIRECTIONS(D) {
+		faux_instance *A = PL::SpatialMap::mapped_as_if(D);
 		if (A) {
 			k++;
 			if (k == 1) {
 				HTML_OPEN("p"); WRITE("<i>Mapping ");
 			} else WRITE("; ");
-			wording DW = Instances::get_name(D, FALSE); /* name of the direction */
-			wording AW = Instances::get_name(A, FALSE); /* name of the as-direction */
+			wording DW = IXInstances::get_name(D); /* name of the direction */
+			wording AW = IXInstances::get_name(A); /* name of the as-direction */
 			WRITE("%+W as %+W", DW, AW);
 		}
 	}
@@ -512,7 +512,7 @@ void PL::HTMLMap::devise_level_rubric(int z, char **level_rubric, int *par) {
 			 if (z == Universe.corner1.z) *level_rubric = "Upper";
 			break;
 		default: {
-			int z_offset = z-Room_position(benchmark_room).z;
+			int z_offset = z - PL::SpatialMap::benchmark_level();
 			switch(z_offset) {
 			case 0: *level_rubric = "Starting level"; break;
 			case 1: *level_rubric = "First level up"; break;
@@ -544,11 +544,10 @@ This will only work if the main routine above has already been called, so
 that the grids are calculated, the region colours decided, and so on.
 
 =
-void PL::HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, instance *R) {
+void PL::HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, faux_instance *R) {
 	WRITE("\n\n");
 	HTML_OPEN("p");
-	noun *nt = Instances::get_noun(R);
-	Index::anchor(OUT, NounIdentifiers::identifier(nt));
+	Index::anchor(OUT, R->anchor_text);
 	HTML_TAG_WITH("a", "name=wo_%d", R->allocation_id);
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);
@@ -887,25 +886,25 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 	WRITE_TO(icon_name, "%s_arrow%s", clue, addendum);
 
 @<Compose a tool tip for this exit icon@> =
-	instance *D = NULL;
-	instance *I3 = PL::SpatialMap::room_exit(room_grid[ROOM_GRID_POS(P)], exit, &D);
+	faux_instance *D = NULL;
+	faux_instance *I3 = PL::SpatialMap::room_exit(room_grid[ROOM_GRID_POS(P)], exit, &D);
 	if ((I3) || (D)) {
 		WRITE_TO(tool_tip, "title=\"");
-		instance *I;
-		LOOP_OVER_INSTANCES(I, K_object)
-			if (InstanceCounting::IK_count(I, K_direction) == exit) {
-				WRITE_TO(tool_tip, "%+I", I);
+		faux_instance *I;
+		LOOP_OVER_OBJECTS(I)
+			if (I->direction_number == exit) {
+				IXInstances::write_name(tool_tip, I);
 				break;
 			}
 		if (D) {
 			if (I3 == NULL) WRITE_TO(tool_tip, " exit blocked by ");
 			else WRITE_TO(tool_tip, " through ");
-			WRITE_TO(tool_tip, "%+I", D);
+			IXInstances::write_name(tool_tip, D);
 
 		}
 		if (I3) {
 			WRITE_TO(tool_tip, " to ");
-			WRITE_TO(tool_tip, "%+I", I3);
+			IXInstances::write_name(tool_tip, I3);
 		}
 		WRITE_TO(tool_tip, "\"");
 	}
@@ -920,21 +919,21 @@ which are bordered and coloured single-cell tables.
 @d ROOM_TEXT_COLOUR "000000"
 
 =
-void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
+void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	if (I) {
 		int b = ROOM_BORDER_SIZE;
-		if ((I == benchmark_room) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
+		if ((I == faux_benchmark) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
 		HTML_OPEN_WITH("table",
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" "
-			"title=\"%+I\"",
-			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, I);
+			"title=\"%+W\"",
+			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, IXInstances::get_name(I));
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
-			MAP_DATA(I)->world_index_colour);
+			I->fimd.colour);
 		TEMPORARY_TEXT(col)
-		if (MAP_DATA(I)->world_index_text_colour)
-			WRITE_TO(col, "%w", MAP_DATA(I)->world_index_text_colour);
+		if (I->fimd.text_colour)
+			WRITE_TO(col, "%w", I->fimd.text_colour);
 		else
 			WRITE_TO(col, "%s", ROOM_TEXT_COLOUR);
 		HTML::begin_colour(OUT, col);
@@ -958,7 +957,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 			I->allocation_id);
 		HTML::begin_colour(OUT, col);
 	}
-	if ((pass == 1) && (I == benchmark_room)) HTML_OPEN("b");
+	if ((pass == 1) && (I == faux_benchmark)) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
 	@<Work out the abbreviation for this room's name@>;
 	#ifdef HTML_MAP_FONT_SIZE
@@ -969,13 +968,13 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_CLOSE("span");
 	#endif
-	if ((pass == 1) && (I == benchmark_room)) HTML_CLOSE("b");
+	if ((pass == 1) && (I == faux_benchmark)) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
 
-@ When names are abbreviated for use on the World Index map (for instance,
+@ When names are abbreviated for use on the World Index map (for faux_instance,
 "Marble Hallway" becomes "MH") each word is tested against the following
-nonterminal; those which match are omitted. So, for instance, "Queen Of The
+nonterminal; those which match are omitted. So, for faux_instance, "Queen Of The
 South" comes out as "QS".
 
 =
@@ -985,7 +984,7 @@ South" comes out as "QS".
 	<article>
 
 @<Work out the abbreviation for this room's name@> =
-	wording W = Instances::get_name(I, FALSE);
+	wording W = IXInstances::get_name(I);
 	if (Wordings::nonempty(W)) {
 		int c = 0;
 		LOOP_THROUGH_WORDING(i, W) {
@@ -1010,17 +1009,17 @@ The first of two extras, which aren't strictly speaking part of the HTML map.
 This is the chip shown on the "details" box for a room in the World Index.
 
 =
-void PL::HTMLMap::colour_chip(OUTPUT_STREAM, instance *I, instance *Reg, parse_node *at) {
+void PL::HTMLMap::colour_chip(OUTPUT_STREAM, faux_instance *I, faux_instance *Reg, int at) {
 	HTML_OPEN_WITH("table",
 		"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 		"bordercolor=\"#%s\" height=\"%d\"",
 		ROOM_BORDER_SIZE, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
-		MAP_DATA(Reg)->world_index_colour);
+		Reg->fimd.colour);
 	WRITE("&nbsp;");
-	PL::SpatialMap::write_name(OUT, Reg); WRITE(" region");
-	if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+	IXInstances::write_name(OUT, Reg); WRITE(" region");
+	if (at > 0) Index::link(OUT, at);
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -1034,24 +1033,24 @@ that nothing is shown if all of the rooms are outside of regions.
 
 =
 void PL::HTMLMap::add_region_key(OUTPUT_STREAM) {
-	instance *reg; int count = 0;
-	LOOP_OVER_INSTANCES(reg, K_region)
+	faux_instance *reg; int count = 0;
+	LOOP_OVER_REGIONS(reg)
 		count += PL::HTMLMap::add_key_for(OUT, reg);
 	if (count > 0) count += PL::HTMLMap::add_key_for(OUT, NULL);
 	if (count > 0) HTML_TAG("hr");
 }
 
-int PL::HTMLMap::add_key_for(OUTPUT_STREAM, instance *reg) {
+int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 	int count = 0;
-	instance *R;
+	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		if (Regions::enclosing(R) == reg) {
+		if (IXInstances::region_of(R) == reg) {
 			if (count++ == 0) {
 				@<Start the region key table for this region@>;
 			} else {
 				WRITE(", ");
 			}
-			WRITE("%+W", Instances::get_name(R, FALSE));
+			WRITE("%+W", IXInstances::get_name(R));
 		}
 	}
 	if (count > 0) @<End the region key table for this region@>;
@@ -1067,7 +1066,7 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, instance *reg) {
 	HTML_CLOSE("td"); WRITE("\n");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"left\"");
 	WRITE("<b>");
-	wording W = Instances::get_name(reg, FALSE);
+	wording W = IXInstances::get_name(reg);
 	if (reg) WRITE("%+W", W);
 	else WRITE("<i>Not in any region</i>");
 	WRITE("</b>: ");

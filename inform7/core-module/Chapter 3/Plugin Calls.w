@@ -648,7 +648,7 @@ the regions plugin uses this to put colour chips next to names of regions.
 @e ADD_TO_WORLD_INDEX_PLUG
 
 =
-int PluginCalls::add_to_World_index(OUTPUT_STREAM, instance *O) {
+int PluginCalls::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 	PLUGINS_CALL(ADD_TO_WORLD_INDEX_PLUG, OUT, O);
 }
 
@@ -658,6 +658,6 @@ the mapping plugin uses this to say where a door leads.
 
 @e ANNOTATE_IN_WORLD_INDEX_PLUG
 
-int PluginCalls::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
+int PluginCalls::annotate_in_World_index(OUTPUT_STREAM, faux_instance *O) {
 	PLUGINS_CALL(ANNOTATE_IN_WORLD_INDEX_PLUG, OUT, O);
 }
