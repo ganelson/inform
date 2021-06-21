@@ -1,0 +1,22 @@
+1. MT
+Map component 0: extent (0...2, -3...0, 0...0): population 8
+  0,   0,   0:   Fort James  (benchmark)
+  0,  -1,   0:   Thames Street End
+  0,  -2,   0:   Lime Street
+  1,  -1,   0:   Water Lane
+  2,  -1,   0:   Thames Street at the Wherry Bridge
+  2,  -2,   0:   Private Alley
+  2,  -3,   0:   Queen Street East
+  1,  -3,   0:   Queen Street Middle
+
+Map component 1: extent (3...3, -3...-3, 0...1): population 2
+  3,  -3,   0:   Feathers
+  3,  -3,   1:   Feathers Bedroom
+
+Map component 2: extent (1...1, -2...-2, 0...0): population 1
+  1,  -2,   0:   Brothel
+
+Map component 3: extent (0...0, -3...-3, 0...0): population 1
+  0,  -3,   0:   Other Brothel
+
+

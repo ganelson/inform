@@ -1,0 +1,9 @@
+1. MT
+Map component 0: extent (-1...1, -1...1, 0...0): population 5
+ -1,   1,   0:   Alpha  (benchmark)
+ -1,  -1,   0:   Gamma
+  1,  -1,   0:   Delta
+  1,   1,   0:   Beta
+  0,   0,   0:   Epsilon
+
+

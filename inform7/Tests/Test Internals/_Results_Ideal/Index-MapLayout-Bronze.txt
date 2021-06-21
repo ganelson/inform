@@ -1,0 +1,59 @@
+1. MT
+Map component 0: extent (-2...3, 0...4, -2...1): population 55
+  0,   0,   0:   Drawbridge  (benchmark)
+  0,   1,   0:   Entrance Hall
+  0,   2,   0:   Central Courtyard
+  0,   3,   0:   State Rotunda
+ -1,   2,   0:   Law Library
+ -1,   3,   0:   Lower Bulb
+ -2,   3,   0:   Translation Room
+ -1,   3,   1:   Upper Bulb
+ -2,   2,   1:   Smoke-Damaged Chamber
+ -2,   1,   1:   Burnt Frame
+ -1,   1,   1:   Black Gallery
+ -1,   2,   1:   Lie Library
+ -1,   0,   1:   Armory
+  0,   3,   1:   Gallery of Still Life
+  1,   3,   1:   White Gallery
+  2,   3,   1:   Bellroom
+  2,   2,   1:   Private Parlor
+  2,   1,   1:   Crystal Bedroom
+  2,   0,   1:   Gilded Balcony
+  3,   1,   1:   Empty Bedroom
+  1,   1,   1:   Green Bedroom
+  3,   2,   1:   Guest Bedroom
+  1,   2,   1:   Upstairs Helical Staircase
+  1,   2,   0:   Ground Floor Helical Staircase
+  3,   3,   1:   Apothecary
+ -2,   3,   1:   Records Room
+ -1,   1,   0:   Great Dining Hall
+ -2,   1,   0:   Enormous Kitchen
+ -2,   2,   0:   Servant Quarters
+ -2,   2,  -1:   Apprentice's Workshop
+ -1,   3,  -1:   Virgin's End
+ -1,   2,  -1:   Central Crypt
+ -1,   1,  -1:   Debtor's Paradise
+  0,   2,  -1:   Father's Regret
+  1,   3,  -1:   Tight Passage
+  2,   4,  -1:   Rooted Room
+  2,   3,  -1:   Bell Castings
+  3,   3,  -1:   Wax Supply
+  2,   2,  -1:   Zoo
+  3,   1,  -1:   Bear Corridor
+  3,   1,   0:   Maze Room
+  2,   1,   0:   Gallery of Historical Paintings
+  1,   1,   0:   Scarlet Gallery
+  2,   2,   0:   Treasure Room
+  3,   2,   0:   Scrying Room
+  3,   3,   0:   Walk's End
+  2,   4,   0:   Rose Garden
+  2,   3,   0:   Cloister Walk
+  1,   3,   0:   Parliamentary Chambers
+  2,   0,   0:   Scarlet Tower
+  1,   1,  -1:   Rocky Chamber
+  0,   3,  -1:   Lucrezia's Study
+ -1,   1,  -2:   Dank Room
+ -1,   2,  -2:   Press Room
+ -1,   0,   0:   Guard Tower
+
+

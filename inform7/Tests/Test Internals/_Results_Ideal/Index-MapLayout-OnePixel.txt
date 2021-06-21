@@ -1,0 +1,12 @@
+1. MT
+Map component 0: extent (-1...1, -1...1, -1...1): population 8
+  0,   0,   0:   Chateau Bibliotheque  (benchmark)
+  0,   1,   0:   Isle
+  0,  -1,   0:   Miscellany Manana
+  1,   0,   0:   Alphabet Soup
+  1,  -1,   0:   Gaming Lounge
+  1,   0,   1:   Astrological Observatory
+  1,   0,  -1:   Danger Zone
+ -1,   0,   0:   Deutsche Universitat Bucherei
+
+

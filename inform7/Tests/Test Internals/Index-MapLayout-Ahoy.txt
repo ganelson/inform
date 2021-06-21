@@ -1,0 +1,24 @@
+"The Ahoy There Affair"
+
+starboard is a direction. The opposite of starboard is port.
+port is a direction. The opposite of port is starboard.
+fore is a direction. The opposite of fore is aft.
+aft is a direction. The opposite of aft is fore.
+Fish Room is a room.
+The player is in Fish Room.
+Spirit Room is a room.
+After Powder Magazine is a room.
+Bread Room is a room.
+After Powder Magazine is starboard of Fish Room.
+Spirit Room is fore of Fish Room.
+Fish Room is aft of Spirit Room.
+Fish Room is port of After Powder Magazine.
+Bread Room is aft of After Powder Magazine.
+After Powder Magazine is fore of Bread Room.
+
+Index map with fore mapped as north.
+Index map with aft mapped as south.
+Index map with port mapped as west.
+Index map with starboard mapped as east.
+
+Test index (internal) with MT.

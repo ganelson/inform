@@ -12,25 +12,29 @@ instance) Spatial.
 
 =
 int suppress_panel_changes = FALSE;
-void IXPhysicalWorld::render(OUTPUT_STREAM) {
+void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
 	if (PluginManager::active(map_plugin) == FALSE) return; /* in this case there is no model world */
 
 	PL::SpatialMap::establish_benchmark_room();
 	PL::EPSMap::traverse_for_map_parameters(1);
 	PL::SpatialMap::establish_spatial_coordinates();
-	PL::HTMLMap::render_map_as_HTML(OUT);
-	PL::HTMLMap::add_region_key(OUT);
-	PL::EPSMap::render_map_as_EPS();
+	if (test_only) {
+		PL::SpatialMap::perform_map_internal_test(OUT);
+	} else {
+		PL::HTMLMap::render_map_as_HTML(OUT);
+		PL::HTMLMap::add_region_key(OUT);
+		PL::EPSMap::render_map_as_EPS();
 
-	IXBackdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
+		IXBackdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
 
-	Index::anchor(OUT, I"MDETAILS");
-	int unruly = FALSE;
-	@<Mark parts, directions and kinds as ineligible for listing in the World index@>;
-	@<Give room details within each region in turn in the World index@>;
-	@<Give room details for rooms outside any region in the World index@>;
-	@<Give details of everything still unmentioned in the World index@>;
+		Index::anchor(OUT, I"MDETAILS");
+		int unruly = FALSE;
+		@<Mark parts, directions and kinds as ineligible for listing in the World index@>;
+		@<Give room details within each region in turn in the World index@>;
+		@<Give room details for rooms outside any region in the World index@>;
+		@<Give details of everything still unmentioned in the World index@>;
+	}
 }
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =

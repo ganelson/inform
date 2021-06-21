@@ -1,0 +1,7 @@
+"The Crossfire Affair"
+
+Aleph is southwest of Beth. Beth is northwest of Gimel.
+Daleth is southwest of Gimel. Aleph is northwest of Daleth.
+Aleph is west of Gimel. Beth is north of Daleth.
+
+Test index (internal) with MT.

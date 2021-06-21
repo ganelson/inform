@@ -1,0 +1,19 @@
+1. MT
+Map component 0: extent (0...7, 0...5, 0...0): population 15
+  0,   4,   0:   Partick  (benchmark)
+  3,   4,   0:   Kelvinhall
+  4,   5,   0:   Hillhead
+  5,   5,   0:   Kelvinbridge
+  6,   4,   0:   St Georges Cross
+  7,   4,   0:   Cowcaddens
+  7,   3,   0:   Buchanan Street
+  7,   2,   0:   St Enoch
+  7,   1,   0:   Bridge Street
+  6,   0,   0:   West Street
+  3,   0,   0:   Shields Road
+  2,   0,   0:   Kinning Park
+  1,   0,   0:   Cessnock
+  0,   0,   0:   Ibrox
+  0,   1,   0:   Govan
+
+

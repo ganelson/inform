@@ -2915,19 +2915,12 @@ void PL::SpatialMap::write_name(OUTPUT_STREAM, instance *I) {
 }
 
 @h Unit testing.
-The internal test case "map" produces a list of spatial coordinates for
-rooms:
 
 =
-void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM,
-	struct internal_test_case *itc) {
-	PL::SpatialMap::establish_benchmark_room();
-	PL::EPSMap::traverse_for_map_parameters(1);
-	PL::SpatialMap::establish_spatial_coordinates();
+void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 	connected_submap *sub;
 	LOOP_OVER(sub, connected_submap) {
-		LOG("\nMap component %d: "
-			"extent (%d...%d, %d...%d, %d...%d): population %d\n",
+		WRITE("Map component %d: extent (%d...%d, %d...%d, %d...%d): population %d\n",
 			sub->allocation_id,
 			sub->bounds.corner0.x, sub->bounds.corner1.x,
 			sub->bounds.corner0.y, sub->bounds.corner1.y,
@@ -2935,12 +2928,14 @@ void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM,
 			sub->bounds.population);
 		instance *R;
 		LOOP_OVER_SUBMAP(R, sub) {
-			wording W = Instances::get_name(R, FALSE);
-			if (R == benchmark_room) LOG("Benchmark: ");
-			LOG("%W: %d, %d, %d\n", W,
+			WRITE("%3d, %3d, %3d:   ",
 				Room_position(R).x,
 				Room_position(R).y,
 				Room_position(R).z);
+			PL::SpatialMap::write_name(OUT, R);
+			if (R == benchmark_room) WRITE("  (benchmark)");
+			WRITE("\n");
 		}
+		WRITE("\n");
 	}
 }

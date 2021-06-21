@@ -1,0 +1,194 @@
+1. MT
+Map component 0: extent (-3...2, 0...7, 0...1): population 28
+  0,   0,   0:   Longwall Street  (benchmark)
+ -1,   0,   0:   Turret Roundhouse
+  1,   0,   0:   Stone Mound
+ -1,   0,   1:   Turret Alcove
+  0,   1,   0:   Fallen Tree
+  1,   2,   0:   Fullers' Town-House
+  0,   2,   0:   Broken Lane
+ -1,   2,   0:   Sunken Courtyard East
+ -2,   3,   0:   Sunken Courtyard North
+ -3,   2,   0:   Sunken Courtyard West
+ -2,   1,   0:   Sunken Courtyard South
+ -3,   1,   0:   Apothecary's Workshop
+ -2,   2,   0:   Sump of the Fountain-Grove
+  0,   3,   0:   Gravel Track
+  0,   4,   0:   Icefinger Ford
+ -1,   5,   0:   Divide
+ -2,   5,   0:   Source of the Icefinger
+  1,   3,   0:   Marshy Hollow
+  2,   3,   0:   Log Pontoon
+  0,   5,   0:   Ziggurat
+  0,   6,   0:   Exalted Throne
+  1,   6,   0:   Budless Grove
+  2,   6,   0:   Hedge Archway
+ -1,   6,   0:   Dry Channel
+ -2,   6,   0:   Temple Plaza
+ -2,   7,   0:   Knotted Room
+ -2,   7,   1:   Dim Garret
+  0,   7,   0:   Old School Yard
+
+Map component 1: extent (6...6, 0...0, 0...0): population 1
+  6,   0,   0:   Sanctum Sanctorum
+
+Map component 2: extent (-3...-3, 6...6, 0...0): population 1
+ -3,   6,   0:   Shrine of the Pinnacle
+
+Map component 3: extent (1...1, 5...5, 0...0): population 1
+  1,   5,   0:   Robing Room
+
+Map component 4: extent (7...7, 0...0, 0...0): population 1
+  7,   0,   0:   Solid Rock
+
+Map component 5: extent (7...7, 1...1, 0...0): population 1
+  7,   1,   0:   Terra Incognita
+
+Map component 6: extent (7...7, 2...2, 0...0): population 1
+  7,   2,   0:   LR0
+
+Map component 7: extent (7...7, 3...3, 0...0): population 1
+  7,   3,   0:   LR1
+
+Map component 8: extent (7...7, 4...4, 0...0): population 1
+  7,   4,   0:   LR2
+
+Map component 9: extent (7...7, 5...5, 0...0): population 1
+  7,   5,   0:   LR3
+
+Map component 10: extent (8...8, 0...0, 0...0): population 1
+  8,   0,   0:   LR4
+
+Map component 11: extent (8...8, 1...1, 0...0): population 1
+  8,   1,   0:   LR5
+
+Map component 12: extent (8...8, 2...2, 0...0): population 1
+  8,   2,   0:   LR6
+
+Map component 13: extent (8...8, 3...3, 0...0): population 1
+  8,   3,   0:   LR7
+
+Map component 14: extent (8...8, 4...4, 0...0): population 1
+  8,   4,   0:   LR8
+
+Map component 15: extent (8...8, 5...5, 0...0): population 1
+  8,   5,   0:   LR9
+
+Map component 16: extent (9...9, 0...0, 0...0): population 1
+  9,   0,   0:   LR10
+
+Map component 17: extent (9...9, 1...1, 0...0): population 1
+  9,   1,   0:   LR11
+
+Map component 18: extent (9...9, 2...2, 0...0): population 1
+  9,   2,   0:   LR12
+
+Map component 19: extent (9...9, 3...3, 0...0): population 1
+  9,   3,   0:   LR13
+
+Map component 20: extent (9...9, 4...4, 0...0): population 1
+  9,   4,   0:   LR14
+
+Map component 21: extent (9...9, 5...5, 0...0): population 1
+  9,   5,   0:   LR15
+
+Map component 22: extent (10...10, 0...0, 0...0): population 1
+ 10,   0,   0:   LR16
+
+Map component 23: extent (10...10, 1...1, 0...0): population 1
+ 10,   1,   0:   LR17
+
+Map component 24: extent (10...10, 2...2, 0...0): population 1
+ 10,   2,   0:   LR18
+
+Map component 25: extent (10...10, 3...3, 0...0): population 1
+ 10,   3,   0:   LR19
+
+Map component 26: extent (10...10, 4...4, 0...0): population 1
+ 10,   4,   0:   LR20
+
+Map component 27: extent (10...10, 5...5, 0...0): population 1
+ 10,   5,   0:   LR21
+
+Map component 28: extent (11...11, 0...0, 0...0): population 1
+ 11,   0,   0:   LR22
+
+Map component 29: extent (11...11, 1...1, 0...0): population 1
+ 11,   1,   0:   LR23
+
+Map component 30: extent (11...11, 2...2, 0...0): population 1
+ 11,   2,   0:   LR24
+
+Map component 31: extent (11...11, 3...3, 0...0): population 1
+ 11,   3,   0:   LR25
+
+Map component 32: extent (11...11, 4...4, 0...0): population 1
+ 11,   4,   0:   LR26
+
+Map component 33: extent (11...11, 5...5, 0...0): population 1
+ 11,   5,   0:   LR27
+
+Map component 34: extent (12...12, 0...0, 0...0): population 1
+ 12,   0,   0:   LR28
+
+Map component 35: extent (12...12, 1...1, 0...0): population 1
+ 12,   1,   0:   LR29
+
+Map component 36: extent (12...12, 2...2, 0...0): population 1
+ 12,   2,   0:   LR30
+
+Map component 37: extent (12...12, 3...3, 0...0): population 1
+ 12,   3,   0:   LR31
+
+Map component 38: extent (12...12, 4...4, 0...0): population 1
+ 12,   4,   0:   LR32
+
+Map component 39: extent (12...12, 5...5, 0...0): population 1
+ 12,   5,   0:   LR33
+
+Map component 40: extent (13...13, 0...0, 0...0): population 1
+ 13,   0,   0:   LR34
+
+Map component 41: extent (13...13, 1...1, 0...0): population 1
+ 13,   1,   0:   LR35
+
+Map component 42: extent (13...13, 2...2, 0...0): population 1
+ 13,   2,   0:   LR36
+
+Map component 43: extent (13...13, 3...3, 0...0): population 1
+ 13,   3,   0:   LR37
+
+Map component 44: extent (13...13, 4...4, 0...0): population 1
+ 13,   4,   0:   LR38
+
+Map component 45: extent (13...13, 5...5, 0...0): population 1
+ 13,   5,   0:   LR39
+
+Map component 46: extent (14...14, 0...0, 0...0): population 1
+ 14,   0,   0:   LR40
+
+Map component 47: extent (14...14, 1...1, 0...0): population 1
+ 14,   1,   0:   LR41
+
+Map component 48: extent (14...14, 2...2, 0...0): population 1
+ 14,   2,   0:   Temple of Peace
+
+Map component 49: extent (3...3, 2...2, 0...0): population 1
+  3,   2,   0:   Island in the Deep Pool
+
+Map component 50: extent (14...14, 3...3, 0...0): population 1
+ 14,   3,   0:   Dome of the White Bones
+
+Map component 51: extent (3...5, 0...2, 0...0): population 4
+  3,   1,   0:   Western Shore
+  4,   2,   0:   Northern Shore
+  5,   1,   0:   Eastern Shore
+  4,   0,   0:   Southern Shore
+
+Map component 52: extent (14...14, 4...4, 0...0): population 1
+ 14,   4,   0:   Archive Chamber
+
+Map component 53: extent (6...6, 1...1, 0...0): population 1
+  6,   1,   0:   Mutatis Mutandis
+
+

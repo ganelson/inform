@@ -1,0 +1,19 @@
+"The Glasgow Affair"
+
+Partick is west of Kelvinhall.
+Kelvinhall is southwest of Hillhead.
+Kelvinbridge is east of Hillhead.
+St Georges Cross is southeast of Kelvinbridge.
+Cowcaddens is east of St Georges Cross.
+Buchanan Street is south of Cowcaddens.
+St Enoch is south of Buchanan Street.
+Bridge Street is south of St Enoch.
+West Street is southwest of Bridge Street.
+Shields Road is west of West Street.
+Kinning Park is west of Shields Road.
+Cessnock is west of Kinning Park.
+Ibrox is west of Cessnock.
+Govan is north of Ibrox.
+Partick is north of Govan.
+
+Test index (internal) with MT.

@@ -1,0 +1,18 @@
+1. MT
+Map component 0: extent (-1...0, -1...0, 0...0): population 2
+  0,   0,   0:   Blockhouse A  (benchmark)
+ -1,  -1,   0:   Blockhouse B
+
+Map component 1: extent (1...2, -1...0, 0...0): population 2
+  2,  -1,   0:   Blockhouse C
+  1,   0,   0:   Blockhouse D
+
+Map component 2: extent (3...4, -1...0, 0...0): population 2
+  3,   0,   0:   Blockhouse E
+  4,  -1,   0:   Blockhouse F
+
+Map component 3: extent (5...6, -1...0, 0...0): population 2
+  5,  -1,   0:   Blockhouse G
+  6,   0,   0:   Blockhouse H
+
+

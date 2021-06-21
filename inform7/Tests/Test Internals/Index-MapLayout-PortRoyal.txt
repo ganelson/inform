@@ -1,0 +1,38 @@
+"The Port Royal Affair"
+
+Fort James is a room.
+Thames Street End is a room.
+Water Lane is a room.
+Thames Street at the Wherry Bridge is a room.
+Private Alley is a room.
+Feathers is a room.
+Feathers Bedroom is a room.
+Lime Street is a room.
+Queen Street East is a room.
+Queen Street Middle is a room.
+Brothel is a room.
+Other Brothel is a room.
+Thames Street End is south of Fort James.
+Fort James is north of Thames Street End.
+Lime Street is south of Thames Street End.
+Water Lane is east of Thames Street End.
+Thames Street at the Wherry Bridge is east of Water Lane.
+Thames Street End is west of Water Lane.
+Brothel is inside of Water Lane.
+Private Alley is south of Thames Street at the Wherry Bridge.
+Water Lane is west of Thames Street at the Wherry Bridge.
+Thames Street at the Wherry Bridge is north of Private Alley.
+Queen Street East is south of Private Alley.
+Feathers is inside of Private Alley.
+Feathers Bedroom is up of Feathers.
+Private Alley is outside of Feathers.
+Feathers is down of Feathers Bedroom.
+Thames Street End is north of Lime Street.
+Other Brothel is inside of Lime Street.
+Private Alley is north of Queen Street East.
+Queen Street Middle is west of Queen Street East.
+Queen Street East is east of Queen Street Middle.
+Water Lane is outside of Brothel.
+Lime Street is outside of Other Brothel.
+
+Test index (internal) with MT.

@@ -669,10 +669,8 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT); return; }
 
 	#ifdef CORE_MODULE
-	if (Str::eq_wide_string(elt, L"Mp")) {
-		IXPhysicalWorld::render(OUT);
-		return;
-	}
+	if (Str::eq_wide_string(elt, L"Mp")) { IXPhysicalWorld::render(OUT, FALSE); return; }
+	if (Str::eq_wide_string(elt, L"MT")) { IXPhysicalWorld::render(OUT, TRUE); return; }
 	#endif
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }

@@ -1,0 +1,27 @@
+"The One Pixel Affair"
+
+Chateau Bibliotheque is a room.
+The player is in Chateau Bibliotheque.
+Deutsche Universitat Bucherei is a room.
+Miscellany Manana is a room.
+Isle is a room.
+Alphabet Soup is a room.
+Gaming Lounge is a room.
+Astrological Observatory is a room.
+Danger Zone is a room.
+Isle is north of Chateau Bibliotheque.
+Miscellany Manana is south of Chateau Bibliotheque.
+Alphabet Soup is east of Chateau Bibliotheque.
+Deutsche Universitat Bucherei is west of Chateau Bibliotheque.
+Chateau Bibliotheque is east of Deutsche Universitat Bucherei.
+Chateau Bibliotheque is north of Miscellany Manana.
+Chateau Bibliotheque is south of Isle.
+Gaming Lounge is south of Alphabet Soup.
+Chateau Bibliotheque is west of Alphabet Soup.
+Astrological Observatory is up of Alphabet Soup.
+Danger Zone is down of Alphabet Soup.
+Alphabet Soup is north of Gaming Lounge.
+Alphabet Soup is down of Astrological Observatory.
+Alphabet Soup is up of Danger Zone.
+
+Test index (internal) with MT.

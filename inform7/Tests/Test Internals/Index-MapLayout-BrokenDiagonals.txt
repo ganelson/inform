@@ -1,0 +1,11 @@
+"The Broken Diagonals Affair"
+
+Blockhouse A is east of Blockhouse B. Blockhouse B is south of Blockhouse A.
+
+Blockhouse C is east of Blockhouse D. Blockhouse D is north of Blockhouse C.
+
+Blockhouse E is west of Blockhouse F. Blockhouse F is south of Blockhouse E.
+
+Blockhouse G is west of Blockhouse H. Blockhouse H is north of Blockhouse G.
+
+Test index (internal) with MT.

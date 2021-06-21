@@ -1,0 +1,303 @@
+1. MT
+Map component 0: extent (-20...32, -16...21, 0...0): population 299
+ -4,   3,   0:   Acton Town  (benchmark)
+ 14,   1,   0:   Aldgate
+ 15,   1,   0:   Aldgate East
+ 21,   2,   0:   All Saints
+ -6,   7,   0:   Alperton
+-20,  17,   0:   Amersham
+ 11,   4,   0:   Angel
+  6,   9,   0:   Archway
+ 10,  13,   0:   Arnos Grove
+ 12,   7,   0:   Arsenal
+  6,   1,   0:   Baker Street
+  6, -12,   0:   Balham
+ 13,   0,   0:   Bank
+ 12,   1,   0:   Barbican
+ 24,  -1,   0:   Barking
+ 26,  11,   0:   Barkingside
+ -1,  -7,   0:   Barons Court
+  2,  -1,   0:   Bayswater
+ 31,   2,   0:   Beckton
+ 30,   1,   0:   Beckton Park
+ 26,  -1,   0:   Becontree
+  4,   8,   0:   Belsize Park
+ 17,  -2,   0:   Bermondsey
+ 14,   3,   0:   Bethnal Green
+ 21,   1,   0:   Blackfriars
+ 15,   9,   0:   Blackhorse Road
+ 24,   1,   0:   Blackwall
+  7,   0,   0:   Bond Street
+ 15,  -2,   0:   Borough
+ -9,   2,   0:   Boston Manor
+ 11,  12,   0:   Bounds Green
+ 20,   4,   0:   Bow Church
+ 18,  -1,   0:   Bow Road
+  1,  10,   0:   Brent Cross
+ 11,  -8,   0:   Brixton
+ 19,  -1,   0:   Bromley-by-Bow
+ 26,  16,   0:   Buckhurst Hill
+ -2,  13,   0:   Burnt Oak
+ 10,   5,   0:   Caledonian Road
+  6,   6,   0:   Camden Town
+ 18,  -2,   0:   Canada Water
+ 19,  -2,   0:   Canary Wharf
+ 20,  -2,   0:   Canning Town
+ 23,   1,   0:   Cannon Street
+ -6,  11,   0:   Canons Park
+-19,  17,   0:   Chalfont-and-Latimer
+  5,   7,   0:   Chalk Farm
+ 10,   0,   0:   Chancery Lane
+ 10,  -1,   0:   Charing Cross
+-20,  18,   0:   Chesham
+ 25,  15,   0:   Chigwell
+ -7,  -5,   0:   Chiswick Park
+-18,  16,   0:   Chorleywood
+  7, -10,   0:   Clapham Common
+  8,  -9,   0:   Clapham North
+  6, -11,   0:   Clapham South
+  9,  15,   0:   Cockfosters
+ -1,  12,   0:   Colindale
+  3, -15,   0:   Colliers Wood
+ 10,   1,   0:   Covent Garden
+ 21,  -5,   0:   Crossharbour-and-London Arena
+-16,  15,   0:   Croxley
+ 27,   1,   0:   Custom House
+ 22,  -8,   0:   Cutty Sark
+ 31,   1,   0:   Cyprus
+ 28,  -1,   0:   Dagenham East
+ 27,  -1,   0:   Dagenham Heathway
+ 27,  17,   0:   Debden
+ 20, -10,   0:   Deptford Bridge
+ 21,   3,   0:   Devons Road
+  0,   4,   0:   Dollis Hill
+-11,   2,   0:   Ealing Broadway
+ -5,   4,   0:   Ealing Common
+  1,  -7,   0:   Earls Court
+ -8,   2,   0:   East Acton
+  4,  11,   0:   East Finchley
+ 23,  -1,   0:   East Ham
+ 25,   1,   0:   East India
+ -1, -12,   0:   East Putney
+-11,  11,   0:   Eastcote
+ -3,  14,   0:   Edgware
+  4,   0,   0:   Edgware Road
+ 14,  -3,   0:   Elephant-and-Castle
+ 29,  -1,   0:   Elm Park
+ 21, -11,   0:   Elverson Road
+ 12,   0,   0:   Embankment
+ 28,  19,   0:   Epping
+  8,   4,   0:   Euston
+  9,   3,   0:   Euston Square
+ 26,  12,   0:   Fairlop
+ 11,   1,   0:   Farringdon
+  3,  12,   0:   Finchley Central
+  4,   4,   0:   Finchley Road
+ 12,   8,   0:   Finsbury Park
+  1,  -9,   0:   Fulham Broadway
+ 32,   1,   0:   Gallions Reach
+ 25,   8,   0:   Gants Hill
+  2,  -6,   0:   Gloucester Road
+  2,  10,   0:   Golders Green
+ -3,  -4,   0:   Goldhawk Road
+  8,   2,   0:   Goodge Street
+ 26,  14,   0:   Grange Hill
+  8,   3,   0:   Great Portland Street
+  8,  -1,   0:   Green Park
+-12,   3,   0:   Greenford
+ 21,  -9,   0:   Greenwich
+ -7,  -6,   0:   Gunnersbury
+ 26,  13,   0:   Hainault
+ -3,  -5,   0:   Hammersmith
+  3,   9,   0:   Hampstead
+-10,   3,   0:   Hanger Lane
+-15,  15,   0:   Harlesden
+-20,  21,   0:   Harrow-and-Wealdstone
+ -8,  10,   0:   Harrow-on-the-Hill
+-13,   0,   0:   Hatton Cross
+-14,   0,   0:   Heathrow Terminal 123
+-14,  -1,   0:   Heathrow Terminal 4
+  0,  11,   0:   Hendon Central
+ 19,  -3,   0:   Heron Quays
+  2,  16,   0:   High Barnet
+  1,  -5,   0:   High Street Kensington
+ 13,   7,   0:   Highbury-and-Islington
+  5,  10,   0:   Highgate
+-15,   9,   0:   Hillingdon
+ 11,   2,   0:   Holborn
+  0,  -3,   0:   Holland Park
+ 11,   6,   0:   Holloway Road
+ 30,  -1,   0:   Hornchurch
+-11,   0,   0:   Hounslow Central
+-10,   0,   0:   Hounslow East
+-12,   0,   0:   Hounslow West
+  7,  -5,   0:   Hyde Park Corner
+-14,  10,   0:   Ickenham
+ 22,  -7,   0:   Island Gardens
+ 13,  -4,   0:   Kennington
+-13,  14,   0:   Kensal Green
+  0,  -6,   0:   Kensington Olympia
+  6,   7,   0:   Kentish Town
+-19,  20,   0:   Kenton
+ -8,  -7,   0:   Kew Gardens
+  2,   4,   0:   Kilburn
+-11,  14,   0:   Kilburn Park
+ 10,   4,   0:   King's Cross St Pancras
+ -5,   9,   0:   Kingsbury
+  6,  -5,   0:   Knightsbridge
+ -1,  -1,   0:   Ladbroke Grove
+ 13,  -2,   0:   Lambeth North
+  3,  -2,   0:   Lancaster Gate
+ -2,  -2,   0:   Latimer Road
+  9,   0,   0:   Leicester Square
+ 22, -12,   0:   Lewisham
+ 21,   7,   0:   Leyton
+ 22,   8,   0:   Leytonstone
+ 17,   1,   0:   Limehouse
+ 13,   2,   0:   Liverpool Street
+ 16,  -1,   0:   London Bridge
+ 26,  17,   0:   Loughton
+-10,  13,   0:   Maida Vale
+ 13,   9,   0:   Manor House
+ 22,   1,   0:   Mansion House
+  4,  -2,   0:   Marble Arch
+  5,   1,   0:   Marylebone
+ 17,  -1,   0:   Mile End
+  2,  13,   0:   Mill Hill East
+ 14,  -1,   0:   Monument
+-16,  14,   0:   Moor Park
+ 12,   2,   0:   Moorgate
+ -1, -16,   0:   Morden
+  7,   5,   0:   Mornington Crescent
+ 21,  -6,   0:   Mudchute
+ -1,   4,   0:   Neasden
+ 18,  -6,   0:   New Cross
+ 17,  -6,   0:   New Cross Gate
+ 26,   8,   0:   Newbury Park
+ -9,   3,   0:   North Acton
+ -5,   5,   0:   North Ealing
+ 20,  -3,   0:   North Greenwich
+-13,  10,   0:   North Harrow
+-17,  18,   0:   North Wembley
+ -8,   3,   0:   Northfields
+-13,   3,   0:   Northolt
+ -7,  10,   0:   Northwick Park
+-16,  13,   0:   Northwood
+-15,  12,   0:   Northwood Hills
+  1,  -2,   0:   Notting Hill Gate
+ 10,  15,   0:   Oakwood
+ 12,   3,   0:   Old Street
+-10,   1,   0:   Osterley
+ 12,  -5,   0:   Oval
+  8,   0,   0:   Oxford Circus
+  3,  -1,   0:   Paddington
+ -5,   6,   0:   Park Royal
+  0, -10,   0:   Parsons Green
+-11,   3,   0:   Perivale
+  9,  -1,   0:   Piccadilly Circus
+  9,  -5,   0:   Pimlico
+-14,  11,   0:   Pinner
+ 21,  -1,   0:   Plaistow
+ 20,   1,   0:   Poplar
+ -6,   9,   0:   Preston Road
+ 28,   1,   0:   Prince Regent
+ 21,   5,   0:   Pudding Mill Lane
+ -1, -11,   0:   Putney Bridge
+-12,  14,   0:   Queen's Park
+ -6,  10,   0:   Queensbury
+  2,  -2,   0:   Queensway
+ -4,  -5,   0:   Ravenscourt Park
+-10,  11,   0:   Rayners Lane
+ 24,   8,   0:   Redbridge
+  8,   1,   0:   Regent's Park
+ -9,  -8,   0:   Richmond
+-17,  15,   0:   Rickmansworth
+ 24,  15,   0:   Roding Valley
+ 17,  -4,   0:   Rotherhithe
+ 29,   1,   0:   Royal Albert
+  3,   0,   0:   Royal Oak
+ 26,   1,   0:   Royal-Victoria
+-13,  11,   0:   Ruislip
+-15,   5,   0:   Ruislip Gardens
+-12,  11,   0:   Ruislip Manor
+ 10,   3,   0:   Russell Square
+ 13,   8,   0:   Seven Sisters
+ 16,   1,   0:   Shadwell
+ -2,  -3,   0:   Shepherd's Bush
+ 15,   3,   0:   Shoreditch
+  6,  -6,   0:   Sloane Square
+ 24,  10,   0:   Snaresbrook
+ -7,   3,   0:   South Ealing
+ -9,  10,   0:   South Harrow
+  5,  -6,   0:   South Kensington
+-18,  19,   0:   South Kenton
+ 20,  -4,   0:   South Quay
+-14,   4,   0:   South Ruislip
+ -1, -15,   0:   South Wimbledon
+ 24,  13,   0:   South-Woodford
+ -1, -13,   0:   Southfields
+ 10,  14,   0:   Southgate
+ 15,  -1,   0:   Southwark
+ 10,  -2,   0:   St James's Park
+  5,   2,   0:   St John's Wood
+ 11,   0,   0:   St Paul's
+ -5,  -5,   0:   Stamford Brook
+ -7,  12,   0:   Stanmore
+ 16,  -2,   0:   Stepney Green
+ 10,  -7,   0:   Stockwell
+-16,  16,   0:   Stonebridge Park
+ 21,   6,   0:   Stratford
+ -8,   9,   0:   Sudbury Hill
+ -7,   8,   0:   Sudbury Town
+ 17,  -5,   0:   Surrey Quays
+  5,   3,   0:   Swiss Cottage
+ 13,   1,   0:   Temple
+ 28,  18,   0:   Theydon Bois
+  5, -13,   0:   Tooting Bec
+  4, -14,   0:   Tooting Broadway
+  9,   1,   0:   Tottenham Court Road
+ 14,   9,   0:   Tottenham Hale
+  3,  15,   0:   Totteridge-and-Whetstone
+ 15,   0,   0:   Tower Gateway
+ 14,   0,   0:   Tower Hill
+  6,   8,   0:   Tufnell Park
+ -6,  -5,   0:   Turnham Green
+ 13,  10,   0:   Turnpike Lane
+ 32,   0,   0:   Upminster
+ 31,   0,   0:   Upminster Bridge
+ 25,  -1,   0:   Upney
+ 22,  -1,   0:   Upton Park
+-16,   8,   0:   Uxbridge
+ 10,  -6,   0:   Vauxhall
+  8,  -4,   0:   Victoria
+ 16,   9,   0:   Walthamstow Central
+ 23,   8,   0:   Wanstead
+ 16,  -3,   0:   Wapping
+  7,   3,   0:   Warren Street
+-10,  12,   0:   Warwick Avenue
+ 13,  -1,   0:   Waterloo
+-15,  16,   0:   Watford
+-17,  17,   0:   Wembley Central
+ -5,   8,   0:   Wembley Park
+-10,   2,   0:   West Acton
+  1,  -8,   0:   West Brompton
+  3,  13,   0:   West Finchley
+ 20,  -1,   0:   West Ham
+  3,   4,   0:   West Hampstead
+ -9,  11,   0:   West Harrow
+ 19,   0,   0:   West India Quay
+  0,  -7,   0:   West Kensington
+-16,   6,   0:   West Ruislip
+  0,   0,   0:   Westbourne Park
+ 18,   1,   0:   Westferry
+ 12,  -2,   0:   Westminster
+ -7,   2,   0:   White City
+ 16,   2,   0:   Whitechapel
+  1,   4,   0:   Willesden Green
+-14,  14,   0:   Willesden Junction
+ -1, -14,   0:   Wimbledon Park
+ 12,  11,   0:   Wood Green
+ 24,  14,   0:   Woodford
+  3,  14,   0:   Woodside Park
+
+
