@@ -680,7 +680,7 @@ void RTKindConstructors::compile(void) {
 		int found = FALSE;
 		instance *inst;
 		LOOP_OVER_INSTANCES(inst, K) {
-			IXInstances::index_name(IDV, inst);
+			Instances::write_name(IDV, inst);
 			found = TRUE;
 			break;
 		}

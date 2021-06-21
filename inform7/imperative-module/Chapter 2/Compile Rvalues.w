@@ -119,7 +119,7 @@ kinds of value:
 				if (N) Emit::holster_iname(VH, N);
 			}
 			parse_node *NB = Functions::line_being_compiled();
-			if (NB) IXInstances::note_usage(I, NB);
+			if (NB) RTInstances::note_usage(I, NB);
 		}
 		return;
 	}

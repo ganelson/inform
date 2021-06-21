@@ -1,4 +1,0 @@
-"The Inner Quadrangle Affair"
-
-Alpha is west of Beta. Gamma is south of Alpha. Delta is east of Gamma.
-Beta is north of Delta. Epsilon is northwest of Delta.

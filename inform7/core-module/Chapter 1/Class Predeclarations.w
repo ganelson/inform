@@ -91,7 +91,6 @@ DECLARE_CLASS(use_option)
 @e equation_node_CLASS
 @e equation_symbol_CLASS
 @e instance_CLASS
-@e instance_usage_CLASS
 @e inv_token_problem_token_CLASS
 @e literal_list_CLASS
 @e literal_pattern_CLASS
@@ -106,7 +105,6 @@ DECLARE_CLASS(equation)
 DECLARE_CLASS(equation_node)
 DECLARE_CLASS(equation_symbol)
 DECLARE_CLASS(instance)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(instance_usage, 200)
 DECLARE_CLASS(inv_token_problem_token)
 DECLARE_CLASS(literal_list)
 DECLARE_CLASS(literal_pattern)

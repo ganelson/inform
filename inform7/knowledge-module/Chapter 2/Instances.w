@@ -139,6 +139,19 @@ int Instances::get_numerical_value(instance *I) {
 	return I->enumeration_index;
 }
 
+void Instances::write_name(OUTPUT_STREAM, instance *I) {
+	wording W = Instances::get_name_in_play(I, FALSE);
+	if (Wordings::nonempty(W)) {
+		WRITE("%+W", W);
+	} else {
+		kind *K = Instances::to_kind(I);
+		W = Kinds::Behaviour::get_name_in_play(K, FALSE,
+			Projects::get_language_of_play(Task::project()));
+		if (Wordings::nonempty(W)) WRITE("%+W", W);
+		else WRITE("nameless");
+	}
+}
+
 @h Subject and source references.
 
 =

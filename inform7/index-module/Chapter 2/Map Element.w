@@ -144,7 +144,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) 
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		PluginCalls::add_to_World_index(OUT, I);
-		IXInstances::index_usages(OUT, I);
+		IXPhysicalWorld::index_usages(OUT, I);
 		Index::extra_div_close(OUT, "e0e0e0");
 	}
 	@<Recurse the index citation for the object as necessary@>;
@@ -248,9 +248,29 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, instance *I, int depth, int details) 
 	parse_node *P = Instances::get_kind_set_sentence(I);
 	if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
 	WRITE(" &gt; <b>");
-	IXInstances::index_name(OUT, I);
+	PL::SpatialMap::write_name(OUT, I);
 	WRITE("</b>");
 	HTML_CLOSE("p");
 
 @<Add the catalogue of specific properties@> =
 	IXInferences::index_specific(OUT, Instances::as_subject(I));
+
+@
+
+=
+void IXPhysicalWorld::index_usages(OUTPUT_STREAM, instance *I) {
+	int k = 0;
+	parse_node *at;
+	LOOP_OVER_LINKED_LIST(at, parse_node, I->compilation_data.usages) {
+		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(Node::get_text(at)));
+		if (Projects::draws_from_source_file(Task::project(), sf)) {
+			k++;
+			if (k == 1) {
+				HTML::open_indented_p(OUT, 1, "tight");
+				WRITE("<i>mentioned in rules:</i> ");
+			} else WRITE("; ");
+			Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+		}
+	}
+	if (k > 0) HTML_CLOSE("p");
+}

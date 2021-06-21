@@ -1,0 +1,3071 @@
+1. Mp
+
+
+<!--WORLD WRITE MAP BEGINS-->
+<p>
+
+    <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+                        <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+                        <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+                        <i>First level up</i>
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+
+
+                  <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Astrological Observatory">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_68 style="text-decoration: none"><span style="color:#000000">AO</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/d_arrow.png title="down to Alphabet Soup"><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+
+                      </table>
+
+
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+                        <i>Starting level</i>
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+
+
+                  <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>3</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Isle">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_65 style="text-decoration: none"><span style="color:#000000">Is</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>3</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Chateau Bibliotheque"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Isle"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/u_arrow.png title="up to Astrological Observatory"><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Deutsche Universitat Bucherei">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_63 style="text-decoration: none"><span style="color:#000000">DU</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Chateau Bibliotheque"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Deutsche Universitat Bucherei"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Chateau Bibliotheque">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_62 style="text-decoration: none"><span style="color:#000000"><b>CB</b></span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Alphabet Soup"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Chateau Bibliotheque"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alphabet Soup">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_66 style="text-decoration: none"><span style="color:#000000">AS</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Miscellany Manana"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Gaming Lounge"><img border=0 src=inform:/map_icons/d_arrow.png title="down to Danger Zone"><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Chateau Bibliotheque"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Alphabet Soup"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>1</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Miscellany Manana">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_64 style="text-decoration: none"><span style="color:#000000">MM</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gaming Lounge">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_67 style="text-decoration: none"><span style="color:#000000">GL</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>1</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+
+                      </table>
+
+
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+                        <i>First level down</i>
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+
+
+                  <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/u_arrow.png title="up to Alphabet Soup"><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Danger Zone">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_69 style="text-decoration: none"><span style="color:#000000">DZ</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+
+                      </table>
+
+
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+                        <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+                        <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+
+        </table>
+
+</p>
+<!--WORLD WRITE MAP ENDS-->
+<a name=MDETAILS></a>
+
+<p><a name=></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Isle"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Deutsche Universitat Bucherei"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Chateau Bibliotheque">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">CB</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Alphabet Soup"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Miscellany Manana"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Chateau Bibliotheque</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Chateau Bibliotheque</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Chateau Bibliotheque"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Isle&nbsp;<a href="source:story.ni#line12"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Miscellany Manana&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Alphabet Soup&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Deutsche Universitat Bucherei&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('Up from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+            <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
+                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
+                            <p class="hangingin1">proper-named; undescribed</p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
+                            <p class="tightin1"><i>initial location:</i> in Chateau Bibliotheque&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Deutsche Universitat Bucherei">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">DU</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Chateau Bibliotheque"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Deutsche Universitat Bucherei</b>&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Deutsche Universitat Bucherei</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Deutsche Universitat Bucherei"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Chateau Bibliotheque"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Miscellany Manana">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">MM</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Miscellany Manana</b>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Miscellany Manana</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Miscellany Manana"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Isle">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">Is</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Chateau Bibliotheque"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Isle</b>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Isle</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Isle"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/u_arrow.png title="up to Astrological Observatory"><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Chateau Bibliotheque"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alphabet Soup">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">AS</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Gaming Lounge"><img border=0 src=inform:/map_icons/d_arrow.png title="down to Danger Zone"><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Alphabet Soup</b>&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Alphabet Soup</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Alphabet Soup"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Gaming Lounge&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;up to Astrological Observatory&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;down to Danger Zone&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Inside from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_67><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Alphabet Soup"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gaming Lounge">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">GL</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra6', 'plus6'); return false;"><img border=0 id="plus6" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gaming Lounge</b>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra6" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gaming Lounge</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Gaming Lounge"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Alphabet Soup&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_68><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Astrological Observatory">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">AO</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/d_arrow.png title="down to Alphabet Soup"><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra7', 'plus7'); return false;"><img border=0 id="plus7" src=inform:/doc_images/extra.png></a>&nbsp;<b>Astrological Observatory</b>&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra7" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Astrological Observatory</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Astrological Observatory"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;down to Alphabet Soup&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Inside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_69><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/u_arrow.png title="up to Alphabet Soup"><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Danger Zone">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">DZ</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra8', 'plus8'); return false;"><img border=0 id="plus8" src=inform:/doc_images/extra.png></a>&nbsp;<b>Danger Zone</b>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra8" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Danger Zone</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Danger Zone"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;up to Alphabet Soup&nbsp;<a href="source:story.ni#line25"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Down from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+

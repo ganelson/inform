@@ -28,6 +28,7 @@ Chapter 2: Emission
 	Here, Nowhere and Everywhere
 	Short Names
 	General Parsing Routines
+	Index Extensions
 
 Chapter 3: Basics
 	Generic Module

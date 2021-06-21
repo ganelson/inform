@@ -79,7 +79,7 @@ int IXSpatial::add_to_World_index(OUTPUT_STREAM, instance *O) {
 				if (PropertyInferences::get_property(inf) == P_worn)
 					rel = "worn by";
 			WRITE("%s ", rel);
-			IXInstances::index_name(OUT, P);
+			PL::SpatialMap::write_name(OUT, P);
 			parse_node *at = SPATIAL_DATA(O)->progenitor_set_at;
 			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 

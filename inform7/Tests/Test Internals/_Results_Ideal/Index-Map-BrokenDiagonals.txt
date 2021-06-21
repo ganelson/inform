@@ -1,0 +1,2632 @@
+1. Mp
+
+
+<!--WORLD WRITE MAP BEGINS-->
+<p>
+
+    <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+                        <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+                        <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+                        <i>Map</i>
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+
+
+                  <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse B"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse A">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_62 style="text-decoration: none"><span style="color:#000000"><b>BA</b></span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse D">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_65 style="text-decoration: none"><span style="color:#000000">BD</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse C"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse E">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_66 style="text-decoration: none"><span style="color:#000000">BE</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse F"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse G"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse H">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_69 style="text-decoration: none"><span style="color:#000000">BH</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse B"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse C"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse F"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse G"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse A"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse D"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse E"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse H"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse B">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_63 style="text-decoration: none"><span style="color:#000000">BB</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse A"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse D"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse C">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_64 style="text-decoration: none"><span style="color:#000000">BC</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse E"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse F">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_67 style="text-decoration: none"><span style="color:#000000">BF</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse G">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000"><a href=#wo_68 style="text-decoration: none"><span style="color:#000000">BG</span></a></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse H"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                              <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                  </table>
+
+
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                    <td>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                    </table>
+
+
+                    </td>
+                </tr>
+
+                      </table>
+
+
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="8">
+                        <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                    <td>
+
+                    </td>
+                    <td width="8">
+                        <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+
+        </table>
+
+</p>
+<!--WORLD WRITE MAP ENDS-->
+<a name=MDETAILS></a>
+
+<p><a name=></a><a name=wo_62><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse B"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse A">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BA</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse B"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse A</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse A</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse A"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Blockhouse B&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Blockhouse B&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse A is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+            <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
+                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
+                            <p class="hangingin1">proper-named; undescribed</p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
+                            <p class="tightin1"></p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_63><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse A"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse B">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BB</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse A"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse B</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse B</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse B"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Blockhouse A&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Blockhouse A&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse B is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_64><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse D"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse D"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse C">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BC</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse C</b>&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse C</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse C"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Blockhouse D&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Blockhouse D&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse C is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_65><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse D">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BD</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse C"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse C"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse D</b>&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse D</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse D"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Blockhouse C&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Blockhouse C&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse D is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_66><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse E">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BE</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse F"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse F"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse E</b>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse E</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse E"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Blockhouse F&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Blockhouse F&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse E is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_67><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse E"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse E"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse F">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BF</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra6', 'plus6'); return false;"><img border=0 id="plus6" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse F</b>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra6" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse F</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse F"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Blockhouse E&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Blockhouse E&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse F is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_68><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/n_arrow.png title="north to Blockhouse H"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse G">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BG</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/e_arrow.png title="east to Blockhouse H"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra7', 'plus7'); return false;"><img border=0 id="plus7" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse G</b>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra7" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse G</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse G"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Blockhouse H&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Blockhouse H&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse G is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+<hr>
+
+
+<p><a name=></a><a name=wo_69><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="left" valign="top">
+
+
+
+                <table border="0" cellspacing="0" cellpadding="0" background="inform:/map_icons/grid.png">
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
+                            <tr>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/w_arrow.png title="west to Blockhouse G"><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                                <td>
+                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Blockhouse H">
+                                        <tr>
+                                            <td valign="middle" align="center" bgcolor="#D3D3D3">
+                                                <span style="color:#000000">BH</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+                                <td>
+
+                                            <table border="0" cellspacing="0" cellpadding="0" width="13" height="27">
+                                        <tr>
+                                            <td>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_square.png><br>
+                                                <img border=0 src=inform:/map_icons/blank_ew.png><br>
+                                                <img border=0 src=inform:/map_icons/ew_spacer.png>
+                                            </td>
+                                        </tr>
+
+                                                </table>
+
+
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                              <table border="0" cellspacing="0" cellpadding="0" width="53" height="13">
+                            <tr>
+                                <td>
+                                    <img border=0 src=inform:/map_icons/blank_square.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/s_arrow.png title="south to Blockhouse G"><img border=0 src=inform:/map_icons/blank_ns.png><img border=0 src=inform:/map_icons/ns_spacer.png><img border=0 src=inform:/map_icons/blank_square.png>
+                                </td>
+                            </tr>
+
+                                  </table>
+
+
+                    </td>
+                </tr>
+
+                    </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <a href="#" onclick="showExtra('extra8', 'plus8'); return false;"><img border=0 id="plus8" src=inform:/doc_images/extra.png></a>&nbsp;<b>Blockhouse H</b>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra8" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+
+                        </td>
+                        <td>
+                            <p class="tightin1">room&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Blockhouse H</b></p>
+                            <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style="color:#000080">"Blockhouse H"</span>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Blockhouse G&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Blockhouse G&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Blockhouse H is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
+
+                        </td>
+                        <td width="8">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="8">
+                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                        <td>
+
+                        </td>
+                        <td width="8">
+                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</p>
+

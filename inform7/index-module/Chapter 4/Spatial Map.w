@@ -2841,33 +2841,33 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 			else if (D) icon = "e_arrow_door_blocked";
 			HTML_TAG_WITH("img", "border=0 src=inform:/map_icons/%s.png", icon);
 			WRITE("&nbsp;");
-			IXInstances::index_name(OUT, dir);
+			PL::SpatialMap::write_name(OUT, dir);
 			WRITE(" to ");
 			if (S) {
-				IXInstances::index_name(OUT, S);
+				PL::SpatialMap::write_name(OUT, S);
 				if (D) {
 					WRITE(" via ");
-					IXInstances::index_name(OUT, D);
+					PL::SpatialMap::write_name(OUT, D);
 				}
 			} else {
-				IXInstances::index_name(OUT, D);
+				PL::SpatialMap::write_name(OUT, D);
 				WRITE(" (a door)");
 			}
 			if (S) {
 				instance *B = opp?(PL::SpatialMap::room_exit(S, od, NULL)):NULL;
 				if (B == NULL) {
 					WRITE(" (but ");
-					IXInstances::index_name(OUT, opp);
+					PL::SpatialMap::write_name(OUT, opp);
 					WRITE(" from ");
-					IXInstances::index_name(OUT, S);
+					PL::SpatialMap::write_name(OUT, S);
 					WRITE(" is nowhere)");
 				} else if (B != R) {
 					WRITE(" (but ");
-					IXInstances::index_name(OUT, opp);
+					PL::SpatialMap::write_name(OUT, opp);
 					WRITE(" from ");
-					IXInstances::index_name(OUT, S);
+					PL::SpatialMap::write_name(OUT, S);
 					WRITE(" is ");
-					IXInstances::index_name(OUT, B);
+					PL::SpatialMap::write_name(OUT, B);
 					WRITE(")");
 				}
 			}
@@ -2905,6 +2905,13 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		WRITE("&nbsp;%+W", DW);
 	}
 	if (k>0) HTML_CLOSE("p");
+}
+
+@h Naming.
+
+=
+void PL::SpatialMap::write_name(OUTPUT_STREAM, instance *I) {
+	Instances::write_name(OUT, I);
 }
 
 @h Unit testing.

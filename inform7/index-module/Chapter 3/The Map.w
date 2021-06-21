@@ -24,7 +24,7 @@ int IXMap::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 			X = Rvalues::to_object_instance(S);
 		}
 		if (X == NULL) WRITE("nowhere");
-		else IXInstances::index_name(OUT, X);
+		else PL::SpatialMap::write_name(OUT, X);
 		WRITE("</i>");
 		return TRUE;
 	}

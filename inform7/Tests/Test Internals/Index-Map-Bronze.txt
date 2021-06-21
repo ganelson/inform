@@ -1,0 +1,271 @@
+"The Bronzed Affair"
+
+Great Outdoors is a region.
+Basement is a region.
+Haunted Area is a region.
+Hourglass is a region.
+State Rooms is a region.
+Apartments is a region.
+Stinky is a region.
+Old Castle is a region.
+Enclosed is a region.
+Main Castle is a region.
+iron-barred gate is a door.
+steps is a door.
+wooden staircase is a door.
+ivory door is a door.
+small door is a door.
+hole is a door.
+trapdoor is a door.
+sinister door is a door.
+decaying ladder is a door.
+thick door is a door.
+heavy door is a door.
+Drawbridge is a room.
+Drawbridge is in Great Outdoors.
+Entrance Hall is a room.
+Entrance Hall is in Main Castle.
+Scarlet Gallery is a room.
+Scarlet Gallery is in Old Castle.
+Scarlet Tower is a room.
+Scarlet Tower is in Old Castle.
+Gallery of Historical Paintings is a room.
+Gallery of Historical Paintings is in Old Castle.
+Treasure Room is a room.
+Treasure Room is in Old Castle.
+Maze Room is a room.
+Maze Room is in Old Castle.
+Bear Corridor is a room.
+Bear Corridor is in Basement.
+Zoo is a room.
+Zoo is in Basement.
+Central Courtyard is a room.
+Central Courtyard is in Main Castle.
+Ground Floor Helical Staircase is a room.
+Ground Floor Helical Staircase is in Main Castle.
+Upstairs Helical Staircase is a room.
+Upstairs Helical Staircase is in Apartments.
+State Rotunda is a room.
+State Rotunda is in State Rooms.
+Law Library is a room.
+Law Library is in State Rooms.
+Lower Bulb is a room.
+Lower Bulb is in Hourglass.
+Upper Bulb is a room.
+Upper Bulb is in Hourglass.
+Smoke-Damaged Chamber is a room.
+Smoke-Damaged Chamber is in State Rooms.
+Burnt Frame is a room.
+Burnt Frame is in State Rooms.
+Records Room is a room.
+Records Room is in State Rooms.
+Parliamentary Chambers is a room.
+Parliamentary Chambers is in State Rooms.
+Great Dining Hall is a room.
+Great Dining Hall is in Main Castle.
+Translation Room is a room.
+Translation Room is in State Rooms.
+Black Gallery is a room.
+Black Gallery is in State Rooms.
+Armory is a room.
+Armory is in State Rooms.
+Lie Library is a room.
+Lie Library is in State Rooms.
+Cloister Walk is a room.
+Cloister Walk is in Enclosed.
+Walk's End is a room.
+Walk's End is in Enclosed.
+Rose Garden is a room.
+Rose Garden is in Enclosed.
+Scrying Room is a room.
+Scrying Room is in Enclosed.
+Central Crypt is a room.
+Central Crypt is in Haunted Area.
+Virgin's End is a room.
+Virgin's End is in Haunted Area.
+Father's Regret is a room.
+Father's Regret is in Haunted Area.
+Debtor's Paradise is a room.
+Debtor's Paradise is in Haunted Area.
+Apprentice's Workshop is a room.
+Apprentice's Workshop is in Haunted Area.
+Rocky Chamber is a room.
+Rocky Chamber is in Basement.
+Dank Room is a room.
+Dank Room is in Haunted Area.
+Press Room is a room.
+Press Room is in Haunted Area.
+Tight Passage is a room.
+Tight Passage is in Basement.
+Lucrezia's Study is a room.
+Lucrezia's Study is in Basement.
+Rooted Room is a room.
+Rooted Room is in Basement.
+Bell Castings is a room.
+Bell Castings is in Basement.
+Wax Supply is a room.
+Wax Supply is in Basement.
+Enormous Kitchen is a room.
+Enormous Kitchen is in Main Castle.
+Servant Quarters is a room.
+Servant Quarters is in Main Castle.
+Guard Tower is a room.
+Guard Tower is in Main Castle.
+Gallery of Still Life is a room.
+Gallery of Still Life is in State Rooms.
+White Gallery is a room.
+White Gallery is in Stinky.
+Private Parlor is a room.
+Private Parlor is in Apartments.
+Green Bedroom is a room.
+Green Bedroom is in Apartments.
+Guest Bedroom is a room.
+Guest Bedroom is in Apartments.
+Empty Bedroom is a room.
+Empty Bedroom is in Apartments.
+Crystal Bedroom is a room.
+Crystal Bedroom is in Apartments.
+Gilded Balcony is a room.
+Gilded Balcony is in Apartments.
+Bellroom is a room.
+Bellroom is in Stinky.
+Apothecary is a room.
+Apothecary is in Stinky.
+iron-barred gate is north of Drawbridge.
+Central Courtyard is north of Entrance Hall.
+iron-barred gate is south of Entrance Hall.
+Guard Tower is southwest of Entrance Hall.
+Scarlet Gallery is east of Entrance Hall.
+Great Dining Hall is west of Entrance Hall.
+Treasure Room is northeast of Scarlet Gallery.
+Scarlet Tower is southeast of Scarlet Gallery.
+Gallery of Historical Paintings is east of Scarlet Gallery.
+Entrance Hall is west of Scarlet Gallery.
+Scarlet Gallery is northwest of Scarlet Tower.
+Maze Room is east of Gallery of Historical Paintings.
+Scarlet Gallery is west of Gallery of Historical Paintings.
+Scarlet Gallery is southwest of Treasure Room.
+small door is east of Treasure Room.
+Gallery of Historical Paintings is west of Maze Room.
+Bear Corridor is down of Maze Room.
+Zoo is northwest of Bear Corridor.
+Maze Room is up of Bear Corridor.
+Wax Supply is northeast of Zoo.
+Bear Corridor is southeast of Zoo.
+Rocky Chamber is southwest of Zoo.
+State Rotunda is north of Central Courtyard.
+Entrance Hall is south of Central Courtyard.
+Ground Floor Helical Staircase is east of Central Courtyard.
+Central Courtyard is west of Ground Floor Helical Staircase.
+steps is up of Ground Floor Helical Staircase.
+Private Parlor is east of Upstairs Helical Staircase.
+steps is down of Upstairs Helical Staircase.
+Central Courtyard is south of State Rotunda.
+Law Library is southwest of State Rotunda.
+Parliamentary Chambers is east of State Rotunda.
+Lower Bulb is west of State Rotunda.
+Lower Bulb is north of Law Library.
+State Rotunda is northeast of Law Library.
+Great Dining Hall is south of Law Library.
+hole is down of Law Library.
+Law Library is south of Lower Bulb.
+State Rotunda is east of Lower Bulb.
+Translation Room is west of Lower Bulb.
+wooden staircase is up of Lower Bulb.
+ivory door is southwest of Upper Bulb.
+Gallery of Still Life is east of Upper Bulb.
+Records Room is west of Upper Bulb.
+wooden staircase is down of Upper Bulb.
+ivory door is northeast of Smoke-Damaged Chamber.
+Burnt Frame is south of Smoke-Damaged Chamber.
+Lie Library is east of Smoke-Damaged Chamber.
+Smoke-Damaged Chamber is north of Burnt Frame.
+Black Gallery is east of Burnt Frame.
+Upper Bulb is east of Records Room.
+Cloister Walk is east of Parliamentary Chambers.
+State Rotunda is west of Parliamentary Chambers.
+Law Library is north of Great Dining Hall.
+Entrance Hall is east of Great Dining Hall.
+Enormous Kitchen is west of Great Dining Hall.
+Lower Bulb is east of Translation Room.
+Lie Library is north of Black Gallery.
+Armory is south of Black Gallery.
+Burnt Frame is west of Black Gallery.
+Black Gallery is north of Armory.
+Black Gallery is south of Lie Library.
+Smoke-Damaged Chamber is west of Lie Library.
+Rose Garden is north of Cloister Walk.
+Walk's End is east of Cloister Walk.
+Parliamentary Chambers is west of Cloister Walk.
+Rose Garden is northwest of Walk's End.
+Scrying Room is south of Walk's End.
+Cloister Walk is west of Walk's End.
+Cloister Walk is south of Rose Garden.
+Walk's End is southeast of Rose Garden.
+Rooted Room is down of Rose Garden.
+Walk's End is north of Scrying Room.
+small door is west of Scrying Room.
+Virgin's End is north of Central Crypt.
+Debtor's Paradise is south of Central Crypt.
+Father's Regret is east of Central Crypt.
+Apprentice's Workshop is west of Central Crypt.
+hole is up of Central Crypt.
+Central Crypt is south of Virgin's End.
+Father's Regret is southeast of Virgin's End.
+Apprentice's Workshop is southwest of Virgin's End.
+Tight Passage is northeast of Father's Regret.
+Virgin's End is northwest of Father's Regret.
+Rocky Chamber is southeast of Father's Regret.
+Debtor's Paradise is southwest of Father's Regret.
+Central Crypt is west of Father's Regret.
+Central Crypt is north of Debtor's Paradise.
+Father's Regret is northeast of Debtor's Paradise.
+Apprentice's Workshop is northwest of Debtor's Paradise.
+trapdoor is down of Debtor's Paradise.
+Virgin's End is northeast of Apprentice's Workshop.
+Debtor's Paradise is southeast of Apprentice's Workshop.
+Central Crypt is east of Apprentice's Workshop.
+decaying ladder is up of Apprentice's Workshop.
+Zoo is northeast of Rocky Chamber.
+Father's Regret is northwest of Rocky Chamber.
+Press Room is north of Dank Room.
+trapdoor is up of Dank Room.
+Dank Room is south of Press Room.
+Rooted Room is northeast of Tight Passage.
+Father's Regret is southwest of Tight Passage.
+sinister door is west of Tight Passage.
+sinister door is east of Lucrezia's Study.
+Bell Castings is south of Rooted Room.
+Tight Passage is southwest of Rooted Room.
+Rose Garden is up of Rooted Room.
+Rooted Room is north of Bell Castings.
+Wax Supply is east of Bell Castings.
+Zoo is southwest of Wax Supply.
+Bell Castings is west of Wax Supply.
+Servant Quarters is north of Enormous Kitchen.
+Great Dining Hall is east of Enormous Kitchen.
+Enormous Kitchen is south of Servant Quarters.
+decaying ladder is down of Servant Quarters.
+Entrance Hall is northeast of Guard Tower.
+thick door is east of Gallery of Still Life.
+Upper Bulb is west of Gallery of Still Life.
+Bellroom is east of White Gallery.
+thick door is west of White Gallery.
+heavy door is north of Private Parlor.
+Crystal Bedroom is south of Private Parlor.
+Empty Bedroom is southeast of Private Parlor.
+Green Bedroom is southwest of Private Parlor.
+Guest Bedroom is east of Private Parlor.
+Upstairs Helical Staircase is west of Private Parlor.
+Private Parlor is northeast of Green Bedroom.
+Private Parlor is west of Guest Bedroom.
+Private Parlor is northwest of Empty Bedroom.
+Private Parlor is north of Crystal Bedroom.
+Gilded Balcony is south of Crystal Bedroom.
+Crystal Bedroom is north of Gilded Balcony.
+heavy door is south of Bellroom.
+Apothecary is east of Bellroom.
+White Gallery is west of Bellroom.
+Bellroom is west of Apothecary.
+
+Test index (internal) with Mp.

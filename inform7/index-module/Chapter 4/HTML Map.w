@@ -1019,7 +1019,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, instance *I, instance *Reg, parse_n
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
 		MAP_DATA(Reg)->world_index_colour);
 	WRITE("&nbsp;");
-	IXInstances::index_name(OUT, Reg); WRITE(" region");
+	PL::SpatialMap::write_name(OUT, Reg); WRITE(" region");
 	if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");

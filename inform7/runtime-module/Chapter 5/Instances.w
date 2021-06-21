@@ -10,6 +10,7 @@ Each |instance| object contains this data:
 typedef struct instance_compilation_data {
 	struct package_request *instance_package;
 	struct inter_name *instance_iname;
+	struct linked_list *usages; /* of |parse_node| */
 	int declaration_sequence_number;
 } instance_compilation_data;
 
@@ -20,6 +21,7 @@ instance_compilation_data RTInstances::new_compilation_data(instance *I) {
 	icd.instance_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL,
 		icd.instance_package, W);
 	icd.declaration_sequence_number = -1;
+	icd.usages = NEW_LINKED_LIST(parse_node);
 	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
 	return icd;
 }
@@ -31,6 +33,21 @@ inter_name *RTInstances::value_iname(instance *I) {
 
 package_request *RTInstances::package(instance *I) {
 	return I->compilation_data.instance_package;
+}
+
+@ It's perhaps ambiguous what a usage of an instance is, or where it occurs,
+but this function is called each time the instance |I| is compiled as a
+constant value.
+
+=
+void RTInstances::note_usage(instance *I, parse_node *NB) {
+	if (NB) {
+		parse_node *where;
+		LOOP_OVER_LINKED_LIST(where, parse_node, I->compilation_data.usages)
+			if (NB == where)
+				return;
+		ADD_TO_LINKED_LIST(NB, parse_node, I->compilation_data.usages);
+	}
 }
 
 @h Compilation.
@@ -72,8 +89,10 @@ using Inter's |INSTANCE_IST| instruction.
 void RTInstances::compilation_agent(compilation_subtask *t) {
 	instance *I = RETRIEVE_POINTER_instance(t->data);
 	package_request *pack = I->compilation_data.instance_package;
-	Hierarchy::apply_metadata_from_raw_wording(pack, INSTANCE_NAME_MD_HL,
-		Nouns::nominative(I->as_noun, FALSE));
+	TEMPORARY_TEXT(name)
+	Instances::write_name(name, I);
+	Hierarchy::apply_metadata(pack, INSTANCE_NAME_MD_HL, name);
+	DISCARD_TEXT(name)
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(I->creating_sentence)));
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
