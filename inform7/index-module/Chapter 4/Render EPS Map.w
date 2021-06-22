@@ -350,9 +350,9 @@ void RenderEPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, faux_insta
 
 @<If that fails, try taking the name from its source text name@> =
 	if (Str::len(txt) == 0) {
-		wording W = IXInstances::get_name(I);
-		if (Wordings::empty(W)) return;
-		WRITE_TO(txt, "%+W", W);
+		text_stream *N = IXInstances::get_name(I);
+		if (Str::len(N)) return;
+		WRITE_TO(txt, "%S", N);
 	}
 
 @ =

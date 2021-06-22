@@ -2690,73 +2690,73 @@ void PL::SpatialMap::log_precis_of_map(void) {
 @<Declare the regions and doors in the precis@> =
 	if ((IXInstances::is_a_direction(R)) &&
 		(R->direction_index >= 12)) {
-		wording W = IXInstances::get_name(R);
-		wording OW = IXInstances::get_name(IXInstances::opposite_direction(R));
-		LOG("%+W is a direction. The opposite of %+W is %+W.\n", W, W, OW);
+		text_stream *W = IXInstances::get_name(R);
+		text_stream *OW = IXInstances::get_name(IXInstances::opposite_direction(R));
+		LOG("%S is a direction. The opposite of %S is %S.\n", W, W, OW);
 	}
 	if (IXInstances::is_a_region(R)) {
-		wording W = IXInstances::get_name(R);
-		LOG("%+W is a region.\n", W);
+		text_stream *W = IXInstances::get_name(R);
+		LOG("%S is a region.\n", W);
 	}
 	if (IXInstances::is_a_door(R)) {
-		wording W = IXInstances::get_name(R);
-		LOG("%+W is a door.\n", W);
+		text_stream *W = IXInstances::get_name(R);
+		LOG("%S is a door.\n", W);
 		faux_instance *X = IXInstances::other_side_of_door(R);
 		if (X) {
-			wording XW = IXInstances::get_name(X);
-			LOG("The other side of %+W is %+W.\n", W, XW);
+			text_stream *XW = IXInstances::get_name(X);
+			LOG("The other side of %S is %S.\n", W, XW);
 		}
 	}
 
 @<Declare the rooms in the precis, starting with the start room@> =
 	if (IXInstances::is_a_room(R)) {
-		wording RW = IXInstances::get_name(R);
-		LOG("%+W is a room.\n", RW);
+		text_stream *RW = IXInstances::get_name(R);
+		LOG("%S is a room.\n", RW);
 		faux_instance *reg = IXInstances::region_of(R);
 		if (reg) {
-			wording RGW = IXInstances::get_name(reg);
+			text_stream *RGW = IXInstances::get_name(reg);
 			if (reg->fimd.zone == 1) {
-				LOG("%+W is a region.\n", RGW);
+				LOG("%S is a region.\n", RGW);
 				reg->fimd.zone = 0;
 			}
-			LOG("%+W is in %+W.\n", RW, RGW);
+			LOG("%S is in %S.\n", RW, RGW);
 		}
 		faux_instance *start = IXInstances::start_room();
 		if (R == start) {
-			LOG("The player is in %+W.\n", RW);
+			LOG("The player is in %S.\n", RW);
 		}
 	}
 
 @<Declare the map connections in the precis@> =
 	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		wording RW = IXInstances::get_name(R);
+		text_stream *RW = IXInstances::get_name(R);
 		int i;
 		LOOP_OVER_STORY_DIRECTIONS(i) {
 			faux_instance *D = NULL;
 			faux_instance *S = PL::SpatialMap::room_exit(R, i, &D);
 			if ((S) || (D)) {
-				wording OW = EMPTY_WORDING;
+				text_stream *OW = NULL;
 				if (D) OW = IXInstances::get_name(D);
 				else OW = IXInstances::get_name(S);
 				if (i < 12) {
 					char *n = PL::SpatialMap::usual_Inform_direction_name(i);
 					int opp = PL::SpatialMap::opposite(i);
-					LOG("%+W is %s of %+W.\n", OW, n, RW);
+					LOG("%S is %s of %S.\n", OW, n, RW);
 					if ((S) && (PL::SpatialMap::room_exit(S, opp, NULL) == NULL))
-						LOG("%s of %+W is nowhere.\n",
+						LOG("%s of %S is nowhere.\n",
 							PL::SpatialMap::usual_Inform_direction_name(opp), OW);
 				} else {
 					faux_instance *dir;
 					LOOP_OVER_DIRECTIONS(dir)
 						if (dir->direction_index == i) {
-							wording DW = IXInstances::get_name(dir);
-							LOG("%+W is %W of %+W.\n", OW, DW, RW);
+							text_stream *DW = IXInstances::get_name(dir);
+							LOG("%S is %S of %S.\n", OW, DW, RW);
 							faux_instance *opp = IXInstances::opposite_direction(dir);
 							int od = opp->direction_index;
 							if ((S) && (PL::SpatialMap::room_exit(S, od, NULL) == NULL)) {
-								wording OPW = IXInstances::get_name(dir);
-								LOG("%W of %+W is nowhere.\n", OPW, OW);
+								text_stream *OPW = IXInstances::get_name(dir);
+								LOG("%S of %S is nowhere.\n", OPW, OW);
 							}
 						}
 				}
@@ -2779,7 +2779,7 @@ void PL::SpatialMap::visit_to_transcribe(parse_node *p) {
 
 =
 void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
-	wording RW = IXInstances::get_name(R); /* name of the origin room */
+	text_stream *RW = IXInstances::get_name(R); /* name of the origin room */
 	faux_instance *dir;
 	LOOP_OVER_DIRECTIONS(dir) {
 		int i = dir->direction_index;
@@ -2833,7 +2833,6 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 	LOOP_OVER_DIRECTIONS(dir) {
 		int i = dir->direction_index;
 		if (PL::SpatialMap::room_exit(R, i, NULL)) continue;
-		wording DW = IXInstances::get_name(dir); /* name of the direction */
 		k++;
 		if (k == 1) {
 			HTML::open_indented_p(OUT, 1, "hanging");
@@ -2842,20 +2841,16 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 			WRITE("; ");
 		}
 		TEMPORARY_TEXT(TEMP)
-		wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(DW));
-		for (int j=0; p[j]; j++) {
-			if (j==0) PUT_TO(TEMP, Characters::toupper(p[j]));
-			else PUT_TO(TEMP, p[j]);
-		}
-		if (Wordings::length(DW) > 1)
-			WRITE_TO(TEMP, " %+W", Wordings::trim_first_word(DW));
+		text_stream *DW = IXInstances::get_name(dir); /* name of the direction */
+		WRITE_TO(TEMP, "%S", DW);
+		Str::put_at(TEMP, 0, Characters::toupper(Str::get_at(TEMP, 0)));
 		WRITE_TO(TEMP, " from ");
-		if (Wordings::nonempty(RW)) WRITE_TO(TEMP, "%+W", RW);
+		if (Str::len(RW) > 0) WRITE_TO(TEMP, "%S", RW);
 		else WRITE_TO(TEMP, "here");
 		WRITE_TO(TEMP, " is .[=0x000A=]");
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
-		WRITE("&nbsp;%+W", DW);
+		WRITE("&nbsp;%S", DW);
 	}
 	if (k>0) HTML_CLOSE("p");
 }

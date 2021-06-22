@@ -22,6 +22,8 @@ To index instances.
 =
 typedef struct faux_instance {
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
+	struct text_stream *name;
+	struct text_stream *abbrev;
 	struct instance *original;
 	int is_a_thing;
 	int is_a_supporter;
@@ -102,6 +104,40 @@ fi_map_data IXInstances::new_fimd(faux_instance *FI) {
 	return fimd;
 }
 
+@ When names are abbreviated for use on the World Index map (for instance,
+"Marble Hallway" becomes "MH") each word is tested against the following
+nonterminal; those which match are omitted. So, for instance, "Queen Of The
+South" comes out as "QS".
+
+@d ABBREV_ROOMS_TO 2
+
+=
+<map-name-abbreviation-omission-words> ::=
+	in |
+	of |
+	<article>
+
+@<Compose the abbreviated name@> =
+	wording W = Instances::get_name(I, FALSE);
+	if (Wordings::nonempty(W)) {
+		int c = 0;
+		LOOP_THROUGH_WORDING(i, W) {
+			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
+				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
+			wchar_t *p = Lexer::word_raw_text(i);
+			if (c++ < ABBREV_ROOMS_TO) PUT_TO(FI->abbrev, Characters::toupper(p[0]));
+		}
+		LOOP_THROUGH_WORDING(i, W) {
+			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
+				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
+			wchar_t *p = Lexer::word_raw_text(i);
+			for (int j=1; p[j]; j++)
+				if (Characters::vowel(p[j]) == FALSE)
+					if (c++ < ABBREV_ROOMS_TO) PUT_TO(FI->abbrev, p[j]);
+			if ((c++ < ABBREV_ROOMS_TO) && (p[1])) PUT_TO(FI->abbrev, p[1]);
+		}
+	}
+
 @ =
 faux_instance *start_faux_instance = NULL;
 faux_instance *faux_yourself = NULL;
@@ -112,6 +148,11 @@ void IXInstances::make_faux(void) {
 	LOOP_OVER_INSTANCES(I, K_object) {
 		faux_instance *FI = CREATE(faux_instance);
 		FI->index_appearances = 0;
+		FI->name = Str::new();
+		Instances::write_name(FI->name, I);
+		FI->abbrev = Str::new();
+		@<Compose the abbreviated name@>;
+		
 		FI->original = I;
 		FI->is_a_thing = Instances::of_kind(I, K_thing);
 		FI->is_a_supporter = Instances::of_kind(I, K_supporter);
@@ -221,8 +262,6 @@ void IXInstances::make_faux(void) {
 	faux_instance *FR;
 	LOOP_OVER(FR, faux_instance)
 		if (FR->is_a_direction) {
-			FR->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FR->original)->map_connection_a);
-			FR->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FR->original)->map_connection_b);
 			FR->opposite_direction = IXInstances::fi(Map::get_value_of_opposite_property(FR->original));
 		}
 	faux_instance *FD;
@@ -231,6 +270,8 @@ void IXInstances::make_faux(void) {
 			parse_node *S = PropertyInferences::value_of(
 				Instances::as_subject(I), P_other_side);
 			FD->other_side = IXInstances::fi(Rvalues::to_object_instance(S));
+			FD->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FD->original)->map_connection_a);
+			FD->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FD->original)->map_connection_b);
 		}
 
 }
@@ -246,8 +287,13 @@ faux_instance *IXInstances::yourself(void) {
 @h Naming.
 
 =
+text_stream *IXInstances::get_name(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->name;
+}
+
 void IXInstances::write_name(OUTPUT_STREAM, faux_instance *I) {
-	Instances::write_name(OUT, I->original);
+	WRITE("%S", IXInstances::get_name(I));
 }
 
 void IXInstances::write_kind(OUTPUT_STREAM, faux_instance *I) {
@@ -256,11 +302,6 @@ void IXInstances::write_kind(OUTPUT_STREAM, faux_instance *I) {
 
 void IXInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_chain);
-}
-
-wording IXInstances::get_name(faux_instance *FI) {
-	if (FI == NULL) return EMPTY_WORDING;
-	return Instances::get_name(FI->original, FALSE);
 }
 
 inference_subject *IXInstances::as_subject(faux_instance *FI) {

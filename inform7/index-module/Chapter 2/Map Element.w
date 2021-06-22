@@ -62,9 +62,9 @@ void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 		}
 
 @<Index the name and super-region of the region@> =
-	WRITE("<b>The <i>%+W</i> region", IXInstances::get_name(reg));
+	WRITE("<b>The <i>%S</i> region", IXInstances::get_name(reg));
 	faux_instance *within = IXInstances::region_of(reg);
-	if (within) WRITE(" within the <i>%+W</i> region", IXInstances::get_name(within));
+	if (within) WRITE(" within the <i>%S</i> region", IXInstances::get_name(within));
 	WRITE("</b>");
 
 @<Give room details for rooms outside any region in the World index@> =

@@ -493,9 +493,7 @@ from each other.)
 			if (k == 1) {
 				HTML_OPEN("p"); WRITE("<i>Mapping ");
 			} else WRITE("; ");
-			wording DW = IXInstances::get_name(D); /* name of the direction */
-			wording AW = IXInstances::get_name(A); /* name of the as-direction */
-			WRITE("%+W as %+W", DW, AW);
+			WRITE("%S as %S", IXInstances::get_name(D), IXInstances::get_name(A));
 		}
 	}
 	if (k > 0) { WRITE("</i>"); HTML_CLOSE("p"); }
@@ -926,7 +924,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 		HTML_OPEN_WITH("table",
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" "
-			"title=\"%+W\"",
+			"title=\"%S\"",
 			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, IXInstances::get_name(I));
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
@@ -947,10 +945,6 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	}
 }
 
-@
-
-@d ABBREV_ROOMS_TO 2
-
 @<Write the text of the abbreviated name of the room@> =
 	if (pass == 1) {
 		HTML_OPEN_WITH("a", "href=#wo_%d style=\"text-decoration: none\"",
@@ -959,7 +953,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	}
 	if ((pass == 1) && (I == faux_benchmark)) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
-	@<Work out the abbreviation for this room's name@>;
+	WRITE_TO(abbrev, "%S", I->abbrev);
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_OPEN_WITH("span", "style=\"font-size:%dpx;\"", HTML_MAP_FONT_SIZE);
 	#endif
@@ -971,38 +965,6 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	if ((pass == 1) && (I == faux_benchmark)) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
-
-@ When names are abbreviated for use on the World Index map (for faux_instance,
-"Marble Hallway" becomes "MH") each word is tested against the following
-nonterminal; those which match are omitted. So, for faux_instance, "Queen Of The
-South" comes out as "QS".
-
-=
-<map-name-abbreviation-omission-words> ::=
-	in |
-	of |
-	<article>
-
-@<Work out the abbreviation for this room's name@> =
-	wording W = IXInstances::get_name(I);
-	if (Wordings::nonempty(W)) {
-		int c = 0;
-		LOOP_THROUGH_WORDING(i, W) {
-			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
-				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
-			if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, Characters::toupper(p[0]));
-		}
-		LOOP_THROUGH_WORDING(i, W) {
-			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
-				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
-			for (int j=1; p[j]; j++)
-				if (Characters::vowel(p[j]) == FALSE)
-					if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, p[j]);
-			if ((c++ < ABBREV_ROOMS_TO) && (p[1])) PUT_TO(abbrev, p[1]);
-		}
-	}
 
 @h The colour chip.
 The first of two extras, which aren't strictly speaking part of the HTML map.
@@ -1050,7 +1012,7 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 			} else {
 				WRITE(", ");
 			}
-			WRITE("%+W", IXInstances::get_name(R));
+			WRITE("%S", IXInstances::get_name(R));
 		}
 	}
 	if (count > 0) @<End the region key table for this region@>;
@@ -1066,8 +1028,7 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 	HTML_CLOSE("td"); WRITE("\n");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"left\"");
 	WRITE("<b>");
-	wording W = IXInstances::get_name(reg);
-	if (reg) WRITE("%+W", W);
+	if (reg) WRITE("%S", IXInstances::get_name(reg));
 	else WRITE("<i>Not in any region</i>");
 	WRITE("</b>: ");
 
