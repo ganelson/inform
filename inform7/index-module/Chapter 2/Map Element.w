@@ -12,8 +12,8 @@ int suppress_panel_changes = FALSE;
 void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
 	if (PluginManager::active(map_plugin) == FALSE) return; /* in this case there is no model world */
+	PL::SpatialMap::initialise_page_directions();
 	IXInstances::make_faux();
-	EPSMap::traverse_for_map_parameters(1);
 	PL::SpatialMap::establish_spatial_coordinates();
 	if (test_only) {
 		PL::SpatialMap::perform_map_internal_test(OUT);
@@ -201,7 +201,9 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
+	#ifdef CORE_MODULE
 	IXInferences::index(OUT, IXInstances::as_subject(I), TRUE);
+	#endif
 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
@@ -213,7 +215,9 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 	HTML_CLOSE("p");
 
 @<Add the catalogue of specific properties@> =
+	#ifdef CORE_MODULE
 	IXInferences::index_specific(OUT, IXInstances::as_subject(I));
+	#endif
 
 @
 

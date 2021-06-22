@@ -76,7 +76,7 @@ property *Properties::create(wording W, package_request *using_package,
 	@<Note the significance of this property, if it needs compiler support@>;
 
 	if (Wordings::nonempty(W)) @<Register the property name as a noun@>
-	else IXProperties::dont_show_in_index(prn);
+	else RTProperties::dont_show_in_index(prn);
 
 	LOGIF(PROPERTY_CREATIONS, "Created property: $Y\n", prn);
 	return prn;
@@ -194,20 +194,20 @@ kind "grammatical gender" -- see //Instances::make_kind_coincident//.
 			case 1: P_specification = prn;
 				ValueProperties::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
-				IXProperties::dont_show_in_index(prn);
+				RTProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(model_world, P_specification, TRUE);
 				break;
 			case 2: P_indefinite_appearance_text = prn;
 				ValueProperties::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
-				IXProperties::dont_show_in_index(prn);
+				RTProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_constants,
 					P_indefinite_appearance_text, TRUE);
 				break;
 			case 3: P_variable_initial_value = prn;
 				RTProperties::do_not_compile(prn);
 				ValueProperties::set_kind(prn, K_value);
-				IXProperties::dont_show_in_index(prn);
+				RTProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_variables, P_variable_initial_value, TRUE);
 				break;
 		}

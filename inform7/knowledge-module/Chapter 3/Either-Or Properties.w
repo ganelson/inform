@@ -82,7 +82,7 @@ relies on adjectival meanings.
 property *EitherOrProperties::new_nameless(text_stream *identifier_text) {
 	package_request *R = Hierarchy::completion_package(PROPERTIES_HAP);
 	property *prn = Properties::create(EMPTY_WORDING, R, NULL, TRUE, identifier_text);
-	IXProperties::dont_show_in_index(prn);
+	RTProperties::dont_show_in_index(prn);
 	EitherOrPropertyAdjectives::create_for_property(prn, EMPTY_WORDING, K_object);
 	prn->Inter_level_only = TRUE;
 	return prn;

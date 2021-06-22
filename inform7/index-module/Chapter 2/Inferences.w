@@ -43,7 +43,7 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 	int f = TRUE;
 	property *prn;
 	LOOP_OVER(prn, property) {
-		if (IXProperties::is_shown_in_index(prn) == FALSE) continue;
+		if (RTProperties::is_shown_in_index(prn) == FALSE) continue;
 		if (IXProperties::get_indexed_already_flag(prn)) continue;
 		if (Properties::is_either_or(prn) != bool) continue;
 
@@ -84,7 +84,7 @@ This only tells about specific property settings for a given faux_instance.
 void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 	property *prn; int k = 0;
 	LOOP_OVER(prn, property)
-		if (IXProperties::is_shown_in_index(prn))
+		if (RTProperties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn)) {
 				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
@@ -103,7 +103,7 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 			}
 	if (k > 0) HTML_CLOSE("p");
 	LOOP_OVER(prn, property)
-		if (IXProperties::is_shown_in_index(prn))
+		if (RTProperties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn) == FALSE)
 				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;

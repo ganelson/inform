@@ -167,6 +167,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(AUGMENT_CSEQ, I"Augment model world",
 		-1, debugging, sequence_timer);
 	BENCH(World::stage_V)
+	BENCH(MappingHints::traverse_for_map_parameters)
 
 @<Phrases and rules@> =
 	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules",

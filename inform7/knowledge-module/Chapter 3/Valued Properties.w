@@ -91,7 +91,7 @@ property *ValueProperties::new_nameless(text_stream *Inter_identifier, kind *K) 
 	if (K == NULL) internal_error("new nameless property without kind");
 	property *prn = Properties::create(EMPTY_WORDING,
 		Hierarchy::completion_package(PROPERTIES_HAP), NULL, FALSE, Inter_identifier);
-	IXProperties::dont_show_in_index(prn);
+	RTProperties::dont_show_in_index(prn);
 	@<Initialise this nameless property@>;
 	return prn;
 }
@@ -106,7 +106,7 @@ property *ValueProperties::new_nameless_using(kind *K, package_request *R,
 }
 
 @<Initialise this nameless property@> =
-	IXProperties::dont_show_in_index(prn);
+	RTProperties::dont_show_in_index(prn);
 	prn->value_data->property_value_kind = K;
 	prn->value_data->setting_bp =
 		SettingPropertyRelations::make_set_nameless_property_BP(prn);

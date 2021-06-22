@@ -19,6 +19,7 @@ typedef struct property_compilation_data {
 	int store_in_negation; /* this is the dummy half of an either/or pair */
 	int visited_on_traverse; /* for temporary use when compiling objects */
 	int use_non_typesafe_0; /* as a default to mean "not set" at run-time */
+	int include_in_index; /* is this property shown in the indexes? */
 } property_compilation_data;
 
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname,
@@ -32,6 +33,7 @@ void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_nam
 	prn->compilation_data.implemented_as_attribute = NOT_APPLICABLE;
 	prn->compilation_data.visited_on_traverse = -1;
 	prn->compilation_data.use_non_typesafe_0 = FALSE;
+	prn->compilation_data.include_in_index = TRUE;
 }
 
 @ And these are created on demand, though some properties come with a given
@@ -144,6 +146,16 @@ int RTProperties::has_been_translated(property *prn) {
 text_stream *RTProperties::current_translation(property *prn) {
 	if (prn->compilation_data.translated == FALSE) return NULL;
 	return Produce::get_translation(RTProperties::iname(prn));
+}
+
+@ A property might be missed out of the Index pages for clarity's sake:
+
+=
+int RTProperties::is_shown_in_index(property *prn) {
+	return prn->compilation_data.include_in_index;
+}
+void RTProperties::dont_show_in_index(property *prn) {
+	prn->compilation_data.include_in_index = FALSE;
 }
 
 @h Compilation.

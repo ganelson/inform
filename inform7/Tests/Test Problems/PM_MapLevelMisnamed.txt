@@ -1,3 +1,0 @@
-The Taj Mahal and the Grassy Slope are rooms.
-
-Index map with room-size of level 17 set to 28.

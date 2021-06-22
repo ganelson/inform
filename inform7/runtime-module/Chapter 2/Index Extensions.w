@@ -169,7 +169,7 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 	int kc = 0;
 	LOOP_OVER(prn, property)
 		if ((Wordings::nonempty(prn->name)) &&
-			(IXProperties::is_shown_in_index(prn)) &&
+			(RTProperties::is_shown_in_index(prn)) &&
 			(Lexer::file_of_origin(Wordings::first_wn(prn->name)) == E->read_into_file))
 			kc = IndexExtensions::document_headword(OUT, kc, E, "Properties", I"property",
 				prn->name);

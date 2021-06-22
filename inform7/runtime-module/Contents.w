@@ -30,6 +30,7 @@ Chapter 2: Emission
 	General Parsing Routines
 	Index Extensions
 	EPS Map
+	Mapping Hints
 
 Chapter 3: Basics
 	Generic Module

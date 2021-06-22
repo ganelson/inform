@@ -8,7 +8,7 @@ void RenderEPSMap::render_map_as_EPS(void) {
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
 
-	EPSMap::traverse_for_map_parameters(2);
+	IXInstances::decode_hints(2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
 
@@ -304,7 +304,7 @@ actually go there in any visual way.
 		while (xpart < -5000) xpart+=10000;
 		if (EPSMap::get_int_mp(L"monochrome", NULL)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
 		else RenderEPSMap::EPS_compile_set_colour(OUT, rh->colour);
-		faux_instance *O = IXInstances::fi(rh->offset_from);
+		faux_instance *O = rh->offset_from;
 		if (O) {
 			bx = O->fimd.eps_x;
 			by = O->fimd.eps_y;
@@ -336,16 +336,8 @@ void RenderEPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, faux_insta
 }
 
 @<Try taking the name from the printed name property of the room@> =
-	if (P_printed_name) {
-		parse_node *V = PropertyInferences::value_and_where(
-			IXInstances::as_subject(I), P_printed_name, NULL);
-		if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
-			(Wordings::nonempty(Node::get_text(V)))) {
-			int wn = Wordings::first_wn(Node::get_text(V));
-			WRITE_TO(txt, "%+W", Wordings::one_word(wn));
-			if (Str::get_first_char(txt) == '\"') Str::delete_first_character(txt);
-			if (Str::get_last_char(txt) == '\"') Str::delete_last_character(txt);
-		}
+	if (Str::len(I->printed_name) > 0) {
+		WRITE_TO(txt, "%S", I->printed_name);
 	}
 
 @<If that fails, try taking the name from its source text name@> =

@@ -81,8 +81,8 @@ function togglePopup(material_id) {
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IXPhysicalWorld::render</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_only</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Task::wraps_existing_storyfile</span><span class="plain-syntax">()) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment-syntax"> in this case there is no model world</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PluginManager::active</span><span class="plain-syntax">(</span><span class="identifier-syntax">map_plugin</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment-syntax"> in this case there is no model world</span>
+<span class="plain-syntax">    </span><a href="4-sm.html#SP7_4" class="function-link"><span class="function-syntax">PL::SpatialMap::initialise_page_directions</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-ins.html#SP3" class="function-link"><span class="function-syntax">IXInstances::make_faux</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">EPSMap::traverse_for_map_parameters</span><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    </span><a href="4-sm.html#SP7" class="function-link"><span class="function-syntax">PL::SpatialMap::establish_spatial_coordinates</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">test_only</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="4-sm.html#SP45" class="function-link"><span class="function-syntax">PL::SpatialMap::perform_map_internal_test</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
@@ -331,7 +331,9 @@ will be things which are offstage (and their contents and any parts thereof):
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::open_indented_p</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="string-syntax">"tight"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><a href="2-inf.html#SP1" class="function-link"><span class="function-syntax">IXInferences::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="2-ins.html#SP4" class="function-link"><span class="function-syntax">IXInstances::as_subject</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-me.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_8" class="paragraph-anchor"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the chain of kinds</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
@@ -351,7 +353,9 @@ will be things which are offstage (and their contents and any parts thereof):
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><a href="2-inf.html#SP3" class="function-link"><span class="function-syntax">IXInferences::index_specific</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="2-ins.html#SP4" class="function-link"><span class="function-syntax">IXInstances::as_subject</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-me.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>

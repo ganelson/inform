@@ -42,7 +42,7 @@ effect on the world model itself, and so is dealt with elsewhere, in //runtime: 
 
 =
 int Map::make_special_meanings(void) {
-	SpecialMeanings::declare(EPSMap::index_map_with_SMF, I"index-map-with", 4);
+	SpecialMeanings::declare(MappingHints::index_map_with_SMF, I"index-map-with", 4);
 	return FALSE;
 }
 
@@ -351,7 +351,6 @@ typedef struct map_data {
 	struct parse_node *exits_set_at[MAX_DIRECTIONS];
 	wchar_t *world_index_colour; /* an HTML colour for the room square (rooms only) */
 	wchar_t *world_index_text_colour; /* an HTML colour for the room text (rooms only) */
-	struct map_parameter_scope local_map_parameters; /* temporary: used in EPS mapping */
 	int eps_x, eps_y;
 
 	CLASS_DEFINITION
@@ -374,7 +373,6 @@ int Map::new_subject_notify(inference_subject *subj) {
 
 	md->world_index_colour = NULL;
 	md->world_index_text_colour = NULL;
-	EPSMap::prepare_map_parameter_scope(&(md->local_map_parameters));
 	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, md);
 	return FALSE;
 }

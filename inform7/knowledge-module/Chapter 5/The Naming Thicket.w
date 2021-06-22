@@ -63,11 +63,11 @@ int Naming::naming_new_property_notify(property *prn) {
 			case 2: P_proper_named = prn; break;
 			case 3: P_printed_name = prn; break;
 			case 4: P_printed_plural_name = prn; break;
-			case 5: IXProperties::dont_show_in_index(prn); break;
+			case 5: RTProperties::dont_show_in_index(prn); break;
 			case 6: P_privately_named = prn;
-				IXProperties::dont_show_in_index(prn); break;
+				RTProperties::dont_show_in_index(prn); break;
 			case 7: P_adaptive_text_viewpoint = prn;
-				IXProperties::dont_show_in_index(prn); break;
+				RTProperties::dont_show_in_index(prn); break;
 			case 8: P_neuter = prn; break;
 			case 9: P_female = prn; break;
 		}

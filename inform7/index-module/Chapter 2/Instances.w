@@ -23,6 +23,7 @@ To index instances.
 typedef struct faux_instance {
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
 	struct text_stream *name;
+	struct text_stream *printed_name;
 	struct text_stream *abbrev;
 	struct instance *original;
 	int is_a_thing;
@@ -57,6 +58,10 @@ typedef struct faux_instance {
 	int region_set_at;
 	int progenitor_set_at;
 	struct linked_list *usages; /* of |parse_node| */
+		
+	#ifdef CORE_MODULE
+	inference_subject *knowledge;
+	#endif
 	
 	struct fi_map_data fimd;
 	CLASS_DEFINITION
@@ -79,6 +84,7 @@ typedef struct fi_map_data {
 	struct faux_instance *exits[MAX_DIRECTIONS];
 	struct faux_instance *lock_exits[MAX_DIRECTIONS];
 	int exits_set_at[MAX_DIRECTIONS];
+	struct map_parameter_scope local_map_parameters; /* temporary: used in EPS mapping */
 } fi_map_data;
 
 fi_map_data IXInstances::new_fimd(faux_instance *FI) {
@@ -101,6 +107,7 @@ fi_map_data IXInstances::new_fimd(faux_instance *FI) {
 		fimd.spatial_relationship[i] = NULL;
 		fimd.exits_set_at[i] = -1;
 	}
+	EPSMap::prepare_map_parameter_scope(&(fimd.local_map_parameters));
 	return fimd;
 }
 
@@ -232,6 +239,22 @@ void IXInstances::make_faux(void) {
 		if (I == I_yourself) faux_yourself = FI;
 		if (I == Spatial::get_benchmark_room()) faux_benchmark = FI;
 		if (I == Player::get_start_room()) start_faux_instance = FI;
+		
+		TEMPORARY_TEXT(pname)
+		parse_node *V = PropertyInferences::value_and_where(
+			Instances::as_subject(I), P_printed_name, NULL);
+		if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
+			(Wordings::nonempty(Node::get_text(V)))) {
+			int wn = Wordings::first_wn(Node::get_text(V));
+			WRITE_TO(pname, "%+W", Wordings::one_word(wn));
+			if (Str::get_first_char(pname) == '\"') Str::delete_first_character(pname);
+			if (Str::get_last_char(pname) == '\"') Str::delete_last_character(pname);
+		}
+		FI->printed_name = Str::duplicate(pname);
+		DISCARD_TEXT(pname)
+		#ifdef CORE_MODULE
+		FI->knowledge = Instances::as_subject(I);
+		#endif
 	}
 	faux_instance *FB;
 	LOOP_OVER(FB, faux_instance) {
@@ -273,7 +296,53 @@ void IXInstances::make_faux(void) {
 			FD->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FD->original)->map_connection_a);
 			FD->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FD->original)->map_connection_b);
 		}
+	IXInstances::decode_hints(1);
+}
 
+void IXInstances::decode_hints(int pass) {
+	mapping_hint *hint;
+	LOOP_OVER(hint, mapping_hint) {
+		if ((hint->dir) && (hint->as_dir)) {
+			if (pass == 1)
+				story_dir_to_page_dir[MAP_DATA(hint->dir)->direction_index] =
+					MAP_DATA(hint->as_dir)->direction_index;
+		} else if ((hint->from) && (hint->dir)) {
+			if (pass == 1)
+				PL::SpatialMap::lock_exit_in_place(IXInstances::fi(hint->from),
+					MAP_DATA(hint->dir)->direction_index, IXInstances::fi(hint->to));
+		} else if (hint->name) {
+			if (hint->scope_level != 1000000) {
+				if (pass == 2) {
+					map_parameter_scope *scope = NULL;
+					EPS_map_level *eml;
+					LOOP_OVER(eml, EPS_map_level)
+						if ((eml->contains_rooms)
+							&& (eml->map_level - PL::SpatialMap::benchmark_level() == hint->scope_level))
+							scope = &(eml->map_parameters);
+					if (scope) EPSMap::put_mp(hint->name, scope, IXInstances::fi(hint->scope_I), hint->put_string, hint->put_integer);
+				}
+			} else {
+				if (pass == 1)
+					EPSMap::put_mp(hint->name, NULL, IXInstances::fi(hint->scope_I), hint->put_string, hint->put_integer);
+			}
+		} else if (hint->annotation) {
+			rubric_holder *rh = CREATE(rubric_holder);
+			rh->annotation = hint->annotation;
+			rh->point_size = hint->point_size;
+			rh->font = hint->font;
+			rh->colour = hint->colour;
+			rh->at_offset = hint->at_offset;
+			rh->offset_from = IXInstances::fi(hint->offset_from);
+		}
+	}
+}
+
+faux_instance *IXInstances::fi(instance *I) {
+	faux_instance *FI;
+	LOOP_OVER(FI, faux_instance)
+		if (FI->original == I)
+			return FI;
+	return NULL;
 }
 
 faux_instance *IXInstances::start_room(void) {
@@ -304,18 +373,12 @@ void IXInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_chain);
 }
 
+#ifdef CORE_MODULE
 inference_subject *IXInstances::as_subject(faux_instance *FI) {
 	if (FI == NULL) return NULL;
-	return Instances::as_subject(FI->original);
+	return FI->knowledge;
 }
-
-faux_instance *IXInstances::fi(instance *I) {
-	faux_instance *FI;
-	LOOP_OVER(FI, faux_instance)
-		if (FI->original == I)
-			return FI;
-	return NULL;
-}
+#endif
 
 faux_instance *IXInstances::region_of(faux_instance *FI) {
 	if (FI == NULL) return NULL;
@@ -399,7 +462,7 @@ void IXInstances::get_door_data(faux_instance *door, faux_instance **c1, faux_in
 
 map_parameter_scope *IXInstances::get_parameters(faux_instance *R) {
 	if (R == NULL) return NULL;
-	return &(MAP_DATA(R->original)->local_map_parameters);
+	return &(R->fimd.local_map_parameters);
 }
 
 @h Noun usage.

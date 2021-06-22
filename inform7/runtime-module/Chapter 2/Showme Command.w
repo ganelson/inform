@@ -205,7 +205,7 @@ void RTShowmeCommand::compile_property_SHOWME(inference_subject *subj, property 
 =
 int RTShowmeCommand::SHOWME_primitive(inference_subject *subj, property *prn, int comp,
 	inter_symbol *t_0_s, inter_symbol *na_s) {
-	if (IXProperties::is_shown_in_index(prn) == FALSE) return FALSE;
+	if (RTProperties::is_shown_in_index(prn) == FALSE) return FALSE;
 	if (RTProperties::can_be_compiled(prn) == FALSE) return FALSE;
 
 	inference_subject *parent = InferenceSubjects::narrowest_broader_subject(subj);
