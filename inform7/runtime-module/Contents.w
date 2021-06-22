@@ -29,8 +29,6 @@ Chapter 2: Emission
 	Short Names
 	General Parsing Routines
 	Index Extensions
-	EPS Map
-	Mapping Hints
 
 Chapter 3: Basics
 	Generic Module

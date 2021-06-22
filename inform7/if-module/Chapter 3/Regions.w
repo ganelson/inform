@@ -20,7 +20,6 @@ void Regions::start(void) {
 	PluginManager::plug(MORE_SPECIFIC_PLUG, Regions::more_specific);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
 	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXRegions::add_to_World_index);
 }
 
 @ There is one kind of interest: "region", of course. It is recognised by the English

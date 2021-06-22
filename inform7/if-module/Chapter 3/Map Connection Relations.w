@@ -84,7 +84,6 @@ this to other languages.)
 @ Directions are detected in sentences having the form "D is a direction." This
 is intentionally done very early on.
 
-@d MAX_DIRECTIONS 100 /* the Standard Rules define only 12, so this is plenty */
 @d MAX_MAPPING_RELATION_NAME_LENGTH MAX_WORDS_IN_DIRECTION*MAX_WORD_LENGTH+10
 
 @<Create the mapping BP for the new direction@> =

@@ -2,14 +2,6 @@
 
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
-@ EPS-format files are vector art, rather than raster art, and are produced
-with the intention that authors can tidy them up afterwards using programs
-like Adobe Illustrator. By default they aren't produced, so that the following
-flag stays |FALSE|:
-
-=
-int write_EPS_format_map = FALSE;
-
 @ The EPS map-maker is really a miniature interpreted programming
 language in its own right, and here we define that language's data
 types and variables.

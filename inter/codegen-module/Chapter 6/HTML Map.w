@@ -391,7 +391,7 @@ void PL::HTMLMap::render_map_as_HTML(OUTPUT_STREAM) {
 	@<Choose a map colour for each region@>;
 	@<Choose a map colour for each room, based on its region membership@>;
 
-	if (Instances::count(K_room) >= 2) {
+	if (IXInstances::no_rooms() >= 2) {
 		WRITE("\n\n");
 		HTML::comment(OUT, I"WORLD WRITE MAP BEGINS");
 		HTML_OPEN("p");

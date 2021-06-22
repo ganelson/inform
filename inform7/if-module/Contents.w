@@ -33,6 +33,7 @@ Chapter 3: Space and Time
 	Timed Rules
 	Scenes
 	The Score
+	Mapping Hint Requests
 
 Chapter 4: Actions
 "Actions are impulses to do something within the simulated world."

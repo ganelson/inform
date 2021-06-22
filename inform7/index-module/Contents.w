@@ -9,19 +9,5 @@ Chapter 1: Starting Up
 
 Chapter 2: Indexing
 "Utility routines for generating index pages."
-	Map Element
-	Instances
 	Properties
 	Inferences
-
-Chapter 3: Indexing for Plugins
-	Spatial
-	The Player
-	Backdrops
-	Regions
-	The Map
-
-Chapter 4: Visualising Space
-	Spatial Map
-	HTML Map
-	Render EPS Map

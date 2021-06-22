@@ -10,19 +10,9 @@ which use this module:
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-@e INDEX_SORTING_MREASON
-@e MAP_INDEX_MREASON
-@e TYPE_TABLES_MREASON
-
-@e faux_instance_CLASS
-
 =
-DECLARE_CLASS(faux_instance)
 
 void IndexModule::start(void) {
-	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
-	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
-	Memory::reason_name(TYPE_TABLES_MREASON, "tables of details of the kinds of values");
 }
 void IndexModule::end(void) {
 }

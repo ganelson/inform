@@ -639,25 +639,3 @@ requirements set by |SET_PATTERN_MATCH_REQUIREMENTS_PLUG|.
 int PluginCalls::compile_pattern_match_clause(action_pattern *ap, int cpmc) {
 	PLUGINS_CALL(COMPILE_PATTERN_MATCH_CLAUSE_PLUG, ap, cpmc);
 }
-
-@h Influencing index.
-Called from //index: Map Element// to add something (if it wishes)
-to the index description of an instance in the spatial model. For example,
-the regions plugin uses this to put colour chips next to names of regions.
-
-@e ADD_TO_WORLD_INDEX_PLUG
-
-=
-int PluginCalls::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
-	PLUGINS_CALL(ADD_TO_WORLD_INDEX_PLUG, OUT, O);
-}
-
-@ Called from //index: Map Element// to add something (if it wishes)
-to the textual description of an instance in the spatial model. For example,
-the mapping plugin uses this to say where a door leads.
-
-@e ANNOTATE_IN_WORLD_INDEX_PLUG
-
-int PluginCalls::annotate_in_World_index(OUTPUT_STREAM, faux_instance *O) {
-	PLUGINS_CALL(ANNOTATE_IN_WORLD_INDEX_PLUG, OUT, O);
-}

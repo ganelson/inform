@@ -223,15 +223,9 @@ DECLARE_CLASS(to_phrase_request)
 @ //index// --
 
 @e activity_crossref_CLASS
-@e connected_submap_CLASS
-@e EPS_map_level_CLASS
-@e rubric_holder_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
-DECLARE_CLASS(connected_submap)
-DECLARE_CLASS(EPS_map_level)
-DECLARE_CLASS(rubric_holder)
 
 @ //if// --
 

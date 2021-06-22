@@ -3,7 +3,7 @@
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
 @ =
-void RenderEPSMap::render_map_as_EPS(void) {
+void RenderEPSMap::prepare_universe(void) {
 	@<Create the main EPS map super-level@>;
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
@@ -11,8 +11,11 @@ void RenderEPSMap::render_map_as_EPS(void) {
 	IXInstances::decode_hints(2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
+}
 
-	if (write_EPS_format_map) @<Open a stream and write the EPS map to it@>;
+void RenderEPSMap::render_map_as_EPS(filename *F) {
+	RenderEPSMap::prepare_universe();
+	@<Open a stream and write the EPS map to it@>;
 }
 
 @<Create the main EPS map super-level@> =
@@ -63,10 +66,15 @@ void RenderEPSMap::render_map_as_EPS(void) {
 			R->fimd.colour);
 
 @<Open a stream and write the EPS map to it@> =
-	filename *F = Task::epsmap_file();
 	text_stream EPS_struct; text_stream *EPS = &EPS_struct;
-	if (STREAM_OPEN_TO_FILE(EPS, F, ISO_ENC) == FALSE)
-		Problems::fatal_on_file("Can't open EPS map file", F);
+	if (STREAM_OPEN_TO_FILE(EPS, F, ISO_ENC) == FALSE) {
+		#ifdef CORE_MODULE
+		Problems::fatal_on_file("Can't open index file", F);
+		#endif
+		#ifndef CORE_MODULE
+		Errors::fatal_with_file("can't open index file", F);
+		#endif
+	}
 	RenderEPSMap::EPS_compile_map(EPS);
 	STREAM_CLOSE(EPS);
 

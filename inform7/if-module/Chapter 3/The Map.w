@@ -25,8 +25,6 @@ void Map::start(void) {
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Map::new_property_notify);
 	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Map::intervene_in_assertion);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXMap::add_to_World_index);
-	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, IXMap::annotate_in_World_index);
 	PluginManager::plug(PRODUCTION_LINE_PLUG, Map::production_line);
 }
 
@@ -38,7 +36,7 @@ int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_tim
 }
 
 @ This special sentence is used as a hint in making map documents; it has no
-effect on the world model itself, and so is dealt with elsewhere, in //runtime: EPS Map//.
+effect on the world model itself, and so is dealt with elsewhere, in //codegen: EPS Map//.
 
 =
 int Map::make_special_meanings(void) {
@@ -445,7 +443,7 @@ noted above are keys into these arrays.
 It might look a little wasteful of I7's memory to expand the direction
 inferences, a nicely compact representation, into large and sparse arrays.
 But it's convenient, and profiling suggests that the memory overhead is not
-significant. It also means that the //index: Spatial Map// mapping code, which
+significant. It also means that the //codegen: Spatial Map// mapping code, which
 contains quite crunchy algorithms, has the fastest possible access to the layout.
 
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]

@@ -24,7 +24,6 @@ void Player::start(void) {
 	PluginManager::plug(COMPLETE_MODEL_PLUG, Player::complete_model);
 	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, Player::refine_implicit_noun);
 	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, Player::detect_bodysnatching);
-	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, IXPlayer::annotate_in_World_index);
 }
 
 int Player::production_line(int stage, int debugging,

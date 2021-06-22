@@ -135,7 +135,6 @@ int partitioned_into_components = FALSE;
 
 void PL::SpatialMap::establish_spatial_coordinates(void) {
 	if (spatial_coordinates_established) return;
-	if (Log::aspect_switched_on(SPATIAL_MAP_DA)) PL::SpatialMap::log_precis_of_map();
 	Universe = Geometry::empty_cuboid();
 	@<(1) Create the spatial relationship arrays@>;
 	@<(2) Partition the set of rooms into component submaps@>;
@@ -199,8 +198,7 @@ int story_dir_to_page_dir[MAX_DIRECTIONS];
 
 @ =
 void PL::SpatialMap::initialise_page_directions(void) {
-	int N = Map::number_of_directions();
-	for (int i=0; i<N; i++)
+	for (int i=0; i<MAX_DIRECTIONS; i++)
 		story_dir_to_page_dir[i] = i;
 }
 
@@ -332,7 +330,7 @@ we use these hard-wired macros instead.
 	for (i=0; i<12; i++)
 
 @d LOOP_OVER_STORY_DIRECTIONS(i)
-	for (i=0; i<Map::number_of_directions(); i++)
+	for (i=0; ((i<IXInstances::no_directions()) && (i<MAX_DIRECTIONS)); i++)
 
 @d LOOP_OVER_LATTICE_DIRECTIONS(i)
 	for (i=0; i<10; i++)
@@ -437,8 +435,7 @@ faux_instance *PL::SpatialMap::room_exit(faux_instance *origin, int dir_num, fau
 }
 
 faux_instance *PL::SpatialMap::room_exit_as_indexed(faux_instance *origin, int dir_num, faux_instance **via) {
-	int j;
-	for (j=0; j<MAX_DIRECTIONS; j++) {
+	for (int j=0; j<MAX_DIRECTIONS; j++) {
 		if (story_dir_to_page_dir[j] == dir_num) {
 			faux_instance *I = PL::SpatialMap::room_exit(origin, j, via);
 			if (I) return I;
@@ -2666,116 +2663,7 @@ locking means that blank planes are inevitable.
 				PL::SpatialMap::translate_room(R, D_vector);
 	}
 
-@h Precis.
-It turns out to be useful to test the above algorithm on maps of actual IF
-works. But they tend to have large source texts full of irrelevancies to
-the spatial layout, so in order to extract the arrangement cleanly, we
-can make use of the following:
-
-=
-void PL::SpatialMap::log_precis_of_map(void) {
-	LOG("[Precis of source text giving map layout follows.]\n\n");
-	faux_instance *R;
-	LOOP_OVER_OBJECTS(R) R->fimd.zone = 1;
-	LOOP_OVER_OBJECTS(R) {
-		@<Declare the regions and doors in the precis@>;
-		@<Declare the rooms in the precis, starting with the start room@>;
-		R->fimd.zone = 0;
-	}
-	@<Declare the map connections in the precis@>;
-	SyntaxTree::traverse(Task::syntax_tree(), PL::SpatialMap::visit_to_transcribe);
-	LOG("\n[Precis complete.]\n\n");
-}
-
-@<Declare the regions and doors in the precis@> =
-	if ((IXInstances::is_a_direction(R)) &&
-		(R->direction_index >= 12)) {
-		text_stream *W = IXInstances::get_name(R);
-		text_stream *OW = IXInstances::get_name(IXInstances::opposite_direction(R));
-		LOG("%S is a direction. The opposite of %S is %S.\n", W, W, OW);
-	}
-	if (IXInstances::is_a_region(R)) {
-		text_stream *W = IXInstances::get_name(R);
-		LOG("%S is a region.\n", W);
-	}
-	if (IXInstances::is_a_door(R)) {
-		text_stream *W = IXInstances::get_name(R);
-		LOG("%S is a door.\n", W);
-		faux_instance *X = IXInstances::other_side_of_door(R);
-		if (X) {
-			text_stream *XW = IXInstances::get_name(X);
-			LOG("The other side of %S is %S.\n", W, XW);
-		}
-	}
-
-@<Declare the rooms in the precis, starting with the start room@> =
-	if (IXInstances::is_a_room(R)) {
-		text_stream *RW = IXInstances::get_name(R);
-		LOG("%S is a room.\n", RW);
-		faux_instance *reg = IXInstances::region_of(R);
-		if (reg) {
-			text_stream *RGW = IXInstances::get_name(reg);
-			if (reg->fimd.zone == 1) {
-				LOG("%S is a region.\n", RGW);
-				reg->fimd.zone = 0;
-			}
-			LOG("%S is in %S.\n", RW, RGW);
-		}
-		faux_instance *start = IXInstances::start_room();
-		if (R == start) {
-			LOG("The player is in %S.\n", RW);
-		}
-	}
-
-@<Declare the map connections in the precis@> =
-	faux_instance *R;
-	LOOP_OVER_ROOMS(R) {
-		text_stream *RW = IXInstances::get_name(R);
-		int i;
-		LOOP_OVER_STORY_DIRECTIONS(i) {
-			faux_instance *D = NULL;
-			faux_instance *S = PL::SpatialMap::room_exit(R, i, &D);
-			if ((S) || (D)) {
-				text_stream *OW = NULL;
-				if (D) OW = IXInstances::get_name(D);
-				else OW = IXInstances::get_name(S);
-				if (i < 12) {
-					char *n = PL::SpatialMap::usual_Inform_direction_name(i);
-					int opp = PL::SpatialMap::opposite(i);
-					LOG("%S is %s of %S.\n", OW, n, RW);
-					if ((S) && (PL::SpatialMap::room_exit(S, opp, NULL) == NULL))
-						LOG("%s of %S is nowhere.\n",
-							PL::SpatialMap::usual_Inform_direction_name(opp), OW);
-				} else {
-					faux_instance *dir;
-					LOOP_OVER_DIRECTIONS(dir)
-						if (dir->direction_index == i) {
-							text_stream *DW = IXInstances::get_name(dir);
-							LOG("%S is %S of %S.\n", OW, DW, RW);
-							faux_instance *opp = IXInstances::opposite_direction(dir);
-							int od = opp->direction_index;
-							if ((S) && (PL::SpatialMap::room_exit(S, od, NULL) == NULL)) {
-								text_stream *OPW = IXInstances::get_name(dir);
-								LOG("%S of %S is nowhere.\n", OPW, OW);
-							}
-						}
-				}
-			}
-		}
-	}
-
 @ 
-
-@e TRAVERSE_FOR_MAP_INDEX_SMFT
-
-=
-void PL::SpatialMap::visit_to_transcribe(parse_node *p) {
-	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
-		MajorNodes::try_special_meaning(TRAVERSE_FOR_MAP_INDEX_SMFT, p->down);
-	}
-}
-
-@ Rather similar code is used for details on the World index.
 
 =
 void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
@@ -2859,6 +2747,16 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 
 =
 void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
+/*	WRITE("%d dirs, %d rooms\n", IXInstances::no_directions(), IXInstances::no_rooms());
+	faux_instance *I;
+	LOOP_OVER_OBJECTS(I) {
+		WRITE("%S\n", IXInstances::get_name(I));
+		if (IXInstances::is_a_direction(I)) {
+			WRITE("  Opposite %S\n", IXInstances::get_name(IXInstances::opposite_direction(I)));
+			WRITE("  Index %d, Number %d\n", I->direction_index, I->direction_number);
+		}
+	}
+*/
 	connected_submap *sub;
 	LOOP_OVER(sub, connected_submap) {
 		WRITE("Map component %d: extent (%d...%d, %d...%d, %d...%d): population %d\n",

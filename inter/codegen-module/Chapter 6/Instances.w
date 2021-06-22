@@ -19,6 +19,22 @@ To index instances.
 @d LOOP_OVER_OBJECTS(R)
 	LOOP_OVER(R, faux_instance)
 
+@d MAX_DIRECTIONS 100 /* the Standard Rules define only 12, so this is plenty */
+
+=
+int no_direction_fi = 0;
+int no_room_fi = 0;
+
+int IXInstances::no_directions(void) {
+	return no_direction_fi;
+}
+
+int IXInstances::no_rooms(void) {
+	return no_room_fi;
+}
+
+@
+
 =
 typedef struct faux_instance {
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
@@ -151,6 +167,7 @@ faux_instance *faux_yourself = NULL;
 faux_instance *faux_benchmark = NULL;
 
 void IXInstances::make_faux(void) {
+#ifdef CORE_MODULE
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		faux_instance *FI = CREATE(faux_instance);
@@ -165,9 +182,11 @@ void IXInstances::make_faux(void) {
 		FI->is_a_supporter = Instances::of_kind(I, K_supporter);
 		FI->is_a_person = Instances::of_kind(I, K_person);
 		FI->is_a_room = Spatial::object_is_a_room(I);
+		if (FI->is_a_room) no_room_fi++;
 		FI->is_a_door = Map::instance_is_a_door(I);
 		FI->is_a_region = Regions::object_is_a_region(I);
 		FI->is_a_direction = Map::object_is_a_direction(I);
+		if (FI->is_a_direction) no_direction_fi++;
 		FI->is_a_backdrop = Backdrops::object_is_a_backdrop(I);
 		FI->is_everywhere = FALSE;
 		FI->is_worn = FALSE;
@@ -296,10 +315,12 @@ void IXInstances::make_faux(void) {
 			FD->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FD->original)->map_connection_a);
 			FD->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FD->original)->map_connection_b);
 		}
+#endif
 	IXInstances::decode_hints(1);
 }
 
 void IXInstances::decode_hints(int pass) {
+#ifdef CORE_MODULE
 	mapping_hint *hint;
 	LOOP_OVER(hint, mapping_hint) {
 		if ((hint->dir) && (hint->as_dir)) {
@@ -326,17 +347,21 @@ void IXInstances::decode_hints(int pass) {
 					EPSMap::put_mp(hint->name, NULL, IXInstances::fi(hint->scope_I), hint->put_string, hint->put_integer);
 			}
 		} else if (hint->annotation) {
-			rubric_holder *rh = CREATE(rubric_holder);
-			rh->annotation = hint->annotation;
-			rh->point_size = hint->point_size;
-			rh->font = hint->font;
-			rh->colour = hint->colour;
-			rh->at_offset = hint->at_offset;
-			rh->offset_from = IXInstances::fi(hint->offset_from);
+			if (pass == 1) {
+				rubric_holder *rh = CREATE(rubric_holder);
+				rh->annotation = hint->annotation;
+				rh->point_size = hint->point_size;
+				rh->font = hint->font;
+				rh->colour = hint->colour;
+				rh->at_offset = hint->at_offset;
+				rh->offset_from = IXInstances::fi(hint->offset_from);
+			}
 		}
 	}
+#endif
 }
 
+#ifdef CORE_MODULE
 faux_instance *IXInstances::fi(instance *I) {
 	faux_instance *FI;
 	LOOP_OVER(FI, faux_instance)
@@ -344,6 +369,7 @@ faux_instance *IXInstances::fi(instance *I) {
 			return FI;
 	return NULL;
 }
+#endif
 
 faux_instance *IXInstances::start_room(void) {
 	return start_faux_instance;

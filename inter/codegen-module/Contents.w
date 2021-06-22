@@ -89,3 +89,14 @@ Chapter 6: Index
 	Grouped Element
 	Alphabetic Element
 	Spatial Geometry
+	EPS Map
+	Map Element
+	Instances
+	Spatial
+	The Player
+	Backdrops
+	Regions
+	The Map
+	Spatial Map
+	HTML Map
+	Render EPS Map

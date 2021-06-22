@@ -418,6 +418,14 @@ pathname *Task::released_interpreter_path(void) {
 	return Pathnames::down(Task::release_path(), I"interpreter");
 }
 
+@ EPS-format files are vector art, rather than raster art, and are produced
+with the intention that authors can tidy them up afterwards using programs
+like Adobe Illustrator. By default they aren't produced, so that the following
+flag stays |FALSE|:
+
+=
+int write_EPS_format_map = FALSE;
+
 @ And so, finally, the following triggers the indexing process.
 
 =
@@ -428,5 +436,6 @@ void Task::produce_index(void) {
 			Languages::path_to_bundle(
 				Projects::get_language_of_index(project)),
 			Projects::index_structure(project)));
+	if (write_EPS_format_map) RenderEPSMap::render_map_as_EPS(Task::epsmap_file());
 }
 

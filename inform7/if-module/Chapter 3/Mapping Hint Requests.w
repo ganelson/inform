@@ -1,6 +1,7 @@
-[MappingHints::] Mapping Hints.
+[MappingHints::] Mapping Hint Requests.
 
-To read sentences which give hints on how to produce the index or EPS maps.
+Special sentences giving layout or design hints on how to produce the World map
+in the index and an EPS map.
 
 @h Parsing sentences which set map parameters.
 This happens in two passes: pass 1 before HTML mapping, pass 2 before EPS mapping.
@@ -30,9 +31,6 @@ int MappingHints::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 			return TRUE;
 		case TRAVERSE_FOR_MAP1_SMFT:
 			MappingHints::new_map_hint_sentence(V->next);
-			break;
-		case TRAVERSE_FOR_MAP_INDEX_SMFT:
-			LOG("\nIndex map with %+W.\n", Node::get_text(V->next));
 			break;
 	}
 	return FALSE;

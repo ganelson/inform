@@ -27,7 +27,6 @@ void Spatial::start(void) {
 	PluginManager::plug(PARSE_COMPOSITE_NQS_PLUG, Spatial::parse_composite_NQs);
 	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Spatial::set_kind_notify);
 	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXSpatial::add_to_World_index);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
 }
 

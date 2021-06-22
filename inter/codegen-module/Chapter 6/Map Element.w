@@ -10,8 +10,6 @@ aren't plugged in.
 =
 int suppress_panel_changes = FALSE;
 void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
-	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
-	if (PluginManager::active(map_plugin) == FALSE) return; /* in this case there is no model world */
 	PL::SpatialMap::initialise_page_directions();
 	IXInstances::make_faux();
 	PL::SpatialMap::establish_spatial_coordinates();
@@ -20,8 +18,6 @@ void IXPhysicalWorld::render(OUTPUT_STREAM, int test_only) {
 	} else {
 		PL::HTMLMap::render_map_as_HTML(OUT);
 		PL::HTMLMap::add_region_key(OUT);
-		RenderEPSMap::render_map_as_EPS();
-
 		IXBackdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
 
 		Index::anchor(OUT, I"MDETAILS");
@@ -136,7 +132,7 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 		Index::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
-		PluginCalls::add_to_World_index(OUT, I);
+		@<Add details depending on the kind@>;
 		IXPhysicalWorld::index_usages(OUT, I);
 		Index::extra_div_close(OUT, "e0e0e0");
 	}
@@ -181,7 +177,8 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 	}
 
 @<Index the kind attribution part of the object citation@> =
-	if (PluginCalls::annotate_in_World_index(OUT, I) == FALSE) {
+	if ((IXMap::annotate_in_World_index(OUT, I) == FALSE) &&
+		(IXPlayer::annotate_in_World_index(OUT, I) == FALSE)) {
 		if (I->specify_kind) {
 			WRITE(" - <i>");
 			IXInstances::write_kind(OUT, I);
@@ -219,10 +216,16 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 	IXInferences::index_specific(OUT, IXInstances::as_subject(I));
 	#endif
 
+@<Add details depending on the kind@> =
+	IXMap::add_to_World_index(OUT, I);
+	IXRegions::add_to_World_index(OUT, I);
+	IXSpatial::add_to_World_index(OUT, I);
+
 @
 
 =
 void IXPhysicalWorld::index_usages(OUTPUT_STREAM, faux_instance *I) {
+	#ifdef CORE_MODULE
 	int k = 0;
 	parse_node *at;
 	LOOP_OVER_LINKED_LIST(at, parse_node, I->usages) {
@@ -237,4 +240,5 @@ void IXPhysicalWorld::index_usages(OUTPUT_STREAM, faux_instance *I) {
 		}
 	}
 	if (k > 0) HTML_CLOSE("p");
+	#endif
 }
