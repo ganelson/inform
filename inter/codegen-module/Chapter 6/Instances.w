@@ -56,7 +56,6 @@ typedef struct faux_instance {
 	int is_a_part;
 	int specify_kind;
 	int direction_index;
-	int direction_number;
 	struct linked_list *backdrop_presences; /* of |faux_instance| */
 	struct faux_instance *region_enclosing;
 	struct faux_instance *next_room_in_submap;
@@ -128,40 +127,6 @@ fi_map_data IXInstances::new_fimd(faux_instance *FI) {
 	return fimd;
 }
 
-@ When names are abbreviated for use on the World Index map (for instance,
-"Marble Hallway" becomes "MH") each word is tested against the following
-nonterminal; those which match are omitted. So, for instance, "Queen Of The
-South" comes out as "QS".
-
-@d ABBREV_ROOMS_TO 2
-
-=
-<map-name-abbreviation-omission-words> ::=
-	in |
-	of |
-	<article>
-
-@<Compose the abbreviated name@> =
-	wording W = Instances::get_name(I, FALSE);
-	if (Wordings::nonempty(W)) {
-		int c = 0;
-		LOOP_THROUGH_WORDING(i, W) {
-			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
-				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
-			if (c++ < ABBREV_ROOMS_TO) PUT_TO(FI->abbrev, Characters::toupper(p[0]));
-		}
-		LOOP_THROUGH_WORDING(i, W) {
-			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
-				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
-			for (int j=1; p[j]; j++)
-				if (Characters::vowel(p[j]) == FALSE)
-					if (c++ < ABBREV_ROOMS_TO) PUT_TO(FI->abbrev, p[j]);
-			if ((c++ < ABBREV_ROOMS_TO) && (p[1])) PUT_TO(FI->abbrev, p[1]);
-		}
-	}
-
 @ =
 faux_instance *start_faux_instance = NULL;
 faux_instance *faux_yourself = NULL;
@@ -172,39 +137,33 @@ void IXInstances::make_faux(void) {
 	tree_inventory *inv = Synoptic::inv(IT);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
-#ifdef CORE_MODULE
 		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
-		instance *I = NULL, *J = NULL;
-		LOOP_OVER_INSTANCES(J, K_object)
-			if (Metadata::read_numeric(pack,  I"^cheat_code") == (inter_ti) J->allocation_id)
-				I = J;
-		if (I == NULL) continue;
+		if (Metadata::read_optional_numeric(pack,  I"^is_object") == 0) continue;
 		faux_instance *FI = CREATE(faux_instance);
 		FI->index_appearances = 0;
 		FI->package = pack;
-		FI->name = Str::new();
-		Instances::write_name(FI->name, I);
-		FI->abbrev = Str::new();
-		@<Compose the abbreviated name@>;
-		
-		FI->original = I;
-		FI->is_a_thing = Instances::of_kind(I, K_thing);
-		FI->is_a_supporter = Instances::of_kind(I, K_supporter);
-		FI->is_a_person = Instances::of_kind(I, K_person);
-		FI->is_a_room = Spatial::object_is_a_room(I);
-		if (FI->is_a_room) no_room_fi++;
-		FI->is_a_door = Map::instance_is_a_door(I);
-		FI->is_a_region = Regions::object_is_a_region(I);
-		FI->is_a_direction = Map::object_is_a_direction(I);
-		if (FI->is_a_direction) no_direction_fi++;
-		FI->is_a_backdrop = Backdrops::object_is_a_backdrop(I);
+		FI->name = Str::duplicate(Metadata::read_textual(pack,  I"^name"));
+		FI->printed_name = Str::duplicate(Metadata::read_textual(pack,  I"^printed_name"));
+		FI->abbrev = Str::duplicate(Metadata::read_textual(pack,  I"^abbreviation"));
+		FI->kind_text = Str::duplicate(Metadata::read_textual(pack,  I"^index_kind"));
+		FI->is_a_thing = (Metadata::read_optional_numeric(pack,  I"^is_thing"))?TRUE:FALSE;
+		FI->is_a_supporter = (Metadata::read_optional_numeric(pack,  I"^is_supporter"))?TRUE:FALSE;
+		FI->is_a_person = (Metadata::read_optional_numeric(pack,  I"^is_person"))?TRUE:FALSE;
+		FI->is_a_room = (Metadata::read_optional_numeric(pack,  I"^is_room"))?TRUE:FALSE;
+		FI->is_a_door = (Metadata::read_optional_numeric(pack,  I"^is_door"))?TRUE:FALSE;
+		FI->is_a_region = (Metadata::read_optional_numeric(pack,  I"^is_region"))?TRUE:FALSE;
+		FI->is_a_direction = (Metadata::read_optional_numeric(pack,  I"^is_direction"))?TRUE:FALSE;
+		FI->is_a_backdrop = (Metadata::read_optional_numeric(pack,  I"^is_backdrop"))?TRUE:FALSE;
+		FI->other_side = NULL;
+		if (FI->is_a_direction) FI->direction_index = no_direction_fi;
+		else FI->direction_index = -1;
+		FI->specify_kind = TRUE;
+		if (Str::eq(FI->kind_text, I"thing")) FI->specify_kind = FALSE;
+		if (Str::eq(FI->kind_text, I"room")) FI->specify_kind = FALSE;
+
+		FI->is_worn = (Metadata::read_optional_numeric(pack,  I"^is_worn"))?TRUE:FALSE;
+		FI->is_a_part = (Metadata::read_optional_numeric(pack,  I"^is_a_part"))?TRUE:FALSE;
 		FI->is_everywhere = FALSE;
-		FI->is_worn = FALSE;
-		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
-			if (PropertyInferences::get_property(inf) == P_worn)
-				FI->is_worn = TRUE;
-		FI->is_a_part = SPATIAL_DATA(I)->part_flag;
 		FI->backdrop_presences = NEW_LINKED_LIST(faux_instance);
 		FI->region_enclosing = NULL;
 		FI->next_room_in_submap = NULL;
@@ -214,17 +173,18 @@ void IXInstances::make_faux(void) {
 		FI->progenitor = NULL;
 		FI->incorp_tree_sibling = NULL;
 		FI->incorp_tree_child = NULL;
-		FI->direction_index = MAP_DATA(I)->direction_index;
-		FI->direction_number = InstanceCounting::IK_count(I, K_direction);
-		kind *k = Instances::to_kind(I);
-		FI->specify_kind = TRUE;
-		if (Kinds::eq(k, K_thing)) FI->specify_kind = FALSE;
-		if (Kinds::eq(k, K_room)) FI->specify_kind = FALSE;
-		FI->other_side = NULL;
-		FI->kind_text = Str::new();
-		wording W = Kinds::Behaviour::get_name_in_play(k, FALSE,
-			Projects::get_language_of_play(Task::project()));
-		WRITE_TO(FI->kind_text, "%+W", W);
+		
+		if (FI->is_a_room) no_room_fi++;
+		if (FI->is_a_direction) no_direction_fi++;
+
+	#ifdef CORE_MODULE
+		instance *I = NULL, *J = NULL;
+		LOOP_OVER_INSTANCES(J, K_object)
+			if (Metadata::read_numeric(pack,  I"^cheat_code") == (inter_ti) J->allocation_id)
+				I = J;
+		if (I == NULL) internal_error("no ID");
+		FI->original = I;
+
 		FI->kind_chain = Str::new();
 		kind *IK = Instances::to_kind(I);
 		int i = 0;
@@ -255,6 +215,14 @@ void IXInstances::make_faux(void) {
 		if (C) FI->region_set_at = Wordings::first_wn(Node::get_text(C));
 		FI->usages = I->compilation_data.usages;
 		
+		if (I == I_yourself) faux_yourself = FI;
+		if (I == Spatial::get_benchmark_room()) faux_benchmark = FI;
+		if (I == Player::get_start_room()) start_faux_instance = FI;
+		
+		#ifdef CORE_MODULE
+		FI->knowledge = Instances::as_subject(I);
+		#endif
+
 		FI->fimd = IXInstances::new_fimd(FI);
 		FI->fimd.colour = NULL;
 		FI->fimd.text_colour = NULL;
@@ -264,27 +232,7 @@ void IXInstances::make_faux(void) {
 			parse_node *at = MAP_DATA(I)->exits_set_at[i];
 			if (at) FI->fimd.exits_set_at[i] = Wordings::first_wn(Node::get_text(at));
 		}
-	
-		if (I == I_yourself) faux_yourself = FI;
-		if (I == Spatial::get_benchmark_room()) faux_benchmark = FI;
-		if (I == Player::get_start_room()) start_faux_instance = FI;
-		
-		TEMPORARY_TEXT(pname)
-		parse_node *V = PropertyInferences::value_and_where(
-			Instances::as_subject(I), P_printed_name, NULL);
-		if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
-			(Wordings::nonempty(Node::get_text(V)))) {
-			int wn = Wordings::first_wn(Node::get_text(V));
-			WRITE_TO(pname, "%+W", Wordings::one_word(wn));
-			if (Str::get_first_char(pname) == '\"') Str::delete_first_character(pname);
-			if (Str::get_last_char(pname) == '\"') Str::delete_last_character(pname);
-		}
-		FI->printed_name = Str::duplicate(pname);
-		DISCARD_TEXT(pname)
-		#ifdef CORE_MODULE
-		FI->knowledge = Instances::as_subject(I);
-		#endif
-		#endif
+#endif
 	}
 	if (faux_benchmark == NULL) internal_error("no benchmark");
 #ifdef CORE_MODULE
@@ -332,6 +280,9 @@ void IXInstances::make_faux(void) {
 	IXInstances::decode_hints(1);
 }
 
+@
+
+=
 void IXInstances::decode_hints(int pass) {
 #ifdef CORE_MODULE
 	mapping_hint *hint;

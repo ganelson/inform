@@ -890,7 +890,7 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 		WRITE_TO(tool_tip, "title=\"");
 		faux_instance *I;
 		LOOP_OVER_OBJECTS(I)
-			if (I->direction_number == exit) {
+			if (I->direction_index == exit) {
 				IXInstances::write_name(tool_tip, I);
 				break;
 			}

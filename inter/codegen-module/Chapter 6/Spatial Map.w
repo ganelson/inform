@@ -2753,7 +2753,7 @@ void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 		WRITE("%S\n", IXInstances::get_name(I));
 		if (IXInstances::is_a_direction(I)) {
 			WRITE("  Opposite %S\n", IXInstances::get_name(IXInstances::opposite_direction(I)));
-			WRITE("  Index %d, Number %d\n", I->direction_index, I->direction_number);
+			WRITE("  Index %d, Number %d\n", I->direction_index, I->direction_index);
 		}
 	}
 */

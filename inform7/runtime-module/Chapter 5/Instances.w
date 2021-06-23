@@ -95,6 +95,22 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	Instances::write_name(name, I);
 	Hierarchy::apply_metadata(pack, INSTANCE_NAME_MD_HL, name);
 	DISCARD_TEXT(name)
+	TEMPORARY_TEXT(pname)
+	parse_node *V = PropertyInferences::value_and_where(
+		Instances::as_subject(I), P_printed_name, NULL);
+	if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
+		(Wordings::nonempty(Node::get_text(V)))) {
+		int wn = Wordings::first_wn(Node::get_text(V));
+		WRITE_TO(pname, "%+W", Wordings::one_word(wn));
+		if (Str::get_first_char(pname) == '\"') Str::delete_first_character(pname);
+		if (Str::get_last_char(pname) == '\"') Str::delete_last_character(pname);
+	}
+	Hierarchy::apply_metadata(pack, INSTANCE_PRINTED_NAME_MD_HL, name);
+	DISCARD_TEXT(pname)
+	TEMPORARY_TEXT(abbrev)
+	@<Compose the abbreviated name@>;
+	Hierarchy::apply_metadata(pack, INSTANCE_ABBREVIATION_MD_HL, abbrev);
+	DISCARD_TEXT(abbrev)
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(I->creating_sentence)));
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
@@ -119,6 +135,33 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if ((K_external_file) && (Kinds::eq(K, K_external_file)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_EXF_MD_HL, 1);
+	if (Instances::of_kind(I, K_thing))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_THING_MD_HL, 1);
+	if (Instances::of_kind(I, K_supporter))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_SUPPORTER_MD_HL, 1);
+	if (Instances::of_kind(I, K_person))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_PERSON_MD_HL, 1);
+	if (Spatial::object_is_a_room(I))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_ROOM_MD_HL, 1);
+	if (Map::instance_is_a_door(I))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_DOOR_MD_HL, 1);
+	if (Regions::object_is_a_region(I))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_REGION_MD_HL, 1);
+	if (Map::object_is_a_direction(I))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_DIRECTION_MD_HL, 1);
+	if (Backdrops::object_is_a_backdrop(I))
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
+
+	inference *inf;
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
+		if (PropertyInferences::get_property(inf) == P_worn) {
+			Hierarchy::apply_metadata_from_number(pack,
+				INSTANCE_IS_WORN_MD_HL, 1);
+			break;
+		}
+	if (SPATIAL_DATA(I)->part_flag)
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_A_PART_MD_HL, 1);
 
 	if (RTShowmeCommand::needed_for_instance(I)) {
 		inter_name *iname = Hierarchy::make_iname_in(INST_SHOWME_FN_HL,
@@ -145,6 +188,40 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	RTBackdropInstances::compile_extra(I);
 	RTScenes::compile_extra(I);
 }
+
+@ When names are abbreviated for use on the World Index map (for instance,
+"Marble Hallway" becomes "MH") each word is tested against the following
+nonterminal; those which match are omitted. So, for instance, "Queen Of The
+South" comes out as "QS".
+
+@d ABBREV_ROOMS_TO 2
+
+=
+<map-name-abbreviation-omission-words> ::=
+	in |
+	of |
+	<article>
+
+@<Compose the abbreviated name@> =
+	wording W = Instances::get_name(I, FALSE);
+	if (Wordings::nonempty(W)) {
+		int c = 0;
+		LOOP_THROUGH_WORDING(i, W) {
+			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
+				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
+			wchar_t *p = Lexer::word_raw_text(i);
+			if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, Characters::toupper(p[0]));
+		}
+		LOOP_THROUGH_WORDING(i, W) {
+			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
+				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
+			wchar_t *p = Lexer::word_raw_text(i);
+			for (int j=1; p[j]; j++)
+				if (Characters::vowel(p[j]) == FALSE)
+					if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, p[j]);
+			if ((c++ < ABBREV_ROOMS_TO) && (p[1])) PUT_TO(abbrev, p[1]);
+		}
+	}
 
 @h Condition element.
 This compiles a test of whether or not |t0_s| is equal to an instance.

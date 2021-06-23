@@ -4774,7 +4774,7 @@
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16515/98356 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16531/98892 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 20340/236320 nti r2 constraint (none) extremes [1, 1]
 
@@ -8566,14 +8566,14 @@
 
 <name-local-to-inline-stack-frame> internal hits 1559/3118 nti 9 constraint (none) extremes [1, infinity)
 
-<map-name-abbreviation-omission-words> nti 30 constraint (none) extremes [1, 1]
+<map-name-abbreviation-omission-words> hits 30/564 nti 30 constraint (none) extremes [1, 1]
     English:
         in 
-          constraint CS = {30} extremes [1, 1]
+          (hits 6/58) (matched: 'in') constraint CS = {30} extremes [1, 1]
         of 
-          constraint CS = {30} extremes [1, 1]
+          (hits 8/52) (matched: 'of') constraint CS = {30} extremes [1, 1]
         <article> 
-          constraint (none) extremes [1, 1]
+          (hits 16/268) (matched: 'a') constraint (none) extremes [1, 1]
 
 <notable-rulebook-outcomes> hits 5/30 nti 31 constraint CS = {31} extremes [3, 4]
     English:

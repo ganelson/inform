@@ -888,6 +888,8 @@ void Hierarchy::establish(void) {
 @e INSTANCES_HAP
 @e INSTANCE_CHEAT_MD_HL
 @e INSTANCE_NAME_MD_HL
+@e INSTANCE_PRINTED_NAME_MD_HL
+@e INSTANCE_ABBREVIATION_MD_HL
 @e INSTANCE_AT_MD_HL
 @e INSTANCE_VALUE_MD_HL
 @e INSTANCE_KIND_MD_HL
@@ -915,6 +917,16 @@ void Hierarchy::establish(void) {
 @e INSTANCE_SOUND_ID_MD_HL
 @e INSTANCE_SSF_MD_HL
 @e INSTANCE_SCF_MD_HL
+@e INSTANCE_IS_WORN_MD_HL
+@e INSTANCE_IS_A_PART_MD_HL
+@e INSTANCE_IS_THING_MD_HL
+@e INSTANCE_IS_SUPPORTER_MD_HL
+@e INSTANCE_IS_PERSON_MD_HL
+@e INSTANCE_IS_ROOM_MD_HL
+@e INSTANCE_IS_DOOR_MD_HL
+@e INSTANCE_IS_REGION_MD_HL
+@e INSTANCE_IS_DIRECTION_MD_HL
+@e INSTANCE_IS_BACKDROP_MD_HL
 @e SCENE_ENDS_HAP
 @e SCENE_END_NAME_MD_HL
 @e SCENE_END_AT_MD_HL
@@ -946,6 +958,8 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
 			H_C_U(INSTANCE_CHEAT_MD_HL,  I"^cheat_code")
 			H_C_U(INSTANCE_NAME_MD_HL,  I"^name")
+			H_C_U(INSTANCE_PRINTED_NAME_MD_HL,  I"^printed_name")
+			H_C_U(INSTANCE_ABBREVIATION_MD_HL,  I"^abbreviation")
 			H_C_U(INSTANCE_AT_MD_HL,  I"^at")
 			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
 			H_C_U(INSTANCE_KIND_MD_HL,  I"^kind")
@@ -953,6 +967,8 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_INDEX_KIND_MD_HL,  I"^index_kind")
 			H_C_U(INSTANCE_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
+			H_C_U(INSTANCE_IS_WORN_MD_HL, I"^is_worn")
+			H_C_U(INSTANCE_IS_A_PART_MD_HL, I"^is_a_part")
 			H_C_U(INSTANCE_IS_ENTIRE_GAME_MD_HL, I"^is_entire_game")
 			H_C_U(INSTANCE_SCENE_STARTS_MD_HL, I"^starts")
 			H_C_U(INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL, I"^starts_on_condition")
@@ -985,6 +1001,14 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_SOUND_FILENAME_MD_HL, I"^filename")
 			H_C_U(INSTANCE_SOUND_ID_MD_HL, I"^resource_id")
 			H_C_U(INST_SHOWME_MD_HL,    I"^showme_fn")
+			H_C_U(INSTANCE_IS_THING_MD_HL,    I"^is_thing")
+			H_C_U(INSTANCE_IS_SUPPORTER_MD_HL,    I"^is_supporter")
+			H_C_U(INSTANCE_IS_PERSON_MD_HL,    I"^is_person")
+			H_C_U(INSTANCE_IS_ROOM_MD_HL,    I"^is_room")
+			H_C_U(INSTANCE_IS_DOOR_MD_HL,    I"^is_door")
+			H_C_U(INSTANCE_IS_REGION_MD_HL,    I"^is_region")
+			H_C_U(INSTANCE_IS_DIRECTION_MD_HL,    I"^is_direction")
+			H_C_U(INSTANCE_IS_BACKDROP_MD_HL,    I"^is_backdrop")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
