@@ -37,6 +37,7 @@ int IXInstances::no_rooms(void) {
 
 =
 typedef struct faux_instance {
+	struct inter_package *package;
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
 	struct text_stream *name;
 	struct text_stream *printed_name;
@@ -167,11 +168,20 @@ faux_instance *faux_yourself = NULL;
 faux_instance *faux_benchmark = NULL;
 
 void IXInstances::make_faux(void) {
+	inter_tree *IT = Index::get_tree();
+	tree_inventory *inv = Synoptic::inv(IT);
+	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
+	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
 #ifdef CORE_MODULE
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+		instance *I = NULL, *J = NULL;
+		LOOP_OVER_INSTANCES(J, K_object)
+			if (Metadata::read_numeric(pack,  I"^cheat_code") == (inter_ti) J->allocation_id)
+				I = J;
+		if (I == NULL) continue;
 		faux_instance *FI = CREATE(faux_instance);
 		FI->index_appearances = 0;
+		FI->package = pack;
 		FI->name = Str::new();
 		Instances::write_name(FI->name, I);
 		FI->abbrev = Str::new();
@@ -246,10 +256,10 @@ void IXInstances::make_faux(void) {
 		FI->usages = I->compilation_data.usages;
 		
 		FI->fimd = IXInstances::new_fimd(FI);
-		FI->fimd.colour = MAP_DATA(I)->world_index_colour;
-		FI->fimd.text_colour = MAP_DATA(I)->world_index_text_colour;
-		FI->fimd.eps_x = MAP_DATA(I)->eps_x;
-		FI->fimd.eps_y = MAP_DATA(I)->eps_y;
+		FI->fimd.colour = NULL;
+		FI->fimd.text_colour = NULL;
+		FI->fimd.eps_x = 0;
+		FI->fimd.eps_y = 0;
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
 			parse_node *at = MAP_DATA(I)->exits_set_at[i];
 			if (at) FI->fimd.exits_set_at[i] = Wordings::first_wn(Node::get_text(at));
@@ -274,7 +284,10 @@ void IXInstances::make_faux(void) {
 		#ifdef CORE_MODULE
 		FI->knowledge = Instances::as_subject(I);
 		#endif
+		#endif
 	}
+	if (faux_benchmark == NULL) internal_error("no benchmark");
+#ifdef CORE_MODULE
 	faux_instance *FB;
 	LOOP_OVER(FB, faux_instance) {
 		if (FB->is_a_backdrop) {
@@ -310,7 +323,7 @@ void IXInstances::make_faux(void) {
 	LOOP_OVER(FD, faux_instance)
 		if (FD->is_a_door) {
 			parse_node *S = PropertyInferences::value_of(
-				Instances::as_subject(I), P_other_side);
+				Instances::as_subject(FD->original), P_other_side);
 			FD->other_side = IXInstances::fi(Rvalues::to_object_instance(S));
 			FD->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FD->original)->map_connection_a);
 			FD->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FD->original)->map_connection_b);

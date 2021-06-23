@@ -89,6 +89,8 @@ using Inter's |INSTANCE_IST| instruction.
 void RTInstances::compilation_agent(compilation_subtask *t) {
 	instance *I = RETRIEVE_POINTER_instance(t->data);
 	package_request *pack = I->compilation_data.instance_package;
+	Hierarchy::apply_metadata_from_number(pack, INSTANCE_CHEAT_MD_HL,
+		(inter_ti) I->allocation_id);
 	TEMPORARY_TEXT(name)
 	Instances::write_name(name, I);
 	Hierarchy::apply_metadata(pack, INSTANCE_NAME_MD_HL, name);

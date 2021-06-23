@@ -324,12 +324,12 @@ int Map::set_kind_notify(instance *I, kind *k) {
 	MapRelations::make_mapped_predicate(I);
 
 @h Map data on instances.
-We will use quite a lot of temporary work-space to put all of this together,
-but the details can be ignored. If we expected very large numbers of instances
-then it would be worth economising here, but profiling suggests that it really
-isn't.
+The following structure weighs several hundred bytes. If we expected very
+large numbers of instances then it might be worth economising here, but
+profiling suggests that it really isn't.
 
 @d MAP_DATA(I) PLUGIN_DATA_ON_INSTANCE(map, I)
+@d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
 typedef struct map_data {
@@ -344,12 +344,9 @@ typedef struct map_data {
 	struct inter_name *direction_iname; /* for the constant instance ref */
 	struct binary_predicate *direction_relation; /* the corresponding "mapped D of" relation */
 
-	/* these are meaningful for rooms only, and are used in making the World index */
+	/* these are meaningful for rooms only */
 	struct instance *exits[MAX_DIRECTIONS];
 	struct parse_node *exits_set_at[MAX_DIRECTIONS];
-	wchar_t *world_index_colour; /* an HTML colour for the room square (rooms only) */
-	wchar_t *world_index_text_colour; /* an HTML colour for the room text (rooms only) */
-	int eps_x, eps_y;
 
 	CLASS_DEFINITION
 } map_data;
@@ -369,8 +366,6 @@ int Map::new_subject_notify(inference_subject *subj) {
 		md->exits[i] = NULL;
 	}
 
-	md->world_index_colour = NULL;
-	md->world_index_text_colour = NULL;
 	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, md);
 	return FALSE;
 }
@@ -443,10 +438,7 @@ noted above are keys into these arrays.
 It might look a little wasteful of I7's memory to expand the direction
 inferences, a nicely compact representation, into large and sparse arrays.
 But it's convenient, and profiling suggests that the memory overhead is not
-significant. It also means that the //codegen: Spatial Map// mapping code, which
-contains quite crunchy algorithms, has the fastest possible access to the layout.
-
-@d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
+significant.
 
 =
 void Map::build_exits_array(void) {

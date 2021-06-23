@@ -886,6 +886,7 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
+@e INSTANCE_CHEAT_MD_HL
 @e INSTANCE_NAME_MD_HL
 @e INSTANCE_AT_MD_HL
 @e INSTANCE_VALUE_MD_HL
@@ -943,6 +944,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
+			H_C_U(INSTANCE_CHEAT_MD_HL,  I"^cheat_code")
 			H_C_U(INSTANCE_NAME_MD_HL,  I"^name")
 			H_C_U(INSTANCE_AT_MD_HL,  I"^at")
 			H_C_U(INSTANCE_VALUE_MD_HL, I"^value")
