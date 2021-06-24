@@ -113,13 +113,41 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	DISCARD_TEXT(abbrev)
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(I->creating_sentence)));
+
+	parse_node *C = Instances::get_kind_set_sentence(I);
+	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_KIND_SET_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(C)));
+	C = SPATIAL_DATA(I)->progenitor_set_at;
+	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_PROGENITOR_SET_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(C)));
+	C = REGIONS_DATA(I)->in_region_set_at;
+	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_REGION_SET_AT_MD_HL,
+		(inter_ti) Wordings::first_wn(Node::get_text(C)));
+
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_VALUE_MD_HL, I->compilation_data.instance_iname);
 	inter_name *kn_iname = Hierarchy::make_iname_in(INSTANCE_KIND_MD_HL, pack);
 	kind *K = Instances::to_kind(I);
-	TEMPORARY_TEXT(IK)
-	WRITE_TO(IK, "%u", K);
-	Hierarchy::apply_metadata(pack, INSTANCE_INDEX_KIND_MD_HL, IK);
-	DISCARD_TEXT(IK)
+	TEMPORARY_TEXT(KT)
+	WRITE_TO(KT, "%u", K);
+	Hierarchy::apply_metadata(pack, INSTANCE_INDEX_KIND_MD_HL, KT);
+	DISCARD_TEXT(KT)
+	TEMPORARY_TEXT(KC)
+		kind *IK = Instances::to_kind(I);
+		int i = 0;
+		while ((IK != K_object) && (IK)) {
+			i++;
+			IK = Latticework::super(IK);
+		}
+		for (int j=i-1; j>=0; j--) {
+			int k; IK = Instances::to_kind(I);
+			for (k=0; k<j; k++) IK = Latticework::super(IK);
+			if (j != i-1) WRITE_TO(KC, " &gt; ");
+			wording W = Kinds::Behaviour::get_name(IK, FALSE);
+			WRITE_TO(KC, "%+W", W);
+		}
+	Hierarchy::apply_metadata(pack, INSTANCE_INDEX_KIND_CHAIN_MD_HL, KC);
+	DISCARD_TEXT(KC)
+
 	RTKindIDs::define_constant_as_strong_id(kn_iname, K);
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_KIND_XREF_MD_HL,
 		RTKindConstructors::xref_iname(K->construct));
@@ -160,8 +188,13 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 			break;
 		}
 	if (SPATIAL_DATA(I)->part_flag)
-		Hierarchy::apply_metadata_from_number(pack,
-			INSTANCE_IS_A_PART_MD_HL, 1);
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
+	if (I == I_yourself)
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_YOURSELF_MD_HL, 1);
+	if (I == Spatial::get_benchmark_room())
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BENCHMARK_ROOM_MD_HL, 1);
+	if (I == Player::get_start_room())
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_START_ROOM_MD_HL, 1);
 
 	if (RTShowmeCommand::needed_for_instance(I)) {
 		inter_name *iname = Hierarchy::make_iname_in(INST_SHOWME_FN_HL,

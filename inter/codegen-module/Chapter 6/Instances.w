@@ -145,7 +145,12 @@ void IXInstances::make_faux(void) {
 		FI->name = Str::duplicate(Metadata::read_textual(pack,  I"^name"));
 		FI->printed_name = Str::duplicate(Metadata::read_textual(pack,  I"^printed_name"));
 		FI->abbrev = Str::duplicate(Metadata::read_textual(pack,  I"^abbreviation"));
+		FI->created_at = (int) Metadata::read_optional_numeric(pack,  I"^at");
+		FI->kind_set_at = (int) Metadata::read_optional_numeric(pack,  I"^kind_set_at");
+		FI->progenitor_set_at = (int) Metadata::read_optional_numeric(pack,  I"^progenitor_set_at");
+		FI->region_set_at = (int) Metadata::read_optional_numeric(pack,  I"^region_set_at");
 		FI->kind_text = Str::duplicate(Metadata::read_textual(pack,  I"^index_kind"));
+		FI->kind_chain = Str::duplicate(Metadata::read_textual(pack,  I"^index_kind_chain"));
 		FI->is_a_thing = (Metadata::read_optional_numeric(pack,  I"^is_thing"))?TRUE:FALSE;
 		FI->is_a_supporter = (Metadata::read_optional_numeric(pack,  I"^is_supporter"))?TRUE:FALSE;
 		FI->is_a_person = (Metadata::read_optional_numeric(pack,  I"^is_person"))?TRUE:FALSE;
@@ -177,6 +182,19 @@ void IXInstances::make_faux(void) {
 		if (FI->is_a_room) no_room_fi++;
 		if (FI->is_a_direction) no_direction_fi++;
 
+		FI->anchor_text = Str::new();
+		WRITE_TO(FI->anchor_text, "fi%d", FI->allocation_id);
+
+		FI->fimd = IXInstances::new_fimd(FI);
+		FI->fimd.colour = NULL;
+		FI->fimd.text_colour = NULL;
+		FI->fimd.eps_x = 0;
+		FI->fimd.eps_y = 0;
+
+		if (Metadata::read_optional_numeric(pack,  I"^is_yourself")) faux_yourself = FI;
+		if (Metadata::read_optional_numeric(pack,  I"^is_benchmark_room")) faux_benchmark = FI;
+		if (Metadata::read_optional_numeric(pack,  I"^is_start_room")) start_faux_instance = FI;
+		
 	#ifdef CORE_MODULE
 		instance *I = NULL, *J = NULL;
 		LOOP_OVER_INSTANCES(J, K_object)
@@ -185,56 +203,15 @@ void IXInstances::make_faux(void) {
 		if (I == NULL) internal_error("no ID");
 		FI->original = I;
 
-		FI->kind_chain = Str::new();
-		kind *IK = Instances::to_kind(I);
-		int i = 0;
-		while ((IK != K_object) && (IK)) {
-			i++;
-			IK = Latticework::super(IK);
-		}
-		for (int j=i-1; j>=0; j--) {
-			int k; IK = Instances::to_kind(I);
-			for (k=0; k<j; k++) IK = Latticework::super(IK);
-			if (j != i-1) WRITE_TO(FI->kind_chain, " &gt; ");
-			wording W = Kinds::Behaviour::get_name(IK, FALSE);
-			WRITE_TO(FI->kind_chain, "%+W", W);
-		}
-		noun *nt = Instances::get_noun(I);
-		FI->anchor_text = Str::duplicate(NounIdentifiers::identifier(nt));
-		parse_node *C = Instances::get_creating_sentence(I);
-		if (C) FI->created_at = Wordings::first_wn(Node::get_text(C));
-		else FI->created_at = -1;
-		C = Instances::get_kind_set_sentence(I);
-		if (C) FI->kind_set_at = Wordings::first_wn(Node::get_text(C));
-		else FI->kind_set_at = -1;
-		C = SPATIAL_DATA(I)->progenitor_set_at;
-		if (C) FI->progenitor_set_at = Wordings::first_wn(Node::get_text(C));
-		else FI->progenitor_set_at = -1;
-		FI->region_set_at = -1;
-		C = REGIONS_DATA(I)->in_region_set_at;
-		if (C) FI->region_set_at = Wordings::first_wn(Node::get_text(C));
 		FI->usages = I->compilation_data.usages;
-		
-		if (I == I_yourself) faux_yourself = FI;
-		if (I == Spatial::get_benchmark_room()) faux_benchmark = FI;
-		if (I == Player::get_start_room()) start_faux_instance = FI;
-		
-		#ifdef CORE_MODULE
 		FI->knowledge = Instances::as_subject(I);
-		#endif
 
-		FI->fimd = IXInstances::new_fimd(FI);
-		FI->fimd.colour = NULL;
-		FI->fimd.text_colour = NULL;
-		FI->fimd.eps_x = 0;
-		FI->fimd.eps_y = 0;
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
 			parse_node *at = MAP_DATA(I)->exits_set_at[i];
 			if (at) FI->fimd.exits_set_at[i] = Wordings::first_wn(Node::get_text(at));
 		}
-#endif
+	#endif
 	}
-	if (faux_benchmark == NULL) internal_error("no benchmark");
 #ifdef CORE_MODULE
 	faux_instance *FB;
 	LOOP_OVER(FB, faux_instance) {
