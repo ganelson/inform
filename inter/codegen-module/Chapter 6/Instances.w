@@ -167,8 +167,8 @@ void IXInstances::make_faux(void) {
 		if (Str::eq(FI->kind_text, I"room")) FI->specify_kind = FALSE;
 
 		FI->is_worn = (Metadata::read_optional_numeric(pack,  I"^is_worn"))?TRUE:FALSE;
+		FI->is_everywhere = (Metadata::read_optional_numeric(pack,  I"^is_everywhere"))?TRUE:FALSE;
 		FI->is_a_part = (Metadata::read_optional_numeric(pack,  I"^is_a_part"))?TRUE:FALSE;
-		FI->is_everywhere = FALSE;
 		FI->backdrop_presences = NEW_LINKED_LIST(faux_instance);
 		FI->region_enclosing = NULL;
 		FI->next_room_in_submap = NULL;
@@ -222,9 +222,6 @@ void IXInstances::make_faux(void) {
 				instance *L = Backdrops::get_inferred_location(inf);
 				faux_instance *FL = IXInstances::fi(L);
 				ADD_TO_LINKED_LIST(FB, faux_instance, FL->backdrop_presences);
-			}
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(B), found_everywhere_inf) {
-				FB->is_everywhere = TRUE;
 			}
 		}
 		for (int i=0; i<MAX_DIRECTIONS; i++) {

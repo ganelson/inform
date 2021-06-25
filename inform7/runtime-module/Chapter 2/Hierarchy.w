@@ -922,6 +922,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_SSF_MD_HL
 @e INSTANCE_SCF_MD_HL
 @e INSTANCE_IS_WORN_MD_HL
+@e INSTANCE_IS_EVERYWHERE_MD_HL
 @e INSTANCE_IS_A_PART_MD_HL
 @e INSTANCE_IS_YOURSELF_MD_HL
 @e INSTANCE_IS_BENCHMARK_ROOM_MD_HL
@@ -979,6 +980,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_OBJECT_MD_HL, I"^is_object")
 			H_C_U(INSTANCE_IS_SCENE_MD_HL, I"^is_scene")
 			H_C_U(INSTANCE_IS_WORN_MD_HL, I"^is_worn")
+			H_C_U(INSTANCE_IS_EVERYWHERE_MD_HL, I"^is_everywhere")
 			H_C_U(INSTANCE_IS_A_PART_MD_HL, I"^is_a_part")
 			H_C_U(INSTANCE_IS_YOURSELF_MD_HL, I"^is_yourself")
 			H_C_U(INSTANCE_IS_BENCHMARK_ROOM_MD_HL, I"^is_benchmark_room")

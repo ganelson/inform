@@ -183,10 +183,13 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
 		if (PropertyInferences::get_property(inf) == P_worn) {
-			Hierarchy::apply_metadata_from_number(pack,
-				INSTANCE_IS_WORN_MD_HL, 1);
+			Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_WORN_MD_HL, 1);
 			break;
 		}
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_everywhere_inf) {
+		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_EVERYWHERE_MD_HL, 1);
+		break;
+	}
 	if (SPATIAL_DATA(I)->part_flag)
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
 	if (I == I_yourself)
