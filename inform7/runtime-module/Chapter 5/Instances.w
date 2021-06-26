@@ -171,12 +171,29 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_PERSON_MD_HL, 1);
 	if (Spatial::object_is_a_room(I))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_ROOM_MD_HL, 1);
-	if (Map::instance_is_a_door(I))
+	if (Map::instance_is_a_door(I)) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_DOOR_MD_HL, 1);
+		parse_node *S = PropertyInferences::value_of(
+			Instances::as_subject(I), P_other_side);
+		if (S)
+			Hierarchy::apply_metadata_from_iname(pack, INSTANCE_DOOR_OTHER_SIDE_MD_HL,
+				RTInstances::value_iname(Rvalues::to_object_instance(S)));
+		instance *IA = MAP_DATA(I)->map_connection_a;
+		instance *IB = MAP_DATA(I)->map_connection_b;
+		if (IA)
+			Hierarchy::apply_metadata_from_iname(pack, INSTANCE_DOOR_SIDE_A_MD_HL,
+				RTInstances::value_iname(IA));
+		if (IB)
+			Hierarchy::apply_metadata_from_iname(pack, INSTANCE_DOOR_SIDE_B_MD_HL,
+				RTInstances::value_iname(IB));
+	}		
 	if (Regions::object_is_a_region(I))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_REGION_MD_HL, 1);
-	if (Map::object_is_a_direction(I))
+	if (Map::object_is_a_direction(I)) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_DIRECTION_MD_HL, 1);
+		Hierarchy::apply_metadata_from_iname(pack, INSTANCE_OPPOSITE_DIRECTION_MD_HL,
+			RTInstances::value_iname(Map::get_value_of_opposite_property(I)));
+	}
 	if (Backdrops::object_is_a_backdrop(I))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
 

@@ -236,21 +236,19 @@ void IXInstances::make_faux(void) {
 		FB->incorp_tree_sibling = IXInstances::fi(SPATIAL_DATA(FB->original)->incorp_tree_sibling);
 		FB->incorp_tree_child = IXInstances::fi(SPATIAL_DATA(FB->original)->incorp_tree_child);
 	}
+#endif
 	faux_instance *FR;
 	LOOP_OVER(FR, faux_instance)
 		if (FR->is_a_direction) {
-			FR->opposite_direction = IXInstances::fi(Map::get_value_of_opposite_property(FR->original));
+			FR->opposite_direction = IXInstances::instance_metadata(FR, I"^opposite_direction");
 		}
 	faux_instance *FD;
 	LOOP_OVER(FD, faux_instance)
 		if (FD->is_a_door) {
-			parse_node *S = PropertyInferences::value_of(
-				Instances::as_subject(FD->original), P_other_side);
-			FD->other_side = IXInstances::fi(Rvalues::to_object_instance(S));
-			FD->fimd.map_connection_a = IXInstances::fi(MAP_DATA(FD->original)->map_connection_a);
-			FD->fimd.map_connection_b = IXInstances::fi(MAP_DATA(FD->original)->map_connection_b);
+			FD->other_side = IXInstances::instance_metadata(FD, I"^other_side");
+			FD->fimd.map_connection_a = IXInstances::instance_metadata(FD, I"^side_a");
+			FD->fimd.map_connection_b = IXInstances::instance_metadata(FD, I"^side_b");
 		}
-#endif
 	IXInstances::decode_hints(1);
 }
 
@@ -308,6 +306,22 @@ faux_instance *IXInstances::fi(instance *I) {
 	return NULL;
 }
 #endif
+
+faux_instance *IXInstances::instance_metadata(faux_instance *I, text_stream *key) {
+	if (I == NULL) return I;
+	inter_symbol *val_s = Metadata::read_optional_symbol(I->package, key);
+	return IXInstances::fis(val_s);
+}
+
+faux_instance *IXInstances::fis(inter_symbol *S) {
+	if (S == NULL) return NULL;
+	inter_package *want = Inter::Packages::container(S->definition);
+	faux_instance *FI;
+	LOOP_OVER(FI, faux_instance)
+		if (FI->package == want)
+			return FI;
+	return NULL;
+}
 
 faux_instance *IXInstances::start_room(void) {
 	return start_faux_instance;

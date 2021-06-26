@@ -932,8 +932,12 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_PERSON_MD_HL
 @e INSTANCE_IS_ROOM_MD_HL
 @e INSTANCE_IS_DOOR_MD_HL
+@e INSTANCE_DOOR_OTHER_SIDE_MD_HL
+@e INSTANCE_DOOR_SIDE_A_MD_HL
+@e INSTANCE_DOOR_SIDE_B_MD_HL
 @e INSTANCE_IS_REGION_MD_HL
 @e INSTANCE_IS_DIRECTION_MD_HL
+@e INSTANCE_OPPOSITE_DIRECTION_MD_HL
 @e INSTANCE_IS_BACKDROP_MD_HL
 @e SCENE_ENDS_HAP
 @e SCENE_END_NAME_MD_HL
@@ -1022,8 +1026,12 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_PERSON_MD_HL,    I"^is_person")
 			H_C_U(INSTANCE_IS_ROOM_MD_HL,    I"^is_room")
 			H_C_U(INSTANCE_IS_DOOR_MD_HL,    I"^is_door")
+			H_C_U(INSTANCE_DOOR_OTHER_SIDE_MD_HL,    I"^other_side")
+			H_C_U(INSTANCE_DOOR_SIDE_A_MD_HL,    I"^side_a")
+			H_C_U(INSTANCE_DOOR_SIDE_B_MD_HL,    I"^side_b")
 			H_C_U(INSTANCE_IS_REGION_MD_HL,    I"^is_region")
 			H_C_U(INSTANCE_IS_DIRECTION_MD_HL,    I"^is_direction")
+			H_C_U(INSTANCE_OPPOSITE_DIRECTION_MD_HL,    I"^opposite_direction")
 			H_C_U(INSTANCE_IS_BACKDROP_MD_HL,    I"^is_backdrop")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
