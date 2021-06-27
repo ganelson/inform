@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
 	BytecodeModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
+	IndexModule::start();
 
 @<Begin with an empty file list and variables dictionary@> =
 	inter_file_list = NEW_LINKED_LIST(filename);
@@ -125,6 +126,7 @@ form, which would be written to |*outt|.
 	BuildingModule::end();
 	CodegenModule::end();
 	ArchModule::end();
+	IndexModule::end();
 	Foundation::end(); /* must be ended last */
 
 @h Command line.

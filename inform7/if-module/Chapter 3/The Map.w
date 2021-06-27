@@ -36,7 +36,8 @@ int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_tim
 }
 
 @ This special sentence is used as a hint in making map documents; it has no
-effect on the world model itself, and so is dealt with elsewhere, in //codegen: EPS Map//.
+effect on the world model itself, and so is dealt with elsewhere, in
+//index: Map Configuration//.
 
 =
 int Map::make_special_meanings(void) {

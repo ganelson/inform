@@ -235,6 +235,8 @@ File (0) ones -- and which are not within any extensions -- so, are in the
 primary source text written by the user.
 
 =
+int headings_indexed = 0;
+
 void CompletionModule::index_heading_recursively(heading *h) {
 	if (h == NULL) return;
 	int show_heading = TRUE;

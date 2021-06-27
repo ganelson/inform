@@ -13,6 +13,7 @@ Import: services/arch
 Import: bytecode
 Import: building
 Import: codegen
+Import: index
 
 Manual
 "Documentation for the Inter format itself, as well as the inter tool which processes it."

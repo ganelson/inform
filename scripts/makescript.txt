@@ -64,12 +64,12 @@ INBUILDX = inbuild/Tangled/inbuild
 {module} RUNTIME runtime inform7/runtime-module modules
 {module} VALUES values inform7/values-module modules
 {module} IF if inform7/if-module modules
-{module} INDEX index inform7/index-module modules
 {module} MULTIMEDIA multimedia inform7/multimedia-module modules
 
 {module} BYTECODE bytecode inter/bytecode-module modules
 {module} BUILDING building inter/building-module modules
 {module} CODEGEN codegen inter/codegen-module modules
+{module} INDEX index inter/index-module modules
 
 {module} SUPERVISOR supervisor inbuild/supervisor-module modules
 

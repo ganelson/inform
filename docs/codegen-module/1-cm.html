@@ -87,17 +87,6 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">link_instruction_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tree_inventory_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tree_inventory_item_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">index_page_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">index_element_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">index_tlexicon_entry_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_scene_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_end_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">simplified_connector_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">command_index_entry_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">faux_instance_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">connected_submap_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EPS_map_level_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rubric_holder_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">I6T_intervention</span><span class="plain-syntax">)</span>
@@ -113,18 +102,6 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">link_instruction</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_inventory</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_inventory_item</span><span class="plain-syntax">)</span>
-
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_element</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_page</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_tlexicon_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_scene</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_end</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">simplified_connector</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_index_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">faux_instance</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">connected_submap</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">EPS_map_level</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">rubric_holder</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
@@ -141,19 +118,13 @@ which use this module:
 </pre>
 <p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INDEX_SORTING_MREASON</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CODE_GENERATION_MREASON</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SCENE_SORTING_MREASON</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">MAP_INDEX_MREASON</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CODE_GENERATION_MREASON</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">CODE_GENERATION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"code generation workspace for objects"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">SCENE_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"scene index sorting"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">INDEX_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"index sorting"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">MAP_INDEX_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"map in the World index"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
@@ -170,8 +141,6 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">EXTERNAL_SYMBOL_RESOLUTION_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ELIMINATION_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">CONSTANT_DEPTH_CALCULATION_DA</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SPATIAL_MAP_DA</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SPATIAL_MAP_WORKINGS_DA</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3_5" class="paragraph-anchor"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
 </p>
@@ -182,8 +151,6 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">EXTERNAL_SYMBOL_RESOLUTION_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"external symbol resolution"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">ELIMINATION_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"code elimination"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">CONSTANT_DEPTH_CALCULATION_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"constant depth calculation"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SPATIAL_MAP_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"spatial map"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SPATIAL_MAP_WORKINGS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"spatial map workings"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_6" class="paragraph-anchor"></a><b>&#167;3.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.6</span></span><span class="comment-syntax"> =</span>
@@ -194,7 +161,7 @@ which use this module:
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cm.html#SP3">&#167;3</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">cm</li><li class="progresssection"><a href="1-stg.html">stg</a></li><li class="progresssection"><a href="1-arc.html">arc</a></li><li class="progresssection"><a href="1-li.html">li</a></li><li class="progresssection"><a href="1-ppl.html">ppl</a></li><li class="progresschapter"><a href="2-mt.html">2</a></li><li class="progresschapter"><a href="3-sh.html">3</a></li><li class="progresschapter"><a href="4-cg.html">4</a></li><li class="progresschapter"><a href="5-ft.html">5</a></li><li class="progresschapter"><a href="6-ii.html">6</a></li><li class="progressnext"><a href="1-stg.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">cm</li><li class="progresssection"><a href="1-stg.html">stg</a></li><li class="progresssection"><a href="1-arc.html">arc</a></li><li class="progresssection"><a href="1-li.html">li</a></li><li class="progresssection"><a href="1-ppl.html">ppl</a></li><li class="progresschapter"><a href="2-mt.html">2</a></li><li class="progresschapter"><a href="3-sh.html">3</a></li><li class="progresschapter"><a href="4-cg.html">4</a></li><li class="progresschapter"><a href="5-ft.html">5</a></li><li class="progressnext"><a href="1-stg.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

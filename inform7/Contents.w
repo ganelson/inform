@@ -30,7 +30,7 @@ Import: runtime
 Import: inter/building
 Import: if
 Import: multimedia
-Import: index
+Import: inter/index
 
 Manual
 	Command-Line Usage
