@@ -238,11 +238,6 @@ row.
 			ChartElement::index_instances(OUT, inv, pack, 1);
 
 @<Index explanatory text supplied for a kind@> =
-	text_stream *explanation = Metadata::read_optional_textual(pack, I"^specification");
-	if (Str::len(explanation) > 0) {
-		WRITE("%S", explanation);
-		HTML_TAG("br");
-	}
 	ChartElement::index_inferences(OUT, pack, FALSE);
 
 @<Explain about covariance and contravariance@> =
@@ -308,7 +303,7 @@ int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package 
 	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref);
 	int i = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (i >= 1) WRITE(" [%d]", i);
-	Index::below_link_numbered(OUT, (int) Metadata::read_optional_numeric(pack, I"^cheat_code")); /* a grey see below icon leading to an anchor on pass 2 */
+	Index::below_link_numbered(OUT, pack->allocation_id);
 	if (shaded) HTML::end_colour(OUT);
 	return shaded;
 }
@@ -473,20 +468,14 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	}
 
 @ =
-#ifdef CORE_MODULE
-kind *ChartElement::cheat(int id) {
-	kind_constructor *kc;
-	LOOP_OVER(kc, kind_constructor)
-		if (kc->allocation_id == id)
-			return Kinds::base_construction(kc);
-	internal_error("oops");
-	return NULL;
-}
-#endif
-
 void ChartElement::index_inferences(OUTPUT_STREAM, inter_package *pack, int brief) {
-	#ifdef CORE_MODULE
-	kind *K = ChartElement::cheat((int) Metadata::read_optional_numeric(pack, I"^cheat_code"));
-	IXInferences::index(OUT, KindSubjects::from_kind(K), brief);
-	#endif
+	text_stream *explanation = Metadata::read_optional_textual(pack, I"^specification");
+	if (Str::len(explanation) > 0) {
+		WRITE("%S", explanation);
+		HTML_TAG("br");
+	}
+	text_stream *material = NULL;
+	if (brief) material = Metadata::read_optional_textual(pack, I"^brief_inferences");
+	else material = Metadata::read_optional_textual(pack, I"^inferences");
+	WRITE("%S", material);
 }

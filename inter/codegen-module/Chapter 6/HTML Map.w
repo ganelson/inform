@@ -423,21 +423,24 @@ from each other.)
 	faux_instance *RG;
 	int regc = 0;
 	LOOP_OVER_REGIONS(RG)
-		if (RG->fimd.colour == NULL)
-			RG->fimd.colour =
+		if (RG->fimd.colour == NULL) {
+			RG->fimd.colour = Str::new();
+			WRITE_TO(RG->fimd.colour, "%w", 
 				HTML::translate_colour_name(
-					some_map_colours[(regc++) % NO_REGION_COLOURS]);
+					some_map_colours[(regc++) % NO_REGION_COLOURS]));
+		}
 
 @<Choose a map colour for each room, based on its region membership@> =
-	wchar_t *default_room_col = HTML::translate_colour_name(L"Light Grey");
+	text_stream *default_room_col = Str::new();
+	WRITE_TO(default_room_col, "%w", HTML::translate_colour_name(L"Light Grey"));
 	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		if (R->fimd.colour == NULL) {
 			faux_instance *reg = IXInstances::region_of(R);
 			if (reg)
-				R->fimd.colour = reg->fimd.colour;
+				R->fimd.colour = Str::duplicate(reg->fimd.colour);
 			else
-				R->fimd.colour = default_room_col;
+				R->fimd.colour = Str::duplicate(default_room_col);
 		}
 
 @<Draw an HTML map for the whole Universe of rooms@> =
@@ -927,11 +930,11 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 			"title=\"%S\"",
 			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, IXInstances::get_name(I));
 		HTML_OPEN("tr");
-		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
+		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 			I->fimd.colour);
 		TEMPORARY_TEXT(col)
 		if (I->fimd.text_colour)
-			WRITE_TO(col, "%w", I->fimd.text_colour);
+			WRITE_TO(col, "%S", I->fimd.text_colour);
 		else
 			WRITE_TO(col, "%s", ROOM_TEXT_COLOUR);
 		HTML::begin_colour(OUT, col);
@@ -977,7 +980,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, faux_instance *I, faux_instance *Re
 		"bordercolor=\"#%s\" height=\"%d\"",
 		ROOM_BORDER_SIZE, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE);
 	HTML_OPEN("tr");
-	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
+	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 		Reg->fimd.colour);
 	WRITE("&nbsp;");
 	IXInstances::write_name(OUT, Reg); WRITE(" region");

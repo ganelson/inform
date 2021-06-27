@@ -68,6 +68,6 @@ void EitherOrPropertyAdjectives::prepare_schemas(adjective_meaning_family *famil
 int EitherOrPropertyAdjectives::index(adjective_meaning_family *f, text_stream *OUT,
 	adjective_meaning *am) {
 	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
-	IXProperties::index_either_or(OUT, prn);
+	RTInferences::index_either_or(OUT, prn);
 	return TRUE;
 }

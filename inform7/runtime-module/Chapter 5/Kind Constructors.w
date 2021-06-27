@@ -468,10 +468,23 @@ void RTKindConstructors::compile(void) {
 			KIND_PNAME_MD_HL, S);
 		DISCARD_TEXT(S)
 
-		text_stream *explanation = Kinds::Behaviour::get_specification_text(K);
-		if (Str::len(explanation) > 0)
-			Hierarchy::apply_metadata(pack, KIND_SPECIFICATION_MD_HL, explanation);
-
+		inference *inf;
+		int made_exp = FALSE;
+		KNOWLEDGE_LOOP(inf, KindSubjects::from_kind(K), property_inf)
+			if (PropertyInferences::get_property(inf) == P_specification) {
+				parse_node *spec = PropertyInferences::get_value(inf);
+				TEMPORARY_TEXT(exp)
+				Index::dequote(exp, Lexer::word_raw_text(Wordings::first_wn(Node::get_text(spec))));
+				Hierarchy::apply_metadata(pack, KIND_SPECIFICATION_MD_HL, exp);
+				DISCARD_TEXT(exp)
+				made_exp = TRUE;
+				break;
+			}
+		if ((made_exp == FALSE) && (RTKindConstructors::is_subkind_of_object(kc) == FALSE)) {
+			text_stream *exp = Kinds::Behaviour::get_specification_text(K);
+			if (Str::len(exp) > 0)
+				Hierarchy::apply_metadata(pack, KIND_SPECIFICATION_MD_HL, exp);
+		}
 		Hierarchy::apply_metadata_from_number(pack,
 			KIND_IS_BASE_MD_HL, 1);
 		if (KindConstructors::is_arithmetic(kc))
@@ -661,8 +674,6 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata(pack, DIMENSIONS_INDEX_MD_HL, OUT);
 			DISCARD_TEXT(OUT)
 		}
-		Hierarchy::apply_metadata_from_number(pack, CHEAT_CODE_MD_HL,
-			(inter_ti) kc->allocation_id);
 
 		if ((RTKindConstructors::get_highest_valid_value_as_integer(K) == 0) &&
 			(Kinds::Behaviour::indexed_grey_if_empty(K)))
@@ -723,6 +734,9 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata(pack, KIND_INDEX_NOTATION_MD_HL, LF);
 			DISCARD_TEXT(LF)
 		}
+
+		RTInferences::index(pack, KIND_BRIEF_INFERENCES_MD_HL, KindSubjects::from_kind(K), TRUE);
+		RTInferences::index(pack, KIND_INFERENCES_MD_HL, KindSubjects::from_kind(K), FALSE);
 	}
 	@<Compile multiplication rules for the index@>;
 }

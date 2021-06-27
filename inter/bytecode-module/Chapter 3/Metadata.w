@@ -53,6 +53,18 @@ inter_symbol *Metadata::read_optional_symbol(inter_package *pack, text_stream *k
 	return s;
 }
 
+inter_tree_node *Metadata::read_optional_list(inter_package *pack, text_stream *key) {
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	if (md == NULL) return NULL;
+	inter_tree_node *D = md->definition;
+	if (D == NULL) Metadata::err("not defined", pack, key);
+	if (D->W.data[FORMAT_CONST_IFLD] != CONSTANT_INDIRECT_LIST) {
+		LOG("%d\n", D->W.data[FORMAT_CONST_IFLD]);
+		Metadata::err("not a list", pack, key);
+	}
+	return D;
+}
+
 inter_ti Metadata::read_numeric(inter_package *pack, text_stream *key) {
 	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
 	if (md == NULL) Metadata::err("not found", pack, key);

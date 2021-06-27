@@ -1,4 +1,4 @@
-[IXInferences::] Inferences.
+[RTInferences::] Inferences.
 
 To index inferences.
 
@@ -7,20 +7,11 @@ This is where the detailed description of a given kind -- what properties it
 has, and so on -- is generated.
 
 =
-void IXInferences::index(OUTPUT_STREAM, inference_subject *infs, int brief) {
-	inference *inf;
-	KNOWLEDGE_LOOP(inf, infs, property_inf)
-		if (PropertyInferences::get_property(inf) == P_specification) {
-			parse_node *spec = PropertyInferences::get_value(inf);
-			Index::dequote(OUT, Lexer::word_raw_text(Wordings::first_wn(Node::get_text(spec))));
-			HTML_TAG("br");
-		}
-
+void RTInferences::index(package_request *pack, int hl, inference_subject *infs, int brief) {
+	TEMPORARY_TEXT(OUT)
 	property *prn;
-	LOOP_OVER(prn, property) IXProperties::set_indexed_already_flag(prn, FALSE);
-
-	int c;
-	for (c = CERTAIN_CE; c >= IMPOSSIBLE_CE; c--) {
+	LOOP_OVER(prn, property) RTProperties::set_indexed_already_flag(prn, FALSE);
+	for (int c = CERTAIN_CE; c >= IMPOSSIBLE_CE; c--) {
 		char *cert = "Text only put here to stop gcc -O2 wrongly reporting an error";
 		if (c == UNKNOWN_CE) continue;
 		switch(c) {
@@ -30,21 +21,23 @@ void IXInferences::index(OUTPUT_STREAM, inference_subject *infs, int brief) {
 			case IMPOSSIBLE_CE: cert = "Never"; break;
 			case INITIALLY_CE:	cert = "Initially"; break;
 		}
-		IXInferences::index_provided(OUT, infs, TRUE, c, cert, brief);
+		RTInferences::index_provided(OUT, infs, TRUE, c, cert, brief);
 	}
-	IXInferences::index_provided(OUT, infs, FALSE, LIKELY_CE, "Can have", brief);
+	RTInferences::index_provided(OUT, infs, FALSE, LIKELY_CE, "Can have", brief);
+	Hierarchy::apply_metadata(pack, hl, OUT);
+	DISCARD_TEXT(OUT)
 }
 
 @ The following lists off the properties of the kind, with the given
 state of being boolean, and the given certainty levels:
 
 =
-void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bool, int c, char *cert, int brief) {
+void RTInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bool, int c, char *cert, int brief) {
 	int f = TRUE;
 	property *prn;
 	LOOP_OVER(prn, property) {
 		if (RTProperties::is_shown_in_index(prn) == FALSE) continue;
-		if (IXProperties::get_indexed_already_flag(prn)) continue;
+		if (RTProperties::get_indexed_already_flag(prn)) continue;
 		if (Properties::is_either_or(prn) != bool) continue;
 
 		int state = PropertyInferences::has_or_can_have(infs, prn);
@@ -56,13 +49,13 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 		if (f) { WRITE("<i>%s</i> ", cert); f = FALSE; }
 		else WRITE(", ");
 		WRITE("%+W", prn->name);
-		IXProperties::set_indexed_already_flag(prn, TRUE);
+		RTProperties::set_indexed_already_flag(prn, TRUE);
 
 		if (Properties::is_either_or(prn)) {
 			property *prnbar = EitherOrProperties::get_negation(prn);
 			if (prnbar) {
 				WRITE(" <i>not</i> %+W", prnbar->name);
-				IXProperties::set_indexed_already_flag(prnbar, TRUE);
+				RTProperties::set_indexed_already_flag(prnbar, TRUE);
 			}
 		} else {
 			kind *K = ValueProperties::kind(prn);
@@ -81,7 +74,8 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 This only tells about specific property settings for a given faux_instance.
 
 =
-void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
+void RTInferences::index_specific(package_request *pack, int hl, inference_subject *infs) {
+	TEMPORARY_TEXT(OUT)
 	property *prn; int k = 0;
 	LOOP_OVER(prn, property)
 		if (RTProperties::is_shown_in_index(prn))
@@ -118,4 +112,36 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 						HTML_CLOSE("p");
 					}
 				}
+	Hierarchy::apply_metadata(pack, hl, OUT);
+	DISCARD_TEXT(OUT)
+}
+
+void RTInferences::index_either_or(OUTPUT_STREAM, property *prn) {
+	property *neg = EitherOrProperties::get_negation(prn);
+	WRITE("either/or property");
+	if (Properties::get_permissions(prn)) {
+		WRITE(" of "); RTInferences::index_permissions(OUT, prn);
+	} else if ((neg) && (Properties::get_permissions(neg))) {
+		WRITE(" of "); RTInferences::index_permissions(OUT, neg);
+	}
+	if (neg) WRITE(", opposite of </i>%+W<i>", neg->name);
+}
+
+void RTInferences::index_permissions(OUTPUT_STREAM, property *prn) {
+	for (int ac = 0, s = 1; s <= 2; s++) {
+		property_permission *pp;
+		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
+			wording W = InferenceSubjects::get_name_text(
+				PropertyPermissions::get_subject(pp));
+			if (Wordings::nonempty(W)) {
+				if (s == 1) ac++;
+				else {
+					WRITE("</i>%+W<i>", W);
+					ac--;
+					if (ac == 1) WRITE(" or ");
+					if (ac > 1) WRITE(", ");
+				}
+			}
+		}
+	}
 }

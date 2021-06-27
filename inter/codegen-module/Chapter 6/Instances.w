@@ -42,7 +42,6 @@ typedef struct faux_instance {
 	struct text_stream *name;
 	struct text_stream *printed_name;
 	struct text_stream *abbrev;
-	struct instance *original;
 	int is_a_thing;
 	int is_a_supporter;
 	int is_a_person;
@@ -73,11 +72,6 @@ typedef struct faux_instance {
 	int kind_set_at;
 	int region_set_at;
 	int progenitor_set_at;
-	struct linked_list *usages; /* of |parse_node| */
-		
-	#ifdef CORE_MODULE
-	inference_subject *knowledge;
-	#endif
 	
 	struct fi_map_data fimd;
 	CLASS_DEFINITION
@@ -90,8 +84,8 @@ typedef struct fi_map_data {
 	int cooled;
 	int shifted;
 	int zone;
-	wchar_t *colour; /* an HTML colour for the room square (rooms only) */
-	wchar_t *text_colour; /* an HTML colour for text on that square */
+	struct text_stream *colour; /* an HTML colour for the room square (rooms only) */
+	struct text_stream *text_colour; /* an HTML colour for text on that square */
 	int eps_x, eps_y;
 	struct faux_instance *map_connection_a;
 	struct faux_instance *map_connection_b;
@@ -194,49 +188,56 @@ void IXInstances::make_faux(void) {
 		if (Metadata::read_optional_numeric(pack,  I"^is_yourself")) faux_yourself = FI;
 		if (Metadata::read_optional_numeric(pack,  I"^is_benchmark_room")) faux_benchmark = FI;
 		if (Metadata::read_optional_numeric(pack,  I"^is_start_room")) start_faux_instance = FI;
-		
-	#ifdef CORE_MODULE
-		instance *I = NULL, *J = NULL;
-		LOOP_OVER_INSTANCES(J, K_object)
-			if (Metadata::read_numeric(pack,  I"^cheat_code") == (inter_ti) J->allocation_id)
-				I = J;
-		if (I == NULL) internal_error("no ID");
-		FI->original = I;
-
-		FI->usages = I->compilation_data.usages;
-		FI->knowledge = Instances::as_subject(I);
-
-		for (int i=0; i<MAX_DIRECTIONS; i++) {
-			parse_node *at = MAP_DATA(I)->exits_set_at[i];
-			if (at) FI->fimd.exits_set_at[i] = Wordings::first_wn(Node::get_text(at));
-		}
-	#endif
 	}
-#ifdef CORE_MODULE
-	faux_instance *FB;
-	LOOP_OVER(FB, faux_instance) {
-		if (FB->is_a_backdrop) {
-			instance *B = FB->original;
-			inference *inf;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(B), found_in_inf) {
-				instance *L = Backdrops::get_inferred_location(inf);
-				faux_instance *FL = IXInstances::fi(L);
-				ADD_TO_LINKED_LIST(FB, faux_instance, FL->backdrop_presences);
+	faux_instance *FI;
+	LOOP_OVER(FI, faux_instance) {
+		if (FI->is_a_room) {
+			inter_package *pack = FI->package;
+			inter_tree_node *P = Metadata::read_optional_list(pack, I"^map");
+			if (P) {
+				for (int i=0; i<MAX_DIRECTIONS; i++) {
+					int offset = DATA_CONST_IFLD + 4*i;
+					if (offset >= P->W.extent) break;
+					inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+					if (v1 == ALIAS_IVAL) {
+						inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+						if (s == NULL) internal_error("malformed map metadata");
+						FI->fimd.exits[i] = IXInstances::fis(s);
+					} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
+					inter_ti v3 = P->W.data[offset+2], v4 = P->W.data[offset+3];
+					if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
+					if (v4) FI->fimd.exits_set_at[i] = (int) v4;
+				}
 			}
 		}
-		for (int i=0; i<MAX_DIRECTIONS; i++) {
-			FB->fimd.exits[i] = IXInstances::fi(MAP_EXIT(FB->original, i));
+	}
+	LOOP_OVER(FI, faux_instance) {
+		if (FI->is_a_backdrop) {
+			inter_package *pack = FI->package;
+			inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
+			if (P) {
+				int offset = DATA_CONST_IFLD;
+				while (offset < P->W.extent) {
+					inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+					if (v1 == ALIAS_IVAL) {
+						inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+						if (s == NULL) internal_error("malformed map metadata");
+						faux_instance *FL = IXInstances::fis(s);
+						ADD_TO_LINKED_LIST(FI, faux_instance, FL->backdrop_presences);
+					} else internal_error("malformed backdrop metadata");
+					offset += 2;
+				}
+			}
 		}
 	}
-	LOOP_OVER(FB, faux_instance) {
-		FB->region_enclosing = IXInstances::fi(Regions::enclosing(FB->original));
-		FB->object_tree_sibling = IXInstances::fi(SPATIAL_DATA(FB->original)->object_tree_sibling);
-		FB->object_tree_child = IXInstances::fi(SPATIAL_DATA(FB->original)->object_tree_child);
-		FB->progenitor = IXInstances::fi(Spatial::progenitor(FB->original));
-		FB->incorp_tree_sibling = IXInstances::fi(SPATIAL_DATA(FB->original)->incorp_tree_sibling);
-		FB->incorp_tree_child = IXInstances::fi(SPATIAL_DATA(FB->original)->incorp_tree_child);
+	LOOP_OVER(FI, faux_instance) {
+		FI->region_enclosing = IXInstances::instance_metadata(FI, I"^region_enclosing");
+		FI->object_tree_sibling = IXInstances::instance_metadata(FI, I"^sibling");
+		FI->object_tree_child = IXInstances::instance_metadata(FI, I"^child");
+		FI->progenitor = IXInstances::instance_metadata(FI, I"^progenitor");
+		FI->incorp_tree_sibling = IXInstances::instance_metadata(FI, I"^incorp_sibling");
+		FI->incorp_tree_child = IXInstances::instance_metadata(FI, I"^incorp_child");
 	}
-#endif
 	faux_instance *FR;
 	LOOP_OVER(FR, faux_instance)
 		if (FR->is_a_direction) {
@@ -249,63 +250,73 @@ void IXInstances::make_faux(void) {
 			FD->fimd.map_connection_a = IXInstances::instance_metadata(FD, I"^side_a");
 			FD->fimd.map_connection_b = IXInstances::instance_metadata(FD, I"^side_b");
 		}
-	IXInstances::decode_hints(1);
+	IXInstances::decode_hints(IT, 1);
 }
 
 @
 
 =
-void IXInstances::decode_hints(int pass) {
-#ifdef CORE_MODULE
-	mapping_hint *hint;
-	LOOP_OVER(hint, mapping_hint) {
-		if ((hint->dir) && (hint->as_dir)) {
-			if (pass == 1)
-				story_dir_to_page_dir[MAP_DATA(hint->dir)->direction_index] =
-					MAP_DATA(hint->as_dir)->direction_index;
-		} else if ((hint->from) && (hint->dir)) {
-			if (pass == 1)
-				PL::SpatialMap::lock_exit_in_place(IXInstances::fi(hint->from),
-					MAP_DATA(hint->dir)->direction_index, IXInstances::fi(hint->to));
-		} else if (hint->name) {
-			if (hint->scope_level != 1000000) {
-				if (pass == 2) {
-					map_parameter_scope *scope = NULL;
-					EPS_map_level *eml;
-					LOOP_OVER(eml, EPS_map_level)
-						if ((eml->contains_rooms)
-							&& (eml->map_level - PL::SpatialMap::benchmark_level() == hint->scope_level))
-							scope = &(eml->map_parameters);
-					if (scope) EPSMap::put_mp(hint->name, scope, IXInstances::fi(hint->scope_I), hint->put_string, hint->put_integer);
+void IXInstances::decode_hints(inter_tree *I, int pass) {
+	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/mapping_hints");
+	inter_symbol *wanted = PackageTypes::get(I, I"_mapping_hint");
+	inter_tree_node *D = Inter::Packages::definition(pack);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+			inter_package *entry = Inter::Package::defined_by_frame(C);
+			if (Inter::Packages::type(entry) == wanted) {
+				faux_instance *from = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^from"));
+				faux_instance *to = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^to"));
+				faux_instance *dir = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^dir"));
+				faux_instance *as_dir = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^as_dir"));
+				if ((dir) && (as_dir)) {
+					if (pass == 1)
+						story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
+					continue;
 				}
-			} else {
-				if (pass == 1)
-					EPSMap::put_mp(hint->name, NULL, IXInstances::fi(hint->scope_I), hint->put_string, hint->put_integer);
-			}
-		} else if (hint->annotation) {
-			if (pass == 1) {
-				rubric_holder *rh = CREATE(rubric_holder);
-				rh->annotation = hint->annotation;
-				rh->point_size = hint->point_size;
-				rh->font = hint->font;
-				rh->colour = hint->colour;
-				rh->at_offset = hint->at_offset;
-				rh->offset_from = IXInstances::fi(hint->offset_from);
+				if ((from) && (dir)) {
+					if (pass == 1)
+						PL::SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
+					continue;
+				}
+				text_stream *name = Metadata::read_optional_textual(entry, I"^name");
+				if (Str::len(name) > 0) {
+					int scope_level = (int) Metadata::read_optional_numeric(entry, I"^scope_level");
+					faux_instance *scope_I = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^scope_instance"));
+					text_stream *text_val = Metadata::read_optional_textual(entry, I"^text");
+					int int_val = (int) Metadata::read_optional_numeric(entry, I"^number");
+					if (scope_level != 1000000) {
+						if (pass == 2) {
+							map_parameter_scope *scope = NULL;
+							EPS_map_level *eml;
+							LOOP_OVER(eml, EPS_map_level)
+								if ((eml->contains_rooms)
+									&& (eml->map_level - PL::SpatialMap::benchmark_level() == scope_level))
+									scope = &(eml->map_parameters);
+							if (scope) EPSMap::put_mp(name, scope, scope_I, text_val, int_val);
+						}
+					} else {
+						if (pass == 1)
+							EPSMap::put_mp(name, NULL, scope_I, text_val, int_val);
+					}
+					continue;
+				}
+				text_stream *annotation = Metadata::read_optional_textual(entry, I"^annotation");
+				if (Str::len(annotation) > 0) {
+					if (pass == 1) {
+						rubric_holder *rh = CREATE(rubric_holder);
+						rh->annotation = annotation;
+						rh->point_size = (int) Metadata::read_optional_numeric(entry, I"^point_size");
+						rh->font = Metadata::read_optional_textual(entry, I"^font");
+						rh->colour = Metadata::read_optional_textual(entry, I"^colour");
+						rh->at_offset = (int) Metadata::read_optional_numeric(entry, I"^offset");
+						rh->offset_from = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^offset_from"));
+					}
+					continue;
+				}
 			}
 		}
 	}
-#endif
 }
-
-#ifdef CORE_MODULE
-faux_instance *IXInstances::fi(instance *I) {
-	faux_instance *FI;
-	LOOP_OVER(FI, faux_instance)
-		if (FI->original == I)
-			return FI;
-	return NULL;
-}
-#endif
 
 faux_instance *IXInstances::instance_metadata(faux_instance *I, text_stream *key) {
 	if (I == NULL) return I;
@@ -350,13 +361,6 @@ void IXInstances::write_kind(OUTPUT_STREAM, faux_instance *I) {
 void IXInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_chain);
 }
-
-#ifdef CORE_MODULE
-inference_subject *IXInstances::as_subject(faux_instance *FI) {
-	if (FI == NULL) return NULL;
-	return FI->knowledge;
-}
-#endif
 
 faux_instance *IXInstances::region_of(faux_instance *FI) {
 	if (FI == NULL) return NULL;

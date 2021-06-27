@@ -139,7 +139,7 @@ For now, at least, these are all in English only.
 	int i;
 	wchar_t *parameter_name = Lexer::word_text(Wordings::first_wn(W));
 	if ((Wordings::length(W) == 1) &&
-		((i = EPSMap::get_map_variable_index_forgivingly(parameter_name))>=0)) {
+		((i = EPSMap::get_map_variable_index_from_wchar(parameter_name))>=0)) {
 		==> { i, parameter_name };
 		return TRUE;
 	}
@@ -396,7 +396,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 		"definition on level 0), or a region, or a kind of room.");
 
 @<Check that the value has the right type for this map parameter, and set it@> =
-	int type_wanted = global_map_scope.values[index_of_parameter].parameter_data_type;
+	int type_wanted = EPSMap::global()->values[index_of_parameter].parameter_data_type;
 	int type_found = <<msvtype>>;
 	char *i_wanted_a = "";
 	int wn = <<msword>>;

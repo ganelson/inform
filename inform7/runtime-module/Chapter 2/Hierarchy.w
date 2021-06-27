@@ -187,6 +187,7 @@ void Hierarchy::establish(void) {
 	@<Establish int-fiction@>;
 	@<Establish kinds@>;
 	@<Establish literal patterns@>;
+	@<Establish mapping hints@>;
 	@<Establish phrases@>;
 	@<Establish properties@>;
 	@<Establish relations@>;
@@ -886,7 +887,6 @@ void Hierarchy::establish(void) {
 @h Instances.
 
 @e INSTANCES_HAP
-@e INSTANCE_CHEAT_MD_HL
 @e INSTANCE_NAME_MD_HL
 @e INSTANCE_PRINTED_NAME_MD_HL
 @e INSTANCE_ABBREVIATION_MD_HL
@@ -939,6 +939,17 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_DIRECTION_MD_HL
 @e INSTANCE_OPPOSITE_DIRECTION_MD_HL
 @e INSTANCE_IS_BACKDROP_MD_HL
+@e INSTANCE_BACKDROP_PRESENCES_MD_HL
+@e INSTANCE_REGION_ENCLOSING_MD_HL
+@e INSTANCE_SIBLING_MD_HL
+@e INSTANCE_CHILD_MD_HL
+@e INSTANCE_PROGENITOR_MD_HL
+@e INSTANCE_INCORP_SIBLING_MD_HL
+@e INSTANCE_INCORP_CHILD_MD_HL
+@e INSTANCE_MAP_MD_HL
+@e INSTANCE_USAGES_MD_HL
+@e INSTANCE_BRIEF_INFERENCES_MD_HL
+@e INSTANCE_SPECIFIC_INFERENCES_MD_HL
 @e SCENE_ENDS_HAP
 @e SCENE_END_NAME_MD_HL
 @e SCENE_END_AT_MD_HL
@@ -968,7 +979,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
-			H_C_U(INSTANCE_CHEAT_MD_HL,  I"^cheat_code")
 			H_C_U(INSTANCE_NAME_MD_HL,  I"^name")
 			H_C_U(INSTANCE_PRINTED_NAME_MD_HL,  I"^printed_name")
 			H_C_U(INSTANCE_ABBREVIATION_MD_HL,  I"^abbreviation")
@@ -1033,6 +1043,17 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_DIRECTION_MD_HL,    I"^is_direction")
 			H_C_U(INSTANCE_OPPOSITE_DIRECTION_MD_HL,    I"^opposite_direction")
 			H_C_U(INSTANCE_IS_BACKDROP_MD_HL,    I"^is_backdrop")
+			H_C_U(INSTANCE_BACKDROP_PRESENCES_MD_HL,    I"^backdrop_presences")
+			H_C_U(INSTANCE_REGION_ENCLOSING_MD_HL,    I"^region_enclosing")
+			H_C_U(INSTANCE_SIBLING_MD_HL,    I"^sibling")
+			H_C_U(INSTANCE_CHILD_MD_HL,    I"^child")
+			H_C_U(INSTANCE_PROGENITOR_MD_HL,    I"^progenitor")
+			H_C_U(INSTANCE_INCORP_SIBLING_MD_HL,    I"^incorp_sibling")
+			H_C_U(INSTANCE_INCORP_CHILD_MD_HL,    I"^incorp_child")
+			H_C_U(INSTANCE_MAP_MD_HL,        I"^map")
+			H_C_U(INSTANCE_USAGES_MD_HL,        I"^usages")
+			H_C_U(INSTANCE_BRIEF_INFERENCES_MD_HL, I"^brief_inferences")
+			H_C_U(INSTANCE_SPECIFIC_INFERENCES_MD_HL, I"^specific_inferences")
 			H_C_U(INSTANCE_HL,                I"I")
 			H_F_U(SCENE_STATUS_FN_HL,         I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,         I"scene_change_fn")
@@ -1087,7 +1108,6 @@ void Hierarchy::establish(void) {
 @e K_TYPELESS_STRING_HL
 
 @e KIND_HAP
-@e CHEAT_CODE_MD_HL
 @e KIND_NAME_MD_HL
 @e KIND_SPECIFICATION_MD_HL
 @e KIND_AT_MD_HL
@@ -1124,6 +1144,8 @@ void Hierarchy::establish(void) {
 @e KIND_UNDERSTANDABLE_MD_HL
 @e KIND_INDEX_DEFAULT_MD_HL
 @e KIND_INSTANCE_COUNT_MD_HL
+@e KIND_INFERENCES_MD_HL
+@e KIND_BRIEF_INFERENCES_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e ILIST_HL
@@ -1189,7 +1211,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))
 		H_BEGIN_AP(KIND_HAP,                  I"kind", I"_kind")
-			H_C_U(CHEAT_CODE_MD_HL,      I"^cheat_code")
 			H_C_U(KIND_NAME_MD_HL,      I"^name")
 			H_C_U(KIND_SPECIFICATION_MD_HL,      I"^specification")
 			H_C_U(KIND_AT_MD_HL,      I"^at")
@@ -1226,6 +1247,8 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_UNDERSTANDABLE_MD_HL, I"^understandable")
 			H_C_U(KIND_INDEX_DEFAULT_MD_HL, I"^index_default")
 			H_C_U(KIND_INSTANCE_COUNT_MD_HL, I"^instance_count")
+			H_C_U(KIND_BRIEF_INFERENCES_MD_HL, I"^brief_inferences")
+			H_C_U(KIND_INFERENCES_MD_HL, 		I"^inferences")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
@@ -1299,6 +1322,48 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(LITERAL_PATTERNS_HAP,      I"literal_pattern", I"_literal_pattern")
 			H_F_U(LP_PRINT_FN_HL,             I"print_fn")
 			H_F_U(LP_PARSE_FN_HL,             I"parse_fn")
+		H_END
+	H_END
+
+@h Mapping hints.
+
+@e MAPPING_HINTS_HAP
+@e MH_FROM_HL
+@e MH_TO_HL
+@e MH_DIR_HL
+@e MH_AS_DIR_HL
+@e MH_NAME_HL
+@e MH_SCOPE_LEVEL_HL
+@e MH_SCOPE_INSTANCE_HL
+@e MH_TEXT_HL
+@e MH_NUMBER_HL
+@e MH_ANNOTATION_HL
+@e MH_POINT_SIZE_HL
+@e MH_FONT_HL
+@e MH_COLOUR_HL
+@e MH_OFFSET_HL
+@e MH_OFFSET_FROM_HL
+
+@<Establish mapping hints@> =
+	submodule_identity *hints = Packaging::register_submodule(I"mapping_hints");
+
+	H_BEGIN(HierarchyLocations::completion_submodule(I, hints))
+		H_BEGIN_AP(MAPPING_HINTS_HAP,      I"mapping_hint", I"_mapping_hint")
+			H_C_U(MH_FROM_HL,        I"^from")
+			H_C_U(MH_TO_HL,        I"^to")
+			H_C_U(MH_DIR_HL,        I"^dir")
+			H_C_U(MH_AS_DIR_HL,        I"^as_dir")
+			H_C_U(MH_NAME_HL,        I"^name")
+			H_C_U(MH_SCOPE_LEVEL_HL,        I"^scope_level")
+			H_C_U(MH_SCOPE_INSTANCE_HL,        I"^scope_instance")
+			H_C_U(MH_TEXT_HL,        I"^text")
+			H_C_U(MH_NUMBER_HL,        I"^number")
+			H_C_U(MH_ANNOTATION_HL,        I"^annotation")
+			H_C_U(MH_POINT_SIZE_HL,        I"^point_size")
+			H_C_U(MH_FONT_HL,        I"^font")
+			H_C_U(MH_COLOUR_HL,        I"^colour")
+			H_C_U(MH_OFFSET_HL,        I"^offset")
+			H_C_U(MH_OFFSET_FROM_HL,        I"^offset_from")
 		H_END
 	H_END
 

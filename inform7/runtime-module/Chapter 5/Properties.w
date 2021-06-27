@@ -20,6 +20,7 @@ typedef struct property_compilation_data {
 	int visited_on_traverse; /* for temporary use when compiling objects */
 	int use_non_typesafe_0; /* as a default to mean "not set" at run-time */
 	int include_in_index; /* is this property shown in the indexes? */
+	int indexed_already; /* and has it been, thus far in index construction? */
 } property_compilation_data;
 
 void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_name *iname,
@@ -34,6 +35,7 @@ void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_nam
 	prn->compilation_data.visited_on_traverse = -1;
 	prn->compilation_data.use_non_typesafe_0 = FALSE;
 	prn->compilation_data.include_in_index = TRUE;
+	prn->compilation_data.indexed_already = FALSE;
 }
 
 @ And these are created on demand, though some properties come with a given
@@ -156,6 +158,14 @@ int RTProperties::is_shown_in_index(property *prn) {
 }
 void RTProperties::dont_show_in_index(property *prn) {
 	prn->compilation_data.include_in_index = FALSE;
+}
+
+void RTProperties::set_indexed_already_flag(property *prn, int state) {
+	prn->compilation_data.indexed_already = state;
+}
+
+int RTProperties::get_indexed_already_flag(property *prn) {
+	return prn->compilation_data.indexed_already;
 }
 
 @h Compilation.

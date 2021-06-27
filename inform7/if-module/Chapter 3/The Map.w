@@ -54,6 +54,10 @@ parse_node *directions_noticed[MAX_DIRECTIONS];
 binary_predicate *direction_relations_noticed[MAX_DIRECTIONS];
 int no_directions_noticed = 0;
 
+int Map::no_directions(void) {
+	return no_directions_noticed;
+}
+
 int Map::look_for_direction_creation(parse_node *pn) {
 	if (Node::get_type(pn) != SENTENCE_NT) return FALSE;
 	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL))

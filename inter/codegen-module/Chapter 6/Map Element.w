@@ -198,9 +198,8 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
-	#ifdef CORE_MODULE
-	IXInferences::index(OUT, IXInstances::as_subject(I), TRUE);
-	#endif
+	text_stream *material = Metadata::read_optional_textual(I->package, I"^brief_inferences");
+	WRITE("%S", material);
 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
@@ -212,9 +211,8 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 	HTML_CLOSE("p");
 
 @<Add the catalogue of specific properties@> =
-	#ifdef CORE_MODULE
-	IXInferences::index_specific(OUT, IXInstances::as_subject(I));
-	#endif
+	text_stream *material = Metadata::read_optional_textual(I->package, I"^specific_inferences");
+	WRITE("%S", material);
 
 @<Add details depending on the kind@> =
 	IXMap::add_to_World_index(OUT, I);
@@ -225,20 +223,23 @@ void IXPhysicalWorld::index(OUTPUT_STREAM, faux_instance *I, int depth, int deta
 
 =
 void IXPhysicalWorld::index_usages(OUTPUT_STREAM, faux_instance *I) {
-	#ifdef CORE_MODULE
 	int k = 0;
-	parse_node *at;
-	LOOP_OVER_LINKED_LIST(at, parse_node, I->usages) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(Node::get_text(at)));
-		if (Projects::draws_from_source_file(Task::project(), sf)) {
-			k++;
-			if (k == 1) {
-				HTML::open_indented_p(OUT, 1, "tight");
-				WRITE("<i>mentioned in rules:</i> ");
-			} else WRITE("; ");
-			Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
+	inter_package *pack = I->package;
+	inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
+	if (P) {
+		int offset = DATA_CONST_IFLD;
+		while (offset < P->W.extent) {
+			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			if (v1 == LITERAL_IVAL) {
+				k++;
+				if (k == 1) {
+					HTML::open_indented_p(OUT, 1, "tight");
+					WRITE("<i>mentioned in rules:</i> ");
+				} else WRITE("; ");
+				Index::link(OUT, (int) v2);				
+			} else internal_error("malformed usage metadata");
+			offset += 2;
 		}
 	}
 	if (k > 0) HTML_CLOSE("p");
-	#endif
 }

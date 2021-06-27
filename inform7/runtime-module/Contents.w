@@ -81,6 +81,8 @@ Chapter 6: Completion Resources
 	Property Values
 	Action Bitmap Property
 	Phrasebook Index
+	Mapping Hints
+	Inferences
 
 Chapter 7: Command Grammar
 	Command Grammars

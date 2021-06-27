@@ -31,7 +31,6 @@ typedef struct property {
 	struct value_property_data *value_data; /* for a value property */
 
 	struct property_compilation_data compilation_data;
-	struct property_indexing_data indexing_data;
 
 	struct possession_marker pom; /* for temporary use when checking implications */
 
@@ -152,7 +151,6 @@ something.
 	prn->permissions = NEW_LINKED_LIST(property_permission);
 	prn->Inter_level_only = FALSE;
 	RTProperties::initialise_pcd(prn, using_package, using_iname, translation);
-	IXProperties::initialise_pid(prn);
 	if (eo) {
 		prn->either_or_data = EitherOrProperties::new_eo_data(prn);
 		prn->value_data = NULL;

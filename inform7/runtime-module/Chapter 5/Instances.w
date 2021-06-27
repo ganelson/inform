@@ -89,8 +89,6 @@ using Inter's |INSTANCE_IST| instruction.
 void RTInstances::compilation_agent(compilation_subtask *t) {
 	instance *I = RETRIEVE_POINTER_instance(t->data);
 	package_request *pack = I->compilation_data.instance_package;
-	Hierarchy::apply_metadata_from_number(pack, INSTANCE_CHEAT_MD_HL,
-		(inter_ti) I->allocation_id);
 	TEMPORARY_TEXT(name)
 	Instances::write_name(name, I);
 	Hierarchy::apply_metadata(pack, INSTANCE_NAME_MD_HL, name);
@@ -197,6 +195,47 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if (Backdrops::object_is_a_backdrop(I))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
 
+	RTInstances::xref_metadata(I, INSTANCE_REGION_ENCLOSING_MD_HL, Regions::enclosing(I));
+	RTInstances::xref_metadata(I, INSTANCE_SIBLING_MD_HL, SPATIAL_DATA(I)->object_tree_sibling);
+	RTInstances::xref_metadata(I, INSTANCE_CHILD_MD_HL, SPATIAL_DATA(I)->object_tree_child);
+	RTInstances::xref_metadata(I, INSTANCE_PROGENITOR_MD_HL, Spatial::progenitor(I));
+	RTInstances::xref_metadata(I, INSTANCE_INCORP_SIBLING_MD_HL, SPATIAL_DATA(I)->incorp_tree_sibling);
+	RTInstances::xref_metadata(I, INSTANCE_INCORP_CHILD_MD_HL, SPATIAL_DATA(I)->incorp_tree_child);
+
+	if (Spatial::object_is_a_room(I)) {
+		packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_MAP_MD_HL, pack), K_value);
+		for (int i=0; i<Map::no_directions(); i++) {
+			instance *T = MAP_EXIT(I, i);
+			if (I) EmitArrays::iname_entry(RTInstances::value_iname(T));
+			else EmitArrays::numeric_entry(0);
+			parse_node *at = MAP_DATA(I)->exits_set_at[i];
+			if (at) EmitArrays::numeric_entry((inter_ti) Wordings::first_wn(Node::get_text(at)));
+			else EmitArrays::numeric_entry(0);
+		}
+		EmitArrays::end(save);
+	}
+	if (Backdrops::object_is_a_backdrop(I)) {
+		packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_BACKDROP_PRESENCES_MD_HL, pack), K_value);
+		inference *inf;
+		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
+			instance *L = Backdrops::get_inferred_location(inf);
+			EmitArrays::iname_entry(RTInstances::value_iname(L));
+		}
+		EmitArrays::end(save);
+	}
+
+	packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_USAGES_MD_HL, pack), K_value);
+	int k = 0;
+	parse_node *at;
+	LOOP_OVER_LINKED_LIST(at, parse_node, I->compilation_data.usages) {
+		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(Node::get_text(at)));
+		if (Projects::draws_from_source_file(Task::project(), sf)) {
+			EmitArrays::numeric_entry((inter_ti) Wordings::first_wn(Node::get_text(at)));
+			k++;
+		}
+	}
+	EmitArrays::end(save);
+
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
 		if (PropertyInferences::get_property(inf) == P_worn) {
@@ -207,6 +246,8 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_EVERYWHERE_MD_HL, 1);
 		break;
 	}
+	RTInferences::index(pack, INSTANCE_BRIEF_INFERENCES_MD_HL, Instances::as_subject(I), TRUE);
+	RTInferences::index_specific(pack, INSTANCE_SPECIFIC_INFERENCES_MD_HL, Instances::as_subject(I));
 	if (SPATIAL_DATA(I)->part_flag)
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
 	if (I == I_yourself)
@@ -240,6 +281,12 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	RTRegionInstances::compile_extra(I);
 	RTBackdropInstances::compile_extra(I);
 	RTScenes::compile_extra(I);
+}
+
+void RTInstances::xref_metadata(instance *I, int hl, instance *X) {
+	if (X)
+		Hierarchy::apply_metadata_from_iname(RTInstances::package(I), hl,
+			RTInstances::value_iname(X));
 }
 
 @ When names are abbreviated for use on the World Index map (for instance,

@@ -6,8 +6,3 @@ Licence: Artistic License 2.0
 
 Chapter 1: Starting Up
 	Index Module
-
-Chapter 2: Indexing
-"Utility routines for generating index pages."
-	Properties
-	Inferences
