@@ -1,7 +1,6 @@
 [InterpretIndex::] Index Interpreter.
 
-Inform 6 template language, or I6T for short, is a notation for expressing
-low-level code in Inter.
+The index layout is read in from a file.
 
 @
 

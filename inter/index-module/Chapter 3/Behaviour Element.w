@@ -1,6 +1,6 @@
 [BehaviourElement::] Behaviour Element.
 
-To write the Behavuour element (Bh) in the index.
+To write the Behaviour element (Bh) in the index.
 
 @ This simply itemises kinds of action, and what defines them.
 
