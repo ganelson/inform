@@ -2,36 +2,6 @@
 
 The index layout is read in from a file.
 
-@
-
-=
-int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
-void InterpretIndex::disable_or_enable_index(int which) {
-	do_not_generate_index = which;
-}
-
-void InterpretIndex::interpret_indext(filename *indext_file) {
-	if (do_not_generate_index == FALSE) {
-		InterpretIndex::interpreter_shared(indext_file);
-		InterpretIndex::update_extension_index();
-	}
-}
-
-@ Similarly, the census update for indexing purposes.
-
-=
-int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
-void InterpretIndex::disable_or_enable_census(int which) {
-	do_not_update_census = which;
-}
-
-void InterpretIndex::update_extension_index(void) {
-	#ifdef CORE_MODULE
-	if (do_not_update_census == FALSE)
-		ExtensionWebsite::index_after_compilation(Task::project());
-	#endif
-}
-
 @h Implementation.
 So, then, here is the shared interpreter for these functions. Broadly
 speaking, it's a filter from input to output, where the input is either to
@@ -40,15 +10,17 @@ In kind or indexing mode, there is in fact no output, and the interpreter
 is run only to call other functions.
 
 =
-void InterpretIndex::interpreter_shared(filename *index_structure) {
-	text_stream *OUT = NULL;
-	FILE *Input_File = NULL;
+void InterpretIndex::generate_from_structure_file(filename *index_structure) {
+	FILE *Input_File = Filenames::fopen(index_structure, "r");
+	if (Input_File == NULL) {
+		LOG("Filename was %f\n", index_structure);
+		internal_error("unable to open template file for the index");
+	}
+
 	int col = 1, cr;
 	TEMPORARY_TEXT(heading_name)
 
 	int comment = FALSE;
-
-	@<Open a file for input, if necessary@>;
 
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
@@ -66,11 +38,9 @@ void InterpretIndex::interpreter_shared(filename *index_structure) {
 					@<Act on an I6T indexing command@>;
 					continue;
 				} else { /* otherwise the open brace was a literal */
-					if (OUT) PUT_TO(OUT, '{');
 					goto NewCharacter;
 				}
 			}
-			if (OUT) PUT_TO(OUT, cr);
 		}
 	} while (cr != EOF);
 	DISCARD_TEXT(command)
@@ -78,19 +48,8 @@ void InterpretIndex::interpreter_shared(filename *index_structure) {
 	if (Input_File) { if (DL) STREAM_FLUSH(DL); fclose(Input_File); }
 
 	DISCARD_TEXT(heading_name)
+	Index::complete(); 
 }
-
-@ "If necessary" because our input may be supplied as a wide string, not a
-file.
-
-@<Open a file for input, if necessary@> =
-	if (index_structure) {
-		Input_File = Filenames::fopen(index_structure, "r");
-		if (Input_File == NULL) {
-			LOG("Filename was %f\n", index_structure);
-			internal_error("unable to open template file for the index");
-		}
-	}
 
 @ I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
 ordinary |fgetc| is used, and no BOM marker is parsed. Lines are assumed
@@ -143,8 +102,6 @@ ommand-line switch to disable the index. (As is done by |intest|, to save
 time.) |{-index:name}| opens the index file called |name|.
 
 @<Act on an I6T indexing command@> =
-	if (Str::eq_wide_string(command, L"index-complete")) { Index::complete(); continue; }
-
 	if (Str::eq_wide_string(command, L"index-page")) {
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, argument, L"(%c+?)=(%c+?)=(%c+)")) {
@@ -189,3 +146,64 @@ time.) |{-index:name}| opens the index file called |name|.
 		Regexp::dispose_of(&mr);
 		continue;
 	}
+
+@ Here we read a localisation file for text used in the Index elements, and write
+this into a given dictionary of key-value pairs.
+
+=
+void InterpretIndex::read_into_dictionary(filename *localisation_file, dictionary *D) {
+	FILE *Input_File = Filenames::fopen(localisation_file, "r");
+	if (Input_File == NULL) {
+		LOG("Filename was %f\n", localisation_file);
+		internal_error("unable to open localisation file for the index");
+	}
+
+	int col = 1, cr;
+
+	TEMPORARY_TEXT(key)
+	TEMPORARY_TEXT(value)
+	do {
+		@<Read next character from localisation stream@>;
+		if (cr == EOF) break;
+		if (cr == '%') @<Read up to the next white space as a key@>;
+		if (cr == EOF) break;
+		if (Str::len(key) > 0) PUT_TO(value, cr);
+	} while (cr != EOF);
+	if (Str::len(key) > 0) @<Write key-value pair@>;
+	DISCARD_TEXT(key)
+	DISCARD_TEXT(value)
+	fclose(Input_File);
+	Index::complete(); 
+}
+
+@ Localisation files are encoded as ISO Latin-1, not as Unicode UTF-8, so
+ordinary |fgetc| is used, and no BOM marker is parsed. Lines are assumed
+to be terminated with either |0x0a| or |0x0d|. (Since blank lines are
+harmless, we take no trouble over |0a0d| or |0d0a| combinations.)
+
+@<Read next character from localisation stream@> =
+	if (Input_File) cr = fgetc(Input_File);
+	else cr = EOF;
+	col++; if ((cr == 10) || (cr == 13)) col = 0;
+
+@<Read up to the next white space as a key@> =
+	if (Str::len(key) > 0) @<Write key-value pair@>;
+	Str::clear(key);
+	Str::clear(value);
+	while (TRUE) {
+		@<Read next character from localisation stream@>;
+		if ((cr == '=') || (cr == EOF)) break;
+		if (Characters::is_whitespace(cr)) continue;
+		PUT_TO(key, cr);
+	}
+	if (cr == '=') {
+		while (TRUE) {
+			@<Read next character from localisation stream@>;
+			if (cr == EOF) break;
+			if (Characters::is_whitespace(cr)) continue;
+		}
+	}		
+
+@<Write key-value pair@> =
+	text_stream *to = Dictionaries::create_text(D, key);
+	WRITE_TO(to, "%S", value);

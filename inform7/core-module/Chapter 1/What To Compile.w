@@ -426,16 +426,31 @@ flag stays |FALSE|:
 =
 int write_EPS_format_map = FALSE;
 
+@
+
+=
+int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
+void Task::disable_or_enable_index(int which) {
+	do_not_generate_index = which;
+}
+int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
+void Task::disable_or_enable_census(int which) {
+	do_not_update_census = which;
+}
+
 @ And so, finally, the following triggers the indexing process.
 
 =
 void Task::produce_index(void) {
 	inform_project *project = Task::project();
-	InterpretIndex::interpret_indext(
-		Filenames::in(
-			Languages::path_to_bundle(
-				Projects::get_language_of_index(project)),
-			Projects::index_structure(project)));
+	if (do_not_generate_index == FALSE) {
+		InterpretIndex::generate_from_structure_file(
+			Filenames::in(
+				Languages::path_to_bundle(
+					Projects::get_language_of_index(project)),
+				Projects::index_structure(project)));
+		if (do_not_update_census == FALSE)
+			ExtensionWebsite::index_after_compilation(Task::project());
+	}
 	if (write_EPS_format_map) RenderEPSMap::render_map_as_EPS(Task::epsmap_file());
 }
-

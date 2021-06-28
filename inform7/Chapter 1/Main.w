@@ -301,8 +301,8 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case CRASHALL_CLSW: debugger_mode = val;
 			ProblemSigils::crash_on_problems(val); break;
-		case INDEX_CLSW: InterpretIndex::disable_or_enable_index(val?FALSE:TRUE); break;
-		case CENSUS_UPDATE_CLSW: InterpretIndex::disable_or_enable_census(val?FALSE:TRUE); break;
+		case INDEX_CLSW: Task::disable_or_enable_index(val?FALSE:TRUE); break;
+		case CENSUS_UPDATE_CLSW: Task::disable_or_enable_census(val?FALSE:TRUE); break;
 		case PROGRESS_CLSW: ProgressBar::enable_or_disable(val); break;
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
