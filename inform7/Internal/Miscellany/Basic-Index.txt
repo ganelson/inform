@@ -1,0 +1,20 @@
+page CONTENTS cf0a38
+element C
+element Tb
+element Fi
+element In
+
+page KINDS e9cf08
+element Ch
+element Ar
+element Vl
+
+page PHRASEBOOK 52992f
+element Ph
+element Lx
+element Rl
+element Vb
+
+page RULES 1d31b4
+element St
+element Xt
