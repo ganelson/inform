@@ -444,6 +444,12 @@ void Task::disable_or_enable_census(int which) {
 void Task::produce_index(void) {
 	inform_project *project = Task::project();
 	if (do_not_generate_index == FALSE) {
+		dictionary *D = Dictionaries::new(32, TRUE);
+		InterpretIndex::read_into_dictionary( 
+			InstalledFiles::index_structure_file(
+				Projects::index_structure(project)),
+			D);
+		Dictionaries::log(DL, D);
 		InterpretIndex::generate_from_structure_file(
 			Filenames::in(
 				Languages::path_to_bundle(

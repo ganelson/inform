@@ -38,3 +38,8 @@ element Gz
 
 page BOGUS 111111
 element Bg
+
+%THIS = This is the example
+%THAT = And
+so is
+ ...this

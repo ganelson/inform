@@ -57,4 +57,12 @@ filename *InstalledFiles::filename(int ires) {
 	return NULL;
 }
 
+@ This directory also holds the |Basic.indext| and |Standard.indext| index
+structure files, but in principle we allow a wider range of these to exist, so:
 
+=
+filename *InstalledFiles::index_structure_file(text_stream *leaf) {
+	pathname *internal = INSTALLED_FILES_HTML_CALLBACK();
+	pathname *misc = Pathnames::down(internal, I"Miscellany");
+	return Filenames::in(misc, leaf);
+}

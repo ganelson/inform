@@ -157,7 +157,6 @@ void InterpretIndex::read_into_dictionary(filename *localisation_file, dictionar
 		LOG("Filename was %f\n", localisation_file);
 		internal_error("unable to open localisation file for the index");
 	}
-
 	int col = 1, cr;
 
 	TEMPORARY_TEXT(key)
@@ -173,7 +172,6 @@ void InterpretIndex::read_into_dictionary(filename *localisation_file, dictionar
 	DISCARD_TEXT(key)
 	DISCARD_TEXT(value)
 	fclose(Input_File);
-	Index::complete(); 
 }
 
 @ Localisation files are encoded as ISO Latin-1, not as Unicode UTF-8, so
@@ -199,11 +197,13 @@ harmless, we take no trouble over |0a0d| or |0d0a| combinations.)
 	if (cr == '=') {
 		while (TRUE) {
 			@<Read next character from localisation stream@>;
-			if (cr == EOF) break;
 			if (Characters::is_whitespace(cr)) continue;
+			break;
 		}
 	}		
 
 @<Write key-value pair@> =
 	text_stream *to = Dictionaries::create_text(D, key);
+	Str::trim_white_space(value);
+	Str::trim_all_white_space_at_end(value);
 	WRITE_TO(to, "%S", value);
