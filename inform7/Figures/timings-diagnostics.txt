@@ -1,8 +1,8 @@
 100.0% in inform7 run
-     55.8% in compilation to Inter
-         40.0% in //Sequence::undertake_queued_tasks//
-          3.5% in //MajorNodes::pre_pass//
-          2.6% in //MajorNodes::pass_1//
+     56.3% in compilation to Inter
+         39.9% in //Sequence::undertake_queued_tasks//
+          3.8% in //MajorNodes::pre_pass//
+          2.7% in //MajorNodes::pass_1//
           2.0% in //RTPhrasebook::compile_entries//
           1.4% in //ImperativeDefinitions::assess_all//
           1.1% in //RTKindConstructors::compile//
@@ -11,18 +11,18 @@
           0.4% in //Sequence::undertake_queued_tasks//
           0.4% in //Sequence::undertake_queued_tasks//
           0.4% in //World::stage_V//
-          0.1% in //CompletionModule::compile//
+          0.2% in //CompletionModule::compile//
           0.1% in //InferenceSubjects::emit_all//
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          1.8% not specifically accounted for
-     42.0% in running Inter pipeline
-         11.3% in step preparation
+          2.0% not specifically accounted for
+     41.7% in running Inter pipeline
+         11.2% in step preparation
           9.8% in inter step 7/14: consolidate-text
-          8.2% in inter step 2/14: link
-          7.0% in inter step 14/14: generate inform6 -> auto.inf
-          1.4% in inter step 10/14: make-identifiers-unique
+          8.0% in inter step 2/14: link
+          6.8% in inter step 14/14: generate inform6 -> auto.inf
+          1.6% in inter step 10/14: make-identifiers-unique
           0.4% in inter step 11/14: reconcile-verbs
           0.2% in inter step 13/14: eliminate-redundant-operations
           0.2% in inter step 6/14: assimilate
@@ -31,6 +31,6 @@
           0.1% in inter step 12/14: eliminate-redundant-labels
           0.1% in inter step 4/14: parse-linked-matter
           0.1% in inter step 5/14: resolve-conditional-compilation
-          2.0% not specifically accounted for
+          2.1% not specifically accounted for
       1.6% in supervisor
-      0.5% not specifically accounted for
+      0.3% not specifically accounted for

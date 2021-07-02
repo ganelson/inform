@@ -1,146 +1,52 @@
-page CONTENTS cf0a38
-element C
-element Cd
-element Tb
-element Fi
-element In
+{-index-page:cf0a38=Contents Index=Like the preliminary pages of a book}
+{-index-element:C Contents=Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>}
+{-index-element:Cd Card=How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>}
+{-index-element:Tb Tables=Tables of information in the source text.|About tables<TABLES>}
+{-index-element:Fi Figures=The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>}
+{-index-element:In Innards=Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>}
 
-page ACTIONS ea5b1f
-element A1
-element A2
-element Bh
-element Cm
-element To
+{-index-page:ea5b1f=Actions Index=Things that people can try to do}
+{-index-element:A1 Grouped=With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>}
+{-index-element:A2 Alphabetic=Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>}
+{-index-element:Bh Behaviour=Kinds of action, grouped under common names|About kinds of action<KACTIONS>}
+{-index-element:Cm Commands=Commands which the player can type|About commands<UNDERSTANDING>}
+{-index-element:To Tokens=Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>}
 
-page KINDS e9cf08
-element Ch
-element Ar
-element Vl
+{-index-page:e9cf08=Kinds Index=All the different sorts of value}
+{-index-element:Ch Chart=A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>}
+{-index-element:Ar Arithmetic=Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>}
+{-index-element:Vl Values=Values which vary during play, and equations.|About variables<VARIABLES>}
 
-page PHRASEBOOK 52992f
-element Ph
-element Lx
-element Rl
-element Vb
+{-index-page:52992f=Phrasebook Index=A short dictionary}
+{-index-element:Ph Phrases=A guide to the phrases allowed|About phrases<PHRASES>}
+{-index-element:Lx Lexicon=Words used in descriptions|About descriptions<DESCRIPTIONS>}
+{-index-element:Rl Relations=Relations give meaning to verbs|About relations<RELATIONS>}
+{-index-element:Vb Verbs=A table of verbs|About verbs<VERBS>}
 
-page RULES 1d31b4
-element St
-element Xt
+{-index-page:1d31b4=Rules Index=Inform's general workings}
+{-index-element:St Standards=From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>}
+{-index-element:Xt Extras=Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>}
 
-page SCENES 001860
-element Pl
-element Ev
-element RS
+{-index-page:001860=Scenes Index=Like scenes in a movie}
+{-index-element:Pl Plot=A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>}
+{-index-element:Ev Events=Timed events, if any|About timed events<TIMEDEVENTS>}
+{-index-element:RS Rules=General rules about scenes}
 
-page WORLD 8b58bf
-element Mp
-element Gz
+{-index-page:8b58bf=World Index=Like locations, props and actors in a movie}
+{-index-element:Mp Map=A map of the world}
+{-index-element:Gz Gazetteer=An A-Z of places, things, people and so on}
 
-page BOGUS 111111
-element Bg
+{-index-page:111111=Welcome Index=This text is not actually used}
+{-index-element:Bg Bogus=Does not in fact exist}
 
-%CONTENTS-Title = Contents Index
-%CONTENTS-Heading = Like the preliminary pages of a book
-%CONTENTS-IndexEntry = How the source text is organised
+{-index:Contents Index=How the source text is organised}
+{-index:Actions Index=Things that people can try to do}
+{-index:Kinds Index=All the different sorts of value}
+{-index:Phrasebook Index=A short dictionary}
+{-index:Rules Index=And the rulebooks they belong to}
+{-index:Scenes Index=Like scenes in a movie}
+{-index:World Index=Like locations, props and actors in a movie}
+{-index:Welcome Index=Navigation only}
 
-%C-Title = Contents
-%C-Heading = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
-
-%Cd-Title = Card
-%Cd-Heading = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
-
-%Tb-Title = Tables
-%Tb-Heading = Tables of information in the source text.|About tables<TABLES>
-
-%Fi-Title = Figures
-%Fi-Heading = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
-
-%In-Title = Innards
-%In-Heading = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
-
-
-%ACTIONS-Title = Actions Index
-%ACTIONS-Heading = Things that people can try to do
-%ACTIONS-IndexEntry = Things that people can try to do
-
-%A1-Title = Grouped
-%A1-Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
-
-%A2-Title = Alphabetic
-%A2-Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
-
-%Bh-Title = Behaviour
-%Bh-Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
-
-%Cm-Title = Commands
-%Cm-Heading = Commands which the player can type|About commands<UNDERSTANDING>
-
-%To-Title = Tokens
-%To-Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
-
-
-%KINDS-Title = Kinds Index
-%KINDS-Heading = All the different sorts of value
-%KINDS-IndexEntry = All the different sorts of value
-
-%Ch-Title = Chart
-%Ch-Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
-
-%Ar-Title = Arithmetic
-%Ar-Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>
-
-%Vl-Title = Values
-%Vl-Heading = Values which vary during play, and equations.|About variables<VARIABLES>
-
-
-%PHRASEBOOK-Title = Phrasebook Index
-%PHRASEBOOK-Heading = A short dictionary
-%PHRASEBOOK-IndexEntry = A short dictionary
-
-%Ph-Title = Phrases
-%Ph-Heading = A guide to the phrases allowed|About phrases<PHRASES>
-
-%Lx-Title = Lexicon
-%Lx-Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
-
-%Rl-Title = Relations
-%Rl-Heading = Relations give meaning to verbs|About relations<RELATIONS>
-
-%Vb-Title = Verbs
-%Vb-Heading = A table of verbs|About verbs<VERBS>
-
-
-%RULES-Title = Rules Index
-%RULES-Heading = Inform's general workings
-%RULES-IndexEntry = And the rulebooks they belong to
-
-%St-Title = Standards
-%St-Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
-
-%Xt-Title = Extras
-%Xt-Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
-
-
-%SCENES-Title = Scenes Index
-%SCENES-Heading = Like scenes in a movie
-%SCENES-IndexEntry = Like scenes in a movie
-
-%Pl-Title = Plot
-%Pl-Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
-
-%Ev-Title = Events
-%Ev-Heading = Timed events, if any|About timed events<TIMEDEVENTS>
-
-%RS-Title = Rules
-%RS-Heading = General rules about scenes
-
-
-%WORLD-Title = World Index
-%WORLD-Heading = Like locations, props and actors in a movie
-%WORLD-IndexEntry = Like locations, props and actors in a movie
-
-%Mp-Title = Map
-%Mp-Heading = A map of the world
-
-%Gz-Title = Gazetteer
-%Gz-Heading = An A-Z of places, things, people and so on
+{-index-page:cf0a38=Action Details=This text is not actually used}
+{-index-element:Bg Bogus=Does not in fact exist}

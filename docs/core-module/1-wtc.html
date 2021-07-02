@@ -544,15 +544,16 @@ flag stays <span class="extract"><span class="extract-syntax">FALSE</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">do_not_generate_index</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::new</span><span class="plain-syntax">(32, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">InterpretIndex::read_into_dictionary</span><span class="plain-syntax">(</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::index_structure_file</span><span class="plain-syntax">(</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Projects::index_structure</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)),</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::log</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">InterpretIndex::generate_from_structure_file</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Languages::path_to_bundle</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Projects::get_language_of_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)),</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Projects::index_structure</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)));</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"Index.txt"</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::log</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InterpretIndex::generate_from_structure_file</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InstalledFiles::index_structure_file</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Projects::index_structure</span><span class="plain-syntax">(</span><span class="identifier-syntax">project</span><span class="plain-syntax">)),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">do_not_update_census</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ExtensionWebsite::index_after_compilation</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::project</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">    }</span>

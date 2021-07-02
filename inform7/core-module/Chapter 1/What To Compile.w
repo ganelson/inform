@@ -446,15 +446,16 @@ void Task::produce_index(void) {
 	if (do_not_generate_index == FALSE) {
 		dictionary *D = Dictionaries::new(32, TRUE);
 		InterpretIndex::read_into_dictionary( 
-			InstalledFiles::index_structure_file(
-				Projects::index_structure(project)),
-			D);
-		Dictionaries::log(DL, D);
-		InterpretIndex::generate_from_structure_file(
 			Filenames::in(
 				Languages::path_to_bundle(
 					Projects::get_language_of_index(project)),
-				Projects::index_structure(project)));
+				I"Index.txt"),
+			D);
+		Dictionaries::log(DL, D);
+		InterpretIndex::generate_from_structure_file(
+			InstalledFiles::index_structure_file(
+				Projects::index_structure(project)),
+			D);
 		if (do_not_update_census == FALSE)
 			ExtensionWebsite::index_after_compilation(Task::project());
 	}

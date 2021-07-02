@@ -10,7 +10,7 @@ In kind or indexing mode, there is in fact no output, and the interpreter
 is run only to call other functions.
 
 =
-void InterpretIndex::generate_from_structure_file(filename *index_structure) {
+void InterpretIndex::generate_from_structure_file(filename *index_structure, dictionary *D) {
 	FILE *Input_File = Filenames::fopen(index_structure, "r");
 	if (Input_File == NULL) {
 		LOG("Filename was %f\n", index_structure);

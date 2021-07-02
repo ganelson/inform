@@ -571,6 +571,7 @@ integration: \
 		$(INTERNAL)/Languages/English/Syntax.preform \
 		$(INTERNAL)/Languages/English/Standard.indext \
 		$(INTERNAL)/Languages/English/Basic.indext \
+		$(INTERNAL)/Languages/English/Index.txt \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
 		kitsintegration \
@@ -640,11 +641,15 @@ $(INTERNAL)/Languages/English/Standard.indext: inform7/Internal/Languages/Englis
 $(INTERNAL)/Languages/English/Basic.indext: inform7/Internal/Languages/English/Basic.indext
 	$(call transfer-preform)
 
+$(INTERNAL)/Languages/English/Index.txt: inform7/Internal/Languages/English/Index.txt
+	$(call transfer-preform)
+
 define transfer-preform
 	cp -f 'inform7/Tangled/Syntax.preform' "$(INTERNAL)/Languages/English/Syntax.preform"
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 	cp -f 'inform7/Internal/Languages/English/Standard.indext' "$(INTERNAL)/Languages/English/Standard.indext"
 	cp -f 'inform7/Internal/Languages/English/Basic.indext' "$(INTERNAL)/Languages/English/Basic.indext"
+	cp -f 'inform7/Internal/Languages/English/Index.txt' "$(INTERNAL)/Languages/English/Index.txt"
 endef
 
 # (c) Copying the Standard Rules into the app
