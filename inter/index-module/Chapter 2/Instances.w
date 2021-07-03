@@ -127,7 +127,7 @@ faux_instance *faux_yourself = NULL;
 faux_instance *faux_benchmark = NULL;
 
 void IXInstances::make_faux(void) {
-	inter_tree *IT = Index::get_tree();
+	inter_tree *IT = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(IT);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {

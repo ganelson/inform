@@ -5,8 +5,8 @@ To write the Chart element (Ch) in the index.
 @
 
 =
-void ChartElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void ChartElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);

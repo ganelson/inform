@@ -3,8 +3,8 @@
 To write the Commands element (Cm) in the index.
 
 @ =
-void CommandsElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void CommandsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 
 	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
 	int head_letter;

@@ -1,106 +1,154 @@
+%%Contents
 
-%CONTENTS-Title = Contents Index
-%CONTENTS-Heading = Like the preliminary pages of a book
-%CONTENTS-IndexEntry = How the source text is organised
+%Title      = Contents Index
+%Caption    = How the source text is organised
 
-%C-Title = Contents
-%C-Heading = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
+%%C
 
-%Cd-Title = Card
-%Cd-Heading = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
+%Title      = Contents
+%Heading    = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
 
-%Tb-Title = Tables
-%Tb-Heading = Tables of information in the source text.|About tables<TABLES>
+%%Cd
 
-%Fi-Title = Figures
-%Fi-Heading = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
+%Title      = Card
+%Heading    = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
 
-%In-Title = Innards
-%In-Heading = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
+%%Tb
 
+%Title      = Tables
+%Heading    = Tables of information in the source text.|About tables<TABLES>
 
-%ACTIONS-Title = Actions Index
-%ACTIONS-Heading = Things that people can try to do
-%ACTIONS-IndexEntry = Things that people can try to do
+%%Fi
 
-%A1-Title = Grouped
-%A1-Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
+%Title      = Figures
+%Heading    = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
 
-%A2-Title = Alphabetic
-%A2-Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
+%%In
 
-%Bh-Title = Behaviour
-%Bh-Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
+%Title      = Innards
+%Heading    = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
 
-%Cm-Title = Commands
-%Cm-Heading = Commands which the player can type|About commands<UNDERSTANDING>
+%%Actions
 
-%To-Title = Tokens
-%To-Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
+%Title      = Actions Index
+%Caption    = Things that people can try to do
 
+%%A1
 
-%KINDS-Title = Kinds Index
-%KINDS-Heading = All the different sorts of value
-%KINDS-IndexEntry = All the different sorts of value
+%Title = Grouped
+%Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
-%Ch-Title = Chart
-%Ch-Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
+%%A2
 
-%Ar-Title = Arithmetic
-%Ar-Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>
+%Title = Alphabetic
+%Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
-%Vl-Title = Values
-%Vl-Heading = Values which vary during play, and equations.|About variables<VARIABLES>
+%%Bh
 
+%Title = Behaviour
+%Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
 
-%PHRASEBOOK-Title = Phrasebook Index
-%PHRASEBOOK-Heading = A short dictionary
-%PHRASEBOOK-IndexEntry = A short dictionary
+%%Cm
 
-%Ph-Title = Phrases
-%Ph-Heading = A guide to the phrases allowed|About phrases<PHRASES>
+%Title = Commands
+%Heading = Commands which the player can type|About commands<UNDERSTANDING>
 
-%Lx-Title = Lexicon
-%Lx-Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
+%%To
 
-%Rl-Title = Relations
-%Rl-Heading = Relations give meaning to verbs|About relations<RELATIONS>
+%Title = Tokens
+%Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
 
-%Vb-Title = Verbs
-%Vb-Heading = A table of verbs|About verbs<VERBS>
+%%Kinds
 
+%Title = Kinds Index
+%Caption    = All the different sorts of value
 
-%RULES-Title = Rules Index
-%RULES-Heading = Inform's general workings
-%RULES-IndexEntry = And the rulebooks they belong to
+%%Ch
 
-%St-Title = Standards
-%St-Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
+%Title = Chart
+%Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
 
-%Xt-Title = Extras
-%Xt-Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
+%%Ar
 
+%Title = Arithmetic
+%Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>
 
-%SCENES-Title = Scenes Index
-%SCENES-Heading = Like scenes in a movie
-%SCENES-IndexEntry = Like scenes in a movie
+%%Vl
 
-%Pl-Title = Plot
-%Pl-Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
+%Title = Values
+%Heading = Values which vary during play, and equations.|About variables<VARIABLES>
 
-%Ev-Title = Events
-%Ev-Heading = Timed events, if any|About timed events<TIMEDEVENTS>
+%%Phrasebook
 
-%RS-Title = Rules
-%RS-Heading = General rules about scenes
+%Title = Phrasebook Index
+%Caption    = A short dictionary
 
+%%Ph
 
-%WORLD-Title = World Index
-%WORLD-Heading = Like locations, props and actors in a movie
-%WORLD-IndexEntry = Like locations, props and actors in a movie
+%Title = Phrases
+%Heading = A guide to the phrases allowed|About phrases<PHRASES>
 
-%Mp-Title = Map
-%Mp-Heading = A map of the world
+%%Lx
 
-%Gz-Title = Gazetteer
-%Gz-Heading = An A-Z of places, things, people and so on
+%Title = Lexicon
+%Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
+
+%%Rl
+
+%Title = Relations
+%Heading = Relations give meaning to verbs|About relations<RELATIONS>
+
+%%Vb
+
+%Title = Verbs
+%Heading = A table of verbs|About verbs<VERBS>
+
+%%Rules
+
+%Title = Rules Index
+%Caption    = And the rulebooks they belong to
+
+%%St
+
+%Title = Standards
+%Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
+
+%%Xt
+
+%Title = Extras
+%Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
+
+%%Scenes
+
+%Title = Scenes Index
+%Caption    = Like scenes in a movie
+
+%%Pl
+
+%Title = Plot
+%Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
+
+%%Ev
+
+%Title = Events
+%Heading = Timed events, if any|About timed events<TIMEDEVENTS>
+
+%%RS
+
+%Title = Rules
+%Heading = General rules about scenes
+
+%%World
+
+%Title = World Index
+%Caption    = Like locations, props and actors in a movie
+
+%%Mp
+
+%Title = Map
+%Heading = A map of the world
+
+%%Gz
+
+%Title = Gazetteer
+%Heading = An A-Z of places, things, people and so on

@@ -3,8 +3,8 @@
 To write the Phrasebook element (Pb) in the index.
 
 @ =
-void PhrasebookElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void PhrasebookElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/phrases");
 	inter_symbol *wanted = PackageTypes::get(I, I"_phrasebook_super_heading");
 	inter_tree_node *D = Inter::Packages::definition(pack);

@@ -4,8 +4,8 @@ To write the Grouped actions element (A1) in the index, and also the detailed
 per-action pages linked from it.
 
 @ =
-void GroupedElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void GroupedElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
@@ -56,14 +56,14 @@ void GroupedElement::index_p1(OUTPUT_STREAM, inter_package *an_pack, int bold,
 	Index::detail_link(OUT, "A", i, (on_details_page)?FALSE:TRUE);
 }
 
-void GroupedElement::detail_pages(void) {
-	inter_tree *I = Index::get_tree();
+void GroupedElement::detail_pages(localisation_dictionary *D) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
-		text_stream *OUT = Index::open_file(I"A.html", I"<Actions", i, I"Detail view");
+		text_stream *OUT = InterpretIndex::open_file(I"A.html", I"<Actions", i, D);
 		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
 		text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");
 		HTML_OPEN("p");

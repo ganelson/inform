@@ -14,7 +14,7 @@ void RenderEPSMap::prepare_universe(inter_tree *I) {
 }
 
 void RenderEPSMap::render_map_as_EPS(filename *F) {
-	inter_tree *I = Index::get_tree();
+	inter_tree *I = InterpretIndex::get_tree();
 	RenderEPSMap::prepare_universe(I);
 	@<Open a stream and write the EPS map to it@>;
 }

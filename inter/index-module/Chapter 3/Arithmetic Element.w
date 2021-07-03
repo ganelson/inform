@@ -6,8 +6,8 @@ To write the Arithmetic element (Ar) in the index.
 so we do little more than tabulate that data here.
 
 =
-void ArithmeticElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->multiplication_rule_nodes, Synoptic::module_order);

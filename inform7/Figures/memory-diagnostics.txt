@@ -1,4 +1,4 @@
-Total memory consumption was 391600K = 382 MB
+Total memory consumption was 391601K = 382 MB
 
 60.4% was used for 1994725 objects, in 371042 frames in 296 x 800K = 236800K = 231 MB:
 
@@ -193,50 +193,50 @@ Total memory consumption was 391600K = 382 MB
      ----  article_usage                            8 objects, 384 bytes
      ----  source_file                              5 objects, 360 bytes
      ----  inbuild_genre                            7 objects, 336 bytes
-     ----  grammatical_category                     8 objects, 320 bytes
      ----  pronoun                                  8 objects, 320 bytes
+     ----  grammatical_category                     8 objects, 320 bytes
      ----  door_dir_notice                          5 objects, 320 bytes
      ----  tree_inventory                           1 object, 312 bytes
      ----  build_step                               4 objects, 288 bytes
      ----  up_family                                9 objects, 288 bytes
      ----  contents_entry                           7 objects, 280 bytes
+     ----  compilation_unit                         5 objects, 280 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
      ----  door_to_notice                           5 objects, 280 bytes
-     ----  compilation_unit                         5 objects, 280 bytes
      ----  inform_pipeline                          4 objects, 256 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
      ----  release_instructions                     1 object, 208 bytes
      ----  build_skill                              5 objects, 200 bytes
-     ----  plural_dictionary_entry                  4 objects, 192 bytes
      ----  kit_dependency                           4 objects, 192 bytes
+     ----  plural_dictionary_entry                  4 objects, 192 bytes
      ----  inform_project                           1 object, 176 bytes
-     ----  link_instruction                         4 objects, 160 bytes
      ----  code_generation_target                   4 objects, 160 bytes
-     ----  inter_architecture                       4 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
+     ----  link_instruction                         4 objects, 160 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
+     ----  inter_architecture                       4 objects, 160 bytes
      ----  element_activation                       4 objects, 128 bytes
      ----  codegen_pipeline                         1 object, 128 bytes
      ----  inbuild_nest                             3 objects, 120 bytes
      ----  local_block_value                        2 objects, 112 bytes
      ----  inform_kit_ittt                          2 objects, 96 bytes
      ----  compile_task_data                        1 object, 80 bytes
-     ----  article                                  2 objects, 80 bytes
      ----  group_together_function                  2 objects, 80 bytes
+     ----  article                                  2 objects, 80 bytes
+     ----  build_methodology                        1 object, 56 bytes
      ----  figures_data                             1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
-     ----  build_methodology                        1 object, 56 bytes
-     ----  HTML_file_state                          1 object, 48 bytes
      ----  star_invention                           1 object, 48 bytes
-     ----  by_function_bp_data                      1 object, 40 bytes
+     ----  HTML_file_state                          1 object, 48 bytes
      ----  loop_over_scope                          1 object, 40 bytes
+     ----  by_function_bp_data                      1 object, 40 bytes
      ----  kind_template_definition                 1 object, 40 bytes
 
 39.5% was used for memory not allocated for objects:
 
-    20.6%  text stream storage                      82674764 bytes in 530378 claims
+    20.6%  text stream storage                      82674968 bytes in 530380 claims
      4.5%  dictionary storage                       18152448 bytes in 33228 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims

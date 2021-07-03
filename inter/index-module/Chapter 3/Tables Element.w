@@ -9,8 +9,8 @@ user to poke around with; that's certainly true of the tables in the Standard
 Rules, which of course are always present. So these are hidden by default.
 
 =
-void TablesElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->table_nodes, Synoptic::category_order);
 

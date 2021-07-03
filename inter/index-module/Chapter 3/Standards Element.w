@@ -6,8 +6,8 @@ To write the Standards element (St) in the index.
 their contents in logical order.
 
 =
-void StandardsElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->activity_nodes, Synoptic::module_order);

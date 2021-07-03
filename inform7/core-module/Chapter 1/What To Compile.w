@@ -331,7 +331,7 @@ it to, and this is where:
 
 =
 void Task::write_XML_headings_file(void) {
-	Headings::write_as_XML(Task::syntax_tree(), Index::xml_headings_file());
+	Headings::write_as_XML(Task::syntax_tree(), IndexLocations::xml_headings_filename());
 }
 
 @ That's it for the project folder, but other project-related stuff is in
@@ -444,17 +444,13 @@ void Task::disable_or_enable_census(int which) {
 void Task::produce_index(void) {
 	inform_project *project = Task::project();
 	if (do_not_generate_index == FALSE) {
-		dictionary *D = Dictionaries::new(32, TRUE);
-		InterpretIndex::read_into_dictionary( 
-			Filenames::in(
-				Languages::path_to_bundle(
-					Projects::get_language_of_index(project)),
-				I"Index.txt"),
-			D);
-		Dictionaries::log(DL, D);
-		InterpretIndex::generate_from_structure_file(
-			InstalledFiles::index_structure_file(
-				Projects::index_structure(project)),
+		inform_language *L = Projects::get_language_of_index(project);
+		localisation_dictionary *D = Localisation::new();
+		Localisation::stock_from_file( 
+			Filenames::in(Languages::path_to_bundle(L), I"Index.txt"), D);
+		InterpretIndex::generate(
+			Emit::tree(),
+			Projects::index_structure(project),
 			D);
 		if (do_not_update_census == FALSE)
 			ExtensionWebsite::index_after_compilation(Task::project());

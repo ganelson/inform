@@ -3,8 +3,8 @@
 To write the Alphabetic actions element (A2) in the index.
 
 @ =
-void AlphabeticElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->action_nodes, AlphabeticElement::alphabetical_order);
 

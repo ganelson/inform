@@ -3,8 +3,8 @@
 To write the Lexicon element (Lx) in the index.
 
 @ =
-void LexiconElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void LexiconElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	TempLexicon::stock(I);
 	Index::anchor(OUT, I"LEXICON");
 	HTML_OPEN("p");

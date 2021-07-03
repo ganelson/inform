@@ -3,7 +3,7 @@
 To write the Tokens element (To) in the index.
 
 @ =
-void TokensElement::render(OUTPUT_STREAM) {
+void TokensElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
 	WRITE("In addition to the tokens listed below, any description of an object "
 		"or value can be used: for example, \"[number]\" matches text like 127 or "
@@ -15,7 +15,7 @@ void TokensElement::render(OUTPUT_STREAM) {
 		"sight, but writing 'any' lifts this restriction. So \"[any person]\" allows "
 		"every name of a person, wherever they happen to be.");
 	HTML_CLOSE("p");
-	inter_tree *I = Index::get_tree();
+	inter_tree *I = InterpretIndex::get_tree();
 	TokensElement::index_tokens_for(OUT, I, "anybody", NULL, I"someone_token", "same as \"[someone]\"");
 	TokensElement::index_tokens_for(OUT, I, "anyone", NULL, I"someone_token", "same as \"[someone]\"");
 	TokensElement::index_tokens_for(OUT, I, "anything", NULL, I"things_token", "same as \"[thing]\"");

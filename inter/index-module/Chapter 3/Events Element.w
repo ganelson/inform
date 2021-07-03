@@ -5,8 +5,8 @@ To write the Events element (Ev) in the index.
 @ There are two tables, one for timed events, the other for those of no fixed time.
 
 =
-void EventsElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->rule_nodes, Synoptic::module_order);
 

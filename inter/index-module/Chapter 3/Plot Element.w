@@ -152,8 +152,8 @@ int PlotElement::scon_at(simplified_connector *scon) {
 	return (int) Metadata::read_numeric(scon->con_pack, I"^at");
 }
 
-void PlotElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void PlotElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->scene_nodes, PlotElement::scene_order);
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);

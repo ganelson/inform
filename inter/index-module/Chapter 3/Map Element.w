@@ -6,7 +6,7 @@ To write the Map element (Mp) in the index.
 
 =
 int suppress_panel_changes = FALSE;
-void MapElement::render(OUTPUT_STREAM, int test_only) {
+void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only) {
 	PL::SpatialMap::initialise_page_directions();
 	IXInstances::make_faux();
 	PL::SpatialMap::establish_spatial_coordinates();

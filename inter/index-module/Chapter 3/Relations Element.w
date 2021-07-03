@@ -5,8 +5,8 @@ To write the Relations element (Rl) in the index.
 @ A big table of relations.
 
 =
-void RelationsElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->relation_nodes, Synoptic::module_order);
 

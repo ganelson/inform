@@ -5,8 +5,8 @@ To write the Verbs element (Vb) in the index.
 @
 
 =
-void VerbsElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	TempLexicon::stock(I);
 	HTML_OPEN("p"); WRITE("Verbs listed as \"for saying only\" are values of the kind \"verb\" "
 		"and can be used in adaptive text, but they have no meaning to Inform, so "

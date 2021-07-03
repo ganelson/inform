@@ -20,7 +20,6 @@ inter_tree *main_emission_tree = NULL;
 
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
-	Index::set_tree(main_emission_tree);
 	Packaging::outside_all_packages(main_emission_tree);
 	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic", I"_module")->the_package);
 	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic", I"_module")->the_package);

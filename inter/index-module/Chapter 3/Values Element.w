@@ -5,8 +5,8 @@ To write the Values element (Vl) in the index.
 @ And here is the indexing code:
 
 =
-void ValuesElement::render(OUTPUT_STREAM) {
-	inter_tree *I = Index::get_tree();
+void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->variable_nodes, Synoptic::module_order);
 	@<Index the variables@>;

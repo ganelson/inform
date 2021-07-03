@@ -8,7 +8,10 @@ Chapter 1: Starting Up
 	Index Module
 
 Chapter 2: Utilities
+	Index Locations
+	Localisation
 	Index Interpreter
+	Styles and Scripts
 	Index File Services
 	Index Rules
 	Lexicon
@@ -16,6 +19,7 @@ Chapter 2: Utilities
 	Spatial
 
 Chapter 3: Elements
+	Elements
 	Alphabetic Element
 	Arithmetic Element
 	Behaviour Element
