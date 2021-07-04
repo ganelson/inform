@@ -474,11 +474,6 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 @ =
 void IndexRules::index_activity(OUTPUT_STREAM, inter_tree *I, inter_package *pack, int indent) {
 	int empty = (int) Metadata::read_optional_numeric(pack, I"^empty");
-/*	if (av->compilation_data.activity_indexed) return;
-	av->compilation_data.activity_indexed = TRUE;
-	if (av->compilation_data.cross_references) empty = FALSE;
-*/
-
 	text_stream *text = NULL;
 	text_stream *doc_link = Metadata::read_optional_textual(pack, I"^documentation");
 	if (empty) text = I"There are no rules before, for or after this activity.";

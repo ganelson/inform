@@ -8,7 +8,7 @@ void RenderEPSMap::prepare_universe(inter_tree *I) {
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
 
-	IXInstances::decode_hints(I, 2);
+	FauxInstances::decode_hints(I, 2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
 }
@@ -57,13 +57,13 @@ void RenderEPSMap::render_map_as_EPS(filename *F) {
 
 	LOOP_OVER_ROOMS(R)
 		if (Room_position(R).z == z) {
-			IXInstances::get_parameters(R)->wider_scope = &(eml->map_parameters);
+			FauxInstances::get_parameters(R)->wider_scope = &(eml->map_parameters);
 		}
 
 @<Inherit EPS room colours from those used in the World Index@> =
 	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
-		ConfigureIndexMap::put_text_mp(I"room-colour", IXInstances::get_parameters(R),
+		ConfigureIndexMap::put_text_mp(I"room-colour", FauxInstances::get_parameters(R),
 			R->fimd.colour);
 
 @<Open a stream and write the EPS map to it@> =
@@ -183,7 +183,7 @@ rectangle around the whole thing...
 	}
 
 @<Establish EPS coordinates for this room@> =
-	map_parameter_scope *room_scope = IXInstances::get_parameters(R);
+	map_parameter_scope *room_scope = FauxInstances::get_parameters(R);
 	int bx = Room_position(R).x-Universe.corner0.x;
 	int by = Room_position(R).y-eml->y_min;
 	int offs = ConfigureIndexMap::get_int_mp(I"room-offset", room_scope);
@@ -201,7 +201,7 @@ rectangle around the whole thing...
 	R->fimd.eps_y = by;
 
 @<Draw the map connections from this room as EPS paths@> =
-	map_parameter_scope *room_scope = IXInstances::get_parameters(R);
+	map_parameter_scope *room_scope = FauxInstances::get_parameters(R);
 	RenderEPSMap::EPS_compile_line_width_setting(OUT, ConfigureIndexMap::get_int_mp(I"route-thickness", room_scope));
 
 	int bx = R->fimd.eps_x;
@@ -212,13 +212,13 @@ rectangle around the whole thing...
 	LOOP_OVER_STORY_DIRECTIONS(dir) {
 		faux_instance *T = PL::SpatialMap::room_exit(R, dir, NULL);
 		int exit = story_dir_to_page_dir[dir];
-		if (IXInstances::is_a_room(T))
+		if (FauxInstances::is_a_room(T))
 			@<Draw a single map connection as an EPS arrow@>;
 	}
 	RenderEPSMap::EPS_compile_line_width_unsetting(OUT);
 
 @<Draw a single map connection as an EPS arrow@> =
-	int T_stiffness = ConfigureIndexMap::get_int_mp(I"route-stiffness", IXInstances::get_parameters(T));
+	int T_stiffness = ConfigureIndexMap::get_int_mp(I"route-stiffness", FauxInstances::get_parameters(T));
 	if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
 	else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"route-colour", level_scope));
 	if ((Room_position(T).z == Room_position(R).z) &&
@@ -258,7 +258,7 @@ actually go there in any visual way.
 		TRUE, TRUE);
 
 @<Draw the boxes for the rooms themselves@> =
-	map_parameter_scope *room_scope = IXInstances::get_parameters(R);
+	map_parameter_scope *room_scope = FauxInstances::get_parameters(R);
 	int bx = R->fimd.eps_x;
 	int by = R->fimd.eps_y;
 	int boxsize = ConfigureIndexMap::get_int_mp(I"room-size", room_scope)/2;
@@ -351,7 +351,7 @@ void RenderEPSMap::plot_text_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_i
 
 @<If that fails, try taking the name from its source text name@> =
 	if (Str::len(txt) == 0) {
-		text_stream *N = IXInstances::get_name(I);
+		text_stream *N = FauxInstances::get_name(I);
 		if (Str::len(N)) return;
 		WRITE_TO(txt, "%S", N);
 	}

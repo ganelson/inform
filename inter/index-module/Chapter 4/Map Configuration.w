@@ -199,7 +199,7 @@ void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope, fa
 	text_stream *put_string, int put_integer) {
 	if (scope == NULL) {
 		if (scope_I == NULL) scope = ConfigureIndexMap::global();
-		else scope = IXInstances::get_parameters(scope_I);
+		else scope = FauxInstances::get_parameters(scope_I);
 	}
 	if (Str::cmp(name, I"room-colour") == 0) {
 		if (scope == ConfigureIndexMap::global()) changed_global_room_colour = TRUE;

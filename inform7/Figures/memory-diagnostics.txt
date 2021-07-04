@@ -125,7 +125,7 @@ Total memory consumption was 391601K = 382 MB
      ----  value_property_data                      84 objects, 4704 bytes
      ----  parsing_pp_data                          96 objects, 4608 bytes
      ----  build_vertex                             40 objects, 4480 bytes
-     ----  activity                                 35 objects, 4200 bytes
+     ----  activity                                 35 objects, 3920 bytes
      ----  inbuild_edition                          54 objects, 3888 bytes
      ----  submodule_request                        94 objects, 3760 bytes
      ----  parse_node_annotation_type               114 objects, 3648 bytes
@@ -254,5 +254,5 @@ Total memory consumption was 391601K = 382 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    157552 bytes in 2061 claims
 
-18.6% was overhead - 74982864 bytes = 73225K = 71 MB
+18.6% was overhead - 74983144 bytes = 73225K = 71 MB
 

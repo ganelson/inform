@@ -391,7 +391,7 @@ void PL::HTMLMap::render_map_as_HTML(OUTPUT_STREAM) {
 	@<Choose a map colour for each region@>;
 	@<Choose a map colour for each room, based on its region membership@>;
 
-	if (IXInstances::no_rooms() >= 2) {
+	if (FauxInstances::no_rooms() >= 2) {
 		WRITE("\n\n");
 		HTML::comment(OUT, I"WORLD WRITE MAP BEGINS");
 		HTML_OPEN("p");
@@ -436,7 +436,7 @@ from each other.)
 	faux_instance *R;
 	LOOP_OVER_ROOMS(R)
 		if (R->fimd.colour == NULL) {
-			faux_instance *reg = IXInstances::region_of(R);
+			faux_instance *reg = FauxInstances::region_of(R);
 			if (reg)
 				R->fimd.colour = Str::duplicate(reg->fimd.colour);
 			else
@@ -496,7 +496,7 @@ from each other.)
 			if (k == 1) {
 				HTML_OPEN("p"); WRITE("<i>Mapping ");
 			} else WRITE("; ");
-			WRITE("%S as %S", IXInstances::get_name(D), IXInstances::get_name(A));
+			WRITE("%S as %S", FauxInstances::get_name(D), FauxInstances::get_name(A));
 		}
 	}
 	if (k > 0) { WRITE("</i>"); HTML_CLOSE("p"); }
@@ -894,18 +894,18 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 		faux_instance *I;
 		LOOP_OVER_OBJECTS(I)
 			if (I->direction_index == exit) {
-				IXInstances::write_name(tool_tip, I);
+				FauxInstances::write_name(tool_tip, I);
 				break;
 			}
 		if (D) {
 			if (I3 == NULL) WRITE_TO(tool_tip, " exit blocked by ");
 			else WRITE_TO(tool_tip, " through ");
-			IXInstances::write_name(tool_tip, D);
+			FauxInstances::write_name(tool_tip, D);
 
 		}
 		if (I3) {
 			WRITE_TO(tool_tip, " to ");
-			IXInstances::write_name(tool_tip, I3);
+			FauxInstances::write_name(tool_tip, I3);
 		}
 		WRITE_TO(tool_tip, "\"");
 	}
@@ -928,7 +928,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" "
 			"title=\"%S\"",
-			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, IXInstances::get_name(I));
+			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, FauxInstances::get_name(I));
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 			I->fimd.colour);
@@ -983,7 +983,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, faux_instance *I, faux_instance *Re
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 		Reg->fimd.colour);
 	WRITE("&nbsp;");
-	IXInstances::write_name(OUT, Reg); WRITE(" region");
+	FauxInstances::write_name(OUT, Reg); WRITE(" region");
 	if (at > 0) Index::link(OUT, at);
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");
@@ -1009,13 +1009,13 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 	int count = 0;
 	faux_instance *R;
 	LOOP_OVER_ROOMS(R) {
-		if (IXInstances::region_of(R) == reg) {
+		if (FauxInstances::region_of(R) == reg) {
 			if (count++ == 0) {
 				@<Start the region key table for this region@>;
 			} else {
 				WRITE(", ");
 			}
-			WRITE("%S", IXInstances::get_name(R));
+			WRITE("%S", FauxInstances::get_name(R));
 		}
 	}
 	if (count > 0) @<End the region key table for this region@>;
@@ -1031,7 +1031,7 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 	HTML_CLOSE("td"); WRITE("\n");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"left\"");
 	WRITE("<b>");
-	if (reg) WRITE("%S", IXInstances::get_name(reg));
+	if (reg) WRITE("%S", FauxInstances::get_name(reg));
 	else WRITE("<i>Not in any region</i>");
 	WRITE("</b>: ");
 

@@ -64,6 +64,10 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		text_stream *OUT = InterpretIndex::open_file(I"A.html", I"<Actions", i, D);
+		InterpretIndex::index_banner_line(OUT, 1, I"^", I"Details",
+			I"A single action in detail.|About the action rulebooks<ARSUMMARY>",
+			"../Actions.html");
+		HTML_TAG("hr");
 		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
 		text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");
 		HTML_OPEN("p");
@@ -88,6 +92,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 		@<Show the commands@>;
 		@<Show the action variables@>;
 		@<Show the rules relevant to this action@>;
+		InterpretIndex::close_index_file(OUT);
 	}
 }
 

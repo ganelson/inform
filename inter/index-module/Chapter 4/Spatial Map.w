@@ -330,7 +330,7 @@ we use these hard-wired macros instead.
 	for (i=0; i<12; i++)
 
 @d LOOP_OVER_STORY_DIRECTIONS(i)
-	for (i=0; ((i<IXInstances::no_directions()) && (i<MAX_DIRECTIONS)); i++)
+	for (i=0; ((i<FauxInstances::no_directions()) && (i<MAX_DIRECTIONS)); i++)
 
 @d LOOP_OVER_LATTICE_DIRECTIONS(i)
 	for (i=0; i<10; i++)
@@ -416,17 +416,17 @@ door, which we take a note of if asked to do so.
 =
 faux_instance *PL::SpatialMap::room_exit(faux_instance *origin, int dir_num, faux_instance **via) {
 	if (via) *via = NULL;
-	if ((origin == NULL) || (IXInstances::is_a_room(origin) == FALSE) ||
+	if ((origin == NULL) || (FauxInstances::is_a_room(origin) == FALSE) ||
 		(dir_num < 0) || (dir_num >= MAX_DIRECTIONS)) return NULL;
 	faux_instance *ultimate_destination = NULL;
 	faux_instance *immediate_destination = origin->fimd.exits[dir_num];
 	if (immediate_destination) {
-		if (IXInstances::is_a_room(immediate_destination))
+		if (FauxInstances::is_a_room(immediate_destination))
 			ultimate_destination = immediate_destination;
-		if (IXInstances::is_a_door(immediate_destination)) {
+		if (FauxInstances::is_a_door(immediate_destination)) {
 			if (via) *via = immediate_destination;
 			faux_instance *A = NULL, *B = NULL;
-			IXInstances::get_door_data(immediate_destination, &A, &B);
+			FauxInstances::get_door_data(immediate_destination, &A, &B);
 			if (A == origin) ultimate_destination = B;
 			if (B == origin) ultimate_destination = A;
 		}
@@ -2450,8 +2450,8 @@ int PL::SpatialMap::compare_components(const void *ent1, const void *ent2) {
 		faux_instance *R1 = mc1->first_room_in_submap;
 		faux_instance *R2 = mc2->first_room_in_submap;
 		if ((R1) && (R2)) { /* which should always happen, but just in case of an error */
-			faux_instance *reg1 = IXInstances::region_of(R1);
-			faux_instance *reg2 = IXInstances::region_of(R2);
+			faux_instance *reg1 = FauxInstances::region_of(R1);
+			faux_instance *reg2 = FauxInstances::region_of(R2);
 			if ((reg1) && (reg2 == NULL)) return -1;
 			if ((reg1 == NULL) && (reg2)) return 1;
 			if (reg1) {
@@ -2574,12 +2574,12 @@ running time in check.
 	if (sub->bounds.population == 1) {
 		faux_instance *R = sub->first_room_in_submap;
 		if (R) { /* which should always happen, but just in case of an error */
-			faux_instance *reg = IXInstances::region_of(R);
+			faux_instance *reg = FauxInstances::region_of(R);
 			if (reg) {
 				faux_instance *S, *closest_S = NULL;
 				int closest = 0;
 				LOOP_OVER_ROOMS(S)
-					if ((S != R) && (IXInstances::region_of(S) == reg))
+					if ((S != R) && (FauxInstances::region_of(S) == reg))
 						if ((posnd == FALSE) || (S->fimd.submap->positioned)) {
 							int diff = 2*(R->allocation_id - S->allocation_id);
 							if (diff < 0) diff = 1-diff;
@@ -2667,11 +2667,11 @@ locking means that blank planes are inevitable.
 
 =
 void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
-	text_stream *RW = IXInstances::get_name(R); /* name of the origin room */
+	text_stream *RW = FauxInstances::get_name(R); /* name of the origin room */
 	faux_instance *dir;
 	LOOP_OVER_DIRECTIONS(dir) {
 		int i = dir->direction_index;
-		faux_instance *opp = IXInstances::opposite_direction(dir);
+		faux_instance *opp = FauxInstances::opposite_direction(dir);
 		int od = opp?(opp->direction_index):(-1);
 		faux_instance *D = NULL;
 		faux_instance *S = PL::SpatialMap::room_exit(R, i, &D);
@@ -2682,33 +2682,33 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 			else if (D) icon = "e_arrow_door_blocked";
 			HTML_TAG_WITH("img", "border=0 src=inform:/map_icons/%s.png", icon);
 			WRITE("&nbsp;");
-			IXInstances::write_name(OUT, dir);
+			FauxInstances::write_name(OUT, dir);
 			WRITE(" to ");
 			if (S) {
-				IXInstances::write_name(OUT, S);
+				FauxInstances::write_name(OUT, S);
 				if (D) {
 					WRITE(" via ");
-					IXInstances::write_name(OUT, D);
+					FauxInstances::write_name(OUT, D);
 				}
 			} else {
-				IXInstances::write_name(OUT, D);
+				FauxInstances::write_name(OUT, D);
 				WRITE(" (a door)");
 			}
 			if ((S) && (opp)) {
 				faux_instance *B = PL::SpatialMap::room_exit(S, od, NULL);
 				if (B == NULL) {
 					WRITE(" (but ");
-					IXInstances::write_name(OUT, opp);
+					FauxInstances::write_name(OUT, opp);
 					WRITE(" from ");
-					IXInstances::write_name(OUT, S);
+					FauxInstances::write_name(OUT, S);
 					WRITE(" is nowhere)");
 				} else if (B != R) {
 					WRITE(" (but ");
-					IXInstances::write_name(OUT, opp);
+					FauxInstances::write_name(OUT, opp);
 					WRITE(" from ");
-					IXInstances::write_name(OUT, S);
+					FauxInstances::write_name(OUT, S);
 					WRITE(" is ");
-					IXInstances::write_name(OUT, B);
+					FauxInstances::write_name(OUT, B);
 					WRITE(")");
 				}
 			}
@@ -2729,7 +2729,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 			WRITE("; ");
 		}
 		TEMPORARY_TEXT(TEMP)
-		text_stream *DW = IXInstances::get_name(dir); /* name of the direction */
+		text_stream *DW = FauxInstances::get_name(dir); /* name of the direction */
 		WRITE_TO(TEMP, "%S", DW);
 		Str::put_at(TEMP, 0, Characters::toupper(Str::get_at(TEMP, 0)));
 		WRITE_TO(TEMP, " from ");
@@ -2747,12 +2747,12 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 
 =
 void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
-/*	WRITE("%d dirs, %d rooms\n", IXInstances::no_directions(), IXInstances::no_rooms());
+/*	WRITE("%d dirs, %d rooms\n", FauxInstances::no_directions(), FauxInstances::no_rooms());
 	faux_instance *I;
 	LOOP_OVER_OBJECTS(I) {
-		WRITE("%S\n", IXInstances::get_name(I));
-		if (IXInstances::is_a_direction(I)) {
-			WRITE("  Opposite %S\n", IXInstances::get_name(IXInstances::opposite_direction(I)));
+		WRITE("%S\n", FauxInstances::get_name(I));
+		if (FauxInstances::is_a_direction(I)) {
+			WRITE("  Opposite %S\n", FauxInstances::get_name(FauxInstances::opposite_direction(I)));
 			WRITE("  Index %d, Number %d\n", I->direction_index, I->direction_index);
 		}
 	}
@@ -2771,7 +2771,7 @@ void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 				Room_position(R).x,
 				Room_position(R).y,
 				Room_position(R).z);
-			IXInstances::write_name(OUT, R);
+			FauxInstances::write_name(OUT, R);
 			if (R == faux_benchmark) WRITE("  (benchmark)");
 			WRITE("\n");
 		}

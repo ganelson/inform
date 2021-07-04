@@ -1,4 +1,4 @@
-[IXInstances::] Instances.
+[FauxInstances::] Faux Instances.
 
 To index instances.
 
@@ -25,11 +25,11 @@ To index instances.
 int no_direction_fi = 0;
 int no_room_fi = 0;
 
-int IXInstances::no_directions(void) {
+int FauxInstances::no_directions(void) {
 	return no_direction_fi;
 }
 
-int IXInstances::no_rooms(void) {
+int FauxInstances::no_rooms(void) {
 	return no_room_fi;
 }
 
@@ -97,7 +97,7 @@ typedef struct fi_map_data {
 	struct map_parameter_scope local_map_parameters; /* temporary: used in EPS mapping */
 } fi_map_data;
 
-fi_map_data IXInstances::new_fimd(faux_instance *FI) {
+fi_map_data FauxInstances::new_fimd(faux_instance *FI) {
 	fi_map_data fimd;
 	fimd.submap = NULL;
 	fimd.position = Geometry::zero();
@@ -126,7 +126,7 @@ faux_instance *start_faux_instance = NULL;
 faux_instance *faux_yourself = NULL;
 faux_instance *faux_benchmark = NULL;
 
-void IXInstances::make_faux(void) {
+void FauxInstances::make_faux(void) {
 	inter_tree *IT = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(IT);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
@@ -179,7 +179,7 @@ void IXInstances::make_faux(void) {
 		FI->anchor_text = Str::new();
 		WRITE_TO(FI->anchor_text, "fi%d", FI->allocation_id);
 
-		FI->fimd = IXInstances::new_fimd(FI);
+		FI->fimd = FauxInstances::new_fimd(FI);
 		FI->fimd.colour = NULL;
 		FI->fimd.text_colour = NULL;
 		FI->fimd.eps_x = 0;
@@ -202,7 +202,7 @@ void IXInstances::make_faux(void) {
 					if (v1 == ALIAS_IVAL) {
 						inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
 						if (s == NULL) internal_error("malformed map metadata");
-						FI->fimd.exits[i] = IXInstances::fis(s);
+						FI->fimd.exits[i] = FauxInstances::fis(s);
 					} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
 					inter_ti v3 = P->W.data[offset+2], v4 = P->W.data[offset+3];
 					if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
@@ -222,7 +222,7 @@ void IXInstances::make_faux(void) {
 					if (v1 == ALIAS_IVAL) {
 						inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
 						if (s == NULL) internal_error("malformed map metadata");
-						faux_instance *FL = IXInstances::fis(s);
+						faux_instance *FL = FauxInstances::fis(s);
 						ADD_TO_LINKED_LIST(FI, faux_instance, FL->backdrop_presences);
 					} else internal_error("malformed backdrop metadata");
 					offset += 2;
@@ -231,32 +231,32 @@ void IXInstances::make_faux(void) {
 		}
 	}
 	LOOP_OVER(FI, faux_instance) {
-		FI->region_enclosing = IXInstances::instance_metadata(FI, I"^region_enclosing");
-		FI->object_tree_sibling = IXInstances::instance_metadata(FI, I"^sibling");
-		FI->object_tree_child = IXInstances::instance_metadata(FI, I"^child");
-		FI->progenitor = IXInstances::instance_metadata(FI, I"^progenitor");
-		FI->incorp_tree_sibling = IXInstances::instance_metadata(FI, I"^incorp_sibling");
-		FI->incorp_tree_child = IXInstances::instance_metadata(FI, I"^incorp_child");
+		FI->region_enclosing = FauxInstances::instance_metadata(FI, I"^region_enclosing");
+		FI->object_tree_sibling = FauxInstances::instance_metadata(FI, I"^sibling");
+		FI->object_tree_child = FauxInstances::instance_metadata(FI, I"^child");
+		FI->progenitor = FauxInstances::instance_metadata(FI, I"^progenitor");
+		FI->incorp_tree_sibling = FauxInstances::instance_metadata(FI, I"^incorp_sibling");
+		FI->incorp_tree_child = FauxInstances::instance_metadata(FI, I"^incorp_child");
 	}
 	faux_instance *FR;
 	LOOP_OVER(FR, faux_instance)
 		if (FR->is_a_direction) {
-			FR->opposite_direction = IXInstances::instance_metadata(FR, I"^opposite_direction");
+			FR->opposite_direction = FauxInstances::instance_metadata(FR, I"^opposite_direction");
 		}
 	faux_instance *FD;
 	LOOP_OVER(FD, faux_instance)
 		if (FD->is_a_door) {
-			FD->other_side = IXInstances::instance_metadata(FD, I"^other_side");
-			FD->fimd.map_connection_a = IXInstances::instance_metadata(FD, I"^side_a");
-			FD->fimd.map_connection_b = IXInstances::instance_metadata(FD, I"^side_b");
+			FD->other_side = FauxInstances::instance_metadata(FD, I"^other_side");
+			FD->fimd.map_connection_a = FauxInstances::instance_metadata(FD, I"^side_a");
+			FD->fimd.map_connection_b = FauxInstances::instance_metadata(FD, I"^side_b");
 		}
-	IXInstances::decode_hints(IT, 1);
+	FauxInstances::decode_hints(IT, 1);
 }
 
 @
 
 =
-void IXInstances::decode_hints(inter_tree *I, int pass) {
+void FauxInstances::decode_hints(inter_tree *I, int pass) {
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/mapping_hints");
 	inter_symbol *wanted = PackageTypes::get(I, I"_mapping_hint");
 	inter_tree_node *D = Inter::Packages::definition(pack);
@@ -264,10 +264,10 @@ void IXInstances::decode_hints(inter_tree *I, int pass) {
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *entry = Inter::Package::defined_by_frame(C);
 			if (Inter::Packages::type(entry) == wanted) {
-				faux_instance *from = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^from"));
-				faux_instance *to = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^to"));
-				faux_instance *dir = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^dir"));
-				faux_instance *as_dir = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^as_dir"));
+				faux_instance *from = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^from"));
+				faux_instance *to = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^to"));
+				faux_instance *dir = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^dir"));
+				faux_instance *as_dir = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^as_dir"));
 				if ((dir) && (as_dir)) {
 					if (pass == 1)
 						story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
@@ -281,7 +281,7 @@ void IXInstances::decode_hints(inter_tree *I, int pass) {
 				text_stream *name = Metadata::read_optional_textual(entry, I"^name");
 				if (Str::len(name) > 0) {
 					int scope_level = (int) Metadata::read_optional_numeric(entry, I"^scope_level");
-					faux_instance *scope_I = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^scope_instance"));
+					faux_instance *scope_I = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^scope_instance"));
 					text_stream *text_val = Metadata::read_optional_textual(entry, I"^text");
 					int int_val = (int) Metadata::read_optional_numeric(entry, I"^number");
 					if (scope_level != 1000000) {
@@ -309,7 +309,7 @@ void IXInstances::decode_hints(inter_tree *I, int pass) {
 						rh->font = Metadata::read_optional_textual(entry, I"^font");
 						rh->colour = Metadata::read_optional_textual(entry, I"^colour");
 						rh->at_offset = (int) Metadata::read_optional_numeric(entry, I"^offset");
-						rh->offset_from = IXInstances::fis(Metadata::read_optional_symbol(entry, I"^offset_from"));
+						rh->offset_from = FauxInstances::fis(Metadata::read_optional_symbol(entry, I"^offset_from"));
 					}
 					continue;
 				}
@@ -318,13 +318,13 @@ void IXInstances::decode_hints(inter_tree *I, int pass) {
 	}
 }
 
-faux_instance *IXInstances::instance_metadata(faux_instance *I, text_stream *key) {
+faux_instance *FauxInstances::instance_metadata(faux_instance *I, text_stream *key) {
 	if (I == NULL) return I;
 	inter_symbol *val_s = Metadata::read_optional_symbol(I->package, key);
-	return IXInstances::fis(val_s);
+	return FauxInstances::fis(val_s);
 }
 
-faux_instance *IXInstances::fis(inter_symbol *S) {
+faux_instance *FauxInstances::fis(inter_symbol *S) {
 	if (S == NULL) return NULL;
 	inter_package *want = Inter::Packages::container(S->definition);
 	faux_instance *FI;
@@ -334,115 +334,115 @@ faux_instance *IXInstances::fis(inter_symbol *S) {
 	return NULL;
 }
 
-faux_instance *IXInstances::start_room(void) {
+faux_instance *FauxInstances::start_room(void) {
 	return start_faux_instance;
 }
 
-faux_instance *IXInstances::yourself(void) {
+faux_instance *FauxInstances::yourself(void) {
 	return faux_yourself;
 }
 
 @h Naming.
 
 =
-text_stream *IXInstances::get_name(faux_instance *I) {
+text_stream *FauxInstances::get_name(faux_instance *I) {
 	if (I == NULL) return NULL;
 	return I->name;
 }
 
-void IXInstances::write_name(OUTPUT_STREAM, faux_instance *I) {
-	WRITE("%S", IXInstances::get_name(I));
+void FauxInstances::write_name(OUTPUT_STREAM, faux_instance *I) {
+	WRITE("%S", FauxInstances::get_name(I));
 }
 
-void IXInstances::write_kind(OUTPUT_STREAM, faux_instance *I) {
+void FauxInstances::write_kind(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_text);
 }
 
-void IXInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
+void FauxInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_chain);
 }
 
-faux_instance *IXInstances::region_of(faux_instance *FI) {
+faux_instance *FauxInstances::region_of(faux_instance *FI) {
 	if (FI == NULL) return NULL;
 	return FI->region_enclosing;
 }
 
-faux_instance *IXInstances::opposite_direction(faux_instance *FR) {
+faux_instance *FauxInstances::opposite_direction(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->opposite_direction;
 }
 
-faux_instance *IXInstances::other_side_of_door(faux_instance *FR) {
+faux_instance *FauxInstances::other_side_of_door(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->other_side;
 }
 
-faux_instance *IXInstances::sibling(faux_instance *FR) {
+faux_instance *FauxInstances::sibling(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->object_tree_sibling;
 }
 
-faux_instance *IXInstances::child(faux_instance *FR) {
+faux_instance *FauxInstances::child(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->object_tree_child;
 }
 
-faux_instance *IXInstances::progenitor(faux_instance *FR) {
+faux_instance *FauxInstances::progenitor(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->progenitor;
 }
 
-faux_instance *IXInstances::incorp_child(faux_instance *FR) {
+faux_instance *FauxInstances::incorp_child(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->incorp_tree_child;
 }
 
-faux_instance *IXInstances::incorp_sibling(faux_instance *FR) {
+faux_instance *FauxInstances::incorp_sibling(faux_instance *FR) {
 	if (FR == NULL) return NULL;
 	return FR->incorp_tree_sibling;
 }
 
-int IXInstances::is_a_direction(faux_instance *FR) {
+int FauxInstances::is_a_direction(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_direction;
 }
 
-int IXInstances::is_a_room(faux_instance *FR) {
+int FauxInstances::is_a_room(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_room;
 }
 
-int IXInstances::is_a_door(faux_instance *FR) {
+int FauxInstances::is_a_door(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_door;
 }
 
-int IXInstances::is_a_region(faux_instance *FR) {
+int FauxInstances::is_a_region(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_region;
 }
 
-int IXInstances::is_a_thing(faux_instance *FR) {
+int FauxInstances::is_a_thing(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_thing;
 }
 
-int IXInstances::is_a_supporter(faux_instance *FR) {
+int FauxInstances::is_a_supporter(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_supporter;
 }
 
-int IXInstances::is_a_person(faux_instance *FR) {
+int FauxInstances::is_a_person(faux_instance *FR) {
 	if (FR == NULL) return FALSE;
 	return FR->is_a_person;
 }
 
-void IXInstances::get_door_data(faux_instance *door, faux_instance **c1, faux_instance **c2) {
+void FauxInstances::get_door_data(faux_instance *door, faux_instance **c1, faux_instance **c2) {
 	if (c1) *c1 = door->fimd.map_connection_a;
 	if (c2) *c2 = door->fimd.map_connection_b;
 }
 
-map_parameter_scope *IXInstances::get_parameters(faux_instance *R) {
+map_parameter_scope *FauxInstances::get_parameters(faux_instance *R) {
 	if (R == NULL) return NULL;
 	return &(R->fimd.local_map_parameters);
 }
@@ -451,11 +451,11 @@ map_parameter_scope *IXInstances::get_parameters(faux_instance *R) {
 This simply avoids repetitions in the World index:
 
 =
-void IXInstances::increment_indexing_count(faux_instance *I) {
+void FauxInstances::increment_indexing_count(faux_instance *I) {
 	I->index_appearances++;
 }
 
-int IXInstances::indexed_yet(faux_instance *I) {
+int FauxInstances::indexed_yet(faux_instance *I) {
 	if (I->index_appearances > 0) return TRUE;
 	return FALSE;
 }

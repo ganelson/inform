@@ -118,7 +118,7 @@ values inherited by sub-objects.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">numeric_value</span><span class="plain-syntax">; </span><span class="comment-syntax"> or numeric value, if appropriate to this type</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">plotting_parameter</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure plotting_parameter is accessed in 2/ins and here.</li></ul>
+<ul class="endnotetexts"><li>The structure plotting_parameter is accessed in 2/fi and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>A set of variables associated with any map object is called a "scope".
 As implied above, the global scope is special: it contains the default
 settings passed down to all lower scopes.
@@ -205,7 +205,7 @@ it will be a title.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">rubric_holder</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure rubric_holder is accessed in 2/ins, 4/rhm, 4/rem and here.</li></ul>
+<ul class="endnotetexts"><li>The structure rubric_holder is accessed in 2/fi, 4/rhm, 4/rem and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Each horizontal level of the EPS map needs its own storage, not least to
 hold the applicable mapping parameters.
 </p>
@@ -227,7 +227,7 @@ hold the applicable mapping parameters.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">EPS_map_level</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure EPS_map_level is accessed in 2/ins, 4/rem.</li></ul>
+<ul class="endnotetexts"><li>The structure EPS_map_level is accessed in 2/fi, 4/rem.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The following are the directions at which arrows for UP, DOWN, IN and OUT
 are drawn on EPS maps.
 </p>
@@ -273,7 +273,7 @@ doesn't matter.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ConfigureIndexMap::prepare_map_parameter_scope</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ConfigureIndexMap::prepare_map_parameter_scope</span></span>:<br/>Instances - <a href="2-ins.html#SP2">&#167;2</a><br/>Render EPS Map - <a href="4-rem.html#SP1_1">&#167;1.1</a>, <a href="4-rem.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">map_parameter_scope</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ConfigureIndexMap::prepare_map_parameter_scope</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ConfigureIndexMap::prepare_map_parameter_scope</span></span>:<br/>Faux Instances - <a href="2-fi.html#SP2">&#167;2</a><br/>Render EPS Map - <a href="4-rem.html#SP1_1">&#167;1.1</a>, <a href="4-rem.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">map_parameter_scope</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">scope</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">wider_scope</span><span class="plain-syntax"> = </span><a href="4-mc.html#SP2" class="function-link"><span class="function-syntax">ConfigureIndexMap::global</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">s</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">s</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">NO_MAP_PARAMETERS</span><span class="plain-syntax">; </span><span class="identifier-syntax">s</span><span class="plain-syntax">++) {</span>
@@ -292,11 +292,11 @@ If all are null, then the global scope is used.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ConfigureIndexMap::put_mp</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">ConfigureIndexMap::put_mp</span></span>:<br/>Instances - <a href="2-ins.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">map_parameter_scope</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">, </span><span class="reserved-syntax">faux_instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope_I</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ConfigureIndexMap::put_mp</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">ConfigureIndexMap::put_mp</span></span>:<br/>Faux Instances - <a href="2-fi.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">map_parameter_scope</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">, </span><span class="reserved-syntax">faux_instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope_I</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">put_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">put_integer</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scope</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scope_I</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">scope</span><span class="plain-syntax"> = </span><a href="4-mc.html#SP2" class="function-link"><span class="function-syntax">ConfigureIndexMap::global</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope</span><span class="plain-syntax"> = </span><a href="2-ins.html#SP5" class="function-link"><span class="function-syntax">IXInstances::get_parameters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">scope_I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">scope</span><span class="plain-syntax"> = </span><a href="2-fi.html#SP5" class="function-link"><span class="function-syntax">FauxInstances::get_parameters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">scope_I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::cmp</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"room-colour"</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scope</span><span class="plain-syntax"> == </span><a href="4-mc.html#SP2" class="function-link"><span class="function-syntax">ConfigureIndexMap::global</span></a><span class="plain-syntax">()) </span><span class="identifier-syntax">changed_global_room_colour</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -352,7 +352,7 @@ If all are null, then the global scope is used.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-ve2.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-il.html">2</a></li><li class="progresschapter"><a href="3-elm.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">mc</li><li class="progresssection"><a href="4-sg.html">sg</a></li><li class="progresssection"><a href="4-sm.html">sm</a></li><li class="progresssection"><a href="4-rhm.html">rhm</a></li><li class="progresssection"><a href="4-rem.html">rem</a></li><li class="progressnext"><a href="4-sg.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-ve2.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-il.html">2</a></li><li class="progresschapter"><a href="3-tpt.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">mc</li><li class="progresssection"><a href="4-sg.html">sg</a></li><li class="progresssection"><a href="4-sm.html">sm</a></li><li class="progresssection"><a href="4-rhm.html">rhm</a></li><li class="progresssection"><a href="4-rem.html">rem</a></li><li class="progressnext"><a href="4-sg.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

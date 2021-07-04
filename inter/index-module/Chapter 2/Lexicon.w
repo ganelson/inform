@@ -1,4 +1,4 @@
-[TempLexicon::] Lexicon.
+[IndexLexicon::] Lexicon.
 
 A lexicon for nouns, adjectives and verbs found in an Inter tree.
 
@@ -43,7 +43,7 @@ index_tlexicon_entry *sorted_tlexicon = NULL; /* head of list in lexicographic o
 @ Lexicon entries are created by the following routine:
 
 =
-index_tlexicon_entry *TempLexicon::lexicon_new_entry(text_stream *lemma, int part) {
+index_tlexicon_entry *IndexLexicon::lexicon_new_entry(text_stream *lemma, int part) {
 	index_tlexicon_entry *lex = CREATE(index_tlexicon_entry);
 	lex->lemma = Str::duplicate(lemma);
 	lex->part_of_speech = part;
@@ -58,17 +58,17 @@ index_tlexicon_entry *TempLexicon::lexicon_new_entry(text_stream *lemma, int par
 @ 
 
 =
-index_tlexicon_entry *TempLexicon::new_entry_with_details(text_stream *lemma, int pos,
+index_tlexicon_entry *IndexLexicon::new_entry_with_details(text_stream *lemma, int pos,
 	char *category, char *gloss) {
-	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(lemma, pos);
+	index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, pos);
 	lex->lemma = lemma;
 	lex->category = category; lex->gloss_note = gloss;
 	return lex;
 }
 
-index_tlexicon_entry *TempLexicon::new_main_verb(text_stream *infinitive, int part,
+index_tlexicon_entry *IndexLexicon::new_main_verb(text_stream *infinitive, int part,
 	inter_package *pack) {
-	index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(NULL, part);
+	index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(NULL, part);
 	lex->lemma = infinitive;
 	lex->category = "verb";
 	lex->lex_package = pack;
@@ -89,7 +89,7 @@ explanation of what it is: for instance,
 In a few cases, there is a further textual gloss to add.
 
 =
-void TempLexicon::listing(OUTPUT_STREAM, int proper_nouns_only) {
+void IndexLexicon::listing(OUTPUT_STREAM, int proper_nouns_only) {
 	index_tlexicon_entry *lex;
 	wchar_t current_initial_letter = '?';
 	int verb_count = 0, proper_noun_count = 0, c;
@@ -207,7 +207,7 @@ The following produces the table of verbs in the Phrasebook Index page.
 
 =
 inter_tree *tree_stored_by_lexicon = NULL;
-void TempLexicon::stock(inter_tree *I) {
+void IndexLexicon::stock(inter_tree *I) {
 	if (I == tree_stored_by_lexicon) return;
 	tree_stored_by_lexicon = I;
 	tree_inventory *inv = Synoptic::inv(I);
@@ -216,21 +216,21 @@ void TempLexicon::stock(inter_tree *I) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_nodes->list[i].node);
 		index_tlexicon_entry *lex;
 		if (Metadata::read_numeric(pack, I"^meaningless"))
-			lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
+			lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
 		else
-			lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
+			lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 	for (int i=0; i<TreeLists::len(inv->preposition_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->preposition_nodes->list[i].node);
-		index_tlexicon_entry *lex = TempLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
+		index_tlexicon_entry *lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 	for (int i=0; i<TreeLists::len(inv->adjective_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->adjective_nodes->list[i].node);
 		text_stream *lemma = Metadata::read_textual(pack, I"^text");
 		if (Str::len(lemma) > 0) {
-			index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
+			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
 			lex->category = "adjective";
 			lex->lex_package = pack;		
 		}
@@ -239,7 +239,7 @@ void TempLexicon::stock(inter_tree *I) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 		if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object"))) {
-			index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
+			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;			
@@ -248,12 +248,12 @@ void TempLexicon::stock(inter_tree *I) {
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
-			index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
+			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;
 		} else {
-			index_tlexicon_entry *lex = TempLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
+			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;

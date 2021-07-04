@@ -8,7 +8,8 @@ CSS and Javascripts embedded into the body of index pages.
 
 =
 void IndexStyles::incorporate(OUTPUT_STREAM) {
-	if (current_index_page == NULL) return;
+	index_page *current_page = InterpretIndex::current();
+	if (current_page == NULL) return;
 
 	HTML_OPEN_WITH("style", "type=\"text/css\" media=\"screen, print\"");
 	@<Write some CSS styles for all these classes@>;
@@ -186,7 +187,7 @@ elements.)
 	WRITE("    } else {\n");
 	WRITE("        var x = 0;\n");
 	int i;
-	for (i=1; i<=current_index_page->no_elements; i++)
+	for (i=1; i<=current_page->no_elements; i++)
 		WRITE("        if (document.getElementById('segment%d').style.display == '') { x++; }\n", i);
 	WRITE("        if (x == 1) { show_all_elements(); }\n");
 	WRITE("        else { show_only_one_element(id); }\n");
@@ -210,7 +211,7 @@ page to a new state. This routine goes to state (1):
 
 @<Write Javascript code for showing every element on the page@> =
 	WRITE("function show_all_elements() {\n");
-	for (int i=1; i<=current_index_page->no_elements; i++) {
+	for (int i=1; i<=current_page->no_elements; i++) {
 		WRITE("    show_element('segment%d');\n", i);
 		WRITE("    light_up('segment%d');\n", i);
 	}
@@ -221,7 +222,7 @@ element -- |segment1|, |segment2|, ...
 
 @<Write Javascript code for showing only one element on the page@> =
 	WRITE("function show_only_one_element(id) {\n");
-	for (int i=1; i<=current_index_page->no_elements; i++) {
+	for (int i=1; i<=current_page->no_elements; i++) {
 		WRITE("    hide_element('segment%d');\n", i);
 		WRITE("    light_down('segment%d');\n", i);
 	}
@@ -233,7 +234,7 @@ element -- |segment1|, |segment2|, ...
 
 @<Write Javascript code for entering the periodic table display@> =
 	WRITE("function enter_periodic_table() {\n");
-	for (int i=1; i<=current_index_page->no_elements; i++) {
+	for (int i=1; i<=current_page->no_elements; i++) {
 		WRITE("    hide_element('segment%d');\n", i);
 		WRITE("    light_up('segment%d');\n", i);
 	}
@@ -254,7 +255,7 @@ to show, hide and colour things:
 	WRITE("function light_up(id) {\n");
 	@<Write Javascript to produce the corresponding icon name@>;
 	WRITE("    document.getElementById(ic).style.background = '#%S';\n",
-		current_index_page->key_colour);
+		current_page->key_colour);
 	WRITE("}\n");
 	WRITE("function light_down(id) {\n");
 	@<Write Javascript to produce the corresponding icon name@>;
@@ -262,7 +263,7 @@ to show, hide and colour things:
 	WRITE("}\n");
 
 @<Write Javascript to produce the corresponding icon name@> =
-	WRITE("    var ic = 'box%d_1';\n", current_index_page->allocation_id+1);
-	for (int i=2; i<=current_index_page->no_elements; i++)
+	WRITE("    var ic = 'box%d_1';\n", current_page->allocation_id+1);
+	for (int i=2; i<=current_page->no_elements; i++)
 		WRITE("    if (id == 'segment%d') { ic = 'box%d_%d';}\n",
-			i, current_index_page->allocation_id+1, i);
+			i, current_page->allocation_id+1, i);

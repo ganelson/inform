@@ -5,7 +5,7 @@ To write the Lexicon element (Lx) in the index.
 @ =
 void LexiconElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	inter_tree *I = InterpretIndex::get_tree();
-	TempLexicon::stock(I);
+	IndexLexicon::stock(I);
 	Index::anchor(OUT, I"LEXICON");
 	HTML_OPEN("p");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
@@ -18,5 +18,5 @@ void LexiconElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		"with rules like 'Instead of taking an empty container, ...'.");
 	HTML_CLOSE("span");
 	HTML_CLOSE("p");
-	TempLexicon::listing(OUT, FALSE);
+	IndexLexicon::listing(OUT, FALSE);
 }

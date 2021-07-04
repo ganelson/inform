@@ -11,7 +11,6 @@ typedef struct activity_compilation_data {
 	struct package_request *av_package; /* its |_activity| package */
 	struct inter_name *value_iname;     /* an identifier for a constant identifying this */
 	struct inter_name *variables_id;    /* ID for the shared variables set, if any */
-	int activity_indexed; /* has this been indexed yet? */
 	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
 	struct activity_crossref *cross_references;
 } activity_compilation_data;
@@ -29,7 +28,6 @@ activity_compilation_data RTActivities::new_compilation_data(activity *av, wordi
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	acd.value_iname = Hierarchy::make_iname_with_memo(ACTIVITY_VALUE_HL, acd.av_package, av->name);
 	acd.variables_id = Hierarchy::make_iname_in(ACTIVITY_SHV_ID_HL, acd.av_package);
-	acd.activity_indexed = FALSE;
 	acd.av_documentation_symbol = doc;
 	acd.cross_references = NULL;
 	return acd;

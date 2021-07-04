@@ -15,11 +15,10 @@ Chapter 2: Utilities
 	Index File Services
 	Index Rules
 	Lexicon
-	Instances
-	Spatial
+	Faux Instances
 
 Chapter 3: Elements
-	Elements
+	The Periodic Table
 	Alphabetic Element
 	Arithmetic Element
 	Behaviour Element
