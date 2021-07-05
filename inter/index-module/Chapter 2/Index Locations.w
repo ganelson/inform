@@ -27,21 +27,20 @@ filename *IndexLocations::xml_headings_filename(void) {
 }
 
 @ And the following function determines the filename for a page in this
-mini-website. Filenames down in the |Details| area have the form
-|N_S| where |N| is an integer supplied and |S| the leafname; for instance,
-|21_A.html| provides details page number 21 about actions, derived from the
-leafname |A.html|.
+mini-website. Filenames down in the |Details| area have the form |N_S| where
+|N| is an integer supplied and |S| the leafname; for instance, |21_A.html|
+provides details page number 21 about actions, derived from the leafname |A.html|.
 
 =
-filename *IndexLocations::filename(text_stream *leafname, int sub) {
-	if (sub >= 0) {
+filename *IndexLocations::filename(text_stream *S, int N) {
+	if (N >= 0) {
 		TEMPORARY_TEXT(full_leafname)
-		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
+		WRITE_TO(full_leafname, "%d_%S", N, S);
 		filename *F = Filenames::in(IndexLocations::details_path(), full_leafname);
 		DISCARD_TEXT(full_leafname)
 		return F;
 	} else {
-		return Filenames::in(IndexLocations::path(), leafname);
+		return Filenames::in(IndexLocations::path(), S);
 	}
 }
 
