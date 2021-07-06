@@ -8,7 +8,7 @@ CSS and Javascripts embedded into the body of index pages.
 
 =
 void IndexStyles::incorporate(OUTPUT_STREAM) {
-	index_page *current_page = InterpretIndex::current();
+	index_page *current_page = InterpretIndex::get_page();
 	if (current_page == NULL) return;
 
 	HTML_OPEN_WITH("style", "type=\"text/css\" media=\"screen, print\"");

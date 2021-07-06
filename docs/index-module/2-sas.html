@@ -72,7 +72,7 @@
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IndexStyles::incorporate</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> = </span><a href="2-ii.html#SP5" class="function-link"><span class="function-syntax">InterpretIndex::current</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> = </span><a href="2-ii.html#SP6" class="function-link"><span class="function-syntax">InterpretIndex::get_page</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"style"</span><span class="plain-syntax">, </span><span class="string-syntax">"type=\"text/css\" media=\"screen, print\""</span><span class="plain-syntax">);</span>

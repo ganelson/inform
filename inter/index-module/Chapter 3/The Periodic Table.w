@@ -160,7 +160,7 @@ content at last; and then a rule.
 		if (ie->owning_page == current_page) {
 			HTML_OPEN_WITH("div", "id=\"segment%d\"", ie->atomic_number);
 			HTML_TAG("hr");
-			InterpretIndex::index_banner_line(OUT, ie->atomic_number, ie->chemical_symbol,
+			InterpretIndex::index_banner_line(OUT, current_page, ie->atomic_number, ie->chemical_symbol,
 				ie->element_name, ie->explanatory_note, NULL);
 			Elements::render(OUT, ie->chemical_symbol, D);
 			HTML_CLOSE("div");

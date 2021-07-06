@@ -63,8 +63,8 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
-		text_stream *OUT = InterpretIndex::open_file(I"A.html", I"<Actions", i, D);
-		InterpretIndex::index_banner_line(OUT, 1, I"^", I"Details",
+		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, D);
+		InterpretIndex::index_banner_line(OUT, NULL, 1, I"^", I"Details",
 			I"A single action in detail.|About the action rulebooks<ARSUMMARY>",
 			"../Actions.html");
 		HTML_TAG("hr");
