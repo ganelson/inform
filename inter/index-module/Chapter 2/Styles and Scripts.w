@@ -2,7 +2,14 @@
 
 CSS and Javascripts embedded into the body of index pages.
 
-@h So here goes with the CSS and Javascript.
+@ This is a questionable decision: The HTML pages of the index, which have
+to live inside a project bundle and may be accessed through non-standard URL
+schemes, do not use external script files. That avoids possible problems with
+failing to link to said files correctly.
+
+But it means every HTML page in the index has to embed its own CSS and
+Javascript, and this is done with a callback function which allows us to insert
+material into the head of an HTML page when it is opened for output:
 
 @d ADDITIONAL_SCRIPTING_HTML_CALLBACK IndexStyles::incorporate
 
@@ -10,11 +17,37 @@ CSS and Javascripts embedded into the body of index pages.
 void IndexStyles::incorporate(OUTPUT_STREAM) {
 	index_page *current_page = InterpretIndex::get_page();
 	if (current_page == NULL) return;
+	@<Incorporate some CSS@>;
+	@<Incorporate some Javascript@>;
+}
 
+@ The CSS is mostly the same every time and is therefore mostly loaded from an
+external file in the Inform installation; but the colour scheme depends on the
+structure file loaded by the //Index Interpreter//, so that's not fixed on every
+run of Inform.
+
+@<Incorporate some CSS@> =
+	HTML::incorporate_CSS(OUT, InstalledFiles::filename(CSS_FOR_INDEX_PAGES_IRES));
 	HTML_OPEN_WITH("style", "type=\"text/css\" media=\"screen, print\"");
-	@<Write some CSS styles for all these classes@>;
+	index_page *ip;
+	LOOP_OVER(ip, index_page) {
+		index_element *ie;
+		LOOP_OVER(ie, index_element)
+			if (ie->owning_page == ip) {
+				WRITE("#box%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
+				WRITE("    background: #%S;\n", ip->key_colour);
+				WRITE("}\n");
+				WRITE("#minibox%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
+				WRITE("    background: #%S;\n", ip->key_colour);
+				WRITE("}\n");
+			}
+	}
 	HTML_CLOSE("style");
 
+@ Now we come to the Javascript. This varies much more from page to page, and
+is generated procedurally below.
+
+@<Incorporate some Javascript@> =
 	HTML_OPEN_WITH("script", "type=\"text/javascript\"");
 	WRITE("var qq; window.onload = function() {\n");
 	WRITE("    if (location.search.length > 0) {\n");
@@ -32,133 +65,8 @@ void IndexStyles::incorporate(OUTPUT_STREAM) {
 	@<Write Javascript code for showing and hiding a single element@>;
 	@<Write Javascript code for lighting up or greying down an element box@>;
 	HTML_CLOSE("script");
-}
 
-@<Write some CSS styles for all these classes@> =
-	WRITE("p {\n");
-	WRITE("font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n");
-	WRITE("}\n");
-	WRITE("\n");
-	WRITE(".box a:link { text-decoration: none; }\n");
-	WRITE(".box a:visited { text-decoration: none; }\n");
-	WRITE(".box a:active { text-decoration: none; }\n");
-	WRITE(".box a:hover { text-decoration: none; color: #444444; }\n");
-	WRITE("\n");
-	WRITE(".smallbox a:link { text-decoration: none; }\n");
-	WRITE(".smallbox a:visited { text-decoration: none; }\n");
-	WRITE(".smallbox a:active { text-decoration: none; }\n");
-	WRITE(".smallbox a:hover { text-decoration: none; color: #444444; }\n");
-	WRITE("\n");
-	WRITE(".symbol {\n");
-	WRITE("	position: absolute;\n");
-	WRITE("	top: -4px;\n");
-	WRITE("	left: -1px;\n");
-	WRITE("	width: 100%%;\n");
-	WRITE("	color: #ffffff;\n");
-	WRITE("	padding: 14px 0px 14px 1px;\n");
-	WRITE("	font-size: 20px;\n");
-	WRITE("	font-weight: bold;\n");
-	WRITE("	text-align: center;\n");
-	WRITE("}\n");
-	WRITE(".indexno {\n");
-	WRITE("	position: absolute;\n");
-	WRITE("	top: 1px;\n");
-	WRITE("	left: 3px;\n");
-	WRITE("	color: #ffffff;\n");
-	WRITE("	font-size: 7pt;\n");
-	WRITE("	text-align: left;\n");
-	WRITE("}\n");
-	WRITE(".rubric {\n");
-	WRITE("	position: absolute;\n");
-	WRITE("	top: 35px;\n");
-	WRITE("	width: 100%%;\n");
-	WRITE("	color: #ffffff;\n");
-	WRITE("	font-size: 9px;\n");
-	WRITE("	font-weight: bold;\n");
-	WRITE("	text-align: center;\n");
-	WRITE("}\n");
-	WRITE("\n");
-	WRITE(".box {\n");
-	WRITE(" position: relative;\n");
-	WRITE(" height: 56px;\n");
-	WRITE(" width: 56px;\n");
-	WRITE(" padding: 0px;\n");
-	WRITE("font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n");
-	WRITE("-webkit-font-smoothing: antialiased;\n");
-	WRITE("}\n");
-	WRITE(".sidebar {\n");
-	WRITE(" height: 56px;\n");
-	WRITE(" width: 16px;\n");
-	WRITE(" background: #888;\n");
-	WRITE("font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n");
-	WRITE("-webkit-font-smoothing: antialiased;\n");
-	WRITE("}\n");
-	WRITE(".sidebar:hover { background: #222; }\n");
-	WRITE("\n");
-	WRITE(".smallbox {\n");
-	WRITE(" position: relative;\n");
-	WRITE(" height: 40px;\n");
-	WRITE(" width: 40px;\n");
-	WRITE(" padding: 0px;\n");
-	WRITE("font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n");
-	WRITE("-webkit-font-smoothing: antialiased;\n");
-	WRITE("}\n");
-	WRITE("\n");
-	index_page *ip;
-	LOOP_OVER(ip, index_page) {
-		index_element *ie;
-		LOOP_OVER(ie, index_element)
-			if (ie->owning_page == ip) {
-				WRITE("#box%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
-				WRITE(" background: #%S;\n", ip->key_colour);
-				WRITE(" }\n");
-				WRITE("#minibox%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
-				WRITE(" background: #%S;\n", ip->key_colour);
-				WRITE(" }\n");
-			}
-	}
-	WRITE("\n");
-
-	WRITE("ul.leaders {\n");
-	WRITE("    padding: 0;\n");
-	WRITE("    margin-top: 1px;\n");
-	WRITE("    margin-bottom: 0;\n");
-	WRITE("    overflow-x: hidden;\n");
-	WRITE("    list-style: none}\n");
-	WRITE("ul.leaders li.leaded:before {\n");
-	WRITE("    float: left;\n");
-	WRITE("    width: 0;\n");
-	WRITE("    white-space: nowrap;\n");
-	WRITE("    content:\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n");
-	WRITE("	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"}\n");
-	WRITE("ul.leaders li.leaded span:first-child {\n");
-	WRITE("    padding-right: 0.33em;\n");
-	WRITE("    background: white}\n");
-	WRITE("ul.leaders li.leaded span + span {\n");
-	WRITE("    float: right;\n");
-	WRITE("    padding-left: 0.33em;\n");
-	WRITE("    background: white}\n");
-	int i;
-	for (i=1; i<10; i++) {
-		WRITE("li.indent%d span:first-child {\n", i);
-		WRITE("    padding-left: %dpx;\n", 25*i);
-		WRITE("}\n");
-	}
-	WRITE("\n");
-	WRITE("li.unleaded:before {\n");
-	WRITE("	content: \"\";\n");
-	WRITE("}\n");
-
-@ Now we come to the Javascript. The page can be in one of three states:
+@ When loaded in a browser, a page can be in one of three states:
 
 (1) With the periodic table closed, and all the boxes in the one visible
 row lit up, and all of the elements on the page visible;
@@ -170,8 +78,8 @@ visible on the page below.
 The page loads in state (1). Note that on a page with just one element,
 states (1) and (2) are indistinguishable.
 
-We'll structure the Javascript routines on three levels. At the top level,
-we have routines called when buttons on the page are clicked:
+We'll structure the Javascript functions on three levels. At the top level,
+we have functions called when buttons on the page are clicked:
 
 @ This is called when the user clicks on an element box corresponding to
 something on the current page. If that's hidden, we go to state (2) for the
@@ -206,7 +114,7 @@ state (1).
 	WRITE("    }\n");
 	WRITE("}\n");
 
-@ At the middle level of our Javascript, we have routines which move the
+@ At the middle level of our Javascript, we have functions which move the
 page to a new state. This routine goes to state (1):
 
 @<Write Javascript code for showing every element on the page@> =
@@ -240,7 +148,7 @@ element -- |segment1|, |segment2|, ...
 	}
 	WRITE("}\n");
 
-@ And at the bottom level of the Javascript code we have service routines
+@ And at the bottom level of the Javascript code we have service functions
 to show, hide and colour things:
 
 @<Write Javascript code for showing and hiding a single element@> =

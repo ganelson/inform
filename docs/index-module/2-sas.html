@@ -64,9 +64,16 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">index</a></li><li><a href="index.html#2">Chapter 2: Utilities</a></li><li><b>Styles and Scripts</b></li></ul></div>
 <p class="purpose">CSS and Javascripts embedded into the body of index pages.</p>
 
-<ul class="toc"><li><a href="2-sas.html#SP1">&#167;1. So here goes with the CSS and Javascript</a></li></ul><hr class="tocbar">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This is a questionable decision: The HTML pages of the index, which have
+to live inside a project bundle and may be accessed through non-standard URL
+schemes, do not use external script files. That avoids possible problems with
+failing to link to said files correctly.
+</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. So here goes with the CSS and Javascript. </b></p>
+<p class="commentary">But it means every HTML page in the index has to embed its own CSS and
+Javascript, and this is done with a callback function which allows us to insert
+material into the head of an HTML page when it is opened for output:
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADDITIONAL_SCRIPTING_HTML_CALLBACK</span><span class="plain-syntax"> </span><a href="2-sas.html#SP1" class="function-link"><span class="function-syntax">IndexStyles::incorporate</span></a>
 </pre>
@@ -74,11 +81,46 @@
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IndexStyles::incorporate</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> = </span><a href="2-ii.html#SP6" class="function-link"><span class="function-syntax">InterpretIndex::get_page</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Incorporate some CSS</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Incorporate some Javascript</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>The CSS is mostly the same every time and is therefore mostly loaded from an
+external file in the Inform installation; but the colour scheme depends on the
+structure file loaded by the <a href="2-ii.html" class="internal">Index Interpreter</a>, so that's not fixed on every
+run of Inform.
+</p>
 
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Incorporate some CSS</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::incorporate_CSS</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">CSS_FOR_INDEX_PAGES_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"style"</span><span class="plain-syntax">, </span><span class="string-syntax">"type=\"text/css\" media=\"screen, print\""</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Write some CSS styles for all these classes</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ip</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ip</span><span class="plain-syntax">, </span><span class="reserved-syntax">index_page</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">index_element</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ie</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ie</span><span class="plain-syntax">, </span><span class="reserved-syntax">index_element</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ip</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#box%d_%d {\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">atomic_number</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    background: #%S;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key_colour</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#minibox%d_%d {\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">atomic_number</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    background: #%S;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key_colour</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"style"</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b>Now we come to the Javascript. This varies much more from page to page, and
+is generated procedurally below.
+</p>
 
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Incorporate some Javascript</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"script"</span><span class="plain-syntax">, </span><span class="string-syntax">"type=\"text/javascript\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"var qq; window.onload = function() {\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (location.search.length &gt; 0) {\n"</span><span class="plain-syntax">);</span>
@@ -86,147 +128,19 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"        show_only_one_element(qq);\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for clicking on an element box</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for clicking on the sidebar</span><span class="named-paragraph-number">1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_2" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for clicking on an element box</span><span class="named-paragraph-number">1.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_3" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for clicking on the sidebar</span><span class="named-paragraph-number">1.2.3</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing every element on the page</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing only one element on the page</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_7" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for entering the periodic table display</span><span class="named-paragraph-number">1.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_4" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing every element on the page</span><span class="named-paragraph-number">1.2.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_5" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing only one element on the page</span><span class="named-paragraph-number">1.2.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_6" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for entering the periodic table display</span><span class="named-paragraph-number">1.2.6</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_8" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing and hiding a single element</span><span class="named-paragraph-number">1.8</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_9" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">1.9</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_7" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for showing and hiding a single element</span><span class="named-paragraph-number">1.2.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_8" class="named-paragraph-link"><span class="named-paragraph">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">1.2.8</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"script"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write some CSS styles for all these classes</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"p {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".box a:link { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".box a:visited { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".box a:active { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".box a:hover { text-decoration: none; color: #444444; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".smallbox a:link { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".smallbox a:visited { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".smallbox a:active { text-decoration: none; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".smallbox a:hover { text-decoration: none; color: #444444; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".symbol {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" position: absolute;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" top: -4px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" left: -1px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" width: 100%%;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" color: #ffffff;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" padding: 14px 0px 14px 1px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" font-size: 20px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" font-weight: bold;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" text-align: center;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".indexno {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" position: absolute;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" top: 1px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" left: 3px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" color: #ffffff;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" font-size: 7pt;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" text-align: left;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".rubric {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" position: absolute;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" top: 35px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" width: 100%%;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" color: #ffffff;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" font-size: 9px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" font-weight: bold;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" text-align: center;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".box {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" position: relative;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" height: 56px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" width: 56px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" padding: 0px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".sidebar {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" height: 56px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" width: 16px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" background: #888;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".sidebar:hover { background: #222; }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".smallbox {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" position: relative;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" height: 40px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" width: 40px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" padding: 0px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ip</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ip</span><span class="plain-syntax">, </span><span class="reserved-syntax">index_page</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">index_element</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ie</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ie</span><span class="plain-syntax">, </span><span class="reserved-syntax">index_element</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ip</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#box%d_%d {\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">atomic_number</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" background: #%S;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key_colour</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#minibox%d_%d {\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ie</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">atomic_number</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" background: #%S;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ip</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key_colour</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" }\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul.leaders {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    padding: 0;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    margin-top: 1px;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    margin-bottom: 0;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    overflow-x: hidden;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    list-style: none}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul.leaders li.leaded:before {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    float: left;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    width: 0;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    white-space: nowrap;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    content:\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" \".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul.leaders li.leaded span:first-child {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    padding-right: 0.33em;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    background: white}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul.leaders li.leaded span + span {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    float: right;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    padding-left: 0.33em;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    background: white}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;10; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"li.indent%d span:first-child {\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    padding-left: %dpx;\n"</span><span class="plain-syntax">, </span><span class="constant-syntax">25</span><span class="plain-syntax">*</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"li.unleaded:before {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" content: \"\";\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b>Now we come to the Javascript. The page can be in one of three states:
+<p class="commentary firstcommentary"><a id="SP1_2_1" class="paragraph-anchor"></a><b>&#167;1.2.1.  </b>When loaded in a browser, a page can be in one of three states:
 </p>
 
 <ul class="items"><li>(1) With the periodic table closed, and all the boxes in the one visible
@@ -240,11 +154,11 @@ visible on the page below.
 states (1) and (2) are indistinguishable.
 </p>
 
-<p class="commentary">We'll structure the Javascript routines on three levels. At the top level,
-we have routines called when buttons on the page are clicked:
+<p class="commentary">We'll structure the Javascript functions on three levels. At the top level,
+we have functions called when buttons on the page are clicked:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b>This is called when the user clicks on an element box corresponding to
+<p class="commentary firstcommentary"><a id="SP1_2_2" class="paragraph-anchor"></a><b>&#167;1.2.2.  </b>This is called when the user clicks on an element box corresponding to
 something on the current page. If that's hidden, we go to state (2) for the
 element clicked on. If it's showing, we see which state we're in: if we're
 in state (2) we go to state (1), and otherwise go to state (2). (The trick
@@ -252,7 +166,7 @@ is deciding what state we're in: we do that by counting the number of visible
 elements.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for clicking on an element box</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for clicking on an element box</span><span class="named-paragraph-number">1.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -269,12 +183,12 @@ elements.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b>If we're in state (1) or (2), go to state (3); if we're in state (3), go to
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_3" class="paragraph-anchor"></a><b>&#167;1.2.3.  </b>If we're in state (1) or (2), go to state (3); if we're in state (3), go to
 state (1).
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for clicking on the sidebar</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for clicking on the sidebar</span><span class="named-paragraph-number">1.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -286,12 +200,12 @@ state (1).
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b>At the middle level of our Javascript, we have routines which move the
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_4" class="paragraph-anchor"></a><b>&#167;1.2.4.  </b>At the middle level of our Javascript, we have functions which move the
 page to a new state. This routine goes to state (1):
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing every element on the page</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing every element on the page</span><span class="named-paragraph-number">1.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -302,12 +216,12 @@ page to a new state. This routine goes to state (1):
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" }\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b>This routine goes to state (2), where the <span class="extract"><span class="extract-syntax">id</span></span> is the ID of the content
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_5" class="paragraph-anchor"></a><b>&#167;1.2.5.  </b>This routine goes to state (2), where the <span class="extract"><span class="extract-syntax">id</span></span> is the ID of the content
 element &mdash; <span class="extract"><span class="extract-syntax">segment1</span></span>, <span class="extract"><span class="extract-syntax">segment2</span></span>, ...
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing only one element on the page</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing only one element on the page</span><span class="named-paragraph-number">1.2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -320,11 +234,11 @@ element &mdash; <span class="extract"><span class="extract-syntax">segment1</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    light_up(id);\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7.  </b>This routine goes to state (3):
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_6" class="paragraph-anchor"></a><b>&#167;1.2.6.  </b>This routine goes to state (3):
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for entering the periodic table display</span><span class="named-paragraph-number">1.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for entering the periodic table display</span><span class="named-paragraph-number">1.2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -335,12 +249,12 @@ element &mdash; <span class="extract"><span class="extract-syntax">segment1</spa
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_8" class="paragraph-anchor"></a><b>&#167;1.8.  </b>And at the bottom level of the Javascript code we have service routines
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_7" class="paragraph-anchor"></a><b>&#167;1.2.7.  </b>And at the bottom level of the Javascript code we have service functions
 to show, hide and colour things:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing and hiding a single element</span><span class="named-paragraph-number">1.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for showing and hiding a single element</span><span class="named-paragraph-number">1.2.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -351,23 +265,23 @@ to show, hide and colour things:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    document.getElementById(id).style.display = 'none';\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_9" class="paragraph-anchor"></a><b>&#167;1.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">1.9</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_8" class="paragraph-anchor"></a><b>&#167;1.2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">1.2.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"function light_up(id) {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_9_1" class="named-paragraph-link"><span class="named-paragraph">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_8_1" class="named-paragraph-link"><span class="named-paragraph">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.2.8.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    document.getElementById(ic).style.background = '#%S';\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_page</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key_colour</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"function light_down(id) {\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_9_1" class="named-paragraph-link"><span class="named-paragraph">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2_8_1" class="named-paragraph-link"><span class="named-paragraph">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.2.8.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    document.getElementById(ic).style.background = '#cccccc';\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_9_1" class="paragraph-anchor"></a><b>&#167;1.9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.9.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2_8_1" class="paragraph-anchor"></a><b>&#167;1.2.8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">1.2.8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -376,7 +290,7 @@ to show, hide and colour things:
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (id == 'segment%d') { ic = 'box%d_%d';}\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_page</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_9">&#167;1.9</a> (twice).</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-sas.html#SP1_2_8">&#167;1.2.8</a> (twice).</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-ii.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-il.html">il</a></li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-ii.html">ii</a></li><li class="progresscurrent">sas</li><li class="progresssection"><a href="2-ifs.html">ifs</a></li><li class="progresssection"><a href="2-ir.html">ir</a></li><li class="progresssection"><a href="2-lxc.html">lxc</a></li><li class="progresssection"><a href="2-fi.html">fi</a></li><li class="progresschapter"><a href="3-tpt.html">3</a></li><li class="progresschapter"><a href="4-mc.html">4</a></li><li class="progressnext"><a href="2-ifs.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -2,6 +2,47 @@
 
 Miscellaneous utility functions for producing index content.
 
+@h Header.
+
+=
+void Index::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym,
+	text_stream *name, text_stream *exp, char *link) {
+	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" style=\"background:#eeeeee;\"");
+	HTML_OPEN("tr");
+	@<Write the banner mini-element-box@>;
+	@<Write the row titling element@>;
+	HTML_CLOSE("tr");
+	HTML_CLOSE("table");
+	WRITE("\n");
+}
+
+@<Write the banner mini-element-box@> =
+	int ref = (page)?(page->allocation_id+1):1;
+	HTML_OPEN_WITH("td", "valign=\"top\" align=\"left\"");
+	HTML_OPEN_WITH("div", "id=\"minibox%d_%d\" class=\"smallbox\"", ref, N);
+	TEMPORARY_TEXT(dets)
+	WRITE_TO(dets, "class=\"symbol\" title=\"%S\" ", name);
+	if (link) WRITE_TO(dets, "href=\"%s\"", link);
+	else WRITE_TO(dets, "href=\"#\" onclick=\"click_element_box('segment%d'); return false;\"", N);
+	HTML_OPEN_WITH("a", "%S", dets);
+	DISCARD_TEXT(dets)
+	WRITE("%S", sym);
+	HTML_CLOSE("a");
+	HTML_OPEN_WITH("div", "class=\"indexno\"");
+	WRITE("%d\n", N);
+	HTML_CLOSE("div");
+	HTML_CLOSE("div");
+	HTML_CLOSE("td");
+
+@<Write the row titling element@> =
+	HTML_OPEN_WITH("td", "style=\"width:100%%;\" align=\"left\" valign=\"top\"");
+	HTML_OPEN_WITH("p", "style=\"margin-top:0px;padding-top:0px;"
+		"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\"");
+	WRITE("<b>%S</b> &mdash; \n", name);
+	Index::explain(OUT, exp);
+	HTML_CLOSE("p");
+	HTML_CLOSE("td");
+
 @h Links to source.
 When index files need to reference source text material, they normally do
 so by means of orange back-arrow icons which are linked to positions in

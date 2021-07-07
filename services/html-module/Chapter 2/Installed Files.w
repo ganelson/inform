@@ -19,6 +19,7 @@ but they're just plain old files, and are not managed by Inbuild as "copies".
 @e JAVASCRIPT_FOR_EXTENSIONS_IRES
 @e JAVASCRIPT_FOR_ONE_EXTENSION_IRES
 @e CSS_FOR_STANDARD_PAGES_IRES
+@e CSS_FOR_INDEX_PAGES_IRES
 @e EXTENSION_DOCUMENTATION_MODEL_IRES
 
 =
@@ -50,6 +51,8 @@ filename *InstalledFiles::filename(int ires) {
 				return Filenames::in(models, I"extensionfile.js");
 		case CSS_FOR_STANDARD_PAGES_IRES: 
 				return Filenames::in(models, I"main.css");
+		case CSS_FOR_INDEX_PAGES_IRES: 
+				return Filenames::in(models, I"index.css");
 		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
 				return Filenames::in(models, I"extensionfile.html");
 		}
