@@ -156,16 +156,16 @@ source text: so any single link would be potentially misleading.
 	switch(lex->part_of_speech) {
 		case COMMON_NOUN_TLEXE: {
 			text_stream *ref = Metadata::read_optional_textual(lex->lex_package, I"^documentation");
-			if (Str::len(ref) > 0) Index::DocReferences::link(OUT, ref);
+			if (Str::len(ref) > 0) IndexUtilities::DocReferences::link(OUT, ref);
 			break;
 		}
 		case VERB_TLEXE:
 		case PREP_TLEXE:
-			Index::below_link_numbered(OUT, 10000+verb_count++);
+			IndexUtilities::below_link_numbered(OUT, 10000+verb_count++);
 			break;
 	}
 	if ((lex->part_of_speech != ADJECTIVAL_PHRASE_TLEXE) && (lex->link_to > 0))
-		Index::link(OUT, lex->link_to);
+		IndexUtilities::link(OUT, lex->link_to);
 
 @<Definition of common noun entry@> =
 	@<Begin definition text@>;

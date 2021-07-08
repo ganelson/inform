@@ -12,7 +12,7 @@ Chapter 2: Utilities
 	Localisation
 	Index Interpreter
 	Styles and Scripts
-	Index File Services
+	Index Utilities
 	Index Rules
 	Lexicon
 	Faux Instances

@@ -189,11 +189,11 @@ row.
 
 @<Write heading for the detailed index entry for this kind@> =
 	HTML::open_indented_p(OUT, 1, "halftight");
-	Index::anchor_numbered(OUT, i); /* ...the anchor to which the grey icon in the table led */
+	IndexUtilities::anchor_numbered(OUT, i); /* ...the anchor to which the grey icon in the table led */
 	WRITE("<b>"); ChartElement::index_kind(OUT, pack, FALSE, TRUE); WRITE("</b>");
 	WRITE(" (<i>plural</i> "); ChartElement::index_kind(OUT, pack, TRUE, FALSE); WRITE(")");
 	text_stream *doc_ref = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
+	if (Str::len(doc_ref) > 0) IndexUtilities::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
 	HTML_CLOSE("p");
 	text_stream *variance =  Metadata::read_optional_textual(pack, I"^variance");
 	if (Str::len(variance) > 0) {
@@ -300,10 +300,10 @@ int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package 
 		HTML_CLOSE("a");
 	}
 	text_stream *doc_ref = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref);
+	if (Str::len(doc_ref) > 0) IndexUtilities::DocReferences::link(OUT, doc_ref);
 	int i = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (i >= 1) WRITE(" [%d]", i);
-	Index::below_link_numbered(OUT, pack->allocation_id);
+	IndexUtilities::below_link_numbered(OUT, pack->allocation_id);
 	if (shaded) HTML::end_colour(OUT);
 	return shaded;
 }
@@ -348,7 +348,7 @@ void ChartElement::index_kind(OUTPUT_STREAM, inter_package *pack, int plural, in
 	WRITE("%S", Metadata::read_optional_textual(pack, key));
 	if (with_links) {
 		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (at > 0) Index::link(OUT, at);
+		if (at > 0) IndexUtilities::link(OUT, at);
 	}
 }
 
@@ -388,7 +388,7 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv, inter_p
 	if (pass == 1) ChartElement::begin_chart_row(OUT);
 	if (pass == 2) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		Index::anchor(OUT, anchor);
+		IndexUtilities::anchor(OUT, anchor);
 	}
 
 @<End the object citation line@> =
@@ -418,10 +418,10 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv, inter_p
 
 @<Index the link icons part of the object citation@> =
 	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	text_stream *doc_ref = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref);
-	if (pass == 1) Index::below_link(OUT, anchor);
+	if (Str::len(doc_ref) > 0) IndexUtilities::DocReferences::link(OUT, doc_ref);
+	if (pass == 1) IndexUtilities::below_link(OUT, anchor);
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
@@ -437,15 +437,15 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	int c = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (c >= 10) {
 		int xtra = ii_xtras++;
-		Index::extra_link(OUT, xtra);
+		IndexUtilities::extra_link(OUT, xtra);
 		HTML::begin_colour(OUT, I"808080");
 		WRITE("%d ", c);
 		ChartElement::index_kind(OUT, pack, TRUE, FALSE);
 		HTML::end_colour(OUT);
 		HTML_CLOSE("p");
-		Index::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
 		@<Itemise the instances@>;
-		Index::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	} else {
 		@<Itemise the instances@>;
 		HTML_CLOSE("p");
@@ -463,7 +463,7 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 			WRITE("%S", Metadata::read_optional_textual(I_pack, I"^name"));
 			HTML::end_colour(OUT);
 			int at = (int) Metadata::read_optional_numeric(I_pack, I"^at");
-			if (at > 0) Index::link(OUT, at);
+			if (at > 0) IndexUtilities::link(OUT, at);
 		}
 	}
 

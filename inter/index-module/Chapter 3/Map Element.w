@@ -17,7 +17,7 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 		PL::HTMLMap::add_region_key(OUT);
 		MapElement::index_backdrop_further(OUT, NULL, 0, FALSE, 1);
 
-		Index::anchor(OUT, I"MDETAILS");
+		IndexUtilities::anchor(OUT, I"MDETAILS");
 		int unruly = FALSE;
 		@<Mark parts, directions and kinds as ineligible for listing in the World index@>;
 		@<Give room details within each region in turn in the World index@>;
@@ -119,19 +119,19 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 	@<Begin the object citation line@>;
 	int xtra = -1;
 	if (I) xtra = xtras_count++;
-	if (xtra >= 0) Index::extra_link(OUT, xtra);
+	if (xtra >= 0) IndexUtilities::extra_link(OUT, xtra);
 	@<Index the name part of the object citation@>;
 	if (I) @<Index the kind attribution part of the object citation@>;
 	@<Index the link icons part of the object citation@>;
 	@<End the object citation line@>;
 	if (details) @<Add a subsidiary paragraph of details about this object@>;
 	if (xtra >= 0) {
-		Index::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		@<Add details depending on the kind@>;
 		MapElement::index_usages(OUT, I);
-		Index::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 	@<Recurse the index citation for the object as necessary@>;
 }
@@ -139,7 +139,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 @<Begin the object citation line@> =
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		if (I != indexing_room) Index::anchor(OUT, I->anchor_text);
+		if (I != indexing_room) IndexUtilities::anchor(OUT, I->anchor_text);
 	} else {
 		#ifdef IF_MODULE
 		if (I) MapElement::index_spatial_relationship(OUT, I);
@@ -184,7 +184,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 	}
 
 @<Index the link icons part of the object citation@> =
-	if (I->created_at > 0) Index::link(OUT, I->created_at);
+	if (I->created_at > 0) IndexUtilities::link(OUT, I->created_at);
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 
@@ -201,7 +201,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
 	FauxInstances::write_kind_chain(OUT, I);
-	if (I->kind_set_at > 0) Index::link(OUT, I->kind_set_at);
+	if (I->kind_set_at > 0) IndexUtilities::link(OUT, I->kind_set_at);
 	WRITE(" &gt; <b>");
 	FauxInstances::write_name(OUT, I);
 	WRITE("</b>");
@@ -233,7 +233,7 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I) {
 					HTML::open_indented_p(OUT, 1, "tight");
 					WRITE("<i>mentioned in rules:</i> ");
 				} else WRITE("; ");
-				Index::link(OUT, (int) v2);				
+				IndexUtilities::link(OUT, (int) v2);				
 			} else internal_error("malformed usage metadata");
 			offset += 2;
 		}
@@ -259,7 +259,7 @@ int MapElement::add_region_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 int MapElement::annotate_player(OUTPUT_STREAM, faux_instance *I) {
 	if (I == FauxInstances::start_room()) {
 		WRITE(" - <i>room where play begins</i>");
-		Index::DocReferences::link(OUT, I"ROOMPLAYBEGINS");
+		IndexUtilities::DocReferences::link(OUT, I"ROOMPLAYBEGINS");
 		return TRUE;
 	}
 	return FALSE;
@@ -355,7 +355,7 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 			WRITE("%s ", rel);
 			FauxInstances::write_name(OUT, P);
 			int at = O->progenitor_set_at;
-			if (at) Index::link(OUT, at);
+			if (at) IndexUtilities::link(OUT, at);
 
 		}
 		HTML_CLOSE("p");

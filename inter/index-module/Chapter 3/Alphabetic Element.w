@@ -30,7 +30,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (oow) HTML::begin_colour(OUT, I"800000");
 		WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
 		if (oow) HTML::end_colour(OUT);
-		Index::detail_link(OUT, "A", i, TRUE);
+		IndexUtilities::detail_link(OUT, "A", i, TRUE);
 
 		if (requires_light) WRITE(" <i>requires light</i>");
 

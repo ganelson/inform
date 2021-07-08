@@ -14,19 +14,19 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	@<Show the use options@>;
 
 	HTML_OPEN("p");
-	Index::extra_link(OUT, 3);
+	IndexUtilities::extra_link(OUT, 3);
 	WRITE("See some technicalities for Inform maintainers only");
 	HTML_CLOSE("p");
-	Index::extra_div_open(OUT, 3, 2, "e0e0e0");
+	IndexUtilities::extra_div_open(OUT, 3, 2, "e0e0e0");
 	HTML_OPEN("p");
-	Index::anchor(OUT, I"CONFIG");
+	IndexUtilities::anchor(OUT, I"CONFIG");
 	@<Show the language elements used@>;
 	@<Add some paste buttons for the debugging log@>;
-	Index::extra_div_close(OUT, "e0e0e0");
+	IndexUtilities::extra_div_close(OUT, "e0e0e0");
 }
 
 @<Show the virtual machine compiled for@> =
-	Index::anchor(OUT, I"STORYFILE");
+	IndexUtilities::anchor(OUT, I"STORYFILE");
 	HTML_OPEN("p"); WRITE("Story file format: ");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
 	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
@@ -159,7 +159,7 @@ int InnardsElement::uo_set_from(inter_package *pack, int category, inter_package
 			WRITE("the source text"); break;
 		case OPTIONS_FILE_UO_ORIGIN:
 			WRITE("the Options.txt configuration file, or automatically");
-			Index::DocReferences::link(OUT, I"OPTIONSFILE"); break;
+			IndexUtilities::DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
 			WRITE("%S", Metadata::read_optional_textual(E, I"^credit"));
 			break;
@@ -174,7 +174,7 @@ int InnardsElement::uo_set_from(inter_package *pack, int category, inter_package
 	int msv = (int) Metadata::read_optional_numeric(pack, I"^minimum");
 	if (msv > 0) WRITE(" of at least %d", msv);
 	int at = (int) Metadata::read_optional_numeric(pack, I"^used_at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	if (msv > 0) {
 		WRITE("&nbsp;");
 		TEMPORARY_TEXT(TEMP)

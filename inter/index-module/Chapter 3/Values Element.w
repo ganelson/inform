@@ -17,7 +17,7 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Index the variables@> =
 	inter_symbol *definition_area = NULL, *current_area = NULL;
 	HTML_OPEN("p");
-	Index::anchor(OUT, I"NAMES");
+	IndexUtilities::anchor(OUT, I"NAMES");
 	int understood_note_given = FALSE;
 	for (int i=0; i<TreeLists::len(inv->variable_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->variable_nodes->list[i].node);
@@ -44,16 +44,16 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		inter_package *heading_pack = Inter::Packages::container(definition_area->definition);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
-		Index::show_definition_area(OUT, heading_pack, FALSE);
+		IndexUtilities::show_definition_area(OUT, heading_pack, FALSE);
 	}
 	current_area = definition_area;
 
 	text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 	WRITE("%S", name);
 	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	text_stream *doc = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc) > 0) Index::DocReferences::link(OUT, doc);
+	if (Str::len(doc) > 0) IndexUtilities::DocReferences::link(OUT, doc);
 	text_stream *contents = Metadata::read_optional_textual(pack, I"^contents");
 	WRITE(" - <i>%S</i>", contents);
 	HTML_TAG("br");
@@ -61,7 +61,7 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Index the equations@> =
 	if (TreeLists::len(inv->equation_nodes) > 0) {
 		HTML_OPEN("p"); WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
-		Index::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
+		IndexUtilities::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		int N = 0;
@@ -70,7 +70,7 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			if (at > 0) {
 				WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));
-				Index::link(OUT, at);
+				IndexUtilities::link(OUT, at);
 				WRITE(" (%S)", Metadata::read_optional_textual(pack, I"^text"));
 				HTML_TAG("br");
 				N++;

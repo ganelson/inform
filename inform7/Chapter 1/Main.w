@@ -173,7 +173,7 @@ they can be rather lengthy.
 			Main::write_diagnostics(
 				I"preform-summary.txt", &Main::log_preform_summary);
 			Main::write_diagnostics(
-				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
+				I"documentation-diagnostics.txt", &IndexUtilities::DocReferences::log_statistics);
 			Main::write_diagnostics(
 				I"verbs-diagnostics.txt", &VerbUsages::log_all);
 			Main::write_diagnostics(

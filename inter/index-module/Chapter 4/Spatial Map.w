@@ -2713,7 +2713,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 				}
 			}
 			int at = R->fimd.exits_set_at[i];
-			if (at > 0) Index::link(OUT, at);
+			if (at > 0) IndexUtilities::link(OUT, at);
 			HTML_CLOSE("p");
 		}
 	}

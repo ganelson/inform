@@ -113,7 +113,7 @@ void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 				Wordings::first_word(GET_RW(<to-phrase-preamble>, 3));
 		}
 		wording PW = GET_RW(<to-phrase-preamble>, 1);
-		tfd->ph_documentation_symbol = Index::DocReferences::position_of_symbol(&PW);
+		tfd->ph_documentation_symbol = IndexUtilities::DocReferences::position_of_symbol(&PW);
 		tfd->prototype_text = PW;
 	}
 }

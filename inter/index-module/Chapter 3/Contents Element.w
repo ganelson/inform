@@ -47,7 +47,7 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (TreeLists::len(inv->heading_nodes) == 1) {
 		HTML_OPEN("p"); WRITE("(This would look more like a contents page if the source text "
 			"were divided up into headings.");
-		Index::DocReferences::link(OUT, I"HEADINGS");
+		IndexUtilities::DocReferences::link(OUT, I"HEADINGS");
 		WRITE(")");
 		HTML_CLOSE("p");
 		WRITE("\n");
@@ -69,7 +69,7 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (L > min_positive_level) HTML::end_colour(OUT);
 	/* place a link to the relevant line of the primary source text */
 	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	HTML_CLOSE("span");
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
@@ -138,7 +138,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	WRITE("%S ", Metadata::read_textual(pack, I"^title"));
 	if (Metadata::read_optional_numeric(pack, I"^standard") == 0) {
 	 	int ext_at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (ext_at > 0) { Index::link(OUT, ext_at); WRITE("&nbsp;&nbsp;"); }
+		if (ext_at > 0) { IndexUtilities::link(OUT, ext_at); WRITE("&nbsp;&nbsp;"); }
 	}
 
 	if (auto_included != TRUE) WRITE("by %S ", Metadata::read_textual(pack, I"^author"));
@@ -159,7 +159,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	WRITE("%d words", (int) Metadata::read_numeric(pack, I"^word_count"));
 	if (by_id == NULL) {
 		int at = (int) Metadata::read_optional_numeric(pack, I"^included_at");
-		if (at > 0) Index::link(OUT, at);
+		if (at > 0) IndexUtilities::link(OUT, at);
 	}
 	HTML_CLOSE("span");
 	HTML_CLOSE("li");

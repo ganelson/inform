@@ -51,9 +51,9 @@ void TokensElement::index_tokens_for(OUTPUT_STREAM, inter_tree *I, char *special
 	WRITE("]\"");
 	if (defns) {
 		int at = (int) Metadata::read_optional_numeric(defns, I"^at");
-		if (at > 0) Index::link(OUT, at);
+		if (at > 0) IndexUtilities::link(OUT, at);
 	}
-	if (Str::len(help) > 0) Index::DocReferences::link(OUT, help);
+	if (Str::len(help) > 0) IndexUtilities::DocReferences::link(OUT, help);
 	if (explanation) WRITE(" - %s", explanation);
 	HTML_CLOSE("p");
 	if (defns) TokensElement::index_list_for_token(OUT, I, defns);
@@ -76,7 +76,7 @@ void TokensElement::index_list_for_token(OUTPUT_STREAM, inter_tree *I, inter_pac
 					trueverb, EMPTY_WORDING);
 				WRITE("&quot;");
 				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				if (Metadata::read_optional_numeric(entry, I"^reversed"))
 					WRITE(" <i>reversed</i>");
 				HTML_CLOSE("p");

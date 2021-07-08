@@ -66,7 +66,7 @@ int Task::carry_out(build_step *S) {
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
 
-	Index::DocReferences::read_xrefs();
+	IndexUtilities::DocReferences::read_xrefs();
 	Task::issue_problems_arising(project->as_copy->vertex);
 	PluginManager::start_plugins();
 

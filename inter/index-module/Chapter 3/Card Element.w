@@ -12,7 +12,7 @@ void CardElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/bibliographic");
 	
 	HTML_OPEN("p");
-	Index::anchor(OUT, I"LCARD");
+	IndexUtilities::anchor(OUT, I"LCARD");
 	HTML::begin_html_table(OUT, "*bg_images/indexcard.png", FALSE, 0, 3, 3, 0, 0);
 	CardElement::Library_Card_entry(OUT, "Story title", pack, I"^title", I"Untitled");
 	CardElement::Library_Card_entry(OUT, "Story author", pack, I"^author", I"Anonymous");

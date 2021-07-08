@@ -604,7 +604,7 @@ to abbreviated forms of object names are normally allowed.
 		@<Create an instance of an enumerated kind@>
 	else
 		@<Issue an unable-to-create problem message@>;
-	Index::DocReferences::position_of_symbol(&W);
+	IndexUtilities::DocReferences::position_of_symbol(&W);
 	Node::set_text(p, W);
 
 @<Create a new kind of value@> =

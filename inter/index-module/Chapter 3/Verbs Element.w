@@ -19,13 +19,13 @@ void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			(lex->part_of_speech == PREP_TLEXE)) {
 			text_stream *entry_text = lex->lemma;
 			HTML_OPEN_WITH("p", "class=\"hang\"");
-			Index::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */
+			IndexUtilities::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */
 			if (lex->part_of_speech == VERB_TLEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == MVERB_TLEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == PREP_TLEXE) WRITE("To be <b>%S</b>", entry_text);
 			else WRITE("To be able to <b>%S</b>", entry_text);
 			int at = (int) Metadata::read_optional_numeric(lex->lex_package, I"^at");
-			if (at > 0) Index::link(OUT, at);
+			if (at > 0) IndexUtilities::link(OUT, at);
 			if (lex->part_of_speech == MVERB_TLEXE) WRITE(" ... for saying only");
 			else WRITE(" ... <i>%S</i>", Metadata::read_optional_textual(lex->lex_package, I"^meaning"));
 			HTML_CLOSE("p");

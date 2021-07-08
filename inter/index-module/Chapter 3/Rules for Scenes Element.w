@@ -14,7 +14,7 @@ void RulesForScenesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	IndexRules::index_rules_box(OUT, inv, I"Scene changing", NULL,
 		IndexRules::find_rulebook(inv, I"scene_changing"), NULL, 1, FALSE);
 	HTML_OPEN("p");
-	Index::anchor(OUT, I"SRULES");
+	IndexUtilities::anchor(OUT, I"SRULES");
 	WRITE("<b>General rules applying to scene changes</b>");
 	HTML_CLOSE("p");
 	IndexRules::index_rules_box(OUT, inv, I"When a scene begins", NULL,

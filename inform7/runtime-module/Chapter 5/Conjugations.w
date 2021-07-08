@@ -130,7 +130,7 @@ void RTVerbs::show_meaning(OUTPUT_STREAM, verb_conjugation *vc) {
 	LOOP_OVER(vu, verb_usage)
 		if (vu->vu_lex_entry == vc) {
 			if (vu->where_vu_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
+				IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
 			binary_predicate *bp =
 				VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
 			if (bp) RTVerbs::show_relation(OUT, bp);
@@ -140,7 +140,7 @@ void RTVerbs::show_meaning(OUTPUT_STREAM, verb_conjugation *vc) {
 	LOOP_OVER(prep, preposition)
 		if (prep->prep_lex_entry == vc) {
 			if (prep->where_prep_created)
-				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
+				IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
 			binary_predicate *bp =
 				VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
 			if (bp) RTVerbs::show_relation(OUT, bp);

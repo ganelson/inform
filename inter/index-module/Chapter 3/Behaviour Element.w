@@ -22,7 +22,7 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			HTML_OPEN("p"); WRITE("<b>%S</b>", name);
-			Index::link(OUT, at);
+			IndexUtilities::link(OUT, at);
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;<i>defined as any of the following acts:</i>\n");
 			inter_tree_node *D = Inter::Packages::definition(pack);
@@ -34,7 +34,7 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 						HTML_TAG("br");
 						WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%S", text);
 						int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-						Index::link(OUT, at);
+						IndexUtilities::link(OUT, at);
 					}
 				}
 			}

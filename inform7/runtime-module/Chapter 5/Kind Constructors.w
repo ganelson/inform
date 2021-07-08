@@ -474,7 +474,7 @@ void RTKindConstructors::compile(void) {
 			if (PropertyInferences::get_property(inf) == P_specification) {
 				parse_node *spec = PropertyInferences::get_value(inf);
 				TEMPORARY_TEXT(exp)
-				Index::dequote(exp, Lexer::word_raw_text(Wordings::first_wn(Node::get_text(spec))));
+				IndexUtilities::dequote(exp, Lexer::word_raw_text(Wordings::first_wn(Node::get_text(spec))));
 				Hierarchy::apply_metadata(pack, KIND_SPECIFICATION_MD_HL, exp);
 				DISCARD_TEXT(exp)
 				made_exp = TRUE;
@@ -511,7 +511,7 @@ void RTKindConstructors::compile(void) {
 			if (Wordings::nonempty(W)) {
 				TEMPORARY_TEXT(temp)
 				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
-				if (Index::DocReferences::validate_if_possible(temp))
+				if (IndexUtilities::DocReferences::validate_if_possible(temp))
 					Kinds::Behaviour::set_documentation_reference(K, temp);
 				DISCARD_TEXT(temp)
 			}

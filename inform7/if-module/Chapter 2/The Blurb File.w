@@ -252,55 +252,55 @@ Inblorb to copy out later.
 	if (rel->release_cover == FALSE) {
 		WRITE("status alternative ||Using 'Release along with cover art', to "
 			"provide something more distinctive than the default artwork above");
-		Index::DocReferences::link_to(OUT, I"release_cover", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_cover", FALSE);
 		WRITE("||\n");
 	}
 	if (rel->release_website == FALSE) {
 		WRITE("status alternative ||Using 'Release along with a website'");
-		Index::DocReferences::link_to(OUT, I"release_website", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_website", FALSE);
 		WRITE("||\n");
 	}
 	if (rel->release_interpreter == FALSE) {
 		WRITE("status alternative ||Using 'Release along with an interpreter', "
 			"for in-browser play on your website");
-		Index::DocReferences::link_to(OUT, I"release_interpreter", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_interpreter", FALSE);
 		WRITE("||\n");
 	}
 	if (NUMBER_CREATED(auxiliary_file) == 0) {
 		WRITE("status alternative ||Using 'Release along with a file of "
 			"\"Such-and-Such\" called \"whatever.pdf\"', perhaps to add a "
 			"manual, or a welcoming note");
-		Index::DocReferences::link_to(OUT, I"release_files", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_files", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_source == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the source text'");
-		Index::DocReferences::link_to(OUT, I"release_source", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_source", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_solution == FALSE) {
 		WRITE("status alternative ||Using 'Release along with a solution'");
-		Index::DocReferences::link_to(OUT, I"release_solution", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_solution", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_card == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the library card'");
-		Index::DocReferences::link_to(OUT, I"release_card", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_card", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_booklet == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the introductory booklet'");
-		Index::DocReferences::link_to(OUT, I"release_booklet", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_booklet", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_postcard == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the introductory postcard'");
-		Index::DocReferences::link_to(OUT, I"release_postcard", FALSE);
+		IndexUtilities::DocReferences::link_to(OUT, I"release_postcard", FALSE);
 		WRITE("||\n");
 	}
 
@@ -310,7 +310,7 @@ void BlurbFile::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
 		special_meaning_holder *sm = Node::get_special_meaning(p->down);
 		if (SpecialMeanings::is(sm, ReleaseInstructions::release_along_with_SMF)) {
 			TEMPORARY_TEXT(TEMP)
-			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
+			IndexUtilities::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
 			WRITE("status instruction ||");
 			STREAM_COPY(OUT, TEMP);
 			WRITE("||\n");

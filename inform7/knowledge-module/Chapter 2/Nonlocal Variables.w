@@ -106,7 +106,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *s
 
 	nonlocal_variable *nlv = CREATE(nonlocal_variable);
 	latest_nonlocal_variable = nlv;
-	nlv->var_documentation_symbol = Index::DocReferences::position_of_symbol(&W);
+	nlv->var_documentation_symbol = IndexUtilities::DocReferences::position_of_symbol(&W);
 	nlv->name = W;
 	nlv->nlv_created_at = current_sentence;
 	nlv->nlv_kind = K;

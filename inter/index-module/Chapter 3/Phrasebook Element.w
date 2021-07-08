@@ -27,12 +27,12 @@ void PhrasebookElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 								c++; grand_c++;
 								if ((pass == 1) && (c > 1)) WRITE(", ");
 								if (pass == 2) {
-									Index::anchor_numbered(OUT, grand_c);
+									IndexUtilities::anchor_numbered(OUT, grand_c);
 									HTML_OPEN_WITH("p", "class=\"in2\"");
 									WRITE("<b>");
 								}
 								WRITE("%S", Metadata::read_textual(entry_b, I"^text"));
-								if (pass == 1) Index::below_link_numbered(OUT, grand_c);
+								if (pass == 1) IndexUtilities::below_link_numbered(OUT, grand_c);
 								if (pass == 2) {
 									WRITE("</b>");
 									HTML_CLOSE("p");

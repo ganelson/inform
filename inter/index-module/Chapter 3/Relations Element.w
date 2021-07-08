@@ -25,7 +25,7 @@ void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		HTML::first_html_column(OUT, 0);
 		WRITE("%S", name);
 		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (at > 0) Index::link(OUT, at);
+		if (at > 0) IndexUtilities::link(OUT, at);
 		HTML::next_html_column(OUT, 0);
 		if (Str::len(type) > 0) WRITE("%S", type); else WRITE("--");
 		HTML::next_html_column(OUT, 0);

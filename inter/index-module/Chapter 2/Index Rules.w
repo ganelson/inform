@@ -94,7 +94,7 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 
 	if (hide_behind_plus) {
 		HTML::open_indented_p(OUT, indent+1, "tight");
-		Index::extra_link(OUT, xtra_no);
+		IndexUtilities::extra_link(OUT, xtra_no);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
 		WRITE("%S", textual_name);
 		@<Write the titling line of an index rules box@>;
@@ -102,7 +102,7 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 		if (n == 0) HTML::end_colour(OUT);
 		HTML_CLOSE("p");
 
-		Index::extra_div_open(OUT, xtra_no, indent+1, col);
+		IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
 	} else {
 		HTML::open_indented_p(OUT, indent, "");
 		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
@@ -136,7 +136,7 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 		IndexRules::index_rulebook(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context(), &ignore_me);
 	}
 	if (hide_behind_plus) {
-		Index::extra_div_close(OUT, col);
+		IndexUtilities::extra_div_close(OUT, col);
 	} else {
 		HTML::close_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 		HTML_CLOSE("p");
@@ -144,10 +144,10 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 }
 
 @<Write the titling line of an index rules box@> =
-	if (Str::len(doc_link) > 0) Index::DocReferences::link(OUT, doc_link);
+	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
 	WRITE(" ... %S", Metadata::read_optional_textual(rb_pack, I"^focus"));
 	int at = (int) Metadata::read_optional_numeric(rb_pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 
 @ =
 void IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
@@ -324,7 +324,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 		}
 		if (c > 0) {
 			WRITE("&nbsp;&nbsp;");
-			Index::extra_link_with(OUT, response_box_id, "responses");
+			IndexUtilities::extra_link_with(OUT, response_box_id, "responses");
 			WRITE("%d", c);
 		}
 	}
@@ -339,14 +339,14 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *entry = Inter::Package::defined_by_frame(C);
 				if (Inter::Packages::type(entry) == wanted) {
-					if (c == 0) Index::extra_div_open_nested(OUT, response_box_id, 2);
+					if (c == 0) IndexUtilities::extra_div_open_nested(OUT, response_box_id, 2);
 					else HTML_TAG("br");
 					IndexRules::index_response(OUT, R, entry);
 					c++;
 				}
 			}
 		}
-		if (c > 0) Index::extra_div_close_nested(OUT);
+		if (c > 0) IndexUtilities::extra_div_close_nested(OUT);
 		no_responses_indexed = c;
 	}
 
@@ -355,7 +355,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 
 @<Index a link to the first line of the rule's definition@> =
 	int at = (int) Metadata::read_optional_numeric(R, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 
 @<Index the small type rule numbering@> =
 	inter_ti id = Metadata::read_optional_numeric(R, I"^index_number");
@@ -377,7 +377,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 				if (Inter::Packages::type(entry) == wanted) {
 					HTML_TAG("br");
 					int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-					if (at > 0) Index::link(OUT, at);
+					if (at > 0) IndexUtilities::link(OUT, at);
 					WRITE("&nbsp;%S", Metadata::read_textual(entry, I"^index_text"));
 				}
 			}
@@ -463,7 +463,7 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 				HTML_OPEN_WITH("span", "class=\"smaller\"");
 				WRITE("<i>NB:</i> %S", Metadata::read_optional_textual(entry, I"^text"));
 				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				HTML_CLOSE("span");
 				HTML_TAG("br");
 			}
@@ -506,7 +506,7 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 
 	if (hide_behind_plus) {
 		HTML::open_indented_p(OUT, indent+1, "tight");
-		Index::extra_link(OUT, xtra_no);
+		IndexUtilities::extra_link(OUT, xtra_no);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
 		WRITE("%S", textual_name);
 		@<Write the titling line of an activity rules box@>;
@@ -514,7 +514,7 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 		if (n == 0) HTML::end_colour(OUT);
 		HTML_CLOSE("p");
 
-		Index::extra_div_open(OUT, xtra_no, indent+1, col);
+		IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
 	} else {
 		HTML::open_indented_p(OUT, indent, "");
 		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
@@ -566,14 +566,14 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 				HTML::open_indented_p(OUT, 2, "tight");
 				WRITE("NB: %S", Metadata::read_optional_textual(entry, I"^text"));
 				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				HTML_CLOSE("p");
 			}
 		}
 	}
 
 	if (hide_behind_plus) {
-		Index::extra_div_close(OUT, col);
+		IndexUtilities::extra_div_close(OUT, col);
 	} else {
 		HTML::close_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 		HTML_CLOSE("p");
@@ -581,7 +581,7 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 }
 
 @<Write the titling line of an activity rules box@> =
-	if (Str::len(doc_link) > 0) Index::DocReferences::link(OUT, doc_link);
+	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
 	WRITE(" ... activity");
 	int at = (int) Metadata::read_optional_numeric(av_pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);

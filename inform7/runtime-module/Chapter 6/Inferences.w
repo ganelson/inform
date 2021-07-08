@@ -91,7 +91,7 @@ void RTInferences::index_specific(package_request *pack, int hl, inference_subje
 						else WRITE("; ");
 						if (S < 0) WRITE("not ");
 						WRITE("%+W", prn->name);
-						if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
+						if (P) IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(P)));
 					}
 				}
 			}
@@ -108,7 +108,7 @@ void RTInferences::index_specific(package_request *pack, int hl, inference_subje
 						HTML::begin_colour(OUT, I"000080");
 						WRITE("%+W", Node::get_text(S));
 						HTML::end_colour(OUT);
-						if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
+						if (P) IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(P)));
 						HTML_CLOSE("p");
 					}
 				}

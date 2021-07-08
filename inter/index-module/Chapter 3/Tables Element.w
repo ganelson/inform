@@ -39,13 +39,13 @@ void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (cat > 1) {
 		if (first_ext) { 
 			HTML_OPEN("p");
-			Index::extra_link(OUT, 2);
+			IndexUtilities::extra_link(OUT, 2);
 			if (mc > 1) WRITE("Show tables inside extensions too");
 			else WRITE("Show tables inside extensions (there are none in the main text)");
 			HTML_CLOSE("p");
 			first_ext = FALSE;
 		}
-		Index::extra_div_open(OUT, 2, 1, "e0e0e0");		
+		IndexUtilities::extra_div_open(OUT, 2, 1, "e0e0e0");		
 		HTML_OPEN("p");
 		WRITE("<i>%S</i>", Metadata::read_textual(mod, I"^title"));
 		HTML_CLOSE("p");
@@ -56,7 +56,7 @@ void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Close block of tables@> =
 	if (mc > 0) {
 		HTML::end_html_table(OUT);
-		if (open_cat > 1) Index::extra_div_close(OUT, "e0e0e0");
+		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 
 @ The following probably ought to use a multiplication sign rather than a
@@ -73,7 +73,7 @@ Helvetica-style lower case "x", but life is full of compromises.
 			if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_table_contribution")) {
 				if (ntc++ > 0) WRITE(" +");
 				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				Index::link(OUT, at);
+				IndexUtilities::link(OUT, at);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ Helvetica-style lower case "x", but life is full of compromises.
 	if ((defines) && (col == 0)) {
 		WRITE("%S", Metadata::read_optional_textual(pack, I"^defines_text"));
 		int at = (int) Metadata::read_optional_numeric(pack, I"^defines_at");
-		Index::link(OUT, at);
+		IndexUtilities::link(OUT, at);
 	} else {
 		if (defines) WRITE("<i>sets</i> ");
 		WRITE("%S&nbsp;", CW);

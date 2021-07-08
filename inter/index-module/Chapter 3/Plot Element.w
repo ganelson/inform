@@ -210,7 +210,7 @@ about and created but never made use of.)
 
 
 @<Give details of each scene in turn@> =
-	Index::anchor(OUT, I"SDETAILS");
+	IndexUtilities::anchor(OUT, I"SDETAILS");
 	simplified_scene *ssc;
 	LOOP_OVER(ssc, simplified_scene) {
 		HTML_TAG("hr");
@@ -237,10 +237,10 @@ fact, end.
 
 @<Index the name and recurrence status of the scene@> =
 	HTML::open_indented_p(OUT, 1, "hanging");
-	Index::anchor_numbered(OUT, ssc->allocation_id);
+	IndexUtilities::anchor_numbered(OUT, ssc->allocation_id);
 	WRITE("<b>The <i>%S</i> scene</b>", Metadata::read_textual(ssc->pack, I"^name"));
 	int at = (int) Metadata::read_optional_numeric(ssc->pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	if (PlotElement::recurs(ssc)) WRITE("&nbsp;&nbsp;<i>recurring</i>");
 	HTML_CLOSE("p");
 
@@ -298,7 +298,7 @@ fact, end.
 		}
 		WRITE("%S", PlotElement::anchor_condition(ssc->ends[end]));
 		int at = PlotElement::anchor_condition_set_at(ssc->ends[end]);
-		if (at > 0) Index::link(OUT, at);
+		if (at > 0) IndexUtilities::link(OUT, at);
 		count++;
 	}
 
@@ -312,7 +312,7 @@ fact, end.
 		text_stream *NW = PlotElement::scene_name(to_ssc);
 		WRITE("<b>%S</b> <i>%s</i>", NW, (PlotElement::scon_end(scon)==0)?"begins":"ends");
 		if (PlotElement::scon_end(scon) >= 2) WRITE(" %S", PlotElement::end_name(to_ssc->ends[PlotElement::scon_end(scon)]));
-		Index::link(OUT, PlotElement::scon_at(scon));
+		IndexUtilities::link(OUT, PlotElement::scon_at(scon));
 		count++;
 	}
 
@@ -377,7 +377,7 @@ void PlotElement::index_from_scene(OUTPUT_STREAM, simplified_scene **plot,
 	if (ssc->indexed_already) WRITE("<i>");
 	WRITE("%S", Metadata::read_textual(ssc->pack, I"^name"));
 	if (ssc->indexed_already) WRITE("</i>");
-	else Index::below_link_numbered(OUT, ssc->allocation_id);
+	else IndexUtilities::below_link_numbered(OUT, ssc->allocation_id);
 
 @<Show the never-ends icon if appropriate@> =
 	if (PlotElement::never_ends(ssc))

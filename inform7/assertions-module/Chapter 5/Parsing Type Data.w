@@ -25,7 +25,7 @@ void ParsingIDTypeData::parse(id_type_data *idtd, wording XW) {
 	if (Wordings::nonempty(XW))
 		XW = ParsingIDTypeData::phtd_parse_return_data(idtd, XW);        /* trim return from the front */
 	if (Wordings::nonempty(XW))
-		Index::DocReferences::position_of_symbol(&XW);                   /* trim doc ref from the back */
+		IndexUtilities::DocReferences::position_of_symbol(&XW);                   /* trim doc ref from the back */
 	if (Wordings::nonempty(XW))
 		XW = ParsingIDTypeData::phtd_parse_doodads(idtd, XW, &say_flag); /* and doodads from the back */
 

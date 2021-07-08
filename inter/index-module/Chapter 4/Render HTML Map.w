@@ -548,7 +548,7 @@ that the grids are calculated, the region colours decided, and so on.
 void PL::HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, faux_instance *R) {
 	WRITE("\n\n");
 	HTML_OPEN("p");
-	Index::anchor(OUT, R->anchor_text);
+	IndexUtilities::anchor(OUT, R->anchor_text);
 	HTML_TAG_WITH("a", "name=wo_%d", R->allocation_id);
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);
@@ -984,7 +984,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, faux_instance *I, faux_instance *Re
 		Reg->fimd.colour);
 	WRITE("&nbsp;");
 	FauxInstances::write_name(OUT, Reg); WRITE(" region");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");

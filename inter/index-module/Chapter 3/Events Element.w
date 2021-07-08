@@ -32,7 +32,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 				HTML_OPEN_WITH("p", "class=\"tightin2\"");
 				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
 				int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				WRITE(" (where triggered: ");
 				inter_tree_node *D = Inter::Packages::definition(pack);
 				LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -40,7 +40,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 						inter_package *entry = Inter::Package::defined_by_frame(C);
 						if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_timed_rule_trigger")) {
 							int at = (int) Metadata::read_optional_numeric(entry, I"^used_at");
-							if (at > 0) Index::link(OUT, at);
+							if (at > 0) IndexUtilities::link(OUT, at);
 						}
 					}
 				}
@@ -64,7 +64,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 				HTML_OPEN_WITH("p", "class=\"in2\"");
 				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
 				int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				HTML_CLOSE("p");
 			}
 		}

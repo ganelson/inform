@@ -180,18 +180,18 @@ code for the box.
 	}
 
 	HTML_OPEN_WITH("p", "class=\"tightin2\"");
-	if (run_begin == idb) Index::extra_link(OUT, run_end->allocation_id);
-	else Index::noextra_link(OUT);
+	if (run_begin == idb) IndexUtilities::extra_link(OUT, run_end->allocation_id);
+	else IndexUtilities::noextra_link(OUT);
 	RTPhrasebook::index_type_data(OUT, &(idb->type_data), idb);
 	if (IDTypeData::deprecated(&(idb->type_data)))
-		Index::deprecation_icon(OUT, run_begin->allocation_id);
-	Index::link(OUT, Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))));
+		IndexUtilities::deprecation_icon(OUT, run_begin->allocation_id);
+	IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))));
 	HTML_CLOSE("p");
 
 	if (run_end == idb) {
-		Index::extra_div_open(OUT, idb->allocation_id, 3, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, idb->allocation_id, 3, "e0e0e0");
 		RTPhrasebook::write_reveal_box(OUT, &(run_begin->type_data), run_begin);
-		Index::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 	package_request *entry =
 				Hierarchy::package_within(PHRASEBOOK_ENTRY_HAP, last_heading_package);
@@ -289,9 +289,9 @@ of course.
 		HTML_CLOSE("p");
 		TEMPORARY_TEXT(pds)
 		WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ToPhraseFamily::doc_ref(idb->head_of_defn))));
-		Index::DocReferences::doc_fragment(OUT, pds);
+		IndexUtilities::DocReferences::doc_fragment(OUT, pds);
 		HTML_OPEN("p"); WRITE("<b>See</b> ");
-		Index::DocReferences::fully_link(OUT, pds);
+		IndexUtilities::DocReferences::fully_link(OUT, pds);
 		DISCARD_TEXT(pds)
 	}
 

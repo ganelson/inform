@@ -52,8 +52,8 @@ void GroupedElement::index_p1(OUTPUT_STREAM, inter_package *an_pack, int bold,
 	if (bold) WRITE("</b>");
 	if (oow) HTML::end_colour(OUT);
 	int at = (int) Metadata::read_optional_numeric(an_pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
-	Index::detail_link(OUT, "A", i, (on_details_page)?FALSE:TRUE);
+	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::detail_link(OUT, "A", i, (on_details_page)?FALSE:TRUE);
 }
 
 void GroupedElement::detail_pages(localisation_dictionary *D) {
@@ -64,7 +64,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, D);
-		Index::banner_line(OUT, NULL, 1, I"^", I"Details",
+		IndexUtilities::banner_line(OUT, NULL, 1, I"^", I"Details",
 			I"A single action in detail.|About the action rulebooks<ARSUMMARY>",
 			"../Actions.html");
 		HTML_TAG("hr");
@@ -82,7 +82,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 				if (j == i) WRITE("<b>");
 				WRITE("%S", Metadata::read_optional_textual(an2_pack, I"^name"));
 				if (j == i) WRITE("</b>");
-				if (j != i) Index::detail_link(OUT, "A", j, FALSE);
+				if (j != i) IndexUtilities::detail_link(OUT, "A", j, FALSE);
 			}
 		}
 		HTML_CLOSE("p");
@@ -106,7 +106,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	if (oow) HTML::end_colour(OUT);
 	WRITE("</b>");
 	int at = (int) Metadata::read_optional_numeric(an_pack, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	if (requires_light) WRITE(" (requires light)");
 	WRITE(" (<i>past tense</i> %S)", Metadata::read_optional_textual(an_pack, I"^past_name"));
 	text_stream *spec = Metadata::read_optional_textual(an_pack, I"^specification");
@@ -169,7 +169,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 		WRITE("Click on the speech-bubble icons to see the responses, "
 			"or here to see all of them:");
 		WRITE("&nbsp;");
-		Index::extra_all_link_with(OUT, TreeLists::len(inv->rule_nodes), "responses");
+		IndexUtilities::extra_all_link_with(OUT, TreeLists::len(inv->rule_nodes), "responses");
 		WRITE("%d", resp_count);
 	}
 	HTML_CLOSE("p");
@@ -200,9 +200,9 @@ void GroupedElement::index_stv_set(OUTPUT_STREAM, inter_tree *I, inter_package *
 				HTML::open_indented_p(OUT, 2, "tight");
 				WRITE("%S", Metadata::read_optional_textual(var_pack, I"^name"));
 				int at = (int) Metadata::read_optional_numeric(var_pack, I"^at");
-				if (at > 0) Index::link(OUT, at);
+				if (at > 0) IndexUtilities::link(OUT, at);
 				text_stream *doc_ref = Metadata::read_optional_textual(var_pack, I"^documentation");
-				if (Str::len(doc_ref) > 0) Index::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
+				if (Str::len(doc_ref) > 0) IndexUtilities::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
 				WRITE(" - <i>%S</i>", Metadata::read_optional_textual(var_pack, I"^kind"));
 				HTML_CLOSE("p");
 			}

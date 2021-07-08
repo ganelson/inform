@@ -150,7 +150,7 @@ void RTAdjectives::print(OUTPUT_STREAM, adjective_meaning *am) {
 			WRITE("%+W", am->indexing_text);
 	}
 	if (Wordings::nonempty(am->indexing_text))
-		Index::link(OUT, Wordings::first_wn(am->indexing_text));
+		IndexUtilities::link(OUT, Wordings::first_wn(am->indexing_text));
 }
 
 @ This is supposed to imitate dictionaries, distinguishing meanings by

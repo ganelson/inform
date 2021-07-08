@@ -1,11 +1,17 @@
-[Index::] Index File Services.
+[IndexUtilities::] Index Utilities.
 
 Miscellaneous utility functions for producing index content.
 
-@h Header.
+@h Element banner.
+This is used as the banner at the top of each index element, and also at the
+top of the Actions detail pages. It's about time this table-based HTML was
+replaced with styled CSS layout code, really. But it works fine.
+
+(Anyone tempted to do this should note that the result must render correctly
+on typical browser views embedded in apps on Windows, MacOS and Linux.)
 
 =
-void Index::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym,
+void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym,
 	text_stream *name, text_stream *exp, char *link) {
 	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" style=\"background:#eeeeee;\"");
 	HTML_OPEN("tr");
@@ -39,7 +45,7 @@ void Index::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym
 	HTML_OPEN_WITH("p", "style=\"margin-top:0px;padding-top:0px;"
 		"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\"");
 	WRITE("<b>%S</b> &mdash; \n", name);
-	Index::explain(OUT, exp);
+	IndexUtilities::explain(OUT, exp);
 	HTML_CLOSE("p");
 	HTML_CLOSE("td");
 
@@ -58,19 +64,19 @@ to the documentation for the extension; and otherwise we make a link to
 the source text in the application.
 
 =
-void Index::link(OUTPUT_STREAM, int wn) {
-	Index::link_to_location(OUT, Lexer::word_location(wn), TRUE);
+void IndexUtilities::link(OUTPUT_STREAM, int wn) {
+	IndexUtilities::link_to_location(OUT, Lexer::word_location(wn), TRUE);
 }
 
-void Index::link_location(OUTPUT_STREAM, source_location sl) {
-	Index::link_to_location(OUT, sl, TRUE);
+void IndexUtilities::link_location(OUTPUT_STREAM, source_location sl) {
+	IndexUtilities::link_to_location(OUT, sl, TRUE);
 }
 
-void Index::link_to(OUTPUT_STREAM, int wn, int nonbreaking_space) {
-	Index::link_to_location(OUT, Lexer::word_location(wn), nonbreaking_space);
+void IndexUtilities::link_to(OUTPUT_STREAM, int wn, int nonbreaking_space) {
+	IndexUtilities::link_to_location(OUT, Lexer::word_location(wn), nonbreaking_space);
 }
 
-void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
+void IndexUtilities::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
 	#ifdef SUPERVISOR_MODULE
 	inform_extension *E = Extensions::corresponding_to(sl.file_of_origin);
 	if (E) {
@@ -92,7 +98,7 @@ current index page: for instance, for the link from the Actions page to the
 page about the taking action.
 
 =
-void Index::detail_link(OUTPUT_STREAM, char *stub, int sub, int down) {
+void IndexUtilities::detail_link(OUTPUT_STREAM, char *stub, int sub, int down) {
 	WRITE("&nbsp;");
 	HTML_OPEN_WITH("a", "href=%s%d_%s.html", (down)?"Details/":"", sub, stub);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Beneath.png");
@@ -106,53 +112,53 @@ either by number, or by name: whichever is more convenient for the indexing
 code.
 
 =
-void Index::below_link(OUTPUT_STREAM, text_stream *p) {
+void IndexUtilities::below_link(OUTPUT_STREAM, text_stream *p) {
 	WRITE("&nbsp;");
 	HTML_OPEN_WITH("a", "href=#%S", p);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Below.png");
 	HTML_CLOSE("a");
 }
 
-void Index::anchor(OUTPUT_STREAM, text_stream *p) {
+void IndexUtilities::anchor(OUTPUT_STREAM, text_stream *p) {
 	HTML_OPEN_WITH("a", "name=%S", p); HTML_CLOSE("a");
 }
 
-void Index::below_link_numbered(OUTPUT_STREAM, int n) {
+void IndexUtilities::below_link_numbered(OUTPUT_STREAM, int n) {
 	WRITE("&nbsp;");
 	HTML_OPEN_WITH("a", "href=#A%d", n);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Below.png");
 	HTML_CLOSE("a");
 }
 
-void Index::anchor_numbered(OUTPUT_STREAM, int n) {
+void IndexUtilities::anchor_numbered(OUTPUT_STREAM, int n) {
 	HTML_OPEN_WITH("a", "name=A%d", n); HTML_CLOSE("a");
 }
 
 @h "Show extra" links, and also a spacer of equivalent width.
 
 =
-void Index::extra_link(OUTPUT_STREAM, int id) {
+void IndexUtilities::extra_link(OUTPUT_STREAM, int id) {
 	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/extra.png", id);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
 }
 
-void Index::extra_all_link_with(OUTPUT_STREAM, int nr, char *icon) {
+void IndexUtilities::extra_all_link_with(OUTPUT_STREAM, int nr, char *icon) {
 	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showAllResp(%d); return false;\"", nr);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%s.png", icon);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
 }
 
-void Index::extra_link_with(OUTPUT_STREAM, int id, char *icon) {
+void IndexUtilities::extra_link_with(OUTPUT_STREAM, int id, char *icon) {
 	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/%s.png", id, icon);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
 }
 
-void Index::noextra_link(OUTPUT_STREAM) {
+void IndexUtilities::noextra_link(OUTPUT_STREAM) {
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/noextra.png");
 	WRITE("&nbsp;");
 }
@@ -160,24 +166,24 @@ void Index::noextra_link(OUTPUT_STREAM) {
 @ These open up divisions:
 
 =
-void Index::extra_div_open(OUTPUT_STREAM, int id, int indent, char *colour) {
+void IndexUtilities::extra_div_open(OUTPUT_STREAM, int id, int indent, char *colour) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
 	HTML::open_indented_p(OUT, indent, "");
 	HTML::open_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 }
 
-void Index::extra_div_close(OUTPUT_STREAM, char *colour) {
+void IndexUtilities::extra_div_close(OUTPUT_STREAM, char *colour) {
 	HTML::close_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 	HTML_CLOSE("p");
 	HTML_CLOSE("div");
 }
 
-void Index::extra_div_open_nested(OUTPUT_STREAM, int id, int indent) {
+void IndexUtilities::extra_div_open_nested(OUTPUT_STREAM, int id, int indent) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
 	HTML::open_indented_p(OUT, indent, "");
 }
 
-void Index::extra_div_close_nested(OUTPUT_STREAM) {
+void IndexUtilities::extra_div_close_nested(OUTPUT_STREAM) {
 	HTML_CLOSE("p");
 	HTML_CLOSE("div");
 }
@@ -185,7 +191,7 @@ void Index::extra_div_close_nested(OUTPUT_STREAM) {
 @h "Deprecation" icons.
 
 =
-void Index::deprecation_icon(OUTPUT_STREAM, int id) {
+void IndexUtilities::deprecation_icon(OUTPUT_STREAM, int id) {
 	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/deprecated.png");
 	HTML_CLOSE("a");
@@ -197,7 +203,7 @@ First: to print a double-quoted word into the index, without its surrounding
 quotes.
 
 =
-void Index::dequote(OUTPUT_STREAM, wchar_t *p) {
+void IndexUtilities::dequote(OUTPUT_STREAM, wchar_t *p) {
 	int i = 1;
 	if ((p[0] == 0) || (p[1] == 0)) return;
 	for (i=1; p[i+1]; i++) {
@@ -209,10 +215,11 @@ void Index::dequote(OUTPUT_STREAM, wchar_t *p) {
 	}
 }
 
-@
+@ The "definition area" for content is usually a heading inside an extension;
+see the Phrasebook element for examples of how this comes out.
 
 =
-void Index::show_definition_area(OUTPUT_STREAM, inter_package *heading_pack,
+void IndexUtilities::show_definition_area(OUTPUT_STREAM, inter_package *heading_pack,
 	int show_if_unhyphenated) {
 	inter_ti parts = Metadata::read_optional_numeric(heading_pack, I"^parts");
 	if ((parts == 1) && (show_if_unhyphenated == FALSE)) return;
@@ -228,8 +235,21 @@ void Index::show_definition_area(OUTPUT_STREAM, inter_package *heading_pack,
 	HTML_TAG("br");
 }
 
-@ =
-void Index::explain(OUTPUT_STREAM, text_stream *explanation) {
+@ This takes material which ultimately comes from //Localisation// files and
+allows a little markup in order to insert formatting. A vertical stroke denotes
+a line break; angle brackets |<THUS>| insert a documentation reference to
+documentation symbol |THUS|; square brackets |[THUS]| link to a named anchor
+found on the same page. For example:
+= (text)
+%Heading = How this project might be filed in a library
+catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
+=
+inserts one line break, and two documentation links.
+
+(These syntax conventions do not apply to all material in //Localisation// files.)
+
+=
+void IndexUtilities::explain(OUTPUT_STREAM, text_stream *explanation) {
 	int italics_open = FALSE;
 	for (int i=0, L=Str::len(explanation); i<L; i++) {
 		switch (Str::get_at(explanation, i)) {
@@ -242,7 +262,7 @@ void Index::explain(OUTPUT_STREAM, text_stream *explanation) {
 				i++;
 				while ((i<L) && (Str::get_at(explanation, i) != '>'))
 					PUT_TO(link, Str::get_at(explanation, i++));
-				Index::DocReferences::link(OUT, link);
+				IndexUtilities::DocReferences::link(OUT, link);
 				DISCARD_TEXT(link)
 				break;
 			}
@@ -252,7 +272,7 @@ void Index::explain(OUTPUT_STREAM, text_stream *explanation) {
 				i++;
 				while ((i<L) && (Str::get_at(explanation, i) != '>'))
 					PUT_TO(link, Str::get_at(explanation, i++));
-				Index::below_link(OUT, link);
+				IndexUtilities::below_link(OUT, link);
 				DISCARD_TEXT(link)
 				break;
 			}

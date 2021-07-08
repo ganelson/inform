@@ -890,10 +890,10 @@ void IDTypeData::inv_write_HTML_representation(OUTPUT_STREAM, parse_node *inv) {
 			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W",
 				Wordings::one_word(Wordings::first_wn(ToPhraseFamily::doc_ref(idb->head_of_defn))));
-			Index::DocReferences::link_to(OUT, pds, -1);
+			IndexUtilities::DocReferences::link_to(OUT, pds, -1);
 			DISCARD_TEXT(pds)
 		} else
-			Index::link_to(OUT,
+			IndexUtilities::link_to(OUT,
 				Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))), FALSE);
 		WRITE(" ");
 		IDTypeData::write_HTML_representation(OUT, idtd, INDEX_PHRASE_FORMAT, inv);

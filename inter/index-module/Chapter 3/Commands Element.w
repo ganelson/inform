@@ -177,17 +177,17 @@ void CommandsElement::cgl_index_normal(OUTPUT_STREAM, inter_package *cgl, text_s
 	if (an_s == NULL) return;
 	inter_package *an = Inter::Packages::container(an_s->definition);
 	int oow = (int) Metadata::read_optional_numeric(an, I"^out_of_world");
-	if (Str::len(headword) > 0) Index::anchor(OUT, headword);
+	if (Str::len(headword) > 0) IndexUtilities::anchor(OUT, headword);
 	if (oow) HTML::begin_colour(OUT, I"800000");
 	WRITE("&quot;");
 	TokensElement::verb_definition(OUT, Metadata::read_optional_textual(cgl, I"^text"),
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
 	int at = (int) Metadata::read_optional_numeric(cgl, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	
 	WRITE(" - <i>%S", Metadata::read_textual(an, I"^name"));
-	Index::detail_link(OUT, "A", (int) Metadata::read_numeric(an, I"action_id"), TRUE);
+	IndexUtilities::detail_link(OUT, "A", (int) Metadata::read_numeric(an, I"action_id"), TRUE);
 	if (Metadata::read_optional_numeric(cgl, I"^reversed"))
 		WRITE(" <i>reversed</i>");
 	WRITE("</i>");
@@ -199,6 +199,6 @@ void CommandsElement::index_alias(OUTPUT_STREAM, inter_tree *I, inter_package *c
 	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%S&quot;",
 		headword, Metadata::read_textual(cg, I"^command"));
 	int at = (int) Metadata::read_optional_numeric(cg, I"^at");
-	if (at > 0) Index::link(OUT, at);
+	if (at > 0) IndexUtilities::link(OUT, at);
 	HTML_TAG("br");
 }
