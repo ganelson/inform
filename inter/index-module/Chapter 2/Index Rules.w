@@ -2,7 +2,17 @@
 
 Utility functions for indexing rules, rulebooks and activities.
 
-@
+@h Marked rulebooks and activities.
+The Inter hierarchy likely contains numerous rulebooks and activities, and we
+need to know which one is, for example, the "when play begins" rulebook. We don't
+want to recognise this by its name, since that might cause problems if the source
+language is not English. Instead, the Inform compiler marks certain special
+rulebook or activity packages with an |^index_id| metadatum: for example, this
+might be |"when_play_begins"|. Such markers are language-independent.
+
+Given an inventory |inv| of the Inter hierarchy, then, the following functions
+retrieve packages by marker text. This coild be done more efficiently with a
+dictionary, but it's not used often enough to make it worth the work.
 
 =
 inter_package *IndexRules::find_rulebook(tree_inventory *inv, text_stream *marker) {
@@ -23,37 +33,57 @@ inter_package *IndexRules::find_activity(tree_inventory *inv, text_stream *marke
 	return NULL;
 }
 
-typedef struct ix_rule_context {
+@h Rule contexts.
+We sometimes want to index only some of the contents of a rulebook: those which
+fit a particular "context". This structure abstracts that idea:
+
+=
+typedef struct rule_context {
 	struct inter_package *action_context;
 	struct simplified_scene *scene_context;
-} ix_rule_context;
+} rule_context;
 
-ix_rule_context IndexRules::action_context(inter_package *an) {
-	ix_rule_context rc;
+@ Either the rules have to take effect with the given action, or during the
+given scene:
+
+=
+rule_context IndexRules::action_context(inter_package *an) {
+	rule_context rc;
 	rc.action_context = an;
 	rc.scene_context = NULL;
 	return rc;
 }
-ix_rule_context IndexRules::scene_context(simplified_scene *s) {
-	ix_rule_context rc;
+rule_context IndexRules::scene_context(simplified_scene *s) {
+	rule_context rc;
 	rc.action_context = NULL;
 	rc.scene_context = s;
 	return rc;
 }
 
-ix_rule_context IndexRules::no_rule_context(void) {
-	ix_rule_context rc;
+@ ...Or, of course, neither. This is the default rule context, and means there
+is no restriction, so that we should be indexing the entire rulebook.
+
+=
+rule_context IndexRules::no_rule_context(void) {
+	rule_context rc;
 	rc.action_context = NULL;
 	rc.scene_context = NULL;
 	return rc;
 }
 
-int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *entry, ix_rule_context rc) {
-	if (entry == NULL) return FALSE;
+@ To implement this, we need to know if the premiss for a given rule contains
+explicit requirements matching the given context |rc|. This is something that
+only the compiler can know for sure, so the compiler has marked the rule package
+with |^action| and |^during| metadata to make it possible for us to decide now.
+
+=
+int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack,
+	rule_context rc) {
+	if (rule_pack == NULL) return FALSE;
 	if (rc.action_context) {
 		int passes = FALSE;
 		inter_symbol *wanted = PackageTypes::get(I, I"_relevant_action");
-		inter_tree_node *D = Inter::Packages::definition(entry);
+		inter_tree_node *D = Inter::Packages::definition(rule_pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *rel_pack = Inter::Package::defined_by_frame(C);
@@ -67,17 +97,41 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *entry, ix
 		if (passes == FALSE) return FALSE;
 	}
 	if (rc.scene_context) {
-		inter_symbol *scene_symbol = Metadata::read_optional_symbol(entry, I"^during");
+		inter_symbol *scene_symbol = Metadata::read_optional_symbol(rule_pack, I"^during");
 		if (scene_symbol == NULL) return FALSE;
-		if (Inter::Packages::container(scene_symbol->definition) != rc.scene_context->pack) return FALSE;
+		if (Inter::Packages::container(scene_symbol->definition) !=
+			rc.scene_context->pack) return FALSE;
 	}
 	return TRUE;
 }
 
+@ A rulebook is "conceptually empty" with respect to a context |rc| if it contains
+no rules which fit |rc|:
+
+=
+int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, rule_context rc) {
+	if (rb_pack) {
+		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
+		inter_tree_node *D = Inter::Packages::definition(rb_pack);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *entry = Inter::Package::defined_by_frame(C);
+				if (Inter::Packages::type(entry) == wanted)
+					if (IndexRules::phrase_fits_rule_context(I, entry, rc))
+						return FALSE;
+			}
+		}
+	}
+	return TRUE;
+}
+
+@h Rulebook boxes.
+
+=
 int RS_unique_xtra_no = 77777;
 void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
-	text_stream *titling_text, text_stream *doc_link,
-	inter_package *rb_pack, char *text, int indent, int hide_behind_plus) {
+	text_stream *titling_text, text_stream *doc_link, inter_package *rb_pack,
+	char *text, int indent, int hide_behind_plus) {
 	if (rb_pack == NULL) return;
 
 	int xtra_no = RS_unique_xtra_no++;
@@ -150,12 +204,12 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 	if (at > 0) IndexUtilities::link(OUT, at);
 
 @ =
-void IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
+void IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
 	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, resp_count);
 	if (t > 0) HTML_CLOSE("p");
 }
 
-int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I, inter_package *rb_pack, text_stream *billing, ix_rule_context rc, int *resp_count) {
+int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
 	int suppress_outcome = FALSE, t = initial_t;
 	if (rb_pack == NULL) return 0;
 	if (Str::len(billing) > 0) {
@@ -166,22 +220,6 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 	if (suppress_outcome == FALSE) IndexRules::index_outcomes(OUT, I, rb_pack);
 	IndexRules::rb_index_placements(OUT, I, rb_pack);
 	return t;
-}
-
-int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, ix_rule_context rc) {
-	if (rb_pack) {
-		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
-		inter_tree_node *D = Inter::Packages::definition(rb_pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted)
-					if (IndexRules::phrase_fits_rule_context(I, entry, rc))
-						return FALSE;
-			}
-		}
-	}
-	return TRUE;
 }
 
 int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
@@ -201,7 +239,7 @@ int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
 }
 
 int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
-	ix_rule_context rc, text_stream *billing, int *resp_count) {
+	rule_context rc, text_stream *billing, int *resp_count) {
 	inter_package *prev = NULL;
 	int count = 0;
 	inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
@@ -238,7 +276,6 @@ void IndexRules::br_start_index_line(OUTPUT_STREAM, inter_package *prev, text_st
 	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
 	WRITE("%S", billing);
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-//	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
 }
 
 @ And here's how the index links (if wanted) are chosen and plotted:
@@ -264,7 +301,7 @@ void IndexRules::br_show_linkage_icon(OUTPUT_STREAM, inter_package *prev) {
 @ And off we go:
 
 =
-int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter_package *owner, ix_rule_context rc) {
+int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter_package *owner, rule_context rc) {
 	int no_responses_indexed = 0;
 	int response_box_id = RS_unique_xtra_no++;
 	text_stream *name = Metadata::read_optional_textual(R, I"^name");
