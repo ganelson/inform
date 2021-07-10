@@ -32,9 +32,9 @@ void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			if (Metadata::read_optional_numeric(pack, I"^automatically_generated"))
 				continue;
 			if (c++ == 0) @<Heading for these@>;
-			IndexRules::index_rules_box(OUT, inv, 
+			IndexRules::rulebook_box(OUT, inv, 
 				Metadata::read_optional_textual(pack, I"^printed_name"),
-				NULL, pack, NULL, 1, TRUE);
+				NULL, pack, NULL, 1, TRUE, LD);
 		}
 	}
 	for (int j=0; j<TreeLists::len(inv->activity_nodes); j++) {
@@ -42,7 +42,7 @@ void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			inter_package *pack =
 				Inter::Package::defined_by_frame(inv->activity_nodes->list[j].node);
 			if (c++ == 0) @<Heading for these@>;
-			IndexRules::index_activity(OUT, I, pack, 1);
+			IndexRules::activity_box(OUT, I, pack, 1, LD);
 		}
 	}
 

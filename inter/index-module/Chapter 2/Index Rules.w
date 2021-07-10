@@ -125,13 +125,21 @@ int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, rul
 	return TRUE;
 }
 
+@ Actual emptiness is easier to spot:
+
+=
+int IndexRules::is_empty(inter_tree *I, inter_package *rb_pack) {
+	if ((rb_pack) && (IndexRules::no_rules(I, rb_pack) > 0)) return FALSE;
+	return TRUE;
+}
+
 @h Rulebook boxes.
 
 =
 int RS_unique_xtra_no = 77777;
-void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
+void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	text_stream *titling_text, text_stream *doc_link, inter_package *rb_pack,
-	char *text, int indent, int hide_behind_plus) {
+	text_stream *text, int indent, int hide_behind_plus, localisation_dictionary *LD) {
 	if (rb_pack == NULL) return;
 
 	int xtra_no = RS_unique_xtra_no++;
@@ -181,13 +189,13 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	if (n == 0) text = "There are no rules in this rulebook.";
+	if (n == 0) text = Localisation::read(LD, I"RS", I"Empty");
+	
 	if (text) {
 		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%s", text); HTML_CLOSE("p");
+		WRITE("%S", text); HTML_CLOSE("p");
 	} else {
-		int ignore_me = 0;
-		IndexRules::index_rulebook(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context(), &ignore_me);
+		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context());
 	}
 	if (hide_behind_plus) {
 		IndexUtilities::extra_div_close(OUT, col);
@@ -204,9 +212,23 @@ void IndexRules::index_rules_box(OUTPUT_STREAM, tree_inventory *inv,
 	if (at > 0) IndexUtilities::link(OUT, at);
 
 @ =
-void IndexRules::index_rulebook(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
-	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, resp_count);
+int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc) {
+	int resp_count = 0;
+	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, &resp_count);
 	if (t > 0) HTML_CLOSE("p");
+	return resp_count;
+}
+
+int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an, inter_package *rb,
+	text_stream *key, text_stream *desc) {
+	int resp_count = 0;
+	IndexRules::list_suppress_indexed_links();
+	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree, IndexRules::find_rulebook(inv, key), desc,
+		IndexRules::action_context(an), &resp_count);
+	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc, IndexRules::no_rule_context(), &resp_count);
+	if (t > 0) HTML_CLOSE("p");
+	IndexRules::list_resume_indexed_links();
+	return resp_count;
 }
 
 int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
@@ -509,17 +531,12 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 }
 
 @ =
-void IndexRules::index_activity(OUTPUT_STREAM, inter_tree *I, inter_package *pack, int indent) {
-	int empty = (int) Metadata::read_optional_numeric(pack, I"^empty");
+void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pack,
+	int indent, localisation_dictionary *LD) {
+	int empty = (int) Metadata::read_optional_numeric(av_pack, I"^empty");
 	text_stream *text = NULL;
-	text_stream *doc_link = Metadata::read_optional_textual(pack, I"^documentation");
+	text_stream *doc_link = Metadata::read_optional_textual(av_pack, I"^documentation");
 	if (empty) text = I"There are no rules before, for or after this activity.";
-	IndexRules::activity_rules_box(OUT, I, doc_link, pack, text, indent, TRUE);
-}
-
-@ =
-void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *doc_link,
-	inter_package *av_pack, text_stream *text, int indent, int hide_behind_plus) {
 
 	int xtra_no = RS_unique_xtra_no++;
 
@@ -541,21 +558,16 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
 
-	if (hide_behind_plus) {
-		HTML::open_indented_p(OUT, indent+1, "tight");
-		IndexUtilities::extra_link(OUT, xtra_no);
-		if (n == 0) HTML::begin_colour(OUT, I"808080");
-		WRITE("%S", textual_name);
-		@<Write the titling line of an activity rules box@>;
-		WRITE(" (%d rule%s)", n, (n==1)?"":"s");
-		if (n == 0) HTML::end_colour(OUT);
-		HTML_CLOSE("p");
+	HTML::open_indented_p(OUT, indent+1, "tight");
+	IndexUtilities::extra_link(OUT, xtra_no);
+	if (n == 0) HTML::begin_colour(OUT, I"808080");
+	WRITE("%S", textual_name);
+	@<Write the titling line of an activity rules box@>;
+	WRITE(" (%d rule%s)", n, (n==1)?"":"s");
+	if (n == 0) HTML::end_colour(OUT);
+	HTML_CLOSE("p");
 
-		IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
-	} else {
-		HTML::open_indented_p(OUT, indent, "");
-		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
-	}
+	IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
 
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
@@ -589,10 +601,9 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	int ignore_me = 0;
-	IndexRules::index_rulebook(OUT, I, before_pack, I"before", IndexRules::no_rule_context(), &ignore_me);
-	IndexRules::index_rulebook(OUT, I, for_pack, I"for", IndexRules::no_rule_context(), &ignore_me);
-	IndexRules::index_rulebook(OUT, I, after_pack, I"after", IndexRules::no_rule_context(), &ignore_me);
+	IndexRules::rulebook_list(OUT, I, before_pack, I"before", IndexRules::no_rule_context());
+	IndexRules::rulebook_list(OUT, I, for_pack, I"for", IndexRules::no_rule_context());
+	IndexRules::rulebook_list(OUT, I, after_pack, I"after", IndexRules::no_rule_context());
 
 	inter_symbol *wanted = PackageTypes::get(I, I"_activity_xref");
 	inter_tree_node *D = Inter::Packages::definition(av_pack);
@@ -609,12 +620,7 @@ void IndexRules::activity_rules_box(OUTPUT_STREAM, inter_tree *I, text_stream *d
 		}
 	}
 
-	if (hide_behind_plus) {
-		IndexUtilities::extra_div_close(OUT, col);
-	} else {
-		HTML::close_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
-		HTML_CLOSE("p");
-	}
+	IndexUtilities::extra_div_close(OUT, col);
 }
 
 @<Write the titling line of an activity rules box@> =

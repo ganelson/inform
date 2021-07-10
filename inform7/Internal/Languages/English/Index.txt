@@ -113,6 +113,15 @@
 %Title = Standards
 %Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
 
+%Check =
+	Check rules are tied to specific actions, and there are too many to index here.
+	For instance, the check taking rules can only ever affect the taking action, so
+	they are indexed on the detailed index page for taking.
+%CarryOut =
+	Carry out rules are tied to specific actions, and there are too many to index here.
+%Report =
+	Report rules are tied to specific actions, and there are too many to index here.
+
 %%Xt
 
 %Title = Extras
@@ -137,6 +146,8 @@
 
 %Title = Rules
 %Heading = General rules about scenes
+
+%Empty = There are no rules in this rulebook.
 
 %%World
 

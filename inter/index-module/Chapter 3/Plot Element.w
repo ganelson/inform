@@ -263,8 +263,7 @@ fact, end.
 			}
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>%S</i>", Metadata::read_textual(pack, I"^printed_name")); HTML_CLOSE("p");
-			int ignore_me = 0;
-			IndexRules::index_rulebook(OUT, I, pack, I"", IndexRules::scene_context(ssc), &ignore_me);
+			IndexRules::rulebook_list(OUT, I, pack, I"", IndexRules::scene_context(ssc));
 		}
 	}
 
@@ -319,11 +318,10 @@ fact, end.
 @<Index the rules which apply when this scene end occurs@> =
 	inter_symbol *rb = PlotElement::end_rulebook(ssc->ends[end]);
 	inter_package *rb_pack = Inter::Packages::container(rb->definition);
-	if (IndexRules::no_rules(I, rb_pack) > 0) {
+	if (IndexRules::is_empty(I, rb_pack) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
-		int ignore_me = 0;
-		IndexRules::index_rulebook(OUT, I, rb_pack, I"", IndexRules::no_rule_context(), &ignore_me);
+		IndexRules::rulebook_list(OUT, I, rb_pack, I"", IndexRules::no_rule_context());
 	}
 
 @h Table of Scenes.

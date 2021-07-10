@@ -147,11 +147,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	int resp_count = 0;
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	if (oow == FALSE) {
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion", &resp_count);
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt", &resp_count);
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for", &resp_count);
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before", &resp_count);
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of", &resp_count);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of");
 	}
 	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
@@ -160,11 +160,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	inter_package *carry_out_pack = Inter::Packages::container(carry_out_s->definition);
 	inter_package *report_pack = Inter::Packages::container(report_s->definition);
 
-	GroupedElement::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check", &resp_count);
-	GroupedElement::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out", &resp_count);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check");
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out");
 	if (oow == FALSE)
-		GroupedElement::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after", &resp_count);
-	GroupedElement::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report", &resp_count);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after");
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report");
 	if (resp_count > 1) {
 		WRITE("Click on the speech-bubble icons to see the responses, "
 			"or here to see all of them:");
@@ -208,14 +208,4 @@ void GroupedElement::index_stv_set(OUTPUT_STREAM, inter_tree *I, inter_package *
 			}
 		}
 	}
-}
-
-void GroupedElement::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an, inter_package *rb,
-	text_stream *key, text_stream *desc, int *resp_count) {
-	IndexRules::list_suppress_indexed_links();
-	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree, IndexRules::find_rulebook(inv, key), desc,
-		IndexRules::action_context(an), resp_count);
-	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc, IndexRules::no_rule_context(), resp_count);
-	if (t > 0) HTML_CLOSE("p");
-	IndexRules::list_resume_indexed_links();
 }
