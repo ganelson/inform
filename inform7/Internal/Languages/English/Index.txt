@@ -148,6 +148,7 @@
 %Heading = General rules about scenes
 
 %Empty = There are no rules in this rulebook.
+%Nameless = nameless
 
 %%World
 

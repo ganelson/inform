@@ -133,79 +133,81 @@ int IndexRules::is_empty(inter_tree *I, inter_package *rb_pack) {
 	return TRUE;
 }
 
-@h Rulebook boxes.
+@h Unique extra-box IDs.
 
 =
 int RS_unique_xtra_no = 77777;
+int IndexRules::extra_ID(void) {
+	return RS_unique_xtra_no++;
+}
+
+@h Rulebook boxes.
+
+@d RULEBOOK_BOX_COLOUR "e0e0e0"
+
+=
 void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	text_stream *titling_text, text_stream *doc_link, inter_package *rb_pack,
-	text_stream *text, int indent, int hide_behind_plus, localisation_dictionary *LD) {
+	text_stream *disclaimer_instead, int indent, int place_in_expandable_box, localisation_dictionary *LD) {
 	if (rb_pack == NULL) return;
-
-	int xtra_no = RS_unique_xtra_no++;
-
-	char *col = "e0e0e0";
-
-	int n = IndexRules::no_rules(inv->of_tree, rb_pack);
 
 	TEMPORARY_TEXT(textual_name)
 	if (Str::len(titling_text) > 0) WRITE_TO(textual_name, "%S", titling_text);
-	else WRITE_TO(textual_name, "nameless");
+	else WRITE_TO(textual_name, "%S", Localisation::read(LD, I"RS", I"Nameless"));
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
 
-	if (hide_behind_plus) {
+	int n = IndexRules::no_rules(inv->of_tree, rb_pack);
+
+	if (place_in_expandable_box) {
+		int expand_id = IndexRules::extra_ID();
 		HTML::open_indented_p(OUT, indent+1, "tight");
-		IndexUtilities::extra_link(OUT, xtra_no);
+		IndexUtilities::extra_link(OUT, expand_id);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
 		WRITE("%S", textual_name);
-		@<Write the titling line of an index rules box@>;
+		@<Add links and such to the titling@>;
 		WRITE(" (%d rule%s)", n, (n==1)?"":"s");
 		if (n == 0) HTML::end_colour(OUT);
 		HTML_CLOSE("p");
-
-		IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
+		IndexUtilities::extra_div_open(OUT, expand_id, indent+1, RULEBOOK_BOX_COLOUR);
+		@<Index the contents of the rulebook box@>;
+		IndexUtilities::extra_div_close(OUT, RULEBOOK_BOX_COLOUR);
 	} else {
 		HTML::open_indented_p(OUT, indent, "");
-		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
+		HTML::open_coloured_box(OUT, RULEBOOK_BOX_COLOUR, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
+		@<Index the contents of the rulebook box@>;
+		HTML::close_coloured_box(OUT, RULEBOOK_BOX_COLOUR, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
+		HTML_CLOSE("p");
 	}
+	DISCARD_TEXT(textual_name)
+}
 
+@<Index the contents of the rulebook box@> =
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
-
 	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("<b>%S</b>", textual_name);
-	@<Write the titling line of an index rules box@>;
+	@<Add links and such to the titling@>;
 	HTML_CLOSE("p");
-
 	HTML::next_html_column_right_justified(OUT, 0);
-
 	HTML::open_indented_p(OUT, 1, "tight");
 	PasteButtons::paste_text(OUT, textual_name);
 	WRITE("&nbsp;<i>name</i>");
 	HTML_CLOSE("p");
-	DISCARD_TEXT(textual_name)
-
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	if (n == 0) text = Localisation::read(LD, I"RS", I"Empty");
-	
-	if (text) {
+	if (n == 0) {
 		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%S", text); HTML_CLOSE("p");
+		WRITE("%S", Localisation::read(LD, I"RS", I"Empty"));
+		HTML_CLOSE("p");
+	} else if (disclaimer_instead) {
+		HTML::open_indented_p(OUT, 2, "tight"); WRITE("%S", disclaimer_instead); HTML_CLOSE("p");
 	} else {
 		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context());
 	}
-	if (hide_behind_plus) {
-		IndexUtilities::extra_div_close(OUT, col);
-	} else {
-		HTML::close_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
-		HTML_CLOSE("p");
-	}
-}
 
-@<Write the titling line of an index rules box@> =
+@<Add links and such to the titling@> =
 	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
 	WRITE(" ... %S", Metadata::read_optional_textual(rb_pack, I"^focus"));
 	int at = (int) Metadata::read_optional_numeric(rb_pack, I"^at");
@@ -325,7 +327,7 @@ void IndexRules::br_show_linkage_icon(OUTPUT_STREAM, inter_package *prev) {
 =
 int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter_package *owner, rule_context rc) {
 	int no_responses_indexed = 0;
-	int response_box_id = RS_unique_xtra_no++;
+	int response_box_id = IndexRules::extra_ID();
 	text_stream *name = Metadata::read_optional_textual(R, I"^name");
 	text_stream *italicised_text = Metadata::read_optional_textual(R, I"^index_name");
 	text_stream *first_line = Metadata::read_optional_textual(R, I"^first_line");
@@ -530,7 +532,11 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 	}
 }
 
-@ =
+@
+
+@d ACTIVITY_BOX_COLOUR "e8e0c0"
+
+=
 void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pack,
 	int indent, localisation_dictionary *LD) {
 	int empty = (int) Metadata::read_optional_numeric(av_pack, I"^empty");
@@ -538,9 +544,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	text_stream *doc_link = Metadata::read_optional_textual(av_pack, I"^documentation");
 	if (empty) text = I"There are no rules before, for or after this activity.";
 
-	int xtra_no = RS_unique_xtra_no++;
-
-	char *col = "e8e0c0";
+	int expand_id = IndexRules::extra_ID();
 
 	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
 	inter_symbol *for_s = Metadata::read_symbol(av_pack, I"^for_rulebook");
@@ -559,7 +563,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	Str::put(start, Characters::tolower(Str::get(start)));
 
 	HTML::open_indented_p(OUT, indent+1, "tight");
-	IndexUtilities::extra_link(OUT, xtra_no);
+	IndexUtilities::extra_link(OUT, expand_id);
 	if (n == 0) HTML::begin_colour(OUT, I"808080");
 	WRITE("%S", textual_name);
 	@<Write the titling line of an activity rules box@>;
@@ -567,7 +571,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	if (n == 0) HTML::end_colour(OUT);
 	HTML_CLOSE("p");
 
-	IndexUtilities::extra_div_open(OUT, xtra_no, indent+1, col);
+	IndexUtilities::extra_div_open(OUT, expand_id, indent+1, ACTIVITY_BOX_COLOUR);
 
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
@@ -620,7 +624,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 		}
 	}
 
-	IndexUtilities::extra_div_close(OUT, col);
+	IndexUtilities::extra_div_close(OUT, ACTIVITY_BOX_COLOUR);
 }
 
 @<Write the titling line of an activity rules box@> =
