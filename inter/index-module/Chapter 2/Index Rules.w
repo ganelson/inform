@@ -133,6 +133,42 @@ int IndexRules::is_empty(inter_tree *I, inter_package *rb_pack) {
 	return TRUE;
 }
 
+int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
+	int N = 0;
+	if (rb_pack) {
+		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
+		inter_tree_node *D = Inter::Packages::definition(rb_pack);
+		LOOP_THROUGH_INTER_CHILDREN(C, D) {
+			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+				inter_package *entry = Inter::Package::defined_by_frame(C);
+				if (Inter::Packages::type(entry) == wanted)
+					N++;
+			}
+		}
+	}
+	return N;
+}
+
+@h Links between rules in rulebook listings.
+A notation is used to show how rulebook sorting affected the placement of
+adjacent rules in an index listing; but this notation can be temporarily
+switched off:
+
+=
+int IX_show_index_links = TRUE;
+
+void IndexRules::list_suppress_indexed_links(void) {
+	IX_show_index_links = FALSE;
+}
+
+void IndexRules::list_resume_indexed_links(void) {
+	IX_show_index_links = TRUE;
+}
+
+int IndexRules::showing_links(void) {
+	return IX_show_index_links;
+}
+
 @h Unique extra-box IDs.
 
 =
@@ -213,59 +249,47 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	int at = (int) Metadata::read_optional_numeric(rb_pack, I"^at");
 	if (at > 0) IndexUtilities::link(OUT, at);
 
-@ =
-int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc) {
+@h Two ways to list a rulebook.
+Firstly, the whole contents:
+
+=
+int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
+	text_stream *billing, rule_context rc) {
 	int resp_count = 0;
 	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, &resp_count);
 	if (t > 0) HTML_CLOSE("p");
 	return resp_count;
 }
 
-int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an, inter_package *rb,
-	text_stream *key, text_stream *desc) {
+@ Secondly, just the contents relevant to a given action:
+
+=
+int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an,
+	inter_package *rb, text_stream *key, text_stream *desc) {
 	int resp_count = 0;
 	IndexRules::list_suppress_indexed_links();
-	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree, IndexRules::find_rulebook(inv, key), desc,
+	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree,
+		IndexRules::find_rulebook(inv, key), desc,
 		IndexRules::action_context(an), &resp_count);
-	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc, IndexRules::no_rule_context(), &resp_count);
+	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc,
+		IndexRules::no_rule_context(), &resp_count);
 	if (t > 0) HTML_CLOSE("p");
 	IndexRules::list_resume_indexed_links();
 	return resp_count;
 }
 
-int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I, inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
-	int suppress_outcome = FALSE, t = initial_t;
+@ Either way, we end up here:
+
+=
+int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I,
+	inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
+	int suppress_outcome = FALSE, count = initial_t;
 	if (rb_pack == NULL) return 0;
 	if (Str::len(billing) > 0) {
 		if (rc.action_context) suppress_outcome = TRUE;
 		if (IndexRules::is_contextually_empty(I, rb_pack, rc)) suppress_outcome = TRUE;
 	}
-	t = IndexRules::index_booking_list(OUT, I, rb_pack, rc, billing, resp_count);
-	if (suppress_outcome == FALSE) IndexRules::index_outcomes(OUT, I, rb_pack);
-	IndexRules::rb_index_placements(OUT, I, rb_pack);
-	return t;
-}
-
-int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
-	int N = 0;
-	if (rb_pack) {
-		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
-		inter_tree_node *D = Inter::Packages::definition(rb_pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted)
-					N++;
-			}
-		}
-	}
-	return N;
-}
-
-int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
-	rule_context rc, text_stream *billing, int *resp_count) {
 	inter_package *prev = NULL;
-	int count = 0;
 	inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
 	inter_tree_node *D = Inter::Packages::definition(rb_pack);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -275,7 +299,10 @@ int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I, inter_package *
 				if (IndexRules::phrase_fits_rule_context(I, entry, rc)) {
 					if (count++ == 0) HTML::open_indented_p(OUT, 2, "indent");
 					else WRITE("<br>");
-					IndexRules::br_start_index_line(OUT, prev, billing);
+					if ((Str::len(billing) > 0) && (IndexRules::showing_links()))
+						@<Show a linkage icon@>;
+					WRITE("%S", billing);
+					WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
 					*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc);
 				}
 				prev = entry;
@@ -283,49 +310,37 @@ int IndexRules::index_booking_list(OUTPUT_STREAM, inter_tree *I, inter_package *
 		}
 	}
 	if (count > 0) HTML_CLOSE("p");
+	if (suppress_outcome == FALSE) IndexRules::index_outcomes(OUT, I, rb_pack);
+	IndexRules::rb_index_placements(OUT, I, rb_pack);
 	return count;
 }
 
-int IX_show_index_links = TRUE;
+@ As noted somewhere above, there's a notation for marking the relative specificity
+of adjacent rules in a listing:
 
-void IndexRules::list_suppress_indexed_links(void) {
-	IX_show_index_links = FALSE;
-}
-
-void IndexRules::list_resume_indexed_links(void) {
-	IX_show_index_links = TRUE;
-}
-
-void IndexRules::br_start_index_line(OUTPUT_STREAM, inter_package *prev, text_stream *billing) {
-	if ((Str::len(billing) > 0) && (IX_show_index_links)) IndexRules::br_show_linkage_icon(OUT, prev);
-	WRITE("%S", billing);
-	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-}
-
-@ And here's how the index links (if wanted) are chosen and plotted:
-
-=
-void IndexRules::br_show_linkage_icon(OUTPUT_STREAM, inter_package *prev) {
+@<Show a linkage icon@> =
 	text_stream *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
-	if ((prev == NULL) || (Str::len(Metadata::read_optional_textual(prev, I"^tooltip")) == 0)) {
+	if ((prev == NULL) ||
+		(Str::len(Metadata::read_optional_textual(prev, I"^tooltip")) == 0)) {
 		HTML::icon_with_tooltip(OUT, I"inform:/doc_images/rulenone.png",
 			I"start of rulebook", NULL);
-		return;
+	} else {
+		switch (Metadata::read_optional_numeric(prev, I"^specificity")) {
+			case 0: icon_name = I"inform:/doc_images/ruleless.png"; break;
+			case 1: icon_name = I"inform:/doc_images/ruleequal.png"; break;
+			case 2: icon_name = I"inform:/doc_images/rulemore.png"; break;
+			default: internal_error("unknown rule specificity");
+		}
+		HTML::icon_with_tooltip(OUT, icon_name,
+			Metadata::read_optional_textual(prev, I"^tooltip"),
+			Metadata::read_optional_textual(prev, I"^law"));
 	}
-	switch (Metadata::read_optional_numeric(prev, I"^specificity")) {
-		case 0: icon_name = I"inform:/doc_images/ruleless.png"; break;
-		case 1: icon_name = I"inform:/doc_images/ruleequal.png"; break;
-		case 2: icon_name = I"inform:/doc_images/rulemore.png"; break;
-		default: internal_error("unknown rule specificity");
-	}
-	HTML::icon_with_tooltip(OUT, icon_name,
-		Metadata::read_optional_textual(prev, I"^tooltip"), Metadata::read_optional_textual(prev, I"^law"));
-}
 
-@ And off we go:
+@h Listing a single rule.
 
 =
-int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter_package *owner, rule_context rc) {
+int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
+	inter_package *owner, rule_context rc) {
 	int no_responses_indexed = 0;
 	int response_box_id = IndexRules::extra_ID();
 	text_stream *name = Metadata::read_optional_textual(R, I"^name");
@@ -449,7 +464,8 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R, inter
 text to assert a change:
 
 =
-void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack, inter_package *resp_pack) {
+void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
+	inter_package *resp_pack) {
 	int marker = (int) Metadata::read_numeric(resp_pack, I"^marker");
 	text_stream *text = Metadata::read_textual(resp_pack, I"^index_text");
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
