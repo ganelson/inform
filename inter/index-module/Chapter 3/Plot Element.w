@@ -263,7 +263,7 @@ fact, end.
 			}
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>%S</i>", Metadata::read_textual(pack, I"^printed_name")); HTML_CLOSE("p");
-			IndexRules::rulebook_list(OUT, I, pack, I"", IndexRules::scene_context(ssc));
+			IndexRules::rulebook_list(OUT, I, pack, I"", IndexRules::scene_context(ssc), LD);
 		}
 	}
 
@@ -321,7 +321,7 @@ fact, end.
 	if (IndexRules::is_empty(I, rb_pack) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
-		IndexRules::rulebook_list(OUT, I, rb_pack, I"", IndexRules::no_rule_context());
+		IndexRules::rulebook_list(OUT, I, rb_pack, I"", IndexRules::no_rule_context(), LD);
 	}
 
 @h Table of Scenes.

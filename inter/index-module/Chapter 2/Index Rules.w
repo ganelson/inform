@@ -240,7 +240,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	} else if (disclaimer_instead) {
 		HTML::open_indented_p(OUT, 2, "tight"); WRITE("%S", disclaimer_instead); HTML_CLOSE("p");
 	} else {
-		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context());
+		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context(), LD);
 	}
 
 @<Add links and such to the titling@> =
@@ -254,9 +254,9 @@ Firstly, the whole contents:
 
 =
 int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
-	text_stream *billing, rule_context rc) {
+	text_stream *billing, rule_context rc, localisation_dictionary *LD) {
 	int resp_count = 0;
-	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, &resp_count);
+	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, &resp_count, LD);
 	if (t > 0) HTML_CLOSE("p");
 	return resp_count;
 }
@@ -265,14 +265,14 @@ int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pa
 
 =
 int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an,
-	inter_package *rb, text_stream *key, text_stream *desc) {
+	inter_package *rb, text_stream *key, text_stream *desc, localisation_dictionary *LD) {
 	int resp_count = 0;
 	IndexRules::list_suppress_indexed_links();
 	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree,
 		IndexRules::find_rulebook(inv, key), desc,
-		IndexRules::action_context(an), &resp_count);
+		IndexRules::action_context(an), &resp_count, LD);
 	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc,
-		IndexRules::no_rule_context(), &resp_count);
+		IndexRules::no_rule_context(), &resp_count, LD);
 	if (t > 0) HTML_CLOSE("p");
 	IndexRules::list_resume_indexed_links();
 	return resp_count;
@@ -282,7 +282,8 @@ int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 
 =
 int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I,
-	inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count) {
+	inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count,
+	localisation_dictionary *LD) {
 	int suppress_outcome = FALSE, count = initial_t;
 	if (rb_pack == NULL) return 0;
 	if (Str::len(billing) > 0) {
@@ -303,7 +304,7 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 						@<Show a linkage icon@>;
 					WRITE("%S", billing);
 					WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-					*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc);
+					*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc, LD);
 				}
 				prev = entry;
 			}
@@ -340,7 +341,7 @@ of adjacent rules in a listing:
 
 =
 int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
-	inter_package *owner, rule_context rc) {
+	inter_package *owner, rule_context rc, localisation_dictionary *LD) {
 	int no_responses_indexed = 0;
 	int response_box_id = IndexRules::extra_ID();
 	text_stream *name = Metadata::read_optional_textual(R, I"^name");
@@ -380,7 +381,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("&nbsp;<i>name</i> ");
 
 	Str::clear(S);
-	WRITE_TO(S, "The %S is not listed in the %S.\n", name,
+	Localisation::write_2(S, LD, I"RS", I"Unlist", name,
 		Metadata::read_optional_textual(owner, I"^printed_name"));
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
@@ -621,9 +622,9 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	IndexRules::rulebook_list(OUT, I, before_pack, I"before", IndexRules::no_rule_context());
-	IndexRules::rulebook_list(OUT, I, for_pack, I"for", IndexRules::no_rule_context());
-	IndexRules::rulebook_list(OUT, I, after_pack, I"after", IndexRules::no_rule_context());
+	IndexRules::rulebook_list(OUT, I, before_pack, I"before", IndexRules::no_rule_context(), LD);
+	IndexRules::rulebook_list(OUT, I, for_pack, I"for", IndexRules::no_rule_context(), LD);
+	IndexRules::rulebook_list(OUT, I, after_pack, I"after", IndexRules::no_rule_context(), LD);
 
 	inter_symbol *wanted = PackageTypes::get(I, I"_activity_xref");
 	inter_tree_node *D = Inter::Packages::definition(av_pack);

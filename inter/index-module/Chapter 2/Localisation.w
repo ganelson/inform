@@ -163,3 +163,23 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 	LOG("Localisation file error: %f, line %d:%d: %S\n",
 		F, line, col, err);
 }
+
+@
+
+=
+void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D,
+	text_stream *context, text_stream *key,
+	text_stream *val1, text_stream *val2) {
+	text_stream *prototype = Localisation::read(D, context, key);
+	for (int i=0; i<Str::len(prototype); i++) {
+		wchar_t c = Str::get_at(prototype, i);
+		if (c == '*') {
+			int n = ((int) (Str::get_at(prototype, i+1)) - (int) '0');
+			if (n == 1) WRITE("%S", val1);
+			if (n == 2) WRITE("%S", val2);
+			i++;
+		} else {
+			PUT(c);
+		}
+	}
+}

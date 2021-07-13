@@ -147,11 +147,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	int resp_count = 0;
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	if (oow == FALSE) {
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion");
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt");
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for");
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before");
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of", D);
 	}
 	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
@@ -160,11 +160,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	inter_package *carry_out_pack = Inter::Packages::container(carry_out_s->definition);
 	inter_package *report_pack = Inter::Packages::container(report_s->definition);
 
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check");
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out");
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check", D);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out", D);
 	if (oow == FALSE)
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after");
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report");
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after", D);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report", D);
 	if (resp_count > 1) {
 		WRITE("Click on the speech-bubble icons to see the responses, "
 			"or here to see all of them:");

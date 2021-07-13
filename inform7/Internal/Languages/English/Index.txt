@@ -149,6 +149,7 @@
 
 %Empty = There are no rules in this rulebook.
 %Nameless = nameless
+%Unlist = The *1 is not listed in the *2.
 
 %%World
 
