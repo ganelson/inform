@@ -167,16 +167,47 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 @
 
 =
+void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D,
+	text_stream *context, text_stream *key) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	Localisation::write_general(OUT, D, context, key, vals);
+}
+
+void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D,
+	text_stream *context, text_stream *key,
+	text_stream *val1) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	vals[1] = val1;
+	Localisation::write_general(OUT, D, context, key, vals);
+}
+
 void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D,
 	text_stream *context, text_stream *key,
 	text_stream *val1, text_stream *val2) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	vals[1] = val1; vals[2] = val2;
+	Localisation::write_general(OUT, D, context, key, vals);
+}
+
+@<Vacate the vals@> =
+	for (int i=0; i<10; i++) vals[i] = NULL;
+
+@
+
+=
+void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
+	text_stream *context, text_stream *key, text_stream **vals) {
 	text_stream *prototype = Localisation::read(D, context, key);
 	for (int i=0; i<Str::len(prototype); i++) {
 		wchar_t c = Str::get_at(prototype, i);
 		if (c == '*') {
-			int n = ((int) (Str::get_at(prototype, i+1)) - (int) '0');
-			if (n == 1) WRITE("%S", val1);
-			if (n == 2) WRITE("%S", val2);
+			wchar_t nc = Str::get_at(prototype, i+1);
+			int n = ((int) nc - (int) '0');
+			if ((n >= 0) && (n <= 9)) WRITE("%S", vals[n]);
+			else PUT(nc);
 			i++;
 		} else {
 			PUT(c);

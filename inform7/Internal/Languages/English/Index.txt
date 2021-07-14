@@ -150,6 +150,18 @@
 %Empty = There are no rules in this rulebook.
 %Nameless = nameless
 %Unlist = The *1 is not listed in the *2.
+%During = during *1
+%Response = The *1 response (*2) is "New text.".
+%Outcome = outcome
+%Success = a success
+%Failure = a failure
+%NoOutcome = no outcome
+%DefaultSuccess = default outcome is success
+%DefaultFailure = default outcome is failure
+%Activity = activity
+%BeforeActivity = Before *1
+%ForActivity = Rule for *1
+%AfterActivity = After *1
 
 %%World
 
