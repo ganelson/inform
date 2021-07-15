@@ -6,14 +6,13 @@ To write the Verbs element (Vb) in the index.
 
 =
 void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	IndexLexicon::stock(I);
 	HTML_OPEN("p"); WRITE("Verbs listed as \"for saying only\" are values of the kind \"verb\" "
 		"and can be used in adaptive text, but they have no meaning to Inform, so "
 		"they can't be used in sentences about what's in the story.");
 	HTML_CLOSE("p");
 	int verb_count = 0;
-	for (index_tlexicon_entry *lex = sorted_tlexicon; lex; lex = lex->sorted_next)
+	inter_lexicon *lexicon = InterpretIndex::get_lexicon();
+	for (index_lexicon_entry *lex = lexicon->first; lex; lex = lex->sorted_next)
 		if ((lex->part_of_speech == VERB_TLEXE) ||
 			(lex->part_of_speech == MVERB_TLEXE) ||
 			(lex->part_of_speech == PREP_TLEXE)) {
@@ -36,7 +35,7 @@ void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		}
 }
 
-void VerbsElement::tabulate_verbs(OUTPUT_STREAM, index_tlexicon_entry *lex, text_stream *key, char *tensename) {
+void VerbsElement::tabulate_verbs(OUTPUT_STREAM, index_lexicon_entry *lex, text_stream *key, char *tensename) {
 	text_stream *val = Metadata::read_optional_textual(lex->lex_package, key);
 	if (Str::len(key) > 0) {
 		HTML::open_indented_p(OUT, 2, "tight");

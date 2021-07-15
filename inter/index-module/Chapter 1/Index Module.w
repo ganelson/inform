@@ -33,7 +33,8 @@ void IndexModule::end(void) {
 @e localisation_dictionary_CLASS
 @e index_page_CLASS
 @e index_element_CLASS
-@e index_tlexicon_entry_CLASS
+@e inter_lexicon_CLASS
+@e index_lexicon_entry_CLASS
 @e simplified_scene_CLASS
 @e simplified_end_CLASS
 @e simplified_connector_CLASS
@@ -47,7 +48,8 @@ void IndexModule::end(void) {
 DECLARE_CLASS(localisation_dictionary)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
-DECLARE_CLASS(index_tlexicon_entry)
+DECLARE_CLASS(inter_lexicon)
+DECLARE_CLASS(index_lexicon_entry)
 DECLARE_CLASS(simplified_scene)
 DECLARE_CLASS(simplified_end)
 DECLARE_CLASS(simplified_connector)

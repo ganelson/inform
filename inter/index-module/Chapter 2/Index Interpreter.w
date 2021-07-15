@@ -204,6 +204,15 @@ inter_tree *InterpretIndex::get_tree(void) {
 	return indexing_tree;
 }
 
+inter_lexicon *indexing_lexicon = NULL;
+inter_lexicon *InterpretIndex::get_lexicon(void) {
+	if (indexing_lexicon == NULL) {
+		if (indexing_tree == NULL) internal_error("no indexing lexicon");
+		indexing_lexicon = IndexLexicon::stock(indexing_tree);
+	}
+	return indexing_lexicon;
+}
+
 @h Opening and closing HTML files.
 
 =

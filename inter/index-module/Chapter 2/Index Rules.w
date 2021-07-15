@@ -565,7 +565,9 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 	}
 }
 
-@
+@h Activity boxes.
+This is all just meant to convey visually that the three constituent rulebooks
+of an activity are part of a single construct:
 
 @d ACTIVITY_BOX_COLOUR "e8e0c0"
 

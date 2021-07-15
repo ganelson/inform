@@ -5,9 +5,8 @@ A lexicon for nouns, adjectives and verbs found in an Inter tree.
 @ The lexicon is the part of the Index which gives an alphabetised list of
 adjectives, nouns, verbs and other words which can be used in descriptions
 of things: it's the nearest thing to an index of the meanings inside Inform.
-This is in one sense quite an elaborate indexing mechanism, since it brings
-together meanings relating to various different Inform structures under a single
-umbrella, the "lexicon entry" structure:
+It brings together meanings relating to various different Inform structures
+under a single umbrella:
 
 @d COMMON_NOUN_TLEXE 1 /* a kind */
 @d PROPER_NOUN_TLEXE 2 /* an instance of "object" */
@@ -17,38 +16,35 @@ umbrella, the "lexicon entry" structure:
 @d PREP_TLEXE 7 /* a "to be upon..." sort of verb */
 @d MVERB_TLEXE 9 /* a meaningless verb */
 
-@ We can set entries either to excerpts of words from the source, or to
-any collation of up to 5 vocabulary entries.
-
 =
-typedef struct index_tlexicon_entry {
+typedef struct index_lexicon_entry {
 	struct text_stream *lemma;
 	int part_of_speech; /* one of those above */
 	char *category; /* textual description of said, e.g., |"adjective"| */
 	struct general_pointer entry_refers_to; /* depending on which part of speech */
-	struct parse_node *verb_defined_at; /* sentence where defined (verbs only) */
 	char *gloss_note; /* gloss on the definition, or |NULL| if none is provided */
 	struct inter_package *lex_package;
 	int link_to; /* word number in source text */
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
-	struct index_tlexicon_entry *sorted_next; /* next in lexicographic order */
+	struct index_lexicon_entry *sorted_next; /* next in lexicographic order */
 	CLASS_DEFINITION
-} index_tlexicon_entry;
+} index_lexicon_entry;
 
-@
-
-= (early code)
-index_tlexicon_entry *sorted_tlexicon = NULL; /* head of list in lexicographic order */
+typedef struct inter_lexicon {
+	struct linked_list *unsorted;
+	index_lexicon_entry *first; /* head of list in lexicographic order */
+	CLASS_DEFINITION
+} inter_lexicon;
 
 @ Lexicon entries are created by the following routine:
 
 =
-index_tlexicon_entry *IndexLexicon::lexicon_new_entry(text_stream *lemma, int part) {
-	index_tlexicon_entry *lex = CREATE(index_tlexicon_entry);
+index_lexicon_entry *IndexLexicon::lexicon_new_entry(text_stream *lemma, int part) {
+	index_lexicon_entry *lex = CREATE(index_lexicon_entry);
 	lex->lemma = Str::duplicate(lemma);
 	lex->part_of_speech = part;
 	lex->entry_refers_to = NULL_GENERAL_POINTER;
-	lex->category = NULL; lex->gloss_note = NULL; lex->verb_defined_at = NULL;
+	lex->category = NULL; lex->gloss_note = NULL;
 	lex->reduced_to_lower_case = Str::new();
 	lex->lex_package = NULL;
 	lex->link_to = 0;
@@ -58,21 +54,20 @@ index_tlexicon_entry *IndexLexicon::lexicon_new_entry(text_stream *lemma, int pa
 @ 
 
 =
-index_tlexicon_entry *IndexLexicon::new_entry_with_details(text_stream *lemma, int pos,
+index_lexicon_entry *IndexLexicon::new_entry_with_details(text_stream *lemma, int pos,
 	char *category, char *gloss) {
-	index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, pos);
+	index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, pos);
 	lex->lemma = lemma;
 	lex->category = category; lex->gloss_note = gloss;
 	return lex;
 }
 
-index_tlexicon_entry *IndexLexicon::new_main_verb(text_stream *infinitive, int part,
+index_lexicon_entry *IndexLexicon::new_main_verb(text_stream *infinitive, int part,
 	inter_package *pack) {
-	index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(NULL, part);
+	index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(NULL, part);
 	lex->lemma = infinitive;
 	lex->category = "verb";
 	lex->lex_package = pack;
-//	lex->verb_defined_at = current_sentence;
 	return lex;
 }
 
@@ -89,18 +84,18 @@ explanation of what it is: for instance,
 In a few cases, there is a further textual gloss to add.
 
 =
-void IndexLexicon::listing(OUTPUT_STREAM, int proper_nouns_only) {
-	index_tlexicon_entry *lex;
+void IndexLexicon::listing(OUTPUT_STREAM, inter_lexicon *lexicon, int proper_nouns_only) {
+	index_lexicon_entry *lex;
 	wchar_t current_initial_letter = '?';
 	int verb_count = 0, proper_noun_count = 0, c;
-	for (lex = sorted_tlexicon; lex; lex = lex->sorted_next)
+	for (lex = lexicon->first; lex; lex = lex->sorted_next)
 		if (lex->part_of_speech == PROPER_NOUN_TLEXE)
 			proper_noun_count++;
 	if (proper_nouns_only) {
 		HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 		HTML::first_html_column(OUT, 0);
 	}
-	for (c = 0, lex = sorted_tlexicon; lex; lex = lex->sorted_next) {
+	for (c = 0, lex = lexicon->first; lex; lex = lex->sorted_next) {
 		if (proper_nouns_only) { if (lex->part_of_speech != PROPER_NOUN_TLEXE) continue; }
 		else { if (lex->part_of_speech == PROPER_NOUN_TLEXE) continue; }
 		if ((proper_nouns_only) && (c == proper_noun_count/2)) HTML::next_html_column(OUT, 0);
@@ -206,69 +201,75 @@ different contexts. We want to quote all of those.
 The following produces the table of verbs in the Phrasebook Index page.
 
 =
-inter_tree *tree_stored_by_lexicon = NULL;
-void IndexLexicon::stock(inter_tree *I) {
-	if (I == tree_stored_by_lexicon) return;
-	tree_stored_by_lexicon = I;
+inter_lexicon *IndexLexicon::stock(inter_tree *I) {
+	inter_lexicon *lexicon = CREATE(inter_lexicon);
+	lexicon->first = NULL;
+	lexicon->unsorted = NEW_LINKED_LIST(index_lexicon_entry);
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->verb_nodes, Synoptic::module_order);
 	for (int i=0; i<TreeLists::len(inv->verb_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_nodes->list[i].node);
-		index_tlexicon_entry *lex;
+		index_lexicon_entry *lex;
 		if (Metadata::read_numeric(pack, I"^meaningless"))
 			lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
 		else
 			lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
+		ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 	}
 	for (int i=0; i<TreeLists::len(inv->preposition_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->preposition_nodes->list[i].node);
-		index_tlexicon_entry *lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
+		index_lexicon_entry *lex = IndexLexicon::new_main_verb(Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 	for (int i=0; i<TreeLists::len(inv->adjective_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->adjective_nodes->list[i].node);
 		text_stream *lemma = Metadata::read_textual(pack, I"^text");
 		if (Str::len(lemma) > 0) {
-			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
+			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
 			lex->category = "adjective";
 			lex->lex_package = pack;		
+			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		}
 	}
 	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 		if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object"))) {
-			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
+			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;			
+			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		}
 	}
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
-			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
+			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;
+			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		} else {
-			index_tlexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
+			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(Metadata::read_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;
+			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		}
 	}
 	@<Create lower-case forms of all lexicon entries dash@>;
 	@<Sort the lexicon into alphabetical order dash@>;
+	return lexicon;
 }
 
 @ Before we can sort the lexicon, we need to turn its disparate forms of name
 into a single, canonical, lower-case representation.
 
 @<Create lower-case forms of all lexicon entries dash@> =
-	index_tlexicon_entry *lex;
-	LOOP_OVER(lex, index_tlexicon_entry) {
+	index_lexicon_entry *lex;
+	LOOP_OVER_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted) {
 		Str::copy(lex->reduced_to_lower_case, lex->lemma);
 		LOOP_THROUGH_TEXT(pos, lex->reduced_to_lower_case)
 			Str::put(pos, Characters::tolower(Str::get(pos)));
@@ -280,16 +281,16 @@ more than 1000 or so entries, so the speed penalty for insertion rather
 than (say) quicksort is not great.
 
 @<Sort the lexicon into alphabetical order dash@> =
-	index_tlexicon_entry *lex;
-	LOOP_OVER(lex, index_tlexicon_entry) {
-		index_tlexicon_entry *lex2, *last_lex;
-		if (sorted_tlexicon == NULL) {
-			sorted_tlexicon = lex; lex->sorted_next = NULL; continue;
+	index_lexicon_entry *lex;
+	LOOP_OVER_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted) {
+		index_lexicon_entry *lex2, *last_lex;
+		if (lexicon->first == NULL) {
+			lexicon->first = lex; lex->sorted_next = NULL; continue;
 		}
-		for (last_lex = NULL, lex2 = sorted_tlexicon; lex2;
+		for (last_lex = NULL, lex2 = lexicon->first; lex2;
 			last_lex = lex2, lex2 = lex2->sorted_next)
 			if (Str::cmp(lex->reduced_to_lower_case, lex2->reduced_to_lower_case) < 0) {
-				if (last_lex == NULL) sorted_tlexicon = lex;
+				if (last_lex == NULL) lexicon->first = lex;
 				else last_lex->sorted_next = lex;
 				lex->sorted_next = lex2; goto Inserted;
 			}
