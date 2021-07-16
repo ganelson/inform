@@ -16,5 +16,5 @@ void LexiconElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		"with rules like 'Instead of taking an empty container, ...'.");
 	HTML_CLOSE("span");
 	HTML_CLOSE("p");
-	IndexLexicon::listing(OUT, InterpretIndex::get_lexicon(), FALSE);
+	IndexLexicon::listing(OUT, InterpretIndex::get_lexicon(), FALSE, LD);
 }

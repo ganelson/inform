@@ -93,6 +93,10 @@
 %Title = Lexicon
 %Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
 
+%ToBe = *1, to be
+%KindOf = a kind of *1
+%ValueOf = value of *1
+
 %%Rl
 
 %Title = Relations
