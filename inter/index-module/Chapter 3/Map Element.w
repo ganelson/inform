@@ -28,19 +28,19 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
 	faux_instance *I;
-	LOOP_OVER_OBJECTS(I)
+	LOOP_OVER_FAUX_INSTANCES(I)
 		if ((MapElement::no_detail_index(I))
 			|| (FauxInstances::is_a_direction(I)))
 			FauxInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =
 	faux_instance *reg;
-	LOOP_OVER_OBJECTS(reg)
+	LOOP_OVER_FAUX_INSTANCES(reg)
 		if (FauxInstances::is_a_region(reg)) {
 			int subheaded = FALSE;
 			FauxInstances::increment_indexing_count(reg);
 			faux_instance *rm;
-			LOOP_OVER_ROOMS(rm)
+			LOOP_OVER_FAUX_ROOMS(rm)
 				if (FauxInstances::region_of(rm) == reg) {
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
@@ -62,7 +62,7 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 
 @<Give room details for rooms outside any region in the World index@> =
 	faux_instance *I;
-	LOOP_OVER_ROOMS(I)
+	LOOP_OVER_FAUX_ROOMS(I)
 		if (FauxInstances::indexed_yet(I) == FALSE) {
 			@<Start a new details panel on the World index@>;
 			PL::HTMLMap::render_single_room_as_HTML(OUT, I);
@@ -76,7 +76,7 @@ will be things which are offstage (and their contents and any parts thereof):
 @<Give details of everything still unmentioned in the World index@> =
 	int out_of_play_count = 0;
 	faux_instance *I;
-	LOOP_OVER_OBJECTS(I)
+	LOOP_OVER_FAUX_INSTANCES(I)
 		if ((FauxInstances::indexed_yet(I) == FALSE) &&
 			(FauxInstances::progenitor(I) == NULL)) {
 			@<Start a new details panel on the World index@>;
@@ -176,7 +176,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 @<Index the kind attribution part of the object citation@> =
 	if ((MapElement::annotate_door(OUT, I) == FALSE) &&
 		(MapElement::annotate_player(OUT, I) == FALSE)) {
-		if (I->specify_kind) {
+		if (FauxInstances::specify_kind(I)) {
 			WRITE(" - <i>");
 			FauxInstances::write_kind(OUT, I);
 			WRITE("</i>");
@@ -184,7 +184,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 	}
 
 @<Index the link icons part of the object citation@> =
-	if (I->created_at > 0) IndexUtilities::link(OUT, I->created_at);
+	if (FauxInstances::created_at(I) > 0) IndexUtilities::link(OUT, FauxInstances::created_at(I));
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 
@@ -201,7 +201,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 @<Add the chain of kinds@> =
 	HTML::open_indented_p(OUT, 1, "tight");
 	FauxInstances::write_kind_chain(OUT, I);
-	if (I->kind_set_at > 0) IndexUtilities::link(OUT, I->kind_set_at);
+	if (FauxInstances::kind_set_at(I) > 0) IndexUtilities::link(OUT, FauxInstances::kind_set_at(I));
 	WRITE(" &gt; <b>");
 	FauxInstances::write_name(OUT, I);
 	WRITE("</b>");
@@ -251,7 +251,7 @@ int MapElement::add_room_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 int MapElement::add_region_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 	if ((O) && (FauxInstances::is_a_room(O))) {
 		faux_instance *R = FauxInstances::region_of(O);
-		if (R) PL::HTMLMap::colour_chip(OUT, O, R, O->region_set_at);
+		if (R) PL::HTMLMap::colour_chip(OUT, O, R, FauxInstances::region_set_at(O));
 	}
 	return FALSE;
 }
@@ -290,8 +290,8 @@ void MapElement::index_spatial_relationship(OUTPUT_STREAM, faux_instance *I) {
 		/* we could set |rel| to "in" here, but the index omits that for clarity */
 		if (FauxInstances::is_a_supporter(P)) rel = "on";
 		if (FauxInstances::is_a_person(P)) rel = "carried";
-		if (I->is_a_part) rel = "part";
-		if (I->is_worn) rel = "worn";
+		if (FauxInstances::is_a_part(I)) rel = "part";
+		if (FauxInstances::is_worn(I)) rel = "worn";
 	}
 	if (rel) WRITE("<i>%s</i> ", rel);
 }
@@ -301,7 +301,7 @@ it already turns up under its owner.
 
 =
 int MapElement::no_detail_index(faux_instance *I) {
-	if (I->is_a_part) return TRUE;
+	if (FauxInstances::is_a_part(I)) return TRUE;
 	return FALSE;
 }
 
@@ -322,7 +322,7 @@ void MapElement::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth
 	if ((FauxInstances::is_a_room(I)) &&
 		(FauxInstances::is_a_door(I) == FALSE)) {
 		faux_instance *I2;
-		LOOP_OVER_OBJECTS(I2) {
+		LOOP_OVER_FAUX_INSTANCES(I2) {
 			if ((FauxInstances::is_a_door(I2)) && (FauxInstances::progenitor(I2) != I)) {
 				faux_instance *A = NULL, *B = NULL;
 				FauxInstances::get_door_data(I2, &A, &B);
@@ -350,11 +350,11 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 			char *rel = "in";
 			if (FauxInstances::is_a_supporter(P)) rel = "on";
 			if (FauxInstances::is_a_person(P)) rel = "carried by";
-			if (O->is_a_part) rel = "part of";
-			if (O->is_worn) rel = "worn by";
+			if (FauxInstances::is_a_part(O)) rel = "part of";
+			if (FauxInstances::is_worn(O)) rel = "worn by";
 			WRITE("%s ", rel);
 			FauxInstances::write_name(OUT, P);
-			int at = O->progenitor_set_at;
+			int at = FauxInstances::progenitor_set_at(O);
 			if (at) IndexUtilities::link(OUT, at);
 
 		}
@@ -380,8 +380,8 @@ void MapElement::index_backdrop_further(OUTPUT_STREAM, faux_instance *loc, int d
 			MapElement::index(OUT, bd, depth+1, details);
 		}
 	} else {
-		LOOP_OVER_BACKDROPS(bd)
-			if (bd->is_everywhere) {
+		LOOP_OVER_FAUX_BACKDROPS(bd)
+			if (FauxInstances::is_everywhere(bd)) {
 				if (++discoveries == 1) @<Insert fore-matter@>;
 				MapElement::index(OUT, bd, depth+1, details);
 			}
