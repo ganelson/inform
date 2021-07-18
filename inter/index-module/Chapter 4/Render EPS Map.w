@@ -4,11 +4,12 @@ To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
 @ =
 void RenderEPSMap::prepare_universe(inter_tree *I) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	@<Create the main EPS map super-level@>;
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
 
-	FauxInstances::decode_hints(I, 2);
+	FauxInstances::decode_hints(faux_set, I, 2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
 }
@@ -38,7 +39,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F) {
 
 	eml->y_max = -100000, eml->y_min = 100000;
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (Room_position(R).z == z) {
 			if (Room_position(R).y < eml->y_min) eml->y_min = Room_position(R).y;
 			if (Room_position(R).y > eml->y_max) eml->y_max = Room_position(R).y;
@@ -55,14 +56,14 @@ void RenderEPSMap::render_map_as_EPS(filename *F) {
 	ConfigureIndexMap::prepare_map_parameter_scope(&(eml->map_parameters));
 	ConfigureIndexMap::put_text_mp(I"subtitle", &(eml->map_parameters), eml->titling);
 
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (Room_position(R).z == z) {
 			FauxInstances::get_parameters(R)->wider_scope = &(eml->map_parameters);
 		}
 
 @<Inherit EPS room colours from those used in the World Index@> =
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		ConfigureIndexMap::put_text_mp(I"room-colour", FauxInstances::get_parameters(R),
 			R->fimd.colour);
 
@@ -85,11 +86,13 @@ void RenderEPSMap::EPS_compile_map(OUTPUT_STREAM) {
 		blw, /* total width of the EPS map area (not counting border) */
 		border = ConfigureIndexMap::get_int_mp(I"border-size", NULL),
 		vskip = ConfigureIndexMap::get_int_mp(I"vertical-spacing", NULL);
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	@<Compute the dimensions of the EPS map@>;
 	int bounding_box_width = blw+2*border, bounding_box_height = blh+2*border;
 
 	RenderEPSMap::EPS_compile_header(OUT, bounding_box_width, bounding_box_height,
-		ConfigureIndexMap::get_text_mp(I"title-font", NULL), ConfigureIndexMap::get_int_mp(I"title-size", NULL));
+		ConfigureIndexMap::get_text_mp(I"title-font", NULL),
+		ConfigureIndexMap::get_int_mp(I"title-size", NULL));
 
 	if (ConfigureIndexMap::get_int_mp(I"map-outline", NULL))
 		@<Draw a big rectangular outline around the entire EPS map@>;
@@ -105,13 +108,13 @@ void RenderEPSMap::EPS_compile_map(OUTPUT_STREAM) {
 			@<Draw the title for this EPS map level@>;
 		if (eml->contains_rooms) {
 			faux_instance *R;
-			LOOP_OVER_FAUX_ROOMS(R)
+			LOOP_OVER_FAUX_ROOMS(faux_set, R)
 				if (Room_position(R).z == eml->map_level)
 					@<Establish EPS coordinates for this room@>;
-			LOOP_OVER_FAUX_ROOMS(R)
+			LOOP_OVER_FAUX_ROOMS(faux_set, R)
 				if (Room_position(R).z == eml->map_level)
 					@<Draw the map connections from this room as EPS paths@>;
-			LOOP_OVER_FAUX_ROOMS(R)
+			LOOP_OVER_FAUX_ROOMS(faux_set, R)
 				if (Room_position(R).z == eml->map_level)
 					@<Draw the boxes for the rooms themselves@>;
 		}

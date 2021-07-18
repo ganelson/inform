@@ -204,6 +204,7 @@ inter_tree *InterpretIndex::get_tree(void) {
 	return indexing_tree;
 }
 
+@ =
 inter_lexicon *indexing_lexicon = NULL;
 inter_lexicon *InterpretIndex::get_lexicon(void) {
 	if (indexing_lexicon == NULL) {
@@ -211,6 +212,16 @@ inter_lexicon *InterpretIndex::get_lexicon(void) {
 		indexing_lexicon = IndexLexicon::stock(indexing_tree);
 	}
 	return indexing_lexicon;
+}
+
+@ =
+faux_instance_set *indexing_fis = NULL;
+faux_instance_set *InterpretIndex::get_faux_instances(void) {
+	if (indexing_fis == NULL) {
+		if (indexing_tree == NULL) internal_error("no indexing lexicon");
+		indexing_fis = FauxInstances::make_faux(indexing_tree);
+	}
+	return indexing_fis;
 }
 
 @h Opening and closing HTML files.

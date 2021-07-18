@@ -86,8 +86,8 @@ This is usually the room in which the player begins.
 
 =
 int PL::SpatialMap::benchmark_level(void) {
-	if (faux_benchmark == NULL) return 0;
-	return Room_position(faux_benchmark).z;
+	if (FauxInstances::benchmark() == NULL) return 0;
+	return Room_position(FauxInstances::benchmark()).z;
 }
 
 @ We are going to be iterating through the set of rooms often. Looping over
@@ -135,6 +135,7 @@ int partitioned_into_components = FALSE;
 
 void PL::SpatialMap::establish_spatial_coordinates(void) {
 	if (spatial_coordinates_established) return;
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	Universe = Geometry::empty_cuboid();
 	@<(1) Create the spatial relationship arrays@>;
 	@<(2) Partition the set of rooms into component submaps@>;
@@ -211,10 +212,11 @@ direction) with page direction 6:
 
 =
 faux_instance *PL::SpatialMap::mapped_as_if(faux_instance *I) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	int i = I->direction_index;
 	if (story_dir_to_page_dir[i] == i) return NULL;
 	faux_instance *D;
-	LOOP_OVER_FAUX_DIRECTIONS(D)
+	LOOP_OVER_FAUX_DIRECTIONS(faux_set, D)
 		if (D->direction_index == story_dir_to_page_dir[i])
 			return D;
 	return NULL;
@@ -454,7 +456,7 @@ As can be seen, step (1) runs in $O(R)$ time, where $R$ is the number of rooms.
 
 @<(1) Create the spatial relationship arrays@> =
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		int i;
 		LOOP_OVER_LATTICE_DIRECTIONS(i) {
 			faux_instance *T = PL::SpatialMap::room_exit_as_indexed(R, i, NULL);
@@ -792,8 +794,9 @@ since its rooms have all moved out.
 =
 void PL::SpatialMap::create_submaps_from_zones(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		if (R->fimd.zone == Z1_number)
 			PL::SpatialMap::add_room_to_submap(R, Zone1);
 		else if (R->fimd.zone == Z2_number)
@@ -809,8 +812,9 @@ reverse process exactly.
 =
 void PL::SpatialMap::create_zones_from_submaps(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		if (R->fimd.submap == Zone1) {
 			PL::SpatialMap::add_room_to_submap(R, sub);
 			R->fimd.zone = Z1_number;
@@ -832,9 +836,9 @@ We ensure that the first-created component is the one containing the
 benchmark room.
 
 @<(2) Partition the set of rooms into component submaps@> =
-	PL::SpatialMap::create_map_component_around(faux_benchmark);
+	PL::SpatialMap::create_map_component_around(FauxInstances::benchmark());
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (R->fimd.submap == NULL)
 			PL::SpatialMap::create_map_component_around(R);
 
@@ -2531,6 +2535,7 @@ rooms connected that way are by definition in the same component.
 =
 int PL::SpatialMap::cross_component_links(connected_submap *sub, faux_instance **outer, faux_instance **inner,
 	int *heat, int posnd) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	int no_links = 0;
 	if (heat) *heat = 0;
 	faux_instance *R;
@@ -2547,7 +2552,7 @@ int PL::SpatialMap::cross_component_links(connected_submap *sub, faux_instance *
 			}
 		}
 		faux_instance *S;
-		LOOP_OVER_FAUX_ROOMS(S) {
+		LOOP_OVER_FAUX_ROOMS(faux_set, S) {
 			if (S->fimd.submap == sub) continue;
 			if ((posnd) && (S->fimd.submap->positioned == FALSE)) continue;
 			int d;
@@ -2578,7 +2583,7 @@ running time in check.
 			if (reg) {
 				faux_instance *S, *closest_S = NULL;
 				int closest = 0;
-				LOOP_OVER_FAUX_ROOMS(S)
+				LOOP_OVER_FAUX_ROOMS(faux_set, S)
 					if ((S != R) && (FauxInstances::region_of(S) == reg))
 						if ((posnd == FALSE) || (S->fimd.submap->positioned)) {
 							int diff = 2*(R->allocation_id - S->allocation_id);
@@ -2634,7 +2639,7 @@ Short and sweet. We make |Universe| the minimal-sized cuboid containing each roo
 @<(5) Find the universal bounding cuboid@> =
 	Universe = Geometry::empty_cuboid();
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		Geometry::adjust_cuboid(&Universe, Room_position(R));
 
 @h Stage 6, removing blank planes.
@@ -2649,7 +2654,7 @@ locking means that blank planes are inevitable.
 		for (z = Universe.corner1.z - 1; z >= Universe.corner0.z + 1; z--) {
 			int occupied = FALSE;
 			faux_instance *R;
-			LOOP_OVER_FAUX_ROOMS(R)
+			LOOP_OVER_FAUX_ROOMS(faux_set, R)
 				if (Room_position(R).z == z) occupied = TRUE;
 			if (occupied == FALSE) {
 				blank_z = z;
@@ -2658,7 +2663,7 @@ locking means that blank planes are inevitable.
 		}
 		if (blank_plane_found == FALSE) break;
 		faux_instance *R;
-		LOOP_OVER_FAUX_ROOMS(R)
+		LOOP_OVER_FAUX_ROOMS(faux_set, R)
 			if (Room_position(R).z > blank_z)
 				PL::SpatialMap::translate_room(R, D_vector);
 	}
@@ -2668,8 +2673,9 @@ locking means that blank planes are inevitable.
 =
 void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 	text_stream *RW = FauxInstances::get_name(R); /* name of the origin room */
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	faux_instance *dir;
-	LOOP_OVER_FAUX_DIRECTIONS(dir) {
+	LOOP_OVER_FAUX_DIRECTIONS(faux_set, dir) {
 		int i = dir->direction_index;
 		faux_instance *opp = FauxInstances::opposite_direction(dir);
 		int od = opp?(opp->direction_index):(-1);
@@ -2718,7 +2724,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 		}
 	}
 	int k = 0;
-	LOOP_OVER_FAUX_DIRECTIONS(dir) {
+	LOOP_OVER_FAUX_DIRECTIONS(faux_set, dir) {
 		int i = dir->direction_index;
 		if (PL::SpatialMap::room_exit(R, i, NULL)) continue;
 		k++;
@@ -2747,16 +2753,6 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 
 =
 void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
-/*	WRITE("%d dirs, %d rooms\n", FauxInstances::no_directions(), FauxInstances::no_rooms());
-	faux_instance *I;
-	LOOP_OVER_FAUX_INSTANCES(I) {
-		WRITE("%S\n", FauxInstances::get_name(I));
-		if (FauxInstances::is_a_direction(I)) {
-			WRITE("  Opposite %S\n", FauxInstances::get_name(FauxInstances::opposite_direction(I)));
-			WRITE("  Index %d, Number %d\n", I->direction_index, I->direction_index);
-		}
-	}
-*/
 	connected_submap *sub;
 	LOOP_OVER(sub, connected_submap) {
 		WRITE("Map component %d: extent (%d...%d, %d...%d, %d...%d): population %d\n",
@@ -2772,7 +2768,7 @@ void PL::SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 				Room_position(R).y,
 				Room_position(R).z);
 			FauxInstances::write_name(OUT, R);
-			if (R == faux_benchmark) WRITE("  (benchmark)");
+			if (R == FauxInstances::benchmark()) WRITE("  (benchmark)");
 			WRITE("\n");
 		}
 		WRITE("\n");

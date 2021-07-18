@@ -8,7 +8,7 @@ To write the Map element (Mp) in the index.
 int suppress_panel_changes = FALSE;
 void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only) {
 	PL::SpatialMap::initialise_page_directions();
-	FauxInstances::make_faux();
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	PL::SpatialMap::establish_spatial_coordinates();
 	if (test_only) {
 		PL::SpatialMap::perform_map_internal_test(OUT);
@@ -28,19 +28,19 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
 	faux_instance *I;
-	LOOP_OVER_FAUX_INSTANCES(I)
+	LOOP_OVER_FAUX_INSTANCES(faux_set, I)
 		if ((MapElement::no_detail_index(I))
 			|| (FauxInstances::is_a_direction(I)))
 			FauxInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =
 	faux_instance *reg;
-	LOOP_OVER_FAUX_INSTANCES(reg)
+	LOOP_OVER_FAUX_INSTANCES(faux_set, reg)
 		if (FauxInstances::is_a_region(reg)) {
 			int subheaded = FALSE;
 			FauxInstances::increment_indexing_count(reg);
 			faux_instance *rm;
-			LOOP_OVER_FAUX_ROOMS(rm)
+			LOOP_OVER_FAUX_ROOMS(faux_set, rm)
 				if (FauxInstances::region_of(rm) == reg) {
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
@@ -62,7 +62,7 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 
 @<Give room details for rooms outside any region in the World index@> =
 	faux_instance *I;
-	LOOP_OVER_FAUX_ROOMS(I)
+	LOOP_OVER_FAUX_ROOMS(faux_set, I)
 		if (FauxInstances::indexed_yet(I) == FALSE) {
 			@<Start a new details panel on the World index@>;
 			PL::HTMLMap::render_single_room_as_HTML(OUT, I);
@@ -76,7 +76,7 @@ will be things which are offstage (and their contents and any parts thereof):
 @<Give details of everything still unmentioned in the World index@> =
 	int out_of_play_count = 0;
 	faux_instance *I;
-	LOOP_OVER_FAUX_INSTANCES(I)
+	LOOP_OVER_FAUX_INSTANCES(faux_set, I)
 		if ((FauxInstances::indexed_yet(I) == FALSE) &&
 			(FauxInstances::progenitor(I) == NULL)) {
 			@<Start a new details panel on the World index@>;
@@ -184,7 +184,8 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details) 
 	}
 
 @<Index the link icons part of the object citation@> =
-	if (FauxInstances::created_at(I) > 0) IndexUtilities::link(OUT, FauxInstances::created_at(I));
+	if (FauxInstances::created_at(I) > 0)
+		IndexUtilities::link(OUT, FauxInstances::created_at(I));
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 
@@ -309,6 +310,7 @@ int MapElement::no_detail_index(faux_instance *I) {
 
 =
 void MapElement::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth, int details) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
 	if (FauxInstances::incorp_child(I)) {
 		faux_instance *I2 = FauxInstances::incorp_child(I);
@@ -322,7 +324,7 @@ void MapElement::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth
 	if ((FauxInstances::is_a_room(I)) &&
 		(FauxInstances::is_a_door(I) == FALSE)) {
 		faux_instance *I2;
-		LOOP_OVER_FAUX_INSTANCES(I2) {
+		LOOP_OVER_FAUX_INSTANCES(faux_set, I2) {
 			if ((FauxInstances::is_a_door(I2)) && (FauxInstances::progenitor(I2) != I)) {
 				faux_instance *A = NULL, *B = NULL;
 				FauxInstances::get_door_data(I2, &A, &B);
@@ -372,6 +374,7 @@ void MapElement::index_player_further(OUTPUT_STREAM, faux_instance *I, int depth
 
 void MapElement::index_backdrop_further(OUTPUT_STREAM, faux_instance *loc, int depth,
 	int details, int how) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	int discoveries = 0;
 	faux_instance *bd;
 	if (loc) {
@@ -380,7 +383,7 @@ void MapElement::index_backdrop_further(OUTPUT_STREAM, faux_instance *loc, int d
 			MapElement::index(OUT, bd, depth+1, details);
 		}
 	} else {
-		LOOP_OVER_FAUX_BACKDROPS(bd)
+		LOOP_OVER_FAUX_BACKDROPS(faux_set, bd)
 			if (FauxInstances::is_everywhere(bd)) {
 				if (++discoveries == 1) @<Insert fore-matter@>;
 				MapElement::index(OUT, bd, depth+1, details);

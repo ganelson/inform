@@ -28,6 +28,7 @@ faux_instance **room_grid = NULL;
 int *icon_grid = NULL, *exit_grid = NULL;
 
 void PL::HTMLMap::calculate_map_grid(void) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	@<Allocate the three mapping grids@>;
 	@<Populate the room grid@>;
 	@<Populate the icon and exit grids@>;
@@ -52,12 +53,12 @@ void PL::HTMLMap::calculate_map_grid(void) {
 
 @<Populate the room grid@> =
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		room_grid[ROOM_GRID_POS(Room_position(R))] = R;
 
 @<Populate the icon and exit grids@> =
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		int exit;
 		LOOP_OVER_STORY_DIRECTIONS(exit)
 			if (PL::SpatialMap::direction_is_mappable(exit)) {
@@ -148,16 +149,16 @@ is east from B to K. If so, we get both the fading and aligned bits.
 @<Set the fading bit if another room lies where the target ought to be@> =
 	vector Farend = Geometry::vec_plus(Room_position(R), E);
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if ((R != T) && (Geometry::vec_eq(Room_position(R), Farend)))
 			bitmap |= FADING_MAPBIT;
 
 @<Apply the remaining nuance bits to the icon grid@> =
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		icon_grid[ICON_GRID_POS(Room_position(R), 2, 2)] = OCCUPIED_MAPBIT;
 
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		vector P = Room_position(R);
 		PL::HTMLMap::correct_pair(P, SW_vector, 0, 4, 4, 0);
 		PL::HTMLMap::correct_pair(P, W_vector,  0, 2, 4, 2);
@@ -386,6 +387,7 @@ the details part of the World Index page) will be all right.
 
 =
 void PL::HTMLMap::render_map_as_HTML(OUTPUT_STREAM) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	PL::HTMLMap::calculate_map_grid();
 
 	@<Choose a map colour for each region@>;
@@ -422,7 +424,7 @@ from each other.)
 
 	faux_instance *RG;
 	int regc = 0;
-	LOOP_OVER_FAUX_REGIONS(RG)
+	LOOP_OVER_FAUX_REGIONS(faux_set, RG)
 		if (RG->fimd.colour == NULL) {
 			RG->fimd.colour = Str::new();
 			WRITE_TO(RG->fimd.colour, "%w", 
@@ -434,7 +436,7 @@ from each other.)
 	text_stream *default_room_col = Str::new();
 	WRITE_TO(default_room_col, "%w", HTML::translate_colour_name(L"Light Grey"));
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (R->fimd.colour == NULL) {
 			faux_instance *reg = FauxInstances::region_of(R);
 			if (reg)
@@ -468,7 +470,7 @@ from each other.)
 @<Draw this level of the map@> =
 	int y_max = -1000000000, y_min = 1000000000; /* assuming there are fewer than 1 billion rooms */
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R)
+	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (Room_position(R).z == z) {
 			if (Room_position(R).y < y_min) y_min = Room_position(R).y;
 			if (Room_position(R).y > y_max) y_max = Room_position(R).y;
@@ -489,7 +491,7 @@ from each other.)
 
 @<Add a paragraph describing how non-standard directions are mapped@> =
 	faux_instance *D; int k = 0;
-	LOOP_OVER_FAUX_DIRECTIONS(D) {
+	LOOP_OVER_FAUX_DIRECTIONS(faux_set, D) {
 		faux_instance *A = PL::SpatialMap::mapped_as_if(D);
 		if (A) {
 			k++;
@@ -841,6 +843,7 @@ of the cell. First, the eight cells around the outside:
 
 =
 void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i2, int faux_exit) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	int bitmap = icon_grid[ICON_GRID_POS(P, i1, i2)];
 	if (pass == 2) bitmap &= CONNECTIVE_BITMAP;
 	if (bitmap == 0) @<This map cell is empty@>
@@ -892,7 +895,7 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 	if ((I3) || (D)) {
 		WRITE_TO(tool_tip, "title=\"");
 		faux_instance *I;
-		LOOP_OVER_FAUX_INSTANCES(I)
+		LOOP_OVER_FAUX_INSTANCES(faux_set, I)
 			if (I->direction_index == exit) {
 				FauxInstances::write_name(tool_tip, I);
 				break;
@@ -923,7 +926,7 @@ which are bordered and coloured single-cell tables.
 void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	if (I) {
 		int b = ROOM_BORDER_SIZE;
-		if ((I == faux_benchmark) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
+		if ((I == FauxInstances::benchmark()) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
 		HTML_OPEN_WITH("table",
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" "
@@ -954,7 +957,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 			I->allocation_id);
 		HTML::begin_colour(OUT, col);
 	}
-	if ((pass == 1) && (I == faux_benchmark)) HTML_OPEN("b");
+	if ((pass == 1) && (I == FauxInstances::benchmark())) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
 	WRITE_TO(abbrev, "%S", I->abbrev);
 	#ifdef HTML_MAP_FONT_SIZE
@@ -965,7 +968,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_CLOSE("span");
 	#endif
-	if ((pass == 1) && (I == faux_benchmark)) HTML_CLOSE("b");
+	if ((pass == 1) && (I == FauxInstances::benchmark())) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
 
@@ -998,17 +1001,19 @@ that nothing is shown if all of the rooms are outside of regions.
 
 =
 void PL::HTMLMap::add_region_key(OUTPUT_STREAM) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	faux_instance *reg; int count = 0;
-	LOOP_OVER_FAUX_REGIONS(reg)
+	LOOP_OVER_FAUX_REGIONS(faux_set, reg)
 		count += PL::HTMLMap::add_key_for(OUT, reg);
 	if (count > 0) count += PL::HTMLMap::add_key_for(OUT, NULL);
 	if (count > 0) HTML_TAG("hr");
 }
 
 int PL::HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
+	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	int count = 0;
 	faux_instance *R;
-	LOOP_OVER_FAUX_ROOMS(R) {
+	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		if (FauxInstances::region_of(R) == reg) {
 			if (count++ == 0) {
 				@<Start the region key table for this region@>;
