@@ -308,7 +308,7 @@ actually go there in any visual way.
 
 @<Plot all of the rubrics onto the EPS map@> =
 	rubric_holder *rh;
-	LOOP_OVER(rh, rubric_holder) {
+	LOOP_OVER_LINKED_LIST(rh, rubric_holder, faux_set->rubrics) {
 		int bx = 0, by = 0;
 		int xpart = rh->at_offset%10000, ypart = rh->at_offset/10000;
 		int mapunit = ConfigureIndexMap::get_int_mp(I"grid-size", NULL);

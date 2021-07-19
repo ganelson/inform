@@ -40,32 +40,32 @@ created.
 
 =
 faux_instance *FauxInstances::new(inter_package *pack) {
-	faux_instance *FI = CREATE(faux_instance);
-	FI->index_appearances = 0;
-	FI->package = pack;
-	FI->name = Str::duplicate(Metadata::read_textual(pack, I"^name"));
-	FI->printed_name = Str::duplicate(Metadata::read_textual(pack, I"^printed_name"));
-	FI->abbrev = Str::duplicate(Metadata::read_textual(pack, I"^abbreviation"));
-	FI->kind_text = Str::duplicate(Metadata::read_textual(pack, I"^index_kind"));
-	FI->kind_chain = Str::duplicate(Metadata::read_textual(pack, I"^index_kind_chain"));
-	FI->other_side = NULL;
-	FI->direction_index = -1;
+	faux_instance *I = CREATE(faux_instance);
+	I->index_appearances = 0;
+	I->package = pack;
+	I->name = Str::duplicate(Metadata::read_textual(pack, I"^name"));
+	I->printed_name = Str::duplicate(Metadata::read_textual(pack, I"^printed_name"));
+	I->abbrev = Str::duplicate(Metadata::read_textual(pack, I"^abbreviation"));
+	I->kind_text = Str::duplicate(Metadata::read_textual(pack, I"^index_kind"));
+	I->kind_chain = Str::duplicate(Metadata::read_textual(pack, I"^index_kind_chain"));
+	I->other_side = NULL;
+	I->direction_index = -1;
 
-	FI->backdrop_presences = NEW_LINKED_LIST(faux_instance);
-	FI->region_enclosing = NULL;
-	FI->next_room_in_submap = NULL;
-	FI->opposite_direction = NULL;
-	FI->object_tree_sibling = NULL;
-	FI->object_tree_child = NULL;
-	FI->progenitor = NULL;
-	FI->incorp_tree_sibling = NULL;
-	FI->incorp_tree_child = NULL;
+	I->backdrop_presences = NEW_LINKED_LIST(faux_instance);
+	I->region_enclosing = NULL;
+	I->next_room_in_submap = NULL;
+	I->opposite_direction = NULL;
+	I->object_tree_sibling = NULL;
+	I->object_tree_child = NULL;
+	I->progenitor = NULL;
+	I->incorp_tree_sibling = NULL;
+	I->incorp_tree_child = NULL;
 
-	FI->anchor_text = Str::new();
-	WRITE_TO(FI->anchor_text, "fi%d", FI->allocation_id);
+	I->anchor_text = Str::new();
+	WRITE_TO(I->anchor_text, "fi%d", I->allocation_id);
 
-	FI->fimd = FauxInstances::new_fimd(FI);
-	return FI;
+	I->fimd = FauxInstances::new_fimd(I);
+	return I;
 }
 
 @ Though the FI structure mostly paraphrases data in the Inter tree which in
@@ -99,7 +99,7 @@ typedef struct fi_map_data {
 @ Data which is blanked out, ready for use, here:
 
 =
-fi_map_data FauxInstances::new_fimd(faux_instance *FI) {
+fi_map_data FauxInstances::new_fimd(faux_instance *I) {
 	fi_map_data fimd;
 	fimd.submap = NULL;
 	fimd.position = Geometry::zero();
@@ -124,8 +124,11 @@ fi_map_data FauxInstances::new_fimd(faux_instance *FI) {
 	return fimd;
 }
 
+@h Sets.
+Since we might want to index multiple different Inter trees in the same run,
+we may need to keep multiple sets of faux instances, one for each tree. So:
 
-@ =
+=
 typedef struct faux_instance_set {
 	int no_direction_fi;
 	int no_room_fi;
@@ -133,10 +136,24 @@ typedef struct faux_instance_set {
 	struct faux_instance *start_faux_instance;
 	struct faux_instance *faux_yourself;
 	struct faux_instance *faux_benchmark;
+	struct linked_list *rubrics; /* of |rubric_holder| */
 	CLASS_DEFINITION
 } faux_instance_set;
 
-@ Iterating over faux instances in a set:
+@ =
+faux_instance_set *FauxInstances::new_empty_set(void) {
+	faux_instance_set *faux_set = CREATE(faux_instance_set);
+	faux_set->no_direction_fi = 0;
+	faux_set->no_room_fi = 0;
+	faux_set->instances = NEW_LINKED_LIST(faux_instance);
+	faux_set->start_faux_instance = NULL;
+	faux_set->faux_yourself = NULL;
+	faux_set->faux_benchmark = NULL;
+	faux_set->rubrics = NEW_LINKED_LIST(rubric_holder);
+	return faux_set;
+}
+
+@ Iterating over faux instances in a set can then be done thus:
 		
 @d LOOP_OVER_FAUX_INSTANCES(faux_set, R)
 	LOOP_OVER_LINKED_LIST(R, faux_instance, faux_set->instances)
@@ -156,91 +173,128 @@ typedef struct faux_instance_set {
 	LOOP_OVER_FAUX_INSTANCES(faux_set, R)
 		if (FauxInstances::is_a_backdrop(R))
 
-@
+@ And here is the code to make a fully cross-referenced set from a given tree:
 
 =
 faux_instance_set *FauxInstances::make_faux(inter_tree *IT) {
-	faux_instance_set *faux_set = CREATE(faux_instance_set);
-	faux_set->no_direction_fi = 0;
-	faux_set->no_room_fi = 0;
-	faux_set->instances = NEW_LINKED_LIST(faux_instance);
-	faux_set->start_faux_instance = NULL;
-	faux_set->faux_yourself = NULL;
-	faux_set->faux_benchmark = NULL;
+	faux_instance_set *faux_set = FauxInstances::new_empty_set();
 
 	tree_inventory *inv = Synoptic::inv(IT);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack,  I"^is_object") == 0) continue;
-		faux_instance *FI = FauxInstances::new(pack);
-		ADD_TO_LINKED_LIST(FI, faux_instance, faux_set->instances);	
-		if (FauxInstances::is_a_direction(FI)) FI->direction_index = faux_set->no_direction_fi++;
-		if (FauxInstances::is_a_room(FI)) faux_set->no_room_fi++;
-		if (Metadata::read_optional_numeric(pack, I"^is_yourself")) faux_set->faux_yourself = FI;
-		if (Metadata::read_optional_numeric(pack, I"^is_benchmark_room")) faux_set->faux_benchmark = FI;
-		if (Metadata::read_optional_numeric(pack, I"^is_start_room")) faux_set->start_faux_instance = FI;
+		@<Add a faux instance to the set for this object-instance package@>;
 	}
-	faux_instance *FI;
-	LOOP_OVER_FAUX_ROOMS(faux_set, FI) {
-		inter_package *pack = FI->package;
-		inter_tree_node *P = Metadata::read_optional_list(pack, I"^map");
-		if (P) {
-			for (int i=0; i<MAX_DIRECTIONS; i++) {
-				int offset = DATA_CONST_IFLD + 4*i;
-				if (offset >= P->W.extent) break;
-				inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
-				if (v1 == ALIAS_IVAL) {
-					inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
-					if (s == NULL) internal_error("malformed map metadata");
-					FI->fimd.exits[i] = FauxInstances::fis(faux_set, s);
-				} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
-				inter_ti v3 = P->W.data[offset+2], v4 = P->W.data[offset+3];
-				if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
-				if (v4) FI->fimd.exits_set_at[i] = (int) v4;
-			}
-		}
-	}
-	LOOP_OVER_FAUX_BACKDROPS(faux_set, FI) {
-		inter_package *pack = FI->package;
-		inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
-		if (P) {
-			int offset = DATA_CONST_IFLD;
-			while (offset < P->W.extent) {
-				inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
-				if (v1 == ALIAS_IVAL) {
-					inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
-					if (s == NULL) internal_error("malformed map metadata");
-					faux_instance *FL = FauxInstances::fis(faux_set, s);
-					ADD_TO_LINKED_LIST(FI, faux_instance, FL->backdrop_presences);
-				} else internal_error("malformed backdrop metadata");
-				offset += 2;
-			}
-		}
+	faux_instance *I;
+	LOOP_OVER_FAUX_INSTANCES(faux_set, I) {
+		inter_package *pack = I->package;
+		@<Cross-reference spatial relationships@>;
+		if (FauxInstances::is_a_room(I)) @<Cross-reference map relationships@>;
+		if (FauxInstances::is_a_backdrop(I)) @<Cross-reference backdrop locations@>;
+		if (FauxInstances::is_a_direction(I)) @<Cross-reference diametric directions@>;
+		if (FauxInstances::is_a_door(I)) @<Cross-reference door adjacencies@>;
 	}
 
-	LOOP_OVER_FAUX_INSTANCES(faux_set, FI) {
-		FI->region_enclosing = FauxInstances::instance_metadata(faux_set, FI, I"^region_enclosing");
-		FI->object_tree_sibling = FauxInstances::instance_metadata(faux_set, FI, I"^sibling");
-		FI->object_tree_child = FauxInstances::instance_metadata(faux_set, FI, I"^child");
-		FI->progenitor = FauxInstances::instance_metadata(faux_set, FI, I"^progenitor");
-		FI->incorp_tree_sibling = FauxInstances::instance_metadata(faux_set, FI, I"^incorp_sibling");
-		FI->incorp_tree_child = FauxInstances::instance_metadata(faux_set, FI, I"^incorp_child");
-	}
-	faux_instance *FR;
-	LOOP_OVER_FAUX_DIRECTIONS(faux_set, FR)
-		FR->opposite_direction = FauxInstances::instance_metadata(faux_set, FR, I"^opposite_direction");
-	faux_instance *FD;
-	LOOP_OVER_FAUX_DOORS(faux_set, FD) {
-		FD->other_side = FauxInstances::instance_metadata(faux_set, FD, I"^other_side");
-		FD->fimd.map_connection_a = FauxInstances::instance_metadata(faux_set, FD, I"^side_a");
-		FD->fimd.map_connection_b = FauxInstances::instance_metadata(faux_set, FD, I"^side_b");
-	}
 	FauxInstances::decode_hints(faux_set, IT, 1);
 	return faux_set;
 }
 
-@
+@<Add a faux instance to the set for this object-instance package@> =
+	faux_instance *I = FauxInstances::new(pack);
+	ADD_TO_LINKED_LIST(I, faux_instance, faux_set->instances);	
+	if (FauxInstances::is_a_direction(I)) I->direction_index = faux_set->no_direction_fi++;
+	if (FauxInstances::is_a_room(I)) faux_set->no_room_fi++;
+	if (Metadata::read_optional_numeric(pack, I"^is_yourself")) faux_set->faux_yourself = I;
+	if (Metadata::read_optional_numeric(pack, I"^is_benchmark_room")) faux_set->faux_benchmark = I;
+	if (Metadata::read_optional_numeric(pack, I"^is_start_room")) faux_set->start_faux_instance = I;
+
+@<Cross-reference spatial relationships@> =
+	I->region_enclosing = FauxInstances::xref(faux_set, I->package, I"^region_enclosing");
+	I->object_tree_sibling = FauxInstances::xref(faux_set, I->package, I"^sibling");
+	I->object_tree_child = FauxInstances::xref(faux_set, I->package, I"^child");
+	I->progenitor = FauxInstances::xref(faux_set, I->package, I"^progenitor");
+	I->incorp_tree_sibling = FauxInstances::xref(faux_set, I->package, I"^incorp_sibling");
+	I->incorp_tree_child = FauxInstances::xref(faux_set, I->package, I"^incorp_child");
+
+@<Cross-reference map relationships@> =
+	inter_tree_node *P = Metadata::read_optional_list(pack, I"^map");
+	if (P) {
+		for (int i=0; i<MAX_DIRECTIONS; i++) {
+			int offset = DATA_CONST_IFLD + 4*i;
+			if (offset >= P->W.extent) break;
+			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			if (v1 == ALIAS_IVAL) {
+				inter_symbol *S =
+					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+				if (S == NULL) internal_error("malformed map metadata");
+				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
+			} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
+			inter_ti v3 = P->W.data[offset+2], v4 = P->W.data[offset+3];
+			if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
+			if (v4) I->fimd.exits_set_at[i] = (int) v4;
+		}
+	}
+
+@<Cross-reference backdrop locations@> =
+	inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
+	if (P) {
+		int offset = DATA_CONST_IFLD;
+		while (offset < P->W.extent) {
+			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			if (v1 == ALIAS_IVAL) {
+				inter_symbol *S =
+					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+				if (S == NULL) internal_error("malformed map metadata");
+				faux_instance *FL = FauxInstances::symbol_to_faux_instance(faux_set, S);
+				ADD_TO_LINKED_LIST(I, faux_instance, FL->backdrop_presences);
+			} else internal_error("malformed backdrop metadata");
+			offset += 2;
+		}
+	}
+
+@<Cross-reference diametric directions@> =
+	I->opposite_direction = FauxInstances::xref(faux_set, I->package, I"^opposite_direction");
+
+@<Cross-reference door adjacencies@> =
+	I->other_side = FauxInstances::xref(faux_set, I->package, I"^other_side");
+	I->fimd.map_connection_a = FauxInstances::xref(faux_set, I->package, I"^side_a");
+	I->fimd.map_connection_b = FauxInstances::xref(faux_set, I->package, I"^side_b");
+
+@ When the Inter package for one instance wants to refer to another one, say
+with the key |other|, it does so by having a symbol |other| defined as the
+instance value of the other instance: so we first extract the symbol by looking
+|key| up in the first instance's package; then we can find the other instance
+package simply by finding the container-package for where |S| is defined.
+It is then a simple if not especially quick task to find which //faux_instance//
+was made from that package.
+
+=
+faux_instance *FauxInstances::xref(faux_instance_set *faux_set, inter_package *pack,
+	text_stream *key) {
+	return FauxInstances::symbol_to_faux_instance(faux_set,
+		Metadata::read_optional_symbol(pack, key));
+}
+
+faux_instance *FauxInstances::symbol_to_faux_instance(faux_instance_set *faux_set,
+	inter_symbol *S) {
+	if (S == NULL) return NULL;
+	inter_package *want = Inter::Packages::container(S->definition);
+	faux_instance *I;
+	LOOP_OVER_FAUX_INSTANCES(faux_set, I)
+		if (I->package == want)
+			return I;
+	return NULL;
+}
+
+@h Decoding map hints.
+Mapping hints arise from sentences like "Index with X mapped east of Y", or
+some other helpful tip: these are compiled fairly directly into Inter packages,
+and this is where we decode those packages and make use of them.
+
+This is done in two passes. |pass| 1 occurs when a new faux set of instances is
+being made; |pass| 2 only after the spatial grid layout has been calculated,
+and only if needed.
 
 =
 void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int pass) {
@@ -251,39 +305,28 @@ void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *entry = Inter::Package::defined_by_frame(C);
 			if (Inter::Packages::type(entry) == wanted) {
-				faux_instance *from = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^from"));
-				faux_instance *to = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^to"));
-				faux_instance *dir = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^dir"));
-				faux_instance *as_dir = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^as_dir"));
+				faux_instance *from = FauxInstances::xref(faux_set, entry, I"^from");
+				faux_instance *to = FauxInstances::xref(faux_set, entry, I"^to");
+				faux_instance *dir = FauxInstances::xref(faux_set, entry, I"^dir");
+				faux_instance *as_dir = FauxInstances::xref(faux_set, entry, I"^as_dir");
 				if ((dir) && (as_dir)) {
-					if (pass == 1)
-						story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
+					if (pass == 1) @<Decode a hint mapping one direction as if another@>;
 					continue;
 				}
 				if ((from) && (dir)) {
-					if (pass == 1)
-						PL::SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
+					if (pass == 1) @<Decode a hint mapping one room in a specific direction from another@>;
 					continue;
 				}
 				text_stream *name = Metadata::read_optional_textual(entry, I"^name");
 				if (Str::len(name) > 0) {
 					int scope_level = (int) Metadata::read_optional_numeric(entry, I"^scope_level");
-					faux_instance *scope_I = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^scope_instance"));
+					faux_instance *scope_I = FauxInstances::xref(faux_set, entry, I"^scope_instance");
 					text_stream *text_val = Metadata::read_optional_textual(entry, I"^text");
 					int int_val = (int) Metadata::read_optional_numeric(entry, I"^number");
 					if (scope_level != 1000000) {
-						if (pass == 2) {
-							map_parameter_scope *scope = NULL;
-							EPS_map_level *eml;
-							LOOP_OVER(eml, EPS_map_level)
-								if ((eml->contains_rooms)
-									&& (eml->map_level - PL::SpatialMap::benchmark_level() == scope_level))
-									scope = &(eml->map_parameters);
-							if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val);
-						}
+						if (pass == 2) @<Decode a hint setting EPS map parameters relating to levels@>;
 					} else {
-						if (pass == 1)
-							ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val);
+						if (pass == 1) @<Decode a hint setting EPS map parameters@>;
 					}
 					continue;
 				}
@@ -296,7 +339,8 @@ void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int
 						rh->font = Metadata::read_optional_textual(entry, I"^font");
 						rh->colour = Metadata::read_optional_textual(entry, I"^colour");
 						rh->at_offset = (int) Metadata::read_optional_numeric(entry, I"^offset");
-						rh->offset_from = FauxInstances::fis(faux_set, Metadata::read_optional_symbol(entry, I"^offset_from"));
+						rh->offset_from = FauxInstances::xref(faux_set, entry, I"^offset_from");
+						ADD_TO_LINKED_LIST(rh, rubric_holder, faux_set->rubrics);	
 					}
 					continue;
 				}
@@ -305,23 +349,38 @@ void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int
 	}
 }
 
-faux_instance *FauxInstances::instance_metadata(faux_instance_set *faux_set,
-	faux_instance *I, text_stream *key) {
-	if (I == NULL) return I;
-	inter_symbol *val_s = Metadata::read_optional_symbol(I->package, key);
-	return FauxInstances::fis(faux_set, val_s);
-}
+@ For instance, for "starboard" to be mapped as if "east":
 
-faux_instance *FauxInstances::fis(faux_instance_set *faux_set, inter_symbol *S) {
-	if (S == NULL) return NULL;
-	inter_package *want = Inter::Packages::container(S->definition);
-	faux_instance *FI;
-	LOOP_OVER_FAUX_INSTANCES(faux_set, FI)
-		if (FI->package == want)
-			return FI;
-	return NULL;
-}
+@<Decode a hint mapping one direction as if another@> =
+	story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
 
+@ For instance, for the East Room to be mapped east of the Grand Lobby:
+
+@<Decode a hint mapping one room in a specific direction from another@> =
+	PL::SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
+
+@ Most map parameters (e.g. setting room colours or font sizes) can be set
+immediately, i.e., on |pass| 1:
+
+@<Decode a hint setting EPS map parameters@> =
+	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val);
+
+@ ...but not those hints applying to a specific level of the map (e.g., level 4),
+since we do not initially know what level any given room actually lives on: that
+can only be known once the spatial grid has been found, i.e., on |pass| 2.
+
+@<Decode a hint setting EPS map parameters relating to levels@> =
+	map_parameter_scope *scope = NULL;
+	EPS_map_level *eml;
+	LOOP_OVER(eml, EPS_map_level)
+		if ((eml->contains_rooms)
+			&& (eml->map_level - PL::SpatialMap::benchmark_level() == scope_level))
+			scope = &(eml->map_parameters);
+	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val);
+
+@h Instance set properties.
+
+=
 faux_instance *FauxInstances::start_room(void) {
 	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	return faux_set->start_faux_instance;
@@ -337,10 +396,7 @@ faux_instance *FauxInstances::benchmark(void) {
 	return faux_set->faux_benchmark;
 }
 
-@
-
-=
-
+@ =
 int FauxInstances::no_directions(void) {
 	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	return faux_set->no_direction_fi;
@@ -351,7 +407,7 @@ int FauxInstances::no_rooms(void) {
 	return faux_set->no_room_fi;
 }
 
-@h Naming.
+@h Individual instance properties.
 
 =
 text_stream *FauxInstances::get_name(faux_instance *I) {
@@ -371,151 +427,152 @@ void FauxInstances::write_kind_chain(OUTPUT_STREAM, faux_instance *I) {
 	WRITE("%S", I->kind_chain);
 }
 
-faux_instance *FauxInstances::region_of(faux_instance *FI) {
-	if (FI == NULL) return NULL;
-	return FI->region_enclosing;
+faux_instance *FauxInstances::region_of(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->region_enclosing;
 }
 
-faux_instance *FauxInstances::opposite_direction(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->opposite_direction;
+faux_instance *FauxInstances::opposite_direction(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->opposite_direction;
 }
 
-faux_instance *FauxInstances::other_side_of_door(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->other_side;
+faux_instance *FauxInstances::other_side_of_door(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->other_side;
 }
 
-faux_instance *FauxInstances::sibling(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->object_tree_sibling;
+faux_instance *FauxInstances::sibling(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->object_tree_sibling;
 }
 
-faux_instance *FauxInstances::child(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->object_tree_child;
+faux_instance *FauxInstances::child(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->object_tree_child;
 }
 
-faux_instance *FauxInstances::progenitor(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->progenitor;
+faux_instance *FauxInstances::progenitor(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->progenitor;
 }
 
-faux_instance *FauxInstances::incorp_child(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->incorp_tree_child;
+faux_instance *FauxInstances::incorp_child(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->incorp_tree_child;
 }
 
-faux_instance *FauxInstances::incorp_sibling(faux_instance *FR) {
-	if (FR == NULL) return NULL;
-	return FR->incorp_tree_sibling;
+faux_instance *FauxInstances::incorp_sibling(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return I->incorp_tree_sibling;
 }
 
-int FauxInstances::is_a_direction(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_direction")) return TRUE;
+int FauxInstances::is_a_direction(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_direction")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_room(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_room")) return TRUE;
+int FauxInstances::is_a_room(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_room")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_door(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_door")) return TRUE;
+int FauxInstances::is_a_door(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_door")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_region(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_region")) return TRUE;
+int FauxInstances::is_a_region(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_region")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_backdrop(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_backdrop")) return TRUE;
+int FauxInstances::is_a_backdrop(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_backdrop")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_thing(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_thing")) return TRUE;
+int FauxInstances::is_a_thing(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_thing")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_supporter(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_supporter")) return TRUE;
+int FauxInstances::is_a_supporter(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_supporter")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_person(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_person")) return TRUE;
+int FauxInstances::is_a_person(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_person")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_worn(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_worn")) return TRUE;
+int FauxInstances::is_worn(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_worn")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_everywhere(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_everywhere")) return TRUE;
+int FauxInstances::is_everywhere(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_everywhere")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::is_a_part(faux_instance *FR) {
-	if (FR == NULL) return FALSE;
-	if (Metadata::read_optional_numeric(FR->package, I"^is_a_part")) return TRUE;
+int FauxInstances::is_a_part(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Metadata::read_optional_numeric(I->package, I"^is_a_part")) return TRUE;
 	return FALSE;
 }
 
-int FauxInstances::created_at(faux_instance *FR) {
-	if (FR == NULL) return -1;
-	return (int) Metadata::read_optional_numeric(FR->package,  I"^at");
+int FauxInstances::created_at(faux_instance *I) {
+	if (I == NULL) return -1;
+	return (int) Metadata::read_optional_numeric(I->package,  I"^at");
 }
 
-int FauxInstances::kind_set_at(faux_instance *FR) {
-	if (FR == NULL) return -1;
-	return (int) Metadata::read_optional_numeric(FR->package,  I"^kind_set_at");
+int FauxInstances::kind_set_at(faux_instance *I) {
+	if (I == NULL) return -1;
+	return (int) Metadata::read_optional_numeric(I->package,  I"^kind_set_at");
 }
 
-int FauxInstances::progenitor_set_at(faux_instance *FR) {
-	if (FR == NULL) return -1;
-	return (int) Metadata::read_optional_numeric(FR->package,  I"^progenitor_set_at");
+int FauxInstances::progenitor_set_at(faux_instance *I) {
+	if (I == NULL) return -1;
+	return (int) Metadata::read_optional_numeric(I->package,  I"^progenitor_set_at");
 }
 
-int FauxInstances::region_set_at(faux_instance *FR) {
-	if (FR == NULL) return -1;
-	return (int) Metadata::read_optional_numeric(FR->package,  I"^region_set_at");
+int FauxInstances::region_set_at(faux_instance *I) {
+	if (I == NULL) return -1;
+	return (int) Metadata::read_optional_numeric(I->package,  I"^region_set_at");
 }
 
-void FauxInstances::get_door_data(faux_instance *door, faux_instance **c1, faux_instance **c2) {
+void FauxInstances::get_door_data(faux_instance *door,
+	faux_instance **c1, faux_instance **c2) {
 	if (c1) *c1 = door->fimd.map_connection_a;
 	if (c2) *c2 = door->fimd.map_connection_b;
 }
 
-map_parameter_scope *FauxInstances::get_parameters(faux_instance *R) {
-	if (R == NULL) return NULL;
-	return &(R->fimd.local_map_parameters);
+map_parameter_scope *FauxInstances::get_parameters(faux_instance *I) {
+	if (I == NULL) return NULL;
+	return &(I->fimd.local_map_parameters);
 }
 
-int FauxInstances::specify_kind(faux_instance *FI) {
-	if (FI == NULL) return FALSE;
-	if (Str::eq(FI->kind_text, I"thing")) return FALSE;
-	if (Str::eq(FI->kind_text, I"room")) return FALSE;
+int FauxInstances::specify_kind(faux_instance *I) {
+	if (I == NULL) return FALSE;
+	if (Str::eq(I->kind_text, I"thing")) return FALSE;
+	if (Str::eq(I->kind_text, I"room")) return FALSE;
 	return TRUE;
 }
 
-@h Noun usage.
-This simply avoids repetitions in the World index:
+@h Appearance counts.
+This code simply avoids repetitions in the World index:
 
 =
 void FauxInstances::increment_indexing_count(faux_instance *I) {
