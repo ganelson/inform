@@ -32,14 +32,14 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (oow) HTML::end_colour(OUT);
 		IndexUtilities::detail_link(OUT, "A", i, TRUE);
 
-		if (requires_light) WRITE(" <i>requires light</i>");
+		if (requires_light) AlphabeticElement::note(OUT, I"Light", LD);
 
 		HTML::next_html_column(OUT, 0);
 		if (can_have_noun == 0) {
 			WRITE("&mdash;");
 		} else {
-			if (noun_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (noun_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			if (noun_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
+			if (noun_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 			WRITE("<b>");
 			ChartElement::index_kind(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
 			WRITE("</b>");
@@ -49,8 +49,8 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (can_have_second == 0) {
 			WRITE("&mdash;");
 		} else {
-			if (second_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (second_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			if (second_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
+			if (second_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 			WRITE("<b>");
 			ChartElement::index_kind(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
 			WRITE("</b>");
@@ -58,6 +58,12 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		HTML::end_html_row(OUT);
 	}
 	HTML::end_html_table(OUT);
+}
+
+void AlphabeticElement::note(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
+	WRITE("<i>");
+	Localisation::write_0(OUT, LD, I"A2", key);
+	WRITE("</i> ");
 }
 
 int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {

@@ -43,6 +43,10 @@
 %Title = Alphabetic
 %Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
+%Light = requires light
+%Touchable = touchable
+%Carried = carried
+
 %%Bh
 
 %Title = Behaviour
