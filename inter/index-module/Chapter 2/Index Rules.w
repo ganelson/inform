@@ -189,7 +189,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 
 	TEMPORARY_TEXT(textual_name)
 	if (Str::len(titling_text) > 0) WRITE_TO(textual_name, "%S", titling_text);
-	else WRITE_TO(textual_name, "%S", Localisation::read(LD, I"RS", I"Nameless"));
+	else Localisation::write_0(textual_name, LD, I"Index.Elements.RS.Nameless");
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
 
@@ -235,7 +235,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 
 	if (n == 0) {
 		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%S", Localisation::read(LD, I"RS", I"Empty"));
+		Localisation::write_0(OUT, LD, I"Index.Elements.RS.Empty");
 		HTML_CLOSE("p");
 	} else if (disclaimer_instead) {
 		HTML::open_indented_p(OUT, 2, "tight"); WRITE("%S", disclaimer_instead); HTML_CLOSE("p");
@@ -363,7 +363,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("<i>%S", italicised_text);
 	if (rc.scene_context) {
 		WRITE(" ");
-		Localisation::write_1(OUT, LD, I"RS", I"During",
+		Localisation::write_1(OUT, LD, I"Index.Elements.RS.During",
 			PlotElement::scene_name(rc.scene_context));
 	}
 	WRITE("</i>&nbsp;&nbsp;");
@@ -384,7 +384,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("&nbsp;<i>name</i> ");
 
 	Str::clear(S);
-	Localisation::write_2(S, LD, I"RS", I"Unlist", name,
+	Localisation::write_2(S, LD, I"Index.Elements.RS.Response", name,
 		Metadata::read_optional_textual(owner, I"^printed_name"));
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
@@ -491,7 +491,7 @@ void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 	Str::clear(S);
 	TEMPORARY_TEXT(letter)
 	WRITE_TO(letter, "%c", 'A' + marker);
-	Localisation::write_2(S, LD, I"RS", I"Response",
+	Localisation::write_2(S, LD, I"Index.Elements.RS.Response",
 		Metadata::read_textual(rule_pack, I"^name"), letter);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>set</i>");
@@ -510,7 +510,7 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 			if (Inter::Packages::type(entry) == wanted) {	
 				HTML::open_indented_p(OUT, 2, "hanging");
 				WRITE("<i>");
-				Localisation::write_0(OUT, LD, I"RS", I"Outcome");
+				Localisation::write_0(OUT, LD, I"Index.Elements.RS.Outcome");
 				WRITE("</i>&nbsp;&nbsp;");
 				int is_def = (int) Metadata::read_optional_numeric(entry, I"^is_default");
 				if (is_def) WRITE("<b>");
@@ -518,11 +518,11 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 				if (is_def) WRITE("</b> (default)");
 				WRITE(" - <i>");
 				if (Metadata::read_optional_numeric(entry, I"^succeeds"))
-					Localisation::write_0(OUT, LD, I"RS", I"Success");
+					Localisation::write_0(OUT, LD, I"Index.Elements.RS.Success");
 				else if (Metadata::read_optional_numeric(entry, I"^fails"))
-					Localisation::write_0(OUT, LD, I"RS", I"Failure");
+					Localisation::write_0(OUT, LD, I"Index.Elements.RS.Failure");
 				else
-					Localisation::write_0(OUT, LD, I"RS", I"NoOutcome");
+					Localisation::write_0(OUT, LD, I"Index.Elements.RS.NoOutcome");
 				WRITE("</i>");
 				HTML_CLOSE("p");
 			}
@@ -532,14 +532,14 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 	if (Metadata::read_optional_numeric(rb_pack, I"^default_succeeds")) {
 		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"RS", I"DefaultSuccess");
+		Localisation::write_0(OUT, LD, I"Index.Elements.RS.DefaultSuccess");
 		WRITE("</i>");
 		HTML_CLOSE("p");
 	}
 	if (Metadata::read_optional_numeric(rb_pack, I"^default_fails")) {
 		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"RS", I"DefaultFailure");
+		Localisation::write_0(OUT, LD, I"Index.Elements.RS.DefaultFailure");
 		WRITE("</i>");
 		HTML_CLOSE("p");
 	}
@@ -619,15 +619,15 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	HTML::open_indented_p(OUT, 1, "tight");
 
 	TEMPORARY_TEXT(skeleton)
-	Localisation::write_1(skeleton, LD, I"RS", I"BeforeActivity", textual_name);
+	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.BeforeActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>b</i> ");
 	Str::clear(skeleton);
-	Localisation::write_1(skeleton, LD, I"RS", I"ForActivity", textual_name);
+	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.ForActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>f</i> ");
 	Str::clear(skeleton);
-	Localisation::write_1(skeleton, LD, I"RS", I"AfterActivity", textual_name);
+	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.AfterActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>a</i>");
 	DISCARD_TEXT(skeleton)
@@ -663,6 +663,6 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 @<Write the titling line of an activity rules box@> =
 	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
 	WRITE(" ... ");
-	Localisation::write_0(OUT, LD, I"RS", I"Activity");
+	Localisation::write_0(OUT, LD, I"Index.Elements.RS.Activity");
 	int at = (int) Metadata::read_optional_numeric(av_pack, I"^at");
 	if (at > 0) IndexUtilities::link(OUT, at);

@@ -1,187 +1,135 @@
-%%Contents
+%Index.Pages.Contents.Title = Contents Index
+%Index.Pages.Contents.Caption = How the source text is organised
 
-%Title      = Contents Index
-%Caption    = How the source text is organised
+%Index.Elements.C.Title = Contents
+%Index.Elements.C.Heading = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
 
-%%C
+%Index.Elements.Cd.Title = Card
+%Index.Elements.Cd.Heading = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
 
-%Title      = Contents
-%Heading    = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
+%Index.Elements.Tb.Title = Tables
+%Index.Elements.Tb.Heading = Tables of information in the source text.|About tables<TABLES>
 
-%%Cd
+%Index.Elements.Fi.Title = Figures
+%Index.Elements.Fi.Heading = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
 
-%Title      = Card
-%Heading    = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
+%Index.Elements.In.Title = Innards
+%Index.Elements.In.Heading = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
 
-%%Tb
+%Index.Pages.Actions.Title = Actions Index
+%Index.Pages.Actions.Caption = Things that people can try to do
 
-%Title      = Tables
-%Heading    = Tables of information in the source text.|About tables<TABLES>
+%Index.Elements.A1.Title = Grouped
+%Index.Elements.A1.Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
-%%Fi
+%Index.Elements.A2.Title = Alphabetic
+%Index.Elements.A2.Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
-%Title      = Figures
-%Heading    = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
+%Index.Elements.A2.Light = requires light
+%Index.Elements.A2.Touchable = touchable
+%Index.Elements.A2.Carried = carried
 
-%%In
+%Index.Elements.Bh.Title = Behaviour
+%Index.Elements.Bh.Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
 
-%Title      = Innards
-%Heading    = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
+%Index.Elements.Bh.None = No names for kinds of action have yet been defined.
+%Index.Elements.Bh.Defined = defined as any of the following acts
 
-%%Actions
+%Index.Elements.Cm.Title = Commands
+%Index.Elements.Cm.Heading = Commands which the player can type|About commands<UNDERSTANDING>
 
-%Title      = Actions Index
-%Caption    = Things that people can try to do
+%Index.Elements.To.Title = Tokens
+%Index.Elements.To.Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
 
-%%A1
+%Index.Pages.Kinds.Title = Kinds Index
+%Index.Pages.Kinds.Caption = All the different sorts of value
 
-%Title = Grouped
-%Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
+%Index.Elements.Ch.Title = Chart
+%Index.Elements.Ch.Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
 
-%%A2
+%Index.Elements.Ar.Title = Arithmetic
+%Index.Elements.Ar.Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>
 
-%Title = Alphabetic
-%Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
+%Index.Elements.Ar.Calculator =
+	Kinds of value marked with the calculator symbol are numerical -
+	these are values we can add, multiply and so on. The range of these
+	numbers depends on the Format setting for the project (Glulx format
+	supports much higher numbers than Z-code).
+%Index.Elements.Ar.Dimensionless = dimensionless
 
-%Light = requires light
-%Touchable = touchable
-%Carried = carried
+%Index.Elements.Vl.Title = Values
+%Index.Elements.Vl.Heading = Values which vary during play, and equations.|About variables<VARIABLES>
 
-%%Bh
+%Index.Pages.Phrasebook.Title = Phrasebook Index
+%Index.Pages.Phrasebook.Caption = A short dictionary
 
-%Title = Behaviour
-%Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
+%Index.Elements.Ph.Title = Phrases
+%Index.Elements.Ph.Heading = A guide to the phrases allowed|About phrases<PHRASES>
 
-%%Cm
+%Index.Elements.Lx.Title = Lexicon
+%Index.Elements.Lx.Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
 
-%Title = Commands
-%Heading = Commands which the player can type|About commands<UNDERSTANDING>
+%Index.Elements.Lx.ToBe = *1, to be
+%Index.Elements.Lx.KindOf = a kind of *1
+%Index.Elements.Lx/ValueOf = value of *1
 
-%%To
+%Index.Elements.Rl.Title = Relations
+%Index.Elements.Rl.Heading = Relations give meaning to verbs|About relations<RELATIONS>
 
-%Title = Tokens
-%Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
+%Index.Elements.Vb.Title = Verbs
+%Index.Elements.Vb.Heading = A table of verbs|About verbs<VERBS>
 
-%%Kinds
+%Index.Pages.Rules.Title = Rules Index
+%Index.Pages.Rules.Caption = And the rulebooks they belong to
 
-%Title = Kinds Index
-%Caption    = All the different sorts of value
+%Index.Elements.St.Title = Standards
+%Index.Elements.St.Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
 
-%%Ch
-
-%Title = Chart
-%Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
-
-%%Ar
-
-%Title = Arithmetic
-%Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>
-
-%%Vl
-
-%Title = Values
-%Heading = Values which vary during play, and equations.|About variables<VARIABLES>
-
-%%Phrasebook
-
-%Title = Phrasebook Index
-%Caption    = A short dictionary
-
-%%Ph
-
-%Title = Phrases
-%Heading = A guide to the phrases allowed|About phrases<PHRASES>
-
-%%Lx
-
-%Title = Lexicon
-%Heading = Words used in descriptions|About descriptions<DESCRIPTIONS>
-
-%ToBe = *1, to be
-%KindOf = a kind of *1
-%ValueOf = value of *1
-
-%%Rl
-
-%Title = Relations
-%Heading = Relations give meaning to verbs|About relations<RELATIONS>
-
-%%Vb
-
-%Title = Verbs
-%Heading = A table of verbs|About verbs<VERBS>
-
-%%Rules
-
-%Title = Rules Index
-%Caption    = And the rulebooks they belong to
-
-%%St
-
-%Title = Standards
-%Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
-
-%Check =
+%Index.Elements.St.Check =
 	Check rules are tied to specific actions, and there are too many to index here.
 	For instance, the check taking rules can only ever affect the taking action, so
 	they are indexed on the detailed index page for taking.
-%CarryOut =
+%Index.Elements.St..CarryOut =
 	Carry out rules are tied to specific actions, and there are too many to index here.
-%Report =
+%Index.Elements.St..Report =
 	Report rules are tied to specific actions, and there are too many to index here.
 
-%%Xt
+%Index.Elements.Xt.Title = Extras
+%Index.Elements.Xt.Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
 
-%Title = Extras
-%Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
+%Index.Pages.Scenes.Title = Scenes Index
+%Index.Pages.Scenes.Caption = Like scenes in a movie
 
-%%Scenes
+%Index.Elements.Pl.Title = Plot
+%Index.Elements.Pl.Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
 
-%Title = Scenes Index
-%Caption    = Like scenes in a movie
+%Index.Elements.Ev.Title = Events
+%Index.Elements.Ev.Heading = Timed events, if any|About timed events<TIMEDEVENTS>
 
-%%Pl
+%Index.Elements.RS.Title = Rules
+%Index.Elements.RS.Heading = General rules about scenes
 
-%Title = Plot
-%Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
+%Index.Elements.RS.Empty = There are no rules in this rulebook.
+%Index.Elements.RS.Nameless = nameless
+%Index.Elements.RS.Unlist = The *1 is not listed in the *2.
+%Index.Elements.RS.During = during *1
+%Index.Elements.RS.Response = The *1 response (*2) is "New text.".
+%Index.Elements.RS.Outcome = outcome
+%Index.Elements.RS.Success = a success
+%Index.Elements.RS.Failure = a failure
+%Index.Elements.RS.NoOutcome = no outcome
+%Index.Elements.RS.DefaultSuccess = default outcome is success
+%Index.Elements.RS.DefaultFailure = default outcome is failure
+%Index.Elements.RS.Activity = activity
+%Index.Elements.RS.BeforeActivity = Before *1
+%Index.Elements.RS.ForActivity = Rule for *1
+%Index.Elements.RS.AfterActivity = After *1
 
-%%Ev
+%Index.Pages.World.Title = World Index
+%Index.Pages.World.Caption = Like locations, props and actors in a movie
 
-%Title = Events
-%Heading = Timed events, if any|About timed events<TIMEDEVENTS>
+%Index.Elements.Mp,Title = Map
+%Index.Elements.Mp.Heading = A map of the world
 
-%%RS
-
-%Title = Rules
-%Heading = General rules about scenes
-
-%Empty = There are no rules in this rulebook.
-%Nameless = nameless
-%Unlist = The *1 is not listed in the *2.
-%During = during *1
-%Response = The *1 response (*2) is "New text.".
-%Outcome = outcome
-%Success = a success
-%Failure = a failure
-%NoOutcome = no outcome
-%DefaultSuccess = default outcome is success
-%DefaultFailure = default outcome is failure
-%Activity = activity
-%BeforeActivity = Before *1
-%ForActivity = Rule for *1
-%AfterActivity = After *1
-
-%%World
-
-%Title = World Index
-%Caption    = Like locations, props and actors in a movie
-
-%%Mp
-
-%Title = Map
-%Heading = A map of the world
-
-%%Gz
-
-%Title = Gazetteer
-%Heading = An A-Z of places, things, people and so on
+%Index.Elements.Gz.Title = Gazetteer
+%Index.Elements.Index.Elements.Tb.Heading = An A-Z of places, things, people and so on

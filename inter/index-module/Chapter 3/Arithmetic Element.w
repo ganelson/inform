@@ -24,10 +24,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::first_html_column(OUT, 0);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/calc2.png");
 	WRITE("&nbsp;");
-	WRITE("Kinds of value marked with the calculator symbol are numerical - "
-		"these are values we can add, multiply and so on. The range of these "
-		"numbers depends on the Format setting for the project (Glulx format "
-		"supports much higher numbers than Z-code).");
+	Localisation::write_0(OUT, LD, I"Index.Elements.Ar.Calculator");
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
@@ -56,13 +53,22 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			HTML::next_html_column(OUT, 0);
 			WRITE("%S", Metadata::read_optional_textual(pack, I"^max_value"));
 			HTML::next_html_column(OUT, 0);
-			text_stream *dims = Metadata::read_optional_textual(pack, I"^dimensions");
-			if (Str::len(dims) > 0) WRITE("%S", dims); else WRITE("<i>dimensionless</i>");
+			@<Dimensions column@>;
 			HTML::end_html_row(OUT);
 		}
 	}
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
+
+@<Dimensions column@> =
+	text_stream *dims = Metadata::read_optional_textual(pack, I"^dimensions");
+	if (Str::len(dims) > 0) {
+		WRITE("%S", dims);
+	} else {
+		WRITE("<i>");
+		Localisation::write_0(OUT, LD, I"Index.Elements.Ar.Dimensionless");
+		WRITE("</i>");
+	}
 
 @ This is simply a table of all the multiplications declared in the source
 text, sorted into kind order of left and then right operand.
@@ -75,7 +81,8 @@ text, sorted into kind order of left and then right operand.
 		HTML_OPEN("p");
 		HTML::begin_plain_html_table(OUT);
 		for (int i=0; i<TreeLists::len(inv->multiplication_rule_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->multiplication_rule_nodes->list[i].node);
+			inter_package *pack =
+				Inter::Package::defined_by_frame(inv->multiplication_rule_nodes->list[i].node);
 			HTML::first_html_column(OUT, 0);
 			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			if (at > 0) IndexUtilities::link(OUT, at);

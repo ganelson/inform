@@ -92,13 +92,13 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	IndexRules::rulebook_box(OUT, inv, I"Instead", I"rules_instead",
 		IndexRules::find_rulebook(inv, I"instead"), NULL, 1, TRUE, LD);
 	IndexRules::rulebook_box(OUT, inv, I"Check", NULL, NULL,
-		Localisation::read(LD, I"St", I"Check"), 1, TRUE, LD);
+		Localisation::read(LD, I"Index.Elements.St.Check"), 1, TRUE, LD);
 	IndexRules::rulebook_box(OUT, inv, I"Carry out", NULL, NULL,
-		Localisation::read(LD, I"St", I"CarryOut"), 1, TRUE, LD);
+		Localisation::read(LD, I"Index.Elements.St.CarryOut"), 1, TRUE, LD);
 	IndexRules::rulebook_box(OUT, inv, I"After", I"rules_after",
 		IndexRules::find_rulebook(inv, I"after"), NULL, 1, TRUE, LD);
 	IndexRules::rulebook_box(OUT, inv, I"Report", NULL, NULL,
-		Localisation::read(LD, I"St", I"Report"), 1, TRUE, LD);
+		Localisation::read(LD, I"Index.Elements.St.Report"), 1, TRUE, LD);
 
 @<Index the segment for the action processing rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>How actions are processed</b>"); HTML_CLOSE("p");

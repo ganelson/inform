@@ -93,8 +93,13 @@ will be |Kinds.html| either way.
 @<Register a new index page@> =
 	text_stream *col = mr.exp[1];
 	text_stream *key = mr.exp[0];
-	text_stream *heading = Localisation::read(D, key, I"Title");
-	text_stream *explanation = Localisation::read(D, key, I"Caption");
+	TEMPORARY_TEXT(path)
+	WRITE_TO(path, "Index.Pages.%S.Title", key);
+	text_stream *heading = Localisation::read(D, path);
+	Str::clear(path);
+	WRITE_TO(path, "Index.Pages.%S.Caption", key);
+	text_stream *explanation = Localisation::read(D, path);
+	DISCARD_TEXT(path)
 	index_page *new_page = InterpretIndex::register_page(col, heading, explanation, key);
 	ADD_TO_LINKED_LIST(new_page, index_page, igs->pages);
 
@@ -102,20 +107,29 @@ will be |Kinds.html| either way.
 	if (LinkedLists::len(igs->pages) == 0) internal_error("element without page");
 	index_page *latest = LAST_IN_LINKED_LIST(index_page, igs->pages);
 	text_stream *elt = mr.exp[0];
+	TEMPORARY_TEXT(tkey)
+	TEMPORARY_TEXT(hkey)
+	WRITE_TO(tkey, "Index.Elements.%S.Title", elt);
+	WRITE_TO(hkey, "Index.Elements.%S.Heading", elt);
 	InterpretIndex::register_element(elt, latest,
-		Localisation::read(D, elt, I"Title"),
-		Localisation::read(D, elt, I"Heading"));
+		Localisation::read(D, tkey),
+		Localisation::read(D, hkey));
+	DISCARD_TEXT(tkey)
+	DISCARD_TEXT(hkey)
 
 @<Actually generate the index files@> =
 	index_page *page;
 	LOOP_OVER_LINKED_LIST(page, index_page, igs.pages) {
 		TEMPORARY_TEXT(leafname)
 		WRITE_TO(leafname, "%S.html", page->page_leafname);
+		TEMPORARY_TEXT(key)
+		WRITE_TO(key, "Index.Pages.%S.Title", page->page_leafname);
 		text_stream *OUT =
 			InterpretIndex::open_file(page, leafname,
-				Localisation::read(D, page->page_leafname, I"Title"), -1, D);
+				Localisation::read(D, key), -1, D);
 		Elements::periodic_table(OUT, page, leafname, D);
 		InterpretIndex::close_index_file(OUT);
+		DISCARD_TEXT(key)
 		DISCARD_TEXT(leafname)
 	}
 	GroupedElement::detail_pages(D);

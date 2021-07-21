@@ -30,45 +30,52 @@ typedef struct localisation_dictionary {
 
 localisation_dictionary *Localisation::new(void) {
 	localisation_dictionary *D = CREATE(localisation_dictionary);
-	D->texts = Dictionaries::new(32, TRUE);
+	D->texts = Dictionaries::new(256, TRUE);
 	return D;
 }
 
-@ We think of the dictionary as structured into a two-level hierarchy: for
-each different |context| there is an independent set of key-value pairs.
-Thus |title| in the context |Phrasebook| is not the same as |title| in the
-context |Kinds|, say.
-
-If this had to hold an enormous number of contexts, and had to be accessed
-quickly, we could implement that as a dictionary of dictionaries, using the
-|context| and then the |key| in turn to find values. But that's overkill here.
+@ We think of the dictionary as structured into a hierarchy: for example,
+a typical entry might be |Index.Pages.Kinds.Caption|. At present, we do not
+take advantage of this to make a more efficient search (one could imagine
+a tree structure of dictionaries): we just use these path-like identifiers
+as keys to a single dictionary. If we ever need really large localisatiom
+dictionaries, we might revisit this.
 
 =
-text_stream *Localisation::read(localisation_dictionary *D, text_stream *context,
-	text_stream *key) {
-	TEMPORARY_TEXT(true_key)
-	WRITE_TO(true_key, "%S-%S", context, key);
-	text_stream *text = Dictionaries::get_text(D->texts, true_key);
-	DISCARD_TEXT(true_key)
-	return text;
+text_stream *Localisation::read(localisation_dictionary *D, text_stream *key) {
+	return Dictionaries::get_text(D->texts, key);
 }
 
-void Localisation::write(localisation_dictionary *D, text_stream *context,
+void Localisation::define(localisation_dictionary *D,
 	text_stream *key, text_stream *value) {
-	TEMPORARY_TEXT(true_key)
-	WRITE_TO(true_key, "%S-%S", context, key);
-	text_stream *to = Dictionaries::create_text(D->texts, true_key);
+	text_stream *to = Dictionaries::create_text(D->texts, key);
 	WRITE_TO(to, "%S", value);
-	DISCARD_TEXT(true_key)
 }
 
 @ As noted above, the user is more likely to stock a dictionary by calling the
 following to read it in from a UTF-8-encoded Unicode text file. Lines are assumed
 to be terminated with either |0x0a| or |0x0d|.
 
-The format is simple. Contexts are introduced with |%%NAME|, where |NAME| is
-the context name; keys by |%KEY = ...|, where |KEY| is the key name and |...|
-the text going into it.
+The format is simple:
+(*) If the first non-whitespace character on a line is a |#|, then the line is
+a comment and is ignored.
+(*) If the first non-whitespace character on a line is a |%|, then the line is
+expected to take the form |%KEY = ...|, where |...| is the text value for this
+key. This text continues on what may be multiple lines until the next key;
+and any white space at the start or end is ignored.
+
+So, for example:
+= (text)
+# This is a comment line
+	%Index.Elements.Cm.Title = Commands
+	%Index.Elements.Cm.Heading =
+		Commands which the player can type
+=
+
+And the following function reads such a file into an existing dictionary. Note
+that it can be used to read several files in turn into the same dictionary;
+if later files define the same keys as earlier ones, their new texts override
+the earlier ones.
 
 =
 int Localisation::stock_from_file(filename *localisation_file, localisation_dictionary *D) {
@@ -77,16 +84,17 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 		LOG("Failed to load localisation file at: %f\n", localisation_file);
 		return FALSE;
 	}
-	int col = 1, line = 1;
+	int col = 1, line = 1, nwsol = FALSE; /* "non white space on line" */
 	unicode_file_buffer ufb = TextFiles::create_ufb();
 	wchar_t cr;
-	TEMPORARY_TEXT(context)
 	TEMPORARY_TEXT(key)
 	TEMPORARY_TEXT(value)
 	do {
 		@<Read next character@>;
 		if (cr == EOF) break;
-		if (cr == '%') @<Read up to the next white space as a key@>;
+		if ((cr == '#') && (nwsol == FALSE)) @<Read up to end of line as a comment@>
+		else if ((cr == '%') && (nwsol == FALSE)) @<Read up to the next white space as a key@>
+		else if (Characters::is_whitespace(cr) == FALSE) nwsol = TRUE;
 		if (cr == EOF) break;
 		if (Str::len(key) > 0) {
 			if ((Characters::is_whitespace(cr) == FALSE) || (Str::len(value) > 0))
@@ -99,7 +107,6 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 		}
 	} while (cr != EOF);
 	if (Str::len(key) > 0) @<Write key-value pair@>;
-	DISCARD_TEXT(context)
 	DISCARD_TEXT(key)
 	DISCARD_TEXT(value)
 	fclose(Input_File);
@@ -108,34 +115,28 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 
 @<Read next character@> =
 	cr = TextFiles::utf8_fgetc(Input_File, NULL, FALSE, &ufb);
-	col++; if ((cr == 10) || (cr == 13)) { col = 0; line++; }
+	col++;
+	if ((cr == 10) || (cr == 13)) { col = 0; nwsol = FALSE; line++; }
 
 @<Read up to the next white space as a key@> =
 	if (Str::len(key) > 0) @<Write key-value pair@>;
 	Str::clear(key);
 	Str::clear(value);
-	int double_mode = FALSE;
 	while (TRUE) {
 		@<Read next character@>;
-		if ((cr == '%') && (Str::len(key) == 0)) { double_mode = TRUE; continue; }
 		if ((cr == '=') || (cr == EOF)) break;
-		if (Characters::is_whitespace(cr)) {
-			if (double_mode) break;
-			continue;
-		}
-		PUT_TO(key, cr);
+		if (Characters::is_whitespace(cr) == FALSE) PUT_TO(key, cr);
 	}
-	if (double_mode) {
-		Str::clear(context);
-		WRITE_TO(context, "%S", key);
-		Str::clear(key);
-	} else if (cr == '=') {
+	if (cr == '=') {
 		while (TRUE) {
 			@<Read next character@>;
 			if (Characters::is_whitespace(cr)) continue;
 			break;
 		}
 	}		
+	
+@<Read up to end of line as a comment@> =
+	while (col != 0) @<Read next character@>;
 
 @<Write key-value pair@> =
 	Str::trim_white_space(value);
@@ -145,13 +146,8 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 		WRITE_TO(err, "key '%%%S' has no text", key);
 		Localisation::error(localisation_file, line, col, err);
 		DISCARD_TEXT(err)
-	} else if (Str::len(context) == 0) {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "key '%%%S' does not have a %%%%CONTEXT", key);
-		Localisation::error(localisation_file, line, col, err);
-		DISCARD_TEXT(err)
 	} else {
-		Localisation::write(D, context, key, value);
+		Localisation::define(D, key, value);
 	}
 
 @ The function above is very forgiving, in that it never throws syntax errors.
@@ -167,29 +163,26 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 @
 
 =
-void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D,
-	text_stream *context, text_stream *key) {
+void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
-	Localisation::write_general(OUT, D, context, key, vals);
+	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D,
-	text_stream *context, text_stream *key,
+void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
 	vals[1] = val1;
-	Localisation::write_general(OUT, D, context, key, vals);
+	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D,
-	text_stream *context, text_stream *key,
+void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
 	vals[1] = val1; vals[2] = val2;
-	Localisation::write_general(OUT, D, context, key, vals);
+	Localisation::write_general(OUT, D, key, vals);
 }
 
 @<Vacate the vals@> =
@@ -199,8 +192,8 @@ void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D,
 
 =
 void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
-	text_stream *context, text_stream *key, text_stream **vals) {
-	text_stream *prototype = Localisation::read(D, context, key);
+	text_stream *key, text_stream **vals) {
+	text_stream *prototype = Localisation::read(D, key);
 	for (int i=0; i<Str::len(prototype); i++) {
 		wchar_t c = Str::get_at(prototype, i);
 		if (c == '*') {

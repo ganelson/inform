@@ -264,7 +264,7 @@ eds. Howarth and Lyons (1996).
 
 @<Text of the actual lexicon entry@> =
 	if (lex->part_of_speech == PREP_TLEXE)
-		Localisation::write_1(OUT, LD, I"Lx", I"ToBe", lex->lemma);
+		Localisation::write_1(OUT, LD, I"Index.Elements.Lx.ToBe", lex->lemma);
 	else
 		WRITE("%S", lex->lemma);
 
@@ -298,7 +298,7 @@ source text: so any single link would be potentially misleading.
 @<Definition of common noun entry@> =
 	@<Begin definition text@>;
 	WRITE(", ");
-	Localisation::write_1(OUT, LD, I"Lx", I"KindOf",
+	Localisation::write_1(OUT, LD, I"Index.Elements.Lx.KindOf",
 		Metadata::read_optional_textual(lex->lex_package, I"^index_superkind"));
 	@<End definition text@>;
 
@@ -320,7 +320,7 @@ different contexts. We want to quote all of those.
 @<Definition of enumerated instance entry@> =
 	@<Begin definition text@>;
 	WRITE(", ");
-	Localisation::write_1(OUT, LD, I"Lx", I"ValueOf",
+	Localisation::write_1(OUT, LD, I"Index.Elements.Lx.ValueOf",
 		Metadata::read_optional_textual(lex->lex_package, I"^index_kind"));
 	@<End definition text@>;
 

@@ -2,7 +2,9 @@
 
 To write the Alphabetic actions element (A2) in the index.
 
-@ =
+@ This element is a simple three-column table.
+
+=
 void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
@@ -18,7 +20,6 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::end_html_row(OUT);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
-		HTML::first_html_column(OUT, 0);
 		inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 		inter_ti requires_light = Metadata::read_numeric(an_pack, I"^requires_light");
 		inter_ti can_have_noun = Metadata::read_numeric(an_pack, I"^can_have_noun");
@@ -27,45 +28,61 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		inter_ti second_access = Metadata::read_numeric(an_pack, I"^second_access");
 		inter_symbol *noun_kind = Metadata::read_symbol(an_pack, I"^noun_kind");
 		inter_symbol *second_kind = Metadata::read_symbol(an_pack, I"^second_kind");
-		if (oow) HTML::begin_colour(OUT, I"800000");
-		WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
-		if (oow) HTML::end_colour(OUT);
-		IndexUtilities::detail_link(OUT, "A", i, TRUE);
 
-		if (requires_light) AlphabeticElement::note(OUT, I"Light", LD);
-
+		HTML::first_html_column(OUT, 0);
+		@<Action column@>;
 		HTML::next_html_column(OUT, 0);
-		if (can_have_noun == 0) {
-			WRITE("&mdash;");
-		} else {
-			if (noun_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
-			if (noun_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
-			WRITE("<b>");
-			ChartElement::index_kind(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
-			WRITE("</b>");
-		}
-
+		@<Noun column@>;
 		HTML::next_html_column(OUT, 0);
-		if (can_have_second == 0) {
-			WRITE("&mdash;");
-		} else {
-			if (second_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
-			if (second_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
-			WRITE("<b>");
-			ChartElement::index_kind(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
-			WRITE("</b>");
-		}
+		@<Second noun column@>;
 		HTML::end_html_row(OUT);
 	}
 	HTML::end_html_table(OUT);
 }
 
+@<Action column@> =
+	if (oow) HTML::begin_colour(OUT, I"800000");
+	WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
+	if (oow) HTML::end_colour(OUT);
+	IndexUtilities::detail_link(OUT, "A", i, TRUE);
+	if (requires_light) AlphabeticElement::note(OUT, I"Light", LD);
+
+@<Noun column@> =
+	if (can_have_noun == 0) {
+		WRITE("&mdash;");
+	} else {
+		if (noun_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
+		if (noun_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
+		WRITE("<b>");
+		ChartElement::index_kind(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
+		WRITE("</b>");
+	}
+
+@<Second noun column@> =
+	if (can_have_second == 0) {
+		WRITE("&mdash;");
+	} else {
+		if (second_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
+		if (second_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
+		WRITE("<b>");
+		ChartElement::index_kind(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
+		WRITE("</b>");
+	}
+
+@ =
 void AlphabeticElement::note(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
+	TEMPORARY_TEXT(full)
+	WRITE_TO(full, "Index.Elements.A2.%S", key);
 	WRITE("<i>");
-	Localisation::write_0(OUT, LD, I"A2", key);
+	Localisation::write_0(OUT, LD, full);
 	WRITE("</i> ");
+	DISCARD_TEXT(full)
 }
 
+@ This comparison function sorts actions in alphabetical order of name; by
+default the inventory would have them in declaration order.
+
+=
 int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {
 	itl_entry *E1 = (itl_entry *) ent1;
 	itl_entry *E2 = (itl_entry *) ent2;
