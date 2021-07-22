@@ -12,7 +12,7 @@ on typical browser views embedded in apps on Windows, MacOS and Linux.)
 
 =
 void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym,
-	text_stream *name, text_stream *exp, char *link) {
+	text_stream *name, text_stream *exp, char *link, localisation_dictionary *D) {
 	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" style=\"background:#eeeeee;\"");
 	HTML_OPEN("tr");
 	@<Write the banner mini-element-box@>;
@@ -45,7 +45,7 @@ void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_st
 	HTML_OPEN_WITH("p", "style=\"margin-top:0px;padding-top:0px;"
 		"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\"");
 	WRITE("<b>%S</b> &mdash; \n", name);
-	IndexUtilities::explain(OUT, exp);
+	Localisation::write_0(OUT, D, exp);
 	HTML_CLOSE("p");
 	HTML_CLOSE("td");
 
@@ -233,51 +233,4 @@ void IndexUtilities::show_definition_area(OUTPUT_STREAM, inter_package *heading_
 	}
 	HTML_CLOSE("b");
 	HTML_TAG("br");
-}
-
-@ This takes material which ultimately comes from //Localisation// files and
-allows a little markup in order to insert formatting. A vertical stroke denotes
-a line break; angle brackets |<THUS>| insert a documentation reference to
-documentation symbol |THUS|; square brackets |[THUS]| link to a named anchor
-found on the same page. For example:
-= (text)
-%Heading = How this project might be filed in a library
-catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
-=
-inserts one line break, and two documentation links.
-
-(These syntax conventions do not apply to all material in //Localisation// files.)
-
-=
-void IndexUtilities::explain(OUTPUT_STREAM, text_stream *explanation) {
-	int italics_open = FALSE;
-	for (int i=0, L=Str::len(explanation); i<L; i++) {
-		switch (Str::get_at(explanation, i)) {
-			case '|':
-				HTML_TAG("br");
-				WRITE("<i>"); italics_open = TRUE; break;
-			case '<': {
-				TEMPORARY_TEXT(link)
-				WRITE("&nbsp;");
-				i++;
-				while ((i<L) && (Str::get_at(explanation, i) != '>'))
-					PUT_TO(link, Str::get_at(explanation, i++));
-				IndexUtilities::DocReferences::link(OUT, link);
-				DISCARD_TEXT(link)
-				break;
-			}
-			case '[': {
-				TEMPORARY_TEXT(link)
-				WRITE("&nbsp;");
-				i++;
-				while ((i<L) && (Str::get_at(explanation, i) != '>'))
-					PUT_TO(link, Str::get_at(explanation, i++));
-				IndexUtilities::below_link(OUT, link);
-				DISCARD_TEXT(link)
-				break;
-			}
-			default: WRITE("%c", Str::get_at(explanation, i)); break;
-		}
-	}
-	if (italics_open) WRITE("</i>");
 }

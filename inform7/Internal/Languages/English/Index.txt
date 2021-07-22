@@ -19,6 +19,8 @@
 %Index.Pages.Actions.Title = Actions Index
 %Index.Pages.Actions.Caption = Things that people can try to do
 
+%Index.Pages.ActionDetails.Heading = A single action in detail.|About the action rulebooks<ARSUMMARY>
+
 %Index.Elements.A1.Title = Grouped
 %Index.Elements.A1.Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
 
@@ -89,9 +91,9 @@
 	Check rules are tied to specific actions, and there are too many to index here.
 	For instance, the check taking rules can only ever affect the taking action, so
 	they are indexed on the detailed index page for taking.
-%Index.Elements.St..CarryOut =
+%Index.Elements.St.CarryOut =
 	Carry out rules are tied to specific actions, and there are too many to index here.
-%Index.Elements.St..Report =
+%Index.Elements.St.Report =
 	Report rules are tied to specific actions, and there are too many to index here.
 
 %Index.Elements.Xt.Title = Extras

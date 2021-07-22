@@ -112,8 +112,7 @@ will be |Kinds.html| either way.
 	WRITE_TO(tkey, "Index.Elements.%S.Title", elt);
 	WRITE_TO(hkey, "Index.Elements.%S.Heading", elt);
 	InterpretIndex::register_element(elt, latest,
-		Localisation::read(D, tkey),
-		Localisation::read(D, hkey));
+		Localisation::read(D, tkey), hkey);
 	DISCARD_TEXT(tkey)
 	DISCARD_TEXT(hkey)
 
@@ -176,7 +175,7 @@ typedef struct index_element {
 	int atomic_number; /* 1, 2, 3, ..., within its page */
 	struct text_stream *chemical_symbol;
 	struct text_stream *element_name;
-	struct text_stream *explanatory_note;
+	struct text_stream *explanation_key;
 	struct index_page *owning_page;
 	CLASS_DEFINITION
 } index_element;
@@ -192,7 +191,7 @@ index_element *InterpretIndex::register_element(text_stream *abb, index_page *ow
 	ie->atomic_number = ++(owner->no_elements);
 	ie->chemical_symbol = Str::duplicate(abb);
 	ie->element_name = Str::duplicate(title);
-	ie->explanatory_note = Str::duplicate(explanation);
+	ie->explanation_key = Str::duplicate(explanation);
 	return ie;
 }
 

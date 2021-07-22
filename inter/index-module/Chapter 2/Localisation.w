@@ -160,7 +160,28 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 		F, line, col, err);
 }
 
-@
+@h Writers.
+These functions can then be used for generating text (or HTML) which expands one
+of the keys, substituting textual values in for placeholders. For example, given:
+= (text)
+%Index.Elements.RS.Unlist = The *1 is not listed in the *2.
+=
+Calling //Localisation::write_2// on the key |"Index.Elements.RS.Unlist"| with
+the values "imports rule" and "customs rulebook" would then produce:
+= (text)
+The imports rule is not listed in the customs rulebook.
+=
+If an actual asterisk is needed, |**| will produce one.
+
+Two further syntaxes can be used if the text is HTML rather than plain. The
+notation |<REF>| expands to a blue help icon linking to the Inform documentation
+at reference point |REF|; and a vertical stroke becomes a forced line break,
+with everything under the first line being italicised. For example:
+= (text)
+%Index.Elements.Cd.Heading =
+	How this project might be filed in a library
+	catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
+=
 
 =
 void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
@@ -188,22 +209,40 @@ void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D, text_strea
 @<Vacate the vals@> =
 	for (int i=0; i<10; i++) vals[i] = NULL;
 
-@
-
-=
+@ =
 void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 	text_stream *key, text_stream **vals) {
 	text_stream *prototype = Localisation::read(D, key);
+	int italics_open = FALSE;
 	for (int i=0; i<Str::len(prototype); i++) {
 		wchar_t c = Str::get_at(prototype, i);
-		if (c == '*') {
-			wchar_t nc = Str::get_at(prototype, i+1);
-			int n = ((int) nc - (int) '0');
-			if ((n >= 0) && (n <= 9)) WRITE("%S", vals[n]);
-			else PUT(nc);
-			i++;
-		} else {
-			PUT(c);
+		switch (c) {
+			case '*': {
+				wchar_t nc = Str::get_at(prototype, i+1);
+				int n = ((int) nc - (int) '0');
+				if ((n >= 0) && (n <= 9)) WRITE("%S", vals[n]);
+				else PUT(nc);
+				i++;
+				break;
+			}
+			case '|':
+				if (italics_open) WRITE("</i>");
+				HTML_TAG("br");
+				WRITE("<i>"); italics_open = TRUE; break;
+			case '<': {
+				TEMPORARY_TEXT(link)
+				WRITE("&nbsp;");
+				i++;
+				while ((i<Str::len(prototype)) && (Str::get_at(prototype, i) != '>'))
+					PUT_TO(link, Str::get_at(prototype, i++));
+				IndexUtilities::DocReferences::link(OUT, link);
+				DISCARD_TEXT(link)
+				break;
+			}
+			default:
+				PUT(c);
+				break;
 		}
 	}
+	if (italics_open) WRITE("</i>");
 }

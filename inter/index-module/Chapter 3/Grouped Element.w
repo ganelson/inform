@@ -65,8 +65,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, D);
 		IndexUtilities::banner_line(OUT, NULL, 1, I"^", I"Details",
-			I"A single action in detail.|About the action rulebooks<ARSUMMARY>",
-			"../Actions.html");
+			I"Index.Pages.ActionDetails.Heading", "../Actions.html", D);
 		HTML_TAG("hr");
 		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
 		text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");

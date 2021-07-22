@@ -161,7 +161,7 @@ content at last; and then a rule.
 			HTML_OPEN_WITH("div", "id=\"segment%d\"", ie->atomic_number);
 			HTML_TAG("hr");
 			IndexUtilities::banner_line(OUT, current_page, ie->atomic_number, ie->chemical_symbol,
-				ie->element_name, ie->explanatory_note, NULL);
+				ie->element_name, ie->explanation_key, NULL, D);
 			Elements::render(OUT, ie->chemical_symbol, D);
 			HTML_CLOSE("div");
 		}
