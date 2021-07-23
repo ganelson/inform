@@ -12,11 +12,11 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	HTML::begin_html_table(OUT, NULL, FALSE, 0, 0, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
-	WRITE("<b>action</b>");
+	AlphabeticElement::column(OUT, I"ActionColumn", LD);
 	HTML::next_html_column(OUT, 0);
-	WRITE("<b>noun</b>");
+	AlphabeticElement::column(OUT, I"NounColumn", LD);
 	HTML::next_html_column(OUT, 0);
-	WRITE("<b>second noun</b>");
+	AlphabeticElement::column(OUT, I"SecondColumn", LD);
 	HTML::end_html_row(OUT);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
@@ -68,6 +68,16 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		ChartElement::index_kind(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
 		WRITE("</b>");
 	}
+
+@ =
+void AlphabeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
+	TEMPORARY_TEXT(full)
+	WRITE_TO(full, "Index.Elements.A2.%S", key);
+	WRITE("<b>");
+	Localisation::write_0(OUT, LD, full);
+	WRITE("</b> ");
+	DISCARD_TEXT(full)
+}
 
 @ =
 void AlphabeticElement::note(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {

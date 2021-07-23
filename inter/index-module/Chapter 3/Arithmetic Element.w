@@ -34,13 +34,13 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::begin_plain_html_table(OUT);
 
 	HTML::first_html_column(OUT, 0);
-	WRITE("<b>kind of value</b>");
+	ArithmeticElement::column(OUT, I"KindColumn", LD);
 	HTML::next_html_column(OUT, 0);
-	WRITE("<b>minimum</b>");
+	ArithmeticElement::column(OUT, I"MinimumColumn", LD);
 	HTML::next_html_column(OUT, 0);
-	WRITE("<b>maximum</b>");
+	ArithmeticElement::column(OUT, I"MaximumColumn", LD);
 	HTML::next_html_column(OUT, 0);
-	WRITE("<b>dimensions</b>");
+	ArithmeticElement::column(OUT, I"DimensionsdColumn", LD);
 	HTML::end_html_row(OUT);
 
 	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
@@ -112,3 +112,13 @@ text, sorted into kind order of left and then right operand.
 		HTML::end_html_table(OUT);
 		HTML_CLOSE("p");
 	}
+
+@ =
+void ArithmeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
+	TEMPORARY_TEXT(full)
+	WRITE_TO(full, "Index.Elements.Ar.%S", key);
+	WRITE("<b>");
+	Localisation::write_0(OUT, LD, full);
+	WRITE("</b> ");
+	DISCARD_TEXT(full)
+}
