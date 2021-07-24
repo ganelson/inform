@@ -21,9 +21,8 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			inter_package *pack =
 				Inter::Package::defined_by_frame(inv->named_action_pattern_nodes->list[i].node);
 			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
-			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			HTML_OPEN("p"); WRITE("<b>%S</b>", name);
-			IndexUtilities::link(OUT, at);
+			IndexUtilities::link_package(OUT, pack);
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;<i>");
 			Localisation::write_0(OUT, LD, I"Index.Elements.Bh.Defined");
@@ -37,8 +36,7 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 						text_stream *text = Metadata::read_optional_textual(entry, I"^text");
 						HTML_TAG("br");
 						WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%S", text);
-						int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-						IndexUtilities::link(OUT, at);
+						IndexUtilities::link_package(OUT, entry);
 					}
 				}
 			}

@@ -44,6 +44,13 @@
 %Index.Elements.Cm.Title = Commands
 %Index.Elements.Cm.Heading = Commands which the player can type|About commands<UNDERSTANDING>
 
+%Index.Elements.Cm.Command = a command for controlling play
+%Index.Elements.Cm.TestingCommand = a testing command not available in the final game
+%Index.Elements.Cm.DirectionCommand = going
+
+%Index.Elements.Cm.Alias = same as
+%Index.Elements.Cm.Reversed = reversed
+
 %Index.Elements.To.Title = Tokens
 %Index.Elements.To.Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
 
@@ -52,6 +59,54 @@
 
 %Index.Elements.Ch.Title = Chart
 %Index.Elements.Ch.Heading = A chart of all the kinds|About kinds<KINDS>; New kinds of object<NEWKINDS>; Other new kinds<KINDSVALUE>
+
+%Index.Elements.Ch.BasicKinds = basic kinds
+%Index.Elements.Ch.NewKinds = making new kinds from old
+%Index.Elements.Ch.Plural = plural
+
+%Index.Elements.Ch.DefaultColumn = default value
+%Index.Elements.Ch.RepeatColumn = repeat
+%Index.Elements.Ch.PropsColumn = props
+%Index.Elements.Ch.UnderColumn = under
+
+%Index.Elements.Ch.DefaultGloss = 
+	The <b>default value</b> is used when we make something like 
+	a variable but don't tell Inform what its value is. For instance, if 
+	we write 'Zero hour is a time that varies', but don't tell Inform 
+	anything specific like 'Zero hour is 11:21 PM.', then Inform uses 
+	the value in the table above to decide what it will be. 
+	The same applies if we create a property (for instance, 'A person 
+	has a number called lucky number.'). Kinds of value not included 
+	in the table cannot be used in variables and properties.
+%Index.Elements.Ch.RepeatGloss = 
+	A tick for <b>repeat</b> means that it's possible to 
+	repeat through values of this kind. For instance, 'repeat with T 
+	running through times:' is allowed, but 'repeat with N running 
+	through numbers:' is not - there are too many numbers for this to 
+	make sense. A tick here also means it's possible to form lists such 
+	as 'list of rulebooks', or to count the 'number of scenes'.
+%Index.Elements.Ch.PropsGloss = 
+	A tick for <b>props</b> means that values of this 
+	kind can have properties. For instance, 'A scene can be thrilling or 
+	dull.' makes an either/or property of a scene, but 'A number can be 
+	nice or nasty.' is not allowed because it would cost too much storage 
+	space. (Of course 'Definition:' can always be used to make adjectives 
+	applying to numbers; it's only properties which have storage 
+	worries.)
+%Index.Elements.Ch.UnderGloss = 
+	A tick for <b>under</b> means that it's possible 
+	to understand values of this kind. For instance, 'Understand "award 
+	[number]" as awarding.' might be allowed, if awarding were an action 
+	applying to a number, but 'Understand "run [rule]" as rule-running.' 
+	is not allowed - there are so many rules with such long names that 
+	Inform doesn't add them to its vocabulary during play.
+%Index.Elements.Ch.CovarianceGloss =
+	<b>Covariance</b> means that if K is a kind of L, then something
+	you make from K can be used as the same thing made from L. For example,
+	a list of doors can be used as a list of things, because 'list of K' is
+	covariant. <b>Contravariance</b> means it works the other way round.
+	For example, an activity on things can be used as an activity on doors,
+	but not vice versa, because 'activity of K' is contravariant.
 
 %Index.Elements.Ar.Title = Arithmetic
 %Index.Elements.Ar.Heading = Which values can be added up, multiplied and so on|About arithmetic<ARITHMETIC>

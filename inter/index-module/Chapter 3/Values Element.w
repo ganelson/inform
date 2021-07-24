@@ -50,10 +50,8 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 	WRITE("%S", name);
-	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
-	text_stream *doc = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc) > 0) IndexUtilities::DocReferences::link(OUT, doc);
+	IndexUtilities::link_package(OUT, pack);
+	IndexUtilities::link_to_documentation(OUT, pack);
 	text_stream *contents = Metadata::read_optional_textual(pack, I"^contents");
 	WRITE(" - <i>%S</i>", contents);
 	HTML_TAG("br");

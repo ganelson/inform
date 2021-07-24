@@ -29,16 +29,10 @@ void TokensElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	TokensElement::index_tokens_for(OUT, I, "things inside", NULL, I"things_token", NULL);
 	TokensElement::index_tokens_for(OUT, I, "things preferably held", NULL, I"things_token", NULL);
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/grammar");
-	inter_symbol *wanted = PackageTypes::get(I, I"_command_grammar");
-	inter_tree_node *D = Inter::Packages::definition(pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				if (Metadata::read_optional_numeric(entry, I"^is_token"))
-					TokensElement::index_tokens_for(OUT, I, NULL, entry, NULL, NULL);
-			}
-		}
+	inter_package *cg_pack;
+	LOOP_THROUGH_SUBPACKAGES(cg_pack, pack, I"_command_grammar") {
+		if (Metadata::read_optional_numeric(cg_pack, I"^is_token"))
+			TokensElement::index_tokens_for(OUT, I, NULL, cg_pack, NULL, NULL);
 	}
 }
 
@@ -49,10 +43,7 @@ void TokensElement::index_tokens_for(OUTPUT_STREAM, inter_tree *I, char *special
 	if (special) WRITE("%s", special);
 	else if (defns) WRITE("%S", Metadata::read_optional_textual(defns, I"^name"));
 	WRITE("]\"");
-	if (defns) {
-		int at = (int) Metadata::read_optional_numeric(defns, I"^at");
-		if (at > 0) IndexUtilities::link(OUT, at);
-	}
+	if (defns) IndexUtilities::link_package(OUT, defns);
 	if (Str::len(help) > 0) IndexUtilities::DocReferences::link(OUT, help);
 	if (explanation) WRITE(" - %s", explanation);
 	HTML_CLOSE("p");
@@ -60,28 +51,21 @@ void TokensElement::index_tokens_for(OUTPUT_STREAM, inter_tree *I, char *special
 }
 
 void TokensElement::index_list_for_token(OUTPUT_STREAM, inter_tree *I, inter_package *cg) {
-	inter_symbol *wanted = PackageTypes::get(I, I"_cg_line");
-	inter_tree_node *D = Inter::Packages::definition(cg);
 	int k = 0;
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				text_stream *trueverb = Metadata::read_optional_textual(entry, I"^true_verb");
-				HTML::open_indented_p(OUT, 2, "hanging");
-				if (k++ == 0) WRITE("="); else WRITE("or");
-				WRITE(" &quot;");
-				TokensElement::verb_definition(OUT,
-					Metadata::read_optional_textual(entry, I"^text"),
-					trueverb, EMPTY_WORDING);
-				WRITE("&quot;");
-				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
-				if (Metadata::read_optional_numeric(entry, I"^reversed"))
-					WRITE(" <i>reversed</i>");
-				HTML_CLOSE("p");
-			}
-		}
+	inter_package *line_pack;
+	LOOP_THROUGH_SUBPACKAGES(line_pack, cg, I"_cg_line") {
+		text_stream *trueverb = Metadata::read_optional_textual(line_pack, I"^true_verb");
+		HTML::open_indented_p(OUT, 2, "hanging");
+		if (k++ == 0) WRITE("="); else WRITE("or");
+		WRITE(" &quot;");
+		TokensElement::verb_definition(OUT,
+			Metadata::read_optional_textual(line_pack, I"^text"),
+			trueverb, EMPTY_WORDING);
+		WRITE("&quot;");
+		IndexUtilities::link_package(OUT, line_pack);
+		if (Metadata::read_optional_numeric(line_pack, I"^reversed"))
+			WRITE(" <i>reversed</i>");
+		HTML_CLOSE("p");
 	}
 }
 

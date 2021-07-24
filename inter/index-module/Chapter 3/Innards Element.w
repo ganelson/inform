@@ -84,27 +84,21 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	WRITE("Debugging log:");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	inter_symbol *wanted = PackageTypes::get(I, I"_debugging_aspect");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
-	inter_tree_node *D = Inter::Packages::definition(pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {	
-				TEMPORARY_TEXT(is)
-				WRITE_TO(is, "Include %S in the debugging log.",
-					Metadata::read_textual(entry, I"^name"));
-				PasteButtons::paste_text(OUT, is);
-				WRITE("&nbsp;%S&nbsp;", is);
-				DISCARD_TEXT(is)
-				if (Metadata::read_optional_numeric(entry, I"^used")) {
-					HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/tick.png");
-				} else {
-					HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/cross.png");
-				}
-				HTML_TAG("br");
-			}
+	inter_package *aspect_pack;
+	LOOP_THROUGH_SUBPACKAGES(aspect_pack, pack, I"_debugging_aspect") {	
+		TEMPORARY_TEXT(is)
+		WRITE_TO(is, "Include %S in the debugging log.",
+			Metadata::read_textual(aspect_pack, I"^name"));
+		PasteButtons::paste_text(OUT, is);
+		WRITE("&nbsp;%S&nbsp;", is);
+		DISCARD_TEXT(is)
+		if (Metadata::read_optional_numeric(aspect_pack, I"^used")) {
+			HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/tick.png");
+		} else {
+			HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/cross.png");
 		}
+		HTML_TAG("br");
 	}
 	HTML_CLOSE("p");
 

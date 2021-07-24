@@ -102,8 +102,7 @@ to match this width, preserving the aspect ratio.
 
 			HTML::next_html_column(OUT, 0);
 			WRITE("%S", Metadata::read_textual(pack, I"^name"));
-			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-			if (at > 0) IndexUtilities::link(OUT, at);
+			IndexUtilities::link_package(OUT, pack);
 
 			HTML_TAG("br");
 			if (Str::len(line2) > 0) {
@@ -217,8 +216,7 @@ to match this width, preserving the aspect ratio.
 		WRITE("&nbsp;");
 		HTML::next_html_column(OUT, 0);
 		WRITE("%S", Metadata::read_textual(pack, I"^name"));
-		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (at > 0) IndexUtilities::link(OUT, at);
+		IndexUtilities::link_package(OUT, pack);
 		HTML_TAG("br");
 		if (Str::len(line2) > 0) {
 			WRITE("%S", line2);
@@ -250,8 +248,7 @@ to match this width, preserving the aspect ratio.
 		WRITE("&nbsp;");
 		HTML::next_html_column(OUT, 0);
 		WRITE("%S", Metadata::read_textual(pack, I"^name"));
-		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (at > 0) IndexUtilities::link(OUT, at);
+		IndexUtilities::link_package(OUT, pack);
 		HTML_TAG("br");
 		WRITE("Filename: %s %S- owned by ",
 			(is_binary)?"- binary ":"",

@@ -51,21 +51,20 @@ void GroupedElement::index_p1(OUTPUT_STREAM, inter_package *an_pack, int bold,
 	WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
 	if (bold) WRITE("</b>");
 	if (oow) HTML::end_colour(OUT);
-	int at = (int) Metadata::read_optional_numeric(an_pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, an_pack);
 	IndexUtilities::detail_link(OUT, "A", i, (on_details_page)?FALSE:TRUE);
 }
 
-void GroupedElement::detail_pages(localisation_dictionary *D) {
+void GroupedElement::detail_pages(localisation_dictionary *LD) {
 	inter_tree *I = InterpretIndex::get_tree();
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
-		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, D);
+		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, LD);
 		IndexUtilities::banner_line(OUT, NULL, 1, I"^", I"Details",
-			I"Index.Pages.ActionDetails.Heading", "../Actions.html", D);
+			I"Index.Pages.ActionDetails.Heading", "../Actions.html", LD);
 		HTML_TAG("hr");
 		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
 		text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");
@@ -104,8 +103,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	WRITE("%S", Metadata::read_optional_textual(an_pack, I"^display_name"));
 	if (oow) HTML::end_colour(OUT);
 	WRITE("</b>");
-	int at = (int) Metadata::read_optional_numeric(an_pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, an_pack);
 	if (requires_light) WRITE(" (requires light)");
 	WRITE(" (<i>past tense</i> %S)", Metadata::read_optional_textual(an_pack, I"^past_name"));
 	text_stream *spec = Metadata::read_optional_textual(an_pack, I"^specification");
@@ -118,17 +116,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	HTML_OPEN("p"); WRITE("<b>Typed commands leading to this action</b>\n"); HTML_CLOSE("p");
 	HTML_OPEN("p");
 	int producers = 0;
-	inter_symbol *wanted = PackageTypes::get(I, I"_cg_line");
-	inter_tree_node *D = Inter::Packages::definition(an_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				inter_symbol *xref = Metadata::read_symbol(entry, I"^line");
-				CommandsElement::cgl_index_normal(OUT, Inter::Packages::container(xref->definition), NULL);
-				producers++;
-			}
-		}
+	inter_package *line_pack;
+	LOOP_THROUGH_SUBPACKAGES(line_pack, an_pack, I"_cg_line") {
+		inter_symbol *xref = Metadata::read_symbol(line_pack, I"^line");
+		CommandsElement::index_grammar_line(OUT, Inter::Packages::container(xref->definition), NULL, LD);
+		producers++;
 	}
 	if (producers == 0) WRITE("<i>None</i>");
 	HTML_CLOSE("p");
@@ -136,7 +128,7 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 @<Show the action variables@> =
 	if (GroupedElement::no_vars(an_pack, I) > 0) {
 		HTML_OPEN("p"); WRITE("<b>Named values belonging to this action</b>\n"); HTML_CLOSE("p");
-		GroupedElement::index_stv_set(OUT, I, an_pack);
+		GroupedElement::index_shv_set(OUT, I, an_pack);
 	}
 
 @<Show the rules relevant to this action@> =
@@ -146,11 +138,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	int resp_count = 0;
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	if (oow == FALSE) {
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion", D);
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt", D);
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for", D);
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before", D);
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"persuasion", I"persuasion", LD);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"unsuccessful_attempt_by", I"unsuccessful attempt", LD);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"setting_action_variables", I"set action variables for", LD);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"before", I"before", LD);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"instead", I"instead of", LD);
 	}
 	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
@@ -159,11 +151,11 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 	inter_package *carry_out_pack = Inter::Packages::container(carry_out_s->definition);
 	inter_package *report_pack = Inter::Packages::container(report_s->definition);
 
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check", D);
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out", D);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack, I"check", I"check", LD);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack, I"carry_out", I"carry out", LD);
 	if (oow == FALSE)
-		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after", D);
-	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report", D);
+		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL, I"after", I"after", LD);
+	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack, I"report", I"report", LD);
 	if (resp_count > 1) {
 		WRITE("Click on the speech-bubble icons to see the responses, "
 			"or here to see all of them:");
@@ -175,36 +167,17 @@ void GroupedElement::detail_pages(localisation_dictionary *D) {
 
 @ =
 int GroupedElement::no_vars(inter_package *set, inter_tree *I) {
-	int sv = 0;
-	inter_symbol *wanted = PackageTypes::get(I, I"_shared_variable");
-	inter_tree_node *D = Inter::Packages::definition(set);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				sv++;
-			}
-		}
-	}
-	return sv;
+	return InterTree::no_subpackages(set, I"_shared_variable");
 }
 
-void GroupedElement::index_stv_set(OUTPUT_STREAM, inter_tree *I, inter_package *set) {
-	inter_symbol *wanted = PackageTypes::get(I, I"_shared_variable");
-	inter_tree_node *D = Inter::Packages::definition(set);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *var_pack = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(var_pack) == wanted) {
-				HTML::open_indented_p(OUT, 2, "tight");
-				WRITE("%S", Metadata::read_optional_textual(var_pack, I"^name"));
-				int at = (int) Metadata::read_optional_numeric(var_pack, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
-				text_stream *doc_ref = Metadata::read_optional_textual(var_pack, I"^documentation");
-				if (Str::len(doc_ref) > 0) IndexUtilities::DocReferences::link(OUT, doc_ref); /* blue help icon, if any */
-				WRITE(" - <i>%S</i>", Metadata::read_optional_textual(var_pack, I"^kind"));
-				HTML_CLOSE("p");
-			}
-		}
+void GroupedElement::index_shv_set(OUTPUT_STREAM, inter_tree *I, inter_package *set) {
+	inter_package *var_pack;
+	LOOP_THROUGH_SUBPACKAGES(var_pack, set, I"_shared_variable") {
+		HTML::open_indented_p(OUT, 2, "tight");
+		WRITE("%S", Metadata::read_optional_textual(var_pack, I"^name"));
+		IndexUtilities::link_package(OUT, var_pack);
+		IndexUtilities::link_to_documentation(OUT, var_pack);
+		WRITE(" - <i>%S</i>", Metadata::read_optional_textual(var_pack, I"^kind"));
+		HTML_CLOSE("p");
 	}
 }

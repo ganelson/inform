@@ -82,17 +82,11 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack
 	if (rule_pack == NULL) return FALSE;
 	if (rc.action_context) {
 		int passes = FALSE;
-		inter_symbol *wanted = PackageTypes::get(I, I"_relevant_action");
-		inter_tree_node *D = Inter::Packages::definition(rule_pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *rel_pack = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(rel_pack) == wanted) {
-					inter_symbol *act_ds = Metadata::read_symbol(rel_pack, I"^action");
-					if (Inter::Packages::container(act_ds->definition) == rc.action_context)
-						passes = TRUE;
-				}
-			}
+		inter_package *rel_pack;
+		LOOP_THROUGH_SUBPACKAGES(rel_pack, rule_pack, I"_relevant_action") {
+			inter_symbol *act_ds = Metadata::read_symbol(rel_pack, I"^action");
+			if (Inter::Packages::container(act_ds->definition) == rc.action_context)
+				passes = TRUE;
 		}
 		if (passes == FALSE) return FALSE;
 	}
@@ -111,16 +105,10 @@ no rules which fit |rc|:
 =
 int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, rule_context rc) {
 	if (rb_pack) {
-		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
-		inter_tree_node *D = Inter::Packages::definition(rb_pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted)
-					if (IndexRules::phrase_fits_rule_context(I, entry, rc))
-						return FALSE;
-			}
-		}
+		inter_package *entry;
+		LOOP_THROUGH_SUBPACKAGES(entry, rb_pack, I"_rulebook_entry")
+			if (IndexRules::phrase_fits_rule_context(I, entry, rc))
+				return FALSE;
 	}
 	return TRUE;
 }
@@ -129,24 +117,12 @@ int IndexRules::is_contextually_empty(inter_tree *I, inter_package *rb_pack, rul
 
 =
 int IndexRules::is_empty(inter_tree *I, inter_package *rb_pack) {
-	if ((rb_pack) && (IndexRules::no_rules(I, rb_pack) > 0)) return FALSE;
+	if ((rb_pack) && (IndexRules::no_rules(rb_pack) > 0)) return FALSE;
 	return TRUE;
 }
 
-int IndexRules::no_rules(inter_tree *I, inter_package *rb_pack) {
-	int N = 0;
-	if (rb_pack) {
-		inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
-		inter_tree_node *D = Inter::Packages::definition(rb_pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted)
-					N++;
-			}
-		}
-	}
-	return N;
+int IndexRules::no_rules(inter_package *rb_pack) {
+	return InterTree::no_subpackages(rb_pack, I"_rulebook_entry");
 }
 
 @h Links between rules in rulebook listings.
@@ -193,7 +169,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
 
-	int n = IndexRules::no_rules(inv->of_tree, rb_pack);
+	int n = IndexRules::no_rules(rb_pack);
 
 	if (place_in_expandable_box) {
 		int expand_id = IndexRules::extra_ID();
@@ -246,8 +222,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 @<Add links and such to the titling@> =
 	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
 	WRITE(" ... %S", Metadata::read_optional_textual(rb_pack, I"^focus"));
-	int at = (int) Metadata::read_optional_numeric(rb_pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, rb_pack);
 
 @h Two ways to list a rulebook.
 Firstly, the whole contents:
@@ -291,24 +266,18 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 		if (IndexRules::is_contextually_empty(I, rb_pack, rc)) suppress_outcome = TRUE;
 	}
 	inter_package *prev = NULL;
-	inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_entry");
-	inter_tree_node *D = Inter::Packages::definition(rb_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				if (IndexRules::phrase_fits_rule_context(I, entry, rc)) {
-					if (count++ == 0) HTML::open_indented_p(OUT, 2, "indent");
-					else WRITE("<br>");
-					if ((Str::len(billing) > 0) && (IndexRules::showing_links()))
-						@<Show a linkage icon@>;
-					WRITE("%S", billing);
-					WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-					*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc, LD);
-				}
-				prev = entry;
-			}
+	inter_package *entry;
+	LOOP_THROUGH_SUBPACKAGES(entry, rb_pack, I"_rulebook_entry") {
+		if (IndexRules::phrase_fits_rule_context(I, entry, rc)) {
+			if (count++ == 0) HTML::open_indented_p(OUT, 2, "indent");
+			else WRITE("<br>");
+			if ((Str::len(billing) > 0) && (IndexRules::showing_links()))
+				@<Show a linkage icon@>;
+			WRITE("%S", billing);
+			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+			*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc, LD);
 		}
+		prev = entry;
 	}
 	if (count > 0) HTML_CLOSE("p");
 	if (suppress_outcome == FALSE) IndexRules::index_outcomes(OUT, I, rb_pack, LD);
@@ -392,16 +361,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 
 	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
 	if (R_symbol) {
-		int c = 0;
-		inter_symbol *wanted = PackageTypes::get(I, I"_response");
-		inter_tree_node *D = Inter::Packages::definition(R);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted)
-					c++;
-			}
-		}
+		int c = InterTree::no_subpackages(R, I"_response");
 		if (c > 0) {
 			WRITE("&nbsp;&nbsp;");
 			IndexUtilities::extra_link_with(OUT, response_box_id, "responses");
@@ -413,18 +373,12 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
 	if (R_symbol) {
 		int c = 0;
-		inter_symbol *wanted = PackageTypes::get(I, I"_response");
-		inter_tree_node *D = Inter::Packages::definition(R);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted) {
-					if (c == 0) IndexUtilities::extra_div_open_nested(OUT, response_box_id, 2);
-					else HTML_TAG("br");
-					IndexRules::index_response(OUT, R, entry, LD);
-					c++;
-				}
-			}
+		inter_package *resp_pack;
+		LOOP_THROUGH_SUBPACKAGES(resp_pack, R, I"_response") {
+			if (c == 0) IndexUtilities::extra_div_open_nested(OUT, response_box_id, 2);
+			else HTML_TAG("br");
+			IndexRules::index_response(OUT, R, resp_pack, LD);
+			c++;
 		}
 		if (c > 0) IndexUtilities::extra_div_close_nested(OUT);
 		no_responses_indexed = c;
@@ -434,8 +388,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("(%S)", first_line);
 
 @<Index a link to the first line of the rule's definition@> =
-	int at = (int) Metadata::read_optional_numeric(R, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, R);
 
 @<Index the small type rule numbering@> =
 	inter_ti id = Metadata::read_optional_numeric(R, I"^index_number");
@@ -449,18 +402,11 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 @<Index any applicability conditions@> =
 	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
 	if (R_symbol) {
-		inter_symbol *wanted = PackageTypes::get(I, I"_applicability_condition");
-		inter_tree_node *D = Inter::Packages::definition(R);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-				inter_package *entry = Inter::Package::defined_by_frame(C);
-				if (Inter::Packages::type(entry) == wanted) {
-					HTML_TAG("br");
-					int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-					if (at > 0) IndexUtilities::link(OUT, at);
-					WRITE("&nbsp;%S", Metadata::read_textual(entry, I"^index_text"));
-				}
-			}
+		inter_package *ac_pack;
+		LOOP_THROUGH_SUBPACKAGES(ac_pack, R, I"_applicability_condition") {
+			HTML_TAG("br");
+			IndexUtilities::link_package(OUT, ac_pack);
+			WRITE("&nbsp;%S", Metadata::read_textual(ac_pack, I"^index_text"));
 		}
 	}
 
@@ -502,31 +448,25 @@ void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 @ =
 void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
 	localisation_dictionary *LD) {
-	inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_outcome");
-	inter_tree_node *D = Inter::Packages::definition(rb_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {	
-				HTML::open_indented_p(OUT, 2, "hanging");
-				WRITE("<i>");
-				Localisation::write_0(OUT, LD, I"Index.Elements.RS.Outcome");
-				WRITE("</i>&nbsp;&nbsp;");
-				int is_def = (int) Metadata::read_optional_numeric(entry, I"^is_default");
-				if (is_def) WRITE("<b>");
-				WRITE("%S", Metadata::read_optional_textual(entry, I"^text"));
-				if (is_def) WRITE("</b> (default)");
-				WRITE(" - <i>");
-				if (Metadata::read_optional_numeric(entry, I"^succeeds"))
-					Localisation::write_0(OUT, LD, I"Index.Elements.RS.Success");
-				else if (Metadata::read_optional_numeric(entry, I"^fails"))
-					Localisation::write_0(OUT, LD, I"Index.Elements.RS.Failure");
-				else
-					Localisation::write_0(OUT, LD, I"Index.Elements.RS.NoOutcome");
-				WRITE("</i>");
-				HTML_CLOSE("p");
-			}
-		}
+	inter_package *ro_pack;
+	LOOP_THROUGH_SUBPACKAGES(ro_pack, rb_pack, I"_rulebook_outcome") {	
+		HTML::open_indented_p(OUT, 2, "hanging");
+		WRITE("<i>");
+		Localisation::write_0(OUT, LD, I"Index.Elements.RS.Outcome");
+		WRITE("</i>&nbsp;&nbsp;");
+		int is_def = (int) Metadata::read_optional_numeric(ro_pack, I"^is_default");
+		if (is_def) WRITE("<b>");
+		WRITE("%S", Metadata::read_optional_textual(ro_pack, I"^text"));
+		if (is_def) WRITE("</b> (default)");
+		WRITE(" - <i>");
+		if (Metadata::read_optional_numeric(ro_pack, I"^succeeds"))
+			Localisation::write_0(OUT, LD, I"Index.Elements.RS.Success");
+		else if (Metadata::read_optional_numeric(ro_pack, I"^fails"))
+			Localisation::write_0(OUT, LD, I"Index.Elements.RS.Failure");
+		else
+			Localisation::write_0(OUT, LD, I"Index.Elements.RS.NoOutcome");
+		WRITE("</i>");
+		HTML_CLOSE("p");
 	}
 
 	if (Metadata::read_optional_numeric(rb_pack, I"^default_succeeds")) {
@@ -547,21 +487,14 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 
 void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
 	localisation_dictionary *LD) {
-	inter_symbol *wanted = PackageTypes::get(I, I"_rulebook_placement");
-	inter_tree_node *D = Inter::Packages::definition(rb_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {	
-				WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-				HTML_OPEN_WITH("span", "class=\"smaller\"");
-				WRITE("<i>NB:</i> %S", Metadata::read_optional_textual(entry, I"^text"));
-				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
-				HTML_CLOSE("span");
-				HTML_TAG("br");
-			}
-		}
+	inter_package *rp_pack;
+	LOOP_THROUGH_SUBPACKAGES(rp_pack, rb_pack, I"_rulebook_placement") {	
+		WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		HTML_OPEN_WITH("span", "class=\"smaller\"");
+		WRITE("<i>NB:</i> %S", Metadata::read_optional_textual(rp_pack, I"^text"));
+		IndexUtilities::link_package(OUT, rp_pack);
+		HTML_CLOSE("span");
+		HTML_TAG("br");
 	}
 }
 
@@ -574,7 +507,6 @@ of an activity are part of a single construct:
 =
 void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pack,
 	int indent, localisation_dictionary *LD) {
-	text_stream *doc_link = Metadata::read_optional_textual(av_pack, I"^documentation");
 	int expand_id = IndexRules::extra_ID();
 
 	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
@@ -584,9 +516,9 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	inter_package *for_pack = Inter::Packages::container(for_s->definition);
 	inter_package *after_pack = Inter::Packages::container(after_s->definition);
 
-	int n = IndexRules::no_rules(I, before_pack) +
-			IndexRules::no_rules(I, for_pack) +
-			IndexRules::no_rules(I, after_pack);
+	int n = IndexRules::no_rules(before_pack) +
+			IndexRules::no_rules(for_pack) +
+			IndexRules::no_rules(after_pack);
 
 	TEMPORARY_TEXT(textual_name)
 	text_stream *name = Metadata::read_optional_textual(av_pack, I"^name");
@@ -642,27 +574,19 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	IndexRules::rulebook_list(OUT, I, for_pack, I"for", IndexRules::no_rule_context(), LD);
 	IndexRules::rulebook_list(OUT, I, after_pack, I"after", IndexRules::no_rule_context(), LD);
 
-	inter_symbol *wanted = PackageTypes::get(I, I"_activity_xref");
-	inter_tree_node *D = Inter::Packages::definition(av_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {	
-				HTML::open_indented_p(OUT, 2, "tight");
-				WRITE("NB: %S", Metadata::read_optional_textual(entry, I"^text"));
-				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
-				HTML_CLOSE("p");
-			}
-		}
+	inter_package *xref_pack;
+	LOOP_THROUGH_SUBPACKAGES(xref_pack, av_pack, I"_activity_xref") {	
+		HTML::open_indented_p(OUT, 2, "tight");
+		WRITE("NB: %S", Metadata::read_optional_textual(xref_pack, I"^text"));
+		IndexUtilities::link_package(OUT, xref_pack);
+		HTML_CLOSE("p");
 	}
 
 	IndexUtilities::extra_div_close(OUT, ACTIVITY_BOX_COLOUR);
 }
 
 @<Write the titling line of an activity rules box@> =
-	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
+	IndexUtilities::link_to_documentation(OUT, av_pack);
 	WRITE(" ... ");
 	Localisation::write_0(OUT, LD, I"Index.Elements.RS.Activity");
-	int at = (int) Metadata::read_optional_numeric(av_pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, av_pack);

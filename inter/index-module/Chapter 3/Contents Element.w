@@ -68,8 +68,7 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	WRITE("%d words", Metadata::read_numeric(pack, I"^word_count"));
 	if (L > min_positive_level) HTML::end_colour(OUT);
 	/* place a link to the relevant line of the primary source text */
-	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, pack);
 	HTML_CLOSE("span");
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
@@ -137,8 +136,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	HTML_OPEN("span");
 	WRITE("%S ", Metadata::read_textual(pack, I"^title"));
 	if (Metadata::read_optional_numeric(pack, I"^standard") == 0) {
-	 	int ext_at = (int) Metadata::read_optional_numeric(pack, I"^at");
-		if (ext_at > 0) { IndexUtilities::link(OUT, ext_at); WRITE("&nbsp;&nbsp;"); }
+		IndexUtilities::link_package(OUT, pack); WRITE("&nbsp;&nbsp;");
 	}
 
 	if (auto_included != TRUE) WRITE("by %S ", Metadata::read_textual(pack, I"^author"));

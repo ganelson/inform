@@ -182,6 +182,7 @@ with everything under the first line being italicised. For example:
 	How this project might be filed in a library
 	catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
 =
+Note that a valid documentation reference must begin with an upper-case letter.
 
 =
 void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
@@ -235,7 +236,9 @@ void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 				i++;
 				while ((i<Str::len(prototype)) && (Str::get_at(prototype, i) != '>'))
 					PUT_TO(link, Str::get_at(prototype, i++));
-				IndexUtilities::DocReferences::link(OUT, link);
+				if (Characters::isupper(Str::get_at(link, 0)))
+					IndexUtilities::DocReferences::link(OUT, link);
+				else WRITE("<%S>", link);
 				DISCARD_TEXT(link)
 				break;
 			}

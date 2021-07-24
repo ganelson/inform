@@ -38,38 +38,27 @@ simplified_scene *PlotElement::simplified(inter_tree *I, inter_package *sc_pack)
 	ssc->pack = sc_pack;
 	ssc->no_ends = 0;
 	ssc->indexed_already = FALSE;
-	inter_symbol *wanted = PackageTypes::get(I, I"_scene_end");
-	inter_symbol *wanted_within = PackageTypes::get(I, I"_scene_connector");
-	inter_tree_node *D = Inter::Packages::definition(sc_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				simplified_end *se = CREATE(simplified_end);
-				se->end_pack = entry;
-				se->anchor_connectors = NULL;
-				LOOP_THROUGH_INTER_CHILDREN(B, C) {
-					if (B->W.data[ID_IFLD] == PACKAGE_IST) {
-						inter_package *inner_entry = Inter::Package::defined_by_frame(B);
-						if (Inter::Packages::type(inner_entry) == wanted_within) {
-							simplified_connector *scon = CREATE(simplified_connector);
-							scon->con_pack = inner_entry;
-							scon->next = NULL;
-							if (se->anchor_connectors == NULL) {
-								se->anchor_connectors = scon;
-							} else {
-								simplified_connector *last = se->anchor_connectors;
-								while ((last) && (last->next)) last = last->next;
-								last->next = scon;
-							}
-							scon->connect_to = NULL;
-						}
-					}
-				}
-				if (ssc->no_ends >= MAX_SCENE_ENDS) internal_error("too many scene ends");
-				ssc->ends[ssc->no_ends++] = se;
+	inter_package *end_pack;
+	LOOP_THROUGH_SUBPACKAGES(end_pack, sc_pack, I"_scene_end") {
+		simplified_end *se = CREATE(simplified_end);
+		se->end_pack = end_pack;
+		se->anchor_connectors = NULL;
+		inter_package *con_pack;
+		LOOP_THROUGH_SUBPACKAGES(con_pack, end_pack, I"_scene_connector") {
+			simplified_connector *scon = CREATE(simplified_connector);
+			scon->con_pack = con_pack;
+			scon->next = NULL;
+			if (se->anchor_connectors == NULL) {
+				se->anchor_connectors = scon;
+			} else {
+				simplified_connector *last = se->anchor_connectors;
+				while ((last) && (last->next)) last = last->next;
+				last->next = scon;
 			}
+			scon->connect_to = NULL;
 		}
+		if (ssc->no_ends >= MAX_SCENE_ENDS) internal_error("too many scene ends");
+		ssc->ends[ssc->no_ends++] = se;
 	}
 	return ssc;
 }
@@ -239,8 +228,7 @@ fact, end.
 	HTML::open_indented_p(OUT, 1, "hanging");
 	IndexUtilities::anchor_numbered(OUT, ssc->allocation_id);
 	WRITE("<b>The <i>%S</i> scene</b>", Metadata::read_textual(ssc->pack, I"^name"));
-	int at = (int) Metadata::read_optional_numeric(ssc->pack, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, ssc->pack);
 	if (PlotElement::recurs(ssc)) WRITE("&nbsp;&nbsp;<i>recurring</i>");
 	HTML_CLOSE("p");
 

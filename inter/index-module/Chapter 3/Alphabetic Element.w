@@ -54,7 +54,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (noun_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
 		if (noun_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 		WRITE("<b>");
-		ChartElement::index_kind(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
+		IndexUtilities::kind_name(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
 		WRITE("</b>");
 	}
 
@@ -65,7 +65,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (second_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
 		if (second_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 		WRITE("<b>");
-		ChartElement::index_kind(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
+		IndexUtilities::kind_name(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
 		WRITE("</b>");
 	}
 

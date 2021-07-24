@@ -1,4 +1,4 @@
-Total memory consumption was 391661K = 382 MB
+Total memory consumption was 391667K = 382 MB
 
 60.4% was used for 1994926 objects, in 371045 frames in 296 x 800K = 236800K = 231 MB:
 
@@ -236,7 +236,7 @@ Total memory consumption was 391661K = 382 MB
 
 39.5% was used for memory not allocated for objects:
 
-    20.6%  text stream storage                      82735296 bytes in 530462 claims
+    20.6%  text stream storage                      82741540 bytes in 530498 claims
      4.5%  dictionary storage                       18153472 bytes in 33229 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims

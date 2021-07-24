@@ -299,52 +299,46 @@ and only if needed.
 =
 void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int pass) {
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/mapping_hints");
-	inter_symbol *wanted = PackageTypes::get(I, I"_mapping_hint");
-	inter_tree_node *D = Inter::Packages::definition(pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				faux_instance *from = FauxInstances::xref(faux_set, entry, I"^from");
-				faux_instance *to = FauxInstances::xref(faux_set, entry, I"^to");
-				faux_instance *dir = FauxInstances::xref(faux_set, entry, I"^dir");
-				faux_instance *as_dir = FauxInstances::xref(faux_set, entry, I"^as_dir");
-				if ((dir) && (as_dir)) {
-					if (pass == 1) @<Decode a hint mapping one direction as if another@>;
-					continue;
-				}
-				if ((from) && (dir)) {
-					if (pass == 1) @<Decode a hint mapping one room in a specific direction from another@>;
-					continue;
-				}
-				text_stream *name = Metadata::read_optional_textual(entry, I"^name");
-				if (Str::len(name) > 0) {
-					int scope_level = (int) Metadata::read_optional_numeric(entry, I"^scope_level");
-					faux_instance *scope_I = FauxInstances::xref(faux_set, entry, I"^scope_instance");
-					text_stream *text_val = Metadata::read_optional_textual(entry, I"^text");
-					int int_val = (int) Metadata::read_optional_numeric(entry, I"^number");
-					if (scope_level != 1000000) {
-						if (pass == 2) @<Decode a hint setting EPS map parameters relating to levels@>;
-					} else {
-						if (pass == 1) @<Decode a hint setting EPS map parameters@>;
-					}
-					continue;
-				}
-				text_stream *annotation = Metadata::read_optional_textual(entry, I"^annotation");
-				if (Str::len(annotation) > 0) {
-					if (pass == 1) {
-						rubric_holder *rh = CREATE(rubric_holder);
-						rh->annotation = annotation;
-						rh->point_size = (int) Metadata::read_optional_numeric(entry, I"^point_size");
-						rh->font = Metadata::read_optional_textual(entry, I"^font");
-						rh->colour = Metadata::read_optional_textual(entry, I"^colour");
-						rh->at_offset = (int) Metadata::read_optional_numeric(entry, I"^offset");
-						rh->offset_from = FauxInstances::xref(faux_set, entry, I"^offset_from");
-						ADD_TO_LINKED_LIST(rh, rubric_holder, faux_set->rubrics);	
-					}
-					continue;
-				}
+	inter_package *hint_pack;
+	LOOP_THROUGH_SUBPACKAGES(hint_pack, pack, I"_mapping_hint") {
+		faux_instance *from = FauxInstances::xref(faux_set, hint_pack, I"^from");
+		faux_instance *to = FauxInstances::xref(faux_set, hint_pack, I"^to");
+		faux_instance *dir = FauxInstances::xref(faux_set, hint_pack, I"^dir");
+		faux_instance *as_dir = FauxInstances::xref(faux_set, hint_pack, I"^as_dir");
+		if ((dir) && (as_dir)) {
+			if (pass == 1) @<Decode a hint mapping one direction as if another@>;
+			continue;
+		}
+		if ((from) && (dir)) {
+			if (pass == 1) @<Decode a hint mapping one room in a specific direction from another@>;
+			continue;
+		}
+		text_stream *name = Metadata::read_optional_textual(hint_pack, I"^name");
+		if (Str::len(name) > 0) {
+			int scope_level = (int) Metadata::read_optional_numeric(hint_pack, I"^scope_level");
+			faux_instance *scope_I = FauxInstances::xref(faux_set, hint_pack, I"^scope_instance");
+			text_stream *text_val = Metadata::read_optional_textual(hint_pack, I"^text");
+			int int_val = (int) Metadata::read_optional_numeric(hint_pack, I"^number");
+			if (scope_level != 1000000) {
+				if (pass == 2) @<Decode a hint setting EPS map parameters relating to levels@>;
+			} else {
+				if (pass == 1) @<Decode a hint setting EPS map parameters@>;
 			}
+			continue;
+		}
+		text_stream *annotation = Metadata::read_optional_textual(hint_pack, I"^annotation");
+		if (Str::len(annotation) > 0) {
+			if (pass == 1) {
+				rubric_holder *rh = CREATE(rubric_holder);
+				rh->annotation = annotation;
+				rh->point_size = (int) Metadata::read_optional_numeric(hint_pack, I"^point_size");
+				rh->font = Metadata::read_optional_textual(hint_pack, I"^font");
+				rh->colour = Metadata::read_optional_textual(hint_pack, I"^colour");
+				rh->at_offset = (int) Metadata::read_optional_numeric(hint_pack, I"^offset");
+				rh->offset_from = FauxInstances::xref(faux_set, hint_pack, I"^offset_from");
+				ADD_TO_LINKED_LIST(rh, rubric_holder, faux_set->rubrics);	
+			}
+			continue;
 		}
 	}
 }

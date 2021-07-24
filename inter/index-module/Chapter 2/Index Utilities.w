@@ -68,6 +68,11 @@ void IndexUtilities::link(OUTPUT_STREAM, int wn) {
 	IndexUtilities::link_to_location(OUT, Lexer::word_location(wn), TRUE);
 }
 
+void IndexUtilities::link_package(OUTPUT_STREAM, inter_package *pack) {
+	int at = (int) Metadata::read_optional_numeric(pack, I"^at");
+	if (at > 0) IndexUtilities::link(OUT, at);
+}
+
 void IndexUtilities::link_location(OUTPUT_STREAM, source_location sl) {
 	IndexUtilities::link_to_location(OUT, sl, TRUE);
 }
@@ -90,6 +95,17 @@ void IndexUtilities::link_to_location(OUTPUT_STREAM, source_location sl, int non
 	}
 	#endif
 	SourceLinks::link(OUT, sl, nonbreaking_space);
+}
+
+@h Links to documentation.
+These produce little blue help icons which, when clicked, show the relevant
+page of documentation in the Inform app. Cross-referencing is via the
+system set up in //html: Documentation References//.
+
+=
+void IndexUtilities::link_to_documentation(OUTPUT_STREAM, inter_package *pack) {
+	text_stream *doc = Metadata::read_optional_textual(pack, I"^documentation");
+	if (Str::len(doc) > 0) IndexUtilities::DocReferences::link(OUT, doc);
 }
 
 @h Links to detail pages.
@@ -233,4 +249,15 @@ void IndexUtilities::show_definition_area(OUTPUT_STREAM, inter_package *heading_
 	}
 	HTML_CLOSE("b");
 	HTML_TAG("br");
+}
+
+@ Here |pack| is the Inter package for a kind constructor.
+
+=
+void IndexUtilities::kind_name(OUTPUT_STREAM, inter_package *pack, int plural,
+	int with_links) {
+	if (pack == NULL) return;
+	text_stream *key = (plural)?I"^index_plural":I"^index_singular";
+	WRITE("%S", Metadata::read_optional_textual(pack, key));
+	if (with_links) IndexUtilities::link_package(OUT, pack);
 }

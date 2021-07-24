@@ -84,8 +84,7 @@ text, sorted into kind order of left and then right operand.
 			inter_package *pack =
 				Inter::Package::defined_by_frame(inv->multiplication_rule_nodes->list[i].node);
 			HTML::first_html_column(OUT, 0);
-			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-			if (at > 0) IndexUtilities::link(OUT, at);
+			IndexUtilities::link_package(OUT, pack);
 			HTML::next_html_column(OUT, 0);
 			WRITE("%S", Metadata::read_optional_textual(pack, I"^left_operand"));
 			HTML::begin_colour(OUT, I"808080");

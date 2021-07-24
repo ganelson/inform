@@ -291,3 +291,23 @@ void InterTree::traverse_r(inter_tree *from, inter_tree_node *P, void (*visitor)
 		InterTree::traverse_r(from, C, visitor, state, filter);
 	}
 }
+
+@
+
+@d LOOP_THROUGH_SUBPACKAGES(entry, pack, ptype)
+	inter_symbol *pack##wanted = (pack)?(PackageTypes::get(pack->package_head->tree, ptype)):NULL;
+	if (pack)
+		LOOP_THROUGH_INTER_CHILDREN(C, Inter::Packages::definition(pack))
+			if ((C->W.data[ID_IFLD] == PACKAGE_IST) &&
+				(entry = Inter::Package::defined_by_frame(C)) &&
+				(Inter::Packages::type(entry) == pack##wanted))
+
+=
+int InterTree::no_subpackages(inter_package *pack, text_stream *ptype) {
+	int N = 0;
+	if (pack) {
+		inter_package *entry;
+		LOOP_THROUGH_SUBPACKAGES(entry, pack, ptype) N++;
+	}
+	return N;
+}

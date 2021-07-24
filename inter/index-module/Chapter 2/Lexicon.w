@@ -281,12 +281,9 @@ source text: so any single link would be potentially misleading.
 
 @<Icon with link to documentation, source or verb table, if any@> =
 	switch(lex->part_of_speech) {
-		case COMMON_NOUN_TLEXE: {
-			text_stream *ref =
-				Metadata::read_optional_textual(lex->lex_package, I"^documentation");
-			if (Str::len(ref) > 0) IndexUtilities::DocReferences::link(OUT, ref);
+		case COMMON_NOUN_TLEXE:
+			IndexUtilities::link_to_documentation(OUT, lex->lex_package);
 			break;
-		}
 		case VERB_TLEXE:
 		case PREP_TLEXE:
 			IndexUtilities::below_link_numbered(OUT, 10000+verb_count++);

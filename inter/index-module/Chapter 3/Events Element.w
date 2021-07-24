@@ -31,8 +31,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 				when_count++;
 				HTML_OPEN_WITH("p", "class=\"tightin2\"");
 				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
-				int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
+				IndexUtilities::link_package(OUT, pack);
 				WRITE(" (where triggered: ");
 				inter_tree_node *D = Inter::Packages::definition(pack);
 				LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -63,8 +62,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 				tt_count++;
 				HTML_OPEN_WITH("p", "class=\"in2\"");
 				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
-				int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-				if (at > 0) IndexUtilities::link(OUT, at);
+				IndexUtilities::link_package(OUT, pack);
 				HTML_CLOSE("p");
 			}
 		}

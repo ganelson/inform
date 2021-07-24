@@ -6,106 +6,43 @@ To write the Commands element (Cm) in the index.
 void CommandsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	inter_tree *I = InterpretIndex::get_tree();
 
-	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
-	int head_letter;
+	linked_list *entries = NEW_LINKED_LIST(command_index_entry);
+	@<Create the entries for the command list@>;
+	linked_list *sorted = CommandsElement::sort(entries);
 
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/grammar");
-	inter_symbol *wanted = PackageTypes::get(I, I"_command_grammar");
-	inter_tree_node *D = Inter::Packages::definition(pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) {
-				if ((Metadata::read_optional_numeric(entry, I"^is_command")) &&
-					(CommandsElement::no_lines(I, entry) > 0)) {
-					text_stream *main_command = Metadata::read_optional_textual(entry, I"^command");
-					if (Str::len(main_command) == 0) main_command = I"0";
-					CommandsElement::vie_new_from(main_command, entry, NORMAL_COMMAND);
-					inter_symbol *wanted_i = PackageTypes::get(I, I"_cg_alias");
-					LOOP_THROUGH_INTER_CHILDREN(B, C) {
-						if (B->W.data[ID_IFLD] == PACKAGE_IST) {
-							inter_package *alias = Inter::Package::defined_by_frame(B);
-							if (Inter::Packages::type(alias) == wanted_i) {
-								text_stream *alias_command = Metadata::read_textual(alias, I"^alias");
-								CommandsElement::vie_new_from(alias_command, entry, ALIAS_COMMAND);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	CommandsElement::direction_verb();
-
-	LOOP_OVER(vie, command_index_entry) {
-		if (list_start == NULL) { list_start = vie; continue; }
-		vie2 = list_start;
-		last_vie2 = NULL;
-		while (vie2 && (Str::cmp(vie->command_headword, vie2->command_headword) > 0)) {
-			last_vie2 = vie2;
-			vie2 = vie2->next_alphabetically;
-		}
-		if (last_vie2 == NULL) {
-			vie->next_alphabetically = list_start; list_start = vie;
-		} else {
-			last_vie2->next_alphabetically = vie; vie->next_alphabetically = vie2;
-		}
-	}
-
-	for (vie = list_start, head_letter = 0; vie; vie = vie->next_alphabetically) {
-		if (Str::get_first_char(vie->command_headword) != head_letter) {
+	wchar_t head_letter = 0;
+	command_index_entry *cie;
+	LOOP_OVER_LINKED_LIST(cie, command_index_entry, sorted) {
+		if (Str::get_first_char(cie->command_headword) != head_letter) {
 			if (head_letter) HTML_TAG("br");
-			head_letter = Str::get_first_char(vie->command_headword);
+			head_letter = Str::get_first_char(cie->command_headword);
 		}
-		inter_package *cg = vie->cg_indexed;
-		switch (vie->nature) {
-			case NORMAL_COMMAND:
-				CommandsElement::index_normal(OUT, I, cg, vie->command_headword);
-				break;
-			case ALIAS_COMMAND:
-				CommandsElement::index_alias(OUT, I, cg, vie->command_headword);
-				break;
-			case OUT_OF_WORLD_COMMAND:
-				HTML::begin_colour(OUT, I"800000");
-				WRITE("&quot;%S&quot;, <i>a command for controlling play</i>",
-					vie->command_headword);
-				HTML::end_colour(OUT);
-				HTML_TAG("br");
-				break;
-			case TESTING_COMMAND:
-				HTML::begin_colour(OUT, I"800000");
-				WRITE("&quot;%S&quot;, <i>a testing command not available "
-					"in the final game</i>",
-					vie->command_headword);
-				HTML::end_colour(OUT);
-				HTML_TAG("br");
-				break;
-			case BARE_DIRECTION_COMMAND:
-				WRITE("&quot;[direction]&quot; - <i>going</i>");
-				HTML_TAG("br");
-				break;
-		}
+		@<Render an index entry from the sorted list@>;
 	}
 }
 
-int CommandsElement::no_lines(inter_tree *I, inter_package *cg) {
-	int N = 0;
-	inter_symbol *wanted = PackageTypes::get(I, I"_cg_line");
-	inter_tree_node *D = Inter::Packages::definition(cg);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted) N++;
-		}
-	}
-	return N;
-}
+@<Create the entries for the command list@> =
+	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/grammar");
+	inter_package *entry;
+	LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_command_grammar")
+		if ((Metadata::read_optional_numeric(entry, I"^is_command")) &&
+			(InterTree::no_subpackages(entry, I"_cg_line") > 0))
+			@<Create entry for this command@>;
+	CommandsElement::make_direction_entry(entries);
 
-@ The following modest structure is used for the indexing of command verbs,
-and is too deeply boring to comment upon. These are the headwords of commands
-which can be typed at run-time, like QUIT or INVENTORY. For indexing purposes,
-we divide these headwords into five "natures":
+@<Create entry for this command@> =
+	text_stream *main_command = Metadata::read_optional_textual(entry, I"^command");
+	if (Str::len(main_command) == 0) main_command = I"0";
+	CommandsElement::make_entry(main_command, entry, NORMAL_COMMAND, entries);
+	inter_package *alias;
+	LOOP_THROUGH_SUBPACKAGES(alias, entry, I"_cg_alias") {
+		text_stream *alias_command = Metadata::read_textual(alias, I"^alias");
+		CommandsElement::make_entry(alias_command, entry, ALIAS_COMMAND, entries);
+	}
+
+@ Entries in the list correspond to the headwords of commands which can be typed
+at runtime, like QUIT or INVENTORY. For indexing purposes, we divide these headwords
+as follows:
 
 @d NORMAL_COMMAND 1
 @d ALIAS_COMMAND 2
@@ -125,54 +62,113 @@ typedef struct command_index_entry {
 command_index_entry *sorted_command_index = NULL; /* in alphabetical order of |text| */
 
 @ =
-void CommandsElement::test_verb(text_stream *t) {
-	command_index_entry *vie;
-	vie = CREATE(command_index_entry);
-	vie->command_headword = Str::duplicate(t);
-	vie->nature = TESTING_COMMAND;
-	vie->cg_indexed = NULL;
-	vie->next_alphabetically = NULL;
+void CommandsElement::make_test_entry(text_stream *t, linked_list *entries) {
+	command_index_entry *cie;
+	cie = CREATE(command_index_entry);
+	cie->command_headword = Str::duplicate(t);
+	cie->nature = TESTING_COMMAND;
+	cie->cg_indexed = NULL;
+	cie->next_alphabetically = NULL;
+	ADD_TO_LINKED_LIST(cie, command_index_entry, entries);
 }
 
-command_index_entry *CommandsElement::vie_new_from(text_stream *headword, inter_package *cg, int nature) {
-	command_index_entry *vie = CREATE(command_index_entry);
-	vie->command_headword = Str::duplicate(headword);
-	vie->nature = nature;
-	vie->cg_indexed = cg;
-	vie->next_alphabetically = NULL;
-	return vie;
+void CommandsElement::make_entry(text_stream *headword, inter_package *cg_pack,
+	int nature, linked_list *entries) {
+	command_index_entry *cie = CREATE(command_index_entry);
+	cie->command_headword = Str::duplicate(headword);
+	cie->nature = nature;
+	cie->cg_indexed = cg_pack;
+	cie->next_alphabetically = NULL;
+	ADD_TO_LINKED_LIST(cie, command_index_entry, entries);
 }
 
-void CommandsElement::direction_verb(void) {
-	command_index_entry *vie = CREATE(command_index_entry);
-	vie->command_headword = I"0";
-	vie->nature = BARE_DIRECTION_COMMAND;
-	vie->cg_indexed = NULL;
-	vie->next_alphabetically = NULL;
+void CommandsElement::make_direction_entry(linked_list *entries) {
+	command_index_entry *cie = CREATE(command_index_entry);
+	cie->command_headword = I"0";
+	cie->nature = BARE_DIRECTION_COMMAND;
+	cie->cg_indexed = NULL;
+	cie->next_alphabetically = NULL;
+	ADD_TO_LINKED_LIST(cie, command_index_entry, entries);
 }
 
-@h Indexing by grammar.
-This is the more obvious form of indexing: we show the grammar lines which
-make up an individual CGL. (For instance, this is used in the Actions index
-to show the grammar for an individual command word, by calling the routine
-below for that command word's CG.) Such an index list is done in sorted
-order, so that the order of appearance in the index corresponds to the
-order of parsing -- this is what the reader of the index is interested in.
-
-=
-void CommandsElement::index_normal(OUTPUT_STREAM, inter_tree *I, inter_package *cg, text_stream *headword) {
-	inter_symbol *wanted = PackageTypes::get(I, I"_cg_line");
-	inter_tree_node *D = Inter::Packages::definition(cg);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == wanted)
-				CommandsElement::cgl_index_normal(OUT, entry, headword);
+@ =
+linked_list *CommandsElement::sort(linked_list *entries) {
+	command_index_entry *cie, *list_start = NULL;
+	LOOP_OVER_LINKED_LIST(cie, command_index_entry, entries) {
+		if (list_start == NULL) { list_start = cie; continue; }
+		command_index_entry *cie2 = list_start, *last_cie2 = NULL;
+		while (cie2 && (Str::cmp(cie->command_headword, cie2->command_headword) > 0)) {
+			last_cie2 = cie2;
+			cie2 = cie2->next_alphabetically;
+		}
+		if (last_cie2 == NULL) {
+			cie->next_alphabetically = list_start; list_start = cie;
+		} else {
+			last_cie2->next_alphabetically = cie; cie->next_alphabetically = cie2;
 		}
 	}
+	linked_list *sorted = NEW_LINKED_LIST(command_index_entry);
+	for (command_index_entry *cie = list_start; cie; cie = cie->next_alphabetically)
+		ADD_TO_LINKED_LIST(cie, command_index_entry, sorted);
+	return sorted;
 }
 
-void CommandsElement::cgl_index_normal(OUTPUT_STREAM, inter_package *cgl, text_stream *headword) {
+@ With those lengthy digressions done, back to the actual indexing:
+
+@<Render an index entry from the sorted list@> =
+	inter_package *cg_pack = cie->cg_indexed;
+	switch (cie->nature) {
+		case NORMAL_COMMAND:
+			CommandsElement::index_normal(OUT, I, cg_pack, cie->command_headword, LD);
+			break;
+		case ALIAS_COMMAND:
+			CommandsElement::index_alias(OUT, I, cg_pack, cie->command_headword, LD);
+			break;
+		case OUT_OF_WORLD_COMMAND:
+			HTML::begin_colour(OUT, I"800000");
+			WRITE("&quot;%S&quot;, <i>", cie->command_headword);
+			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Command");
+			WRITE("</i>");
+			HTML::end_colour(OUT);
+			HTML_TAG("br");
+			break;
+		case TESTING_COMMAND:
+			HTML::begin_colour(OUT, I"800000");
+			WRITE("&quot;%S&quot;, <i>", cie->command_headword);
+			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.TestingCommand");
+			WRITE("</i>");
+			HTML::end_colour(OUT);
+			HTML_TAG("br");
+			break;
+		case BARE_DIRECTION_COMMAND:
+			WRITE("&quot;[direction]&quot; - <i>");
+			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.DirectionCommand");
+			WRITE("</i>");
+			HTML_TAG("br");
+			break;
+	}
+
+@h Indexing grammar lines.
+
+=
+void CommandsElement::index_normal(OUTPUT_STREAM, inter_tree *I, inter_package *cg_pack,
+	text_stream *headword, localisation_dictionary *LD) {
+	inter_package *entry;
+	LOOP_THROUGH_SUBPACKAGES(entry, cg_pack, I"_cg_line")
+		CommandsElement::index_grammar_line(OUT, entry, headword, LD);
+}
+
+void CommandsElement::index_alias(OUTPUT_STREAM, inter_tree *I, inter_package *cg_pack,
+	text_stream *headword, localisation_dictionary *LD) {
+	WRITE("&quot;%S&quot;, <i>", headword);
+	Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Alias");
+	WRITE("</i> &quot;%S&quot;", Metadata::read_textual(cg_pack, I"^command"));
+	IndexUtilities::link_package(OUT, cg_pack);
+	HTML_TAG("br");
+}
+
+void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
+	text_stream *headword, localisation_dictionary *LD) {
 	inter_symbol *an_s = Metadata::read_optional_symbol(cgl, I"^action");
 	if (an_s == NULL) return;
 	inter_package *an = Inter::Packages::container(an_s->definition);
@@ -183,22 +179,17 @@ void CommandsElement::cgl_index_normal(OUTPUT_STREAM, inter_package *cgl, text_s
 	TokensElement::verb_definition(OUT, Metadata::read_optional_textual(cgl, I"^text"),
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
-	int at = (int) Metadata::read_optional_numeric(cgl, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
+	IndexUtilities::link_package(OUT, cgl);
 	
 	WRITE(" - <i>%S", Metadata::read_textual(an, I"^name"));
-	IndexUtilities::detail_link(OUT, "A", (int) Metadata::read_numeric(an, I"action_id"), TRUE);
-	if (Metadata::read_optional_numeric(cgl, I"^reversed"))
-		WRITE(" <i>reversed</i>");
+	IndexUtilities::detail_link(OUT, "A",
+		(int) Metadata::read_numeric(an, I"action_id"), TRUE);
+	if (Metadata::read_optional_numeric(cgl, I"^reversed")) {
+		WRITE(" <i>");
+		Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Reversed");
+		WRITE("</i>");
+	}
 	WRITE("</i>");
 	if (oow) HTML::end_colour(OUT);
-	HTML_TAG("br");
-}
-
-void CommandsElement::index_alias(OUTPUT_STREAM, inter_tree *I, inter_package *cg, text_stream *headword) {
-	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%S&quot;",
-		headword, Metadata::read_textual(cg, I"^command"));
-	int at = (int) Metadata::read_optional_numeric(cg, I"^at");
-	if (at > 0) IndexUtilities::link(OUT, at);
 	HTML_TAG("br");
 }

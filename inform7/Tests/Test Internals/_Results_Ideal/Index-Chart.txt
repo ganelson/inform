@@ -1,5 +1,4 @@
 1. Ch
-<p></p>
 <table border="0" cellspacing="0" cellpadding="0" width=100%>
     <tr bgcolor="#888">
         <td height="1" colspan="5" cellpadding="0">
@@ -30,25 +29,48 @@
     </tr>
     <tr style="display:none" id="default">
         <td colspan="5">
-            The <b>default value</b> is used when we make something like a variable but don't tell Inform what its value is. For instance, if we write 'Zero hour is a time that varies', but don't tell Inform anything specific like 'Zero hour is 11:21 PM.', then Inform uses the value in the table above to decide what it will be. The same applies if we create a property (for instance, 'A person has a number called lucky number.'). Kinds of value not included in the table cannot be used in variables and properties.<hr>
+            The &nbsp;<b>default value&nbsp;</b> is used when we make something like 
+            	a variable but don't tell Inform what its value is. For instance, if 
+            	we write 'Zero hour is a time that varies', but don't tell Inform 
+            	anything specific like 'Zero hour is 11:21 PM.', then Inform uses 
+            	the value in the table above to decide what it will be. 
+            	The same applies if we create a property (for instance, 'A person 
+            	has a number called lucky number.'). Kinds of value not included 
+            	in the table cannot be used in variables and properties.<hr>
 
         </td>
     </tr>
     <tr style="display:none" id="repeat">
         <td colspan="5">
-            A tick for <b>repeat</b> means that it's possible to repeat through values of this kind. For instance, 'repeat with T running through times:' is allowed, but 'repeat with N running through numbers:' is not - there are too many numbers for this to make sense. A tick here also means it's possible to form lists such as 'list of rulebooks', or to count the 'number of scenes'.<hr>
+            A tick for &nbsp;<b>repeat&nbsp;</b> means that it's possible to 
+            	repeat through values of this kind. For instance, 'repeat with T 
+            	running through times:' is allowed, but 'repeat with N running 
+            	through numbers:' is not - there are too many numbers for this to 
+            	make sense. A tick here also means it's possible to form lists such 
+            	as 'list of rulebooks', or to count the 'number of scenes'.<hr>
 
         </td>
     </tr>
     <tr style="display:none" id="props">
         <td colspan="5">
-            A tick for <b>props</b> means that values of this kind can have properties. For instance, 'A scene can be thrilling or dull.' makes an either/or property of a scene, but 'A number can be nice or nasty.' is not allowed because it would cost too much storage space. (Of course 'Definition:' can always be used to make adjectives applying to numbers; it's only properties which have storage worries.)<hr>
+            A tick for &nbsp;<b>props&nbsp;</b> means that values of this 
+            	kind can have properties. For instance, 'A scene can be thrilling or 
+            	dull.' makes an either/or property of a scene, but 'A number can be 
+            	nice or nasty.' is not allowed because it would cost too much storage 
+            	space. (Of course 'Definition:' can always be used to make adjectives 
+            	applying to numbers; it's only properties which have storage 
+            	worries.)<hr>
 
         </td>
     </tr>
     <tr style="display:none" id="under">
         <td colspan="5">
-            A tick for <b>under</b> means that it's possible to understand values of this kind. For instance, 'Understand "award [number]" as awarding.' might be allowed, if awarding were an action applying to a number, but 'Understand "run [rule]" as rule-running.' is not allowed - there are so many rules with such long names that Inform doesn't add them to its vocabulary during play.<hr>
+            A tick for &nbsp;<b>under&nbsp;</b> means that it's possible 
+            	to understand values of this kind. For instance, 'Understand "award 
+            	[number]" as awarding.' might be allowed, if awarding were an action 
+            	applying to a number, but 'Understand "run [rule]" as rule-running.' 
+            	is not allowed - there are so many rules with such long names that 
+            	Inform doesn't add them to its vocabulary during play.<hr>
 
         </td>
     </tr>
@@ -1028,8 +1050,8 @@ and southwest, for instance; down and up.<br>
 <i>Usually</i> unmarked for listing <i>not</i> marked for listing.<br>
 <i>Can have</i> opposite (<i>direction</i>).<br>
 </p>
-<p class="tightin2"><a href="#" onclick="showExtra('extra900000', 'plus900000'); return false;"><img border=0 id="plus900000" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
-<div id="extra900000" style="display: none;">
+<p class="tightin2"><a href="#" onclick="showExtra('extra77777', 'plus77777'); return false;"><img border=0 id="plus77777" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
+<div id="extra77777" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">
@@ -1119,8 +1141,8 @@ Like a scene in a play: a period of time which is usually tied to events in the 
 </p>
 <p class="halftightin1"><a name=A16></a><b>command parser error</b> (<i>plural</i> command parser errors)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
-<p class="tightin1"><a href="#" onclick="showExtra('extra900001', 'plus900001'); return false;"><img border=0 id="plus900001" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
-<div id="extra900001" style="display: none;">
+<p class="tightin1"><a href="#" onclick="showExtra('extra77778', 'plus77778'); return false;"><img border=0 id="plus77778" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
+<div id="extra77778" style="display: none;">
     <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">
@@ -1266,5 +1288,10 @@ A description of a set of values, where all of the items have to have the same k
 <p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 </p>
-<p><a name=contra><span class="smaller"><b>Covariance</b> means that if K is a kind of L, then something you make from K can be used as the same thing made from L. For example, a list of doors can be used as a list of things, because 'list of K' is covariant. <b>Contravariance</b> means it works the other way round. For example, an activity on things can be used as an activity on doors, but not vice versa, because 'activity of K' is contravariant.</span></p>
+<p><a name=contra><span class="smaller">&nbsp;<b>Covariance&nbsp;</b> means that if K is a kind of L, then something
+	you make from K can be used as the same thing made from L. For example,
+	a list of doors can be used as a list of things, because 'list of K' is
+	covariant. &nbsp;<b>Contravariance&nbsp;</b> means it works the other way round.
+	For example, an activity on things can be used as an activity on doors,
+	but not vice versa, because 'activity of K' is contravariant.</span></p>
 

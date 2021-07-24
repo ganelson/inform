@@ -72,8 +72,7 @@ Helvetica-style lower case "x", but life is full of compromises.
 			inter_package *entry = Inter::Package::defined_by_frame(C);
 			if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_table_contribution")) {
 				if (ntc++ > 0) WRITE(" +");
-				int at = (int) Metadata::read_optional_numeric(entry, I"^at");
-				IndexUtilities::link(OUT, at);
+				IndexUtilities::link_package(OUT, entry);
 			}
 		}
 	}

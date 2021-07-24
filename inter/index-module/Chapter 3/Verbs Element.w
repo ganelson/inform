@@ -23,8 +23,7 @@ void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			else if (lex->part_of_speech == MVERB_TLEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == PREP_TLEXE) WRITE("To be <b>%S</b>", entry_text);
 			else WRITE("To be able to <b>%S</b>", entry_text);
-			int at = (int) Metadata::read_optional_numeric(lex->lex_package, I"^at");
-			if (at > 0) IndexUtilities::link(OUT, at);
+			IndexUtilities::link_package(OUT, lex->lex_package);
 			if (lex->part_of_speech == MVERB_TLEXE) WRITE(" ... for saying only");
 			else WRITE(" ... <i>%S</i>", Metadata::read_optional_textual(lex->lex_package, I"^meaning"));
 			HTML_CLOSE("p");
