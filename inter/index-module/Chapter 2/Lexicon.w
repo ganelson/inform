@@ -61,8 +61,8 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I) {
 
 @<Add verb entries@> =
 	TreeLists::sort(inv->verb_nodes, Synoptic::module_order);
-	for (int i=0; i<TreeLists::len(inv->verb_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->verb_nodes) {
 		index_lexicon_entry *lex;
 		if (Metadata::read_numeric(pack, I"^meaningless"))
 			lex = IndexLexicon::new_entry_with_package(
@@ -75,16 +75,16 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I) {
 	}
 
 @<Add preposition entries@> =
-	for (int i=0; i<TreeLists::len(inv->preposition_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->preposition_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->preposition_nodes) {
 		index_lexicon_entry *lex = IndexLexicon::new_entry_with_package(
 			Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 
 @<Add adjective entries@> =
-	for (int i=0; i<TreeLists::len(inv->adjective_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->adjective_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->adjective_nodes) {
 		text_stream *lemma = Metadata::read_textual(pack, I"^text");
 		if (Str::len(lemma) > 0) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
@@ -95,8 +95,8 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I) {
 	}
 
 @<Add common noun entries@> =
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->kind_nodes)
 		if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object"))) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
@@ -106,11 +106,10 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I) {
 			lex->lex_package = pack;			
 			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		}
-	}
 
 @<Add proper noun entries@> =
-	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->instance_nodes) {
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
 				Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);

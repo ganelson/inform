@@ -12,8 +12,8 @@ void GroupedElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	int f = FALSE;
 	text_stream *current_area = I"___no_area___";
 	text_stream *current_subarea = I"___no_sub_area___";
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+	inter_package *an_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
 		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
 		int suppress_comma = FALSE;
 		if (Str::eq(this_area, current_area) == FALSE) {
@@ -60,8 +60,8 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 	tree_inventory *inv = Synoptic::inv(I);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+	inter_package *an_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
 		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, LD);
 		IndexUtilities::banner_line(OUT, NULL, 1, I"^", I"Details",
 			I"Index.Pages.ActionDetails.Heading", "../Actions.html", LD);
@@ -71,8 +71,8 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 		HTML_OPEN("p");
 		WRITE("<b>%S - %S</b><br>", this_area, this_subarea);
 		int c = 0;
-		for (int j=0; j<TreeLists::len(inv->action_nodes); j++) {
-			inter_package *an2_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[j].node);
+		inter_package *an2_pack;
+		LOOP_OVER_INVENTORY_PACKAGES(an2_pack, j, inv->action_nodes) {
 			text_stream *this_area2 = Metadata::read_optional_textual(an2_pack, I"^index_heading");
 			text_stream *this_subarea2 = Metadata::read_optional_textual(an2_pack, I"^index_subheading");
 			if ((Str::eq(this_area, this_area2)) && (Str::eq(this_subarea, this_subarea2))) {

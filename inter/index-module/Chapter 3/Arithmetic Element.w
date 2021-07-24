@@ -43,8 +43,8 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	ArithmeticElement::column(OUT, I"DimensionsdColumn", LD);
 	HTML::end_html_row(OUT);
 
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->kind_nodes)
 		if (Str::len(Metadata::read_optional_textual(pack, I"^min_value")) > 0) {
 			HTML::first_html_column(OUT, 0);
 			WRITE("%S", Metadata::read_optional_textual(pack, I"^printed_name"));
@@ -56,7 +56,6 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			@<Dimensions column@>;
 			HTML::end_html_row(OUT);
 		}
-	}
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
 
@@ -80,9 +79,8 @@ text, sorted into kind order of left and then right operand.
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		HTML::begin_plain_html_table(OUT);
-		for (int i=0; i<TreeLists::len(inv->multiplication_rule_nodes); i++) {
-			inter_package *pack =
-				Inter::Package::defined_by_frame(inv->multiplication_rule_nodes->list[i].node);
+		inter_package *pack;
+		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->multiplication_rule_nodes) {
 			HTML::first_html_column(OUT, 0);
 			IndexUtilities::link_package(OUT, pack);
 			HTML::next_html_column(OUT, 0);

@@ -42,15 +42,14 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p"); WRITE("The following use options are in force:"); HTML_CLOSE("p");
 	InnardsElement::index_options_in_force_from(OUT, inv, MAIN_TEXT_UO_ORIGIN, NULL);
 	InnardsElement::index_options_in_force_from(OUT, inv, OPTIONS_FILE_UO_ORIGIN, NULL);
-	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
-		inter_package *E = Inter::Package::defined_by_frame(inv->module_nodes->list[i].node);
+	inter_package *E;
+	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)
 		InnardsElement::index_options_in_force_from(OUT, inv, EXTENSION_UO_ORIGIN, E);
-	}
 	int c = 0;
 	HTML_OPEN("p"); WRITE("Whereas these are not in force:"); HTML_CLOSE("p");
 	HTML::open_indented_p(OUT, 2, "tight");
-	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->use_option_nodes) {
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
 		inter_ti sfs = Metadata::read_numeric(pack, I"^source_file_scoped");
 		if ((set == FALSE) && (sfs == FALSE)) {
@@ -111,8 +110,8 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 =
 void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *inv, int category, inter_package *E) {
 	int N = 0;
-	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->use_option_nodes) {
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
 		inter_ti sfs = Metadata::read_numeric(pack, I"^source_file_scoped");
 		if ((set) && (sfs == FALSE)) {

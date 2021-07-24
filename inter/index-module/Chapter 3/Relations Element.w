@@ -17,8 +17,8 @@ void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::next_html_column(OUT, 0); WRITE("<i>relates this...</i>");
 	HTML::next_html_column(OUT, 0); WRITE("<i>...to this</i>");
 	HTML::end_html_row(OUT);
-	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->relation_nodes) {
 		text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 		text_stream *type = Metadata::read_optional_textual(pack, I"^description");
 		if ((Str::len(type) == 0) || (Str::len(name) == 0)) continue;

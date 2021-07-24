@@ -62,3 +62,10 @@ void TreeLists::sort(inter_tree_location_list *NL, int (*cmp)(const void *, cons
 	if (NL == NULL) internal_error("null inter_tree_location_list");
 	qsort(NL->list, (size_t) NL->list_used, sizeof(itl_entry), cmp);
 }
+
+@ And this macro conveniently loops through packages in a node list of their
+definitions:
+
+@d LOOP_OVER_INVENTORY_PACKAGES(pack, i, node_list)
+	for (int i=0; i<TreeLists::len(node_list); i++)
+		if ((pack = Inter::Package::defined_by_frame(node_list->list[i].node)))

@@ -241,8 +241,8 @@ fact, end.
 
 @<Index the rules which apply during this scene@> =
 	int rbc = 0;
-	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->rulebook_nodes)
 		if (IndexRules::is_contextually_empty(I, pack, IndexRules::scene_context(ssc)) == FALSE) {
 			if (rbc++ == 0) {
 				HTML::open_indented_p(OUT, 1, "hanging");
@@ -253,7 +253,6 @@ fact, end.
 			WRITE("<i>%S</i>", Metadata::read_textual(pack, I"^printed_name")); HTML_CLOSE("p");
 			IndexRules::rulebook_list(OUT, I, pack, I"", IndexRules::scene_context(ssc), LD);
 		}
-	}
 
 @<Index the conditions for this scene end to occur@> =
 	HTML::open_indented_p(OUT, 1, "hanging");

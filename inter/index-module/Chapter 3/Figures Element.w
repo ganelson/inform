@@ -54,8 +54,8 @@ to match this width, preserving the aspect ratio.
 	HTML_OPEN("p"); WRITE("<b>List of Figures</b>"); HTML_CLOSE("p");
 	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
 	int count_of_displayed_figures = 0;
-	for (int i=0; i<TreeLists::len(inv->figure_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->figure_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->figure_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
 		if (id > 1) {
 			text_stream *filename_as_text = Metadata::read_textual(pack, I"^filename");
@@ -131,8 +131,8 @@ to match this width, preserving the aspect ratio.
 	HTML_OPEN("p"); WRITE("<b>List of Sounds</b>"); HTML_CLOSE("p");
 	WRITE("\n");
 	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
-	for (int i=0; i<TreeLists::len(inv->sound_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->sound_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->sound_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
 		text_stream *filename_as_text = Metadata::read_textual(pack, I"^filename");
 		filename *F = Filenames::from_text(filename_as_text);
@@ -236,8 +236,8 @@ to match this width, preserving the aspect ratio.
 	WRITE("<b>List of External Files</b>");
 	HTML_CLOSE("p");
 	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
-	for (int i=0; i<TreeLists::len(inv->file_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->file_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->file_nodes) {
 		HTML::first_html_column(OUT, THUMBNAIL_WIDTH+10);
 		int is_binary = (int) Metadata::read_optional_numeric(pack, I"^is_binary");
 		if (is_binary) {

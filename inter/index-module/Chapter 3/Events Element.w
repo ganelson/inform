@@ -19,51 +19,42 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 }
 
 @<Index events with no specific time@> =
-	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
-		if (Metadata::exists(pack, I"^timed")) {
-			if (Metadata::exists(pack, I"^timed_for") == FALSE) {
-				if (when_count == 0) {
-					HTML_OPEN("p");
-					WRITE("<i>Events with no specific time</i>");
-					HTML_CLOSE("p");
-				}
-				when_count++;
-				HTML_OPEN_WITH("p", "class=\"tightin2\"");
-				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
-				IndexUtilities::link_package(OUT, pack);
-				WRITE(" (where triggered: ");
-				inter_tree_node *D = Inter::Packages::definition(pack);
-				LOOP_THROUGH_INTER_CHILDREN(C, D) {
-					if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-						inter_package *entry = Inter::Package::defined_by_frame(C);
-						if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_timed_rule_trigger")) {
-							int at = (int) Metadata::read_optional_numeric(entry, I"^used_at");
-							if (at > 0) IndexUtilities::link(OUT, at);
-						}
-					}
-				}
-				WRITE(")");
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->rule_nodes)
+		if ((Metadata::exists(pack, I"^timed")) &&
+			(Metadata::exists(pack, I"^timed_for") == FALSE)) {
+			if (when_count == 0) {
+				HTML_OPEN("p");
+				WRITE("<i>Events with no specific time</i>");
 				HTML_CLOSE("p");
 			}
+			when_count++;
+			HTML_OPEN_WITH("p", "class=\"tightin2\"");
+			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
+			IndexUtilities::link_package(OUT, pack);
+			WRITE(" (where triggered: ");
+			inter_package *entry;
+			LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_timed_rule_trigger") {
+				int at = (int) Metadata::read_optional_numeric(entry, I"^used_at");
+				if (at > 0) IndexUtilities::link(OUT, at);
+			}
+			WRITE(")");
+			HTML_CLOSE("p");
 		}
-	}
 
 @<Index timetabled events@> =
-	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
-		if (Metadata::exists(pack, I"^timed")) {
-			if (Metadata::exists(pack, I"^timed_for")) {
-				if (tt_count == 0) {
-					HTML_OPEN("p");
-					WRITE("<i>Timetable</i>");
-					HTML_CLOSE("p");
-				}
-				tt_count++;
-				HTML_OPEN_WITH("p", "class=\"in2\"");
-				WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
-				IndexUtilities::link_package(OUT, pack);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->rule_nodes)
+		if ((Metadata::exists(pack, I"^timed")) &&
+			(Metadata::exists(pack, I"^timed_for"))) {
+			if (tt_count == 0) {
+				HTML_OPEN("p");
+				WRITE("<i>Timetable</i>");
 				HTML_CLOSE("p");
 			}
+			tt_count++;
+			HTML_OPEN_WITH("p", "class=\"in2\"");
+			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
+			IndexUtilities::link_package(OUT, pack);
+			HTML_CLOSE("p");
 		}
-	}

@@ -16,20 +16,18 @@ dictionary, but it's not used often enough to make it worth the work.
 
 =
 inter_package *IndexRules::find_rulebook(tree_inventory *inv, text_stream *marker) {
-	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->rulebook_nodes)
 		if (Str::eq(marker, Metadata::read_optional_textual(pack, I"^index_id")))
 			return pack;
-	}
 	return NULL;
 }
 
 inter_package *IndexRules::find_activity(tree_inventory *inv, text_stream *marker) {
-	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->activity_nodes)
 		if (Str::eq(marker, Metadata::read_optional_textual(pack, I"^index_id")))
 			return pack;
-	}
 	return NULL;
 }
 

@@ -181,11 +181,10 @@ faux_instance_set *FauxInstances::make_faux(inter_tree *IT) {
 
 	tree_inventory *inv = Synoptic::inv(IT);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
-	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
-		if (Metadata::read_optional_numeric(pack,  I"^is_object") == 0) continue;
-		@<Add a faux instance to the set for this object-instance package@>;
-	}
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->instance_nodes)
+		if (Metadata::read_optional_numeric(pack,  I"^is_object"))
+			@<Add a faux instance to the set for this object-instance package@>;
 	faux_instance *I;
 	LOOP_OVER_FAUX_INSTANCES(faux_set, I) {
 		inter_package *pack = I->package;

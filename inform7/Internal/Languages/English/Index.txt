@@ -4,6 +4,20 @@
 %Index.Elements.C.Title = Contents
 %Index.Elements.C.Heading = Like the contents page of a book.|About headings<HEADINGS>; About extensions<EXTENSIONS>
 
+%Index.Elements.C.Titling = *1 by *2
+%Index.Elements.C.AnonymousTitling = *1 (anonymous)
+%Index.Elements.C.NoContents = 
+	This would look more like a contents page if the source text
+	were divided up into headings.<HEADINGS>
+%Index.Elements.C.Words = *1 words
+%Index.Elements.C.ContentsHeading = CONTENTS
+%Index.Elements.C.ExtensionsHeading = EXTENSIONS
+
+%Index.Elements.C.IncludedAutomatically = Included automatically by Inform
+%Index.Elements.C.IncludedFromSource = Included from the source text
+%Index.Elements.C.IncludedBy = Included by the extension *1
+%Index.Elements.C.Version = version *1
+
 %Index.Elements.Cd.Title = Card
 %Index.Elements.Cd.Heading = How this project might be filed in a library catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
 

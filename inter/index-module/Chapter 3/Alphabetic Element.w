@@ -18,8 +18,8 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::next_html_column(OUT, 0);
 	AlphabeticElement::column(OUT, I"SecondColumn", LD);
 	HTML::end_html_row(OUT);
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *an_pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+	inter_package *an_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
 		inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 		inter_ti requires_light = Metadata::read_numeric(an_pack, I"^requires_light");
 		inter_ti can_have_noun = Metadata::read_numeric(an_pack, I"^can_have_noun");

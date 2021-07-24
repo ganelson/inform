@@ -36,8 +36,8 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 
 @<Run through the kinds in priority order@> =
 	for (int priority = 1; priority <= LOWEST_INDEX_PRIORITY; priority++) {
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+		inter_package *pack;
+		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->kind_nodes)
 			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == 0) &&
 				(priority == (int) Metadata::read_optional_numeric(pack, I"^index_priority"))) {
@@ -45,7 +45,6 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 					@<Index this kind package@>;
 				}
 			}
-		}
 		if ((priority == 1) || (priority == 6) || (priority == 7)) {
 			if (pass == 1) {
 				@<Add a dotty row to the chart of kinds@>;
@@ -300,15 +299,14 @@ The following limitation exists just to catch errors.
 =
 void ChartElement::index_subkinds(OUTPUT_STREAM, tree_inventory *inv, inter_package *pack,
 	int depth, int pass, localisation_dictionary *D) {
-	for (int j=0; j<TreeLists::len(inv->kind_nodes); j++) {
-		inter_package *inner_pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[j].node);
-		if ((Metadata::read_optional_numeric(inner_pack, I"^is_base")) &&
-			(Metadata::read_optional_numeric(inner_pack, I"^is_subkind_of_object"))) {
-			inter_symbol *super_weak = Metadata::read_optional_symbol(inner_pack, I"^superkind");
+	inter_package *subkind_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(subkind_pack, i, inv->kind_nodes)
+		if ((Metadata::read_optional_numeric(subkind_pack, I"^is_base")) &&
+			(Metadata::read_optional_numeric(subkind_pack, I"^is_subkind_of_object"))) {
+			inter_symbol *super_weak = Metadata::read_optional_symbol(subkind_pack, I"^superkind");
 			if ((super_weak) && (Inter::Packages::container(super_weak->definition) == pack))
-				ChartElement::index_object_kind(OUT, inv, inner_pack, depth, pass, D);
+				ChartElement::index_object_kind(OUT, inv, subkind_pack, depth, pass, D);
 		}
-	}
 }
 
 void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
@@ -397,8 +395,8 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 
 @<Itemise the instances@> =
 	int c = 0;
-	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
-		inter_package *I_pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+	inter_package *I_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(I_pack, i, inv->instance_nodes) {
 		inter_symbol *strong_kind_ID = Metadata::read_optional_symbol(I_pack, I"^kind_xref");
 		if ((strong_kind_ID) && (Inter::Packages::container(strong_kind_ID->definition) == pack)) {
 			if (c > 0) WRITE(", "); c++;

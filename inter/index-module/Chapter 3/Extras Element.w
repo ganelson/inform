@@ -11,40 +11,33 @@ void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->activity_nodes, Synoptic::module_order);
 
-	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
-		inter_package *E = Inter::Package::defined_by_frame(inv->module_nodes->list[i].node);
+	inter_package *E;
+	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)
 		if (Metadata::read_optional_numeric(E, I"^category") == 1)
 			@<Index rulebooks occurring in this part of the source text@>;
-	}
-	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
-		inter_package *E = Inter::Package::defined_by_frame(inv->module_nodes->list[i].node);
+	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)
 		if (Metadata::read_optional_numeric(E, I"^category") == 2)
 			@<Index rulebooks occurring in this part of the source text@>;
-	}
 }
 
 @<Index rulebooks occurring in this part of the source text@> =
 	int c = 0;
-	for (int j=0; j<TreeLists::len(inv->rulebook_nodes); j++) {
-		if (Synoptic::module_containing(inv->rulebook_nodes->list[j].node) == E) {
-			inter_package *pack =
-				Inter::Package::defined_by_frame(inv->rulebook_nodes->list[j].node);
-			if (Metadata::read_optional_numeric(pack, I"^automatically_generated"))
+	inter_package *rb_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(rb_pack, i, inv->rulebook_nodes)
+		if (Synoptic::module_containing(rb_pack->package_head) == E) {
+			if (Metadata::read_optional_numeric(rb_pack, I"^automatically_generated"))
 				continue;
 			if (c++ == 0) @<Heading for these@>;
 			IndexRules::rulebook_box(OUT, inv, 
-				Metadata::read_optional_textual(pack, I"^printed_name"),
-				NULL, pack, NULL, 1, TRUE, LD);
+				Metadata::read_optional_textual(rb_pack, I"^printed_name"),
+				NULL, rb_pack, NULL, 1, TRUE, LD);
 		}
-	}
-	for (int j=0; j<TreeLists::len(inv->activity_nodes); j++) {
-		if (Synoptic::module_containing(inv->activity_nodes->list[j].node) == E) {
-			inter_package *pack =
-				Inter::Package::defined_by_frame(inv->activity_nodes->list[j].node);
+	inter_package *av_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(av_pack, i, inv->activity_nodes)
+		if (Synoptic::module_containing(av_pack->package_head) == E) {
 			if (c++ == 0) @<Heading for these@>;
-			IndexRules::activity_box(OUT, I, pack, 1, LD);
+			IndexRules::activity_box(OUT, I, av_pack, 1, LD);
 		}
-	}
 
 @<Heading for these@> =
 	HTML_OPEN("p");

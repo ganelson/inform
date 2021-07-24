@@ -17,9 +17,8 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		HTML_CLOSE("p");
 	} else {
 		TreeLists::sort(inv->named_action_pattern_nodes, Synoptic::module_order);
-		for (int i=0; i<TreeLists::len(inv->named_action_pattern_nodes); i++) {
-			inter_package *pack =
-				Inter::Package::defined_by_frame(inv->named_action_pattern_nodes->list[i].node);
+		inter_package *pack;
+		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->named_action_pattern_nodes) {
 			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
 			HTML_OPEN("p"); WRITE("<b>%S</b>", name);
 			IndexUtilities::link_package(OUT, pack);

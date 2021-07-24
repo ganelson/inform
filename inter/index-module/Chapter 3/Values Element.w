@@ -19,15 +19,14 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"NAMES");
 	int understood_note_given = FALSE;
-	for (int i=0; i<TreeLists::len(inv->variable_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->variable_nodes->list[i].node);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->variable_nodes)
 		if (Metadata::read_optional_numeric(pack, I"^indexable")) {
 			if (Metadata::read_optional_numeric(pack, I"^understood"))
 				@<Index a K understood variable@>
 			else
 				@<Index a regular variable@>;
 		}
-	}
 	HTML_CLOSE("p");
 
 @<Index a K understood variable@> =
@@ -41,7 +40,8 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	definition_area = Metadata::read_optional_symbol(pack, I"^heading");
 	if (definition_area == NULL) continue;
 	if (definition_area != current_area) {
-		inter_package *heading_pack = Inter::Packages::container(definition_area->definition);
+		inter_package *heading_pack =
+			Inter::Packages::container(definition_area->definition);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		IndexUtilities::show_definition_area(OUT, heading_pack, FALSE);
@@ -58,13 +58,14 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Index the equations@> =
 	if (TreeLists::len(inv->equation_nodes) > 0) {
-		HTML_OPEN("p"); WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
+		HTML_OPEN("p");
+		WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
 		IndexUtilities::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		int N = 0;
-		for (int i=0; i<TreeLists::len(inv->equation_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->equation_nodes->list[i].node);
+		inter_package *pack;
+		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->equation_nodes) {
 			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 			if (at > 0) {
 				WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));

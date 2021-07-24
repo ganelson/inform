@@ -17,18 +17,19 @@ void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	inter_package *current_mod = NULL; int mc = 0, first_ext = TRUE;
 	inter_ti cat = 1, open_cat = 0;
 	for (inter_ti with_cat = 1; with_cat <= 3; with_cat++) {
-		for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
-			inter_package *mod = Synoptic::module_containing(inv->table_nodes->list[i].node);
-			if (mod == NULL) continue;
-			cat = Metadata::read_optional_numeric(mod, I"^category");
-			if (cat == with_cat) {
-				if ((mc == 0) || (mod != current_mod)) {
-					@<Close block of tables@>;
-					mc++; current_mod = mod;
-					@<Open block of tables@>;
+		inter_package *table_pack;
+		LOOP_OVER_INVENTORY_PACKAGES(table_pack, i, inv->table_nodes) {
+			inter_package *mod = Synoptic::module_containing(table_pack->package_head);
+			if (mod) {
+				cat = Metadata::read_optional_numeric(mod, I"^category");
+				if (cat == with_cat) {
+					if ((mc == 0) || (mod != current_mod)) {
+						@<Close block of tables@>;
+						mc++; current_mod = mod;
+						@<Open block of tables@>;
+					}
+					@<Index this table@>;
 				}
-				inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
-				@<Index this table@>;
 			}
 		}
 	}
@@ -64,9 +65,9 @@ Helvetica-style lower case "x", but life is full of compromises.
 
 @<Index this table@> =
 	HTML::first_html_column_spaced(OUT, 0);
-	WRITE("<b>%S</b>", Metadata::read_textual(pack, I"^printed_name"));
+	WRITE("<b>%S</b>", Metadata::read_textual(table_pack, I"^printed_name"));
 	int ntc = 0;
-	inter_tree_node *D = Inter::Packages::definition(pack);
+	inter_tree_node *D = Inter::Packages::definition(table_pack);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *entry = Inter::Package::defined_by_frame(C);
@@ -86,10 +87,10 @@ Helvetica-style lower case "x", but life is full of compromises.
 				nc++;
 		}
 	}
-	int nr = (int) Metadata::read_numeric(pack, I"^rows");
-	int nb = (int) Metadata::read_numeric(pack, I"^blank_rows");
-	int defines = (int) Metadata::read_optional_numeric(pack, I"^defines");
-	text_stream *for_each = Metadata::read_optional_textual(pack, I"^blank_rows_for_each");
+	int nr = (int) Metadata::read_numeric(table_pack, I"^rows");
+	int nb = (int) Metadata::read_numeric(table_pack, I"^blank_rows");
+	int defines = (int) Metadata::read_optional_numeric(table_pack, I"^defines");
+	text_stream *for_each = Metadata::read_optional_textual(table_pack, I"^blank_rows_for_each");
 
 	WRITE("<i>");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
@@ -133,8 +134,8 @@ Helvetica-style lower case "x", but life is full of compromises.
 @<Give column details@> =
 	text_stream *CW = Metadata::read_optional_textual(col_pack, I"^name");
 	if ((defines) && (col == 0)) {
-		WRITE("%S", Metadata::read_optional_textual(pack, I"^defines_text"));
-		int at = (int) Metadata::read_optional_numeric(pack, I"^defines_at");
+		WRITE("%S", Metadata::read_optional_textual(table_pack, I"^defines_text"));
+		int at = (int) Metadata::read_optional_numeric(table_pack, I"^defines_at");
 		IndexUtilities::link(OUT, at);
 	} else {
 		if (defines) WRITE("<i>sets</i> ");
