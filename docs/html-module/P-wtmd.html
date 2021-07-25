@@ -64,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">html</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the html module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Purpose</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Custom HTML link protocols</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Purpose</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Custom HTML link protocols</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Localisation</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The html module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -143,6 +143,16 @@ new extensions. If no file was found, the link should simply do nothing:
 the application is required not to produce a 404 error page, or to
 blank out the page currently showing.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Localisation. </b>This module also contains a very simple system for "localisation" of text,
+that is, enabling the user to output text in multiple human languages. (Inform
+makes heavy use of this in the Index.) This may not appear at first to have
+anything to do with HTML, but in fact we will mainly use it when generating
+web pages in the Index, so it has some conveniences for stylistic markup as well.
+</p>
+
+<p class="commentary">See <a href="2-lcl.html" class="internal">Localisation</a> for details.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-hm.html">1</a></li><li class="progresschapter"><a href="2-sl.html">2</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

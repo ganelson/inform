@@ -73,3 +73,12 @@ external resources area -- that is, the place to which the app is installing
 new extensions. If no file was found, the link should simply do nothing:
 the application is required not to produce a 404 error page, or to
 blank out the page currently showing.
+
+@h Localisation.
+This module also contains a very simple system for "localisation" of text,
+that is, enabling the user to output text in multiple human languages. (Inform
+makes heavy use of this in the Index.) This may not appear at first to have
+anything to do with HTML, but in fact we will mainly use it when generating
+web pages in the Index, so it has some conveniences for stylistic markup as well.
+
+See //Localisation// for details.
