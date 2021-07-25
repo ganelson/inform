@@ -2,7 +2,8 @@
 
 To write the Innards element (In) in the index.
 
-@ Describing the current VM.
+@ This element is something of a miscellany, except that it's all about the
+technical implementation rather than the content of a work.
 
 =
 void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
@@ -15,7 +16,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	HTML_OPEN("p");
 	IndexUtilities::extra_link(OUT, 3);
-	WRITE("See some technicalities for Inform maintainers only");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.Technicalities");
 	HTML_CLOSE("p");
 	IndexUtilities::extra_div_open(OUT, 3, 2, "e0e0e0");
 	HTML_OPEN("p");
@@ -27,7 +28,9 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Show the virtual machine compiled for@> =
 	IndexUtilities::anchor(OUT, I"STORYFILE");
-	HTML_OPEN("p"); WRITE("Story file format: ");
+	HTML_OPEN("p");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.Format");
+	WRITE(": ");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
 	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
 	text_stream *VM_icon = Metadata::read_optional_textual(pack, I"^virtual_machine_icon");
@@ -39,14 +42,20 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_CLOSE("p");
 
 @<Show the use options@> =
-	HTML_OPEN("p"); WRITE("The following use options are in force:"); HTML_CLOSE("p");
-	InnardsElement::index_options_in_force_from(OUT, inv, MAIN_TEXT_UO_ORIGIN, NULL);
-	InnardsElement::index_options_in_force_from(OUT, inv, OPTIONS_FILE_UO_ORIGIN, NULL);
+	HTML_OPEN("p");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.ActiveUseOptions");
+	WRITE(":");
+	HTML_CLOSE("p");
+	InnardsElement::index_options_in_force_from(OUT, inv, MAIN_TEXT_UO_ORIGIN, NULL, LD);
+	InnardsElement::index_options_in_force_from(OUT, inv, OPTIONS_FILE_UO_ORIGIN, NULL, LD);
 	inter_package *E;
 	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)
-		InnardsElement::index_options_in_force_from(OUT, inv, EXTENSION_UO_ORIGIN, E);
+		InnardsElement::index_options_in_force_from(OUT, inv, EXTENSION_UO_ORIGIN, E, LD);
 	int c = 0;
-	HTML_OPEN("p"); WRITE("Whereas these are not in force:"); HTML_CLOSE("p");
+	HTML_OPEN("p");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.InactiveUseOptions");
+	WRITE(":");
+	HTML_CLOSE("p");
 	HTML::open_indented_p(OUT, 2, "tight");
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->use_option_nodes) {
@@ -57,7 +66,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			if (c++ > 0) WRITE(", ");
 		}
 	}
-	if (c == 0) WRITE("None."); /* in practice, this will never happen */
+	if (c == 0) Localisation::write_0(OUT, LD, I"Index.Elements.In.NoUseOptions");
 	HTML_CLOSE("p");
 
 @<Write in the index line for a use option not taken@> =
@@ -70,17 +79,25 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_CLOSE("span");
 
 @<Show the language elements used@> =
-	WRITE("Inform language definition:\n");
+	HTML_OPEN("p");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.LanguageDefinition");
+	WRITE(":");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
 	text_stream *used = Metadata::read_optional_textual(pack, I"^language_elements_used");
 	text_stream *not_used = Metadata::read_optional_textual(pack, I"^language_elements_not_used");
-	if (Str::len(used) > 0) WRITE("Included: %S", used);
-	if (Str::len(not_used) > 0) WRITE("<br>Excluded: %S", not_used);
+	if (Str::len(used) > 0) 
+		Localisation::write_1(OUT, LD, I"Index.Elements.In.Included", used);
+	if ((Str::len(used) > 0) && (Str::len(not_used) > 0)) WRITE("<br>");
+	if (Str::len(not_used) > 0)
+		Localisation::write_1(OUT, LD, I"Index.Elements.In.Excluded", not_used);
 	HTML_CLOSE("p");
 
 @<Add some paste buttons for the debugging log@> =
 	HTML_OPEN("p");
-	WRITE("Debugging log:");
+	Localisation::write_0(OUT, LD, I"Index.Elements.In.Log");
+	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
@@ -101,36 +118,23 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	}
 	HTML_CLOSE("p");
 
-@ Now for indexing, where there's nothing much to see.
+@ Use options can be set in three general ways, and the following function
+answers the question "was this option set in this way?". |E| is meaningless
+except for |EXTENSION_UO_ORIGIN|, when we are testing whether it was set in |E|.
 
 @d MAIN_TEXT_UO_ORIGIN 1
 @d OPTIONS_FILE_UO_ORIGIN 2
 @d EXTENSION_UO_ORIGIN 3
 
 =
-void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *inv, int category, inter_package *E) {
-	int N = 0;
-	inter_package *pack;
-	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->use_option_nodes) {
-		inter_ti set = Metadata::read_numeric(pack, I"^active");
-		inter_ti sfs = Metadata::read_numeric(pack, I"^source_file_scoped");
-		if ((set) && (sfs == FALSE)) {
-			if (InnardsElement::uo_set_from(pack, category, E)) {
-				if (N++ == 0) @<Write in the use option subheading@>;
-				@<Write in the index line for a use option taken@>;
-			}
-		}
-	}
-}
-
-@ And this is what the rest of Inform calls to find out whether a particular
-pragma is set:
-
-=
-int InnardsElement::uo_set_from(inter_package *pack, int category, inter_package *E) {
-	switch (category) {
-		case MAIN_TEXT_UO_ORIGIN: if (Metadata::read_optional_numeric(pack, I"^used_in_source_text")) return TRUE; break;
-		case OPTIONS_FILE_UO_ORIGIN: if (Metadata::read_optional_numeric(pack, I"^used_in_options")) return TRUE; break;
+int InnardsElement::uo_set_from(inter_package *pack, int way, inter_package *E) {
+	switch (way) {
+		case MAIN_TEXT_UO_ORIGIN:
+			if (Metadata::read_optional_numeric(pack, I"^used_in_source_text")) return TRUE;
+			break;
+		case OPTIONS_FILE_UO_ORIGIN:
+			if (Metadata::read_optional_numeric(pack, I"^used_in_options")) return TRUE;
+			break;
 		case EXTENSION_UO_ORIGIN: {
 			inter_symbol *id = Metadata::read_optional_symbol(pack, I"^used_in_extension");
 			if (id) {
@@ -143,18 +147,38 @@ int InnardsElement::uo_set_from(inter_package *pack, int category, inter_package
 	return FALSE;
 }
 
+@ Here we list the UOs set in a particular way, using the same calling conventions.
+
+=
+void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *inv,
+	int way, inter_package *E, localisation_dictionary *LD) {
+	int N = 0;
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->use_option_nodes) {
+		inter_ti set = Metadata::read_numeric(pack, I"^active");
+		inter_ti sfs = Metadata::read_numeric(pack, I"^source_file_scoped");
+		if ((set) && (sfs == FALSE)) {
+			if (InnardsElement::uo_set_from(pack, way, E)) {
+				if (N++ == 0) @<Write in the use option subheading@>;
+				@<Write in the index line for a use option taken@>;
+			}
+		}
+	}
+}
+
 @<Write in the use option subheading@> =
 	HTML::open_indented_p(OUT, 2, "tight");
 	HTML::begin_colour(OUT, I"808080");
-	WRITE("Set from ");
-	switch (category) {
+	switch (way) {
 		case MAIN_TEXT_UO_ORIGIN:
-			WRITE("the source text"); break;
+			Localisation::write_0(OUT, LD, I"Index.Elements.In.SetFromSource");
+			break;
 		case OPTIONS_FILE_UO_ORIGIN:
-			WRITE("the Options.txt configuration file, or automatically");
+			Localisation::write_0(OUT, LD, I"Index.Elements.In.SetAutomatically");
 			IndexUtilities::DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
-			WRITE("%S", Metadata::read_optional_textual(E, I"^credit"));
+			Localisation::write_1(OUT, LD, I"Index.Elements.In.SetFrom",
+				Metadata::read_optional_textual(E, I"^credit"));
 			break;
 	}
 	WRITE(":");
@@ -175,6 +199,7 @@ int InnardsElement::uo_set_from(inter_package *pack, int category, inter_package
 			Metadata::read_optional_textual(pack, I"^name"), 2*msv);
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
-		WRITE("&nbsp;<i>Double this</i>");
+		WRITE("&nbsp;");
+		Localisation::italic_0(OUT, LD, I"Index.Elements.In.Double");
 	}
 	HTML_CLOSE("p");

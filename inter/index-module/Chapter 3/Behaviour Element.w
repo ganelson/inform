@@ -23,9 +23,8 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			HTML_OPEN("p"); WRITE("<b>%S</b>", name);
 			IndexUtilities::link_package(OUT, pack);
 			HTML_TAG("br");
-			WRITE("&nbsp;&nbsp;<i>");
-			Localisation::write_0(OUT, LD, I"Index.Elements.Bh.Defined");
-			WRITE(":</i>\n");
+			WRITE("&nbsp;&nbsp;");
+			Localisation::italic_0(OUT, LD, I"Index.Elements.Bh.Defined");
 			inter_tree_node *D = Inter::Packages::definition(pack);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.data[ID_IFLD] == PACKAGE_IST) {

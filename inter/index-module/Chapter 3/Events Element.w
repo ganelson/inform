@@ -14,7 +14,9 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	@<Index events with no specific time@>;
 	@<Index timetabled events@>;
 	if ((when_count == 0) && (tt_count == 0)) {
-		HTML_OPEN("p"); WRITE("<i>None.</i>"); HTML_CLOSE("p");
+		HTML_OPEN("p");
+		Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.None");
+		HTML_CLOSE("p");
 	}
 }
 
@@ -25,14 +27,16 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			(Metadata::exists(pack, I"^timed_for") == FALSE)) {
 			if (when_count == 0) {
 				HTML_OPEN("p");
-				WRITE("<i>Events with no specific time</i>");
+				Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.Timeless");
 				HTML_CLOSE("p");
 			}
 			when_count++;
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
 			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
 			IndexUtilities::link_package(OUT, pack);
-			WRITE(" (where triggered: ");
+			WRITE(" (");
+			Localisation::write_0(OUT, LD, I"Index.Elements.Ev.WhereTriggered");
+			WRITE(": ");
 			inter_package *entry;
 			LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_timed_rule_trigger") {
 				int at = (int) Metadata::read_optional_numeric(entry, I"^used_at");
@@ -49,7 +53,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			(Metadata::exists(pack, I"^timed_for"))) {
 			if (tt_count == 0) {
 				HTML_OPEN("p");
-				WRITE("<i>Timetable</i>");
+				Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.Timetable");
 				HTML_CLOSE("p");
 			}
 			tt_count++;

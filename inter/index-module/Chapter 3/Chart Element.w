@@ -155,9 +155,9 @@ or as paragraph of text in pass 2:
 	HTML::open_indented_p(OUT, 1, "halftight");
 	IndexUtilities::anchor_numbered(OUT, i); /* ...the anchor to which the grey icon in the table led */
 	WRITE("<b>"); IndexUtilities::kind_name(OUT, pack, FALSE, TRUE); WRITE("</b>");
-	WRITE(" (<i>");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.Plural");
-	WRITE("</i> ");
+	WRITE(" (");
+	Localisation::italic_0(OUT, D, I"Index.Elements.Ch.Plural");
+	WRITE(" ");
 	IndexUtilities::kind_name(OUT, pack, TRUE, FALSE); WRITE(")");
 	IndexUtilities::link_to_documentation(OUT, pack);
 	HTML_CLOSE("p");
@@ -353,9 +353,9 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	IndexUtilities::kind_name(OUT, pack, FALSE, FALSE);
 	if (pass == 2) WRITE("</b>");
 	if (pass == 2) {
-		WRITE(" (<i>");
-		Localisation::write_0(OUT, D, I"Index.Elements.Ch.Plural");
-		WRITE("</i> ");
+		WRITE(" (");
+		Localisation::italic_0(OUT, D, I"Index.Elements.Ch.Plural");
+		WRITE(" ");
 		IndexUtilities::kind_name(OUT, pack, TRUE, FALSE);
 		WRITE(")");
 	}

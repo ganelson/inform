@@ -1,10 +1,10 @@
-Total memory consumption was 391672K = 382 MB
+Total memory consumption was 392495K = 383 MB
 
-60.4% was used for 1994926 objects, in 371045 frames in 296 x 800K = 236800K = 231 MB:
+60.5% was used for 1995026 objects, in 371046 frames in 297 x 800K = 237600K = 232 MB:
 
     10.4%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-     7.1%  text_stream_array                        5124 x 100 = 512400 objects, 28858368 bytes
-     4.3%  linked_list                              30840 objects, 17270400 bytes
+     7.1%  text_stream_array                        5125 x 100 = 512500 objects, 28864000 bytes
+     4.2%  linked_list                              30840 objects, 17270400 bytes
      3.4%  inter_symbol_array                       139 x 1024 = 142336 objects, 13668704 bytes
      2.5%  parse_node                               129399 objects, 10351920 bytes
      1.8%  verb_conjugation                         160 objects, 7425280 bytes
@@ -234,9 +234,9 @@ Total memory consumption was 391672K = 382 MB
      ----  kind_template_definition                 1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
 
-39.5% was used for memory not allocated for objects:
+39.4% was used for memory not allocated for objects:
 
-    20.6%  text stream storage                      82746500 bytes in 530520 claims
+    20.5%  text stream storage                      82770840 bytes in 530655 claims
      4.5%  dictionary storage                       18153472 bytes in 33229 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -254,5 +254,5 @@ Total memory consumption was 391672K = 382 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    157552 bytes in 2061 claims
 
-18.6% was overhead - 74974232 bytes = 73217K = 71 MB
+18.8% was overhead - 75787800 bytes = 74011K = 72 MB
 

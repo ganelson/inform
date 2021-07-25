@@ -126,24 +126,21 @@ linked_list *CommandsElement::sort(linked_list *entries) {
 			break;
 		case OUT_OF_WORLD_COMMAND:
 			HTML::begin_colour(OUT, I"800000");
-			WRITE("&quot;%S&quot;, <i>", cie->command_headword);
-			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Command");
-			WRITE("</i>");
+			WRITE("&quot;%S&quot;, ", cie->command_headword);
+			Localisation::italic_0(OUT, LD, I"Index.Elements.Cm.Command");
 			HTML::end_colour(OUT);
 			HTML_TAG("br");
 			break;
 		case TESTING_COMMAND:
 			HTML::begin_colour(OUT, I"800000");
-			WRITE("&quot;%S&quot;, <i>", cie->command_headword);
-			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.TestingCommand");
-			WRITE("</i>");
+			WRITE("&quot;%S&quot;, ", cie->command_headword);
+			Localisation::italic_0(OUT, LD, I"Index.Elements.Cm.TestingCommand");
 			HTML::end_colour(OUT);
 			HTML_TAG("br");
 			break;
 		case BARE_DIRECTION_COMMAND:
-			WRITE("&quot;[direction]&quot; - <i>");
-			Localisation::write_0(OUT, LD, I"Index.Elements.Cm.DirectionCommand");
-			WRITE("</i>");
+			WRITE("&quot;[direction]&quot; - ");
+			Localisation::italic_0(OUT, LD, I"Index.Elements.Cm.DirectionCommand");
 			HTML_TAG("br");
 			break;
 	}
@@ -160,9 +157,9 @@ void CommandsElement::index_normal(OUTPUT_STREAM, inter_tree *I, inter_package *
 
 void CommandsElement::index_alias(OUTPUT_STREAM, inter_tree *I, inter_package *cg_pack,
 	text_stream *headword, localisation_dictionary *LD) {
-	WRITE("&quot;%S&quot;, <i>", headword);
-	Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Alias");
-	WRITE("</i> &quot;%S&quot;", Metadata::read_textual(cg_pack, I"^command"));
+	WRITE("&quot;%S&quot;, ", headword);
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Cm.Alias");
+	WRITE(" &quot;%S&quot;", Metadata::read_textual(cg_pack, I"^command"));
 	IndexUtilities::link_package(OUT, cg_pack);
 	HTML_TAG("br");
 }
@@ -181,15 +178,13 @@ void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
 	WRITE("&quot;");
 	IndexUtilities::link_package(OUT, cgl);
 	
-	WRITE(" - <i>%S", Metadata::read_textual(an, I"^name"));
+	WRITE(" - <i>%S</i>", Metadata::read_textual(an, I"^name"));
 	IndexUtilities::detail_link(OUT, "A",
 		(int) Metadata::read_numeric(an, I"action_id"), TRUE);
 	if (Metadata::read_optional_numeric(cgl, I"^reversed")) {
-		WRITE(" <i>");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Cm.Reversed");
-		WRITE("</i>");
+		WRITE(" ");
+		Localisation::italic_0(OUT, LD, I"Index.Elements.Cm.Reversed");
 	}
-	WRITE("</i>");
 	if (oow) HTML::end_colour(OUT);
 	HTML_TAG("br");
 }

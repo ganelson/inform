@@ -2,7 +2,8 @@
 
 To write the Extras element (Xt) in the index.
 
-@
+@ This is to sweep up rulebooks and activities not covered by other elements,
+really, and most of the code here is just to arrange them in some logical order.
 
 =
 void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
@@ -41,10 +42,12 @@ void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Heading for these@> =
 	HTML_OPEN("p");
+	WRITE("<b>");
 	if (Metadata::read_optional_numeric(E, I"^category") == 1) {
-		WRITE("<b>From the source text</b>");
+		Localisation::write_0(OUT, LD, I"Index.Elements.Xt.FromSourceText");
 	} else {
-		WRITE("<b>From the extension %S</b>",
+		Localisation::write_1(OUT, LD, I"Index.Elements.Xt.FromExtension",
 			Metadata::read_optional_textual(E, I"^credit"));
 	}
+	WRITE("</b>");
 	HTML_CLOSE("p");

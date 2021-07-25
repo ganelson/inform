@@ -185,6 +185,18 @@ with everything under the first line being italicised. For example:
 Note that a valid documentation reference must begin with an upper-case letter.
 
 =
+void Localisation::bold_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
+	WRITE("<b>");
+	Localisation::write_0(OUT, D, key);
+	WRITE("</b>");
+}
+
+void Localisation::italic_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
+	WRITE("<i>");
+	Localisation::write_0(OUT, D, key);
+	WRITE("</i>");
+}
+
 void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -199,12 +211,73 @@ void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D, text_strea
 	Localisation::write_general(OUT, D, key, vals);
 }
 
+void Localisation::write_1n(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+	int val1) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	TEMPORARY_TEXT(f1)
+	WRITE_TO(f1, "%d", val1);
+	vals[1] = f1;
+	Localisation::write_general(OUT, D, key, vals);
+	DISCARD_TEXT(f1)
+}
+
 void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
 	vals[1] = val1; vals[2] = val2;
 	Localisation::write_general(OUT, D, key, vals);
+}
+
+void Localisation::write_2n(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+	int val1, int val2) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	TEMPORARY_TEXT(f1)
+	TEMPORARY_TEXT(f2)
+	WRITE_TO(f1, "%d", val1);
+	WRITE_TO(f2, "%d", val2);
+	vals[1] = f1; vals[2] = f2;
+	Localisation::write_general(OUT, D, key, vals);
+	DISCARD_TEXT(f1)
+	DISCARD_TEXT(f2)
+}
+
+void Localisation::write_2sn(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+	text_stream *val1, int val2) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	TEMPORARY_TEXT(f2)
+	WRITE_TO(f2, "%d", val2);
+	vals[1] = val1; vals[2] = f2;
+	Localisation::write_general(OUT, D, key, vals);
+	DISCARD_TEXT(f2)
+}
+
+void Localisation::write_2ns(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+	int val1, text_stream *val2) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	TEMPORARY_TEXT(f1)
+	WRITE_TO(f1, "%d", val1);
+	vals[1] = f1; vals[2] = val2;
+	Localisation::write_general(OUT, D, key, vals);
+	DISCARD_TEXT(f1)
+}
+
+void Localisation::write_3nsn(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+	int val1, text_stream *val2, int val3) {
+	text_stream *vals[10];
+	@<Vacate the vals@>;
+	TEMPORARY_TEXT(f1)
+	TEMPORARY_TEXT(f3)
+	WRITE_TO(f1, "%d", val1);
+	WRITE_TO(f3, "%d", val3);
+	vals[1] = f1; vals[2] = val2; vals[3] = f3;
+	Localisation::write_general(OUT, D, key, vals);
+	DISCARD_TEXT(f1)
+	DISCARD_TEXT(f3)
 }
 
 @<Vacate the vals@> =

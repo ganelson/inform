@@ -73,9 +73,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 void AlphabeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, "Index.Elements.A2.%S", key);
-	WRITE("<b>");
-	Localisation::write_0(OUT, LD, full);
-	WRITE("</b> ");
+	Localisation::bold_0(OUT, LD, full);
 	DISCARD_TEXT(full)
 }
 
@@ -83,9 +81,7 @@ void AlphabeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dic
 void AlphabeticElement::note(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, "Index.Elements.A2.%S", key);
-	WRITE("<i>");
-	Localisation::write_0(OUT, LD, full);
-	WRITE("</i> ");
+	Localisation::italic_0(OUT, LD, full);
 	DISCARD_TEXT(full)
 }
 

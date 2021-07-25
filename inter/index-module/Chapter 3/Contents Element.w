@@ -173,8 +173,6 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 @ =
 void ContentsElement::word_count(OUTPUT_STREAM, inter_package *pack,
 	localisation_dictionary *LD) {
-	TEMPORARY_TEXT(words)
-	WRITE_TO(words, "%d", Metadata::read_numeric(pack, I"^word_count"));
-	Localisation::write_1(OUT, LD, I"Index.Elements.C.Words", words);
-	DISCARD_TEXT(words)
+	Localisation::write_1n(OUT, LD, I"Index.Elements.C.Words",
+		(int) Metadata::read_numeric(pack, I"^word_count"));
 }

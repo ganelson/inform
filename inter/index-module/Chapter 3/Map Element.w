@@ -29,8 +29,7 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *D, int test_only
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
 	faux_instance *I;
 	LOOP_OVER_FAUX_INSTANCES(faux_set, I)
-		if ((MapElement::no_detail_index(I))
-			|| (FauxInstances::is_a_direction(I)))
+		if ((MapElement::no_detail_index(I)) || (FauxInstances::is_a_direction(I)))
 			FauxInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =

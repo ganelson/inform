@@ -64,9 +64,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (Str::len(dims) > 0) {
 		WRITE("%S", dims);
 	} else {
-		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Ar.Dimensionless");
-		WRITE("</i>");
+		Localisation::italic_0(OUT, LD, I"Index.Elements.Ar.Dimensionless");
 	}
 
 @ This is simply a table of all the multiplications declared in the source
@@ -114,8 +112,7 @@ text, sorted into kind order of left and then right operand.
 void ArithmeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, "Index.Elements.Ar.%S", key);
-	WRITE("<b>");
-	Localisation::write_0(OUT, LD, full);
-	WRITE("</b> ");
+	Localisation::bold_0(OUT, LD, full);
+	WRITE(" ");
 	DISCARD_TEXT(full)
 }

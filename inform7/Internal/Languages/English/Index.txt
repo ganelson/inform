@@ -27,8 +27,61 @@
 %Index.Elements.Fi.Title = Figures
 %Index.Elements.Fi.Heading = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
 
+%Index.Elements.Fi.NoFigures = There are no figures, or illustrations, in this project.
+%Index.Elements.Fi.NoSounds = There are no sound effects in this project.
+%Index.Elements.Fi.NoFiles = This project doesn't read or write external files.
+%Index.Elements.Fi.ListOfFigures = List of Figures
+%Index.Elements.Fi.ListOfSounds = List of Sounds
+%Index.Elements.Fi.ListOfFiles = List of External Files
+
+%Index.Elements.Fi.Format = Format *1
+%Index.Elements.Fi.UnknownFormat = Unknown image format
+%Index.Elements.Fi.Dimensions = *1 (width) by *2 (height) pixels
+%Index.Elements.Fi.Missing = Missing from the Figures folder
+%Index.Elements.Fi.Resource = Filename: "*1" - resource number *2
+
+%Index.Elements.Fi.UnknownSoundFormat = Unknown sound format
+%Index.Elements.Fi.SoundUnsupported = Warning: not officially supported in Glulx yet
+%Index.Elements.Fi.SoundFormatOneTrack = Type *1 *2 file with 1 track
+%Index.Elements.Fi.SoundFormatMultiTrack = Type *1 *2 file with *3 tracks
+%Index.Elements.Fi.SoundFile = *1 *2 file
+%Index.Elements.Fi.MissingSound = Missing from the Sounds folder
+%Index.Elements.Fi.DurationS = duration *1 seconds
+%Index.Elements.Fi.DurationMS = duration *1 minutes *2 seconds
+%Index.Elements.Fi.DurationM = duration *1 minutes exactly
+%Index.Elements.Fi.Sampled = Sampled as *1
+%Index.Elements.Fi.Mono = Mono
+%Index.Elements.Fi.Stereo = Stereo
+%Index.Elements.Fi.BitRate = *1 kilobits/sec
+
+%Index.Elements.Fi.BinaryFile = Binary file "*1"
+%Index.Elements.Fi.TextFile = File "*1"
+%Index.Elements.Fi.FileOwnedByThis = owned by this project
+%Index.Elements.Fi.FileOwnedByOther = owned by another project
+%Index.Elements.Fi.FileOwnedBy = owned by project with IFID number *1
+
+%Index.Elements.Fi.ThumbnailLimit = 
+	Only the first *1 thumbnails have been shown here, to avoid Inform taking
+	up too much memory. If you'd like to see more, set 'Use index figure
+	thumbnails of at least *2.', or whatever number you want to wait for.
+
 %Index.Elements.In.Title = Innards
 %Index.Elements.In.Heading = Technicalities about the story file being produced.|About the story file<STORYFILES>; About use options<OPTIONS>
+
+%Index.Elements.In.Technicalities = See some technicalities for Inform maintainers only
+%Index.Elements.In.Format = Story file format
+%Index.Elements.In.ActiveUseOptions = The following use options are in force
+%Index.Elements.In.InactiveUseOptions = Whereas these are not in force
+%Index.Elements.In.NoUseOptions = None
+%Index.Elements.In.LanguageDefinition = Inform language definition
+%Index.Elements.In.Included = Included: *1
+%Index.Elements.In.Excluded = Excluded: *1
+%Index.Elements.In.Log = Debugging log
+
+%Index.Elements.In.SetFromSource = Set from the source text
+%Index.Elements.In.SetAutomatically = Set from the Options.txt configuration file, or automatically
+%Index.Elements.In.SetFrom = Set from *1
+%Index.Elements.In.Double = Double this
 
 %Index.Pages.Actions.Title = Actions Index
 %Index.Pages.Actions.Caption = Things that people can try to do
@@ -37,6 +90,15 @@
 
 %Index.Elements.A1.Title = Grouped
 %Index.Elements.A1.Heading = With similar actions grouped together|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
+
+%Index.Elements.A1.RequiresLight = requires light
+%Index.Elements.A1.PastTense = past tense
+%Index.Elements.A1.CommandsHeading = Typed commands leading to this action
+%Index.Elements.A1.NoCommands = None
+%Index.Elements.A1.ValuesHeading = Named values belonging to this action
+%Index.Elements.A1.RulesHeading = Rules controlling this action
+%Index.Elements.A1.ResponseIcons =
+	Click on the speech-bubble icons to see the responses, or here to see all of them
 
 %Index.Elements.A2.Title = Alphabetic
 %Index.Elements.A2.Heading = Listed in alphabetical order|About actions<ACTIONS>; New actions<NEWACTIONS>; Out of world actions (in red)<OUTOFWORLD>
@@ -53,7 +115,7 @@
 %Index.Elements.Bh.Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
 
 %Index.Elements.Bh.None = No names for kinds of action have yet been defined.
-%Index.Elements.Bh.Defined = defined as any of the following acts
+%Index.Elements.Bh.Defined = defined as any of the following acts:
 
 %Index.Elements.Cm.Title = Commands
 %Index.Elements.Cm.Heading = Commands which the player can type|About commands<UNDERSTANDING>
@@ -151,7 +213,16 @@
 
 %Index.Elements.Lx.ToBe = *1, to be
 %Index.Elements.Lx.KindOf = a kind of *1
-%Index.Elements.Lx/ValueOf = value of *1
+%Index.Elements.Lx.ValueOf = value of *1
+
+%Index.Elements.Lx.Explanation = 
+	For instance, the description 'an unlocked door' is made
+	up from the adjective 'unlocked' and the noun 'door', both of which
+	can be found below. Property adjectives, like 'open', can be used
+	when creating things - 'In the Ballroom is an open container' is
+	allowed because 'open' is a property - but those with complicated
+	definitions, like 'empty', can only be tested during play, e.g.
+	with rules like 'Instead of taking an empty container, ...'.
 
 %Index.Elements.Rl.Title = Relations
 %Index.Elements.Rl.Heading = Relations give meaning to verbs|About relations<RELATIONS>
@@ -177,6 +248,9 @@
 %Index.Elements.Xt.Title = Extras
 %Index.Elements.Xt.Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
 
+%Index.Elements.Xt.FromSourceText = From the source text
+%Index.Elements.Xt.FromExtension = From the extension *1
+
 %Index.Pages.Scenes.Title = Scenes Index
 %Index.Pages.Scenes.Caption = Like scenes in a movie
 
@@ -185,6 +259,11 @@
 
 %Index.Elements.Ev.Title = Events
 %Index.Elements.Ev.Heading = Timed events, if any|About timed events<TIMEDEVENTS>
+
+%Index.Elements.Ev.None = None
+%Index.Elements.Ev.Timeless = Events with no specific time
+%Index.Elements.Ev.WhereTriggered = where triggered
+%Index.Elements.Ev.Timetable = Timetable
 
 %Index.Elements.RS.Title = Rules
 %Index.Elements.RS.Heading = General rules about scenes

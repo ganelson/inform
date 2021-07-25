@@ -60,7 +60,8 @@ void TreeLists::add(inter_tree_location_list *NL, inter_tree_node *P) {
 
 void TreeLists::sort(inter_tree_location_list *NL, int (*cmp)(const void *, const void *)) {
 	if (NL == NULL) internal_error("null inter_tree_location_list");
-	qsort(NL->list, (size_t) NL->list_used, sizeof(itl_entry), cmp);
+	if (NL->list_used > 0)
+		qsort(NL->list, (size_t) NL->list_used, sizeof(itl_entry), cmp);
 }
 
 @ And this macro conveniently loops through packages in a node list of their

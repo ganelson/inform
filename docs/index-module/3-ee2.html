@@ -72,7 +72,9 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">index</a></li><li><a href="index.html#3">Chapter 3: Elements</a></li><li><b>Extras Element</b></li></ul></div>
 <p class="purpose">To write the Extras element (Xt) in the index.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This is to sweep up rulebooks and activities not covered by other elements,
+really, and most of the code here is just to arrange them in some logical order.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtrasElement::render</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ExtrasElement::render</span></span>:<br/>The Periodic Table - <a href="3-tpt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">localisation_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">LD</span><span class="plain-syntax">) {</span>
@@ -118,12 +120,14 @@ function togglePopup(material_id) {
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;b&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Metadata::read_optional_numeric</span><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"^category"</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;b&gt;From the source text&lt;/b&gt;"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-lcl.html#SP5" class="function-link"><span class="function-syntax">Localisation::write_0</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">LD</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Index.Elements.Xt.FromSourceText"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;b&gt;From the extension %S&lt;/b&gt;"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><a href="2-lcl.html#SP5" class="function-link"><span class="function-syntax">Localisation::write_1</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">LD</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Index.Elements.Xt.FromExtension"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"^credit"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/b&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ee2.html#SP1_1">&#167;1.1</a> (twice).</li></ul>
