@@ -3,7 +3,13 @@
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
 @ =
-void RenderEPSMap::prepare_universe(inter_tree *I) {
+void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
+	inter_tree *I = InterpretIndex::get_tree();
+	@<Prepare the EPS levels@>;
+	@<Open a stream and write the EPS map to it@>;
+}
+
+@<Prepare the EPS levels@> =
 	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	@<Create the main EPS map super-level@>;
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
@@ -12,13 +18,6 @@ void RenderEPSMap::prepare_universe(inter_tree *I) {
 	FauxInstances::decode_hints(faux_set, I, 2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
-}
-
-void RenderEPSMap::render_map_as_EPS(filename *F) {
-	inter_tree *I = InterpretIndex::get_tree();
-	RenderEPSMap::prepare_universe(I);
-	@<Open a stream and write the EPS map to it@>;
-}
 
 @<Create the main EPS map super-level@> =
 	EPS_map_level *main_eml = CREATE(EPS_map_level);
@@ -26,7 +25,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F) {
 	main_eml->actual_height = 0;
 	main_eml->titling_point_size = ConfigureIndexMap::get_int_mp(I"title-size", NULL);
 	main_eml->titling = Str::new();
-	WRITE_TO(main_eml->titling, "Map");
+	Localisation::write_0(main_eml->titling, LD, I"Index.EPSMap.DefaultTitle");
 	main_eml->contains_titling = TRUE;
 	main_eml->contains_rooms = FALSE;
 	ConfigureIndexMap::prepare_map_parameter_scope(&(main_eml->map_parameters));
@@ -46,9 +45,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F) {
 		}
 
 	Str::clear(eml->titling);
-	char *level_rubric = "Map"; int par = 0;
-	PL::HTMLMap::devise_level_rubric(z, &level_rubric, &par);
-	WRITE_TO(eml->titling, level_rubric, par);
+	HTMLMap::devise_level_rubric(z, eml->titling, LD);
 
 	if (Str::len(eml->titling) == 0) eml->contains_titling = FALSE;
 	else eml->contains_titling = TRUE;
@@ -164,8 +161,11 @@ rectangle around the whole thing...
 @<Draw the title for this EPS map level@> =
 	int y = eml->eps_origin + vskip + eml->actual_height;
 	if (eml->contains_rooms) {
-		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
-		else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"subtitle-colour", level_scope));
+		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope))
+			RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+		else
+			RenderEPSMap::EPS_compile_set_colour(OUT,
+				ConfigureIndexMap::get_text_mp(I"subtitle-colour", level_scope));
 		RenderEPSMap::plot_stream_at(OUT,
 			ConfigureIndexMap::get_text_mp(I"subtitle", level_scope),
 			NULL, 128,
@@ -174,8 +174,10 @@ rectangle around the whole thing...
 			ConfigureIndexMap::get_int_mp(I"subtitle-size", level_scope),
 			FALSE, FALSE);
 	} else {
-		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
-		else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"title-colour", level_scope));
+		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope))
+			RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+		else RenderEPSMap::EPS_compile_set_colour(OUT,
+			ConfigureIndexMap::get_text_mp(I"title-colour", level_scope));
 		RenderEPSMap::plot_stream_at(OUT,
 			ConfigureIndexMap::get_text_mp(I"title", NULL),
 			NULL, 128,
@@ -205,7 +207,8 @@ rectangle around the whole thing...
 
 @<Draw the map connections from this room as EPS paths@> =
 	map_parameter_scope *room_scope = FauxInstances::get_parameters(R);
-	RenderEPSMap::EPS_compile_line_width_setting(OUT, ConfigureIndexMap::get_int_mp(I"route-thickness", room_scope));
+	RenderEPSMap::EPS_compile_line_width_setting(OUT,
+		ConfigureIndexMap::get_int_mp(I"route-thickness", room_scope));
 
 	int bx = R->fimd.eps_x;
 	int by = R->fimd.eps_y;
@@ -213,7 +216,7 @@ rectangle around the whole thing...
 	int R_stiffness = ConfigureIndexMap::get_int_mp(I"route-stiffness", room_scope);
 	int dir;
 	LOOP_OVER_STORY_DIRECTIONS(dir) {
-		faux_instance *T = PL::SpatialMap::room_exit(R, dir, NULL);
+		faux_instance *T = SpatialMap::room_exit(R, dir, NULL);
 		int exit = story_dir_to_page_dir[dir];
 		if (FauxInstances::is_a_room(T))
 			@<Draw a single map connection as an EPS arrow@>;
@@ -221,11 +224,15 @@ rectangle around the whole thing...
 	RenderEPSMap::EPS_compile_line_width_unsetting(OUT);
 
 @<Draw a single map connection as an EPS arrow@> =
-	int T_stiffness = ConfigureIndexMap::get_int_mp(I"route-stiffness", FauxInstances::get_parameters(T));
-	if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
-	else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"route-colour", level_scope));
+	int T_stiffness = ConfigureIndexMap::get_int_mp(I"route-stiffness",
+		FauxInstances::get_parameters(T));
+	if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope))
+		RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+	else
+		RenderEPSMap::EPS_compile_set_colour(OUT,
+			ConfigureIndexMap::get_text_mp(I"route-colour", level_scope));
 	if ((Room_position(T).z == Room_position(R).z) &&
-		(PL::SpatialMap::room_exit(T, PL::SpatialMap::opposite(dir), FALSE) == R))
+		(SpatialMap::room_exit(T, SpatialMap::opposite(dir), FALSE) == R))
 		@<Draw a two-ended arrow for a two-way horizontal connection@>
 	else
 		@<Draw a one-way arrow for a distant or off-level connection@>;
@@ -238,14 +245,14 @@ just for the earlier-defined room.
 		RenderEPSMap::EPS_compile_Bezier_curve(OUT,
 			R_stiffness*mapunit, T_stiffness*mapunit,
 			bx, by, exit,
-			T->fimd.eps_x, T->fimd.eps_y, PL::SpatialMap::opposite(exit));
+			T->fimd.eps_x, T->fimd.eps_y, SpatialMap::opposite(exit));
 
 @ A one-way arrow has the destination marked on it textually, since it doesn't
 actually go there in any visual way.
 
 @<Draw a one-way arrow for a distant or off-level connection@> =
 	int scaled = 1;
-	vector E = PL::SpatialMap::direction_as_vector(exit);
+	vector E = SpatialMap::direction_as_vector(exit);
 	switch(exit) {
 		case 8:  E = U_vector_EPS; scaled = 2; break;
 		case 9:  E = D_vector_EPS; scaled = 2; break;
@@ -271,18 +278,25 @@ actually go there in any visual way.
 
 @<Draw the filled box for the room@> =
 	WRITE("newpath %% Room interior\n");
-	if (ConfigureIndexMap::get_int_mp(I"monochrome", room_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 75);
-	else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"room-colour", room_scope));
-	RenderEPSMap::EPS_compile_room_boundary_path(OUT, bx, by, boxsize, ConfigureIndexMap::get_text_mp(I"room-shape", room_scope));
+	if (ConfigureIndexMap::get_int_mp(I"monochrome", room_scope))
+		RenderEPSMap::EPS_compile_set_greyscale(OUT, 75);
+	else RenderEPSMap::EPS_compile_set_colour(OUT,
+		ConfigureIndexMap::get_text_mp(I"room-colour", room_scope));
+	RenderEPSMap::EPS_compile_room_boundary_path(OUT, bx, by, boxsize,
+		ConfigureIndexMap::get_text_mp(I"room-shape", room_scope));
 	WRITE("fill\n\n");
 
 @<Draw the outline of the box for the room@> =
 	if (ConfigureIndexMap::get_int_mp(I"room-outline", room_scope)) {
-		RenderEPSMap::EPS_compile_line_width_setting(OUT, ConfigureIndexMap::get_int_mp(I"room-outline-thickness", room_scope));
+		RenderEPSMap::EPS_compile_line_width_setting(OUT,
+			 ConfigureIndexMap::get_int_mp(I"room-outline-thickness", room_scope));
 		WRITE("newpath %% Room outline\n");
-		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
-		else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"room-outline-colour", room_scope));
-		RenderEPSMap::EPS_compile_room_boundary_path(OUT, bx, by, boxsize, ConfigureIndexMap::get_text_mp(I"room-shape", room_scope));
+		if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope))
+			RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+		else RenderEPSMap::EPS_compile_set_colour(OUT,
+			ConfigureIndexMap::get_text_mp(I"room-outline-colour", room_scope));
+		RenderEPSMap::EPS_compile_room_boundary_path(OUT, bx, by, boxsize,
+			ConfigureIndexMap::get_text_mp(I"room-shape", room_scope));
 		WRITE("stroke\n");
 		RenderEPSMap::EPS_compile_line_width_unsetting(OUT);
 	}
@@ -295,8 +309,10 @@ actually go there in any visual way.
 	bx += xpart*mapunit/100;
 	by += ypart*mapunit/100;
 
-	if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
-	else RenderEPSMap::EPS_compile_set_colour(OUT, ConfigureIndexMap::get_text_mp(I"room-name-colour", room_scope));
+	if (ConfigureIndexMap::get_int_mp(I"monochrome", level_scope))
+		RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+	else RenderEPSMap::EPS_compile_set_colour(OUT,
+		ConfigureIndexMap::get_text_mp(I"room-name-colour", room_scope));
 	text_stream *legend = ConfigureIndexMap::get_text_mp(I"room-name", room_scope);
 	faux_instance *room_to_name = NULL;
 	if (Str::len(legend) == 0) { room_to_name = R; legend = NULL; }
@@ -314,7 +330,8 @@ actually go there in any visual way.
 		int mapunit = ConfigureIndexMap::get_int_mp(I"grid-size", NULL);
 		while (xpart > 5000) xpart-=10000;
 		while (xpart < -5000) xpart+=10000;
-		if (ConfigureIndexMap::get_int_mp(I"monochrome", NULL)) RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
+		if (ConfigureIndexMap::get_int_mp(I"monochrome", NULL))
+			RenderEPSMap::EPS_compile_set_greyscale(OUT, 0);
 		else RenderEPSMap::EPS_compile_set_colour(OUT, rh->colour);
 		faux_instance *O = rh->offset_from;
 		if (O) {
@@ -322,8 +339,8 @@ actually go there in any visual way.
 			by = O->fimd.eps_y;
 		}
 		bx += xpart*mapunit/100; by += ypart*mapunit/100;
-		RenderEPSMap::plot_text_at(OUT, rh->annotation, NULL, 128, rh->font, bx, by, rh->point_size,
-			TRUE, TRUE); /* centred both horizontally and vertically */
+		RenderEPSMap::plot_text_at(OUT, rh->annotation, NULL, 128, rh->font, bx, by,
+			rh->point_size, TRUE, TRUE); /* centred both horizontally and vertically */
 	}
 
 @h Writing text in EPS.
@@ -334,8 +351,8 @@ on -- come from here.
 @d MAX_EPS_ABBREVIATED_LENGTH MAX_EPS_TEXT_LENGTH
 
 =
-void RenderEPSMap::plot_text_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_instance *I, int abbrev_to,
-	text_stream *font, int x, int y, int pointsize, int centre_h, int centre_v) {
+void RenderEPSMap::plot_text_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_instance *I,
+	int abbrev_to, text_stream *font, int x, int y, int pointsize, int centre_h, int centre_v) {
 	TEMPORARY_TEXT(txt)
 	if (text_to_plot) {
 		WRITE_TO(txt, "%S", text_to_plot);
@@ -343,7 +360,8 @@ void RenderEPSMap::plot_text_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_i
 		@<Try taking the name from the printed name property of the room@>;
 		@<If that fails, try taking the name from its source text name@>;
 	} else return;
-	RenderEPSMap::plot_stream_at(OUT, txt, I, abbrev_to, font, x, y, pointsize, centre_h, centre_v);
+	RenderEPSMap::plot_stream_at(OUT, txt, I, abbrev_to, font, x, y, pointsize,
+		centre_h, centre_v);
 	DISCARD_TEXT(txt)
 }
 
@@ -360,8 +378,9 @@ void RenderEPSMap::plot_text_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_i
 	}
 
 @ =
-void RenderEPSMap::plot_stream_at(OUTPUT_STREAM, text_stream *text_to_plot, faux_instance *I, int abbrev_to,
-	text_stream *font, int x, int y, int pointsize, int centre_h, int centre_v) {
+void RenderEPSMap::plot_stream_at(OUTPUT_STREAM, text_stream *text_to_plot,
+	faux_instance *I, int abbrev_to, text_stream *font, int x, int y, int pointsize,
+	int centre_h, int centre_v) {
 	TEMPORARY_TEXT(txt)
 	Str::copy(txt, text_to_plot);
 	@<Abbreviate the text to be printed by stripping dispensable letters@>;
@@ -396,8 +415,8 @@ is "PsyNn".
 EPS files are identified and version-numbered by a header, as follows.
 
 =
-void RenderEPSMap::EPS_compile_header(OUTPUT_STREAM, int bounding_box_width, int bounding_box_height,
-	text_stream *default_font, int default_point_size) {
+void RenderEPSMap::EPS_compile_header(OUTPUT_STREAM, int bounding_box_width,
+	int bounding_box_height, text_stream *default_font, int default_point_size) {
 	WRITE("%%!PS-Adobe EPSF-3.0\n");
 	WRITE("%%%%BoundingBox: 0 0 %d %d\n", bounding_box_width, bounding_box_height);
 	WRITE("%%%%IncludeFont: %S\n", default_font);
@@ -417,7 +436,8 @@ void RenderEPSMap::EPS_compile_circular_path(OUTPUT_STREAM, int x0, int y0, int 
 	WRITE("closepath\n");
 }
 
-void RenderEPSMap::EPS_compile_rectangular_path(OUTPUT_STREAM, int x0, int y0, int x1, int y1) {
+void RenderEPSMap::EPS_compile_rectangular_path(OUTPUT_STREAM, int x0, int y0,
+	int x1, int y1) {
 	WRITE("%d %d moveto %% bottom left corner\n", x0, y0);
 	WRITE("%d %d lineto %% bottom side\n", x1, y0);
 	WRITE("%d %d lineto %% right side\n", x1, y1);
@@ -428,15 +448,19 @@ void RenderEPSMap::EPS_compile_rectangular_path(OUTPUT_STREAM, int x0, int y0, i
 @ The boundary of a room is always one of these:
 
 =
-void RenderEPSMap::EPS_compile_room_boundary_path(OUTPUT_STREAM, int bx, int by, int boxsize, text_stream *shape) {
+void RenderEPSMap::EPS_compile_room_boundary_path(OUTPUT_STREAM, int bx, int by,
+	int boxsize, text_stream *shape) {
 	if (Str::cmp(shape, I"square") == 0)
-		RenderEPSMap::EPS_compile_rectangular_path(OUT, bx-boxsize, by-boxsize, bx+boxsize, by+boxsize);
+		RenderEPSMap::EPS_compile_rectangular_path(OUT, 
+			bx-boxsize, by-boxsize, bx+boxsize, by+boxsize);
 	else if (Str::cmp(shape, I"rectangle") == 0)
-		RenderEPSMap::EPS_compile_rectangular_path(OUT, bx-2*boxsize, by-boxsize, bx+2*boxsize, by+boxsize);
+		RenderEPSMap::EPS_compile_rectangular_path(OUT,
+			bx-2*boxsize, by-boxsize, bx+2*boxsize, by+boxsize);
 	else if (Str::cmp(shape, I"circle") == 0)
 		RenderEPSMap::EPS_compile_circular_path(OUT, bx, by, boxsize);
 	else
-		RenderEPSMap::EPS_compile_rectangular_path(OUT, bx-boxsize, by-boxsize, bx+boxsize, by+boxsize);
+		RenderEPSMap::EPS_compile_rectangular_path(OUT,
+			bx-boxsize, by-boxsize, bx+boxsize, by+boxsize);
 }
 
 @h Straight lines.
@@ -451,7 +475,8 @@ void RenderEPSMap::EPS_compile_horizontal_line_path(OUTPUT_STREAM, int x0, int x
 @h Dashed arrows.
 
 =
-void RenderEPSMap::EPS_compile_dashed_arrow(OUTPUT_STREAM, int length, vector Dir, int x0, int y0) {
+void RenderEPSMap::EPS_compile_dashed_arrow(OUTPUT_STREAM, int length, vector Dir,
+	int x0, int y0) {
 	WRITE("[2 1] 0 setdash %% dashed line for arrow\n");
 	WRITE("%d %d moveto %% room centre\n", x0, y0);
 	WRITE("%d %d rlineto %% arrow out\n", Dir.x*length, Dir.y*length);
@@ -468,9 +493,9 @@ reference book on PostScript.
 void RenderEPSMap::EPS_compile_Bezier_curve(OUTPUT_STREAM, int stiffness0, int stiffness1,
 	int x0, int y0, int exit0, int x1, int y1, int exit1) {
 	int cx1, cy1, cx2, cy2;
-	vector E = PL::SpatialMap::direction_as_vector(exit0);
+	vector E = SpatialMap::direction_as_vector(exit0);
 	cx1 = x0+E.x*stiffness0/100; cy1 = y0+E.y*stiffness0/100;
-	E = PL::SpatialMap::direction_as_vector(exit1);
+	E = SpatialMap::direction_as_vector(exit1);
 	cx2 = x1+E.x*stiffness1/100; cy2 = y1+E.y*stiffness1/100;
 	WRITE("%d %d moveto %% start of Bezier curve\n", x0, y0);
 	WRITE("%d %d %d %d %d %d curveto %% control points 1, 2 and end\n",

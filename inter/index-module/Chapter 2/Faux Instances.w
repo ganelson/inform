@@ -350,7 +350,7 @@ void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int
 @ For instance, for the East Room to be mapped east of the Grand Lobby:
 
 @<Decode a hint mapping one room in a specific direction from another@> =
-	PL::SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
+	SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
 
 @ Most map parameters (e.g. setting room colours or font sizes) can be set
 immediately, i.e., on |pass| 1:
@@ -367,7 +367,7 @@ can only be known once the spatial grid has been found, i.e., on |pass| 2.
 	EPS_map_level *eml;
 	LOOP_OVER(eml, EPS_map_level)
 		if ((eml->contains_rooms)
-			&& (eml->map_level - PL::SpatialMap::benchmark_level() == scope_level))
+			&& (eml->map_level - SpatialMap::benchmark_level() == scope_level))
 			scope = &(eml->map_parameters);
 	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val);
 

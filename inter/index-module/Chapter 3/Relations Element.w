@@ -2,7 +2,7 @@
 
 To write the Relations element (Rl) in the index.
 
-@ A big table of relations.
+@ A four-column table of relations.
 
 =
 void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
@@ -12,10 +12,14 @@ void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	HTML_OPEN("p");
 	HTML::begin_plain_html_table(OUT);
-	HTML::first_html_column(OUT, 0); WRITE("<i>name</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>category</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>relates this...</i>");
-	HTML::next_html_column(OUT, 0); WRITE("<i>...to this</i>");
+	HTML::first_html_column(OUT, 0); 
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.NameColumn");
+	HTML::next_html_column(OUT, 0);
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.CategoryColumn");
+	HTML::next_html_column(OUT, 0);
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.FromColumn");
+	HTML::next_html_column(OUT, 0);
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.ToColumn");
 	HTML::end_html_row(OUT);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->relation_nodes) {

@@ -264,7 +264,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 			p, "The second-named thing must be a room (beware ambiguities!).");
 		return;
 	}
-	if (PL::SpatialMap::direction_is_lateral(MAP_DATA(exit)->direction_index) == FALSE) {
+	if (SpatialMap::direction_is_lateral(MAP_DATA(exit)->direction_index) == FALSE) {
 		StandardProblems::map_problem(_p_(PM_MapNonLateral),
 			p, "The direction given as a hint for map placement must be "
 			"a lateral direction (not up, down, above, below, inside "

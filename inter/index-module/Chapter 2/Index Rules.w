@@ -157,12 +157,12 @@ int IndexRules::extra_ID(void) {
 
 =
 void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
-	text_stream *titling_text, text_stream *doc_link, inter_package *rb_pack,
+	text_stream *titling_key, text_stream *doc_link, inter_package *rb_pack,
 	text_stream *disclaimer_instead, int indent, int place_in_expandable_box, localisation_dictionary *LD) {
 	if (rb_pack == NULL) return;
 
 	TEMPORARY_TEXT(textual_name)
-	if (Str::len(titling_text) > 0) WRITE_TO(textual_name, "%S", titling_text);
+	if (Str::len(titling_key) > 0) Localisation::write_0(textual_name, LD, titling_key);
 	else Localisation::write_0(textual_name, LD, I"Index.Elements.RS.Nameless");
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
@@ -331,7 +331,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	if (rc.scene_context) {
 		WRITE(" ");
 		Localisation::write_1(OUT, LD, I"Index.Elements.RS.During",
-			PlotElement::scene_name(rc.scene_context));
+			FauxScenes::scene_name(rc.scene_context));
 	}
 	WRITE("</i>&nbsp;&nbsp;");
 

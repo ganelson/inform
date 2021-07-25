@@ -24,6 +24,23 @@
 %Index.Elements.Tb.Title = Tables
 %Index.Elements.Tb.Heading = Tables of information in the source text.|About tables<TABLES>
 
+%Index.Elements.Tb.ShowExtensionTables = Show tables inside extensions too
+%Index.Elements.Tb.ShowOnlyExtensionTables = Show tables inside extensions (there are none in the main text)
+%Index.Elements.Tb.Definition = *1 definition
+%Index.Elements.Tb.Definitions = *1 definitions
+%Index.Elements.Tb.Column = *1 column
+%Index.Elements.Tb.Columns = *1 columns
+%Index.Elements.Tb.Row = *1 row
+%Index.Elements.Tb.Rows = *1 rows
+%Index.Elements.Tb.Blank = *1 blank
+%Index.Elements.Tb.BlankEach = one for each *1
+%Index.Elements.Tb.Col = col *1
+%Index.Elements.Tb.Sets = sets
+%Index.Elements.Tb.Names = names
+%Index.Elements.Tb.Property = *1 property
+%Index.Elements.Tb.Of = of *1
+%Index.Elements.Tb.Entry = *1 entry
+
 %Index.Elements.Fi.Title = Figures
 %Index.Elements.Fi.Heading = The figures, sound effects or external files used.|About figures<FIGURES>; About sounds<SOUNDS>; About files<EFILES>
 
@@ -130,6 +147,18 @@
 %Index.Elements.To.Title = Tokens
 %Index.Elements.To.Heading = Those square-bracketed pieces inside Understand grammar|About tokens<TOKENS>; New tokens<NEWTOKENS>
 
+%Index.Elements.To.Explanation1 = 
+	In addition to the tokens listed below, any description of an object
+	or value can be used: for example, "[number]" matches text like 127 or
+	SIX, and "[open door]" matches the name of any nearby door which is
+	currently open.
+%Index.Elements.To.Explanation2 = 
+	Names of objects are normally understood only when they are within sight,
+	but writing "any" lifts this restriction. So "[any person]" allows
+	every name of a person, wherever they happen to be.
+%Index.Elements.To.SameAs = same as "*1"
+%Index.Elements.To.Reversed = reversed
+
 %Index.Pages.Kinds.Title = Kinds Index
 %Index.Pages.Kinds.Caption = All the different sorts of value
 
@@ -202,6 +231,11 @@
 %Index.Elements.Vl.Title = Values
 %Index.Elements.Vl.Heading = Values which vary during play, and equations.|About variables<VARIABLES>
 
+%Index.Elements.Vl.UnderstoodVariables = <i>kind</i> understood - <i>value</i>
+%Index.Elements.Vl.EquationsHeading = List of Named or Numbered Equations
+%Index.Elements.Vl.AboutEquations = About equations<EQUATIONS>
+%Index.Elements.Vl.NoEquations = None
+
 %Index.Pages.Phrasebook.Title = Phrasebook Index
 %Index.Pages.Phrasebook.Caption = A short dictionary
 
@@ -227,8 +261,27 @@
 %Index.Elements.Rl.Title = Relations
 %Index.Elements.Rl.Heading = Relations give meaning to verbs|About relations<RELATIONS>
 
+%Index.Elements.Rl.NameColumn = name
+%Index.Elements.Rl.CategoryColumn = category
+%Index.Elements.Rl.FromColumn = relates this...
+%Index.Elements.Rl.ToColumn = ...to this
+
 %Index.Elements.Vb.Title = Verbs
 %Index.Elements.Vb.Heading = A table of verbs|About verbs<VERBS>
+
+%Index.Elements.Vb.About =
+	Verbs listed as "for saying only" are values of the kind "verb" and can be
+	used in adaptive text, but they have no meaning to Inform, so they can't
+	be used in sentences about what's in the story.
+%Index.Elements.Vb.ForSayingOnly = for saying only
+%Index.Elements.Vb.To = To <b>*1</b>
+%Index.Elements.Vb.ToBe = To be <b>*1</b>
+%Index.Elements.Vb.ToBeAbleTo = To be able to <b>*1</b>
+
+%Index.Elements.Vb.Present = present
+%Index.Elements.Vb.Past = past
+%Index.Elements.Vb.Perfect = present perfect
+%Index.Elements.Vb.PastPerfect = past perfect
 
 %Index.Pages.Rules.Title = Rules Index
 %Index.Pages.Rules.Caption = And the rulebooks they belong to
@@ -236,14 +289,86 @@
 %Index.Elements.St.Title = Standards
 %Index.Elements.St.Heading = From the Standard Rules|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
 
-%Index.Elements.St.Check =
+%Index.Elements.St.TopLevelHeading = The top level
+%Index.Elements.St.TopLevelRubric =
+	An Inform story file spends its whole time working through these three master
+	rulebooks. They can be altered, just as all rulebooks can, but it's generally
+	better to leave them alone.
+%Index.Elements.St.StartupRules = Startup rules
+%Index.Elements.St.TurnSequenceRules = Turn sequence rules
+%Index.Elements.St.ShutdownRules = Shutdown rules
+
+%Index.Elements.St.CheckRules =
 	Check rules are tied to specific actions, and there are too many to index here.
 	For instance, the check taking rules can only ever affect the taking action, so
 	they are indexed on the detailed index page for taking.
-%Index.Elements.St.CarryOut =
+%Index.Elements.St.CarryOutRules =
 	Carry out rules are tied to specific actions, and there are too many to index here.
-%Index.Elements.St.Report =
+%Index.Elements.St.ReportRules =
 	Report rules are tied to specific actions, and there are too many to index here.
+
+%Index.Elements.St.SequenceHeading = Rules added to the sequence of play
+%Index.Elements.St.SequenceRubric =
+	These rulebooks are the best places to put rules timed to happen
+	at the start, at the end, or once each turn. (Each is run through at
+	a carefully chosen moment in the relevant top-level rulebook.) It is
+	also possible to have rules take effect at specific times of day
+	or when certain events happen. Those are listed in the Scenes index,
+	alongside rules taking place when scenes begin or end.
+%Index.Elements.St.WhenPlayBegins = When play begins
+%Index.Elements.St.EveryTurn = Every turn
+%Index.Elements.St.WhenPlayEnds = When play ends
+
+%Index.Elements.St.UnderstoodHeading = How commands are understood
+%Index.Elements.St.UnderstoodRubric =
+	'Understanding' here means turning a typed command, like GET FISH,
+	into one or more actions, like taking the red herring. This is all handled
+	by a single large rule (the parse command rule), but that rule makes use
+	of the following activities and rulebooks in its work.
+%Index.Elements.St.DoesThePlayerMean = Does the player mean
+
+%Index.Elements.St.ActionsHeading = Rules governing actions
+%Index.Elements.St.ActionsRubric =
+	These rules are the ones which tell Inform how actions work,
+	and which affect how they happen in particular cases.
+%Index.Elements.St.Persuasion = Persuasion
+%Index.Elements.St.UnsuccessfulAttemptBy = Unsuccessful attempt by
+%Index.Elements.St.Before = Before
+%Index.Elements.St.Instead = Instead
+%Index.Elements.St.Check = Check
+%Index.Elements.St.CarryOut = Carry out
+%Index.Elements.St.After = After
+%Index.Elements.St.Report = Report
+
+%Index.Elements.St.ProcessingHeading = How actions are processed
+%Index.Elements.St.ProcessingRubric =
+	These form the technical machinery for dealing with actions, and are
+	called on at least once every turn. They seldom need to be changed.
+%Index.Elements.St.ActionProcessingRules = Action-processing rules
+%Index.Elements.St.SpecificActionProcessingRules = Specific action-processing rules
+%Index.Elements.St.PlayersActionAwarenessRules = Player's action awareness rules
+
+%Index.Elements.St.ResponsesHeading = How responses are printed
+%Index.Elements.St.ResponsesRubric =
+	The Standard Rules, and some extensions, reply to the player's
+	commands with messages which are able to be modified.
+
+%Index.Elements.St.AccessibilityHeading = How accessibility is judged
+%Index.Elements.St.AccessibilityRubric =
+	These rulebooks are used when deciding who can reach what, and
+	who can see what.
+%Index.Elements.St.ReachingInside = Reaching inside
+%Index.Elements.St.ReachingOutside = Reaching outside
+%Index.Elements.St.Visibility = Visibility
+
+%Index.Elements.St.LightHeading = Light and darkness
+%Index.Elements.St.LightRubric =
+	These activities control how we describe darkness.
+
+%Index.Elements.St.DescriptionHeading = How things are described
+%Index.Elements.St.DescriptionRubric =
+	These activities control what is printed when naming rooms or
+	things, and their descriptions.
 
 %Index.Elements.Xt.Title = Extras
 %Index.Elements.Xt.Heading = Further rulebooks, from the source or extensions|About rulebooks<RULEBOOKS>; About activities<ACTIVITIES>; Moving or abolishing rules<RLISTING>
@@ -257,6 +382,33 @@
 %Index.Elements.Pl.Title = Plot
 %Index.Elements.Pl.Heading = A map of how the scenes begin and end|About scenes<SCENESINTRO>; How they link together<LINKINGSCENES>
 
+%Index.Elements.Pl.LegendHeading = Legend
+%Index.Elements.Pl.WPBLegend = Begins when play begins
+%Index.Elements.Pl.WhenCLegend = can begin whenever some condition holds
+%Index.Elements.Pl.SegueLegend = follows when a previous scene ends
+%Index.Elements.Pl.SimulLegend = begins simultaneously
+%Index.Elements.Pl.WNeverLegend = never begins
+%Index.Elements.Pl.ENeverLegend = never ends
+%Index.Elements.Pl.RecurringLegend = recurring (can happen more than once)
+%Index.Elements.Pl.LegendNote =
+	Scene names are italicised when and if they appear for a second
+	or subsequent time because the scene can begin in more than one way.
+
+%Index.Elements.Pl.SceneName = The <i>*1</i> scene
+%Index.Elements.Pl.Recurring = recurring
+%Index.Elements.Pl.EntireGame = 
+	The Entire Game scene is built-in. It is going on whenever play is going
+	on. (It is recurring so that if the story ends, but then resumes, it too
+	will end but then begin again.)
+%Index.Elements.Pl.During = During this scene:
+%Index.Elements.Pl.Never = never
+
+%Index.Elements.Pl.BeginsWhen = Begins when:
+%Index.Elements.Pl.EndsWhen = Ends when:
+%Index.Elements.Pl.EndsUnusuallyWhen = Ends *1 when:
+%Index.Elements.Pl.OrWhen = or when:
+%Index.Elements.Pl.WhatHappens = What happens
+
 %Index.Elements.Ev.Title = Events
 %Index.Elements.Ev.Heading = Timed events, if any|About timed events<TIMEDEVENTS>
 
@@ -267,6 +419,13 @@
 
 %Index.Elements.RS.Title = Rules
 %Index.Elements.RS.Heading = General rules about scenes
+
+%Index.Elements.RS.Machinery = The scene-changing machinery
+%Index.Elements.RS.General = General rules applying to scene changes
+
+%Index.Elements.RS.SceneChanging = Scene changing
+%Index.Elements.RS.SceneBegins = When a scene begins
+%Index.Elements.RS.SceneEnds = When a scene ends
 
 %Index.Elements.RS.Empty = There are no rules in this rulebook.
 %Index.Elements.RS.Nameless = nameless
@@ -287,8 +446,50 @@
 %Index.Pages.World.Title = World Index
 %Index.Pages.World.Caption = Like locations, props and actors in a movie
 
-%Index.Elements.Mp,Title = Map
+%Index.Elements.Mp.Title = Map
 %Index.Elements.Mp.Heading = A map of the world
+
+%Index.Elements.Mp.Region = The <i>*1</i> region
+%Index.Elements.Mp.RegionInRegion = The <i>*1</i> region within the <i>*2</i> region
+%Index.Elements.Mp.NowhereHeading = Nowhere (that is, initially not in any room):
+%Index.Elements.Mp.EverywhereHeading = Present everywhere:
+%Index.Elements.Mp.KindOf = a kind of *1
+%Index.Elements.Mp.MentionedIn = mentioned in rules
+%Index.Elements.Mp.RoomWherePlayBegins = room where play begins
+%Index.Elements.Mp.DoorTo = door to *1
+%Index.Elements.Mp.OneSidedDoorTo = one-sided door to *1
+
+%Index.Elements.Mp.BriefOn = on
+%Index.Elements.Mp.BriefCarried = carried
+%Index.Elements.Mp.BriefPart = part
+%Index.Elements.Mp.BriefWorn = worn
+
+%Index.Elements.Mp.In = in *1
+%Index.Elements.Mp.On = on *1
+%Index.Elements.Mp.Carried = carried by *1
+%Index.Elements.Mp.Part = part of *1
+%Index.Elements.Mp.Worn = worn by *1
+
+%Index.Elements.Mp.MappingAs = mapping *1 as *2
+
+%Index.Elements.Mp.ExitTooltip = *1 to *2
+%Index.Elements.Mp.ExitThroughTooltip = *1 through *2 to *3
+%Index.Elements.Mp.ExitBlockedTooltip = *1 exit blocked by *2
+
+%Index.Elements.Mp.DefaultLevel = Map
+%Index.Elements.Mp.LowerLevel = Lower
+%Index.Elements.Mp.UpperLevel = Upper
+%Index.Elements.Mp.StartingLevel = Starting level
+%Index.Elements.Mp.FirstLevelUp = First level up
+%Index.Elements.Mp.FirstLevelDown = First level down
+%Index.Elements.Mp.SecondLevelUp = Second level up
+%Index.Elements.Mp.SecondLevelDown = Second level down
+%Index.Elements.Mp.ThirdLevelUp = Third level up
+%Index.Elements.Mp.ThirdLevelDown = Third level down
+%Index.Elements.Mp.LevelUp = Level *1 up
+%Index.Elements.Mp.LevelDown = Level *1 down
 
 %Index.Elements.Gz.Title = Gazetteer
 %Index.Elements.Index.Elements.Tb.Heading = An A-Z of places, things, people and so on
+
+%Index.EPSMap.DefaultTitle = Map

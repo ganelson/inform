@@ -1,6 +1,7 @@
 [Geometry::] Spatial Geometry.
 
-To deal with vectors and cuboids in a three-dimensional integer lattice.
+Simple mathematical functions for dealing with vectors and cuboids in a
+three-dimensional integer lattice.
 
 @ We will store 3-vectors in the obvious way:
 
@@ -9,9 +10,7 @@ typedef struct vector {
 	int x, y, z;
 } vector;
 
-@ Some useful constant vectors, including those pointing in each direction.
-Note that these are not of unit length -- rather, they are the ideal grid
-offsets on the map we will eventually draw.
+@ Some useful constant vectors:
 
 =
 vector Zero_vector = {0, 0, 0};
@@ -21,7 +20,9 @@ vector Geometry::zero(void) {
 	return Zero_vector;
 }
 
-@
+@ Now for vectors pointing in each direction. Note that not all of these are of
+unit length -- rather, they are the ideal grid offsets on the map we will
+eventually draw.
 
 =
 vector N_vector = {0, 1, 0};

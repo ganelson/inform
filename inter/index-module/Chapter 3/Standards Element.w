@@ -24,47 +24,35 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 }
 
 @<Index the segment for the top-level rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>The top level</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("An Inform story file spends its whole time working through "
-		"these three master rulebooks. They can be altered, just as all "
-		"rulebooks can, but it's generally better to leave them alone.");
-	HTML_CLOSE("p");
-
-	IndexRules::rulebook_box(OUT, inv, I"Startup rules", NULL,
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.TopLevelHeading", I"Index.Elements.St.TopLevelRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.StartupRules", NULL,
 		IndexRules::find_rulebook(inv, I"startup"), NULL, 1, TRUE, LD);
 	StandardsElement::activity(OUT, inv, I"starting_virtual_machine", 2, LD);
 	StandardsElement::activity(OUT, inv, I"printing_banner_text", 2, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Turn sequence rules", NULL,
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.TurnSequenceRules", NULL,
 		IndexRules::find_rulebook(inv, I"turn_sequence"), NULL, 1, TRUE, LD);
 	StandardsElement::activity(OUT, inv, I"constructing_status_line", 2, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Shutdown rules", NULL,
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ShutdownRules", NULL,
 		IndexRules::find_rulebook(inv, I"shutdown"), NULL, 1, TRUE, LD);
 	StandardsElement::activity(OUT, inv, I"amusing_a_victorious_player", 2, LD);
 	StandardsElement::activity(OUT, inv, I"printing_players_obituary", 2, LD);
 	StandardsElement::activity(OUT, inv, I"dealing_with_final_question", 2, LD);
 
 @<Index the segment for the sequence of play rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Rules added to the sequence of play</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These rulebooks are the best places to put rules timed to happen "
-		"at the start, at the end, or once each turn. (Each is run through at "
-		"a carefully chosen moment in the relevant top-level rulebook.) It is "
-		"also possible to have rules take effect at specific times of day "
-		"or when certain events happen. Those are listed in the Scenes index, "
-		"alongside rules taking place when scenes begin or end."); HTML_CLOSE("p");
-	IndexRules::rulebook_box(OUT, inv, I"When play begins", I"rules_wpb",
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.SequenceHeading", I"Index.Elements.St.SequenceRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.WhenPlayBegins", I"rules_wpb",
 		IndexRules::find_rulebook(inv, I"when_play_begins"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Every turn", I"rules_et",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.EveryTurn", I"rules_et",
 		IndexRules::find_rulebook(inv, I"every_turn"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"When play ends", I"rules_wpe",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.WhenPlayEnds", I"rules_wpe",
 		IndexRules::find_rulebook(inv, I"when_play_ends"), NULL, 1, TRUE, LD);
 
 @<Index the segment for the Understanding rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How commands are understood</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("'Understanding' here means turning a typed command, like GET FISH, "
-		"into one or more actions, like taking the red herring. This is all handled "
-		"by a single large rule (the parse command rule), but that rule makes use "
-		"of the following activities and rulebooks in its work."); HTML_CLOSE("p");
-	IndexRules::rulebook_box(OUT, inv, I"Does the player mean", I"rules_dtpm",
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.UnderstoodHeading", I"Index.Elements.St.UnderstoodRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.DoesThePlayerMean", I"rules_dtpm",
 		IndexRules::find_rulebook(inv, I"does_the_player_mean"), NULL, 1, TRUE, LD);
 	StandardsElement::activity(OUT, inv, I"reading_a_command", 1, LD);
 	StandardsElement::activity(OUT, inv, I"deciding_scope", 1, LD);
@@ -78,59 +66,53 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	StandardsElement::activity(OUT, inv, I"implicitly_taking", 1, LD);
 
 @<Index the segment for the main action rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Rules governing actions</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p");
-	WRITE("These rules are the ones which tell Inform how actions work, "
-		"and which affect how they happen in particular cases.");
-	HTML_CLOSE("p");
-	IndexRules::rulebook_box(OUT, inv, I"Persuasion", I"rules_per",
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.ActionsHeading", I"Index.Elements.St.ActionsRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Persuasion", I"rules_per",
 		IndexRules::find_rulebook(inv, I"persuasion"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Unsuccessful attempt by", I"rules_fail",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.UnsuccessfulAttemptBy", I"rules_fail",
 		IndexRules::find_rulebook(inv, I"unsuccessful_attempt_by"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Before", I"rules_before",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Before", I"rules_before",
 		IndexRules::find_rulebook(inv, I"before"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Instead", I"rules_instead",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Instead", I"rules_instead",
 		IndexRules::find_rulebook(inv, I"instead"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Check", NULL, NULL,
-		Localisation::read(LD, I"Index.Elements.St.Check"), 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Carry out", NULL, NULL,
-		Localisation::read(LD, I"Index.Elements.St.CarryOut"), 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"After", I"rules_after",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Check", NULL, NULL,
+		Localisation::read(LD, I"Index.Elements.St.CheckRules"), 1, TRUE, LD);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.CarryOut", NULL, NULL,
+		Localisation::read(LD, I"Index.Elements.St.CarryOutRules"), 1, TRUE, LD);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.After", I"rules_after",
 		IndexRules::find_rulebook(inv, I"after"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Report", NULL, NULL,
-		Localisation::read(LD, I"Index.Elements.St.Report"), 1, TRUE, LD);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Report", NULL, NULL,
+		Localisation::read(LD, I"Index.Elements.St.ReportRules"), 1, TRUE, LD);
 
 @<Index the segment for the action processing rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How actions are processed</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These form the technical machinery for dealing with actions, and are "
-		"called on at least once every turn. They seldom need to be changed."); HTML_CLOSE("p");
-	IndexRules::rulebook_box(OUT, inv, I"Action-processing rules", NULL,
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.ProcessingHeading", I"Index.Elements.St.ProcessingRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ActionProcessingRules", NULL,
 		IndexRules::find_rulebook(inv, I"action_processing"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Specific action-processing rules", NULL,
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.SpecificActionProcessingRules", NULL,
 		IndexRules::find_rulebook(inv, I"specific_action_processing"), NULL, 2, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Player's action awareness rules", NULL,
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.PlayersActionAwarenessRules", NULL,
 		IndexRules::find_rulebook(inv, I"players_action_awareness"), NULL, 3, TRUE, LD);
 
 @<Index the segment for the responses@> =
-	HTML_OPEN("p"); WRITE("<b>How responses are printed</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("The Standard Rules, and some extensions, reply to the player's "
-		"commands with messages which are able to be modified."); HTML_CLOSE("p");
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.ResponsesHeading", I"Index.Elements.St.ResponsesRubric");
 	StandardsElement::activity(OUT, inv, I"printing_response", 1, LD);
 
 @<Index the segment for the accessibility rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How accessibility is judged</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These rulebooks are used when deciding who can reach what, and "
-		"who can see what."); HTML_CLOSE("p");
-	IndexRules::rulebook_box(OUT, inv, I"Reaching inside", I"rules_ri",
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.AccessibilityHeading", I"Index.Elements.St.AccessibilityRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ReachingInside", I"rules_ri",
 		IndexRules::find_rulebook(inv, I"reaching_inside"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Reaching outside", I"rules_ri",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ReachingOutside", I"rules_ri",
 		IndexRules::find_rulebook(inv, I"reaching_outside"), NULL, 1, TRUE, LD);
-	IndexRules::rulebook_box(OUT, inv, I"Visibility", I"visibility",
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.Visibility", I"visibility",
 		IndexRules::find_rulebook(inv, I"visibility"), NULL, 1, TRUE, LD);
 
 @<Index the segment for the light and darkness rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Light and darkness</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These activities control how we describe darkness."); HTML_CLOSE("p");
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.LightHeading", I"Index.Elements.St.LightRubric");
 	StandardsElement::activity(OUT, inv, I"printing_name_of_dark_room", 1, LD);
 	StandardsElement::activity(OUT, inv, I"printing_desc_of_dark_room", 1, LD);
 	StandardsElement::activity(OUT, inv, I"printing_news_of_darkness", 1, LD);
@@ -138,9 +120,8 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	StandardsElement::activity(OUT, inv, I"refusal_to_act_in_dark", 1, LD);
 
 @<Index the segment for the description rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How things are described</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These activities control what is printed when naming rooms or "
-		"things, and their descriptions."); HTML_CLOSE("p");
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.DescriptionHeading", I"Index.Elements.St.DescriptionRubric");
 	StandardsElement::activity(OUT, inv, I"printing_the_name", 1, LD);
 	StandardsElement::activity(OUT, inv, I"printing_the_plural_name", 1, LD);
 	StandardsElement::activity(OUT, inv, I"printing_a_number_of", 1, LD);
@@ -155,6 +136,12 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	StandardsElement::activity(OUT, inv, I"printing_locale_paragraph", 1, LD);
 
 @ =
+void StandardsElement::subhead(OUTPUT_STREAM, localisation_dictionary *LD,
+	text_stream *heading_key, text_stream *rubric_key) {
+	HTML_OPEN("p"); Localisation::bold_0(OUT, LD, heading_key); HTML_CLOSE("p");
+	HTML_OPEN("p"); Localisation::write_0(OUT, LD, rubric_key); HTML_CLOSE("p");
+}
+
 void StandardsElement::activity(OUTPUT_STREAM, tree_inventory *inv, text_stream *id,
 	int indent, localisation_dictionary *LD) {
 	inter_package *av = IndexRules::find_activity(inv, id);

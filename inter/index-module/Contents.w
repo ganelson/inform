@@ -16,6 +16,7 @@ Chapter 2: Utilities
 	Index Rules
 	Lexicon
 	Faux Instances
+	Faux Scenes
 
 Chapter 3: Elements
 	The Periodic Table

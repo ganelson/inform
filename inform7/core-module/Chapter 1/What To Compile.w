@@ -443,17 +443,21 @@ void Task::disable_or_enable_census(int which) {
 =
 void Task::produce_index(void) {
 	inform_project *project = Task::project();
-	if (do_not_generate_index == FALSE) {
+	if ((do_not_generate_index == FALSE) || (write_EPS_format_map)) {
 		inform_language *L = Projects::get_language_of_index(project);
 		localisation_dictionary *D = Localisation::new();
 		Localisation::stock_from_file( 
 			Filenames::in(Languages::path_to_bundle(L), I"Index.txt"), D);
-		InterpretIndex::generate(
-			Emit::tree(),
-			Projects::index_structure(project),
-			D);
-		if (do_not_update_census == FALSE)
-			ExtensionWebsite::index_after_compilation(Task::project());
+		if (do_not_generate_index == FALSE) {
+			InterpretIndex::generate(
+				Emit::tree(),
+				Projects::index_structure(project),
+				D);
+			if (do_not_update_census == FALSE)
+				ExtensionWebsite::index_after_compilation(Task::project());
+		}
+		if (write_EPS_format_map) {
+			RenderEPSMap::render_map_as_EPS(Task::epsmap_file(), D);
+		}
 	}
-	if (write_EPS_format_map) RenderEPSMap::render_map_as_EPS(Task::epsmap_file());
 }

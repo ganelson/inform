@@ -2,7 +2,8 @@
 
 To write the Values element (Vl) in the index.
 
-@ And here is the indexing code:
+@ Variables and equations both appear here, though really they're conceptually
+quite different.
 
 =
 void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
@@ -32,7 +33,7 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Index a K understood variable@> =
 	if (understood_note_given == FALSE) {
 		understood_note_given = TRUE;
-		WRITE("<i>kind</i> understood - <i>value</i>");
+		Localisation::write_0(OUT, LD, I"Index.Elements.Vl.UnderstoodVariables");
 		HTML_TAG("br");
 	}
 
@@ -57,24 +58,24 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_TAG("br");
 
 @<Index the equations@> =
-	if (TreeLists::len(inv->equation_nodes) > 0) {
-		HTML_OPEN("p");
-		WRITE("<b>List of Named or Numbered Equations</b> (<i>About equations</i>");
-		IndexUtilities::DocReferences::link(OUT, I"EQUATIONS"); WRITE(")");
-		HTML_CLOSE("p");
-		HTML_OPEN("p");
-		int N = 0;
-		inter_package *pack;
-		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->equation_nodes) {
-			int at = (int) Metadata::read_optional_numeric(pack, I"^at");
-			if (at > 0) {
-				WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));
-				IndexUtilities::link(OUT, at);
-				WRITE(" (%S)", Metadata::read_optional_textual(pack, I"^text"));
-				HTML_TAG("br");
-				N++;
-			}
+	HTML_OPEN("p");
+	Localisation::bold_0(OUT, LD, I"Index.Elements.Vl.EquationsHeading");
+	WRITE(" (");
+	Localisation::italic_0(OUT, LD, I"Index.Elements.Vl.AboutEquations");
+	WRITE(")");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	int N = 0;
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->equation_nodes) {
+		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
+		if (at > 0) {
+			WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));
+			IndexUtilities::link(OUT, at);
+			WRITE(" (%S)", Metadata::read_optional_textual(pack, I"^text"));
+			HTML_TAG("br");
+			N++;
 		}
-		if (N == 0) WRITE("<i>None</i>.\n");
-		HTML_CLOSE("p");
 	}
+	if (N == 0) Localisation::italic_0(OUT, LD, I"Index.Elements.Vl.NoEquations");
+	HTML_CLOSE("p");

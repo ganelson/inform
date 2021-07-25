@@ -2,11 +2,9 @@
 
 To write the Tables element (Tb) in the index.
 
-@h Indexing.
-Tables inside extensions are often used just for the storage needed to manage
-back-of-house algorithms, so to speak, and they aren't intended for the end
-user to poke around with; that's certainly true of the tables in the Standard
-Rules, which of course are always present. So these are hidden by default.
+@ This is arranged as a sequence of "blocks" of tables, where each block
+corresponds to one of the compilation modules: thus, all the tables in the
+main source text, all the tables in the Standard Rules, and so on.
 
 =
 void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
@@ -36,13 +34,18 @@ void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	@<Close block of tables@>;
 }
 
+@ Tables inside extensions are often used just for the storage needed to manage
+back-of-house algorithms, so to speak, and they aren't intended for the end
+user to poke around with; that's certainly true of the tables in the Standard
+Rules, which of course are always present. So these are hidden by default.
+
 @<Open block of tables@> = 
 	if (cat > 1) {
 		if (first_ext) { 
 			HTML_OPEN("p");
 			IndexUtilities::extra_link(OUT, 2);
-			if (mc > 1) WRITE("Show tables inside extensions too");
-			else WRITE("Show tables inside extensions (there are none in the main text)");
+			if (mc > 1) Localisation::write_0(OUT, LD, I"Index.Elements.Tb.ShowExtensionTables");
+			else Localisation::write_0(OUT, LD, I"Index.Elements.Tb.ShowOnlyExtensionTables");
 			HTML_CLOSE("p");
 			first_ext = FALSE;
 		}
@@ -60,98 +63,105 @@ void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 
-@ The following probably ought to use a multiplication sign rather than a
-Helvetica-style lower case "x", but life is full of compromises.
-
 @<Index this table@> =
+	int defines = (int) Metadata::read_optional_numeric(table_pack, I"^defines");
+	@<Produce a row about the name and extent of the table@>;
+	int col = 0;
+	inter_package *usage_pack;
+	LOOP_THROUGH_SUBPACKAGES(usage_pack, table_pack, I"_table_column_usage") {
+		@<Produce a row for this table usage@>;
+		col++;
+	}
+
+@<Produce a row about the name and extent of the table@> =
 	HTML::first_html_column_spaced(OUT, 0);
+	@<Table name column@>;
+	HTML::next_html_column_spaced(OUT, 0);
+	@<Table extent column@>;
+	HTML::end_html_row(OUT);
+
+@<Table name column@> =
 	WRITE("<b>%S</b>", Metadata::read_textual(table_pack, I"^printed_name"));
 	int ntc = 0;
-	inter_tree_node *D = Inter::Packages::definition(table_pack);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_table_contribution")) {
-				if (ntc++ > 0) WRITE(" +");
-				IndexUtilities::link_package(OUT, entry);
-			}
-		}
+	inter_package *cont_pack;
+	LOOP_THROUGH_SUBPACKAGES(cont_pack, table_pack, I"_table_contribution") {
+		if (ntc++ > 0) WRITE(" +");
+		IndexUtilities::link_package(OUT, cont_pack);
 	}
-	HTML::next_html_column_spaced(OUT, 0);
 
-	int nc = 0;
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_table_column_usage"))
-				nc++;
-		}
-	}
+@<Table extent column@> =
+	int nc = InterTree::no_subpackages(table_pack, I"_table_column_usage");
 	int nr = (int) Metadata::read_numeric(table_pack, I"^rows");
 	int nb = (int) Metadata::read_numeric(table_pack, I"^blank_rows");
-	int defines = (int) Metadata::read_optional_numeric(table_pack, I"^defines");
 	text_stream *for_each = Metadata::read_optional_textual(table_pack, I"^blank_rows_for_each");
 
 	WRITE("<i>");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
 	if (defines) {
-		WRITE("%d definition%s", nr, (nr == 1)?"":"s");
+		if (nr == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Definition", nr);
+		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Definitions", nr);
 	} else {
-		WRITE("%d column%s x %d row%s", nc, (nc == 1)?"":"s", nr, (nr == 1)?"":"s");
+		if (nc == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Column", nc);
+		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Columns", nc);
+		WRITE(" x ");
+		if (nr == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Row", nr);
+		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Rows", nr);
 	}
 	if (nb > 0) {
-		WRITE(" (%d blank", nb);
-		if (Str::len(for_each) > 0) WRITE(", one for each %S", for_each);
+		WRITE(" (");
+		Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Blank", nb);
+		if (Str::len(for_each) > 0) {
+			WRITE(", ");
+			Localisation::write_1(OUT, LD, I"Index.Elements.Tb.BlankEach", for_each);
+		}
 		WRITE(")");
 	}
 	HTML_CLOSE("span");
 	WRITE("</i>");
 
+@<Produce a row for this table usage@> =
+	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
+	inter_symbol *id_s = NULL;
+	if (ID->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)
+		id_s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(usage_pack),
+			ID->W.data[DATA_CONST_IFLD+1]);
+	if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
+	inter_package *col_pack = Inter::Packages::container(id_s->definition);
+	HTML::first_html_column(OUT, 0);
+	WRITE("&nbsp;&nbsp;");
+	Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Col", col+1);
+	WRITE(":&nbsp;&nbsp;");
+	@<Give usage details@>;
+	HTML::next_html_column(OUT, 0);
+	@<Give purpose details@>;
 	HTML::end_html_row(OUT);
 
-	int col = 0;
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *entry = Inter::Package::defined_by_frame(C);
-			if (Inter::Packages::type(entry) == PackageTypes::get(I, I"_table_column_usage")) {
-				inter_tree_node *ID = Synoptic::get_definition(entry, I"column_identity");
-				inter_symbol *id_s = NULL;
-				if (ID->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)
-					id_s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(entry), ID->W.data[DATA_CONST_IFLD+1]);
-				if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
-				inter_package *col_pack = Inter::Packages::container(id_s->definition);
-				HTML::first_html_column(OUT, 0);
-				WRITE("&nbsp;&nbsp;col %d:&nbsp;&nbsp;", col+1);
-				@<Give column details@>;
-				HTML::next_html_column(OUT, 0);
-				@<Give column 2 details@>;
-				HTML::end_html_row(OUT);
-				col++;
-			}
-		}
-	}
-
-@<Give column details@> =
+@<Give usage details@> =
 	text_stream *CW = Metadata::read_optional_textual(col_pack, I"^name");
 	if ((defines) && (col == 0)) {
 		WRITE("%S", Metadata::read_optional_textual(table_pack, I"^defines_text"));
 		int at = (int) Metadata::read_optional_numeric(table_pack, I"^defines_at");
 		IndexUtilities::link(OUT, at);
 	} else {
-		if (defines) WRITE("<i>sets</i> ");
+		if (defines) {
+			Localisation::italic_0(OUT, LD, I"Index.Elements.Tb.Sets");
+			WRITE(" ");
+		}
 		WRITE("%S&nbsp;", CW);
 		TEMPORARY_TEXT(TEMP)
-		WRITE_TO(TEMP, "%S", CW);
-		if (defines == FALSE) WRITE_TO(TEMP, " entry");
+		if (defines) WRITE_TO(TEMP, "%S", CW);
+		else Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Entry", CW);
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 	}
 
-@<Give column 2 details@> =
+@<Give purpose details@> =
 	if ((defines) && (col == 0)) {
-		WRITE("<i>names</i>");
+		Localisation::italic_0(OUT, LD, I"Index.Elements.Tb.Names");
 	} else if (defines) {
-		WRITE("%S property", Metadata::read_optional_textual(col_pack, I"^contents"));
+		Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Property",
+			Metadata::read_optional_textual(col_pack, I"^contents"));
 	} else {
-		WRITE("of %S", Metadata::read_optional_textual(col_pack, I"^contents"));
+		Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Of",
+			Metadata::read_optional_textual(col_pack, I"^contents"));
 	}

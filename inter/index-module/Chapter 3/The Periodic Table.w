@@ -167,7 +167,8 @@ content at last; and then a rule.
 		}
 	HTML_TAG("hr");
 
-@
+@ This digression is used for internal test cases in Inform, to output a plain
+text file from the content of a single element.
 
 =
 void Elements::test_card(OUTPUT_STREAM, wording W, localisation_dictionary *LD) {
@@ -177,6 +178,9 @@ void Elements::test_card(OUTPUT_STREAM, wording W, localisation_dictionary *LD) 
 	DISCARD_TEXT(elt)
 }
 
+@ In general, then, these are the elements:
+
+=
 void Elements::render(OUTPUT_STREAM, text_stream *elt, localisation_dictionary *LD) {
 	if (Str::eq_wide_string(elt, L"A1")) { GroupedElement::render(OUT, LD); return; }
 	if (Str::eq_wide_string(elt, L"A2")) { AlphabeticElement::render(OUT, LD); return; }
