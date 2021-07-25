@@ -8,7 +8,7 @@ be more usefully informative.
 =
 void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Vb.About");	
+	Localisation::italic(OUT, LD, I"Index.Elements.Vb.About");	
 	HTML_CLOSE("p");
 
 	int verb_count = 0;
@@ -25,11 +25,11 @@ void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			else if (lex->part_of_speech == MVERB_TLEXE) key = I"Index.Elements.Vb.To";
 			else if (lex->part_of_speech == PREP_TLEXE) key = I"Index.Elements.Vb.ToBe";
 			else key = I"Index.Elements.Vb.ToBeAbleTo";
-			Localisation::write_1(OUT, LD, key, entry_text);
+			Localisation::roman_t(OUT, LD, key, entry_text);
 			IndexUtilities::link_package(OUT, lex->lex_package);
 			WRITE(" ... ");
 			if (lex->part_of_speech == MVERB_TLEXE)
-				Localisation::italic_0(OUT, LD, I"Index.Elements.Vb.ForSayingOnly");
+				Localisation::italic(OUT, LD, I"Index.Elements.Vb.ForSayingOnly");
 			else WRITE("%S", Metadata::read_optional_textual(lex->lex_package, I"^meaning"));
 			HTML_CLOSE("p");
 			VerbsElement::tabulate(OUT, lex, I"^present", I"Index.Elements.Vb.Present", LD);
@@ -45,7 +45,7 @@ void VerbsElement::tabulate(OUTPUT_STREAM, index_lexicon_entry *lex, text_stream
 	if (Str::len(key) > 0) {
 		HTML::open_indented_p(OUT, 2, "tight");
 		WRITE("<i>");
-		Localisation::italic_0(OUT, LD, tense);
+		Localisation::italic(OUT, LD, tense);
 		WRITE("</i>&nbsp;%S", val);
 		HTML_CLOSE("p");
 	}

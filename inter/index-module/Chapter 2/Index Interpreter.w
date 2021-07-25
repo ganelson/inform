@@ -20,8 +20,7 @@ element Vl
 declares a new index page with leafname |Kinds.html|, and with the highlight
 colour (in CSS hexadecimal style) |e9cf08|; and then declzres that it contains
 the three elements |Ch|, |Ar| and |Vl|, in that order. Note that this file does
-not contain any user-facing text: all of that comes from //Localisation//, with
-|%%Kinds|, |%%Ch|, |%%Ar| and |%%Vl| being localisation contexts.
+not contain any user-facing text: all of that comes from //html: Localisation//.
 
 The file also doesn't contain instructions for what goes into those elements.
 All of that is hardwired into this module's code: for example, |Ar| is generated

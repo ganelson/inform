@@ -5,10 +5,10 @@ To write the Tokens element (To) in the index.
 @ =
 void TokensElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.To.Explanation1");
+	Localisation::roman(OUT, LD, I"Index.Elements.To.Explanation1");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.To.Explanation2");
+	Localisation::roman(OUT, LD, I"Index.Elements.To.Explanation2");
 	HTML_CLOSE("p");
 	inter_tree *I = InterpretIndex::get_tree();
 
@@ -47,10 +47,10 @@ void TokensElement::token(OUTPUT_STREAM, inter_tree *I, char *special,
 	else if (cg_pack) WRITE("%S", Metadata::read_optional_textual(cg_pack, I"^name"));
 	WRITE("]\"");
 	if (cg_pack) IndexUtilities::link_package(OUT, cg_pack);
-	if (Str::len(help) > 0) IndexUtilities::DocReferences::link(OUT, help);
+	if (Str::len(help) > 0) DocReferences::link(OUT, help);
 	if (explanation) {
 		WRITE(" - ");
-		Localisation::write_1(OUT, LD, I"Index.Elements.To.SameAs", explanation);
+		Localisation::roman_t(OUT, LD, I"Index.Elements.To.SameAs", explanation);
 	}
 	HTML_CLOSE("p");
 	if (cg_pack) {
@@ -68,7 +68,7 @@ void TokensElement::token(OUTPUT_STREAM, inter_tree *I, char *special,
 			IndexUtilities::link_package(OUT, line_pack);
 			if (Metadata::read_optional_numeric(line_pack, I"^reversed")) {
 				WRITE(" ");
-				Localisation::write_0(OUT, LD, I"Index.Elements.To.Reversed");
+				Localisation::roman(OUT, LD, I"Index.Elements.To.Reversed");
 			}
 			HTML_CLOSE("p");
 		}

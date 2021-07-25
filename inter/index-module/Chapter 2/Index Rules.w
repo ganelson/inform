@@ -162,8 +162,8 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	if (rb_pack == NULL) return;
 
 	TEMPORARY_TEXT(textual_name)
-	if (Str::len(titling_key) > 0) Localisation::write_0(textual_name, LD, titling_key);
-	else Localisation::write_0(textual_name, LD, I"Index.Elements.RS.Nameless");
+	if (Str::len(titling_key) > 0) Localisation::roman(textual_name, LD, titling_key);
+	else Localisation::roman(textual_name, LD, I"Index.Elements.RS.Nameless");
 	string_position start = Str::start(textual_name);
 	Str::put(start, Characters::tolower(Str::get(start)));
 
@@ -209,7 +209,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 
 	if (n == 0) {
 		HTML::open_indented_p(OUT, 2, "tight");
-		Localisation::write_0(OUT, LD, I"Index.Elements.RS.Empty");
+		Localisation::roman(OUT, LD, I"Index.Elements.RS.Empty");
 		HTML_CLOSE("p");
 	} else if (disclaimer_instead) {
 		HTML::open_indented_p(OUT, 2, "tight"); WRITE("%S", disclaimer_instead); HTML_CLOSE("p");
@@ -218,7 +218,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	}
 
 @<Add links and such to the titling@> =
-	if (Str::len(doc_link) > 0) IndexUtilities::DocReferences::link(OUT, doc_link);
+	if (Str::len(doc_link) > 0) DocReferences::link(OUT, doc_link);
 	WRITE(" ... %S", Metadata::read_optional_textual(rb_pack, I"^focus"));
 	IndexUtilities::link_package(OUT, rb_pack);
 
@@ -330,7 +330,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("<i>%S", italicised_text);
 	if (rc.scene_context) {
 		WRITE(" ");
-		Localisation::write_1(OUT, LD, I"Index.Elements.RS.During",
+		Localisation::roman_t(OUT, LD, I"Index.Elements.RS.During",
 			FauxScenes::scene_name(rc.scene_context));
 	}
 	WRITE("</i>&nbsp;&nbsp;");
@@ -351,7 +351,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	WRITE("&nbsp;<i>name</i> ");
 
 	Str::clear(S);
-	Localisation::write_2(S, LD, I"Index.Elements.RS.Response", name,
+	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Response", name,
 		Metadata::read_optional_textual(owner, I"^printed_name"));
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
@@ -435,7 +435,7 @@ void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 	Str::clear(S);
 	TEMPORARY_TEXT(letter)
 	WRITE_TO(letter, "%c", 'A' + marker);
-	Localisation::write_2(S, LD, I"Index.Elements.RS.Response",
+	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Response",
 		Metadata::read_textual(rule_pack, I"^name"), letter);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>set</i>");
@@ -450,7 +450,7 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 	LOOP_THROUGH_SUBPACKAGES(ro_pack, rb_pack, I"_rulebook_outcome") {	
 		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"Index.Elements.RS.Outcome");
+		Localisation::roman(OUT, LD, I"Index.Elements.RS.Outcome");
 		WRITE("</i>&nbsp;&nbsp;");
 		int is_def = (int) Metadata::read_optional_numeric(ro_pack, I"^is_default");
 		if (is_def) WRITE("<b>");
@@ -458,11 +458,11 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 		if (is_def) WRITE("</b> (default)");
 		WRITE(" - <i>");
 		if (Metadata::read_optional_numeric(ro_pack, I"^succeeds"))
-			Localisation::write_0(OUT, LD, I"Index.Elements.RS.Success");
+			Localisation::roman(OUT, LD, I"Index.Elements.RS.Success");
 		else if (Metadata::read_optional_numeric(ro_pack, I"^fails"))
-			Localisation::write_0(OUT, LD, I"Index.Elements.RS.Failure");
+			Localisation::roman(OUT, LD, I"Index.Elements.RS.Failure");
 		else
-			Localisation::write_0(OUT, LD, I"Index.Elements.RS.NoOutcome");
+			Localisation::roman(OUT, LD, I"Index.Elements.RS.NoOutcome");
 		WRITE("</i>");
 		HTML_CLOSE("p");
 	}
@@ -470,14 +470,14 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 	if (Metadata::read_optional_numeric(rb_pack, I"^default_succeeds")) {
 		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"Index.Elements.RS.DefaultSuccess");
+		Localisation::roman(OUT, LD, I"Index.Elements.RS.DefaultSuccess");
 		WRITE("</i>");
 		HTML_CLOSE("p");
 	}
 	if (Metadata::read_optional_numeric(rb_pack, I"^default_fails")) {
 		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>");
-		Localisation::write_0(OUT, LD, I"Index.Elements.RS.DefaultFailure");
+		Localisation::roman(OUT, LD, I"Index.Elements.RS.DefaultFailure");
 		WRITE("</i>");
 		HTML_CLOSE("p");
 	}
@@ -549,15 +549,15 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	HTML::open_indented_p(OUT, 1, "tight");
 
 	TEMPORARY_TEXT(skeleton)
-	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.BeforeActivity", textual_name);
+	Localisation::roman_t(skeleton, LD, I"Index.Elements.RS.BeforeActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>b</i> ");
 	Str::clear(skeleton);
-	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.ForActivity", textual_name);
+	Localisation::roman_t(skeleton, LD, I"Index.Elements.RS.ForActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>f</i> ");
 	Str::clear(skeleton);
-	Localisation::write_1(skeleton, LD, I"Index.Elements.RS.AfterActivity", textual_name);
+	Localisation::roman_t(skeleton, LD, I"Index.Elements.RS.AfterActivity", textual_name);
 	PasteButtons::paste_text(OUT, skeleton);
 	WRITE(":&nbsp;<i>a</i>");
 	DISCARD_TEXT(skeleton)
@@ -586,5 +586,5 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 @<Write the titling line of an activity rules box@> =
 	IndexUtilities::link_to_documentation(OUT, av_pack);
 	WRITE(" ... ");
-	Localisation::write_0(OUT, LD, I"Index.Elements.RS.Activity");
+	Localisation::roman(OUT, LD, I"Index.Elements.RS.Activity");
 	IndexUtilities::link_package(OUT, av_pack);

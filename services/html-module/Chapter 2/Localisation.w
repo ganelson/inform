@@ -17,7 +17,7 @@ is available.
 
 It would be elegant to handle this using |inform_language| objects, but
 those exist only in the //supervisor// module, which is a part of //inform7//
-but not of //inter//: and this indexing module has to work in both.
+but not of //inter//: and this code has to work in both.
 
 For now, a |localisation_dictionary| object is just a wrapper for a simple
 |dictionary| of key-value pairs, but it may become more elaborate later.
@@ -166,7 +166,7 @@ of the keys, substituting textual values in for placeholders. For example, given
 = (text)
 %Index.Elements.RS.Unlist = The *1 is not listed in the *2.
 =
-Calling //Localisation::write_2// on the key |"Index.Elements.RS.Unlist"| with
+Calling //Localisation::roman_tt// on the key |"Index.Elements.RS.Unlist"| with
 the values "imports rule" and "customs rulebook" would then produce:
 = (text)
 The imports rule is not listed in the customs rulebook.
@@ -185,39 +185,30 @@ with everything under the first line being italicised. For example:
 Note that a valid documentation reference must begin with an upper-case letter.
 
 =
-void Localisation::bold_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
-	WRITE("<b>");
-	Localisation::write_0(OUT, D, key);
-	WRITE("</b>");
+void Localisation::bold(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
+	WRITE("<b>"); Localisation::roman(OUT, D, key); WRITE("</b>");
 }
 
-void Localisation::italic_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
-	WRITE("<i>");
-	Localisation::write_0(OUT, D, key);
-	WRITE("</i>");
+void Localisation::italic(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
+	WRITE("<i>"); Localisation::roman(OUT, D, key); WRITE("</i>");
 }
 
-void Localisation::write_0(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
+void Localisation::roman(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
 	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::bold_1(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::bold_t(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1) {
-	WRITE("<b>");
-	Localisation::write_1(OUT, D, key, val1);
-	WRITE("</b>");
+	WRITE("<b>"); Localisation::roman_t(OUT, D, key, val1); WRITE("</b>");
 }
-
-void Localisation::italic_1(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+void Localisation::italic_t(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1) {
-	WRITE("<i>");
-	Localisation::write_1(OUT, D, key, val1);
-	WRITE("</i>");
+	WRITE("<i>"); Localisation::roman_t(OUT, D, key, val1); WRITE("</i>");
 }
-
-void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+void Localisation::roman_t(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -225,7 +216,8 @@ void Localisation::write_1(OUTPUT_STREAM, localisation_dictionary *D, text_strea
 	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::write_1n(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::roman_i(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	int val1) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -236,21 +228,16 @@ void Localisation::write_1n(OUTPUT_STREAM, localisation_dictionary *D, text_stre
 	DISCARD_TEXT(f1)
 }
 
-void Localisation::bold_2(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::bold_tt(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2) {
-	WRITE("<b>");
-	Localisation::write_2(OUT, D, key, val1, val2);
-	WRITE("</b>");
+	WRITE("<b>"); Localisation::roman_tt(OUT, D, key, val1, val2); WRITE("</b>");
 }
-
-void Localisation::italic_2(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+void Localisation::italic_tt(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2) {
-	WRITE("<i>");
-	Localisation::write_2(OUT, D, key, val1, val2);
-	WRITE("</i>");
+	WRITE("<i>"); Localisation::roman_tt(OUT, D, key, val1, val2); WRITE("</i>");
 }
-
-void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+void Localisation::roman_tt(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -258,7 +245,8 @@ void Localisation::write_2(OUTPUT_STREAM, localisation_dictionary *D, text_strea
 	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::write_2n(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::roman_ii(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	int val1, int val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -272,7 +260,8 @@ void Localisation::write_2n(OUTPUT_STREAM, localisation_dictionary *D, text_stre
 	DISCARD_TEXT(f2)
 }
 
-void Localisation::write_2sn(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::roman_ti(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, int val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -283,7 +272,8 @@ void Localisation::write_2sn(OUTPUT_STREAM, localisation_dictionary *D, text_str
 	DISCARD_TEXT(f2)
 }
 
-void Localisation::write_2ns(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::roman_it(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	int val1, text_stream *val2) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -294,7 +284,8 @@ void Localisation::write_2ns(OUTPUT_STREAM, localisation_dictionary *D, text_str
 	DISCARD_TEXT(f1)
 }
 
-void Localisation::write_3(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::write_ttt(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	text_stream *val1, text_stream *val2, text_stream *val3) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -302,7 +293,8 @@ void Localisation::write_3(OUTPUT_STREAM, localisation_dictionary *D, text_strea
 	Localisation::write_general(OUT, D, key, vals);
 }
 
-void Localisation::write_3nsn(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
+@ =
+void Localisation::write_iti(OUTPUT_STREAM, localisation_dictionary *D, text_stream *key,
 	int val1, text_stream *val2, int val3) {
 	text_stream *vals[10];
 	@<Vacate the vals@>;
@@ -346,7 +338,7 @@ void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 				while ((i<Str::len(prototype)) && (Str::get_at(prototype, i) != '>'))
 					PUT_TO(link, Str::get_at(prototype, i++));
 				if (Characters::isupper(Str::get_at(link, 0)))
-					IndexUtilities::DocReferences::link(OUT, link);
+					DocReferences::link(OUT, link);
 				else WRITE("<%S>", link);
 				DISCARD_TEXT(link)
 				break;

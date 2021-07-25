@@ -9,7 +9,6 @@ Chapter 1: Starting Up
 
 Chapter 2: Utilities
 	Index Locations
-	Localisation
 	Index Interpreter
 	Styles and Scripts
 	Index Utilities

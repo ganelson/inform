@@ -111,11 +111,11 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 	IndexUtilities::link_package(OUT, an_pack);
 	if (requires_light) {
 		WRITE(" (");
-		Localisation::write_0(OUT, LD, I"Index.Elements.A1.RequiresLight");
+		Localisation::roman(OUT, LD, I"Index.Elements.A1.RequiresLight");
 		WRITE(")");
 	}
 	WRITE(" (");	
-	Localisation::italic_0(OUT, LD, I"Index.Elements.A1.PastTense");
+	Localisation::italic(OUT, LD, I"Index.Elements.A1.PastTense");
 	WRITE(" %S)", Metadata::read_optional_textual(an_pack, I"^past_name"));
 	text_stream *spec = Metadata::read_optional_textual(an_pack, I"^specification");
 	if (Str::len(spec) > 0)	WRITE(": %S", spec);
@@ -125,7 +125,7 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 
 @<Show the commands@> =
 	HTML_OPEN("p");
-	Localisation::bold_0(OUT, LD, I"Index.Elements.A1.CommandsHeading");
+	Localisation::bold(OUT, LD, I"Index.Elements.A1.CommandsHeading");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
 	int producers = 0;
@@ -136,20 +136,20 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 			Inter::Packages::container(xref->definition), NULL, LD);
 		producers++;
 	}
-	if (producers == 0) Localisation::bold_0(OUT, LD, I"Index.Elements.A1.NoCommands");
+	if (producers == 0) Localisation::bold(OUT, LD, I"Index.Elements.A1.NoCommands");
 	HTML_CLOSE("p");
 
 @<Show the action variables@> =
 	if (GroupedElement::no_vars(an_pack, I) > 0) {
 		HTML_OPEN("p");
-		Localisation::bold_0(OUT, LD, I"Index.Elements.A1.ValuesHeading");
+		Localisation::bold(OUT, LD, I"Index.Elements.A1.ValuesHeading");
 		HTML_CLOSE("p");
 		GroupedElement::index_shv_set(OUT, I, an_pack);
 	}
 
 @<Show the rules relevant to this action@> =
 	HTML_OPEN("p");
-	Localisation::bold_0(OUT, LD, I"Index.Elements.A1.RulesHeading");
+	Localisation::bold(OUT, LD, I"Index.Elements.A1.RulesHeading");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
 	int resp_count = 0;
@@ -183,7 +183,7 @@ void GroupedElement::detail_pages(localisation_dictionary *LD) {
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack,
 		I"report", I"report", LD);
 	if (resp_count > 1) {
-		Localisation::write_0(OUT, LD, I"Index.Elements.A1.ResponseIcons");
+		Localisation::roman(OUT, LD, I"Index.Elements.A1.ResponseIcons");
 		WRITE(":&nbsp;");
 		IndexUtilities::extra_all_link_with(OUT, TreeLists::len(inv->rule_nodes), "responses");
 		WRITE("%d", resp_count);

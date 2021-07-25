@@ -289,9 +289,9 @@ of course.
 		HTML_CLOSE("p");
 		TEMPORARY_TEXT(pds)
 		WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ToPhraseFamily::doc_ref(idb->head_of_defn))));
-		IndexUtilities::DocReferences::doc_fragment(OUT, pds);
+		DocReferences::doc_fragment(OUT, pds);
 		HTML_OPEN("p"); WRITE("<b>See</b> ");
-		IndexUtilities::DocReferences::fully_link(OUT, pds);
+		DocReferences::fully_link(OUT, pds);
 		DISCARD_TEXT(pds)
 	}
 

@@ -44,8 +44,8 @@ Rules, which of course are always present. So these are hidden by default.
 		if (first_ext) { 
 			HTML_OPEN("p");
 			IndexUtilities::extra_link(OUT, 2);
-			if (mc > 1) Localisation::write_0(OUT, LD, I"Index.Elements.Tb.ShowExtensionTables");
-			else Localisation::write_0(OUT, LD, I"Index.Elements.Tb.ShowOnlyExtensionTables");
+			if (mc > 1) Localisation::roman(OUT, LD, I"Index.Elements.Tb.ShowExtensionTables");
+			else Localisation::roman(OUT, LD, I"Index.Elements.Tb.ShowOnlyExtensionTables");
 			HTML_CLOSE("p");
 			first_ext = FALSE;
 		}
@@ -98,21 +98,21 @@ Rules, which of course are always present. So these are hidden by default.
 	WRITE("<i>");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
 	if (defines) {
-		if (nr == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Definition", nr);
-		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Definitions", nr);
+		if (nr == 1) Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definition", nr);
+		else Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definitions", nr);
 	} else {
-		if (nc == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Column", nc);
-		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Columns", nc);
+		if (nc == 1) Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Column", nc);
+		else Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Columns", nc);
 		WRITE(" x ");
-		if (nr == 1) Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Row", nr);
-		else Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Rows", nr);
+		if (nr == 1) Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Row", nr);
+		else Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Rows", nr);
 	}
 	if (nb > 0) {
 		WRITE(" (");
-		Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Blank", nb);
+		Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Blank", nb);
 		if (Str::len(for_each) > 0) {
 			WRITE(", ");
-			Localisation::write_1(OUT, LD, I"Index.Elements.Tb.BlankEach", for_each);
+			Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.BlankEach", for_each);
 		}
 		WRITE(")");
 	}
@@ -129,7 +129,7 @@ Rules, which of course are always present. So these are hidden by default.
 	inter_package *col_pack = Inter::Packages::container(id_s->definition);
 	HTML::first_html_column(OUT, 0);
 	WRITE("&nbsp;&nbsp;");
-	Localisation::write_1n(OUT, LD, I"Index.Elements.Tb.Col", col+1);
+	Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Col", col+1);
 	WRITE(":&nbsp;&nbsp;");
 	@<Give usage details@>;
 	HTML::next_html_column(OUT, 0);
@@ -144,24 +144,24 @@ Rules, which of course are always present. So these are hidden by default.
 		IndexUtilities::link(OUT, at);
 	} else {
 		if (defines) {
-			Localisation::italic_0(OUT, LD, I"Index.Elements.Tb.Sets");
+			Localisation::italic(OUT, LD, I"Index.Elements.Tb.Sets");
 			WRITE(" ");
 		}
 		WRITE("%S&nbsp;", CW);
 		TEMPORARY_TEXT(TEMP)
 		if (defines) WRITE_TO(TEMP, "%S", CW);
-		else Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Entry", CW);
+		else Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Entry", CW);
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 	}
 
 @<Give purpose details@> =
 	if ((defines) && (col == 0)) {
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Tb.Names");
+		Localisation::italic(OUT, LD, I"Index.Elements.Tb.Names");
 	} else if (defines) {
-		Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Property",
+		Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Property",
 			Metadata::read_optional_textual(col_pack, I"^contents"));
 	} else {
-		Localisation::write_1(OUT, LD, I"Index.Elements.Tb.Of",
+		Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Of",
 			Metadata::read_optional_textual(col_pack, I"^contents"));
 	}

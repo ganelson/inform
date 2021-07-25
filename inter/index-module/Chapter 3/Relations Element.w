@@ -13,13 +13,13 @@ void RelationsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0); 
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.NameColumn");
+	Localisation::italic(OUT, LD, I"Index.Elements.Rl.NameColumn");
 	HTML::next_html_column(OUT, 0);
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.CategoryColumn");
+	Localisation::italic(OUT, LD, I"Index.Elements.Rl.CategoryColumn");
 	HTML::next_html_column(OUT, 0);
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.FromColumn");
+	Localisation::italic(OUT, LD, I"Index.Elements.Rl.FromColumn");
 	HTML::next_html_column(OUT, 0);
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Rl.ToColumn");
+	Localisation::italic(OUT, LD, I"Index.Elements.Rl.ToColumn");
 	HTML::end_html_row(OUT);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->relation_nodes) {

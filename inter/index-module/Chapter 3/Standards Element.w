@@ -138,8 +138,8 @@ void StandardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @ =
 void StandardsElement::subhead(OUTPUT_STREAM, localisation_dictionary *LD,
 	text_stream *heading_key, text_stream *rubric_key) {
-	HTML_OPEN("p"); Localisation::bold_0(OUT, LD, heading_key); HTML_CLOSE("p");
-	HTML_OPEN("p"); Localisation::write_0(OUT, LD, rubric_key); HTML_CLOSE("p");
+	HTML_OPEN("p"); Localisation::bold(OUT, LD, heading_key); HTML_CLOSE("p");
+	HTML_OPEN("p"); Localisation::roman(OUT, LD, rubric_key); HTML_CLOSE("p");
 }
 
 void StandardsElement::activity(OUTPUT_STREAM, tree_inventory *inv, text_stream *id,

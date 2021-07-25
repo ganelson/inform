@@ -13,7 +13,7 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	if (num_naps == 0) {
 		HTML_OPEN("p");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Bh.None");
+		Localisation::roman(OUT, LD, I"Index.Elements.Bh.None");
 		HTML_CLOSE("p");
 	} else {
 		TreeLists::sort(inv->named_action_pattern_nodes, Synoptic::module_order);
@@ -24,7 +24,7 @@ void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			IndexUtilities::link_package(OUT, pack);
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;");
-			Localisation::italic_0(OUT, LD, I"Index.Elements.Bh.Defined");
+			Localisation::italic(OUT, LD, I"Index.Elements.Bh.Defined");
 			inter_tree_node *D = Inter::Packages::definition(pack);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.data[ID_IFLD] == PACKAGE_IST) {

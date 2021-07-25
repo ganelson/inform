@@ -18,3 +18,4 @@ Chapter 2: Intranet
 	Documentation Renderer
 	Installed Files
 	Documentation References
+	Localisation

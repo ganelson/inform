@@ -24,7 +24,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML::first_html_column(OUT, 0);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/calc2.png");
 	WRITE("&nbsp;");
-	Localisation::write_0(OUT, LD, I"Index.Elements.Ar.Calculator");
+	Localisation::roman(OUT, LD, I"Index.Elements.Ar.Calculator");
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
@@ -64,7 +64,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (Str::len(dims) > 0) {
 		WRITE("%S", dims);
 	} else {
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Ar.Dimensionless");
+		Localisation::italic(OUT, LD, I"Index.Elements.Ar.Dimensionless");
 	}
 
 @ This is simply a table of all the multiplications declared in the source
@@ -112,7 +112,7 @@ text, sorted into kind order of left and then right operand.
 void ArithmeticElement::column(OUTPUT_STREAM, text_stream *key, localisation_dictionary *LD) {
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, "Index.Elements.Ar.%S", key);
-	Localisation::bold_0(OUT, LD, full);
+	Localisation::bold(OUT, LD, full);
 	WRITE(" ");
 	DISCARD_TEXT(full)
 }

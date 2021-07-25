@@ -21,11 +21,11 @@ void FiguresElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Index the figures@> =
 	if (TreeLists::len(inv->figure_nodes) <= 1) { /* cover art always creates 1 */
 		HTML_OPEN("p");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Fi.NoFigures");
+		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoFigures");
 		HTML_CLOSE("p");
 	} else {
 		HTML_OPEN("p");
-		Localisation::bold_0(OUT, LD, I"Index.Elements.Fi.ListOfFigures");
+		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfFigures");
 		HTML_CLOSE("p");
 		@<Tabulate the figures@>;
 	}
@@ -61,7 +61,7 @@ to match this width, preserving the aspect ratio.
 	if (count_of_displayed_figures > MAX_INDEXED_FIGURES) {
 		HTML_OPEN("p");
 		WRITE("(");
-		Localisation::write_2n(OUT, LD, I"Index.Elements.Fi.ThumbnailLimit", 
+		Localisation::roman_ii(OUT, LD, I"Index.Elements.Fi.ThumbnailLimit", 
 			MAX_INDEXED_FIGURES, 10*MAX_INDEXED_FIGURES);
 		WRITE(")");
 		HTML_CLOSE("p");
@@ -82,15 +82,15 @@ to match this width, preserving the aspect ratio.
 			}
 		}
 		if (format_found == 0) {
-			Localisation::italic_0(description, LD, I"Index.Elements.Fi.UnknownFormat");
+			Localisation::italic(description, LD, I"Index.Elements.Fi.UnknownFormat");
 		} else {
-			Localisation::write_1(description, LD, I"Index.Elements.Fi.Format", real_format);
+			Localisation::roman_t(description, LD, I"Index.Elements.Fi.Format", real_format);
 			WRITE_TO(description, ": ");
-			Localisation::write_2n(description, LD, I"Index.Elements.Fi.Dimensions",
+			Localisation::roman_ii(description, LD, I"Index.Elements.Fi.Dimensions",
 				(int) width, (int) height);
 		}
 	} else {
-		Localisation::italic_0(description, LD, I"Index.Elements.Fi.Missing");
+		Localisation::italic(description, LD, I"Index.Elements.Fi.Missing");
 	}
 
 @<Render a table row for the image@> =
@@ -120,7 +120,7 @@ to match this width, preserving the aspect ratio.
 		WRITE("%S", description);
 		HTML_TAG("br");
 	}
-	Localisation::write_2sn(description, LD, I"Index.Elements.Fi.Resource",
+	Localisation::roman_ti(description, LD, I"Index.Elements.Fi.Resource",
 		Filenames::get_leafname(F), (int) id);
 	HTML::end_html_row(OUT);
 
@@ -129,10 +129,10 @@ to match this width, preserving the aspect ratio.
 @<Index the sounds@> =
 	if (TreeLists::len(inv->sound_nodes) == 0) {
 		HTML_OPEN("p");
-		Localisation::bold_0(OUT, LD, I"Index.Elements.Fi.ListOfSounds");
+		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfSounds");
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Fi.NoSounds");
+		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoSounds");
 		HTML_CLOSE("p");
 	} else {
 		@<Tabulate the sounds@>;
@@ -187,30 +187,30 @@ to match this width, preserving the aspect ratio.
 			}
 		}
 		if (format_found == 0) {
-			Localisation::italic_0(description, LD, I"Index.Elements.Fi.UnknownSoundFormat");
+			Localisation::italic(description, LD, I"Index.Elements.Fi.UnknownSoundFormat");
 		} else {
 			if (waveform_style == FALSE) @<Describe sound in MIDI format@>
 			else @<Describe sound in waveform format@>;
 		}
 	} else {
-		Localisation::italic_0(description, LD, I"Index.Elements.Fi.MissingSound");
+		Localisation::italic(description, LD, I"Index.Elements.Fi.MissingSound");
 	}
 
 @<Describe sound in MIDI format@> =
 	if (no_tracks == 1) {
-		Localisation::write_2ns(description, LD, I"Index.Elements.Fi.SoundFormatOneTrack",
+		Localisation::roman_it(description, LD, I"Index.Elements.Fi.SoundFormatOneTrack",
 			(int) midi_version, real_format);
 	} else {
-		Localisation::write_3nsn(description, LD, I"Index.Elements.Fi.SoundFormatMultiTrack",
+		Localisation::write_iti(description, LD, I"Index.Elements.Fi.SoundFormatMultiTrack",
 			(int) midi_version, real_format, (int) no_tracks);
 	}
 	WRITE_TO(description, " - ");
-	Localisation::italic_0(description, LD, I"Index.Elements.Fi.SoundUnsupported");
+	Localisation::italic(description, LD, I"Index.Elements.Fi.SoundUnsupported");
 
 @<Describe sound in waveform format@> =
 	TEMPORARY_TEXT(size)
 	WRITE_TO(size, "%d.%01dKB", fsize/1024, (fsize%1024)/102);
-	Localisation::write_2(description, LD, I"Index.Elements.Fi.SoundFile", size, real_format);
+	Localisation::roman_tt(description, LD, I"Index.Elements.Fi.SoundFile", size, real_format);
 	DISCARD_TEXT(size)
 	int min = (duration/6000), sec = (duration%6000)/100, centisec = (duration%100);
 	WRITE_TO(description, ": ");
@@ -219,27 +219,27 @@ to match this width, preserving the aspect ratio.
 	else WRITE_TO(seconds, "%d.%02d", sec, centisec);
 	if (min > 0) {
 		if ((sec > 0) || (centisec > 0)) {
-			Localisation::write_2ns(description, LD, I"Index.Elements.Fi.DurationMS",
+			Localisation::roman_it(description, LD, I"Index.Elements.Fi.DurationMS",
 				min, seconds);
 		} else {
-			Localisation::write_1n(description, LD, I"Index.Elements.Fi.DurationM", min);
+			Localisation::roman_i(description, LD, I"Index.Elements.Fi.DurationM", min);
 		}
 	} else {
-		Localisation::write_1(description, LD, I"Index.Elements.Fi.DurationS", seconds);
+		Localisation::roman_t(description, LD, I"Index.Elements.Fi.DurationS", seconds);
 	}
 	DISCARD_TEXT(seconds)
 	WRITE_TO(description, "<br>");
 	TEMPORARY_TEXT(sample)
 	WRITE_TO(sample, "%d.%01dkHz", pSampleRate/1000, (pSampleRate%1000)/100);
-	Localisation::write_1(OUT, LD, I"Index.Elements.Fi.Sampled", sample);
+	Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.Sampled", sample);
 	DISCARD_TEXT(sample)
 	WRITE_TO(description, " ");
-	if (pChannels == 1) Localisation::write_0(OUT, LD, I"Index.Elements.Fi.Mono");
-	else Localisation::write_0(OUT, LD, I"Index.Elements.Fi.Stereo");
+	if (pChannels == 1) Localisation::roman(OUT, LD, I"Index.Elements.Fi.Mono");
+	else Localisation::roman(OUT, LD, I"Index.Elements.Fi.Stereo");
 	WRITE_TO(description, " (");
 	TEMPORARY_TEXT(bitrate)
 	WRITE_TO(bitrate, "%d.%01d", pBitsPerSecond/1000, (pSampleRate%1000)/100);
-	Localisation::write_1(OUT, LD, I"Index.Elements.Fi.BitRate", bitrate);
+	Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.BitRate", bitrate);
 	DISCARD_TEXT(bitrate)
 	WRITE_TO(description, ")");
 
@@ -265,7 +265,7 @@ to match this width, preserving the aspect ratio.
 		WRITE("%S", description);
 		HTML_TAG("br");
 	}
-	Localisation::write_2sn(description, LD, I"Index.Elements.Fi.Resource",
+	Localisation::roman_ti(description, LD, I"Index.Elements.Fi.Resource",
 		Filenames::get_leafname(F), (int) id);
 	HTML::end_html_row(OUT);
 
@@ -275,11 +275,11 @@ This is more or less perfunctory, but still of some use, if only as a list.
 @<Index the files@> =
 	if (TreeLists::len(inv->file_nodes) == 0) {
 		HTML_OPEN("p");
-		Localisation::write_0(OUT, LD, I"Index.Elements.Fi.NoFiles");
+		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoFiles");
 		HTML_CLOSE("p");
 	} else {
 		HTML_OPEN("p");
-		Localisation::bold_0(OUT, LD, I"Index.Elements.Fi.ListOfFiles");
+		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfFiles");
 		HTML_CLOSE("p");
 		@<Tabulate the files@>;
 	}
@@ -301,18 +301,18 @@ This is more or less perfunctory, but still of some use, if only as a list.
 		IndexUtilities::link_package(OUT, pack);
 		HTML_TAG("br");
 		if (is_binary)
-			Localisation::write_1(OUT, LD, I"Index.Elements.Fi.BinaryFile",
+			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.BinaryFile",
 				Metadata::read_textual(pack, I"^leafname"));
 		else
-			Localisation::write_1(OUT, LD, I"Index.Elements.Fi.TextFile",
+			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.TextFile",
 				Metadata::read_textual(pack, I"^leafname"));
 		WRITE(" - ");
 		if (Metadata::read_optional_numeric(pack, I"^file_owned")) {
-			Localisation::write_0(OUT, LD, I"Index.Elements.Fi.FileOwnedByThis");
+			Localisation::roman(OUT, LD, I"Index.Elements.Fi.FileOwnedByThis");
 		} else if (Metadata::read_optional_numeric(pack, I"^file_owned_by_other")) {
-			Localisation::write_0(OUT, LD, I"Index.Elements.Fi.FileOwnedByOther");
+			Localisation::roman(OUT, LD, I"Index.Elements.Fi.FileOwnedByOther");
 		} else {
-			Localisation::write_1(OUT, LD, I"Index.Elements.Fi.FileOwnedBy",
+			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.FileOwnedBy",
 				Metadata::read_textual(pack, I"^file_owner"));
 		}
 		HTML::end_html_row(OUT);

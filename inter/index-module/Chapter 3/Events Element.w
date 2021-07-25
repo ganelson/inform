@@ -15,7 +15,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	@<Index timetabled events@>;
 	if ((when_count == 0) && (tt_count == 0)) {
 		HTML_OPEN("p");
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.None");
+		Localisation::italic(OUT, LD, I"Index.Elements.Ev.None");
 		HTML_CLOSE("p");
 	}
 }
@@ -27,7 +27,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			(Metadata::exists(pack, I"^timed_for") == FALSE)) {
 			if (when_count == 0) {
 				HTML_OPEN("p");
-				Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.Timeless");
+				Localisation::italic(OUT, LD, I"Index.Elements.Ev.Timeless");
 				HTML_CLOSE("p");
 			}
 			when_count++;
@@ -35,7 +35,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
 			IndexUtilities::link_package(OUT, pack);
 			WRITE(" (");
-			Localisation::write_0(OUT, LD, I"Index.Elements.Ev.WhereTriggered");
+			Localisation::roman(OUT, LD, I"Index.Elements.Ev.WhereTriggered");
 			WRITE(": ");
 			inter_package *entry;
 			LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_timed_rule_trigger") {
@@ -53,7 +53,7 @@ void EventsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			(Metadata::exists(pack, I"^timed_for"))) {
 			if (tt_count == 0) {
 				HTML_OPEN("p");
-				Localisation::italic_0(OUT, LD, I"Index.Elements.Ev.Timetable");
+				Localisation::italic(OUT, LD, I"Index.Elements.Ev.Timetable");
 				HTML_CLOSE("p");
 			}
 			tt_count++;

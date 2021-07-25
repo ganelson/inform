@@ -44,9 +44,9 @@ void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	HTML_OPEN("p");
 	WRITE("<b>");
 	if (Metadata::read_optional_numeric(E, I"^category") == 1) {
-		Localisation::write_0(OUT, LD, I"Index.Elements.Xt.FromSourceText");
+		Localisation::roman(OUT, LD, I"Index.Elements.Xt.FromSourceText");
 	} else {
-		Localisation::write_1(OUT, LD, I"Index.Elements.Xt.FromExtension",
+		Localisation::roman_t(OUT, LD, I"Index.Elements.Xt.FromExtension",
 			Metadata::read_optional_textual(E, I"^credit"));
 	}
 	WRITE("</b>");

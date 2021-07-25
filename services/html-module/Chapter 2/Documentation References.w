@@ -1,4 +1,4 @@
-[IndexUtilities::DocReferences::] Documentation References.
+[DocReferences::] Documentation References.
 
 To enable index or results pages to link into documentation.
 
@@ -31,12 +31,12 @@ typedef struct documentation_ref {
 
 @
 
-@d DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK IndexUtilities::DocReferences::show_xref_in_problem
+@d DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK DocReferences::show_xref_in_problem
 
 =
-void IndexUtilities::DocReferences::show_xref_in_problem(text_stream *OUT, text_stream *sigil) {
+void DocReferences::show_xref_in_problem(text_stream *OUT, text_stream *sigil) {
 	wchar_t *chap = NULL, *sec = NULL;
-	wchar_t *leaf = IndexUtilities::DocReferences::link_if_possible_once(
+	wchar_t *leaf = DocReferences::link_if_possible_once(
 		sigil, &chap, &sec);
 	if (leaf) {
 		HTML::open_indented_p(OUT, 2, "tight");
@@ -61,16 +61,16 @@ file is read on demand; in some runs, it won't be needed.
 
 =
 int xrefs_read = FALSE;
-void IndexUtilities::DocReferences::read_xrefs(void) {
+void DocReferences::read_xrefs(void) {
 	if (xrefs_read == FALSE) {
 		xrefs_read = TRUE;
 		TextFiles::read(
 			InstalledFiles::filename(DOCUMENTATION_XREFS_IRES), TRUE,
-			NULL, FALSE, IndexUtilities::DocReferences::read_xrefs_helper, NULL, NULL);
+			NULL, FALSE, DocReferences::read_xrefs_helper, NULL, NULL);
 	}
 }
 
-void IndexUtilities::DocReferences::read_xrefs_helper(text_stream *line,
+void DocReferences::read_xrefs_helper(text_stream *line,
 	text_file_position *tfp, void *unused_state) {
 	WRITE_TO(line, "\n");
 	wording W = Feeds::feed_text(line);
@@ -117,8 +117,8 @@ we return the leafname for this documentation page, without filename
 extension (say |doc24|); if it does not exist, we return NULL.
 
 =
-int IndexUtilities::DocReferences::validate_if_possible(text_stream *temp) {
-	IndexUtilities::DocReferences::read_xrefs();
+int DocReferences::validate_if_possible(text_stream *temp) {
+	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::eq(dr->doc_symbol, temp))
@@ -129,8 +129,8 @@ int IndexUtilities::DocReferences::validate_if_possible(text_stream *temp) {
 @ And similarly, returning the page we link to:
 
 =
-wchar_t *IndexUtilities::DocReferences::link_if_possible_once(text_stream *temp, wchar_t **chap, wchar_t **sec) {
-	IndexUtilities::DocReferences::read_xrefs();
+wchar_t *DocReferences::link_if_possible_once(text_stream *temp, wchar_t **chap, wchar_t **sec) {
+	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::eq(dr->doc_symbol, temp)) {
@@ -163,7 +163,7 @@ to other natural languages.
 	documented at ###					==> { Wordings::first_wn(WR[1]), - }
 
 @ =
-wording IndexUtilities::DocReferences::position_of_symbol(wording *W) {
+wording DocReferences::position_of_symbol(wording *W) {
 	if (<documentation-symbol-tail>(*W)) {
 		*W = GET_RW(<documentation-symbol-tail>, 1);
 		return Wordings::one_word(<<r>>);
@@ -177,8 +177,8 @@ such a phrase, it increments the usage count by calling the following:
 
 =
 #ifdef CORE_MODULE
-void IndexUtilities::DocReferences::doc_mark_used(text_stream *symb, int at_word) {
-	IndexUtilities::DocReferences::read_xrefs();
+void DocReferences::doc_mark_used(text_stream *symb, int at_word) {
+	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref) {
 		if (Str::eq(dr->doc_symbol, symb)) {
@@ -203,9 +203,9 @@ especially, but to be accumulated over a whole corpus of source texts, e.g.:
 =
 
 =
-void IndexUtilities::DocReferences::log_statistics(void) {
+void DocReferences::log_statistics(void) {
 	LOG("The following shows how often each built-in phrase was used:\n");
-	IndexUtilities::DocReferences::read_xrefs();
+	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::begins_with_wide_string(dr->doc_symbol, L"ph"))
@@ -217,8 +217,8 @@ void IndexUtilities::DocReferences::log_statistics(void) {
 following routine.
 
 =
-void IndexUtilities::DocReferences::link_to(OUTPUT_STREAM, text_stream *fn, int full) {
-	documentation_ref *dr = IndexUtilities::DocReferences::name_to_dr(fn);
+void DocReferences::link_to(OUTPUT_STREAM, text_stream *fn, int full) {
+	documentation_ref *dr = DocReferences::name_to_dr(fn);
 	if (dr) {
 		if (full >= 0) WRITE("&nbsp;"); else WRITE(" ");
 		HTML_OPEN_WITH("a", "href=inform:/%N.html", dr->section);
@@ -230,16 +230,16 @@ void IndexUtilities::DocReferences::link_to(OUTPUT_STREAM, text_stream *fn, int 
 	}
 }
 
-void IndexUtilities::DocReferences::link(OUTPUT_STREAM, text_stream *fn) {
-	IndexUtilities::DocReferences::link_to_S(OUT, fn, FALSE);
+void DocReferences::link(OUTPUT_STREAM, text_stream *fn) {
+	DocReferences::link_to_S(OUT, fn, FALSE);
 }
 
-void IndexUtilities::DocReferences::fully_link(OUTPUT_STREAM, text_stream *fn) {
-	IndexUtilities::DocReferences::link_to_S(OUT, fn, TRUE);
+void DocReferences::fully_link(OUTPUT_STREAM, text_stream *fn) {
+	DocReferences::link_to_S(OUT, fn, TRUE);
 }
 
-void IndexUtilities::DocReferences::link_to_S(OUTPUT_STREAM, text_stream *fn, int full) {
-	documentation_ref *dr = IndexUtilities::DocReferences::name_to_dr(fn);
+void DocReferences::link_to_S(OUTPUT_STREAM, text_stream *fn, int full) {
+	documentation_ref *dr = DocReferences::name_to_dr(fn);
 	if (dr) {
 		if (full >= 0) WRITE("&nbsp;"); else WRITE(" ");
 		HTML_OPEN_WITH("a", "href=inform:/%N.html", dr->section);
@@ -258,17 +258,17 @@ if the file can't be found, or contains nothing germane, we fail safe by doing
 nothing at all -- not issuing any internal errors.
 
 =
-void IndexUtilities::DocReferences::doc_fragment(OUTPUT_STREAM, text_stream *fn) {
-	IndexUtilities::DocReferences::doc_fragment_to(OUT, fn);
+void DocReferences::doc_fragment(OUTPUT_STREAM, text_stream *fn) {
+	DocReferences::doc_fragment_to(OUT, fn);
 }
 
 int fragments_loaded = FALSE;
-void IndexUtilities::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
+void DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 	if (fragments_loaded == FALSE) {
 		@<Load in the documentation fragments file@>;
 		fragments_loaded = TRUE;
 	}
-	documentation_ref *dr = IndexUtilities::DocReferences::name_to_dr(fn);
+	documentation_ref *dr = DocReferences::name_to_dr(fn);
 	if ((dr) && (dr->fragment_at)) {
 		char *p = dr->fragment_at;
 		int i;
@@ -315,7 +315,7 @@ void IndexUtilities::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *
 			for (j=0; p[i+j]; j++) {
 				if ((p[i+j] == '=') && (p[i+j+1] == '*')) {
 					i = i+j+1;
-					tracking = IndexUtilities::DocReferences::name_to_dr(rn);
+					tracking = DocReferences::name_to_dr(rn);
 					if (tracking) tracking->fragment_at = p+i+1;
 					break;
 				} else {
@@ -330,8 +330,8 @@ void IndexUtilities::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *
 and we need to search fairly seldom:
 
 =
-documentation_ref *IndexUtilities::DocReferences::name_to_dr(text_stream *fn) {
-	IndexUtilities::DocReferences::read_xrefs();
+documentation_ref *DocReferences::name_to_dr(text_stream *fn) {
+	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::eq(dr->doc_symbol, fn))
@@ -345,7 +345,7 @@ documentation_ref *IndexUtilities::DocReferences::name_to_dr(text_stream *fn) {
 @<Complain about a bad documentation reference@> =
 	if (problem_count == 0) {
 		LOG("Bad ref was <%S>. Known references are:\n", fn);
-		IndexUtilities::DocReferences::read_xrefs();
+		DocReferences::read_xrefs();
 		LOOP_OVER(dr, documentation_ref)
 			LOG("%S = %+N\n", dr->doc_symbol, dr->section);
 		internal_error("Bad index documentation reference");

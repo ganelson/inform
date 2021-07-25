@@ -497,7 +497,7 @@ from each other.)
 		if (A) {
 			k++;
 			if (k == 1) { HTML_OPEN("p"); } else WRITE("; ");
-			Localisation::italic_2(OUT, LD, I"Index.Elements.Mp.MappingAs",
+			Localisation::italic_tt(OUT, LD, I"Index.Elements.Mp.MappingAs",
 				FauxInstances::get_name(D), FauxInstances::get_name(A));
 		}
 	}
@@ -538,7 +538,7 @@ void HTMLMap::devise_level_rubric(int z, text_stream *level_rubric,
 			break;
 		}
 	}
-	Localisation::write_1n(level_rubric, LD, key, par);
+	Localisation::roman_i(level_rubric, LD, key, par);
 }
 
 @h Single-room submaps.
@@ -913,12 +913,12 @@ void HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i2,
 		if (I3) FauxInstances::write_name(destination_name, I3);
 
 		if (D) {
-			if (I3) Localisation::write_3(tool_tip, LD, I"Index.Elements.Mp.ExitThroughTooltip",
+			if (I3) Localisation::write_ttt(tool_tip, LD, I"Index.Elements.Mp.ExitThroughTooltip",
 				direction_name, door_name, destination_name);
-			else Localisation::write_2(tool_tip, LD, I"Index.Elements.Mp.ExitBlockedTooltip",
+			else Localisation::roman_tt(tool_tip, LD, I"Index.Elements.Mp.ExitBlockedTooltip",
 				direction_name, door_name);
 		} else {
-			if (I3) Localisation::write_2(tool_tip, LD, I"Index.Elements.Mp.ExitTooltip",
+			if (I3) Localisation::roman_tt(tool_tip, LD, I"Index.Elements.Mp.ExitTooltip",
 				direction_name, destination_name);
 		}
 		WRITE_TO(tool_tip, "\"");

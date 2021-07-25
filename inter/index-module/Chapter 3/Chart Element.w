@@ -61,7 +61,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @<Add a titling row to the chart of kinds@> =
 	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
 	WRITE("<b>");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.BasicKinds");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.BasicKinds");
 	WRITE("</b>");
 	ChartElement::index_kind_col_head(OUT, I"Index.Elements.Ch.DefaultColumn", "default", D);
 	ChartElement::index_kind_col_head(OUT, I"Index.Elements.Ch.RepeatColumn", "repeat", D);
@@ -74,7 +74,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @<Add a second titling row to the chart of kinds@> =
 	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
 	WRITE("<b>");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.NewKinds");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.NewKinds");
 	WRITE("</b>");
 	ChartElement::index_kind_col_head(OUT, I"Index.Elements.Ch.DefaultColumn", "default", D);
 	ChartElement::index_kind_col_head(OUT, NULL, NULL, D);
@@ -96,25 +96,25 @@ row.
 @<Add the rubric below the chart of kinds@> =
 	HTML_OPEN_WITH("tr", "style=\"display:none\" id=\"default\"");
 	HTML_OPEN_WITH("td", "colspan=\"5\"");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.DefaultGloss");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.DefaultGloss");
 	HTML_TAG("hr");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_OPEN_WITH("tr", "style=\"display:none\" id=\"repeat\"");
 	HTML_OPEN_WITH("td", "colspan=\"5\"");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.RepeatGloss");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.RepeatGloss");
 	HTML_TAG("hr");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_OPEN_WITH("tr", "style=\"display:none\" id=\"props\"");
 	HTML_OPEN_WITH("td", "colspan=\"5\"");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.PropsGloss");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.PropsGloss");
 	HTML_TAG("hr");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_OPEN_WITH("tr", "style=\"display:none\" id=\"under\"");
 	HTML_OPEN_WITH("td", "colspan=\"5\"");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.UnderGloss");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.UnderGloss");
 	HTML_TAG("hr");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -156,7 +156,7 @@ or as paragraph of text in pass 2:
 	IndexUtilities::anchor_numbered(OUT, i); /* ...the anchor to which the grey icon in the table led */
 	WRITE("<b>"); IndexUtilities::kind_name(OUT, pack, FALSE, TRUE); WRITE("</b>");
 	WRITE(" (");
-	Localisation::italic_0(OUT, D, I"Index.Elements.Ch.Plural");
+	Localisation::italic(OUT, D, I"Index.Elements.Ch.Plural");
 	WRITE(" ");
 	IndexUtilities::kind_name(OUT, pack, TRUE, FALSE); WRITE(")");
 	IndexUtilities::link_to_documentation(OUT, pack);
@@ -204,7 +204,7 @@ or as paragraph of text in pass 2:
 	HTML_OPEN("p");
 	HTML_TAG_WITH("a", "name=contra");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
-	Localisation::write_0(OUT, D, I"Index.Elements.Ch.CovarianceGloss");
+	Localisation::roman(OUT, D, I"Index.Elements.Ch.CovarianceGloss");
 	HTML_CLOSE("span");
 	HTML_CLOSE("p");
 
@@ -217,7 +217,7 @@ void ChartElement::index_kind_col_head(OUTPUT_STREAM, text_stream *key, char *an
 	localisation_dictionary *D) {
 	HTML::next_html_column_nowrap(OUT, 0);
 	WRITE("<i>");
-	if (Str::len(key) > 0) Localisation::write_0(OUT, D, key);
+	if (Str::len(key) > 0) Localisation::roman(OUT, D, key);
 	WRITE("</i>&nbsp;");
 	if (anchor) {
 		HTML_OPEN_WITH("a", "href=\"#\" onClick=\"showBasic('%s');\"", anchor);
@@ -354,7 +354,7 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	if (pass == 2) WRITE("</b>");
 	if (pass == 2) {
 		WRITE(" (");
-		Localisation::italic_0(OUT, D, I"Index.Elements.Ch.Plural");
+		Localisation::italic(OUT, D, I"Index.Elements.Ch.Plural");
 		WRITE(" ");
 		IndexUtilities::kind_name(OUT, pack, TRUE, FALSE);
 		WRITE(")");

@@ -45,7 +45,7 @@ void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_st
 	HTML_OPEN_WITH("p", "style=\"margin-top:0px;padding-top:0px;"
 		"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\"");
 	WRITE("<b>%S</b> &mdash; \n", name);
-	Localisation::write_0(OUT, D, exp);
+	Localisation::roman(OUT, D, exp);
 	HTML_CLOSE("p");
 	HTML_CLOSE("td");
 
@@ -105,7 +105,7 @@ system set up in //html: Documentation References//.
 =
 void IndexUtilities::link_to_documentation(OUTPUT_STREAM, inter_package *pack) {
 	text_stream *doc = Metadata::read_optional_textual(pack, I"^documentation");
-	if (Str::len(doc) > 0) IndexUtilities::DocReferences::link(OUT, doc);
+	if (Str::len(doc) > 0) DocReferences::link(OUT, doc);
 }
 
 @h Links to detail pages.

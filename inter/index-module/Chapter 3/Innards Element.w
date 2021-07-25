@@ -16,7 +16,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	HTML_OPEN("p");
 	IndexUtilities::extra_link(OUT, 3);
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.Technicalities");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.Technicalities");
 	HTML_CLOSE("p");
 	IndexUtilities::extra_div_open(OUT, 3, 2, "e0e0e0");
 	HTML_OPEN("p");
@@ -29,7 +29,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Show the virtual machine compiled for@> =
 	IndexUtilities::anchor(OUT, I"STORYFILE");
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.Format");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.Format");
 	WRITE(": ");
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
 	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
@@ -43,7 +43,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Show the use options@> =
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.ActiveUseOptions");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.ActiveUseOptions");
 	WRITE(":");
 	HTML_CLOSE("p");
 	InnardsElement::index_options_in_force_from(OUT, inv, MAIN_TEXT_UO_ORIGIN, NULL, LD);
@@ -53,7 +53,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 		InnardsElement::index_options_in_force_from(OUT, inv, EXTENSION_UO_ORIGIN, E, LD);
 	int c = 0;
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.InactiveUseOptions");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.InactiveUseOptions");
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML::open_indented_p(OUT, 2, "tight");
@@ -66,7 +66,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			if (c++ > 0) WRITE(", ");
 		}
 	}
-	if (c == 0) Localisation::write_0(OUT, LD, I"Index.Elements.In.NoUseOptions");
+	if (c == 0) Localisation::roman(OUT, LD, I"Index.Elements.In.NoUseOptions");
 	HTML_CLOSE("p");
 
 @<Write in the index line for a use option not taken@> =
@@ -80,7 +80,7 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Show the language elements used@> =
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.LanguageDefinition");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.LanguageDefinition");
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
@@ -88,15 +88,15 @@ void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	text_stream *used = Metadata::read_optional_textual(pack, I"^language_elements_used");
 	text_stream *not_used = Metadata::read_optional_textual(pack, I"^language_elements_not_used");
 	if (Str::len(used) > 0) 
-		Localisation::write_1(OUT, LD, I"Index.Elements.In.Included", used);
+		Localisation::roman_t(OUT, LD, I"Index.Elements.In.Included", used);
 	if ((Str::len(used) > 0) && (Str::len(not_used) > 0)) WRITE("<br>");
 	if (Str::len(not_used) > 0)
-		Localisation::write_1(OUT, LD, I"Index.Elements.In.Excluded", not_used);
+		Localisation::roman_t(OUT, LD, I"Index.Elements.In.Excluded", not_used);
 	HTML_CLOSE("p");
 
 @<Add some paste buttons for the debugging log@> =
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.In.Log");
+	Localisation::roman(OUT, LD, I"Index.Elements.In.Log");
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
@@ -171,13 +171,13 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 	HTML::begin_colour(OUT, I"808080");
 	switch (way) {
 		case MAIN_TEXT_UO_ORIGIN:
-			Localisation::write_0(OUT, LD, I"Index.Elements.In.SetFromSource");
+			Localisation::roman(OUT, LD, I"Index.Elements.In.SetFromSource");
 			break;
 		case OPTIONS_FILE_UO_ORIGIN:
-			Localisation::write_0(OUT, LD, I"Index.Elements.In.SetAutomatically");
-			IndexUtilities::DocReferences::link(OUT, I"OPTIONSFILE"); break;
+			Localisation::roman(OUT, LD, I"Index.Elements.In.SetAutomatically");
+			DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
-			Localisation::write_1(OUT, LD, I"Index.Elements.In.SetFrom",
+			Localisation::roman_t(OUT, LD, I"Index.Elements.In.SetFrom",
 				Metadata::read_optional_textual(E, I"^credit"));
 			break;
 	}
@@ -200,6 +200,6 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 		WRITE("&nbsp;");
-		Localisation::italic_0(OUT, LD, I"Index.Elements.In.Double");
+		Localisation::italic(OUT, LD, I"Index.Elements.In.Double");
 	}
 	HTML_CLOSE("p");

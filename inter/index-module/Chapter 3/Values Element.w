@@ -33,7 +33,7 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 @<Index a K understood variable@> =
 	if (understood_note_given == FALSE) {
 		understood_note_given = TRUE;
-		Localisation::write_0(OUT, LD, I"Index.Elements.Vl.UnderstoodVariables");
+		Localisation::roman(OUT, LD, I"Index.Elements.Vl.UnderstoodVariables");
 		HTML_TAG("br");
 	}
 
@@ -59,9 +59,9 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Index the equations@> =
 	HTML_OPEN("p");
-	Localisation::bold_0(OUT, LD, I"Index.Elements.Vl.EquationsHeading");
+	Localisation::bold(OUT, LD, I"Index.Elements.Vl.EquationsHeading");
 	WRITE(" (");
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Vl.AboutEquations");
+	Localisation::italic(OUT, LD, I"Index.Elements.Vl.AboutEquations");
 	WRITE(")");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
@@ -77,5 +77,5 @@ void ValuesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 			N++;
 		}
 	}
-	if (N == 0) Localisation::italic_0(OUT, LD, I"Index.Elements.Vl.NoEquations");
+	if (N == 0) Localisation::italic(OUT, LD, I"Index.Elements.Vl.NoEquations");
 	HTML_CLOSE("p");

@@ -24,16 +24,16 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	text_stream *author = Metadata::read_optional_textual(pack, I"^author");
 	if (Str::len(title) > 0) {
 		if (Str::len(author) > 0)
-			Localisation::write_2(OUT, LD, I"Index.Elements.C.Titling", title, author);
+			Localisation::roman_tt(OUT, LD, I"Index.Elements.C.Titling", title, author);
 		else
-			Localisation::write_1(OUT, LD, I"Index.Elements.C.AnonymousTitling", title);
+			Localisation::roman_t(OUT, LD, I"Index.Elements.C.AnonymousTitling", title);
 	}
 	WRITE("</b>");
 	HTML_CLOSE("p");
 
 @<Index the headings@> =
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.C.ContentsHeading");
+	Localisation::roman(OUT, LD, I"Index.Elements.C.ContentsHeading");
 	HTML_CLOSE("p");
 	int min_positive_level = 10, entries_written = 0;
 	inter_package *heading_pack;
@@ -51,7 +51,7 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	if (entries_written == 0) {
 		HTML_OPEN("p");
 		WRITE("(");
-		Localisation::write_0(OUT, LD, I"Index.Elements.C.NoContents");
+		Localisation::roman(OUT, LD, I"Index.Elements.C.NoContents");
 		WRITE(")");
 		HTML_CLOSE("p");
 		WRITE("\n");
@@ -88,7 +88,7 @@ void ContentsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 @<Index the extensions@> =
 	HTML_OPEN("p");
-	Localisation::write_0(OUT, LD, I"Index.Elements.C.ExtensionsHeading");
+	Localisation::roman(OUT, LD, I"Index.Elements.C.ExtensionsHeading");
 	HTML_CLOSE("p");
 	ContentsElement::index_extensions_included_by(OUT, inv, NULL, FALSE, LD);
 	inter_package *ext_pack;
@@ -117,12 +117,12 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 				HTML::open_indented_p(OUT, 2, "hanging");
 				HTML::begin_colour(OUT, I"808080");
 				if (auto_included == TRUE)
-					Localisation::write_0(OUT, LD, I"Index.Elements.C.IncludedAutomatically");
+					Localisation::roman(OUT, LD, I"Index.Elements.C.IncludedAutomatically");
 				else if (auto_included == FALSE)
-					Localisation::write_0(OUT, LD, I"Index.Elements.C.IncludedFromSource");
+					Localisation::roman(OUT, LD, I"Index.Elements.C.IncludedFromSource");
 				else {
 					inter_package *owner_pack = Inter::Packages::container(owner_id->definition);
-					Localisation::write_1(OUT, LD, I"Index.Elements.C.IncludedBy",
+					Localisation::roman_t(OUT, LD, I"Index.Elements.C.IncludedBy",
 						Metadata::read_optional_textual(owner_pack, I"^title"));
 				}
 				HTML::end_colour(OUT);
@@ -148,7 +148,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	text_stream *v = Metadata::read_textual(pack, I"^version");
 	if (Str::len(v) > 0) {
 		HTML_OPEN_WITH("span", "class=\"smaller\"");
-		Localisation::write_1(OUT, LD, I"Index.Elements.C.Version", v);
+		Localisation::roman_t(OUT, LD, I"Index.Elements.C.Version", v);
 		HTML_CLOSE("span");
 		WRITE(" ");
 	}
@@ -173,6 +173,6 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 @ =
 void ContentsElement::word_count(OUTPUT_STREAM, inter_package *pack,
 	localisation_dictionary *LD) {
-	Localisation::write_1n(OUT, LD, I"Index.Elements.C.Words",
+	Localisation::roman_i(OUT, LD, I"Index.Elements.C.Words",
 		(int) Metadata::read_numeric(pack, I"^word_count"));
 }

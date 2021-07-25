@@ -25,7 +25,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
 	main_eml->actual_height = 0;
 	main_eml->titling_point_size = ConfigureIndexMap::get_int_mp(I"title-size", NULL);
 	main_eml->titling = Str::new();
-	Localisation::write_0(main_eml->titling, LD, I"Index.EPSMap.DefaultTitle");
+	Localisation::roman(main_eml->titling, LD, I"Index.EPSMap.DefaultTitle");
 	main_eml->contains_titling = TRUE;
 	main_eml->contains_rooms = FALSE;
 	ConfigureIndexMap::prepare_map_parameter_scope(&(main_eml->map_parameters));

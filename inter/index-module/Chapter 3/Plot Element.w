@@ -47,7 +47,7 @@ about and created but never made use of.)
 
 @<Show the legend for the scene table icons@> =
 	HTML_OPEN("p"); 
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.LegendHeading");
+	Localisation::italic(OUT, LD, I"Index.Elements.Pl.LegendHeading");
 	WRITE(": ");
 	PlotElement::scene_icon_legend(OUT, "WPB", LD, I"Index.Elements.Pl.WPBLegend");
 	WRITE("; ");
@@ -63,7 +63,7 @@ about and created but never made use of.)
 	WRITE("; ");
 	PlotElement::scene_icon_legend(OUT, "Recurring", LD, I"Index.Elements.Pl.RecurringLegend");
 	WRITE(". ");
-	Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.LegendNote");
+	Localisation::italic(OUT, LD, I"Index.Elements.Pl.LegendNote");
 	HTML_CLOSE("p");
 
 @<Give details of each scene in turn@> =
@@ -95,18 +95,18 @@ fact, end.
 @<Index the name and recurrence status of the scene@> =
 	HTML::open_indented_p(OUT, 1, "hanging");
 	IndexUtilities::anchor_numbered(OUT, ssc->allocation_id);
-	Localisation::bold_1(OUT, LD, I"Index.Elements.Pl.SceneName",
+	Localisation::bold_t(OUT, LD, I"Index.Elements.Pl.SceneName",
 		Metadata::read_textual(ssc->pack, I"^name"));
 	IndexUtilities::link_package(OUT, ssc->pack);
 	if (FauxScenes::recurs(ssc)) {
 		WRITE("&nbsp;&nbsp;");
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.Recurring");
+		Localisation::italic(OUT, LD, I"Index.Elements.Pl.Recurring");
 	}
 	HTML_CLOSE("p");
 
 @<Explain the Entire Game scene@> =
 	HTML::open_indented_p(OUT, 1, "tight");
-	Localisation::write_0(OUT, LD, I"Index.Elements.Pl.EntireGame");
+	Localisation::roman(OUT, LD, I"Index.Elements.Pl.EntireGame");
 	HTML_CLOSE("p");
 
 @<Index the rules which apply during this scene@> =
@@ -117,7 +117,7 @@ fact, end.
 			IndexRules::scene_context(ssc)) == FALSE) {
 			if (rbc++ == 0) {
 				HTML::open_indented_p(OUT, 1, "hanging");
-				Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.During");
+				Localisation::italic(OUT, LD, I"Index.Elements.Pl.During");
 				HTML_CLOSE("p");
 			}
 			HTML::open_indented_p(OUT, 2, "hanging");
@@ -129,23 +129,23 @@ fact, end.
 
 @<Index the conditions for this scene end to occur@> =
 	HTML::open_indented_p(OUT, 1, "hanging");
-	if (end == 0) Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.BeginsWhen");
-	if (end == 1) Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.EndsWhen");
-	if (end >= 2) Localisation::italic_1(OUT, LD, I"Index.Elements.Pl.EndsUnusuallyWhen",
+	if (end == 0) Localisation::italic(OUT, LD, I"Index.Elements.Pl.BeginsWhen");
+	if (end == 1) Localisation::italic(OUT, LD, I"Index.Elements.Pl.EndsWhen");
+	if (end >= 2) Localisation::italic_t(OUT, LD, I"Index.Elements.Pl.EndsUnusuallyWhen",
 		FauxScenes::end_name(ssc->ends[end]));
 	WRITE(" ");
 	int count = 0;
 	@<Index the play-begins condition@>;
 	@<Index the I7 condition for a scene to end@>;
 	@<Index connections to other scene ends@>;
-	if (count == 0) Localisation::bold_0(OUT, LD, I"Index.Elements.Pl.Never");
+	if (count == 0) Localisation::bold(OUT, LD, I"Index.Elements.Pl.Never");
 	HTML_CLOSE("p");
 
 @<Index the play-begins condition@> =
 	if ((end==0) && (FauxScenes::starts_at_start_of_play(ssc))) {
 		if (count > 0) {
 			HTML_TAG("br");
-			Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.OrWhen");
+			Localisation::italic(OUT, LD, I"Index.Elements.Pl.OrWhen");
 			WRITE(" ");
 		}
 		WRITE("<b>play begins</b>");
@@ -156,7 +156,7 @@ fact, end.
 	if (FauxScenes::has_anchor_condition(ssc->ends[end])) {
 		if (count > 0) {
 			HTML_TAG("br");
-			Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.OrWhen");
+			Localisation::italic(OUT, LD, I"Index.Elements.Pl.OrWhen");
 			WRITE(" ");
 		}
 		WRITE("%S", FauxScenes::anchor_condition(ssc->ends[end]));
@@ -170,7 +170,7 @@ fact, end.
 		scon=scon->next) {
 		if (count > 0) {
 			HTML_TAG("br");
-			Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.OrWhen");
+			Localisation::italic(OUT, LD, I"Index.Elements.Pl.OrWhen");
 			WRITE(" ");
 		}
 		simplified_scene *to_ssc = FauxScenes::connects_to(scon);
@@ -188,7 +188,7 @@ fact, end.
 	inter_package *rb_pack = Inter::Packages::container(rb->definition);
 	if (IndexRules::is_empty(I, rb_pack) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Pl.WhatHappens");
+		Localisation::italic(OUT, LD, I"Index.Elements.Pl.WhatHappens");
 		WRITE(":"); HTML_CLOSE("p");
 		IndexRules::rulebook_list(OUT, I, rb_pack, I"", IndexRules::no_rule_context(), LD);
 	}
@@ -285,7 +285,7 @@ void PlotElement::scene_icon_legend(OUTPUT_STREAM, char *si, localisation_dictio
 	text_stream *gloss) {
 	PlotElement::scene_icon_unspaced(OUT, si);
 	WRITE("&nbsp;");
-	Localisation::italic_0(OUT, LD, gloss);
+	Localisation::italic(OUT, LD, gloss);
 }
 
 void PlotElement::scene_icon_unspaced(OUTPUT_STREAM, char *si) {

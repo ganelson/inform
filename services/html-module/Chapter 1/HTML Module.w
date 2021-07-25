@@ -24,6 +24,8 @@ void HTMLModule::end(void) {
 @
 
 @e documentation_ref_CLASS
+@e localisation_dictionary_CLASS
 
 =
 DECLARE_CLASS(documentation_ref)
+DECLARE_CLASS(localisation_dictionary)

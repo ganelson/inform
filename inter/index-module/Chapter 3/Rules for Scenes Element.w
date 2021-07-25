@@ -11,7 +11,7 @@ void RulesForScenesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 
 	HTML_OPEN("p");
-	Localisation::bold_0(OUT, LD, I"Index.Elements.RS.Machinery");
+	Localisation::bold(OUT, LD, I"Index.Elements.RS.Machinery");
 	HTML_CLOSE("p");
 
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.RS.SceneChanging", NULL,
@@ -19,7 +19,7 @@ void RulesForScenesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"SRULES");
-	Localisation::bold_0(OUT, LD, I"Index.Elements.RS.General");
+	Localisation::bold(OUT, LD, I"Index.Elements.RS.General");
 	HTML_CLOSE("p");
 
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.RS.SceneBegins", NULL,

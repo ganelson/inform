@@ -252,55 +252,55 @@ Inblorb to copy out later.
 	if (rel->release_cover == FALSE) {
 		WRITE("status alternative ||Using 'Release along with cover art', to "
 			"provide something more distinctive than the default artwork above");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_cover", FALSE);
+		DocReferences::link_to(OUT, I"release_cover", FALSE);
 		WRITE("||\n");
 	}
 	if (rel->release_website == FALSE) {
 		WRITE("status alternative ||Using 'Release along with a website'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_website", FALSE);
+		DocReferences::link_to(OUT, I"release_website", FALSE);
 		WRITE("||\n");
 	}
 	if (rel->release_interpreter == FALSE) {
 		WRITE("status alternative ||Using 'Release along with an interpreter', "
 			"for in-browser play on your website");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_interpreter", FALSE);
+		DocReferences::link_to(OUT, I"release_interpreter", FALSE);
 		WRITE("||\n");
 	}
 	if (NUMBER_CREATED(auxiliary_file) == 0) {
 		WRITE("status alternative ||Using 'Release along with a file of "
 			"\"Such-and-Such\" called \"whatever.pdf\"', perhaps to add a "
 			"manual, or a welcoming note");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_files", FALSE);
+		DocReferences::link_to(OUT, I"release_files", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_source == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the source text'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_source", FALSE);
+		DocReferences::link_to(OUT, I"release_source", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_solution == FALSE) {
 		WRITE("status alternative ||Using 'Release along with a solution'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_solution", FALSE);
+		DocReferences::link_to(OUT, I"release_solution", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_card == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the library card'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_card", FALSE);
+		DocReferences::link_to(OUT, I"release_card", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_booklet == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the introductory booklet'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_booklet", FALSE);
+		DocReferences::link_to(OUT, I"release_booklet", FALSE);
 		WRITE("||\n");
 	}
 
 	if (rel->release_postcard == FALSE) {
 		WRITE("status alternative ||Using 'Release along with the introductory postcard'");
-		IndexUtilities::DocReferences::link_to(OUT, I"release_postcard", FALSE);
+		DocReferences::link_to(OUT, I"release_postcard", FALSE);
 		WRITE("||\n");
 	}
 

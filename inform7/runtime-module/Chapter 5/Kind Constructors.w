@@ -511,7 +511,7 @@ void RTKindConstructors::compile(void) {
 			if (Wordings::nonempty(W)) {
 				TEMPORARY_TEXT(temp)
 				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
-				if (IndexUtilities::DocReferences::validate_if_possible(temp))
+				if (DocReferences::validate_if_possible(temp))
 					Kinds::Behaviour::set_documentation_reference(K, temp);
 				DISCARD_TEXT(temp)
 			}

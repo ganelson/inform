@@ -58,10 +58,10 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *LD, int test_onl
 @<Index the name and super-region of the region@> =
 	faux_instance *within = FauxInstances::region_of(reg);
 	if (within)
-		Localisation::bold_2(OUT, LD, I"Index.Elements.Mp.RegionInRegion",
+		Localisation::bold_tt(OUT, LD, I"Index.Elements.Mp.RegionInRegion",
 			FauxInstances::get_name(reg), FauxInstances::get_name(within));
 	else
-		Localisation::bold_1(OUT, LD, I"Index.Elements.Mp.Region",
+		Localisation::bold_t(OUT, LD, I"Index.Elements.Mp.Region",
 			FauxInstances::get_name(reg));
 
 @<Give room details for rooms outside any region in the World index@> =
@@ -86,7 +86,7 @@ will be things which are offstage (and their contents and any parts thereof):
 			@<Start a new details panel on the World index@>;
 			if (++out_of_play_count == 1) {
 				suppress_panel_changes = TRUE;
-				Localisation::bold_0(OUT, LD, I"Index.Elements.Mp.NowhereHeading");
+				Localisation::bold(OUT, LD, I"Index.Elements.Mp.NowhereHeading");
 				HTML_TAG("br");
 			}
 			MapElement::index(OUT, I, 2, FALSE, LD);
@@ -177,7 +177,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 		WRITE(", ");
 		TEMPORARY_TEXT(whatever)
 		FauxInstances::write_kind(whatever, I);
-		Localisation::write_1(OUT, LD, I"Index.Elements.Mp.KindOf", whatever);
+		Localisation::roman_t(OUT, LD, I"Index.Elements.Mp.KindOf", whatever);
 		DISCARD_TEXT(whatever)
 	}
 
@@ -243,7 +243,7 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, localisation_dict
 				k++;
 				if (k == 1) {
 					HTML::open_indented_p(OUT, 1, "tight");
-					Localisation::italic_0(OUT, LD, I"Index.Elements.Mp.MentionedIn");					
+					Localisation::italic(OUT, LD, I"Index.Elements.Mp.MentionedIn");					
 					WRITE(": ");
 				} else WRITE("; ");
 				IndexUtilities::link(OUT, (int) v2);				
@@ -273,8 +273,8 @@ int MapElement::annotate_player(OUTPUT_STREAM, faux_instance *I,
 	localisation_dictionary *LD) {
 	if (I == FauxInstances::start_room()) {
 		WRITE(" - ");
-		Localisation::italic_0(OUT, LD, I"Index.Elements.Mp.RoomWherePlayBegins");		
-		IndexUtilities::DocReferences::link(OUT, I"ROOMPLAYBEGINS");
+		Localisation::italic(OUT, LD, I"Index.Elements.Mp.RoomWherePlayBegins");		
+		DocReferences::link(OUT, I"ROOMPLAYBEGINS");
 		return TRUE;
 	}
 	return FALSE;
@@ -292,8 +292,8 @@ int MapElement::annotate_door(OUTPUT_STREAM, faux_instance *O,
 		if (X == NULL) WRITE_TO(to, "nowhere");
 		else FauxInstances::write_name(to, X);
 		WRITE(" - ");
-		if ((A) && (B)) Localisation::italic_1(OUT, LD, I"Index.Elements.Mp.DoorTo", to);
-		else Localisation::italic_1(OUT, LD, I"Index.Elements.Mp.OneSidedDoorTo", to);
+		if ((A) && (B)) Localisation::italic_t(OUT, LD, I"Index.Elements.Mp.DoorTo", to);
+		else Localisation::italic_t(OUT, LD, I"Index.Elements.Mp.OneSidedDoorTo", to);
 		DISCARD_TEXT(to)
 		return TRUE;
 	}
@@ -313,7 +313,7 @@ void MapElement::index_spatial_relationship(OUTPUT_STREAM, faux_instance *I,
 		if (FauxInstances::is_worn(I)) rel = I"Index.Elements.Mp.BriefWorn";
 	}
 	if (rel) {
-		Localisation::italic_0(OUT, LD, rel);
+		Localisation::italic(OUT, LD, rel);
 		WRITE(" ");
 	}
 }
@@ -379,7 +379,7 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O,
 			if (FauxInstances::is_worn(O)) rel = I"Index.Elements.Mp.Worn";
 			TEMPORARY_TEXT(to)
 			FauxInstances::write_name(to, P);
-			Localisation::italic_1(OUT, LD, rel, to);
+			Localisation::italic_t(OUT, LD, rel, to);
 			WRITE(" ");
 			DISCARD_TEXT(to)
 			int at = FauxInstances::progenitor_set_at(O);
@@ -422,7 +422,7 @@ void MapElement::index_backdrop_further(OUTPUT_STREAM, faux_instance *loc, int d
 @<Insert fore-matter@> =
 	switch (how) {
 		case 1: HTML_OPEN("p");
-				Localisation::bold_0(OUT, LD, I"Index.Elements.Mp.EverywhereHeading");
+				Localisation::bold(OUT, LD, I"Index.Elements.Mp.EverywhereHeading");
 				HTML_TAG("br"); break;
 		case 2: HTML_TAG("br"); break;
 	}
