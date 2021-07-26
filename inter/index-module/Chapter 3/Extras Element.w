@@ -32,13 +32,13 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 			if (c++ == 0) @<Heading for these@>;
 			IndexRules::rulebook_box(OUT, inv, 
 				Metadata::read_optional_textual(rb_pack, I"^printed_name"),
-				NULL, rb_pack, NULL, 1, TRUE, LD);
+				NULL, rb_pack, NULL, 1, TRUE, session);
 		}
 	inter_package *av_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(av_pack, i, inv->activity_nodes)
 		if (Synoptic::module_containing(av_pack->package_head) == E) {
 			if (c++ == 0) @<Heading for these@>;
-			IndexRules::activity_box(OUT, I, av_pack, 1, LD);
+			IndexRules::activity_box(OUT, I, av_pack, 1, session);
 		}
 
 @<Heading for these@> =

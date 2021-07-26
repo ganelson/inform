@@ -311,7 +311,12 @@ void Localisation::write_iti(OUTPUT_STREAM, localisation_dictionary *D, text_str
 @<Vacate the vals@> =
 	for (int i=0; i<10; i++) vals[i] = NULL;
 
-@ =
+@ Note that if a non-existing documentation reference is tried, say |<BOGUS>|,
+then it is passed through into the output as it stands, angle brackets and all.
+This is actually useful, since it means small HTML tags such as |<i>| can be
+included in localisation texts.
+
+=
 void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 	text_stream *key, text_stream **vals) {
 	text_stream *prototype = Localisation::read(D, key);
@@ -333,13 +338,15 @@ void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 				WRITE("<i>"); italics_open = TRUE; break;
 			case '<': {
 				TEMPORARY_TEXT(link)
-				WRITE("&nbsp;");
 				i++;
 				while ((i<Str::len(prototype)) && (Str::get_at(prototype, i) != '>'))
 					PUT_TO(link, Str::get_at(prototype, i++));
-				if (Characters::isupper(Str::get_at(link, 0)))
+				if (Characters::isupper(Str::get_at(link, 0))) {
+					WRITE("&nbsp;");
 					DocReferences::link(OUT, link);
-				else WRITE("<%S>", link);
+				} else {
+					WRITE("<%S>", link);
+				}
 				DISCARD_TEXT(link)
 				break;
 			}

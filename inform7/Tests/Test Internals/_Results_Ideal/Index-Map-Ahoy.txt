@@ -589,7 +589,7 @@
 
         </table>
 
-<p><i>Mapping starboard as east; port as west; fore as north; aft as south</i></p>
+<p><i>mapping starboard as east</i>; <i>mapping port as west</i>; <i>mapping fore as north</i>; <i>mapping aft as south</i></p>
 </p>
 <!--WORLD WRITE MAP ENDS-->
 <a name=MDETAILS></a>
@@ -763,7 +763,7 @@
                             <p class="hangingin1">proper-named; undescribed</p>
                             <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
-                            <p class="tightin1"><i>initial location:</i> in Fish Room&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><i>initial location</i>: in Fish Room &nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
                         </td>
                         <td width="8">

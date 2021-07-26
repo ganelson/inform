@@ -121,7 +121,7 @@ fact, end.
 			WRITE("<i>%S</i>", Metadata::read_textual(pack, I"^printed_name"));
 			HTML_CLOSE("p");
 			IndexRules::rulebook_list(OUT, I, pack, I"",
-				IndexRules::scene_context(ssc), LD);
+				IndexRules::scene_context(ssc), session);
 		}
 
 @<Index the conditions for this scene end to occur@> =
@@ -170,7 +170,7 @@ fact, end.
 			Localisation::italic(OUT, LD, I"Index.Elements.Pl.OrWhen");
 			WRITE(" ");
 		}
-		simplified_scene *to_ssc = FauxScenes::connects_to(scon);
+		simplified_scene *to_ssc = FauxScenes::connects_to(scon, session);
 		text_stream *NW = FauxScenes::scene_name(to_ssc);
 		WRITE("<b>%S</b> <i>%s</i>", NW,
 			(FauxScenes::scon_end(scon)==0)?"begins":"ends");
@@ -187,7 +187,8 @@ fact, end.
 		HTML::open_indented_p(OUT, 1, "hanging");
 		Localisation::italic(OUT, LD, I"Index.Elements.Pl.WhatHappens");
 		WRITE(":"); HTML_CLOSE("p");
-		IndexRules::rulebook_list(OUT, I, rb_pack, I"", IndexRules::no_rule_context(), LD);
+		IndexRules::rulebook_list(OUT, I, rb_pack, I"",
+			IndexRules::no_rule_context(), session);
 	}
 
 @h Table of Scenes.
@@ -261,11 +262,11 @@ this one does; then to scenes which begin when this one ends.
 	simplified_scene *ssc2;
 	LOOP_OVER_LINKED_LIST(ssc2, simplified_scene, L)
 		for (simplified_connector *scon = ssc2->ends[0]->anchor_connectors; scon; scon=scon->next)
-			if ((FauxScenes::connects_to(scon) == ssc) && (FauxScenes::scon_end(scon) >= 1))
+			if ((FauxScenes::connects_to(scon, session) == ssc) && (FauxScenes::scon_end(scon) >= 1))
 				PlotElement::index_from_scene(OUT, ssc2, depth + 1, FauxScenes::scon_end(scon), ssc, session);
 	LOOP_OVER_LINKED_LIST(ssc2, simplified_scene, L)
 		for (simplified_connector *scon = ssc2->ends[0]->anchor_connectors; scon; scon=scon->next)
-			if ((FauxScenes::connects_to(scon) == ssc) && (FauxScenes::scon_end(scon) == 0))
+			if ((FauxScenes::connects_to(scon, session) == ssc) && (FauxScenes::scon_end(scon) == 0))
 				PlotElement::index_from_scene(OUT, ssc2, depth, FauxScenes::scon_end(scon), ssc, session);
 
 @ We have been using:
@@ -288,24 +289,4 @@ void PlotElement::scene_icon_legend(OUTPUT_STREAM, char *si, localisation_dictio
 
 void PlotElement::scene_icon_unspaced(OUTPUT_STREAM, char *si) {
 	HTML_TAG_WITH("img", "border=0 src=inform:/scene_icons/%s.png", si);
-}
-
-@ Lastly: the following is the criterion used for sorting the scenes into
-their indexing order. The Entire Game always comes first, and then come the
-rest in ascending alphabetical order.
-
-=
-int PlotElement::scene_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
-	if (E1 == E2) return 0;
-	inter_tree_node *P1 = E1->node;
-	inter_tree_node *P2 = E2->node;
-	inter_package *sc1 = Inter::Package::defined_by_frame(P1);
-	inter_package *sc2 = Inter::Package::defined_by_frame(P2);
-	if (Metadata::read_optional_numeric(sc1, I"^is_entire_game")) return -1;
-	if (Metadata::read_optional_numeric(sc2, I"^is_entire_game")) return 1;
-	text_stream *SW1 = Metadata::read_textual(sc1, I"^name");
-	text_stream *SW2 = Metadata::read_textual(sc2, I"^name");
-	return Str::cmp(SW1, SW2);
 }

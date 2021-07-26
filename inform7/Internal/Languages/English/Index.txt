@@ -464,6 +464,7 @@
 %Index.Elements.Mp.BriefPart = part
 %Index.Elements.Mp.BriefWorn = worn
 
+%Index.Elements.Mp.InitialLocation = initial location
 %Index.Elements.Mp.In = in *1
 %Index.Elements.Mp.On = on *1
 %Index.Elements.Mp.Carried = carried by *1

@@ -132,7 +132,7 @@ or as paragraph of text in pass 2:
 			if (Metadata::read_optional_numeric(pack, I"^has_properties")) props = "tick";
 			if (Metadata::read_optional_numeric(pack, I"^understandable")) under = "tick";
 			if (priority == 8) { repeat = NULL; props = NULL; under = NULL; }
-			ChartElement::begin_chart_row(OUT);
+			ChartElement::begin_chart_row(OUT, session);
 			ChartElement::index_kind_name_cell(OUT, shaded, pack);
 			ChartElement::end_chart_row(OUT, shaded, pack, repeat, props, under);
 			break;
@@ -149,7 +149,7 @@ or as paragraph of text in pass 2:
 		}
 	}
 	if (Str::eq(Metadata::read_textual(pack, I"^printed_name"), I"object"))
-		ChartElement::index_subkinds(OUT, inv, pack, 2, pass, D);
+		ChartElement::index_subkinds(OUT, inv, pack, 2, pass, session);
 
 @<Write heading for the detailed index entry for this kind@> =
 	HTML::open_indented_p(OUT, 1, "halftight");
@@ -195,7 +195,7 @@ or as paragraph of text in pass 2:
 @<Index possible values of an enumerated kind@> =
 	if (Str::ne(Metadata::read_textual(pack, I"^printed_name"), I"object"))
 		if (Metadata::read_optional_numeric(pack, I"^instance_count") > 0)
-			ChartElement::index_instances(OUT, inv, pack, 1);
+			ChartElement::index_instances(OUT, inv, pack, 1, session);
 
 @<Index explanatory text supplied for a kind@> =
 	ChartElement::index_inferences(OUT, pack, FALSE);
@@ -230,11 +230,9 @@ void ChartElement::index_kind_col_head(OUTPUT_STREAM, text_stream *key, char *an
 is called --
 
 =
-int striper = FALSE;
-void ChartElement::begin_chart_row(OUTPUT_STREAM) {
+void ChartElement::begin_chart_row(OUTPUT_STREAM, index_session *session) {
 	char *col = NULL;
-	if (striper) col = "#f0f0ff";
-	striper = striper?FALSE:TRUE;
+	if (IndexUtilities::stripe(session) == FALSE) col = "#f0f0ff";
 	HTML::first_html_column_nowrap(OUT, 0, col);
 }
 
@@ -298,19 +296,20 @@ The following limitation exists just to catch errors.
 
 =
 void ChartElement::index_subkinds(OUTPUT_STREAM, tree_inventory *inv, inter_package *pack,
-	int depth, int pass, localisation_dictionary *D) {
+	int depth, int pass, index_session *session) {
 	inter_package *subkind_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(subkind_pack, i, inv->kind_nodes)
 		if ((Metadata::read_optional_numeric(subkind_pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(subkind_pack, I"^is_subkind_of_object"))) {
 			inter_symbol *super_weak = Metadata::read_optional_symbol(subkind_pack, I"^superkind");
 			if ((super_weak) && (Inter::Packages::container(super_weak->definition) == pack))
-				ChartElement::index_object_kind(OUT, inv, subkind_pack, depth, pass, D);
+				ChartElement::index_object_kind(OUT, inv, subkind_pack, depth, pass, session);
 		}
 }
 
 void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
-	inter_package *pack, int depth, int pass, localisation_dictionary *D) {
+	inter_package *pack, int depth, int pass, index_session *session) {
+	localisation_dictionary *D = Indexing::get_localisation(session);
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
 	if (class_s == NULL) internal_error("no class for object kind");
@@ -322,11 +321,11 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	@<Index the link icons part of the object citation@>;
 	@<End the object citation line@>;
 	if (pass == 2) @<Add a subsidiary paragraph of details about this object@>;
-	ChartElement::index_subkinds(OUT, inv, pack, depth+1, pass, D);
+	ChartElement::index_subkinds(OUT, inv, pack, depth+1, pass, session);
 }
 
 @<Begin the object citation line@> =
-	if (pass == 1) ChartElement::begin_chart_row(OUT);
+	if (pass == 1) ChartElement::begin_chart_row(OUT, session);
 	if (pass == 2) {
 		HTML::open_indented_p(OUT, depth, "halftight");
 		IndexUtilities::anchor(OUT, anchor);
@@ -369,15 +368,15 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	HTML::open_indented_p(OUT, depth, "tight");
 	ChartElement::index_inferences(OUT, pack, TRUE);
 	HTML_CLOSE("p");
-	ChartElement::index_instances(OUT, inv, pack, depth);
+	ChartElement::index_instances(OUT, inv, pack, depth, session);
 
 @ =
 void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_package *pack,
-	int depth) {
+	int depth, index_session *session) {
 	HTML::open_indented_p(OUT, depth, "tight");
 	int c = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (c >= 10) {
-		int xtra = IndexRules::extra_ID();
+		int xtra = IndexUtilities::extra_ID(session);
 		IndexUtilities::extra_link(OUT, xtra);
 		HTML::begin_colour(OUT, I"808080");
 		WRITE("%d ", c);

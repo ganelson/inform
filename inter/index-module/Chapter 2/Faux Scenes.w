@@ -30,19 +30,48 @@ typedef struct simplified_connector {
 	CLASS_DEFINITION
 } simplified_connector;
 
-linked_list *FauxScenes::list_of_faux_scenes(index_session *session) {
+@ This three-deck structure of objects matches a similar hiersrchy of Inter
+packages, where |_scene_connector| packages are inside |_scene_end| packages
+which are inside |_scene| packages.
+
+=
+void FauxScenes::list_of_faux_scenes(index_session *session) {
 	linked_list *L = NEW_LINKED_LIST(simplified_scene);
+	session->list_of_scenes = L;
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->scene_nodes, PlotElement::scene_order);
+	TreeLists::sort(inv->scene_nodes, FauxScenes::scene_order);
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 
 	inter_package *scene_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(scene_pack, i, inv->scene_nodes)
 		ADD_TO_LINKED_LIST(FauxScenes::simplified(I, scene_pack), simplified_scene, L);
-	return L;
 }	
 
+@ The following is the criterion used for sorting the scenes into their indexing
+order. The Entire Game always comes first, and then come the rest in ascending
+alphabetical order.
+
+=
+int FauxScenes::scene_order(const void *ent1, const void *ent2) {
+	itl_entry *E1 = (itl_entry *) ent1;
+	itl_entry *E2 = (itl_entry *) ent2;
+	if (E1 == E2) return 0;
+	inter_tree_node *P1 = E1->node;
+	inter_tree_node *P2 = E2->node;
+	inter_package *sc1 = Inter::Package::defined_by_frame(P1);
+	inter_package *sc2 = Inter::Package::defined_by_frame(P2);
+	if (Metadata::read_optional_numeric(sc1, I"^is_entire_game")) return -1;
+	if (Metadata::read_optional_numeric(sc2, I"^is_entire_game")) return 1;
+	text_stream *SW1 = Metadata::read_textual(sc1, I"^name");
+	text_stream *SW2 = Metadata::read_textual(sc2, I"^name");
+	return Str::cmp(SW1, SW2);
+}
+
+@ The following returns a valid |simplified_scene| for each |_scene| package,
+tpgether with its connectors and ends.
+
+=
 simplified_scene *FauxScenes::simplified(inter_tree *I, inter_package *sc_pack) {
 	simplified_scene *ssc = CREATE(simplified_scene);
 	ssc->pack = sc_pack;
@@ -73,6 +102,7 @@ simplified_scene *FauxScenes::simplified(inter_tree *I, inter_package *sc_pack) 
 	return ssc;
 }
 
+@ =
 int FauxScenes::is_entire_game(simplified_scene *ssc) {
 	if (Metadata::read_optional_numeric(ssc->pack, I"^is_entire_game")) return TRUE;
 	return FALSE;
@@ -106,6 +136,7 @@ text_stream *FauxScenes::scene_name(simplified_scene *ssc) {
 	return Metadata::read_textual(ssc->pack, I"^name");
 }
 
+@ =
 text_stream *FauxScenes::end_name(simplified_end *se) {
 	return Metadata::read_textual(se->end_pack, I"^name");
 }
@@ -127,13 +158,18 @@ inter_symbol *FauxScenes::end_rulebook(simplified_end *se) {
 	return Metadata::read_optional_symbol(se->end_pack, I"^rulebook");
 }
 
-simplified_scene *FauxScenes::connects_to(simplified_connector *scon) {
+@ A connector leads, of course, to another scene. Determiming that is quite
+slow, but ww cache the result so that it must only be done once.
+
+=
+simplified_scene *FauxScenes::connects_to(simplified_connector *scon, index_session *session) {
 	if (scon->connect_to) return scon->connect_to;
 	inter_symbol *sc_symbol = Metadata::read_optional_symbol(scon->con_pack, I"^to");
 	if (sc_symbol) {
 		inter_package *to_pack = Inter::Packages::container(sc_symbol->definition);
+		linked_list *L = Indexing::get_list_of_scenes(session);
 		simplified_scene *ssc;
-		LOOP_OVER(ssc, simplified_scene)
+		LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)
 			if (ssc->pack == to_pack) {
 				scon->connect_to = ssc;
 				return ssc;

@@ -34,29 +34,15 @@ file has been read.
 =
 void InterpretIndex::generate(text_stream *structure, index_session *session) {
 	localisation_dictionary *D = Indexing::get_localisation(session);
+	Indexing::empty_list_of_pages(session);
 	filename *index_structure = InstalledFiles::index_structure_file(structure);
-	index_generation_state igs;
-	@<Initialise IGS@>;
 	@<Read the structure file line by line@>;
 	@<Actually generate the index files@>;
 }
 
-@ This little structure is just some state being carried by the reader-function
-which goes through the |.indext| file line by line.
-
-=
-typedef struct index_generation_state {
-	struct index_session *session;
-	struct linked_list *pages; /* of |index_page| */
-} index_generation_state;
-
-@<Initialise IGS@> =
-	igs.pages = NEW_LINKED_LIST(index_page);
-	igs.session = session;
-
 @<Read the structure file line by line@> =
 	TextFiles::read(index_structure, FALSE, "unable to read index structure file", TRUE,
-		&InterpretIndex::read_structure, NULL, (void *) &igs);
+		&InterpretIndex::read_structure, NULL, (void *) session);
 
 @ |contents| is currently implemented identically to |pages|, but it is supposed to
 represent the home page of the index. The declaration for it should come
@@ -69,8 +55,8 @@ pages.
 
 =
 void InterpretIndex::read_structure(text_stream *text, text_file_position *tfp, void *state) {
-	index_generation_state *igs = (index_generation_state *) state;
-	localisation_dictionary *D = Indexing::get_localisation(igs->session);
+	index_session *session = (index_session *) state;
+	localisation_dictionary *D = Indexing::get_localisation(session);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, L"page (%C+) (%C+)")) {
 		@<Register a new index page@>;
@@ -98,31 +84,31 @@ will be |Kinds.html| either way.
 	WRITE_TO(path, "Index.Pages.%S.Caption", key);
 	text_stream *explanation = Localisation::read(D, path);
 	DISCARD_TEXT(path)
-	index_page *new_page = InterpretIndex::register_page(col, heading, explanation, key);
-	ADD_TO_LINKED_LIST(new_page, index_page, igs->pages);
+	InterpretIndex::register_page(col, heading, explanation, key, session);
 
 @<Register a new index element@> =
-	if (LinkedLists::len(igs->pages) == 0) internal_error("element without page");
-	index_page *latest = LAST_IN_LINKED_LIST(index_page, igs->pages);
+	index_page *latest = Indexing::latest_page(session);
+	if (latest == NULL) internal_error("element without page");
 	text_stream *elt = mr.exp[0];
 	TEMPORARY_TEXT(tkey)
 	TEMPORARY_TEXT(hkey)
 	WRITE_TO(tkey, "Index.Elements.%S.Title", elt);
 	WRITE_TO(hkey, "Index.Elements.%S.Heading", elt);
-	InterpretIndex::register_element(elt, latest,
-		Localisation::read(D, tkey), hkey);
+	InterpretIndex::register_element(elt, latest, Localisation::read(D, tkey), hkey);
 	DISCARD_TEXT(tkey)
 	DISCARD_TEXT(hkey)
 
 @<Actually generate the index files@> =
 	index_page *page;
-	LOOP_OVER_LINKED_LIST(page, index_page, igs.pages) {
+	linked_list *L = Indexing::get_list_of_pages(session);
+	LOOP_OVER_LINKED_LIST(page, index_page, L) {
 		TEMPORARY_TEXT(leafname)
 		WRITE_TO(leafname, "%S.html", page->page_leafname);
 		TEMPORARY_TEXT(key)
 		WRITE_TO(key, "Index.Pages.%S.Title", page->page_leafname);
 		text_stream index_file_struct; text_stream *OUT = &index_file_struct;
-		InterpretIndex::open_file(OUT, page, leafname, Localisation::read(D, key), -1, D);
+		InterpretIndex::open_file(OUT, page, leafname, Localisation::read(D, key),
+			-1, session);
 		Elements::periodic_table(OUT, page, leafname, session);
 		InterpretIndex::close_index_file(OUT);
 		DISCARD_TEXT(key)
@@ -141,17 +127,22 @@ typedef struct index_page {
 	struct text_stream *page_title;
 	struct text_stream *page_explanation;
 	struct text_stream *page_leafname;
+	struct linked_list *elements; /* of |index_element| */
+	struct index_session *for_session;
 	CLASS_DEFINITION
 } index_page;
 
 index_page *InterpretIndex::register_page(text_stream *col, text_stream *title,
-	text_stream *exp, text_stream *leaf) {
+	text_stream *exp, text_stream *leaf, index_session *session) {
 	index_page *new_page = CREATE(index_page);
 	new_page->no_elements = 0;
 	new_page->key_colour = Str::duplicate(col);
 	new_page->page_title = Str::duplicate(title);
 	new_page->page_explanation = Str::duplicate(exp);
 	new_page->page_leafname = Str::duplicate(leaf);
+	new_page->elements = NEW_LINKED_LIST(index_element);
+	new_page->for_session = session;
+	Indexing::add_page(session, new_page);
 	return new_page;
 }
 
@@ -177,6 +168,7 @@ index_element *InterpretIndex::register_element(text_stream *abb, index_page *ow
 	ie->chemical_symbol = Str::duplicate(abb);
 	ie->element_name = Str::duplicate(title);
 	ie->explanation_key = Str::duplicate(explanation);
+	ADD_TO_LINKED_LIST(ie, index_element, owner->elements);
 	return ie;
 }
 
@@ -185,7 +177,7 @@ index_element *InterpretIndex::register_element(text_stream *abb, index_page *ow
 =
 text_stream *InterpretIndex::open_file(text_stream *IF,
 	index_page *page, text_stream *index_leaf,
-	text_stream *title, int sub, localisation_dictionary *D) {
+	text_stream *title, int sub, index_session *session) {
 	filename *F = IndexLocations::filename(index_leaf, sub);
 	if (STREAM_OPEN_TO_FILE(IF, F, UTF8_ENC) == FALSE) {
 		#ifdef CORE_MODULE
@@ -199,6 +191,7 @@ text_stream *InterpretIndex::open_file(text_stream *IF,
 		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
 		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES),
 		(void *) page);
+	IndexUtilities::clear_page_data(session);
 	return IF;
 }
 

@@ -7,10 +7,9 @@ is delegated to //Spatial Mapping//. This section contains only the code which
 cues all of that up; but even that code is fairly long.
 
 =
-int suppress_panel_changes = FALSE;
 void MapElement::render(OUTPUT_STREAM, index_session *session, int test_only) {
+	int suppress_panel_changes = FALSE;
 	localisation_dictionary *LD = Indexing::get_localisation(session);
-	SpatialMap::initialise_page_directions();
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	SpatialMap::establish_spatial_coordinates(session);
 	if (test_only) {
@@ -103,17 +102,6 @@ will be things which are offstage (and their contents and any parts thereof):
 @default MAX_OBJECT_INDEX_DEPTH 10000
 
 =
-faux_instance *indexing_room = NULL;
-int xtras_count = 0;
-
-faux_instance *MapElement::room_being_indexed(void) {
-	return indexing_room;
-}
-
-void MapElement::set_room_being_indexed(faux_instance *I) {
-	indexing_room = I;
-}
-
 void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
@@ -121,11 +109,11 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	if (I) {
 		if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
 		FauxInstances::increment_indexing_count(I);
-		if (FauxInstances::is_a_room(I)) indexing_room = I;
+		if (FauxInstances::is_a_room(I)) IndexUtilities::set_room_being_indexed(I, session);
 	}
 	@<Begin the object citation line@>;
 	int xtra = -1;
-	if (I) xtra = xtras_count++;
+	if (I) xtra = IndexUtilities::extra_ID(session);
 	if (xtra >= 0) IndexUtilities::extra_link(OUT, xtra);
 	@<Index the name part of the object citation@>;
 	if (I) @<Index the kind attribution part of the object citation@>;
@@ -146,7 +134,8 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 @<Begin the object citation line@> =
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		if (I != indexing_room) IndexUtilities::anchor(OUT, I->anchor_text);
+		if (I != IndexUtilities::room_being_indexed(session))
+			IndexUtilities::anchor(OUT, I->anchor_text);
 	} else {
 		#ifdef IF_MODULE
 		if (I) MapElement::index_spatial_relationship(OUT, I, session);
@@ -293,7 +282,7 @@ int MapElement::annotate_door(OUTPUT_STREAM, faux_instance *O,
 		FauxInstances::get_door_data(O, &A, &B);
 		TEMPORARY_TEXT(to)
 		faux_instance *X = A;
-		if (A == MapElement::room_being_indexed()) X = B;
+		if (A == IndexUtilities::room_being_indexed(session)) X = B;
 		if (X == NULL) X = FauxInstances::other_side_of_door(O);
 		if (X == NULL) WRITE_TO(to, "nowhere");
 		else FauxInstances::write_name(to, X);
@@ -379,7 +368,8 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O,
 		HTML::open_indented_p(OUT, 1, "tight");
 		faux_instance *P = FauxInstances::progenitor(O);
 		if (P) {
-			WRITE("<i>initial location:</i> ");
+			Localisation::italic(OUT, LD, I"Index.Elements.Mp.InitialLocation");
+			WRITE(": ");
 			text_stream *rel = I"Index.Elements.Mp.In";
 			if (FauxInstances::is_a_supporter(P)) rel = I"Index.Elements.Mp.On";
 			if (FauxInstances::is_a_person(P)) rel = I"Index.Elements.Mp.Carried";
@@ -387,7 +377,7 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O,
 			if (FauxInstances::is_worn(O)) rel = I"Index.Elements.Mp.Worn";
 			TEMPORARY_TEXT(to)
 			FauxInstances::write_name(to, P);
-			Localisation::italic_t(OUT, LD, rel, to);
+			Localisation::roman_t(OUT, LD, rel, to);
 			WRITE(" ");
 			DISCARD_TEXT(to)
 			int at = FauxInstances::progenitor_set_at(O);

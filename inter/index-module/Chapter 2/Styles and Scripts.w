@@ -20,6 +20,7 @@ void IndexStyles::incorporate(OUTPUT_STREAM, void *state) {
 	if (state) {
 		index_page *current_page = (index_page *) state;
 		if (current_page == NULL) return;
+		index_session *session = current_page->for_session;
 		@<Incorporate some CSS@>;
 		@<Incorporate some Javascript@>;
 	}
@@ -34,17 +35,17 @@ run of Inform.
 	HTML::incorporate_CSS(OUT, InstalledFiles::filename(CSS_FOR_INDEX_PAGES_IRES));
 	HTML_OPEN_WITH("style", "type=\"text/css\" media=\"screen, print\"");
 	index_page *ip;
-	LOOP_OVER(ip, index_page) {
+	linked_list *L = Indexing::get_list_of_pages(session);
+	LOOP_OVER_LINKED_LIST(ip, index_page, L) {
 		index_element *ie;
-		LOOP_OVER(ie, index_element)
-			if (ie->owning_page == ip) {
-				WRITE("#box%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
-				WRITE("    background: #%S;\n", ip->key_colour);
-				WRITE("}\n");
-				WRITE("#minibox%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
-				WRITE("    background: #%S;\n", ip->key_colour);
-				WRITE("}\n");
-			}
+		LOOP_OVER_LINKED_LIST(ie, index_element, ip->elements) {
+			WRITE("#box%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
+			WRITE("    background: #%S;\n", ip->key_colour);
+			WRITE("}\n");
+			WRITE("#minibox%d_%d {\n", ip->allocation_id+1, ie->atomic_number);
+			WRITE("    background: #%S;\n", ip->key_colour);
+			WRITE("}\n");
+		}
 	}
 	HTML_CLOSE("style");
 

@@ -61,7 +61,7 @@ void HTMLMap::calculate_map_grid(index_session *session) {
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		int exit;
 		LOOP_OVER_STORY_DIRECTIONS(exit)
-			if (SpatialMap::direction_is_mappable(exit)) {
+			if (SpatialMap::direction_is_mappable(exit, session)) {
 				faux_instance *D = NULL; /* door which the exit passes through, if it does */
 				faux_instance *T = SpatialMap::room_exit(R, exit, &D); /* target at the other end */
 				if ((T) || (D))
@@ -105,7 +105,7 @@ stage can even begin.
 
 @<Fill in the grid-square for this exit of room R@> =
 	int i1, i2;
-	SpatialMap::cell_position_for_direction(exit, &i1, &i2);
+	SpatialMap::cell_position_for_direction(exit, &i1, &i2, session);
 	int bitmap = 0;
 	if (D) {
 		if (T) bitmap |= DOOR2_MAPBIT;
@@ -113,9 +113,9 @@ stage can even begin.
 	}
 	if (T) {
 		bitmap |= EXIT_MAPBIT;
-		vector E = SpatialMap::direction_as_vector(exit);
+		vector E = SpatialMap::direction_as_vector(exit, session);
 		if ((Geometry::vec_eq(E, Zero_vector) == FALSE) &&
-			(SpatialMap::direction_is_lateral(exit))) {
+			(SpatialMap::direction_is_lateral(exit, session))) {
 			@<Set the adjacent or aligned bit if the target lies in the correct direction@>;
 			@<Set the fading bit if another room lies where the target ought to be@>;
 		}
@@ -882,8 +882,8 @@ void HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i2,
 	DISCARD_TEXT(tool_tip)
 
 @<Compose the icon name for this exit@> =
-	char *clue = SpatialMap::find_icon_label(exit);
-	if (clue == NULL) clue = SpatialMap::find_icon_label(faux_exit);
+	char *clue = SpatialMap::find_icon_label(exit, session);
+	if (clue == NULL) clue = SpatialMap::find_icon_label(faux_exit, session);
 	if (clue == NULL) clue = ""; /* should never happen */
 
 	char *addendum = "";

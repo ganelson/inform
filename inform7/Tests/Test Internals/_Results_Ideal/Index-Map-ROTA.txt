@@ -17866,7 +17866,7 @@
                             <p class="hangingin1">proper-named; undescribed</p>
                             <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line113"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
-                            <p class="tightin1"><i>initial location:</i> in Longwall Street&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><i>initial location</i>: in Longwall Street &nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
                         </td>
                         <td width="8">
@@ -28749,7 +28749,7 @@
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line111"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>wooden trap-door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line111"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span style="color:#000080">"wooden trap-door"</span>&nbsp;<a href="source:story.ni#line113"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="tightin1"><i>initial location:</i> in Old School Yard</p>
+                            <p class="tightin1"><i>initial location</i>: in Old School Yard </p>
 
                         </td>
                         <td width="8">

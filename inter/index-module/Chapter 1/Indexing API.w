@@ -30,10 +30,16 @@ so that this decision could be reversed if we wanted to.
 typedef struct index_session {
 	struct inter_tree *tree;
 	struct tree_inventory *inv;
-	struct inter_lexicon *indexing_lexicon;
-	struct faux_instance_set *indexing_fis;
-	struct linked_list *indexing_fs;
-	struct localisation_dictionary *dict;
+	struct inter_lexicon *lexicon;
+	struct faux_instance_set *set_of_instances;
+	struct linked_list *list_of_scenes; /* of |simplified_scene| */
+	struct localisation_dictionary *localisation;
+	struct linked_list *list_of_EPS_map_levels; /* of |EPS_map_level| */
+	struct linked_list *list_of_submaps; /* of |connected_submap| */
+	struct linked_list *list_of_pages; /* of |index_page| */
+	struct map_parameter_scope global_map_scope;
+	struct index_page_data page;
+	int story_dir_to_page_dir[MAX_DIRECTIONS];
 	int session_closed;
 	CLASS_DEFINITION
 } index_session;
@@ -46,11 +52,17 @@ index_session *Indexing::open_session(inter_tree *I) {
 	index_session *session = CREATE(index_session);
 	session->tree = I;
 	session->inv = Synoptic::inv(I);
-	session->indexing_lexicon = NULL;
-	session->indexing_fis = NULL;
-	session->indexing_fs = NULL;
-	session->dict = Localisation::new();
+	session->lexicon = NULL;
+	session->set_of_instances = NULL;
+	session->list_of_scenes = NULL;
+	session->list_of_EPS_map_levels = NEW_LINKED_LIST(EPS_map_level);
+	session->list_of_submaps = NEW_LINKED_LIST(connected_submap);
+	session->list_of_pages = NEW_LINKED_LIST(index_page);
+	session->localisation = Localisation::new();
+	session->global_map_scope = ConfigureIndexMap::global_settings();
 	session->session_closed = FALSE;
+	for (int i=0; i<MAX_DIRECTIONS; i++)
+		session->story_dir_to_page_dir[i] = i;
 	return session;
 }
 
@@ -61,12 +73,12 @@ for how all of this works.
 =
 void Indexing::set_localisation_dictionary(index_session *session, localisation_dictionary *LD) {
 	@<Check this is an open session@>;
-	session->dict = LD;
+	session->localisation = LD;
 }
 
 void Indexing::localise(index_session *session, filename *F) {
 	@<Check this is an open session@>;
-	Localisation::stock_from_file(F, session->dict);
+	Localisation::stock_from_file(F, session->localisation);
 }
 
 @ Now for the productive part. You can make an entire index mini-website with
@@ -126,7 +138,7 @@ inter_tree *Indexing::get_tree(index_session *session) {
 
 localisation_dictionary *Indexing::get_localisation(index_session *session) {
 	@<Check this is an open session@>;
-	return session->dict;
+	return session->localisation;
 }
 
 tree_inventory *Indexing::get_inventory(index_session *session) {
@@ -134,25 +146,72 @@ tree_inventory *Indexing::get_inventory(index_session *session) {
 	return session->inv;
 }
 
-@ These more substantial resources are calculated only on demand:
+map_parameter_scope *Indexing::get_global_map_scope(index_session *session) {
+	return &(session->global_map_scope);
+}
+
+@ These build up gradually:
+
+=
+linked_list *Indexing::get_list_of_EPS_map_levels(index_session *session) {
+	@<Check this is an open session@>;
+	return session->list_of_EPS_map_levels;
+}
+
+void Indexing::add_EPS_map_levels(index_session *session, EPS_map_level *eml) {
+	@<Check this is an open session@>;
+	ADD_TO_LINKED_LIST(eml, EPS_map_level, session->list_of_EPS_map_levels);
+}
+
+linked_list *Indexing::get_list_of_submaps(index_session *session) {
+	@<Check this is an open session@>;
+	return session->list_of_submaps;
+}
+
+void Indexing::add_submap(index_session *session, connected_submap *sub) {
+	@<Check this is an open session@>;
+	ADD_TO_LINKED_LIST(sub, connected_submap, session->list_of_submaps);
+}
+
+void Indexing::empty_list_of_pages(index_session *session) {
+	@<Check this is an open session@>;
+	LinkedLists::empty(session->list_of_pages);
+}
+
+linked_list *Indexing::get_list_of_pages(index_session *session) {
+	@<Check this is an open session@>;
+	return session->list_of_pages;
+}
+
+void Indexing::add_page(index_session *session, index_page *page) {
+	@<Check this is an open session@>;
+	ADD_TO_LINKED_LIST(page, index_page, session->list_of_pages);
+}
+
+index_page *Indexing::latest_page(index_session *session) {
+	@<Check this is an open session@>;
+	if (LinkedLists::len(session->list_of_pages) == 0) return NULL;
+	return LAST_IN_LINKED_LIST(index_page, session->list_of_pages);
+}
+
+@ These more substantial resources are calculated all in one go, but only on demand:
 
 =
 inter_lexicon *Indexing::get_lexicon(index_session *session) {
 	@<Check this is an open session@>;
-	if (session->indexing_lexicon == NULL)
-		session->indexing_lexicon = IndexLexicon::stock(session->tree, session->inv);
-	return session->indexing_lexicon;
+	if (session->lexicon == NULL)
+		session->lexicon = IndexLexicon::stock(session->tree, session->inv);
+	return session->lexicon;
 }
 
 faux_instance_set *Indexing::get_set_of_instances(index_session *session) {
 	@<Check this is an open session@>;
-	if (session->indexing_fis == NULL) FauxInstances::make_faux(session);
-	return session->indexing_fis;
+	if (session->set_of_instances == NULL) FauxInstances::make_faux(session);
+	return session->set_of_instances;
 }
 
 linked_list *Indexing::get_list_of_scenes(index_session *session) {
 	@<Check this is an open session@>;
-	if (session->indexing_fs == NULL)
-		session->indexing_fs = FauxScenes::list_of_faux_scenes(session);
-	return session->indexing_fs;
+	if (session->list_of_scenes == NULL) FauxScenes::list_of_faux_scenes(session);
+	return session->list_of_scenes;
 }

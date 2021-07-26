@@ -29,7 +29,7 @@
     </tr>
     <tr style="display:none" id="default">
         <td colspan="5">
-            The &nbsp;<b>default value&nbsp;</b> is used when we make something like 
+            The <b>default value</b> is used when we make something like 
             	a variable but don't tell Inform what its value is. For instance, if 
             	we write 'Zero hour is a time that varies', but don't tell Inform 
             	anything specific like 'Zero hour is 11:21 PM.', then Inform uses 
@@ -42,7 +42,7 @@
     </tr>
     <tr style="display:none" id="repeat">
         <td colspan="5">
-            A tick for &nbsp;<b>repeat&nbsp;</b> means that it's possible to 
+            A tick for <b>repeat</b> means that it's possible to 
             	repeat through values of this kind. For instance, 'repeat with T 
             	running through times:' is allowed, but 'repeat with N running 
             	through numbers:' is not - there are too many numbers for this to 
@@ -53,7 +53,7 @@
     </tr>
     <tr style="display:none" id="props">
         <td colspan="5">
-            A tick for &nbsp;<b>props&nbsp;</b> means that values of this 
+            A tick for <b>props</b> means that values of this 
             	kind can have properties. For instance, 'A scene can be thrilling or 
             	dull.' makes an either/or property of a scene, but 'A number can be 
             	nice or nasty.' is not allowed because it would cost too much storage 
@@ -65,7 +65,7 @@
     </tr>
     <tr style="display:none" id="under">
         <td colspan="5">
-            A tick for &nbsp;<b>under&nbsp;</b> means that it's possible 
+            A tick for <b>under</b> means that it's possible 
             	to understand values of this kind. For instance, 'Understand "award 
             	[number]" as awarding.' might be allowed, if awarding were an action 
             	applying to a number, but 'Understand "run [rule]" as rule-running.' 
@@ -1050,8 +1050,8 @@ and southwest, for instance; down and up.<br>
 <i>Usually</i> unmarked for listing <i>not</i> marked for listing.<br>
 <i>Can have</i> opposite (<i>direction</i>).<br>
 </p>
-<p class="tightin2"><a href="#" onclick="showExtra('extra77777', 'plus77777'); return false;"><img border=0 id="plus77777" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
-<div id="extra77777" style="display: none;">
+<p class="tightin2"><a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">12 directions</span></p>
+<div id="extra0" style="display: none;">
     <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">
@@ -1141,8 +1141,8 @@ Like a scene in a play: a period of time which is usually tied to events in the 
 </p>
 <p class="halftightin1"><a name=A16></a><b>command parser error</b> (<i>plural</i> command parser errors)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
-<p class="tightin1"><a href="#" onclick="showExtra('extra77778', 'plus77778'); return false;"><img border=0 id="plus77778" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
-<div id="extra77778" style="display: none;">
+<p class="tightin1"><a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;<span style="color:#808080">25 command parser errors</span></p>
+<div id="extra1" style="display: none;">
     <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
         <tr>
             <td width="8">
@@ -1288,10 +1288,10 @@ A description of a set of values, where all of the items have to have the same k
 <p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 </p>
-<p><a name=contra><span class="smaller">&nbsp;<b>Covariance&nbsp;</b> means that if K is a kind of L, then something
+<p><a name=contra><span class="smaller"><b>Covariance</b> means that if K is a kind of L, then something
 	you make from K can be used as the same thing made from L. For example,
 	a list of doors can be used as a list of things, because 'list of K' is
-	covariant. &nbsp;<b>Contravariance&nbsp;</b> means it works the other way round.
+	covariant. <b>Contravariance</b> means it works the other way round.
 	For example, an activity on things can be used as an activity on doors,
 	but not vice versa, because 'activity of K' is contravariant.</span></p>
 

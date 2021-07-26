@@ -39,7 +39,7 @@ FIs are present: those can only be made once all of the basic FIs have been
 created.
 
 =
-faux_instance *FauxInstances::new(inter_package *pack) {
+faux_instance *FauxInstances::new(inter_package *pack, index_session *session) {
 	faux_instance *I = CREATE(faux_instance);
 	I->index_appearances = 0;
 	I->package = pack;
@@ -64,7 +64,7 @@ faux_instance *FauxInstances::new(inter_package *pack) {
 	I->anchor_text = Str::new();
 	WRITE_TO(I->anchor_text, "fi%d", I->allocation_id);
 
-	I->fimd = FauxInstances::new_fimd(I);
+	I->fimd = FauxInstances::new_fimd(I, session);
 	return I;
 }
 
@@ -99,7 +99,7 @@ typedef struct fi_map_data {
 @ Data which is blanked out, ready for use, here:
 
 =
-fi_map_data FauxInstances::new_fimd(faux_instance *I) {
+fi_map_data FauxInstances::new_fimd(faux_instance *I, index_session *session) {
 	fi_map_data fimd;
 	fimd.submap = NULL;
 	fimd.position = Geometry::zero();
@@ -120,7 +120,7 @@ fi_map_data FauxInstances::new_fimd(faux_instance *I) {
 		fimd.spatial_relationship[i] = NULL;
 		fimd.exits_set_at[i] = -1;
 	}
-	ConfigureIndexMap::prepare_map_parameter_scope(&(fimd.local_map_parameters));
+	ConfigureIndexMap::prepare_map_parameter_scope(&(fimd.local_map_parameters), session);
 	return fimd;
 }
 
@@ -178,7 +178,7 @@ faux_instance_set *FauxInstances::new_empty_set(void) {
 =
 void FauxInstances::make_faux(index_session *session) {
 	faux_instance_set *faux_set = FauxInstances::new_empty_set();
-	session->indexing_fis = faux_set;
+	session->set_of_instances = faux_set;
 
 	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
@@ -200,7 +200,7 @@ void FauxInstances::make_faux(index_session *session) {
 }
 
 @<Add a faux instance to the set for this object-instance package@> =
-	faux_instance *I = FauxInstances::new(pack);
+	faux_instance *I = FauxInstances::new(pack, session);
 	ADD_TO_LINKED_LIST(I, faux_instance, faux_set->instances);	
 	if (FauxInstances::is_a_direction(I)) I->direction_index = faux_set->no_direction_fi++;
 	if (FauxInstances::is_a_room(I)) faux_set->no_room_fi++;
@@ -347,18 +347,18 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 @ For instance, for "starboard" to be mapped as if "east":
 
 @<Decode a hint mapping one direction as if another@> =
-	story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
+	session->story_dir_to_page_dir[dir->direction_index] = as_dir->direction_index;
 
 @ For instance, for the East Room to be mapped east of the Grand Lobby:
 
 @<Decode a hint mapping one room in a specific direction from another@> =
-	SpatialMap::lock_exit_in_place(from, dir->direction_index, to);
+	SpatialMap::lock_exit_in_place(from, dir->direction_index, to, session);
 
 @ Most map parameters (e.g. setting room colours or font sizes) can be set
 immediately, i.e., on |pass| 1:
 
 @<Decode a hint setting EPS map parameters@> =
-	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val);
+	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val, session);
 
 @ ...but not those hints applying to a specific level of the map (e.g., level 4),
 since we do not initially know what level any given room actually lives on: that
@@ -366,12 +366,13 @@ can only be known once the spatial grid has been found, i.e., on |pass| 2.
 
 @<Decode a hint setting EPS map parameters relating to levels@> =
 	map_parameter_scope *scope = NULL;
+	linked_list *L = Indexing::get_list_of_EPS_map_levels(session);
 	EPS_map_level *eml;
-	LOOP_OVER(eml, EPS_map_level)
+	LOOP_OVER_LINKED_LIST(eml, EPS_map_level, L)
 		if ((eml->contains_rooms)
 			&& (eml->map_level - SpatialMap::benchmark_level(session) == scope_level))
 			scope = &(eml->map_parameters);
-	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val);
+	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val, session);
 
 @h Instance set properties.
 

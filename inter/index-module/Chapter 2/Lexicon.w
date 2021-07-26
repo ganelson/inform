@@ -210,9 +210,6 @@ In a few cases, there is a further textual gloss to add.
 void IndexLexicon::listing(OUTPUT_STREAM, inter_lexicon *lexicon, int proper_nouns_only,
 	localisation_dictionary *LD) {
 	index_lexicon_entry *lex;
-	LOOP_OVER_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted) {
-		LOG("%S: %d\n", lex->lemma, lex->part_of_speech);
-	}
 	wchar_t current_initial_letter = '?';
 	int verb_count = 0, proper_noun_count = 0, c;
 	for (lex = lexicon->first; lex; lex = lex->sorted_next)

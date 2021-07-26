@@ -1,6 +1,11 @@
 1. To
-<p>In addition to the tokens listed below, any description of an object or value can be used: for example, "[number]" matches text like 127 or  SIX, and "[open door]" matches the name of any nearby door which is currently open.</p>
-<p>Names of objects are normally understood only when they are within sight, but writing 'any' lifts this restriction. So "[any person]" allows every name of a person, wherever they happen to be.</p>
+<p>In addition to the tokens listed below, any description of an object
+	or value can be used: for example, "[number]" matches text like 127 or
+	SIX, and "[open door]" matches the name of any nearby door which is
+	currently open.</p>
+<p>Names of objects are normally understood only when they are within sight,
+	but writing "any" lifts this restriction. So "[any person]" allows
+	every name of a person, wherever they happen to be.</p>
 <p class="tightin1">"[anybody]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
 <p class="tightin1">"[anyone]"&nbsp;<a href=inform:/doc265.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
 <p class="tightin1">"[anything]"&nbsp;<a href=inform:/doc268.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[thing]"</p>

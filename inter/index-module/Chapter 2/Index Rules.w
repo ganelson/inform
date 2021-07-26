@@ -123,34 +123,6 @@ int IndexRules::no_rules(inter_package *rb_pack) {
 	return InterTree::no_subpackages(rb_pack, I"_rulebook_entry");
 }
 
-@h Links between rules in rulebook listings.
-A notation is used to show how rulebook sorting affected the placement of
-adjacent rules in an index listing; but this notation can be temporarily
-switched off:
-
-=
-int IX_show_index_links = TRUE;
-
-void IndexRules::list_suppress_indexed_links(void) {
-	IX_show_index_links = FALSE;
-}
-
-void IndexRules::list_resume_indexed_links(void) {
-	IX_show_index_links = TRUE;
-}
-
-int IndexRules::showing_links(void) {
-	return IX_show_index_links;
-}
-
-@h Unique extra-box IDs.
-
-=
-int RS_unique_xtra_no = 77777;
-int IndexRules::extra_ID(void) {
-	return RS_unique_xtra_no++;
-}
-
 @h Rulebook boxes.
 
 @d RULEBOOK_BOX_COLOUR "e0e0e0"
@@ -158,9 +130,10 @@ int IndexRules::extra_ID(void) {
 =
 void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	text_stream *titling_key, text_stream *doc_link, inter_package *rb_pack,
-	text_stream *disclaimer_instead, int indent, int place_in_expandable_box, localisation_dictionary *LD) {
+	text_stream *disclaimer_instead, int indent, int place_in_expandable_box,
+	index_session *session) {
 	if (rb_pack == NULL) return;
-
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	TEMPORARY_TEXT(textual_name)
 	if (Str::len(titling_key) > 0) Localisation::roman(textual_name, LD, titling_key);
 	else Localisation::roman(textual_name, LD, I"Index.Elements.RS.Nameless");
@@ -170,7 +143,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	int n = IndexRules::no_rules(rb_pack);
 
 	if (place_in_expandable_box) {
-		int expand_id = IndexRules::extra_ID();
+		int expand_id = IndexUtilities::extra_ID(session);
 		HTML::open_indented_p(OUT, indent+1, "tight");
 		IndexUtilities::extra_link(OUT, expand_id);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
@@ -214,7 +187,8 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	} else if (disclaimer_instead) {
 		HTML::open_indented_p(OUT, 2, "tight"); WRITE("%S", disclaimer_instead); HTML_CLOSE("p");
 	} else {
-		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL, IndexRules::no_rule_context(), LD);
+		IndexRules::rulebook_list(OUT, inv->of_tree, rb_pack, NULL,
+			IndexRules::no_rule_context(), session);
 	}
 
 @<Add links and such to the titling@> =
@@ -227,9 +201,10 @@ Firstly, the whole contents:
 
 =
 int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pack,
-	text_stream *billing, rule_context rc, localisation_dictionary *LD) {
+	text_stream *billing, rule_context rc, index_session *session) {
 	int resp_count = 0;
-	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc, &resp_count, LD);
+	int t = IndexRules::index_rulebook_inner(OUT, 0, I, rb_pack, billing, rc,
+		&resp_count, session);
 	if (t > 0) HTML_CLOSE("p");
 	return resp_count;
 }
@@ -238,16 +213,16 @@ int IndexRules::rulebook_list(OUTPUT_STREAM, inter_tree *I, inter_package *rb_pa
 
 =
 int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_package *an,
-	inter_package *rb, text_stream *key, text_stream *desc, localisation_dictionary *LD) {
+	inter_package *rb, text_stream *key, text_stream *desc, index_session *session) {
 	int resp_count = 0;
-	IndexRules::list_suppress_indexed_links();
+	IndexUtilities::list_suppress_indexed_links(session);
 	int t = IndexRules::index_rulebook_inner(OUT, 0, inv->of_tree,
 		IndexRules::find_rulebook(inv, key), desc,
-		IndexRules::action_context(an), &resp_count, LD);
+		IndexRules::action_context(an), &resp_count, session);
 	if (rb) t += IndexRules::index_rulebook_inner(OUT, t, inv->of_tree, rb, desc,
-		IndexRules::no_rule_context(), &resp_count, LD);
+		IndexRules::no_rule_context(), &resp_count, session);
 	if (t > 0) HTML_CLOSE("p");
-	IndexRules::list_resume_indexed_links();
+	IndexUtilities::list_resume_indexed_links(session);
 	return resp_count;
 }
 
@@ -256,7 +231,8 @@ int IndexRules::index_action_rules(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 =
 int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I,
 	inter_package *rb_pack, text_stream *billing, rule_context rc, int *resp_count,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	int suppress_outcome = FALSE, count = initial_t;
 	if (rb_pack == NULL) return 0;
 	if (Str::len(billing) > 0) {
@@ -269,11 +245,11 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 		if (IndexRules::phrase_fits_rule_context(I, entry, rc)) {
 			if (count++ == 0) HTML::open_indented_p(OUT, 2, "indent");
 			else WRITE("<br>");
-			if ((Str::len(billing) > 0) && (IndexRules::showing_links()))
+			if ((Str::len(billing) > 0) && (IndexUtilities::showing_links(session)))
 				@<Show a linkage icon@>;
 			WRITE("%S", billing);
 			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-			*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc, LD);
+			*resp_count += IndexRules::index_rule(OUT, I, entry, rb_pack, rc, session);
 		}
 		prev = entry;
 	}
@@ -308,9 +284,10 @@ of adjacent rules in a listing:
 
 =
 int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
-	inter_package *owner, rule_context rc, localisation_dictionary *LD) {
+	inter_package *owner, rule_context rc, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	int no_responses_indexed = 0;
-	int response_box_id = IndexRules::extra_ID();
+	int response_box_id = IndexUtilities::extra_ID(session);
 	text_stream *name = Metadata::read_optional_textual(R, I"^name");
 	text_stream *italicised_text = Metadata::read_optional_textual(R, I"^index_name");
 	text_stream *first_line = Metadata::read_optional_textual(R, I"^first_line");
@@ -504,8 +481,10 @@ of an activity are part of a single construct:
 
 =
 void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pack,
-	int indent, localisation_dictionary *LD) {
-	int expand_id = IndexRules::extra_ID();
+	int indent, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+
+	int expand_id = IndexUtilities::extra_ID(session);
 
 	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
 	inter_symbol *for_s = Metadata::read_symbol(av_pack, I"^for_rulebook");
@@ -568,9 +547,12 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	IndexRules::rulebook_list(OUT, I, before_pack, I"before", IndexRules::no_rule_context(), LD);
-	IndexRules::rulebook_list(OUT, I, for_pack, I"for", IndexRules::no_rule_context(), LD);
-	IndexRules::rulebook_list(OUT, I, after_pack, I"after", IndexRules::no_rule_context(), LD);
+	IndexRules::rulebook_list(OUT, I, before_pack, I"before",
+		IndexRules::no_rule_context(), session);
+	IndexRules::rulebook_list(OUT, I, for_pack, I"for",
+		IndexRules::no_rule_context(), session);
+	IndexRules::rulebook_list(OUT, I, after_pack, I"after",
+		IndexRules::no_rule_context(), session);
 
 	inter_package *xref_pack;
 	LOOP_THROUGH_SUBPACKAGES(xref_pack, av_pack, I"_activity_xref") {	

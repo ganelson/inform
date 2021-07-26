@@ -40,7 +40,7 @@ typedef struct map_parameter_scope {
 	struct plotting_parameter values[NO_MAP_PARAMETERS];
 } map_parameter_scope;
 
-map_parameter_scope global_map_scope = {
+map_parameter_scope initial_global_map_scope = {
 	NULL,
 	{
 		{ TRUE, NULL, L"font",					FONT_MDT, NULL,	L"Helvetica", 0 },
@@ -80,34 +80,36 @@ map_parameter_scope global_map_scope = {
 	}
 };
 
+int ConfigureIndexMap::type_of_parameter(int index_of_parameter) {
+	return initial_global_map_scope.values[index_of_parameter].parameter_data_type;
+}
+
 @ A little dynamic initialisation is needed here, because |I"whatever"| constants
 are not in fact legal in constant context in C. So those |L"whatever"| values,
 which are legal, are converted to to |I"whatever"| values here:
 
 =
-int global_map_scope_initialised = FALSE;
-map_parameter_scope *ConfigureIndexMap::global(void) {
-	if (global_map_scope_initialised == FALSE) {
-		for (int p=0; p<NO_MAP_PARAMETERS; p++) {
-			global_map_scope.values[p].name = Str::new();
-			WRITE_TO(global_map_scope.values[p].name, "%w",
-				global_map_scope.values[p].name_init);
-			global_map_scope.values[p].textual_value = Str::new();
-			if (global_map_scope.values[p].textual_value_init)
-				WRITE_TO(global_map_scope.values[p].textual_value, "%w",
-					global_map_scope.values[p].textual_value_init);
-		}
-		global_map_scope_initialised = TRUE;
+map_parameter_scope ConfigureIndexMap::global_settings(void) {
+	map_parameter_scope mps = initial_global_map_scope;
+	for (int p=0; p<NO_MAP_PARAMETERS; p++) {
+		mps.values[p].name = Str::new();
+		WRITE_TO(mps.values[p].name, "%w",
+			mps.values[p].name_init);
+		mps.values[p].textual_value = Str::new();
+		if (mps.values[p].textual_value_init)
+			WRITE_TO(mps.values[p].textual_value, "%w",
+				mps.values[p].textual_value_init);
 	}
-	return &global_map_scope;
+	return mps;
 }
 
 @ Non-global scopes are initialised here, though it's a much simpler process
 because everything starts out blank.
 
 =
-void ConfigureIndexMap::prepare_map_parameter_scope(map_parameter_scope *scope) {
-	scope->wider_scope = ConfigureIndexMap::global();
+void ConfigureIndexMap::prepare_map_parameter_scope(map_parameter_scope *scope,
+	index_session *session) {
+	scope->wider_scope = Indexing::get_global_map_scope(session);
 	for (int s=0; s<NO_MAP_PARAMETERS; s++) {
 		scope->values[s].specified = FALSE;
 		scope->values[s].name = NULL;
@@ -120,8 +122,8 @@ void ConfigureIndexMap::prepare_map_parameter_scope(map_parameter_scope *scope) 
 doesn't matter.
 
 =
-int ConfigureIndexMap::get_map_variable_index(text_stream *name) {
-	int s = ConfigureIndexMap::get_map_variable_index_forgivingly(name);
+int ConfigureIndexMap::get_map_variable_index(text_stream *name, index_session *session) {
+	int s = ConfigureIndexMap::get_map_variable_index_forgivingly(name, session);
 	if (s < 0) {
 		LOG("Tried to look up <%S>\n", name);
 		internal_error("looked up non-existent map variable");
@@ -131,17 +133,18 @@ int ConfigureIndexMap::get_map_variable_index(text_stream *name) {
 }
 
 int ConfigureIndexMap::get_map_variable_index_from_wchar(wchar_t *wc_name) {
-	TEMPORARY_TEXT(name)
-	WRITE_TO(name, "%w", wc_name);
-	int rv = ConfigureIndexMap::get_map_variable_index_forgivingly(name);
-	DISCARD_TEXT(name)
-	return rv;
+	for (int s=0; s<NO_MAP_PARAMETERS; s++)
+		if ((initial_global_map_scope.values[s].name_init) &&
+			(Wide::cmp(wc_name, initial_global_map_scope.values[s].name_init) == 0))
+			return s;
+	return -1;
 }
 
-int ConfigureIndexMap::get_map_variable_index_forgivingly(text_stream *name) {
+int ConfigureIndexMap::get_map_variable_index_forgivingly(text_stream *name,
+	index_session *session) {
 	for (int s=0; s<NO_MAP_PARAMETERS; s++)
-		if ((ConfigureIndexMap::global()->values[s].name) &&
-			(Str::cmp(name, ConfigureIndexMap::global()->values[s].name) == 0))
+		if ((Indexing::get_global_map_scope(session)->values[s].name) &&
+			(Str::cmp(name, Indexing::get_global_map_scope(session)->values[s].name) == 0))
 			return s;
 	return -1;
 }
@@ -156,28 +159,30 @@ If all are null, then the global scope is used.
 int changed_global_room_colour = FALSE;
 
 void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
-	faux_instance *scope_I, text_stream *put_string, int put_integer) {
+	faux_instance *scope_I, text_stream *put_string, int put_integer, index_session *session) {
 	if (scope == NULL) {
-		if (scope_I == NULL) scope = ConfigureIndexMap::global();
+		if (scope_I == NULL) scope = Indexing::get_global_map_scope(session);
 		else scope = FauxInstances::get_parameters(scope_I);
 	}
 	if (Str::cmp(name, I"room-colour") == 0) {
-		if (scope == ConfigureIndexMap::global()) changed_global_room_colour = TRUE;
+		if (scope == Indexing::get_global_map_scope(session)) changed_global_room_colour = TRUE;
 		if (scope_I) scope_I->fimd.colour = put_string;
 	}
 	if (Str::cmp(name, I"room-name-colour") == 0)
 		if (scope_I) scope_I->fimd.text_colour = put_string;
-	if (put_string) ConfigureIndexMap::put_text_mp(name, scope, put_string);
-	else ConfigureIndexMap::put_int_mp(name, scope, put_integer);
+	if (put_string) ConfigureIndexMap::put_text_mp(name, scope, put_string, session);
+	else ConfigureIndexMap::put_int_mp(name, scope, put_integer, session);
 }
 
 @ Text parameters.
 
 =
-text_stream *ConfigureIndexMap::get_text_mp(text_stream *name, map_parameter_scope *scope) {
-	if (Str::eq(name, I"<font>")) return ConfigureIndexMap::get_text_mp(I"font", NULL);
-	int s = ConfigureIndexMap::get_map_variable_index(name);
-	if (scope == NULL) scope = ConfigureIndexMap::global();
+text_stream *ConfigureIndexMap::get_text_mp(text_stream *name, map_parameter_scope *scope,
+	index_session *session) {
+	if (Str::eq(name, I"<font>"))
+		return ConfigureIndexMap::get_text_mp(I"font", NULL, session);
+	int s = ConfigureIndexMap::get_map_variable_index(name, session);
+	if (scope == NULL) scope = Indexing::get_global_map_scope(session);
 	while (scope->values[s].specified == FALSE) {
 		scope = scope->wider_scope;
 		if (scope == NULL) internal_error("scope exhausted in looking up map parameter");
@@ -186,9 +191,9 @@ text_stream *ConfigureIndexMap::get_text_mp(text_stream *name, map_parameter_sco
 }
 
 void ConfigureIndexMap::put_text_mp(text_stream *name, map_parameter_scope *scope,
-	text_stream *val) {
-	int s = ConfigureIndexMap::get_map_variable_index(name);
-	if (scope == NULL) scope = ConfigureIndexMap::global();
+	text_stream *val, index_session *session) {
+	int s = ConfigureIndexMap::get_map_variable_index(name, session);
+	if (scope == NULL) scope = Indexing::get_global_map_scope(session);
 	scope->values[s].specified = TRUE;
 	scope->values[s].textual_value = Str::duplicate(val);
 }
@@ -196,9 +201,10 @@ void ConfigureIndexMap::put_text_mp(text_stream *name, map_parameter_scope *scop
 @ Integer parameters.
 
 =
-int ConfigureIndexMap::get_int_mp(text_stream *name, map_parameter_scope *scope) {
-	int s = ConfigureIndexMap::get_map_variable_index(name);
-	if (scope == NULL) scope = ConfigureIndexMap::global();
+int ConfigureIndexMap::get_int_mp(text_stream *name, map_parameter_scope *scope,
+	index_session *session) {
+	int s = ConfigureIndexMap::get_map_variable_index(name, session);
+	if (scope == NULL) scope = Indexing::get_global_map_scope(session);
 	while (scope->values[s].specified == FALSE) {
 		scope = scope->wider_scope;
 		if (scope == NULL) internal_error("scope exhausted in looking up map parameter");
@@ -206,9 +212,10 @@ int ConfigureIndexMap::get_int_mp(text_stream *name, map_parameter_scope *scope)
 	return scope->values[s].numeric_value;
 }
 
-void ConfigureIndexMap::put_int_mp(text_stream *name, map_parameter_scope *scope, int val) {
-	int s = ConfigureIndexMap::get_map_variable_index(name);
-	if (scope == NULL) scope = ConfigureIndexMap::global();
+void ConfigureIndexMap::put_int_mp(text_stream *name, map_parameter_scope *scope, int val,
+	index_session *session) {
+	int s = ConfigureIndexMap::get_map_variable_index(name, session);
+	if (scope == NULL) scope = Indexing::get_global_map_scope(session);
 	scope->values[s].specified = TRUE;
 	scope->values[s].numeric_value = val;
 }

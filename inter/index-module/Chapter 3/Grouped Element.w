@@ -62,7 +62,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
 		text_stream index_file_struct; text_stream *OUT = &index_file_struct;
-		InterpretIndex::open_file(OUT, NULL, I"A.html", I"<Actions", i, LD);
+		InterpretIndex::open_file(OUT, NULL, I"A.html", I"<Actions", i, session);
 		@<Write details page for the action@>;
 		InterpretIndex::close_index_file(OUT);
 	}
@@ -157,15 +157,15 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	if (oow == FALSE) {
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"persuasion", I"persuasion", LD);
+			I"persuasion", I"persuasion", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"unsuccessful_attempt_by", I"unsuccessful attempt", LD);
+			I"unsuccessful_attempt_by", I"unsuccessful attempt", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"setting_action_variables", I"set action variables for", LD);
+			I"setting_action_variables", I"set action variables for", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"before", I"before", LD);
+			I"before", I"before", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"instead", I"instead of", LD);
+			I"instead", I"instead of", session);
 	}
 	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
@@ -175,14 +175,14 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_package *report_pack = Inter::Packages::container(report_s->definition);
 
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack,
-		I"check", I"check", LD);
+		I"check", I"check", session);
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack,
-		I"carry_out", I"carry out", LD);
+		I"carry_out", I"carry out", session);
 	if (oow == FALSE)
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"after", I"after", LD);
+			I"after", I"after", session);
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack,
-		I"report", I"report", LD);
+		I"report", I"report", session);
 	if (resp_count > 1) {
 		Localisation::roman(OUT, LD, I"Index.Elements.A1.ResponseIcons");
 		WRITE(":&nbsp;");

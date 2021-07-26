@@ -150,7 +150,7 @@ Rules, which of course are always present. So these are hidden by default.
 		WRITE("%S&nbsp;", CW);
 		TEMPORARY_TEXT(TEMP)
 		if (defines) WRITE_TO(TEMP, "%S", CW);
-		else Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Entry", CW);
+		else Localisation::roman_t(TEMP, LD, I"Index.Elements.Tb.Entry", CW);
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 	}

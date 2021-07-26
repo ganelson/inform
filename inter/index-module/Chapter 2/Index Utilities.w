@@ -154,7 +154,8 @@ void IndexUtilities::anchor_numbered(OUTPUT_STREAM, int n) {
 
 =
 void IndexUtilities::extra_link(OUTPUT_STREAM, int id) {
-	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
+	HTML_OPEN_WITH("a",
+		"href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/extra.png", id);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
@@ -168,7 +169,8 @@ void IndexUtilities::extra_all_link_with(OUTPUT_STREAM, int nr, char *icon) {
 }
 
 void IndexUtilities::extra_link_with(OUTPUT_STREAM, int id, char *icon) {
-	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\"", id, id);
+	HTML_OPEN_WITH("a",
+		"href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 id=\"plus%d\" src=inform:/doc_images/%s.png", id, icon);
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
@@ -208,7 +210,8 @@ void IndexUtilities::extra_div_close_nested(OUTPUT_STREAM) {
 
 =
 void IndexUtilities::deprecation_icon(OUTPUT_STREAM, int id) {
-	HTML_OPEN_WITH("a", "href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
+	HTML_OPEN_WITH("a",
+		"href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\"", id, id);
 	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/deprecated.png");
 	HTML_CLOSE("a");
 	WRITE("&nbsp;");
@@ -220,9 +223,8 @@ quotes.
 
 =
 void IndexUtilities::dequote(OUTPUT_STREAM, wchar_t *p) {
-	int i = 1;
 	if ((p[0] == 0) || (p[1] == 0)) return;
-	for (i=1; p[i+1]; i++) {
+	for (int i=1; p[i+1]; i++) {
 		int c = p[i];
 		switch(c) {
 			case '"': WRITE("&quot;"); break;
@@ -260,4 +262,68 @@ void IndexUtilities::kind_name(OUTPUT_STREAM, inter_package *pack, int plural,
 	text_stream *key = (plural)?I"^index_plural":I"^index_singular";
 	WRITE("%S", Metadata::read_optional_textual(pack, key));
 	if (with_links) IndexUtilities::link_package(OUT, pack);
+}
+
+@h Page state.
+
+=
+typedef struct index_page_data {
+	int RS_unique_xtra_no;
+	int IX_show_index_links;
+	int row_stripe;
+	struct faux_instance *indexing_room;
+} index_page_data;
+
+@ This is called whenever a new page is written:
+
+=
+void IndexUtilities::clear_page_data(index_session *session) {
+	session->page.RS_unique_xtra_no = 1;
+	session->page.IX_show_index_links = TRUE;
+	session->page.row_stripe = FALSE;
+	session->page.indexing_room = NULL;
+}
+
+@h Unique extra-box IDs.
+
+=
+int IndexUtilities::extra_ID(index_session *session) {
+	return session->page.RS_unique_xtra_no++;
+}
+
+@h Links between rules in rulebook listings.
+A notation is used to show how rulebook sorting affected the placement of
+adjacent rules in an index listing; but this notation can be temporarily
+switched off:
+
+=
+void IndexUtilities::list_suppress_indexed_links(index_session *session) {
+	session->page.IX_show_index_links = FALSE;
+}
+
+void IndexUtilities::list_resume_indexed_links(index_session *session) {
+	session->page.IX_show_index_links = TRUE;
+}
+
+int IndexUtilities::showing_links(index_session *session) {
+	return session->page.IX_show_index_links;
+}
+
+@h Row stripes.
+
+=
+int IndexUtilities::stripe(index_session *session) {
+	session->page.row_stripe = (session->page.row_stripe)?FALSE:TRUE;
+	return session->page.row_stripe;
+}
+
+@h Room being indexed, if any.
+
+=
+faux_instance *IndexUtilities::room_being_indexed(index_session *session) {
+	return session->page.indexing_room;
+}
+
+void IndexUtilities::set_room_being_indexed(faux_instance *I, index_session *session) {
+	session->page.indexing_room = I;
 }

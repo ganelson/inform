@@ -43,7 +43,8 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	localisation_dictionary *D = Indexing::get_localisation(session);
 	int max_elements = 0;
 	index_page *ip;
-	LOOP_OVER(ip, index_page)
+	linked_list *L = Indexing::get_list_of_pages(session);
+	LOOP_OVER_LINKED_LIST(ip, index_page, L)
 		if (max_elements < ip->no_elements)
 			max_elements = ip->no_elements;
 
@@ -51,14 +52,13 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
 	if (Str::eq_wide_string(index_leaf, L"Welcome.html"))
 		@<Write the heading row of the surround@>;
-	LOOP_OVER(ip, index_page)
+	LOOP_OVER_LINKED_LIST(ip, index_page, L)
 		if (((Str::eq_wide_string(index_leaf, L"Welcome.html")) || (ip == current_page)) &&
 			(Str::eq_wide_string(ip->page_leafname, L"Welcome") == FALSE)) {
 			@<Start a row of the periodic table@>;
 			index_element *ie;
-			LOOP_OVER(ie, index_element)
-				if (ie->owning_page == ip)
-					@<Write an element-box of the periodic table@>;
+			LOOP_OVER_LINKED_LIST(ie, index_element, ip->elements)
+				@<Write an element-box of the periodic table@>;
 			@<End a row of the periodic table@>;
 		}
 	HTML_CLOSE("table");
@@ -156,9 +156,9 @@ so on. There's then a banner line -- a sort of subheading; then the index
 content at last; and then a rule.
 
 @<Write the index elements@> =
-	index_element *ie;
-	LOOP_OVER(ie, index_element)
-		if (ie->owning_page == current_page) {
+	if (current_page) {
+		index_element *ie;
+		LOOP_OVER_LINKED_LIST(ie, index_element, current_page->elements) {
 			HTML_OPEN_WITH("div", "id=\"segment%d\"", ie->atomic_number);
 			HTML_TAG("hr");
 			IndexUtilities::banner_line(OUT, current_page, ie->atomic_number, ie->chemical_symbol,
@@ -166,6 +166,7 @@ content at last; and then a rule.
 			Elements::render(OUT, ie->chemical_symbol, session);
 			HTML_CLOSE("div");
 		}
+	}
 	HTML_TAG("hr");
 
 @ This digression is used for internal test cases in Inform, to output a plain

@@ -1961,7 +1961,7 @@
                             <p class="hangingin1">proper-named; undescribed</p>
                             <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
-                            <p class="tightin1"><i>initial location:</i> in Chateau Bibliotheque&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="tightin1"><i>initial location</i>: in Chateau Bibliotheque &nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
                         </td>
                         <td width="8">

@@ -264,7 +264,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 			p, "The second-named thing must be a room (beware ambiguities!).");
 		return;
 	}
-	if (SpatialMap::direction_is_lateral(MAP_DATA(exit)->direction_index) == FALSE) {
+	if (SpatialMap::direction_is_lateral(MAP_DATA(exit)->direction_index, NULL) == FALSE) {
 		StandardProblems::map_problem(_p_(PM_MapNonLateral),
 			p, "The direction given as a hint for map placement must be "
 			"a lateral direction (not up, down, above, below, inside "
@@ -396,7 +396,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 		"definition on level 0), or a region, or a kind of room.");
 
 @<Check that the value has the right type for this map parameter, and set it@> =
-	int type_wanted = ConfigureIndexMap::global()->values[index_of_parameter].parameter_data_type;
+	int type_wanted = ConfigureIndexMap::type_of_parameter(index_of_parameter);
 	int type_found = <<msvtype>>;
 	char *i_wanted_a = "";
 	int wn = <<msword>>;

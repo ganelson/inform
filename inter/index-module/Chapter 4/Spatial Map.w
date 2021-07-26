@@ -6,15 +6,17 @@ coordinate locations.
 
 @ We assign $(x, y, z)$ coordinates to each room, aiming to make the
 descriptive map connections ("The Ballroom is east of the Old Kitchens")
-as plausible as possible in coordinate terms. This is potentially a
-research-level problem in graph theory or aesthetics. A problem like it was
-recently set in a world programming competition: to turn spatial
-coordinates into a simplified subway map. This is almost the reverse, but
-has a certain amount in common with it.
+as plausible as possible in coordinate terms. To do this well feels like a
+research-level problem in graph theory or aesthetics, but we will just have
+to muddle through.
 
-We will partition the set of rooms into "components", which are disjoint
-nonempty collections of rooms joined together by proximity. This has two
-forms:
+Those experimenting with this code may like to use "Include spatial map
+in the debugging layout", and the internal test cases with names in the form
+|Index-MapLayout-*|.
+
+@ We will partition the set of rooms into "components", which are disjoint
+nonempty collections of rooms joined together by proximity. Proximity comes
+about in two ways:
 
 (i) Map connections in directions along lattice lines (EAST, UP, and so on
 but not INSIDE or OUTSIDE);
@@ -74,6 +76,7 @@ typedef struct connected_submap {
 	struct cuboid incidence_cache_bounds; /* bounds of the incidence cache array */
 	int superpositions; /* number of pairs of rooms which share the same grid location */
 	struct index_session *for_session;
+	int discarded;
 	CLASS_DEFINITION
 } connected_submap;
 
@@ -169,14 +172,17 @@ void SpatialMap::set_room_position_breaking_cache(faux_instance *R, vector P) {
 given exit to be locked in place, forbidding it to be distorted.
 
 =
-void SpatialMap::lock_exit_in_place(faux_instance *I, int exit, faux_instance *I2) {
-	SpatialMap::lock_one_exit(I2, exit, I);
-	SpatialMap::lock_one_exit(I, SpatialMap::opposite(exit), I2);
+void SpatialMap::lock_exit_in_place(faux_instance *I, int exit, faux_instance *I2,
+	index_session *session) {
+	SpatialMap::lock_one_exit(I2, exit, I, session);
+	SpatialMap::lock_one_exit(I, SpatialMap::opposite(exit, session), I2, session);
 }
 
-void SpatialMap::lock_one_exit(faux_instance *F, int exit, faux_instance *T) {
-	LOGIF(SPATIAL_MAP, "Mapping clue: put $O to the %s of $O\n",
-		T, SpatialMap::usual_Inform_direction_name(exit), F);
+void SpatialMap::lock_one_exit(faux_instance *F, int exit, faux_instance *T,
+	index_session *session) {
+	LOGIF(SPATIAL_MAP, "Mapping clue: put %S to the %s of %S\n",
+		FauxInstances::get_name(T), SpatialMap::usual_Inform_direction_name(exit, session),
+		FauxInstances::get_name(F));
 	F->fimd.lock_exits[exit] = T;
 }
 
@@ -192,19 +198,9 @@ story file. But that needn't be true; some story files create exotic directions
 like "port" and "starboard". So the following array gives the correspondence
 of story directions to page directions; if the value is 12 or more, the direction
 won't be shown on the index at all. The initial setup is for the 12 standard
-story directions to correspond exactly to the 12 page directions, then, and
-for any subsequent story directions to be unshown:
+story directions to correspond exactly to the 12 page directions.
 
-= (early code)
-int story_dir_to_page_dir[MAX_DIRECTIONS];
-
-@ =
-void SpatialMap::initialise_page_directions(void) {
-	for (int i=0; i<MAX_DIRECTIONS; i++)
-		story_dir_to_page_dir[i] = i;
-}
-
-@ If we want to show one of the exotic directions, we can use a sentence like:
+If we want to show one of the exotic directions, we can use a sentence like:
 
 >> Index map with starboard mapped as east.
 
@@ -215,10 +211,10 @@ direction) with page direction 6:
 faux_instance *SpatialMap::mapped_as_if(faux_instance *I, index_session *session) {
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	int i = I->direction_index;
-	if (story_dir_to_page_dir[i] == i) return NULL;
+	if (session->story_dir_to_page_dir[i] == i) return NULL;
 	faux_instance *D;
 	LOOP_OVER_FAUX_DIRECTIONS(faux_set, D)
-		if (D->direction_index == story_dir_to_page_dir[i])
+		if (D->direction_index == session->story_dir_to_page_dir[i])
 			return D;
 	return NULL;
 }
@@ -227,9 +223,9 @@ faux_instance *SpatialMap::mapped_as_if(faux_instance *I, index_session *session
 be visible on the map we draw:
 
 =
-int SpatialMap::direction_is_mappable(int story_direction) {
+int SpatialMap::direction_is_mappable(int story_direction, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return FALSE;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction = session->story_dir_to_page_dir[story_direction];
 	if (page_direction >= 12) return FALSE;
 	return TRUE;
 }
@@ -240,10 +236,11 @@ in this map direction increases the $x$-coordinate by 1 and leaves $y$ and $z$
 unchanged.
 
 =
-vector SpatialMap::direction_as_vector(int story_direction) {
+vector SpatialMap::direction_as_vector(int story_direction, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS))
 		return Zero_vector;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	switch(page_direction) {
 		case 0: return N_vector;
 		case 1: return NE_vector;
@@ -262,9 +259,10 @@ vector SpatialMap::direction_as_vector(int story_direction) {
 @ Page directions all have opposites:
 
 =
-int SpatialMap::opposite(int story_direction) {
+int SpatialMap::opposite(int story_direction, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return 0;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	switch(page_direction) {
 		case 0: return 3; /* N -- S */
 		case 1: return 5; /* NE -- SW */
@@ -286,9 +284,10 @@ int SpatialMap::opposite(int story_direction) {
 is positive; or anticlockwise if it's negative.
 
 =
-int SpatialMap::rotate_direction(int story_direction, int way) {
+int SpatialMap::rotate_direction(int story_direction, int way, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return 0;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	int i, N = 1; if (way < 0) N = 7;
 	for (i=1; i<=N; i++) {
 		switch(page_direction) {
@@ -310,9 +309,9 @@ int SpatialMap::rotate_direction(int story_direction, int way) {
 movement along the $x-y$ grid lines.
 
 =
-int SpatialMap::direction_is_lateral(int story_direction) {
+int SpatialMap::direction_is_lateral(int story_direction, index_session *session) {
 	return Geometry::vec_lateral(
-			SpatialMap::direction_as_vector(story_direction));
+			SpatialMap::direction_as_vector(story_direction, session));
 }
 
 @ Along-lattice directions are those which (a) are mappable, and (b) involve
@@ -320,8 +319,8 @@ movement along grid lines. Clearly lateral directions are along-lattice, but
 not necessarily vice versa.
 
 =
-int SpatialMap::direction_is_along_lattice(int story_direction) {
-	vector D = SpatialMap::direction_as_vector(story_direction);
+int SpatialMap::direction_is_along_lattice(int story_direction, index_session *session) {
+	vector D = SpatialMap::direction_as_vector(story_direction, session);
 	if (Geometry::vec_eq(D, Zero_vector)) return FALSE;
 	return TRUE;
 }
@@ -348,10 +347,12 @@ boundary of that grid; for example, a line running in page direction 6
 will be plotted with an icon at cell $(4, 2)$.
 
 =
-void SpatialMap::cell_position_for_direction(int story_direction, int *mx, int *my) {
+void SpatialMap::cell_position_for_direction(int story_direction, int *mx, int *my,
+	index_session *session) {
 	*mx = 0; *my = 0;
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	switch(page_direction) {
 		case 0: *mx = 2; *my = 0; break;
 		case 1: *mx = 4; *my = 0; break;
@@ -371,9 +372,10 @@ void SpatialMap::cell_position_for_direction(int story_direction, int *mx, int *
 @ And similarly:
 
 =
-char *SpatialMap::find_icon_label(int story_direction) {
+char *SpatialMap::find_icon_label(int story_direction, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return NULL;
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	switch(page_direction) {
 		case 0: return "n";
 		case 1: return "ne";
@@ -391,9 +393,10 @@ char *SpatialMap::find_icon_label(int story_direction) {
 	return NULL;
 }
 
-char *SpatialMap::usual_Inform_direction_name(int story_direction) {
+char *SpatialMap::usual_Inform_direction_name(int story_direction, index_session *session) {
 	if ((story_direction < 0) || (story_direction >= MAX_DIRECTIONS)) return "<none>";
-	int page_direction = story_dir_to_page_dir[story_direction];
+	int page_direction =
+		(session)?(session->story_dir_to_page_dir[story_direction]):story_direction;
 	switch(page_direction) {
 		case 0: return "north";
 		case 1: return "northeast";
@@ -439,9 +442,9 @@ faux_instance *SpatialMap::room_exit(faux_instance *origin, int dir_num,
 }
 
 faux_instance *SpatialMap::room_exit_as_indexed(faux_instance *origin, int dir_num,
-	faux_instance **via) {
+	faux_instance **via, index_session *session) {
 	for (int j=0; j<MAX_DIRECTIONS; j++) {
-		if (story_dir_to_page_dir[j] == dir_num) {
+		if (session->story_dir_to_page_dir[j] == dir_num) {
 			faux_instance *I = SpatialMap::room_exit(origin, j, via);
 			if (I) return I;
 		}
@@ -462,7 +465,7 @@ As can be seen, step (1) runs in $O(R)$ time, where $R$ is the number of rooms.
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		int i;
 		LOOP_OVER_LATTICE_DIRECTIONS(i) {
-			faux_instance *T = SpatialMap::room_exit_as_indexed(R, i, NULL);
+			faux_instance *T = SpatialMap::room_exit_as_indexed(R, i, NULL, session);
 			if (T) @<Consider this Inform map connection for a spatial relationship@>;
 		}
 	}
@@ -481,13 +484,13 @@ be plotted on the index page; we just won't use it in our choice of how to
 position the rooms.)
 
 @<Consider this Inform map connection for a spatial relationship@> =
-	int back = SpatialMap::opposite(i);
-	int cw = SpatialMap::rotate_direction(back, 1); /* clockwise one place */
-	int cwcw = SpatialMap::rotate_direction(cw, 1); /* clockwise twice */
-	int ccw = SpatialMap::rotate_direction(back, -1); /* counterclockwise once */
-	int ccwccw = SpatialMap::rotate_direction(ccw, -1); /* counterclockwise twice */
+	int back = SpatialMap::opposite(i, session);
+	int cw = SpatialMap::rotate_direction(back, 1, session); /* clockwise one place */
+	int cwcw = SpatialMap::rotate_direction(cw, 1, session); /* clockwise twice */
+	int ccw = SpatialMap::rotate_direction(back, -1, session); /* counterclockwise once */
+	int ccwccw = SpatialMap::rotate_direction(ccw, -1, session); /* counterclockwise twice */
 
-	faux_instance *backstep = SpatialMap::room_exit_as_indexed(T, back, NULL);
+	faux_instance *backstep = SpatialMap::room_exit_as_indexed(T, back, NULL, session);
 
 	@<Average out a pair of 2-way connections which each bend@>;
 	@<Turn a straightforward 2-way connection into a spatial relationship@>;
@@ -506,20 +509,20 @@ We check first clockwise, then counterclockwise.
 @<Average out a pair of 2-way connections which each bend@> =
 	if ((backstep == R) &&
 		(cwcw >= 0) &&
-		(SpatialMap::room_exit_as_indexed(T, cwcw, NULL) == R) &&
-		(SpatialMap::room_exit_as_indexed(T, cw, NULL) == NULL) &&
-		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(cwcw), NULL) == T) &&
-		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(cw), NULL) == NULL)) {
-		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(cw), T);
+		(SpatialMap::room_exit_as_indexed(T, cwcw, NULL, session) == R) &&
+		(SpatialMap::room_exit_as_indexed(T, cw, NULL, session) == NULL) &&
+		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(cwcw, session), NULL, session) == T) &&
+		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(cw, session), NULL, session) == NULL)) {
+		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(cw, session), T, session);
 		continue;
 	}
 	if ((backstep == R) &&
 		(ccwccw >= 0) &&
-		(SpatialMap::room_exit_as_indexed(T, ccwccw, NULL) == R) &&
-		(SpatialMap::room_exit_as_indexed(T, ccw, NULL) == NULL) &&
-		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(ccwccw), NULL) == T) &&
-		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(ccw), NULL) == NULL)) {
-		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(ccw), T);
+		(SpatialMap::room_exit_as_indexed(T, ccwccw, NULL, session) == R) &&
+		(SpatialMap::room_exit_as_indexed(T, ccw, NULL, session) == NULL) &&
+		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(ccwccw, session), NULL, session) == T) &&
+		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(ccw, session), NULL, session) == NULL)) {
+		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(ccw, session), T, session);
 		continue;
 	}
 
@@ -527,7 +530,7 @@ We check first clockwise, then counterclockwise.
 
 @<Turn a straightforward 2-way connection into a spatial relationship@> =
 	if (backstep == R) {
-		SpatialMap::form_spatial_relationship(R, i, T);
+		SpatialMap::form_spatial_relationship(R, i, T, session);
 		continue;
 	}
 
@@ -538,19 +541,19 @@ northeast from A to B:
 @<Average out a pair of 1-way connections which suggest a deformed 2-way connection@> =
 	/* a deformed 2-way connection made up of 1-way connections */
 	if ((cwcw >= 0) &&
-		(SpatialMap::room_exit_as_indexed(T, cwcw, NULL) == R) &&
-		(SpatialMap::room_exit_as_indexed(T, cw, NULL) == NULL) &&
-		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(cwcw), NULL) == T) &&
-		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(cw), NULL) == NULL)) {
-		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(cw), T);
+		(SpatialMap::room_exit_as_indexed(T, cwcw, NULL, session) == R) &&
+		(SpatialMap::room_exit_as_indexed(T, cw, NULL, session) == NULL) &&
+		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(cwcw, session), NULL, session) == T) &&
+		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(cw, session), NULL, session) == NULL)) {
+		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(cw, session), T, session);
 		continue;
 	}
 	if ((ccwccw >= 0) &&
-		(SpatialMap::room_exit_as_indexed(T, ccwccw, NULL) == R) &&
-		(SpatialMap::room_exit_as_indexed(T, ccw, NULL) == NULL) &&
-		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(ccwccw), NULL) == T) &&
-		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(ccw), NULL) == NULL)) {
-		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(ccw), T);
+		(SpatialMap::room_exit_as_indexed(T, ccwccw, NULL, session) == R) &&
+		(SpatialMap::room_exit_as_indexed(T, ccw, NULL, session) == NULL) &&
+		(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(ccwccw, session), NULL, session) == T) &&
+		(SpatialMap::room_exit_as_indexed(T, SpatialMap::opposite(ccw, session), NULL, session) == NULL)) {
+		SpatialMap::form_spatial_relationship(R, SpatialMap::opposite(ccw, session), T, session);
 		continue;
 	}
 
@@ -563,19 +566,20 @@ room (the case where |backstep| is not null here).
 @<Treat a 1-way connection as 2-way if there are no 2-way connections already@> =
 	int j, two_ways = 0;
 	LOOP_OVER_LATTICE_DIRECTIONS(j)
-		if ((SpatialMap::room_exit_as_indexed(T, j, NULL) == R) &&
-			(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(j), NULL) == T))
+		if ((SpatialMap::room_exit_as_indexed(T, j, NULL, session) == R) &&
+			(SpatialMap::room_exit_as_indexed(R, SpatialMap::opposite(j, session), NULL, session) == T))
 			two_ways++;
 	if ((two_ways == 0) && (backstep == NULL))
-		SpatialMap::form_spatial_relationship(R, i, T);
+		SpatialMap::form_spatial_relationship(R, i, T, session);
 
 @ The following ensures that SR links are always symmetric, in opposed
 pairs of directions:
 
 =
-void SpatialMap::form_spatial_relationship(faux_instance *R, int dir, faux_instance *T) {
+void SpatialMap::form_spatial_relationship(faux_instance *R, int dir, faux_instance *T,
+	index_session *session) {
 	R->fimd.spatial_relationship[dir] = T;
-	T->fimd.spatial_relationship[SpatialMap::opposite(dir)] = R;
+	T->fimd.spatial_relationship[SpatialMap::opposite(dir, session)] = R;
 }
 
 @ The spatial relationships arrays are read only by the following. Note
@@ -621,6 +625,7 @@ Here's an empty submap, with no rooms.
 =
 connected_submap *SpatialMap::new_submap(index_session *session) {
 	connected_submap *sub = CREATE(connected_submap);
+	Indexing::add_submap(session, sub);
 	sub->bounds = Geometry::empty_cuboid();
 	sub->first_room_in_submap = NULL;
 	sub->last_room_in_submap = NULL;
@@ -628,8 +633,16 @@ connected_submap *SpatialMap::new_submap(index_session *session) {
 	sub->incidence_cache_bounds = Geometry::empty_cuboid();
 	sub->superpositions = 0;
 	sub->for_session = session;
+	sub->discarded = FALSE;
 	return sub;
 }
+
+@ This will loop through all of the submaps attached to a session, assuming
+that |LS| already holds the session's list:
+
+@d LOOP_OVER_SUBMAPS(sub)
+	LOOP_OVER_LINKED_LIST(sub, connected_submap, LS)
+		if (sub->discarded == FALSE)
 
 @ Doctrinally, a room is always in just one submap, except at the very beginning
 when we are forming the original components into submaps, when most of the
@@ -769,7 +782,7 @@ void SpatialMap::empty_submap(connected_submap *sub) {
 =
 void SpatialMap::destroy_submap(connected_submap *sub) {
 	SpatialMap::free_incidence_cache(sub);
-	DESTROY(sub, connected_submap);
+	sub->discarded = TRUE;
 }
 
 @ Suppose we want to move all the rooms in a submap at once, and all by the
@@ -883,9 +896,9 @@ void SpatialMap::translate_room(faux_instance *R, vector D) {
 	SpatialMap::set_room_position(R, Geometry::vec_plus(Room_position(R), D));
 }
 
-void SpatialMap::move_room_to(faux_instance *R, vector P) {
+void SpatialMap::move_room_to(faux_instance *R, vector P, index_session *session) {
 	SpatialMap::set_room_position(R, P);
-	SpatialMap::move_anything_locked_to(R);
+	SpatialMap::move_anything_locked_to(R, session);
 }
 
 @h Synchronising movements of locked rooms.
@@ -899,24 +912,24 @@ it moves anything locked to R (and anything locked to that, and so on) to
 corresponding positions.
 
 =
-void SpatialMap::move_anything_locked_to(faux_instance *R) {
+void SpatialMap::move_anything_locked_to(faux_instance *R, index_session *session) {
 	connected_submap *sub = R->fimd.submap;
 	faux_instance *R2;
 	LOOP_OVER_SUBMAP(R2, sub)
 		R2->fimd.shifted = FALSE;
-	SpatialMap::move_anything_locked_to_r(R);
+	SpatialMap::move_anything_locked_to_r(R, session);
 }
 
-void SpatialMap::move_anything_locked_to_r(faux_instance *R) {
+void SpatialMap::move_anything_locked_to_r(faux_instance *R, index_session *session) {
 	if (R->fimd.shifted) return;
 	R->fimd.shifted = TRUE;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *F = SpatialMap::read_slock(R, i);
 		if (F) {
-			vector D = SpatialMap::direction_as_vector(i);
+			vector D = SpatialMap::direction_as_vector(i, session);
 			SpatialMap::set_room_position(F, Geometry::vec_plus(Room_position(R), D));
-			SpatialMap::move_anything_locked_to_r(F);
+			SpatialMap::move_anything_locked_to_r(F, session);
 		}
 	}
 }
@@ -926,12 +939,12 @@ All rooms begin at (0,0,0), except that locking may offset a few of them
 slightly. This runs in $O(R)$ time.
 
 =
-void SpatialMap::lock_positions_in_submap(connected_submap *sub) {
+void SpatialMap::lock_positions_in_submap(connected_submap *sub, index_session *session) {
 	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub)
 		R->fimd.shifted = FALSE;
 	LOOP_OVER_SUBMAP(R, sub)
-		SpatialMap::move_anything_locked_to_r(R);
+		SpatialMap::move_anything_locked_to_r(R, session);
 }
 
 @h Positioning within components.
@@ -949,9 +962,10 @@ the loop over submaps doesn't therefore add to the running time.
 @<(3) Position the rooms within each component@> =
 	connected_submap *sub;
 	int total_accuracy = 0;
-	LOOP_OVER(sub, connected_submap) {
+	linked_list *LS = Indexing::get_list_of_submaps(session);
+	LOOP_OVER_SUBMAPS(sub) {
 		LOGIF(SPATIAL_MAP, "Laying out component %d\n", sub->allocation_id);
-		SpatialMap::lock_positions_in_submap(sub); /* $O(R)$ running time */
+		SpatialMap::lock_positions_in_submap(sub, session); /* $O(R)$ running time */
 		SpatialMap::establish_natural_lengths(sub); /* $O(R)$ running time */
 		SpatialMap::position_submap(sub);
 		total_accuracy += sub->heat;
@@ -1029,7 +1043,7 @@ int SpatialMap::find_submap_heat(connected_submap *sub) {
 	sub->bounds = Geometry::empty_cuboid();
 	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) {
-		heat = SpatialMap::heat_sum(heat, SpatialMap::find_room_heat(R));
+		heat = SpatialMap::heat_sum(heat, SpatialMap::find_room_heat(R, sub->for_session));
 		Geometry::adjust_cuboid(&(sub->bounds), Room_position(R));
 	}
 
@@ -1048,9 +1062,9 @@ int SpatialMap::find_submap_heat(connected_submap *sub) {
 in constant time.
 
 =
-int SpatialMap::find_room_heat(faux_instance *R) {
+int SpatialMap::find_room_heat(faux_instance *R, index_session *session) {
 	int i, h = 0;
-	LOOP_OVER_LATTICE_DIRECTIONS(i) h += SpatialMap::find_exit_heat(R, i);
+	LOOP_OVER_LATTICE_DIRECTIONS(i) h += SpatialMap::find_exit_heat(R, i, session);
 	return h;
 }
 
@@ -1075,7 +1089,7 @@ This too runs in constant time.
 @d ANGULAR_MULTIPLIER 50
 
 =
-int SpatialMap::find_exit_heat(faux_instance *from, int exit) {
+int SpatialMap::find_exit_heat(faux_instance *from, int exit, index_session *session) {
 	drognas_spent++;
 
 	faux_instance *to = SpatialMap::read_smap(from, exit);
@@ -1083,13 +1097,13 @@ int SpatialMap::find_exit_heat(faux_instance *from, int exit) {
 
 	if (from == to) return 0; /* an exit from a room to itself doesn't show on the map */
 
-	if (SpatialMap::direction_is_along_lattice(exit) == FALSE) return 0; /* IN, OUT generate no heat */
+	if (SpatialMap::direction_is_along_lattice(exit, session) == FALSE) return 0; /* IN, OUT generate no heat */
 
 	vector D = Geometry::vec_minus(Room_position(to), Room_position(from));
 
 	if (Geometry::vec_eq(D, Zero_vector)) return COLLISION_HEAT; /* the two rooms have collided! */
 
-	vector E = SpatialMap::direction_as_vector(exit);
+	vector E = SpatialMap::direction_as_vector(exit, session);
 	int distance_distortion = Geometry::vec_length_squared(Geometry::vec_minus(E, D));
 	if (distance_distortion == 0) return 0; /* perfect placement */
 	int angular_distortion = (int) (ANGULAR_MULTIPLIER*Geometry::vec_angular_separation(E, D));
@@ -1112,18 +1126,18 @@ the destination room lies along a multiple of the exit vector from the
 origin. In effect, it tests whether |angular_distortion| is zero.
 
 =
-int SpatialMap::exit_aligned(faux_instance *from, int exit) {
+int SpatialMap::exit_aligned(faux_instance *from, int exit, index_session *session) {
 	drognas_spent++;
 
 	faux_instance *to = SpatialMap::read_smap(from, exit);
 	if (to == NULL) return TRUE; /* at any rate, not misaligned */
 	if (from == to) return TRUE; /* ditto */
-	if (SpatialMap::direction_is_along_lattice(exit) == FALSE) return TRUE; /* IN, OUT are always aligned */
+	if (SpatialMap::direction_is_along_lattice(exit, session) == FALSE) return TRUE; /* IN, OUT are always aligned */
 
 	vector D = Geometry::vec_minus(Room_position(to), Room_position(from));
 	if (Geometry::vec_eq(D, Zero_vector)) return TRUE; /* bad, but not for alignment reasons */
 
-	vector E = SpatialMap::direction_as_vector(exit);
+	vector E = SpatialMap::direction_as_vector(exit, session);
 	int angular_distortion = (int) (ANGULAR_MULTIPLIER*Geometry::vec_angular_separation(E, D));
 	if (angular_distortion == 0) return TRUE;
 	return FALSE;
@@ -1144,6 +1158,7 @@ first even before looking for subdivisions.
 int unique_Z_number = 1;
 
 void SpatialMap::position_submap(connected_submap *sub) {
+	index_session *session = sub->for_session;
 	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nPOSITIONING submap %d: initial heat %d",
 		sub->allocation_id, sub->heat);
@@ -1152,7 +1167,7 @@ void SpatialMap::position_submap(connected_submap *sub) {
 		faux_instance *R; int n = 0;
 		LOOP_OVER_SUBMAP(R, sub) {
 			if ((n++) % 8 == 0) LOG("\n    ");
-			LOG(" $O", R);
+			LOG(" %S", FauxInstances::get_name(R));
 		}
 		LOG("\n");
 	}
@@ -1229,17 +1244,23 @@ dividing at one relationship F1-to-T1 or at two, F1-to-T1 and F2-to-T2.
 			if (R->fimd.zone == Z1_number) Z1_count++;
 			if (R->fimd.zone == Z2_number) Z2_count++;
 		}
-		LOGIF(SPATIAL_MAP, "Making a double cut: $O %s to $O and $O %s to $O at cost %d\n",
-			div_F1, SpatialMap::usual_Inform_direction_name(div_dir1), div_T1,
-			div_F2, SpatialMap::usual_Inform_direction_name(div_dir2), div_T2,
+		LOGIF(SPATIAL_MAP, "Making a double cut: %S %s to %S and %S %s to %S at cost %d\n",
+			FauxInstances::get_name(div_F1),
+			SpatialMap::usual_Inform_direction_name(div_dir1, session),
+			FauxInstances::get_name(div_T1),
+			FauxInstances::get_name(div_F2),
+			SpatialMap::usual_Inform_direction_name(div_dir2, session),
+			FauxInstances::get_name(div_T2),
 			drognas_spent - predivision_spending);
 		division_spending += drognas_spent - predivision_spending;
 	} else {
 		int predivision_spending = drognas_spent;
 		SpatialMap::divide_into_zones_onecut(sub, div_F1, div_T1,
 			&Z1_count, &Z2_count, Z1_number, Z2_number);
-		LOGIF(SPATIAL_MAP, "Making a single cut: $O %s to $O at cost %d\n",
-			div_F1, SpatialMap::usual_Inform_direction_name(div_dir1), div_T1,
+		LOGIF(SPATIAL_MAP, "Making a single cut: %S %s to %S at cost %d\n",
+			FauxInstances::get_name(div_F1),
+			SpatialMap::usual_Inform_direction_name(div_dir1, session),
+			FauxInstances::get_name(div_T1),
 			drognas_spent - predivision_spending);
 		division_spending += drognas_spent - predivision_spending;
 	}
@@ -1289,7 +1310,7 @@ We therefore cap the length once we have reduced below the collision penalty.
 
 @<Slide the two former zones together along the F1-to-T1 line, minimising heat@> =
 	int preslide_spending = drognas_spent;
-	vector Axis = SpatialMap::direction_as_vector(div_dir1);
+	vector Axis = SpatialMap::direction_as_vector(div_dir1, session);
 
 	int worst_case_length = 0;
 	faux_instance *R;
@@ -1382,6 +1403,7 @@ run slowly; it's his own fault.
 int SpatialMap::work_out_optimal_cutpoint(connected_submap *sub,
 	faux_instance **from, faux_instance **to, int *way,
 	faux_instance **from2, faux_instance **to2, int *way2) {
+	index_session *session = sub->for_session;
 	faux_instance *first = NULL; int size = 0;
 
 	@<Find the size of and first room in the submap, and give all rooms generation 0@>;
@@ -1397,11 +1419,10 @@ int SpatialMap::work_out_optimal_cutpoint(connected_submap *sub,
 	faux_instance *outer_contact_from[CLIPBOARD_SIZE], *outer_contact_to[CLIPBOARD_SIZE];
 	@<Initialise all this cutpoint search workspace@>;
 
-	SpatialMap::assign_generation_count(first, NULL, size,
-		best_spread,
+	SpatialMap::assign_generation_count(first, NULL, size, best_spread,
 		best_from1, best_to1, best_dir1,
 		best_from2, best_to2, best_dir2,
-		outer_contact_generation, outer_contact_from, outer_contact_to, outer_contact_dir);
+		outer_contact_generation, outer_contact_from, outer_contact_to, outer_contact_dir, session);
 
 	@<Look at the results and return connections to cut, if any look good enough@>;
 	return FALSE;
@@ -1478,7 +1499,8 @@ int SpatialMap::assign_generation_count(faux_instance *at, faux_instance *from, 
 	faux_instance **best_from1, faux_instance **best_to1, int *best_dir1,
 	faux_instance **best_from2, faux_instance **best_to2, int *best_dir2,
 	int *contact_generation,
-	faux_instance **contact_from, faux_instance **contact_to, int *contact_dir) {
+	faux_instance **contact_from, faux_instance **contact_to, int *contact_dir,
+	index_session *session) {
 	int rooms_visited = 0;
 	int generation = at->fimd.zone, i;
 	LOG_INDENT;
@@ -1554,11 +1576,10 @@ there, maybe just a broom cupboard.
 	@<Give the new team of explorers a fresh clipboard@>;
 
 	T->fimd.zone = generation + 1;
-	int rooms_explored_in_the_beyond = SpatialMap::assign_generation_count(T, at, size,
-		best_spread,
+	int rooms_explored_in_the_beyond = SpatialMap::assign_generation_count(T, at, size, best_spread,
 		best_from1, best_to1, best_dir1,
 		best_from2, best_to2, best_dir2,
-		inner_contact_generation, inner_contact_from, inner_contact_to, inner_contact_dir);
+		inner_contact_generation, inner_contact_from, inner_contact_to, inner_contact_dir, session);
 	rooms_visited += rooms_explored_in_the_beyond;
 
 	@<Copy interesting items from the returning team's clipboard to ours@>;
@@ -1641,7 +1662,7 @@ we can get it.
 	if (SpatialMap::read_slock(inner_contact_from[0], inner_contact_dir[0])
 		== inner_contact_to[0]) break;
 	int r = BEST_TWOCUT_ER;
-	if ((inner_contact_dir[0] == i) || (inner_contact_dir[0] == SpatialMap::opposite(i)))
+	if ((inner_contact_dir[0] == i) || (inner_contact_dir[0] == SpatialMap::opposite(i, session)))
 		r = BEST_PARALLEL_TWOCUT_ER;
 	if (spread < best_spread[r]) {
 		best_spread[r] = spread;
@@ -1875,6 +1896,7 @@ can only be cooled once in a given round.
 =
 void SpatialMap::cool_component_from(connected_submap *sub, faux_instance *R) {
 	if (R->fimd.cooled) return;
+	index_session *session = sub->for_session;
 	R->fimd.cooled = TRUE;
 
 	int exit_heats[MAX_DIRECTIONS];
@@ -1886,7 +1908,7 @@ void SpatialMap::cool_component_from(connected_submap *sub, faux_instance *R) {
 @<Find the exits from this room and their current heats@> =
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		exit_heats[i] = SpatialMap::find_exit_heat(R, i);
+		exit_heats[i] = SpatialMap::find_exit_heat(R, i, session);
 		exit_rooms[i] = SpatialMap::read_smap(R, i);
 	}
 
@@ -1931,7 +1953,7 @@ all three in an afternoon stroll.)
 						exit_heats[i] = 0; exits_cooled++;
 					}
 				if (exit_heats[i] > 0) {
-					SpatialMap::cool_exit(R, i);
+					SpatialMap::cool_exit(R, i, session);
 					exit_heats[i] = 0; exits_cooled++;
 					SpatialMap::cool_component_from(sub, exit_rooms[i]);
 					LOOP_OVER_LATTICE_DIRECTIONS(j)
@@ -1952,25 +1974,26 @@ neighbours.)
 
 =
 faux_instance *saved_to; vector Saved_position;
-void SpatialMap::undo_cool_exit(void) {
-	SpatialMap::move_room_to(saved_to, Saved_position);
-	LOGIF(SPATIAL_MAP_WORKINGS, "Undoing move of $O\n", saved_to);
+void SpatialMap::undo_cool_exit(index_session *session) {
+	SpatialMap::move_room_to(saved_to, Saved_position, session);
+	LOGIF(SPATIAL_MAP_WORKINGS, "Undoing move of %S\n", FauxInstances::get_name(saved_to));
 }
 
-void SpatialMap::cool_exit(faux_instance *R, int exit) {
+void SpatialMap::cool_exit(faux_instance *R, int exit, index_session *session) {
 	faux_instance *to = SpatialMap::read_smap(R, exit);
 	saved_to = to; Saved_position = Room_position(to);
 
-	vector D = SpatialMap::direction_as_vector(exit);
+	vector D = SpatialMap::direction_as_vector(exit, session);
 
 	int length = R->fimd.exit_lengths[exit];
 	vector N = Geometry::vec_plus(Room_position(R), Geometry::vec_scale(length, D));
 
 	if (Geometry::vec_eq(Room_position(to), N)) return;
 
-	SpatialMap::move_room_to(saved_to, N);
-	LOGIF(SPATIAL_MAP_WORKINGS, "Moving $O %s from $O: now at (%d,%d,%d)\n",
-		to, SpatialMap::find_icon_label(exit), R, N.x, N.y, N.z);
+	SpatialMap::move_room_to(saved_to, N, session);
+	LOGIF(SPATIAL_MAP_WORKINGS, "Moving %S %s from %S: now at (%d,%d,%d)\n",
+		FauxInstances::get_name(to), SpatialMap::find_icon_label(exit, session),
+		FauxInstances::get_name(R), N.x, N.y, N.z);
 }
 
 @h The quenching tactic.
@@ -1989,6 +2012,7 @@ on large connected submaps.
 =
 void SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1,
 	faux_instance *avoid2) {
+	index_session *session = sub->for_session;
 	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Quenching submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
@@ -2002,7 +2026,7 @@ void SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1,
 		LOOP_OVER_SUBMAP(R, sub) {
 			int i;
 			LOOP_OVER_LATTICE_DIRECTIONS(i)
-				if (SpatialMap::find_exit_heat(R, i) > 0)
+				if (SpatialMap::find_exit_heat(R, i, session) > 0)
 					@<Attempt to quench this heated link@>;
 		}
 		LOG_OUTDENT;
@@ -2017,12 +2041,13 @@ void SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1,
 	faux_instance *T = SpatialMap::read_smap(R, i);
 	if ((T == avoid1) && (R == avoid2)) continue;
 	if ((T == avoid2) && (R == avoid1)) continue;
-	LOGIF(SPATIAL_MAP_WORKINGS, "Quenching $O %s to $O.\n",
-		R, SpatialMap::find_icon_label(i), T);
-	SpatialMap::cool_exit(R, i);
+	LOGIF(SPATIAL_MAP_WORKINGS, "Quenching %S %s to %S.\n",
+		FauxInstances::get_name(R), SpatialMap::find_icon_label(i, session),
+		FauxInstances::get_name(T));
+	SpatialMap::cool_exit(R, i, session);
 	int h = SpatialMap::find_submap_heat(sub);
 	if (h >= heat) {
-		SpatialMap::undo_cool_exit();
+		SpatialMap::undo_cool_exit(session);
 		LOGIF(SPATIAL_MAP_WORKINGS, "Undoing: would have resulted in heat %d\n", h);
 	} else {
 		heat = h;
@@ -2042,6 +2067,7 @@ neighbourhood as the rooms shimmy apart.
 
 =
 void SpatialMap::diffuse_submap(connected_submap *sub) {
+	index_session *session = sub->for_session;
 	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Diffusing submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
@@ -2077,18 +2103,19 @@ rooms whose exits are cold (or which are locked to each other).
 @<Try diffusion along this link@> =
 	int L = R->fimd.exit_lengths[i];
 	if (L > -1) {
-		LOGIF(SPATIAL_MAP_WORKINGS, "Lengthening $O %s to $O to %d.\n",
-			R, SpatialMap::find_icon_label(i), T, L+1);
+		LOGIF(SPATIAL_MAP_WORKINGS, "Lengthening %S %s to %S to %d.\n",
+			FauxInstances::get_name(R), SpatialMap::find_icon_label(i, session),
+			FauxInstances::get_name(T), L+1);
 		LOG_INDENT;
 		SpatialMap::save_component_positions(sub);
 
 		vector O = Room_position(R);
 		R->fimd.exit_lengths[i] = L+1;
-		SpatialMap::cool_exit(R, i);
+		SpatialMap::cool_exit(R, i, session);
 		vector D = Geometry::vec_minus(Room_position(R), O);
 		faux_instance *S;
 		LOOP_OVER_SUBMAP(S, sub) S->fimd.zone = 1;
-		SpatialMap::diffuse_across(R, T);
+		SpatialMap::diffuse_across(R, T, session);
 		LOOP_OVER_SUBMAP(S, sub)
 			if ((S->fimd.zone == 2) && (S != R))
 				SpatialMap::translate_room(S, D);
@@ -2113,18 +2140,19 @@ except that it's forbidden to including |avoiding| (the room we are trying
 to lengthen away from).
 
 =
-void SpatialMap::diffuse_across(faux_instance *at, faux_instance *avoiding) {
+void SpatialMap::diffuse_across(faux_instance *at, faux_instance *avoiding,
+	index_session *session) {
 	at->fimd.zone = 2;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *T = SpatialMap::read_slock(at, i);
-		if ((T) && (T->fimd.zone == 1)) SpatialMap::diffuse_across(T, avoiding);
+		if ((T) && (T->fimd.zone == 1)) SpatialMap::diffuse_across(T, avoiding, session);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *T = SpatialMap::read_smap(at, i);
 		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
-			(SpatialMap::find_exit_heat(at, i) == 0))
-			SpatialMap::diffuse_across(T, avoiding);
+			(SpatialMap::find_exit_heat(at, i, session) == 0))
+			SpatialMap::diffuse_across(T, avoiding, session);
 	}
 }
 
@@ -2145,6 +2173,7 @@ links.
 
 =
 void SpatialMap::radiate_submap(connected_submap *sub) {
+	index_session *session = sub->for_session;
 	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Radiating submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
@@ -2159,7 +2188,7 @@ void SpatialMap::radiate_submap(connected_submap *sub) {
 			LOOP_OVER_LATTICE_DIRECTIONS(i) {
 				faux_instance *T = SpatialMap::read_smap(R, i);
 				if (T) {
-					if (SpatialMap::exit_aligned(R, i) == FALSE)
+					if (SpatialMap::exit_aligned(R, i, sub->for_session) == FALSE)
 						@<Attempt to radiate from this misaligned link@>;
 				}
 			}
@@ -2183,18 +2212,19 @@ are only three or four viable new positions for R.
 @d MAX_RADIATION_DISTANCE 5
 
 @<Attempt to radiate from this misaligned link@> =
-	LOGIF(SPATIAL_MAP_WORKINGS, "Map misaligned on $O %s to $O.\n",
-		R, SpatialMap::find_icon_label(i), T);
+	LOGIF(SPATIAL_MAP_WORKINGS, "Map misaligned on %S %s to %S.\n",
+		FauxInstances::get_name(R), SpatialMap::find_icon_label(i, session),
+		FauxInstances::get_name(T));
 	LOG_INDENT;
 	int j;
 	vector O = Room_position(R);
 	LOOP_OVER_LATTICE_DIRECTIONS(j) {
-		vector E = SpatialMap::direction_as_vector(j);
+		vector E = SpatialMap::direction_as_vector(j, session);
 		int L;
 		for (L = 1; L <= MAX_RADIATION_DISTANCE; L++) {
 			vector D = Geometry::vec_scale(L, E);
 			SpatialMap::set_room_position(R, Geometry::vec_plus(O, D));
-			if (SpatialMap::exit_aligned(R, i))
+			if (SpatialMap::exit_aligned(R, i, sub->for_session))
 				@<Radiation is geometrically possible here@>;
 		}
 		SpatialMap::set_room_position(R, O);
@@ -2209,10 +2239,10 @@ are only three or four viable new positions for R.
 	SpatialMap::save_component_positions(sub);
 	faux_instance *S;
 	LOOP_OVER_SUBMAP(S, sub) S->fimd.zone = 1;
-	SpatialMap::radiate_across(R, T, j);
+	SpatialMap::radiate_across(R, T, j, session);
 	LOOP_OVER_SUBMAP(S, sub)
 		if ((S->fimd.zone == 2) && (S != R)) {
-			LOGIF(SPATIAL_MAP_WORKINGS, "Comoving $O\n", S);
+			LOGIF(SPATIAL_MAP_WORKINGS, "Comoving %S\n", FauxInstances::get_name(S));
 			SpatialMap::translate_room(S, D);
 		}
 	SpatialMap::find_submap_heat(sub);
@@ -2241,19 +2271,20 @@ become aligned.)
 It follows that radiation can never increase the number of unaligned links.
 
 =
-void SpatialMap::radiate_across(faux_instance *at, faux_instance *avoiding, int not_this_way) {
+void SpatialMap::radiate_across(faux_instance *at, faux_instance *avoiding,
+	int not_this_way, index_session *session) {
 	at->fimd.zone = 2;
-	int i, not_this_way_either = SpatialMap::opposite(not_this_way);
+	int i, not_this_way_either = SpatialMap::opposite(not_this_way, session);
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *T = SpatialMap::read_slock(at, i);
 		if ((T) && (T->fimd.zone == 1))
-			SpatialMap::radiate_across(T, avoiding, not_this_way);
+			SpatialMap::radiate_across(T, avoiding, not_this_way, session);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *T = SpatialMap::read_smap(at, i);
 		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
 			(i != not_this_way) && (i != not_this_way_either))
-			SpatialMap::radiate_across(T, avoiding, not_this_way);
+			SpatialMap::radiate_across(T, avoiding, not_this_way, session);
 	}
 }
 
@@ -2269,6 +2300,7 @@ is so high that this is unlikely to be an issue.
 
 =
 void SpatialMap::explode_submap(connected_submap *sub) {
+	index_session *session = sub->for_session;
 	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Exploding submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
@@ -2279,7 +2311,8 @@ void SpatialMap::explode_submap(connected_submap *sub) {
 		LOOP_OVER_SUBMAP(R, sub) {
 			vector At = Room_position(R);
 			if (SpatialMap::occupied_in_submap(sub, At) >= 2) {
-				LOGIF(SPATIAL_MAP, "Collision: pushing $O away\n", R);
+				LOGIF(SPATIAL_MAP, "Collision: pushing %S away\n",
+					FauxInstances::get_name(R));
 				int x, y, coldest = FUSION_POINT;
 				vector Coldest = Geometry::vec(MAX_EXPLOSION_DISTANCE + 1, 0, 0);
 				for (x = -MAX_EXPLOSION_DISTANCE; x<=MAX_EXPLOSION_DISTANCE; x++)
@@ -2287,14 +2320,14 @@ void SpatialMap::explode_submap(connected_submap *sub) {
 						if ((x != 0) || (y != 0)) {
 							vector V = Geometry::vec_plus(At, Geometry::vec(x, y, 0));
 							if (SpatialMap::occupied_in_submap(sub, V) == 0) {
-								SpatialMap::move_room_to(R, V);
+								SpatialMap::move_room_to(R, V, session);
 								int h = SpatialMap::find_submap_heat(sub);
 								if (h < coldest) { Coldest = V; coldest = h; }
 							}
 						}
-				SpatialMap::move_room_to(R, Geometry::vec_plus(At, Coldest));
-				LOGIF(SPATIAL_MAP, "Moving $O to blank offset (%d,%d,%d) for heat %d\n",
-					R, Coldest.x, Coldest.y, Coldest.z, coldest);
+				SpatialMap::move_room_to(R, Geometry::vec_plus(At, Coldest), session);
+				LOGIF(SPATIAL_MAP, "Moving %S to blank offset (%d,%d,%d) for heat %d\n",
+					FauxInstances::get_name(R), Coldest.x, Coldest.y, Coldest.z, coldest);
 				keep_trying = TRUE;
 				moves++;
 				break;
@@ -2321,12 +2354,15 @@ ocean on OS18 "Sound of Harris", despite its being separated by about
 60km from the position shown.)
 
 @<(4) Position the components in space@> =
-	int ncom = NUMBER_CREATED(connected_submap);
+	connected_submap *sub;
+	int ncom = 0;
+	linked_list *LS = Indexing::get_list_of_submaps(session);
+	LOOP_OVER_SUBMAPS(sub) ncom++;
 	connected_submap **sorted =
 		Memory::calloc(ncom, sizeof(connected_submap *), INDEX_SORTING_MREASON);
 	@<Sort the components into decreasing order of size@>;
 
-	connected_submap *sub, *previous_mc = NULL;
+	connected_submap *previous_mc = NULL;
 	int i, j;
 	vector Drill_square_O = Zero_vector;
 	vector Drill_square_At = Zero_vector;
@@ -2389,7 +2425,8 @@ one big component.
 		Drill_square_At = Drill_square_O;
 		connected_submap *sing;
 		int N = 0;
-		LOOP_OVER(sing, connected_submap)
+		linked_list *LS = Indexing::get_list_of_submaps(session);
+		LOOP_OVER_SUBMAPS(sing)
 			if ((sing->bounds.population == 1) && (SpatialMap::component_is_isolated(sing)))
 				N++;
 		while (drill_square_side*drill_square_side < N) drill_square_side++;
@@ -2442,10 +2479,10 @@ with.
 
 @<Sort the components into decreasing order of size@> =
 	connected_submap *sub;
-	LOOP_OVER(sub, connected_submap) sub->positioned = FALSE;
-
+	linked_list *LS = Indexing::get_list_of_submaps(session);
+	LOOP_OVER_SUBMAPS(sub) sub->positioned = FALSE;
 	int i = 0;
-	LOOP_OVER(sub, connected_submap) sorted[i++] = sub;
+	LOOP_OVER_SUBMAPS(sub) sorted[i++] = sub;
 	qsort(sorted, (size_t) ncom, sizeof(connected_submap *), SpatialMap::compare_components);
 
 @ The following means the components are sorted in descending size order,
@@ -2499,7 +2536,8 @@ are $R$ components of size 1, so in practice it's much better than that.
 =
 int SpatialMap::find_component_placement_heat(connected_submap *sub) {
 	connected_submap *other;
-	LOOP_OVER(other, connected_submap)
+	linked_list *LS = Indexing::get_list_of_submaps(sub->for_session);
+	LOOP_OVER_SUBMAPS(other)
 		if (other->positioned) {
 			faux_instance *R;
 			LOOP_OVER_SUBMAP(R, sub)
@@ -2604,7 +2642,8 @@ running time in check.
 							}
 						}
 				if (closest_S) {
-					LOGIF(SPATIAL_MAP, "vdW force between $O and $O\n", R, closest_S);
+					LOGIF(SPATIAL_MAP, "vdW force between %S and %S\n",
+						FauxInstances::get_name(R), FauxInstances::get_name(closest_S));
 					no_links++;
 					if (outer) *outer = closest_S; if (inner) *inner = R;
 					if (heat) *heat = SpatialMap::heat_sum(*heat,
@@ -2767,7 +2806,8 @@ void SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R,
 =
 void SpatialMap::perform_map_internal_test(OUTPUT_STREAM, index_session *session) {
 	connected_submap *sub;
-	LOOP_OVER(sub, connected_submap) {
+	linked_list *LS = Indexing::get_list_of_submaps(session);
+	LOOP_OVER_SUBMAPS(sub) {
 		WRITE("Map component %d: extent (%d...%d, %d...%d, %d...%d): population %d\n",
 			sub->allocation_id,
 			sub->bounds.corner0.x, sub->bounds.corner1.x,
