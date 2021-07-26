@@ -30,6 +30,7 @@ void IndexModule::end(void) {
 
 @
 
+@e index_session_CLASS
 @e index_page_CLASS
 @e index_element_CLASS
 @e inter_lexicon_CLASS
@@ -45,6 +46,7 @@ void IndexModule::end(void) {
 @e rubric_holder_CLASS
 
 =
+DECLARE_CLASS(index_session)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
 DECLARE_CLASS(inter_lexicon)

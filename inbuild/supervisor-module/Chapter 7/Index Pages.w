@@ -17,7 +17,7 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 
 	HTML::header(OUT, I"Extensions",
 		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_EXTENSIONS_IRES));
+		InstalledFiles::filename(JAVASCRIPT_FOR_EXTENSIONS_IRES), NULL);
 	@<Write the body of the HTML@>;
 	STREAM_CLOSE(OUT);
 	HTML::footer(OUT);

@@ -73,6 +73,7 @@ typedef struct connected_submap {
 	int incidence_cache_size; /* how large that cache is */
 	struct cuboid incidence_cache_bounds; /* bounds of the incidence cache array */
 	int superpositions; /* number of pairs of rooms which share the same grid location */
+	struct index_session *for_session;
 	CLASS_DEFINITION
 } connected_submap;
 
@@ -85,9 +86,9 @@ cuboid Universe;
 This is usually the room in which the player begins.
 
 =
-int SpatialMap::benchmark_level(void) {
-	if (FauxInstances::benchmark() == NULL) return 0;
-	return Room_position(FauxInstances::benchmark()).z;
+int SpatialMap::benchmark_level(index_session *session) {
+	if (FauxInstances::benchmark(session) == NULL) return 0;
+	return Room_position(FauxInstances::benchmark(session)).z;
 }
 
 @ We are going to be iterating through the set of rooms often. Looping over
@@ -133,9 +134,9 @@ to get the results in time to write them in the story file.
 int spatial_coordinates_established = FALSE;
 int partitioned_into_components = FALSE;
 
-void SpatialMap::establish_spatial_coordinates(void) {
+void SpatialMap::establish_spatial_coordinates(index_session *session) {
 	if (spatial_coordinates_established) return;
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	Universe = Geometry::empty_cuboid();
 	@<(1) Create the spatial relationship arrays@>;
 	@<(2) Partition the set of rooms into component submaps@>;
@@ -211,8 +212,8 @@ When we read this, we associate direction object 13, say (the starboard
 direction) with page direction 6:
 
 =
-faux_instance *SpatialMap::mapped_as_if(faux_instance *I) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+faux_instance *SpatialMap::mapped_as_if(faux_instance *I, index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	int i = I->direction_index;
 	if (story_dir_to_page_dir[i] == i) return NULL;
 	faux_instance *D;
@@ -332,7 +333,7 @@ we use these hard-wired macros instead.
 	for (i=0; i<12; i++)
 
 @d LOOP_OVER_STORY_DIRECTIONS(i)
-	for (i=0; ((i<FauxInstances::no_directions()) && (i<MAX_DIRECTIONS)); i++)
+	for (i=0; ((i<FauxInstances::no_directions(session)) && (i<MAX_DIRECTIONS)); i++)
 
 @d LOOP_OVER_LATTICE_DIRECTIONS(i)
 	for (i=0; i<10; i++)
@@ -618,7 +619,7 @@ faux_instance *SpatialMap::read_slock(faux_instance *from, int dir) {
 Here's an empty submap, with no rooms.
 
 =
-connected_submap *SpatialMap::new_submap(void) {
+connected_submap *SpatialMap::new_submap(index_session *session) {
 	connected_submap *sub = CREATE(connected_submap);
 	sub->bounds = Geometry::empty_cuboid();
 	sub->first_room_in_submap = NULL;
@@ -626,6 +627,7 @@ connected_submap *SpatialMap::new_submap(void) {
 	sub->incidence_cache = NULL;
 	sub->incidence_cache_bounds = Geometry::empty_cuboid();
 	sub->superpositions = 0;
+	sub->for_session = session;
 	return sub;
 }
 
@@ -797,7 +799,7 @@ since its rooms have all moved out.
 =
 void SpatialMap::create_submaps_from_zones(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(sub->for_session);
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		if (R->fimd.zone == Z1_number)
@@ -815,7 +817,7 @@ reverse process exactly.
 =
 void SpatialMap::create_zones_from_submaps(connected_submap *sub,
 	int Z1_number, connected_submap *Zone1, int Z2_number, connected_submap *Zone2) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(sub->for_session);
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		if (R->fimd.submap == Zone1) {
@@ -839,11 +841,11 @@ We ensure that the first-created component is the one containing the
 benchmark room.
 
 @<(2) Partition the set of rooms into component submaps@> =
-	SpatialMap::create_map_component_around(FauxInstances::benchmark());
+	SpatialMap::create_map_component_around(FauxInstances::benchmark(session), session);
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (R->fimd.submap == NULL)
-			SpatialMap::create_map_component_around(R);
+			SpatialMap::create_map_component_around(R, session);
 
 @ The following grows a component outwards from |at|, so that it also includes
 all rooms locked to |at| or with a SR to it. If |at| is currently not in a
@@ -854,21 +856,21 @@ doesn't depend on $R$, the number of rooms. It is called exactly once for
 each room, so phase (2) has running time $O(R)$.
 
 =
-void SpatialMap::create_map_component_around(faux_instance *at) {
+void SpatialMap::create_map_component_around(faux_instance *at, index_session *session) {
 	if (at->fimd.submap == NULL)
-		SpatialMap::add_room_to_submap(at, SpatialMap::new_submap());
+		SpatialMap::add_room_to_submap(at, SpatialMap::new_submap(session));
 
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		faux_instance *locked_to = SpatialMap::read_slock(at, i);
 		if ((locked_to) && (locked_to->fimd.submap != at->fimd.submap)) {
 			SpatialMap::add_room_to_submap(locked_to, at->fimd.submap);
-			SpatialMap::create_map_component_around(locked_to);
+			SpatialMap::create_map_component_around(locked_to, session);
 		}
 		faux_instance *dest = SpatialMap::read_smap(at, i);
 		if ((dest) && (dest->fimd.submap != at->fimd.submap)) {
 			SpatialMap::add_room_to_submap(dest, at->fimd.submap);
-			SpatialMap::create_map_component_around(dest);
+			SpatialMap::create_map_component_around(dest, session);
 		}
 	}
 }
@@ -1245,8 +1247,8 @@ dividing at one relationship F1-to-T1 or at two, F1-to-T1 and F2-to-T2.
 		Z1_count, Z2_count);
 
 @<Divide the submap into zones, recurse to position those, then merge back@> =
-	connected_submap *Zone1 = SpatialMap::new_submap();
-	connected_submap *Zone2 = SpatialMap::new_submap();
+	connected_submap *Zone1 = SpatialMap::new_submap(sub->for_session);
+	connected_submap *Zone2 = SpatialMap::new_submap(sub->for_session);
 	SpatialMap::create_submaps_from_zones(sub, Z1_number, Zone1, Z2_number, Zone2);
 	LOGIF(SPATIAL_MAP, "Zone 1 becomes submap %d; zone 2 becomes submap %d\n",
 		Zone1->allocation_id, Zone2->allocation_id);
@@ -2368,7 +2370,7 @@ predecessor, with the same baseline, and on the level of the benchmark room.
 		sub->allocation_id, sub->bounds.population);
 	SpatialMap::move_component(sub,
 		Geometry::vec(x_max, box.corner0.y - sub->bounds.corner0.y,
-			SpatialMap::benchmark_level() - sub->bounds.corner0.z));
+			SpatialMap::benchmark_level(session) - sub->bounds.corner0.z));
 
 @ The drill square is a way to place large numbers of single-room components,
 such as exist in IF works where rooms are being plaited together live during
@@ -2383,7 +2385,7 @@ one big component.
 		sub->allocation_id, sub->bounds.population);
 	if (drill_square_side == 0) {
 		Drill_square_O =
-			Geometry::vec(box.corner1.x + 1, box.corner0.y, SpatialMap::benchmark_level());
+			Geometry::vec(box.corner1.x + 1, box.corner0.y, SpatialMap::benchmark_level(session));
 		Drill_square_At = Drill_square_O;
 		connected_submap *sing;
 		int N = 0;
@@ -2414,7 +2416,7 @@ with.
 	SpatialMap::find_link_to_placed_components(sub, &outer, &inner);
 	vector Best_offset =
 		Geometry::vec(x_max, box.corner0.y - sub->bounds.corner0.y,
-			SpatialMap::benchmark_level() - sub->bounds.corner0.z);
+			SpatialMap::benchmark_level(session) - sub->bounds.corner0.z);
 	if ((outer) && (inner)) {
 		int dx = 0, dy = 0, dz = 0, min_s = FUSION_POINT;
 		for (dx = -MAX_OFFSET; dx <= MAX_OFFSET; dx++)
@@ -2542,7 +2544,7 @@ rooms connected that way are by definition in the same component.
 =
 int SpatialMap::cross_component_links(connected_submap *sub, faux_instance **outer,
 	faux_instance **inner, int *heat, int posnd) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(sub->for_session);
 	int no_links = 0;
 	if (heat) *heat = 0;
 	faux_instance *R;
@@ -2681,9 +2683,10 @@ locking means that blank planes are inevitable.
 @ 
 
 =
-void SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
+void SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R,
+	index_session *session) {
 	text_stream *RW = FauxInstances::get_name(R); /* name of the origin room */
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	faux_instance *dir;
 	LOOP_OVER_FAUX_DIRECTIONS(faux_set, dir) {
 		int i = dir->direction_index;
@@ -2762,7 +2765,7 @@ void SpatialMap::index_room_connections(OUTPUT_STREAM, faux_instance *R) {
 @h Unit testing.
 
 =
-void SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
+void SpatialMap::perform_map_internal_test(OUTPUT_STREAM, index_session *session) {
 	connected_submap *sub;
 	LOOP_OVER(sub, connected_submap) {
 		WRITE("Map component %d: extent (%d...%d, %d...%d, %d...%d): population %d\n",
@@ -2778,7 +2781,7 @@ void SpatialMap::perform_map_internal_test(OUTPUT_STREAM) {
 				Room_position(R).y,
 				Room_position(R).z);
 			FauxInstances::write_name(OUT, R);
-			if (R == FauxInstances::benchmark()) WRITE("  (benchmark)");
+			if (R == FauxInstances::benchmark(session)) WRITE("  (benchmark)");
 			WRITE("\n");
 		}
 		WRITE("\n");

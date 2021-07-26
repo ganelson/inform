@@ -27,8 +27,8 @@ this icon position, and has the same indexing as the icon grid.
 faux_instance **room_grid = NULL;
 int *icon_grid = NULL, *exit_grid = NULL;
 
-void HTMLMap::calculate_map_grid(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+void HTMLMap::calculate_map_grid(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	@<Allocate the three mapping grids@>;
 	@<Populate the room grid@>;
 	@<Populate the icon and exit grids@>;
@@ -386,14 +386,15 @@ as the icon grid in order to be sure that the little 1 by 1 map for it (in
 the details part of the World Index page) will be all right.
 
 =
-void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, localisation_dictionary *LD) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
-	HTMLMap::calculate_map_grid();
+void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
+	HTMLMap::calculate_map_grid(session);
 
 	@<Choose a map colour for each region@>;
 	@<Choose a map colour for each room, based on its region membership@>;
 
-	if (FauxInstances::no_rooms() >= 2) {
+	if (FauxInstances::no_rooms(session) >= 2) {
 		WRITE("\n\n");
 		HTML::comment(OUT, I"WORLD WRITE MAP BEGINS");
 		HTML_OPEN("p");
@@ -458,7 +459,7 @@ from each other.)
 
 @<Draw the rubric row which labels this level of the map@> =
 	TEMPORARY_TEXT(level_rubric)
-	HTMLMap::devise_level_rubric(z, level_rubric, LD);
+	HTMLMap::devise_level_rubric(z, level_rubric, session);
 	HTML_OPEN("tr"); HTML_OPEN("td");
 	int rounding = 0;
 	if (z == Universe.corner1.z) rounding = ROUND_BOX_TOP;
@@ -481,7 +482,7 @@ from each other.)
 	LOGIF(SPATIAL_MAP, "Level %d has rooms with %d <= y <= %d\n", z, y_min, y_max);
 
 	HTML_OPEN("tr"); HTML_OPEN("td");
-	HTMLMap::plot_map_level(OUT, Universe.corner0.x, Universe.corner1.x, y_min, y_max, z, 1, LD);
+	HTMLMap::plot_map_level(OUT, Universe.corner0.x, Universe.corner1.x, y_min, y_max, z, 1, session);
 	HTML_CLOSE("td"); HTML_CLOSE("tr"); WRITE("\n");
 
 @<Draw the baseline rubric row which concludes the map@> =
@@ -493,7 +494,7 @@ from each other.)
 @<Add a paragraph describing how non-standard directions are mapped@> =
 	faux_instance *D; int k = 0;
 	LOOP_OVER_FAUX_DIRECTIONS(faux_set, D) {
-		faux_instance *A = SpatialMap::mapped_as_if(D);
+		faux_instance *A = SpatialMap::mapped_as_if(D, session);
 		if (A) {
 			k++;
 			if (k == 1) { HTML_OPEN("p"); } else WRITE("; ");
@@ -507,7 +508,8 @@ from each other.)
 
 =
 void HTMLMap::devise_level_rubric(int z, text_stream *level_rubric,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	text_stream *key = I"Index.Elements.Mp.DefaultLevel";
 	int par = 0;
 	switch(Universe.corner1.z - Universe.corner0.z) {
@@ -517,7 +519,7 @@ void HTMLMap::devise_level_rubric(int z, text_stream *level_rubric,
 			 if (z == Universe.corner1.z) key = I"Index.Elements.Mp.UpperLevel";
 			break;
 		default: {
-			int z_offset = z - SpatialMap::benchmark_level();
+			int z_offset = z - SpatialMap::benchmark_level(session);
 			switch(z_offset) {
 			case 0:  key = I"Index.Elements.Mp.StartingLevel"; break;
 			case 1:  key = I"Index.Elements.Mp.FirstLevelUp"; break;
@@ -551,7 +553,7 @@ that the grids are calculated, the region colours decided, and so on.
 
 =
 void HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, faux_instance *R,
-	localisation_dictionary *LD) {
+	index_session *session) {
 	WRITE("\n\n");
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, R->anchor_text);
@@ -559,11 +561,11 @@ void HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, faux_instance *R,
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);
 	vector P = Room_position(R);
-	HTMLMap::plot_map_level(OUT, P.x, P.x, P.y, P.y, P.z, 2, LD);
+	HTMLMap::plot_map_level(OUT, P.x, P.x, P.y, P.y, P.z, 2, session);
 	HTML::next_html_column(OUT, 0);
 	WRITE("&nbsp;");
 	HTML::next_html_column(OUT, 0);
-	MapElement::index(OUT, R, 1, FALSE, LD);
+	MapElement::index(OUT, R, 1, FALSE, session);
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
@@ -577,7 +579,7 @@ index page.
 
 =
 void HTMLMap::plot_map_level(OUTPUT_STREAM, int x0, int x1, int y0, int y1, int z,
-	int pass, localisation_dictionary *LD) {
+	int pass, index_session *session) {
 	if (pass == 1)
 		LOGIF(SPATIAL_MAP, "Plot: [%d, %d] x [%d, %d] x {%d}\n", x0, x1, y0, y1, z);
 
@@ -694,15 +696,15 @@ height, and they're drawn with a single stripe.
 	HTMLMap::begin_map_table(OUT, MAP_CELL_SIZE, MAP_CELL_OUTER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN("td");
-	HTMLMap::plot_map_cell(OUT, pass, P, 0, 0, 2, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 0, 0, 2, session);
 	if (icon_grid[ICON_GRID_POS(P, 0, 0)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"s_dot"); else HTMLMap::plot_map_icon(OUT, I"ns_spacer");
-	HTMLMap::plot_map_cell(OUT, pass, P, 1, 0, 8, LD);
-	HTMLMap::plot_map_cell(OUT, pass, P, 2, 0, 0, LD);
-	HTMLMap::plot_map_cell(OUT, pass, P, 3, 0, -1, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 1, 0, 8, session);
+	HTMLMap::plot_map_cell(OUT, pass, P, 2, 0, 0, session);
+	HTMLMap::plot_map_cell(OUT, pass, P, 3, 0, -1, session);
 	if (icon_grid[ICON_GRID_POS(P, 4, 0)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"s_dot"); else HTMLMap::plot_map_icon(OUT, I"ns_spacer");
-	HTMLMap::plot_map_cell(OUT, pass, P, 4, 0, 1, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 4, 0, 1, session);
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTMLMap::end_map_table(OUT);
@@ -720,11 +722,11 @@ height, and they're drawn with a single stripe.
 	if (icon_grid[ICON_GRID_POS(P, 0, 0)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"e_dot"); else HTMLMap::plot_map_icon(OUT, I"ew_spacer");
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 0, 1, 11, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 0, 1, 11, session);
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 0, 2, 7, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 0, 2, 7, session);
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 0, 3, -1, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 0, 3, -1, session);
 	HTML_TAG("br");
 	if (icon_grid[ICON_GRID_POS(P, 0, 4)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"e_dot"); else HTMLMap::plot_map_icon(OUT, I"ew_spacer");
@@ -742,11 +744,11 @@ height, and they're drawn with a single stripe.
 	if (icon_grid[ICON_GRID_POS(P, 4, 0)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"w_dot"); else HTMLMap::plot_map_icon(OUT, I"ew_spacer");
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 4, 1, -1, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 4, 1, -1, session);
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 4, 2, 6, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 4, 2, 6, session);
 	HTML_TAG("br");
-	HTMLMap::plot_map_cell(OUT, pass, P, 4, 3, 10, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 4, 3, 10, session);
 	HTML_TAG("br");
 	if (icon_grid[ICON_GRID_POS(P, 4, 4)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"w_dot"); else HTMLMap::plot_map_icon(OUT, I"ew_spacer");
@@ -766,7 +768,7 @@ There are 15 possibilities, and their icons are named as the following shows:
 	HTML_OPEN("td");
 	int bits = (icon_grid[ICON_GRID_POS(P, 2, 2)]) & LONGS_BITMAP;
 	if (bits == 0)
-		HTMLMap::index_room_square(OUT, room_grid[ROOM_GRID_POS(P)], pass);
+		HTMLMap::index_room_square(OUT, room_grid[ROOM_GRID_POS(P)], pass, session);
 	else {
 		TEMPORARY_TEXT(icon_name)
 		WRITE_TO(icon_name, "long");
@@ -785,15 +787,15 @@ There are 15 possibilities, and their icons are named as the following shows:
 	HTMLMap::begin_map_table(OUT, MAP_CELL_SIZE, MAP_CELL_OUTER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN("td");
-	HTMLMap::plot_map_cell(OUT, pass, P, 0, 4, 5, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 0, 4, 5, session);
 	if (icon_grid[ICON_GRID_POS(P, 0, 4)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"n_dot"); else HTMLMap::plot_map_icon(OUT, I"ns_spacer");
-	HTMLMap::plot_map_cell(OUT, pass, P, 1, 4, -1, LD);
-	HTMLMap::plot_map_cell(OUT, pass, P, 2, 4, 3, LD);
-	HTMLMap::plot_map_cell(OUT, pass, P, 3, 4, 9, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 1, 4, -1, session);
+	HTMLMap::plot_map_cell(OUT, pass, P, 2, 4, 3, session);
+	HTMLMap::plot_map_cell(OUT, pass, P, 3, 4, 9, session);
 	if (icon_grid[ICON_GRID_POS(P, 4, 4)] & CONNECTIVE_BITMAP)
 		HTMLMap::plot_map_icon(OUT, I"n_dot"); else HTMLMap::plot_map_icon(OUT, I"ns_spacer");
-	HTMLMap::plot_map_cell(OUT, pass, P, 4, 4, 4, LD);
+	HTMLMap::plot_map_cell(OUT, pass, P, 4, 4, 4, session);
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTMLMap::end_map_table(OUT);
@@ -848,8 +850,9 @@ of the cell. First, the eight cells around the outside:
 
 =
 void HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i2,
-	int faux_exit, localisation_dictionary *LD) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	int faux_exit, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	int bitmap = icon_grid[ICON_GRID_POS(P, i1, i2)];
 	if (pass == 2) bitmap &= CONNECTIVE_BITMAP;
 	if (bitmap == 0) @<This map cell is empty@>
@@ -937,10 +940,10 @@ which are bordered and coloured single-cell tables.
 @d ROOM_TEXT_COLOUR "000000"
 
 =
-void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
+void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index_session *session) {
 	if (I) {
 		int b = ROOM_BORDER_SIZE;
-		if ((I == FauxInstances::benchmark()) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
+		if ((I == FauxInstances::benchmark(session)) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
 		HTML_OPEN_WITH("table",
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
 			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" title=\"%S\"",
@@ -971,7 +974,7 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 			I->allocation_id);
 		HTML::begin_colour(OUT, col);
 	}
-	if ((pass == 1) && (I == FauxInstances::benchmark())) HTML_OPEN("b");
+	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
 	WRITE_TO(abbrev, "%S", I->abbrev);
 	#ifdef HTML_MAP_FONT_SIZE
@@ -982,7 +985,7 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass) {
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_CLOSE("span");
 	#endif
-	if ((pass == 1) && (I == FauxInstances::benchmark())) HTML_CLOSE("b");
+	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
 
@@ -1014,17 +1017,17 @@ The part of the World Index showing which rooms belong to which regions. Note
 that nothing is shown if all of the rooms are outside of regions.
 
 =
-void HTMLMap::add_region_key(OUTPUT_STREAM) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+void HTMLMap::add_region_key(OUTPUT_STREAM, index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	faux_instance *reg; int count = 0;
 	LOOP_OVER_FAUX_REGIONS(faux_set, reg)
-		count += HTMLMap::add_key_for(OUT, reg);
-	if (count > 0) count += HTMLMap::add_key_for(OUT, NULL);
+		count += HTMLMap::add_key_for(OUT, reg, session);
+	if (count > 0) count += HTMLMap::add_key_for(OUT, NULL, session);
 	if (count > 0) HTML_TAG("hr");
 }
 
-int HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+int HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg, index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	int count = 0;
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
@@ -1046,7 +1049,7 @@ int HTMLMap::add_key_for(OUTPUT_STREAM, faux_instance *reg) {
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN("tr"); WRITE("\n");
 	HTML_OPEN_WITH("td", "width=\"40\" valign=\"middle\" align=\"left\"");
-	HTMLMap::index_room_square(OUT, R, 1);
+	HTMLMap::index_room_square(OUT, R, 1, session);
 	HTML_CLOSE("td"); WRITE("\n");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"left\"");
 	WRITE("<b>");

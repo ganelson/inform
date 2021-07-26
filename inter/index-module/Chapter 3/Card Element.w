@@ -7,8 +7,8 @@ natural way to present bibliographic data to the user. In effect, it's a
 simplified form of the iFiction record, without the XML overhead.
 
 =
-void CardElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
+void CardElement::render(OUTPUT_STREAM, index_session *session) {
+	inter_tree *I = Indexing::get_tree(session);
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/bibliographic");
 	
 	HTML_OPEN("p");

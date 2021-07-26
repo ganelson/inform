@@ -44,11 +44,10 @@ typedef struct inter_lexicon {
 And this is where that happens:
 
 =
-inter_lexicon *IndexLexicon::stock(inter_tree *I) {
+inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 	inter_lexicon *lexicon = CREATE(inter_lexicon);
 	lexicon->first = NULL;
 	lexicon->unsorted = NEW_LINKED_LIST(index_lexicon_entry);
-	tree_inventory *inv = Synoptic::inv(I);
 	@<Add verb entries@>;
 	@<Add preposition entries@>;
 	@<Add adjective entries@>;

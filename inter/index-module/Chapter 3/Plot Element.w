@@ -10,16 +10,11 @@ with a notation which takes a little bit of on-screen explanation, but
 seems natural enough to learn in practice.
 
 =
-void PlotElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
-	TreeLists::sort(inv->scene_nodes, PlotElement::scene_order);
-	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
-
-	inter_package *scene_pack;
-	LOOP_OVER_INVENTORY_PACKAGES(scene_pack, i, inv->scene_nodes)
-		FauxScenes::simplified(I, scene_pack);
-
+void PlotElement::render(OUTPUT_STREAM, index_session *session) {
+	tree_inventory *inv = Indexing::get_inventory(session);
+	inter_tree *I = Indexing::get_tree(session);
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	linked_list *L = Indexing::get_list_of_scenes(session);
 	@<Tabulate the scenes@>;
 	@<Show the legend for the scene table icons@>;
 	@<Give details of each scene in turn@>;
@@ -35,15 +30,17 @@ about and created but never made use of.)
 
 @<Tabulate the scenes@> =
 	simplified_scene *ssc;
-	LOOP_OVER(ssc, simplified_scene)
+	LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)
+		ssc->indexed_already = FALSE;
+	LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)
 		if ((FauxScenes::starts_at_start_of_play(ssc)) || (FauxScenes::is_entire_game(ssc)))
-			PlotElement::index_from_scene(OUT, ssc, 0, START_OF_PLAY_END, NULL);
-	LOOP_OVER(ssc, simplified_scene)
+			PlotElement::index_from_scene(OUT, ssc, 0, START_OF_PLAY_END, NULL, session);
+	LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)
 		if ((FauxScenes::starts_on_condition(ssc)) && (FauxScenes::is_entire_game(ssc) == FALSE))
-			PlotElement::index_from_scene(OUT, ssc, 0, START_OF_PLAY_END, NULL);
-	LOOP_OVER(ssc, simplified_scene)
+			PlotElement::index_from_scene(OUT, ssc, 0, START_OF_PLAY_END, NULL, session);
+	LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)
 		if (ssc->indexed_already == FALSE)
-			PlotElement::index_from_scene(OUT, ssc, 0, NEVER_HAPPENS_END, NULL);
+			PlotElement::index_from_scene(OUT, ssc, 0, NEVER_HAPPENS_END, NULL, session);
 
 @<Show the legend for the scene table icons@> =
 	HTML_OPEN("p"); 
@@ -69,7 +66,7 @@ about and created but never made use of.)
 @<Give details of each scene in turn@> =
 	IndexUtilities::anchor(OUT, I"SDETAILS");
 	simplified_scene *ssc;
-	LOOP_OVER(ssc, simplified_scene) {
+	LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L) {
 		HTML_TAG("hr");
 		@<Give details of a specific scene@>;
 	}
@@ -210,7 +207,8 @@ on the initial call when |depth| is 0.
 
 =
 void PlotElement::index_from_scene(OUTPUT_STREAM, simplified_scene *ssc, int depth,
-	int end, simplified_scene *sc_from) {
+	int end, simplified_scene *sc_from, index_session *session) {
+	linked_list *L = Indexing::get_list_of_scenes(session);
 	HTML::open_indented_p(OUT, depth+1, "tight");
 	@<Indicate the route by which this scene was reached@>;
 	@<Name the scene in the table, italicised if we've seen it already@>;
@@ -261,14 +259,14 @@ this one does; then to scenes which begin when this one ends.
 
 @<Indent to tabulate other scenes connected to the ends of this one@> =
 	simplified_scene *ssc2;
-	LOOP_OVER(ssc2, simplified_scene)
+	LOOP_OVER_LINKED_LIST(ssc2, simplified_scene, L)
 		for (simplified_connector *scon = ssc2->ends[0]->anchor_connectors; scon; scon=scon->next)
 			if ((FauxScenes::connects_to(scon) == ssc) && (FauxScenes::scon_end(scon) >= 1))
-				PlotElement::index_from_scene(OUT, ssc2, depth + 1, FauxScenes::scon_end(scon), ssc);
-	LOOP_OVER(ssc2, simplified_scene)
+				PlotElement::index_from_scene(OUT, ssc2, depth + 1, FauxScenes::scon_end(scon), ssc, session);
+	LOOP_OVER_LINKED_LIST(ssc2, simplified_scene, L)
 		for (simplified_connector *scon = ssc2->ends[0]->anchor_connectors; scon; scon=scon->next)
 			if ((FauxScenes::connects_to(scon) == ssc) && (FauxScenes::scon_end(scon) == 0))
-				PlotElement::index_from_scene(OUT, ssc2, depth, FauxScenes::scon_end(scon), ssc);
+				PlotElement::index_from_scene(OUT, ssc2, depth, FauxScenes::scon_end(scon), ssc, session);
 
 @ We have been using:
 

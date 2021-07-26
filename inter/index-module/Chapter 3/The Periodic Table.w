@@ -39,7 +39,8 @@ and text underneath in another of class "headingrubric".
 
 =
 void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
-	text_stream *index_leaf, localisation_dictionary *D) {
+	text_stream *index_leaf, index_session *session) {
+	localisation_dictionary *D = Indexing::get_localisation(session);
 	int max_elements = 0;
 	index_page *ip;
 	LOOP_OVER(ip, index_page)
@@ -162,7 +163,7 @@ content at last; and then a rule.
 			HTML_TAG("hr");
 			IndexUtilities::banner_line(OUT, current_page, ie->atomic_number, ie->chemical_symbol,
 				ie->element_name, ie->explanation_key, NULL, D);
-			Elements::render(OUT, ie->chemical_symbol, D);
+			Elements::render(OUT, ie->chemical_symbol, session);
 			HTML_CLOSE("div");
 		}
 	HTML_TAG("hr");
@@ -171,42 +172,42 @@ content at last; and then a rule.
 text file from the content of a single element.
 
 =
-void Elements::test_card(OUTPUT_STREAM, wording W, localisation_dictionary *LD) {
+void Elements::test_card(OUTPUT_STREAM, wording W, index_session *session) {
 	TEMPORARY_TEXT(elt)
 	WRITE_TO(elt, "%+W", W);
-	Elements::render(OUT, elt, LD);
+	Elements::render(OUT, elt, session);
 	DISCARD_TEXT(elt)
 }
 
 @ In general, then, these are the elements:
 
 =
-void Elements::render(OUTPUT_STREAM, text_stream *elt, localisation_dictionary *LD) {
-	if (Str::eq_wide_string(elt, L"A1")) { GroupedElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"A2")) { AlphabeticElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Ar")) { ArithmeticElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Ch")) { ChartElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Cm")) { CommandsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Mp")) { MapElement::render(OUT, LD, FALSE); return; }
-	if (Str::eq_wide_string(elt, L"MT")) { MapElement::render(OUT, LD, TRUE); return; }
-	if (Str::eq_wide_string(elt, L"Ph")) { PhrasebookElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Tb")) { TablesElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"To")) { TokensElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT, LD); return; }
-	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT, LD); return; }
+void Elements::render(OUTPUT_STREAM, text_stream *elt, index_session *session) {
+	if (Str::eq_wide_string(elt, L"A1")) { GroupedElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"A2")) { AlphabeticElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Ar")) { ArithmeticElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Ch")) { ChartElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Cm")) { CommandsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Mp")) { MapElement::render(OUT, session, FALSE); return; }
+	if (Str::eq_wide_string(elt, L"MT")) { MapElement::render(OUT, session, TRUE); return; }
+	if (Str::eq_wide_string(elt, L"Ph")) { PhrasebookElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Tb")) { TablesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"To")) { TokensElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT, session); return; }
 
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }

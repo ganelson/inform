@@ -6,6 +6,7 @@ Licence: Artistic License 2.0
 
 Chapter 1: Starting Up
 	Index Module
+	Indexing API
 
 Chapter 2: Utilities
 	Index Locations

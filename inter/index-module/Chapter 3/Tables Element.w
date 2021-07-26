@@ -7,9 +7,9 @@ corresponds to one of the compilation modules: thus, all the tables in the
 main source text, all the tables in the Standard Rules, and so on.
 
 =
-void TablesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void TablesElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->table_nodes, Synoptic::category_order);
 
 	inter_package *current_mod = NULL; int mc = 0, first_ext = TRUE;

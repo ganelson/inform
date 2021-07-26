@@ -3,8 +3,9 @@
 To write the Commands element (Cm) in the index.
 
 @ =
-void CommandsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
+void CommandsElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
 
 	linked_list *entries = NEW_LINKED_LIST(command_index_entry);
 	@<Create the entries for the command list@>;

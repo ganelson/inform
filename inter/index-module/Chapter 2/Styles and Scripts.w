@@ -9,16 +9,20 @@ failing to link to said files correctly.
 
 But it means every HTML page in the index has to embed its own CSS and
 Javascript, and this is done with a callback function which allows us to insert
-material into the head of an HTML page when it is opened for output:
+material into the head of an HTML page when it is opened for output. Note that
+the function acts only when the page was created with |state|, which will only
+happen when it was created by //index//.
 
 @d ADDITIONAL_SCRIPTING_HTML_CALLBACK IndexStyles::incorporate
 
 =
-void IndexStyles::incorporate(OUTPUT_STREAM) {
-	index_page *current_page = InterpretIndex::get_page();
-	if (current_page == NULL) return;
-	@<Incorporate some CSS@>;
-	@<Incorporate some Javascript@>;
+void IndexStyles::incorporate(OUTPUT_STREAM, void *state) {
+	if (state) {
+		index_page *current_page = (index_page *) state;
+		if (current_page == NULL) return;
+		@<Incorporate some CSS@>;
+		@<Incorporate some Javascript@>;
+	}
 }
 
 @ The CSS is mostly the same every time and is therefore mostly loaded from an

@@ -3,19 +3,19 @@
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
 @ =
-void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
+void RenderEPSMap::render_map_as_EPS(filename *F, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	@<Prepare the EPS levels@>;
 	@<Open a stream and write the EPS map to it@>;
 }
 
 @<Prepare the EPS levels@> =
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	@<Create the main EPS map super-level@>;
 	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
 
-	FauxInstances::decode_hints(faux_set, I, 2);
+	FauxInstances::decode_hints(session, 2);
 	if (changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
 
@@ -45,7 +45,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
 		}
 
 	Str::clear(eml->titling);
-	HTMLMap::devise_level_rubric(z, eml->titling, LD);
+	HTMLMap::devise_level_rubric(z, eml->titling, session);
 
 	if (Str::len(eml->titling) == 0) eml->contains_titling = FALSE;
 	else eml->contains_titling = TRUE;
@@ -65,8 +65,8 @@ void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
 			R->fimd.colour);
 
 @<Open a stream and write the EPS map to it@> =
-	text_stream EPS_struct; text_stream *EPS = &EPS_struct;
-	if (STREAM_OPEN_TO_FILE(EPS, F, ISO_ENC) == FALSE) {
+	text_stream EPS_struct; text_stream *OUT = &EPS_struct;
+	if (STREAM_OPEN_TO_FILE(OUT, F, ISO_ENC) == FALSE) {
 		#ifdef CORE_MODULE
 		Problems::fatal_on_file("Can't open index file", F);
 		#endif
@@ -74,16 +74,16 @@ void RenderEPSMap::render_map_as_EPS(filename *F, localisation_dictionary *LD) {
 		Errors::fatal_with_file("can't open index file", F);
 		#endif
 	}
-	RenderEPSMap::EPS_compile_map(EPS);
-	STREAM_CLOSE(EPS);
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
+	@<Plot the map itself@>;
+	@<Plot all of the rubrics onto the EPS map@>;
+	STREAM_CLOSE(OUT);
 
-@ =
-void RenderEPSMap::EPS_compile_map(OUTPUT_STREAM) {
+@<Plot the map itself@> =
 	int blh, /* total height of the EPS map area (not counting border) */
 		blw, /* total width of the EPS map area (not counting border) */
 		border = ConfigureIndexMap::get_int_mp(I"border-size", NULL),
 		vskip = ConfigureIndexMap::get_int_mp(I"vertical-spacing", NULL);
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
 	@<Compute the dimensions of the EPS map@>;
 	int bounding_box_width = blw+2*border, bounding_box_height = blh+2*border;
 
@@ -116,9 +116,6 @@ void RenderEPSMap::EPS_compile_map(OUTPUT_STREAM) {
 					@<Draw the boxes for the rooms themselves@>;
 		}
 	}
-
-	@<Plot all of the rubrics onto the EPS map@>;
-}
 
 @<Compute the dimensions of the EPS map@> =
 	int total_chunk_height = 0, max_chunk_width = 0;

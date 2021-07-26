@@ -176,10 +176,11 @@ faux_instance_set *FauxInstances::new_empty_set(void) {
 @ And here is the code to make a fully cross-referenced set from a given tree:
 
 =
-faux_instance_set *FauxInstances::make_faux(inter_tree *IT) {
+void FauxInstances::make_faux(index_session *session) {
 	faux_instance_set *faux_set = FauxInstances::new_empty_set();
+	session->indexing_fis = faux_set;
 
-	tree_inventory *inv = Synoptic::inv(IT);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->instance_nodes)
@@ -195,8 +196,7 @@ faux_instance_set *FauxInstances::make_faux(inter_tree *IT) {
 		if (FauxInstances::is_a_door(I)) @<Cross-reference door adjacencies@>;
 	}
 
-	FauxInstances::decode_hints(faux_set, IT, 1);
-	return faux_set;
+	FauxInstances::decode_hints(session, 1);
 }
 
 @<Add a faux instance to the set for this object-instance package@> =
@@ -296,7 +296,9 @@ being made; |pass| 2 only after the spatial grid layout has been calculated,
 and only if needed.
 
 =
-void FauxInstances::decode_hints(faux_instance_set *faux_set, inter_tree *I, int pass) {
+void FauxInstances::decode_hints(index_session *session, int pass) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
+	inter_tree *I = Indexing::get_tree(session);
 	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/mapping_hints");
 	inter_package *hint_pack;
 	LOOP_THROUGH_SUBPACKAGES(hint_pack, pack, I"_mapping_hint") {
@@ -367,36 +369,36 @@ can only be known once the spatial grid has been found, i.e., on |pass| 2.
 	EPS_map_level *eml;
 	LOOP_OVER(eml, EPS_map_level)
 		if ((eml->contains_rooms)
-			&& (eml->map_level - SpatialMap::benchmark_level() == scope_level))
+			&& (eml->map_level - SpatialMap::benchmark_level(session) == scope_level))
 			scope = &(eml->map_parameters);
 	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val);
 
 @h Instance set properties.
 
 =
-faux_instance *FauxInstances::start_room(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+faux_instance *FauxInstances::start_room(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	return faux_set->start_faux_instance;
 }
 
-faux_instance *FauxInstances::yourself(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+faux_instance *FauxInstances::yourself(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	return faux_set->faux_yourself;
 }
 
-faux_instance *FauxInstances::benchmark(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+faux_instance *FauxInstances::benchmark(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	return faux_set->faux_benchmark;
 }
 
 @ =
-int FauxInstances::no_directions(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+int FauxInstances::no_directions(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	return faux_set->no_direction_fi;
 }
 
-int FauxInstances::no_rooms(void) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+int FauxInstances::no_rooms(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	return faux_set->no_room_fi;
 }
 

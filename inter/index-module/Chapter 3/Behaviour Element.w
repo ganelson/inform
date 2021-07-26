@@ -5,9 +5,10 @@ To write the Behaviour element (Bh) in the index.
 @ This simply itemises kinds of action, and what defines them.
 
 =
-void BehaviourElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 
 	int num_naps = TreeLists::len(inv->named_action_pattern_nodes);
 

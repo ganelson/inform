@@ -6,13 +6,14 @@ To write the Verbs element (Vb) in the index.
 be more usefully informative.
 
 =
-void VerbsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+void VerbsElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	HTML_OPEN("p");
 	Localisation::italic(OUT, LD, I"Index.Elements.Vb.About");	
 	HTML_CLOSE("p");
 
 	int verb_count = 0;
-	inter_lexicon *lexicon = InterpretIndex::get_lexicon();
+	inter_lexicon *lexicon = Indexing::get_lexicon(session);
 	for (index_lexicon_entry *lex = lexicon->first; lex; lex = lex->sorted_next)
 		if ((lex->part_of_speech == VERB_TLEXE) ||
 			(lex->part_of_speech == MVERB_TLEXE) ||

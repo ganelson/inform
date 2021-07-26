@@ -6,9 +6,8 @@ per-action pages linked from it.
 @ The element itself is easily made:
 
 =
-void GroupedElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
 	int f = FALSE;
@@ -54,14 +53,16 @@ void GroupedElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
 page for each action.
 
 =
-void GroupedElement::detail_pages(localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void GroupedElement::detail_pages(index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
-		text_stream *OUT = InterpretIndex::open_file(NULL, I"A.html", I"<Actions", i, LD);
+		text_stream index_file_struct; text_stream *OUT = &index_file_struct;
+		InterpretIndex::open_file(OUT, NULL, I"A.html", I"<Actions", i, LD);
 		@<Write details page for the action@>;
 		InterpretIndex::close_index_file(OUT);
 	}

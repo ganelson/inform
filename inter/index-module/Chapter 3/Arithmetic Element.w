@@ -6,9 +6,9 @@ To write the Arithmetic element (Ar) in the index.
 so we do little more than tabulate that data here.
 
 =
-void ArithmeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->multiplication_rule_nodes, Synoptic::module_order);
 	HTML_TAG("hr");

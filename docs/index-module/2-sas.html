@@ -72,17 +72,21 @@ failing to link to said files correctly.
 
 <p class="commentary">But it means every HTML page in the index has to embed its own CSS and
 Javascript, and this is done with a callback function which allows us to insert
-material into the head of an HTML page when it is opened for output:
+material into the head of an HTML page when it is opened for output. Note that
+the function acts only when the page was created with <span class="extract"><span class="extract-syntax">state</span></span>, which will only
+happen when it was created by <a href="index.html" class="internal">index</a>.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADDITIONAL_SCRIPTING_HTML_CALLBACK</span><span class="plain-syntax"> </span><a href="2-sas.html#SP1" class="function-link"><span class="function-syntax">IndexStyles::incorporate</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IndexStyles::incorporate</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> = </span><a href="2-ii.html#SP6" class="function-link"><span class="function-syntax">InterpretIndex::get_page</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Incorporate some CSS</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Incorporate some Javascript</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IndexStyles::incorporate</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">index_page</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_page</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Incorporate some CSS</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-sas.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Incorporate some Javascript</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>The CSS is mostly the same every time and is therefore mostly loaded from an

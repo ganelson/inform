@@ -5,9 +5,10 @@ To write the Figures element (Fi) in the index.
 @ Not only figures but also sounds and external files, a little questionably.
 
 =
-void FiguresElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void FiguresElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->figure_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->sound_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->file_nodes, Synoptic::module_order);

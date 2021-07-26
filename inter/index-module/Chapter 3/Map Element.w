@@ -8,16 +8,17 @@ cues all of that up; but even that code is fairly long.
 
 =
 int suppress_panel_changes = FALSE;
-void MapElement::render(OUTPUT_STREAM, localisation_dictionary *LD, int test_only) {
+void MapElement::render(OUTPUT_STREAM, index_session *session, int test_only) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	SpatialMap::initialise_page_directions();
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
-	SpatialMap::establish_spatial_coordinates();
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
+	SpatialMap::establish_spatial_coordinates(session);
 	if (test_only) {
-		SpatialMap::perform_map_internal_test(OUT);
+		SpatialMap::perform_map_internal_test(OUT, session);
 	} else {
-		HTMLMap::render_map_as_HTML(OUT, LD);
-		HTMLMap::add_region_key(OUT);
-		MapElement::index_backdrop_further(OUT, NULL, 0, FALSE, 1, LD);
+		HTMLMap::render_map_as_HTML(OUT, session);
+		HTMLMap::add_region_key(OUT, session);
+		MapElement::index_backdrop_further(OUT, NULL, 0, FALSE, 1, session);
 
 		IndexUtilities::anchor(OUT, I"MDETAILS");
 		int unruly = FALSE;
@@ -46,11 +47,11 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *LD, int test_onl
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
 						@<Index the name and super-region of the region@>;
-						MapElement::index_backdrop_further(OUT, reg, 0, FALSE, 2, LD);
+						MapElement::index_backdrop_further(OUT, reg, 0, FALSE, 2, session);
 						HTML_OPEN("p");
 						subheaded = TRUE;
 					}
-					HTMLMap::render_single_room_as_HTML(OUT, rm, LD);
+					HTMLMap::render_single_room_as_HTML(OUT, rm, session);
 					FauxInstances::increment_indexing_count(rm);
 				}
 		}
@@ -69,7 +70,7 @@ void MapElement::render(OUTPUT_STREAM, localisation_dictionary *LD, int test_onl
 	LOOP_OVER_FAUX_ROOMS(faux_set, I)
 		if (FauxInstances::indexed_yet(I) == FALSE) {
 			@<Start a new details panel on the World index@>;
-			HTMLMap::render_single_room_as_HTML(OUT, I, LD);
+			HTMLMap::render_single_room_as_HTML(OUT, I, session);
 		}
 
 @ By this point we've accounted for rooms (and their contents and any parts
@@ -89,7 +90,7 @@ will be things which are offstage (and their contents and any parts thereof):
 				Localisation::bold(OUT, LD, I"Index.Elements.Mp.NowhereHeading");
 				HTML_TAG("br");
 			}
-			MapElement::index(OUT, I, 2, FALSE, LD);
+			MapElement::index(OUT, I, 2, FALSE, session);
 		}
 	suppress_panel_changes = FALSE;
 
@@ -114,7 +115,8 @@ void MapElement::set_room_being_indexed(faux_instance *I) {
 }
 
 void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	if (I) {
 		if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
@@ -135,7 +137,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		@<Add details depending on the kind@>;
-		MapElement::index_usages(OUT, I, LD);
+		MapElement::index_usages(OUT, I, session);
 		IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 	@<Recurse the index citation for the object as necessary@>;
@@ -147,7 +149,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 		if (I != indexing_room) IndexUtilities::anchor(OUT, I->anchor_text);
 	} else {
 		#ifdef IF_MODULE
-		if (I) MapElement::index_spatial_relationship(OUT, I, LD);
+		if (I) MapElement::index_spatial_relationship(OUT, I, session);
 		#endif
 	}
 
@@ -182,8 +184,8 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	}
 
 @<Index the kind attribution part of the object citation@> =
-	if ((MapElement::annotate_door(OUT, I, LD) == FALSE) &&
-		(MapElement::annotate_player(OUT, I, LD) == FALSE)) {
+	if ((MapElement::annotate_door(OUT, I, session) == FALSE) &&
+		(MapElement::annotate_player(OUT, I, session) == FALSE)) {
 		if (FauxInstances::specify_kind(I)) {
 			WRITE(" - <i>");
 			FauxInstances::write_kind(OUT, I);
@@ -199,7 +201,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 
 @<Recurse the index citation for the object as necessary@> =
 	#ifdef IF_MODULE
-	MapElement::index_object_further(OUT, I, depth, details, LD);
+	MapElement::index_object_further(OUT, I, depth, details, session);
 	#endif
 
 @<Add a subsidiary paragraph of details about this object@> =
@@ -224,14 +226,15 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	WRITE("%S", material);
 
 @<Add details depending on the kind@> =
-	MapElement::add_room_to_World_index(OUT, I);
+	MapElement::add_room_to_World_index(OUT, I, session);
 	MapElement::add_region_to_World_index(OUT, I);
-	MapElement::add_to_World_index(OUT, I, LD);
+	MapElement::add_to_World_index(OUT, I, session);
 
 @
 
 =
-void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, localisation_dictionary *LD) {
+void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	int k = 0;
 	inter_package *pack = I->package;
 	inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
@@ -254,9 +257,10 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, localisation_dict
 	if (k > 0) HTML_CLOSE("p");
 }
 
-int MapElement::add_room_to_World_index(OUTPUT_STREAM, faux_instance *O) {
+int MapElement::add_room_to_World_index(OUTPUT_STREAM, faux_instance *O,
+	index_session *session) {
 	if ((O) && (FauxInstances::is_a_room(O))) {
-		SpatialMap::index_room_connections(OUT, O);
+		SpatialMap::index_room_connections(OUT, O, session);
 	}
 	return FALSE;
 }
@@ -270,8 +274,9 @@ int MapElement::add_region_to_World_index(OUTPUT_STREAM, faux_instance *O) {
 }
 
 int MapElement::annotate_player(OUTPUT_STREAM, faux_instance *I,
-	localisation_dictionary *LD) {
-	if (I == FauxInstances::start_room()) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	if (I == FauxInstances::start_room(session)) {
 		WRITE(" - ");
 		Localisation::italic(OUT, LD, I"Index.Elements.Mp.RoomWherePlayBegins");		
 		DocReferences::link(OUT, I"ROOMPLAYBEGINS");
@@ -281,7 +286,8 @@ int MapElement::annotate_player(OUTPUT_STREAM, faux_instance *I,
 }
 
 int MapElement::annotate_door(OUTPUT_STREAM, faux_instance *O,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	if ((O) && (FauxInstances::is_a_door(O))) {
 		faux_instance *A = NULL, *B = NULL;
 		FauxInstances::get_door_data(O, &A, &B);
@@ -302,7 +308,8 @@ int MapElement::annotate_door(OUTPUT_STREAM, faux_instance *O,
 
 @ =
 void MapElement::index_spatial_relationship(OUTPUT_STREAM, faux_instance *I,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	text_stream *rel = NULL;
 	faux_instance *P = FauxInstances::progenitor(I);
 	if (P) {
@@ -331,18 +338,18 @@ int MapElement::no_detail_index(faux_instance *I) {
 
 =
 void MapElement::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth,
-	int details, localisation_dictionary *LD) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	int details, index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	if (depth > NUMBER_CREATED(faux_instance) + 1) return; /* to recover from errors */
 	if (FauxInstances::incorp_child(I)) {
 		faux_instance *I2 = FauxInstances::incorp_child(I);
 		while (I2) {
-			MapElement::index(OUT, I2, depth+1, details, LD);
+			MapElement::index(OUT, I2, depth+1, details, session);
 			I2 = FauxInstances::incorp_sibling(I2);
 		}
 	}
 	if (FauxInstances::child(I))
-		MapElement::index(OUT, FauxInstances::child(I), depth+1, details, LD);
+		MapElement::index(OUT, FauxInstances::child(I), depth+1, details, session);
 	if ((FauxInstances::is_a_room(I)) &&
 		(FauxInstances::is_a_door(I) == FALSE)) {
 		faux_instance *I2;
@@ -350,23 +357,24 @@ void MapElement::index_object_further(OUTPUT_STREAM, faux_instance *I, int depth
 			if ((FauxInstances::is_a_door(I2)) && (FauxInstances::progenitor(I2) != I)) {
 				faux_instance *A = NULL, *B = NULL;
 				FauxInstances::get_door_data(I2, &A, &B);
-				if (A == I) MapElement::index(OUT, I2, depth+1, details, LD);
-				if (B == I) MapElement::index(OUT, I2, depth+1, details, LD);
+				if (A == I) MapElement::index(OUT, I2, depth+1, details, session);
+				if (B == I) MapElement::index(OUT, I2, depth+1, details, session);
 			}
 		}
 	}
-	MapElement::index_player_further(OUT, I, depth, details, LD);
-	MapElement::index_backdrop_further(OUT, I, depth, details, 0, LD);
+	MapElement::index_player_further(OUT, I, depth, details, session);
+	MapElement::index_backdrop_further(OUT, I, depth, details, 0, session);
 
 	if (FauxInstances::sibling(I))
-		MapElement::index(OUT, FauxInstances::sibling(I), depth, details, LD);
+		MapElement::index(OUT, FauxInstances::sibling(I), depth, details, session);
 }
 
 @ And also:
 
 =
 int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O,
-	localisation_dictionary *LD) {
+	index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	if ((O) && (FauxInstances::is_a_thing(O))) {
 		HTML::open_indented_p(OUT, 1, "tight");
 		faux_instance *P = FauxInstances::progenitor(O);
@@ -392,28 +400,29 @@ int MapElement::add_to_World_index(OUTPUT_STREAM, faux_instance *O,
 }
 
 void MapElement::index_player_further(OUTPUT_STREAM, faux_instance *I, int depth,
-	int details, localisation_dictionary *LD) {
-	faux_instance *yourself = FauxInstances::yourself();
-	if ((I == FauxInstances::start_room()) && (yourself) &&
+	int details, index_session *session) {
+	faux_instance *yourself = FauxInstances::yourself(session);
+	if ((I == FauxInstances::start_room(session)) && (yourself) &&
 		(FauxInstances::indexed_yet(yourself) == FALSE))
-		MapElement::index(OUT, yourself, depth+1, details, LD);
+		MapElement::index(OUT, yourself, depth+1, details, session);
 }
 
 void MapElement::index_backdrop_further(OUTPUT_STREAM, faux_instance *loc, int depth,
-	int details, int how, localisation_dictionary *LD) {
-	faux_instance_set *faux_set = InterpretIndex::get_faux_instances();
+	int details, int how, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	int discoveries = 0;
 	faux_instance *bd;
 	if (loc) {
 		LOOP_OVER_LINKED_LIST(bd, faux_instance, loc->backdrop_presences) {
 			if (++discoveries == 1) @<Insert fore-matter@>;
-			MapElement::index(OUT, bd, depth+1, details, LD);
+			MapElement::index(OUT, bd, depth+1, details, session);
 		}
 	} else {
 		LOOP_OVER_FAUX_BACKDROPS(faux_set, bd)
 			if (FauxInstances::is_everywhere(bd)) {
 				if (++discoveries == 1) @<Insert fore-matter@>;
-				MapElement::index(OUT, bd, depth+1, details, LD);
+				MapElement::index(OUT, bd, depth+1, details, session);
 			}
 	}
 	if (discoveries > 0) @<Insert after-matter@>;

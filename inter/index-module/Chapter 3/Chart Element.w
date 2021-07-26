@@ -6,9 +6,9 @@ To write the Chart element (Ch) in the index.
 and it is quite dense with information.
 
 =
-void ChartElement::render(OUTPUT_STREAM, localisation_dictionary *D) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void ChartElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *D = Indexing::get_localisation(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	HTML::begin_wide_html_table(OUT);

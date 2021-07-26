@@ -30,6 +30,19 @@ typedef struct simplified_connector {
 	CLASS_DEFINITION
 } simplified_connector;
 
+linked_list *FauxScenes::list_of_faux_scenes(index_session *session) {
+	linked_list *L = NEW_LINKED_LIST(simplified_scene);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
+	TreeLists::sort(inv->scene_nodes, PlotElement::scene_order);
+	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
+
+	inter_package *scene_pack;
+	LOOP_OVER_INVENTORY_PACKAGES(scene_pack, i, inv->scene_nodes)
+		ADD_TO_LINKED_LIST(FauxScenes::simplified(I, scene_pack), simplified_scene, L);
+	return L;
+}	
+
 simplified_scene *FauxScenes::simplified(inter_tree *I, inter_package *sc_pack) {
 	simplified_scene *ssc = CREATE(simplified_scene);
 	ssc->pack = sc_pack;

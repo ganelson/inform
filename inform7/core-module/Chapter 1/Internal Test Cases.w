@@ -216,11 +216,11 @@ void InternalTests::perform_ing_internal_test(OUTPUT_STREAM,
 
 void InternalTests::perform_index_internal_test(OUTPUT_STREAM,
 	struct internal_test_case *itc) {
-	localisation_dictionary *D = Localisation::new();
+	index_session *session = Indexing::open_session(Emit::tree());
 	inform_language *L = Projects::get_language_of_index(Task::project());
-	Localisation::stock_from_file( 
-		Filenames::in(Languages::path_to_bundle(L), I"Index.txt"), D);
-	InterpretIndex::generate_one_element(OUT, Emit::tree(), itc->text_supplying_the_case, D);
+	Indexing::localise(session, Filenames::in(Languages::path_to_bundle(L), I"Index.txt"));
+	Indexing::generate_one_element(session, OUT, itc->text_supplying_the_case);
+	Indexing::close_session(session);
 }
 
 @ And here's a set of six tests of the kinds system. This is quite old code,

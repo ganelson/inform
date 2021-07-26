@@ -175,11 +175,11 @@ Total memory consumption was 391746K = 383 MB
      ----  target_vm                                6 objects, 816 bytes
      ----  generated_segment                        25 objects, 800 bytes
      ----  inter_data_type                          14 objects, 784 bytes
-     ----  internal_test                            14 objects, 672 bytes
      ----  inform_language                          6 objects, 672 bytes
+     ----  internal_test                            14 objects, 672 bytes
+     ----  inter_warehouse_room                     10 objects, 640 bytes
      ----  I6T_intervention                         8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
-     ----  inter_warehouse_room                     10 objects, 640 bytes
      ----  inbuild_search_result                    15 objects, 600 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
@@ -193,43 +193,43 @@ Total memory consumption was 391746K = 383 MB
      ----  bp_family                                12 objects, 384 bytes
      ----  source_file                              5 objects, 360 bytes
      ----  inbuild_genre                            7 objects, 336 bytes
-     ----  door_dir_notice                          5 objects, 320 bytes
      ----  grammatical_category                     8 objects, 320 bytes
+     ----  door_dir_notice                          5 objects, 320 bytes
      ----  pronoun                                  8 objects, 320 bytes
      ----  tree_inventory                           1 object, 312 bytes
-     ----  build_step                               4 objects, 288 bytes
      ----  up_family                                9 objects, 288 bytes
-     ----  compilation_unit                         5 objects, 280 bytes
+     ----  build_step                               4 objects, 288 bytes
      ----  door_to_notice                           5 objects, 280 bytes
-     ----  contents_entry                           7 objects, 280 bytes
+     ----  compilation_unit                         5 objects, 280 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
+     ----  contents_entry                           7 objects, 280 bytes
      ----  inform_pipeline                          4 objects, 256 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
      ----  release_instructions                     1 object, 208 bytes
      ----  build_skill                              5 objects, 200 bytes
-     ----  kit_dependency                           4 objects, 192 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
+     ----  kit_dependency                           4 objects, 192 bytes
      ----  inform_project                           1 object, 176 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
      ----  inter_architecture                       4 objects, 160 bytes
-     ----  code_generation_target                   4 objects, 160 bytes
      ----  link_instruction                         4 objects, 160 bytes
+     ----  code_generation_target                   4 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
-     ----  element_activation                       4 objects, 128 bytes
      ----  codegen_pipeline                         1 object, 128 bytes
+     ----  element_activation                       4 objects, 128 bytes
      ----  inbuild_nest                             3 objects, 120 bytes
      ----  local_block_value                        2 objects, 112 bytes
      ----  inform_kit_ittt                          2 objects, 96 bytes
      ----  group_together_function                  2 objects, 80 bytes
      ----  compile_task_data                        1 object, 80 bytes
      ----  article                                  2 objects, 80 bytes
-     ----  figures_data                             1 object, 56 bytes
      ----  build_methodology                        1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
-     ----  HTML_file_state                          1 object, 48 bytes
+     ----  figures_data                             1 object, 56 bytes
      ----  star_invention                           1 object, 48 bytes
+     ----  HTML_file_state                          1 object, 48 bytes
      ----  kind_template_definition                 1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
      ----  by_function_bp_data                      1 object, 40 bytes

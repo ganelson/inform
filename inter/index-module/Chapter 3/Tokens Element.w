@@ -3,14 +3,15 @@
 To write the Tokens element (To) in the index.
 
 @ =
-void TokensElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
+void TokensElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
 	HTML_OPEN("p");
 	Localisation::roman(OUT, LD, I"Index.Elements.To.Explanation1");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
 	Localisation::roman(OUT, LD, I"Index.Elements.To.Explanation2");
 	HTML_CLOSE("p");
-	inter_tree *I = InterpretIndex::get_tree();
+	inter_tree *I = Indexing::get_tree(session);
 
 	TokensElement::token(OUT, I, "anybody", NULL, I"someone_token", I"[someone]", LD);
 	TokensElement::token(OUT, I, "anyone", NULL, I"someone_token", I"[someone]", LD);

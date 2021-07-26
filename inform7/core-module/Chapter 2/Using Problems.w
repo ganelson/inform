@@ -18,7 +18,7 @@ void Problems::Using::start_problems_report(filename *F, text_stream *P) {
 		Problems::fatal_on_file("Can't open problem log", F);
 	HTML::header(P, I"Translating the Source",
 		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
+		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES), NULL);
 }
 
 void Problems::Using::final_report(int disaster_struck, int problems_count) {

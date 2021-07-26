@@ -5,9 +5,9 @@ To write the Alphabetic actions element (A2) in the index.
 @ This element is a simple three-column table.
 
 =
-void AlphabeticElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->action_nodes, AlphabeticElement::alphabetical_order);
 
 	HTML::begin_html_table(OUT, NULL, FALSE, 0, 0, 0, 0, 0);

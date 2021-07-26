@@ -6,9 +6,10 @@ To write the Innards element (In) in the index.
 technical implementation rather than the content of a work.
 
 =
-void InnardsElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->use_option_nodes, Synoptic::module_order);
 
 	@<Show the virtual machine compiled for@>;

@@ -6,9 +6,10 @@ To write the Extras element (Xt) in the index.
 really, and most of the code here is just to arrange them in some logical order.
 
 =
-void ExtrasElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	inter_tree *I = Indexing::get_tree(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 	TreeLists::sort(inv->activity_nodes, Synoptic::module_order);
 

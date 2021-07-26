@@ -32,14 +32,13 @@ begin writing some HTML when this scanning is done, i.e., when the whole structu
 file has been read.
 
 =
-void InterpretIndex::generate(inter_tree *I, text_stream *structure, localisation_dictionary *D) {
-	InterpretIndex::set_tree(I);
+void InterpretIndex::generate(text_stream *structure, index_session *session) {
+	localisation_dictionary *D = Indexing::get_localisation(session);
 	filename *index_structure = InstalledFiles::index_structure_file(structure);
 	index_generation_state igs;
 	@<Initialise IGS@>;
 	@<Read the structure file line by line@>;
 	@<Actually generate the index files@>;
-	InterpretIndex::set_tree(NULL);
 }
 
 @ This little structure is just some state being carried by the reader-function
@@ -47,13 +46,13 @@ which goes through the |.indext| file line by line.
 
 =
 typedef struct index_generation_state {
-	struct localisation_dictionary *dict;
+	struct index_session *session;
 	struct linked_list *pages; /* of |index_page| */
 } index_generation_state;
 
 @<Initialise IGS@> =
 	igs.pages = NEW_LINKED_LIST(index_page);
-	igs.dict = D;
+	igs.session = session;
 
 @<Read the structure file line by line@> =
 	TextFiles::read(index_structure, FALSE, "unable to read index structure file", TRUE,
@@ -71,7 +70,7 @@ pages.
 =
 void InterpretIndex::read_structure(text_stream *text, text_file_position *tfp, void *state) {
 	index_generation_state *igs = (index_generation_state *) state;
-	localisation_dictionary *D = igs->dict;
+	localisation_dictionary *D = Indexing::get_localisation(igs->session);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, L"page (%C+) (%C+)")) {
 		@<Register a new index page@>;
@@ -122,27 +121,14 @@ will be |Kinds.html| either way.
 		WRITE_TO(leafname, "%S.html", page->page_leafname);
 		TEMPORARY_TEXT(key)
 		WRITE_TO(key, "Index.Pages.%S.Title", page->page_leafname);
-		text_stream *OUT =
-			InterpretIndex::open_file(page, leafname,
-				Localisation::read(D, key), -1, D);
-		Elements::periodic_table(OUT, page, leafname, D);
+		text_stream index_file_struct; text_stream *OUT = &index_file_struct;
+		InterpretIndex::open_file(OUT, page, leafname, Localisation::read(D, key), -1, D);
+		Elements::periodic_table(OUT, page, leafname, session);
 		InterpretIndex::close_index_file(OUT);
 		DISCARD_TEXT(key)
 		DISCARD_TEXT(leafname)
 	}
-	GroupedElement::detail_pages(D);
-
-@ This is a one-off function for generating the content of an index element
-(without its heading, or any HTML surround): it's used for unit-testing those
-elements.
-
-=
-void InterpretIndex::generate_one_element(OUTPUT_STREAM, inter_tree *I, wording elt,
-	localisation_dictionary *D) {
-	InterpretIndex::set_tree(I);
-	Elements::test_card(OUT, elt, D);
-	InterpretIndex::set_tree(NULL);
-}
+	GroupedElement::detail_pages(session);
 
 @h Registering.
 So, then, here are the objects representing the index pages and their elements
@@ -194,56 +180,14 @@ index_element *InterpretIndex::register_element(text_stream *abb, index_page *ow
 	return ie;
 }
 
-@h Current.
-A clumsy convenience: keeping track of the page currently being written, and
-of the Inter tree currently being indexed.
-
-=
-index_page *current_index_page = NULL;
-void InterpretIndex::set_page(index_page *page) {
-	current_index_page = page;
-}
-index_page *InterpretIndex::get_page(void) {
-	return current_index_page;
-}
-
-inter_tree *indexing_tree = NULL;
-void InterpretIndex::set_tree(inter_tree *I) {
-	indexing_tree = I;
-}
-inter_tree *InterpretIndex::get_tree(void) {
-	if (indexing_tree == NULL) internal_error("no indexing tree");
-	return indexing_tree;
-}
-
-@ =
-inter_lexicon *indexing_lexicon = NULL;
-inter_lexicon *InterpretIndex::get_lexicon(void) {
-	if (indexing_lexicon == NULL) {
-		if (indexing_tree == NULL) internal_error("no indexing lexicon");
-		indexing_lexicon = IndexLexicon::stock(indexing_tree);
-	}
-	return indexing_lexicon;
-}
-
-@ =
-faux_instance_set *indexing_fis = NULL;
-faux_instance_set *InterpretIndex::get_faux_instances(void) {
-	if (indexing_fis == NULL) {
-		if (indexing_tree == NULL) internal_error("no indexing lexicon");
-		indexing_fis = FauxInstances::make_faux(indexing_tree);
-	}
-	return indexing_fis;
-}
-
 @h Opening and closing HTML files.
 
 =
-text_stream index_file_struct; /* The current index file being written */
-text_stream *InterpretIndex::open_file(index_page *page, text_stream *index_leaf,
+text_stream *InterpretIndex::open_file(text_stream *IF,
+	index_page *page, text_stream *index_leaf,
 	text_stream *title, int sub, localisation_dictionary *D) {
 	filename *F = IndexLocations::filename(index_leaf, sub);
-	if (STREAM_OPEN_TO_FILE(&index_file_struct, F, UTF8_ENC) == FALSE) {
+	if (STREAM_OPEN_TO_FILE(IF, F, UTF8_ENC) == FALSE) {
 		#ifdef CORE_MODULE
 		Problems::fatal_on_file("Can't open index file", F);
 		#endif
@@ -251,17 +195,15 @@ text_stream *InterpretIndex::open_file(index_page *page, text_stream *index_leaf
 		Errors::fatal_with_file("can't open index file", F);
 		#endif
 	}
-	text_stream *OUT = &index_file_struct;
-	InterpretIndex::set_page(page);
-	HTML::header(OUT, title,
+	HTML::header(IF, title,
 		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
-	return OUT;
+		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES),
+		(void *) page);
+	return IF;
 }
 
 @ =
 void InterpretIndex::close_index_file(text_stream *ifl) {
 	HTML::footer(ifl);
 	STREAM_CLOSE(ifl);
-	InterpretIndex::set_page(NULL);
 }

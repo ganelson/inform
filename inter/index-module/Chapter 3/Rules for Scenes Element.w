@@ -5,9 +5,9 @@ To write the Rules for Scenes element (RS) in the index.
 @
 
 =
-void RulesForScenesElement::render(OUTPUT_STREAM, localisation_dictionary *LD) {
-	inter_tree *I = InterpretIndex::get_tree();
-	tree_inventory *inv = Synoptic::inv(I);
+void RulesForScenesElement::render(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	tree_inventory *inv = Indexing::get_inventory(session);
 	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 
 	HTML_OPEN("p");
