@@ -2,10 +2,16 @@
 
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
-@ =
-void RenderEPSMap::render_map_as_EPS(filename *F, index_session *session) {
+@ The test case |Index-MapEPS-ROTA| may be useful here: its output is a plain
+text file, but simply removing the top line (which contains the test case number)
+and then renaming it to have file extension |.eps| should make it a valid EPS
+file, which can be opened in Ghostscript, Photoshop or similar.
+
+=
+void RenderEPSMap::render_map_as_EPS(filename *F, text_stream *F_alt, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	SpatialMap::establish_spatial_coordinates(session);
+	HTMLMap::compute_room_colours(session);
 	@<Prepare the EPS levels@>;
 	@<Open a stream and write the EPS map to it@>;
 }
@@ -13,11 +19,11 @@ void RenderEPSMap::render_map_as_EPS(filename *F, index_session *session) {
 @<Prepare the EPS levels@> =
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	@<Create the main EPS map super-level@>;
-	for (int z=Universe.corner1.z; z>=Universe.corner0.z; z--)
+	for (int z=session->calc.Universe.corner1.z; z>=session->calc.Universe.corner0.z; z--)
 		@<Create an EPS map level for this z-slice@>;
 
 	FauxInstances::decode_hints(session, 2);
-	if (changed_global_room_colour == FALSE)
+	if (session->changed_global_room_colour == FALSE)
 		@<Inherit EPS room colours from those used in the World Index@>;
 
 @<Create the main EPS map super-level@> =
@@ -68,19 +74,25 @@ void RenderEPSMap::render_map_as_EPS(filename *F, index_session *session) {
 			R->fimd.colour, session);
 
 @<Open a stream and write the EPS map to it@> =
-	text_stream EPS_struct; text_stream *OUT = &EPS_struct;
-	if (STREAM_OPEN_TO_FILE(OUT, F, ISO_ENC) == FALSE) {
-		#ifdef CORE_MODULE
-		Problems::fatal_on_file("Can't open index file", F);
-		#endif
-		#ifndef CORE_MODULE
-		Errors::fatal_with_file("can't open index file", F);
-		#endif
+	text_stream *OUT = F_alt;
+	text_stream EPS_struct;
+	if (F_alt == NULL) {
+		OUT = &EPS_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, F, ISO_ENC) == FALSE) {
+			#ifdef CORE_MODULE
+			Problems::fatal_on_file("Can't open index file", F);
+			#endif
+			#ifndef CORE_MODULE
+			Errors::fatal_with_file("can't open index file", F);
+			#endif
+		}
 	}
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	@<Plot the map itself@>;
 	@<Plot all of the rubrics onto the EPS map@>;
-	STREAM_CLOSE(OUT);
+	if (F_alt == NULL) {
+		STREAM_CLOSE(OUT);
+	}
 
 @<Plot the map itself@> =
 	int blh, /* total height of the EPS map area (not counting border) */
@@ -131,7 +143,7 @@ void RenderEPSMap::render_map_as_EPS(filename *F, index_session *session) {
 		if (eml->contains_rooms)
 			p = ConfigureIndexMap::get_int_mp(I"subtitle-size", level_scope, session);
 		eml->titling_point_size = p;
-		eml->width = (Universe.corner1.x-Universe.corner0.x+2)*mapunit;
+		eml->width = (session->calc.Universe.corner1.x-session->calc.Universe.corner0.x+2)*mapunit;
 		if (eml->allocation_id == 0) eml->actual_height = 0;
 		else eml->actual_height = (eml->y_max-eml->y_min+1)*mapunit;
 		eml->eps_origin = total_chunk_height + border;
@@ -191,7 +203,7 @@ rectangle around the whole thing...
 
 @<Establish EPS coordinates for this room@> =
 	map_parameter_scope *room_scope = FauxInstances::get_parameters(R);
-	int bx = Room_position(R).x-Universe.corner0.x;
+	int bx = Room_position(R).x-session->calc.Universe.corner0.x;
 	int by = Room_position(R).y-eml->y_min;
 	int offs = ConfigureIndexMap::get_int_mp(I"room-offset", room_scope, session);
 	int xpart = offs%10000, ypart = offs/10000;
@@ -543,7 +555,10 @@ EPS uses reverse Polish notation, so the command here is: |R G B setrgbcolor|.
 
 =
 void RenderEPSMap::EPS_compile_set_colour(OUTPUT_STREAM, text_stream *htmlcolour) {
-	if (Str::len(htmlcolour) != 6) internal_error("Improper HTML colour");
+	if (Str::len(htmlcolour) != 6) {
+		WRITE_TO(STDERR, "Colour '%S'\n", htmlcolour);
+		internal_error("Improper HTML colour");
+	}
 	RenderEPSMap::choose_colour_beam(OUT, Str::get_at(htmlcolour, 0), Str::get_at(htmlcolour, 1));
 	RenderEPSMap::choose_colour_beam(OUT, Str::get_at(htmlcolour, 2), Str::get_at(htmlcolour, 3));
 	RenderEPSMap::choose_colour_beam(OUT, Str::get_at(htmlcolour, 4), Str::get_at(htmlcolour, 5));

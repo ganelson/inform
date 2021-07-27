@@ -47,6 +47,9 @@ option name is taken from the |...| or |###| as appropriate:
 <use-inter-pipeline> ::=
 	inter pipeline {<quoted-text>}                 ==> { TRUE, - }
 
+<use-index-language> ::=
+	... language index                             ==> { TRUE, - }
+
 <use-memory-setting> ::=
 	### of <cardinal-number-unlimited>             ==> { R[1], - }
 
@@ -59,6 +62,8 @@ option name is taken from the |...| or |###| as appropriate:
 	wording S = Node::get_text(p);
 	if (<use-inter-pipeline>(S))
 		@<Set the pipeline given in this word range@>
+	else if (<use-index-language>(S))
+		@<Set index language@>
 	else if (<use-memory-setting>(S))
 		@<Set a memory setting@>
 	else if (<use-setting>(S))
@@ -76,6 +81,18 @@ option name is taken from the |...| or |###| as appropriate:
 		Supervisor::set_inter_pipeline(p);
 		DISCARD_TEXT(p)
 	}
+
+@ This is a somewhat experimental feature, too. For now, it is a deliberate
+choice to fail silently if no such language is available.
+
+@<Set index language@> =
+	wording CW = GET_RW(<use-index-language>, 1);
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%+W", CW);
+	inform_language *L = Languages::find_for(name, Projects::nest_list(Task::project()));
+	DISCARD_TEXT(name)
+	if (L) Projects::set_language_of_index(Task::project(), L);
+	else LOG("Cannot find language %S: ignoring use option\n", name);
 
 @ ICL, the "Inform 6 control language", is a set of a pragma-like settings for
 the I6 compiler. Of course, in the age in Inter, those might well be ignored,

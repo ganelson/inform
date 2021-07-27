@@ -426,9 +426,6 @@ flag stays |FALSE|:
 =
 int write_EPS_format_map = FALSE;
 
-@
-
-=
 int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
 void Task::disable_or_enable_index(int which) {
 	do_not_generate_index = which;
@@ -441,20 +438,29 @@ void Task::disable_or_enable_census(int which) {
 @ And so, finally, the following triggers the indexing process.
 
 =
+index_session *Task::index_session(inter_tree *I, inform_project *project) {
+	index_session *session = Indexing::open_session(I);
+	inform_language *E = Languages::find_for(I"English", Projects::nest_list(project));
+	inform_language *L = Projects::get_language_of_index(project);
+	if (E != L)
+		Indexing::localise(session,
+			Filenames::in(Languages::path_to_bundle(E), I"Index.txt"));
+	Indexing::localise(session,
+		Filenames::in(Languages::path_to_bundle(L), I"Index.txt"));
+	return session;
+}
+
 void Task::produce_index(void) {
 	inform_project *project = Task::project();
 	if ((do_not_generate_index == FALSE) || (write_EPS_format_map)) {
-		index_session *session = Indexing::open_session(Emit::tree());
-		inform_language *L = Projects::get_language_of_index(project);
-		Indexing::localise(session,
-			Filenames::in(Languages::path_to_bundle(L), I"Index.txt"));
+		index_session *session = Task::index_session(Emit::tree(), project);
 		if (do_not_generate_index == FALSE) {
 			Indexing::generate_index_website(session, Projects::index_structure(project));
 			if (do_not_update_census == FALSE)
 				ExtensionWebsite::index_after_compilation(Task::project());
 		}
 		if (write_EPS_format_map)
-			Indexing::generate_EPS_map(session, Task::epsmap_file());
+			Indexing::generate_EPS_map(session, Task::epsmap_file(), NULL);
 		Indexing::close_session(session);
 	}
 }

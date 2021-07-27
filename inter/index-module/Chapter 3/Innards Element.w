@@ -22,6 +22,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	IndexUtilities::extra_div_open(OUT, 3, 2, "e0e0e0");
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"CONFIG");
+	HTML_CLOSE("p");
 	@<Show the language elements used@>;
 	@<Add some paste buttons for the debugging log@>;
 	IndexUtilities::extra_div_close(OUT, "e0e0e0");

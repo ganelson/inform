@@ -80,11 +80,6 @@ typedef struct connected_submap {
 	CLASS_DEFINITION
 } connected_submap;
 
-@ Just as each submap has a bounding cuboid, so does the whole assemblage:
-
-=
-cuboid Universe;
-
 @ One special room is the "benchmark", from which the map is arranged.
 This is usually the room in which the player begins.
 
@@ -107,16 +102,45 @@ it's useful to keep track of how much time they cost. The unit of currency
 here is the "drogna"; 1 drogna is equivalent to a single map or lock lookup,
 or a single exit heat calculation.
 
+Just as each submap has a bounding cuboid, so does the whole assemblage:
+
 =
-int drognas_spent = 0; /* in order to measure roughly how much work we're doing */
-int cutpoint_spending = 0;
-int division_spending = 0;
-int slide_spending = 0;
-int cooling_spending = 0;
-int quenching_spending = 0;
-int diffusion_spending = 0;
-int radiation_spending = 0;
-int explosion_spending = 0;
+typedef struct map_calculation_data {
+	struct cuboid Universe;
+
+	int spatial_coordinates_established;
+	int partitioned_into_components;
+
+	int drognas_spent; /* in order to measure roughly how much work we're doing */
+	int cutpoint_spending;
+	int division_spending;
+	int slide_spending;
+	int cooling_spending;
+	int quenching_spending;
+	int diffusion_spending;
+	int radiation_spending;
+	int explosion_spending;
+} map_calculation_data;
+
+@ =
+map_calculation_data SpatialMap::fresh_data(void) {
+	map_calculation_data calc;
+	calc.Universe = Geometry::empty_cuboid();
+
+	calc.spatial_coordinates_established = FALSE;
+	calc.partitioned_into_components = FALSE;
+
+	calc.drognas_spent = 0; /* in order to measure roughly how much work we're doing */
+	calc.cutpoint_spending = 0;
+	calc.division_spending = 0;
+	calc.slide_spending = 0;
+	calc.cooling_spending = 0;
+	calc.quenching_spending = 0;
+	calc.diffusion_spending = 0;
+	calc.radiation_spending = 0;
+	calc.explosion_spending = 0;
+	return calc;
+}
 
 @h Grand strategy.
 Here is the six-stage strategy. I estimate that the running time is as
@@ -129,27 +153,23 @@ follows, where $R$ is the number of rooms:
 (5) Linear time, $O(R)$, so essentially instant.
 (6) In theory about $O(R^{4/3})$, but in practice $O(R)$.
 
-We allow this routine to be called more than once only for the convenience of
+We allow this function to be called more than once only for the convenience of
 the unit test below, which makes spatial positioning happen early in order
 to get the results in time to write them in the story file.
 
 =
-int spatial_coordinates_established = FALSE;
-int partitioned_into_components = FALSE;
-
 void SpatialMap::establish_spatial_coordinates(index_session *session) {
-	if (spatial_coordinates_established) return;
+	if (session->calc.spatial_coordinates_established) return;
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
-	Universe = Geometry::empty_cuboid();
 	@<(1) Create the spatial relationship arrays@>;
 	@<(2) Partition the set of rooms into component submaps@>;
-	partitioned_into_components = TRUE;
+	session->calc.partitioned_into_components = TRUE;
 	@<(3) Position the rooms within each component@>;
 	@<(4) Position the components in space@>;
 	@<(5) Find the universal bounding cuboid@>;
 	@<(6) Remove any blank lateral planes@>;
 	@<(5) Find the universal bounding cuboid@>;
-	spatial_coordinates_established = TRUE;
+	session->calc.spatial_coordinates_established = TRUE;
 }
 
 @ To make the code less cumbersome to read, all access to the position
@@ -416,7 +436,7 @@ char *SpatialMap::usual_Inform_direction_name(int story_direction, index_session
 
 @h Map reading.
 The map is read in the first faux_instance by the |SpatialMap::room_exit|
-routine below, which works out what room the exit leads to, perhaps via a
+function below, which works out what room the exit leads to, perhaps via a
 door, which we take a note of if asked to do so.
 
 =
@@ -593,19 +613,20 @@ from one submap to another.
 boundaries, and will be needed when we place submaps on the global grid.
 
 =
-faux_instance *SpatialMap::read_smap(faux_instance *from, int dir) {
+faux_instance *SpatialMap::read_smap(faux_instance *from, int dir, index_session *session) {
 	if (from == NULL) internal_error("tried to read smap at null room");
-	drognas_spent++;
+	session->calc.drognas_spent++;
 	faux_instance *to = from->fimd.spatial_relationship[dir];
-	if ((partitioned_into_components) && (to) &&
+	if ((session->calc.partitioned_into_components) && (to) &&
 		(from->fimd.submap != to->fimd.submap))
 			to = NULL;
 	return to;
 }
 
-faux_instance *SpatialMap::read_smap_cross(faux_instance *from, int dir) {
+faux_instance *SpatialMap::read_smap_cross(faux_instance *from, int dir,
+	index_session *session) {
 	if (from == NULL) internal_error("tried to read smap at null room");
-	drognas_spent++;
+	session->calc.drognas_spent++;
 	faux_instance *to = SpatialMap::room_exit(from, dir, NULL);
 	return to;
 }
@@ -613,9 +634,10 @@ faux_instance *SpatialMap::read_smap_cross(faux_instance *from, int dir) {
 @ While we're at it:
 
 =
-faux_instance *SpatialMap::read_slock(faux_instance *from, int dir) {
+faux_instance *SpatialMap::read_slock(faux_instance *from, int dir,
+	index_session *session) {
 	if (from == NULL) internal_error("tried to read slock at null room");
-	drognas_spent++;
+	session->calc.drognas_spent++;
 	return from->fimd.lock_exits[dir];
 }
 
@@ -649,7 +671,7 @@ when we are forming the original components into submaps, when most of the
 rooms aren't yet in any submap. Doctrinally, too, if a room is in a submap,
 any room locked to it must always be in the same submap.
 
-That makes the following routine dangerous to use, since it doesn't guarantee
+That makes the following function dangerous to use, since it doesn't guarantee
 either of those things. Use with care.
 
 Because we keep a double-ended linked list to hold membership, adding a
@@ -689,7 +711,7 @@ int SpatialMap::occupied_in_submap(connected_submap *sub, vector P) {
 }
 
 @ The cache will be invalidated by any movement of a room, so the following
-routine must be notified of any such:
+function must be notified of any such:
 
 =
 void SpatialMap::move_room_within_submap(connected_submap *sub, vector O, vector P) {
@@ -799,7 +821,7 @@ void SpatialMap::move_component(connected_submap *sub, vector D) {
 	Geometry::cuboid_translate(&(sub->incidence_cache_bounds), D);
 }
 
-@ The following routines will be used in order to divide an existing submap
+@ The following functions will be used in order to divide an existing submap
 into two new ones, which we'll call Zone 1 and Zone 2, and then to merge
 them back again.
 
@@ -875,12 +897,12 @@ void SpatialMap::create_map_component_around(faux_instance *at, index_session *s
 
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *locked_to = SpatialMap::read_slock(at, i);
+		faux_instance *locked_to = SpatialMap::read_slock(at, i, session);
 		if ((locked_to) && (locked_to->fimd.submap != at->fimd.submap)) {
 			SpatialMap::add_room_to_submap(locked_to, at->fimd.submap);
 			SpatialMap::create_map_component_around(locked_to, session);
 		}
-		faux_instance *dest = SpatialMap::read_smap(at, i);
+		faux_instance *dest = SpatialMap::read_smap(at, i, session);
 		if ((dest) && (dest->fimd.submap != at->fimd.submap)) {
 			SpatialMap::add_room_to_submap(dest, at->fimd.submap);
 			SpatialMap::create_map_component_around(dest, session);
@@ -925,7 +947,7 @@ void SpatialMap::move_anything_locked_to_r(faux_instance *R, index_session *sess
 	R->fimd.shifted = TRUE;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *F = SpatialMap::read_slock(R, i);
+		faux_instance *F = SpatialMap::read_slock(R, i, session);
 		if (F) {
 			vector D = SpatialMap::direction_as_vector(i, session);
 			SpatialMap::set_room_position(F, Geometry::vec_plus(Room_position(R), D));
@@ -973,14 +995,14 @@ the loop over submaps doesn't therefore add to the running time.
 	}
 	LOGIF(SPATIAL_MAP, "\nAll components laid out: total heat %d\n\n", total_accuracy);
 
-	LOGIF(SPATIAL_MAP, "Cost: cutpoint choosing %d drognas\n", cutpoint_spending);
-	LOGIF(SPATIAL_MAP, "Cost: dividing %d drognas\n", division_spending);
-	LOGIF(SPATIAL_MAP, "Cost: sliding %d drognas\n", slide_spending);
-	LOGIF(SPATIAL_MAP, "Cost: cooling %d drognas\n", cooling_spending);
-	LOGIF(SPATIAL_MAP, "Cost: quenching %d drognas\n", quenching_spending);
-	LOGIF(SPATIAL_MAP, "Cost: diffusion %d drognas\n", diffusion_spending);
-	LOGIF(SPATIAL_MAP, "Cost: radiation %d drognas\n", radiation_spending);
-	LOGIF(SPATIAL_MAP, "Cost: explosion %d drognas\n\n", explosion_spending);
+	LOGIF(SPATIAL_MAP, "Cost: cutpoint choosing %d drognas\n", session->calc.cutpoint_spending);
+	LOGIF(SPATIAL_MAP, "Cost: dividing %d drognas\n", session->calc.division_spending);
+	LOGIF(SPATIAL_MAP, "Cost: sliding %d drognas\n", session->calc.slide_spending);
+	LOGIF(SPATIAL_MAP, "Cost: cooling %d drognas\n", session->calc.cooling_spending);
+	LOGIF(SPATIAL_MAP, "Cost: quenching %d drognas\n", session->calc.quenching_spending);
+	LOGIF(SPATIAL_MAP, "Cost: diffusion %d drognas\n", session->calc.diffusion_spending);
+	LOGIF(SPATIAL_MAP, "Cost: radiation %d drognas\n", session->calc.radiation_spending);
+	LOGIF(SPATIAL_MAP, "Cost: explosion %d drognas\n\n", session->calc.explosion_spending);
 
 @ Every spatial relationship has a "length", which is a positive integer.
 This is our preferred amount of stretch when laying out the rooms; a
@@ -993,7 +1015,7 @@ void SpatialMap::establish_natural_lengths(connected_submap *sub) {
 	LOOP_OVER_SUBMAP(R, sub) {
 		int i;
 		LOOP_OVER_LATTICE_DIRECTIONS(i) {
-			if (SpatialMap::read_smap(R, i))
+			if (SpatialMap::read_smap(R, i, sub->for_session))
 				R->fimd.exit_lengths[i] = 1;
 			else
 				R->fimd.exit_lengths[i] = -1;
@@ -1090,9 +1112,9 @@ This too runs in constant time.
 
 =
 int SpatialMap::find_exit_heat(faux_instance *from, int exit, index_session *session) {
-	drognas_spent++;
+	session->calc.drognas_spent++;
 
-	faux_instance *to = SpatialMap::read_smap(from, exit);
+	faux_instance *to = SpatialMap::read_smap(from, exit, session);
 	if (to == NULL) return 0; /* if there's no exit this way, there's no heat */
 
 	if (from == to) return 0; /* an exit from a room to itself doesn't show on the map */
@@ -1127,9 +1149,9 @@ origin. In effect, it tests whether |angular_distortion| is zero.
 
 =
 int SpatialMap::exit_aligned(faux_instance *from, int exit, index_session *session) {
-	drognas_spent++;
+	session->calc.drognas_spent++;
 
-	faux_instance *to = SpatialMap::read_smap(from, exit);
+	faux_instance *to = SpatialMap::read_smap(from, exit, session);
 	if (to == NULL) return TRUE; /* at any rate, not misaligned */
 	if (from == to) return TRUE; /* ditto */
 	if (SpatialMap::direction_is_along_lattice(exit, session) == FALSE) return TRUE; /* IN, OUT are always aligned */
@@ -1159,7 +1181,8 @@ int unique_Z_number = 1;
 
 void SpatialMap::position_submap(connected_submap *sub) {
 	index_session *session = sub->for_session;
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	int initial_heat = SpatialMap::find_submap_heat(sub),
+		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nPOSITIONING submap %d: initial heat %d",
 		sub->allocation_id, sub->heat);
 	if (sub->heat == 0) LOGIF(SPATIAL_MAP, ": nothing to do");
@@ -1181,7 +1204,7 @@ void SpatialMap::position_submap(connected_submap *sub) {
 		LOGIF(SPATIAL_MAP, "\nPOSITIONING submap %d done: cooled by %d to %d "
 			"at cost of %d drognas\n\n",
 			sub->allocation_id, initial_heat - sub->heat, sub->heat,
-			drognas_spent - initial_spending);
+			session->calc.drognas_spent - initial_spending);
 	}
 }
 
@@ -1198,10 +1221,10 @@ no good cutpoint.
 	int Z1_number = unique_Z_number++, Z2_number = unique_Z_number++;
 	faux_instance *div_F1 = NULL, *div_T1 = NULL; int div_dir1 = -1;
 	faux_instance *div_F2 = NULL, *div_T2 = NULL; int div_dir2 = -1;
-	int initial_spending = drognas_spent;
+	int initial_spending = session->calc.drognas_spent;
 	int found = SpatialMap::work_out_optimal_cutpoint(sub, &div_F1, &div_T1, &div_dir1,
 		&div_F2, &div_T2, &div_dir2);
-	cutpoint_spending += drognas_spent - initial_spending;
+	session->calc.cutpoint_spending += session->calc.drognas_spent - initial_spending;
 	if (found) {
 		@<Set the zone numbers throughout the two soon-to-be zones@>;
 		@<Divide the submap into zones, recurse to position those, then merge back@>;
@@ -1236,9 +1259,9 @@ dividing at one relationship F1-to-T1 or at two, F1-to-T1 and F2-to-T2.
 @<Set the zone numbers throughout the two soon-to-be zones@> =
 	int Z1_count = 0, Z2_count = 0;
 	if (div_F2) {
-		int predivision_spending = drognas_spent;
+		int predivision_spending = session->calc.drognas_spent;
 		SpatialMap::divide_into_zones_twocut(div_F1, div_T1, div_F2, div_T2,
-			Z1_number, Z2_number);
+			Z1_number, Z2_number, session);
 		faux_instance *R;
 		LOOP_OVER_SUBMAP(R, sub) {
 			if (R->fimd.zone == Z1_number) Z1_count++;
@@ -1251,18 +1274,18 @@ dividing at one relationship F1-to-T1 or at two, F1-to-T1 and F2-to-T2.
 			FauxInstances::get_name(div_F2),
 			SpatialMap::usual_Inform_direction_name(div_dir2, session),
 			FauxInstances::get_name(div_T2),
-			drognas_spent - predivision_spending);
-		division_spending += drognas_spent - predivision_spending;
+			session->calc.drognas_spent - predivision_spending);
+		session->calc.division_spending += session->calc.drognas_spent - predivision_spending;
 	} else {
-		int predivision_spending = drognas_spent;
+		int predivision_spending = session->calc.drognas_spent;
 		SpatialMap::divide_into_zones_onecut(sub, div_F1, div_T1,
-			&Z1_count, &Z2_count, Z1_number, Z2_number);
+			&Z1_count, &Z2_count, Z1_number, Z2_number, session);
 		LOGIF(SPATIAL_MAP, "Making a single cut: %S %s to %S at cost %d\n",
 			FauxInstances::get_name(div_F1),
 			SpatialMap::usual_Inform_direction_name(div_dir1, session),
 			FauxInstances::get_name(div_T1),
-			drognas_spent - predivision_spending);
-		division_spending += drognas_spent - predivision_spending;
+			session->calc.drognas_spent - predivision_spending);
+		session->calc.division_spending += session->calc.drognas_spent - predivision_spending;
 	}
 	LOGIF(SPATIAL_MAP, "This produces two zones of sizes %d and %d\n",
 		Z1_count, Z2_count);
@@ -1309,7 +1332,7 @@ We therefore cap the length once we have reduced below the collision penalty.
 @d CAP_ON_SLIDE_LENGTHS 10
 
 @<Slide the two former zones together along the F1-to-T1 line, minimising heat@> =
-	int preslide_spending = drognas_spent;
+	int preslide_spending = session->calc.drognas_spent;
 	vector Axis = SpatialMap::direction_as_vector(div_dir1, session);
 
 	int worst_case_length = 0;
@@ -1332,8 +1355,8 @@ We therefore cap the length once we have reduced below the collision penalty.
 			break;
 	}
 	LOGIF(SPATIAL_MAP, "Optimal axis length for cut-exit is %d (heat %d), at cost %d.\n",
-		coolest_L, coolest_temperature, drognas_spent - preslide_spending);
-	slide_spending += drognas_spent - preslide_spending;
+		coolest_L, coolest_temperature, session->calc.drognas_spent - preslide_spending);
+	session->calc.slide_spending += session->calc.drognas_spent - preslide_spending;
 	L = coolest_L;
 	@<Displace zone 2 relative to zone 1@>;
 
@@ -1372,7 +1395,7 @@ on each call. Thus a line of rooms from |first| would have generations 1, 2,
 3, ... When |SpatialMap::assign_generation_count| finds a connection from its current
 position to a room with a lower generation, we say that there's a "contact".
 
-What makes the routine so effective is that it returns a great deal of data
+What makes the function so effective is that it returns a great deal of data
 about the high-spots of the history after it was called. The mechanism for
 this, though, is that the caller has to set up a pile of arrays, and then
 pass pointers to |SpatialMap::assign_generation_count|; on its exit, the arrays are
@@ -1506,7 +1529,7 @@ int SpatialMap::assign_generation_count(faux_instance *at, faux_instance *from, 
 	LOG_INDENT;
 	int locking_to_neighbours = TRUE;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_slock(at, i);
+		faux_instance *T = SpatialMap::read_slock(at, i, session);
 		if (T) {
 			@<Exclude generating this way if we don't need to@>;
 			@<Actually generate this way@>;
@@ -1514,7 +1537,7 @@ int SpatialMap::assign_generation_count(faux_instance *at, faux_instance *from, 
 	}
 	locking_to_neighbours = FALSE;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_smap(at, i);
+		faux_instance *T = SpatialMap::read_smap(at, i, session);
 		if (T) {
 			@<Exclude generating this way if we don't need to@>;
 			@<Actually generate this way@>;
@@ -1659,7 +1682,7 @@ slide the zones to and fro without angular distortion, so we prefer it if
 we can get it.
 
 @<Cutting on this link and the contact found would disconnect the submap@> =
-	if (SpatialMap::read_slock(inner_contact_from[0], inner_contact_dir[0])
+	if (SpatialMap::read_slock(inner_contact_from[0], inner_contact_dir[0], session)
 		== inner_contact_to[0]) break;
 	int r = BEST_TWOCUT_ER;
 	if ((inner_contact_dir[0] == i) || (inner_contact_dir[0] == SpatialMap::opposite(i, session)))
@@ -1672,7 +1695,7 @@ we can get it.
 		best_dir2[r] = inner_contact_dir[0];
 	}
 
-@ This is a piece of code used twice in the above routine: it puts the
+@ This is a piece of code used twice in the above function: it puts the
 contact |observed_from| to |observed_to| onto our clipboard, provided that
 there's room and/or it is interesting enough. We use an insertion-sort to
 keep the clipboard in ascending generation order: this would be slow if the
@@ -1711,16 +1734,16 @@ from R1, or vice versa, then we're in the |FALSE| case.
 
 =
 int SpatialMap::divide_into_zones_onecut(connected_submap *sub, faux_instance *R1,
-	faux_instance *R2, int *Z1_count, int *Z2_count, int Z1, int Z2) {
+	faux_instance *R2, int *Z1_count, int *Z2_count, int Z1, int Z2, index_session *session) {
 	if (R1 == R2) internal_error("can't divide");
 	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) R->fimd.zone = 0;
 	R1->fimd.zone = Z1; R2->fimd.zone = Z2;
 	*Z1_count = 0; *Z2_count = 0;
 	int contacts = 0;
-	*Z1_count = SpatialMap::divide_into_zones_onecut_r(R1, NULL, R1, R2, &contacts);
+	*Z1_count = SpatialMap::divide_into_zones_onecut_r(R1, NULL, R1, R2, &contacts, session);
 	if (contacts > 0) return FALSE;
-	*Z2_count = SpatialMap::divide_into_zones_onecut_r(R2, NULL, R2, R1, &contacts);
+	*Z2_count = SpatialMap::divide_into_zones_onecut_r(R2, NULL, R2, R1, &contacts, session);
 	LOOP_OVER_SUBMAP(R, sub)
 		if (R->fimd.zone == 0)
 			R->fimd.zone = Z1;
@@ -1729,7 +1752,7 @@ int SpatialMap::divide_into_zones_onecut(connected_submap *sub, faux_instance *R
 	return FALSE;
 }
 
-@ And this is the recursive flooding routine -- essentially it's a much
+@ And this is the recursive flooding function -- essentially it's a much
 simplified version of the exploration code above. |from| is the room we're
 currently at; |zone_capital| is the one we started from, within our zone;
 |foreign_capital| is corresponding room of the other zone, so (a) we
@@ -1740,15 +1763,16 @@ our original component into two disjoint connected zones.
 
 =
 int SpatialMap::divide_into_zones_onecut_r(faux_instance *at, faux_instance *from,
-	faux_instance *our_capital, faux_instance *foreign_capital, int *borders) {
+	faux_instance *our_capital, faux_instance *foreign_capital, int *borders,
+	index_session *session) {
 	int rooms_visited = 0;
 	int our_zone = at->fimd.zone, i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_slock(at, i);
+		faux_instance *T = SpatialMap::read_slock(at, i, session);
 		if (T) @<Consider whether to spread the zone to room T@>;
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_smap(at, i);
+		faux_instance *T = SpatialMap::read_smap(at, i, session);
 		if (T) @<Consider whether to spread the zone to room T@>;
 	}
 	return rooms_visited + 1;
@@ -1762,7 +1786,7 @@ int SpatialMap::divide_into_zones_onecut_r(faux_instance *at, faux_instance *fro
 	if (T_zone == foreign_zone) { (*borders)++; continue; }
 	T->fimd.zone = our_zone;
 	rooms_visited +=
-		SpatialMap::divide_into_zones_onecut_r(T, at, our_capital, foreign_capital, borders);
+		SpatialMap::divide_into_zones_onecut_r(T, at, our_capital, foreign_capital, borders, session);
 
 @h Zones 1 and 2 for a double cut.
 This is more or less the same, but simpler, since it can't determine whether
@@ -1770,25 +1794,25 @@ we've chosen the cuts correctly, so doesn't even try.
 
 =
 void SpatialMap::divide_into_zones_twocut(faux_instance *div_F1, faux_instance *div_T1,
-	faux_instance *other_F, faux_instance *div_T2, int Z1, int Z2) {
+	faux_instance *other_F, faux_instance *div_T2, int Z1, int Z2, index_session *session) {
 	connected_submap *sub = div_F1->fimd.submap;
 	faux_instance *R;
 	LOOP_OVER_SUBMAP(R, sub) R->fimd.zone = 0;
 	div_F1->fimd.zone = Z1; div_T1->fimd.zone = Z2;
-	SpatialMap::divide_into_zones_twocut_r(div_F1, div_F1, div_T1, other_F, div_T2);
-	SpatialMap::divide_into_zones_twocut_r(div_T1, div_F1, div_T1, other_F, div_T2);
+	SpatialMap::divide_into_zones_twocut_r(div_F1, div_F1, div_T1, other_F, div_T2, session);
+	SpatialMap::divide_into_zones_twocut_r(div_T1, div_F1, div_T1, other_F, div_T2, session);
 }
 
 @ =
 void SpatialMap::divide_into_zones_twocut_r(faux_instance *at, faux_instance *not_X1,
-	faux_instance *not_Y1, faux_instance *not_X2, faux_instance *not_Y2) {
+	faux_instance *not_Y1, faux_instance *not_X2, faux_instance *not_Y2, index_session *session) {
 	int Z = at->fimd.zone, i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_slock(at, i);
+		faux_instance *T = SpatialMap::read_slock(at, i, session);
 		if (T) @<Consider once again whether to spread the zone to room T@>;
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_smap(at, i);
+		faux_instance *T = SpatialMap::read_smap(at, i, session);
 		if (T) @<Consider once again whether to spread the zone to room T@>;
 	}
 }
@@ -1800,7 +1824,7 @@ void SpatialMap::divide_into_zones_twocut_r(faux_instance *at, faux_instance *no
 		if (((at == not_X2) && (T == not_Y2)) || ((at == not_Y2) && (T == not_X2)))
 			continue;
 		T->fimd.zone = Z;
-		SpatialMap::divide_into_zones_twocut_r(T, not_X1, not_Y1, not_X2, not_Y2);
+		SpatialMap::divide_into_zones_twocut_r(T, not_X1, not_Y1, not_X2, not_Y2, session);
 	}
 
 @h Tactics.
@@ -1857,7 +1881,8 @@ reduces this to absolute zero.
 
 =
 void SpatialMap::cool_submap(connected_submap *sub) {
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	index_session *session = sub->for_session;
+	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Cooling submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
 	int heat_before_round = initial_heat;
@@ -1883,8 +1908,8 @@ void SpatialMap::cool_submap(connected_submap *sub) {
 	LOGIF(SPATIAL_MAP,
 		"Cooling submap %d done (%d round(s)): cooled by %d at cost of %d drognas\n\n",
 		sub->allocation_id, rounds,
-		initial_heat - sub->heat, drognas_spent - initial_spending);
-	cooling_spending += drognas_spent - initial_spending;
+		initial_heat - sub->heat, session->calc.drognas_spent - initial_spending);
+	session->calc.cooling_spending += session->calc.drognas_spent - initial_spending;
 }
 
 @ Cooling is done room by room within the component, but we get slightly
@@ -1909,7 +1934,7 @@ void SpatialMap::cool_component_from(connected_submap *sub, faux_instance *R) {
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
 		exit_heats[i] = SpatialMap::find_exit_heat(R, i, session);
-		exit_rooms[i] = SpatialMap::read_smap(R, i);
+		exit_rooms[i] = SpatialMap::read_smap(R, i, session);
 	}
 
 @ An important point here is that we don't re-measure the heat of the exits
@@ -1980,7 +2005,7 @@ void SpatialMap::undo_cool_exit(index_session *session) {
 }
 
 void SpatialMap::cool_exit(faux_instance *R, int exit, index_session *session) {
-	faux_instance *to = SpatialMap::read_smap(R, exit);
+	faux_instance *to = SpatialMap::read_smap(R, exit, session);
 	saved_to = to; Saved_position = Room_position(to);
 
 	vector D = SpatialMap::direction_as_vector(exit, session);
@@ -2013,7 +2038,8 @@ on large connected submaps.
 void SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1,
 	faux_instance *avoid2) {
 	index_session *session = sub->for_session;
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	int initial_heat = SpatialMap::find_submap_heat(sub),
+		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Quenching submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
 	faux_instance *R;
@@ -2033,12 +2059,13 @@ void SpatialMap::quench_submap(connected_submap *sub, faux_instance *avoid1,
 		LOGIF(SPATIAL_MAP, "Quenching round %d had %d success(es).\n", rounds, successes);
 	}
 	LOGIF(SPATIAL_MAP, "Quenching submap %d done: cooled by %d at cost of %d drognas\n",
-		sub->allocation_id, initial_heat - sub->heat, drognas_spent - initial_spending);
-	quenching_spending += drognas_spent - initial_spending;
+		sub->allocation_id, initial_heat - sub->heat,
+		session->calc.drognas_spent - initial_spending);
+	session->calc.quenching_spending += session->calc.drognas_spent - initial_spending;
 }
 
 @<Attempt to quench this heated link@> =
-	faux_instance *T = SpatialMap::read_smap(R, i);
+	faux_instance *T = SpatialMap::read_smap(R, i, session);
 	if ((T == avoid1) && (R == avoid2)) continue;
 	if ((T == avoid2) && (R == avoid1)) continue;
 	LOGIF(SPATIAL_MAP_WORKINGS, "Quenching %S %s to %S.\n",
@@ -2068,7 +2095,8 @@ neighbourhood as the rooms shimmy apart.
 =
 void SpatialMap::diffuse_submap(connected_submap *sub) {
 	index_session *session = sub->for_session;
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	int initial_heat = SpatialMap::find_submap_heat(sub),
+		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Diffusing submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
 	faux_instance *R;
@@ -2080,7 +2108,7 @@ void SpatialMap::diffuse_submap(connected_submap *sub) {
 		LOOP_OVER_SUBMAP(R, sub) {
 			int i;
 			LOOP_OVER_LATTICE_DIRECTIONS(i) {
-				faux_instance *T = SpatialMap::read_smap(R, i);
+				faux_instance *T = SpatialMap::read_smap(R, i, session);
 				if (T)
 					@<Try diffusion along this link@>;
 			}
@@ -2090,8 +2118,8 @@ void SpatialMap::diffuse_submap(connected_submap *sub) {
 	LOGIF(SPATIAL_MAP, "Diffusing submap %d done after %d round(s): "
 		"cooled by %d at cost of %d drognas\n",
 		sub->allocation_id, rounds,
-		initial_heat - sub->heat, drognas_spent - initial_spending);
-	diffusion_spending += drognas_spent - initial_spending;
+		initial_heat - sub->heat, session->calc.drognas_spent - initial_spending);
+	session->calc.diffusion_spending += session->calc.drognas_spent - initial_spending;
 }
 
 @ Essentially we try lengthening the link by 1 unit, and see if that makes
@@ -2145,11 +2173,11 @@ void SpatialMap::diffuse_across(faux_instance *at, faux_instance *avoiding,
 	at->fimd.zone = 2;
 	int i;
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_slock(at, i);
+		faux_instance *T = SpatialMap::read_slock(at, i, session);
 		if ((T) && (T->fimd.zone == 1)) SpatialMap::diffuse_across(T, avoiding, session);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_smap(at, i);
+		faux_instance *T = SpatialMap::read_smap(at, i, session);
 		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
 			(SpatialMap::find_exit_heat(at, i, session) == 0))
 			SpatialMap::diffuse_across(T, avoiding, session);
@@ -2174,7 +2202,8 @@ links.
 =
 void SpatialMap::radiate_submap(connected_submap *sub) {
 	index_session *session = sub->for_session;
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	int initial_heat = SpatialMap::find_submap_heat(sub),
+		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Radiating submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
 	faux_instance *R;
@@ -2186,7 +2215,7 @@ void SpatialMap::radiate_submap(connected_submap *sub) {
 		LOOP_OVER_SUBMAP(R, sub) {
 			int i;
 			LOOP_OVER_LATTICE_DIRECTIONS(i) {
-				faux_instance *T = SpatialMap::read_smap(R, i);
+				faux_instance *T = SpatialMap::read_smap(R, i, session);
 				if (T) {
 					if (SpatialMap::exit_aligned(R, i, sub->for_session) == FALSE)
 						@<Attempt to radiate from this misaligned link@>;
@@ -2199,8 +2228,8 @@ void SpatialMap::radiate_submap(connected_submap *sub) {
 	LOGIF(SPATIAL_MAP, "Radiating submap %d done after %d round(s): "
 		"cooled by %d at cost of %d drognas\n",
 		sub->allocation_id, rounds,
-		initial_heat - sub->heat, drognas_spent - initial_spending);
-	radiation_spending += drognas_spent - initial_spending;
+		initial_heat - sub->heat, session->calc.drognas_spent - initial_spending);
+	session->calc.radiation_spending += session->calc.drognas_spent - initial_spending;
 }
 
 @ We try some 40 possible translations of the R end of the link, hoping to
@@ -2276,12 +2305,12 @@ void SpatialMap::radiate_across(faux_instance *at, faux_instance *avoiding,
 	at->fimd.zone = 2;
 	int i, not_this_way_either = SpatialMap::opposite(not_this_way, session);
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_slock(at, i);
+		faux_instance *T = SpatialMap::read_slock(at, i, session);
 		if ((T) && (T->fimd.zone == 1))
 			SpatialMap::radiate_across(T, avoiding, not_this_way, session);
 	}
 	LOOP_OVER_LATTICE_DIRECTIONS(i) {
-		faux_instance *T = SpatialMap::read_smap(at, i);
+		faux_instance *T = SpatialMap::read_smap(at, i, session);
 		if ((T) && (T->fimd.zone == 1) && (T != avoiding) &&
 			(i != not_this_way) && (i != not_this_way_either))
 			SpatialMap::radiate_across(T, avoiding, not_this_way, session);
@@ -2301,7 +2330,8 @@ is so high that this is unlikely to be an issue.
 =
 void SpatialMap::explode_submap(connected_submap *sub) {
 	index_session *session = sub->for_session;
-	int initial_heat = SpatialMap::find_submap_heat(sub), initial_spending = drognas_spent;
+	int initial_heat = SpatialMap::find_submap_heat(sub),
+		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Exploding submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
 	int keep_trying = TRUE, moves = 0;
@@ -2338,8 +2368,8 @@ void SpatialMap::explode_submap(connected_submap *sub) {
 	LOGIF(SPATIAL_MAP, "Exploding submap %d done after %d move(s): "
 		"cooled by %d at cost of %d drognas\n",
 		sub->allocation_id, moves,
-		initial_heat - sub->heat, drognas_spent - initial_spending);
-	explosion_spending += drognas_spent - initial_spending;
+		initial_heat - sub->heat, session->calc.drognas_spent - initial_spending);
+	session->calc.explosion_spending += session->calc.drognas_spent - initial_spending;
 }
 
 @h Stage 3, positioning the components.
@@ -2420,8 +2450,8 @@ one big component.
 	LOGIF(SPATIAL_MAP, "Component %d (size %d): drill square strategy\n",
 		sub->allocation_id, sub->bounds.population);
 	if (drill_square_side == 0) {
-		Drill_square_O =
-			Geometry::vec(box.corner1.x + 1, box.corner0.y, SpatialMap::benchmark_level(session));
+		Drill_square_O = Geometry::vec(box.corner1.x + 1, box.corner0.y,
+			SpatialMap::benchmark_level(session));
 		Drill_square_At = Drill_square_O;
 		connected_submap *sing;
 		int N = 0;
@@ -2571,7 +2601,7 @@ int SpatialMap::no_links_to_other_components(connected_submap *sub) {
 	return SpatialMap::cross_component_links(sub, NULL, NULL, NULL, FALSE);
 }
 
-@ So, now we have to define our Swiss-army-knife routine to cope with all
+@ So, now we have to define our Swiss-army-knife function to cope with all
 these requirements. We not only count non-lattice connections to other
 components (IN and OUT links, basically), but also score how bad they are,
 if requested, and record the first we find, if requested.
@@ -2582,6 +2612,7 @@ rooms connected that way are by definition in the same component.
 =
 int SpatialMap::cross_component_links(connected_submap *sub, faux_instance **outer,
 	faux_instance **inner, int *heat, int posnd) {
+	index_session *session = sub->for_session;
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(sub->for_session);
 	int no_links = 0;
 	if (heat) *heat = 0;
@@ -2589,7 +2620,7 @@ int SpatialMap::cross_component_links(connected_submap *sub, faux_instance **out
 	LOOP_OVER_SUBMAP(R, sub) {
 		int d;
 		LOOP_OVER_NONLATTICE_DIRECTIONS(d) {
-			faux_instance *R2 = SpatialMap::read_smap_cross(R, d);
+			faux_instance *R2 = SpatialMap::read_smap_cross(R, d, session);
 			if ((R2) && (R2->fimd.submap != sub)) {
 				if ((posnd == FALSE) || (R2->fimd.submap->positioned)) {
 					no_links++;
@@ -2605,7 +2636,7 @@ int SpatialMap::cross_component_links(connected_submap *sub, faux_instance **out
 			if ((posnd) && (S->fimd.submap->positioned == FALSE)) continue;
 			int d;
 			LOOP_OVER_NONLATTICE_DIRECTIONS(d) {
-				faux_instance *R2 = SpatialMap::read_smap_cross(S, d);
+				faux_instance *R2 = SpatialMap::read_smap_cross(S, d, session);
 				if ((R2) && (R2->fimd.submap == sub)) {
 					no_links++;
 					if (outer) *outer = S; if (inner) *inner = R2;
@@ -2688,10 +2719,10 @@ int SpatialMap::component_metric(vector P1, vector P2, int dir) {
 Short and sweet. We make |Universe| the minimal-sized cuboid containing each room.
 
 @<(5) Find the universal bounding cuboid@> =
-	Universe = Geometry::empty_cuboid();
+	session->calc.Universe = Geometry::empty_cuboid();
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R)
-		Geometry::adjust_cuboid(&Universe, Room_position(R));
+		Geometry::adjust_cuboid(&session->calc.Universe, Room_position(R));
 
 @h Stage 6, removing blank planes.
 We need to avoid what might be an infinite loop in awkward cases where
@@ -2702,7 +2733,8 @@ locking means that blank planes are inevitable.
 	while (safety_count-- >= 0) {
 		int blank_z = 0, blank_plane_found = FALSE;
 		int z;
-		for (z = Universe.corner1.z - 1; z >= Universe.corner0.z + 1; z--) {
+		for (z = session->calc.Universe.corner1.z - 1;
+			z >= session->calc.Universe.corner0.z + 1; z--) {
 			int occupied = FALSE;
 			faux_instance *R;
 			LOOP_OVER_FAUX_ROOMS(faux_set, R)

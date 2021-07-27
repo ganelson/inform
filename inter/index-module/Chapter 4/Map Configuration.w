@@ -90,17 +90,16 @@ which are legal, are converted to to |I"whatever"| values here:
 
 =
 map_parameter_scope ConfigureIndexMap::global_settings(void) {
-	map_parameter_scope mps = initial_global_map_scope;
 	for (int p=0; p<NO_MAP_PARAMETERS; p++) {
-		mps.values[p].name = Str::new();
-		WRITE_TO(mps.values[p].name, "%w",
-			mps.values[p].name_init);
-		mps.values[p].textual_value = Str::new();
-		if (mps.values[p].textual_value_init)
-			WRITE_TO(mps.values[p].textual_value, "%w",
-				mps.values[p].textual_value_init);
+		initial_global_map_scope.values[p].name = Str::new();
+		WRITE_TO(initial_global_map_scope.values[p].name, "%w",
+			initial_global_map_scope.values[p].name_init);
+		initial_global_map_scope.values[p].textual_value = Str::new();
+		if (initial_global_map_scope.values[p].textual_value_init)
+			WRITE_TO(initial_global_map_scope.values[p].textual_value, "%w",
+				initial_global_map_scope.values[p].textual_value_init);
 	}
-	return mps;
+	return initial_global_map_scope;
 }
 
 @ Non-global scopes are initialised here, though it's a much simpler process
@@ -156,8 +155,6 @@ or as a single room, or as a single region, or as a kind of room or region.
 If all are null, then the global scope is used.
 
 =
-int changed_global_room_colour = FALSE;
-
 void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
 	faux_instance *scope_I, text_stream *put_string, int put_integer, index_session *session) {
 	if (scope == NULL) {
@@ -165,7 +162,8 @@ void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
 		else scope = FauxInstances::get_parameters(scope_I);
 	}
 	if (Str::cmp(name, I"room-colour") == 0) {
-		if (scope == Indexing::get_global_map_scope(session)) changed_global_room_colour = TRUE;
+		if (scope == Indexing::get_global_map_scope(session))
+			session->changed_global_room_colour = TRUE;
 		if (scope_I) scope_I->fimd.colour = put_string;
 	}
 	if (Str::cmp(name, I"room-name-colour") == 0)
@@ -179,14 +177,14 @@ void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
 =
 text_stream *ConfigureIndexMap::get_text_mp(text_stream *name, map_parameter_scope *scope,
 	index_session *session) {
-	if (Str::eq(name, I"<font>"))
-		return ConfigureIndexMap::get_text_mp(I"font", NULL, session);
 	int s = ConfigureIndexMap::get_map_variable_index(name, session);
 	if (scope == NULL) scope = Indexing::get_global_map_scope(session);
 	while (scope->values[s].specified == FALSE) {
 		scope = scope->wider_scope;
 		if (scope == NULL) internal_error("scope exhausted in looking up map parameter");
 	}
+	if ((Str::ne(name, I"font")) && (Str::eq(scope->values[s].textual_value, I"<font>")))
+		return ConfigureIndexMap::get_text_mp(I"font", NULL, session);
 	return scope->values[s].textual_value;
 }
 

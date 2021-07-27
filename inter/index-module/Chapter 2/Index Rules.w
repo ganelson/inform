@@ -141,7 +141,6 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	Str::put(start, Characters::tolower(Str::get(start)));
 
 	int n = IndexRules::no_rules(rb_pack);
-
 	if (place_in_expandable_box) {
 		int expand_id = IndexUtilities::extra_ID(session);
 		HTML::open_indented_p(OUT, indent+1, "tight");
@@ -253,7 +252,6 @@ int IndexRules::index_rulebook_inner(OUTPUT_STREAM, int initial_t, inter_tree *I
 		}
 		prev = entry;
 	}
-	if (count > 0) HTML_CLOSE("p");
 	if (suppress_outcome == FALSE) IndexRules::index_outcomes(OUT, I, rb_pack, LD);
 	IndexRules::rb_index_placements(OUT, I, rb_pack, LD);
 	return count;

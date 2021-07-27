@@ -49,6 +49,7 @@ text_stream *Localisation::read(localisation_dictionary *D, text_stream *key) {
 void Localisation::define(localisation_dictionary *D,
 	text_stream *key, text_stream *value) {
 	text_stream *to = Dictionaries::create_text(D->texts, key);
+	Str::clear(to);
 	WRITE_TO(to, "%S", value);
 }
 

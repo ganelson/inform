@@ -20,7 +20,7 @@ i_2\leq 4$) associated with the room cell at $(x, y, z)$.
 The |exit_grid| stores which direction number is the exit being marked at
 this icon position, and has the same indexing as the icon grid.
 
-@d ROOM_GRID_POS(P) Geometry::cuboid_index(P, Universe)
+@d ROOM_GRID_POS(P) Geometry::cuboid_index(P, session->calc.Universe)
 @d ICON_GRID_POS(P, i1, i2) (25*ROOM_GRID_POS(P) + 5*(i1) + (i2))
 
 =
@@ -36,7 +36,7 @@ void HTMLMap::calculate_map_grid(index_session *session) {
 }
 
 @<Allocate the three mapping grids@> =
-	int size_needed = Geometry::cuboid_volume(Universe), x;
+	int size_needed = Geometry::cuboid_volume(session->calc.Universe), x;
 
 	room_grid = (faux_instance **)
 		(Memory::calloc(size_needed, sizeof(faux_instance *), MAP_INDEX_MREASON));
@@ -160,14 +160,14 @@ is east from B to K. If so, we get both the fading and aligned bits.
 
 	LOOP_OVER_FAUX_ROOMS(faux_set, R) {
 		vector P = Room_position(R);
-		HTMLMap::correct_pair(P, SW_vector, 0, 4, 4, 0);
-		HTMLMap::correct_pair(P, W_vector,  0, 2, 4, 2);
-		HTMLMap::correct_pair(P, NW_vector, 0, 0, 4, 4);
-		HTMLMap::correct_pair(P, S_vector,  2, 4, 2, 0);
-		HTMLMap::correct_pair(P, N_vector,  2, 0, 2, 4);
-		HTMLMap::correct_pair(P, SE_vector, 4, 4, 0, 0);
-		HTMLMap::correct_pair(P, E_vector,  4, 2, 0, 2);
-		HTMLMap::correct_pair(P, NE_vector, 4, 0, 0, 4);
+		HTMLMap::correct_pair(P, SW_vector, 0, 4, 4, 0, session);
+		HTMLMap::correct_pair(P, W_vector,  0, 2, 4, 2, session);
+		HTMLMap::correct_pair(P, NW_vector, 0, 0, 4, 4, session);
+		HTMLMap::correct_pair(P, S_vector,  2, 4, 2, 0, session);
+		HTMLMap::correct_pair(P, N_vector,  2, 0, 2, 4, session);
+		HTMLMap::correct_pair(P, SE_vector, 4, 4, 0, 0, session);
+		HTMLMap::correct_pair(P, E_vector,  4, 2, 0, 2, session);
+		HTMLMap::correct_pair(P, NE_vector, 4, 0, 0, 4, session);
 	}
 
 @ A process called "pair correction" fills in the nuance bits for all
@@ -185,11 +185,12 @@ vector to one of its eight neighbouring cell positions on the map. If
 $P+D$ lies outside the map altogether, we do nothing.
 
 =
-void HTMLMap::correct_pair(vector P, vector D, int from_i1, int from_i2, int to_i1, int to_i2) {
+void HTMLMap::correct_pair(vector P, vector D, int from_i1, int from_i2, int to_i1, int to_i2,
+	index_session *session) {
 	vector Q = Geometry::vec_plus(P, D);
 
-	if (Geometry::within_cuboid(P, Universe) == FALSE) return; /* should never happen */
-	if (Geometry::within_cuboid(Q, Universe) == FALSE) return; /* neighbouring cell outside map */
+	if (Geometry::within_cuboid(P, session->calc.Universe) == FALSE) return; /* should never happen */
+	if (Geometry::within_cuboid(Q, session->calc.Universe) == FALSE) return; /* neighbour outside map */
 
 	int from = icon_grid[ICON_GRID_POS(P, from_i1, from_i2)];
 	int to = icon_grid[ICON_GRID_POS(Q, to_i1, to_i2)];
@@ -253,8 +254,8 @@ we were originally looking at, or might be one of the other two).
 	vector N = P;
 	if (D.x < 0) N.x--;
 	if (D.y < 0) N.y--;
-	HTMLMap::correct_diagonal(N, TRUE);
-	HTMLMap::correct_diagonal(N, FALSE);
+	HTMLMap::correct_diagonal(N, TRUE, session);
+	HTMLMap::correct_diagonal(N, FALSE, session);
 
 @ So now the vector $BL$ represents the bottom left cell (i.e., the southwestern
 corner of the box). We can obtain the other three cells of the $2\times 2$ box
@@ -262,7 +263,7 @@ by offsetting to N, E and NE. Two of these cells form the diagonal of the
 map connection (are "used"), and two are off-diagonal (are "unused").
 
 =
-void HTMLMap::correct_diagonal(vector BL, int SW_to_NE) {
+void HTMLMap::correct_diagonal(vector BL, int SW_to_NE, index_session *session) {
 	int pos_00, /* corner icon position of lower cell used by the map connection */
 		pos_01, /* corner icon position of lower cell not used by the map connection */
 		pos_10, /* corner icon position of upper cell not used by the map connection */
@@ -379,33 +380,8 @@ void HTMLMap::plot_map_icon_with_tip(OUTPUT_STREAM, text_stream *icon_name, text
 	HTML_TAG_WITH("img", "border=0 src=inform:/map_icons/%S.png %S", icon_name, tool_tip);
 }
 
-@h The major map.
-Note that we check to see if there is more than one room in the world: if
-there isn't, we don't bother with a full map, but we still calculate as far
-as the icon grid in order to be sure that the little 1 by 1 map for it (in
-the details part of the World Index page) will be all right.
-
-=
-void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, index_session *session) {
-	localisation_dictionary *LD = Indexing::get_localisation(session);
-	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
-	HTMLMap::calculate_map_grid(session);
-
-	@<Choose a map colour for each region@>;
-	@<Choose a map colour for each room, based on its region membership@>;
-
-	if (FauxInstances::no_rooms(session) >= 2) {
-		WRITE("\n\n");
-		HTML::comment(OUT, I"WORLD WRITE MAP BEGINS");
-		HTML_OPEN("p");
-		WRITE("\n");
-		@<Draw an HTML map for the whole Universe of rooms@>;
-		HTML_CLOSE("p");
-		HTML::comment(OUT, I"WORLD WRITE MAP ENDS");
-	}
-}
-
-@ We give different colours to the first 20 regions defined, then repeat
+@h Room colours.
+We give different colours to the first 20 regions defined, then repeat
 the cycle for the next 20, and so on. (It's unlikely that there are that
 many regions, but even if there are, regions 20 apart are unlikely to come
 into contact, since they would be created in source text a long way distant
@@ -413,7 +389,9 @@ from each other.)
 
 @d NO_REGION_COLOURS 20
 
-@<Choose a map colour for each region@> =
+=
+void HTMLMap::compute_room_colours(index_session *session) {
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	wchar_t *some_map_colours[NO_REGION_COLOURS] = {
 		L"Pale Green", L"Light Blue", L"Plum",
 		L"Light Sea Green", L"Light Slate Blue", L"Navajo White",
@@ -433,7 +411,6 @@ from each other.)
 					some_map_colours[(regc++) % NO_REGION_COLOURS]));
 		}
 
-@<Choose a map colour for each room, based on its region membership@> =
 	text_stream *default_room_col = Str::new();
 	WRITE_TO(default_room_col, "%w", HTML::translate_colour_name(L"Light Grey"));
 	faux_instance *R;
@@ -445,11 +422,36 @@ from each other.)
 			else
 				R->fimd.colour = Str::duplicate(default_room_col);
 		}
+}
+
+@h The major map.
+Note that we check to see if there is more than one room in the world: if
+there isn't, we don't bother with a full map, but we still calculate as far
+as the icon grid in order to be sure that the little 1 by 1 map for it (in
+the details part of the World Index page) will be all right.
+
+=
+void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, index_session *session) {
+	localisation_dictionary *LD = Indexing::get_localisation(session);
+	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
+	HTMLMap::calculate_map_grid(session);
+	HTMLMap::compute_room_colours(session);
+
+	if (FauxInstances::no_rooms(session) >= 2) {
+		WRITE("\n\n");
+		HTML::comment(OUT, I"WORLD WRITE MAP BEGINS");
+		HTML_OPEN("p");
+		WRITE("\n");
+		@<Draw an HTML map for the whole Universe of rooms@>;
+		HTML_CLOSE("p");
+		HTML::comment(OUT, I"WORLD WRITE MAP ENDS");
+	}
+}
 
 @<Draw an HTML map for the whole Universe of rooms@> =
 	HTMLMap::begin_variable_width_table(OUT);
 	int z;
-	for (z=Universe.corner1.z; z>=Universe.corner0.z; z--) {
+	for (z=session->calc.Universe.corner1.z; z>=session->calc.Universe.corner0.z; z--) {
 		@<Draw the rubric row which labels this level of the map@>;
 		@<Draw this level of the map@>;
 	}
@@ -462,7 +464,7 @@ from each other.)
 	HTMLMap::devise_level_rubric(z, level_rubric, session);
 	HTML_OPEN("tr"); HTML_OPEN("td");
 	int rounding = 0;
-	if (z == Universe.corner1.z) rounding = ROUND_BOX_TOP;
+	if (z == session->calc.Universe.corner1.z) rounding = ROUND_BOX_TOP;
 	HTML::open_coloured_box(OUT, "e0e0e0", rounding);
 	WRITE("<i>%S</i>", level_rubric);
 	HTML::close_coloured_box(OUT, "e0e0e0", rounding);
@@ -482,7 +484,8 @@ from each other.)
 	LOGIF(SPATIAL_MAP, "Level %d has rooms with %d <= y <= %d\n", z, y_min, y_max);
 
 	HTML_OPEN("tr"); HTML_OPEN("td");
-	HTMLMap::plot_map_level(OUT, Universe.corner0.x, Universe.corner1.x, y_min, y_max, z, 1, session);
+	HTMLMap::plot_map_level(OUT, session->calc.Universe.corner0.x,
+		session->calc.Universe.corner1.x, y_min, y_max, z, 1, session);
 	HTML_CLOSE("td"); HTML_CLOSE("tr"); WRITE("\n");
 
 @<Draw the baseline rubric row which concludes the map@> =
@@ -512,11 +515,11 @@ void HTMLMap::devise_level_rubric(int z, text_stream *level_rubric,
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	text_stream *key = I"Index.Elements.Mp.DefaultLevel";
 	int par = 0;
-	switch(Universe.corner1.z - Universe.corner0.z) {
+	switch(session->calc.Universe.corner1.z - session->calc.Universe.corner0.z) {
 		case 0:
 			break;
-		case 1: if (z == Universe.corner0.z) key = I"Index.Elements.Mp.LowerLevel";
-			 if (z == Universe.corner1.z) key = I"Index.Elements.Mp.UpperLevel";
+		case 1: if (z == session->calc.Universe.corner0.z) key = I"Index.Elements.Mp.LowerLevel";
+			 if (z == session->calc.Universe.corner1.z) key = I"Index.Elements.Mp.UpperLevel";
 			break;
 		default: {
 			int z_offset = z - SpatialMap::benchmark_level(session);
@@ -584,7 +587,8 @@ void HTMLMap::plot_map_level(OUTPUT_STREAM, int x0, int x1, int y0, int y1, int 
 		LOGIF(SPATIAL_MAP, "Plot: [%d, %d] x [%d, %d] x {%d}\n", x0, x1, y0, y1, z);
 
 	int with_numbering = FALSE;
-	if ((pass == 1) && (Universe.corner1.z != Universe.corner0.z)) with_numbering = TRUE;
+	if ((pass == 1) && (session->calc.Universe.corner1.z != session->calc.Universe.corner0.z))
+		with_numbering = TRUE;
 
 	WRITE("\n\n");
 	HTMLMap::begin_variable_width_table_with_background(OUT, "grid.png");
@@ -832,7 +836,7 @@ and south ends.
 	#endif
 	HTML_OPEN("center");
 	HTML_OPEN("i");
-	WRITE("%d", y-Universe.corner0.y+1);
+	WRITE("%d", y-session->calc.Universe.corner0.y+1);
 	HTML_CLOSE("i");
 	HTML_CLOSE("center");
 	#ifdef HTML_MAP_FONT_SIZE

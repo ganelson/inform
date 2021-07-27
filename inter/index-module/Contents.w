@@ -1,8 +1,11 @@
 Title: index
 Author: Graham Nelson
-Purpose: Generating the index for an Inform project, as a module.
+Purpose: Generating the index for an Inform project.
 Language: InC
 Licence: Artistic License 2.0
+
+Preliminaries
+	What This Module Does
 
 Chapter 1: Starting Up
 	Index Module

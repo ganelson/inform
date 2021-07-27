@@ -1,0 +1,202 @@
+"The Back To Tolti-Aph Affair"
+
+Sanctuaries are a region.
+Sanctum Sanctorum is a room.
+Sanctum Sanctorum is in Sanctuaries.
+Longwall Street is a room.
+The player is in Longwall Street.
+dark doorway is a door.
+Turret Roundhouse is a room.
+Stone Mound is a room.
+Turret Alcove is a room.
+Fallen Tree is a room.
+Fullers' Town-House is a room.
+Broken Lane is a room.
+flame-blackened door is a door.
+Sunken Courtyard East is a room.
+Sunken Courtyard North is a room.
+Sunken Courtyard West is a room.
+Sunken Courtyard South is a room.
+Apothecary's Workshop is a room.
+Sump of the Fountain-Grove is a room.
+Gravel Track is a room.
+Icefinger Ford is a room.
+Riverbed Course is a region.
+Icefinger Ford is in Riverbed Course.
+Divide is a room.
+Divide is in Riverbed Course.
+Riverbed Course is a region.
+Source of the Icefinger is a room.
+Source of the Icefinger is in Riverbed Course.
+Shrine of the Pinnacle is a room.
+Shrine of the Pinnacle is in Riverbed Course.
+Marshy Hollow is a room.
+Log Pontoon is a room.
+Ziggurat is a room.
+Exalted Throne is a room.
+stonework throne of the king is a door.
+Robing Room is a room.
+Budless Grove is a room.
+trellis-work archway is a door.
+Hedge Archway is a room.
+Solid Rock is a room.
+Terra Incognita is a room.
+LR0 is a room.
+LR1 is a room.
+LR2 is a room.
+LR3 is a room.
+LR4 is a room.
+LR5 is a room.
+LR6 is a room.
+LR7 is a room.
+LR8 is a room.
+LR9 is a room.
+LR10 is a room.
+LR11 is a room.
+LR12 is a room.
+LR13 is a room.
+LR14 is a room.
+LR15 is a room.
+LR16 is a room.
+LR17 is a room.
+LR18 is a room.
+LR19 is a room.
+LR20 is a room.
+LR21 is a room.
+LR22 is a room.
+LR23 is a room.
+LR24 is a room.
+LR25 is a room.
+LR26 is a room.
+LR27 is a room.
+LR28 is a room.
+LR29 is a room.
+LR30 is a room.
+LR31 is a room.
+LR32 is a room.
+LR33 is a room.
+LR34 is a room.
+LR35 is a room.
+LR36 is a room.
+LR37 is a room.
+LR38 is a room.
+LR39 is a room.
+LR40 is a room.
+LR41 is a room.
+Temple of Peace is a room.
+Island in the Deep Pool is a room.
+Deep Pool Environs is a region.
+Island in the Deep Pool is in Deep Pool Environs.
+Dome of the White Bones is a room.
+Western Shore is a room.
+Western Shore is in Deep Pool Environs.
+Northern Shore is a room.
+Northern Shore is in Deep Pool Environs.
+Eastern Shore is a room.
+Eastern Shore is in Deep Pool Environs.
+Southern Shore is a room.
+Southern Shore is in Deep Pool Environs.
+Deep Pool Environs is a region.
+Sandy Area is a region.
+Dry Channel is a room.
+Dry Channel is in Sandy Area.
+Temple Plaza is a room.
+Temple Plaza is in Sandy Area.
+Knotted Room is a room.
+Knotted Room is in Sandy Area.
+thick door is a door.
+hole is a door.
+Dim Garret is a room.
+Old School Yard is a room.
+wooden trap-door is a door.
+Archive Chamber is a room.
+Mutatis Mutandis is a room.
+Mutatis Mutandis is in Sanctuaries.
+Fallen Tree is north of Longwall Street.
+Stone Mound is east of Longwall Street.
+dark doorway is west of Longwall Street.
+Stone Mound is up of Longwall Street.
+Turret Roundhouse is inside of Longwall Street.
+dark doorway is east of Turret Roundhouse.
+Turret Alcove is up of Turret Roundhouse.
+Longwall Street is outside of Turret Roundhouse.
+Longwall Street is west of Stone Mound.
+Longwall Street is down of Stone Mound.
+Turret Roundhouse is down of Turret Alcove.
+Broken Lane is north of Fallen Tree.
+Fullers' Town-House is northeast of Fallen Tree.
+Longwall Street is south of Fallen Tree.
+Fullers' Town-House is inside of Fallen Tree.
+Fallen Tree is southwest of Fullers' Town-House.
+Fallen Tree is outside of Fullers' Town-House.
+Gravel Track is north of Broken Lane.
+Fallen Tree is south of Broken Lane.
+flame-blackened door is west of Broken Lane.
+Sunken Courtyard North is northwest of Sunken Courtyard East.
+Sunken Courtyard South is southwest of Sunken Courtyard East.
+flame-blackened door is east of Sunken Courtyard East.
+Sump of the Fountain-Grove is west of Sunken Courtyard East.
+Sump of the Fountain-Grove is south of Sunken Courtyard North.
+Sunken Courtyard East is southeast of Sunken Courtyard North.
+Sunken Courtyard West is southwest of Sunken Courtyard North.
+Sunken Courtyard North is northeast of Sunken Courtyard West.
+Apothecary's Workshop is south of Sunken Courtyard West.
+Sunken Courtyard South is southeast of Sunken Courtyard West.
+Sump of the Fountain-Grove is east of Sunken Courtyard West.
+Apothecary's Workshop is up of Sunken Courtyard West.
+Sump of the Fountain-Grove is north of Sunken Courtyard South.
+Sunken Courtyard East is northeast of Sunken Courtyard South.
+Sunken Courtyard West is northwest of Sunken Courtyard South.
+Sunken Courtyard West is north of Apothecary's Workshop.
+Sunken Courtyard West is down of Apothecary's Workshop.
+Sunken Courtyard North is north of Sump of the Fountain-Grove.
+Sunken Courtyard South is south of Sump of the Fountain-Grove.
+Sunken Courtyard East is east of Sump of the Fountain-Grove.
+Sunken Courtyard West is west of Sump of the Fountain-Grove.
+Icefinger Ford is north of Gravel Track.
+Broken Lane is south of Gravel Track.
+Ziggurat is north of Icefinger Ford.
+Divide is northwest of Icefinger Ford.
+Gravel Track is south of Icefinger Ford.
+Marshy Hollow is southeast of Icefinger Ford.
+Icefinger Ford is southeast of Divide.
+Source of the Icefinger is west of Divide.
+Divide is east of Source of the Icefinger.
+Icefinger Ford is northwest of Marshy Hollow.
+Log Pontoon is east of Marshy Hollow.
+Marshy Hollow is west of Log Pontoon.
+Exalted Throne is north of Ziggurat.
+Icefinger Ford is south of Ziggurat.
+Exalted Throne is up of Ziggurat.
+Old School Yard is north of Exalted Throne.
+Ziggurat is south of Exalted Throne.
+Budless Grove is east of Exalted Throne.
+Dry Channel is west of Exalted Throne.
+Dry Channel is down of Exalted Throne.
+stonework throne of the king is inside of Exalted Throne.
+stonework throne of the king is outside of Robing Room.
+trellis-work archway is east of Budless Grove.
+Exalted Throne is west of Budless Grove.
+Exalted Throne is up of Budless Grove.
+trellis-work archway is west of Hedge Archway.
+Northern Shore is northeast of Western Shore.
+Southern Shore is southeast of Western Shore.
+Eastern Shore is southeast of Northern Shore.
+Western Shore is southwest of Northern Shore.
+Northern Shore is northwest of Eastern Shore.
+Southern Shore is southwest of Eastern Shore.
+Eastern Shore is northeast of Southern Shore.
+Western Shore is northwest of Southern Shore.
+Exalted Throne is east of Dry Channel.
+thick door is west of Dry Channel.
+Exalted Throne is up of Dry Channel.
+Knotted Room is north of Temple Plaza.
+thick door is east of Temple Plaza.
+Temple Plaza is south of Knotted Room.
+hole is up of Knotted Room.
+hole is down of Dim Garret.
+Exalted Throne is south of Old School Yard.
+Exalted Throne is up of Old School Yard.
+wooden trap-door is down of Old School Yard.
+
+Test eps (internal) with MT.

@@ -191,6 +191,8 @@ void InternalTests::begin(void) {
 		&InternalTests::perform_verb_internal_test, FALSE);
 	InternalTests::make_late_test_available(I"index",
 		&InternalTests::perform_index_internal_test, FALSE);
+	InternalTests::make_late_test_available(I"eps",
+		&InternalTests::perform_EPS_map_internal_test, FALSE);
 }
 
 void InternalTests::perform_dimensions_internal_test(OUTPUT_STREAM,
@@ -216,10 +218,15 @@ void InternalTests::perform_ing_internal_test(OUTPUT_STREAM,
 
 void InternalTests::perform_index_internal_test(OUTPUT_STREAM,
 	struct internal_test_case *itc) {
-	index_session *session = Indexing::open_session(Emit::tree());
-	inform_language *L = Projects::get_language_of_index(Task::project());
-	Indexing::localise(session, Filenames::in(Languages::path_to_bundle(L), I"Index.txt"));
+	index_session *session = Task::index_session(Emit::tree(), Task::project());
 	Indexing::generate_one_element(session, OUT, itc->text_supplying_the_case);
+	Indexing::close_session(session);
+}
+
+void InternalTests::perform_EPS_map_internal_test(OUTPUT_STREAM,
+	struct internal_test_case *itc) {
+	index_session *session = Task::index_session(Emit::tree(), Task::project());
+	Indexing::generate_EPS_map(session, NULL, OUT);
 	Indexing::close_session(session);
 }
 

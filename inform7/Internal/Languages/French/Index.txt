@@ -1,0 +1,2 @@
+%Index.Pages.Contents.Title = Index des matières
+%Index.Pages.Contents.Caption = Comment le texte source est organisé
