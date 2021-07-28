@@ -31,6 +31,7 @@ void CodeGen::Targets::make_targets(void) {
 		CodeGen::Binary::create_target();
 		CodeGen::Inventory::create_target();
 		CodeGen::I6::create_target();
+		CodeGen::C::create_target();
 	}
 }
 
@@ -188,4 +189,19 @@ void CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_n
 }
 void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_name) {
 	VOID_METHOD_CALL(gen->target, END_CONSTANT_MTID, gen, const_name);
+}
+
+@
+
+@e BEGIN_FUNCTION_MTID
+@e END_FUNCTION_MTID
+
+=
+VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *fn_name)
+VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen)
+void CodeGen::Targets::begin_function(code_generation *gen, text_stream *fn_name) {
+	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_MTID, gen, fn_name);
+}
+void CodeGen::Targets::end_function(code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, gen);
 }

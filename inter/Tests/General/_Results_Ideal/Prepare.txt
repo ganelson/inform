@@ -10,6 +10,7 @@ packagetype _action
 packagetype _command
 packagetype _property
 packagetype _to_phrase
+packagetype _response
 # Pragmas:
 # Primitives:
 primitive !font val -> void
@@ -122,7 +123,7 @@ primitive !notin val val -> val
 primitive !read val val -> void
 primitive !inversion void -> void
 package main _plain
-	package veneer _module
+	package veneer _linkage
 		symbol external misc K_unchecked --> /main/generic/K_unchecked
 		symbol public misc WORDSIZE
 		symbol public misc TARGET_ZCODE

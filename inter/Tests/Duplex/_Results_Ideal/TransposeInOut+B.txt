@@ -164,7 +164,6 @@ package main _plain
 				val K_colour I_red
 	constant R_102 K_colour____colour = R_102_B
 	constant amount K_number = sum{ 2, C_taxes }
-	response R_101_A R_101 0 = C_taxes
 	# Imported my_fn here
 	package my_fn _plain
 		symbol public misc R_101

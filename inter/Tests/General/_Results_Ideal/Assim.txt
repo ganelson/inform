@@ -135,11 +135,16 @@ package main _plain
 		package properties _submodule
 			package marmorial_prop _plain
 				symbol public misc marmorial `marmorial`
+				symbol public misc property_id*
+				symbol external misc K_unchecked --> /main/other/K_unchecked
 				symbol external misc K_truth_state --> /main/other/K_truth_state
+				constant property_id K_unchecked = 0
 				property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
 			package density_prop _plain
 				symbol public misc density
+				symbol public misc property_id*
 				symbol external misc K_unchecked --> /main/other/K_unchecked
+				constant property_id K_unchecked = 0
 				property density K_unchecked __assimilated=1
 	package connectors _linkage
 		symbol plug misc plug_00001 --? VERB_DIRECTIVE_REVERSE
@@ -160,6 +165,7 @@ package main _plain
 		symbol socket misc Banana --> /main/template/functions/Banana_fn/Banana
 		symbol socket misc Peach --> /main/template/functions/Peach_fn/Peach
 		symbol socket misc marmorial --> /main/template/properties/marmorial_prop/marmorial
+		symbol socket misc property_id --> /main/template/properties/marmorial_prop/property_id
 		symbol socket misc P_marmorial --> /main/template/properties/marmorial_prop/marmorial
 		symbol socket misc density --> /main/template/properties/density_prop/density
 		symbol socket misc DEBUG --> /main/template/constants/DEBUG_con/DEBUG

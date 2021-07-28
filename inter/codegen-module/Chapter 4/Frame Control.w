@@ -139,7 +139,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
-	if (function_code_block) { OUTDENT; WRITE("];\n"); }
+	if (function_code_block) { OUTDENT; CodeGen::Targets::end_function(gen); WRITE("\n"); }
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_tree_node *P) {

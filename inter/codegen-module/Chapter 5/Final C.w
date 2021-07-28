@@ -1,78 +1,43 @@
-[CodeGen::I6::] Generating Inform 6.
+[CodeGen::C::] Generating C.
 
 To generate I6 code from intermediate code.
 
 @h Target.
 
 =
-code_generation_target *inform6_target = NULL;
-void CodeGen::I6::create_target(void) {
-	code_generation_target *cgt = CodeGen::Targets::new(I"inform6");
-	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, CodeGen::I6::begin_generation);
-	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, CodeGen::I6::general_segment);
-	METHOD_ADD(cgt, TL_SEGMENT_MTID, CodeGen::I6::tl_segment);
-	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, CodeGen::I6::default_segment);
-	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, CodeGen::I6::basic_constant_segment);
-	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
-	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
-	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
-	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
-	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
-	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
-	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
-	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
-	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
-	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
-	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
-	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::I6::begin_function);
-	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
-	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
-	inform6_target = cgt;
+code_generation_target *c_target = NULL;
+void CodeGen::C::create_target(void) {
+	code_generation_target *cgt = CodeGen::Targets::new(I"c");
+	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, CodeGen::C::begin_generation);
+	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, CodeGen::C::general_segment);
+	METHOD_ADD(cgt, TL_SEGMENT_MTID, CodeGen::C::tl_segment);
+	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, CodeGen::C::default_segment);
+	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, CodeGen::C::basic_constant_segment);
+	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::C::constant_segment);
+	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::C::property_segment);
+	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::C::compile_primitive);
+	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::C::compile_dictionary_word);
+	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::C::compile_literal_text);
+	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::C::declare_property);
+	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::C::prepare_variable);
+	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::C::declare_variable);
+	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::C::declare_local_variable);
+	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::C::begin_constant);
+	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::C::end_constant);
+	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::C::begin_function);
+	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::C::end_function);
+	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::C::offer_pragma)
+	c_target = cgt;
 }
 
-code_generation_target *CodeGen::I6::target(void) {
+code_generation_target *CodeGen::C::target(void) {
 	return inform6_target;
 }
 
 @h Segmentation.
-The loss of |life| is so appalling that I6 will not even compile a story
-file which doesn't define the property number |life| (well, strictly
-speaking, it checks the presence of constants suggesting the I6 library
-first, but the template layer does define constants like that). We define
-it as a null constant to be sure of avoiding any valid property number; I6
-being typeless, that enables the veneer to compile again. (The relevant
-code is in |CA__Pr|, defined in the |veneer.c| section of I6.)
-
-|debug_flag| is traditionally called so, but is actually
-now a bitmap of flags for tracing actions, calls to object routines, and so on.
-
-@e pragmatic_matter_I7CGS from 0
-@e compiler_versioning_matter_I7CGS
-@e attributes_at_eof_I7CGS
-@e very_early_matter_I7CGS
-@e constants_1_I7CGS
-@e constants_2_I7CGS
-@e constants_3_I7CGS
-@e constants_4_I7CGS
-@e constants_5_I7CGS
-@e constants_6_I7CGS
-@e constants_7_I7CGS
-@e constants_8_I7CGS
-@e constants_9_I7CGS
-@e constants_10_I7CGS
-@e early_matter_I7CGS
-@e text_literals_code_I7CGS
-@e summations_at_eof_I7CGS
-@e arrays_at_eof_I7CGS
-@e globals_array_I7CGS
-@e main_matter_I7CGS
-@e routines_at_eof_I7CGS
-@e code_at_eof_I7CGS
-@e verbs_at_eof_I7CGS
-@e stubs_at_eof_I7CGS
 
 =
-int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
+int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
@@ -100,16 +65,16 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Constant Grammar__Version 2;\n");
-	WRITE("Global debug_flag;\n");
-	WRITE("Global reason_code = NULL;\n");
-	WRITE("Constant life = NULL;\n");
+	WRITE("#define Grammar__Version 2;\n");
+	WRITE("int debug_flag = 0;\n");
+	WRITE("int reason_code = NULL;\n");
+	WRITE("int life = NULL;\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
 }
 
-int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
+int CodeGen::C::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
 	switch (P->W.data[ID_IFLD]) {
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
@@ -127,37 +92,31 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 			return choice;
 		}
 	}
-	return CodeGen::I6::default_segment(cgt);
+	return CodeGen::C::default_segment(cgt);
 }
 
-int CodeGen::I6::default_segment(code_generation_target *cgt) {
+int CodeGen::C::default_segment(code_generation_target *cgt) {
 	return main_matter_I7CGS;
 }
-int CodeGen::I6::constant_segment(code_generation_target *cgt, code_generation *gen) {
+int CodeGen::C::constant_segment(code_generation_target *cgt, code_generation *gen) {
 	return early_matter_I7CGS;
 }
-int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
+int CodeGen::C::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
 	if (depth >= 10) depth = 10;
 	return constants_1_I7CGS + depth - 1;
 }
-int CodeGen::I6::property_segment(code_generation_target *cgt) {
+int CodeGen::C::property_segment(code_generation_target *cgt) {
 	return attributes_at_eof_I7CGS;
 }
-int CodeGen::I6::tl_segment(code_generation_target *cgt) {
+int CodeGen::C::tl_segment(code_generation_target *cgt) {
 	return text_literals_code_I7CGS;
 }
 
-void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen,
+void CodeGen::C::offer_pragma(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, text_stream *tag, text_stream *content) {
-	if (Str::eq(tag, I"target_I6")) {
-		generated_segment *saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE("!%% %S\n", content);
-		CodeGen::deselect(gen, saved);
-	}
 }
 
-int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation *gen,
+int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
@@ -451,7 +410,7 @@ then the result.
 @
 
 =
-void CodeGen::I6::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
+void CodeGen::C::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	int n = 0;
@@ -476,7 +435,7 @@ void CodeGen::I6::compile_dictionary_word(code_generation_target *cgt, code_gene
 @
 
 =
-void CodeGen::I6::compile_literal_text(code_generation_target *cgt, code_generation *gen,
+void CodeGen::C::compile_literal_text(code_generation_target *cgt, code_generation *gen,
 	text_stream *S, int printing_mode, int box_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\"");
@@ -537,7 +496,7 @@ property names which don't exist as constant symbols with the harmless value
 trick called "stubbing", these being "stub definitions".)
 
 =
-void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation *gen,
+void CodeGen::C::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
 	if (used) {
@@ -554,7 +513,7 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 @
 
 =
-int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *gen,
+int CodeGen::C::prepare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k) {
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
@@ -567,12 +526,12 @@ int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *
 	return k;
 }
 
-int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *gen,
+int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
 	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
 		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("Global %S = ", CodeGen::CL::name(var_name));
+		WRITE("int %S = ", CodeGen::CL::name(var_name));
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
@@ -595,27 +554,27 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 	return k;
 }
 
-void CodeGen::I6::declare_local_variable(code_generation_target *cgt, code_generation *gen,
+void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" %S", var_name->symbol_name);
 }
 
-void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
+void CodeGen::C::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Constant %S", const_name);
-	if (continues) WRITE(" = ");
+	WRITE("#define %S", const_name);
+	if (continues) WRITE(" ");
 }
-void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name) {
+void CodeGen::C::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 }
 
-void CodeGen::I6::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {
+void CodeGen::C::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("[ %S", fn_name);
+	WRITE("int %S(", fn_name);
 }
-void CodeGen::I6::end_function(code_generation_target *cgt, code_generation *gen) {
+void CodeGen::C::end_function(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("];");
+	WRITE("}\n");
 }

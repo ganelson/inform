@@ -162,7 +162,6 @@ package main _plain
 				val K_colour I_red
 	constant R_102 K_colour____colour = R_102_B
 	constant amount K_number = sum{ 2, C_taxes }
-	response R_101_A R_101 0 = C_taxes
 	package connectors _linkage
 		symbol socket misc C_majors --> /main/C_majors
 		symbol plug misc plug_00001 --? secret
