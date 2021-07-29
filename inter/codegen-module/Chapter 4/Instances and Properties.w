@@ -455,24 +455,30 @@ property usage is legal.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
+	CodeGen::Targets::begin_array(gen, I"KindHierarchy");
 	if (no_kos > 0) {
-		WRITE("Array KindHierarchy --> K0_kind (0)");
+		CodeGen::Targets::array_entry(gen, I"K0_kind");
+		CodeGen::Targets::array_entry(gen, I"0");
 		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
+				CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name));
 				if ((super_name) && (super_name != object_kind_symbol)) {
-					WRITE(" %S (%d)", CodeGen::CL::name(kind_name),
-						CodeGen::IP::kind_of_object_count(super_name));
+					TEMPORARY_TEXT(N);
+					WRITE_TO(N, "%d", CodeGen::IP::kind_of_object_count(super_name));
+					CodeGen::Targets::array_entry(gen, N);
+					DISCARD_TEXT(N);
 				} else {
-					WRITE(" %S (0)", CodeGen::CL::name(kind_name));
+					CodeGen::Targets::array_entry(gen, I"0");
 				}
 			}
 		}
-		WRITE(";\n");
 	} else {
-		WRITE("Array KindHierarchy --> (0) (0);\n");
+		CodeGen::Targets::array_entry(gen, I"0");
+		CodeGen::Targets::array_entry(gen, I"0");
 	}
+	CodeGen::Targets::end_array(gen);
 
 @h Lookup mechanism for properties of value instances.
 As noted above, if |K| is a kind which can have properties but is not a subkind

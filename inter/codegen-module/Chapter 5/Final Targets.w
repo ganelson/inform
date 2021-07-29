@@ -194,14 +194,39 @@ void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_nam
 @
 
 @e BEGIN_FUNCTION_MTID
+@e BEGIN_FUNCTION_CODE_MTID
 @e END_FUNCTION_MTID
 
 =
 VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *fn_name)
+VOID_METHOD_TYPE(BEGIN_FUNCTION_CODE_MTID, code_generation_target *cgt, code_generation *gen)
 VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen)
 void CodeGen::Targets::begin_function(code_generation *gen, text_stream *fn_name) {
 	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_MTID, gen, fn_name);
 }
+void CodeGen::Targets::begin_function_code(code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_CODE_MTID, gen);
+}
 void CodeGen::Targets::end_function(code_generation *gen) {
 	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, gen);
+}
+
+@
+
+@e BEGIN_ARRAY_MTID
+@e ARRAY_ENTRY_MTID
+@e END_ARRAY_MTID
+
+=
+VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name)
+VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *entry)
+VOID_METHOD_TYPE(END_ARRAY_MTID, code_generation_target *cgt, code_generation *gen)
+void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name) {
+	VOID_METHOD_CALL(gen->target, BEGIN_ARRAY_MTID, gen, const_name);
+}
+void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry) {
+	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry);
+}
+void CodeGen::Targets::end_array(code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen);
 }

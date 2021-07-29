@@ -3,6 +3,7 @@
 -cases [General] 'inter/Tests/General'
 -cases [Duplex] 'inter/Tests/Duplex'
 -cases [PipelineErrors] 'inter/Tests/PipelineErrors'
+-cases [Toy] 'inter/Tests/Toys'
 
 -recipe [Valid]
 
@@ -117,5 +118,42 @@
 
 	match platform text: $A $I
 	or: 'produced incorrect errors'
+
+-end
+
+-recipe [Toy]
+
+	set: $O = $PATH/$CASE.intert
+	set: $P = $PATH/_Pipelines/toy_i6.interpipeline
+	set: $A = $PATH/_I6_Results_Actual/$CASE.txt
+	set: $I = $PATH/_I6_Results_Ideal/$CASE.txt
+	set: $T = $PATH/_I6_Console/$CASE.txt
+	set: $PC = $PATH/_Pipelines/toy_c.interpipeline
+	set: $AC = $PATH/_C_Results_Actual/$CASE.txt
+	set: $IC = $PATH/_C_Results_Ideal/$CASE.txt
+	set: $TC = $PATH/_C_Console/$CASE.txt
+
+	mkdir: $PATH/_I6_Results_Actual
+	mkdir: $PATH/_I6_Results_Ideal
+	mkdir: $PATH/_I6_Console
+	mkdir: $PATH/_C_Results_Actual
+	mkdir: $PATH/_C_Results_Ideal
+	mkdir: $PATH/_C_Console
+
+	step: inter/Tangled/inter -architecture 16d -variable *in=$O -variable *out=$A -pipeline-file $P >$T 2>&1
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect I6 code'
+
+	step: inter/Tangled/inter -architecture 16d -variable *in=$O -variable *out=$AC -pipeline-file $PC >$TC 2>&1
+	or: 'failed to produce output' $T
+
+	show: $AC
+
+	match text: $AC $IC
+	or: 'produced incorrect C code'
 
 -end

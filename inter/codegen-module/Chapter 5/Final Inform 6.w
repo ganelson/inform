@@ -25,7 +25,11 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::I6::begin_function);
+	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::I6::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
+	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::I6::begin_array);
+	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
+	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
 	inform6_target = cgt;
 }
@@ -615,7 +619,26 @@ void CodeGen::I6::begin_function(code_generation_target *cgt, code_generation *g
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ %S", fn_name);
 }
+void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";");
+}
 void CodeGen::I6::end_function(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("];");
+}
+
+void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Array %S -->", array_name);
+}
+
+void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" (%S)", entry);
+}
+
+void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";\n");
 }

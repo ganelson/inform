@@ -22,6 +22,10 @@ Tests/General/_Console/
 Tests/Duplex/_Results_Actual/
 Tests/Duplex/_Console/
 Tests/Duplex/_Binaries/
+Tests/Toys/_C_Results_Actual/
+Tests/Toys/_C_Console/
+Tests/Toys/_I6_Results_Actual/
+Tests/Toys/_I6_Console/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/

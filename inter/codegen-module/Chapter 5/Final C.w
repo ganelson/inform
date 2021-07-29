@@ -25,7 +25,11 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::C::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::C::end_constant);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::C::begin_function);
+	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::C::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::C::end_function);
+	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::C::begin_array);
+	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::C::array_entry);
+	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::C::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::C::offer_pragma)
 	c_target = cgt;
 }
@@ -65,10 +69,12 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#define Grammar__Version 2;\n");
-	WRITE("int debug_flag = 0;\n");
-	WRITE("int reason_code = NULL;\n");
-	WRITE("int life = NULL;\n");
+	WRITE("typedef i7val int;\n");
+	WRITE("#include <stdio.h>\n");
+	WRITE("#define Grammar__Version 2\n");
+	WRITE("i7val debug_flag = 0;\n");
+	WRITE("i7val reason_code = NULL;\n");
+	WRITE("i7val life = NULL;\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -531,7 +537,7 @@ int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *g
 	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
 		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("int %S = ", CodeGen::CL::name(var_name));
+		WRITE("i7val %S = ", CodeGen::CL::name(var_name));
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
@@ -554,12 +560,6 @@ int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *g
 	return k;
 }
 
-void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" %S", var_name->symbol_name);
-}
-
 void CodeGen::C::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S", const_name);
@@ -570,11 +570,45 @@ void CodeGen::C::end_constant(code_generation_target *cgt, code_generation *gen,
 	WRITE(";\n");
 }
 
+int C_fn_parameter_count = 0;
+
 void CodeGen::C::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("int %S(", fn_name);
+	WRITE("i7val %S(", fn_name); C_fn_parameter_count = 0;
 }
+
+void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (C_fn_parameter_count == 0) WRITE("void");
+	WRITE(") {");
+}
+
 void CodeGen::C::end_function(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("}\n");
+	WRITE("\n}\n");
+}
+
+void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,
+	inter_tree_node *P, inter_symbol *var_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (C_fn_parameter_count++ > 0) WRITE(", ");
+	WRITE("i7val %S", var_name->symbol_name);
+}
+
+int C_array_entry_count = 0;
+
+void CodeGen::C::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name) {
+	text_stream *OUT = CodeGen::current(gen); C_array_entry_count = 0;
+	WRITE("i7val %S[] = { ", array_name);
+}
+
+void CodeGen::C::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (C_array_entry_count++ > 0) WRITE(", ");
+	WRITE("%S", entry);
+}
+
+void CodeGen::C::end_array(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" };\n");
 }

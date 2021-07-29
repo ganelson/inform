@@ -135,7 +135,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	if (PAR == NULL) internal_error("misplaced code node");
 	if (PAR->W.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
-	if (function_code_block) { WRITE(";\n"); INDENT; }
+	if (function_code_block) { CodeGen::Targets::begin_function_code(gen); WRITE("\n"); INDENT; }
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
