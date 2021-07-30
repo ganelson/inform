@@ -1182,7 +1182,7 @@ returning the ZSCII character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
 into the buffer |b|, then parses it into a word stream in the table |t|.
 
-There are elaborations to due with mouse clicks, but this isn't the place
+There are elaborations to do with mouse clicks, but this isn't the place
 to document all of that.
 
 =

@@ -642,6 +642,12 @@ instance *Spatial::progenitor(instance *I) {
 	return SPATIAL_DATA(I)->progenitor;
 }
 
+parse_node *Spatial::progenitor_set_at(instance *I) {
+	if (I == NULL) return NULL;
+	if (PluginManager::active(spatial_plugin) == FALSE) return NULL;
+	return SPATIAL_DATA(I)->progenitor_set_at;
+}
+
 void Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
 	if (PluginManager::active(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");

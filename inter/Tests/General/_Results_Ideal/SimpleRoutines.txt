@@ -1,7 +1,5 @@
 Constant Grammar__Version 2;
 Global debug_flag;
-Global reason_code = NULL;
-Constant life = NULL;
 Array KindHierarchy --> (0) (0);
 [ Falsity;
     return false;];

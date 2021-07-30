@@ -1,5 +1,7 @@
 Constant Grammar__Version 2;
 Global debug_flag;
-Constant I_green = 1;
-Constant I_red = 17;
 Array KindHierarchy --> (0) (0);
+[ Main;
+    print "Hello, world.^";
+    quit;
+];

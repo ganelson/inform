@@ -135,6 +135,13 @@ int Regions::new_subject_notify(inference_subject *subj) {
 	return FALSE;
 }
 
+@ =
+parse_node *Regions::in_region_set_at(instance *I) {
+	if (I == NULL) return NULL;
+	if (PluginManager::active(regions_plugin) == FALSE) return NULL;
+	return REGIONS_DATA(I)->in_region_set_at;
+}
+
 @ This is a property name to do with regions which Inform provides special
 support for; it recognises the English name when it is defined by the
 Standard Rules. (So there is no need to translate this to other languages.)

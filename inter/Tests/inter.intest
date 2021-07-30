@@ -124,26 +124,42 @@
 -recipe [Toy]
 
 	set: $O = $PATH/$CASE.intert
+
 	set: $P = $PATH/_Pipelines/toy_i6.interpipeline
 	set: $A = $PATH/_I6_Results_Actual/$CASE.txt
 	set: $I = $PATH/_I6_Results_Ideal/$CASE.txt
 	set: $T = $PATH/_I6_Console/$CASE.txt
+	set: $CT = $PATH/_I6_Console/compile-$CASE.txt
+	set: $X = $PATH/_I6_Object_Code/$CASE
+	set: $AO = $PATH/_I6_Output_Actual/$CASE.txt
+	set: $AI = $PATH/_I6_Output_Ideal/$CASE.txt
+
 	set: $PC = $PATH/_Pipelines/toy_c.interpipeline
-	set: $AC = $PATH/_C_Results_Actual/$CASE.txt
-	set: $IC = $PATH/_C_Results_Ideal/$CASE.txt
+	set: $AC = $PATH/_C_Results_Actual/$CASE.c
+	set: $IC = $PATH/_C_Results_Ideal/$CASE.c
 	set: $TC = $PATH/_C_Console/$CASE.txt
+	set: $OC = $PATH/_C_Object_Code/$CASE.o
+	set: $CTC = $PATH/_C_Console/compile-$CASE.txt
+	set: $LTC = $PATH/_C_Console/link-$CASE.txt
+	set: $XC = $PATH/_C_Object_Code/$CASE
+	set: $AOC = $PATH/_C_Output_Actual/$CASE.txt
+	set: $AIC = $PATH/_C_Output_Ideal/$CASE.txt
 
 	mkdir: $PATH/_I6_Results_Actual
 	mkdir: $PATH/_I6_Results_Ideal
 	mkdir: $PATH/_I6_Console
+	mkdir: $PATH/_I6_Object_Code
+	mkdir: $PATH/_I6_Output_Actual
+	mkdir: $PATH/_I6_Output_Ideal
 	mkdir: $PATH/_C_Results_Actual
 	mkdir: $PATH/_C_Results_Ideal
 	mkdir: $PATH/_C_Console
+	mkdir: $PATH/_C_Object_Code
+	mkdir: $PATH/_C_Output_Actual
+	mkdir: $PATH/_C_Output_Ideal
 
 	step: inter/Tangled/inter -architecture 16d -variable *in=$O -variable *out=$A -pipeline-file $P >$T 2>&1
 	or: 'failed to produce output' $T
-
-	show: $A
 
 	match text: $A $I
 	or: 'produced incorrect I6 code'
@@ -151,9 +167,40 @@
 	step: inter/Tangled/inter -architecture 16d -variable *in=$O -variable *out=$AC -pipeline-file $PC >$TC 2>&1
 	or: 'failed to produce output' $T
 
-	show: $AC
-
 	match text: $AC $IC
 	or: 'produced incorrect C code'
+
+	step: clang -std=c99 -c -o $OC $AC >$CTC 2>&1
+	or: 'failed to compile C' $CTC
+
+	step: clang -g -o $XC $OC >$LTC 2>&1
+	or: 'failed to link C' $LTC
+	
+	step: $XC >$AOC 2>&1
+	or: 'failed to run C program' $AOC
+
+	match text: $AOC $AIC
+	or: 'C program misbehaved'
+	
+	show: $AOC
+
+	set: $I6 = inform6/Tangled/inform6
+	set: $I6OPTIONS		= -E2SDwv8x
+
+	step: $I6 `$I6OPTIONS $A $X >$CT 2>&1
+	or: 'failed to pass through Inform 6' $CT
+
+	set: $INT			= inform6/Tests/Assistants/dumb-frotz/dumb-frotz
+	set: $INTNAME		= dumb-frotz
+	set: $INTOPTIONS	= -w 1000
+
+	step: $INT `$INTOPTIONS $X </dev/null >$AO 2>&1
+	or: 'unable to run $INTNAME (do you need to make interpreters?)'
+
+	match text: $AO $AI
+	or: 'I6 program misbehaved'
+
+	match text: $AO $AOC
+	or: 'I6 and C programs disagreed'
 
 -end

@@ -3,13 +3,16 @@ packagetype _code
 packagetype _linkage
 
 primitive !print val -> void
+primitive !quit void -> void
 
 package main _plain
 	package resources _plain
 		kind K_unchecked unchecked
 		kind K_unchecked_function function K_unchecked -> K_unchecked
-		package main_fn _code
+		package Main_B _code
 			symbol external misc K_unchecked
 			code
 				inv !print
 					val K_unchecked "Hello, world.\n"
+				inv !quit
+		constant Main K_unchecked_function = Main_B

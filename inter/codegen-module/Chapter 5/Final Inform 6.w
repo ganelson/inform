@@ -106,8 +106,6 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
-	WRITE("Global reason_code = NULL;\n");
-	WRITE("Constant life = NULL;\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;

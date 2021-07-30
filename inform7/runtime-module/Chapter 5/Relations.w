@@ -174,11 +174,11 @@ void RTRelations::compile(void) {
 					desc, bp->bp_created_at);
 			}
 		}
-		if (bp->right_way_round) {
-			text_stream *desc = Str::new();
-			WRITE_TO(desc, "relation metadata for %A",  &(bp->relation_name));
+		if ((bp->compilation_data.record_needed) || (bp->right_way_round)) {
+			text_stream *mdesc = Str::new();
+			WRITE_TO(mdesc, "relation metadata for %A",  &(bp->relation_name));
 			Sequence::queue_at(&RTRelations::metadata_agent,
-				STORE_POINTER_binary_predicate(bp), desc, bp->bp_created_at);
+				STORE_POINTER_binary_predicate(bp), mdesc, bp->bp_created_at);
 		}
 	}
 }

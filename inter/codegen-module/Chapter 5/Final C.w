@@ -69,12 +69,15 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("typedef i7val int;\n");
+	WRITE("typedef int i7val;\n");
 	WRITE("#include <stdio.h>\n");
 	WRITE("#define Grammar__Version 2\n");
 	WRITE("i7val debug_flag = 0;\n");
-	WRITE("i7val reason_code = NULL;\n");
-	WRITE("i7val life = NULL;\n");
+	CodeGen::deselect(gen, saved);
+	
+	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("int main(int argc, char **argv) { Main(); return 0; }\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -178,7 +181,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
 		case JUMP_BIP: 			WRITE("jump "); INV_A1; break;
-		case QUIT_BIP: 			WRITE("quit"); break;
+		case QUIT_BIP: 			WRITE("exit(0)"); break;
 		case RESTORE_BIP: 		WRITE("restore "); INV_A1; break;
 
 		case INDIRECT0_BIP: case INDIRECT0V_BIP:
@@ -234,7 +237,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case SEQUENTIAL_BIP: WRITE("("); INV_A1; WRITE(","); INV_A2; WRITE(")"); break;
 		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
-		case PRINT_BIP: WRITE("print "); INV_A1_PRINTMODE; break;
+		case PRINT_BIP: WRITE("printf(\"%%s\", "); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTRET_BIP: INV_A1_PRINTMODE; break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
 		case PRINTNAME_BIP: WRITE("print (name) "); INV_A1; break;
@@ -445,49 +448,26 @@ void CodeGen::C::compile_literal_text(code_generation_target *cgt, code_generati
 	text_stream *S, int printing_mode, int box_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\"");
-	int esc_char = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
 		if (box_mode) {
 			switch(c) {
-				case '@': WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^': WRITE("@{5E}"); break;
-				case '~': WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
+				case '"': WRITE("\\\""); break;
+				case '\\': WRITE("\\\\"); break;
 				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\"\n\""); break;
+				case '\n': WRITE("\\n\"\n\""); break;
 				case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
 				default: PUT(c);
 			}
 		} else {
 			switch(c) {
-				case '@':
-					if (printing_mode) {
-						WRITE("@@64"); esc_char = TRUE; continue;
-					}
-					WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^':
-					if (printing_mode) {
-						WRITE("@@94"); esc_char = TRUE; continue;
-					}
-					WRITE("@{5E}"); break;
-				case '~':
-					if (printing_mode) {
-						WRITE("@@126"); esc_char = TRUE; continue;
-					}
-					WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
+				case '"': WRITE("\\\""); break;
+				case '\\': WRITE("\\\\"); break;
 				case '\t': WRITE(" "); break;
-				case '\n': WRITE("^"); break;
-				case NEWLINE_IN_STRING: WRITE("^"); break;
-				default: {
-					if (esc_char) WRITE("@{%02x}", c);
-					else PUT(c);
-				}
+				case '\n': WRITE("\\n"); break;
+				case NEWLINE_IN_STRING: WRITE("\\n"); break;
+				default: PUT(c); break;
 			}
-			esc_char = FALSE;
 		}
 	}
 	WRITE("\"");

@@ -115,10 +115,11 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	parse_node *C = Instances::get_kind_set_sentence(I);
 	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_KIND_SET_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(C)));
-	C = SPATIAL_DATA(I)->progenitor_set_at;
+	
+	C = Spatial::progenitor_set_at(I);
 	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_PROGENITOR_SET_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(C)));
-	C = REGIONS_DATA(I)->in_region_set_at;
+	C = Regions::in_region_set_at(I);
 	if (C) Hierarchy::apply_metadata_from_number(pack, INSTANCE_REGION_SET_AT_MD_HL,
 		(inter_ti) Wordings::first_wn(Node::get_text(C)));
 
@@ -196,11 +197,13 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
 
 	RTInstances::xref_metadata(I, INSTANCE_REGION_ENCLOSING_MD_HL, Regions::enclosing(I));
-	RTInstances::xref_metadata(I, INSTANCE_SIBLING_MD_HL, SPATIAL_DATA(I)->object_tree_sibling);
-	RTInstances::xref_metadata(I, INSTANCE_CHILD_MD_HL, SPATIAL_DATA(I)->object_tree_child);
-	RTInstances::xref_metadata(I, INSTANCE_PROGENITOR_MD_HL, Spatial::progenitor(I));
-	RTInstances::xref_metadata(I, INSTANCE_INCORP_SIBLING_MD_HL, SPATIAL_DATA(I)->incorp_tree_sibling);
-	RTInstances::xref_metadata(I, INSTANCE_INCORP_CHILD_MD_HL, SPATIAL_DATA(I)->incorp_tree_child);
+	if (PluginManager::active(spatial_plugin)) {
+		RTInstances::xref_metadata(I, INSTANCE_SIBLING_MD_HL, SPATIAL_DATA(I)->object_tree_sibling);
+		RTInstances::xref_metadata(I, INSTANCE_CHILD_MD_HL, SPATIAL_DATA(I)->object_tree_child);
+		RTInstances::xref_metadata(I, INSTANCE_PROGENITOR_MD_HL, Spatial::progenitor(I));
+		RTInstances::xref_metadata(I, INSTANCE_INCORP_SIBLING_MD_HL, SPATIAL_DATA(I)->incorp_tree_sibling);
+		RTInstances::xref_metadata(I, INSTANCE_INCORP_CHILD_MD_HL, SPATIAL_DATA(I)->incorp_tree_child);
+	}
 
 	if (Spatial::object_is_a_room(I)) {
 		packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_MAP_MD_HL, pack), K_value);
@@ -248,8 +251,10 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	}
 	RTInferences::index(pack, INSTANCE_BRIEF_INFERENCES_MD_HL, Instances::as_subject(I), TRUE);
 	RTInferences::index_specific(pack, INSTANCE_SPECIFIC_INFERENCES_MD_HL, Instances::as_subject(I));
-	if (SPATIAL_DATA(I)->part_flag)
-		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
+	if (PluginManager::active(spatial_plugin)) {
+		if (SPATIAL_DATA(I)->part_flag)
+			Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
+	}
 	if (I == I_yourself)
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_YOURSELF_MD_HL, 1);
 	if (I == Spatial::get_benchmark_room())

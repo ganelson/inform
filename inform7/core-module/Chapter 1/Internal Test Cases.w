@@ -116,7 +116,8 @@ int InternalTests::run(int stage) {
 	linked_list *L = NEW_LINKED_LIST(internal_test_case);
 	internal_test_case *itc;
 	LOOP_OVER(itc, internal_test_case)
-		if (itc->which_method->at_stage == stage)
+		if (((itc->which_method == NULL) && (stage == 1)) ||
+			((itc->which_method != NULL) && ((itc->which_method->at_stage == stage))))
 			ADD_TO_LINKED_LIST(itc, internal_test_case, L);
 		
 	if (LinkedLists::len(L) == 0) return 0;

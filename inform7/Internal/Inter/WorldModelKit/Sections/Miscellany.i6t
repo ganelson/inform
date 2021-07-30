@@ -195,7 +195,7 @@ Global scope_token; ! for "scope=Routine" grammar tokens
 Global scope_error;
 Global scope_stage; ! 1, 2 then 3
 Global advance_warning; ! what a later-named thing will be
-! Global reason_code = NULL; ! for the I6 veneer
+Global reason_code = NULL; ! for the I6 veneer
 
 Global ats_flag = 0; ! for AddToScope routines
 Global ats_hls;

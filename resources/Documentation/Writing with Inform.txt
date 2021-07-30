@@ -16860,7 +16860,7 @@ Finally, we can:
 
 which releases a stand-alone XML file in 'iFiction' format for the bibliographic data on the story file; this is the same data embedded in the blorb file itself, but having an external copy makes it easier to see what Inform has done, and some external programs can read iFiction data like this.
 
-[x] Improving the index map {MAPHINTS} {PM_MapFromNonRoom} {PM_MapToNonRoom} {PM_MapNonLateral} {PM_MapUnknownColour} {PM_MapUnknownOffset} {PM_MapUnknownOffsetBase} {PM_MapBadRubric} {PM_MapLevelMisnamed} {PM_MapSettingOfUnknown} {PM_MapSettingUnknown} {PM_MapSettingTooLong} {PM_MapSettingTypeFailed} {PM_MapHintUnknown} {PM_MapDirectionClue} {PM_MapPlacement} {PM_MapPlacementDirection}
+[x] Improving the index map {MAPHINTS} {PM_MapFromNonRoom} {PM_MapToNonRoom} {PM_MapNonLateral} {PM_MapUnknownColour} {PM_MapUnknownOffset} {PM_MapUnknownOffsetBase} {PM_MapBadRubric} {PM_MapSettingOfUnknown} {PM_MapSettingUnknown} {PM_MapSettingTooLong} {PM_MapSettingTypeFailed} {PM_MapHintUnknown} {PM_MapDirectionClue} {PM_MapPlacement} {PM_MapPlacementDirection}
 
 ^^{materials folder: map}
 ^^{index map: customizing for release <-- `EPS file}
