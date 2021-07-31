@@ -17,6 +17,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
+	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CodeGen::I6::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
@@ -478,6 +479,16 @@ void CodeGen::I6::compile_dictionary_word(code_generation_target *cgt, code_gene
 @
 
 =
+void CodeGen::I6::compile_literal_number(code_generation_target *cgt,
+	code_generation *gen, inter_ti val, int hex_mode) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (hex_mode) WRITE("$%x", val);
+	else WRITE("%d", val);
+}
+
+@
+
+=
 void CodeGen::I6::compile_literal_text(code_generation_target *cgt, code_generation *gen,
 	text_stream *S, int printing_mode, int box_mode) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -626,17 +637,26 @@ void CodeGen::I6::end_function(code_generation_target *cgt, code_generation *gen
 	WRITE("];");
 }
 
-void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name) {
+void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Array %S -->", array_name);
+	WRITE("Array %S ", array_name);
+	switch (format) {
+		case WORD_ARRAY_FORMAT: WRITE("-->"); break;
+		case BYTE_ARRAY_FORMAT: WRITE("->"); break;
+		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
+		case STRING_ARRAY_FORMAT: WRITE("string \""); break;
+		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
+	}
 }
 
-void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry) {
+void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" (%S)", entry);
+	if (format == STRING_ARRAY_FORMAT) WRITE("%S", entry);
+	else WRITE(" (%S)", entry);
 }
 
-void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen) {
+void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen, int format) {
 	text_stream *OUT = CodeGen::current(gen);
+	if (format == STRING_ARRAY_FORMAT) WRITE("\"");
 	WRITE(";\n");
 }

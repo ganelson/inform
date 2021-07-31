@@ -78,7 +78,8 @@ void RTTestCommand::compilation_agent(compilation_subtask *t) {
 	TranscodeText::from_stream(tttext, test->text_of_script,
 		CT_EXPAND_APOSTROPHES + CT_RECOGNISE_APOSTROPHE_SUBSTITUTION);
 	WRITE_TO(tttext, "||||");
-	EmitArrays::text_entry(tttext);
+	LOOP_THROUGH_TEXT(pos, tttext)
+		EmitArrays::numeric_entry((inter_ti) Str::get(pos));
 	DISCARD_TEXT(tttext)
 	EmitArrays::end(save);
 

@@ -97,9 +97,19 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_ti ID = P->W.data[DATA_CONST_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		WRITE("Array UUID_ARRAY string \"UUID://");
-		for (int i=0, L=Str::len(S); i<L; i++) WRITE("%c", Characters::toupper(Str::get_at(S, i)));
-		WRITE("//\";\n");
+		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", STRING_ARRAY_FORMAT);
+		TEMPORARY_TEXT(content)
+		WRITE_TO(content, "UUID://");
+		for (int i=0, L=Str::len(S); i<L; i++) WRITE_TO(content, "%c", Characters::toupper(Str::get_at(S, i)));
+		WRITE_TO(content, "//");
+		LOOP_THROUGH_TEXT(pos, content) {
+			TEMPORARY_TEXT(ch)
+			WRITE_TO(ch, "%c", Str::get(pos));
+			CodeGen::Targets::array_entry(gen, ch, STRING_ARRAY_FORMAT);
+			DISCARD_TEXT(ch)
+		}
+		DISCARD_TEXT(content)
+		CodeGen::Targets::end_array(gen, STRING_ARRAY_FORMAT);
 		return;
 	}
 
@@ -121,31 +131,43 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			break;
 		}
 		case CONSTANT_INDIRECT_LIST: {
-			char *format = "-->";
-			int do_not_bracket = FALSE, unsub = FALSE, extra_zero = FALSE;
+			int format = WORD_ARRAY_FORMAT, hang_one = FALSE;
+			int do_not_bracket = FALSE, unsub = FALSE;
 			int X = (P->W.extent - DATA_CONST_IFLD)/2;
 			if (X == 1) do_not_bracket = TRUE;
-			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = "->";
+			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;
 			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) {
-				format = "table";
-				if (P->W.extent - DATA_CONST_IFLD == 2) format = "--> 1";
+				format = TABLE_ARRAY_FORMAT;
+				if (P->W.extent - DATA_CONST_IFLD == 2) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }
 			}
-			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = "buffer";
-			if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) { format = "string"; do_not_bracket = TRUE; }
+			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = BUFFER_ARRAY_FORMAT;
+			if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) { format = STRING_ARRAY_FORMAT; do_not_bracket = TRUE; }
 			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) {
 				WRITE("Verb "); do_not_bracket = TRUE; unsub = TRUE;
 				if (Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1) WRITE("meta ");
+				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+					WRITE(" ");
+					CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
+				}
+				WRITE(";");
 			} else {
-				WRITE("Array %S %s", CodeGen::CL::name(con_name), format);
+				CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), format);
+				if (hang_one) CodeGen::Targets::array_entry(gen, I"1", format);
+				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+					if (P->W.data[i] != DIVIDER_IVAL) {
+						TEMPORARY_TEXT(entry)
+						CodeGen::select_temporary(gen, entry);
+	//					if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE("(");
+						CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
+	//					if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE(")");
+						CodeGen::deselect_temporary(gen);
+						CodeGen::Targets::array_entry(gen, entry, format);
+						DISCARD_TEXT(entry)
+					}
+				}
+				CodeGen::Targets::end_array(gen, format);
 			}
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				WRITE(" ");
-				if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE("(");
-				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
-				if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE(")");
-			}
-			if (extra_zero) WRITE(" 0");
-			WRITE(";\n");
+			WRITE("\n");
 			break;
 		}
 		case CONSTANT_SUM_LIST:
@@ -302,10 +324,8 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		int hex = FALSE;
-		if (con_name)
-			if (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN)) hex = TRUE;
-		if (hex) WRITE("$%x", val2);
-		else WRITE("%d", val2);
+		if ((con_name) && (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN))) hex = TRUE;
+		CodeGen::Targets::compile_literal_number(gen, val2, hex);
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");

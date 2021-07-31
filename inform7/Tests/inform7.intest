@@ -89,8 +89,8 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -crash-all
-		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE >$A 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
+		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
 		exists: $I
@@ -103,8 +103,8 @@
 	! And then the general case.
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -crash-all
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE >$I7CONSOLE 2>&1
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable -pipeline $PIPELINE -crash-all
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
 

@@ -1,4 +1,5 @@
 typedef int i7val;
+typedef char i7byte;
 #include <stdio.h>
 #define Grammar__Version 2
 i7val debug_flag = 0;

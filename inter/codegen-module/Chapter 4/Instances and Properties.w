@@ -455,30 +455,30 @@ property usage is legal.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
-	CodeGen::Targets::begin_array(gen, I"KindHierarchy");
+	CodeGen::Targets::begin_array(gen, I"KindHierarchy", WORD_ARRAY_FORMAT);
 	if (no_kos > 0) {
-		CodeGen::Targets::array_entry(gen, I"K0_kind");
-		CodeGen::Targets::array_entry(gen, I"0");
+		CodeGen::Targets::array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
-				CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name));
+				CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 				if ((super_name) && (super_name != object_kind_symbol)) {
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%d", CodeGen::IP::kind_of_object_count(super_name));
-					CodeGen::Targets::array_entry(gen, N);
+					CodeGen::Targets::array_entry(gen, N, WORD_ARRAY_FORMAT);
 					DISCARD_TEXT(N);
 				} else {
-					CodeGen::Targets::array_entry(gen, I"0");
+					CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 				}
 			}
 		}
 	} else {
-		CodeGen::Targets::array_entry(gen, I"0");
-		CodeGen::Targets::array_entry(gen, I"0");
+		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	CodeGen::Targets::end_array(gen);
+	CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
 
 @h Lookup mechanism for properties of value instances.
 As noted above, if |K| is a kind which can have properties but is not a subkind
@@ -575,7 +575,8 @@ words, the number of instances of this kind.
 doesn't have a VPH, or the object number of its VPH if it has.
 
 @<Write the VPH lookup array@> =
-	WRITE("Array value_property_holders --> 0");
+	CodeGen::Targets::begin_array(gen, I"value_property_holders", WORD_ARRAY_FORMAT);
+	CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	int vph = 0;
 	for (int w=1; w<M; w++) {
 		int written = FALSE;
@@ -584,13 +585,16 @@ doesn't have a VPH, or the object number of its VPH if it has.
 			if (CodeGen::IP::weak_id(kind_name) == w) {
 				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 					written = TRUE;
-					WRITE(" VPH_%d", w);
+					TEMPORARY_TEXT(vph)
+					WRITE_TO(vph, "VPH_%d", w);
+					CodeGen::Targets::array_entry(gen, vph, WORD_ARRAY_FORMAT);
+					DISCARD_TEXT(vph)
 				}
 			}
 		}
-		if (written) vph++; else WRITE(" 0");
+		if (written) vph++; else CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	WRITE(";\n");
+	CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
 	@<Stub a faux VPH if none have otherwise been created@>;
 
 @ In the event that no value instances have properties, there'll be no
@@ -727,7 +731,7 @@ though this won't happen for any property created by I7 source text.
 		WRITE_TO(pm_writer, "for (i=0: i<valued_property_offsets_SIZE: i++)"); STREAM_INDENT(pm_writer);
 		WRITE_TO(pm_writer, "valued_property_offsets-->i = -1;\n"); STREAM_OUTDENT(pm_writer);
 
-		WRITE("Array property_metadata -->\n"); INDENT;
+		CodeGen::Targets::begin_array(gen, I"property_metadata", WORD_ARRAY_FORMAT);
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
@@ -740,9 +744,10 @@ though this won't happen for any property created by I7 source text.
 
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
-			WRITE("NULL\n"); pos++;
+			CodeGen::Targets::array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+			pos++;
 		}
-		OUTDENT; WRITE(";\n");
+		CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
 		STREAM_OUTDENT(pm_writer);
 		WRITE_TO(pm_writer, "];\n");
 		WRITE("%S", pm_writer);
@@ -750,11 +755,14 @@ though this won't happen for any property created by I7 source text.
 	}
 
 @<Write the property name in double quotes@> =
+	TEMPORARY_TEXT(OUT)
 	WRITE("\"");
 	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
 	if (N <= 0) WRITE("<nameless>");
 	else WRITE("%S", Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N));
-	WRITE("\" ");
+	WRITE("\"");
+	CodeGen::Targets::array_entry(gen, OUT, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(OUT)
 	pos++;
 
 @ A complete list here would be wasteful both of space and run-time
@@ -777,7 +785,8 @@ linearly with the size of the source text, even though $N$ does.
 		inter_symbol *eprop_name = props_in_source_order[e];
 		if (Str::eq(CodeGen::CL::name(eprop_name), CodeGen::CL::name(prop_name))) {
 			inter_node_list *EVL =
-				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Property::permissions_list(eprop_name));
+				Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+					Inter::Property::permissions_list(eprop_name));
 
 			@<List any O with an explicit permission@>;
 			@<List all top-level kinds if "object" itself has an explicit permission@>;
@@ -790,9 +799,10 @@ linearly with the size of the source text, even though $N$ does.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_name =
+					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
-					WRITE("%S ", CodeGen::CL::name(kind_name));
+					CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -803,9 +813,10 @@ linearly with the size of the source text, even though $N$ does.
 		if (CodeGen::IP::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_name =
+					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
-					WRITE("%S ", CodeGen::CL::name(inst_name));
+					CodeGen::Targets::array_entry(gen, CodeGen::CL::name(inst_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -816,13 +827,15 @@ linearly with the size of the source text, even though $N$ does.
 	if (Inter::Symbols::read_annotation(eprop_name, RTO_IANN) < 0) {
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-			inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+			inter_symbol *owner_name =
+				InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
-				WRITE("K0_kind "); pos++;
+				CodeGen::Targets::array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+				pos++;
 				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						WRITE("%S ", CodeGen::CL::name(kind_name));
+						CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 						pos++;
 					}
 				}

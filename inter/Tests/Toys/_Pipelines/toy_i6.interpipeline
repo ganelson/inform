@@ -2,4 +2,5 @@ read <- *in
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
+resolve-external-symbols
 generate inform6 -> *out

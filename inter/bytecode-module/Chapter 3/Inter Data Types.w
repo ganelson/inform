@@ -76,6 +76,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
 				return NULL;
 			}
+			WRITE_TO(STDERR, "ks %S\n", kind_symbol->symbol_name);
 			return Inode::error(P, I"unknown kind for value", NULL);
 		}
 		case ALIAS_IVAL: {

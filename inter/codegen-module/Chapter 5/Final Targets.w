@@ -124,6 +124,16 @@ void CodeGen::Targets::compile_dictionary_word(code_generation *gen, text_stream
 
 @
 
+@e COMPILE_LITERAL_NUMBER_MTID
+
+=
+VOID_METHOD_TYPE(COMPILE_LITERAL_NUMBER_MTID, code_generation_target *cgt, code_generation *gen, inter_ti val, int hex_mode)
+void CodeGen::Targets::compile_literal_number(code_generation *gen, inter_ti val, int hex_mode) {
+	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_NUMBER_MTID, gen, val, hex_mode);
+}
+
+@
+
 @e COMPILE_LITERAL_TEXT_MTID
 
 =
@@ -217,16 +227,22 @@ void CodeGen::Targets::end_function(code_generation *gen) {
 @e ARRAY_ENTRY_MTID
 @e END_ARRAY_MTID
 
+@d WORD_ARRAY_FORMAT 1
+@d BYTE_ARRAY_FORMAT 2
+@d TABLE_ARRAY_FORMAT 3
+@d STRING_ARRAY_FORMAT 4
+@d BUFFER_ARRAY_FORMAT 5
+
 =
-VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name)
-VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *entry)
-VOID_METHOD_TYPE(END_ARRAY_MTID, code_generation_target *cgt, code_generation *gen)
-void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name) {
-	VOID_METHOD_CALL(gen->target, BEGIN_ARRAY_MTID, gen, const_name);
+VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int format)
+VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *entry, int format)
+VOID_METHOD_TYPE(END_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, int format)
+void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name, int format) {
+	VOID_METHOD_CALL(gen->target, BEGIN_ARRAY_MTID, gen, const_name, format);
 }
-void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry) {
-	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry);
+void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry, int format) {
+	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry, format);
 }
-void CodeGen::Targets::end_array(code_generation *gen) {
-	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen);
+void CodeGen::Targets::end_array(code_generation *gen, int format) {
+	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen, format);
 }
