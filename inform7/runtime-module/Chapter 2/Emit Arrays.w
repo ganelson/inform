@@ -46,13 +46,6 @@ packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
 	return save;
 }
 
-packaging_state EmitArrays::begin_string(inter_name *name, kind *K) {
-	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
-	Produce::annotate_iname_i(name, STRINGARRAY_IANN, 1);
-	return save;
-}
-
 packaging_state EmitArrays::begin_late_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);

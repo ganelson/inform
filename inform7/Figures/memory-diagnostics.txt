@@ -1,6 +1,6 @@
-Total memory consumption was 385660K = 377 MB
+Total memory consumption was 385659K = 377 MB
 
-61.4% was used for 1995481 objects, in 371105 frames in 296 x 800K = 236800K = 231 MB:
+61.4% was used for 1995480 objects, in 371104 frames in 296 x 800K = 236800K = 231 MB:
 
     10.5%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.3%  text_stream_array                        5128 x 100 = 512800 objects, 28880896 bytes
@@ -153,7 +153,7 @@ Total memory consumption was 385660K = 377 MB
      ----  plugin                                   25 objects, 1600 bytes
      ----  cached_kind_declaration                  39 objects, 1560 bytes
      ----  noun_filter_token                        22 objects, 1408 bytes
-     ----  inter_annotation_form                    35 objects, 1400 bytes
+     ----  inter_annotation_form                    34 objects, 1360 bytes
      ----  inter_tree_location_list                 34 objects, 1360 bytes
      ----  special_meaning_holder                   33 objects, 1320 bytes
      ----  build_script                             41 objects, 1312 bytes
@@ -236,7 +236,7 @@ Total memory consumption was 385660K = 377 MB
 
 38.5% was used for memory not allocated for objects:
 
-    19.3%  text stream storage                      76585388 bytes in 530481 claims
+    19.3%  text stream storage                      76585088 bytes in 530478 claims
      4.5%  dictionary storage                       18153984 bytes in 33230 claims
      ----  sorting                                  744 bytes in 3 claims
      1.8%  source text                              7200000 bytes in 3 claims
@@ -254,5 +254,5 @@ Total memory consumption was 385660K = 377 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    161920 bytes in 2064 claims
 
-18.9% was overhead - 74942648 bytes = 73186K = 71 MB
+18.9% was overhead - 74942688 bytes = 73186K = 71 MB
 

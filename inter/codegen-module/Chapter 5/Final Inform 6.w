@@ -122,7 +122,6 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = code_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) choice = verbs_at_eof_I7CGS;
@@ -644,19 +643,16 @@ void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen,
 		case WORD_ARRAY_FORMAT: WRITE("-->"); break;
 		case BYTE_ARRAY_FORMAT: WRITE("->"); break;
 		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
-		case STRING_ARRAY_FORMAT: WRITE("string \""); break;
 		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
 	}
 }
 
 void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (format == STRING_ARRAY_FORMAT) WRITE("%S", entry);
-	else WRITE(" (%S)", entry);
+	WRITE(" (%S)", entry);
 }
 
 void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (format == STRING_ARRAY_FORMAT) WRITE("\"");
 	WRITE(";\n");
 }

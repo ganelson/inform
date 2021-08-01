@@ -97,19 +97,23 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_ti ID = P->W.data[DATA_CONST_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", STRING_ARRAY_FORMAT);
+		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", BYTE_ARRAY_FORMAT);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE_TO(content, "%c", Characters::toupper(Str::get_at(S, i)));
 		WRITE_TO(content, "//");
+		TEMPORARY_TEXT(length)
+		WRITE_TO(length, "%d", (int) Str::len(content));
+		CodeGen::Targets::array_entry(gen, length, BYTE_ARRAY_FORMAT);
+		DISCARD_TEXT(length)
 		LOOP_THROUGH_TEXT(pos, content) {
 			TEMPORARY_TEXT(ch)
-			WRITE_TO(ch, "%c", Str::get(pos));
-			CodeGen::Targets::array_entry(gen, ch, STRING_ARRAY_FORMAT);
+			WRITE_TO(ch, "'%c'", Str::get(pos));
+			CodeGen::Targets::array_entry(gen, ch, BYTE_ARRAY_FORMAT);
 			DISCARD_TEXT(ch)
 		}
 		DISCARD_TEXT(content)
-		CodeGen::Targets::end_array(gen, STRING_ARRAY_FORMAT);
+		CodeGen::Targets::end_array(gen, BYTE_ARRAY_FORMAT);
 		return;
 	}
 
@@ -140,8 +144,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				format = TABLE_ARRAY_FORMAT;
 				if (P->W.extent - DATA_CONST_IFLD == 2) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }
 			}
-			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = BUFFER_ARRAY_FORMAT;
-			if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) { format = STRING_ARRAY_FORMAT; do_not_bracket = TRUE; }
+			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
+				format = BUFFER_ARRAY_FORMAT;
 			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) {
 				WRITE("Verb "); do_not_bracket = TRUE; unsub = TRUE;
 				if (Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1) WRITE("meta ");

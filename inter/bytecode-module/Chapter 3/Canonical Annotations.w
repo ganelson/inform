@@ -33,7 +33,6 @@ Defining the one true set of Inter annotation codes.
 @e RTO_IANN
 @e SCOPE_FILTER_IANN
 @e SOURCE_ORDER_IANN
-@e STRINGARRAY_IANN
 @e TABLEARRAY_IANN
 @e VERBARRAY_IANN
 @e EXPLICIT_ATTRIBUTE_IANN
@@ -98,7 +97,6 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(RTO_IANN, I"__rto", FALSE);
 	Inter::Annotations::form(SCOPE_FILTER_IANN, I"__scope_filter", FALSE);
 	Inter::Annotations::form(SOURCE_ORDER_IANN, I"__source_order", FALSE);
-	Inter::Annotations::form(STRINGARRAY_IANN, I"__string_array", FALSE);
 	Inter::Annotations::form(TABLEARRAY_IANN, I"__table_array", FALSE);
 	Inter::Annotations::form(VERBARRAY_IANN, I"__verb", FALSE);
 	Inter::Annotations::form(EXPLICIT_ATTRIBUTE_IANN, I"__explicit_attribute", FALSE);

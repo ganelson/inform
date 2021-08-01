@@ -55,10 +55,11 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 @<Make an ownership record@> =
 	IFID_array_iname = Hierarchy::make_iname_with_memo(IFID_HL, P, W);
 	packaging_state save =
-		EmitArrays::begin_string(IFID_array_iname, K_value);
+		EmitArrays::begin_byte(IFID_array_iname, K_value);
 	TEMPORARY_TEXT(II)
 	WRITE_TO(II, "//%S//", exf->IFID_of_owner);
-	EmitArrays::text_entry(II);
+	LOOP_THROUGH_TEXT(pos, II)
+		EmitArrays::numeric_entry((inter_ti) Str::get(pos));
 	DISCARD_TEXT(II)
 	EmitArrays::end(save);
 

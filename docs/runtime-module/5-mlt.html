@@ -129,10 +129,11 @@ function togglePopup(material_id) {
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">IFID_array_iname</span><span class="plain-syntax"> = </span><a href="2-hrr.html#SP13" class="function-link"><span class="function-syntax">Hierarchy::make_iname_with_memo</span></a><span class="plain-syntax">(</span><span class="constant-syntax">IFID_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">        </span><a href="2-ea.html#SP2" class="function-link"><span class="function-syntax">EmitArrays::begin_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IFID_array_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ea.html#SP2" class="function-link"><span class="function-syntax">EmitArrays::begin_byte</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IFID_array_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">II</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">II</span><span class="plain-syntax">, </span><span class="string-syntax">"//%S</span><span class="comment-syntax">", exf-&gt;IFID_of_owner);</span>
-<span class="string-syntax">    EmitArrays::text_entry(II);</span>
+<span class="string-syntax">    LOOP_THROUGH_TEXT(pos, II)</span>
+<span class="string-syntax">        EmitArrays::numeric_entry((inter_ti) Str::get(pos));</span>
 <span class="string-syntax">    DISCARD_TEXT(II)</span>
 <span class="string-syntax">    EmitArrays::end(save);</span>
 </pre>

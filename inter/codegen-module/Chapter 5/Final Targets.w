@@ -230,8 +230,7 @@ void CodeGen::Targets::end_function(code_generation *gen) {
 @d WORD_ARRAY_FORMAT 1
 @d BYTE_ARRAY_FORMAT 2
 @d TABLE_ARRAY_FORMAT 3
-@d STRING_ARRAY_FORMAT 4
-@d BUFFER_ARRAY_FORMAT 5
+@d BUFFER_ARRAY_FORMAT 4
 
 =
 VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int format)
