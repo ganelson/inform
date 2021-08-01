@@ -175,33 +175,33 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 			PUT(Str::get(pos));
 }
 
-void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {
+void CodeGen::FC::val_to_I6(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {
+	if (temporary_generation == NULL) {
+		CodeGen::Targets::make_targets();
+		temporary_generation =
+			CodeGen::new_generation(NULL, Inter::Bookmarks::tree(IBM), NULL, CodeGen::I6::target());
+	}
+	CodeGen::select_temporary(temporary_generation, OUT);
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(
 			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
-		WRITE("%S", CodeGen::CL::name(symb));
-		return;
+		CodeGen::Targets::mangle(temporary_generation, OUT, CodeGen::CL::name(symb));
+	} else {
+		switch (val1) {
+			case UNDEF_IVAL:
+				internal_error("value undefined");
+			case LITERAL_IVAL:
+			case LITERAL_TEXT_IVAL:
+			case GLOB_IVAL:
+			case DWORD_IVAL:
+			case REAL_IVAL:
+			case PDWORD_IVAL:
+				CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);
+				break;
+		}
 	}
-	switch (val1) {
-		case UNDEF_IVAL:
-			internal_error("value undefined");
-		case LITERAL_IVAL:
-		case LITERAL_TEXT_IVAL:
-		case GLOB_IVAL:
-		case DWORD_IVAL:
-		case REAL_IVAL:
-		case PDWORD_IVAL:
-			if (temporary_generation == NULL) {
-				CodeGen::Targets::make_targets();
-				temporary_generation =
-					CodeGen::new_generation(NULL, Inter::Bookmarks::tree(IBM), NULL, CodeGen::I6::target());
-			}
-			CodeGen::select_temporary(temporary_generation, OUT);
-			CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);
-			CodeGen::deselect_temporary(temporary_generation);
-			break;
-	}
+	CodeGen::deselect_temporary(temporary_generation);
 }
 
 void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
@@ -215,7 +215,7 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 			if (symb == NULL) symb = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 			if (symb == NULL) internal_error("bad val");
 			text_stream *OUT = CodeGen::current(gen);
-			WRITE("%S", CodeGen::CL::name(symb));
+			CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(symb));
 			return;
 		}
 		switch (val1) {
@@ -260,7 +260,8 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		case INVOKED_ROUTINE: {
 			inter_symbol *routine = InterSymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
 			if (routine == NULL) internal_error("bad routine");
-			WRITE("%S(", CodeGen::CL::name(routine));
+			CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(routine));
+			WRITE("(");
 			int argc = 0;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				if (argc++ > 0) WRITE(", ");

@@ -52,9 +52,9 @@ Chapter 4: Inter to Final Code
 	Constants and Literals
 	Instances and Properties
 	Variables
+	Final Targets
 
 Chapter 5: Final Code
-	Final Targets
 	Final Textual Inter
 	Final Binary Inter
 	Final Inventory

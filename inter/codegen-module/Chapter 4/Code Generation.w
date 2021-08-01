@@ -25,6 +25,7 @@ int CodeGen::run_pipeline_stage(pipeline_step *step) {
 		CodeGen::new_generation(step, step->repository, which, step->target_argument);
 	if (CodeGen::Targets::begin_generation(gen) == FALSE) {
 		CodeGen::generate(gen);
+		CodeGen::Targets::end_generation(gen);
 		CodeGen::write(step->text_out_file, gen);
 	}
 	return TRUE;

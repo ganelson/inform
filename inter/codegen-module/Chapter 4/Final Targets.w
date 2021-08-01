@@ -38,12 +38,19 @@ void CodeGen::Targets::make_targets(void) {
 @
 
 @e BEGIN_GENERATION_MTID
+@e END_GENERATION_MTID
 
 =
 INT_METHOD_TYPE(BEGIN_GENERATION_MTID, code_generation_target *cgt, code_generation *gen)
+INT_METHOD_TYPE(END_GENERATION_MTID, code_generation_target *cgt, code_generation *gen)
 int CodeGen::Targets::begin_generation(code_generation *gen) {
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, gen->target, BEGIN_GENERATION_MTID, gen);
+	return rv;
+}
+int CodeGen::Targets::end_generation(code_generation *gen) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->target, END_GENERATION_MTID, gen);
 	return rv;
 }
 
@@ -98,6 +105,16 @@ int CodeGen::Targets::tl_segment(code_generation *gen) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->target, TL_SEGMENT_MTID, gen);
 	return rv;
+}
+
+@
+
+@e MANGLE_IDENTIFIER_MTID
+
+=
+VOID_METHOD_TYPE(MANGLE_IDENTIFIER_MTID, code_generation_target *cgt, text_stream *OUT, text_stream *identifier)
+void CodeGen::Targets::mangle(code_generation *gen, text_stream *OUT, text_stream *identifier) {
+	VOID_METHOD_CALL(gen->target, MANGLE_IDENTIFIER_MTID, OUT, identifier);
 }
 
 @

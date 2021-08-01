@@ -248,10 +248,10 @@
 	set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 	set: $STORYFILE = $WORK/Example.inform/Build/final
 
-	step: clang -std=c99 -c -o $OFILE $COUT >$CCCONSOLE 2>&1
+	step: clang -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality >$CCCONSOLE 2>&1
 	or: 'failed to compile C' $CCCONSOLE
 
-	step: clang -g -o $STORYFILE $OFILE >$LINKCONSOLE 2>&1
+	step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
 	or: 'failed to link C' $LINKCONSOLE
 	
 	set: $A = $PATH/_Results_Actual/$CASE.txt

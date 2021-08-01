@@ -358,7 +358,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 					if (pos.index >= 2)
 						PUT(Str::get(pos));
 			} else {
-				WRITE("%S", S);
+				CodeGen::Targets::mangle(gen, OUT, S);
 			}
 		}
 	} else if (val1 == DIVIDER_IVAL) {

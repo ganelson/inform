@@ -16,6 +16,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
 	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
+	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CodeGen::I6::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CodeGen::I6::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
@@ -53,7 +54,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 
 @e pragmatic_matter_I7CGS from 0
 @e compiler_versioning_matter_I7CGS
-@e attributes_at_eof_I7CGS
+@e predeclarations_I7CGS
 @e very_early_matter_I7CGS
 @e constants_1_I7CGS
 @e constants_2_I7CGS
@@ -80,7 +81,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[predeclarations_I7CGS] = CodeGen::new_segment();
 	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_1_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_2_I7CGS] = CodeGen::new_segment();
@@ -143,7 +144,7 @@ int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_genera
 	return constants_1_I7CGS + depth - 1;
 }
 int CodeGen::I6::property_segment(code_generation_target *cgt) {
-	return attributes_at_eof_I7CGS;
+	return predeclarations_I7CGS;
 }
 int CodeGen::I6::tl_segment(code_generation_target *cgt) {
 	return text_literals_code_I7CGS;
@@ -157,6 +158,10 @@ void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen
 		WRITE("!%% %S\n", content);
 		CodeGen::deselect(gen, saved);
 	}
+}
+
+void CodeGen::I6::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
+	WRITE("%S", identifier);
 }
 
 int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation *gen,
@@ -553,7 +558,7 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
 	if (used) {
-		generated_segment *saved = CodeGen::select(gen, attributes_at_eof_I7CGS);
+		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
 		CodeGen::deselect(gen, saved);
 	} else {
@@ -590,7 +595,7 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 		CodeGen::deselect(gen, saved);
 	}
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
-		generated_segment *saved = CodeGen::select(gen, attributes_at_eof_I7CGS);
+		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		if (k == 0) WRITE("Array Global_Vars -->\n");
 		WRITE("  (");
