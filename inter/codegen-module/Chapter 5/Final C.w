@@ -164,7 +164,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 	switch (bip) {
-		case INVERSION_BIP:		WRITE("inversion"); break;
+		case INVERSION_BIP:		break; /* we won't support this in C */
 
 		case PLUS_BIP:			WRITE("("); INV_A1; WRITE(" + "); INV_A2; WRITE(")"); break;
 		case MINUS_BIP:			WRITE("("); INV_A1; WRITE(" - "); INV_A2; WRITE(")"); break;
@@ -185,16 +185,16 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case GE_BIP: 			WRITE("("); INV_A1; WRITE(" >= "); INV_A2; WRITE(")"); break;
 		case LT_BIP: 			WRITE("("); INV_A1; WRITE(" < "); INV_A2; WRITE(")"); break;
 		case LE_BIP: 			WRITE("("); INV_A1; WRITE(" <= "); INV_A2; WRITE(")"); break;
-		case OFCLASS_BIP:		WRITE("("); INV_A1; WRITE(" ofclass "); INV_A2; WRITE(")"); break;
-		case HAS_BIP:			WRITE("("); INV_A1; WRITE(" has "); INV_A2; WRITE(")"); break;
-		case HASNT_BIP:			WRITE("("); INV_A1; WRITE(" hasnt "); INV_A2; WRITE(")"); break;
-		case IN_BIP:			WRITE("("); INV_A1; WRITE(" in "); INV_A2; WRITE(")"); break;
-		case NOTIN_BIP:			WRITE("("); INV_A1; WRITE(" notin "); INV_A2; WRITE(")"); break;
-		case PROVIDES_BIP:		WRITE("("); INV_A1; WRITE(" provides "); INV_A2; WRITE(")"); break;
+		case OFCLASS_BIP:		WRITE("(i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
+		case HAS_BIP:			WRITE("(i7_has("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
+		case HASNT_BIP:			WRITE("(i7_has("); INV_A1; WRITE(", "); INV_A2; WRITE(") == FALSE)"); break;
+		case IN_BIP:			WRITE("(i7_in("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
+		case NOTIN_BIP:			WRITE("(i7_in("); INV_A1; WRITE(", "); INV_A2; WRITE(") == FALSE)"); break;
+		case PROVIDES_BIP:		WRITE("(i7_provides("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
 		case ALTERNATIVE_BIP:	INV_A1; WRITE(" or "); INV_A2; break;
 
-		case PUSH_BIP:			WRITE("@push "); INV_A1; break;
-		case PULL_BIP:			WRITE("@pull "); INV_A1; break;
+		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
+		case PULL_BIP:			WRITE("i7_pull("); INV_A1; WRITE(")"); break;
 		case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
 		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
 		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
@@ -212,9 +212,9 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
-		case JUMP_BIP: 			WRITE("jump "); INV_A1; break;
+		case JUMP_BIP: 			WRITE("goto "); INV_A1; break;
 		case QUIT_BIP: 			WRITE("exit(0)"); break;
-		case RESTORE_BIP: 		WRITE("restore "); INV_A1; break;
+		case RESTORE_BIP: 		break; /* we won't support this in C */
 
 		case INDIRECT0_BIP: case INDIRECT0V_BIP:
 								WRITE("("); INV_A1; WRITE(")()"); break;
@@ -250,20 +250,20 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case CALLMESSAGE3_BIP: 	WRITE("("); INV_A1; WRITE(".call(");
 								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE("))"); break;
 
-		case SPACES_BIP:		WRITE("spaces "); INV_A1; break;
+		case SPACES_BIP:		WRITE("for (int j = "); INV_A1; WRITE("; j >= 0; j--) printf(\" \")"); break;
 		case FONT_BIP:
-			WRITE("if ("); INV_A1; WRITE(") { font on; } else { font off; }");
+			WRITE("if ("); INV_A1; WRITE(") { i7_font(1); } else { i7_font(0); }");
 			suppress_terminal_semicolon = TRUE;
 			break;
-		case STYLEROMAN_BIP: WRITE("style roman"); break;
-		case STYLEBOLD_BIP: WRITE("style bold"); break;
-		case STYLEUNDERLINE_BIP: WRITE("style underline"); break;
-		case STYLEREVERSE_BIP: WRITE("style reverse"); break;
+		case STYLEROMAN_BIP: WRITE("i7_style(i7_roman)"); break;
+		case STYLEBOLD_BIP: WRITE("i7_style(i7_bold)"); break;
+		case STYLEUNDERLINE_BIP: WRITE("i7_style(i7_underline)"); break;
+		case STYLEREVERSE_BIP: WRITE("i7_style(i7_reverse)"); break;
 
-		case MOVE_BIP: WRITE("move "); INV_A1; WRITE(" to "); INV_A2; break;
-		case REMOVE_BIP: WRITE("remove "); INV_A1; break;
-		case GIVE_BIP: WRITE("give "); INV_A1; WRITE(" "); INV_A2; break;
-		case TAKE_BIP: WRITE("give "); INV_A1; WRITE(" ~"); INV_A2; break;
+		case MOVE_BIP: WRITE("i7_move("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case REMOVE_BIP: WRITE("i7_move("); INV_A1; WRITE(", 0)"); break;
+		case GIVE_BIP: WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
+		case TAKE_BIP: WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 0)"); break;
 
 		case ALTERNATIVECASE_BIP: INV_A1; WRITE(", "); INV_A2; break;
 		case SEQUENTIAL_BIP: WRITE("("); INV_A1; WRITE(","); INV_A2; WRITE(")"); break;
@@ -271,19 +271,19 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 
 		case PRINT_BIP: WRITE("printf(\"%%s\", "); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTRET_BIP: INV_A1_PRINTMODE; break;
-		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
-		case PRINTNAME_BIP: WRITE("print (name) "); INV_A1; break;
-		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
-		case PRINTPROPERTY_BIP: WRITE("print (property) "); INV_A1; break;
+		case PRINTCHAR_BIP: WRITE("i7_print_char("); INV_A1; WRITE(")"); break;
+		case PRINTNAME_BIP: WRITE("i7_print_name("); INV_A1; WRITE(")"); break;
+		case PRINTOBJ_BIP: WRITE("i7_print_object"); INV_A1; WRITE(")"); break;
+		case PRINTPROPERTY_BIP: WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP: WRITE("printf(\"%%d\", "); INV_A1; WRITE(")"); break;
-		case PRINTADDRESS_BIP: WRITE("print (address) "); INV_A1; break;
+		case PRINTADDRESS_BIP: WRITE("i7_print_address("); INV_A1; WRITE(")"); break;
 		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE("])"); break;
-		case PRINTNLNUMBER_BIP: WRITE("print (number) "); INV_A1; break;
-		case PRINTDEF_BIP: WRITE("print (the) "); INV_A1; break;
-		case PRINTCDEF_BIP: WRITE("print (The) "); INV_A1; break;
-		case PRINTINDEF_BIP: WRITE("print (a) "); INV_A1; break;
-		case PRINTCINDEF_BIP: WRITE("print (A) "); INV_A1; break;
-		case BOX_BIP: WRITE("box "); INV_A1_BOXMODE; break;
+		case PRINTNLNUMBER_BIP: WRITE("i7_print_number("); INV_A1; WRITE(")"); break;
+		case PRINTDEF_BIP: WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
+		case PRINTCDEF_BIP: WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
+		case PRINTINDEF_BIP: WRITE("i7_print_indef_art("); INV_A1; WRITE(")"); break;
+		case PRINTCINDEF_BIP: WRITE("i7_print_cindef_art("); INV_A1; WRITE(")"); break;
+		case BOX_BIP: WRITE("i7_print_box("); INV_A1_BOXMODE; WRITE(")"); break;
 
 		case IF_BIP: @<Generate primitive for if@>; break;
 		case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
@@ -299,9 +299,9 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case CASE_BIP: @<Generate primitive for case@>; break;
 		case DEFAULT_BIP: @<Generate primitive for default@>; break;
 
-		case RANDOM_BIP: WRITE("random("); INV_A1; WRITE(")"); break;
+		case RANDOM_BIP: WRITE("i7_random("); INV_A1; WRITE(")"); break;
 
-		case READ_BIP: WRITE("read "); INV_A1; WRITE(" "); INV_A2; break;
+		case READ_BIP: WRITE("i7_read("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 
 		default: LOG("Prim: %S\n", prim_name->symbol_name); internal_error("unimplemented prim");
 	}
