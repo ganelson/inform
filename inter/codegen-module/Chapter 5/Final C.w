@@ -180,7 +180,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
 		case OR_BIP: 			WRITE("(("); INV_A1; WRITE(") || ("); INV_A2; WRITE("))"); break;
 		case EQ_BIP: 			WRITE("("); INV_A1; WRITE(" == "); INV_A2; WRITE(")"); break;
-		case NE_BIP: 			WRITE("("); INV_A1; WRITE(" ~= "); INV_A2; WRITE(")"); break;
+		case NE_BIP: 			WRITE("("); INV_A1; WRITE(" != "); INV_A2; WRITE(")"); break;
 		case GT_BIP: 			WRITE("("); INV_A1; WRITE(" > "); INV_A2; WRITE(")"); break;
 		case GE_BIP: 			WRITE("("); INV_A1; WRITE(" >= "); INV_A2; WRITE(")"); break;
 		case LT_BIP: 			WRITE("("); INV_A1; WRITE(" < "); INV_A2; WRITE(")"); break;
@@ -397,8 +397,8 @@ then the result.
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
 	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) INV_A1;
-	WRITE(":"); INV_A2;
-	WRITE(":");
+	WRITE(";"); INV_A2;
+	WRITE(";");
 	inter_tree_node *U = InterTree::third_child(P);
 	if (U->W.data[ID_IFLD] != VAL_IST)
 	CodeGen::FC::frame(gen, U);
