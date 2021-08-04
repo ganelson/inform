@@ -29,6 +29,9 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::I6::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::I6::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
+	METHOD_ADD(cgt, BEGIN_OPCODE_MTID, CodeGen::I6::begin_opcode);
+	METHOD_ADD(cgt, SUPPLY_OPERAND_MTID, CodeGen::I6::supply_operand);
+	METHOD_ADD(cgt, END_OPCODE_MTID, CodeGen::I6::end_opcode);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::I6::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
@@ -639,6 +642,20 @@ void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generati
 void CodeGen::I6::end_function(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("];");
+}
+
+void CodeGen::I6::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("%S ", opcode);
+}
+void CodeGen::I6::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (is_label) WRITE("?");
+	CodeGen::FC::frame(gen, F);
+}
+void CodeGen::I6::end_opcode(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";");
 }
 
 void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name, int format) {

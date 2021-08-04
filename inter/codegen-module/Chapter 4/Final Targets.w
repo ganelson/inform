@@ -240,6 +240,26 @@ void CodeGen::Targets::end_function(code_generation *gen) {
 
 @
 
+@e BEGIN_OPCODE_MTID
+@e SUPPLY_OPERAND_MTID
+@e END_OPCODE_MTID
+
+=
+VOID_METHOD_TYPE(BEGIN_OPCODE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *opcode)
+VOID_METHOD_TYPE(SUPPLY_OPERAND_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label)
+VOID_METHOD_TYPE(END_OPCODE_MTID, code_generation_target *cgt, code_generation *gen)
+void CodeGen::Targets::begin_opcode(code_generation *gen, text_stream *opcode) {
+	VOID_METHOD_CALL(gen->target, BEGIN_OPCODE_MTID, gen, opcode);
+}
+void CodeGen::Targets::supply_operand(code_generation *gen, inter_tree_node *F, int is_label) {
+	VOID_METHOD_CALL(gen->target, SUPPLY_OPERAND_MTID, gen, F, is_label);
+}
+void CodeGen::Targets::end_opcode(code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, END_OPCODE_MTID, gen);
+}
+
+@
+
 @e BEGIN_ARRAY_MTID
 @e ARRAY_ENTRY_MTID
 @e END_ARRAY_MTID

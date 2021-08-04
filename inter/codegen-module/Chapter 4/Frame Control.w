@@ -273,7 +273,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		case INVOKED_OPCODE: {
 			inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			WRITE("%S", S);
+			CodeGen::Targets::begin_opcode(gen, S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				query_labels_mode = TRUE;
@@ -288,11 +288,11 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 						}
 					}
 				}
-				WRITE(" ");
-				CodeGen::FC::frame(gen, F);
+				CodeGen::Targets::supply_operand(gen, F, FALSE);
 				query_labels_mode = FALSE;
 			}
 			negate_label_mode = FALSE;
+			CodeGen::Targets::end_opcode(gen);
 			break;
 		}
 		default: internal_error("bad inv");

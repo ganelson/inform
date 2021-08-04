@@ -29,6 +29,9 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::C::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::C::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::C::end_function);
+	METHOD_ADD(cgt, BEGIN_OPCODE_MTID, CodeGen::C::begin_opcode);
+	METHOD_ADD(cgt, SUPPLY_OPERAND_MTID, CodeGen::C::supply_operand);
+	METHOD_ADD(cgt, END_OPCODE_MTID, CodeGen::C::end_opcode);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::C::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::C::array_entry);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::C::end_array);
@@ -322,7 +325,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 	switch (rboolean) {
 		case FALSE: WRITE("return 0"); break;
 		case TRUE: WRITE("return 1"); break;
-		case NOT_APPLICABLE: WRITE("return "); CodeGen::FC::frame(gen, V); break;
+		case NOT_APPLICABLE: WRITE("return (i7val) "); CodeGen::FC::frame(gen, V); break;
 	}
 	
 
@@ -646,6 +649,26 @@ void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generatio
 void CodeGen::C::end_function(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\n}\n");
+}
+
+int C_operand_count = 0;
+void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("glulx_");
+	LOOP_THROUGH_TEXT(pos, opcode)
+		if (Str::get(pos) != '@')
+			PUT(Str::get(pos));
+	WRITE("("); C_operand_count = 0;
+}
+void CodeGen::C::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (C_operand_count++ > 0) WRITE(", ");
+	if (is_label) WRITE("?");
+	CodeGen::FC::frame(gen, F);
+}
+void CodeGen::C::end_opcode(code_generation_target *cgt, code_generation *gen) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(");");
 }
 
 void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,
