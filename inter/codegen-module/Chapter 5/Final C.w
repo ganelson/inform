@@ -84,10 +84,10 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("typedef int i7val;\n");
-	WRITE("typedef char i7byte;\n");
-	WRITE("#include <stdlib.h>\n");
-	WRITE("#include <stdio.h>\n");
+	WRITE("#include \"inform7_clib.h\"\n");
+	WRITE("i7val ");
+	CodeGen::C::mangle(cgt, OUT, I"self");
+	WRITE(" = 0;\n");
 	WRITE("#define ");
 	CodeGen::C::mangle(cgt, OUT, I"Grammar__Version");
 	WRITE(" 2\n");
@@ -197,7 +197,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case ALTERNATIVE_BIP:	INV_A1; WRITE(" or "); INV_A2; break;
 
 		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
-		case PULL_BIP:			WRITE("i7_pull("); INV_A1; WRITE(")"); break;
+		case PULL_BIP:			INV_A1; WRITE(" = i7_pull()"); break;
 		case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
 		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
 		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
@@ -205,7 +205,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case STORE_BIP:			WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")"); break;
 		case SETBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" | "); INV_A2; break;
 		case CLEARBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" &~ ("); INV_A2; WRITE(")"); break;
-		case LOOKUP_BIP:		WRITE("("); INV_A1; WRITE("["); INV_A2; WRITE("])"); break;
+		case LOOKUP_BIP:		WRITE("(((i7val *) "); INV_A1; WRITE(")["); INV_A2; WRITE("])"); break;
 		case LOOKUPBYTE_BIP:	WRITE("("); INV_A1; WRITE("->("); INV_A2; WRITE("))"); break;
 		case LOOKUPREF_BIP:		WRITE("("); INV_A1; WRITE("-->("); INV_A2; WRITE("))"); break;
 		case PROPERTYADDRESS_BIP: WRITE("("); INV_A1; WRITE(".& "); INV_A2; WRITE(")"); break;
@@ -278,7 +278,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case PRINTNAME_BIP: WRITE("i7_print_name("); INV_A1; WRITE(")"); break;
 		case PRINTOBJ_BIP: WRITE("i7_print_object"); INV_A1; WRITE(")"); break;
 		case PRINTPROPERTY_BIP: WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
-		case PRINTNUMBER_BIP: WRITE("printf(\"%%d\", "); INV_A1; WRITE(")"); break;
+		case PRINTNUMBER_BIP: WRITE("printf(\"%%d\", (int) "); INV_A1; WRITE(")"); break;
 		case PRINTADDRESS_BIP: WRITE("i7_print_address("); INV_A1; WRITE(")"); break;
 		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE("])"); break;
 		case PRINTNLNUMBER_BIP: WRITE("i7_print_number("); INV_A1; WRITE(")"); break;

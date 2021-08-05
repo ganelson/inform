@@ -124,6 +124,8 @@
 
 -recipe [Toy]
 
+	set: $I7CLIB = inform7/Internal/Miscellany
+
 	set: $O = $PATH/$CASE.intert
 
 	set: $P = $PATH/_Pipelines/toy_i6.interpipeline
@@ -171,7 +173,7 @@
 	match text: $AC $IC
 	or: 'produced incorrect C code'
 
-	step: clang -std=c99 -c -o $OC $AC >$CTC 2>&1
+	step: clang -std=c99 -c -o $OC $AC -I $I7CLIB >$CTC 2>&1
 	or: 'failed to compile C' $CTC
 
 	step: clang -g -o $XC $OC >$LTC 2>&1
@@ -216,6 +218,8 @@
 	set: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
 	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
 
+	set: $I7CLIB = inform7/Internal/Miscellany
+
 	set: $VM = G
 	set: $FORMAT 		= ulx
 	set: $I6OPTIONS		= -E2SDwGx
@@ -248,7 +252,7 @@
 	set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 	set: $STORYFILE = $WORK/Example.inform/Build/final
 
-	step: clang -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality >$CCCONSOLE 2>&1
+	step: clang -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality -I $I7CLIB >$CCCONSOLE 2>&1
 	or: 'failed to compile C' $CCCONSOLE
 
 	step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
