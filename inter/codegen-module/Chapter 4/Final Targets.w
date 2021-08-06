@@ -178,7 +178,7 @@ void CodeGen::Targets::declare_property(code_generation *gen, inter_symbol *prop
 =
 INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
 INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
-VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
 int CodeGen::Targets::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->target, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
@@ -189,8 +189,8 @@ int CodeGen::Targets::declare_variable(code_generation *gen, inter_tree_node *P,
 	INT_METHOD_CALL(rv, gen->target, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
 	return rv;
 }
-void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
-	VOID_METHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, gen, P, var_name);
+void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
+	VOID_METHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, pass, gen, P, var_name);
 }
 
 @
@@ -225,17 +225,37 @@ void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_nam
 @e END_FUNCTION_MTID
 
 =
-VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *fn_name)
+VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn)
 VOID_METHOD_TYPE(BEGIN_FUNCTION_CODE_MTID, code_generation_target *cgt, code_generation *gen)
-VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, code_generation *gen)
-void CodeGen::Targets::begin_function(code_generation *gen, text_stream *fn_name) {
-	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_MTID, gen, fn_name);
+VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, int pass, code_generation *gen)
+void CodeGen::Targets::begin_function(int pass, code_generation *gen, inter_symbol *fn) {
+	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_MTID, pass, gen, fn);
 }
 void CodeGen::Targets::begin_function_code(code_generation *gen) {
 	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_CODE_MTID, gen);
 }
-void CodeGen::Targets::end_function(code_generation *gen) {
-	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, gen);
+void CodeGen::Targets::end_function(int pass, code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, pass, gen);
+}
+
+@
+
+@e BEGIN_FUNCTION_CALL_MTID
+@e ARGUMENT_MTID
+@e END_FUNCTION_CALL_MTID
+
+=
+VOID_METHOD_TYPE(BEGIN_FUNCTION_CALL_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc)
+VOID_METHOD_TYPE(ARGUMENT_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc)
+VOID_METHOD_TYPE(END_FUNCTION_CALL_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc)
+void CodeGen::Targets::begin_function_call(code_generation *gen, inter_symbol *fn, int argc) {
+	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_CALL_MTID, gen, fn, argc);
+}
+void CodeGen::Targets::argument(code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {
+	VOID_METHOD_CALL(gen->target, ARGUMENT_MTID, gen, F, fn, argc, of_argc);
+}
+void CodeGen::Targets::end_function_call(code_generation *gen, inter_symbol *fn, int argc) {
+	VOID_METHOD_CALL(gen->target, END_FUNCTION_CALL_MTID, gen, fn, argc);
 }
 
 @

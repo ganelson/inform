@@ -168,6 +168,7 @@ void CodeGen::generate(code_generation *gen) {
 
 @<Phase two - traverse@> =
 	InterTree::traverse_root_only(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
+	InterTree::traverse(gen->from, CodeGen::FC::pre_iterate, gen, NULL, -PACKAGE_IST);
 	InterTree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
 
 @<Phase three - consolidation@> =

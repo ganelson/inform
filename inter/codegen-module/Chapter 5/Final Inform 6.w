@@ -29,6 +29,9 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::I6::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::I6::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
+	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CodeGen::I6::begin_function_call);
+	METHOD_ADD(cgt, ARGUMENT_MTID, CodeGen::I6::argument);
+	METHOD_ADD(cgt, END_FUNCTION_CALL_MTID, CodeGen::I6::end_function_call);
 	METHOD_ADD(cgt, BEGIN_OPCODE_MTID, CodeGen::I6::begin_opcode);
 	METHOD_ADD(cgt, SUPPLY_OPERAND_MTID, CodeGen::I6::supply_operand);
 	METHOD_ADD(cgt, END_OPCODE_MTID, CodeGen::I6::end_opcode);
@@ -615,10 +618,12 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 	return k;
 }
 
-void CodeGen::I6::declare_local_variable(code_generation_target *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" %S", var_name->symbol_name);
+void CodeGen::I6::declare_local_variable(code_generation_target *cgt, int pass,
+	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE(" %S", var_name->symbol_name);
+	}
 }
 
 void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
@@ -631,17 +636,37 @@ void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen
 	WRITE(";\n");
 }
 
-void CodeGen::I6::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("[ %S", fn_name);
+void CodeGen::I6::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
+	text_stream *fn_name = CodeGen::CL::name(fn);
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("[ %S", fn_name);
+	}
 }
 void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";");
 }
-void CodeGen::I6::end_function(code_generation_target *cgt, code_generation *gen) {
+void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen) {
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("];");
+	}
+}
+
+void CodeGen::I6::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("];");
+	WRITE("%S(", fn_name);
+}
+void CodeGen::I6::argument(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (argc > 0) WRITE(", ");
+	CodeGen::FC::frame(gen, F);
+}
+void CodeGen::I6::end_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(")");
 }
 
 void CodeGen::I6::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {

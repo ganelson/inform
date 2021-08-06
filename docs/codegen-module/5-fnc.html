@@ -101,6 +101,9 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_FUNCTION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::begin_function</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_FUNCTION_CODE_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::begin_function_code</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">END_FUNCTION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::end_function</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_FUNCTION_CALL_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::begin_function_call</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">ARGUMENT_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::argument</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">END_FUNCTION_CALL_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::end_function_call</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_OPCODE_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::begin_opcode</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">SUPPLY_OPERAND_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::supply_operand</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="constant-syntax">END_OPCODE_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP7" class="function-link"><span class="function-syntax">CodeGen::C::end_opcode</span></a><span class="plain-syntax">);</span>
@@ -160,6 +163,9 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7val "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-fnc.html#SP2" class="function-link"><span class="function-syntax">CodeGen::C::mangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"self"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" = 0;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7val "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-fnc.html#SP2" class="function-link"><span class="function-syntax">CodeGen::C::mangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"sp"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" = 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#define "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-fnc.html#SP2" class="function-link"><span class="function-syntax">CodeGen::C::mangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Grammar__Version"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" 2\n"</span><span class="plain-syntax">);</span>
@@ -172,7 +178,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="4-cg.html#SP7" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"int main(int argc, char **argv) { "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-fnc.html#SP2" class="function-link"><span class="function-syntax">CodeGen::C::mangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Main"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(); return 0; }\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(0); return 0; }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-cg.html#SP5" class="function-link"><span class="function-syntax">CodeGen::deselect</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -758,35 +764,89 @@ trick called "stubbing", these being "stub definitions".)
 <span class="string-syntax">text_stream *C_fn_prototype = NULL;</span>
 <span class="string-syntax">int C_fn_parameter_count = 0;</span>
 
-<span class="string-syntax">void CodeGen::C::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {</span>
-<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    WRITE("</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
-<span class="string-syntax">    CodeGen::C::mangle(cgt, OUT, fn_name);</span>
-<span class="string-syntax">    WRITE("</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
-<span class="string-syntax">    if (C_fn_prototype == NULL) C_fn_prototype = Str::new();</span>
-<span class="string-syntax">    Str::clear(C_fn_prototype); C_fn_parameter_count = 0;</span>
-<span class="string-syntax">    WRITE_TO(C_fn_prototype, "</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
-<span class="string-syntax">    CodeGen::C::mangle(cgt, C_fn_prototype, fn_name);</span>
-<span class="string-syntax">    WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
+<span class="string-syntax">typedef struct final_c_function {</span>
+<span class="string-syntax">    int max_arity;</span>
+<span class="string-syntax">    CLASS_DEFINITION</span>
+<span class="string-syntax">} final_c_function;</span>
+
+<span class="string-syntax">final_c_function *C_fn_being_found = NULL;</span>
+
+<span class="string-syntax">void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {</span>
+<span class="string-syntax">    text_stream *fn_name = CodeGen::CL::name(fn);</span>
+<span class="string-syntax">    C_fn_parameter_count = 0;</span>
+<span class="string-syntax">    if (pass == 1) {</span>
+<span class="string-syntax">        C_fn_being_found = CREATE(final_c_function);</span>
+<span class="string-syntax">        C_fn_being_found-&gt;max_arity = 0;</span>
+<span class="string-syntax">        fn-&gt;translation_data = STORE_POINTER_final_c_function(C_fn_being_found);</span>
+<span class="string-syntax">        if (C_fn_prototype == NULL) C_fn_prototype = Str::new();</span>
+<span class="string-syntax">        Str::clear(C_fn_prototype);</span>
+<span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
+<span class="string-syntax">        CodeGen::C::mangle(cgt, C_fn_prototype, fn_name);</span>
+<span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">__argc</span><span class="string-syntax">");</span>
+<span class="string-syntax">    }</span>
+<span class="string-syntax">    if (pass == 2) {</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        WRITE("</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
+<span class="string-syntax">        CodeGen::C::mangle(cgt, OUT, fn_name);</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">__argc</span><span class="string-syntax">");</span>
+<span class="string-syntax">    }</span>
 <span class="string-syntax">}</span>
 
 <span class="string-syntax">void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generation *gen) {</span>
 <span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    if (C_fn_parameter_count == 0) {</span>
+<span class="comment-syntax">	if (C_fn_parameter_count == 0) {</span>
 <span class="string-syntax">        WRITE("</span><span class="reserved-syntax">void</span><span class="string-syntax">");</span>
 <span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="reserved-syntax">void</span><span class="string-syntax">");</span>
 <span class="string-syntax">    }</span>
+<span class="string-syntax">*/</span>
 <span class="string-syntax">    WRITE("</span><span class="plain-syntax">) {</span><span class="string-syntax">");</span>
-<span class="string-syntax">    WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">);\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
-<span class="string-syntax">    generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);</span>
-<span class="string-syntax">    OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    WRITE("</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", C_fn_prototype);</span>
-<span class="string-syntax">    CodeGen::deselect(gen, saved);</span>
+<span class="comment-syntax">	WRITE_TO(C_fn_prototype, ");\n");</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void CodeGen::C::end_function(code_generation_target *cgt, code_generation *gen) {</span>
+<span class="string-syntax">void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_generation *gen) {</span>
+<span class="string-syntax">    if (pass == 1) {</span>
+<span class="comment-syntax">		if (C_fn_parameter_count == 0) {</span>
+<span class="string-syntax">            WRITE_TO(C_fn_prototype, "</span><span class="reserved-syntax">void</span><span class="string-syntax">");</span>
+<span class="string-syntax">        }</span>
+<span class="string-syntax">*/</span>
+<span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
+
+<span class="string-syntax">        generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="plain-syntax">;\</span><span class="identifier-syntax">n</span><span class="string-syntax">", C_fn_prototype);</span>
+<span class="string-syntax">        CodeGen::deselect(gen, saved);</span>
+<span class="string-syntax">    }</span>
+<span class="string-syntax">    if (pass == 2) {</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="plain-syntax">}\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
+<span class="string-syntax">    }</span>
+<span class="string-syntax">}</span>
+
+<span class="string-syntax">void CodeGen::C::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {</span>
+<span class="string-syntax">    text_stream *fn_name = CodeGen::CL::name(fn);</span>
 <span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    WRITE("</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="plain-syntax">}\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
+<span class="string-syntax">    CodeGen::C::mangle(cgt, OUT, fn_name);</span>
+<span class="string-syntax">    WRITE("</span><span class="plain-syntax">(%</span><span class="identifier-syntax">d</span><span class="string-syntax">", argc);</span>
+<span class="string-syntax">}</span>
+<span class="string-syntax">void CodeGen::C::argument(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {</span>
+<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">    WRITE("</span><span class="plain-syntax">, </span><span class="string-syntax">");</span>
+<span class="string-syntax">    CodeGen::FC::frame(gen, F);</span>
+<span class="string-syntax">}</span>
+<span class="string-syntax">void CodeGen::C::end_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {</span>
+<span class="string-syntax">    if (GENERAL_POINTER_IS_NULL(fn-&gt;translation_data)) {</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax"> /* %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">null</span><span class="plain-syntax"> */</span><span class="string-syntax">", CodeGen::CL::name(fn));</span>
+<span class="string-syntax">    } else {</span>
+<span class="string-syntax">        final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn-&gt;translation_data);</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        while (argc &lt; fcf-&gt;max_arity) {</span>
+<span class="string-syntax">            WRITE("</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="string-syntax">");</span>
+<span class="string-syntax">            argc++;</span>
+<span class="string-syntax">        }</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
+<span class="string-syntax">    }</span>
 <span class="string-syntax">}</span>
 
 <span class="string-syntax">int C_operand_count = 0;</span>
@@ -809,17 +869,19 @@ trick called "stubbing", these being "stub definitions".)
 <span class="string-syntax">    WRITE("</span><span class="plain-syntax">);</span><span class="string-syntax">");</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,</span>
-<span class="string-syntax">    inter_tree_node *P, inter_symbol *var_name) {</span>
-<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    if (C_fn_parameter_count++ &gt; 0) {</span>
-<span class="string-syntax">        WRITE("</span><span class="plain-syntax">, </span><span class="string-syntax">");</span>
-<span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">, </span><span class="string-syntax">");</span>
+<span class="string-syntax">void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,</span>
+<span class="string-syntax">    code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {</span>
+<span class="string-syntax">    C_fn_parameter_count++;</span>
+<span class="string-syntax">    if (pass == 1) {</span>
+<span class="string-syntax">        C_fn_being_found-&gt;max_arity++;</span>
+<span class="string-syntax">        WRITE_TO(C_fn_prototype, "</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
+<span class="string-syntax">        CodeGen::C::mangle(cgt, C_fn_prototype, var_name-&gt;symbol_name);</span>
 <span class="string-syntax">    }</span>
-<span class="string-syntax">    WRITE("</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
-<span class="string-syntax">    CodeGen::C::mangle(cgt, OUT, var_name-&gt;symbol_name);</span>
-<span class="string-syntax">    WRITE_TO(C_fn_prototype, "</span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
-<span class="string-syntax">    CodeGen::C::mangle(cgt, C_fn_prototype, var_name-&gt;symbol_name);</span>
+<span class="string-syntax">    if (pass == 2) {</span>
+<span class="string-syntax">        text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">        WRITE("</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="string-syntax">");</span>
+<span class="string-syntax">        CodeGen::C::mangle(cgt, OUT, var_name-&gt;symbol_name);</span>
+<span class="string-syntax">    }</span>
 <span class="string-syntax">}</span>
 
 <span class="string-syntax">int C_array_entry_count = 0;</span>
@@ -863,7 +925,7 @@ trick called "stubbing", these being "stub definitions".)
 <span class="string-syntax">    WRITE("</span><span class="plain-syntax"> };\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
 <span class="string-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The function CodeGen::C::begin_constant is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_constant is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_function is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_function_code is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_function is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_opcode is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::supply_operand is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_opcode is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::declare_local_variable is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_array is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::array_entry is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_array is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li></ul>
+<ul class="endnotetexts"><li>The function CodeGen::C::begin_constant is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_constant is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_function is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_function_code is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_function is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_function_call is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::argument is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_function_call is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_opcode is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::supply_operand is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_opcode is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::declare_local_variable is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::begin_array is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::array_entry is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The function CodeGen::C::end_array is used in <a href="5-fnc.html#SP1">&#167;1</a>.</li><li>The structure final_c_function is private to this section.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-fi6.html">&#10094;</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-mt.html">2</a></li><li class="progresschapter"><a href="3-sh.html">3</a></li><li class="progresschapter"><a href="4-cg.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-fti.html">fti</a></li><li class="progresssection"><a href="5-fbi.html">fbi</a></li><li class="progresssection"><a href="5-fi.html">fi</a></li><li class="progresssection"><a href="5-fi6.html">fi6</a></li><li class="progresscurrent">fnc</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!--End of weave-->

@@ -16,6 +16,48 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
+void CodeGen::FC::pre_iterate(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_package *outer = Inter::Packages::container(P);
+	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
+		generated_segment *saved =
+			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+		switch (P->W.data[ID_IFLD]) {
+			case CONSTANT_IST: {
+				inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+				if (Inter::Constant::is_routine(con_name)) {
+					inter_package *code_block = Inter::Constant::code_block(con_name);
+					CodeGen::Targets::begin_function(1, gen, con_name);
+					void_level = Inter::Defn::get_level(P) + 2;
+					inter_tree_node *D = Inter::Packages::definition(code_block);
+					CodeGen::FC::seek_locals(gen, D);
+					CodeGen::Targets::end_function(1, gen);
+					return;
+				}
+				break;
+			}
+		}
+		CodeGen::deselect(gen, saved);
+	}
+}
+
+void CodeGen::FC::seek_locals(code_generation *gen, inter_tree_node *P) {
+	switch (P->W.data[ID_IFLD]) {
+		case CODE_IST: {
+			break;
+		}
+		case LOCAL_IST: {
+			inter_package *pack = Inter::Packages::container(P);
+			inter_symbol *var_name =
+				InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+			CodeGen::Targets::declare_local_variable(1, gen, P, var_name);
+			break;
+		}
+	}
+	LOOP_THROUGH_INTER_CHILDREN(F, P)
+		CodeGen::FC::seek_locals(gen, F);
+}
+
 void CodeGen::FC::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
@@ -112,7 +154,7 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 void CodeGen::FC::local(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-	CodeGen::Targets::declare_local_variable(gen, P, var_name);
+	CodeGen::Targets::declare_local_variable(2, gen, P, var_name);
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_tree_node *P) {
@@ -139,7 +181,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
-	if (function_code_block) { OUTDENT; CodeGen::Targets::end_function(gen); WRITE("\n"); }
+	if (function_code_block) { OUTDENT; CodeGen::Targets::end_function(2, gen); WRITE("\n"); }
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_tree_node *P) {
@@ -260,16 +302,15 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		case INVOKED_ROUTINE: {
 			inter_symbol *routine = InterSymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
 			if (routine == NULL) internal_error("bad routine");
-			CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(routine));
-			WRITE("(");
 			int argc = 0;
-			LOOP_THROUGH_INTER_CHILDREN(F, P) {
-				if (argc++ > 0) WRITE(", ");
-				CodeGen::FC::frame(gen, F);
-			}
-			WRITE(")");
+			LOOP_THROUGH_INTER_CHILDREN(F, P) argc++;
+			CodeGen::Targets::begin_function_call(gen, routine, argc);
+			int c = 0;
+			LOOP_THROUGH_INTER_CHILDREN(F, P)
+				CodeGen::Targets::argument(gen, F, routine, c++, argc);
+			CodeGen::Targets::end_function_call(gen, routine, argc);
 			break;
-		}
+		} 
 		case INVOKED_OPCODE: {
 			inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);

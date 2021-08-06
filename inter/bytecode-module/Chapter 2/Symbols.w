@@ -18,6 +18,7 @@ typedef struct inter_symbol {
 	int link_time;
 	struct inter_symbol *linked_to;
 	int metadata_key;
+	struct general_pointer translation_data;
 } inter_symbol;
 
 @ =
@@ -39,6 +40,7 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->link_time = 0;
 	symb->linked_to = NULL;
 	symb->metadata_key = FALSE;
+	symb->translation_data = NULL_GENERAL_POINTER;
 	if (Metadata::valid_key(name)) {
 		symb->metadata_key = TRUE;
 		Inter::Symbols::set_scope(symb, PRIVATE_ISYMS);

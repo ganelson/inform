@@ -29,6 +29,9 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::C::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::C::begin_function_code);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::C::end_function);
+	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CodeGen::C::begin_function_call);
+	METHOD_ADD(cgt, ARGUMENT_MTID, CodeGen::C::argument);
+	METHOD_ADD(cgt, END_FUNCTION_CALL_MTID, CodeGen::C::end_function_call);
 	METHOD_ADD(cgt, BEGIN_OPCODE_MTID, CodeGen::C::begin_opcode);
 	METHOD_ADD(cgt, SUPPLY_OPERAND_MTID, CodeGen::C::supply_operand);
 	METHOD_ADD(cgt, END_OPCODE_MTID, CodeGen::C::end_opcode);
@@ -88,6 +91,9 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	WRITE("i7val ");
 	CodeGen::C::mangle(cgt, OUT, I"self");
 	WRITE(" = 0;\n");
+	WRITE("i7val ");
+	CodeGen::C::mangle(cgt, OUT, I"sp");
+	WRITE(" = 0;\n");
 	WRITE("#define ");
 	CodeGen::C::mangle(cgt, OUT, I"Grammar__Version");
 	WRITE(" 2\n");
@@ -100,7 +106,7 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	OUT = CodeGen::current(gen);
 	WRITE("int main(int argc, char **argv) { ");
 	CodeGen::C::mangle(cgt, OUT, I"Main");
-	WRITE("(); return 0; }\n");
+	WRITE("(0); return 0; }\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -620,35 +626,89 @@ void CodeGen::C::end_constant(code_generation_target *cgt, code_generation *gen,
 text_stream *C_fn_prototype = NULL;
 int C_fn_parameter_count = 0;
 
-void CodeGen::C::begin_function(code_generation_target *cgt, code_generation *gen, text_stream *fn_name) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7val ");
-	CodeGen::C::mangle(cgt, OUT, fn_name);
-	WRITE("(");
-	if (C_fn_prototype == NULL) C_fn_prototype = Str::new();
-	Str::clear(C_fn_prototype); C_fn_parameter_count = 0;
-	WRITE_TO(C_fn_prototype, "i7val ");
-	CodeGen::C::mangle(cgt, C_fn_prototype, fn_name);
-	WRITE_TO(C_fn_prototype, "(");
+typedef struct final_c_function {
+	int max_arity;
+	CLASS_DEFINITION
+} final_c_function;
+
+final_c_function *C_fn_being_found = NULL;
+
+void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
+	text_stream *fn_name = CodeGen::CL::name(fn);
+	C_fn_parameter_count = 0;
+	if (pass == 1) {
+		C_fn_being_found = CREATE(final_c_function);
+		C_fn_being_found->max_arity = 0;
+		fn->translation_data = STORE_POINTER_final_c_function(C_fn_being_found);
+		if (C_fn_prototype == NULL) C_fn_prototype = Str::new();
+		Str::clear(C_fn_prototype); 
+		WRITE_TO(C_fn_prototype, "i7val ");
+		CodeGen::C::mangle(cgt, C_fn_prototype, fn_name);
+		WRITE_TO(C_fn_prototype, "(int __argc");
+	}
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("i7val ");
+		CodeGen::C::mangle(cgt, OUT, fn_name);
+		WRITE("(int __argc");
+	}
 }
 
 void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (C_fn_parameter_count == 0) {
+/*	if (C_fn_parameter_count == 0) {
 		WRITE("void");
 		WRITE_TO(C_fn_prototype, "void");
 	}
+*/
 	WRITE(") {");
-	WRITE_TO(C_fn_prototype, ");\n");
-	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("%S", C_fn_prototype);
-	CodeGen::deselect(gen, saved);
+//	WRITE_TO(C_fn_prototype, ");\n");
 }
 
-void CodeGen::C::end_function(code_generation_target *cgt, code_generation *gen) {
+void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_generation *gen) {
+	if (pass == 1) {
+/*		if (C_fn_parameter_count == 0) {
+			WRITE_TO(C_fn_prototype, "void");
+		}
+*/
+		WRITE_TO(C_fn_prototype, ")");
+
+		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("%S;\n", C_fn_prototype);
+		CodeGen::deselect(gen, saved);
+	}
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("\n}\n");
+	}
+}
+
+void CodeGen::C::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("\n}\n");
+	CodeGen::C::mangle(cgt, OUT, fn_name);
+	WRITE("(%d", argc);
+}
+void CodeGen::C::argument(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(", ");
+	CodeGen::FC::frame(gen, F);
+}
+void CodeGen::C::end_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+	if (GENERAL_POINTER_IS_NULL(fn->translation_data)) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE(")");
+		WRITE(" /* %S has null */", CodeGen::CL::name(fn));
+	} else {
+		final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
+		text_stream *OUT = CodeGen::current(gen);
+		while (argc < fcf->max_arity) {
+			WRITE(", 0");
+			argc++;
+		}
+		WRITE(")");
+	}
 }
 
 int C_operand_count = 0;
@@ -671,17 +731,19 @@ void CodeGen::C::end_opcode(code_generation_target *cgt, code_generation *gen) {
 	WRITE(");");
 }
 
-void CodeGen::C::declare_local_variable(code_generation_target *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (C_fn_parameter_count++ > 0) {
-		WRITE(", ");
-		WRITE_TO(C_fn_prototype, ", ");
+void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,
+	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
+	C_fn_parameter_count++;
+	if (pass == 1) {
+		C_fn_being_found->max_arity++;
+		WRITE_TO(C_fn_prototype, ", i7val ");
+		CodeGen::C::mangle(cgt, C_fn_prototype, var_name->symbol_name);
 	}
-	WRITE("i7val ");
-	CodeGen::C::mangle(cgt, OUT, var_name->symbol_name);
-	WRITE_TO(C_fn_prototype, "i7val ");
-	CodeGen::C::mangle(cgt, C_fn_prototype, var_name->symbol_name);
+	if (pass == 2) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE(", i7val ");
+		CodeGen::C::mangle(cgt, OUT, var_name->symbol_name);
+	}
 }
 
 int C_array_entry_count = 0;
