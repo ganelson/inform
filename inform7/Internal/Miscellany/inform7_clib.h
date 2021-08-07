@@ -1,8 +1,27 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef long int i7val;
-typedef char i7byte;
+typedef int i7val;
+typedef unsigned char i7byte;
+
+#define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
+#define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
+#define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
+#define I7BYTE_0(V) (V & 0x000000FF)
+
+i7val i7_lookup(i7byte i7bytes[], i7val offset, i7val ind) {
+	ind = offset + 4*ind;
+	return ((i7val) i7bytes[ind]) + 0x100*((i7val) i7bytes[ind+1]) +
+		0x10000*((i7val) i7bytes[ind+2]) + 0x1000000*((i7val) i7bytes[ind+3]);
+}
+
+void write_i7_lookup(i7byte i7bytes[], i7val offset, i7val ind, i7val V) {
+	ind = offset + 4*ind;
+	i7bytes[ind]   = I7BYTE_0(V);
+	i7bytes[ind+1] = I7BYTE_1(V);
+	i7bytes[ind+2] = I7BYTE_2(V);
+	i7bytes[ind+3] = I7BYTE_3(V);
+}
 
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented.\n");
@@ -68,40 +87,49 @@ void glulx_glk(i7val x, i7val y, i7val z) {
 	printf("Unimplemented.\n");
 }
 
-void glulx_jeq(i7val x) {
+int glulx_jeq(i7val x, i7val y) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jfeq(i7val x) {
+int glulx_jfeq(i7val x, i7val y) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jfge(i7val x) {
+int glulx_jfge(i7val x, i7val y) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jflt(i7val x) {
+int glulx_jflt(i7val x, i7val y) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jisinf(i7val x) {
+int glulx_jisinf(i7val x) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jisnan(i7val x) {
+int glulx_jisnan(i7val x) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jleu(i7val x) {
+int glulx_jleu(i7val x, i7val y) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jnz(i7val x) {
+int glulx_jnz(i7val x) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
-void glulx_jz(i7val x) {
+int glulx_jz(i7val x) {
 	printf("Unimplemented.\n");
+	return 0;
 }
 
 void glulx_log(i7val x, i7val y) {

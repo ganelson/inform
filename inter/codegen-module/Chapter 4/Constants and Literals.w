@@ -123,15 +123,16 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		void_level = Inter::Defn::get_level(P) + 2;
 		inter_tree_node *D = Inter::Packages::definition(code_block);
 		CodeGen::FC::frame(gen, D);
+		CodeGen::Targets::end_function(2, gen, con_name);
 		return;
 	}
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
 			WRITE("\"%S\"", S);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			break;
 		}
 		case CONSTANT_INDIRECT_LIST: {
@@ -186,7 +187,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			}
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
 			text_stream *OUT = CodeGen::current(gen);
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
 					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
@@ -200,7 +201,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
 				if (bracket) WRITE(")");
 			}
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			CodeGen::deselect(gen, saved);
 			break;
 		}
@@ -209,14 +210,11 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
 				"Con %S has depth %d\n", con_name->symbol_name, depth);
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
-			text_stream *OUT = CodeGen::current(gen);
-			if (ifndef_me) WRITE("#ifndef %S;\n", CodeGen::CL::name(con_name));
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
+			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, ifndef_me);
 			inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 			inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 			CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
-			if (ifndef_me) WRITE(" #endif;\n");
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);
 			CodeGen::deselect(gen, saved);
 			break;
 		}

@@ -31,7 +31,7 @@ void CodeGen::FC::pre_iterate(inter_tree *I, inter_tree_node *P, void *state) {
 					void_level = Inter::Defn::get_level(P) + 2;
 					inter_tree_node *D = Inter::Packages::definition(code_block);
 					CodeGen::FC::seek_locals(gen, D);
-					CodeGen::Targets::end_function(1, gen);
+					CodeGen::Targets::end_function(1, gen, con_name);
 					return;
 				}
 				break;
@@ -158,10 +158,9 @@ void CodeGen::FC::local(code_generation *gen, inter_tree_node *P) {
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_tree_node *P) {
-	text_stream *OUT = CodeGen::current(gen);
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
-	WRITE("%S;\n", lab_name->symbol_name);
+	CodeGen::Targets::place_label(gen, lab_name->symbol_name);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_tree_node *P) {
@@ -181,7 +180,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
-	if (function_code_block) { OUTDENT; CodeGen::Targets::end_function(2, gen); WRITE("\n"); }
+	if (function_code_block) { OUTDENT; }
 }
 
 void CodeGen::FC::evaluation(code_generation *gen, inter_tree_node *P) {
@@ -308,7 +307,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			int c = 0;
 			LOOP_THROUGH_INTER_CHILDREN(F, P)
 				CodeGen::Targets::argument(gen, F, routine, c++, argc);
-			CodeGen::Targets::end_function_call(gen, routine, argc);
+			CodeGen::Targets::end_function_call(gen, routine, argc); WRITE("\n");
 			break;
 		} 
 		case INVOKED_OPCODE: {
@@ -317,7 +316,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			CodeGen::Targets::begin_opcode(gen, S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
-				query_labels_mode = TRUE;
+//				query_labels_mode = TRUE;
 				if (F->W.data[ID_IFLD] == VAL_IST) {
 					inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
 					inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
@@ -329,7 +328,10 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 						}
 					}
 				}
-				CodeGen::Targets::supply_operand(gen, F, FALSE);
+				if (F->W.data[ID_IFLD] == LAB_IST)
+					CodeGen::Targets::supply_operand(gen, F, TRUE);
+				else
+					CodeGen::Targets::supply_operand(gen, F, FALSE);
 				query_labels_mode = FALSE;
 			}
 			negate_label_mode = FALSE;

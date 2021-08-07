@@ -1,0 +1,45 @@
+Constant Grammar__Version 2;
+Global debug_flag;
+Constant thirteen = 13;
+Array primes --> (2) (3) (5) ("seven") (11) (thirteen);
+
+Array twins -> (3) (5) (5) (7) (11) (13) (17) (19);
+
+Array carmichaels table (561) (1105) (1729) (2465) (2821) (6601) (8911) (10585) (15841) (29341) (41041) (46657);
+
+Array triangles buffer (0) (1) (3) (6) (10) (15) (21) (28) (36) (45) (55) (66) (78) (91) (105) (120) (136) (153) (171) (190) (210) (231);
+
+Array mutable --> (10) (20) (30);
+
+Array KindHierarchy --> (0) (0);
+[ Main;
+    print "The third prime is: ";
+    print (primes-->(2));
+    print ".^";
+    print "The fourth prime is: ";
+    print (string) (primes-->(3));
+    print ".^";
+    print "The sixth prime is: ";
+    print (primes-->(5));
+    print ".^";
+    print "The second pair of twins is: ";
+    print (twins->(2));
+    print ", ";
+    print (twins->(3));
+    print ".^";
+    print "I knaw of ";
+    print (carmichaels-->(0));
+    print " Carmichael numbers.^";
+    print "I knaw of ";
+    print (triangles->(0));
+    print " triangle numbers.^";
+    ((mutable-->(1)) = 666);
+    print "As mutated, middle entry is: ";
+    print (mutable-->(1));
+    print ".^";
+    ((mutable-->(1)) = 777);
+    print "As mutated, middle entry is: ";
+    print (mutable-->(1));
+    print ".^";
+    quit;
+];

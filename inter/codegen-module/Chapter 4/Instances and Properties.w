@@ -268,9 +268,9 @@ compiles an I6 constant for this value.
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE);
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE, FALSE);
 		WRITE_TO(CodeGen::current(gen), "%S", CodeGen::CL::name(prop_name));
-		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER");
+		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -283,9 +283,9 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	inter_tree *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE);
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE, FALSE);
 		WRITE_TO(CodeGen::current(gen), "MAX_POSITIVE_NUMBER");
-		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER");
+		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}
 	inter_symbol **all_props_in_source_order = NULL;
@@ -457,13 +457,13 @@ property usage is legal.
 
 	CodeGen::Targets::begin_array(gen, I"KindHierarchy", WORD_ARRAY_FORMAT);
 	if (no_kos > 0) {
-		CodeGen::Targets::array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+		CodeGen::Targets::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
-				CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+				CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 				if ((super_name) && (super_name != object_kind_symbol)) {
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%d", CodeGen::IP::kind_of_object_count(super_name));
@@ -587,7 +587,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 					written = TRUE;
 					TEMPORARY_TEXT(vph)
 					WRITE_TO(vph, "VPH_%d", w);
-					CodeGen::Targets::array_entry(gen, vph, WORD_ARRAY_FORMAT);
+					CodeGen::Targets::mangled_array_entry(gen, vph, WORD_ARRAY_FORMAT);
 					DISCARD_TEXT(vph)
 				}
 			}
@@ -744,7 +744,7 @@ though this won't happen for any property created by I7 source text.
 
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
-			CodeGen::Targets::array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+			CodeGen::Targets::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
 			pos++;
 		}
 		CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
@@ -755,14 +755,15 @@ though this won't happen for any property created by I7 source text.
 	}
 
 @<Write the property name in double quotes@> =
-	TEMPORARY_TEXT(OUT)
-	WRITE("\"");
+	text_stream *pname = I"<nameless>";
 	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
-	if (N <= 0) WRITE("<nameless>");
-	else WRITE("%S", Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N));
-	WRITE("\"");
-	CodeGen::Targets::array_entry(gen, OUT, WORD_ARRAY_FORMAT);
-	DISCARD_TEXT(OUT)
+	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
+	TEMPORARY_TEXT(entry)
+	CodeGen::select_temporary(gen, entry);
+	CodeGen::Targets::compile_literal_text(gen, pname, FALSE, FALSE);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::Targets::array_entry(gen, entry, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(entry)
 	pos++;
 
 @ A complete list here would be wasteful both of space and run-time
@@ -802,7 +803,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
-					CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+					CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -816,7 +817,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
-					CodeGen::Targets::array_entry(gen, CodeGen::CL::name(inst_name), WORD_ARRAY_FORMAT);
+					CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(inst_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -830,12 +831,12 @@ linearly with the size of the source text, even though $N$ does.
 			inter_symbol *owner_name =
 				InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
-				CodeGen::Targets::array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+				CodeGen::Targets::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 				pos++;
 				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						CodeGen::Targets::array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+						CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 						pos++;
 					}
 				}
@@ -866,13 +867,13 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		text_stream *OUT = CodeGen::current(gen);
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
-		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined);
+		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined, FALSE);
 		if (defined) {
 			int hex = FALSE;
 			if (Inter::Annotations::find(&(inst_name->ann_set), HEX_IANN)) hex = TRUE;
 			if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
 		}
-		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name));
+		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
 	}
 }
 

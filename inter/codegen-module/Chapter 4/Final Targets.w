@@ -209,33 +209,38 @@ void CodeGen::Targets::offer_pragma(code_generation *gen, inter_tree_node *P, te
 @e END_CONSTANT_MTID
 
 =
-VOID_METHOD_TYPE(BEGIN_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues)
-VOID_METHOD_TYPE(END_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name)
-void CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_name, int continues) {
-	VOID_METHOD_CALL(gen->target, BEGIN_CONSTANT_MTID, gen, const_name, continues);
+VOID_METHOD_TYPE(BEGIN_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me)
+VOID_METHOD_TYPE(END_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me)
+void CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
+	VOID_METHOD_CALL(gen->target, BEGIN_CONSTANT_MTID, gen, const_name, continues, ifndef_me);
 }
-void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_name) {
-	VOID_METHOD_CALL(gen->target, END_CONSTANT_MTID, gen, const_name);
+void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_name, int ifndef_me) {
+	VOID_METHOD_CALL(gen->target, END_CONSTANT_MTID, gen, const_name, ifndef_me);
 }
 
 @
 
 @e BEGIN_FUNCTION_MTID
 @e BEGIN_FUNCTION_CODE_MTID
+@e PLACE_LABEL_MTID
 @e END_FUNCTION_MTID
 
 =
 VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn)
 VOID_METHOD_TYPE(BEGIN_FUNCTION_CODE_MTID, code_generation_target *cgt, code_generation *gen)
-VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, int pass, code_generation *gen)
+VOID_METHOD_TYPE(PLACE_LABEL_MTID, code_generation_target *cgt, code_generation *gen, text_stream *label_name)
+VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn)
 void CodeGen::Targets::begin_function(int pass, code_generation *gen, inter_symbol *fn) {
 	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_MTID, pass, gen, fn);
 }
 void CodeGen::Targets::begin_function_code(code_generation *gen) {
 	VOID_METHOD_CALL(gen->target, BEGIN_FUNCTION_CODE_MTID, gen);
 }
-void CodeGen::Targets::end_function(int pass, code_generation *gen) {
-	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, pass, gen);
+void CodeGen::Targets::place_label(code_generation *gen, text_stream *label_name) {
+	VOID_METHOD_CALL(gen->target, PLACE_LABEL_MTID, gen, label_name);
+}
+void CodeGen::Targets::end_function(int pass, code_generation *gen, inter_symbol *fn) {
+	VOID_METHOD_CALL(gen->target, END_FUNCTION_MTID, pass, gen, fn);
 }
 
 @
@@ -298,6 +303,12 @@ void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name
 }
 void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry, int format) {
 	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry, format);
+}
+void CodeGen::Targets::mangled_array_entry(code_generation *gen, text_stream *entry, int format) {
+	TEMPORARY_TEXT(mangled)
+	CodeGen::Targets::mangle(gen, mangled, entry);
+	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, mangled, format);
+	DISCARD_TEXT(mangled)
 }
 void CodeGen::Targets::end_array(code_generation *gen, int format) {
 	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen, format);

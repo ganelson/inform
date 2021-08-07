@@ -170,8 +170,8 @@
 	step: inter/Tangled/inter -architecture 16d -variable *in=$O -variable *out=$AC -pipeline-file $PC >$TC 2>&1
 	or: 'failed to produce output' $T
 
-	match text: $AC $IC
-	or: 'produced incorrect C code'
+	! match text: $AC $IC
+	! or: 'produced incorrect C code'
 
 	step: clang -std=c99 -c -o $OC $AC -I $I7CLIB >$CTC 2>&1
 	or: 'failed to compile C' $CTC

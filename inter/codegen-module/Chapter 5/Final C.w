@@ -28,6 +28,7 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::C::end_constant);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::C::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::C::begin_function_code);
+	METHOD_ADD(cgt, PLACE_LABEL_MTID, CodeGen::C::place_label);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::C::end_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CodeGen::C::begin_function_call);
 	METHOD_ADD(cgt, ARGUMENT_MTID, CodeGen::C::argument);
@@ -53,11 +54,13 @@ code_generation_target *CodeGen::C::target(void) {
 text_stream *double_quoted_C = NULL;
 int no_double_quoted_C_strings = 0;
 int C_property_enumeration_counter = 0;
+int extent_of_i7mem = 0;
 
 int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[predeclarations_I7CGS] = CodeGen::new_segment();
+	gen->segments[predeclarations_2_I7CGS] = CodeGen::new_segment();
 	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_1_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_2_I7CGS] = CodeGen::new_segment();
@@ -102,10 +105,16 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	WRITE(" = 0;\n");
 	CodeGen::deselect(gen, saved);
 	
+	saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("i7byte i7mem[] = {\n");
+	CodeGen::deselect(gen, saved);
+	extent_of_i7mem = 0;
+	
 	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("int main(int argc, char **argv) { ");
-	CodeGen::C::mangle(cgt, OUT, I"Main");
+	WRITE("fn_"); CodeGen::C::mangle(cgt, OUT, I"Main");
 	WRITE("(0); return 0; }\n");
 	CodeGen::deselect(gen, saved);
 	
@@ -115,7 +124,14 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define I7VAL_STRINGS_BASE %d\n", extent_of_i7mem);
+	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n", extent_of_i7mem + no_double_quoted_C_strings);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", double_quoted_C);
+	CodeGen::deselect(gen, saved);
+	
+	saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("0, 0 };\n");
 	CodeGen::deselect(gen, saved);
 	return FALSE;
 }
@@ -166,6 +182,8 @@ void CodeGen::C::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream 
 	else WRITE("i7_mangled_%S", identifier);
 }
 
+int C_write_lookup_mode = FALSE;
+
 int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -208,12 +226,18 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
 		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
 		case POSTDECREMENT_BIP:	WRITE("("); INV_A1; WRITE(")--"); break;
-		case STORE_BIP:			WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")"); break;
+		case STORE_BIP:			@<Generate primitive for store@>; break;
 		case SETBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" | "); INV_A2; break;
 		case CLEARBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" &~ ("); INV_A2; WRITE(")"); break;
-		case LOOKUP_BIP:		WRITE("(((i7val *) "); INV_A1; WRITE(")["); INV_A2; WRITE("])"); break;
-		case LOOKUPBYTE_BIP:	WRITE("("); INV_A1; WRITE("->("); INV_A2; WRITE("))"); break;
-		case LOOKUPREF_BIP:		WRITE("("); INV_A1; WRITE("-->("); INV_A2; WRITE("))"); break;
+		case LOOKUP_BIP:		if (C_write_lookup_mode) {
+									C_write_lookup_mode = FALSE;
+									@<Generate primitive for lookupref@>;
+								} else {
+									@<Generate primitive for lookup@>;
+								}
+								break;
+		case LOOKUPBYTE_BIP:	@<Generate primitive for lookupbyte@>; break;
+		case LOOKUPREF_BIP:		@<Generate primitive for lookupref@>; break;
 		case PROPERTYADDRESS_BIP: WRITE("("); INV_A1; WRITE(".& "); INV_A2; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("("); INV_A1; WRITE(".# "); INV_A2; WRITE(")"); break;
 		case PROPERTYVALUE_BIP:	WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE(")"); break;
@@ -286,7 +310,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case PRINTPROPERTY_BIP: WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP: WRITE("printf(\"%%d\", (int) "); INV_A1; WRITE(")"); break;
 		case PRINTADDRESS_BIP: WRITE("i7_print_address("); INV_A1; WRITE(")"); break;
-		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE("])"); break;
+		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
 		case PRINTNLNUMBER_BIP: WRITE("i7_print_number("); INV_A1; WRITE(")"); break;
 		case PRINTDEF_BIP: WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
 		case PRINTCDEF_BIP: WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
@@ -317,6 +341,23 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 	return suppress_terminal_semicolon;
 }
 
+@<Generate primitive for store@> =
+	inter_tree_node *ref = InterTree::first_child(P);
+	if (CodeGen::C::basically_an_array_write(gen->from, ref)) {
+		WRITE("("); C_write_lookup_mode = TRUE; INV_A1; C_write_lookup_mode = FALSE; INV_A2; WRITE("))");
+	} else {
+		WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")");
+	}
+
+@<Generate primitive for lookup@> =
+	WRITE("i7_lookup(i7mem, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+
+@<Generate primitive for lookupref@> =
+	WRITE("write_i7_lookup(i7mem, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+	
+@<Generate primitive for lookupbyte@> =
+	WRITE("i7mem["); INV_A1; WRITE(" + "); INV_A2; WRITE("]");
+
 @<Generate primitive for return@> =
 	int rboolean = NOT_APPLICABLE;
 	inter_tree_node *V = InterTree::first_child(P);
@@ -334,7 +375,6 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case NOT_APPLICABLE: WRITE("return (i7val) "); CodeGen::FC::frame(gen, V); break;
 	}
 	
-
 @ Here we need some gymnastics. We need to produce a value which the
 sometimes shaky I6 expression parser will accept, which turns out to be
 quite a constraint. If we were compiling to C, we might try this:
@@ -500,7 +540,7 @@ void CodeGen::C::compile_literal_text(code_generation_target *cgt, code_generati
 	text_stream *OUT = CodeGen::current(gen);
 	
 	if (printing_mode == FALSE) {
-		WRITE("%d", no_double_quoted_C_strings++);
+		WRITE("(I7VAL_STRINGS_BASE + %d)", no_double_quoted_C_strings++);
 		OUT = double_quoted_C;
 	}
 	
@@ -592,41 +632,47 @@ int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *g
 		CodeGen::deselect(gen, saved);
 	}
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
-		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
-		text_stream *OUT = CodeGen::current(gen);
 		if (k == 0) CodeGen::C::begin_array(cgt, gen, I"Global_Vars", WORD_ARRAY_FORMAT);
-		else WRITE(", ");
-		inter_symbols_table *globals = Inter::Packages::scope_of(P);
-		CodeGen::CL::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
-		WRITE(" // -->%d = %S (%S)\n", k, CodeGen::CL::name(var_name), var_name->symbol_name);
+		TEMPORARY_TEXT(val)
+		CodeGen::select_temporary(gen, val);
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+		CodeGen::deselect_temporary(gen);
+		CodeGen::C::array_entry(cgt, gen, val, WORD_ARRAY_FORMAT);
+		DISCARD_TEXT(val)
 		k++;
 		if (k == of) {
 			if (k < 2) {
-				CodeGen::C::array_entry(cgt, gen, I"NULL", WORD_ARRAY_FORMAT);
-				CodeGen::C::array_entry(cgt, gen, I"NULL", WORD_ARRAY_FORMAT);
+				CodeGen::C::array_entry(cgt, gen, I"0", WORD_ARRAY_FORMAT);
+				CodeGen::C::array_entry(cgt, gen, I"0", WORD_ARRAY_FORMAT);
 			}
 			CodeGen::C::end_array(cgt, gen, WORD_ARRAY_FORMAT);
 		}
-		CodeGen::deselect(gen, saved);
 	}
 	return k;
 }
 
-void CodeGen::C::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
+void CodeGen::C::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
+	if (ifndef_me) {
+		WRITE("#ifndef ");
+		CodeGen::C::mangle(cgt, OUT, const_name);
+		WRITE("\n");
+	}
 	WRITE("#define ");
 	CodeGen::C::mangle(cgt, OUT, const_name);
 	if (continues) WRITE(" ");
 }
-void CodeGen::C::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name) {
+void CodeGen::C::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\n");
+	if (ifndef_me) WRITE("#endif\n");
 }
 
 text_stream *C_fn_prototype = NULL;
 int C_fn_parameter_count = 0;
 
 typedef struct final_c_function {
+	struct text_stream *identifier_as_constant;
 	int max_arity;
 	CLASS_DEFINITION
 } final_c_function;
@@ -639,16 +685,17 @@ void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_gene
 	if (pass == 1) {
 		C_fn_being_found = CREATE(final_c_function);
 		C_fn_being_found->max_arity = 0;
+		C_fn_being_found->identifier_as_constant = Str::duplicate(fn_name);
 		fn->translation_data = STORE_POINTER_final_c_function(C_fn_being_found);
 		if (C_fn_prototype == NULL) C_fn_prototype = Str::new();
 		Str::clear(C_fn_prototype); 
-		WRITE_TO(C_fn_prototype, "i7val ");
+		WRITE_TO(C_fn_prototype, "i7val fn_");
 		CodeGen::C::mangle(cgt, C_fn_prototype, fn_name);
 		WRITE_TO(C_fn_prototype, "(int __argc");
 	}
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("i7val ");
+		WRITE("i7val fn_");
 		CodeGen::C::mangle(cgt, OUT, fn_name);
 		WRITE("(int __argc");
 	}
@@ -656,26 +703,28 @@ void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_gene
 
 void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-/*	if (C_fn_parameter_count == 0) {
-		WRITE("void");
-		WRITE_TO(C_fn_prototype, "void");
-	}
-*/
 	WRITE(") {");
-//	WRITE_TO(C_fn_prototype, ");\n");
 }
 
-void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_generation *gen) {
+void CodeGen::C::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	LOOP_THROUGH_TEXT(pos, label_name)
+		if (Str::get(pos) != '.')
+			PUT(Str::get(pos));
+	WRITE(": ;\n", label_name);
+}
+
+void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 1) {
-/*		if (C_fn_parameter_count == 0) {
-			WRITE_TO(C_fn_prototype, "void");
-		}
-*/
 		WRITE_TO(C_fn_prototype, ")");
 
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("%S;\n", C_fn_prototype);
+		final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
+		WRITE("#define ");
+		CodeGen::C::mangle(cgt, OUT, fcf->identifier_as_constant);
+		WRITE(" (I7VAL_FUNCTIONS_BASE + %d)\n", fcf->allocation_id);
 		CodeGen::deselect(gen, saved);
 	}
 	if (pass == 2) {
@@ -687,6 +736,7 @@ void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_genera
 void CodeGen::C::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE("fn_");
 	CodeGen::C::mangle(cgt, OUT, fn_name);
 	WRITE("(%d", argc);
 }
@@ -711,9 +761,13 @@ void CodeGen::C::end_function_call(code_generation_target *cgt, code_generation 
 	}
 }
 
-int C_operand_count = 0;
+int C_operand_count = 0, C_operand_branches = FALSE; inter_tree_node *C_operand_label = NULL;
 void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
 	text_stream *OUT = CodeGen::current(gen);
+	C_operand_branches = FALSE;
+	C_operand_label = NULL;
+	if (Str::get_at(opcode, 1) == 'j') { C_operand_branches = TRUE; WRITE_TO(STDERR, "Hey %S\n", opcode); }
+	if (C_operand_branches) WRITE("if (");
 	WRITE("glulx_");
 	LOOP_THROUGH_TEXT(pos, opcode)
 		if (Str::get(pos) != '@')
@@ -722,13 +776,23 @@ void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen,
 }
 void CodeGen::C::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (C_operand_count++ > 0) WRITE(", ");
-	if (is_label) WRITE("?");
-	CodeGen::FC::frame(gen, F);
+	if (C_operand_branches) { WRITE_TO(STDERR, "Hey operand %d\n", is_label); }
+	if (is_label) {
+		C_operand_label = F;
+	} else {
+		if (C_operand_count++ > 0) WRITE(", ");
+		CodeGen::FC::frame(gen, F);
+	}
 }
 void CodeGen::C::end_opcode(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(");");
+	WRITE(")");
+	if (C_operand_branches) {
+		if (negate_label_mode) WRITE(" == FALSE");
+		WRITE(") goto ");
+		if (C_operand_label == NULL) internal_error("no branch label");
+		CodeGen::FC::frame(gen, C_operand_label);
+	}
 }
 
 void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,
@@ -747,42 +811,65 @@ void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,
 }
 
 int C_array_entry_count = 0;
-text_stream *C_array_entries = NULL;
+text_stream *C_array_name = NULL;
 
 void CodeGen::C::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name, int format) {
-	if (C_array_entries == NULL) C_array_entries = Str::new();
-	Str::clear(C_array_entries); C_array_entry_count = 0;
-	text_stream *entry_type = I"i7val";
-	text_stream *OUT = CodeGen::current(gen);
-	switch (format) {
-		case WORD_ARRAY_FORMAT: entry_type = I"i7val"; break;
-		case BYTE_ARRAY_FORMAT: entry_type = I"i7byte"; break;
-		case TABLE_ARRAY_FORMAT: entry_type = I"i7val"; break;
-		case BUFFER_ARRAY_FORMAT: entry_type = I"i7byte"; break;
-	}
-	WRITE("%S ", entry_type);
-	CodeGen::C::mangle(cgt, OUT, array_name);
-	WRITE("[] = { ");
-
 	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("%S ", entry_type);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define ");
 	CodeGen::C::mangle(cgt, OUT, array_name);
-	WRITE("[];\n");
+	WRITE(" %d // An array in format %d\n", extent_of_i7mem, format);
 	CodeGen::deselect(gen, saved);
+
+	if (C_array_name == NULL) C_array_name = Str::new();
+	Str::clear(C_array_name); WRITE_TO(C_array_name, "%S", array_name);
+	C_array_entry_count = 0;
+
+	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT)) {
+		TEMPORARY_TEXT(extname)
+		WRITE_TO(extname, "xt_%S", array_name);
+		CodeGen::C::array_entry(cgt, gen, extname, format);
+		DISCARD_TEXT(extname)
+	}
 }
 
 void CodeGen::C::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
-	if (C_array_entry_count++ > 0) WRITE_TO(C_array_entries, ", ");
-	WRITE_TO(C_array_entries, "%S", entry);
+	generated_segment *saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	if ((format == TABLE_ARRAY_FORMAT) || (format == WORD_ARRAY_FORMAT)) {
+		WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S),\n",
+			entry, entry, entry, entry);
+		extent_of_i7mem += 4;
+	} else {
+		WRITE("    (i7byte) %S,\n", entry);
+		extent_of_i7mem += 1;
+	}
+	CodeGen::deselect(gen, saved);
+	C_array_entry_count++;
 }
 
 void CodeGen::C::end_array(code_generation_target *cgt, code_generation *gen, int format) {
+	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT)) {
-		WRITE("%d", C_array_entry_count++);
-		if (C_array_entry_count > 1) WRITE(", ");
+		WRITE("#define xt_%S %d\n", C_array_name, C_array_entry_count-1);
 	}
-	WRITE("%S", C_array_entries);
-	WRITE(" };\n");
+	CodeGen::deselect(gen, saved);
+}
+
+int CodeGen::C::basically_an_array_write(inter_tree *I, inter_tree_node *P) {
+	int reffed = FALSE;
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) {
+		P = InterTree::first_child(P);
+		reffed = TRUE;
+	}
+	if (P->W.data[ID_IFLD] == INV_IST) {
+		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(P);
+			inter_ti bip = Primitives::to_bip(I, prim);
+			if (bip == LOOKUPREF_BIP) return TRUE;
+			if ((bip == LOOKUP_BIP) && (reffed)) return TRUE;
+		}
+	}
+	return FALSE;
 }

@@ -5,8 +5,11 @@ packagetype _linkage
 primitive !print val -> void
 primitive !quit void -> void
 primitive !lookup val val -> val
+primitive !lookupref val val -> ref
+primitive !lookupbyte val val -> val
 primitive !printnumber val -> void
 primitive !printstring val -> void
+primitive !store ref val -> val
 
 package main _plain
 	package resources _plain
@@ -16,11 +19,19 @@ package main _plain
 		kind K_list_of_values list of K_unchecked
 		constant thirteen K_number = 13
 		constant primes K_list_of_values = { 2, 3, 5, "seven", 11, thirteen }
+		constant twins K_list_of_values = { 3, 5, 5, 7, 11, 13, 17, 19 } __byte_array=1
+		constant carmichaels K_list_of_values = { 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657 } __table_array=1
+		constant triangles K_list_of_values = { 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120, 136, 153, 171, 190, 210, 231 } __buffer_array=1
+		constant mutable K_list_of_values = { 10, 20, 30 }
 		package Main_B _code
 			symbol external misc K_unchecked --> /main/resources/K_unchecked
 			symbol external misc K_number --> /main/resources/K_number
 			symbol external misc K_list_of_values --> /main/resources/K_list_of_values
 			symbol external misc primes
+			symbol external misc twins
+			symbol external misc carmichaels
+			symbol external misc triangles
+			symbol external misc mutable
 			code
 				inv !print
 					val K_unchecked "The third prime is: "
@@ -44,6 +55,63 @@ package main _plain
 					inv !lookup
 						val K_list_of_values primes
 						val K_number 5
+				inv !print
+					val K_unchecked ".\n"
+				inv !print
+					val K_unchecked "The second pair of twins is: "
+				inv !printnumber
+					inv !lookupbyte
+						val K_list_of_values twins
+						val K_number 2
+				inv !print
+					val K_unchecked ", "
+				inv !printnumber
+					inv !lookupbyte
+						val K_list_of_values twins
+						val K_number 3
+				inv !print
+					val K_unchecked ".\n"
+				inv !print
+					val K_unchecked "I knaw of "
+				inv !printnumber
+					inv !lookup
+						val K_list_of_values carmichaels
+						val K_number 0
+				inv !print
+					val K_unchecked " Carmichael numbers.\n"
+				inv !print
+					val K_unchecked "I knaw of "
+				inv !printnumber
+					inv !lookupbyte
+						val K_list_of_values triangles
+						val K_number 0
+				inv !print
+					val K_unchecked " triangle numbers.\n"
+				inv !store
+					inv !lookupref
+						val K_list_of_values mutable
+						val K_number 1
+					val K_number 666
+				inv !print
+					val K_unchecked "As mutated, middle entry is: "
+				inv !printnumber
+					inv !lookup
+						val K_list_of_values mutable
+						val K_number 1
+				inv !print
+					val K_unchecked ".\n"
+				inv !store
+					reference
+						inv !lookup
+							val K_list_of_values mutable
+							val K_number 1
+					val K_number 777
+				inv !print
+					val K_unchecked "As mutated, middle entry is: "
+				inv !printnumber
+					inv !lookup
+						val K_list_of_values mutable
+						val K_number 1
 				inv !print
 					val K_unchecked ".\n"
 				inv !quit

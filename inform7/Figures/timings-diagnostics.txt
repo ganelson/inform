@@ -1,7 +1,7 @@
 100.0% in inform7 run
      55.6% in compilation to Inter
-         40.6% in //Sequence::undertake_queued_tasks//
-          3.3% in //MajorNodes::pre_pass//
+         40.5% in //Sequence::undertake_queued_tasks//
+          3.5% in //MajorNodes::pre_pass//
           2.5% in //MajorNodes::pass_1//
           1.5% in //RTPhrasebook::compile_entries//
           1.4% in //ImperativeDefinitions::assess_all//
@@ -18,10 +18,10 @@
           0.1% in //World::stages_II_and_III//
           2.1% not specifically accounted for
      42.4% in running Inter pipeline
-         10.9% in step preparation
-          9.7% in inter step 7/14: consolidate-text
+         10.8% in step preparation
+          9.8% in inter step 7/14: consolidate-text
+          8.0% in inter step 14/14: generate inform6 -> auto.inf
           8.0% in inter step 2/14: link
-          7.7% in inter step 14/14: generate inform6 -> auto.inf
           1.5% in inter step 10/14: make-identifiers-unique
           0.4% in inter step 11/14: reconcile-verbs
           0.2% in inter step 13/14: eliminate-redundant-operations
@@ -29,9 +29,8 @@
           0.2% in inter step 8/14: resolve-external-symbols
           0.2% in inter step 9/14: inspect-plugs
           0.1% in inter step 12/14: eliminate-redundant-labels
-          0.1% in inter step 3/14: merge-template <- none
           0.1% in inter step 4/14: parse-linked-matter
           0.1% in inter step 5/14: resolve-conditional-compilation
-          2.2% not specifically accounted for
+          2.3% not specifically accounted for
       1.6% in supervisor
-      0.2% not specifically accounted for
+      0.3% not specifically accounted for

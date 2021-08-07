@@ -28,6 +28,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CodeGen::I6::begin_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::I6::begin_function_code);
+	METHOD_ADD(cgt, PLACE_LABEL_MTID, CodeGen::I6::place_label);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CodeGen::I6::begin_function_call);
 	METHOD_ADD(cgt, ARGUMENT_MTID, CodeGen::I6::argument);
@@ -72,6 +73,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e constants_8_I7CGS
 @e constants_9_I7CGS
 @e constants_10_I7CGS
+@e predeclarations_2_I7CGS
 @e early_matter_I7CGS
 @e text_literals_code_I7CGS
 @e summations_at_eof_I7CGS
@@ -88,6 +90,7 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[predeclarations_I7CGS] = CodeGen::new_segment();
+	gen->segments[predeclarations_2_I7CGS] = CodeGen::new_segment();
 	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_1_I7CGS] = CodeGen::new_segment();
 	gen->segments[constants_2_I7CGS] = CodeGen::new_segment();
@@ -626,14 +629,16 @@ void CodeGen::I6::declare_local_variable(code_generation_target *cgt, int pass,
 	}
 }
 
-void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues) {
+void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
+	if (ifndef_me) WRITE("#ifndef %S;\n", const_name);
 	WRITE("Constant %S", const_name);
 	if (continues) WRITE(" = ");
 }
-void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name) {
+void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
+	if (ifndef_me) WRITE("#endif;\n");
 }
 
 void CodeGen::I6::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
@@ -647,7 +652,11 @@ void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generati
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";");
 }
-void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen) {
+void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("%S;\n", label_name);
+}
+void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("];");
@@ -671,10 +680,11 @@ void CodeGen::I6::end_function_call(code_generation_target *cgt, code_generation
 
 void CodeGen::I6::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S ", opcode);
+	WRITE("%S", opcode);
 }
 void CodeGen::I6::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" ");
 	if (is_label) WRITE("?");
 	CodeGen::FC::frame(gen, F);
 }
