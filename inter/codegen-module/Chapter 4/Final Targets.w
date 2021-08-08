@@ -162,11 +162,16 @@ void CodeGen::Targets::compile_literal_text(code_generation *gen, text_stream *S
 @
 
 @e DECLARE_PROPERTY_MTID
+@e DECLARE_ATTRIBUTE_MTID
 
 =
 VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, int used)
+VOID_METHOD_TYPE(DECLARE_ATTRIBUTE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *prop_name)
 void CodeGen::Targets::declare_property(code_generation *gen, inter_symbol *prop_name, int used) {
 	VOID_METHOD_CALL(gen->target, DECLARE_PROPERTY_MTID, gen, prop_name, used);
+}
+void CodeGen::Targets::declare_attribute(code_generation *gen, text_stream *prop_name) {
+	VOID_METHOD_CALL(gen->target, DECLARE_ATTRIBUTE_MTID, gen, prop_name);
 }
 
 @
@@ -191,6 +196,21 @@ int CodeGen::Targets::declare_variable(code_generation *gen, inter_tree_node *P,
 }
 void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
 	VOID_METHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, pass, gen, P, var_name);
+}
+
+@
+
+@e DECLARE_CLASS_MTID
+@e END_CLASS_MTID
+
+=
+VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
+VOID_METHOD_TYPE(END_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
+void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_name) {
+	VOID_METHOD_CALL(gen->target, DECLARE_CLASS_MTID, gen, class_name);
+}
+void CodeGen::Targets::end_class(code_generation *gen, text_stream *class_name) {
+	VOID_METHOD_CALL(gen->target, END_CLASS_MTID, gen, class_name);
 }
 
 @

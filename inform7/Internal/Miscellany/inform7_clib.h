@@ -4,6 +4,8 @@
 typedef int i7val;
 typedef unsigned char i7byte;
 
+i7val i7_tmp = 0;
+
 #define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
 #define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
@@ -92,7 +94,7 @@ int glulx_jeq(i7val x, i7val y) {
 	return 0;
 }
 
-int glulx_jfeq(i7val x, i7val y) {
+int glulx_jfeq(i7val x, i7val y, i7val z) {
 	printf("Unimplemented.\n");
 	return 0;
 }
@@ -262,4 +264,24 @@ i7val i7_pull(void) {
 
 void i7_push(i7val x) {
 	printf("Unimplemented.\n");
+}
+
+i7val i7_prop_value(i7val obj, i7val pr) {
+	printf("Unimplemented.\n");
+	return 0;
+}
+
+i7val i7_prop_len(i7val obj, i7val pr) {
+	printf("Unimplemented.\n");
+	return 0;
+}
+
+i7val i7_prop_addr(i7val obj, i7val pr) {
+	printf("Unimplemented.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_metaclass(int n, i7val v) {
+	printf("Unimplemented.\n");
+	return 0;
 }

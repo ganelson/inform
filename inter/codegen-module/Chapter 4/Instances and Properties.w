@@ -239,10 +239,10 @@ in the I6 template, or some extension), and we therefore do nothing.
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
 		if (A == NULL) A = CodeGen::CL::name(prop_name);
-		WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", A);
+		CodeGen::Targets::declare_attribute(gen, A);
 	} else {
 		if (translated == FALSE)
-			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", CodeGen::CL::name(prop_name));
+			CodeGen::Targets::declare_attribute(gen, CodeGen::CL::name(prop_name));
 	}
 	CodeGen::deselect(gen, saved);
 
@@ -546,7 +546,8 @@ legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
 
 @<Define the I6 VPH class@> =
-	WRITE("Class VPH_Class;\n");
+	CodeGen::Targets::declare_class(gen, I"VPH_Class");
+	CodeGen::Targets::end_class(gen, I"VPH_Class");
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<no_kind_frames; i++) {
@@ -682,14 +683,14 @@ because I6 doesn't allow function calls in a constant context.
 		inter_symbol *kind_name = kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
 			(CodeGen::IP::is_kind_of_object(kind_name))) {
-			WRITE("Class %S\n", CodeGen::CL::name(kind_name));
+			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name));
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) WRITE("    class %S\n", CodeGen::CL::name(super_name));
 			CodeGen::IP::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(gen, FL);
-			WRITE(";\n\n");
+			CodeGen::Targets::end_class(gen, CodeGen::CL::name(kind_name));
 		}
 	}
 

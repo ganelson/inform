@@ -21,8 +21,11 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CodeGen::C::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::C::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::C::declare_property);
+	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CodeGen::C::declare_attribute);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::C::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::C::declare_variable);
+	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::C::declare_class);
+	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::C::end_class);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::C::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::C::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::C::end_constant);
@@ -55,6 +58,7 @@ text_stream *double_quoted_C = NULL;
 int no_double_quoted_C_strings = 0;
 int C_property_enumeration_counter = 0;
 int extent_of_i7mem = 0;
+int C_class_counter = 0;
 
 int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
@@ -85,6 +89,8 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 
 	double_quoted_C = Str::new();
 	no_double_quoted_C_strings = 0;
+	
+	C_class_counter = 0;
 	
 	C_property_enumeration_counter = 0;
 
@@ -179,7 +185,12 @@ void CodeGen::C::offer_pragma(code_generation_target *cgt, code_generation *gen,
 
 void CodeGen::C::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
 	if (Str::get_first_char(identifier) == '(') WRITE("%S", identifier);
-	else WRITE("i7_mangled_%S", identifier);
+	else if (Str::get_first_char(identifier) == '#') {
+		WRITE("i7_mgl_sharp_");
+		LOOP_THROUGH_TEXT(pos, identifier)
+			if (Str::get(pos) != '#')
+				PUT(Str::get(pos));
+	} else WRITE("i7_mgl_%S", identifier);
 }
 
 int C_write_lookup_mode = FALSE;
@@ -206,18 +217,18 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case NOT_BIP:			WRITE("(~~("); INV_A1; WRITE("))"); break;
 		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
 		case OR_BIP: 			WRITE("(("); INV_A1; WRITE(") || ("); INV_A2; WRITE("))"); break;
-		case EQ_BIP: 			WRITE("("); INV_A1; WRITE(" == "); INV_A2; WRITE(")"); break;
-		case NE_BIP: 			WRITE("("); INV_A1; WRITE(" != "); INV_A2; WRITE(")"); break;
-		case GT_BIP: 			WRITE("("); INV_A1; WRITE(" > "); INV_A2; WRITE(")"); break;
-		case GE_BIP: 			WRITE("("); INV_A1; WRITE(" >= "); INV_A2; WRITE(")"); break;
-		case LT_BIP: 			WRITE("("); INV_A1; WRITE(" < "); INV_A2; WRITE(")"); break;
-		case LE_BIP: 			WRITE("("); INV_A1; WRITE(" <= "); INV_A2; WRITE(")"); break;
-		case OFCLASS_BIP:		WRITE("(i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
-		case HAS_BIP:			WRITE("(i7_has("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
-		case HASNT_BIP:			WRITE("(i7_has("); INV_A1; WRITE(", "); INV_A2; WRITE(") == FALSE)"); break;
-		case IN_BIP:			WRITE("(i7_in("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
-		case NOTIN_BIP:			WRITE("(i7_in("); INV_A1; WRITE(", "); INV_A2; WRITE(") == FALSE)"); break;
-		case PROVIDES_BIP:		WRITE("(i7_provides("); INV_A1; WRITE(", "); INV_A2; WRITE("))"); break;
+		case EQ_BIP: 			@<Generate comparison@>; break;
+		case NE_BIP: 			@<Generate comparison@>; break;
+		case GT_BIP: 			@<Generate comparison@>; break;
+		case GE_BIP: 			@<Generate comparison@>; break;
+		case LT_BIP: 			@<Generate comparison@>; break;
+		case LE_BIP: 			@<Generate comparison@>; break;
+		case OFCLASS_BIP:		@<Generate comparison@>; break;
+		case HAS_BIP:			@<Generate comparison@>; break;
+		case HASNT_BIP:			@<Generate comparison@>; break;
+		case IN_BIP:			@<Generate comparison@>; break;
+		case NOTIN_BIP:			@<Generate comparison@>; break;
+		case PROVIDES_BIP:		@<Generate comparison@>; break;
 		case ALTERNATIVE_BIP:	INV_A1; WRITE(" or "); INV_A2; break;
 
 		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
@@ -238,9 +249,9 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 								break;
 		case LOOKUPBYTE_BIP:	@<Generate primitive for lookupbyte@>; break;
 		case LOOKUPREF_BIP:		@<Generate primitive for lookupref@>; break;
-		case PROPERTYADDRESS_BIP: WRITE("("); INV_A1; WRITE(".& "); INV_A2; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("("); INV_A1; WRITE(".# "); INV_A2; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE(")"); break;
+		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case PROPERTYVALUE_BIP:	WRITE("i7_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
@@ -340,6 +351,9 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 	}
 	return suppress_terminal_semicolon;
 }
+
+@<Generate comparison@> =
+	CodeGen::C::comparison(cgt, gen, bip, InterTree::first_child(P), InterTree::second_child(P));
 
 @<Generate primitive for store@> =
 	inter_tree_node *ref = InterTree::first_child(P);
@@ -490,12 +504,77 @@ then the result.
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for case@> =
-	WRITE("case "); INV_A1; WRITE(":\n"); INDENT; INV_A2; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
+	CodeGen::C::caser(cgt, gen,  InterTree::first_child(P));
+	INDENT; INV_A2; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for default@> =
 	WRITE("default:\n"); INDENT; INV_A1; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
+
+@ =
+void CodeGen::C::caser(code_generation_target *cgt, code_generation *gen, inter_tree_node *X) {
+	if (X->W.data[ID_IFLD] == INV_IST) {
+		if (X->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(X);
+			inter_ti xbip = Primitives::to_bip(gen->from, prim);
+			if (xbip == ALTERNATIVECASE_BIP) {
+				CodeGen::C::caser(cgt, gen, InterTree::first_child(X));
+				CodeGen::C::caser(cgt, gen, InterTree::second_child(X));
+				return;
+			}
+		}
+	}
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("case ");
+	CodeGen::FC::frame(gen, X);
+	WRITE(": ");
+}
+
+void CodeGen::C::comparison(code_generation_target *cgt, code_generation *gen,
+	inter_ti bip, inter_tree_node *X, inter_tree_node *Y) {
+	CodeGen::C::comparison_r(cgt, gen, bip, X, Y, 0);
+}
+
+void CodeGen::C::comparison_r(code_generation_target *cgt, code_generation *gen,
+	inter_ti bip, inter_tree_node *X, inter_tree_node *Y, int depth) {
+	if (Y->W.data[ID_IFLD] == INV_IST) {
+		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(Y);
+			inter_ti ybip = Primitives::to_bip(gen->from, prim);
+			if (ybip == ALTERNATIVE_BIP) {
+				text_stream *OUT = CodeGen::current(gen);
+				if (depth == 0) { WRITE("(i7_tmp = "); CodeGen::FC::frame(gen, X); WRITE(", ("); }
+				CodeGen::C::comparison_r(cgt, gen, bip, NULL, InterTree::first_child(Y), depth+1);
+				WRITE(" || ");
+				CodeGen::C::comparison_r(cgt, gen, bip, NULL, InterTree::second_child(Y), depth+1);
+				if (depth == 0) { WRITE("))"); }
+				return;
+			}
+		}
+	}
+	text_stream *OUT = CodeGen::current(gen);
+	switch (bip) {
+		case EQ_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" == "); @<Compile second compared@>; WRITE(")"); break;
+		case NE_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" != "); @<Compile second compared@>; WRITE(")"); break;
+		case GT_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" > "); @<Compile second compared@>; WRITE(")"); break;
+		case GE_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" >= "); @<Compile second compared@>; WRITE(")"); break;
+		case LT_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" < "); @<Compile second compared@>; WRITE(")"); break;
+		case LE_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" <= "); @<Compile second compared@>; WRITE(")"); break;
+		case OFCLASS_BIP:		WRITE("(i7_ofclass("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
+		case HAS_BIP:			WRITE("(i7_has("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
+		case HASNT_BIP:			WRITE("(i7_has("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == FALSE)"); break;
+		case IN_BIP:			WRITE("(i7_in("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
+		case NOTIN_BIP:			WRITE("(i7_in("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == FALSE)"); break;
+		case PROVIDES_BIP:		WRITE("(i7_provides("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
+	}
+}
+
+@<Compile first compared@> =
+	if (X) CodeGen::FC::frame(gen, X); else WRITE("i7_tmp");
+
+@<Compile second compared@> =
+	CodeGen::FC::frame(gen, Y);
 
 @
 
@@ -583,15 +662,16 @@ trick called "stubbing", these being "stub definitions".)
 void CodeGen::C::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
-	text_stream *OUT = CodeGen::current(gen);
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
 		CodeGen::C::mangle(cgt, OUT, name);
-		WRITE(" %d", C_property_enumeration_counter++);
+		WRITE(" %d\n", C_property_enumeration_counter++);
 		CodeGen::deselect(gen, saved);
 	} else {
-		generated_segment *saved = CodeGen::select(gen, code_at_eof_I7CGS);
+		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#ifndef ");
 		CodeGen::C::mangle(cgt, OUT, name);
 		WRITE("\n#define ");
@@ -599,6 +679,16 @@ void CodeGen::C::declare_property(code_generation_target *cgt, code_generation *
 		WRITE(" 0\n#endif\n");
 		CodeGen::deselect(gen, saved);
 	}
+}
+
+void CodeGen::C::declare_attribute(code_generation_target *cgt, code_generation *gen,
+	text_stream *prop_name) {
+	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define ");
+	CodeGen::C::mangle(cgt, OUT, prop_name);
+	WRITE(" %d\n", C_property_enumeration_counter++);
+	CodeGen::deselect(gen, saved);
 }
 
 @
@@ -808,6 +898,33 @@ void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,
 		WRITE(", i7val ");
 		CodeGen::C::mangle(cgt, OUT, var_name->symbol_name);
 	}
+}
+
+void CodeGen::C::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+	C_class_counter++;
+	if (C_class_counter == 1) {
+		CodeGen::C::declare_class_inner(cgt, gen, I"Class");
+		C_class_counter++;
+		CodeGen::C::declare_class_inner(cgt, gen, I"Object");
+		C_class_counter++;
+		CodeGen::C::declare_class_inner(cgt, gen, I"String");
+		C_class_counter++;
+		CodeGen::C::declare_class_inner(cgt, gen, I"Routine");
+		C_class_counter++;
+	}
+	CodeGen::C::declare_class_inner(cgt, gen, class_name);
+}
+
+void CodeGen::C::declare_class_inner(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define ");
+	CodeGen::C::mangle(cgt, OUT, class_name);
+	WRITE(" %d\n", C_class_counter);
+	CodeGen::deselect(gen, saved);
+}
+
+void CodeGen::C::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
 }
 
 int C_array_entry_count = 0;

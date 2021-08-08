@@ -21,8 +21,11 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CodeGen::I6::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
+	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CodeGen::I6::declare_attribute);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
+	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::I6::declare_class);
+	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::I6::end_class);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
@@ -577,6 +580,11 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 	}
 }
 
+void CodeGen::I6::declare_attribute(code_generation_target *cgt, code_generation *gen,
+	text_stream *prop_name) {
+	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", prop_name);
+}
+
 @
 
 =
@@ -619,6 +627,16 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 		CodeGen::deselect(gen, saved);
 	}
 	return k;
+}
+
+void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Class %S", class_name);
+}
+
+void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";\n");
 }
 
 void CodeGen::I6::declare_local_variable(code_generation_target *cgt, int pass,
