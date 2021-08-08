@@ -205,6 +205,7 @@ void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, in
 @e DECLARE_INSTANCE_MTID
 @e END_INSTANCE_MTID
 @e ASSIGN_PROPERTY_MTID
+@e PROPERTY_OFFSET_MTID
 
 =
 VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
@@ -232,6 +233,11 @@ void CodeGen::Targets::assign_mangled_property(code_generation *gen, text_stream
 	CodeGen::Targets::mangle(gen, mangled, val);
 	CodeGen::Targets::assign_property(gen, property_name, mangled, as_att);
 	DISCARD_TEXT(mangled)
+}
+
+VOID_METHOD_TYPE(PROPERTY_OFFSET_MTID, code_generation_target *cgt, code_generation *gen, text_stream *property_name, int pos, int as_att)
+void CodeGen::Targets::property_offset(code_generation *gen, text_stream *property_name, int pos, int as_att) {
+	VOID_METHOD_CALL(gen->target, PROPERTY_OFFSET_MTID, gen, property_name, pos, as_att);
 }
 
 @

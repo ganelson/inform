@@ -22,6 +22,7 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::C::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::C::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CodeGen::C::declare_attribute);
+	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CodeGen::C::property_offset);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::C::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::C::declare_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::C::declare_class);
@@ -93,6 +94,7 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[property_offset_creator_I7CGS] = CodeGen::new_segment();
 	gen->segments[c_mem_I7CGS] = CodeGen::new_segment();
 	gen->segments[c_initialiser_I7CGS] = CodeGen::new_segment();
 
@@ -153,6 +155,24 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	WRITE("i7val ref = 0;\n");
 	CodeGen::deselect(gen, saved);
 	
+	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("i7val fn_");
+	CodeGen::C::mangle(cgt, OUT, I"CreatePropertyOffsets");
+	WRITE("(int argc) {\n"); INDENT;
+	WRITE("for (int i=0; i<");
+	CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets_SIZE");
+	WRITE("; i++)"); INDENT;
+	WRITE("write_i7_lookup(i7mem, ");
+	CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets");
+	WRITE(", i, -1);\n"); OUTDENT;
+	WRITE("for (int i=0; i<");
+	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets_SIZE");
+	WRITE("; i++)"); INDENT;
+	WRITE("write_i7_lookup(i7mem, ");
+	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
+	WRITE(", i, -1);\n"); OUTDENT;
+	CodeGen::deselect(gen, saved);
 	return FALSE;
 }
 
@@ -172,6 +192,13 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 	saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("return ref;\n");
+	WRITE("}\n");
+	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("return 0;\n");
+	OUTDENT;
 	WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 	return FALSE;
@@ -730,6 +757,18 @@ void CodeGen::C::declare_attribute(code_generation_target *cgt, code_generation 
 	CodeGen::deselect(gen, saved);
 }
 
+void CodeGen::C::property_offset(code_generation_target *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
+	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("write_i7_lookup(i7mem, ");
+	if (as_attr) CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets");
+	else CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
+	WRITE(", ");
+	CodeGen::C::mangle(cgt, OUT, prop);
+	WRITE(", %d);\n", pos);
+	CodeGen::deselect(gen, saved);
+}
+
 @
 
 =
@@ -844,6 +883,7 @@ void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_gene
 		WRITE_TO(C_fn_prototype, "(int __argc");
 	}
 	if (pass == 2) {
+		C_fn_being_found = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("i7val fn_");
 		CodeGen::C::mangle(cgt, OUT, fn_name);
@@ -854,6 +894,11 @@ void CodeGen::C::begin_function(code_generation_target *cgt, int pass, code_gene
 void CodeGen::C::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(") {");
+	if (C_fn_being_found) {
+		if (FALSE) {
+			WRITE("printf(\"called %S\\n\");\n", C_fn_being_found->identifier_as_constant);
+		}
+	}
 }
 
 void CodeGen::C::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
@@ -883,6 +928,16 @@ void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_genera
 }
 
 void CodeGen::C::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+	inter_tree_node *D = fn->definition;
+	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) && (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
+		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+			inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(D));
+			if (aliased) fn = aliased;
+		}
+	}
+
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("fn_");
@@ -932,6 +987,7 @@ void CodeGen::C::end_function_call(code_generation_target *cgt, code_generation 
 }
 
 int C_operand_count = 0, C_operand_branches = FALSE; inter_tree_node *C_operand_label = NULL;
+int C_pointer_on_operand = -1;
 void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
 	text_stream *OUT = CodeGen::current(gen);
 	C_operand_branches = FALSE;
@@ -943,6 +999,9 @@ void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen,
 		if (Str::get(pos) != '@')
 			PUT(Str::get(pos));
 	WRITE("("); C_operand_count = 0;
+	C_pointer_on_operand = -1;
+	if (Str::eq(opcode, I"@gestalt")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@glk")) C_pointer_on_operand = 3;
 }
 void CodeGen::C::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -950,7 +1009,17 @@ void CodeGen::C::supply_operand(code_generation_target *cgt, code_generation *ge
 		C_operand_label = F;
 	} else {
 		if (C_operand_count++ > 0) WRITE(", ");
-		CodeGen::FC::frame(gen, F);
+		if (C_operand_count == C_pointer_on_operand) {
+			TEMPORARY_TEXT(write_to)
+			CodeGen::select_temporary(gen, write_to);
+			CodeGen::FC::frame(gen, F);
+			CodeGen::deselect_temporary(gen);
+			if (Str::eq(write_to, I"0")) WRITE("NULL");
+			else WRITE("&%S", write_to);
+			DISCARD_TEXT(write_to)
+		} else {
+			CodeGen::FC::frame(gen, F);
+		}
 	}
 }
 void CodeGen::C::end_opcode(code_generation_target *cgt, code_generation *gen) {

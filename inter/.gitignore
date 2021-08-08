@@ -32,6 +32,7 @@ Tests/Toys/_I6_Object_Code/
 Tests/Toys/_I6_Output_Actual/
 Tests/C/_C/
 Tests/C/_Textual/
+Tests/C/_Results_Actual/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/

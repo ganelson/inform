@@ -756,34 +756,20 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
 	if (properties_found) {
-		TEMPORARY_TEXT(pm_writer)
-		WRITE_TO(pm_writer, "[ CreatePropertyOffsets i;\n"); STREAM_INDENT(pm_writer);
-		WRITE_TO(pm_writer, "for (i=0: i<attributed_property_offsets_SIZE: i++)"); STREAM_INDENT(pm_writer);
-		WRITE_TO(pm_writer, "attributed_property_offsets-->i = -1;\n"); STREAM_OUTDENT(pm_writer);
-		WRITE_TO(pm_writer, "for (i=0: i<valued_property_offsets_SIZE: i++)"); STREAM_INDENT(pm_writer);
-		WRITE_TO(pm_writer, "valued_property_offsets-->i = -1;\n"); STREAM_OUTDENT(pm_writer);
-
 		CodeGen::Targets::begin_array(gen, I"property_metadata", WORD_ARRAY_FORMAT);
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
-			WRITE("! offset %d: property %S\n", pos, CodeGen::CL::name(prop_name));
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
-				WRITE_TO(pm_writer, "attributed_property_offsets");
+				CodeGen::Targets::property_offset(gen, CodeGen::CL::name(prop_name), pos, TRUE);
 			else
-				WRITE_TO(pm_writer, "valued_property_offsets");
-			WRITE_TO(pm_writer, "-->%S = %d;\n", CodeGen::CL::name(prop_name), pos);
-
+				CodeGen::Targets::property_offset(gen, CodeGen::CL::name(prop_name), pos, FALSE);
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
 			CodeGen::Targets::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
 			pos++;
 		}
 		CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
-		STREAM_OUTDENT(pm_writer);
-		WRITE_TO(pm_writer, "];\n");
-		WRITE("%S", pm_writer);
-		DISCARD_TEXT(pm_writer)
 	}
 
 @<Write the property name in double quotes@> =

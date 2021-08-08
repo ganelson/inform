@@ -8,6 +8,7 @@ typedef struct i7varargs {
 } i7varargs;
 
 i7val i7_tmp = 0;
+int i7_seed = 197;
 
 #define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
@@ -29,156 +30,180 @@ void write_i7_lookup(i7byte i7bytes[], i7val offset, i7val ind, i7val V) {
 }
 
 void glulx_accelfunc(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_accelfunc.\n");
 }
 
 void glulx_accelparam(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_accelparam.\n");
 }
 
 void glulx_call(i7val x, i7val i7varargc, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_call.\n");
 }
 
 void glulx_copy(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_copy.\n");
 }
 
 void glulx_div(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_div.\n");
 }
 
 void glulx_exp(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_exp.\n");
 }
 
 void glulx_fadd(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_fadd.\n");
 }
 
 void glulx_fdiv(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_fdiv.\n");
 }
 
 void glulx_floor(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_floor.\n");
 }
 
 void glulx_fmod(i7val x, i7val y, i7val z, i7val w) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_fmod.\n");
 }
 
 void glulx_fmul(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_fmul.\n");
 }
 
 void glulx_fsub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_fsub.\n");
 }
 
 void glulx_ftonumn(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_ftonumn.\n");
 }
 
 void glulx_ftonumz(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_ftonumz.\n");
 }
 
-void glulx_gestalt(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+void glulx_gestalt(i7val x, i7val y, i7val *z) {
+	*z = 1;
 }
 
-void glulx_glk(i7val x, i7val i7varargc, i7val z) {
-	printf("Unimplemented.\n");
+void glulx_glk(i7val glk_api_selector, i7val i7varargc, i7val *z) {
+	int rv = 0;
+	switch (glk_api_selector) {
+		case 4: // selectpr for glk_gestalt
+			rv = 1; break;
+		case 32: // selector for glk_window_iterate
+			rv = 0; break;
+		case 35: // selector for glk_window_open
+			rv = 1; break;
+		case 47: // selector for glk_set_window
+			rv = 0; break;
+		case 64: // selector for glk_stream_iterate
+			rv = 0; break;
+		case 100: // selector for glk_fileref_iterate
+			rv = 0; break;
+		case 176: // selector for glk_stylehint_set
+			rv = 0; break;
+		case 240: // selector for glk_schannel_iterate
+			rv = 0; break;
+		case 242: // selector for glk_schannel_create
+			rv = 0; break;
+		default:
+			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector);
+			rv = 0; break;
+	}
+	if (z) *z = rv;
 }
 
 int glulx_jeq(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jeq.\n");
 	return 0;
 }
 
 int glulx_jfeq(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jfeq.\n");
 	return 0;
 }
 
 int glulx_jfge(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jfge.\n");
 	return 0;
 }
 
 int glulx_jflt(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jflt.\n");
 	return 0;
 }
 
 int glulx_jisinf(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jisinf.\n");
 	return 0;
 }
 
 int glulx_jisnan(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jisnan.\n");
 	return 0;
 }
 
 int glulx_jleu(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jleu.\n");
 	return 0;
 }
 
 int glulx_jnz(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jnz.\n");
 	return 0;
 }
 
 int glulx_jz(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_jz.\n");
 	return 0;
 }
 
 void glulx_log(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_log.\n");
 }
 
 void glulx_malloc(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_malloc.\n");
 }
 
 void glulx_mcopy(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_mcopy.\n");
 }
 
 void glulx_mfree(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_mfree.\n");
 }
 
 void glulx_mod(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_mod.\n");
 }
 
 void glulx_neg(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_neg.\n");
 }
 
 void glulx_numtof(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_numtof.\n");
 }
 
 void glulx_quit(void) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_quit.\n");
 }
 
 void glulx_random(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_random.\n");
 }
 
 void glulx_setiosys(i7val x, i7val y) {
-	printf("Unimplemented.\n");
+	// Deliberately ignored: we are using stdout, not glk
 }
 
 void glulx_setrandom(i7val x) {
-	printf("Unimplemented.\n");
+	i7_seed = (int) x;
 }
 
 void glulx_streamchar(i7val x) {
@@ -186,11 +211,11 @@ void glulx_streamchar(i7val x) {
 }
 
 void glulx_streamnum(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_streamnum.\n");
 }
 
 void glulx_streamstr(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_streamstr.\n");
 }
 
 void glulx_streamunichar(i7val x) {
@@ -198,25 +223,25 @@ void glulx_streamunichar(i7val x) {
 }
 
 void glulx_sub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_sub.\n");
 }
 
 void glulx_ushiftr(i7val x, i7val y, i7val z) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: glulx_ushiftr.\n");
 }
 
 int i7_has(i7val obj, i7val attr) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_has.\n");
 	return 0;
 }
 
 int i7_ofclass(i7val obj, i7val cl) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_ofclass.\n");
 	return 0;
 }
 
 void i7_print_address(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_address.\n");
 }
 
 void i7_print_char(i7val x) {
@@ -224,70 +249,71 @@ void i7_print_char(i7val x) {
 }
 
 void i7_print_def_art(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_def_art.\n");
 }
 
 void i7_print_indef_art(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_indef_art.\n");
 }
 
 void i7_print_name(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_name.\n");
 }
 
 void i7_print_object(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_object.\n");
 }
 
 void i7_print_property(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_print_property.\n");
 }
 
 int i7_provides(i7val obj, i7val prop) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_provides.\n");
 	return 0;
 }
 
 i7val i7_pull(void) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_pull.\n");
 	return (i7val) 0;
 }
 
 void i7_push(i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_push.\n");
 }
 
 i7val i7_prop_value(i7val obj, i7val pr) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_prop_value.\n");
 	return 0;
 }
 
 void i7_assign(i7val owner, i7val prop, i7val val, i7val inst) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_assign.\n");
 }
 
 i7val i7_prop_len(i7val obj, i7val pr) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_prop_len.\n");
 	return 0;
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_prop_addr.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_metaclass(int n, i7val v) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_metaclass.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_random(int n, i7val v) {
-	printf("Unimplemented.\n");
-	return 0;
+	if (i7_seed < 1000) return ((i7val) ((i7_seed++) % n));
+	i7_seed = i7_seed*i7_seed;
+	return (((i7_seed*i7_seed) & 0xFF00) / 0x100) % n;
 }
 
 i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: i7_gen_call.\n");
 	return 0;
 }
 
@@ -354,42 +380,42 @@ i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 }
 
 i7val fn_i7_mgl_Z__Region(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_Z__Region.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_CP__Tab(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_CP__Tab.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_RA__Pr(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_RA__Pr.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_RL__Pr(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_RL__Pr.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_OC__Cl(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_OC__Cl.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_RV__Pr(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_RV__Pr.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_OP__Pr(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_OP__Pr.\n");
 	return 0;
 }
 
 i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
-	printf("Unimplemented.\n");
+	printf("Unimplemented: fn_i7_mgl_CA__Pr.\n");
 	return 0;
 }
 

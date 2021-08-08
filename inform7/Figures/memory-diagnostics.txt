@@ -1,11 +1,11 @@
-Total memory consumption was 399390K = 390 MB
+Total memory consumption was 398279K = 389 MB
 
-60.2% was used for 1995514 objects, in 371138 frames in 301 x 800K = 240800K = 235 MB:
+60.2% was used for 1995518 objects, in 371142 frames in 300 x 800K = 240000K = 234 MB:
 
     10.2%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.0%  text_stream_array                        5128 x 100 = 512800 objects, 28880896 bytes
      4.2%  linked_list                              30846 objects, 17273760 bytes
-     3.8%  inter_symbol_array                       139 x 1024 = 142336 objects, 15946080 bytes
+     3.9%  inter_symbol_array                       139 x 1024 = 142336 objects, 15946080 bytes
      2.5%  parse_node                               129399 objects, 10351920 bytes
      1.8%  verb_conjugation                         160 objects, 7425280 bytes
      1.3%  parse_node_annotation_array              345 x 500 = 172500 objects, 5531040 bytes
@@ -96,7 +96,7 @@ Total memory consumption was 399390K = 390 MB
      ----  nonlocal_variable                        93 objects, 20088 bytes
      ----  property                                 146 objects, 19856 bytes
      ----  timed_rules_rfd_data                     400 objects, 19200 bytes
-     ----  method                                   390 objects, 18720 bytes
+     ----  method                                   393 objects, 18864 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
      ----  instance                                 167 objects, 17368 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
@@ -169,9 +169,9 @@ Total memory consumption was 399390K = 390 MB
      ----  pipeline_stage                           19 objects, 912 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
      ----  code_generation                          1 object, 864 bytes
+     ----  generated_segment                        27 objects, 864 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
      ----  cached_understanding                     21 objects, 840 bytes
-     ----  generated_segment                        26 objects, 832 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
      ----  target_vm                                6 objects, 816 bytes
      ----  inter_data_type                          14 objects, 784 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 399390K = 390 MB
 
 39.7% was used for memory not allocated for objects:
 
-    21.1%  text stream storage                      86549224 bytes in 530500 claims
+    21.1%  text stream storage                      86230488 bytes in 530517 claims
      4.4%  dictionary storage                       18153984 bytes in 33230 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 399390K = 390 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    161920 bytes in 2064 claims
 
-18.7% was overhead - 76759160 bytes = 74960K = 73 MB
+18.6% was overhead - 75939784 bytes = 74159K = 72 MB
 

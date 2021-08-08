@@ -22,6 +22,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CodeGen::I6::declare_attribute);
+	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CodeGen::I6::property_offset);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::I6::declare_class);
@@ -46,6 +47,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
+	METHOD_ADD(cgt, END_GENERATION_MTID, CodeGen::I6::end_generation);
 	inform6_target = cgt;
 }
 
@@ -90,6 +92,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e code_at_eof_I7CGS
 @e verbs_at_eof_I7CGS
 @e stubs_at_eof_I7CGS
+@e property_offset_creator_I7CGS
 
 =
 int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
@@ -118,13 +121,32 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[property_offset_creator_I7CGS] = CodeGen::new_segment();
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
 	CodeGen::deselect(gen, saved);
-	
+
+	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
+	WRITE("for (i=0: i<attributed_property_offsets_SIZE: i++)"); INDENT;
+	WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
+	WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)"); INDENT;
+	WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
+	CodeGen::deselect(gen, saved);
+
+	return FALSE;
+}
+
+int CodeGen::I6::end_generation(code_generation_target *cgt, code_generation *gen) {
+	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	OUTDENT;
+	WRITE("];\n");
+	CodeGen::deselect(gen, saved);
 	return FALSE;
 }
 
@@ -586,6 +608,15 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 void CodeGen::I6::declare_attribute(code_generation_target *cgt, code_generation *gen,
 	text_stream *prop_name) {
 	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", prop_name);
+}
+
+void CodeGen::I6::property_offset(code_generation_target *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
+	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	if (as_attr) WRITE("attributed_property_offsets");
+	else WRITE("valued_property_offsets");
+	WRITE("-->%S = %d;\n", prop, pos);
+	CodeGen::deselect(gen, saved);
 }
 
 @
