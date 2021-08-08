@@ -24,6 +24,7 @@ which use this module:
 @e tree_inventory_CLASS
 @e tree_inventory_item_CLASS
 @e final_c_function_CLASS
+@e kov_value_stick_CLASS
 
 =
 DECLARE_CLASS(I6T_intervention)
@@ -40,6 +41,7 @@ DECLARE_CLASS(link_instruction)
 DECLARE_CLASS(tree_inventory)
 DECLARE_CLASS(tree_inventory_item)
 DECLARE_CLASS(final_c_function)
+DECLARE_CLASS(kov_value_stick)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

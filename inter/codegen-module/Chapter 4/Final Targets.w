@@ -204,6 +204,7 @@ void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, in
 @e END_CLASS_MTID
 @e DECLARE_INSTANCE_MTID
 @e END_INSTANCE_MTID
+@e ASSIGN_PROPERTY_MTID
 
 =
 VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
@@ -221,6 +222,16 @@ void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class
 }
 void CodeGen::Targets::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	VOID_METHOD_CALL(gen->target, END_INSTANCE_MTID, gen, class_name, instance_name);
+}
+VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att)
+void CodeGen::Targets::assign_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	VOID_METHOD_CALL(gen->target, ASSIGN_PROPERTY_MTID, gen, property_name, val, as_att);
+}
+void CodeGen::Targets::assign_mangled_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	TEMPORARY_TEXT(mangled)
+	CodeGen::Targets::mangle(gen, mangled, val);
+	CodeGen::Targets::assign_property(gen, property_name, mangled, as_att);
+	DISCARD_TEXT(mangled)
 }
 
 @

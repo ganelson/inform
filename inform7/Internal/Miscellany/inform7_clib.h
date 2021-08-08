@@ -262,6 +262,10 @@ i7val i7_prop_value(i7val obj, i7val pr) {
 	return 0;
 }
 
+void i7_assign(i7val owner, i7val prop, i7val val, i7val inst) {
+	printf("Unimplemented.\n");
+}
+
 i7val i7_prop_len(i7val obj, i7val pr) {
 	printf("Unimplemented.\n");
 	return 0;

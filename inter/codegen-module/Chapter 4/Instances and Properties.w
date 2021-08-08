@@ -14,6 +14,14 @@ inter_tree_node **property_frames = NULL;
 inter_tree_node **instance_frames = NULL;
 inter_tree_node **kind_frames = NULL;
 
+typedef struct kov_value_stick {
+	struct inter_symbol *prop;
+	struct inter_symbol *kind_name;
+	struct text_stream *identifier;
+	struct inter_tree_node *node;
+	CLASS_DEFINITION
+} kov_value_stick;
+
 void CodeGen::IP::prepare(code_generation *gen) {
 	properties_written = FALSE;
 	FBNA_found = FALSE;
@@ -422,7 +430,7 @@ bother to force them.)
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
 				inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
 				if (kind_name == truth_state_kind_symbol) {
-					WRITE("  with %S false\n", CodeGen::CL::name(prop_name));
+					CodeGen::Targets::assign_property(gen, CodeGen::CL::name(prop_name), I"0", FALSE);
 				}
 			}
 		}
@@ -497,6 +505,7 @@ This comes at the cost of several hundred bytes of overhead, which we don't
 take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Write Value Property Holder objects for each kind of value instance@> =
+	linked_list *stick_list = NEW_LINKED_LIST(kov_value_stick);
 	@<Define the I6 VPH class@>;
 	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(I, NULL, 
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
@@ -513,9 +522,10 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
 							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name);
-							TEMPORARY_TEXT(sticks)
-							WRITE("\nwith value_range %d\n",
-								w, Inter::Kind::instance_count(kind_name));
+							TEMPORARY_TEXT(N)
+							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
+							CodeGen::Targets::assign_property(gen, I"value_range", N, FALSE);
+							DISCARD_TEXT(N)
 							for (int p=0; p<no_properties; p++) {
 								inter_symbol *prop_name = props_in_source_order[p];
 								CodeGen::unmark(prop_name);
@@ -532,8 +542,6 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 								}
 							}
 							CodeGen::Targets::end_instance(gen, I"VPH_Class", instance_name);
-							WRITE("%S\n", sticks);
-							DISCARD_TEXT(sticks)
 							DISCARD_TEXT(instance_name)
 						}
 					}
@@ -541,6 +549,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 			}
 		}
 	}
+	@<Compile the property stick arrays@>;
 
 @ It's convenient to be able to distinguish, at run-time, which objects are
 the VPH objects used only for kind-property indexing; we can test if |O| is
@@ -620,16 +629,33 @@ just to force the property into being.
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
 			text_stream *call_it = CodeGen::CL::name(prop_name);
-			WRITE("    with %S ", call_it);
 			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				WRITE("%S", CodeGen::CL::name(store));
+				CodeGen::Targets::assign_mangled_property(gen, call_it, CodeGen::CL::name(store), FALSE);
 			} else {
-				@<Compile a stick of property values and put its address here@>;
+				TEMPORARY_TEXT(ident)
+				kov_value_stick *kvs = CREATE(kov_value_stick);
+				kvs->identifier = Str::new();
+				WRITE_TO(kvs->identifier, "KOVP_%d_P%d", w, CodeGen::IP::pnum(prop_name));
+				kvs->prop = prop_name;
+				kvs->kind_name = kind_name;
+				kvs->node = X;
+				ADD_TO_LINKED_LIST(kvs, kov_value_stick, stick_list);
+				CodeGen::Targets::assign_mangled_property(gen, call_it, kvs->identifier, FALSE);
+				DISCARD_TEXT(ident)
 			}
-			WRITE("\n");
 		}
+	}
+
+@<Compile the property stick arrays@> =
+	kov_value_stick *kvs;
+	LOOP_OVER_LINKED_LIST(kvs, kov_value_stick, stick_list) {
+		inter_symbol *prop_name = kvs->prop;
+		inter_symbol *kind_name = kvs->kind_name;
+		text_stream *ident = kvs->identifier;
+		inter_tree_node *X = kvs->node;
+		@<Compile a stick of property values and put its address here@>;
 	}
 
 @ These little arrays are sticks of property values, and they are laid out
@@ -647,10 +673,9 @@ brackets: thus |(4) (-5)|. This cannot be confused with function calling
 because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
-	TEMPORARY_TEXT(ident)
-	WRITE_TO(ident, "KOVP_%d_P%d", w, CodeGen::IP::pnum(prop_name));
-	WRITE("%S", ident);
-	WRITE_TO(sticks, "Array %S table 0 0", ident);
+	CodeGen::Targets::begin_array(gen, ident, TABLE_ARRAY_FORMAT);
+	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
+	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	for (int j=0; j<no_instance_frames; j++) {
 		inter_symbol *inst_name = instances_in_declaration_order[j];
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
@@ -662,10 +687,10 @@ because I6 doesn't allow function calls in a constant context.
 			PVL = Inode::ID_to_frame_list(X,
 					Inter::Kind::properties_list(kind_name));
 			@<Work through this frame list of values@>;
-			if (found == 0) WRITE_TO(sticks, " (0)");
+			if (found == 0) CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
 	}
-	WRITE_TO(sticks, ";\n");
+	CodeGen::Targets::end_array(gen, TABLE_ARRAY_FORMAT);
 
 @<Work through this frame list of values@> =
 	inter_tree_node *Y;
@@ -675,11 +700,12 @@ because I6 doesn't allow function calls in a constant context.
 			found = 1;
 			inter_ti v1 = Y->W.data[DVAL1_PVAL_IFLD];
 			inter_ti v2 = Y->W.data[DVAL2_PVAL_IFLD];
-			WRITE_TO(sticks, " (");
-			CodeGen::select_temporary(gen, sticks);
+			TEMPORARY_TEXT(val)
+			CodeGen::select_temporary(gen, val);
 			CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
 			CodeGen::deselect_temporary(gen);
-			WRITE_TO(sticks, ")");
+			CodeGen::Targets::array_entry(gen, val, TABLE_ARRAY_FORMAT);
+			DISCARD_TEXT(val)
 		}
 	}
 
@@ -971,7 +997,6 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 }
 
 void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
-	text_stream *OUT = CodeGen::current(gen);
 	if (FL == NULL) internal_error("no properties list");
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -979,12 +1004,15 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 		if (prop_name == NULL) internal_error("no property");
 		text_stream *call_it = CodeGen::CL::name(prop_name);
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-			char *maybe = "";
 			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
-				(X->W.data[DVAL2_PVAL_IFLD] == 0)) maybe = "~";
-			WRITE("    has %s%S\n", maybe, call_it);
+				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
+				CodeGen::Targets::assign_property(gen, call_it, I"0", TRUE);
+			} else {
+				CodeGen::Targets::assign_property(gen, call_it, I"1", TRUE);
+			}
 		} else {
-			WRITE("    with %S ", call_it);
+			TEMPORARY_TEXT(OUT)
+			CodeGen::select_temporary(gen, OUT);
 			int done = FALSE;
 			if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
 				inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
@@ -1000,7 +1028,9 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 			if (done == FALSE)
 				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(X),
 					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], FALSE);
-			WRITE("\n");
+			CodeGen::deselect_temporary(gen);
+			CodeGen::Targets::assign_property(gen, call_it, OUT, FALSE);
+			DISCARD_TEXT(OUT)
 		}
 	}
 }

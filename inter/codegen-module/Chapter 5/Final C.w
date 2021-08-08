@@ -28,6 +28,7 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::C::end_class);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CodeGen::C::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, CodeGen::C::end_instance);
+	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CodeGen::C::assign_property);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::C::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::C::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::C::end_constant);
@@ -54,6 +55,9 @@ code_generation_target *CodeGen::C::target(void) {
 }
 
 @h Segmentation.
+
+@e c_mem_I7CGS
+@e c_initialiser_I7CGS
 
 =
 text_stream *double_quoted_C = NULL;
@@ -89,6 +93,8 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[c_mem_I7CGS] = CodeGen::new_segment();
+	gen->segments[c_initialiser_I7CGS] = CodeGen::new_segment();
 
 	double_quoted_C = Str::new();
 	no_double_quoted_C_strings = 0;
@@ -101,6 +107,7 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#include \"inform7_clib.h\"\n");
+	WRITE("i7byte i7mem[];\n");
 	WRITE("i7val ");
 	CodeGen::C::mangle(cgt, OUT, I"self");
 	WRITE(" = 0;\n");
@@ -124,7 +131,9 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	CodeGen::C::make_veneer_fcf(gen, I"OP__Pr");
 	CodeGen::C::make_veneer_fcf(gen, I"CA__Pr");
 
-	saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	CodeGen::C::declare_property_by_name(gen, I"value_range", TRUE);
+
+	saved = CodeGen::select(gen, c_mem_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("i7byte i7mem[] = {\n");
 	CodeGen::deselect(gen, saved);
@@ -132,9 +141,16 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	
 	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("int main(int argc, char **argv) { ");
+	WRITE("int i7_initializer(void);\n");
+	WRITE("int main(int argc, char **argv) { i7_initializer(); ");
 	WRITE("fn_"); CodeGen::C::mangle(cgt, OUT, I"Main");
 	WRITE("(0); return 0; }\n");
+	CodeGen::deselect(gen, saved);
+	
+	saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("int i7_initializer(void) {\n");
+	WRITE("i7val ref = 0;\n");
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -148,9 +164,15 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 	WRITE("char *dqs[] = {\n%S\"\" };\n", double_quoted_C);
 	CodeGen::deselect(gen, saved);
 	
-	saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	saved = CodeGen::select(gen, c_mem_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("0, 0 };\n");
+	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("return ref;\n");
+	WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 	return FALSE;
 }
@@ -675,20 +697,24 @@ trick called "stubbing", these being "stub definitions".)
 void CodeGen::C::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
+	CodeGen::C::declare_property_by_name(gen, name, used);
+}
+
+void CodeGen::C::declare_property_by_name(code_generation *gen, text_stream *name, int used) {
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
-		CodeGen::C::mangle(cgt, OUT, name);
+		CodeGen::C::mangle(NULL, OUT, name);
 		WRITE(" %d\n", C_property_enumeration_counter++);
 		CodeGen::deselect(gen, saved);
 	} else {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#ifndef ");
-		CodeGen::C::mangle(cgt, OUT, name);
+		CodeGen::C::mangle(NULL, OUT, name);
 		WRITE("\n#define ");
-		CodeGen::C::mangle(cgt, OUT, name);
+		CodeGen::C::mangle(NULL, OUT, name);
 		WRITE(" 0\n#endif\n");
 		CodeGen::deselect(gen, saved);
 	}
@@ -990,6 +1016,13 @@ void CodeGen::C::declare_class_inner(code_generation_target *cgt, code_generatio
 	CodeGen::C::mangle(cgt, OUT, class_name);
 	WRITE(" %d\n", C_class_counter);
 	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("ref = ");
+	CodeGen::C::mangle(cgt, OUT, class_name);
+	WRITE(";\n");
+	CodeGen::deselect(gen, saved);
 }
 
 void CodeGen::C::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
@@ -1002,9 +1035,25 @@ void CodeGen::C::declare_instance(code_generation_target *cgt, code_generation *
 	CodeGen::C::mangle(cgt, OUT, instance_name);
 	WRITE(" %d\n", C_instance_counter);
 	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("ref = ");
+	CodeGen::C::mangle(cgt, OUT, instance_name);
+	WRITE(";\n");
+	CodeGen::deselect(gen, saved);
 }
 
 void CodeGen::C::end_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
+}
+
+void CodeGen::C::assign_property(code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("i7_assign(ref, ");
+	CodeGen::C::mangle(cgt, OUT, property_name);
+	WRITE(", %S, %d);\n", val, as_att);
+	CodeGen::deselect(gen, saved);
 }
 
 int C_array_entry_count = 0;
@@ -1031,7 +1080,7 @@ void CodeGen::C::begin_array(code_generation_target *cgt, code_generation *gen, 
 }
 
 void CodeGen::C::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
-	generated_segment *saved = CodeGen::select(gen, predeclarations_2_I7CGS);
+	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if ((format == TABLE_ARRAY_FORMAT) || (format == WORD_ARRAY_FORMAT)) {
 		WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S),\n",

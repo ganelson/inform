@@ -28,6 +28,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::I6::end_class);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CodeGen::I6::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, CodeGen::I6::end_instance);
+	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CodeGen::I6::assign_property);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
@@ -633,7 +634,7 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 
 void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Class %S", class_name);
+	WRITE("Class %S\n", class_name);
 }
 
 void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
@@ -649,6 +650,16 @@ void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation 
 void CodeGen::I6::end_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
+}
+
+void CodeGen::I6::assign_property(code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (as_att) {
+		if (Str::eq(val, I"0")) WRITE("    has %S\n", property_name);
+		else WRITE("    has ~%S\n", property_name);
+	} else {
+		WRITE("    with %S %S\n", property_name, val);
+	}
 }
 
 void CodeGen::I6::declare_local_variable(code_generation_target *cgt, int pass,
