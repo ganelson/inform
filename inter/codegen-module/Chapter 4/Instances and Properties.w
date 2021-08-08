@@ -416,7 +416,7 @@ bother to force them.)
 
 @<Compile the property numberspace forcer@> =
 	if (properties_found) {
-		WRITE("Object property_numberspace_forcer\n"); INDENT;
+		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer");
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
@@ -426,7 +426,7 @@ bother to force them.)
 				}
 			}
 		}
-		OUTDENT; WRITE(";\n");
+		CodeGen::Targets::end_instance(gen, I"Object", I"property_numberspace_forcer");
 	}
 
 @<Annotate kinds of object with a sequence counter@> =
@@ -510,8 +510,11 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 					inter_symbol *kind_name = kinds_in_source_order[i];
 					if (CodeGen::IP::weak_id(kind_name) == w) {
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
+							TEMPORARY_TEXT(instance_name)
+							WRITE_TO(instance_name, "VPH_%d", w);
+							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name);
 							TEMPORARY_TEXT(sticks)
-							WRITE("VPH_Class VPH_%d\n    with value_range %d\n",
+							WRITE("\nwith value_range %d\n",
 								w, Inter::Kind::instance_count(kind_name));
 							for (int p=0; p<no_properties; p++) {
 								inter_symbol *prop_name = props_in_source_order[p];
@@ -528,8 +531,10 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 									@<Work through this frame list of permissions@>;
 								}
 							}
-							WRITE(";\n%S\n", sticks);
+							CodeGen::Targets::end_instance(gen, I"VPH_Class", instance_name);
+							WRITE("%S\n", sticks);
 							DISCARD_TEXT(sticks)
+							DISCARD_TEXT(instance_name)
 						}
 					}
 				}

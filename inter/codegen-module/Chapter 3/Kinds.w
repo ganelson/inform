@@ -159,7 +159,7 @@ which have to be given some type-safe value to start out at.
 			Produce::down(I);
 				Produce::code(I);
 				Produce::down(I);
-					Produce::inv_primitive(I, PRINT_BIP);
+					Produce::inv_primitive(I, PRINTNUMBER_BIP);
 					Produce::down(I);
 						Produce::val_symbol(I, K_value, v_s);
 					Produce::up(I);

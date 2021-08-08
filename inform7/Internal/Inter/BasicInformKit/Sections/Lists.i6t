@@ -91,7 +91,7 @@ things.)
 	rtrue;
 ];
 
-[ LIST_OF_TY_KindData list;
+[ LIST_OF_TY_KindData list dummy;
 	return BlkValueRead(list, LIST_ITEM_KOV_F);
 ];
 

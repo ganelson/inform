@@ -26,6 +26,8 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::I6::declare_class);
 	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::I6::end_class);
+	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CodeGen::I6::declare_instance);
+	METHOD_ADD(cgt, END_INSTANCE_MTID, CodeGen::I6::end_instance);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CodeGen::I6::end_constant);
@@ -635,6 +637,16 @@ void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *ge
 }
 
 void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(";\n");
+}
+
+void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("%S %S", class_name, instance_name);
+}
+
+void CodeGen::I6::end_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 }
