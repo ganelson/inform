@@ -690,8 +690,8 @@ void CodeGen::I6::end_instance(code_generation_target *cgt, code_generation *gen
 void CodeGen::I6::assign_property(code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (as_att) {
-		if (Str::eq(val, I"0")) WRITE("    has %S\n", property_name);
-		else WRITE("    has ~%S\n", property_name);
+		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
+		else WRITE("    has %S\n", property_name);
 	} else {
 		WRITE("    with %S %S\n", property_name, val);
 	}
