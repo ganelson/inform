@@ -96,6 +96,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e property_offset_creator_I7CGS
 
 =
+int I6_property_offsets_made = 0;
 int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
@@ -124,30 +125,25 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[property_offset_creator_I7CGS] = CodeGen::new_segment();
 
+	I6_property_offsets_made = 0;
+
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
 	CodeGen::deselect(gen, saved);
 
-	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
-	WRITE("for (i=0: i<attributed_property_offsets_SIZE: i++)"); INDENT;
-	WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
-	WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)"); INDENT;
-	WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
-	CodeGen::deselect(gen, saved);
-
 	return FALSE;
 }
 
 int CodeGen::I6::end_generation(code_generation_target *cgt, code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	OUTDENT;
-	WRITE("];\n");
-	CodeGen::deselect(gen, saved);
+	if (I6_property_offsets_made > 0) {
+		generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		OUTDENT;
+		WRITE("];\n");
+		CodeGen::deselect(gen, saved);
+	}
 	return FALSE;
 }
 
@@ -614,6 +610,13 @@ void CodeGen::I6::declare_attribute(code_generation_target *cgt, code_generation
 void CodeGen::I6::property_offset(code_generation_target *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
 	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+	if (I6_property_offsets_made++ == 0) {
+		WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
+		WRITE("for (i=0: i<attributed_property_offsets_SIZE: i++)\n"); INDENT;
+		WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
+		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
+		WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
+	}	
 	if (as_attr) WRITE("attributed_property_offsets");
 	else WRITE("valued_property_offsets");
 	WRITE("-->%S = %d;\n", prop, pos);
@@ -732,7 +735,7 @@ void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen,
 void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("];");
+		WRITE("];\n");
 	}
 }
 

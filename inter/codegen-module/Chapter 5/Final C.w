@@ -70,6 +70,7 @@ int C_class_counter = 0;
 int C_instance_counter = 0;
 int C_dword_count = 0;
 int C_action_count = 0;
+int C_property_offsets_made = 0;
 struct dictionary *C_vm_dictionary = NULL;
 
 int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *gen) {
@@ -163,25 +164,8 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	WRITE("int i7_initializer(void) {\n");
 	WRITE("i7val ref = 0;\n");
 	CodeGen::deselect(gen, saved);
-	
-	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("i7val fn_");
-	CodeGen::C::mangle(cgt, OUT, I"CreatePropertyOffsets");
-	WRITE("(int argc) {\n"); INDENT;
-	WRITE("for (int i=0; i<");
-	CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets_SIZE");
-	WRITE("; i++)"); INDENT;
-	WRITE("write_i7_lookup(i7mem, ");
-	CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets");
-	WRITE(", i, -1, i7_cpv_SET);\n"); OUTDENT;
-	WRITE("for (int i=0; i<");
-	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets_SIZE");
-	WRITE("; i++)"); INDENT;
-	WRITE("write_i7_lookup(i7mem, ");
-	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
-	WRITE(", i, -1, i7_cpv_SET);\n"); OUTDENT;
-	CodeGen::deselect(gen, saved);
+
+	C_property_offsets_made = 0;
 	return FALSE;
 }
 
@@ -201,15 +185,19 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 
 	saved = CodeGen::select(gen, globals_array_I7CGS);
 	OUT = CodeGen::current(gen);
+	WRITE("#ifdef i7_defined_i7_mgl_I7S_Comp\n");
 	WRITE("#ifndef fn_i7_mgl_I7S_Comp\n");
 	WRITE("i7val fn_i7_mgl_I7S_Comp(int argc, i7val a1, i7val a2, i7val a3, i7val a4, i7val a5) {\n");
 	WRITE("    return i7_call_5(i7_mgl_I7S_Comp, a1, a2, a3, a4, a5);\n");
 	WRITE("}\n");
 	WRITE("#endif\n");
+	WRITE("#endif\n");
+	WRITE("#ifdef i7_defined_i7_mgl_I7S_Swap\n");
 	WRITE("#ifndef fn_i7_mgl_I7S_Swap\n");
 	WRITE("i7val fn_i7_mgl_I7S_Swap(int argc, i7val a1, i7val a2, i7val a3) {\n");
 	WRITE("    return i7_call_3(i7_mgl_I7S_Swap, a1, a2, a3);\n");
 	WRITE("}\n");
+	WRITE("#endif\n");
 	WRITE("#endif\n");
 	CodeGen::deselect(gen, saved);
 	
@@ -224,12 +212,14 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 	WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 
-	saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("return 0;\n");
-	OUTDENT;
-	WRITE("}\n");
-	CodeGen::deselect(gen, saved);
+	if (C_property_offsets_made > 0) {
+		saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+		OUT = CodeGen::current(gen);
+		WRITE("return 0;\n");
+		OUTDENT;
+		WRITE("}\n");
+		CodeGen::deselect(gen, saved);
+	}
 
 	return FALSE;
 }
@@ -790,6 +780,15 @@ void CodeGen::C::declare_attribute(code_generation_target *cgt, code_generation 
 void CodeGen::C::property_offset(code_generation_target *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
 	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+
+	if (C_property_offsets_made++ == 0) {
+		WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(int argc) {\n"); INDENT;
+		WRITE("for (int i=0; i<i7_mgl_attributed_property_offsets_SIZE; i++)\n"); INDENT;
+		WRITE("write_i7_lookup(i7mem, i7_mgl_attributed_property_offsets, i, -1, i7_cpv_SET);\n"); OUTDENT;
+		WRITE("for (int i=0; i<i7_mgl_valued_property_offsets_SIZE; i++)\n"); INDENT;
+		WRITE("write_i7_lookup(i7mem, i7_mgl_valued_property_offsets, i, -1, i7_cpv_SET);\n"); OUTDENT;
+	}
+
 	WRITE("write_i7_lookup(i7mem, ");
 	if (as_attr) CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets");
 	else CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
@@ -827,6 +826,9 @@ int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *g
 		WRITE(" = "); 
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
+		WRITE("#define i7_defined_");
+		CodeGen::C::mangle(cgt, OUT, CodeGen::CL::name(var_name));
+		WRITE(" 1;\n");
 		CodeGen::deselect(gen, saved);
 	}
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
