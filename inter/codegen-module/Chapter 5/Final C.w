@@ -48,6 +48,7 @@ void CodeGen::C::create_target(void) {
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::C::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::C::offer_pragma)
 	METHOD_ADD(cgt, END_GENERATION_MTID, CodeGen::C::end_generation);
+	METHOD_ADD(cgt, NEW_FAKE_ACTION_MTID, CodeGen::C::new_fake_action);
 	c_target = cgt;
 }
 
@@ -67,6 +68,9 @@ int C_property_enumeration_counter = 0;
 int extent_of_i7mem = 0;
 int C_class_counter = 0;
 int C_instance_counter = 0;
+int C_dword_count = 0;
+int C_action_count = 0;
+struct dictionary *C_vm_dictionary = NULL;
 
 int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
@@ -97,6 +101,8 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	gen->segments[property_offset_creator_I7CGS] = CodeGen::new_segment();
 	gen->segments[c_mem_I7CGS] = CodeGen::new_segment();
 	gen->segments[c_initialiser_I7CGS] = CodeGen::new_segment();
+
+	InterTree::traverse(gen->from, CodeGen::C::sweep_for_locals, gen, NULL, LOCAL_IST);
 
 	double_quoted_C = Str::new();
 	no_double_quoted_C_strings = 0;
@@ -141,6 +147,9 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	CodeGen::deselect(gen, saved);
 	extent_of_i7mem = 0;
 	
+	C_dword_count = 0;
+	C_vm_dictionary = Dictionaries::new(1024, TRUE);
+	
 	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("int i7_initializer(void);\n");
@@ -165,13 +174,13 @@ int CodeGen::C::begin_generation(code_generation_target *cgt, code_generation *g
 	WRITE("; i++)"); INDENT;
 	WRITE("write_i7_lookup(i7mem, ");
 	CodeGen::C::mangle(cgt, OUT, I"attributed_property_offsets");
-	WRITE(", i, -1);\n"); OUTDENT;
+	WRITE(", i, -1, i7_cpv_SET);\n"); OUTDENT;
 	WRITE("for (int i=0; i<");
 	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets_SIZE");
 	WRITE("; i++)"); INDENT;
 	WRITE("write_i7_lookup(i7mem, ");
 	CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
-	WRITE(", i, -1);\n"); OUTDENT;
+	WRITE(", i, -1, i7_cpv_SET);\n"); OUTDENT;
 	CodeGen::deselect(gen, saved);
 	return FALSE;
 }
@@ -182,6 +191,26 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 	WRITE("#define I7VAL_STRINGS_BASE %d\n", extent_of_i7mem);
 	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n", extent_of_i7mem + no_double_quoted_C_strings);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", double_quoted_C);
+
+	for (int i=0; i<C_dword_count; i++) {
+		WRITE("#define i7_s_dword_%d %d\n", i, 2*i);
+		WRITE("#define i7_p_dword_%d %d\n", i, 2*i + 1);
+	}
+	WRITE("#define i7_max_objects %d\n", C_instance_counter);
+	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, globals_array_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("#ifndef fn_i7_mgl_I7S_Comp\n");
+	WRITE("i7val fn_i7_mgl_I7S_Comp(int argc, i7val a1, i7val a2, i7val a3, i7val a4, i7val a5) {\n");
+	WRITE("    return i7_call_5(i7_mgl_I7S_Comp, a1, a2, a3, a4, a5);\n");
+	WRITE("}\n");
+	WRITE("#endif\n");
+	WRITE("#ifndef fn_i7_mgl_I7S_Swap\n");
+	WRITE("i7val fn_i7_mgl_I7S_Swap(int argc, i7val a1, i7val a2, i7val a3) {\n");
+	WRITE("    return i7_call_3(i7_mgl_I7S_Swap, a1, a2, a3);\n");
+	WRITE("}\n");
+	WRITE("#endif\n");
 	CodeGen::deselect(gen, saved);
 	
 	saved = CodeGen::select(gen, c_mem_I7CGS);
@@ -201,7 +230,18 @@ int CodeGen::C::end_generation(code_generation_target *cgt, code_generation *gen
 	OUTDENT;
 	WRITE("}\n");
 	CodeGen::deselect(gen, saved);
+
 	return FALSE;
+}
+
+void CodeGen::C::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_package *pack = Inter::Packages::container(P);
+	inter_symbol *var_name =
+		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "local_%S", var_name->symbol_name);
+	Inter::Symbols::set_translate(var_name, T);
+	DISCARD_TEXT(T)
 }
 
 int CodeGen::C::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
@@ -295,10 +335,10 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 
 		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
 		case PULL_BIP:			INV_A1; WRITE(" = i7_pull()"); break;
-		case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
-		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
-		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
-		case POSTDECREMENT_BIP:	WRITE("("); INV_A1; WRITE(")--"); break;
+		case PREINCREMENT_BIP:	@<Generate primitive for store@>; break;
+		case POSTINCREMENT_BIP:	@<Generate primitive for store@>; break;
+		case PREDECREMENT_BIP:	@<Generate primitive for store@>; break;
+		case POSTDECREMENT_BIP:	@<Generate primitive for store@>; break;
 		case STORE_BIP:			@<Generate primitive for store@>; break;
 		case SETBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" | "); INV_A2; break;
 		case CLEARBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" &~ ("); INV_A2; WRITE(")"); break;
@@ -313,8 +353,13 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case LOOKUPREF_BIP:		@<Generate primitive for lookupref@>; break;
 		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	WRITE("i7_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-
+		case PROPERTYVALUE_BIP:	if (C_write_lookup_mode) {
+									C_write_lookup_mode = FALSE;
+									WRITE("i7_change_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+								} else {
+									WRITE("i7_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+								}
+								break;
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
@@ -405,7 +450,7 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case CASE_BIP: @<Generate primitive for case@>; break;
 		case DEFAULT_BIP: @<Generate primitive for default@>; break;
 
-		case RANDOM_BIP: WRITE("i7_random("); INV_A1; WRITE(")"); break;
+		case RANDOM_BIP: WRITE("fn_i7_mgl_random(1, "); INV_A1; WRITE(")"); break;
 
 		case READ_BIP: WRITE("i7_read("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 
@@ -418,11 +463,31 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 	CodeGen::C::comparison(cgt, gen, bip, InterTree::first_child(P), InterTree::second_child(P));
 
 @<Generate primitive for store@> =
+	text_stream *store_form = NULL;
+	switch (bip) {
+		case PREINCREMENT_BIP:	store_form = I"i7_cpv_PREINC"; break;
+		case POSTINCREMENT_BIP:	store_form = I"i7_cpv_POSTINC"; break;
+		case PREDECREMENT_BIP:	store_form = I"i7_cpv_PREDEC"; break;
+		case POSTDECREMENT_BIP:	store_form = I"i7_cpv_POSTDEC"; break;
+		case STORE_BIP:			store_form = I"i7_cpv_SET"; break;
+	}
 	inter_tree_node *ref = InterTree::first_child(P);
 	if (CodeGen::C::basically_an_array_write(gen->from, ref)) {
-		WRITE("("); C_write_lookup_mode = TRUE; INV_A1; C_write_lookup_mode = FALSE; INV_A2; WRITE("))");
+		WRITE("("); C_write_lookup_mode = TRUE; INV_A1; C_write_lookup_mode = FALSE;
+		if (bip == STORE_BIP) { INV_A2; } else { WRITE("0"); }
+		WRITE(", %S))", store_form);
+	} else if (CodeGen::C::basically_a_property_write(gen->from, ref)) {
+		WRITE("("); C_write_lookup_mode = TRUE; INV_A1; C_write_lookup_mode = FALSE;
+		if (bip == STORE_BIP) { INV_A2; } else { WRITE("0"); }
+		WRITE(", %S))", store_form);
 	} else {
-		WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")");
+		switch (bip) {
+			case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
+			case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
+			case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
+			case POSTDECREMENT_BIP:	WRITE("("); INV_A1; WRITE(")--"); break;
+			case STORE_BIP:			WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")"); break;
+		}
 	}
 
 @<Generate primitive for lookup@> =
@@ -450,48 +515,15 @@ int CodeGen::C::compile_primitive(code_generation_target *cgt, code_generation *
 		case TRUE: WRITE("return 1"); break;
 		case NOT_APPLICABLE: WRITE("return (i7val) "); CodeGen::FC::frame(gen, V); break;
 	}
-	
-@ Here we need some gymnastics. We need to produce a value which the
-sometimes shaky I6 expression parser will accept, which turns out to be
-quite a constraint. If we were compiling to C, we might try this:
-= (text as C)
-	(a, b, c)
-=
-using the serial comma operator -- that is, where the expression |(a, b)|
-evaluates |a| then |b| and returns the value of |b|, discarding |a|.
-Now I6 does support the comma operator, and this makes a workable scheme,
-right up to the point where some of the token values themselves include
-invocations of functions, because I6's syntax analyser won't always
-allow the serial comma to be mixed in the same expression with the
-function argument comma, i.e., I6 is unable properly to handle expressions
-like this one:
-= (text as C)
-	(a(b, c), d)
-=
-where the first comma constructs a list and the second is the operator.
-(Many such expressions work fine, but not all.) That being so, the scheme
-I actually use is:
-= (text as C)
-	(c) + 0*((b) + (a))
-=
-Because I6 evaluates the leaves in an expression tree right-to-left, not
-left-to-right, the parameter assignments happen first, then the conditions,
-then the result.
-
 
 @<Generate primitive for ternarysequential@> =
-	WRITE("(\n"); INDENT;
-	WRITE("! This value evaluates third (i.e., last)\n"); INV_A3;
-	OUTDENT; WRITE("+\n"); INDENT;
-	WRITE("0*(\n"); INDENT;
-	WRITE("! The following condition evaluates second\n");
-	WRITE("((\n"); INDENT; INV_A2;
-	OUTDENT; WRITE("\n))\n");
-	OUTDENT; WRITE("+\n"); INDENT;
-	WRITE("! The following assignments evaluate first\n");
-	WRITE("("); INV_A1; WRITE(")");
-	OUTDENT; WRITE(")\n");
-	OUTDENT; WRITE(")\n");
+	WRITE("(");
+	INV_A1;
+	WRITE(", ");
+	INV_A2;
+	WRITE(", ");
+	INV_A3;
+	WRITE(")");
 
 @<Generate primitive for if@> =
 	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2;
@@ -539,21 +571,27 @@ then the result.
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
-	WRITE("objectloop ");
+	WRITE("for (i7val "); INV_A1;
+	WRITE(" = 1; "); INV_A1;
+	WRITE(" < i7_max_objects; "); INV_A1;
+	WRITE("++) ");
 	if (in_flag == FALSE) {
-		WRITE("("); INV_A1; WRITE(" ofclass "); INV_A2;
-		WRITE(" && ");
-	} INV_A3;
-	if (in_flag == FALSE) {
-		WRITE(")");
+		WRITE("if (i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
 	}
-	WRITE(" {\n"); INDENT; INV_A4;
+	WRITE("if (");
+	INV_A3;
+	WRITE(") {\n"); INDENT; INV_A4;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
-	WRITE("objectloop ("); INV_A1; WRITE(" ofclass "); INV_A2;
-	WRITE(") {\n"); INDENT; INV_A3; OUTDENT; WRITE("}\n");
+	WRITE("for (i7val "); INV_A1;
+	WRITE(" = 1; "); INV_A1;
+	WRITE(" < i7_max_objects; "); INV_A1;
+	WRITE("++) ");
+	WRITE("if (i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
+	WRITE(" {\n"); INDENT; INV_A3;
+	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for loop@> =
@@ -644,23 +682,15 @@ void CodeGen::C::comparison_r(code_generation_target *cgt, code_generation *gen,
 void CodeGen::C::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
-	int n = 0;
-	WRITE("'");
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '/': if (Str::len(S) == 1) WRITE("@{2F}"); else WRITE("/"); break;
-			case '\'': WRITE("^"); break;
-			case '^': WRITE("@{5E}"); break;
-			case '~': WRITE("@{7E}"); break;
-			case '@': WRITE("@{40}"); break;
-			default: PUT(c);
-		}
-		if (n++ > 32) break;
+	text_stream *val = Dictionaries::get_text(C_vm_dictionary, S);
+	if (val) {
+		WRITE("%S", val);
+	} else {
+		WRITE_TO(Dictionaries::create_text(C_vm_dictionary, S),
+			"i7_%s_dword_%d", (pluralise)?"p":"s", C_dword_count++);
+		val = Dictionaries::get_text(C_vm_dictionary, S);
+		WRITE("%S", val);
 	}
-	if (pluralise) WRITE("//p");
-	else if (Str::len(S) == 1) WRITE("//");
-	WRITE("'");
 }
 
 @
@@ -765,7 +795,7 @@ void CodeGen::C::property_offset(code_generation_target *cgt, code_generation *g
 	else CodeGen::C::mangle(cgt, OUT, I"valued_property_offsets");
 	WRITE(", ");
 	CodeGen::C::mangle(cgt, OUT, prop);
-	WRITE(", %d);\n", pos);
+	WRITE(", %d, i7_cpv_SET);\n", pos);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -790,7 +820,7 @@ int CodeGen::C::prepare_variable(code_generation_target *cgt, code_generation *g
 int CodeGen::C::declare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
 	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
-		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
+		generated_segment *saved = CodeGen::select(gen, globals_array_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("i7val ");
 		CodeGen::C::mangle(cgt, OUT, CodeGen::CL::name(var_name));
@@ -923,6 +953,7 @@ void CodeGen::C::end_function(code_generation_target *cgt, int pass, code_genera
 	}
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
+		WRITE("return 1;\n");
 		WRITE("\n}\n");
 	}
 }
@@ -993,15 +1024,33 @@ void CodeGen::C::begin_opcode(code_generation_target *cgt, code_generation *gen,
 	C_operand_branches = FALSE;
 	C_operand_label = NULL;
 	if (Str::get_at(opcode, 1) == 'j') { C_operand_branches = TRUE; }
-	if (C_operand_branches) WRITE("if (");
-	WRITE("glulx_");
-	LOOP_THROUGH_TEXT(pos, opcode)
-		if (Str::get(pos) != '@')
-			PUT(Str::get(pos));
+	if (Str::eq(opcode, I"@return")) WRITE("return ");
+	else {
+		if (C_operand_branches) WRITE("if (");
+		WRITE("glulx_");
+		LOOP_THROUGH_TEXT(pos, opcode)
+			if (Str::get(pos) != '@')
+				PUT(Str::get(pos));
+	}
 	WRITE("("); C_operand_count = 0;
 	C_pointer_on_operand = -1;
+	if (Str::eq(opcode, I"@acos")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@aload")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@aloadb")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@aloads")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@asin")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@atan")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@binarysearch")) C_pointer_on_operand = 8;
+	if (Str::eq(opcode, I"@ceil")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@cos")) C_pointer_on_operand = 2;
 	if (Str::eq(opcode, I"@gestalt")) C_pointer_on_operand = 3;
 	if (Str::eq(opcode, I"@glk")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@pow")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@shiftl")) C_pointer_on_operand = 3;
+	if (Str::eq(opcode, I"@sin")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@sqrt")) C_pointer_on_operand = 2;
+	if (Str::eq(opcode, I"@tan")) C_pointer_on_operand = 2;
+
 }
 void CodeGen::C::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -1035,32 +1084,31 @@ void CodeGen::C::end_opcode(code_generation_target *cgt, code_generation *gen) {
 
 void CodeGen::C::declare_local_variable(code_generation_target *cgt, int pass,
 	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
+	TEMPORARY_TEXT(name)
+	CodeGen::C::mangle(cgt, name, CodeGen::CL::name(var_name));
 	C_fn_parameter_count++;
 	if (pass == 1) {
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			C_fn_being_found->uses_vararg_model = TRUE;
-			WRITE_TO(C_fn_prototype, ", i7val ");
-			CodeGen::C::mangle(cgt, C_fn_prototype, var_name->symbol_name);
+			WRITE_TO(C_fn_prototype, ", i7val %S", name);
 			WRITE_TO(C_fn_prototype, ", i7varargs ");
 			CodeGen::C::mangle(cgt, C_fn_prototype, I"_varargs");
 		} else {
-			WRITE_TO(C_fn_prototype, ", i7val ");
-			CodeGen::C::mangle(cgt, C_fn_prototype, var_name->symbol_name);
+			WRITE_TO(C_fn_prototype, ", i7val %S", name);
 		}
 		C_fn_being_found->max_arity++;
 	}
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
-			WRITE(", i7val ");
-			CodeGen::C::mangle(cgt, OUT, var_name->symbol_name);
+			WRITE(", i7val %S", name);
 			WRITE(", i7varargs ");
 			CodeGen::C::mangle(cgt, OUT, I"_varargs");
 		} else {
-			WRITE(", i7val ");
-			CodeGen::C::mangle(cgt, OUT, var_name->symbol_name);
+			WRITE(", i7val %S", name);
 		}
 	}
+	DISCARD_TEXT(name)
 }
 
 void CodeGen::C::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
@@ -1187,4 +1235,27 @@ int CodeGen::C::basically_an_array_write(inter_tree *I, inter_tree_node *P) {
 		}
 	}
 	return FALSE;
+}
+
+int CodeGen::C::basically_a_property_write(inter_tree *I, inter_tree_node *P) {
+	int reffed = FALSE;
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) {
+		P = InterTree::first_child(P);
+		reffed = TRUE;
+	}
+	if (P->W.data[ID_IFLD] == INV_IST) {
+		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(P);
+			inter_ti bip = Primitives::to_bip(I, prim);
+			if (bip == PROPERTYVALUE_BIP) return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+void CodeGen::C::new_fake_action(code_generation_target *cgt, code_generation *gen, text_stream *name) {
+	generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define i7_ss_%S %d\n", name, C_action_count++);
+	CodeGen::deselect(gen, saved);
 }

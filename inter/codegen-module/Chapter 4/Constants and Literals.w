@@ -50,7 +50,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
 		Str::delete_first_character(fa);
-		WRITE("Fake_Action %S;\n", fa);
+		CodeGen::Targets::new_fake_action(gen, fa);
 		return;
 	}
 

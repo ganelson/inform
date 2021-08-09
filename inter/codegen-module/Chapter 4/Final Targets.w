@@ -360,3 +360,13 @@ void CodeGen::Targets::mangled_array_entry(code_generation *gen, text_stream *en
 void CodeGen::Targets::end_array(code_generation *gen, int format) {
 	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen, format);
 }
+
+@
+
+@e NEW_FAKE_ACTION_MTID
+
+=
+VOID_METHOD_TYPE(NEW_FAKE_ACTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *name)
+void CodeGen::Targets::new_fake_action(code_generation *gen, text_stream *name) {
+	VOID_METHOD_CALL(gen->target, NEW_FAKE_ACTION_MTID, gen, name);
+}

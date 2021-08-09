@@ -19,6 +19,8 @@ syntax-module/Woven/
 words-module/Woven/
 
 Tests/Test Basic/_Results_Actual/
+Tests/Test Basic/_C/
+Tests/Test Basic/_Textual/
 Tests/Test Cases/_Results_Actual/
 Tests/Test Internals/_Results_Actual/
 Tests/Test Extensions/_Results_Actual/

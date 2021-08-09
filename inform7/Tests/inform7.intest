@@ -76,11 +76,6 @@
 		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
-	if: $VM G
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-32d.interb
-	else
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
-	endif
 	set: $PIPELINE = test
 	
 	! First, problem message cases, where we require ni to fail and with the
@@ -148,12 +143,17 @@
 	set: $WORKSPACE = intest/Workspace
 	set: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
 	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+	set: $TOC = NO
 
 	! First we decide whether to compile it for the Z-machine or Glulx.
 
 	set: $VM = Z
 	if: $CASE %c*-G
 		set: $VM = G
+	endif
+	if: $CASE %c*-C
+		set: $VM = G
+		set: $TOC = YES
 	endif
 	if: $CASE %c*Metric%c*Units%c*
 		set: $VM = G
@@ -196,12 +196,11 @@
 		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
-	if: $VM G
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-32d.interb
+	if: $TOC YES
+		set: $PIPELINE = test_basic_c
 	else
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
+		set: $PIPELINE = test_basic
 	endif
-	set: $PIPELINE = test_basic
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -209,8 +208,8 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -crash-all
-		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE >$A 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
+		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
 		exists: $I
@@ -220,45 +219,84 @@
 		pass: 'passed'
 	endif
 
-	! And then the general case.
+	if: $TOC YES
+		mkdir: $PATH/_Textual
+		mkdir: $PATH/_C
 
-	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -crash-all
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
-	show: $I7CONSOLE
+		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $PIPELINE = test_basic_c
+		set: $I7CLIB = inform7/Internal/Miscellany
+	
+		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+		set: $TOUT = $PATH/_Textual/$CASE.intert
+		set: $COUT = $PATH/_C/$CASE.c
+		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *cout=$COUT -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
 
-	set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
+		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-	hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
-	or: 'passed (matching cached I6 known to work)'
+		step: clang -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality -I $I7CLIB >$CCCONSOLE 2>&1
+		or: 'failed to compile C' $CCCONSOLE
 
-	set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
-	set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
+		or: 'failed to link C' $LINKCONSOLE
+	
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
 
-	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
-	or: 'failed to pass through Inform 6' $I6CONSOLE
-	show i6: $I6CONSOLE
+		step: $STORYFILE >$A 2>&1
+		or: 'failed to run C program' $A
 
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
+		show: $A
 
-	step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
-	or: 'unable to run $INTNAME (do you need to make interpreters?)'
+		match text: $A $I
+		or: 'C program misbehaved'
 
-	show transcript: $A
-
-	exists: $I
-	or: 'translated successfully but no ideal transcript existed'
-	if: $VM G
-		match glulxe transcript: $A $I
-		or: 'played incorrectly'
+		pass: 'passed'
 	else
-		match frotz transcript: $A $I
-		or: 'played incorrectly'
-	endif
+		! And then the general case.
 
-	pass: 'passed'
+		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
+		show: $I7CONSOLE
+
+		set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+
+		hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
+		or: 'passed (matching cached I6 known to work)'
+
+		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+
+		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+		or: 'failed to pass through Inform 6' $I6CONSOLE
+		show i6: $I6CONSOLE
+
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+		step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
+		or: 'unable to run $INTNAME (do you need to make interpreters?)'
+
+		show transcript: $A
+
+		exists: $I
+		or: 'translated successfully but no ideal transcript existed'
+		if: $VM G
+			match glulxe transcript: $A $I
+			or: 'played incorrectly'
+		else
+			match frotz transcript: $A $I
+			or: 'played incorrectly'
+		endif
+
+		pass: 'passed'
+	endif
 
 -end
 
@@ -408,17 +446,12 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
-	if: $VM G
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-32d.interb
-	else
-		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
-	endif
 	set: $PIPELINE = test
 	set: $DIAGS = inform7/Figures
 	
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -diagnostics $DIAGS -crash-all
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -diagnostics $DIAGS -crash-all
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
 -end

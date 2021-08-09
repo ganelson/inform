@@ -960,7 +960,7 @@ Constant ACCUM_MFLAG = 2;
 		if ((RE_PACKET_space-->RE_DOWN ~= NULL) &&
 			((RE_PACKET_space-->RE_DOWN)-->RE_CCLASS == START_RE_CC) &&
 			(ipos>0)) { rv = -1; break; }
-		if (ipos > 0) TEXT_TY_RE_EraseConstraints(RE_PACKET_space, initial_mode);
+		if (ipos > 0) TEXT_TY_RE_EraseConstraints(RE_PACKET_space);
 		TEXT_TY_RE_RewindCount = 0;
 		rv = TEXT_TY_RE_ParseAtPosition(ftxt, txt, ipos, ilen, RE_PACKET_space, initial_mode);
 		if (rv >= 0) break;

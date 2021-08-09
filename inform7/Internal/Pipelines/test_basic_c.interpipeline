@@ -9,7 +9,6 @@ resolve-external-symbols
 inspect-plugs
 make-identifiers-unique
 reconcile-verbs
-eliminate-redundant-code
 eliminate-redundant-labels
 generate text -> *tout
 generate c -> *cout

@@ -10,6 +10,48 @@ typedef struct i7varargs {
 i7val i7_tmp = 0;
 int i7_seed = 197;
 
+
+i7val i7_prop_value(i7val obj, i7val pr) {
+	printf("Unimplemented: i7_prop_value.\n");
+	return 0;
+}
+
+#define i7_cpv_SET 1
+#define i7_cpv_PREDEC 2
+#define i7_cpv_POSTDEC 3
+#define i7_cpv_PREINC 4
+#define i7_cpv_POSTINC 5
+
+void i7_assign(i7val owner, i7val prop, i7val val, i7val inst) {
+	printf("Unimplemented: i7_assign.\n");
+}
+
+i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
+	i7val val = i7_prop_value(obj, pr), new_val = val;
+	switch (way) {
+		case i7_cpv_SET:     i7_assign(obj, pr, to, 1); new_val = to; break;
+		case i7_cpv_PREDEC:  new_val = val; i7_assign(obj, pr, val-1, 1); break;
+		case i7_cpv_POSTDEC: new_val = val-1; i7_assign(obj, pr, new_val, 1); break;
+		case i7_cpv_PREINC:  new_val = val; i7_assign(obj, pr, val+1, 1); break;
+		case i7_cpv_POSTINC: new_val = val+1; i7_assign(obj, pr, new_val, 1); break;
+	}
+	return new_val;
+}
+
+void i7_give(i7val owner, i7val prop, i7val val) {
+	i7_assign(owner, prop, val, 1);
+}
+
+i7val i7_prop_len(i7val obj, i7val pr) {
+	printf("Unimplemented: i7_prop_len.\n");
+	return 0;
+}
+
+i7val i7_prop_addr(i7val obj, i7val pr) {
+	printf("Unimplemented: i7_prop_addr.\n");
+	return 0;
+}
+
 #define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
 #define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
@@ -21,12 +63,21 @@ i7val i7_lookup(i7byte i7bytes[], i7val offset, i7val ind) {
 		0x10000*((i7val) i7bytes[ind+2]) + 0x1000000*((i7val) i7bytes[ind+3]);
 }
 
-void write_i7_lookup(i7byte i7bytes[], i7val offset, i7val ind, i7val V) {
+i7val write_i7_lookup(i7byte i7bytes[], i7val offset, i7val ind, i7val V, int way) {
+	i7val val = i7_lookup(i7bytes, offset, ind);
+	i7val RV = V;
+	switch (way) {
+		case i7_cpv_PREDEC:  RV = val; V = val-1; break;
+		case i7_cpv_POSTDEC: RV = val-1; V = val-1; break;
+		case i7_cpv_PREINC:  RV = val; V = val+1; break;
+		case i7_cpv_POSTINC: RV = val+1; V = val+1; break;
+	}
 	ind = offset + 4*ind;
 	i7bytes[ind]   = I7BYTE_0(V);
 	i7bytes[ind+1] = I7BYTE_1(V);
 	i7bytes[ind+2] = I7BYTE_2(V);
 	i7bytes[ind+3] = I7BYTE_3(V);
+	return RV;
 }
 
 void glulx_accelfunc(i7val x, i7val y) {
@@ -230,6 +281,64 @@ void glulx_ushiftr(i7val x, i7val y, i7val z) {
 	printf("Unimplemented: glulx_ushiftr.\n");
 }
 
+void glulx_acos(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_acos\n");
+}
+
+void glulx_aload(i7val x, i7val y, i7val *z) {
+	printf("Unimplemented: glulx_aload\n");
+}
+
+void glulx_aloadb(i7val x, i7val y, i7val *z) {
+	printf("Unimplemented: glulx_aloadb\n");
+}
+
+void glulx_aloads(i7val x, i7val y, i7val *z) {
+	printf("Unimplemented: glulx_aloads\n");
+}
+
+void glulx_asin(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_asin\n");
+}
+
+void glulx_atan(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_atan\n");
+}
+
+void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
+	printf("Unimplemented: glulx_binarysearch\n");
+}
+
+void glulx_ceil(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_ceil\n");
+}
+
+void glulx_cos(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_cos\n");
+}
+
+void glulx_pow(i7val x, i7val y, i7val *z) {
+	printf("Unimplemented: glulx_pow\n");
+}
+
+void glulx_shiftl(i7val x, i7val y, i7val *z) {
+	printf("Unimplemented: glulx_shiftl\n");
+}
+
+void glulx_sin(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_sin\n");
+}
+
+void glulx_sqrt(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_sqrt\n");
+}
+
+void glulx_tan(i7val x, i7val *y) {
+	printf("Unimplemented: glulx_tan\n");
+}
+
+
+
 int i7_has(i7val obj, i7val attr) {
 	printf("Unimplemented: i7_has.\n");
 	return 0;
@@ -250,6 +359,10 @@ void i7_print_char(i7val x) {
 
 void i7_print_def_art(i7val x) {
 	printf("Unimplemented: i7_print_def_art.\n");
+}
+
+void i7_print_cdef_art(i7val x) {
+	printf("Unimplemented: i7_print_cdef_art.\n");
 }
 
 void i7_print_indef_art(i7val x) {
@@ -282,23 +395,10 @@ void i7_push(i7val x) {
 	printf("Unimplemented: i7_push.\n");
 }
 
-i7val i7_prop_value(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_value.\n");
-	return 0;
-}
+#define i7_bold 1
+#define i7_roman 2
 
-void i7_assign(i7val owner, i7val prop, i7val val, i7val inst) {
-	printf("Unimplemented: i7_assign.\n");
-}
-
-i7val i7_prop_len(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_len.\n");
-	return 0;
-}
-
-i7val i7_prop_addr(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_addr.\n");
-	return 0;
+void i7_style(int what) {
 }
 
 i7val fn_i7_mgl_metaclass(int n, i7val v) {
@@ -425,3 +525,8 @@ i7val i7_mgl_sharp_cpv__start = 0;
 i7val i7_mgl_sharp_identifiers_table = 0;
 i7val i7_mgl_sharp_globals_array = 0;
 i7val i7_mgl_sharp_gself = 0;
+i7val i7_mgl_sharp_dict_par2 = 0;
+i7val i7_mgl_sharp_dictionary_table = 0;
+i7val i7_mgl_sharp_grammar_table = 0;
+
+#define i7_mgl_FLOAT_NAN 0

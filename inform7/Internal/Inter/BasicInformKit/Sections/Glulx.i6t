@@ -936,7 +936,7 @@ These are I6 library-style entry point routines, not used by I7, but retained
 in case I7 extensions want to do interesting things with Glulx.
 
 =
-#Stub HandleGlkEvent    2;
+#Stub HandleGlkEvent    3;
 #Stub IdentifyGlkObject 4;
 #Stub InitGlkWindow     1;
 

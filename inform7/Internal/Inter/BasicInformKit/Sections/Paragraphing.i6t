@@ -226,7 +226,7 @@ below.
 	say__p = 1;
 	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
 	TEXT_TY_Say(matter);
-	DivideParagraphPoint(13);
+	DivideParagraphPoint();
 	say__pc = 0;
 ];
 
