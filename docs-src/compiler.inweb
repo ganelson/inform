@@ -24,37 +24,56 @@ or other standard C compilers.
 										\|/   \|/
 									   syntax tree
 											| 
-				 	kit sources             |
-					(in Inform 6 code)      | INFORM7 Stages 2-4
-				  INTER   |                 |
-			 			 \|/               \|/ 
-			kits as Inter binaries     inter tree
-								\       /        INFORM7 Stages 5-6 or INTER
-								\|/   \|/
-						single linked inter tree
+				 	   kit sources          |
+					(in Inform 6 code)      |  INFORM7 Stages 2 to 4
+				  INTER     |               |
+			 			   \|/             \|/ 
+			precompiled Inter trees     Inter tree
+                            \              /
+							 \            /  INFORM7 Stage 5 or INTER
+							 \|/        \|/
+						single linked Inter tree
 		                    /       |       \
-		                   /        |        \   INFORM7 Stages 5-6 or INTER
+ I                         /        |        \   INFORM7 Stage 6 or INTER
 		                 \|/       \|/       \|/
-		         Inform 6 code   C code     Index mini-website
+		         Inform 6 code   C code     index mini-website
 		                  |         |
-		          INFORM6 |         | CLANG/GCC
+		         INFORM6  |         |  CLANG/GCC
 		                 \|/       \|/
 		           story file   executable
 		                  |
-		          INBLORB |
+		         INBLORB  |
     		             \|/
         		 playable website
 =
 
-Inform offers three compiler tools: //inbuild//, //inform7// and //inter//,
-though really they are three points of access to the same code base. //inbuild//
-contains Stage 1 as a stand-alone tool, //inter// contains Stages 5 and 6 as
-a stand-alone tool, but //inform7// is the entire compiler (Stages 1 to 6) in one.
-See //inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
+@ The Inform 7 transpiler, then, occupies the top two-thirds of the above diagram.
+Broadly speaking, it runs in six stages, and the code for each stage is made
+up of one or more "modules", as follows:
+(*) Stage 1. A build manager called //supervisor// gathers what must be compiled.
+(*) Stage 2. //core// organises compilation of a single Inform project,
+doing little except to co-ordinate the other modules.
+(*) Stage 3. //assertions//, //values// and //knowledge// assemble a world model,
+turning sentences first into logical propositions and then into inferred facts,
+and also gather a set of rules and phrases to operate it. //if// and //multimedia//
+provide "plugins" to this process with additional features, adapting the language
+for interactive fiction.
+(*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 3
+into an intermediate bytecode format called Inter.
+(*) Stage 5. //bytecode//, //building// and //pipeline// manage, create, link
+and optimise this Inter code.
+(*) Stage 6. //final// generates final code and //index// generates human-readable
+Index pages, which forn a small website about the project.
+
+Inform 7 presents as three command-line tools, not one: //inbuild//, //inform7//
+and //inter//. Really, though, they are three points of access to the same code
+base. //inbuild// contains Stage 1 as a stand-alone tool, //inter// contains Stages
+5 and 6 as a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 6)
+in one. Each tool has its own CLI (or "command-line interface"): see
+//inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
 //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
 
-Each tool has its own CLI (or "command-line interface") but is otherwise
-divided up into "modules", many shared between two or even all three tools.
+The full breakdown of these three tools into modules is as follows:
 = (hyperlinked text as BoxArt)
         INBUILD                  INFORM7                   INTER     
     +-------------+          +-------------+          +-------------+    
@@ -79,8 +98,8 @@ divided up into "modules", many shared between two or even all three tools.
       .         .              .         .  |         //bytecode//-module   |   }
       .         .              .         .  |         //building//-module   |   } Stage 5
       .         .              .         .  |         //pipeline//-module   |   }
-      .         .              .         .  |          //final//-module     |   }
       .         .              .         .  | ------------------------- |
+      .         .              .         .  |          //final//-module     |   }
       .         .              .         .  |          //index//-module     |   } Stage 6
       .         .              .         .  +---------------------------+
       .         .              .         .              .         .  
@@ -103,30 +122,14 @@ divided up into "modules", many shared between two or even all three tools.
 |                           (standard C library)                        |
 +-----------------------------------------------------------------------+
 =
-The Inform compiler runs in six stages. It is not literally true that each
-completes before the next begins, but compilation broadly flows diagonally
-downwards and rightwards in the diagram:
-(*) Stage 1. The build manager //supervisor// decides what must be compiled.
-(*) Stage 2. //core// organises compilation of a single Inform project,
-doing little except to co-ordinate the other modules.
-(*) Stage 3. //assertions//, //values// and //knowledge// assemble a world model
-and a set of rules and phrases to operate it. //if// and //multimedia// provide
-"plugins" with additional features, adapting the language for interactive fiction.
-(*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 3
-into an intermediate bytecode format called Inter.
-(*) Stage 5. //bytecode//, //building//, //pipeline// and //final// manage,
-create, link/optimise and translate this Inter code, respectively.
-(*) Stage 6. //index// generates the human-readable Index pages, which are like
-a small website about the project, from Inter code.
-
-@ All three tools each use a "services" library, made up of a variety of modules
+Note that all three tools use a "services" library, made up of a variety of modules
 providing services useful for natural language-based programs. At one time this
 was going to be called "Second Foundation" or possibly "Foundation and Empire",
 because there is also //foundation// underneath, a library of utility functions
 provided by //inweb//.
 
-@ That's a lot: for code-spelunkers, this is a veritable limestone hillside.
-Where to begin? Here are some suggested entrances:
+@ That's a lot: for code-spelunkers, this is quite the limestone hillside of
+potential points of entry. Where to begin? Here are some suggested entrances:
 (a) See //supervisor: What This Module Does// for an overview of the
 build-management process.
 (b) Or take that on trust, and see //core: What This Module Does// for
