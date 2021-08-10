@@ -12,7 +12,8 @@ Import: services/html
 Import: services/arch
 Import: bytecode
 Import: building
-Import: codegen
+Import: pipeline
+Import: final
 Import: index
 
 Manual

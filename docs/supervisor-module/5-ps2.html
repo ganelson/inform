@@ -51,7 +51,8 @@ function togglePopup(material_id) {
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
-<li><a href="../codegen-module/index.html">codegen</a></li>
+<li><a href="../pipeline-module/index.html">pipeline</a></li>
+<li><a href="../final-module/index.html">final</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../calculus-module/index.html">calculus</a></li>
@@ -605,7 +606,7 @@ details instead.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CODEGEN_MODULE</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PIPELINE_MODULE</span>
 <span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Projects::list_of_link_instructions</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">Projects::list_of_link_instructions</span></span>:<br/>Inter Skill - <a href="3-is.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">requirements_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">link_instruction</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kd</span><span class="plain-syntax">;</span>

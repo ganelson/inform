@@ -543,10 +543,10 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	return InterNames::to_symbol(RTKindDeclarations::iname(K));
 	#endif
 	#ifndef CORE_MODULE
-	#ifdef CODEGEN_MODULE
+	#ifdef PIPELINE_MODULE
 	return CodeGen::Pipeline::uks();
 	#endif
-	#ifndef CODEGEN_MODULE
+	#ifndef PIPELINE_MODULE
 	return NULL;
 	#endif
 	#endif

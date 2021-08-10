@@ -476,7 +476,7 @@ means we can't give it a list of kits: we have to give it a list of their
 details instead.
 
 =
-#ifdef CODEGEN_MODULE
+#ifdef PIPELINE_MODULE
 linked_list *Projects::list_of_link_instructions(inform_project *project) {
 	linked_list *requirements_list = NEW_LINKED_LIST(link_instruction);
 	kit_dependency *kd;

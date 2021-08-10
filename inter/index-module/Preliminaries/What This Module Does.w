@@ -36,7 +36,7 @@ Inform projects as such:
                       inter tree
                        /     \
                inter  /       \  inter 
-  (codegen module)   /         \   (index module)
+    (final module)   /         \   (index module)
                     |           |
                    \|/         \|/
            generated code     Index products

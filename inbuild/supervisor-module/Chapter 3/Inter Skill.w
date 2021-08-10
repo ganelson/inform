@@ -50,7 +50,7 @@ or should be, so the effect is the same.
 =
 int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
-	#ifdef CODEGEN_MODULE
+	#ifdef PIPELINE_MODULE
 	inter_architecture *A = S->for_arch;
 	if (A == NULL) internal_error("no architecture given");
 
@@ -98,8 +98,8 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 @h Code generation.
 This can only be done internally, for reasons given above, and only when the
-|codegen| module is present in the current executable (which in practice means:
-only inside |inform7|).
+//pipeline// module is present in the current executable (which in practice means:
+only inside //inform7//).
 
 Recall that the |inter_pipeline_name| is managed in Inbuild Control, but that
 it defaults to |compile|.
@@ -110,7 +110,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
-	#ifdef CODEGEN_MODULE
+	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();
 	CodeGen::Architecture::set(
 		Architectures::to_codename(

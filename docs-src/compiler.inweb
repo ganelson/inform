@@ -1,15 +1,55 @@
 Title: The Inform 7 compiler
 Author: Graham Nelson
 
-@ The task of the Inform 7 compiler is to take natural-language source text
-and "transpile" it down to lower-level, more orthodox code which another
-compiler can take the rest of the way. Usually, but not necessarily, that
-other compiler is the typeless but otherwise C-like Inform 6 (1996-2003).
+@ The task of Inform to take natural-language source text, merged from the
+author's main source and some "extensions"; to compile that to an intermediate
+format called Inter; merge once again with pre-compiled libraries of Inter
+called "kits"; and then translate the result to a program which a
+more orthodox compiler can take the rest of the way. Because Inform 7 generates
+code for another compiler, rather than directly making an executable itself,
+it is properly speaking a "transpiler".
+
+For two decades that second compiler was always the roughly C-like Inform 6, a
+sturdy 1990s tool for generating interactive fiction "story files" which, after
+processing with the //inblorb// tool, can then be played in a web browser or
+with an "interpreter". In 2021, limited support was added for transpiling a
+general, non-IF-specific form of the language called Basic Inform to ANSI C.
+This can be compiled into more general executable programs using Clang, gcc,
+or other standard C compilers.
+= (hyperlinked text as BoxArt)
+							 main source text    extension source texts
+									  \           /
+									   \         /  INFORM7 Stage 1 or INBUILD
+										\       /
+										\|/   \|/
+									   syntax tree
+											| 
+				 	kit sources             |
+					(in Inform 6 code)      | INFORM7 Stages 2-4
+				  INTER   |                 |
+			 			 \|/               \|/ 
+			kits as Inter binaries     inter tree
+								\       /        INFORM7 Stages 5-6 or INTER
+								\|/   \|/
+						single linked inter tree
+		                    /       |       \
+		                   /        |        \   INFORM7 Stages 5-6 or INTER
+		                 \|/       \|/       \|/
+		         Inform 6 code   C code     Index mini-website
+		                  |         |
+		          INFORM6 |         | CLANG/GCC
+		                 \|/       \|/
+		           story file   executable
+		                  |
+		          INBLORB |
+    		             \|/
+        		 playable website
+=
 
 Inform offers three compiler tools: //inbuild//, //inform7// and //inter//,
 though really they are three points of access to the same code base. //inbuild//
 contains Stage 1 as a stand-alone tool, //inter// contains Stages 5 and 6 as
-a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 6) in one.
+a stand-alone tool, but //inform7// is the entire compiler (Stages 1 to 6) in one.
 See //inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
 //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
 
@@ -38,9 +78,10 @@ divided up into "modules", many shared between two or even all three tools.
       .         .        +------------------+  +------------------------+
       .         .              .         .  |         //bytecode//-module   |   }
       .         .              .         .  |         //building//-module   |   } Stage 5
-      .         .              .         .  |         //codegen//-module    |   }
+      .         .              .         .  |         //pipeline//-module   |   }
+      .         .              .         .  |          //final//-module     |   }
       .         .              .         .  | ------------------------- |
-      .         .              .         .  |         //index//-module      |   } Stage 6
+      .         .              .         .  |          //index//-module     |   } Stage 6
       .         .              .         .  +---------------------------+
       .         .              .         .              .         .  
 +-----------------------------------------------------------------------+
@@ -71,12 +112,12 @@ doing little except to co-ordinate the other modules.
 (*) Stage 3. //assertions//, //values// and //knowledge// assemble a world model
 and a set of rules and phrases to operate it. //if// and //multimedia// provide
 "plugins" with additional features, adapting the language for interactive fiction.
-(*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 2
+(*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 3
 into an intermediate bytecode format called Inter.
-(*) Stage 5. //bytecode//, //building// and //codegen// optimise the Inter
-code and translate it to our final output.
+(*) Stage 5. //bytecode//, //building//, //pipeline// and //final// manage,
+create, link/optimise and translate this Inter code, respectively.
 (*) Stage 6. //index// generates the human-readable Index pages, which are like
-a small website about the project.
+a small website about the project, from Inter code.
 
 @ All three tools each use a "services" library, made up of a variety of modules
 providing services useful for natural language-based programs. At one time this

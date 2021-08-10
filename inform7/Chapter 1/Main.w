@@ -72,7 +72,8 @@ int Main::deputy(int argc, char *argv[]) {
 	ArchModule::start();
 	BytecodeModule::start();
 	BuildingModule::start();
-	CodegenModule::start();
+	PipelineModule::start();
+	FinalModule::start();
 	SupervisorModule::start();
 
 @ The very first thing we do is to make sure internal errors, though they
@@ -211,7 +212,8 @@ they can be rather lengthy.
 	BytecodeModule::end();
 	ArchModule::end();
 	BuildingModule::end();
-	CodegenModule::end();
+	PipelineModule::end();
+	FinalModule::end();
 	SupervisorModule::end();
 	Foundation::end(); /* must be ended last */
 

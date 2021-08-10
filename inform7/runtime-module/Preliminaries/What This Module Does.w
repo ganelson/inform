@@ -98,7 +98,7 @@ of the other modules.
 
 The role of //runtime// and //imperative// is to build the generic, synoptic
 and compilation-unit modules; the modules from kits will come later in the
-linking stage (see //codegen//).
+linking stage (see //pipeline//).
 
 Modules then have sub-departments called submodules, which are packages of type
 |_submodule|. For example, the rules created in any given compilation unit live

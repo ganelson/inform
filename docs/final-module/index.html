@@ -1,0 +1,163 @@
+<html>
+	<head>
+		<title>final</title>
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
+	</head>
+	<body class="commentary-font">
+		<nav role="navigation">
+		<h1><a href="../index.html">
+<img src="../docs-assets/Inform.png" height=72">
+</a></h1>
+<ul><li><a href="../compiler.html">compiler tools</a></li>
+<li><a href="../other.html">other tools</a></li>
+<li><a href="../extensions.html">extensions and kits</a></li>
+<li><a href="../units.html">unit test tools</a></li>
+</ul><h2>Compiler Webs</h2><ul>
+<li><a href="../inbuild/index.html">inbuild</a></li>
+<li><a href="../inform7/index.html">inform7</a></li>
+<li><a href="../inter/index.html">inter</a></li>
+</ul><h2>Inbuild Modules</h2><ul>
+<li><a href="../supervisor-module/index.html">supervisor</a></li>
+</ul><h2>Inform7 Modules</h2><ul>
+<li><a href="../core-module/index.html">core</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
+<li><a href="../if-module/index.html">if</a></li>
+<li><a href="../multimedia-module/index.html">multimedia</a></li>
+<li><a href="../index-module/index.html">index</a></li>
+</ul><h2>Inter Modules</h2><ul>
+<li><a href="../bytecode-module/index.html">bytecode</a></li>
+<li><a href="../building-module/index.html">building</a></li>
+<li><a href="../pipeline-module/index.html">pipeline</a></li>
+<li><span class="unlink">final</span></li>
+</ul><h2>Services</h2><ul>
+<li><a href="../arch-module/index.html">arch</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
+<li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
+
+</ul>
+		</nav>
+		<main role="main">
+		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><b>final</b></li></ul>
+		<p class="purpose">Final code generation from fully-processed Inter. This is version 1.</p>
+		<hr>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-fm.html">
+								<spon class="sectiontitle">Final Module</span></a> -
+							<span class="sectionpurpose">Setting up the use of this module.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Mechanism</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-cg.html">
+								<spon class="sectiontitle">Code Generation</span></a> -
+							<span class="sectionpurpose">To generate final code from intermediate code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-fc.html">
+								<spon class="sectiontitle">Frame Control</span></a> -
+							<span class="sectionpurpose">To manage the final-code process, at the frame level.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-cal.html">
+								<spon class="sectiontitle">Constants and Literals</span></a> -
+							<span class="sectionpurpose">To generate final code for constants, including arrays.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-iap.html">
+								<spon class="sectiontitle">Instances and Properties</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for instances and their properties, and all associated metadata.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-vrb.html">
+								<spon class="sectiontitle">Variables</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-ft.html">
+								<spon class="sectiontitle">Final Targets</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Final Code</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-fti.html">
+								<spon class="sectiontitle">Final Textual Inter</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-fbi.html">
+								<spon class="sectiontitle">Final Binary Inter</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-fi.html">
+								<spon class="sectiontitle">Final Inventory</span></a> -
+							<span class="sectionpurpose">To print a summary of the contents of a repository.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Inform 6</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-fi6.html">
+								<spon class="sectiontitle">Generating Inform 6</span></a> -
+							<span class="sectionpurpose">To generate I6 code from intermediate code.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: C</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="5-fnc.html">
+								<spon class="sectiontitle">Generating C</span></a> -
+							<span class="sectionpurpose">To generate I6 code from intermediate code.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<hr>
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
+		</main>
+	</body>
+</html>
+

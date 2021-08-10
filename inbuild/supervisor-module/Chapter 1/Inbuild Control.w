@@ -181,7 +181,7 @@ int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Supervisor::set_defaults(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
-	#ifdef CODEGEN_MODULE
+	#ifdef PIPELINE_MODULE
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.ulx");
 	#endif
 	Supervisor::set_inter_pipeline(I"compile");
@@ -238,7 +238,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 	}
 }
 
-@ Note that the following has no effect unless the |codegen| module is part
+@ Note that the following has no effect unless the //pipeline// module is part
 of the parent. In practice, that will be true for |inform7| but not |inbuild|.
 
 @<Set a pipeline variable@> =
@@ -247,7 +247,7 @@ of the parent. In practice, that will be true for |inform7| but not |inbuild|.
 		if (Str::get_first_char(arg) != '*') {
 			Errors::fatal("-variable names must begin with '*'");
 		} else {
-			#ifdef CODEGEN_MODULE
+			#ifdef PIPELINE_MODULE
 			Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
 			#endif
 		}

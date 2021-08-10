@@ -74,7 +74,7 @@ int TextLiterals::suppressing_on(wording W) {
 This was once a rather elegantly complicated algorithm involving searches on
 a red-black tree in order to compile the texts in alphabetical order, but in
 April 2021 that was replaced by an Inter pipeline stage which collates the text
-much later in the process. See //codegen: Literal Text//.
+much later in the process. See //pipeline: Literal Text//.
 
 =
 inter_name *TextLiterals::to_value(wording W) {

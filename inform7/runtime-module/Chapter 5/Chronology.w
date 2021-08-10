@@ -273,7 +273,7 @@ void Chronology::compile_action_history_condition(time_period *duration, action_
 
 @ The test compiled here relies entirely on a slew of arrays being correctly
 maintained. Those arrays are all managed by code compiled in linking (see
-//codegen: Chronology//, code which has regularly been calling our own AHC
+//pipeline: Chronology//, code which has regularly been calling our own AHC
 function throughout play.
 
 @<Compile code to perform the test in the here and now@> =

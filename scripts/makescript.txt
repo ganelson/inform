@@ -68,7 +68,8 @@ INBUILDX = inbuild/Tangled/inbuild
 
 {module} BYTECODE bytecode inter/bytecode-module modules
 {module} BUILDING building inter/building-module modules
-{module} CODEGEN codegen inter/codegen-module modules
+{module} PIPELINE pipeline inter/pipeline-module modules
+{module} FINAL final inter/final-module modules
 {module} INDEX index inter/index-module modules
 
 {module} SUPERVISOR supervisor inbuild/supervisor-module modules

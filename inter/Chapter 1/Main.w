@@ -58,7 +58,8 @@ int main(int argc, char **argv) {
 	ArchModule::start();
 	BytecodeModule::start();
 	BuildingModule::start();
-	CodegenModule::start();
+	PipelineModule::start();
+	FinalModule::start();
 	IndexModule::start();
 
 @<Begin with an empty file list and variables dictionary@> =
@@ -124,7 +125,8 @@ form, which would be written to |*outt|.
 @<Shut down the modules@> =
 	BytecodeModule::end();
 	BuildingModule::end();
-	CodegenModule::end();
+	PipelineModule::end();
+	FinalModule::end();
 	ArchModule::end();
 	IndexModule::end();
 	Foundation::end(); /* must be ended last */

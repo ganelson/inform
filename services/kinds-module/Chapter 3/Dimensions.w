@@ -597,7 +597,7 @@ void Kinds::Dimensions::index_unit_sequence(OUTPUT_STREAM, unit_sequence *deriv,
 		if (briefly) {
 			if (j>0) WRITE(".");
 			WRITE("(");
-			#ifdef CODEGEN_MODULE
+			#ifdef PIPELINE_MODULE
 			Kinds::Textual::write_as_HTML(OUT, fundamental);
 			#else
 			Kinds::Textual::write(OUT, fundamental);
