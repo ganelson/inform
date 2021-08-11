@@ -560,7 +560,7 @@ legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
 
 @<Define the I6 VPH class@> =
-	CodeGen::Targets::declare_class(gen, I"VPH_Class");
+	CodeGen::Targets::declare_class(gen, I"VPH_Class", I"Class");
 	CodeGen::Targets::end_class(gen, I"VPH_Class");
 
 @<Decide who gets a VPH@> =
@@ -714,9 +714,10 @@ because I6 doesn't allow function calls in a constant context.
 		inter_symbol *kind_name = kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
 			(CodeGen::IP::is_kind_of_object(kind_name))) {
-			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name));
+			text_stream *super_class = NULL;
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
-			if (super_name) WRITE("    class %S\n", CodeGen::CL::name(super_name));
+			if (super_name) super_class = CodeGen::CL::name(super_name);
+			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name), super_class);
 			CodeGen::IP::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));

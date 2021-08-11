@@ -4,6 +4,66 @@ To generate I6 code from intermediate code.
 
 @h Target.
 
+@e pragmatic_matter_I7CGS
+@e compiler_versioning_matter_I7CGS
+@e predeclarations_I7CGS
+@e very_early_matter_I7CGS
+@e constants_1_I7CGS
+@e constants_2_I7CGS
+@e constants_3_I7CGS
+@e constants_4_I7CGS
+@e constants_5_I7CGS
+@e constants_6_I7CGS
+@e constants_7_I7CGS
+@e constants_8_I7CGS
+@e constants_9_I7CGS
+@e constants_10_I7CGS
+@e predeclarations_2_I7CGS
+@e early_matter_I7CGS
+@e text_literals_code_I7CGS
+@e summations_at_eof_I7CGS
+@e arrays_at_eof_I7CGS
+@e globals_array_I7CGS
+@e main_matter_I7CGS
+@e routines_at_eof_I7CGS
+@e code_at_eof_I7CGS
+@e verbs_at_eof_I7CGS
+@e stubs_at_eof_I7CGS
+@e property_offset_creator_I7CGS
+
+=
+int I6_target_segments[] = {
+	pragmatic_matter_I7CGS,
+	compiler_versioning_matter_I7CGS,
+	predeclarations_I7CGS,
+	predeclarations_2_I7CGS,
+	very_early_matter_I7CGS,
+	constants_1_I7CGS,
+	constants_2_I7CGS,
+	constants_3_I7CGS,
+	constants_4_I7CGS,
+	constants_5_I7CGS,
+	constants_6_I7CGS,
+	constants_7_I7CGS,
+	constants_8_I7CGS,
+	constants_9_I7CGS,
+	constants_10_I7CGS,
+	early_matter_I7CGS,
+	text_literals_code_I7CGS,
+	summations_at_eof_I7CGS,
+	arrays_at_eof_I7CGS,
+	globals_array_I7CGS,
+	main_matter_I7CGS,
+	routines_at_eof_I7CGS,
+	code_at_eof_I7CGS,
+	verbs_at_eof_I7CGS,
+	stubs_at_eof_I7CGS,
+	property_offset_creator_I7CGS,
+	-1
+};
+
+@
+
 =
 code_generation_target *inform6_target = NULL;
 void CodeGen::I6::create_target(void) {
@@ -68,64 +128,19 @@ code is in |CA__Pr|, defined in the |veneer.c| section of I6.)
 |debug_flag| is traditionally called so, but is actually
 now a bitmap of flags for tracing actions, calls to object routines, and so on.
 
-@e pragmatic_matter_I7CGS from 0
-@e compiler_versioning_matter_I7CGS
-@e predeclarations_I7CGS
-@e very_early_matter_I7CGS
-@e constants_1_I7CGS
-@e constants_2_I7CGS
-@e constants_3_I7CGS
-@e constants_4_I7CGS
-@e constants_5_I7CGS
-@e constants_6_I7CGS
-@e constants_7_I7CGS
-@e constants_8_I7CGS
-@e constants_9_I7CGS
-@e constants_10_I7CGS
-@e predeclarations_2_I7CGS
-@e early_matter_I7CGS
-@e text_literals_code_I7CGS
-@e summations_at_eof_I7CGS
-@e arrays_at_eof_I7CGS
-@e globals_array_I7CGS
-@e main_matter_I7CGS
-@e routines_at_eof_I7CGS
-@e code_at_eof_I7CGS
-@e verbs_at_eof_I7CGS
-@e stubs_at_eof_I7CGS
-@e property_offset_creator_I7CGS
+@d I6_GEN_DATA(x) ((I6_generation_data *) (gen->target_specific_data))->x
 
 =
-int I6_property_offsets_made = 0;
-int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
-	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[predeclarations_I7CGS] = CodeGen::new_segment();
-	gen->segments[predeclarations_2_I7CGS] = CodeGen::new_segment();
-	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_1_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_2_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_3_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_4_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_5_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_6_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_7_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_8_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_9_I7CGS] = CodeGen::new_segment();
-	gen->segments[constants_10_I7CGS] = CodeGen::new_segment();
-	gen->segments[early_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
-	gen->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[arrays_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[globals_array_I7CGS] = CodeGen::new_segment();
-	gen->segments[main_matter_I7CGS] = CodeGen::new_segment();
-	gen->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
-	gen->segments[property_offset_creator_I7CGS] = CodeGen::new_segment();
+typedef struct I6_generation_data {
+	int I6_property_offsets_made;
+	CLASS_DEFINITION
+} I6_generation_data;
 
-	I6_property_offsets_made = 0;
+int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
+	I6_generation_data *data = CREATE(I6_generation_data);
+	data->I6_property_offsets_made = 0;
+
+	CodeGen::create_segments(gen, data, I6_target_segments);
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -137,7 +152,7 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 }
 
 int CodeGen::I6::end_generation(code_generation_target *cgt, code_generation *gen) {
-	if (I6_property_offsets_made > 0) {
+	if (I6_GEN_DATA(I6_property_offsets_made) > 0) {
 		generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		OUTDENT;
@@ -610,7 +625,7 @@ void CodeGen::I6::declare_attribute(code_generation_target *cgt, code_generation
 void CodeGen::I6::property_offset(code_generation_target *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
 	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	if (I6_property_offsets_made++ == 0) {
+	if (I6_GEN_DATA(I6_property_offsets_made)++ == 0) {
 		WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
 		WRITE("for (i=0: i<attributed_property_offsets_SIZE: i++)\n"); INDENT;
 		WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
@@ -667,9 +682,10 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 	return k;
 }
 
-void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {
+void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *super_class) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
+	if (Str::len(super_class) > 0) WRITE("  class %S\n", super_class);
 }
 
 void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name) {

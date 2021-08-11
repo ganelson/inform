@@ -49,8 +49,9 @@ At any given time, a generation has a "current" segment, to which output
 is being written. Ome segment is special: the temporary one, which is used
 only when assembling other material, and not for the final output.
 
+@e temporary_I7CGS from 0
+
 @d MAX_CG_SEGMENTS 100
-@d TEMP_CG_SEGMENT 99
 
 =
 typedef struct code_generation {
@@ -59,8 +60,10 @@ typedef struct code_generation {
 	struct code_generation_target *target;
 	struct inter_package *just_this_package;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
+	struct linked_list *segment_sequence; /* of |generated_segment| */
 	struct generated_segment *current_segment; /* an entry in that array, or null */
 	int temporarily_diverted; /* to the temporary segment */
+	void *target_specific_data; /* depending on the target generated to */
 	CLASS_DEFINITION
 } code_generation;
 
@@ -73,6 +76,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	if (just) gen->just_this_package = just;
 	else gen->just_this_package = Site::main_package(I);
 	gen->current_segment = NULL;
+	gen->segment_sequence = NEW_LINKED_LIST(generated_segment);
 	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
 	return gen;
@@ -93,15 +97,24 @@ generated_segment *CodeGen::new_segment(void) {
 	return seg;
 }
 
-@ The segments should be numbered in the order they will appear in the final
-output, because:
+void CodeGen::create_segments(code_generation *gen, void *data, int codes[]) {
+	gen->segment_sequence = NEW_LINKED_LIST(generated_segment);
+	for (int i=0; codes[i] >= 0; i++) {
+		if ((codes[i] >= MAX_CG_SEGMENTS) ||
+			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
+		gen->segments[codes[i]] = CodeGen::new_segment();
+		ADD_TO_LINKED_LIST(gen->segments[codes[i]], generated_segment, gen->segment_sequence);
+	}
+	gen->target_specific_data = data;
+}
+
+@ And then all we do is concatenate them in order:
 
 =
 void CodeGen::write(OUTPUT_STREAM, code_generation *gen) {
-	for (int i=0; i<MAX_CG_SEGMENTS; i++) {
-		if ((gen->segments[i]) && (i != TEMP_CG_SEGMENT))
-			WRITE("%S", gen->segments[i]->generated_code);
-	}
+	generated_segment *seg;
+	LOOP_OVER_LINKED_LIST(seg, generated_segment, gen->segment_sequence)
+		WRITE("%S", seg->generated_code);
 }
 
 @ Here we switch the output, by changing the segment selection. This must
@@ -126,14 +139,14 @@ we also have to direct it to a given text.
 
 =
 void CodeGen::select_temporary(code_generation *gen, text_stream *T) {
-	if (gen->segments[TEMP_CG_SEGMENT] == NULL) {
-		gen->segments[TEMP_CG_SEGMENT] = CodeGen::new_segment();
-		gen->segments[TEMP_CG_SEGMENT]->generated_code = NULL;
+	if (gen->segments[temporary_I7CGS] == NULL) {
+		gen->segments[temporary_I7CGS] = CodeGen::new_segment();
+		gen->segments[temporary_I7CGS]->generated_code = NULL;
 	}
 	if (gen->temporarily_diverted)
 		internal_error("nested temporary cgs");
 	gen->temporarily_diverted = TRUE;
-	gen->segments[TEMP_CG_SEGMENT]->generated_code = T;
+	gen->segments[temporary_I7CGS]->generated_code = T;
 }
 
 void CodeGen::deselect_temporary(code_generation *gen) {
@@ -145,7 +158,7 @@ void CodeGen::deselect_temporary(code_generation *gen) {
 =
 text_stream *CodeGen::current(code_generation *gen) {
 	if (gen->temporarily_diverted)
-		return gen->segments[TEMP_CG_SEGMENT]->generated_code;
+		return gen->segments[temporary_I7CGS]->generated_code;
 	if (gen->current_segment == NULL) return NULL;
 	return gen->current_segment->generated_code;
 }

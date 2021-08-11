@@ -1,10 +1,2 @@
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
-Unimplemented: i7_assign.
 
 Hello world.

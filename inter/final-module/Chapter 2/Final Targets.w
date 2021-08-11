@@ -31,7 +31,7 @@ void CodeGen::Targets::make_targets(void) {
 		CodeGen::Binary::create_target();
 		CodeGen::Inventory::create_target();
 		CodeGen::I6::create_target();
-		CodeGen::C::create_target();
+		CTarget::create_target();
 	}
 }
 
@@ -208,10 +208,10 @@ void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, in
 @e PROPERTY_OFFSET_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
+VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *super_class)
 VOID_METHOD_TYPE(END_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
-void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_name) {
-	VOID_METHOD_CALL(gen->target, DECLARE_CLASS_MTID, gen, class_name);
+void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_name, text_stream *super_class) {
+	VOID_METHOD_CALL(gen->target, DECLARE_CLASS_MTID, gen, class_name, super_class);
 }
 void CodeGen::Targets::end_class(code_generation *gen, text_stream *class_name) {
 	VOID_METHOD_CALL(gen->target, END_CLASS_MTID, gen, class_name);

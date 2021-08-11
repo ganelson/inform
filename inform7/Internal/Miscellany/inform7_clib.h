@@ -1,55 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef int i7val;
-typedef unsigned char i7byte;
 typedef struct i7varargs {
 	i7val args[10];
 } i7varargs;
 
+i7val i7_mgl_self = 0;
+i7val i7_mgl_sp = 0;
+#define i7_mgl_Grammar__Version 2
+i7val i7_mgl_debug_flag = 0;
+
 i7val i7_tmp = 0;
 int i7_seed = 197;
-
-i7val i7_prop_value(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_value.\n");
-	return 0;
-}
 
 #define i7_cpv_SET 1
 #define i7_cpv_PREDEC 2
 #define i7_cpv_POSTDEC 3
 #define i7_cpv_PREINC 4
 #define i7_cpv_POSTINC 5
-
-void i7_assign(i7val owner, i7val prop, i7val val, i7val inst) {
-	printf("Unimplemented: i7_assign.\n");
-}
-
-i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
-	i7val val = i7_prop_value(obj, pr), new_val = val;
-	switch (way) {
-		case i7_cpv_SET:     i7_assign(obj, pr, to, 1); new_val = to; break;
-		case i7_cpv_PREDEC:  new_val = val; i7_assign(obj, pr, val-1, 1); break;
-		case i7_cpv_POSTDEC: new_val = val-1; i7_assign(obj, pr, new_val, 1); break;
-		case i7_cpv_PREINC:  new_val = val; i7_assign(obj, pr, val+1, 1); break;
-		case i7_cpv_POSTINC: new_val = val+1; i7_assign(obj, pr, new_val, 1); break;
-	}
-	return new_val;
-}
-
-void i7_give(i7val owner, i7val prop, i7val val) {
-	i7_assign(owner, prop, val, 1);
-}
-
-i7val i7_prop_len(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_len.\n");
-	return 0;
-}
-
-i7val i7_prop_addr(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_addr.\n");
-	return 0;
-}
 
 #define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
@@ -343,11 +311,6 @@ int i7_has(i7val obj, i7val attr) {
 	return 0;
 }
 
-int i7_ofclass(i7val obj, i7val cl) {
-	printf("Unimplemented: i7_ofclass.\n");
-	return 0;
-}
-
 void i7_print_address(i7val x) {
 	printf("Unimplemented: i7_print_address.\n");
 }
@@ -398,11 +361,6 @@ void i7_push(i7val x) {
 #define i7_roman 2
 
 void i7_style(int what) {
-}
-
-i7val fn_i7_mgl_metaclass(int n, i7val v) {
-	printf("Unimplemented: fn_i7_mgl_metaclass.\n");
-	return 0;
 }
 
 i7val fn_i7_mgl_random(int n, i7val v) {
@@ -529,3 +487,78 @@ i7val i7_mgl_sharp_dictionary_table = 0;
 i7val i7_mgl_sharp_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
+i7val fn_i7_mgl_metaclass(int n, i7val id) {
+	if (id <= 0) return 0;
+	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
+	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
+	return i7_metaclass_of[id];
+}
+int i7_ofclass(i7val id, i7val cl_id) {
+	if ((id <= 0) || (cl_id <= 0)) return 0;
+	if (id >= I7VAL_FUNCTIONS_BASE) {
+		if (cl_id == i7_mgl_Routine) return 1;
+		return 0;
+	}
+	if (id >= I7VAL_STRINGS_BASE) {
+		if (cl_id == i7_mgl_String) return 1;
+		return 0;
+	}
+	if (id == i7_mgl_Class) {
+		if (cl_id == i7_mgl_Class) return 1;
+		return 0;
+	}
+	int cl_found = i7_class_of[id];
+	while (cl_found != i7_mgl_Class) {
+		if (cl_id == cl_found) return 1;
+		cl_found = i7_class_of[cl_found];
+	}
+	return 0;
+}
+typedef struct i7_property_set {
+	i7val value[i7_no_property_ids];
+	int value_set[i7_no_property_ids];
+} i7_property_set;
+i7_property_set i7_properties[i7_max_objects];
+
+i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
+		owner_id = i7_class_of[owner_id];
+	return i7_properties[(int) owner_id].value[(int) prop_id];
+}
+
+void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
+		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
+		exit(1);
+	}
+	i7_properties[(int) owner_id].value[(int) prop_id] = val;
+	i7_properties[(int) owner_id].value_set[(int) prop_id] = 1;
+}
+i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
+	i7val val = i7_read_prop_value(obj, pr), new_val = val;
+	switch (way) {
+		case i7_cpv_SET:     i7_write_prop_value(obj, pr, to); new_val = to; break;
+		case i7_cpv_PREDEC:  new_val = val; i7_write_prop_value(obj, pr, val-1); break;
+		case i7_cpv_POSTDEC: new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_cpv_PREINC:  new_val = val; i7_write_prop_value(obj, pr, val+1); break;
+		case i7_cpv_POSTINC: new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+	}
+	return new_val;
+}
+
+void i7_give(i7val owner, i7val prop, i7val val) {
+	i7_write_prop_value(owner, prop, val);
+}
+
+i7val i7_prop_len(i7val obj, i7val pr) {
+	printf("Unimplemented: i7_prop_len.\n");
+	return 0;
+}
+
+i7val i7_prop_addr(i7val obj, i7val pr) {
+	printf("Unimplemented: i7_prop_addr.\n");
+	return 0;
+}
