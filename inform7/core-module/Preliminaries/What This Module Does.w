@@ -39,8 +39,6 @@ values and descriptions are parsed and then stored within the compiler.
 //imperative// module, the part of Inform most resembling a conventional compiler.
 (*) The //runtime// module compiles run-time support functions and data structures
 needed to make Inform's many concepts work at run-time.
-(*) Last and least, the //index// module makes the browsable HTML-format index
-for a compiled project, viewable in the Inform user interface applications.
 
 There are then two expansion packs, as it were: the //if// and //multimedia//
 modules, which do nothing essential but add support for interactive fiction

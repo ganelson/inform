@@ -6,7 +6,7 @@ gameinfo.dbg
 gametext.txt
 
 makefile
-
+tags
 *.glkdata
 
 resources/Changes/Output/

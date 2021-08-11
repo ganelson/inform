@@ -2,6 +2,7 @@
 # and is not intended for human editing
 
 debug-log.txt
+tags
 Woven/
 Tangled/
 !Tangled/*.preform

@@ -10,7 +10,6 @@ typedef struct i7varargs {
 i7val i7_tmp = 0;
 int i7_seed = 197;
 
-
 i7val i7_prop_value(i7val obj, i7val pr) {
 	printf("Unimplemented: i7_prop_value.\n");
 	return 0;

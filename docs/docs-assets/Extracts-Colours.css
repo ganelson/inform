@@ -1,0 +1,39 @@
+/* The following correspond to the Inweb colours !definition, ..., !comment: */
+
+span.Extracts-definition-syntax  { color: #444444; }
+span.Extracts-function-syntax    { color: #C00000; }
+span.Extracts-identifier-syntax  { color: #4040ff; }
+span.Extracts-element-syntax     { color: #40407f; }
+span.Extracts-reserved-syntax    { color: #600000; }
+span.Extracts-string-syntax      { color: #408040; }
+span.Extracts-character-syntax   { color: #204020; }
+span.Extracts-constant-syntax    { color: #804020; }
+span.Extracts-plain-syntax       { color: #000000; }
+span.Extracts-extract-syntax     { color: #444444; }
+span.Extracts-comment-syntax     { color: #404040; font-style:italic; }
+
+/* This is used for the "define" or "enum" keyword on Inweb-defined constants: */
+
+span.Extracts-definition-keyword { color:#801010; font-weight:bold; }
+
+/* These are for the angle-bracketed paragraph names: */
+
+span.Extracts-named-paragraph, span.Extracts-named-paragraph-defn { color: #000000; font-size: 90%; }
+span.Extracts-named-paragraph-number { color: #000000; font-size: 70%; font-style:italic; }
+span.Extracts-named-paragraph-container {
+	background: #ececf8; border: 1px solid #888888;
+}
+a.named-paragraph-link:link, a.named-paragraph-link:visited {
+	text-decoration: none;
+}
+a.named-paragraph-link:active, a.named-paragraph-link:hover {
+	background: #c8c8e8;
+}
+
+/* This is the box into which multi-line stretches of code are put: */
+
+pre.Extracts-displayed-code {
+	background: #FFFFE0;
+	border: 1px dashed #cccccc;
+}
+

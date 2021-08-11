@@ -88,22 +88,21 @@ or other standard C compilers.
 <span class="plain-syntax">                                        \       /</span>
 <span class="plain-syntax">                                        \|/   \|/</span>
 <span class="plain-syntax">                                       </span><span class="element-syntax">syntax</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span>
-<span class="plain-syntax">                                            |</span>
 <span class="plain-syntax">                       </span><span class="element-syntax">kit</span><span class="plain-syntax"> </span><span class="element-syntax">sources</span><span class="plain-syntax">          |</span>
-<span class="plain-syntax">                    (</span><span class="element-syntax">in</span><span class="plain-syntax"> </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">)      |  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stages</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="element-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
+<span class="plain-syntax">                    (</span><span class="element-syntax">in</span><span class="plain-syntax"> </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">)      |  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stages</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="element-syntax">to</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 <span class="plain-syntax">                  </span><span class="function-syntax">INTER</span><span class="plain-syntax">     |               |</span>
 <span class="plain-syntax">                           \|/             \|/</span>
 <span class="plain-syntax">            </span><span class="element-syntax">precompiled</span><span class="plain-syntax"> </span><span class="element-syntax">Inter</span><span class="plain-syntax"> </span><span class="element-syntax">trees</span><span class="plain-syntax">     </span><span class="element-syntax">Inter</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span>
 <span class="plain-syntax">                            \              /</span>
-<span class="plain-syntax">                             \            /  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="function-syntax">INTER</span>
+<span class="plain-syntax">                             \            /  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="function-syntax">INTER</span>
 <span class="plain-syntax">                             \|/        \|/</span>
 <span class="plain-syntax">                        </span><span class="element-syntax">single</span><span class="plain-syntax"> </span><span class="element-syntax">linked</span><span class="plain-syntax"> </span><span class="element-syntax">Inter</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span>
 <span class="plain-syntax">                            /       |       \</span>
-<span class="plain-syntax"> </span><span class="element-syntax">I</span><span class="plain-syntax">                         /        |        \   </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="function-syntax">INTER</span>
+<span class="plain-syntax">                           /        |        \   </span><span class="function-syntax">INFORM7</span><span class="plain-syntax"> </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="function-syntax">INTER</span>
 <span class="plain-syntax">                         \|/       \|/       \|/</span>
 <span class="plain-syntax">                 </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">   </span><span class="element-syntax">C</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">     </span><span class="element-syntax">index</span><span class="plain-syntax"> </span><span class="element-syntax">mini</span><span class="plain-syntax">-</span><span class="element-syntax">website</span>
 <span class="plain-syntax">                          |         |</span>
-<span class="plain-syntax">                 </span><span class="function-syntax">INFORM6</span><span class="plain-syntax">  |         |  </span><span class="function-syntax">CLANG</span><span class="plain-syntax">/</span><span class="function-syntax">GCC</span>
+<span class="plain-syntax">                 </span><span class="function-syntax">INFORM6</span><span class="plain-syntax">  |         |  </span><span class="function-syntax">CLANG</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="function-syntax">GCC</span>
 <span class="plain-syntax">                         \|/       \|/</span>
 <span class="plain-syntax">                   </span><span class="element-syntax">story</span><span class="plain-syntax"> </span><span class="element-syntax">file</span><span class="plain-syntax">   </span><span class="element-syntax">executable</span>
 <span class="plain-syntax">                          |</span>
@@ -112,7 +111,7 @@ or other standard C compilers.
 <span class="plain-syntax">                 </span><span class="element-syntax">playable</span><span class="plain-syntax"> </span><span class="element-syntax">website</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The Inform 7 transpiler, then, occupies the top two-thirds of the above diagram.
-Broadly speaking, it runs in six stages, and the code for each stage is made
+Broadly speaking, it runs in seven stages, and the code for each stage is made
 up of one or more "modules", as follows:
 </p>
 
@@ -126,15 +125,16 @@ provide "plugins" to this process with additional features, adapting the languag
 for interactive fiction.
 </li><li>&#9679; Stage 4. <a href="imperative-module/index.html" class="internal">imperative</a> and <a href="runtime-module/index.html" class="internal">runtime</a> turn the constructs from Stage 3
 into an intermediate bytecode format called Inter.
-</li><li>&#9679; Stage 5. <a href="bytecode-module/index.html" class="internal">bytecode</a>, <a href="building-module/index.html" class="internal">building</a> and <a href="pipeline-module/index.html" class="internal">pipeline</a> manage, create, link
-and optimise this Inter code.
-</li><li>&#9679; Stage 6. <a href="final-module/index.html" class="internal">final</a> generates final code and <a href="index-module/index.html" class="internal">index</a> generates human-readable
+</li><li>&#9679; Stage 5. <a href="bytecode-module/index.html" class="internal">bytecode</a> and <a href="building-module/index.html" class="internal">building</a> manage and create Inter code. This is
+more of a layer than a stage, providing services to Stages 4, 6 and 7.
+</li><li>&#9679; Stage 6. <a href="pipeline-module/index.html" class="internal">pipeline</a> links and optimises this Inter code.
+</li><li>&#9679; Stage 7. <a href="final-module/index.html" class="internal">final</a> generates final code and <a href="index-module/index.html" class="internal">index</a> generates human-readable
 Index pages, which forn a small website about the project.
 </li></ul>
 <p class="commentary">Inform 7 presents as three command-line tools, not one: <a href="inbuild/index.html" class="internal">inbuild</a>, <a href="inform7/index.html" class="internal">inform7</a>
 and <a href="inter/index.html" class="internal">inter</a>. Really, though, they are three points of access to the same code
 base. <a href="inbuild/index.html" class="internal">inbuild</a> contains Stage 1 as a stand-alone tool, <a href="inter/index.html" class="internal">inter</a> contains Stages
-5 and 6 as a stand-alone tool, and <a href="inform7/index.html" class="internal">inform7</a> is the entire compiler (Stages 1 to 6)
+5 to 7 as a stand-alone tool, and <a href="inform7/index.html" class="internal">inform7</a> is the entire compiler (Stages 1 to 7)
 in one. Each tool has its own CLI (or "command-line interface"): see
 <a href="inbuild/M-ui.html" class="internal">Manual (in inbuild)</a>, <a href="inform7/M-cu.html" class="internal">Manual (in inform7)</a>, <a href="inter/M-ui.html" class="internal">Manual (in inter)</a> and
 <a href="inbuild/M-rc.html" class="internal">Reference Card (in inbuild)</a>, <a href="inform7/M-rc.html" class="internal">Reference Card (in inform7)</a>, <a href="inter/M-rc.html" class="internal">Reference Card (in inter)</a>.
@@ -166,10 +166,11 @@ in one. Each tool has its own CLI (or "command-line interface"): see
 <span class="plain-syntax">      .         .        +------------------+  +------------------------+</span>
 <span class="plain-syntax">      .         .              .         .  |         </span><a href="bytecode-module/index.html" class="internal">bytecode</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">   |   }</span>
 <span class="plain-syntax">      .         .              .         .  |         </span><a href="building-module/index.html" class="internal">building</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">   |   } </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
-<span class="plain-syntax">      .         .              .         .  |         </span><a href="pipeline-module/index.html" class="internal">pipeline</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">   |   }</span>
 <span class="plain-syntax">      .         .              .         .  | ------------------------- |</span>
-<span class="plain-syntax">      .         .              .         .  |          </span><a href="final-module/index.html" class="internal">final</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">     |   }</span>
-<span class="plain-syntax">      .         .              .         .  |          </span><a href="index-module/index.html" class="internal">index</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">     |   } </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
+<span class="plain-syntax">      .         .              .         .  |         </span><a href="pipeline-module/index.html" class="internal">pipeline</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">   |   } </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
+<span class="plain-syntax">      .         .              .         .  | ------------------------- |</span>
+<span class="plain-syntax">      .         .              .         .  |          </span><a href="final-module/index.html" class="internal">final</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">     |   } </span><span class="element-syntax">Stage</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
+<span class="plain-syntax">      .         .              .         .  |          </span><a href="index-module/index.html" class="internal">index</a><span class="plain-syntax">-</span><span class="element-syntax">module</span><span class="plain-syntax">     |   }</span>
 <span class="plain-syntax">      .         .              .         .  +---------------------------+</span>
 <span class="plain-syntax">      .         .              .         .              .         .</span>
 <span class="plain-syntax">+-----------------------------------------------------------------------+</span>

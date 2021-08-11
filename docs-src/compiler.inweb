@@ -23,22 +23,21 @@ or other standard C compilers.
 										\       /
 										\|/   \|/
 									   syntax tree
-											| 
 				 	   kit sources          |
-					(in Inform 6 code)      |  INFORM7 Stages 2 to 4
+					(in Inform 6 code)      |  INFORM7 Stages 2 to 5
 				  INTER     |               |
 			 			   \|/             \|/ 
 			precompiled Inter trees     Inter tree
                             \              /
-							 \            /  INFORM7 Stage 5 or INTER
+							 \            /  INFORM7 Stage 6 or INTER
 							 \|/        \|/
 						single linked Inter tree
 		                    /       |       \
- I                         /        |        \   INFORM7 Stage 6 or INTER
+                           /        |        \   INFORM7 Stage 7 or INTER
 		                 \|/       \|/       \|/
 		         Inform 6 code   C code     index mini-website
 		                  |         |
-		         INFORM6  |         |  CLANG/GCC
+		         INFORM6  |         |  CLANG or GCC
 		                 \|/       \|/
 		           story file   executable
 		                  |
@@ -48,7 +47,7 @@ or other standard C compilers.
 =
 
 @ The Inform 7 transpiler, then, occupies the top two-thirds of the above diagram.
-Broadly speaking, it runs in six stages, and the code for each stage is made
+Broadly speaking, it runs in seven stages, and the code for each stage is made
 up of one or more "modules", as follows:
 (*) Stage 1. A build manager called //supervisor// gathers what must be compiled.
 (*) Stage 2. //core// organises compilation of a single Inform project,
@@ -60,15 +59,16 @@ provide "plugins" to this process with additional features, adapting the languag
 for interactive fiction.
 (*) Stage 4. //imperative// and //runtime// turn the constructs from Stage 3
 into an intermediate bytecode format called Inter.
-(*) Stage 5. //bytecode//, //building// and //pipeline// manage, create, link
-and optimise this Inter code.
-(*) Stage 6. //final// generates final code and //index// generates human-readable
+(*) Stage 5. //bytecode// and //building// manage and create Inter code. This is
+more of a layer than a stage, providing services to Stages 4, 6 and 7.
+(*) Stage 6. //pipeline// links and optimises this Inter code.
+(*) Stage 7. //final// generates final code and //index// generates human-readable
 Index pages, which forn a small website about the project.
 
 Inform 7 presents as three command-line tools, not one: //inbuild//, //inform7//
 and //inter//. Really, though, they are three points of access to the same code
 base. //inbuild// contains Stage 1 as a stand-alone tool, //inter// contains Stages
-5 and 6 as a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 6)
+5 to 7 as a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 7)
 in one. Each tool has its own CLI (or "command-line interface"): see
 //inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
 //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
@@ -97,10 +97,11 @@ The full breakdown of these three tools into modules is as follows:
       .         .        +------------------+  +------------------------+
       .         .              .         .  |         //bytecode//-module   |   }
       .         .              .         .  |         //building//-module   |   } Stage 5
-      .         .              .         .  |         //pipeline//-module   |   }
       .         .              .         .  | ------------------------- |
-      .         .              .         .  |          //final//-module     |   }
-      .         .              .         .  |          //index//-module     |   } Stage 6
+      .         .              .         .  |         //pipeline//-module   |   } Stage 6
+      .         .              .         .  | ------------------------- |
+      .         .              .         .  |          //final//-module     |   } Stage 7
+      .         .              .         .  |          //index//-module     |   }
       .         .              .         .  +---------------------------+
       .         .              .         .              .         .  
 +-----------------------------------------------------------------------+

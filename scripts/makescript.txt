@@ -122,18 +122,24 @@ INFORM6X = inform6/Tangled/inform6
 # makes everything, disregarding all timestamps on files.
 
 .PHONY: all
-
 all: tools kits srules localintegration
 
 .PHONY: force
-
 force: forcetools forcekits forcesrules localintegration
 
 .PHONY: localintegration
-localintegration: inform7/Internal/Languages/English/Syntax.preform
+localintegration: \
+	inform7/Internal/Languages/English/Syntax.preform \
+	inform7/Internal/Miscellany/inform7_clib.h
 
 inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.preform
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
+
+inform7/Internal/Miscellany/inform7_clib.h: inform7/Tangled/inform7_clib.h
+	cp -f 'inform7/Tangled/inform7_clib.h' "inform7/Internal/Miscellany/inform7_clib.h"
+
+inform7/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
+	$(INWEBX) $(INTERTOOLWEB) -tangle
 
 # (Of course those other four phony targets are yet to be defined.)
 
