@@ -28,8 +28,12 @@ Chapter 5: C
 	C Namespace
 	C References
 	C Memory Model
-	C Implementation
 	C Assembly
+	C Program Control
 	C Arithmetic
+	C Conditions
 	C Object Model
+	C Function Model
+	C Global Variables
 	C Literals
+	C Input-Output Model

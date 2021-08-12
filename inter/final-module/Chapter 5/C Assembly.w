@@ -32,6 +32,22 @@ void CAssembly::begin(code_generation *gen) {
 void CAssembly::end(code_generation *gen) {
 }
 
+
+@
+
+= (text to inform7_clib.h)
+i7val i7_mgl_sp = 0;
+
+i7val i7_pull(void) {
+	printf("Unimplemented: i7_pull.\n");
+	return (i7val) 0;
+}
+
+void i7_push(i7val x) {
+	printf("Unimplemented: i7_push.\n");
+}
+=
+
 @
 
 =
@@ -203,10 +219,6 @@ void glulx_random(i7val x, i7val y) {
 
 void glulx_setiosys(i7val x, i7val y) {
 	// Deliberately ignored: we are using stdout, not glk
-}
-
-void glulx_setrandom(i7val x) {
-	i7_seed = (int) x;
 }
 
 void glulx_streamchar(i7val x) {

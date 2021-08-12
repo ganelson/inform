@@ -466,3 +466,37 @@ void i7_move(i7val obj, i7val to) {
 	printf("Unimplemented: i7_move.\n");
 }
 =
+
+@h Special object-related conditions.
+
+=
+text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
+	switch (bip) {
+		case OFCLASS_BIP:	*positive = TRUE;  return I"i7_ofclass"; break;
+		case HAS_BIP:		*positive = TRUE;  return I"i7_has"; break;
+		case HASNT_BIP:		*positive = FALSE; return I"i7_has"; break;
+		case IN_BIP:		*positive = TRUE;  return I"i7_in"; break;
+		case NOTIN_BIP:		*positive = FALSE; return I"i7_in"; break;
+		case PROVIDES_BIP:	*positive = TRUE;  return I"i7_provides"; break;
+	}
+	*positive = NOT_APPLICABLE; return NULL;
+}
+
+@
+
+= (text to inform7_clib.h)
+int i7_has(i7val obj, i7val attr) {
+	printf("Unimplemented: i7_has.\n");
+	return 0;
+}
+
+int i7_provides(i7val obj, i7val prop) {
+	printf("Unimplemented: i7_provides.\n");
+	return 0;
+}
+
+int i7_in(i7val obj1, i7val obj2) {
+	printf("Unimplemented: i7_in.\n");
+	return 0;
+}
+=

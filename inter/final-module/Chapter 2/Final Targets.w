@@ -60,7 +60,6 @@ int CodeGen::Targets::end_generation(code_generation *gen) {
 @e DEFAULT_SEGMENT_MTID
 @e BASIC_CONSTANT_SEGMENT_MTID
 @e CONSTANT_SEGMENT_MTID
-@e PROPERTY_SEGMENT_MTID
 @e TL_SEGMENT_MTID
 
 =
@@ -68,7 +67,6 @@ INT_METHOD_TYPE(GENERAL_SEGMENT_MTID, code_generation_target *cgt, code_generati
 INT_METHOD_TYPE(DEFAULT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 INT_METHOD_TYPE(BASIC_CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, int depth)
 INT_METHOD_TYPE(CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
-INT_METHOD_TYPE(PROPERTY_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 INT_METHOD_TYPE(TL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 
 int CodeGen::Targets::general_segment(code_generation *gen, inter_tree_node *P) {
@@ -92,12 +90,6 @@ int CodeGen::Targets::constant_segment(code_generation *gen) {
 int CodeGen::Targets::basic_constant_segment(code_generation *gen, int depth) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->target, BASIC_CONSTANT_SEGMENT_MTID, gen, depth);
-	return rv;
-}
-
-int CodeGen::Targets::property_segment(code_generation *gen) {
-	int rv = 0;
-	INT_METHOD_CALL(rv, gen->target, PROPERTY_SEGMENT_MTID, gen);
 	return rv;
 }
 

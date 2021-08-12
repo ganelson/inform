@@ -14,6 +14,7 @@ void CLiteralsModel::initialise(code_generation_target *cgt) {
 typedef struct C_generation_literals_model_data {
 	text_stream *double_quoted_C;
 	int no_double_quoted_C_strings;
+	text_stream *single_quoted_C;
 	int C_dword_count;
 	struct dictionary *C_vm_dictionary;
 } C_generation_literals_model_data;
@@ -21,6 +22,7 @@ typedef struct C_generation_literals_model_data {
 void CLiteralsModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(litdata.double_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.no_double_quoted_C_strings) = 0;
+	C_GEN_DATA(litdata.single_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.C_dword_count) = 0;
 	C_GEN_DATA(litdata.C_vm_dictionary) = Dictionaries::new(1024, TRUE);
 }
@@ -42,6 +44,11 @@ void CLiteralsModel::end(code_generation *gen) {
 	OUT = CodeGen::current(gen);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
 	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("char *sqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.single_quoted_C));
+	CodeGen::deselect(gen, saved);
 }
 
 @
@@ -58,6 +65,7 @@ void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_g
 			"i7_%s_dword_%d", (pluralise)?"p":"s", C_GEN_DATA(litdata.C_dword_count)++);
 		val = Dictionaries::get_text(C_GEN_DATA(litdata.C_vm_dictionary), S);
 		WRITE("%S", val);
+		WRITE_TO(C_GEN_DATA(litdata.single_quoted_C), "\"%S\", \"%S\", ", S, S);
 	}
 }
 
@@ -106,15 +114,9 @@ int CLiteralsModel::no_strings(code_generation *gen) {
 int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_dword("); INV_A1; WRITE(")"); break;
+		case PRINTSTRING_BIP: WRITE("i7_print_C_string(dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_C_string(sqs["); INV_A1; WRITE("])"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;
 }
-
-= (text to inform7_clib.h)
-void i7_print_dword(i7val x) {
-	printf("Unimplemented: i7_print_dword.\n");
-}
-=

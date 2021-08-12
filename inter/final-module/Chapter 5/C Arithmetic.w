@@ -27,6 +27,23 @@ int CArithmetic::compile_primitive(code_generation *gen, inter_ti bip, inter_tre
 	return FALSE;
 }
 
+@ Random integers are rather crudely generated for now, in what amounts to a
+rudimentary form of von Neumann's middle-square algorithm:
+
+= (text to inform7_clib.h)
+int i7_seed = 197;
+
+i7val fn_i7_mgl_random(int n, i7val v) {
+	if (i7_seed < 1000) return ((i7val) ((i7_seed++) % n));
+	i7_seed = i7_seed*i7_seed;
+	return (((i7_seed*i7_seed) & 0xFF00) / 0x100) % n;
+}
+
+void glulx_setrandom(i7val x) {
+	i7_seed = (int) x;
+}
+=
+
 @ Floating-point calculations are not done by primitives but by the use of
 Glulx opcodes. (When Inform could only produce code for the Z-machine and Glulx
 virtual machines, Glulx was the obe of the two which could handle floating-point.)

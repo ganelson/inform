@@ -1,6 +1,6 @@
 [CTarget::] Generating C.
 
-To generate I6 code from intermediate code.
+Managing, or really just delegating, the generation of ANSI C code from a tree of Inter.
 
 @h Target.
 
@@ -12,31 +12,21 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BEGIN_GENERATION_MTID, CTarget::begin_generation);
 	METHOD_ADD(c_target, END_GENERATION_MTID, CTarget::end_generation);
 
+	CProgramControl::initialise(c_target);
 	CNamespace::initialise(c_target);
 	CMemoryModel::initialise(c_target);
+	CFunctionModel::initialise(c_target);
 	CObjectModel::initialise(c_target);
 	CLiteralsModel::initialise(c_target);
+	CGlobals::initialise(c_target);
 	CAssembly::initialise(c_target);
+	CInputOutputModel::initialise(c_target);
 
 	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
 	METHOD_ADD(c_target, TL_SEGMENT_MTID, CTarget::tl_segment);
 	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
 	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
 	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
-	METHOD_ADD(c_target, PROPERTY_SEGMENT_MTID, CTarget::property_segment);
-	METHOD_ADD(c_target, COMPILE_PRIMITIVE_MTID, CTarget::compile_primitive);
-	METHOD_ADD(c_target, PREPARE_VARIABLE_MTID, CTarget::prepare_variable);
-	METHOD_ADD(c_target, DECLARE_VARIABLE_MTID, CTarget::declare_variable);
-	METHOD_ADD(c_target, DECLARE_LOCAL_VARIABLE_MTID, CTarget::declare_local_variable);
-	METHOD_ADD(c_target, BEGIN_CONSTANT_MTID, CTarget::begin_constant);
-	METHOD_ADD(c_target, END_CONSTANT_MTID, CTarget::end_constant);
-	METHOD_ADD(c_target, BEGIN_FUNCTION_MTID, CTarget::begin_function);
-	METHOD_ADD(c_target, BEGIN_FUNCTION_CODE_MTID, CTarget::begin_function_code);
-	METHOD_ADD(c_target, PLACE_LABEL_MTID, CTarget::place_label);
-	METHOD_ADD(c_target, END_FUNCTION_MTID, CTarget::end_function);
-	METHOD_ADD(c_target, BEGIN_FUNCTION_CALL_MTID, CTarget::begin_function_call);
-	METHOD_ADD(c_target, ARGUMENT_MTID, CTarget::argument);
-	METHOD_ADD(c_target, END_FUNCTION_CALL_MTID, CTarget::end_function_call);
 	METHOD_ADD(c_target, NEW_FAKE_ACTION_MTID, CTarget::new_fake_action);
 }
 
@@ -132,6 +122,7 @@ int C_target_segments[] = {
 typedef struct C_generation_data {
 	int C_action_count;
 	struct C_generation_memory_model_data memdata;
+	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
 	struct C_generation_literals_model_data litdata;
 	struct C_generation_assembly_data asmdata;
@@ -140,9 +131,12 @@ typedef struct C_generation_data {
 
 void CTarget::initialise_data(code_generation *gen) {
 	CMemoryModel::initialise_data(gen);
+	CFunctionModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);
 	CLiteralsModel::initialise_data(gen);
+	CGlobals::initialise_data(gen);
 	CAssembly::initialise_data(gen);
+	CInputOutputModel::initialise_data(gen);
 	C_GEN_DATA(C_action_count) = 0;
 }
 
@@ -167,20 +161,126 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	CodeGen::deselect(gen, saved);
 
 	CMemoryModel::begin(gen);
-	CTarget::begin_functions(gen);
+	CFunctionModel::begin(gen);
 	CObjectModel::begin(gen);
 	CLiteralsModel::begin(gen);
+	CGlobals::begin(gen);
 	CAssembly::begin(gen);
+	CInputOutputModel::begin(gen);
 
 	return FALSE;
 }
 
 int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	CMemoryModel::end(gen);
-	CTarget::end_functions(gen);
+	CFunctionModel::end(gen);
 	CObjectModel::end(gen);
 	CLiteralsModel::end(gen);
+	CGlobals::end(gen);
 	CAssembly::end(gen);
+	CInputOutputModel::end(gen);
 
 	return FALSE;
 }
+
+int CTarget::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
+	switch (P->W.data[ID_IFLD]) {
+		case CONSTANT_IST: {
+			inter_symbol *con_name =
+				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+			int choice = c_early_matter_I7CGS;
+			if (Str::eq(con_name->symbol_name, I"DynamicMemoryAllocation")) choice = c_very_early_matter_I7CGS;
+			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = c_code_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) choice = c_verbs_at_eof_I7CGS;
+			if (Inter::Constant::is_routine(con_name)) choice = c_functions_at_eof_I7CGS;
+			return choice;
+		}
+	}
+	return CTarget::default_segment(cgt);
+}
+
+int CTarget::default_segment(code_generation_target *cgt) {
+	return c_main_matter_I7CGS;
+}
+int CTarget::constant_segment(code_generation_target *cgt, code_generation *gen) {
+	return c_early_matter_I7CGS;
+}
+int CTarget::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
+	if (depth >= 10) depth = 10;
+	return c_constants_1_I7CGS + depth - 1;
+}
+int CTarget::tl_segment(code_generation_target *cgt) {
+	return c_text_literals_code_I7CGS;
+}
+
+@ =
+void CTarget::new_fake_action(code_generation_target *cgt, code_generation *gen, text_stream *name) {
+	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(C_action_count)++);
+	CodeGen::deselect(gen, saved);
+}
+
+@
+
+= (text to inform7_clib.h)
+#define i7_mgl_Grammar__Version 2
+i7val i7_mgl_debug_flag = 0;
+i7val i7_mgl_sharp_classes_table = 0;
+i7val i7_mgl_NUM_ATTR_BYTES = 0;
+i7val i7_mgl_sharp_cpv__start = 0;
+i7val i7_mgl_sharp_identifiers_table = 0;
+i7val i7_mgl_sharp_globals_array = 0;
+i7val i7_mgl_sharp_gself = 0;
+i7val i7_mgl_sharp_dict_par2 = 0;
+i7val i7_mgl_sharp_dictionary_table = 0;
+i7val i7_mgl_sharp_grammar_table = 0;
+
+#define i7_mgl_FLOAT_NAN 0
+
+i7val i7_tmp = 0;
+
+i7val fn_i7_mgl_Z__Region(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_Z__Region.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_CP__Tab(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_CP__Tab.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RA__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RA__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RL__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RL__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_OC__Cl(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_OC__Cl.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RV__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RV__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_OP__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_OP__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_CA__Pr.\n");
+	return 0;
+}
+=

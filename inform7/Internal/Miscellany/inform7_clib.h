@@ -5,6 +5,61 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define i7_mgl_Grammar__Version 2
+i7val i7_mgl_debug_flag = 0;
+i7val i7_mgl_sharp_classes_table = 0;
+i7val i7_mgl_NUM_ATTR_BYTES = 0;
+i7val i7_mgl_sharp_cpv__start = 0;
+i7val i7_mgl_sharp_identifiers_table = 0;
+i7val i7_mgl_sharp_globals_array = 0;
+i7val i7_mgl_sharp_gself = 0;
+i7val i7_mgl_sharp_dict_par2 = 0;
+i7val i7_mgl_sharp_dictionary_table = 0;
+i7val i7_mgl_sharp_grammar_table = 0;
+
+#define i7_mgl_FLOAT_NAN 0
+
+i7val i7_tmp = 0;
+
+i7val fn_i7_mgl_Z__Region(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_Z__Region.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_CP__Tab(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_CP__Tab.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RA__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RA__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RL__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RL__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_OC__Cl(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_OC__Cl.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_RV__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_RV__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_OP__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_OP__Pr.\n");
+	return 0;
+}
+
+i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
+	printf("Unimplemented: fn_i7_mgl_CA__Pr.\n");
+	return 0;
+}
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -50,54 +105,7 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 	data[byte_position+3] = I7BYTE_3(new_val);
 	return return_val;
 }
-#include <stdlib.h>
-#include <stdio.h>
-
-i7val i7_mgl_self = 0;
 i7val i7_mgl_sp = 0;
-#define i7_mgl_Grammar__Version 2
-i7val i7_mgl_debug_flag = 0;
-
-i7val i7_tmp = 0;
-int i7_seed = 197;
-
-int i7_has(i7val obj, i7val attr) {
-	printf("Unimplemented: i7_has.\n");
-	return 0;
-}
-
-void i7_print_char(i7val x) {
-	printf("%c", (int) x);
-}
-
-void i7_print_def_art(i7val x) {
-	printf("Unimplemented: i7_print_def_art.\n");
-}
-
-void i7_print_cdef_art(i7val x) {
-	printf("Unimplemented: i7_print_cdef_art.\n");
-}
-
-void i7_print_indef_art(i7val x) {
-	printf("Unimplemented: i7_print_indef_art.\n");
-}
-
-void i7_print_name(i7val x) {
-	printf("Unimplemented: i7_print_name.\n");
-}
-
-void i7_print_object(i7val x) {
-	printf("Unimplemented: i7_print_object.\n");
-}
-
-void i7_print_property(i7val x) {
-	printf("Unimplemented: i7_print_property.\n");
-}
-
-int i7_provides(i7val obj, i7val prop) {
-	printf("Unimplemented: i7_provides.\n");
-	return 0;
-}
 
 i7val i7_pull(void) {
 	printf("Unimplemented: i7_pull.\n");
@@ -107,142 +115,6 @@ i7val i7_pull(void) {
 void i7_push(i7val x) {
 	printf("Unimplemented: i7_push.\n");
 }
-
-#define i7_bold 1
-#define i7_roman 2
-
-void i7_style(int what) {
-}
-
-i7val fn_i7_mgl_random(int n, i7val v) {
-	if (i7_seed < 1000) return ((i7val) ((i7_seed++) % n));
-	i7_seed = i7_seed*i7_seed;
-	return (((i7_seed*i7_seed) & 0xFF00) / 0x100) % n;
-}
-
-i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {
-	printf("Unimplemented: i7_gen_call.\n");
-	return 0;
-}
-
-i7val i7_call_0(i7val fn_ref) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 0);
-}
-
-i7val fn_i7_mgl_indirect(int n, i7val v) {
-	return i7_call_0(v);
-}
-
-i7val i7_call_1(i7val fn_ref, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 0);
-}
-
-i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 0);
-}
-
-i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 0);
-}
-
-i7val i7_call_4(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
-	return i7_gen_call(fn_ref, args, 4, 0);
-}
-
-i7val i7_call_5(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
-	return i7_gen_call(fn_ref, args, 5, 0);
-}
-
-i7val i7_ccall_0(i7val fn_ref) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 1);
-}
-
-i7val i7_ccall_1(i7val fn_ref, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 1);
-}
-
-i7val i7_ccall_2(i7val fn_ref, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 1);
-}
-
-i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 1);
-}
-
-i7val fn_i7_mgl_Z__Region(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_Z__Region.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_CP__Tab(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_CP__Tab.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RA__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RA__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RL__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RL__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_OC__Cl(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_OC__Cl.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RV__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RV__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_OP__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_OP__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_CA__Pr.\n");
-	return 0;
-}
-
-i7val i7_mgl_sharp_classes_table = 0;
-i7val i7_mgl_NUM_ATTR_BYTES = 0;
-i7val i7_mgl_sharp_cpv__start = 0;
-i7val i7_mgl_sharp_identifiers_table = 0;
-i7val i7_mgl_sharp_globals_array = 0;
-i7val i7_mgl_sharp_gself = 0;
-i7val i7_mgl_sharp_dict_par2 = 0;
-i7val i7_mgl_sharp_dictionary_table = 0;
-i7val i7_mgl_sharp_grammar_table = 0;
-
-#define i7_mgl_FLOAT_NAN 0
-
-typedef struct i7varargs {
-	i7val args[10];
-} i7varargs;
-
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
 }
@@ -351,10 +223,6 @@ void glulx_setiosys(i7val x, i7val y) {
 	// Deliberately ignored: we are using stdout, not glk
 }
 
-void glulx_setrandom(i7val x) {
-	i7_seed = (int) x;
-}
-
 void glulx_streamchar(i7val x) {
 	printf("%c", (int) x);
 }
@@ -397,6 +265,17 @@ void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val 
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
+}
+int i7_seed = 197;
+
+i7val fn_i7_mgl_random(int n, i7val v) {
+	if (i7_seed < 1000) return ((i7val) ((i7_seed++) % n));
+	i7_seed = i7_seed*i7_seed;
+	return (((i7_seed*i7_seed) & 0xFF00) / 0x100) % n;
+}
+
+void glulx_setrandom(i7val x) {
+	i7_seed = (int) x;
 }
 void glulx_exp(i7val x, i7val y) {
 	printf("Unimplemented: glulx_exp.\n");
@@ -579,6 +458,141 @@ i7val i7_prop_addr(i7val obj, i7val pr) {
 void i7_move(i7val obj, i7val to) {
 	printf("Unimplemented: i7_move.\n");
 }
-void i7_print_dword(i7val x) {
-	printf("Unimplemented: i7_print_dword.\n");
+int i7_has(i7val obj, i7val attr) {
+	printf("Unimplemented: i7_has.\n");
+	return 0;
+}
+
+int i7_provides(i7val obj, i7val prop) {
+	printf("Unimplemented: i7_provides.\n");
+	return 0;
+}
+
+int i7_in(i7val obj1, i7val obj2) {
+	printf("Unimplemented: i7_in.\n");
+	return 0;
+}
+typedef struct i7varargs {
+	i7val args[10];
+} i7varargs;
+
+i7val i7_mgl_self = 0;
+
+i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {
+	printf("Unimplemented: i7_gen_call.\n");
+	return 0;
+}
+
+i7val i7_call_0(i7val fn_ref) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	return i7_gen_call(fn_ref, args, 0, 0);
+}
+
+i7val fn_i7_mgl_indirect(int n, i7val v) {
+	return i7_call_0(v);
+}
+
+i7val i7_call_1(i7val fn_ref, i7val v) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v;
+	return i7_gen_call(fn_ref, args, 1, 0);
+}
+
+i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2;
+	return i7_gen_call(fn_ref, args, 2, 0);
+}
+
+i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3;
+	return i7_gen_call(fn_ref, args, 3, 0);
+}
+
+i7val i7_call_4(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
+	return i7_gen_call(fn_ref, args, 4, 0);
+}
+
+i7val i7_call_5(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
+	return i7_gen_call(fn_ref, args, 5, 0);
+}
+
+i7val i7_ccall_0(i7val fn_ref) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	return i7_gen_call(fn_ref, args, 0, 1);
+}
+
+i7val i7_ccall_1(i7val fn_ref, i7val v) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v;
+	return i7_gen_call(fn_ref, args, 1, 1);
+}
+
+i7val i7_ccall_2(i7val fn_ref, i7val v, i7val v2) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2;
+	return i7_gen_call(fn_ref, args, 2, 1);
+}
+
+i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3;
+	return i7_gen_call(fn_ref, args, 3, 1);
+}
+#define i7_bold 1
+#define i7_roman 2
+#define i7_underline 3
+#define i7_reverse 4
+
+void i7_style(int what) {
+}
+
+void i7_font(int what) {
+}
+
+void i7_print_char(i7val x) {
+	printf("%c", (int) x);
+}
+
+void i7_print_C_string(char *c_string) {
+	if (c_string)
+		for (int i=0; c_string[i]; i++)
+			i7_print_char((i7val) c_string[i]);
+}
+
+void i7_print_def_art(i7val x) {
+	printf("Unimplemented: i7_print_def_art.\n");
+}
+
+void i7_print_cdef_art(i7val x) {
+	printf("Unimplemented: i7_print_cdef_art.\n");
+}
+
+void i7_print_indef_art(i7val x) {
+	printf("Unimplemented: i7_print_indef_art.\n");
+}
+
+void i7_print_name(i7val x) {
+	printf("Unimplemented: i7_print_name.\n");
+}
+
+void i7_print_object(i7val x) {
+	printf("Unimplemented: i7_print_object.\n");
+}
+
+void i7_print_property(i7val x) {
+	printf("Unimplemented: i7_print_property.\n");
+}
+
+void i7_print_box(i7val x) {
+	printf("Unimplemented: i7_print_box.\n");
+}
+
+void i7_read(i7val x) {
+	printf("Unimplemented: i7_read.\n");
 }

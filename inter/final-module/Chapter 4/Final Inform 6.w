@@ -74,7 +74,6 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, CodeGen::I6::default_segment);
 	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, CodeGen::I6::basic_constant_segment);
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
-	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CodeGen::I6::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
@@ -191,9 +190,6 @@ int CodeGen::I6::constant_segment(code_generation_target *cgt, code_generation *
 int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
 	if (depth >= 10) depth = 10;
 	return constants_1_I7CGS + depth - 1;
-}
-int CodeGen::I6::property_segment(code_generation_target *cgt) {
-	return predeclarations_I7CGS;
 }
 int CodeGen::I6::tl_segment(code_generation_target *cgt) {
 	return text_literals_code_I7CGS;

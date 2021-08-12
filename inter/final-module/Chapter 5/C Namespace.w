@@ -7,6 +7,8 @@ How identifiers are used in the C code we generate.
 =
 void CNamespace::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CNamespace::mangle);
+	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CNamespace::begin_constant);
+	METHOD_ADD(cgt, END_CONSTANT_MTID, CNamespace::end_constant);
 }
 
 void CNamespace::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
@@ -41,4 +43,24 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 	WRITE_TO(T, "local_%S", var_name->symbol_name);
 	Inter::Symbols::set_translate(var_name, T);
 	DISCARD_TEXT(T)
+}
+
+@
+
+=
+void CNamespace::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (ifndef_me) {
+		WRITE("#ifndef ");
+		CNamespace::mangle(cgt, OUT, const_name);
+		WRITE("\n");
+	}
+	WRITE("#define ");
+	CNamespace::mangle(cgt, OUT, const_name);
+	if (continues) WRITE(" ");
+}
+void CNamespace::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("\n");
+	if (ifndef_me) WRITE("#endif\n");
 }
