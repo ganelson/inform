@@ -94,8 +94,8 @@ That's what is done by the "A1 as ref" mode set up above.
 
 @<This does indeed modify a value by reference@> =
 	inter_tree_node *ref = InterTree::first_child(P);
-	if ((CodeGen::CL::node_is_word_array_ref(gen->from, ref)) ||
-		(CodeGen::CL::node_is_property_ref(gen->from, ref))) {
+	if ((CMemoryModel::handle_store_by_ref(gen, ref)) ||
+		(CObjectModel::handle_store_by_ref(gen, ref))) {
 		@<Handle the ref using the incomplete-function mode@>;
 	} else {
 		@<Handle the ref with C code working either as lvalue or rvalue@>;

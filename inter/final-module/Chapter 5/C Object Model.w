@@ -131,13 +131,13 @@ overlap.
 
 	WRITE("i7val i7_class_of[] = { 0");
 	for (int i=1; i<C_GEN_DATA(objdata.owner_id_count); i++) {
-		WRITE(", "); CTarget::mangle(NULL, OUT, C_GEN_DATA(objdata.owners)[i].class);
+		WRITE(", "); CNamespace::mangle(NULL, OUT, C_GEN_DATA(objdata.owners)[i].class);
 	}
 	WRITE(" };\n");
 
 	WRITE("#define I7VAL_STRINGS_BASE %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
 	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n",
-		C_GEN_DATA(objdata.owner_id_count) + 1 + C_GEN_DATA(no_double_quoted_C_strings));
+		C_GEN_DATA(objdata.owner_id_count) + 1 + CLiteralsModel::no_strings(gen));
 
 	WRITE("#define i7_no_property_ids %d\n", C_GEN_DATA(objdata.property_id_counter));
 	CodeGen::deselect(gen, saved);
@@ -176,7 +176,7 @@ void CObjectModel::define_constant_for_owner_id(code_generation *gen, text_strea
 	int id) {
 	generated_segment *saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#define "); CTarget::mangle(NULL, OUT, owner_name); WRITE(" %d\n", id);
+	WRITE("#define "); CNamespace::mangle(NULL, OUT, owner_name); WRITE(" %d\n", id);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -255,13 +255,13 @@ void CObjectModel::declare_property_by_name(code_generation *gen, text_stream *n
 	text_stream *OUT = CodeGen::current(gen);
 	if (used) {
 		WRITE("#define ");
-		CTarget::mangle(NULL, OUT, name);
+		CNamespace::mangle(NULL, OUT, name);
 		WRITE(" %d\n", C_GEN_DATA(objdata.property_id_counter)++);
 	} else {
 		WRITE("#ifndef ");
-		CTarget::mangle(NULL, OUT, name);
+		CNamespace::mangle(NULL, OUT, name);
 		WRITE("\n#define ");
-		CTarget::mangle(NULL, OUT, name);
+		CNamespace::mangle(NULL, OUT, name);
 		WRITE(" 0\n#endif\n");
 	}
 	CodeGen::deselect(gen, saved);
@@ -281,10 +281,10 @@ void CObjectModel::property_offset(code_generation_target *cgt, code_generation 
 		@<Begin the property-offset creator function@>;
 
 	WRITE("i7_write_word(i7mem, ");
-	if (as_attr) CTarget::mangle(cgt, OUT, I"attributed_property_offsets");
-	else CTarget::mangle(cgt, OUT, I"valued_property_offsets");
+	if (as_attr) CNamespace::mangle(cgt, OUT, I"attributed_property_offsets");
+	else CNamespace::mangle(cgt, OUT, I"valued_property_offsets");
 	WRITE(", ");
-	CTarget::mangle(cgt, OUT, prop);
+	CNamespace::mangle(cgt, OUT, prop);
 	WRITE(", %d, i7_lvalue_SET);\n", pos);
 	CodeGen::deselect(gen, saved);
 }
@@ -352,9 +352,9 @@ void CObjectModel::assign_property(code_generation_target *cgt, code_generation 
 	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7_write_prop_value(");
-	CTarget::mangle(cgt, OUT, C_GEN_DATA(objdata.owners)[C_GEN_DATA(objdata.current_owner_id)].name);
+	CNamespace::mangle(cgt, OUT, C_GEN_DATA(objdata.owners)[C_GEN_DATA(objdata.current_owner_id)].name);
 	WRITE(", ");
-	CTarget::mangle(cgt, OUT, property_name);
+	CNamespace::mangle(cgt, OUT, property_name);
 	WRITE(", %S);\n", val);
 	CodeGen::deselect(gen, saved);
 }
@@ -364,6 +364,11 @@ The following primitives are all implemented by calling suitable C functions,
 which we will then need to write in |inform7_clib.h|.
 
 =
+int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
+	if (CodeGen::CL::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) return TRUE;
+	return FALSE;
+}
+
 int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
@@ -387,6 +392,9 @@ int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 								INV_A3; WRITE(", "); INV_A4; WRITE(", "); INV_A5; WRITE(")"); break;
 		case GIVE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
 		case TAKE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 0)"); break;
+		case MOVE_BIP:          WRITE("i7_move("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case REMOVE_BIP:        WRITE("i7_move("); INV_A1; WRITE(", 0)"); break;
+
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;
@@ -452,5 +460,9 @@ i7val i7_prop_len(i7val obj, i7val pr) {
 i7val i7_prop_addr(i7val obj, i7val pr) {
 	printf("Unimplemented: i7_prop_addr.\n");
 	return 0;
+}
+
+void i7_move(i7val obj, i7val to) {
+	printf("Unimplemented: i7_move.\n");
 }
 =

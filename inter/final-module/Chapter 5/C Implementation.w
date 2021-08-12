@@ -16,273 +16,9 @@ i7val i7_mgl_debug_flag = 0;
 i7val i7_tmp = 0;
 int i7_seed = 197;
 
-
-void glulx_accelfunc(i7val x, i7val y) {
-	printf("Unimplemented: glulx_accelfunc.\n");
-}
-
-void glulx_accelparam(i7val x, i7val y) {
-	printf("Unimplemented: glulx_accelparam.\n");
-}
-
-void glulx_call(i7val x, i7val i7varargc, i7val z) {
-	printf("Unimplemented: glulx_call.\n");
-}
-
-void glulx_copy(i7val x, i7val y) {
-	printf("Unimplemented: glulx_copy.\n");
-}
-
-void glulx_div(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_div.\n");
-}
-
-void glulx_exp(i7val x, i7val y) {
-	printf("Unimplemented: glulx_exp.\n");
-}
-
-void glulx_fadd(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fadd.\n");
-}
-
-void glulx_fdiv(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fdiv.\n");
-}
-
-void glulx_floor(i7val x, i7val y) {
-	printf("Unimplemented: glulx_floor.\n");
-}
-
-void glulx_fmod(i7val x, i7val y, i7val z, i7val w) {
-	printf("Unimplemented: glulx_fmod.\n");
-}
-
-void glulx_fmul(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fmul.\n");
-}
-
-void glulx_fsub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fsub.\n");
-}
-
-void glulx_ftonumn(i7val x, i7val y) {
-	printf("Unimplemented: glulx_ftonumn.\n");
-}
-
-void glulx_ftonumz(i7val x, i7val y) {
-	printf("Unimplemented: glulx_ftonumz.\n");
-}
-
-void glulx_gestalt(i7val x, i7val y, i7val *z) {
-	*z = 1;
-}
-
-void glulx_glk(i7val glk_api_selector, i7val i7varargc, i7val *z) {
-	int rv = 0;
-	switch (glk_api_selector) {
-		case 4: // selectpr for glk_gestalt
-			rv = 1; break;
-		case 32: // selector for glk_window_iterate
-			rv = 0; break;
-		case 35: // selector for glk_window_open
-			rv = 1; break;
-		case 47: // selector for glk_set_window
-			rv = 0; break;
-		case 64: // selector for glk_stream_iterate
-			rv = 0; break;
-		case 100: // selector for glk_fileref_iterate
-			rv = 0; break;
-		case 176: // selector for glk_stylehint_set
-			rv = 0; break;
-		case 240: // selector for glk_schannel_iterate
-			rv = 0; break;
-		case 242: // selector for glk_schannel_create
-			rv = 0; break;
-		default:
-			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector);
-			rv = 0; break;
-	}
-	if (z) *z = rv;
-}
-
-int glulx_jeq(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jeq.\n");
-	return 0;
-}
-
-int glulx_jfeq(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_jfeq.\n");
-	return 0;
-}
-
-int glulx_jfge(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jfge.\n");
-	return 0;
-}
-
-int glulx_jflt(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jflt.\n");
-	return 0;
-}
-
-int glulx_jisinf(i7val x) {
-	printf("Unimplemented: glulx_jisinf.\n");
-	return 0;
-}
-
-int glulx_jisnan(i7val x) {
-	printf("Unimplemented: glulx_jisnan.\n");
-	return 0;
-}
-
-int glulx_jleu(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jleu.\n");
-	return 0;
-}
-
-int glulx_jnz(i7val x) {
-	printf("Unimplemented: glulx_jnz.\n");
-	return 0;
-}
-
-int glulx_jz(i7val x) {
-	printf("Unimplemented: glulx_jz.\n");
-	return 0;
-}
-
-void glulx_log(i7val x, i7val y) {
-	printf("Unimplemented: glulx_log.\n");
-}
-
-void glulx_malloc(i7val x, i7val y) {
-	printf("Unimplemented: glulx_malloc.\n");
-}
-
-void glulx_mcopy(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_mcopy.\n");
-}
-
-void glulx_mfree(i7val x) {
-	printf("Unimplemented: glulx_mfree.\n");
-}
-
-void glulx_mod(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_mod.\n");
-}
-
-void glulx_neg(i7val x, i7val y) {
-	printf("Unimplemented: glulx_neg.\n");
-}
-
-void glulx_numtof(i7val x, i7val y) {
-	printf("Unimplemented: glulx_numtof.\n");
-}
-
-void glulx_quit(void) {
-	printf("Unimplemented: glulx_quit.\n");
-}
-
-void glulx_random(i7val x, i7val y) {
-	printf("Unimplemented: glulx_random.\n");
-}
-
-void glulx_setiosys(i7val x, i7val y) {
-	// Deliberately ignored: we are using stdout, not glk
-}
-
-void glulx_setrandom(i7val x) {
-	i7_seed = (int) x;
-}
-
-void glulx_streamchar(i7val x) {
-	printf("%c", (int) x);
-}
-
-void glulx_streamnum(i7val x) {
-	printf("Unimplemented: glulx_streamnum.\n");
-}
-
-void glulx_streamstr(i7val x) {
-	printf("Unimplemented: glulx_streamstr.\n");
-}
-
-void glulx_streamunichar(i7val x) {
-	printf("%c", (int) x);
-}
-
-void glulx_sub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_sub.\n");
-}
-
-void glulx_ushiftr(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_ushiftr.\n");
-}
-
-void glulx_acos(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_acos\n");
-}
-
-void glulx_aload(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_aload\n");
-}
-
-void glulx_aloadb(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_aloadb\n");
-}
-
-void glulx_aloads(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_aloads\n");
-}
-
-void glulx_asin(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_asin\n");
-}
-
-void glulx_atan(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_atan\n");
-}
-
-void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
-	printf("Unimplemented: glulx_binarysearch\n");
-}
-
-void glulx_ceil(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_ceil\n");
-}
-
-void glulx_cos(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_cos\n");
-}
-
-void glulx_pow(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_pow\n");
-}
-
-void glulx_shiftl(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_shiftl\n");
-}
-
-void glulx_sin(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_sin\n");
-}
-
-void glulx_sqrt(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_sqrt\n");
-}
-
-void glulx_tan(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_tan\n");
-}
-
-
-
 int i7_has(i7val obj, i7val attr) {
 	printf("Unimplemented: i7_has.\n");
 	return 0;
-}
-
-void i7_print_address(i7val x) {
-	printf("Unimplemented: i7_print_address.\n");
 }
 
 void i7_print_char(i7val x) {
@@ -467,24 +203,6 @@ typedef struct i7varargs {
 @
 
 =
-void CTarget::begin_dictionary_words(code_generation *gen) {
-}
-
-void CTarget::end_dictionary_words(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	for (int i=0; i<C_GEN_DATA(C_dword_count); i++) {
-		WRITE("#define i7_s_dword_%d %d\n", i, 2*i);
-		WRITE("#define i7_p_dword_%d %d\n", i, 2*i + 1);
-	}
-	CodeGen::deselect(gen, saved);
-
-	saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(double_quoted_C));
-	CodeGen::deselect(gen, saved);
-}
-
 void CTarget::end_functions(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_globals_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -503,20 +221,6 @@ void CTarget::end_functions(code_generation *gen) {
 	WRITE("#endif\n");
 	WRITE("#endif\n");
 	CodeGen::deselect(gen, saved);
-}
-
-void CTarget::fix_locals(code_generation *gen) {
-	InterTree::traverse(gen->from, CTarget::sweep_for_locals, gen, NULL, LOCAL_IST);
-}
-
-void CTarget::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *var_name =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-	TEMPORARY_TEXT(T)
-	WRITE_TO(T, "local_%S", var_name->symbol_name);
-	Inter::Symbols::set_translate(var_name, T);
-	DISCARD_TEXT(T)
 }
 
 int CTarget::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
@@ -556,20 +260,6 @@ int CTarget::tl_segment(code_generation_target *cgt) {
 	return c_text_literals_code_I7CGS;
 }
 
-void CTarget::offer_pragma(code_generation_target *cgt, code_generation *gen,
-	inter_tree_node *P, text_stream *tag, text_stream *content) {
-}
-
-void CTarget::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
-	if (Str::get_first_char(identifier) == '(') WRITE("%S", identifier);
-	else if (Str::get_first_char(identifier) == '#') {
-		WRITE("i7_mgl_sharp_");
-		LOOP_THROUGH_TEXT(pos, identifier)
-			if ((Str::get(pos) != '#') && (Str::get(pos) != '$'))
-				PUT(Str::get(pos));
-	} else WRITE("i7_mgl_%S", identifier);
-}
-
 int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -579,23 +269,17 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 
 	int r = CReferences::compile_primitive(gen, bip, P);
 	if (r != NOT_APPLICABLE) return r;
+	r = CArithmetic::compile_primitive(gen, bip, P);
+	if (r != NOT_APPLICABLE) return r;
 	r = CMemoryModel::compile_primitive(gen, bip, P);
 	if (r != NOT_APPLICABLE) return r;
 	r = CObjectModel::compile_primitive(gen, bip, P);
 	if (r != NOT_APPLICABLE) return r;
+	r = CLiteralsModel::compile_primitive(gen, bip, P);
+	if (r != NOT_APPLICABLE) return r;
 
 	switch (bip) {
 		case INVERSION_BIP:		break; /* we won't support this in C */
-
-		case PLUS_BIP:			WRITE("("); INV_A1; WRITE(" + "); INV_A2; WRITE(")"); break;
-		case MINUS_BIP:			WRITE("("); INV_A1; WRITE(" - "); INV_A2; WRITE(")"); break;
-		case UNARYMINUS_BIP:	WRITE("(-("); INV_A1; WRITE("))"); break;
-		case TIMES_BIP:			WRITE("("); INV_A1; WRITE("*"); INV_A2; WRITE(")"); break;
-		case DIVIDE_BIP:		WRITE("("); INV_A1; WRITE("/"); INV_A2; WRITE(")"); break;
-		case MODULO_BIP:		WRITE("("); INV_A1; WRITE("%%"); INV_A2; WRITE(")"); break;
-		case BITWISEAND_BIP:	WRITE("(("); INV_A1; WRITE(")&("); INV_A2; WRITE("))"); break;
-		case BITWISEOR_BIP:		WRITE("(("); INV_A1; WRITE(")|("); INV_A2; WRITE("))"); break;
-		case BITWISENOT_BIP:	WRITE("(~("); INV_A1; WRITE("))"); break;
 
 		case NOT_BIP:			WRITE("(~~("); INV_A1; WRITE("))"); break;
 		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
@@ -612,7 +296,7 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 		case IN_BIP:			@<Generate comparison@>; break;
 		case NOTIN_BIP:			@<Generate comparison@>; break;
 		case PROVIDES_BIP:		@<Generate comparison@>; break;
-		case ALTERNATIVE_BIP:	INV_A1; WRITE(" or "); INV_A2; break;
+		case ALTERNATIVE_BIP:	internal_error("loose ALTERNATIVE_BIP primitive node"); break;
 
 		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
 		case PULL_BIP:			INV_A1; WRITE(" = i7_pull()"); break;
@@ -660,12 +344,7 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 		case STYLEUNDERLINE_BIP: WRITE("i7_style(i7_underline)"); break;
 		case STYLEREVERSE_BIP: WRITE("i7_style(i7_reverse)"); break;
 
-		case MOVE_BIP: WRITE("i7_move("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-		case REMOVE_BIP: WRITE("i7_move("); INV_A1; WRITE(", 0)"); break;
-
 		case ALTERNATIVECASE_BIP: INV_A1; WRITE(", "); INV_A2; break;
-		case SEQUENTIAL_BIP: WRITE("("); INV_A1; WRITE(","); INV_A2; WRITE(")"); break;
-		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
 		case PRINT_BIP: WRITE("printf(\"%%s\", "); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTRET_BIP: WRITE("printf(\"%%s\", "); INV_A1_PRINTMODE; WRITE("); return 1"); break;
@@ -674,8 +353,6 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 		case PRINTOBJ_BIP: WRITE("i7_print_object("); INV_A1; WRITE(")"); break;
 		case PRINTPROPERTY_BIP: WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP: WRITE("printf(\"%%d\", (int) "); INV_A1; WRITE(")"); break;
-		case PRINTADDRESS_BIP: WRITE("i7_print_address("); INV_A1; WRITE(")"); break;
-		case PRINTSTRING_BIP: WRITE("printf(\"%%s\", dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
 		case PRINTNLNUMBER_BIP: WRITE("i7_print_number("); INV_A1; WRITE(")"); break;
 		case PRINTDEF_BIP: WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
 		case PRINTCDEF_BIP: WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
@@ -697,7 +374,6 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 		case CASE_BIP: @<Generate primitive for case@>; break;
 		case DEFAULT_BIP: @<Generate primitive for default@>; break;
 
-		case RANDOM_BIP: WRITE("fn_i7_mgl_random(1, "); INV_A1; WRITE(")"); break;
 
 		case READ_BIP: WRITE("i7_read("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 
@@ -725,15 +401,6 @@ int CTarget::compile_primitive(code_generation_target *cgt, code_generation *gen
 		case TRUE: WRITE("return 1"); break;
 		case NOT_APPLICABLE: WRITE("return (i7val) "); CodeGen::FC::frame(gen, V); break;
 	}
-
-@<Generate primitive for ternarysequential@> =
-	WRITE("(");
-	INV_A1;
-	WRITE(", ");
-	INV_A2;
-	WRITE(", ");
-	INV_A3;
-	WRITE(")");
 
 @<Generate primitive for if@> =
 	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2;
@@ -873,9 +540,9 @@ void CTarget::comparison_r(code_generation_target *cgt, code_generation *gen,
 		case LE_BIP: 			WRITE("("); @<Compile first compared@>; WRITE(" <= "); @<Compile second compared@>; WRITE(")"); break;
 		case OFCLASS_BIP:		WRITE("(i7_ofclass("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
 		case HAS_BIP:			WRITE("(i7_has("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
-		case HASNT_BIP:			WRITE("(i7_has("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == FALSE)"); break;
+		case HASNT_BIP:			WRITE("(i7_has("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == 0)"); break;
 		case IN_BIP:			WRITE("(i7_in("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
-		case NOTIN_BIP:			WRITE("(i7_in("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == FALSE)"); break;
+		case NOTIN_BIP:			WRITE("(i7_in("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE(") == 0)"); break;
 		case PROVIDES_BIP:		WRITE("(i7_provides("); @<Compile first compared@>; WRITE(", "); @<Compile second compared@>; WRITE("))"); break;
 	}
 }
@@ -889,79 +556,13 @@ void CTarget::comparison_r(code_generation_target *cgt, code_generation *gen,
 @
 
 =
-void CTarget::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
-	text_stream *S, int pluralise) {
-	text_stream *OUT = CodeGen::current(gen);
-	text_stream *val = Dictionaries::get_text(C_GEN_DATA(C_vm_dictionary), S);
-	if (val) {
-		WRITE("%S", val);
-	} else {
-		WRITE_TO(Dictionaries::create_text(C_GEN_DATA(C_vm_dictionary), S),
-			"i7_%s_dword_%d", (pluralise)?"p":"s", C_GEN_DATA(C_dword_count)++);
-		val = Dictionaries::get_text(C_GEN_DATA(C_vm_dictionary), S);
-		WRITE("%S", val);
-	}
-}
-
-@
-
-=
-void CTarget::compile_literal_number(code_generation_target *cgt,
-	code_generation *gen, inter_ti val, int hex_mode) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (hex_mode) WRITE("0x%x", val);
-	else WRITE("%d", val);
-}
-
-@
-
-=
-void CTarget::compile_literal_text(code_generation_target *cgt, code_generation *gen,
-	text_stream *S, int printing_mode, int box_mode) {
-	text_stream *OUT = CodeGen::current(gen);
-	
-	if (printing_mode == FALSE) {
-		WRITE("(I7VAL_STRINGS_BASE + %d)", C_GEN_DATA(no_double_quoted_C_strings)++);
-		OUT = C_GEN_DATA(double_quoted_C);
-	}
-	
-	WRITE("\"");
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if (box_mode) {
-			switch(c) {
-				case '"': WRITE("\\\""); break;
-				case '\\': WRITE("\\\\"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\\n\"\n\""); break;
-				case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
-				default: PUT(c);
-			}
-		} else {
-			switch(c) {
-				case '"': WRITE("\\\""); break;
-				case '\\': WRITE("\\\\"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\\n"); break;
-				case NEWLINE_IN_STRING: WRITE("\\n"); break;
-				default: PUT(c); break;
-			}
-		}
-	}
-	WRITE("\"");
-	if (printing_mode == FALSE) WRITE(",\n");
-}
-
-@
-
-=
 int CTarget::prepare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k) {
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			text_stream *S = Str::new();
 			WRITE_TO(S, "(");
-			CTarget::mangle(cgt, S, I"Global_Vars");
+			CNamespace::mangle(cgt, S, I"Global_Vars");
 			WRITE_TO(S, "[%d])", k);
 			Inter::Symbols::set_translate(var_name, S);
 		}
@@ -976,12 +577,12 @@ int CTarget::declare_variable(code_generation_target *cgt, code_generation *gen,
 		generated_segment *saved = CodeGen::select(gen, c_globals_array_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("i7val ");
-		CTarget::mangle(cgt, OUT, CodeGen::CL::name(var_name));
+		CNamespace::mangle(cgt, OUT, CodeGen::CL::name(var_name));
 		WRITE(" = "); 
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		WRITE("#define i7_defined_");
-		CTarget::mangle(cgt, OUT, CodeGen::CL::name(var_name));
+		CNamespace::mangle(cgt, OUT, CodeGen::CL::name(var_name));
 		WRITE(" 1;\n");
 		CodeGen::deselect(gen, saved);
 	}
@@ -1009,11 +610,11 @@ void CTarget::begin_constant(code_generation_target *cgt, code_generation *gen, 
 	text_stream *OUT = CodeGen::current(gen);
 	if (ifndef_me) {
 		WRITE("#ifndef ");
-		CTarget::mangle(cgt, OUT, const_name);
+		CNamespace::mangle(cgt, OUT, const_name);
 		WRITE("\n");
 	}
 	WRITE("#define ");
-	CTarget::mangle(cgt, OUT, const_name);
+	CNamespace::mangle(cgt, OUT, const_name);
 	if (continues) WRITE(" ");
 }
 void CTarget::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
@@ -1044,7 +645,7 @@ void CTarget::declare_fcf(code_generation *gen, final_c_function *fcf) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CTarget::mangle(NULL, OUT, fcf->identifier_as_constant);
+	CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
 	WRITE(" (I7VAL_FUNCTIONS_BASE + %d)\n", fcf->allocation_id);
 	CodeGen::deselect(gen, saved);
 }
@@ -1066,7 +667,7 @@ void CTarget::add_main(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("void i7_initializer(void);\n");
 	WRITE("int main(int argc, char **argv) { i7_initializer(); ");
-	WRITE("fn_"); CTarget::mangle(NULL, OUT, I"Main");
+	WRITE("fn_"); CNamespace::mangle(NULL, OUT, I"Main");
 	WRITE("(0); return 0; }\n");
 	CodeGen::deselect(gen, saved);
 }
@@ -1087,14 +688,14 @@ void CTarget::begin_function(code_generation_target *cgt, int pass, code_generat
 		if (C_fn_prototype == NULL) C_fn_prototype = Str::new();
 		Str::clear(C_fn_prototype);
 		WRITE_TO(C_fn_prototype, "i7val fn_");
-		CTarget::mangle(cgt, C_fn_prototype, fn_name);
+		CNamespace::mangle(cgt, C_fn_prototype, fn_name);
 		WRITE_TO(C_fn_prototype, "(int __argc");
 	}
 	if (pass == 2) {
 		C_fn_being_found = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("i7val fn_");
-		CTarget::mangle(cgt, OUT, fn_name);
+		CNamespace::mangle(cgt, OUT, fn_name);
 		WRITE("(int __argc");
 	}
 }
@@ -1150,7 +751,7 @@ void CTarget::begin_function_call(code_generation_target *cgt, code_generation *
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("fn_");
-	CTarget::mangle(cgt, OUT, fn_name);
+	CNamespace::mangle(cgt, OUT, fn_name);
 	WRITE("(%d", argc);
 	if (GENERAL_POINTER_IS_NULL(fn->translation_data) == FALSE) {
 		final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
@@ -1195,82 +796,18 @@ void CTarget::end_function_call(code_generation_target *cgt, code_generation *ge
 	}
 }
 
-int C_operand_count = 0, C_operand_branches = FALSE; inter_tree_node *C_operand_label = NULL;
-int C_pointer_on_operand = -1;
-void CTarget::begin_opcode(code_generation_target *cgt, code_generation *gen, text_stream *opcode) {
-	text_stream *OUT = CodeGen::current(gen);
-	C_operand_branches = FALSE;
-	C_operand_label = NULL;
-	if (Str::get_at(opcode, 1) == 'j') { C_operand_branches = TRUE; }
-	if (Str::eq(opcode, I"@return")) WRITE("return ");
-	else {
-		if (C_operand_branches) WRITE("if (");
-		WRITE("glulx_");
-		LOOP_THROUGH_TEXT(pos, opcode)
-			if (Str::get(pos) != '@')
-				PUT(Str::get(pos));
-	}
-	WRITE("("); C_operand_count = 0;
-	C_pointer_on_operand = -1;
-	if (Str::eq(opcode, I"@acos")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@aload")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@aloadb")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@aloads")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@asin")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@atan")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@binarysearch")) C_pointer_on_operand = 8;
-	if (Str::eq(opcode, I"@ceil")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@cos")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@gestalt")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@glk")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@pow")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@shiftl")) C_pointer_on_operand = 3;
-	if (Str::eq(opcode, I"@sin")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@sqrt")) C_pointer_on_operand = 2;
-	if (Str::eq(opcode, I"@tan")) C_pointer_on_operand = 2;
-
-}
-void CTarget::supply_operand(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (is_label) {
-		C_operand_label = F;
-	} else {
-		if (C_operand_count++ > 0) WRITE(", ");
-		if (C_operand_count == C_pointer_on_operand) {
-			TEMPORARY_TEXT(write_to)
-			CodeGen::select_temporary(gen, write_to);
-			CodeGen::FC::frame(gen, F);
-			CodeGen::deselect_temporary(gen);
-			if (Str::eq(write_to, I"0")) WRITE("NULL");
-			else WRITE("&%S", write_to);
-			DISCARD_TEXT(write_to)
-		} else {
-			CodeGen::FC::frame(gen, F);
-		}
-	}
-}
-void CTarget::end_opcode(code_generation_target *cgt, code_generation *gen) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(")");
-	if (C_operand_branches) {
-		if (negate_label_mode) WRITE(" == FALSE");
-		WRITE(") goto ");
-		if (C_operand_label == NULL) internal_error("no branch label");
-		CodeGen::FC::frame(gen, C_operand_label);
-	}
-}
 
 void CTarget::declare_local_variable(code_generation_target *cgt, int pass,
 	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
 	TEMPORARY_TEXT(name)
-	CTarget::mangle(cgt, name, CodeGen::CL::name(var_name));
+	CNamespace::mangle(cgt, name, CodeGen::CL::name(var_name));
 	C_fn_parameter_count++;
 	if (pass == 1) {
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			C_fn_being_found->uses_vararg_model = TRUE;
 			WRITE_TO(C_fn_prototype, ", i7val %S", name);
 			WRITE_TO(C_fn_prototype, ", i7varargs ");
-			CTarget::mangle(cgt, C_fn_prototype, I"_varargs");
+			CNamespace::mangle(cgt, C_fn_prototype, I"_varargs");
 		} else {
 			WRITE_TO(C_fn_prototype, ", i7val %S", name);
 		}
@@ -1281,7 +818,7 @@ void CTarget::declare_local_variable(code_generation_target *cgt, int pass,
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			WRITE(", i7val %S", name);
 			WRITE(", i7varargs ");
-			CTarget::mangle(cgt, OUT, I"_varargs");
+			CNamespace::mangle(cgt, OUT, I"_varargs");
 		} else {
 			WRITE(", i7val %S", name);
 		}

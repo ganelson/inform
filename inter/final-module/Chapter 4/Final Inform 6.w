@@ -331,7 +331,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
 		case PRINTPROPERTY_BIP: WRITE("print (property) "); INV_A1; break;
 		case PRINTNUMBER_BIP: WRITE("print "); INV_A1; break;
-		case PRINTADDRESS_BIP: WRITE("print (address) "); INV_A1; break;
+		case PRINTDWORD_BIP: WRITE("print (address) "); INV_A1; break;
 		case PRINTSTRING_BIP: WRITE("print (string) "); INV_A1; break;
 		case PRINTNLNUMBER_BIP: WRITE("print (number) "); INV_A1; break;
 		case PRINTDEF_BIP: WRITE("print (the) "); INV_A1; break;

@@ -183,7 +183,7 @@ because they too are defined constants, equal to their IDs: see //C Object Model
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CTarget::mangle(cgt, OUT, array_name);
+	CNamespace::mangle(cgt, OUT, array_name);
 	WRITE(" %d /* = position in i7mem of %S array %S */\n",
 		C_GEN_DATA(memdata.himem), format_name, array_name);
 	CodeGen::deselect(gen, saved);
@@ -250,26 +250,28 @@ primitive !lookupbyte val val -> val
 =
 
 =
+int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
+	if (CodeGen::CL::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
+	return FALSE;
+}
+
 int CMemoryModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case LOOKUP_BIP:	if (CReferences::am_I_a_ref(gen)) {
-							 	@<Word value as reference@>;
-							} else {
-								@<Word value as value@>;
-							}
-							break;
+		case LOOKUP_BIP:     if (CReferences::am_I_a_ref(gen)) @<Word value as reference@>
+						     else @<Word value as value@>;
+						     break;
 		case LOOKUPBYTE_BIP: @<Byte value as value@>; break;
-		default: return NOT_APPLICABLE;
+		default:             return NOT_APPLICABLE;
 	}
 	return FALSE;
 }
 
 @<Word value as value@> =
 	WRITE("i7_read_word(i7mem, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
-	
-@<Byte value as value@> =
-	WRITE("i7mem["); INV_A1; WRITE(" + "); INV_A2; WRITE("]");
 
 @<Word value as reference@> =
 	WRITE("i7_write_word(i7mem, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+	
+@<Byte value as value@> =
+	WRITE("i7mem["); INV_A1; WRITE(" + "); INV_A2; WRITE("]");

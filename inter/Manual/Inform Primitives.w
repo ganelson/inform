@@ -70,7 +70,7 @@ These print data of various kinds:
 (a) |primitive !print val -> void|. Print text.
 (b) |primitive !printnumber val -> void|. Print a (signed) number in decimal.
 (c) |primitive !printchar val -> void|. Print a character value, from the ZSCII character set.
-(d) |primitive !printaddress val -> void|. Print a dictionary word.
+(d) |primitive !printdword val -> void|. Print a dictionary word.
 (e) |primitive !printstring val -> void|. Print a packed string.
 
 While these correspond to standard I6 library functions, they should probably

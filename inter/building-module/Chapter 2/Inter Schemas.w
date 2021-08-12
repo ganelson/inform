@@ -1963,7 +1963,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 									n = n->next;
 									while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 									if (Str::eq(pr->material, I"address")) {
-										subordinate_to = PRINTADDRESS_BIP;
+										subordinate_to = PRINTDWORD_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"number")) {
 										subordinate_to = PRINTNLNUMBER_BIP;

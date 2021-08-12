@@ -12,8 +12,11 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BEGIN_GENERATION_MTID, CTarget::begin_generation);
 	METHOD_ADD(c_target, END_GENERATION_MTID, CTarget::end_generation);
 
+	CNamespace::initialise(c_target);
 	CMemoryModel::initialise(c_target);
 	CObjectModel::initialise(c_target);
+	CLiteralsModel::initialise(c_target);
+	CAssembly::initialise(c_target);
 
 	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
 	METHOD_ADD(c_target, TL_SEGMENT_MTID, CTarget::tl_segment);
@@ -21,11 +24,7 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
 	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
 	METHOD_ADD(c_target, PROPERTY_SEGMENT_MTID, CTarget::property_segment);
-	METHOD_ADD(c_target, MANGLE_IDENTIFIER_MTID, CTarget::mangle);
 	METHOD_ADD(c_target, COMPILE_PRIMITIVE_MTID, CTarget::compile_primitive);
-	METHOD_ADD(c_target, COMPILE_DICTIONARY_WORD_MTID, CTarget::compile_dictionary_word);
-	METHOD_ADD(c_target, COMPILE_LITERAL_NUMBER_MTID, CTarget::compile_literal_number);
-	METHOD_ADD(c_target, COMPILE_LITERAL_TEXT_MTID, CTarget::compile_literal_text);
 	METHOD_ADD(c_target, PREPARE_VARIABLE_MTID, CTarget::prepare_variable);
 	METHOD_ADD(c_target, DECLARE_VARIABLE_MTID, CTarget::declare_variable);
 	METHOD_ADD(c_target, DECLARE_LOCAL_VARIABLE_MTID, CTarget::declare_local_variable);
@@ -38,10 +37,6 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BEGIN_FUNCTION_CALL_MTID, CTarget::begin_function_call);
 	METHOD_ADD(c_target, ARGUMENT_MTID, CTarget::argument);
 	METHOD_ADD(c_target, END_FUNCTION_CALL_MTID, CTarget::end_function_call);
-	METHOD_ADD(c_target, BEGIN_OPCODE_MTID, CTarget::begin_opcode);
-	METHOD_ADD(c_target, SUPPLY_OPERAND_MTID, CTarget::supply_operand);
-	METHOD_ADD(c_target, END_OPCODE_MTID, CTarget::end_opcode);
-	METHOD_ADD(c_target, OFFER_PRAGMA_MTID, CTarget::offer_pragma)
 	METHOD_ADD(c_target, NEW_FAKE_ACTION_MTID, CTarget::new_fake_action);
 }
 
@@ -135,24 +130,20 @@ int C_target_segments[] = {
 
 =
 typedef struct C_generation_data {
-	text_stream *double_quoted_C;
-	int no_double_quoted_C_strings;
-	int C_dword_count;
 	int C_action_count;
-	struct dictionary *C_vm_dictionary;
 	struct C_generation_memory_model_data memdata;
 	struct C_generation_object_model_data objdata;
+	struct C_generation_literals_model_data litdata;
+	struct C_generation_assembly_data asmdata;
 	CLASS_DEFINITION
 } C_generation_data;
 
 void CTarget::initialise_data(code_generation *gen) {
 	CMemoryModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);
-	C_GEN_DATA(double_quoted_C) = Str::new();
-	C_GEN_DATA(no_double_quoted_C_strings) = 0;
-	C_GEN_DATA(C_dword_count) = 0;
+	CLiteralsModel::initialise_data(gen);
+	CAssembly::initialise_data(gen);
 	C_GEN_DATA(C_action_count) = 0;
-	C_GEN_DATA(C_vm_dictionary) = Dictionaries::new(1024, TRUE);
 }
 
 @h Begin and end.
@@ -162,7 +153,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
 	CTarget::initialise_data(gen);
 
-	CTarget::fix_locals(gen);
+	CNamespace::fix_locals(gen);
 
 	generated_segment *saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -178,7 +169,8 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	CMemoryModel::begin(gen);
 	CTarget::begin_functions(gen);
 	CObjectModel::begin(gen);
-	CTarget::begin_dictionary_words(gen);
+	CLiteralsModel::begin(gen);
+	CAssembly::begin(gen);
 
 	return FALSE;
 }
@@ -187,7 +179,8 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	CMemoryModel::end(gen);
 	CTarget::end_functions(gen);
 	CObjectModel::end(gen);
-	CTarget::end_dictionary_words(gen);
+	CLiteralsModel::end(gen);
+	CAssembly::end(gen);
 
 	return FALSE;
 }

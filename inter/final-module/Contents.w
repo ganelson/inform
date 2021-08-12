@@ -25,7 +25,11 @@ Chapter 4: Inform 6
 
 Chapter 5: C
 	Final C
+	C Namespace
 	C References
 	C Memory Model
 	C Implementation
+	C Assembly
+	C Arithmetic
 	C Object Model
+	C Literals
