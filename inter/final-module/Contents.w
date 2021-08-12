@@ -25,5 +25,7 @@ Chapter 4: Inform 6
 
 Chapter 5: C
 	Final C
+	C References
+	C Memory Model
 	C Implementation
 	C Object Model

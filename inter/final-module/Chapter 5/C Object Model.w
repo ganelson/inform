@@ -280,12 +280,12 @@ void CObjectModel::property_offset(code_generation_target *cgt, code_generation 
 	if (C_GEN_DATA(objdata.C_property_offsets_made)++ == 0)
 		@<Begin the property-offset creator function@>;
 
-	WRITE("write_i7_lookup(i7mem, ");
+	WRITE("i7_write_word(i7mem, ");
 	if (as_attr) CTarget::mangle(cgt, OUT, I"attributed_property_offsets");
 	else CTarget::mangle(cgt, OUT, I"valued_property_offsets");
 	WRITE(", ");
 	CTarget::mangle(cgt, OUT, prop);
-	WRITE(", %d, i7_cpv_SET);\n", pos);
+	WRITE(", %d, i7_lvalue_SET);\n", pos);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -296,9 +296,9 @@ not deriving from an Inform program.
 @<Begin the property-offset creator function@> =
 	WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(int argc) {\n"); INDENT;
 	WRITE("for (int i=0; i<i7_mgl_attributed_property_offsets_SIZE; i++)\n"); INDENT;
-	WRITE("write_i7_lookup(i7mem, i7_mgl_attributed_property_offsets, i, -1, i7_cpv_SET);\n"); OUTDENT;
+	WRITE("i7_write_word(i7mem, i7_mgl_attributed_property_offsets, i, -1, i7_lvalue_SET);\n"); OUTDENT;
 	WRITE("for (int i=0; i<i7_mgl_valued_property_offsets_SIZE; i++)\n"); INDENT;
-	WRITE("write_i7_lookup(i7mem, i7_mgl_valued_property_offsets, i, -1, i7_cpv_SET);\n"); OUTDENT;
+	WRITE("i7_write_word(i7mem, i7_mgl_valued_property_offsets, i, -1, i7_lvalue_SET);\n"); OUTDENT;
 
 @ This function has no meaningful return value, but has to conform to our
 calling convention for Inform programs, which means it has to return something.
@@ -359,6 +359,39 @@ void CObjectModel::assign_property(code_generation_target *cgt, code_generation 
 	CodeGen::deselect(gen, saved);
 }
 
+@h Primitives for property usage.
+The following primitives are all implemented by calling suitable C functions,
+which we will then need to write in |inform7_clib.h|.
+
+=
+int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+	text_stream *OUT = CodeGen::current(gen);
+	switch (bip) {
+		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
+									WRITE("i7_change_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+								} else {
+									WRITE("i7_read_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+								}
+								break;
+		case MESSAGE0_BIP: 		WRITE("i7_call_0(i7_read_prop_value("); INV_A1;
+								WRITE(", "); INV_A2; WRITE("))"); break;
+		case MESSAGE1_BIP: 		WRITE("i7_call_1(i7_read_prop_value("); INV_A1;
+								WRITE(", "); INV_A2; WRITE("), "); INV_A3; WRITE(")"); break;
+		case MESSAGE2_BIP: 		WRITE("i7_call_2(i7_read_prop_value("); INV_A1;
+								WRITE(", "); INV_A2; WRITE("), ");
+								INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
+		case MESSAGE3_BIP: 		WRITE("i7_call_3(i7_read_prop_value("); INV_A1;
+								WRITE(", "); INV_A2; WRITE("), ");
+								INV_A3; WRITE(", "); INV_A4; WRITE(", "); INV_A5; WRITE(")"); break;
+		case GIVE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
+		case TAKE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 0)"); break;
+		default: return NOT_APPLICABLE;
+	}
+	return FALSE;
+}
+
 @h Reading and writing properties.
 So here is the run-time storage for property values, and simple code to read
 and write them. Note that, unlike in the Z-machine or Glulx implementations,
@@ -371,14 +404,6 @@ typedef struct i7_property_set {
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
-i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
-	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
-		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
-		owner_id = i7_class_of[owner_id];
-	return i7_properties[(int) owner_id].value[(int) prop_id];
-}
-
 void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
@@ -390,17 +415,27 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 }
 =
 
-@h Other things to do with properties.
+@ And here sre the functions called by the above primitives:
 
 = (text to inform7_clib.h)
+i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
+		owner_id = i7_class_of[owner_id];
+	return i7_properties[(int) owner_id].value[(int) prop_id];
+}
+
 i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
 	i7val val = i7_read_prop_value(obj, pr), new_val = val;
 	switch (way) {
-		case i7_cpv_SET:     i7_write_prop_value(obj, pr, to); new_val = to; break;
-		case i7_cpv_PREDEC:  new_val = val; i7_write_prop_value(obj, pr, val-1); break;
-		case i7_cpv_POSTDEC: new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
-		case i7_cpv_PREINC:  new_val = val; i7_write_prop_value(obj, pr, val+1); break;
-		case i7_cpv_POSTINC: new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_SET:      i7_write_prop_value(obj, pr, to); new_val = to; break;
+		case i7_lvalue_PREDEC:   new_val = val; i7_write_prop_value(obj, pr, val-1); break;
+		case i7_lvalue_POSTDEC:  new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_PREINC:   new_val = val; i7_write_prop_value(obj, pr, val+1); break;
+		case i7_lvalue_POSTINC:  new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_SETBIT:   new_val = val | new_val; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_CLEARBIT: new_val = val &(~new_val); i7_write_prop_value(obj, pr, new_val); break;
 	}
 	return new_val;
 }

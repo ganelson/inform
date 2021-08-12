@@ -2,7 +2,7 @@
 
 To generate I6 code from intermediate code.
 
-@h Target,
+@h Target.
 
 =
 code_generation_target *c_target = NULL;
@@ -12,6 +12,7 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BEGIN_GENERATION_MTID, CTarget::begin_generation);
 	METHOD_ADD(c_target, END_GENERATION_MTID, CTarget::end_generation);
 
+	CMemoryModel::initialise(c_target);
 	CObjectModel::initialise(c_target);
 
 	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
@@ -40,12 +41,29 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, BEGIN_OPCODE_MTID, CTarget::begin_opcode);
 	METHOD_ADD(c_target, SUPPLY_OPERAND_MTID, CTarget::supply_operand);
 	METHOD_ADD(c_target, END_OPCODE_MTID, CTarget::end_opcode);
-	METHOD_ADD(c_target, BEGIN_ARRAY_MTID, CTarget::begin_array);
-	METHOD_ADD(c_target, ARRAY_ENTRY_MTID, CTarget::array_entry);
-	METHOD_ADD(c_target, END_ARRAY_MTID, CTarget::end_array);
 	METHOD_ADD(c_target, OFFER_PRAGMA_MTID, CTarget::offer_pragma)
 	METHOD_ADD(c_target, NEW_FAKE_ACTION_MTID, CTarget::new_fake_action);
 }
+
+@h Static supporting code.
+The C code generated here would not compile as a stand-alone file. It needs
+to use variables and functions from a small unchanging library called 
+|inform7_clib.h|. (The |.h| there is questionable, since this is not purely
+a header file: it contains actual content and not only predeclarations. On
+the other hand, it serves the same basic purpose.)
+
+The code we generate here can only make sense if read alongside |inform7_clib.h|,
+and vice versa, so the file is presented here in installments. This is the
+first of those:
+
+= (text to inform7_clib.h)
+/* This is a library of C code to support Inform or other Inter programs compiled
+   tp ANSI C. It was generated mechanically from the Inter source code, so to
+   change it, edit that and not this. */
+
+#include <stdlib.h>
+#include <stdio.h>
+=
 
 @h Segmentation.
 
@@ -119,19 +137,19 @@ int C_target_segments[] = {
 typedef struct C_generation_data {
 	text_stream *double_quoted_C;
 	int no_double_quoted_C_strings;
-	int extent_of_i7mem;
 	int C_dword_count;
 	int C_action_count;
 	struct dictionary *C_vm_dictionary;
+	struct C_generation_memory_model_data memdata;
 	struct C_generation_object_model_data objdata;
 	CLASS_DEFINITION
 } C_generation_data;
 
 void CTarget::initialise_data(code_generation *gen) {
+	CMemoryModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);
 	C_GEN_DATA(double_quoted_C) = Str::new();
 	C_GEN_DATA(no_double_quoted_C_strings) = 0;
-	C_GEN_DATA(extent_of_i7mem) = 0;
 	C_GEN_DATA(C_dword_count) = 0;
 	C_GEN_DATA(C_action_count) = 0;
 	C_GEN_DATA(C_vm_dictionary) = Dictionaries::new(1024, TRUE);
@@ -157,7 +175,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	WRITE("#include \"inform7_clib.h\"\n");
 	CodeGen::deselect(gen, saved);
 
-	CTarget::begin_memory(gen);
+	CMemoryModel::begin(gen);
 	CTarget::begin_functions(gen);
 	CObjectModel::begin(gen);
 	CTarget::begin_dictionary_words(gen);
@@ -166,7 +184,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 }
 
 int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
-	CTarget::end_memory(gen);
+	CMemoryModel::end(gen);
 	CTarget::end_functions(gen);
 	CObjectModel::end(gen);
 	CTarget::end_dictionary_words(gen);

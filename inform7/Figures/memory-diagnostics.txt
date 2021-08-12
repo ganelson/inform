@@ -1,9 +1,9 @@
-Total memory consumption was 399081K = 390 MB
+Total memory consumption was 399082K = 390 MB
 
-60.3% was used for 1995521 objects, in 371145 frames in 301 x 800K = 240800K = 235 MB:
+60.3% was used for 1995621 objects, in 371146 frames in 301 x 800K = 240800K = 235 MB:
 
     10.2%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-     7.0%  text_stream_array                        5128 x 100 = 512800 objects, 28880896 bytes
+     7.0%  text_stream_array                        5129 x 100 = 512900 objects, 28886528 bytes
      4.2%  linked_list                              30848 objects, 17274880 bytes
      3.9%  inter_symbol_array                       139 x 1024 = 142336 objects, 15946080 bytes
      2.5%  parse_node                               129399 objects, 10351920 bytes
@@ -238,7 +238,7 @@ Total memory consumption was 399081K = 390 MB
 
 39.6% was used for memory not allocated for objects:
 
-    21.1%  text stream storage                      86232716 bytes in 530547 claims
+    21.1%  text stream storage                      86234244 bytes in 530559 claims
      4.4%  dictionary storage                       18153984 bytes in 33230 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -256,5 +256,5 @@ Total memory consumption was 399081K = 390 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    161920 bytes in 2064 claims
 
-18.7% was overhead - 76757816 bytes = 74958K = 73 MB
+18.7% was overhead - 76752184 bytes = 74953K = 73 MB
 

@@ -21,6 +21,7 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Extracts-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -73,19 +74,19 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#5">Chapter 5: C</a></li><li><b>Generating C</b></li></ul></div>
 <p class="purpose">To generate I6 code from intermediate code.</p>
 
-<ul class="toc"><li><a href="5-fnc.html#SP1">&#167;1. </a></li><li><a href="5-fnc.html#SP2">&#167;2. Segmentation</a></li><li><a href="5-fnc.html#SP3">&#167;3. State data</a></li><li><a href="5-fnc.html#SP4">&#167;4. Begin and end</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-fnc.html#SP1">&#167;1. Target</a></li><li><a href="5-fnc.html#SP2">&#167;2. Static supporting code</a></li><li><a href="5-fnc.html#SP3">&#167;3. Segmentation</a></li><li><a href="5-fnc.html#SP4">&#167;4. State data</a></li><li><a href="5-fnc.html#SP5">&#167;5. Begin and end</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Target,
-</p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Target. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c_target</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CTarget::create_target</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CTarget::create_target</span></span>:<br/>Final Targets - <a href="2-ft.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">c_target</span><span class="plain-syntax"> = </span><a href="2-ft.html#SP1" class="function-link"><span class="function-syntax">CodeGen::Targets::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"c"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_GENERATION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP4" class="function-link"><span class="function-syntax">CTarget::begin_generation</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">END_GENERATION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP4" class="function-link"><span class="function-syntax">CTarget::end_generation</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_GENERATION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP5" class="function-link"><span class="function-syntax">CTarget::begin_generation</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">END_GENERATION_MTID</span><span class="plain-syntax">, </span><a href="5-fnc.html#SP5" class="function-link"><span class="function-syntax">CTarget::end_generation</span></a><span class="plain-syntax">);</span>
 
+<span class="plain-syntax">    </span><a href="5-cmm.html#SP1" class="function-link"><span class="function-syntax">CMemoryModel::initialise</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-com.html#SP1" class="function-link"><span class="function-syntax">CObjectModel::initialise</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">GENERAL_SEGMENT_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::general_segment</span></a><span class="plain-syntax">);</span>
@@ -114,110 +115,129 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_OPCODE_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::begin_opcode</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">SUPPLY_OPERAND_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::supply_operand</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">END_OPCODE_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::end_opcode</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">BEGIN_ARRAY_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::begin_array</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">ARRAY_ENTRY_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::array_entry</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">END_ARRAY_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::end_array</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">OFFER_PRAGMA_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::offer_pragma</span></a><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">c_target</span><span class="plain-syntax">, </span><span class="constant-syntax">NEW_FAKE_ACTION_MTID</span><span class="plain-syntax">, </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::new_fake_action</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Segmentation. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Static supporting code. </b>The C code generated here would not compile as a stand-alone file. It needs
+to use variables and functions from a small unchanging library called
+<span class="extract"><span class="extract-syntax">inform7_clib.h</span></span>. (The <span class="extract"><span class="extract-syntax">.h</span></span> there is questionable, since this is not purely
+a header file: it contains actual content and not only predeclarations. On
+the other hand, it serves the same basic purpose.)
+</p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">c_fundamental_types_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_ids_and_maxima_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_header_matter_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_predeclarations_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_very_early_matter_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_1_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_2_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_3_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_4_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_5_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_6_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_7_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_8_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_9_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_constants_10_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_early_matter_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_text_literals_code_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_summations_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_arrays_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_globals_array_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_main_matter_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_functions_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_code_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_verbs_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_stubs_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_property_offset_creator_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_mem_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">c_initialiser_I7CGS</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C_target_segments</span><span class="plain-syntax">[] = {</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_fundamental_types_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_ids_and_maxima_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_header_matter_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_predeclarations_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_very_early_matter_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_1_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_2_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_3_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_4_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_5_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_6_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_7_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_8_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_9_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_constants_10_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_early_matter_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_text_literals_code_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_summations_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_arrays_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_globals_array_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_main_matter_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_functions_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_code_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_verbs_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_stubs_at_eof_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_property_offset_creator_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_mem_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">c_initialiser_I7CGS</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    -1</span>
-<span class="plain-syntax">};</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. State data. </b></p>
+<p class="commentary">The code we generate here can only make sense if read alongside <span class="extract"><span class="extract-syntax">inform7_clib.h</span></span>,
+and vice versa, so the file is presented here in installments. This is the
+first of those:
+</p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) ((</span><span class="reserved-syntax">C_generation_data</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">target_specific_data</span><span class="plain-syntax">))-&gt;</span><span class="identifier-syntax">x</span>
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-plain-syntax">/* </span><span class="Extracts-identifier-syntax">This</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">is</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">a</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">library</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">of</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">C</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">code</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">to</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">support</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">Inform</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">or</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">other</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">Inter</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">programs</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">compiled</span>
+<span class="Extracts-plain-syntax">   </span><span class="Extracts-identifier-syntax">tp</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">ANSI</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">C</span><span class="Extracts-plain-syntax">. </span><span class="Extracts-identifier-syntax">It</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">was</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">generated</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">mechanically</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">from</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">the</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">Inter</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">source</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">code</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">so</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">to</span>
+<span class="Extracts-plain-syntax">   </span><span class="Extracts-identifier-syntax">change</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">it</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">edit</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">that</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">and</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">not</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">this</span><span class="Extracts-plain-syntax">. */</span>
+
+<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;stdlib.h&gt;</span>
+<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;stdio.h&gt;</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Segmentation. </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_fundamental_types_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_ids_and_maxima_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_header_matter_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_predeclarations_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_very_early_matter_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_1_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_2_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_3_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_4_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_5_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_6_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_7_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_8_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_9_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_constants_10_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_early_matter_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_text_literals_code_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_summations_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_arrays_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_globals_array_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_main_matter_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_functions_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_code_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_verbs_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_stubs_at_eof_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_property_offset_creator_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_mem_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_initialiser_I7CGS</span>
+</pre>
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-reserved-syntax">int</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">C_target_segments</span><span class="Extracts-plain-syntax">[] = {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_fundamental_types_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_ids_and_maxima_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_header_matter_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_predeclarations_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_very_early_matter_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_1_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_2_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_3_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_4_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_5_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_6_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_7_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_8_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_9_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_constants_10_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_early_matter_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_text_literals_code_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_summations_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_arrays_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_globals_array_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_main_matter_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_functions_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_code_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_verbs_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_stubs_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_property_offset_creator_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_mem_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_initialiser_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    -1</span>
+<span class="Extracts-plain-syntax">};</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. State data. </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Extracts-identifier-syntax">C_GEN_DATA</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">) ((</span><span class="Extracts-reserved-syntax">C_generation_data</span><span class="Extracts-plain-syntax"> *) (</span><span class="Extracts-identifier-syntax">gen</span><span class="Extracts-plain-syntax">-&gt;</span><span class="Extracts-element-syntax">target_specific_data</span><span class="Extracts-plain-syntax">))-&gt;</span><span class="Extracts-identifier-syntax">x</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">C_generation_data</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">double_quoted_C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_double_quoted_C_strings</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">extent_of_i7mem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C_dword_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C_action_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C_vm_dictionary</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">C_generation_memory_model_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">memdata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">C_generation_object_model_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">objdata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">C_generation_data</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CTarget::initialise_data</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CTarget::initialise_data</span></span>:<br/><a href="5-fnc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CTarget::initialise_data</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CTarget::initialise_data</span></span>:<br/><a href="5-fnc.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="5-cmm.html#SP1" class="function-link"><span class="function-syntax">CMemoryModel::initialise_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-com.html#SP1" class="function-link"><span class="function-syntax">CObjectModel::initialise_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">double_quoted_C</span><span class="plain-syntax">) = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">no_double_quoted_C_strings</span><span class="plain-syntax">) = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">extent_of_i7mem</span><span class="plain-syntax">) = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">C_dword_count</span><span class="plain-syntax">) = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">C_action_count</span><span class="plain-syntax">) = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_GEN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">C_vm_dictionary</span><span class="plain-syntax">) = </span><span class="identifier-syntax">Dictionaries::new</span><span class="plain-syntax">(1024, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure C_generation_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Begin and end. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Begin and end. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CTarget::begin_generation</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CTarget::begin_generation</span></span>:<br/><a href="5-fnc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-cg.html#SP3" class="function-link"><span class="function-syntax">CodeGen::create_segments</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">C_generation_data</span><span class="plain-syntax">), </span><span class="identifier-syntax">C_target_segments</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="5-fnc.html#SP3" class="function-link"><span class="function-syntax">CTarget::initialise_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-fnc.html#SP4" class="function-link"><span class="function-syntax">CTarget::initialise_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::fix_locals</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 
@@ -232,7 +252,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#include \"inform7_clib.h\"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-cg.html#SP5" class="function-link"><span class="function-syntax">CodeGen::deselect</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::begin_memory</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-cmm.html#SP3" class="function-link"><span class="function-syntax">CMemoryModel::begin</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-cim.html#SP7" class="function-link"><span class="function-syntax">CTarget::begin_functions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-com.html#SP1" class="function-link"><span class="function-syntax">CObjectModel::begin</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::begin_dictionary_words</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
@@ -241,7 +261,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CTarget::end_generation</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CTarget::end_generation</span></span>:<br/><a href="5-fnc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::end_memory</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-cmm.html#SP4" class="function-link"><span class="function-syntax">CMemoryModel::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::end_functions</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-com.html#SP1" class="function-link"><span class="function-syntax">CObjectModel::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-cim.html#SP2" class="function-link"><span class="function-syntax">CTarget::end_dictionary_words</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
@@ -250,7 +270,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-fi6.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresscurrent">fnc</li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progressnext"><a href="5-cim.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-fi6.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresscurrent">fnc</li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progressnext"><a href="5-crf.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

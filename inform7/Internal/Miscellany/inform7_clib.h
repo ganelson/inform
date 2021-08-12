@@ -1,9 +1,57 @@
+/* This is a library of C code to support Inform or other Inter programs compiled
+   tp ANSI C. It was generated mechanically from the Inter source code, so to
+   change it, edit that and not this. */
+
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct i7varargs {
-	i7val args[10];
-} i7varargs;
+#define i7_lvalue_SET 1
+#define i7_lvalue_PREDEC 2
+#define i7_lvalue_POSTDEC 3
+#define i7_lvalue_PREINC 4
+#define i7_lvalue_POSTINC 5
+#define i7_lvalue_SETBIT 6
+#define i7_lvalue_CLEARBIT 7
+i7byte i7mem[];
+i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
+	int byte_position = array_address + 4*array_index;
+	return             (i7val) data[byte_position]      +
+	            0x100*((i7val) data[byte_position + 1]) +
+		      0x10000*((i7val) data[byte_position + 2]) +
+		    0x1000000*((i7val) data[byte_position + 3]);
+}
+#define i7_lvalue_SET 1
+#define i7_lvalue_PREDEC 2
+#define i7_lvalue_POSTDEC 3
+#define i7_lvalue_PREINC 4
+#define i7_lvalue_POSTINC 5
+#define i7_lvalue_SETBIT 6
+#define i7_lvalue_CLEARBIT 7
+#define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
+#define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
+#define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
+#define I7BYTE_0(V)  (V & 0x000000FF)
+
+i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val new_val, int way) {
+	i7val old_val = i7_read_word(data, array_address, array_index);
+	i7val return_val = new_val;
+	switch (way) {
+		case i7_lvalue_PREDEC:   return_val = old_val;   new_val = old_val-1; break;
+		case i7_lvalue_POSTDEC:  return_val = old_val-1; new_val = old_val-1; break;
+		case i7_lvalue_PREINC:   return_val = old_val;   new_val = old_val+1; break;
+		case i7_lvalue_POSTINC:  return_val = old_val+1; new_val = old_val+1; break;
+		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
+		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
+	}
+	int byte_position = array_address + 4*array_index;
+	data[byte_position]   = I7BYTE_0(new_val);
+	data[byte_position+1] = I7BYTE_1(new_val);
+	data[byte_position+2] = I7BYTE_2(new_val);
+	data[byte_position+3] = I7BYTE_3(new_val);
+	return return_val;
+}
+#include <stdlib.h>
+#include <stdio.h>
 
 i7val i7_mgl_self = 0;
 i7val i7_mgl_sp = 0;
@@ -13,39 +61,6 @@ i7val i7_mgl_debug_flag = 0;
 i7val i7_tmp = 0;
 int i7_seed = 197;
 
-#define i7_cpv_SET 1
-#define i7_cpv_PREDEC 2
-#define i7_cpv_POSTDEC 3
-#define i7_cpv_PREINC 4
-#define i7_cpv_POSTINC 5
-
-#define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
-#define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
-#define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
-#define I7BYTE_0(V) (V & 0x000000FF)
-
-i7val i7_lookup(i7byte i7bytes[], i7val offset, i7val ind) {
-	ind = offset + 4*ind;
-	return ((i7val) i7bytes[ind]) + 0x100*((i7val) i7bytes[ind+1]) +
-		0x10000*((i7val) i7bytes[ind+2]) + 0x1000000*((i7val) i7bytes[ind+3]);
-}
-
-i7val write_i7_lookup(i7byte i7bytes[], i7val offset, i7val ind, i7val V, int way) {
-	i7val val = i7_lookup(i7bytes, offset, ind);
-	i7val RV = V;
-	switch (way) {
-		case i7_cpv_PREDEC:  RV = val; V = val-1; break;
-		case i7_cpv_POSTDEC: RV = val-1; V = val-1; break;
-		case i7_cpv_PREINC:  RV = val; V = val+1; break;
-		case i7_cpv_POSTINC: RV = val+1; V = val+1; break;
-	}
-	ind = offset + 4*ind;
-	i7bytes[ind]   = I7BYTE_0(V);
-	i7bytes[ind+1] = I7BYTE_1(V);
-	i7bytes[ind+2] = I7BYTE_2(V);
-	i7bytes[ind+3] = I7BYTE_3(V);
-	return RV;
-}
 
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
@@ -487,6 +502,11 @@ i7val i7_mgl_sharp_dictionary_table = 0;
 i7val i7_mgl_sharp_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
+
+typedef struct i7varargs {
+	i7val args[10];
+} i7varargs;
+
 i7val fn_i7_mgl_metaclass(int n, i7val id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
@@ -520,14 +540,6 @@ typedef struct i7_property_set {
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
-i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
-	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
-		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
-		owner_id = i7_class_of[owner_id];
-	return i7_properties[(int) owner_id].value[(int) prop_id];
-}
-
 void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
@@ -537,14 +549,24 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 	i7_properties[(int) owner_id].value[(int) prop_id] = val;
 	i7_properties[(int) owner_id].value_set[(int) prop_id] = 1;
 }
+i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
+		owner_id = i7_class_of[owner_id];
+	return i7_properties[(int) owner_id].value[(int) prop_id];
+}
+
 i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
 	i7val val = i7_read_prop_value(obj, pr), new_val = val;
 	switch (way) {
-		case i7_cpv_SET:     i7_write_prop_value(obj, pr, to); new_val = to; break;
-		case i7_cpv_PREDEC:  new_val = val; i7_write_prop_value(obj, pr, val-1); break;
-		case i7_cpv_POSTDEC: new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
-		case i7_cpv_PREINC:  new_val = val; i7_write_prop_value(obj, pr, val+1); break;
-		case i7_cpv_POSTINC: new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_SET:      i7_write_prop_value(obj, pr, to); new_val = to; break;
+		case i7_lvalue_PREDEC:   new_val = val; i7_write_prop_value(obj, pr, val-1); break;
+		case i7_lvalue_POSTDEC:  new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_PREINC:   new_val = val; i7_write_prop_value(obj, pr, val+1); break;
+		case i7_lvalue_POSTINC:  new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_SETBIT:   new_val = val | new_val; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_CLEARBIT: new_val = val &(~new_val); i7_write_prop_value(obj, pr, new_val); break;
 	}
 	return new_val;
 }
