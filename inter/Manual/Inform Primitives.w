@@ -117,21 +117,13 @@ instance, or a global variable, or an entry in memory, for example.
 (f) |primitive !postdecrement ref -> val|. Performs the equivalent of |ref--|.
 (g) |primitive !predecrement ref -> val|. Performs the equivalent of |--ref|.
 
-Memory can be read with the following. The first value is the address of
+Memory can be accessed with the following. The first value is the address of
 the array; the second is an offset, that is, with 0 being the first entry,
 1 the second, and so on. "Word" in this context means either an |int16| or
 an |int32|, depending on what virtual machine are compiling to.
 
 (a) |primitive !lookup val val -> val|. Find word at this word offset.
 (b) |primitive !lookupbyte val val -> val|. Find byte at this byte offset.
-
-Those however only read from array entries. To write to array entries, we
-need to use |!store| or similar (see above); but to do that, we need a
-reference for the memory cell. We do that with:
-
-(a) |primitive !lookupref val val -> ref|. 
-
-(There is at present no equivalent for byte arrays.)
 
 @h Indirect function calls.
 Invocations of functions can only be made with |inv| when the function is

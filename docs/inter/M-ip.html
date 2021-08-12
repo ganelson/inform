@@ -186,7 +186,7 @@ instance, or a global variable, or an entry in memory, for example.
 </li><li>(f) <span class="extract"><span class="extract-syntax">primitive !postdecrement ref -&gt; val</span></span>. Performs the equivalent of <span class="extract"><span class="extract-syntax">ref--</span></span>.
 </li><li>(g) <span class="extract"><span class="extract-syntax">primitive !predecrement ref -&gt; val</span></span>. Performs the equivalent of <span class="extract"><span class="extract-syntax">--ref</span></span>.
 </li></ul>
-<p class="commentary">Memory can be read with the following. The first value is the address of
+<p class="commentary">Memory can be accessed with the following. The first value is the address of
 the array; the second is an offset, that is, with 0 being the first entry,
 1 the second, and so on. "Word" in this context means either an <span class="extract"><span class="extract-syntax">int16</span></span> or
 an <span class="extract"><span class="extract-syntax">int32</span></span>, depending on what virtual machine are compiling to.
@@ -195,16 +195,6 @@ an <span class="extract"><span class="extract-syntax">int32</span></span>, depen
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !lookup val val -&gt; val</span></span>. Find word at this word offset.
 </li><li>(b) <span class="extract"><span class="extract-syntax">primitive !lookupbyte val val -&gt; val</span></span>. Find byte at this byte offset.
 </li></ul>
-<p class="commentary">Those however only read from array entries. To write to array entries, we
-need to use <span class="extract"><span class="extract-syntax">!store</span></span> or similar (see above); but to do that, we need a
-reference for the memory cell. We do that with:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !lookupref val val -&gt; ref</span></span>.
-</li></ul>
-<p class="commentary">(There is at present no equivalent for byte arrays.)
-</p>
-
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Indirect function calls. </b>Invocations of functions can only be made with <span class="extract"><span class="extract-syntax">inv</span></span> when the function is
 specified as a constant, and when its signature is therefore known. If
 we need to call "whatever function this variable refers to", we have to

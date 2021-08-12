@@ -399,10 +399,13 @@ than once for each rule.
 
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
-		EmitCode::inv(LOOKUPREF_BIP);
+		EmitCode::reference();
 		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
-			EmitCode::val_number(0);
+			EmitCode::inv(LOOKUP_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
+				EmitCode::val_number(0);
+			EmitCode::up();
 		EmitCode::up();
 		EmitCode::val_number(0);
 	EmitCode::up();

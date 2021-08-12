@@ -49,10 +49,13 @@ void RTSharedVariables::compile_creator_fn(shared_variable_set *set, inter_name 
 		kind *K = NonlocalVariables::kind(q);
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
-			EmitCode::inv(LOOKUPREF_BIP);
+			EmitCode::reference();
 			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-				EmitCode::val_symbol(K_value, pos_s);
+				EmitCode::inv(LOOKUP_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					EmitCode::val_symbol(K_value, pos_s);
+				EmitCode::up();
 			EmitCode::up();
 			if (Kinds::Behaviour::uses_block_values(K))
 				TheHeap::emit_allocation(TheHeap::make_allocation(K, 1, -1));

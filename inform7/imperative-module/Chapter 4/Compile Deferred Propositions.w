@@ -831,10 +831,13 @@ quantifier.
 	C_sp--;
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
-		EmitCode::inv(LOOKUPREF_BIP);
+		EmitCode::reference();
 		EmitCode::down();
-			EmitCode::val_iname(K_value, LocalParking::callings());
-			EmitCode::val_number((inter_ti) C_stack[C_sp].stash_index);
+			EmitCode::inv(LOOKUP_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, LocalParking::callings());
+				EmitCode::val_number((inter_ti) C_stack[C_sp].stash_index);
+			EmitCode::up();
 		EmitCode::up();
 		CompileSchemas::compile_term(C_stack[C_sp].term, K_value, TRUE);
 	EmitCode::up();

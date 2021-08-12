@@ -48,7 +48,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!random", I"val -> val");
 	Primitives::emit_one(I, IBM, I"!lookup", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!lookupbyte", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!lookupref", I"val val -> ref");
 	Primitives::emit_one(I, IBM, I"!not", I"val -> val");
 	Primitives::emit_one(I, IBM, I"!and", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!or", I"val val -> val");
@@ -264,7 +263,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e OBJECTLOOPX_BIP
 @e LOOKUP_BIP
 @e LOOKUPBYTE_BIP
-@e LOOKUPREF_BIP
 @e LOOP_BIP
 @e SWITCH_BIP
 @e CASE_BIP
@@ -378,7 +376,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case OBJECTLOOPX_BIP: return I"!objectloopx";
 		case LOOKUP_BIP: return I"!lookup";
 		case LOOKUPBYTE_BIP: return I"!lookupbyte";
-		case LOOKUPREF_BIP: return I"!lookupref";
 		case LOOP_BIP: return I"!loop";
 		case SWITCH_BIP: return I"!switch";
 		case CASE_BIP: return I"!case";
@@ -507,7 +504,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!objectloopx")) bip = OBJECTLOOPX_BIP;
 	if (Str::eq(symb->symbol_name, I"!lookup")) bip = LOOKUP_BIP;
 	if (Str::eq(symb->symbol_name, I"!lookupbyte")) bip = LOOKUPBYTE_BIP;
-	if (Str::eq(symb->symbol_name, I"!lookupref")) bip = LOOKUPREF_BIP;
 	if (Str::eq(symb->symbol_name, I"!loop")) bip = LOOP_BIP;
 	if (Str::eq(symb->symbol_name, I"!switch")) bip = SWITCH_BIP;
 	if (Str::eq(symb->symbol_name, I"!case")) bip = CASE_BIP;

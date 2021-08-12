@@ -46,10 +46,13 @@ int LocalParking::park(stack_frame *frame) {
 		EmitCode::down();
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
-				EmitCode::inv(LOOKUPREF_BIP);
+				EmitCode::reference();
 				EmitCode::down();
-					EmitCode::val_iname(K_value, park);
-					EmitCode::val_number(j++);
+					EmitCode::inv(LOOKUP_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, park);
+						EmitCode::val_number(j++);
+					EmitCode::up();
 				EmitCode::up();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				EmitCode::val_symbol(K_value, lvar_s);

@@ -397,7 +397,6 @@ int CodeGen::CL::node_is_word_array_ref(inter_tree *I, inter_tree_node *P) {
 		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			inter_ti bip = Primitives::to_bip(I, prim);
-			if (bip == LOOKUPREF_BIP) return TRUE;
 			if ((bip == LOOKUP_BIP) && (reffed)) return TRUE;
 		}
 	}
@@ -414,7 +413,7 @@ int CodeGen::CL::node_is_property_ref(inter_tree *I, inter_tree_node *P) {
 		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			inter_ti bip = Primitives::to_bip(I, prim);
-			if (bip == PROPERTYVALUE_BIP) return TRUE;
+			if ((bip == PROPERTYVALUE_BIP) && (reffed)) return TRUE;
 		}
 	}
 	return FALSE;

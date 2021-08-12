@@ -214,10 +214,13 @@ void Deferrals::prepare_to_retrieve_callings(pcalc_prop *prop, int as_test) {
 			EmitCode::down();
 				EmitCode::inv(STORE_BIP); /* (3) */
 				EmitCode::down();
-					EmitCode::inv(LOOKUPREF_BIP);
+					EmitCode::reference();
 					EmitCode::down();
-						EmitCode::val_iname(K_value, stash);
-						EmitCode::val_number(26);
+						EmitCode::inv(LOOKUP_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, stash);
+							EmitCode::val_number(26);
+						EmitCode::up();
 					EmitCode::up();
 		}
 	}

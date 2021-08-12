@@ -247,10 +247,7 @@ The signatures here are:
 = (text)
 primitive !lookup val val -> val
 primitive !lookupbyte val val -> val
-primitive !lookupref val val -> ref
 =
-|!lookupref| is a slightly redundant abbreviation for |reference| with |!lookup|
-as a child. At present, there is no equivalent |!lookupbyteref|.
 
 =
 int CMemoryModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -263,7 +260,6 @@ int CMemoryModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 							}
 							break;
 		case LOOKUPBYTE_BIP: @<Byte value as value@>; break;
-		case LOOKUPREF_BIP:	 @<Word value as reference@>; break;
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;

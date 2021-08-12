@@ -75,10 +75,13 @@ void BoxQuotations::compilation_agent(compilation_subtask *t) {
 		EmitCode::down();
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
-				EmitCode::inv(LOOKUPREF_BIP);
+				EmitCode::reference();
 				EmitCode::down();
-					EmitCode::val_iname(K_value, bq->seen_flag_iname);
-					EmitCode::val_number(0);
+					EmitCode::inv(LOOKUP_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, bq->seen_flag_iname);
+						EmitCode::val_number(0);
+					EmitCode::up();
 				EmitCode::up();
 				EmitCode::val_number(1);
 			EmitCode::up();

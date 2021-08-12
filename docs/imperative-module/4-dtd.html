@@ -326,10 +326,13 @@ case which isn't <span class="extract"><span class="extract-syntax">as_test</spa
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">STORE_BIP</span><span class="plain-syntax">); </span><span class="comment-syntax"> (3)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOOKUPREF_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">EmitCode::reference</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">EmitCode::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">stash</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(26);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOOKUP_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">                            </span><span class="identifier-syntax">EmitCode::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">stash</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                            </span><span class="identifier-syntax">EmitCode::val_number</span><span class="plain-syntax">(26);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>

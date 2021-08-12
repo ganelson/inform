@@ -236,10 +236,13 @@ void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
 @<Repack the present@> =
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
-		Produce::inv_primitive(I, LOOKUPREF_BIP);
+		Produce::reference(I);
 		Produce::down(I);
-			Produce::val_symbol(I, K_value, prcr_s);
-			Produce::val_symbol(I, K_value, pt_s);
+			Produce::inv_primitive(I, LOOKUP_BIP);
+			Produce::down(I);
+				Produce::val_symbol(I, K_value, prcr_s);
+				Produce::val_symbol(I, K_value, pt_s);
+			Produce::up(I);
 		Produce::up(I);
 		Produce::inv_primitive(I, PLUS_BIP);
 		Produce::down(I);
