@@ -75,13 +75,6 @@ i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 		      0x10000*((i7val) data[byte_position + 2]) +
 		    0x1000000*((i7val) data[byte_position + 3]);
 }
-#define i7_lvalue_SET 1
-#define i7_lvalue_PREDEC 2
-#define i7_lvalue_POSTDEC 3
-#define i7_lvalue_PREINC 4
-#define i7_lvalue_POSTINC 5
-#define i7_lvalue_SETBIT 6
-#define i7_lvalue_CLEARBIT 7
 #define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
 #define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
@@ -459,12 +452,18 @@ void i7_move(i7val obj, i7val to) {
 	printf("Unimplemented: i7_move.\n");
 }
 int i7_has(i7val obj, i7val attr) {
-	printf("Unimplemented: i7_has.\n");
+	if (i7_read_prop_value(obj, attr) return 1;
 	return 0;
 }
 
-int i7_provides(i7val obj, i7val prop) {
-	printf("Unimplemented: i7_provides.\n");
+int i7_provides(i7val owner_id, i7val prop_id) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (owner_id != 1) {
+		if (i7_properties[(int) owner_id].value_set[(int) prop_id] == 1)
+			return 1;
+		owner_id = i7_class_of[owner_id];
+	}
 	return 0;
 }
 

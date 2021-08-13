@@ -93,22 +93,6 @@ i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 }
 =
 
-Now for writing. Memory locations (like variables and property values) can not
-only be "set", that is, written to, but also pre-decremented, post-decremented,
-pre-incremented and post-incremented. This is the equivalent of being able to
-apply |++| or |--| either side, in C terms. The following enumerated constants
-identify which of these five operations to perform:
-
-= (text to inform7_clib.h)
-#define i7_lvalue_SET 1
-#define i7_lvalue_PREDEC 2
-#define i7_lvalue_POSTDEC 3
-#define i7_lvalue_PREINC 4
-#define i7_lvalue_POSTINC 5
-#define i7_lvalue_SETBIT 6
-#define i7_lvalue_CLEARBIT 7
-=
-
 @ Packing, unlike unpacking, is done with macros so that it is possible to
 express a packed word in constant context, which we will need later.
 

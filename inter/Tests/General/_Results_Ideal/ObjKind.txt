@@ -4,17 +4,17 @@ Array KindHierarchy --> (K0_kind) (0) (K_fruit) (0) (K_citrus_fruit) (1) (K_ston
 Class K_object
 ;
 Class K_fruit
-    class K_object
+  class K_object
 ;
 Class K_citrus_fruit
-    class K_fruit
+  class K_fruit
 ;
 Class K_stone
-    class K_object
+  class K_object
 ;
 Class K_feldspar
-    class K_stone
+  class K_stone
 ;
 Class K_mica
-    class K_stone
+  class K_stone
 ;

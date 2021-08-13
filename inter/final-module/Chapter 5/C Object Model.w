@@ -486,12 +486,18 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 
 = (text to inform7_clib.h)
 int i7_has(i7val obj, i7val attr) {
-	printf("Unimplemented: i7_has.\n");
+	if (i7_read_prop_value(obj, attr) return 1;
 	return 0;
 }
 
-int i7_provides(i7val obj, i7val prop) {
-	printf("Unimplemented: i7_provides.\n");
+int i7_provides(i7val owner_id, i7val prop_id) {
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (owner_id != 1) {
+		if (i7_properties[(int) owner_id].value_set[(int) prop_id] == 1)
+			return 1;
+		owner_id = i7_class_of[owner_id];
+	}
 	return 0;
 }
 

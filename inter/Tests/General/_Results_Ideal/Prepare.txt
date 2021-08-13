@@ -25,7 +25,7 @@ primitive !printname val -> void
 primitive !printobj val -> void
 primitive !printproperty val -> void
 primitive !printnumber val -> void
-primitive !printaddress val -> void
+primitive !printdword val -> void
 primitive !printstring val -> void
 primitive !printnlnumber val -> void
 primitive !printdef val -> void
@@ -57,7 +57,6 @@ primitive !modulo val val -> val
 primitive !random val -> val
 primitive !lookup val val -> val
 primitive !lookupbyte val val -> val
-primitive !lookupref val val -> ref
 primitive !not val -> val
 primitive !and val val -> val
 primitive !or val val -> val

@@ -173,23 +173,6 @@ with <span class="extract"><span class="extract-syntax">data</span></span> set t
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
-<p class="commentary">Now for writing. Memory locations (like variables and property values) can not
-only be "set", that is, written to, but also pre-decremented, post-decremented,
-pre-incremented and post-incremented. This is the equivalent of being able to
-apply <span class="extract"><span class="Extracts-extract-syntax">++</span></span> or <span class="extract"><span class="Extracts-extract-syntax">--</span></span> either side, in C terms. The following enumerated constants
-identify which of these five operations to perform:
-</p>
-
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_SET</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">1</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_PREDEC</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">2</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_POSTDEC</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">3</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_PREINC</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">4</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_POSTINC</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">5</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_SETBIT</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">6</span>
-<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_lvalue_CLEARBIT</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">7</span>
-</pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Packing, unlike unpacking, is done with macros so that it is possible to
 express a packed word in constant context, which we will need later.
 </p>
