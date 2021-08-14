@@ -452,7 +452,7 @@ void i7_move(i7val obj, i7val to) {
 	printf("Unimplemented: i7_move.\n");
 }
 int i7_has(i7val obj, i7val attr) {
-	if (i7_read_prop_value(obj, attr) return 1;
+	if (i7_read_prop_value(obj, attr)) return 1;
 	return 0;
 }
 

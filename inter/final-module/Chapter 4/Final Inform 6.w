@@ -688,9 +688,11 @@ void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, t
 	WRITE(";\n");
 }
 
-void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
+void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S %S", class_name, instance_name);
+	for (int i=0; i<acount; i++) WRITE(" ->");
+	if (is_dir) WRITE(" Compass");
 }
 
 void CodeGen::I6::end_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {

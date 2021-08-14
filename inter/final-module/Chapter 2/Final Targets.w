@@ -208,10 +208,10 @@ void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_na
 void CodeGen::Targets::end_class(code_generation *gen, text_stream *class_name) {
 	VOID_METHOD_CALL(gen->target, END_CLASS_MTID, gen, class_name);
 }
-VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name)
+VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir)
 VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name)
-void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
-	VOID_METHOD_CALL(gen->target, DECLARE_INSTANCE_MTID, gen, class_name, instance_name);
+void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
+	VOID_METHOD_CALL(gen->target, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, acount, is_dir);
 }
 void CodeGen::Targets::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	VOID_METHOD_CALL(gen->target, END_INSTANCE_MTID, gen, class_name, instance_name);

@@ -62,7 +62,7 @@ the model data:
 =
 void CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
 	text_stream *class_name, int is_class) {
-	while (id > C_GEN_DATA(objdata.owners_capacity)) {
+	while (id >= C_GEN_DATA(objdata.owners_capacity)) {
 		int old_capacity = C_GEN_DATA(objdata.owners_capacity);
 		int new_capacity = 4 * old_capacity;
 		if (old_capacity == 0) new_capacity = 8;
@@ -75,6 +75,7 @@ void CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
 		C_GEN_DATA(objdata.owners) = new_array;		
 		C_GEN_DATA(objdata.owners_capacity) = new_capacity;
 	}
+	if (Str::len(name) == 0) internal_error("nameless instance");
 	C_GEN_DATA(objdata.owners)[id].name = Str::duplicate(name);
 	C_GEN_DATA(objdata.owners)[id].class = Str::duplicate(class_name);
 	C_GEN_DATA(objdata.owners)[id].is_class = is_class;
@@ -148,6 +149,7 @@ Each proper base kind in the Inter tree produces an owner as follows:
 =
 void CObjectModel::declare_class(code_generation_target *cgt, code_generation *gen,
 	text_stream *class_name, text_stream *super_class) {
+	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::declare_class_inner(gen, class_name,
 		CObjectModel::next_owner_id(gen), super_class);
 }
@@ -162,7 +164,8 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 
 =
 void CObjectModel::declare_instance(code_generation_target *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *instance_name) {
+	text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
+	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
 	CObjectModel::define_constant_for_owner_id(gen, instance_name, id);
 	CObjectModel::assign_owner(gen, id, instance_name, class_name, FALSE);
@@ -486,7 +489,7 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 
 = (text to inform7_clib.h)
 int i7_has(i7val obj, i7val attr) {
-	if (i7_read_prop_value(obj, attr) return 1;
+	if (i7_read_prop_value(obj, attr)) return 1;
 	return 0;
 }
 
