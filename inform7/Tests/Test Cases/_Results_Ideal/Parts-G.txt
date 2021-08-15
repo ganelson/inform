@@ -1,0 +1,673 @@
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty), a clown car (closed and empty) and a satchel (empty) here.
+
+>** x tightrope
+The tightrope features a bicycle.
+
+>** x bicycle
+The bicycle is empty.
+
+>** get on bicycle
+You get into the bicycle.
+
+>** get out
+You get out of the bicycle.
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty), a clown car (closed and empty) and a satchel (empty) here.
+
+>** x sky
+The sky features a flock of geese, a hot air balloon, a flying saucer and a flying kettle.
+
+>** x geese
+The flock of geese features two eyes.
+
+>** ask geese about geese
+There is no reply.
+
+>** x balloon
+In the hot air balloon is a picnic basket.
+
+>** get in balloon
+You get into the hot air balloon.
+
+In the hot air balloon you can see a picnic basket (empty).
+
+>** get all
+satchel: You're carrying too many things already.
+picnic basket: You're carrying too many things already.
+leash: You're carrying too many things already.
+very very small pair of sunglasses: You're carrying too many things already.
+Fru-Yo bottle: You're carrying too many things already.
+tollbooth coin: You're carrying too many things already.
+squashed clown hat: You're carrying too many things already.
+outsized green shoe: You're carrying too many things already.
+
+>** out
+You get out of the hot air balloon.
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty), a clown car (closed and empty) and a satchel (empty) here.
+
+>** put all in satchle
+You can't see any such thing.
+
+>** put all in satchel
+plastic daisy: Done.
+whip: Done.
+
+>** get satchel
+Taken.
+
+>** get in balloon
+You get into the hot air balloon.
+
+In the hot air balloon you can see a picnic basket (empty).
+
+>** get all
+picnic basket: Taken.
+leash: (putting the picnic basket into the satchel to make room)
+Taken.
+very very small pair of sunglasses: (putting the leash into the satchel to make room)
+Taken.
+Fru-Yo bottle: (putting the very very small pair of sunglasses into the satchel to make room)
+Taken.
+tollbooth coin: (putting the Fru-Yo bottle into the satchel to make room)
+Taken.
+squashed clown hat: (putting the tollbooth coin into the satchel to make room)
+Taken.
+outsized green shoe: (putting the squashed clown hat into the satchel to make room)
+Taken.
+
+>** get out
+You get out of the hot air balloon.
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** get on saucer
+You get onto the flying saucer.
+
+>** drop all
+outsized green shoe: Dropped.
+satchel: Dropped.
+
+>** get out
+You get off the flying saucer.
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** take all from saucer
+satchel: Taken.
+outsized green shoe: Taken.
+
+>** i
+You are carrying:
+  an outsized green shoe
+  a satchel (open)
+    a squashed clown hat
+    a tollbooth coin
+    a Fru-Yo bottle
+    a very very small pair of sunglasses
+    a leash
+    a picnic basket
+    a whip
+    a plastic daisy
+
+>** turn on the kettle
+You switch the flying kettle on.
+
+>** turn it off
+You switch the flying kettle off.
+
+>** look
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** x unicycle
+The unicycle features two pedals and a carrier basket.
+
+>** get on it
+You get into the unicycle.
+
+>** look in carrier basket
+The carrier basket is empty.
+
+>** put leash in basket
+Which do you mean, the carrier basket or the picnic basket?
+
+>** carrier
+(first taking the leash)
+(putting the outsized green shoe into the satchel to make room)
+You put the leash into the carrier basket.
+
+>** take leash. put it in carrier basket.
+Taken.
+
+You put the leash into the carrier basket.
+
+>** get out
+You get out of the unicycle.
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** get leash
+Taken.
+
+>** x car
+The clown car features a dashboard, a glove compartment, an inflatable driver, a start switch and a small spatial anomaly.
+
+>** put coin on dashboard
+(first taking the tollbooth coin)
+(putting the leash into the satchel to make room)
+You put the tollbooth coin on the dashboard.
+
+>** take it
+Taken.
+
+>** put it on dashboard
+You put the tollbooth coin on the dashboard.
+
+>** x dashboard
+The dashboard features a cup holder and an ashtray.
+
+>** look in cup holder
+The cup holder is empty.
+
+>** look in ashtray
+You can't see inside, since the ashtray is closed.
+
+>** open it
+You open the ashtray, revealing cigar ash.
+
+>** take ash
+Taken.
+
+>** close ashtray
+You close the ashtray.
+
+>** put ash in ashtray
+The ashtray is closed.
+
+>** put ash in cup holder
+You put cigar ash into the cup holder.
+
+>** open ashtray
+You open the ashtray.
+
+>** put the fru in the ashtray
+You can't see any such thing.
+
+>** put the bottle in the ashtray
+(first taking the Fru-Yo bottle)
+You put the Fru-Yo bottle into the ashtray.
+
+>** take it
+Taken.
+
+>** put it in the ashtray
+You put the Fru-Yo bottle into the ashtray.
+
+>** put the satchel in the glove compartment
+You put the satchel into the glove compartment.
+
+>** take satchel
+Taken.
+
+>** look
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** x driver
+The inflatable driver features two eyes.
+
+>** ask the driver about hot night spots
+There is no reply.
+
+>** look
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** x door
+The rotating door features a control.
+
+>** turn the door on
+It isn't something you can switch.
+
+>** turn the control on
+You turn on the control on the rotating door; it begins to spin dizzily, but you could go through, if you wanted.
+
+>** e
+
+Striped Tent
+Dusty light, filtered into alternating bars of red and yellow; sand and straw on the ground failing to entirely soak up the leavings from the performing animals; rows of flimsy benches without spectators.
+
+Bobo is hanging from one of the supports. He gives you a look of consternation.
+
+The Circus is too poor, or perhaps too nervous, to own a real lion. Instead it possesses a robot.
+
+The Living Rug is lying around in a funk. It resembles a bearskin rug, but is in fact a freak of natur-- oh, well, that's just what you tell the guests. It's a big fur costume which someone puts on and walks around in.
+
+The Visible Sheep is a purchase from an agricultural college. A door in the side of the sheep opens to reveal (through glass) all the sheep organs doing their assorted business.
+
+You can also see a mother kangaroo, an elephant and a glass door here.
+
+>** x bobo
+The monkey features two eyes and a monkey's back.
+
+>** x lion
+(the robot lion)
+The lion pathetically fails to respond.
+
+>** x rug
+The Living Rug features two eyes and a costume.
+
+>** x sheep
+The Visible Sheep features two eyes.
+
+>** x kangaroo
+(the mother kangaroo)
+The mother kangaroo features two eyes and a pouch.
+
+>** x elephant
+The elephant features two eyes and a howdah.
+
+>** get in howdah
+You get into the howdah.
+
+>** n
+You can't go that way.
+
+>** get out
+You get out of the howdah.
+
+Striped Tent
+Dusty light, filtered into alternating bars of red and yellow; sand and straw on the ground failing to entirely soak up the leavings from the performing animals; rows of flimsy benches without spectators.
+
+Bobo is hanging from one of the supports. He gives you a look of consternation.
+
+The Circus is too poor, or perhaps too nervous, to own a real lion. Instead it possesses a robot.
+
+The Living Rug is lying around in a funk. It resembles a bearskin rug, but is in fact a freak of natur-- oh, well, that's just what you tell the guests. It's a big fur costume which someone puts on and walks around in.
+
+The Visible Sheep is a purchase from an agricultural college. A door in the side of the sheep opens to reveal (through glass) all the sheep organs doing their assorted business.
+
+You can also see a mother kangaroo, an elephant and a glass door here.
+
+>** look in pouch
+In the pouch is a baby kangaroo.
+
+>** get baby
+That seems to belong to the mother kangaroo.
+
+>** put satchel in outer compartment
+You can't put something inside itself.
+
+>** put kangaroo in pouch
+(the mother kangaroo in the pouch)
+(first taking the mother kangaroo)
+I don't suppose the mother kangaroo would care for that.
+
+>** open glass door
+You open the glass door.
+
+>** enter it
+You can't, since the glass door leads nowhere.
+
+>** wear rug
+(first taking the Living Rug)
+I don't suppose the Living Rug would care for that.
+
+>** turn on lion switch
+You switch the lion switch on.
+
+>** x lion
+(the robot lion)
+The robot lion features two eyes and a lion switch.
+
+>** put satchel on monkey's back
+You put the satchel on the monkey's back.
+
+>** get it
+That seems to belong to the monkey.
+
+>** purloin it
+[Purloined.]
+
+>** look
+Striped Tent
+Dusty light, filtered into alternating bars of red and yellow; sand and straw on the ground failing to entirely soak up the leavings from the performing animals; rows of flimsy benches without spectators.
+
+Bobo is hanging from one of the supports. He gives you a look of consternation.
+
+The Circus is too poor, or perhaps too nervous, to own a real lion. Instead it possesses a robot.
+
+The Living Rug is lying around in a funk. It resembles a bearskin rug, but is in fact a freak of natur-- oh, well, that's just what you tell the guests. It's a big fur costume which someone puts on and walks around in.
+
+The Visible Sheep is a purchase from an agricultural college. A door in the side of the sheep opens to reveal (through glass) all the sheep organs doing their assorted business.
+
+You can also see a mother kangaroo, an elephant and a glass door here.
+
+>** w
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** w
+
+Mirror Funhouse
+You can see a rotating door, a reflecting door and a trapdoor here.
+
+>** z
+Time passes.
+
+>** put all on trapdoor
+satchel: Done.
+
+>** d
+(first opening the trapdoor)
+The satchel is in your way.
+
+>** open trapdoor
+The satchel is in your way.
+
+>** take all from surface
+(the satchel from the surface)
+Taken.
+
+>** open trapdoor
+You open the trapdoor.
+
+>** d
+
+Oubliette
+You can see a trapdoor here.
+
+>** u
+
+Mirror Funhouse
+You can see a trapdoor, a rotating door and a reflecting door here.
+
+>** x reflecting
+The reflecting door features a doppelganger.
+
+>** x doppelganger
+The doppelganger features two eyes.
+
+>** say hi to doppelganger
+Your image responds in kind.
+
+>** ask it about Tories
+You can only do that to something animate.
+
+>** ask doppelganger about tories
+Your image responds in kind.
+
+>** n
+(first opening the reflecting door)
+
+esouhnuF rorriM
+You can see a reflecting door and a platform here.
+
+>** open door
+That's already open.
+
+>** reflecting
+That's not a verb I recognise.
+
+>** n
+You can't go that way.
+
+>** open platform
+You open the platform.
+
+>** d
+
+Bottom of the Well
+You can see a platform here.
+
+>** u
+
+esouhnuF rorriM
+You can see a platform and a reflecting door here.
+
+>** put all in bucket
+satchel: Done.
+
+>** get all from bucket
+(the satchel from the bucket)
+Taken.
+
+>** w
+You can't go that way.
+
+>** s
+
+Mirror Funhouse
+You can see a reflecting door, a trapdoor and a rotating door here.
+
+>** w
+You can't go that way.
+
+>** e
+
+Circus Backlot
+Storage for the various contraptions that are used in acts -- or were once used, before being given up as no good.
+
+There is a chasm here which can only be traversed by riding a bicycle along a tightrope. A cinch, really.
+
+You can also see a rotating door, an unicycle (empty) and a clown car (closed and empty) here.
+
+>** n
+
+Wardrobe Trailer
+Paneled inside and out in seductively hideous faux-walnut veneer.
+
+You can see a painted box (on which is a silver key) (closed) here.
+
+>** take key
+Taken.
+
+>** open box
+You open the painted box, revealing a pair of spangled tights, a busker's apron and a tall hat.
+
+>** x key
+You see nothing special about the silver key.
+
+>** take all from box
+pair of spangled tights: (putting the silver key into the satchel to make room)
+Taken.
+busker's apron: (putting the pair of spangled tights into the satchel to make room)
+Taken.
+tall hat: (putting the busker's apron into the satchel to make room)
+Taken.
+
+>** wear apron
+(first taking the busker's apron)
+(putting the tall hat into the satchel to make room)
+You put on the busker's apron.
+
+>** put apron in the pocket
+You can't put something inside itself.
+
+>** take hat
+Which do you mean, the tall hat or the squashed clown hat?
+
+>** tall
+Taken.
+
+>** x tall hat
+The tall hat features a crown.
+
+>** search crown
+On the crown is frightened-looking rabbit.
+
+>** take rabbit
+(putting the tall hat into the satchel to make room)
+Taken.
+
+>** i
+You are carrying:
+  frightened-looking rabbit
+  a busker's apron (being worn)
+  a satchel (open)
+    a tall hat
+    a pair of spangled tights
+    a silver key
+    a leash
+    an outsized green shoe
+    a squashed clown hat
+    a very very small pair of sunglasses
+    a picnic basket
+    a whip
+    a plastic daisy
+
+>** put whip on crown
+(first taking the whip)
+(putting frightened-looking rabbit into the satchel to make room)
+You put the whip on the crown.
+
+>** take it
+Taken.
+
+>** put it on crown
+You put the whip on the crown.
+
+>** wear hat
+Which do you mean, the tall hat or the squashed clown hat?
+
+>** tall
+(first taking the tall hat)
+You put on the tall hat.
+
+>** put whip on crown
+(first taking the whip)
+You put the whip on the crown.
+
+>** take whip
+Taken.
+
+>** put whip on crown
+You put the whip on the crown.
+
+>** i
+You are carrying:
+  a tall hat (being worn)
+  a busker's apron (being worn)
+  a satchel (open)
+    frightened-looking rabbit
+    a pair of spangled tights
+    a silver key
+    a leash
+    an outsized green shoe
+    a squashed clown hat
+    a very very small pair of sunglasses
+    a picnic basket
+    a plastic daisy
+
+>** put hat on crown
+(the tall hat on the crown)
+You can't put something on top of itself.
+
+>** look
+Wardrobe Trailer
+Paneled inside and out in seductively hideous faux-walnut veneer.
+
+You can see a painted box (empty) here.
+
+>** i
+You are carrying:
+  a tall hat (being worn)
+  a busker's apron (being worn)
+  a satchel (open)
+    frightened-looking rabbit
+    a pair of spangled tights
+    a silver key
+    a leash
+    an outsized green shoe
+    a squashed clown hat
+    a very very small pair of sunglasses
+    a picnic basket
+    a plastic daisy
+
+>** wear tights
+(first taking the pair of spangled tights)
+Can't you put your spangled tights on one leg at a time like any other man?
+
+>** wear left leg
+(first taking the left leg)
+That seems to be a part of the pair of spangled tights.
+
+>** wear right leg
+(first taking the right leg)
+That seems to be a part of the pair of spangled tights.
+
+>** i
+You are carrying:
+  a pair of spangled tights
+  a tall hat (being worn)
+  a busker's apron (being worn)
+  a satchel (open)
+    frightened-looking rabbit
+    a silver key
+    a leash
+    an outsized green shoe
+    a squashed clown hat
+    a very very small pair of sunglasses
+    a picnic basket
+    a plastic daisy
+
+>** 
+I beg your pardon?
+
+>
+<end of input>

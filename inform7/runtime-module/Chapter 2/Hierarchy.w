@@ -1125,6 +1125,7 @@ void Hierarchy::establish(void) {
 @e KIND_IS_SKOO_MD_HL
 @e KIND_HAS_BV_MD_HL
 @e KIND_WEAK_ID_MD_HL
+@e KIND_STRONG_ID_MD_HL
 @e KIND_PRINT_FN_MD_HL
 @e KIND_CMP_FN_MD_HL
 @e KIND_SUPPORT_FN_MD_HL
@@ -1228,6 +1229,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INDEX_SUPERKIND_MD_HL, I"^index_superkind")
 			H_C_U(KIND_HAS_BV_MD_HL,    I"^has_block_values")
 			H_C_U(KIND_WEAK_ID_MD_HL,   I"^weak_id")
+			H_C_U(KIND_STRONG_ID_MD_HL,   I"^strong_id")
 			H_C_U(KIND_CMP_FN_MD_HL,    I"^cmp_fn")
 			H_C_U(KIND_PRINT_FN_MD_HL,  I"^print_fn")
 			H_C_U(KIND_SUPPORT_FN_MD_HL, I"^support_fn")

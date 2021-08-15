@@ -14,8 +14,8 @@ void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
 		TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
-			inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
-			if (weak_s) Inter::Symbols::set_int(weak_s, i+2);
+			inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
+			if (id_s) Inter::Symbols::set_int(id_s, i+2);
 		}
 	}
 	if (TreeLists::len(inv->derived_kind_nodes) > 0) {
@@ -92,11 +92,11 @@ which have to be given some type-safe value to start out at.
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^mkdef_fn")) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				inter_symbol *mkdef_fn_s = Metadata::read_symbol(pack, I"^mkdef_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
@@ -140,11 +140,11 @@ which have to be given some type-safe value to start out at.
 			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 				(Metadata::read_optional_symbol(pack, I"^print_fn")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				inter_symbol *print_fn_s = Metadata::read_symbol(pack, I"^print_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_call(I, print_fn_s);
@@ -197,11 +197,11 @@ unless the two values are genuinely equal.
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^cmp_fn")) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				inter_symbol *cmp_fn_s = Metadata::read_symbol(pack, I"^cmp_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
@@ -237,11 +237,11 @@ unless the two values are genuinely equal.
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				inter_ti domain_size = Metadata::read_numeric(pack, I"^domain_size");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
@@ -282,10 +282,10 @@ a kind storing pointers to blocks of data.
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::rtrue(I);
@@ -353,11 +353,11 @@ such a function does, see "BlockValues.i6t".
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
-				inter_symbol *weak_s = Metadata::read_symbol(pack, I"^weak_id");
+				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
 				inter_symbol *support_s = Metadata::read_symbol(pack, I"^support_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val_symbol(I, K_value, weak_s);
+					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);

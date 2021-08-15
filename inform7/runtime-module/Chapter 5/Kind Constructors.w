@@ -563,6 +563,8 @@ void RTKindConstructors::compile(void) {
 		if (weak_iname == NULL) internal_error("no iname for weak ID");
 		Hierarchy::apply_metadata_from_iname(pack,
 			KIND_WEAK_ID_MD_HL, weak_iname);
+		Hierarchy::apply_metadata_from_iname(pack,
+			KIND_STRONG_ID_MD_HL, RTKindConstructors::weak_ID_iname(kc));
 		if (KindConstructors::uses_block_values(kc)) {
 			inter_name *sf_iname = RTKindConstructors::get_support_fn_iname(kc);
 			if (sf_iname)
