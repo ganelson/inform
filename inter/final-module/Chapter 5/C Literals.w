@@ -83,24 +83,27 @@ void CLiteralsModel::compile_literal_number(code_generation_target *cgt,
 
 =
 void CLiteralsModel::compile_literal_text(code_generation_target *cgt, code_generation *gen,
-	text_stream *S, int printing_mode, int box_mode) {
+	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	
 	if (printing_mode == FALSE) {
 		WRITE("(I7VAL_STRINGS_BASE + %d)", C_GEN_DATA(litdata.no_double_quoted_C_strings)++);
 		OUT = C_GEN_DATA(litdata.double_quoted_C);
 	}
-	
 	WRITE("\"");
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '"': WRITE("\\\""); break;
-			case '\\': WRITE("\\\\"); break;
-			case '\t': WRITE(" "); break;
-			case '\n': WRITE("\\n"); break;
-			case NEWLINE_IN_STRING: WRITE("\\n"); break;
-			default: PUT(c); break;
+	if (escape_mode == FALSE) {
+		WRITE("%S", S);
+	} else {
+		LOOP_THROUGH_TEXT(pos, S) {
+			wchar_t c = Str::get(pos);
+			switch(c) {
+				case '"': WRITE("\\\""); break;
+				case '\\': WRITE("\\\\"); break;
+				case '\t': WRITE(" "); break;
+				case '\n': WRITE("\\n"); break;
+				case NEWLINE_IN_STRING: WRITE("\\n"); break;
+				default: PUT(c); break;
+			}
 		}
 	}
 	WRITE("\"");

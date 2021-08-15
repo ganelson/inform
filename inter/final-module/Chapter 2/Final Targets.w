@@ -146,9 +146,9 @@ void CodeGen::Targets::compile_literal_number(code_generation *gen, inter_ti val
 @e COMPILE_LITERAL_TEXT_MTID
 
 =
-VOID_METHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *S, int print_mode, int box_mode)
-void CodeGen::Targets::compile_literal_text(code_generation *gen, text_stream *S, int print_mode, int box_mode) {
-	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_TEXT_MTID, gen, S, print_mode, box_mode);
+VOID_METHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *S, int print_mode, int box_mode, int escape_mode)
+void CodeGen::Targets::compile_literal_text(code_generation *gen, text_stream *S, int print_mode, int box_mode, int escape_mode) {
+	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_TEXT_MTID, gen, S, print_mode, box_mode, escape_mode);
 }
 
 @

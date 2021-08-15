@@ -779,7 +779,7 @@ though this won't happen for any property created by I7 source text.
 	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
-	CodeGen::Targets::compile_literal_text(gen, pname, FALSE, FALSE);
+	CodeGen::Targets::compile_literal_text(gen, pname, FALSE, FALSE, TRUE);
 	CodeGen::deselect_temporary(gen);
 	CodeGen::Targets::array_entry(gen, entry, WORD_ARRAY_FORMAT);
 	DISCARD_TEXT(entry)

@@ -538,52 +538,56 @@ void CodeGen::I6::compile_literal_number(code_generation_target *cgt,
 
 =
 void CodeGen::I6::compile_literal_text(code_generation_target *cgt, code_generation *gen,
-	text_stream *S, int printing_mode, int box_mode) {
+	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\"");
-	int esc_char = FALSE;
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if (box_mode) {
-			switch(c) {
-				case '@': WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^': WRITE("@{5E}"); break;
-				case '~': WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\"\n\""); break;
-				case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
-				default: PUT(c);
-			}
-		} else {
-			switch(c) {
-				case '@':
-					if (printing_mode) {
-						WRITE("@@64"); esc_char = TRUE; continue;
-					}
-					WRITE("@{40}"); break;
-				case '"': WRITE("~"); break;
-				case '^':
-					if (printing_mode) {
-						WRITE("@@94"); esc_char = TRUE; continue;
-					}
-					WRITE("@{5E}"); break;
-				case '~':
-					if (printing_mode) {
-						WRITE("@@126"); esc_char = TRUE; continue;
-					}
-					WRITE("@{7E}"); break;
-				case '\\': WRITE("@{5C}"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("^"); break;
-				case NEWLINE_IN_STRING: WRITE("^"); break;
-				default: {
-					if (esc_char) WRITE("@{%02x}", c);
-					else PUT(c);
+	if (escape_mode == FALSE) {
+		WRITE("%S", S);
+	} else {
+		int esc_char = FALSE;
+		LOOP_THROUGH_TEXT(pos, S) {
+			wchar_t c = Str::get(pos);
+			if (box_mode) {
+				switch(c) {
+					case '@': WRITE("@{40}"); break;
+					case '"': WRITE("~"); break;
+					case '^': WRITE("@{5E}"); break;
+					case '~': WRITE("@{7E}"); break;
+					case '\\': WRITE("@{5C}"); break;
+					case '\t': WRITE(" "); break;
+					case '\n': WRITE("\"\n\""); break;
+					case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
+					default: PUT(c);
 				}
+			} else {
+				switch(c) {
+					case '@':
+						if (printing_mode) {
+							WRITE("@@64"); esc_char = TRUE; continue;
+						}
+						WRITE("@{40}"); break;
+					case '"': WRITE("~"); break;
+					case '^':
+						if (printing_mode) {
+							WRITE("@@94"); esc_char = TRUE; continue;
+						}
+						WRITE("@{5E}"); break;
+					case '~':
+						if (printing_mode) {
+							WRITE("@@126"); esc_char = TRUE; continue;
+						}
+						WRITE("@{7E}"); break;
+					case '\\': WRITE("@{5C}"); break;
+					case '\t': WRITE(" "); break;
+					case '\n': WRITE("^"); break;
+					case NEWLINE_IN_STRING: WRITE("^"); break;
+					default: {
+						if (esc_char) WRITE("@{%02x}", c);
+						else PUT(c);
+					}
+				}
+				esc_char = FALSE;
 			}
-			esc_char = FALSE;
 		}
 	}
 	WRITE("\"");

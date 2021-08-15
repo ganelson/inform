@@ -131,7 +131,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
-			WRITE("\"%S\"", S);
+			CodeGen::Targets::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
+//			WRITE("\"%S\"", S);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			break;
 		}
@@ -373,7 +374,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 		CodeGen::Targets::compile_dictionary_word(gen, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode);
+		CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);
 	} else if (val1 == GLOB_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("%S", glob_text);
