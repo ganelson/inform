@@ -159,16 +159,29 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			} else {
 				CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), format);
 				if (hang_one) CodeGen::Targets::array_entry(gen, I"1", format);
-				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					if (P->W.data[i] != DIVIDER_IVAL) {
-						TEMPORARY_TEXT(entry)
-						CodeGen::select_temporary(gen, entry);
-	//					if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE("(");
-						CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
-	//					if ((do_not_bracket == FALSE) && (P->W.data[i] != DIVIDER_IVAL)) WRITE(")");
-						CodeGen::deselect_temporary(gen);
-						CodeGen::Targets::array_entry(gen, entry, format);
-						DISCARD_TEXT(entry)
+				int entry_count = 0;
+				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
+					if (P->W.data[i] != DIVIDER_IVAL)
+						entry_count++;
+				if (hang_one) entry_count++;
+				inter_ti e = 0; int ips = FALSE;
+				if ((entry_count == 1) && (Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
+					inter_ti val1 = P->W.data[DATA_CONST_IFLD], val2 = P->W.data[DATA_CONST_IFLD+1];
+					e = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(P), val1, val2, &ips);
+				}
+				if (e > 1) {
+					LOG("Entry count 1 on %S masks %d blanks\n", CodeGen::CL::name(con_name), e);
+					CodeGen::Targets::array_entries(gen, (int) e, ips, format);
+				} else {
+					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+						if (P->W.data[i] != DIVIDER_IVAL) {
+							TEMPORARY_TEXT(entry)
+							CodeGen::select_temporary(gen, entry);
+							CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
+							CodeGen::deselect_temporary(gen);
+							CodeGen::Targets::array_entry(gen, entry, format);
+							DISCARD_TEXT(entry)
+						}
 					}
 				}
 				CodeGen::Targets::end_array(gen, format);
@@ -320,6 +333,47 @@ void CodeGen::CL::enter_print_mode(void) {
 
 void CodeGen::CL::exit_print_mode(void) {
 	printing_mode = FALSE;
+}
+
+inter_ti CodeGen::CL::evaluate(code_generation *gen, inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {
+	if (val1 == LITERAL_IVAL) return val2;
+	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
+		if (aliased == NULL) internal_error("bad aliased symbol");
+		inter_tree_node *D = aliased->definition;
+		if (D == NULL) internal_error("undefined symbol");
+		switch (D->W.data[FORMAT_CONST_IFLD]) {
+			case CONSTANT_DIRECT: {
+				inter_ti dval1 = D->W.data[DATA_CONST_IFLD];
+				inter_ti dval2 = D->W.data[DATA_CONST_IFLD + 1];
+				inter_ti e = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(D), dval1, dval2, ips);
+				if (e == 0) {
+					text_stream *S = CodeGen::CL::name(aliased);
+					if (Str::eq(S, I"INDIV_PROP_START")) *ips = TRUE;
+				}
+				LOG("Eval const $3 = %d\n", aliased, e);
+				return e;
+			}
+			case CONSTANT_SUM_LIST:
+			case CONSTANT_PRODUCT_LIST:
+			case CONSTANT_DIFFERENCE_LIST:
+			case CONSTANT_QUOTIENT_LIST: {
+				inter_ti result = 0;
+				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
+					inter_ti extra = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(D), D->W.data[i], D->W.data[i+1], ips);
+					if (i == DATA_CONST_IFLD) result = extra;
+					else {
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) result = result * extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) result = result - extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) result = result / extra;
+					}
+				}
+				return result;
+			}
+		}
+	}
+	return 0;
 }
 
 void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {

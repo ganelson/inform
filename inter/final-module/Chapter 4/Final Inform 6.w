@@ -104,6 +104,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, END_OPCODE_MTID, CodeGen::I6::end_opcode);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::I6::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
+	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CodeGen::I6::array_entries);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
 	METHOD_ADD(cgt, END_GENERATION_MTID, CodeGen::I6::end_generation);
@@ -801,6 +802,17 @@ void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen,
 void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" (%S)", entry);
+}
+
+@ Alternatively, we can just specify how many entries there will be: they will
+then be initialised to 0.
+
+=
+void CodeGen::I6::array_entries(code_generation_target *cgt, code_generation *gen,
+	int how_many, int plus_ips, int format) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (plus_ips) WRITE(" (%d + INDIV_PROP_START)", how_many, plus_ips);
+	else WRITE(" (%d)", how_many);
 }
 
 void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen, int format) {

@@ -326,6 +326,7 @@ void CodeGen::Targets::end_opcode(code_generation *gen) {
 
 @e BEGIN_ARRAY_MTID
 @e ARRAY_ENTRY_MTID
+@e ARRAY_ENTRIES_MTID
 @e END_ARRAY_MTID
 
 @d WORD_ARRAY_FORMAT 1
@@ -336,12 +337,16 @@ void CodeGen::Targets::end_opcode(code_generation *gen) {
 =
 VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int format)
 VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *entry, int format)
+VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generation_target *cgt, code_generation *gen, int how_many, int plus_ips, int format)
 VOID_METHOD_TYPE(END_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, int format)
 void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name, int format) {
 	VOID_METHOD_CALL(gen->target, BEGIN_ARRAY_MTID, gen, const_name, format);
 }
 void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry, int format) {
 	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry, format);
+}
+void CodeGen::Targets::array_entries(code_generation *gen, int how_many, int plus_ips, int format) {
+	VOID_METHOD_CALL(gen->target, ARRAY_ENTRIES_MTID, gen, how_many, plus_ips, format);
 }
 void CodeGen::Targets::mangled_array_entry(code_generation *gen, text_stream *entry, int format) {
 	TEMPORARY_TEXT(mangled)

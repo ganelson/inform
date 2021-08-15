@@ -233,16 +233,29 @@ is 20. We instead compile this as
 <span class="string-syntax">            } else {</span>
 <span class="string-syntax">                CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), format);</span>
 <span class="string-syntax">                if (hang_one) CodeGen::Targets::array_entry(gen, I"</span><span class="constant-syntax">1</span><span class="string-syntax">", format);</span>
-<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
-<span class="string-syntax">                    if (P-&gt;W.data[i] != DIVIDER_IVAL) {</span>
-<span class="string-syntax">                        TEMPORARY_TEXT(entry)</span>
-<span class="string-syntax">                        CodeGen::select_temporary(gen, entry);</span>
-<span class="string-syntax">    </span><span class="comment-syntax">					if ((do_not_bracket == FALSE) &amp;&amp; (P-&gt;W.data[i] != DIVIDER_IVAL)) WRITE("(");</span>
-<span class="string-syntax">                        CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P-&gt;W.data[i], P-&gt;W.data[i+1], unsub);</span>
-<span class="string-syntax">    </span><span class="comment-syntax">					if ((do_not_bracket == FALSE) &amp;&amp; (P-&gt;W.data[i] != DIVIDER_IVAL)) WRITE(")");</span>
-<span class="string-syntax">                        CodeGen::deselect_temporary(gen);</span>
-<span class="string-syntax">                        CodeGen::Targets::array_entry(gen, entry, format);</span>
-<span class="string-syntax">                        DISCARD_TEXT(entry)</span>
+<span class="string-syntax">                int entry_count = 0;</span>
+<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2)</span>
+<span class="string-syntax">                    if (P-&gt;W.data[i] != DIVIDER_IVAL)</span>
+<span class="string-syntax">                        entry_count++;</span>
+<span class="string-syntax">                if (hang_one) entry_count++;</span>
+<span class="string-syntax">                inter_ti e = 0; int ips = FALSE;</span>
+<span class="string-syntax">                if ((entry_count == 1) &amp;&amp; (Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) &gt;= 0)) {</span>
+<span class="string-syntax">                    inter_ti val1 = P-&gt;W.data[DATA_CONST_IFLD], val2 = P-&gt;W.data[DATA_CONST_IFLD+1];</span>
+<span class="string-syntax">                    e = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(P), val1, val2, &amp;ips);</span>
+<span class="string-syntax">                }</span>
+<span class="string-syntax">                if (e &gt; 1) {</span>
+<span class="string-syntax">                    LOG("</span><span class="identifier-syntax">Entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">masks</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax"> </span><span class="identifier-syntax">blanks</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", CodeGen::CL::name(con_name), e);</span>
+<span class="string-syntax">                    CodeGen::Targets::array_entries(gen, (int) e, ips, format);</span>
+<span class="string-syntax">                } else {</span>
+<span class="string-syntax">                    for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
+<span class="string-syntax">                        if (P-&gt;W.data[i] != DIVIDER_IVAL) {</span>
+<span class="string-syntax">                            TEMPORARY_TEXT(entry)</span>
+<span class="string-syntax">                            CodeGen::select_temporary(gen, entry);</span>
+<span class="string-syntax">                            CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P-&gt;W.data[i], P-&gt;W.data[i+1], unsub);</span>
+<span class="string-syntax">                            CodeGen::deselect_temporary(gen);</span>
+<span class="string-syntax">                            CodeGen::Targets::array_entry(gen, entry, format);</span>
+<span class="string-syntax">                            DISCARD_TEXT(entry)</span>
+<span class="string-syntax">                        }</span>
 <span class="string-syntax">                    }</span>
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                CodeGen::Targets::end_array(gen, format);</span>
@@ -396,6 +409,47 @@ is 20. We instead compile this as
 <span class="string-syntax">    printing_mode = FALSE;</span>
 <span class="string-syntax">}</span>
 
+<span class="string-syntax">inter_ti CodeGen::CL::evaluate(code_generation *gen, inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {</span>
+<span class="string-syntax">    if (val1 == LITERAL_IVAL) return val2;</span>
+<span class="string-syntax">    if (Inter::Symbols::is_stored_in_data(val1, val2)) {</span>
+<span class="string-syntax">        inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);</span>
+<span class="string-syntax">        if (aliased == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">aliased</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
+<span class="string-syntax">        inter_tree_node *D = aliased-&gt;definition;</span>
+<span class="string-syntax">        if (D == NULL) internal_error("</span><span class="identifier-syntax">undefined</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
+<span class="string-syntax">        switch (D-&gt;W.data[FORMAT_CONST_IFLD]) {</span>
+<span class="string-syntax">            case CONSTANT_DIRECT: {</span>
+<span class="string-syntax">                inter_ti dval1 = D-&gt;W.data[DATA_CONST_IFLD];</span>
+<span class="string-syntax">                inter_ti dval2 = D-&gt;W.data[DATA_CONST_IFLD + 1];</span>
+<span class="string-syntax">                inter_ti e = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(D), dval1, dval2, ips);</span>
+<span class="string-syntax">                if (e == 0) {</span>
+<span class="string-syntax">                    text_stream *S = CodeGen::CL::name(aliased);</span>
+<span class="string-syntax">                    if (Str::eq(S, I"</span><span class="identifier-syntax">INDIV_PROP_START</span><span class="string-syntax">")) *ips = TRUE;</span>
+<span class="string-syntax">                }</span>
+<span class="string-syntax">                LOG("</span><span class="identifier-syntax">Eval</span><span class="plain-syntax"> </span><span class="reserved-syntax">const</span><span class="plain-syntax"> $3 = %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", aliased, e);</span>
+<span class="string-syntax">                return e;</span>
+<span class="string-syntax">            }</span>
+<span class="string-syntax">            case CONSTANT_SUM_LIST:</span>
+<span class="string-syntax">            case CONSTANT_PRODUCT_LIST:</span>
+<span class="string-syntax">            case CONSTANT_DIFFERENCE_LIST:</span>
+<span class="string-syntax">            case CONSTANT_QUOTIENT_LIST: {</span>
+<span class="string-syntax">                inter_ti result = 0;</span>
+<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;D-&gt;W.extent; i=i+2) {</span>
+<span class="string-syntax">                    inter_ti extra = CodeGen::CL::evaluate(gen, Inter::Packages::scope_of(D), D-&gt;W.data[i], D-&gt;W.data[i+1], ips);</span>
+<span class="string-syntax">                    if (i == DATA_CONST_IFLD) result = extra;</span>
+<span class="string-syntax">                    else {</span>
+<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;</span>
+<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) result = result * extra;</span>
+<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) result = result - extra;</span>
+<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) result = result / extra;</span>
+<span class="string-syntax">                    }</span>
+<span class="string-syntax">                }</span>
+<span class="string-syntax">                return result;</span>
+<span class="string-syntax">            }</span>
+<span class="string-syntax">        }</span>
+<span class="string-syntax">    }</span>
+<span class="string-syntax">    return 0;</span>
+<span class="string-syntax">}</span>
+
 <span class="string-syntax">void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {</span>
 <span class="string-syntax">    inter_tree *I = gen-&gt;from;</span>
 <span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
@@ -461,11 +515,11 @@ is 20. We instead compile this as
 <span class="string-syntax">    return symb-&gt;symbol_name;</span>
 <span class="string-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The function CodeGen::CL::constant_depth appears nowhere else.</li><li>The function CodeGen::CL::constant_depth_inner appears nowhere else.</li><li>The function CodeGen::CL::literal_text_at is used in Frame Control (<a href="2-fc.html#SP1">&#167;1</a>).</li><li>The function CodeGen::CL::compare_tlh appears nowhere else.</li><li>The function CodeGen::CL::sort_literals is used in Code Generation (<a href="2-cg.html#SP8_3">&#167;8.3</a>).</li><li>The function CodeGen::CL::enter_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::enter_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::literal is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The function CodeGen::CL::name is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP4_5">&#167;4.5</a>, <a href="2-iap.html#SP4_6">&#167;4.6</a>, <a href="2-iap.html#SP5_5">&#167;5.5</a>, <a href="2-iap.html#SP5_7">&#167;5.7</a>, <a href="2-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="2-iap.html#SP5_9">&#167;5.9</a>, <a href="2-iap.html#SP5_11">&#167;5.11</a>, <a href="2-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="2-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="2-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="2-iap.html#SP6">&#167;6</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a>), C Object Model (<a href="5-com.html#SP6">&#167;6</a>), C Function Model (<a href="5-cfm.html#SP1">&#167;1</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The function CodeGen::CL::constant_depth appears nowhere else.</li><li>The function CodeGen::CL::constant_depth_inner appears nowhere else.</li><li>The function CodeGen::CL::literal_text_at is used in Frame Control (<a href="2-fc.html#SP1">&#167;1</a>).</li><li>The function CodeGen::CL::compare_tlh appears nowhere else.</li><li>The function CodeGen::CL::sort_literals is used in Code Generation (<a href="2-cg.html#SP8_3">&#167;8.3</a>).</li><li>The function CodeGen::CL::enter_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::enter_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::evaluate appears nowhere else.</li><li>The function CodeGen::CL::literal is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The function CodeGen::CL::name is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP4_5">&#167;4.5</a>, <a href="2-iap.html#SP4_6">&#167;4.6</a>, <a href="2-iap.html#SP5_5">&#167;5.5</a>, <a href="2-iap.html#SP5_7">&#167;5.7</a>, <a href="2-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="2-iap.html#SP5_9">&#167;5.9</a>, <a href="2-iap.html#SP5_11">&#167;5.11</a>, <a href="2-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="2-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="2-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="2-iap.html#SP6">&#167;6</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a>), C Object Model (<a href="5-com.html#SP6">&#167;6</a>), C Function Model (<a href="5-cfm.html#SP1">&#167;1</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::CL::node_is_ref_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CodeGen::CL::node_is_ref_to</span></span>:<br/>C Memory Model - <a href="5-cmm.html#SP10">&#167;10</a><br/>C Object Model - <a href="5-com.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::CL::node_is_ref_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">CodeGen::CL::node_is_ref_to</span></span>:<br/>C Memory Model - <a href="5-cmm.html#SP11">&#167;11</a><br/>C Object Model - <a href="5-com.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reffed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">REFERENCE_IST</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterTree::first_child</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>

@@ -38,7 +38,6 @@ text_stream *RTKindIDs::identifier_for_weak_ID(kind_constructor *kc) {
 		return kc->explicit_identifier;
 	text_stream *invented = Str::new();
 	WRITE_TO(invented, "WEAK_ID_%d", kc->allocation_id);
-LOG("I did make %S\n", invented);
 	return invented;
 }
 

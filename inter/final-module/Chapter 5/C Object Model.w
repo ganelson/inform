@@ -124,14 +124,14 @@ overlap.
 	WRITE("#define i7_max_objects %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
 
 	WRITE("i7val i7_metaclass_of[] = { 0");
-	for (int i=1; i<C_GEN_DATA(objdata.owner_id_count); i++) {
+	for (int i=1; i<=C_GEN_DATA(objdata.owner_id_count); i++) {
 		if (C_GEN_DATA(objdata.owners)[i].is_class) WRITE(", i7_mgl_Class");
 		else WRITE(", i7_mgl_Object");
 	}
 	WRITE(" };\n");
 
 	WRITE("i7val i7_class_of[] = { 0");
-	for (int i=1; i<C_GEN_DATA(objdata.owner_id_count); i++) {
+	for (int i=1; i<=C_GEN_DATA(objdata.owner_id_count); i++) {
 		WRITE(", "); CNamespace::mangle(NULL, OUT, C_GEN_DATA(objdata.owners)[i].class);
 	}
 	WRITE(" };\n");
@@ -256,17 +256,18 @@ only need to be unique, so the order is not significant.
 void CObjectModel::declare_property_by_name(code_generation *gen, text_stream *name, int used) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	if (used) {
+//	if (used) {
 		WRITE("#define ");
 		CNamespace::mangle(NULL, OUT, name);
 		WRITE(" %d\n", C_GEN_DATA(objdata.property_id_counter)++);
-	} else {
+/*	} else {
 		WRITE("#ifndef ");
 		CNamespace::mangle(NULL, OUT, name);
 		WRITE("\n#define ");
 		CNamespace::mangle(NULL, OUT, name);
 		WRITE(" 0\n#endif\n");
 	}
+*/
 	CodeGen::deselect(gen, saved);
 }
 
@@ -314,6 +315,11 @@ By fiat, that will be 0.
 		WRITE("return 0;\n");
 		OUTDENT;
 		WRITE("}\n");
+		CodeGen::deselect(gen, saved);
+
+		saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
+		OUT = CodeGen::current(gen);
+		WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(int argc);\n");
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -432,8 +438,9 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
+	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0) {
 		owner_id = i7_class_of[owner_id];
+	}
 	return i7_properties[(int) owner_id].value[(int) prop_id];
 }
 

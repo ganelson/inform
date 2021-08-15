@@ -48,6 +48,7 @@ first of those:
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 =
 
 @h Segmentation.

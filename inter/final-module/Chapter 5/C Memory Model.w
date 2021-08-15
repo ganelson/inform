@@ -8,6 +8,7 @@ How arrays of all kinds are stored in C.
 void CMemoryModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
+	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CMemoryModel::end_array);
 }
 
@@ -198,7 +199,7 @@ void CMemoryModel::array_entry(code_generation_target *cgt, code_generation *gen
 }
 
 @<This is a byte entry@> =
-	WRITE("    (i7byte) %S,\n", entry);
+	WRITE("    (i7byte) %S, /* %d */\n", entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 1;
 
 @ Now we see why it was important for |I7BYTE_0| and so on to be macros: they
@@ -207,9 +208,19 @@ and therefore if |X| is a valid constant-context expression in C then so is
 |I7BYTE_0(X)|.
 
 @<This is a word entry@> =
-	WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S),\n",
-		entry, entry, entry, entry);
+	WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S), /* %d */\n",
+		entry, entry, entry, entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 4;
+
+@ Alternatively, we can just specify how many entries there will be: they will
+then be initialised to 0.
+
+=
+void CMemoryModel::array_entries(code_generation_target *cgt, code_generation *gen,
+	int how_many, int plus_ips, int format) {
+	if (plus_ips) how_many += 64;
+	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(cgt, gen, I"0", format);
+}
 
 @ When all the entries have been placed, the following is called. It does nothing
 except to predeclare the extent constant, if one was used.

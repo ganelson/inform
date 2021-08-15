@@ -36,7 +36,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case PRINTNAME_BIP:      WRITE("i7_print_name("); INV_A1; WRITE(")"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object("); INV_A1; WRITE(")"); break;
 		case PRINTPROPERTY_BIP:  WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
-		case PRINTNUMBER_BIP:    WRITE("printf(\"%%d\", (int) "); INV_A1; WRITE(")"); break;
+		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal("); INV_A1; WRITE(")"); break;
 		case PRINTNLNUMBER_BIP:  WRITE("i7_print_number("); INV_A1; WRITE(")"); break;
 		case PRINTDEF_BIP:       WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
 		case PRINTCDEF_BIP:      WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
@@ -62,6 +62,10 @@ void i7_style(int what) {
 }
 
 void i7_font(int what) {
+}
+
+void i7_print_decimal(i7val x) {
+	printf("%d", (int) x);
 }
 
 void i7_print_char(i7val x) {

@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
@@ -99,14 +100,18 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 	return return_val;
 }
 i7val i7_mgl_sp = 0;
+#define I7_ASM_STACK_CAPACITY 128
+i7val i7_asm_stack[I7_ASM_STACK_CAPACITY];
+int i7_asm_stack_pointer = 0;
 
 i7val i7_pull(void) {
-	printf("Unimplemented: i7_pull.\n");
-	return (i7val) 0;
+	if (i7_asm_stack_pointer <= 0) { printf("Stack underflow\n"); return (i7val) 0; }
+	return i7_asm_stack[--i7_asm_stack_pointer];
 }
 
 void i7_push(i7val x) {
-	printf("Unimplemented: i7_push.\n");
+	if (i7_asm_stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
+	i7_asm_stack[i7_asm_stack_pointer++] = x;
 }
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
@@ -122,10 +127,6 @@ void glulx_call(i7val x, i7val i7varargc, i7val z) {
 
 void glulx_copy(i7val x, i7val y) {
 	printf("Unimplemented: glulx_copy.\n");
-}
-
-void glulx_div(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_div.\n");
 }
 
 void glulx_gestalt(i7val x, i7val y, i7val *z) {
@@ -161,7 +162,7 @@ void glulx_glk(i7val glk_api_selector, i7val i7varargc, i7val *z) {
 }
 
 int glulx_jeq(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jeq.\n");
+	if (x == y) return 1;
 	return 0;
 }
 
@@ -171,12 +172,12 @@ int glulx_jleu(i7val x, i7val y) {
 }
 
 int glulx_jnz(i7val x) {
-	printf("Unimplemented: glulx_jnz.\n");
+	if (x != 0) return 1;
 	return 0;
 }
 
 int glulx_jz(i7val x) {
-	printf("Unimplemented: glulx_jz.\n");
+	if (x == 0) return 1;
 	return 0;
 }
 
@@ -192,17 +193,6 @@ void glulx_mfree(i7val x) {
 	printf("Unimplemented: glulx_mfree.\n");
 }
 
-void glulx_mod(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_mod.\n");
-}
-
-void glulx_neg(i7val x, i7val y) {
-	printf("Unimplemented: glulx_neg.\n");
-}
-
-void glulx_numtof(i7val x, i7val y) {
-	printf("Unimplemented: glulx_numtof.\n");
-}
 
 void glulx_quit(void) {
 	printf("Unimplemented: glulx_quit.\n");
@@ -216,12 +206,14 @@ void glulx_setiosys(i7val x, i7val y) {
 	// Deliberately ignored: we are using stdout, not glk
 }
 
+void i7_print_char(i7val x);
 void glulx_streamchar(i7val x) {
-	printf("%c", (int) x);
+	i7_print_char(x);
 }
 
+void i7_print_decimal(i7val x);
 void glulx_streamnum(i7val x) {
-	printf("Unimplemented: glulx_streamnum.\n");
+	i7_print_decimal(x);
 }
 
 void glulx_streamstr(i7val x) {
@@ -229,11 +221,7 @@ void glulx_streamstr(i7val x) {
 }
 
 void glulx_streamunichar(i7val x) {
-	printf("%c", (int) x);
-}
-
-void glulx_sub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_sub.\n");
+	i7_print_char(x);
 }
 
 void glulx_ushiftr(i7val x, i7val y, i7val z) {
@@ -270,105 +258,277 @@ i7val fn_i7_mgl_random(int n, i7val v) {
 void glulx_setrandom(i7val x) {
 	i7_seed = (int) x;
 }
-void glulx_exp(i7val x, i7val y) {
-	printf("Unimplemented: glulx_exp.\n");
+void glulx_add(i7val x, i7val y, i7val *z) {
+	if (z) *z = x + y;
 }
 
-void glulx_fadd(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fadd.\n");
+void glulx_sub(i7val x, i7val y, i7val *z) {
+	if (z) *z = x - y;
 }
 
-void glulx_fdiv(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fdiv.\n");
+void glulx_neg(i7val x, i7val *y) {
+	if (y) *y = -x;
 }
 
-void glulx_floor(i7val x, i7val y) {
-	printf("Unimplemented: glulx_floor.\n");
+void glulx_mul(i7val x, i7val y, i7val *z) {
+	if (z) *z = x * y;
 }
 
-void glulx_fmod(i7val x, i7val y, i7val z, i7val w) {
-	printf("Unimplemented: glulx_fmod.\n");
+void glulx_div(i7val x, i7val y, i7val *z) {
+	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 1; return; }
+	int result, ax, ay;
+	/* Since C doesn't guarantee the results of division of negative
+	   numbers, we carefully convert everything to positive values
+	   first. They have to be unsigned values, too, otherwise the
+	   0x80000000 case goes wonky. */
+	if (x < 0) {
+		ax = (-x);
+		if (y < 0) {
+			ay = (-y);
+			result = ax / ay;
+		} else {
+			ay = y;
+			result = -(ax / ay);
+		}
+	} else {
+		ax = x;
+		if (y < 0) {
+			ay = (-y);
+			result = -(ax / ay);
+		} else {
+			ay = y;
+			result = ax / ay;
+		}
+	}
+	if (z) *z = result;
 }
 
-void glulx_fmul(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fmul.\n");
+i7val glulx_div_r(i7val x, i7val y) {
+	i7val z;
+	glulx_div(x, y, &z);
+	return z;
 }
 
-void glulx_fsub(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_fsub.\n");
+void glulx_mod(i7val x, i7val y, i7val *z) {
+	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 0; return; }
+	int result, ax, ay;
+	if (y < 0) {
+		ay = -y;
+	} else {
+		ay = y;
+	}
+	if (x < 0) {
+		ax = (-x);
+		result = -(ax % ay);
+	} else {
+		ax = x;
+		result = ax % ay;
+	}
+	if (z) *z = result;
 }
 
-void glulx_ftonumn(i7val x, i7val y) {
-	printf("Unimplemented: glulx_ftonumn.\n");
+i7val glulx_mod_r(i7val x, i7val y) {
+	i7val z;
+	glulx_mod(x, y, &z);
+	return z;
 }
 
-void glulx_ftonumz(i7val x, i7val y) {
-	printf("Unimplemented: glulx_ftonumz.\n");
+typedef float gfloat32;
+
+i7val encode_float(gfloat32 val) {
+    i7val res;
+    *(gfloat32 *)(&res) = val;
+    return res;
+}
+
+gfloat32 decode_float(i7val val) {
+    gfloat32 res;
+    *(i7val *)(&res) = val;
+    return res;
+}
+
+void glulx_exp(i7val x, i7val *y) {
+	*y = encode_float(expf(decode_float(x)));
+}
+
+void glulx_fadd(i7val x, i7val y, i7val *z) {
+	*z = encode_float(decode_float(x) + decode_float(y));
+}
+
+void glulx_fdiv(i7val x, i7val y, i7val *z) {
+	*z = encode_float(decode_float(x) / decode_float(y));
+}
+
+void glulx_floor(i7val x, i7val *y) {
+	*y = encode_float(floorf(decode_float(x)));
+}
+
+void glulx_fmod(i7val x, i7val y, i7val *z, i7val *w) {
+	float fx = decode_float(x);
+	float fy = decode_float(y);
+	float fquot = fmodf(fx, fy);
+	i7val quot = encode_float(fquot);
+	i7val rem = encode_float((fx-fquot) / fy);
+	if (rem == 0x0 || rem == 0x80000000) {
+		/* When the quotient is zero, the sign has been lost in the
+		 shuffle. We'll set that by hand, based on the original
+		 arguments. */
+		rem = (x ^ y) & 0x80000000;
+	}
+	if (z) *z = quot;
+	if (w) *w = rem;
+}
+
+void glulx_fmul(i7val x, i7val y, i7val *z) {
+	*z = encode_float(decode_float(x) * decode_float(y));
+}
+
+void glulx_fsub(i7val x, i7val y, i7val *z) {
+	*z = encode_float(decode_float(x) - decode_float(y));
+}
+
+void glulx_ftonumn(i7val x, i7val *y) {
+	float fx = decode_float(x);
+	i7val result;
+	if (!signbit(fx)) {
+		if (isnan(fx) || isinf(fx) || (fx > 2147483647.0))
+			result = 0x7FFFFFFF;
+		else
+			result = (i7val) (roundf(fx));
+	}
+	else {
+		if (isnan(fx) || isinf(fx) || (fx < -2147483647.0))
+			result = 0x80000000;
+		else
+			result = (i7val) (roundf(fx));
+	}
+	*y = result;
+}
+
+void glulx_ftonumz(i7val x, i7val *y) {
+	float fx = decode_float(x);
+ 	i7val result;
+	if (!signbit(fx)) {
+		if (isnan(fx) || isinf(fx) || (fx > 2147483647.0))
+			result = 0x7FFFFFFF;
+		else
+			result = (i7val) (truncf(fx));
+	}
+	else {
+		if (isnan(fx) || isinf(fx) || (fx < -2147483647.0))
+			result = 0x80000000;
+		else
+			result = (i7val) (truncf(fx));
+	}
+	*y = result;
+}
+
+void glulx_numtof(i7val x, i7val *y) {
+	*y = encode_float((float) x);
 }
 
 int glulx_jfeq(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_jfeq.\n");
+	int result;
+	if ((z & 0x7F800000) == 0x7F800000 && (z & 0x007FFFFF) != 0) {
+		/* The delta is NaN, which can never match. */
+		result = 0;
+	} else if ((x == 0x7F800000 || x == 0xFF800000)
+			&& (y == 0x7F800000 || y == 0xFF800000)) {
+		/* Both are infinite. Opposite infinities are never equal,
+		even if the difference is infinite, so this is easy. */
+		result = (x == y);
+	} else {
+		float fx = decode_float(y) - decode_float(x);
+		float fy = fabs(decode_float(z));
+		result = (fx <= fy && fx >= -fy);
+	}
+	if (!result) return 1;
 	return 0;
 }
 
+int glulx_jfne(i7val x, i7val y, i7val z) {
+	int result;
+	if ((z & 0x7F800000) == 0x7F800000 && (z & 0x007FFFFF) != 0) {
+		/* The delta is NaN, which can never match. */
+		result = 0;
+	} else if ((x == 0x7F800000 || x == 0xFF800000)
+			&& (y == 0x7F800000 || y == 0xFF800000)) {
+		/* Both are infinite. Opposite infinities are never equal,
+		even if the difference is infinite, so this is easy. */
+		result = (x == y);
+	} else {
+		float fx = decode_float(y) - decode_float(x);
+		float fy = fabs(decode_float(z));
+		result = (fx <= fy && fx >= -fy);
+	}
+	if (!result) return 1;
+}
+
 int glulx_jfge(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jfge.\n");
+	if (isgreaterequal(decode_float(x), decode_float(y))) return 1;
 	return 0;
 }
 
 int glulx_jflt(i7val x, i7val y) {
-	printf("Unimplemented: glulx_jflt.\n");
+	if (isless(decode_float(x), decode_float(y))) return 1;
 	return 0;
 }
 
 int glulx_jisinf(i7val x) {
-	printf("Unimplemented: glulx_jisinf.\n");
+	if (isinf(decode_float(x))) return 1;
 	return 0;
 }
 
 int glulx_jisnan(i7val x) {
-	printf("Unimplemented: glulx_jisnan.\n");
+	if (isnan(decode_float(x))) return 1;
 	return 0;
 }
 
-void glulx_log(i7val x, i7val y) {
-	printf("Unimplemented: glulx_log.\n");
+void glulx_log(i7val x, i7val *y) {
+	*y = encode_float(logf(decode_float(x)));
 }
 
 void glulx_acos(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_acos\n");
+	*y = encode_float(acosf(decode_float(x)));
 }
 
 void glulx_asin(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_asin\n");
+	*y = encode_float(asinf(decode_float(x)));
 }
 
 void glulx_atan(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_atan\n");
+	*y = encode_float(atanf(decode_float(x)));
 }
 
 void glulx_ceil(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_ceil\n");
+	*y = encode_float(ceilf(decode_float(x)));
 }
 
 void glulx_cos(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_cos\n");
+	*y = encode_float(cosf(decode_float(x)));
 }
 
 void glulx_pow(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_pow\n");
+	if (decode_float(x) == 1.0f)
+		*z = encode_float(1.0f);
+	else if ((decode_float(y) == 0.0f) || (decode_float(y) == -0.0f))
+		*z = encode_float(1.0f);
+	else if ((decode_float(x) == -1.0f) && isinf(decode_float(y)))
+		*z = encode_float(1.0f);
+	else
+		*z = encode_float(powf(decode_float(x), decode_float(y)));
 }
 
 void glulx_sin(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_sin\n");
+	*y = encode_float(sinf(decode_float(x)));
 }
 
 void glulx_sqrt(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_sqrt\n");
+	*y = encode_float(sqrtf(decode_float(x)));
 }
 
 void glulx_tan(i7val x, i7val *y) {
-	printf("Unimplemented: glulx_tan\n");
+	*y = encode_float(tanf(decode_float(x)));
 }
 i7val fn_i7_mgl_metaclass(int n, i7val id) {
 	if (id <= 0) return 0;
@@ -415,8 +575,9 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0)
+	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0) {
 		owner_id = i7_class_of[owner_id];
+	}
 	return i7_properties[(int) owner_id].value[(int) prop_id];
 }
 
@@ -476,11 +637,6 @@ typedef struct i7varargs {
 } i7varargs;
 
 i7val i7_mgl_self = 0;
-
-i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {
-	printf("Unimplemented: i7_gen_call.\n");
-	return 0;
-}
 
 i7val i7_call_0(i7val fn_ref) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
@@ -552,6 +708,10 @@ void i7_style(int what) {
 }
 
 void i7_font(int what) {
+}
+
+void i7_print_decimal(i7val x) {
+	printf("%d", (int) x);
 }
 
 void i7_print_char(i7val x) {

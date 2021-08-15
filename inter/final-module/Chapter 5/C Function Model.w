@@ -20,12 +20,14 @@ typedef struct C_generation_function_model_data {
 	struct text_stream *prototype;
 	int argument_count;
 	struct final_c_function *current_fcf;
+	int compiling_function;
 } C_generation_function_model_data;
 
 void CFunctionModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(fndata.prototype) = Str::new();
 	C_GEN_DATA(fndata.argument_count) = 0;
 	C_GEN_DATA(fndata.current_fcf) = NULL;
+	C_GEN_DATA(fndata.compiling_function) = FALSE;
 }
 
 void CFunctionModel::begin(code_generation *gen) {
@@ -65,6 +67,43 @@ void CFunctionModel::end(code_generation *gen) {
 	WRITE("#endif\n");
 	WRITE("#endif\n");
 	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message);\n");
+	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {\n"); INDENT;
+	WRITE("switch (fn_ref) {\n"); INDENT;
+	final_c_function *fcf;
+	LOOP_OVER(fcf, final_c_function) {
+		WRITE("case ");
+		CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
+		WRITE(": return fn_");
+		CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
+		WRITE("(");		
+		if (fcf->uses_vararg_model) {
+			WRITE("2, argc, (i7varargs) { ");
+			for (int i=0; i<10; i++) {
+				if (i > 0) WRITE(", ");
+				WRITE("args[%d]", i);
+			}
+			WRITE(" }");
+			for (int i=0; i<fcf->max_arity - 1; i++)
+				WRITE(", 0");
+		} else {
+			WRITE("argc");
+			for (int i=0; i<fcf->max_arity; i++)
+				WRITE(", args[%d]", i);
+		}
+		WRITE(");\n");
+	}
+	OUTDENT; WRITE("}\n");
+	WRITE("printf(\"function not found\\n\");\n");
+	OUTDENT; WRITE("}\n");
+	CodeGen::deselect(gen, saved);
 }
 
 typedef struct final_c_function {
@@ -93,6 +132,7 @@ void CFunctionModel::declare_fcf(code_generation *gen, final_c_function *fcf) {
 
 void CFunctionModel::make_veneer_fcf(code_generation *gen, text_stream *unmangled_name) {
 	final_c_function *fcf = CFunctionModel::new_fcf(unmangled_name);
+	fcf->max_arity = 1;
 	CFunctionModel::declare_fcf(gen, fcf);
 }
 
@@ -124,6 +164,7 @@ void CFunctionModel::begin_function_code(code_generation_target *cgt, code_gener
 			WRITE("printf(\"called %S\\n\");\n", C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
 		}
 	}
+	C_GEN_DATA(fndata.compiling_function) = TRUE;
 }
 
 void CFunctionModel::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
@@ -150,7 +191,13 @@ void CFunctionModel::end_function(code_generation_target *cgt, int pass, code_ge
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("return 1;\n");
 		WRITE("\n}\n");
+		C_GEN_DATA(fndata.compiling_function) = FALSE;
 	}
+}
+
+int CFunctionModel::inside_function(code_generation *gen) {
+	if (C_GEN_DATA(fndata.compiling_function)) return TRUE;
+	return FALSE;
 }
 
 void CFunctionModel::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
@@ -249,11 +296,6 @@ typedef struct i7varargs {
 } i7varargs;
 
 i7val i7_mgl_self = 0;
-
-i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {
-	printf("Unimplemented: i7_gen_call.\n");
-	return 0;
-}
 
 i7val i7_call_0(i7val fn_ref) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
