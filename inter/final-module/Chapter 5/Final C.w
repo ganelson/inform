@@ -126,7 +126,6 @@ typedef struct C_generation_data {
 	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
 	struct C_generation_literals_model_data litdata;
-	struct C_generation_assembly_data asmdata;
 	CLASS_DEFINITION
 } C_generation_data;
 
@@ -152,7 +151,9 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 
 	generated_segment *saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("typedef int i7val;\n");
+	WRITE("#include <stdint.h>\n");
+	WRITE("typedef int32_t i7val;\n");
+	WRITE("typedef uint32_t i7uval;\n");
 	WRITE("typedef unsigned char i7byte;\n");
 	CodeGen::deselect(gen, saved);
 

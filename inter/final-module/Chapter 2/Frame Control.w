@@ -5,13 +5,10 @@ To manage the final-code process, at the frame level.
 @
 
 =
-int query_labels_mode = FALSE, negate_label_mode = FALSE;
 int void_level = 3;
 code_generation *temporary_generation = NULL;
 
 void CodeGen::FC::prepare(code_generation *gen) {
-	query_labels_mode = FALSE;
-	negate_label_mode = FALSE;
 	void_level = 3;
 	temporary_generation = NULL;
 }
@@ -208,8 +205,6 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *lab = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	text_stream *OUT = CodeGen::current(gen);
-	if (query_labels_mode) PUT('?');
-	if (negate_label_mode) PUT('~');
 	text_stream *S = CodeGen::CL::name(lab);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '.')
@@ -286,6 +281,8 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 @d INV_A5 CodeGen::FC::frame(gen, InterTree::fifth_child(P))
 @d INV_A6 CodeGen::FC::frame(gen, InterTree::sixth_child(P))
 
+@d MAX_OPERANDS_IN_INTER_ASSEMBLY 32
+
 =
 void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -313,29 +310,28 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		case INVOKED_OPCODE: {
 			inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			CodeGen::Targets::begin_opcode(gen, S);
-			negate_label_mode = FALSE;
+			inter_tree_node *operands[MAX_OPERANDS_IN_INTER_ASSEMBLY], *label = NULL;
+			int operand_count = 0;
+			int label_sense = NOT_APPLICABLE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
-//				query_labels_mode = TRUE;
 				if (F->W.data[ID_IFLD] == VAL_IST) {
 					inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
 					inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
 					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 						inter_symbol *symb = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
 						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
-							negate_label_mode = TRUE;
+							label_sense = FALSE;
 							continue;
 						}
 					}
 				}
-				if (F->W.data[ID_IFLD] == LAB_IST)
-					CodeGen::Targets::supply_operand(gen, F, TRUE);
-				else
-					CodeGen::Targets::supply_operand(gen, F, FALSE);
-				query_labels_mode = FALSE;
+				if (F->W.data[ID_IFLD] == LAB_IST) {
+					if (label_sense == NOT_APPLICABLE) label_sense = TRUE;
+					label = F; continue;
+				}
+				operands[operand_count++] = F;
 			}
-			negate_label_mode = FALSE;
-			CodeGen::Targets::end_opcode(gen);
+			CodeGen::Targets::assembly(gen, S, operand_count, operands, label, label_sense);
 			break;
 		}
 		default: internal_error("bad inv");

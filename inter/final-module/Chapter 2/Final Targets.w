@@ -304,22 +304,17 @@ void CodeGen::Targets::end_function_call(code_generation *gen, inter_symbol *fn,
 
 @
 
-@e BEGIN_OPCODE_MTID
-@e SUPPLY_OPERAND_MTID
-@e END_OPCODE_MTID
+@e ASSEMBLY_MTID
 
 =
-VOID_METHOD_TYPE(BEGIN_OPCODE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *opcode)
-VOID_METHOD_TYPE(SUPPLY_OPERAND_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *F, int is_label)
-VOID_METHOD_TYPE(END_OPCODE_MTID, code_generation_target *cgt, code_generation *gen)
-void CodeGen::Targets::begin_opcode(code_generation *gen, text_stream *opcode) {
-	VOID_METHOD_CALL(gen->target, BEGIN_OPCODE_MTID, gen, opcode);
-}
-void CodeGen::Targets::supply_operand(code_generation *gen, inter_tree_node *F, int is_label) {
-	VOID_METHOD_CALL(gen->target, SUPPLY_OPERAND_MTID, gen, F, is_label);
-}
-void CodeGen::Targets::end_opcode(code_generation *gen) {
-	VOID_METHOD_CALL(gen->target, END_OPCODE_MTID, gen);
+VOID_METHOD_TYPE(ASSEMBLY_MTID, code_generation_target *cgt, code_generation *gen,
+	text_stream *opcode, int operand_count, inter_tree_node **operands,
+	inter_tree_node *label, int label_sense)
+
+void CodeGen::Targets::assembly(code_generation *gen, text_stream *opcode, int operand_count,
+	inter_tree_node **operands, inter_tree_node *label, int label_sense) {
+	VOID_METHOD_CALL(gen->target, ASSEMBLY_MTID, gen, opcode, operand_count,
+		operands, label, label_sense);
 }
 
 @

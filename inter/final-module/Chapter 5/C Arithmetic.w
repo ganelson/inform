@@ -268,6 +268,7 @@ int glulx_jfne(i7val x, i7val y, i7val z) {
 		result = (fx <= fy && fx >= -fy);
 	}
 	if (!result) return 1;
+	return 0;
 }
 
 int glulx_jfge(i7val x, i7val y) {
