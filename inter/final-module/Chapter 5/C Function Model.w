@@ -164,6 +164,9 @@ void CFunctionModel::begin_function_code(code_generation_target *cgt, code_gener
 		if (FALSE) {
 			WRITE("printf(\"called %S\\n\");\n", C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
 		}
+		if (C_GEN_DATA(fndata.current_fcf)->uses_vararg_model) {
+			WRITE("for (int i=0; i<i7_mgl_local__vararg_count; i++) i7_push(i7_mgl__varargs.args[i]);\n");
+		}
 	}
 	C_GEN_DATA(fndata.compiling_function) = TRUE;
 }
@@ -358,5 +361,10 @@ i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
 	return i7_gen_call(fn_ref, args, 3, 1);
+}
+
+void glulx_call(i7val fn_ref, i7val argc, i7varargs vargs, i7val *z) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = vargs.args[i];
+	if (z) *z = i7_gen_call(fn_ref, args, argc, 0);
 }
 =

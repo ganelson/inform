@@ -24,7 +24,7 @@ void CGlobals::end(code_generation *gen) {
 =
 int CGlobals::prepare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k) {
-	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+/*	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			text_stream *S = Str::new();
 			WRITE_TO(S, "(");
@@ -34,12 +34,13 @@ int CGlobals::prepare_variable(code_generation_target *cgt, code_generation *gen
 		}
 		k++;
 	}
+*/
 	return k;
 }
 
 int CGlobals::declare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
-	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
+//	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
 		generated_segment *saved = CodeGen::select(gen, c_globals_array_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("i7val ");
@@ -51,7 +52,7 @@ int CGlobals::declare_variable(code_generation_target *cgt, code_generation *gen
 		CNamespace::mangle(cgt, OUT, CodeGen::CL::name(var_name));
 		WRITE(" 1;\n");
 		CodeGen::deselect(gen, saved);
-	}
+/*	}
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (k == 0) CMemoryModel::begin_array(cgt, gen, I"Global_Vars", WORD_ARRAY_FORMAT);
 		TEMPORARY_TEXT(val)
@@ -69,5 +70,6 @@ int CGlobals::declare_variable(code_generation_target *cgt, code_generation *gen
 			CMemoryModel::end_array(cgt, gen, WORD_ARRAY_FORMAT);
 		}
 	}
+*/
 	return k;
 }

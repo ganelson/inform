@@ -107,10 +107,10 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 	i7val old_val = i7_read_word(data, array_address, array_index);
 	i7val return_val = new_val;
 	switch (way) {
-		case i7_lvalue_PREDEC:   return_val = old_val;   new_val = old_val-1; break;
-		case i7_lvalue_POSTDEC:  return_val = old_val-1; new_val = old_val-1; break;
-		case i7_lvalue_PREINC:   return_val = old_val;   new_val = old_val+1; break;
-		case i7_lvalue_POSTINC:  return_val = old_val+1; new_val = old_val+1; break;
+		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
+		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
+		case i7_lvalue_PREINC:   return_val = old_val+1;   new_val = old_val+1; break;
+		case i7_lvalue_POSTINC:  return_val = old_val; new_val = old_val+1; break;
 		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
@@ -120,6 +120,28 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 	data[byte_position+2] = I7BYTE_2(new_val);
 	data[byte_position+3] = I7BYTE_3(new_val);
 	return return_val;
+}
+=
+
+@ A Glulx assembly opcode is provided for fast memory copies:
+
+= (text to inform7_clib.h)
+void glulx_mcopy(i7val x, i7val y, i7val z) {
+printf("glulx_mcopy on %d, %d, %d\n", x, y, z);
+    if (z < y)
+		for (i7val i=0; i<x; i++) i7_write_word(i7mem, z, i, i7_read_word(i7mem, y, i), i7_lvalue_SET);
+    else
+		for (i7val i=x-1; i>=0; i--) i7_write_word(i7mem, z, i, i7_read_word(i7mem, y, i), i7_lvalue_SET);
+}
+
+void glulx_malloc(i7val x, i7val y) {
+	printf("Unimplemented: glulx_malloc.\n");
+	exit(1);
+}
+
+void glulx_mfree(i7val x) {
+	printf("Unimplemented: glulx_mfree.\n");
+	exit(1);
 }
 =
 

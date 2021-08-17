@@ -29,7 +29,7 @@ i7val i7_asm_stack[I7_ASM_STACK_CAPACITY];
 int i7_asm_stack_pointer = 0;
 
 i7val i7_pull(void) {
-	if (i7_asm_stack_pointer <= 0) { printf("Stack underflow\n"); return (i7val) 0; }
+	if (i7_asm_stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7val) 0; }
 	return i7_asm_stack[--i7_asm_stack_pointer];
 }
 
@@ -67,6 +67,11 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	if (Str::eq(opcode, I"@atan")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@binarysearch")) store_this_operand[8] = TRUE;
 	if (Str::eq(opcode, I"@ceil")) store_this_operand[2] = TRUE;
+	if (Str::eq(opcode, I"@call")) {
+		store_this_operand[3] = TRUE;
+		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
+	}
+	if (Str::eq(opcode, I"@copy")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@cos")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@div")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@exp")) store_this_operand[2] = TRUE;
@@ -92,6 +97,7 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	if (Str::eq(opcode, I"@neg")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@numtof")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@pow")) store_this_operand[3] = TRUE;
+	if (Str::eq(opcode, I"@random")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@shiftl")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@sin")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@sqrt")) store_this_operand[2] = TRUE;
@@ -137,18 +143,16 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 = (text to inform7_clib.h)
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
+	exit(1);
 }
 
 void glulx_accelparam(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelparam.\n");
+	exit(1);
 }
 
-void glulx_call(i7val x, i7val i7varargc, i7val z) {
-	printf("Unimplemented: glulx_call.\n");
-}
-
-void glulx_copy(i7val x, i7val y) {
-	printf("Unimplemented: glulx_copy.\n");
+void glulx_copy(i7val x, i7val *y) {
+	*y = x;
 }
 
 void glulx_gestalt(i7val x, i7val y, i7val *z) {
@@ -158,6 +162,9 @@ void glulx_gestalt(i7val x, i7val y, i7val *z) {
 int glulx_jeq(i7val x, i7val y) {
 	if (x == y) return 1;
 	return 0;
+}
+
+void glulx_nop(void) {
 }
 
 int glulx_jleu(i7val x, i7val y) {
@@ -177,25 +184,8 @@ int glulx_jz(i7val x) {
 	return 0;
 }
 
-void glulx_malloc(i7val x, i7val y) {
-	printf("Unimplemented: glulx_malloc.\n");
-}
-
-void glulx_mcopy(i7val x, i7val y, i7val z) {
-	printf("Unimplemented: glulx_mcopy.\n");
-}
-
-void glulx_mfree(i7val x) {
-	printf("Unimplemented: glulx_mfree.\n");
-}
-
-
 void glulx_quit(void) {
-	printf("Unimplemented: glulx_quit.\n");
-}
-
-void glulx_random(i7val x, i7val y) {
-	printf("Unimplemented: glulx_random.\n");
+	exit(1);
 }
 
 void glulx_setiosys(i7val x, i7val y) {
@@ -214,6 +204,7 @@ void glulx_streamnum(i7val x) {
 
 void glulx_streamstr(i7val x) {
 	printf("Unimplemented: glulx_streamstr.\n");
+	exit(1);
 }
 
 void glulx_streamunichar(i7val x) {
@@ -222,26 +213,32 @@ void glulx_streamunichar(i7val x) {
 
 void glulx_ushiftr(i7val x, i7val y, i7val z) {
 	printf("Unimplemented: glulx_ushiftr.\n");
+	exit(1);
 }
 
 void glulx_aload(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aload\n");
+	exit(1);
 }
 
 void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloadb\n");
+	exit(1);
 }
 
 void glulx_aloads(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloads\n");
+	exit(1);
 }
 
 void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
 	printf("Unimplemented: glulx_binarysearch\n");
+	exit(1);
 }
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
+	exit(1);
 }
 =
 

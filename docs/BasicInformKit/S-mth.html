@@ -588,7 +588,8 @@ cases used to check the floating-point extensions to Glulx.
 <span class="plain-syntax">    </span><span class="comment-syntax">programmatic ("1.0e+00") and the literary ("1.0 x 10^0").</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">PROGRAMMING_EXPONENTS_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PrintMultiplicationSign</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">streamstr</span><span class="plain-syntax"> </span><span class="string-syntax">"10"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        @</span><span class="identifier-syntax">streamchar</span><span class="plain-syntax"> </span><span class="character-syntax">'1'</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        @</span><span class="identifier-syntax">streamchar</span><span class="plain-syntax"> </span><span class="character-syntax">'0'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        @</span><span class="identifier-syntax">streamchar</span><span class="plain-syntax"> </span><span class="constant-syntax">$5E</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        @</span><span class="identifier-syntax">streamnum</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>

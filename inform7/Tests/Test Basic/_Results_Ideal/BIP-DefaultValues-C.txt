@@ -1,0 +1,7 @@
+
+"default value of number" = number: 0
+"default value of colour" = colour: red
+"default value of fruit" = fruit: apple
+"default value of truth state" = truth state: false
+"default value of text" = text: 
+"default value of distance" = distance: 0km

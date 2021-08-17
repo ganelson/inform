@@ -1,0 +1,18 @@
+
+"cosine of 2" = real number: -0.41615
+"cosine of 2.0" = real number: -0.41615
+"sine of 0" = real number: 0.0
+"sine of 45 degrees" = real number: 0.70711
+"sine of (pi divided by 4)" = real number: 0.70711
+"sine of (pi divided by 2)" = real number: 1.0
+"sine of pi" = real number: -8.74228 × 10^-8
+"cosine of 0" = real number: 1.0
+"cosine of 45 degrees" = real number: 0.70711
+"cosine of (pi divided by 4)" = real number: 0.70711
+"cosine of (pi divided by 2)" = real number: -4.37114 × 10^-8
+"cosine of pi" = real number: -1.0
+"tangent of 0" = real number: 0.0
+"tangent of 45 degrees" = real number: 1.0
+"tangent of (pi divided by 4)" = real number: 1.0
+"tangent of (pi divided by 2)" = real number: -2.28773 × 10^7
+cos x = -1: "x" = real number: 3.14159

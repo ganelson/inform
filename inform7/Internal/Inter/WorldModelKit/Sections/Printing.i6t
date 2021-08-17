@@ -254,14 +254,14 @@ Global caps_mode = false;
     #Ifdef LanguagePrintShortName;
     if (LanguagePrintShortName(obj)) return;
     #Endif; ! LanguagePrintShortName
-    if (indef_mode && obj.&short_name_indef ~= 0 &&
+    if (indef_mode && obj provides short_name_indef &&
     	PrintOrRun(obj, short_name_indef, true) ~= 0) return;
     if (caps_mode &&
-    	obj.&cap_short_name ~= 0 && PrintOrRun(obj, cap_short_name, true) ~= 0) {
+    	obj provides cap_short_name && PrintOrRun(obj, cap_short_name, true) ~= 0) {
     	caps_mode = false;
     	return;
     }
-    if (obj.&short_name ~= 0 && PrintOrRun(obj, short_name, true) ~= 0) return;
+    if (obj provides short_name && PrintOrRun(obj, short_name, true) ~= 0) return;
     print (object) obj;
 ];
 

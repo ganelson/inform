@@ -8,7 +8,7 @@ Evaluating conditions.
 int CConditions::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case NOT_BIP:			WRITE("(~~("); INV_A1; WRITE("))"); break;
+		case NOT_BIP:			WRITE("(!("); INV_A1; WRITE("))"); break;
 		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
 		case OR_BIP: 			WRITE("(("); INV_A1; WRITE(") || ("); INV_A2; WRITE("))"); break;
 		case EQ_BIP: 			@<Generate comparison@>; break;

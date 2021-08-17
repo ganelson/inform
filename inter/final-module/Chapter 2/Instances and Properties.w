@@ -883,9 +883,10 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE) {
 		inter_ti val1 = P->W.data[VAL1_INST_IFLD];
 		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
-		text_stream *OUT = CodeGen::current(gen);
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, 1));
+		text_stream *OUT = CodeGen::current(gen);
 		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined, FALSE);
 		if (defined) {
 			int hex = FALSE;
@@ -893,6 +894,7 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 			if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
 		}
 		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
+		CodeGen::deselect(gen, saved);
 	}
 }
 

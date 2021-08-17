@@ -1,0 +1,4 @@
+To begin:
+	say "I want to be [bold type]bold[roman type] for a moment.";
+	say "I want to be [italic type]italic[roman type] for a moment.";
+	say "I want to be [fixed letter spacing]fixed in my spacing[variable letter spacing] for a moment.";

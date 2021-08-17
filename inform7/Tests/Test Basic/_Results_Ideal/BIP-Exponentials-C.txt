@@ -1,0 +1,23 @@
+
+"logarithm of e" = real number: 0.99999
+"logarithm of 1" = real number: 0.0
+"logarithm of 1000" = real number: 6.90776
+"logarithm of exponential of 7.12" = real number: 7.12
+"logarithm to base 10 of 1000000" = real number: 6.0
+"logarithm to base 10 of 350" = real number: 2.54407
+"logarithm to base 2 of 256" = real number: 8.0
+"exponential of 0" = real number: 1.0
+"exponential of 1" = real number: 2.71828
+"exponential of -10" = real number: 4.53999 × 10^-5
+"exponential of 10" = real number: 22026.46484
+"exponential of logarithm of 7.12" = real number: 7.12
+x = log (pi^2): "x" = real number: 2.28946
+x = log pi^2: "x" = real number: 2.28946
+x = (log pi)^2: "x" = real number: 1.31041
+x = log(pi^2): "x" = real number: 2.28946
+x = 2 log pi: "x" = real number: 2.28946
+x = exp(exp(0)): "x" = real number: 2.71828
+x = exp exp 0: "x" = real number: 2.71828
+log x = 1: "x" = real number: 2.71828
+log x = 0: "x" = real number: 1.0
+exp x = e: "x" = real number: 0.99999

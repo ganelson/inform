@@ -419,7 +419,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 		WRITE(" ! %S\n\t", divider_text);
 	} else if (val1 == REAL_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		WRITE("$%S", glob_text);
+		CodeGen::Targets::compile_literal_real(gen, glob_text);
 	} else if (val1 == DWORD_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		CodeGen::Targets::compile_dictionary_word(gen, glob_text, FALSE);

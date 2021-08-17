@@ -1,0 +1,7 @@
+To begin:
+	say "Hello.";
+	say "fish";
+	say " and fowl!";
+	say 17, " doors.";
+	say "[4 in words] ladder[s].";
+	say "[1 in words] way[s] out.";

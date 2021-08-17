@@ -37,7 +37,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case PRINTOBJ_BIP:       WRITE("i7_print_object("); INV_A1; WRITE(")"); break;
 		case PRINTPROPERTY_BIP:  WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal("); INV_A1; WRITE(")"); break;
-		case PRINTNLNUMBER_BIP:  WRITE("i7_print_number("); INV_A1; WRITE(")"); break;
+		case PRINTNLNUMBER_BIP:  WRITE("fn_i7_mgl_EnglishNumber(1, "); INV_A1; WRITE(")"); break;
 		case PRINTDEF_BIP:       WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
 		case PRINTCDEF_BIP:      WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
 		case PRINTINDEF_BIP:     WRITE("i7_print_indef_art("); INV_A1; WRITE(")"); break;
@@ -73,6 +73,8 @@ typedef struct i7_stream {
 	i7val write_here_on_closure;
 	size_t write_limit;
 	int active;
+	int encode_UTF8;
+	int char_size;
 } i7_stream;
 
 #define I7_MAX_STREAMS 128
@@ -100,6 +102,8 @@ i7_stream i7_new_stream(FILE *F) {
 	S.write_limit = 0;
 	S.previous_id = 0;
 	S.active = 0;
+	S.encode_UTF8 = 0;
+	S.char_size = 4;
 	return S;
 }
 
@@ -107,8 +111,10 @@ void i7_initialise_streams(void) {
 	for (int i=0; i<I7_MAX_STREAMS; i++) i7_memory_streams[i] = i7_new_stream(NULL);
 	i7_memory_streams[i7_stdout_id] = i7_new_stream(stdout);
 	i7_memory_streams[i7_stdout_id].active = 1;
+	i7_memory_streams[i7_stdout_id].encode_UTF8 = 1;
 	i7_memory_streams[i7_stderr_id] = i7_new_stream(stderr);
 	i7_memory_streams[i7_stderr_id].active = 1;
+	i7_memory_streams[i7_stderr_id].encode_UTF8 = 1;
 	i7_do_glk_stream_set_current(i7_stdout_id);
 }
 
@@ -124,11 +130,21 @@ i7val i7_open_stream(FILE *F) {
 	fprintf(stderr, "Out of streams\n"); exit(1);
 }
 
+i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val rock) {
+	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); exit(1); }
+	i7val id = i7_open_stream(NULL);
+	i7_memory_streams[id].write_here_on_closure = buffer;
+	i7_memory_streams[id].write_limit = (size_t) len;
+	i7_memory_streams[id].char_size = 1;
+	return id;
+}
+
 i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7val rock) {
 	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); exit(1); }
 	i7val id = i7_open_stream(NULL);
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
+	i7_memory_streams[id].char_size = 4;
 	return id;
 }
 
@@ -146,11 +162,19 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); exit(1); }
 	if (i7_str_id == id) i7_str_id = S->previous_id;
 	if (S->write_here_on_closure != 0) {
-		for (size_t i = 0; i < S->write_limit; i++)
-			if (i < S->memory_used)
-				i7_write_word(i7mem, S->write_here_on_closure, i, S->to_memory[i], i7_lvalue_SET);
-			else
-				i7_write_word(i7mem, S->write_here_on_closure, i, 0, i7_lvalue_SET);
+		if (S->char_size == 4) {
+			for (size_t i = 0; i < S->write_limit; i++)
+				if (i < S->memory_used)
+					i7_write_word(i7mem, S->write_here_on_closure, i, S->to_memory[i], i7_lvalue_SET);
+				else
+					i7_write_word(i7mem, S->write_here_on_closure, i, 0, i7_lvalue_SET);
+		} else {
+			for (size_t i = 0; i < S->write_limit; i++)
+				if (i < S->memory_used)
+					i7mem[S->write_here_on_closure + i] = S->to_memory[i];
+				else
+					i7mem[S->write_here_on_closure + i] = 0;
+		}
 	}
 	if (result) {
 		i7_write_word(i7mem, result, 0, 0, i7_lvalue_SET);
@@ -163,7 +187,19 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 void i7_print_char(i7val x) {
 	i7_stream *S = &(i7_memory_streams[i7_str_id]);
 	if (S->to_file) {
-		fputc((wchar_t) x, S->to_file);
+		unsigned int c = (unsigned int) x;
+		if (S->encode_UTF8) {
+			if (c >= 0x800) {
+				fputc(0xE0 + (c >> 12), S->to_file);
+				fputc(0x80 + ((c >> 6) & 0x3f), S->to_file);
+				fputc(0x80 + (c & 0x3f), S->to_file);
+			} else if (c >= 0x80) {
+				fputc(0xC0 + (c >> 6), S->to_file);
+				fputc(0x80 + (c & 0x3f), S->to_file);
+			} else fputc((int) c, S->to_file);
+		} else {
+			fputc((int) c, S->to_file);
+		}
 	} else {
 		if (S->memory_used >= S->memory_capacity) {
 			size_t needed = 4*S->memory_capacity;
@@ -343,44 +379,55 @@ void glulx_glk(i7val glk_api_selector, i7val argc, i7varargs args, i7val *z) {
 			i7_do_glk_stream_set_current(args.args[0]); break;
 		case i7_glk_stream_get_current:
 			rv = i7_do_glk_stream_get_current(); break;
+		case i7_glk_stream_open_memory:
+			rv = i7_do_glk_stream_open_memory(args.args[0], args.args[1], args.args[2], args.args[3]); break;
 		case i7_glk_stream_open_memory_uni:
 			rv = i7_do_glk_stream_open_memory_uni(args.args[0], args.args[1], args.args[2], args.args[3]); break;
 		default:
 			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector);
-			rv = 0; break;
+			rv = 0; 	exit(1);
+break;
 	}
 	if (z) *z = rv;
 }
 
 void i7_print_def_art(i7val x) {
-	printf("Unimplemented: i7_print_def_art.\n");
+	fn_i7_mgl_DefArt(x);
 }
 
 void i7_print_cdef_art(i7val x) {
-	printf("Unimplemented: i7_print_cdef_art.\n");
+	fn_i7_mgl_CDefArt(x);
 }
 
 void i7_print_indef_art(i7val x) {
-	printf("Unimplemented: i7_print_indef_art.\n");
+	fn_i7_mgl_IndefArt(x);
+}
+
+void i7_print_cindef_art(i7val x) {
+	fn_i7_mgl_CIndefArt(x);
 }
 
 void i7_print_name(i7val x) {
-	printf("Unimplemented: i7_print_name.\n");
+	fn_i7_mgl_PrintShortName(x);
 }
 
 void i7_print_object(i7val x) {
 	printf("Unimplemented: i7_print_object.\n");
+	exit(1);
 }
 
 void i7_print_property(i7val x) {
 	printf("Unimplemented: i7_print_property.\n");
+	exit(1);
 }
 
 void i7_print_box(i7val x) {
 	printf("Unimplemented: i7_print_box.\n");
+	exit(1);
 }
 
 void i7_read(i7val x) {
 	printf("Unimplemented: i7_read.\n");
+	exit(1);
 }
 =

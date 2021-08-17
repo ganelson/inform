@@ -448,10 +448,10 @@ i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
 	i7val val = i7_read_prop_value(obj, pr), new_val = val;
 	switch (way) {
 		case i7_lvalue_SET:      i7_write_prop_value(obj, pr, to); new_val = to; break;
-		case i7_lvalue_PREDEC:   new_val = val; i7_write_prop_value(obj, pr, val-1); break;
-		case i7_lvalue_POSTDEC:  new_val = val-1; i7_write_prop_value(obj, pr, new_val); break;
-		case i7_lvalue_PREINC:   new_val = val; i7_write_prop_value(obj, pr, val+1); break;
-		case i7_lvalue_POSTINC:  new_val = val+1; i7_write_prop_value(obj, pr, new_val); break;
+		case i7_lvalue_PREDEC:   new_val = val-1; i7_write_prop_value(obj, pr, val-1); break;
+		case i7_lvalue_POSTDEC:  new_val = val; i7_write_prop_value(obj, pr, val-1); break;
+		case i7_lvalue_PREINC:   new_val = val+1; i7_write_prop_value(obj, pr, val+1); break;
+		case i7_lvalue_POSTINC:  new_val = val; i7_write_prop_value(obj, pr, val+1); break;
 		case i7_lvalue_SETBIT:   new_val = val | new_val; i7_write_prop_value(obj, pr, new_val); break;
 		case i7_lvalue_CLEARBIT: new_val = val &(~new_val); i7_write_prop_value(obj, pr, new_val); break;
 	}

@@ -78,6 +78,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CodeGen::I6::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CodeGen::I6::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CodeGen::I6::compile_literal_number);
+	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, CodeGen::I6::compile_literal_real);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CodeGen::I6::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CodeGen::I6::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CodeGen::I6::declare_attribute);
@@ -531,6 +532,12 @@ void CodeGen::I6::compile_literal_number(code_generation_target *cgt,
 	text_stream *OUT = CodeGen::current(gen);
 	if (hex_mode) WRITE("$%x", val);
 	else WRITE("%d", val);
+}
+
+void CodeGen::I6::compile_literal_real(code_generation_target *cgt,
+	code_generation *gen, text_stream *textual) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("$%S", textual);
 }
 
 @

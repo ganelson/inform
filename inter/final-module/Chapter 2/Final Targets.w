@@ -134,11 +134,16 @@ void CodeGen::Targets::compile_dictionary_word(code_generation *gen, text_stream
 @
 
 @e COMPILE_LITERAL_NUMBER_MTID
+@e COMPILE_LITERAL_REAL_MTID
 
 =
 VOID_METHOD_TYPE(COMPILE_LITERAL_NUMBER_MTID, code_generation_target *cgt, code_generation *gen, inter_ti val, int hex_mode)
+VOID_METHOD_TYPE(COMPILE_LITERAL_REAL_MTID, code_generation_target *cgt, code_generation *gen, text_stream *textual)
 void CodeGen::Targets::compile_literal_number(code_generation *gen, inter_ti val, int hex_mode) {
 	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_NUMBER_MTID, gen, val, hex_mode);
+}
+void CodeGen::Targets::compile_literal_real(code_generation *gen, text_stream *textual) {
+	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_REAL_MTID, gen, textual);
 }
 
 @

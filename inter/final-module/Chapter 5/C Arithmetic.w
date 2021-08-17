@@ -37,20 +37,35 @@ int CArithmetic::compile_primitive(code_generation *gen, inter_ti bip, inter_tre
 	return FALSE;
 }
 
-@ Random integers are rather crudely generated for now, in what amounts to a
-rudimentary form of von Neumann's middle-square algorithm:
+@ Random integers:
 
 = (text to inform7_clib.h)
-int i7_seed = 197;
-
-i7val fn_i7_mgl_random(int n, i7val v) {
-	if (i7_seed < 1000) return ((i7val) ((i7_seed++) % n));
-	i7_seed = i7_seed*i7_seed;
-	return (((i7_seed*i7_seed) & 0xFF00) / 0x100) % n;
+/* Return a random number in the range 0 to 2^32-1. */
+uint32_t i7_random() {
+	return (random() << 16) ^ random();
 }
 
-void glulx_setrandom(i7val x) {
-	i7_seed = (int) x;
+void glulx_random(i7val x, i7val *y) {
+	uint32_t value;
+	if (x == 0) value = i7_random();
+	else if (x >= 1) value = i7_random() % (uint32_t) (x);
+	else value = -(i7_random() % (uint32_t) (-x));
+	*y = (i7val) value;
+}
+
+i7val fn_i7_mgl_random(int n, i7val x) {
+	i7val r;
+	glulx_random(x, &r);
+	return r+1;
+}
+
+/* Set the random-number seed; zero means use as random a source as
+   possible. */
+void glulx_setrandom(i7val s) {
+	uint32_t seed;
+	*((i7val *) &seed) = s;
+	if (seed == 0) seed = time(NULL);
+	srandom(seed);
 }
 =
 
@@ -248,7 +263,7 @@ int glulx_jfeq(i7val x, i7val y, i7val z) {
 		float fy = fabs(decode_float(z));
 		result = (fx <= fy && fx >= -fy);
 	}
-	if (!result) return 1;
+	if (result) return 1;
 	return 0;
 }
 
@@ -272,22 +287,22 @@ int glulx_jfne(i7val x, i7val y, i7val z) {
 }
 
 int glulx_jfge(i7val x, i7val y) {
-	if (isgreaterequal(decode_float(x), decode_float(y))) return 1;
+	if (decode_float(x) >= decode_float(y)) return 1;
 	return 0;
 }
 
 int glulx_jflt(i7val x, i7val y) {
-	if (isless(decode_float(x), decode_float(y))) return 1;
+	if (decode_float(x) < decode_float(y)) return 1;
 	return 0;
 }
 
 int glulx_jisinf(i7val x) {
-	if (isinf(decode_float(x))) return 1;
+    if (x == 0x7F800000 || x == 0xFF800000) return 1;
 	return 0;
 }
 
 int glulx_jisnan(i7val x) {
-	if (isnan(decode_float(x))) return 1;
+    if ((x & 0x7F800000) == 0x7F800000 && (x & 0x007FFFFF) != 0) return 1;
 	return 0;
 }
 

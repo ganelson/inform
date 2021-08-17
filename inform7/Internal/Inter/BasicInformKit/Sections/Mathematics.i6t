@@ -530,7 +530,8 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").
 	if (KIT_CONFIGURATION_BITMAP & PROGRAMMING_EXPONENTS_TCBIT == 0) {
 		PrintMultiplicationSign();
-		@streamstr "10";
+		@streamchar '1';
+		@streamchar '0';
 		@streamchar $5E;
 		@streamnum expo;
 	} else {
