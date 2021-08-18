@@ -70,6 +70,11 @@ void CMemoryModel::end(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("0, 0 };\n");
 	CodeGen::deselect(gen, saved);
+	
+	saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("#define i7_himem %d\n", C_GEN_DATA(memdata.himem));
+	CodeGen::deselect(gen, saved);
 }
 
 @h Reading and writing memory.
@@ -87,10 +92,14 @@ The equivalent for reading a byte entry is |data[array_address + array_index]|.
 = (text to inform7_clib.h)
 i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 	int byte_position = array_address + 4*array_index;
-	return             (i7val) data[byte_position]      +
-	            0x100*((i7val) data[byte_position + 1]) +
-		      0x10000*((i7val) data[byte_position + 2]) +
-		    0x1000000*((i7val) data[byte_position + 3]);
+	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit();
+	}
+	return             (i7val) data[byte_position + 3]      +
+	            0x100*((i7val) data[byte_position + 2]) +
+		      0x10000*((i7val) data[byte_position + 1]) +
+		    0x1000000*((i7val) data[byte_position + 0]);
 }
 =
 
@@ -98,10 +107,10 @@ i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 express a packed word in constant context, which we will need later.
 
 = (text to inform7_clib.h)
-#define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
-#define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
-#define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
-#define I7BYTE_0(V)  (V & 0x000000FF)
+#define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
+#define I7BYTE_1(V) ((V & 0x00FF0000) >> 16)
+#define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
+#define I7BYTE_3(V)  (V & 0x000000FF)
 
 i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val new_val, int way) {
 	i7val old_val = i7_read_word(data, array_address, array_index);
@@ -115,6 +124,10 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
 	int byte_position = array_address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit();
+	}
 	data[byte_position]   = I7BYTE_0(new_val);
 	data[byte_position+1] = I7BYTE_1(new_val);
 	data[byte_position+2] = I7BYTE_2(new_val);
@@ -136,12 +149,12 @@ printf("glulx_mcopy on %d, %d, %d\n", x, y, z);
 
 void glulx_malloc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_malloc.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_mfree(i7val x) {
 	printf("Unimplemented: glulx_mfree.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 =
 

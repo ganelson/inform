@@ -304,7 +304,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			int c = 0;
 			LOOP_THROUGH_INTER_CHILDREN(F, P)
 				CodeGen::Targets::argument(gen, F, routine, c++, argc);
-			CodeGen::Targets::end_function_call(gen, routine, argc); WRITE("\n");
+			CodeGen::Targets::end_function_call(gen, routine, argc);
 			break;
 		} 
 		case INVOKED_OPCODE: {

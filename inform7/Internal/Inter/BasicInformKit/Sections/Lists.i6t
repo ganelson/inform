@@ -189,7 +189,6 @@ use the "listing contents of..." activity in any circumstances.
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return;
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	bk = KindAtomic(BlkValueRead(list, LIST_ITEM_KOV_F));
-	! print no_items, " of kov=", BlkValueRead(list, LIST_ITEM_KOV_F), ":";
 	if (format == 1) print "{";
 	for (i=0:i<no_items:i++) {
 		v = BlkValueRead(list, i+LIST_ITEM_BASE);

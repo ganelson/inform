@@ -1,0 +1,146 @@
+
+"N" = number: 31
+"N" = number: 94
+"N" = number: 47
+"N" = number: 142
+"N" = number: 71
+"N" = number: 214
+"N" = number: 107
+"N" = number: 322
+"N" = number: 161
+"N" = number: 484
+"N" = number: 242
+"N" = number: 121
+"N" = number: 364
+"N" = number: 182
+"N" = number: 91
+"N" = number: 274
+"N" = number: 137
+"N" = number: 412
+"N" = number: 206
+"N" = number: 103
+"N" = number: 310
+"N" = number: 155
+"N" = number: 466
+"N" = number: 233
+"N" = number: 700
+"N" = number: 350
+"N" = number: 175
+"N" = number: 526
+"N" = number: 263
+"N" = number: 790
+"N" = number: 395
+"N" = number: 1186
+"N" = number: 593
+"N" = number: 1780
+"N" = number: 890
+"N" = number: 445
+"N" = number: 1336
+"N" = number: 668
+"N" = number: 334
+"N" = number: 167
+"N" = number: 502
+"N" = number: 251
+"N" = number: 754
+"N" = number: 377
+"N" = number: 1132
+"N" = number: 566
+"N" = number: 283
+"N" = number: 850
+"N" = number: 425
+"N" = number: 1276
+"N" = number: 638
+"N" = number: 319
+"N" = number: 958
+"N" = number: 479
+"N" = number: 1438
+"N" = number: 719
+"N" = number: 2158
+"N" = number: 1079
+"N" = number: 3238
+"N" = number: 1619
+"N" = number: 4858
+"N" = number: 2429
+"N" = number: 7288
+"N" = number: 3644
+"N" = number: 1822
+"N" = number: 911
+"N" = number: 2734
+"N" = number: 1367
+"N" = number: 4102
+"N" = number: 2051
+"N" = number: 6154
+"N" = number: 3077
+"N" = number: 9232
+"N" = number: 4616
+"N" = number: 2308
+"N" = number: 1154
+"N" = number: 577
+"N" = number: 1732
+"N" = number: 866
+"N" = number: 433
+"N" = number: 1300
+"N" = number: 650
+"N" = number: 325
+"N" = number: 976
+"N" = number: 488
+"N" = number: 244
+"N" = number: 122
+"N" = number: 61
+"N" = number: 184
+"N" = number: 92
+"N" = number: 46
+"N" = number: 23
+"N" = number: 70
+"N" = number: 35
+"N" = number: 106
+"N" = number: 53
+"N" = number: 160
+"N" = number: 80
+"N" = number: 40
+"N" = number: 20
+"N" = number: 10
+"N" = number: 5
+"N" = number: 16
+"N" = number: 8
+"N" = number: 4
+"N" = number: 2
+"M" = number: 1
+"M" = number: 2
+"M" = number: 3
+"M" = number: 4
+"M" = number: 5
+"C" = colour: orange
+"C" = colour: yellow
+"C" = colour: green
+"C" = colour: blue
+"C" = colour: indigo
+"C2" = colour: red
+"C2" = colour: orange
+"C2" = colour: yellow
+"C2" = colour: green
+"C2" = colour: blue
+"C2" = colour: indigo
+"C2" = colour: violet
+"K" = number: 2
+"K" = number: 3
+"K" = number: 5
+"K" = number: 7
+"K" = number: 11
+"K" = number: 13
+First run.
+Nereid has a surface best described as utterly unknown.
+Triton has a surface best described as cryovolcanic ridges.
+Proteus has a surface best described as highly irregular and sooty.
+Second run.
+Proteus has a surface best described as highly irregular and sooty.
+Triton has a surface best described as cryovolcanic ridges.
+Nereid has a surface best described as utterly unknown.
+Third run.
+Triton has a surface best described as cryovolcanic ridges.
+Proteus has a surface best described as highly irregular and sooty.
+Nereid has a surface best described as utterly unknown.
+Fourth run.
+Nereid has a surface best described as utterly unknown.
+Proteus has a surface best described as highly irregular and sooty.
+Triton has a surface best described as cryovolcanic ridges.

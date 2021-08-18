@@ -1,0 +1,5 @@
+
+Look at 1, 4 and 9.
+Look at {1, 4, 9}.
+Look at the apple, the pear and the orange.
+Look at an apple, a pear and an orange.

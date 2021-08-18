@@ -1,0 +1,29 @@
+
+L is initially {}.
+L is now {11}.
+L is now {11, 7, 200, 5, -6, 0}.
+Adding 5 if absent should make no difference: {11, 7, 200, 5, -6, 0}.
+Entry 2 of L is 7.
+After changing entry 3 to 104, L is now {11, 7, 104, 5, -6, 0}.
+After changing entry 3 to 208, L is now {11, 7, 208, 5, -6, 0}.
+After changing the two end entries, L is now {1, 7, 208, 5, -6, 6}.
+These, however, should fail as being out of range.
+*** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
+
+*** Run-time problem P50: Attempt to use list item which does not exist.
+
+*** Couldn't write to list entry 7 of a list which has entries numbered from 1 to 6 ***
+L now contains two instances of 208: {1, 7, 208, 5, -6, 6, 208}.
+Both of which go after removing this value: {1, 7, 5, -6, 6}.
+Adding {2, 3, 5, 7, 11} to L gives {1, 7, 5, -6, 6, 2, 3, 5, 7, 11}.
+Removing the same set then gives {1, -6, 6}.
+Adding {7, 11, 5, 16} to M, if absent, gives {2, 3, 5, 7, 11, 16}.
+Adding 1001 at entry 3 gives {2, 3, 1001, 5, 7, 11, 16}.
+Removing entry 2 gives {2, 1001, 5, 7, 11, 16}.
+Removing entries 2 to 4 gives {2, 11, 16}.
+"whether or not 71 is listed in M" = truth state: false
+"whether or not 16 is listed in M" = truth state: true
+"whether or not 71 is not listed in M" = truth state: true
+"whether or not 16 is not listed in M" = truth state: false
+"list of fruits" = list of fruits: {apple, pear, orange}
+"list of dull fruits" = list of fruits: {apple, pear}

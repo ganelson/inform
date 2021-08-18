@@ -125,6 +125,7 @@ first of those:
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;stdio.h&gt;</span>
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;math.h&gt;</span>
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;time.h&gt;</span>
+<span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">include</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-function-syntax">&lt;ctype.h&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Segmentation. </b></p>
@@ -310,6 +311,12 @@ first of those:
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_fatal_exit</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax">) {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">printf</span><span class="Extracts-plain-syntax">("*** </span><span class="Extracts-identifier-syntax">Fatal</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">error</span><span class="Extracts-plain-syntax">: </span><span class="Extracts-identifier-syntax">halted</span><span class="Extracts-plain-syntax"> ***\</span><span class="Extracts-identifier-syntax">n</span><span class="Extracts-plain-syntax">");</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">int</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">0</span><span class="Extracts-plain-syntax">; </span><span class="Extracts-identifier-syntax">printf</span><span class="Extracts-plain-syntax">("%</span><span class="Extracts-identifier-syntax">d</span><span class="Extracts-plain-syntax">", </span><span class="Extracts-constant-syntax">1</span><span class="Extracts-plain-syntax">/</span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">);</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">exit</span><span class="Extracts-plain-syntax">(1);</span>
+<span class="Extracts-plain-syntax">}</span>
+
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_mgl_Grammar__Version</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">2</span>
 <span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_mgl_debug_flag</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">0</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_mgl_sharp_classes_table</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">0</span><span class="Extracts-plain-syntax">;</span>

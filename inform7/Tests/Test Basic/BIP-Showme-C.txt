@@ -1,0 +1,12 @@
+To begin:
+	showme 7;
+	showme minus 6;
+	showme true;
+	showme unicode 1164;
+	showme the engineering notation option;
+	showme "This is textual.";
+	showme { 2, 3, 5, 8, 13 };
+	showme { "martin", "douglas", "carolyn", "arthur" };
+	showme 2.713457 x 10^15;
+	showme pi;
+	showme e;

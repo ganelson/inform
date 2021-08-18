@@ -1,0 +1,4 @@
+To begin:
+	say "Well, look [bracket]into these squares[close bracket].";
+	say "This is 'clever', but this is [apostrophe]even more so['].";
+	say "Seems unlikely that we need a quot[quotation mark]ation mark inside a word, but you never know.";

@@ -1,0 +1,53 @@
+
+Table of Neptune's Moons
+(row 1)  | Nereid | utterly unknown |
+(row 2)  | Triton | cryovolcanic ridges |
+(row 3)  | Proteus | highly irregular and sooty |
+(row 4)  | --  -- 
+The surface of Triton is cryovolcanic ridges.
+We seem to find (row 3)  | Proteus | highly irregular and sooty |.
+The surface of Proteus is highly irregular and sooty.
+"whether or not the sought value is a surface listed in the Table of Neptune's Moons" = truth state: true
+"moon entry" = text: Nereid
+"surface entry" = text: utterly unknown
+"moon entry" = text: Triton
+"surface entry" = text: cryovolcanic ridges
+"number of rows in the Table of Neptune's Moons" = number: 4
+"number of blank rows in the Table of Neptune's Moons" = number: 1
+"number of filled rows in the Table of Neptune's Moons" = number: 3
+Table of Neptune's Moons
+(row 1)  | Nereid | utterly unknown |
+(row 2)  | Triton | cryovolcanic ridges |
+(row 3)  | Proteus | highly irregular and sooty |
+(row 4)  | Dolcelatte | surprisingly aromatic |
+"number of rows in the Table of Neptune's Moons" = number: 4
+"number of blank rows in the Table of Neptune's Moons" = number: 0
+"number of filled rows in the Table of Neptune's Moons" = number: 4
+"whether or not there is a moon of "Dolcelatte" in the Table of Neptune's Moons" = truth state: true
+"whether or not there is a moon of "Dione" in the Table of Neptune's Moons" = truth state: false
+"whether or not there is no moon of "Dolcelatte" in the Table of Neptune's Moons" = truth state: false
+"whether or not there is no moon of "Dione" in the Table of Neptune's Moons" = truth state: true
+"surface corresponding to a moon of "Proteus" in the Table of Neptune's Moons" = text: highly irregular and sooty
+Row 2 looks like (row 2)  | Triton | cryovolcanic ridges |.
+Row 2 looks like (row 2)  | Triton | cryovolcanic ridges |.
+Column 2 looks like utterly unknown, cryovolcanic ridges, highly irregular and sooty, surprisingly aromatic.
+Table of Neptune's Moons
+(row 1)  | Nereid | utterly unknown |
+(row 2)  | Triton | cryovolcanic ridges |
+(row 3)  | Proteus | -- 
+(row 4)  | Dolcelatte | surprisingly aromatic |
+Table of Neptune's Moons
+(row 1)  | Nereid | utterly unknown |
+(row 2)  | Triton | cryovolcanic ridges |
+(row 3)  | --  -- 
+(row 4)  | Dolcelatte | surprisingly aromatic |
+Table of Neptune's Moons
+(row 1)  | --  utterly unknown |
+(row 2)  | --  cryovolcanic ridges |
+(row 3)  | --  -- 
+(row 4)  | --  surprisingly aromatic |
+Table of Neptune's Moons
+(row 1)  | --  -- 
+(row 2)  | --  -- 
+(row 3)  | --  -- 
+(row 4)  | --  -- 

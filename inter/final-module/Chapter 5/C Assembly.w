@@ -28,6 +28,12 @@ i7val i7_mgl_sp = 0;
 i7val i7_asm_stack[I7_ASM_STACK_CAPACITY];
 int i7_asm_stack_pointer = 0;
 
+void i7_debug_stack(char *N) {
+//	printf("Called %s: stack %d ", N, i7_asm_stack_pointer);
+//	for (int i=0; i<i7_asm_stack_pointer; i++) printf("%d -> ", i7_asm_stack[i]);
+//	printf("\n");
+}
+
 i7val i7_pull(void) {
 	if (i7_asm_stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7val) 0; }
 	return i7_asm_stack[--i7_asm_stack_pointer];
@@ -50,14 +56,6 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	int vararg_operands_from = 0, vararg_operands_to = 0;
 	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
 	for (int i=0; i<16; i++) store_this_operand[i] = FALSE;
-	int pushed_result = FALSE;
-
-	if (Str::eq(opcode, I"@return")) WRITE("return ");
-	else {
-		if (label_sense != NOT_APPLICABLE) WRITE("if (");
-		CNamespace::mangle_opcode(cgt, OUT, opcode);
-	}
-	WRITE("(");
 	if (Str::eq(opcode, I"@acos")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@add")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@aload")) store_this_operand[3] = TRUE;
@@ -104,14 +102,26 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	if (Str::eq(opcode, I"@sub")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@tan")) store_this_operand[2] = TRUE;
 
+	int pushed_result = FALSE;
+
+	if (Str::eq(opcode, I"@return")) WRITE("return ");
+	else {
+//		if (vararg_operands_from > 0) {
+//			WRITE("for (int i=i7_mgl_local__vararg_count-1; i>=0; i--) i7_push(i7_mgl__varargs.args[i]);\n");
+//		}
+		if (label_sense != NOT_APPLICABLE) WRITE("if (");
+		CNamespace::mangle_opcode(cgt, OUT, opcode);
+	}
+	WRITE("(");
+
 	for (int opc = 1; opc <= operand_count; opc++) {
 		if (opc > 1) WRITE(", ");
 		TEMPORARY_TEXT(write_to)
 		CodeGen::select_temporary(gen, write_to);
 		CodeGen::FC::frame(gen, operands[opc-1]);
 		CodeGen::deselect_temporary(gen);
-		if (opc == vararg_operands_from) WRITE(" i7_mgl_local__vararg_count, i7_mgl__varargs ");
-		else {
+//		if (opc == vararg_operands_from) WRITE(" i7_mgl_local__vararg_count ");
+//		else {
 		if (store_this_operand[opc]) {
 			if (Str::eq(write_to, I"i7_mgl_sp")) { WRITE("&%S", write_to); pushed_result = TRUE; }
 			else if (Str::eq(write_to, I"0")) WRITE("NULL");
@@ -120,7 +130,7 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 			if (Str::eq(write_to, I"i7_mgl_sp")) { WRITE("i7_pull()"); }
 			else WRITE("%S", write_to);
 		}
-		}
+//		}
 //		if (opc == vararg_operands_to) {
 //			for (int x = 0; x < 10 - (vararg_operands_to - vararg_operands_from + 1); x++) WRITE(", 0");
 //			WRITE(" } ");
@@ -143,16 +153,17 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 = (text to inform7_clib.h)
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_accelparam(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelparam.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_copy(i7val x, i7val *y) {
-	*y = x;
+	i7_debug_stack("glulx_copy");
+	if (y) *y = x;
 }
 
 void glulx_gestalt(i7val x, i7val y, i7val *z) {
@@ -185,7 +196,7 @@ int glulx_jz(i7val x) {
 }
 
 void glulx_quit(void) {
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_setiosys(i7val x, i7val y) {
@@ -204,7 +215,7 @@ void glulx_streamnum(i7val x) {
 
 void glulx_streamstr(i7val x) {
 	printf("Unimplemented: glulx_streamstr.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_streamunichar(i7val x) {
@@ -213,32 +224,32 @@ void glulx_streamunichar(i7val x) {
 
 void glulx_ushiftr(i7val x, i7val y, i7val z) {
 	printf("Unimplemented: glulx_ushiftr.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aload(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aload\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloadb\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aloads(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloads\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
 	printf("Unimplemented: glulx_binarysearch\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
-	exit(1);
+	i7_fatal_exit();
 }
 =
 

@@ -217,6 +217,10 @@ int i7_ofclass(i7val id, i7val cl_id) {
 		if (cl_id == i7_mgl_Class) return 1;
 		return 0;
 	}
+	if (cl_id == i7_mgl_Object) {
+		if (i7_metaclass_of[id] == i7_mgl_Object) return 1;
+		return 0;
+	}
 	int cl_found = i7_class_of[id];
 	while (cl_found != i7_mgl_Class) {
 		if (cl_id == cl_found) return 1;
@@ -425,7 +429,7 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
-		exit(1);
+		i7_fatal_exit();
 	}
 	i7_properties[(int) owner_id].value[(int) prop_id] = val;
 	i7_properties[(int) owner_id].value_set[(int) prop_id] = 1;

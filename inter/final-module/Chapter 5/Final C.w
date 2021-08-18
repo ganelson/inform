@@ -50,6 +50,7 @@ first of those:
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <ctype.h>
 =
 
 @h Segmentation.
@@ -231,6 +232,12 @@ void CTarget::new_fake_action(code_generation_target *cgt, code_generation *gen,
 @
 
 = (text to inform7_clib.h)
+void i7_fatal_exit(void) {
+	printf("*** Fatal error: halted ***\n");
+	int x = 0; printf("%d", 1/x);
+	exit(1);
+}
+
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
 i7val i7_mgl_sharp_classes_table = 0;

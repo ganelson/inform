@@ -245,13 +245,13 @@ void CLiteralsModel::compile_literal_real(code_generation_target *cgt,
 		}
 		if (expocount == 0) {
 			WRITE_TO(STDERR, "Floating-point literal '%S' must have digits after the 'e'", textual);
-			exit(1);
+			internal_error("bad floating-point literal");
 		}
 		if (exposign) { expo = -expo; }
 	}
 	if (intcount + fraccount == 0) {
 		WRITE_TO(STDERR, "Floating-point literal '%S' must have digits", textual);
-		exit(1);
+		internal_error("bad floating-point literal");
 	}
 	uint32_t n = CLiteralsModel::construct_float(signbit, intv, fracv, expo);
 	text_stream *OUT = CodeGen::current(gen);

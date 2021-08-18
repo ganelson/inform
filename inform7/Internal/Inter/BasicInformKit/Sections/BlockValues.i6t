@@ -205,7 +205,7 @@ this array: that doesn't mean that the BV is using them all at any given moment.
 	if (long_block == 0) return 0;
 
 	array_size_in_bytes = FlexTotalSize(long_block);
-
+print "lb ", long_block, " size ", array_size_in_bytes, "^";
 	flags = long_block->BLK_HEADER_FLAGS;
 	entry_size_in_bytes = 1;
 	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
@@ -257,13 +257,14 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 	entry_size_in_bytes = 1;
 	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
 	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
-
 	if (flags & BLK_FLAG_MULTIPLE) header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
 	else header_size_in_bytes = BLK_DATA_OFFSET;
 
 	seek_byte_position = pos*entry_size_in_bytes;
 	for (: long_block~=NULL: long_block=long_block-->BLK_NEXT) {
 		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+		if (chunk_size_in_bytes <= 0)
+			print_ret "*** BlkValueRead: reading malformed block at ", long_block, " ***";
 		if ((seek_byte_position >= 0) && (seek_byte_position<chunk_size_in_bytes)) {
 			long_block = long_block + header_size_in_bytes + seek_byte_position;
 			switch(entry_size_in_bytes) {
@@ -300,6 +301,7 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 	seek_byte_position = pos*entry_size_in_bytes;
 	for (:long_block~=NULL:long_block=long_block-->BLK_NEXT) {
 		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+print "lb ", long_block, " cs ", chunk_size_in_bytes, " sbp ", seek_byte_position, "^";
 		if ((seek_byte_position >= 0) && (seek_byte_position<chunk_size_in_bytes)) {
 			long_block = long_block + header_size_in_bytes + seek_byte_position;
 			switch(entry_size_in_bytes) {

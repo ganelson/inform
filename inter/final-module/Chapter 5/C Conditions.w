@@ -43,7 +43,8 @@ void CConditions::comparison_r(code_generation *gen,
 				text_stream *OUT = CodeGen::current(gen);
 				if (depth == 0) { WRITE("(i7_tmp = "); CodeGen::FC::frame(gen, X); WRITE(", ("); }
 				CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(Y), depth+1);
-				WRITE(" || ");
+				if ((bip == NE_BIP) || (bip == NOTIN_BIP)) WRITE(" && ");
+				else WRITE(" || ");
 				CConditions::comparison_r(gen, bip, NULL, InterTree::second_child(Y), depth+1);
 				if (depth == 0) { WRITE("))"); }
 				return;

@@ -6,6 +6,13 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <ctype.h>
+
+void i7_fatal_exit(void) {
+	printf("*** Fatal error: halted ***\n");
+	int x = 0; printf("%d", 1/x);
+	exit(1);
+}
 
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
@@ -72,15 +79,19 @@ i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
 i7byte i7mem[];
 i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 	int byte_position = array_address + 4*array_index;
-	return             (i7val) data[byte_position]      +
-	            0x100*((i7val) data[byte_position + 1]) +
-		      0x10000*((i7val) data[byte_position + 2]) +
-		    0x1000000*((i7val) data[byte_position + 3]);
+	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit();
+	}
+	return             (i7val) data[byte_position + 3]      +
+	            0x100*((i7val) data[byte_position + 2]) +
+		      0x10000*((i7val) data[byte_position + 1]) +
+		    0x1000000*((i7val) data[byte_position + 0]);
 }
-#define I7BYTE_3(V) ((V & 0xFF000000) >> 24)
-#define I7BYTE_2(V) ((V & 0x00FF0000) >> 16)
-#define I7BYTE_1(V) ((V & 0x0000FF00) >> 8)
-#define I7BYTE_0(V)  (V & 0x000000FF)
+#define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
+#define I7BYTE_1(V) ((V & 0x00FF0000) >> 16)
+#define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
+#define I7BYTE_3(V)  (V & 0x000000FF)
 
 i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val new_val, int way) {
 	i7val old_val = i7_read_word(data, array_address, array_index);
@@ -94,6 +105,10 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
 	int byte_position = array_address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit();
+	}
 	data[byte_position]   = I7BYTE_0(new_val);
 	data[byte_position+1] = I7BYTE_1(new_val);
 	data[byte_position+2] = I7BYTE_2(new_val);
@@ -110,17 +125,23 @@ printf("glulx_mcopy on %d, %d, %d\n", x, y, z);
 
 void glulx_malloc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_malloc.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_mfree(i7val x) {
 	printf("Unimplemented: glulx_mfree.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 i7val i7_mgl_sp = 0;
 #define I7_ASM_STACK_CAPACITY 128
 i7val i7_asm_stack[I7_ASM_STACK_CAPACITY];
 int i7_asm_stack_pointer = 0;
+
+void i7_debug_stack(char *N) {
+//	printf("Called %s: stack %d ", N, i7_asm_stack_pointer);
+//	for (int i=0; i<i7_asm_stack_pointer; i++) printf("%d -> ", i7_asm_stack[i]);
+//	printf("\n");
+}
 
 i7val i7_pull(void) {
 	if (i7_asm_stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7val) 0; }
@@ -133,16 +154,17 @@ void i7_push(i7val x) {
 }
 void glulx_accelfunc(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelfunc.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_accelparam(i7val x, i7val y) {
 	printf("Unimplemented: glulx_accelparam.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_copy(i7val x, i7val *y) {
-	*y = x;
+	i7_debug_stack("glulx_copy");
+	if (y) *y = x;
 }
 
 void glulx_gestalt(i7val x, i7val y, i7val *z) {
@@ -175,7 +197,7 @@ int glulx_jz(i7val x) {
 }
 
 void glulx_quit(void) {
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_setiosys(i7val x, i7val y) {
@@ -194,7 +216,7 @@ void glulx_streamnum(i7val x) {
 
 void glulx_streamstr(i7val x) {
 	printf("Unimplemented: glulx_streamstr.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_streamunichar(i7val x) {
@@ -203,32 +225,32 @@ void glulx_streamunichar(i7val x) {
 
 void glulx_ushiftr(i7val x, i7val y, i7val z) {
 	printf("Unimplemented: glulx_ushiftr.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aload(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aload\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloadb\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_aloads(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloads\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
 	printf("Unimplemented: glulx_binarysearch\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
-	exit(1);
+	i7_fatal_exit();
 }
 /* Return a random number in the range 0 to 2^32-1. */
 uint32_t i7_random() {
@@ -550,6 +572,10 @@ int i7_ofclass(i7val id, i7val cl_id) {
 		if (cl_id == i7_mgl_Class) return 1;
 		return 0;
 	}
+	if (cl_id == i7_mgl_Object) {
+		if (i7_metaclass_of[id] == i7_mgl_Object) return 1;
+		return 0;
+	}
 	int cl_found = i7_class_of[id];
 	while (cl_found != i7_mgl_Class) {
 		if (cl_id == cl_found) return 1;
@@ -567,7 +593,7 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
-		exit(1);
+		i7_fatal_exit();
 	}
 	i7_properties[(int) owner_id].value[(int) prop_id] = val;
 	i7_properties[(int) owner_id].value_set[(int) prop_id] = 1;
@@ -632,10 +658,6 @@ int i7_in(i7val obj1, i7val obj2) {
 	printf("Unimplemented: i7_in.\n");
 	return 0;
 }
-typedef struct i7varargs {
-	i7val args[10];
-} i7varargs;
-
 i7val i7_mgl_self = 0;
 
 i7val i7_call_0(i7val fn_ref) {
@@ -700,9 +722,11 @@ i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	return i7_gen_call(fn_ref, args, 3, 1);
 }
 
-void glulx_call(i7val fn_ref, i7val argc, i7varargs vargs, i7val *z) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = vargs.args[i];
-	if (z) *z = i7_gen_call(fn_ref, args, argc, 0);
+void glulx_call(i7val fn_ref, i7val varargc, i7val *z) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	for (int i=0; i<varargc; i++) args[i] = i7_pull();
+	i7val rv = i7_gen_call(fn_ref, args, varargc, 0);
+	if (z) *z = rv;
 }
 #define i7_bold 1
 #define i7_roman 2
@@ -739,7 +763,7 @@ i7val i7_do_glk_stream_get_current(void) {
 }
 
 void i7_do_glk_stream_set_current(i7val id) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); exit(1); }
+	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
 	i7_str_id = id;
 }
 
@@ -778,11 +802,11 @@ i7val i7_open_stream(FILE *F) {
 			i7_str_id = i;
 			return i;
 		}
-	fprintf(stderr, "Out of streams\n"); exit(1);
+	fprintf(stderr, "Out of streams\n"); i7_fatal_exit();
 }
 
 i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val rock) {
-	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); exit(1); }
+	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(); }
 	i7val id = i7_open_stream(NULL);
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
@@ -791,7 +815,7 @@ i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val r
 }
 
 i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7val rock) {
-	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); exit(1); }
+	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(); }
 	i7val id = i7_open_stream(NULL);
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
@@ -800,17 +824,17 @@ i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7v
 }
 
 i7val i7_do_glk_stream_get_position(i7val id) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); exit(1); }
+	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
 	i7_stream *S = &(i7_memory_streams[id]);
 	return (i7val) S->memory_used;
 }
 
 void i7_do_glk_stream_close(i7val id, i7val result) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); exit(1); }
-	if (id == 0) { fprintf(stderr, "Cannot close stdout\n"); exit(1); }
-	if (id == 1) { fprintf(stderr, "Cannot close stderr\n"); exit(1); }
+	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
+	if (id == 0) { fprintf(stderr, "Cannot close stdout\n"); i7_fatal_exit(); }
+	if (id == 1) { fprintf(stderr, "Cannot close stderr\n"); i7_fatal_exit(); }
 	i7_stream *S = &(i7_memory_streams[id]);
-	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); exit(1); }
+	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); i7_fatal_exit(); }
 	if (i7_str_id == id) i7_str_id = S->previous_id;
 	if (S->write_here_on_closure != 0) {
 		if (S->char_size == 4) {
@@ -827,12 +851,19 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 					i7mem[S->write_here_on_closure + i] = 0;
 		}
 	}
-	if (result) {
+	if (result == -1) {
+		i7_push(0);
+		i7_push(S->memory_used);
+	} else if (result != 0) {
 		i7_write_word(i7mem, result, 0, 0, i7_lvalue_SET);
 		i7_write_word(i7mem, result, 1, S->memory_used, i7_lvalue_SET);
 	}
 	S->active = 0;
 	S->memory_used = 0;
+}
+
+i7val i7_do_glk_char_to_upper(i7val c) {
+	return toupper(c);
 }
 
 void i7_print_char(i7val x) {
@@ -856,7 +887,7 @@ void i7_print_char(i7val x) {
 			size_t needed = 4*S->memory_capacity;
 			if (needed == 0) needed = 1024;
 			wchar_t *new_data = (wchar_t *) calloc(needed, sizeof(wchar_t));
-			if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+			if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); i7_fatal_exit(); }
 			for (size_t i=0; i<S->memory_used; i++) new_data[i] = S->to_memory[i];
 			free(S->to_memory);
 			S->to_memory = new_data;
@@ -1001,7 +1032,15 @@ void i7_print_decimal(i7val x) {
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
 
-void glulx_glk(i7val glk_api_selector, i7val argc, i7varargs args, i7val *z) {
+void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
+	i7_debug_stack("glulx_glk");
+	i7val args[4] = { 0, 0, 0, 0 }, argc = 0;
+	while (varargc > 0) {
+		i7val v = i7_pull();
+		if (argc < 4) args[argc++] = v;
+		varargc--;
+	}
+
 	int rv = 0;
 	switch (glk_api_selector) {
 		case i7_glk_gestalt:
@@ -1023,61 +1062,62 @@ void glulx_glk(i7val glk_api_selector, i7val argc, i7varargs args, i7val *z) {
 		case i7_glk_schannel_create:
 			rv = 0; break;
 		case i7_glk_stream_get_position:
-			rv = i7_do_glk_stream_get_position(args.args[0]); break;
+			rv = i7_do_glk_stream_get_position(args[0]); break;
 		case i7_glk_stream_close:
-			i7_do_glk_stream_close(args.args[0], args.args[1]); break;
+			i7_do_glk_stream_close(args[0], args[1]); break;
 		case i7_glk_stream_set_current:
-			i7_do_glk_stream_set_current(args.args[0]); break;
+			i7_do_glk_stream_set_current(args[0]); break;
 		case i7_glk_stream_get_current:
 			rv = i7_do_glk_stream_get_current(); break;
 		case i7_glk_stream_open_memory:
-			rv = i7_do_glk_stream_open_memory(args.args[0], args.args[1], args.args[2], args.args[3]); break;
+			rv = i7_do_glk_stream_open_memory(args[0], args[1], args[2], args[3]); break;
 		case i7_glk_stream_open_memory_uni:
-			rv = i7_do_glk_stream_open_memory_uni(args.args[0], args.args[1], args.args[2], args.args[3]); break;
+			rv = i7_do_glk_stream_open_memory_uni(args[0], args[1], args[2], args[3]); break;
+		case i7_glk_char_to_upper:
+			rv = i7_do_glk_char_to_upper(args[0]); break;
 		default:
-			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector);
-			rv = 0; 	exit(1);
-break;
+			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector); i7_fatal_exit();
+			break;
 	}
 	if (z) *z = rv;
 }
 
 void i7_print_def_art(i7val x) {
-	fn_i7_mgl_DefArt(x);
+	fn_i7_mgl_DefArt(1, x, 0);
 }
 
 void i7_print_cdef_art(i7val x) {
-	fn_i7_mgl_CDefArt(x);
+	fn_i7_mgl_CDefArt(1, x, 0);
 }
 
 void i7_print_indef_art(i7val x) {
-	fn_i7_mgl_IndefArt(x);
+	fn_i7_mgl_IndefArt(1, x, 0);
 }
 
 void i7_print_cindef_art(i7val x) {
-	fn_i7_mgl_CIndefArt(x);
+	fn_i7_mgl_CIndefArt(1, x, 0);
 }
 
 void i7_print_name(i7val x) {
-	fn_i7_mgl_PrintShortName(x);
+	fn_i7_mgl_PrintShortName(1, x, 0);
 }
 
 void i7_print_object(i7val x) {
 	printf("Unimplemented: i7_print_object.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void i7_print_property(i7val x) {
 	printf("Unimplemented: i7_print_property.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void i7_print_box(i7val x) {
 	printf("Unimplemented: i7_print_box.\n");
-	exit(1);
+	i7_fatal_exit();
 }
 
 void i7_read(i7val x) {
 	printf("Unimplemented: i7_read.\n");
-	exit(1);
+	i7_fatal_exit();
 }

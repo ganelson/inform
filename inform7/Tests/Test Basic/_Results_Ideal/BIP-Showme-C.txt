@@ -1,0 +1,12 @@
+
+number: 7
+number: -6
+truth state: true
+unicode character: 1164
+use option: engineering notation option
+text: This is textual.
+list of numbers: {2, 3, 5, 8, 13}
+list of texts: {"martin", "douglas", "carolyn", "arthur"}
+real number: 2.71345 × 10^15
+real number: 3.14159
+real number: 2.71828
