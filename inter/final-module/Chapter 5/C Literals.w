@@ -261,6 +261,12 @@ void CLiteralsModel::compile_literal_real(code_generation_target *cgt,
 @
 
 =
+int CLiteralsModel::hex_val(wchar_t c) {
+	if ((c >= '0') && (c <= '9')) return c - '0';
+	if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
+	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
+	return -1;
+}
 void CLiteralsModel::compile_literal_text(code_generation_target *cgt, code_generation *gen,
 	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -271,9 +277,26 @@ void CLiteralsModel::compile_literal_text(code_generation_target *cgt, code_gene
 	}
 	WRITE("\"");
 	if (escape_mode == FALSE) {
-		LOOP_THROUGH_TEXT(pos, S) {
-			wchar_t c = Str::get(pos);
+		for (int i=0; i<Str::len(S); i++) {
+			wchar_t c = Str::get_at(S, i);
 			switch(c) {
+				case '@': {
+					if (Str::get_at(S, i+1) == '@') {
+						int cc = 0; i++;
+						while (Characters::isdigit(Str::get_at(S, ++i)))
+							cc = 10*cc + (Str::get_at(S, i) - '0');
+						if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
+						PUT(cc);
+						i--;
+					} else if (Str::get_at(S, i+1) == '{') {
+						int cc = 0; i++;
+						while ((Str::get_at(S, ++i) != '}') && (Str::get_at(S, i) != 0))
+							cc = 16*cc + CLiteralsModel::hex_val(Str::get_at(S, i));
+						if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
+						PUT(cc);
+					} else WRITE("@");
+					break;
+				}
 				case '~': case '"': WRITE("\\\""); break;
 				case '\\': WRITE("\\\\"); break;
 				case '\t': WRITE(" "); break;

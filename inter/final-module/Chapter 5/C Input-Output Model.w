@@ -128,6 +128,7 @@ i7val i7_open_stream(FILE *F) {
 			return i;
 		}
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit();
+	return 0;
 }
 
 i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val rock) {

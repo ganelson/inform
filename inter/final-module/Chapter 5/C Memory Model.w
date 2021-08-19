@@ -140,11 +140,10 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 
 = (text to inform7_clib.h)
 void glulx_mcopy(i7val x, i7val y, i7val z) {
-printf("glulx_mcopy on %d, %d, %d\n", x, y, z);
     if (z < y)
-		for (i7val i=0; i<x; i++) i7_write_word(i7mem, z, i, i7_read_word(i7mem, y, i), i7_lvalue_SET);
+		for (i7val i=0; i<x; i++) i7mem[z+i] = i7mem[y+i];
     else
-		for (i7val i=x-1; i>=0; i--) i7_write_word(i7mem, z, i, i7_read_word(i7mem, y, i), i7_lvalue_SET);
+		for (i7val i=x-1; i>=0; i--) i7mem[z+i] = i7mem[y+i];
 }
 
 void glulx_malloc(i7val x, i7val y) {

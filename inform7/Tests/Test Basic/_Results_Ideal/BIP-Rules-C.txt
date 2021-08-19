@@ -1,0 +1,82 @@
+
+nothing based rule: watching paint dry rule
+
+You watch some paint dry.
+numbers based rulebook: Grading rulebook
+Grading 1: There's something odd about 1.
+Grading 2: Just 2.
+Grading 3: There's something odd about 3.
+Grading 4: Just 4.
+Grading 5: It's five. What can I say?
+Grading 6: Just 6.
+Grading 7: There's something odd about 7.
+Grading 8: Just 8.
+Grading 9: There's something odd about 9.
+Grading 10: Just 10.
+nothing based rulebook producing texts: strange behavior rulebook
+"text produced by the strange behavior rules" = text: Shazam!
+numbers based rulebook producing texts: even stranger behavior rulebook
+"text produced by the even stranger behavior rules for 31" = text: Shazam! There are thirty-one puffs of smoke.
+Judging 1 now.
+So, we seem to have 1.
+
+I succeed, I succeed.
+(Well, so that succeeded.)
+
+Judging 2 now.
+
+I fail, I fail.
+(Well, so that failed.)
+
+Judging 3 now.
+I look at 3 en passant.
+So, we seem to have 3.
+
+I succeed, I succeed.
+(Well, so that succeeded.)
+
+Judging 4 now.
+I'm going to pass 4.
+(Well, so that succeeded.)
+
+Judging 5 now.
+I'm going to fail 5.
+(Well, so that failed.)
+
+Judging 6 now.
+
+I fail, I fail.
+(Well, so that failed.)
+
+Judging 7 now.
+So, we seem to have 7.
+
+I succeed, I succeed.
+(Well, so that succeeded.)
+
+Judging 8 now.
+
+I fail, I fail.
+(Well, so that failed.)
+
+Judging 9 now.
+So, we seem to have 9.
+
+I succeed, I succeed.
+(Well, so that succeeded.)
+
+Judging 10 now.
+
+I fail, I fail.
+(Well, so that failed.)
+
+Inspecting 1: unsatisfactory.
+Inspecting 2: adequate.
+Inspecting 3: unsatisfactory.
+Inspecting 4: adequate.
+Inspecting 5: unsatisfactory.
+Inspecting 6: adequate.
+Inspecting 7: unsatisfactory.
+Inspecting 8: superlative.
+Inspecting 9: unsatisfactory.
+Inspecting 10: adequate.
