@@ -587,7 +587,6 @@ Constant ACCEPTEDPN_BRM = 6;
 ];
 [ TEXT_TY_BlobAccessI txt blobtype ctxt wanted rtxt
 	brm oldbrm ch i dsize csize blobcount gp cl j;
-print "TEXT_TY_BlobAccessI^";
 	dsize = BlkValueLBCapacity(txt);
 	if (ctxt) csize = BlkValueLBCapacity(ctxt);
 	else if (rtxt) "*** rtxt without ctxt ***";
@@ -678,7 +677,6 @@ print "TEXT_TY_BlobAccessI^";
 					if (brm == ACCEPTED_BRM) brm = ACCEPTEDN_BRM;
 					if (brm == ACCEPTEDP_BRM) brm = ACCEPTEDPN_BRM;
 				} else {
-print "ctxt ", ctxt, " cl ", cl, " csize ", csize, "^";
 					if (cl+1 >= csize) {
 						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
 						csize = BlkValueLBCapacity(ctxt);

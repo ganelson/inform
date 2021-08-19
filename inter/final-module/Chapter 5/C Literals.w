@@ -271,7 +271,17 @@ void CLiteralsModel::compile_literal_text(code_generation_target *cgt, code_gene
 	}
 	WRITE("\"");
 	if (escape_mode == FALSE) {
-		WRITE("%S", S);
+		LOOP_THROUGH_TEXT(pos, S) {
+			wchar_t c = Str::get(pos);
+			switch(c) {
+				case '~': case '"': WRITE("\\\""); break;
+				case '\\': WRITE("\\\\"); break;
+				case '\t': WRITE(" "); break;
+				case '^': case '\n': WRITE("\\n"); break;
+				case NEWLINE_IN_STRING: WRITE("\\n"); break;
+				default: PUT(c); break;
+			}
+		}
 	} else {
 		LOOP_THROUGH_TEXT(pos, S) {
 			wchar_t c = Str::get(pos);

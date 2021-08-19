@@ -202,6 +202,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
 			text_stream *OUT = CodeGen::current(gen);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
+			WRITE("(");
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
 					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
@@ -215,6 +216,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
 				if (bracket) WRITE(")");
 			}
+			WRITE(")");
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			CodeGen::deselect(gen, saved);
 			break;
