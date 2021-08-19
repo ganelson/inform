@@ -64,8 +64,110 @@ void i7_style(int what) {
 void i7_font(int what) {
 }
 
+#define fileusage_Data (0x00)
+#define fileusage_SavedGame (0x01)
+#define fileusage_Transcript (0x02)
+#define fileusage_InputRecord (0x03)
+#define fileusage_TypeMask (0x0f)
+
+#define fileusage_TextMode   (0x100)
+#define fileusage_BinaryMode (0x000)
+
+#define filemode_Write (0x01)
+#define filemode_Read (0x02)
+#define filemode_ReadWrite (0x03)
+#define filemode_WriteAppend (0x05)
+
+typedef struct i7_fileref {
+	i7val usage;
+	i7val name;
+	i7val rock;
+	FILE *handle;
+} i7_fileref;
+
+i7_fileref filerefs[128];
+int i7_no_filerefs = 0;
+
+i7val i7_do_glk_fileref_create_by_name(i7val usage, i7val name, i7val rock) {
+	if (i7_no_filerefs >= 128) {
+		fprintf(stderr, "Out of streams\n"); i7_fatal_exit();
+	}
+	int id = i7_no_filerefs++;
+	filerefs[id].usage = usage;
+	filerefs[id].name = name;
+	filerefs[id].rock = rock;
+	filerefs[id].handle = NULL;
+	return id;
+}
+
+int i7_fseek(int id, int pos, int origin) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
+ printf("Seek to %d wrt %d\n", pos, origin);
+	return fseek(filerefs[id].handle, pos, origin);
+}
+
+int i7_ftell(int id) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
+	int t = i7_ftell(filerefs[id].handle);
+ printf("Tell gives %d\n", t);
+	return t;
+}
+
+int i7_fopen(int id, int mode) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle) { fprintf(stderr, "File already open\n"); i7_fatal_exit(); }
+	char *c_mode = "r";
+	switch (mode) {
+		case filemode_Write: c_mode = "w"; break;
+		case filemode_Read: c_mode = "r"; break;
+		case filemode_ReadWrite: c_mode = "r+"; break;
+		case filemode_WriteAppend: c_mode = "r+"; break;
+	}
+	FILE *h = fopen("marzipan.txt", c_mode);
+	if (h == NULL) return 0;
+	filerefs[id].handle = h;
+ printf("Open mode %s\n", c_mode);
+	if (mode == filemode_WriteAppend) i7_fseek(id, 0, SEEK_END);
+	return 1;
+}
+
+void i7_fclose(int id) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
+	fclose(filerefs[id].handle);
+	filerefs[id].handle = NULL;
+ printf("Close\n");
+}
+
+i7val i7_do_glk_fileref_does_file_exist(i7val id) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle) return 1;
+	if (i7_fopen(id, filemode_Read)) {
+		i7_fclose(id); return 1;
+	}
+	return 0;
+}
+
+void i7_fputc(int c, int id) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
+	fputc(c, filerefs[id].handle);
+// printf("Put %c\n", c);
+}
+
+int i7_fgetc(int id) {
+	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
+	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
+	int c = fgetc(filerefs[id].handle);
+ printf("Get %c\n", c);
+	return c;
+}
+
 typedef struct i7_stream {
 	FILE *to_file;
+	i7val to_file_id;
 	wchar_t *to_memory;
 	size_t memory_used;
 	size_t memory_capacity;
@@ -75,6 +177,8 @@ typedef struct i7_stream {
 	int active;
 	int encode_UTF8;
 	int char_size;
+	int read_position;
+	int end_position;
 } i7_stream;
 
 #define I7_MAX_STREAMS 128
@@ -95,6 +199,7 @@ void i7_do_glk_stream_set_current(i7val id) {
 i7_stream i7_new_stream(FILE *F) {
 	i7_stream S;
 	S.to_file = F;
+	S.to_file_id = -1;
 	S.to_memory = NULL;
 	S.memory_used = 0;
 	S.memory_capacity = 0;
@@ -104,6 +209,8 @@ i7_stream i7_new_stream(FILE *F) {
 	S.active = 0;
 	S.encode_UTF8 = 0;
 	S.char_size = 4;
+	S.read_position = 0;
+	S.end_position = 0;
 	return S;
 }
 
@@ -149,9 +256,40 @@ i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7v
 	return id;
 }
 
+i7val i7_do_glk_stream_open_file(i7val fileref, i7val usage, i7val rock) {
+	i7val id = i7_open_stream(NULL);
+	i7_memory_streams[id].to_file_id = fileref;
+	if (i7_fopen(fileref, usage) == 0) return 0;
+	return id;
+}
+
+#define seekmode_Start (0)
+#define seekmode_Current (1)
+#define seekmode_End (2)
+
+void i7_do_glk_stream_set_position(i7val id, i7val pos, i7val seekmode) {
+	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
+	i7_stream *S = &(i7_memory_streams[id]);
+	if (S->to_file_id >= 0) {
+		int origin;
+		switch (seekmode) {
+			case seekmode_Start: origin = SEEK_SET; break;
+			case seekmode_Current: origin = SEEK_CUR; break;
+			case seekmode_End: origin = SEEK_END; break;
+			default: fprintf(stderr, "Unknown seekmode\n"); i7_fatal_exit();
+		}
+		i7_fseek(S->to_file_id, pos, origin);
+	} else {
+		fprintf(stderr, "glk_stream_set_position supported only for file streams\n"); i7_fatal_exit();
+	}
+}
+
 i7val i7_do_glk_stream_get_position(i7val id) {
 	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
 	i7_stream *S = &(i7_memory_streams[id]);
+	if (S->to_file_id >= 0) {
+		return (i7val) i7_ftell(S->to_file_id);
+	}
 	return (i7val) S->memory_used;
 }
 
@@ -184,6 +322,7 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 		i7_write_word(i7mem, result, 0, 0, i7_lvalue_SET);
 		i7_write_word(i7mem, result, 1, S->memory_used, i7_lvalue_SET);
 	}
+	if (S->to_file_id >= 0) i7_fclose(S->to_file_id);
 	S->active = 0;
 	S->memory_used = 0;
 }
@@ -192,8 +331,8 @@ i7val i7_do_glk_char_to_upper(i7val c) {
 	return toupper(c);
 }
 
-void i7_print_char(i7val x) {
-	i7_stream *S = &(i7_memory_streams[i7_str_id]);
+void i7_do_glk_put_char_stream(i7val stream_id, i7val x) {
+	i7_stream *S = &(i7_memory_streams[stream_id]);
 	if (S->to_file) {
 		unsigned int c = (unsigned int) x;
 		if (S->encode_UTF8) {
@@ -208,6 +347,9 @@ void i7_print_char(i7val x) {
 		} else {
 			fputc((int) c, S->to_file);
 		}
+	} else if (S->to_file_id >= 0) {
+		i7_fputc((int) x, S->to_file_id);
+		S->end_position++;
 	} else {
 		if (S->memory_used >= S->memory_capacity) {
 			size_t needed = 4*S->memory_capacity;
@@ -220,6 +362,18 @@ void i7_print_char(i7val x) {
 		}
 		S->to_memory[S->memory_used++] = (wchar_t) x;
 	}
+}
+
+i7val i7_do_glk_get_char_stream(i7val stream_id) {
+	i7_stream *S = &(i7_memory_streams[stream_id]);
+	if (S->to_file_id >= 0) {
+		return i7_fgetc(S->to_file_id);
+	}
+	return 0;
+}
+
+void i7_print_char(i7val x) {
+	i7_do_glk_put_char_stream(i7_str_id, x);
 }
 
 void i7_print_C_string(char *c_string) {
@@ -401,6 +555,20 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = i7_do_glk_stream_open_memory_uni(args[0], args[1], args[2], args[3]); break;
 		case i7_glk_char_to_upper:
 			rv = i7_do_glk_char_to_upper(args[0]); break;
+		case i7_glk_fileref_create_by_name:
+			rv = i7_do_glk_fileref_create_by_name(args[0], args[1], args[2]); break;
+		case i7_glk_fileref_does_file_exist:
+			rv = i7_do_glk_fileref_does_file_exist(args[0]); break;
+		case i7_glk_stream_open_file:
+			rv = i7_do_glk_stream_open_file(args[0], args[1], args[2]); break;
+		case i7_glk_fileref_destroy:
+			rv = 0; break;
+		case i7_glk_stream_set_position:
+			i7_do_glk_stream_set_position(args[0], args[1], args[2]); break;
+		case i7_glk_put_char_stream:
+			i7_do_glk_put_char_stream(args[0], args[1]); break;
+		case i7_glk_get_char_stream:
+			rv = i7_do_glk_get_char_stream(args[0]); break;
 		default:
 			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector); i7_fatal_exit();
 			break;
