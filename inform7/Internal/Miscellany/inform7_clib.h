@@ -777,7 +777,7 @@ i7val i7_do_glk_fileref_create_by_name(i7val usage, i7val name, i7val rock) {
 int i7_fseek(int id, int pos, int origin) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
- printf("Seek to %d wrt %d\n", pos, origin);
+// printf("Seek to %d wrt %d\n", pos, origin);
 	return fseek(filerefs[id].handle, pos, origin);
 }
 
@@ -785,7 +785,7 @@ int i7_ftell(int id) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
 	int t = i7_ftell(filerefs[id].handle);
- printf("Tell gives %d\n", t);
+// printf("Tell gives %d\n", t);
 	return t;
 }
 
@@ -802,7 +802,7 @@ int i7_fopen(int id, int mode) {
 	FILE *h = fopen("marzipan.txt", c_mode);
 	if (h == NULL) return 0;
 	filerefs[id].handle = h;
- printf("Open mode %s\n", c_mode);
+// printf("Open mode %s\n", c_mode);
 	if (mode == filemode_WriteAppend) i7_fseek(id, 0, SEEK_END);
 	return 1;
 }
@@ -812,7 +812,7 @@ void i7_fclose(int id) {
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
 	fclose(filerefs[id].handle);
 	filerefs[id].handle = NULL;
- printf("Close\n");
+// printf("Close\n");
 }
 
 i7val i7_do_glk_fileref_does_file_exist(i7val id) {
@@ -835,7 +835,7 @@ int i7_fgetc(int id) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
 	int c = fgetc(filerefs[id].handle);
- printf("Get %c\n", c);
+// printf("Get %c\n", c);
 	return c;
 }
 
@@ -851,6 +851,7 @@ typedef struct i7_stream {
 	int active;
 	int encode_UTF8;
 	int char_size;
+	int chars_read;
 	int read_position;
 	int end_position;
 } i7_stream;
@@ -883,6 +884,7 @@ i7_stream i7_new_stream(FILE *F) {
 	S.active = 0;
 	S.encode_UTF8 = 0;
 	S.char_size = 4;
+	S.chars_read = 0;
 	S.read_position = 0;
 	S.end_position = 0;
 	return S;
@@ -905,7 +907,6 @@ i7val i7_open_stream(FILE *F) {
 			i7_memory_streams[i] = i7_new_stream(F);
 			i7_memory_streams[i].active = 1;
 			i7_memory_streams[i].previous_id = i7_str_id;
-			i7_str_id = i;
 			return i;
 		}
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit();
@@ -918,6 +919,7 @@ i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val r
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 1;
+			i7_str_id = id;
 	return id;
 }
 
@@ -927,6 +929,7 @@ i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7v
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 4;
+			i7_str_id = id;
 	return id;
 }
 
@@ -990,10 +993,10 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 		}
 	}
 	if (result == -1) {
-		i7_push(0);
+		i7_push(S->chars_read);
 		i7_push(S->memory_used);
 	} else if (result != 0) {
-		i7_write_word(i7mem, result, 0, 0, i7_lvalue_SET);
+		i7_write_word(i7mem, result, 0, S->chars_read, i7_lvalue_SET);
 		i7_write_word(i7mem, result, 1, S->memory_used, i7_lvalue_SET);
 	}
 	if (S->to_file_id >= 0) i7_fclose(S->to_file_id);
@@ -1041,6 +1044,7 @@ void i7_do_glk_put_char_stream(i7val stream_id, i7val x) {
 i7val i7_do_glk_get_char_stream(i7val stream_id) {
 	i7_stream *S = &(i7_memory_streams[stream_id]);
 	if (S->to_file_id >= 0) {
+		S->chars_read++;
 		return i7_fgetc(S->to_file_id);
 	}
 	return 0;
