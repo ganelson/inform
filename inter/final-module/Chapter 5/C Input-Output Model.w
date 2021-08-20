@@ -82,10 +82,11 @@ typedef struct i7_fileref {
 	i7val usage;
 	i7val name;
 	i7val rock;
+	char leafname[128];
 	FILE *handle;
 } i7_fileref;
 
-i7_fileref filerefs[128];
+i7_fileref filerefs[128 + 32];
 int i7_no_filerefs = 0;
 
 i7val i7_do_glk_fileref_create_by_name(i7val usage, i7val name, i7val rock) {
@@ -97,6 +98,13 @@ i7val i7_do_glk_fileref_create_by_name(i7val usage, i7val name, i7val rock) {
 	filerefs[id].name = name;
 	filerefs[id].rock = rock;
 	filerefs[id].handle = NULL;
+	for (int i=0; i<128; i++) {
+		i7byte c = i7mem[name+1+i];
+		filerefs[id].leafname[i] = c;
+		if (c == 0) break;
+	}
+	filerefs[id].leafname[127] = 0;
+	sprintf(filerefs[id].leafname + strlen(filerefs[id].leafname), ".glkdata");
 	return id;
 }
 
@@ -125,7 +133,7 @@ int i7_fopen(int id, int mode) {
 		case filemode_ReadWrite: c_mode = "r+"; break;
 		case filemode_WriteAppend: c_mode = "r+"; break;
 	}
-	FILE *h = fopen("marzipan.txt", c_mode);
+	FILE *h = fopen(filerefs[id].leafname, c_mode);
 	if (h == NULL) return 0;
 	filerefs[id].handle = h;
 // printf("Open mode %s\n", c_mode);
