@@ -14,7 +14,7 @@ void CNamespace::initialise(code_generation_target *cgt) {
 void CNamespace::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
 	if (Str::get_first_char(identifier) == '(') WRITE("%S", identifier);
 	else if (Str::get_first_char(identifier) == '#') {
-		WRITE("i7_mgl_sharp_");
+		WRITE("i7_ss_");
 		LOOP_THROUGH_TEXT(pos, identifier)
 			if ((Str::get(pos) != '#') && (Str::get(pos) != '$'))
 				PUT(Str::get(pos));

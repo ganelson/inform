@@ -118,7 +118,7 @@ int i7_fseek(int id, int pos, int origin) {
 int i7_ftell(int id) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
-	int t = i7_ftell(filerefs[id].handle);
+	int t = ftell(filerefs[id].handle);
 // printf("Tell gives %d\n", t);
 	return t;
 }

@@ -28,12 +28,17 @@
 	set: $WORKSPACE = intest/Workspace
 	set: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
 	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+	set: $TOC = NO
 
 	! First we decide whether to compile it for the Z-machine or Glulx.
 
 	set: $VM = Z
 	if: $CASE %c*-G
 		set: $VM = G
+	endif
+	if: $CASE %c*-C
+		set: $VM = G
+		set: $TOC = YES
 	endif
 	if: $CASE %c*Metric%c*Units%c*
 		set: $VM = G
@@ -76,7 +81,11 @@
 		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
-	set: $PIPELINE = test
+	if: $TOC YES
+		set: $PIPELINE = test_c
+	else
+		set: $PIPELINE = test
+	endif
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -98,40 +107,76 @@
 	! And then the general case.
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable -pipeline $PIPELINE -crash-all
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
-	show: $I7CONSOLE
+	if: $TOC YES
+		mkdir: $PATH/_Textual
+		mkdir: $PATH/_C
 
-	set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+		set: $I7CLIB = inform7/Internal/Miscellany
+	
+		set: $TOUT = $PATH/_Textual/$CASE.intert
+		set: $COUT = $PATH/_C/$CASE.c
+		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *cout=$COUT -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
 
-	hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
-	or: 'passed (matching cached I6 known to work)'
+		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
+		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-	set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
-	set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality -D DEBUG -I $I7CLIB >$CCCONSOLE 2>&1
+		or: 'failed to compile C' $CCCONSOLE
 
-	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
-	or: 'failed to pass through Inform 6' $I6CONSOLE
-	show i6: $I6CONSOLE
+		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
+		or: 'failed to link C' $LINKCONSOLE
+	
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
 
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
+		step: $STORYFILE >$A 2>&1
+		or: 'failed to run C program' $A
 
-	step: $INT `$INTOPTIONS $STORYFILE <$SCRIPT >$A 2>&1
-	or: 'unable to run $INTNAME (do you need to make interpreters?)'
+		show: $A
 
-	exists: $I
-	or: 'translated successfully but no ideal transcript existed'
-	if: $VM G
-		match glulxe transcript: $A $I
-		or: 'played incorrectly'
+		match text: $A $I
+		or: 'C program misbehaved'
+
+		pass: 'passed'
 	else
-		match frotz transcript: $A $I
-		or: 'played incorrectly'
-	endif
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable -pipeline $PIPELINE -crash-all
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
+		show: $I7CONSOLE
 
-	pass: 'passed'
+		set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+
+		hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
+		or: 'passed (matching cached I6 known to work)'
+
+		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+
+		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+		or: 'failed to pass through Inform 6' $I6CONSOLE
+		show i6: $I6CONSOLE
+
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+		step: $INT `$INTOPTIONS $STORYFILE <$SCRIPT >$A 2>&1
+		or: 'unable to run $INTNAME (do you need to make interpreters?)'
+
+		exists: $I
+		or: 'translated successfully but no ideal transcript existed'
+		if: $VM G
+			match glulxe transcript: $A $I
+			or: 'played incorrectly'
+		else
+			match frotz transcript: $A $I
+			or: 'played incorrectly'
+		endif
+
+		pass: 'passed'
+	endif
 
 -end
 

@@ -360,10 +360,10 @@ void CodeGen::Targets::end_array(code_generation *gen, int format) {
 
 @
 
-@e NEW_FAKE_ACTION_MTID
+@e NEW_ACTION_MTID
 
 =
-VOID_METHOD_TYPE(NEW_FAKE_ACTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *name)
-void CodeGen::Targets::new_fake_action(code_generation *gen, text_stream *name) {
-	VOID_METHOD_CALL(gen->target, NEW_FAKE_ACTION_MTID, gen, name);
+VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action)
+void CodeGen::Targets::new_action(code_generation *gen, text_stream *name, int true_action) {
+	VOID_METHOD_CALL(gen->target, NEW_ACTION_MTID, gen, name, true_action);
 }

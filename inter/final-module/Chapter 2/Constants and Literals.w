@@ -44,13 +44,19 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 
 	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
-	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1) return;
+	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1)  {
+		text_stream *fa = Str::duplicate(con_name->symbol_name);
+		Str::delete_first_character(fa);
+		Str::delete_first_character(fa);
+		CodeGen::Targets::new_action(gen, fa, TRUE);
+		return;
+	}
 
 	if (Inter::Symbols::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
 		Str::delete_first_character(fa);
-		CodeGen::Targets::new_fake_action(gen, fa);
+		CodeGen::Targets::new_action(gen, fa, FALSE);
 		return;
 	}
 

@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
@@ -16,15 +17,16 @@ void i7_fatal_exit(void) {
 
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
-i7val i7_mgl_sharp_classes_table = 0;
+i7val i7_ss_classes_table = 0;
 i7val i7_mgl_NUM_ATTR_BYTES = 0;
-i7val i7_mgl_sharp_cpv__start = 0;
-i7val i7_mgl_sharp_identifiers_table = 0;
-i7val i7_mgl_sharp_globals_array = 0;
-i7val i7_mgl_sharp_gself = 0;
-i7val i7_mgl_sharp_dict_par2 = 0;
-i7val i7_mgl_sharp_dictionary_table = 0;
-i7val i7_mgl_sharp_grammar_table = 0;
+i7val i7_ss_cpv__start = 0;
+i7val i7_ss_identifiers_table = 0;
+i7val i7_ss_globals_array = 0;
+i7val i7_ss_gself = 0;
+i7val i7_ss_dict_par1 = 0;
+i7val i7_ss_dict_par2 = 0;
+i7val i7_ss_dictionary_table = 0;
+i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
 
@@ -633,10 +635,6 @@ i7val i7_prop_addr(i7val obj, i7val pr) {
 	printf("Unimplemented: i7_prop_addr.\n");
 	return 0;
 }
-
-void i7_move(i7val obj, i7val to) {
-	printf("Unimplemented: i7_move.\n");
-}
 int i7_has(i7val obj, i7val attr) {
 	if (i7_read_prop_value(obj, attr)) return 1;
 	return 0;
@@ -653,10 +651,34 @@ int i7_provides(i7val owner_id, i7val prop_id) {
 	return 0;
 }
 
+i7val i7_object_tree_parent[i7_max_objects];
+i7val i7_object_tree_child[i7_max_objects];
+i7val i7_object_tree_sibling[i7_max_objects];
+
 int i7_in(i7val obj1, i7val obj2) {
-	printf("Unimplemented: i7_in.\n");
+	if (fn_i7_mgl_metaclass(1, obj1) != i7_mgl_Object) return 0;
+	if (obj2 == 0) return 0;
+	if (i7_object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
+
+i7val fn_i7_mgl_parent(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_parent[id];
+}
+i7val fn_i7_mgl_child(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_child[id];
+}
+i7val fn_i7_mgl_sibling(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_sibling[id];
+}
+
+void i7_move(i7val obj, i7val to) {
+	printf("Unimplemented: i7_move.\n");
+}
+
 i7val i7_mgl_self = 0;
 
 i7val i7_call_0(i7val fn_ref) {
@@ -792,7 +814,7 @@ int i7_fseek(int id, int pos, int origin) {
 int i7_ftell(int id) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(); }
-	int t = i7_ftell(filerefs[id].handle);
+	int t = ftell(filerefs[id].handle);
 // printf("Tell gives %d\n", t);
 	return t;
 }

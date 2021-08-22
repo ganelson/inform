@@ -27,7 +27,7 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
 	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
 	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
-	METHOD_ADD(c_target, NEW_FAKE_ACTION_MTID, CTarget::new_fake_action);
+	METHOD_ADD(c_target, NEW_ACTION_MTID, CTarget::new_action);
 }
 
 @h Static supporting code.
@@ -48,6 +48,7 @@ first of those:
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
@@ -222,7 +223,7 @@ int CTarget::tl_segment(code_generation_target *cgt) {
 }
 
 @ =
-void CTarget::new_fake_action(code_generation_target *cgt, code_generation *gen, text_stream *name) {
+void CTarget::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(C_action_count)++);
@@ -240,15 +241,16 @@ void i7_fatal_exit(void) {
 
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
-i7val i7_mgl_sharp_classes_table = 0;
+i7val i7_ss_classes_table = 0;
 i7val i7_mgl_NUM_ATTR_BYTES = 0;
-i7val i7_mgl_sharp_cpv__start = 0;
-i7val i7_mgl_sharp_identifiers_table = 0;
-i7val i7_mgl_sharp_globals_array = 0;
-i7val i7_mgl_sharp_gself = 0;
-i7val i7_mgl_sharp_dict_par2 = 0;
-i7val i7_mgl_sharp_dictionary_table = 0;
-i7val i7_mgl_sharp_grammar_table = 0;
+i7val i7_ss_cpv__start = 0;
+i7val i7_ss_identifiers_table = 0;
+i7val i7_ss_globals_array = 0;
+i7val i7_ss_gself = 0;
+i7val i7_ss_dict_par1 = 0;
+i7val i7_ss_dict_par2 = 0;
+i7val i7_ss_dictionary_table = 0;
+i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
 

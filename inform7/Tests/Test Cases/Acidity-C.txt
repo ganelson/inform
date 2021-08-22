@@ -1,0 +1,14 @@
+Laboratory is a room.
+
+Acidity is a kind of value. pH 7 specifies an acidity.
+
+When play begins:
+	say "[pH 1] is not nice. Nor is [pH 14]."
+
+Litmus-testing is an action applying to one acidity.
+
+Understand "dip litmus in [acidity]" as litmus-testing.
+
+Carry out litmus-testing: say "The litmus turns the right colour for [acidity understood]."
+
+Test me with "dip litmus in PH 1 / dip litmus in ph 3".

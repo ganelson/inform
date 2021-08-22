@@ -107,7 +107,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
 	METHOD_ADD(cgt, END_GENERATION_MTID, CodeGen::I6::end_generation);
-	METHOD_ADD(cgt, NEW_FAKE_ACTION_MTID, CodeGen::I6::new_fake_action);
+	METHOD_ADD(cgt, NEW_ACTION_MTID, CodeGen::I6::new_action);
 	inform6_target = cgt;
 }
 
@@ -826,7 +826,9 @@ void CodeGen::I6::end_array(code_generation_target *cgt, code_generation *gen, i
 	WRITE(";\n");
 }
 
-void CodeGen::I6::new_fake_action(code_generation_target *cgt, code_generation *gen, text_stream *name) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Fake_Action %S;\n", name);
+void CodeGen::I6::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
+	if (true_action == FALSE) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("Fake_Action %S;\n", name);
+	}
 }

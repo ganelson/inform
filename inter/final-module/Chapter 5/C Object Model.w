@@ -340,13 +340,16 @@ initialiser function which runs early and sets the property values up by hand:
 	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("void i7_initializer(void) {\n"); INDENT;
-	WRITE("for (int id=0; id<i7_max_objects; id++)\n"); INDENT;
+	WRITE("for (int id=0; id<i7_max_objects; id++) {\n"); INDENT;
 	WRITE("for (int p=0; p<i7_no_property_ids; p++) {\n"); INDENT;
 	WRITE("i7_properties[id].value[p] = 0;\n");
 	WRITE("if (id == 1) i7_properties[id].value_set[p] = 1;\n");
 	WRITE("else i7_properties[id].value_set[p] = 0;\n");
 	OUTDENT; WRITE("}\n");
-	OUTDENT;
+	WRITE("i7_object_tree_parent[id] = 0;\n");
+	WRITE("i7_object_tree_child[id] = 0;\n");
+	WRITE("i7_object_tree_sibling[id] = 0;\n");
+	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 
 @<Complete the initialiser function@> =
@@ -475,10 +478,6 @@ i7val i7_prop_addr(i7val obj, i7val pr) {
 	printf("Unimplemented: i7_prop_addr.\n");
 	return 0;
 }
-
-void i7_move(i7val obj, i7val to) {
-	printf("Unimplemented: i7_move.\n");
-}
 =
 
 @h Special object-related conditions.
@@ -515,8 +514,32 @@ int i7_provides(i7val owner_id, i7val prop_id) {
 	return 0;
 }
 
+i7val i7_object_tree_parent[i7_max_objects];
+i7val i7_object_tree_child[i7_max_objects];
+i7val i7_object_tree_sibling[i7_max_objects];
+
 int i7_in(i7val obj1, i7val obj2) {
-	printf("Unimplemented: i7_in.\n");
+	if (fn_i7_mgl_metaclass(1, obj1) != i7_mgl_Object) return 0;
+	if (obj2 == 0) return 0;
+	if (i7_object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
+
+i7val fn_i7_mgl_parent(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_parent[id];
+}
+i7val fn_i7_mgl_child(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_child[id];
+}
+i7val fn_i7_mgl_sibling(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	return i7_object_tree_sibling[id];
+}
+
+void i7_move(i7val obj, i7val to) {
+	printf("Unimplemented: i7_move.\n");
+}
+
 =
