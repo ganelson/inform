@@ -201,6 +201,7 @@ void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, in
 @e END_CLASS_MTID
 @e DECLARE_INSTANCE_MTID
 @e END_INSTANCE_MTID
+@e OPTIMISE_PROPERTY_MTID
 @e ASSIGN_PROPERTY_MTID
 @e PROPERTY_OFFSET_MTID
 
@@ -220,6 +221,12 @@ void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class
 }
 void CodeGen::Targets::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	VOID_METHOD_CALL(gen->target, END_INSTANCE_MTID, gen, class_name, instance_name);
+}
+INT_METHOD_TYPE(OPTIMISE_PROPERTY_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X)
+int CodeGen::Targets::optimise_property_value(code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->target, OPTIMISE_PROPERTY_MTID, gen, prop_name, X);
+	return rv;
 }
 VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att)
 void CodeGen::Targets::assign_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
@@ -253,10 +260,12 @@ void CodeGen::Targets::offer_pragma(code_generation *gen, inter_tree_node *P, te
 @e END_CONSTANT_MTID
 
 =
-VOID_METHOD_TYPE(BEGIN_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me)
+INT_METHOD_TYPE(BEGIN_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me)
 VOID_METHOD_TYPE(END_CONSTANT_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me)
-void CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
-	VOID_METHOD_CALL(gen->target, BEGIN_CONSTANT_MTID, gen, const_name, continues, ifndef_me);
+int CodeGen::Targets::begin_constant(code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->target, BEGIN_CONSTANT_MTID, gen, const_name, const_s, P, continues, ifndef_me);
+	return rv;
 }
 void CodeGen::Targets::end_constant(code_generation *gen, text_stream *const_name, int ifndef_me) {
 	VOID_METHOD_CALL(gen->target, END_CONSTANT_MTID, gen, const_name, ifndef_me);
@@ -327,6 +336,7 @@ void CodeGen::Targets::assembly(code_generation *gen, text_stream *opcode, int o
 @e BEGIN_ARRAY_MTID
 @e ARRAY_ENTRY_MTID
 @e ARRAY_ENTRIES_MTID
+@e COMPILE_LITERAL_SYMBOL_MTID
 @e END_ARRAY_MTID
 
 @d WORD_ARRAY_FORMAT 1
@@ -335,12 +345,15 @@ void CodeGen::Targets::assembly(code_generation *gen, text_stream *opcode, int o
 @d BUFFER_ARRAY_FORMAT 4
 
 =
-VOID_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, int format)
+INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format)
 VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generation_target *cgt, code_generation *gen, text_stream *entry, int format)
 VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generation_target *cgt, code_generation *gen, int how_many, int plus_ips, int format)
+VOID_METHOD_TYPE(COMPILE_LITERAL_SYMBOL_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *aliased, int unsub)
 VOID_METHOD_TYPE(END_ARRAY_MTID, code_generation_target *cgt, code_generation *gen, int format)
-void CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name, int format) {
-	VOID_METHOD_CALL(gen->target, BEGIN_ARRAY_MTID, gen, const_name, format);
+int CodeGen::Targets::begin_array(code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->target, BEGIN_ARRAY_MTID, gen, const_name, array_s, P, format);
+	return rv;
 }
 void CodeGen::Targets::array_entry(code_generation *gen, text_stream *entry, int format) {
 	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, entry, format);
@@ -354,8 +367,22 @@ void CodeGen::Targets::mangled_array_entry(code_generation *gen, text_stream *en
 	VOID_METHOD_CALL(gen->target, ARRAY_ENTRY_MTID, gen, mangled, format);
 	DISCARD_TEXT(mangled)
 }
+void CodeGen::Targets::compile_literal_symbol(code_generation *gen, inter_symbol *aliased, int unsub) {
+	VOID_METHOD_CALL(gen->target, COMPILE_LITERAL_SYMBOL_MTID, gen, aliased, unsub);
+}
+
 void CodeGen::Targets::end_array(code_generation *gen, int format) {
 	VOID_METHOD_CALL(gen->target, END_ARRAY_MTID, gen, format);
+}
+
+@
+
+@e WORLD_MODEL_ESSENTIALS_MTID
+
+=
+VOID_METHOD_TYPE(WORLD_MODEL_ESSENTIALS_MTID, code_generation_target *cgt, code_generation *gen)
+void CodeGen::Targets::world_model_essentials(code_generation *gen) {
+	VOID_METHOD_CALL(gen->target, WORLD_MODEL_ESSENTIALS_MTID, gen);
 }
 
 @

@@ -8,6 +8,7 @@ How arrays of all kinds are stored in C.
 void CMemoryModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
+	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, CMemoryModel::compile_literal_symbol);
 	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CMemoryModel::end_array);
 }
@@ -169,8 +170,8 @@ word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 =
 
 =
-void CMemoryModel::begin_array(code_generation_target *cgt, code_generation *gen,
-	text_stream *array_name, int format) {
+int CMemoryModel::begin_array(code_generation_target *cgt, code_generation *gen,
+	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
@@ -180,6 +181,7 @@ void CMemoryModel::begin_array(code_generation_target *cgt, code_generation *gen
 	@<Define a constant for the byte address in memory where the array begins@>;
 	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT))
 		@<Place the extent entry N at index 0@>;
+	return TRUE;
 }
 
 @<Work out the format name@> =
@@ -245,6 +247,15 @@ and therefore if |X| is a valid constant-context expression in C then so is
 	WRITE("    I7BYTE_0(%S), I7BYTE_1(%S), I7BYTE_2(%S), I7BYTE_3(%S), /* %d */\n",
 		entry, entry, entry, entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 4;
+
+@
+
+=
+void CMemoryModel::compile_literal_symbol(code_generation_target *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
+	text_stream *OUT = CodeGen::current(gen);
+	text_stream *S = CodeGen::CL::name(aliased);
+	CodeGen::Targets::mangle(gen, OUT, S);
+}
 
 @ Alternatively, we can just specify how many entries there will be: they will
 then be initialised to 0.

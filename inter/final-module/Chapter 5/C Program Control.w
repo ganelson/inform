@@ -132,7 +132,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for do@> =
-	WRITE("do {"); INV_A2; WRITE("} until (\n"); INDENT; INV_A1; OUTDENT; WRITE(")\n");
+	WRITE("do {"); INV_A2; WRITE("} while (!(\n"); INDENT; INV_A1; OUTDENT; WRITE("))\n");
 
 @<Generate primitive for for@> =
 	WRITE("for (");

@@ -89,6 +89,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::I6::end_class);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CodeGen::I6::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, CodeGen::I6::end_instance);
+	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CodeGen::I6::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CodeGen::I6::assign_property);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CodeGen::I6::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CodeGen::I6::begin_constant);
@@ -103,10 +104,12 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, ASSEMBLY_MTID, CodeGen::I6::assembly);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::I6::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
+	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, CodeGen::I6::compile_literal_symbol);
 	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CodeGen::I6::array_entries);
 	METHOD_ADD(cgt, END_ARRAY_MTID, CodeGen::I6::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, CodeGen::I6::offer_pragma)
 	METHOD_ADD(cgt, END_GENERATION_MTID, CodeGen::I6::end_generation);
+	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, CodeGen::I6::world_model_essentials);
 	METHOD_ADD(cgt, NEW_ACTION_MTID, CodeGen::I6::new_action);
 	inform6_target = cgt;
 }
@@ -711,6 +714,22 @@ void CodeGen::I6::end_instance(code_generation_target *cgt, code_generation *gen
 	WRITE(";\n");
 }
 
+int CodeGen::I6::optimise_property_value(code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
+		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
+		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
+			inter_tree_node *P = Inter::Symbols::definition(S);
+			text_stream *OUT = CodeGen::current(gen);
+			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+				if (i>DATA_CONST_IFLD) WRITE(" ");
+				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
+			}
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 void CodeGen::I6::assign_property(code_generation_target *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (as_att) {
@@ -729,11 +748,42 @@ void CodeGen::I6::declare_local_variable(code_generation_target *cgt, int pass,
 	}
 }
 
-void CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
+int CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
+
+	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1)) return FALSE;
+
+	if (Str::eq(const_name, I"Release")) {
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
+		WRITE("Release ");
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		WRITE(";\n");
+		return FALSE;
+	}
+
+	if (Str::eq(const_name, I"Story")) {
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
+		WRITE("Global Story = ");
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		WRITE(";\n");
+		return FALSE;
+	}
+
+	if (Str::eq(const_name, I"Serial")) {
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
+		WRITE("Serial ");
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		WRITE(";\n");
+		return FALSE;
+	}
+
 	if (ifndef_me) WRITE("#ifndef %S;\n", const_name);
 	WRITE("Constant %S", const_name);
 	if (continues) WRITE(" = ");
+	return TRUE;
 }
 void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -794,8 +844,19 @@ void CodeGen::I6::assembly(code_generation_target *cgt, code_generation *gen,
 	}
 }
 
-void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name, int format) {
+int CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
 	text_stream *OUT = CodeGen::current(gen);
+	
+	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
+		WRITE("Verb ");
+		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
+		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+			WRITE(" ");
+			CodeGen::CL::literal(gen, array_s, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], TRUE);
+		}
+		WRITE(";");
+		return FALSE;
+	}
 	WRITE("Array %S ", array_name);
 	switch (format) {
 		case WORD_ARRAY_FORMAT: WRITE("-->"); break;
@@ -803,11 +864,44 @@ void CodeGen::I6::begin_array(code_generation_target *cgt, code_generation *gen,
 		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
 		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
 	}
+	return TRUE;
 }
 
 void CodeGen::I6::array_entry(code_generation_target *cgt, code_generation *gen, text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" (%S)", entry);
+}
+
+void CodeGen::I6::compile_literal_symbol(code_generation_target *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (aliased == verb_directive_divider_symbol) WRITE("\n\t*");
+	else if (aliased == verb_directive_reverse_symbol) WRITE("reverse");
+	else if (aliased == verb_directive_slash_symbol) WRITE("/");
+	else if (aliased == verb_directive_result_symbol) WRITE("->");
+	else if (aliased == verb_directive_special_symbol) WRITE("special");
+	else if (aliased == verb_directive_number_symbol) WRITE("number");
+	else if (aliased == verb_directive_noun_symbol) WRITE("noun");
+	else if (aliased == verb_directive_multi_symbol) WRITE("multi");
+	else if (aliased == verb_directive_multiinside_symbol) WRITE("multiinside");
+	else if (aliased == verb_directive_multiheld_symbol) WRITE("multiheld");
+	else if (aliased == verb_directive_held_symbol) WRITE("held");
+	else if (aliased == verb_directive_creature_symbol) WRITE("creature");
+	else if (aliased == verb_directive_topic_symbol) WRITE("topic");
+	else if (aliased == verb_directive_multiexcept_symbol) WRITE("multiexcept");
+	else {
+		if ((unsub) && (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1))
+			WRITE("scope=");
+		if ((unsub) && (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1))
+			WRITE("noun=");
+		text_stream *S = CodeGen::CL::name(aliased);
+		if ((unsub) && (Str::begins_with_wide_string(S, L"##"))) {
+			LOOP_THROUGH_TEXT(pos, S)
+				if (pos.index >= 2)
+					PUT(Str::get(pos));
+		} else {
+			CodeGen::Targets::mangle(gen, OUT, S);
+		}
+	}
 }
 
 @ Alternatively, we can just specify how many entries there will be: they will
@@ -831,4 +925,14 @@ void CodeGen::I6::new_action(code_generation_target *cgt, code_generation *gen, 
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Fake_Action %S;\n", name);
 	}
+}
+
+void CodeGen::I6::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
+	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Object Compass \"compass\" has concealed;\n");
+	WRITE("Object thedark \"(darkness object)\";\n");
+	WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");
+	WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");
+	CodeGen::deselect(gen, saved);
 }

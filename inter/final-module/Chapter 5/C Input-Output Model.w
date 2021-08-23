@@ -627,4 +627,7 @@ void i7_read(i7val x) {
 	printf("Unimplemented: i7_read.\n");
 	i7_fatal_exit();
 }
+
+i7val fn_i7_mgl_pending_boxed_quotation(int __argc) {
+}
 =

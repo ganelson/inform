@@ -48,7 +48,7 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 @
 
 =
-void CNamespace::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int continues, int ifndef_me) {
+int CNamespace::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (ifndef_me) {
 		WRITE("#ifndef ");
@@ -58,6 +58,7 @@ void CNamespace::begin_constant(code_generation_target *cgt, code_generation *ge
 	WRITE("#define ");
 	CNamespace::mangle(cgt, OUT, const_name);
 	if (continues) WRITE(" ");
+	return TRUE;
 }
 void CNamespace::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);

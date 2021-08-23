@@ -25,6 +25,7 @@ i7val i7_ss_globals_array = 0;
 i7val i7_ss_gself = 0;
 i7val i7_ss_dict_par1 = 0;
 i7val i7_ss_dict_par2 = 0;
+i7val i7_ss_actions_table = 0;
 i7val i7_ss_dictionary_table = 0;
 i7val i7_ss_grammar_table = 0;
 
@@ -251,6 +252,36 @@ void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val 
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
+	i7_fatal_exit();
+}
+
+void glulx_restoreundo(i7val x) {
+	printf("Unimplemented: glulx_restoreundo\n");
+	i7_fatal_exit();
+}
+
+void glulx_saveundo(i7val x) {
+	printf("Unimplemented: glulx_saveundo\n");
+	i7_fatal_exit();
+}
+
+void glulx_restart(void) {
+	printf("Unimplemented: glulx_restart\n");
+	i7_fatal_exit();
+}
+
+void glulx_restore(i7val x, i7val y) {
+	printf("Unimplemented: glulx_restore\n");
+	i7_fatal_exit();
+}
+
+void glulx_save(i7val x, i7val y) {
+	printf("Unimplemented: glulx_save\n");
+	i7_fatal_exit();
+}
+
+void glulx_verify(i7val x) {
+	printf("Unimplemented: glulx_verify\n");
 	i7_fatal_exit();
 }
 /* Return a random number in the range 0 to 2^32-1. */
@@ -1322,4 +1353,7 @@ void i7_print_box(i7val x) {
 void i7_read(i7val x) {
 	printf("Unimplemented: i7_read.\n");
 	i7_fatal_exit();
+}
+
+i7val fn_i7_mgl_pending_boxed_quotation(int __argc) {
 }

@@ -12,6 +12,7 @@ void CObjectModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CObjectModel::declare_attribute);
 	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CObjectModel::property_offset);
+	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
 }
 
@@ -357,6 +358,13 @@ initialiser function which runs early and sets the property values up by hand:
 	text_stream *OUT = CodeGen::current(gen);
 	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
+
+@
+
+=
+int CObjectModel::optimise_property_value(code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+	return FALSE;
+}
 
 @ And this function call is compiled to initialise a property value for a given
 owner. Note that it must be called after the owner's declaration call, and before

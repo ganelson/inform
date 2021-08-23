@@ -43,7 +43,6 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 
-	if (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1) return;
 	if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1)  {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
@@ -73,37 +72,10 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 
 	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) return;
 	
-	if (Str::eq(con_name->symbol_name, I"Release")) {
-		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
-		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
-		WRITE("Release ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
-		WRITE(";\n");
-		return;
-	}
-
-	if (Str::eq(con_name->symbol_name, I"Story")) {
-		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
-		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
-		WRITE("Global Story = ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
-		WRITE(";\n");
-		return;
-	}
-
-	if (Str::eq(con_name->symbol_name, I"Serial")) {
-		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
-		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
-		WRITE("Serial ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
-		WRITE(";\n");
-		return;
-	}
-
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_ti ID = P->W.data[DATA_CONST_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", BYTE_ARRAY_FORMAT);
+		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE_TO(content, "%c", Characters::toupper(Str::get_at(S, i)));
@@ -136,10 +108,10 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
-			CodeGen::Targets::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
-//			WRITE("\"%S\"", S);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
+			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
+				CodeGen::Targets::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
+				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
+			}
 			break;
 		}
 		case CONSTANT_INDIRECT_LIST: {
@@ -154,16 +126,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			}
 			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
 				format = BUFFER_ARRAY_FORMAT;
-			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) {
-				WRITE("Verb "); do_not_bracket = TRUE; unsub = TRUE;
-				if (Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1) WRITE("meta ");
-				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					WRITE(" ");
-					CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
-				}
-				WRITE(";");
-			} else {
-				CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), format);
+			if (CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), con_name, P, format)) {
 				if (hang_one) CodeGen::Targets::array_entry(gen, I"1", format);
 				int entry_count = 0;
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
@@ -207,23 +170,24 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			}
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
 			text_stream *OUT = CodeGen::current(gen);
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, FALSE);
-			WRITE("(");
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				if (i>DATA_CONST_IFLD) {
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
+			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
+				WRITE("(");
+				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+					if (i>DATA_CONST_IFLD) {
+						if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
+						if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
+						if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
+						if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
+					}
+					int bracket = TRUE;
+					if ((P->W.data[i] == LITERAL_IVAL) || (Inter::Symbols::is_stored_in_data(P->W.data[i], P->W.data[i+1]))) bracket = FALSE;
+					if (bracket) WRITE("(");
+					CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
+					if (bracket) WRITE(")");
 				}
-				int bracket = TRUE;
-				if ((P->W.data[i] == LITERAL_IVAL) || (Inter::Symbols::is_stored_in_data(P->W.data[i], P->W.data[i+1]))) bracket = FALSE;
-				if (bracket) WRITE("(");
-				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
-				if (bracket) WRITE(")");
+				WRITE(")");
+				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			}
-			WRITE(")");
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			CodeGen::deselect(gen, saved);
 			break;
 		}
@@ -232,11 +196,12 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
 				"Con %S has depth %d\n", con_name->symbol_name, depth);
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
-			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE, ifndef_me);
-			inter_ti val1 = P->W.data[DATA_CONST_IFLD];
-			inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
-			CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);
+			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {
+				inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+				inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
+				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
+				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);
+			}
 			CodeGen::deselect(gen, saved);
 			break;
 		}
@@ -394,34 +359,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
-		if (aliased == verb_directive_divider_symbol) WRITE("\n\t*");
-		else if (aliased == verb_directive_reverse_symbol) WRITE("reverse");
-		else if (aliased == verb_directive_slash_symbol) WRITE("/");
-		else if (aliased == verb_directive_result_symbol) WRITE("->");
-		else if (aliased == verb_directive_special_symbol) WRITE("special");
-		else if (aliased == verb_directive_number_symbol) WRITE("number");
-		else if (aliased == verb_directive_noun_symbol) WRITE("noun");
-		else if (aliased == verb_directive_multi_symbol) WRITE("multi");
-		else if (aliased == verb_directive_multiinside_symbol) WRITE("multiinside");
-		else if (aliased == verb_directive_multiheld_symbol) WRITE("multiheld");
-		else if (aliased == verb_directive_held_symbol) WRITE("held");
-		else if (aliased == verb_directive_creature_symbol) WRITE("creature");
-		else if (aliased == verb_directive_topic_symbol) WRITE("topic");
-		else if (aliased == verb_directive_multiexcept_symbol) WRITE("multiexcept");
-		else {
-			if ((unsub) && (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1))
-				WRITE("scope=");
-			if ((unsub) && (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1))
-				WRITE("noun=");
-			text_stream *S = CodeGen::CL::name(aliased);
-			if ((unsub) && (Str::begins_with_wide_string(S, L"##"))) {
-				LOOP_THROUGH_TEXT(pos, S)
-					if (pos.index >= 2)
-						PUT(Str::get(pos));
-			} else {
-				CodeGen::Targets::mangle(gen, OUT, S);
-			}
-		}
+		CodeGen::Targets::compile_literal_symbol(gen, aliased, unsub);
 	} else if (val1 == DIVIDER_IVAL) {
 		text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE(" ! %S\n\t", divider_text);

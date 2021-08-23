@@ -57,13 +57,8 @@ void CodeGen::IP::store(inter_tree *I, inter_tree_node *P, void *state) {
 void CodeGen::IP::write_properties(code_generation *gen) {
 	if (properties_written == FALSE) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
-		text_stream *TO = CodeGen::current(gen);
-		if (CodeGen::CL::quartet_present()) {
-			WRITE_TO(TO, "Object Compass \"compass\" has concealed;\n");
-			WRITE_TO(TO, "Object thedark \"(darkness object)\";\n");
-			WRITE_TO(TO, "Object InformParser \"(Inform Parser)\" has proper;\n");
-			WRITE_TO(TO, "Object InformLibrary \"(Inform Library)\" has proper;\n");
-		}
+		if (CodeGen::CL::quartet_present())
+			CodeGen::Targets::world_model_essentials(gen);
 		CodeGen::IP::knowledge(gen);
 		CodeGen::deselect(gen, saved);
 		properties_written = TRUE;		
@@ -276,7 +271,7 @@ compiles an I6 constant for this value.
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE, FALSE);
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
 		WRITE_TO(CodeGen::current(gen), "%S", CodeGen::CL::name(prop_name));
 		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
@@ -291,7 +286,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	inter_tree *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE, FALSE);
+		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
 		WRITE_TO(CodeGen::current(gen), "MAX_POSITIVE_NUMBER");
 		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
@@ -463,7 +458,7 @@ property usage is legal.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
-	CodeGen::Targets::begin_array(gen, I"KindHierarchy", WORD_ARRAY_FORMAT);
+	CodeGen::Targets::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT);
 	if (no_kos > 0) {
 		CodeGen::Targets::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
@@ -590,7 +585,7 @@ words, the number of instances of this kind.
 doesn't have a VPH, or the object number of its VPH if it has.
 
 @<Write the VPH lookup array@> =
-	CodeGen::Targets::begin_array(gen, I"value_property_holders", WORD_ARRAY_FORMAT);
+	CodeGen::Targets::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT);
 	CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	int vph = 0;
 	for (int w=1; w<M; w++) {
@@ -673,7 +668,7 @@ brackets: thus |(4) (-5)|. This cannot be confused with function calling
 because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
-	CodeGen::Targets::begin_array(gen, ident, TABLE_ARRAY_FORMAT);
+	CodeGen::Targets::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT);
 	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	for (int j=0; j<no_instance_frames; j++) {
@@ -757,7 +752,7 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
 	if (properties_found) {
-		CodeGen::Targets::begin_array(gen, I"property_metadata", WORD_ARRAY_FORMAT);
+		CodeGen::Targets::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT);
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
@@ -887,13 +882,14 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		if (val1 == UNDEF_IVAL) defined = FALSE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, 1));
 		text_stream *OUT = CodeGen::current(gen);
-		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined, FALSE);
-		if (defined) {
-			int hex = FALSE;
-			if (Inter::Annotations::find(&(inst_name->ann_set), HEX_IANN)) hex = TRUE;
-			if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
+		if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), inst_name, P, defined, FALSE)) {
+			if (defined) {
+				int hex = FALSE;
+				if (Inter::Annotations::find(&(inst_name->ann_set), HEX_IANN)) hex = TRUE;
+				if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
+			}
+			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
 		}
-		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
 		CodeGen::deselect(gen, saved);
 	}
 }
@@ -1006,21 +1002,10 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 		} else {
 			TEMPORARY_TEXT(OUT)
 			CodeGen::select_temporary(gen, OUT);
-			int done = FALSE;
-			if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
-				inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
-				if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
-					inter_tree_node *P = Inter::Symbols::definition(S);
-					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-						if (i>DATA_CONST_IFLD) WRITE(" ");
-						CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
-					}
-					done = TRUE;
-				}
-			}
-			if (done == FALSE)
+			if (CodeGen::Targets::optimise_property_value(gen, prop_name, X) == FALSE) {
 				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(X),
 					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], FALSE);
+			}
 			CodeGen::deselect_temporary(gen);
 			CodeGen::Targets::assign_property(gen, call_it, OUT, FALSE);
 			DISCARD_TEXT(OUT)

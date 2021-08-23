@@ -251,5 +251,35 @@ void glulx_shiftl(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
 	i7_fatal_exit();
 }
+
+void glulx_restoreundo(i7val x) {
+	printf("Unimplemented: glulx_restoreundo\n");
+	i7_fatal_exit();
+}
+
+void glulx_saveundo(i7val x) {
+	printf("Unimplemented: glulx_saveundo\n");
+	i7_fatal_exit();
+}
+
+void glulx_restart(void) {
+	printf("Unimplemented: glulx_restart\n");
+	i7_fatal_exit();
+}
+
+void glulx_restore(i7val x, i7val y) {
+	printf("Unimplemented: glulx_restore\n");
+	i7_fatal_exit();
+}
+
+void glulx_save(i7val x, i7val y) {
+	printf("Unimplemented: glulx_save\n");
+	i7_fatal_exit();
+}
+
+void glulx_verify(i7val x) {
+	printf("Unimplemented: glulx_verify\n");
+	i7_fatal_exit();
+}
 =
 
