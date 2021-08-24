@@ -701,6 +701,12 @@ i7val fn_i7_mgl_child(int n, i7val id) {
 	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
 	return i7_object_tree_child[id];
 }
+i7val fn_i7_mgl_children(int n, i7val id) {
+	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
+	i7val c=0;
+	for (int i=0; i<i7_max_objects; i++) if (i7_object_tree_parent[i] == id) c++;
+	return c;
+}
 i7val fn_i7_mgl_sibling(int n, i7val id) {
 	if (fn_i7_mgl_metaclass(1, id) != i7_mgl_Object) return 0;
 	return i7_object_tree_sibling[id];

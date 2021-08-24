@@ -4,6 +4,7 @@ merge-template <- none
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
+generate text -> *tout
 consolidate-text
 resolve-external-symbols
 inspect-plugs
@@ -11,5 +12,4 @@ make-identifiers-unique
 reconcile-verbs
 eliminate-redundant-labels
 eliminate-redundant-operations
-generate text -> *tout
 generate c -> *cout

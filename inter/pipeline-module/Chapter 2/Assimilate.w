@@ -203,6 +203,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	inter_symbol *con_name = CodeGen::Assimilate::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(con_name, ASSIMILATED_IANN, 1);
+	if (plm == VERB_PLM)
+		Inter::Symbols::set_flag(con_name, MAKE_NAME_UNIQUE);
 	if (plm == FAKEACTION_PLM)
 		Inter::Symbols::annotate_i(con_name, FAKE_ACTION_IANN, 1);
 	if (plm == OBJECT_PLM)

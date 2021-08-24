@@ -250,7 +250,7 @@ Object InformParser "(Inform Parser)" has proper;
 
 Object InformLibrary "(Inform Library)" has proper;
 
-[ UnknownVerb;
+[ UnknownVerb v;
 	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
 		verb_wordnum = 0; return 'no.verb';
 	}
