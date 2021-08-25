@@ -19,6 +19,7 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Assimilate
 	Resolve External Symbols
 	Inspect Plugs
+	Detect Indirect Calls
 	Uniqueness
 	Reconcile Verbs
 	Eliminate Redundant Matter

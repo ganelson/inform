@@ -88,7 +88,7 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, PARENT_VSYMB, I"parent", NULL);
 	Veneer::index(I, CHILD_VSYMB, I"child", NULL);
 	Veneer::index(I, SIBLING_VSYMB, I"sibling", NULL);
-	Veneer::index(I, INDIRECT_VSYMB, I"indirect", NULL);
+//	Veneer::index(I, INDIRECT_VSYMB, I"indirect", NULL);
 	Veneer::index(I, RANDOM_VSYMB, I"random", NULL);
 	Veneer::index(I, METACLASS_VSYMB, I"metaclass", NULL);
 	Veneer::index(I, CHILDREN_VSYMB, I"children", NULL);

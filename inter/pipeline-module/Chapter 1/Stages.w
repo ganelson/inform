@@ -53,6 +53,7 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Architecture::create_pipeline_stage();
 		CodeGen::LinkInstructions::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
+		DetectIndirectCalls::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
 		CodeGen::Inspection::create_pipeline_stage();

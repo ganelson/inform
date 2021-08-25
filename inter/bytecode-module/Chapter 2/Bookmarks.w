@@ -40,6 +40,14 @@ inter_bookmark Inter::Bookmarks::after_this_node(inter_tree *I, inter_tree_node 
 	return IBM;
 }
 
+inter_bookmark Inter::Bookmarks::first_child_of_this_node(inter_tree *I, inter_tree_node *D) {
+	if (D == NULL) internal_error("invalid frame supplied");
+	inter_bookmark IBM;
+	IBM.R = D;
+	IBM.placement_wrt_R = AS_FIRST_CHILD_OF_ICPLACEMENT;
+	return IBM;
+}
+
 void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	if (P == NULL) internal_error("invalid package supplied");

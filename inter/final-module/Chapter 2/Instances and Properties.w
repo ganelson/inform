@@ -272,7 +272,7 @@ compiles an I6 constant for this value.
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
-		WRITE_TO(CodeGen::current(gen), "%S", CodeGen::CL::name(prop_name));
+		CodeGen::Targets::mangle(gen, CodeGen::current(gen), CodeGen::CL::name(prop_name));
 		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}

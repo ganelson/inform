@@ -1362,4 +1362,5 @@ void i7_read(i7val x) {
 }
 
 i7val fn_i7_mgl_pending_boxed_quotation(int __argc) {
+	return 0;
 }

@@ -7,6 +7,7 @@ assimilate
 consolidate-text
 resolve-external-symbols
 inspect-plugs
+detect-indirect-calls
 make-identifiers-unique
 reconcile-verbs
 eliminate-redundant-labels

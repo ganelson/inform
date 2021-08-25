@@ -229,8 +229,19 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
 			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL)) {
-				to_call = EmitInterSchemas::find_identifier(I, tok, first_call, second_call);
-				if (Inter::Symbols::is_local(to_call)) to_call = NULL;
+				if (Str::eq(tok->material, I"indirect")) { 
+					at = at->next_node;
+				} else {
+					to_call = EmitInterSchemas::find_identifier(I, tok, first_call, second_call);
+					if (Inter::Symbols::is_local(to_call)) to_call = NULL;
+					if (to_call) {
+						inter_tree_node *D = to_call->definition;
+						if ((D) && (D->W.data[ID_IFLD] == VARIABLE_IST)) {
+							WRITE_TO(STDERR, "Yes %S\n", tok->material);
+							to_call = NULL;
+						}
+					}
+				}
 			}
 		}
 		if (to_call) {
