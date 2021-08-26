@@ -23,6 +23,7 @@ typedef struct C_generation_object_model_data {
 	int property_id_counter;
 	int C_property_offsets_made;
 	int current_owner_id;
+	struct dictionary *declared_properties;
 } C_generation_object_model_data;
 
 typedef struct C_property_owner {
@@ -37,6 +38,7 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.C_property_offsets_made) = 0;
 	C_GEN_DATA(objdata.owners) = NULL;
 	C_GEN_DATA(objdata.owners_capacity) = 0;
+	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, TRUE);
 }
 
 void CObjectModel::begin(code_generation *gen) {
@@ -259,21 +261,17 @@ only need to be unique, so the order is not significant.
 
 =
 void CObjectModel::declare_property_by_name(code_generation *gen, text_stream *name, int used) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-//	if (used) {
+	dictionary *D = C_GEN_DATA(objdata.declared_properties);
+	text_stream *X = Dictionaries::get_text(D, name);
+	if (X == NULL) {
+		Dictionaries::create(D, name);
+		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
 		CNamespace::mangle(NULL, OUT, name);
 		WRITE(" %d\n", C_GEN_DATA(objdata.property_id_counter)++);
-/*	} else {
-		WRITE("#ifndef ");
-		CNamespace::mangle(NULL, OUT, name);
-		WRITE("\n#define ");
-		CNamespace::mangle(NULL, OUT, name);
-		WRITE(" 0\n#endif\n");
+		CodeGen::deselect(gen, saved);
 	}
-*/
-	CodeGen::deselect(gen, saved);
 }
 
 @h Property offsets arrays.

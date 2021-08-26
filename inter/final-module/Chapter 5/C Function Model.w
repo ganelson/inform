@@ -11,9 +11,7 @@ void CFunctionModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CFunctionModel::begin_function_code);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, CFunctionModel::place_label);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CFunctionModel::end_function);
-	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CFunctionModel::begin_function_call);
-	METHOD_ADD(cgt, ARGUMENT_MTID, CFunctionModel::argument);
-	METHOD_ADD(cgt, END_FUNCTION_CALL_MTID, CFunctionModel::end_function_call);
+	METHOD_ADD(cgt, FUNCTION_CALL_MTID, CFunctionModel::function_call);
 }
 
 typedef struct C_generation_function_model_data {
@@ -205,7 +203,7 @@ int CFunctionModel::inside_function(code_generation *gen) {
 	return FALSE;
 }
 
-void CFunctionModel::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+void CFunctionModel::function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
 	inter_tree_node *D = fn->definition;
 	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) && (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
@@ -222,31 +220,25 @@ void CFunctionModel::begin_function_call(code_generation_target *cgt, code_gener
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	
+	inter_tree_node *fargstuff[128];
+	
 	WRITE("fn_");
 	CNamespace::mangle(cgt, OUT, fn_name);
 	WRITE("(%d", argc);
-}
 
-inter_tree_node *fargstuff[128];
-
-void CFunctionModel::argument(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (GENERAL_POINTER_IS_NULL(fn->translation_data) == FALSE) {
-		final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
-		if (fcf->uses_vararg_model) fargstuff[argc] = F;
-		else { WRITE(", "); CodeGen::FC::frame(gen, F); }
-	} else {
-		WRITE(", ");
-		CodeGen::FC::frame(gen, F);
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P) {
+		if (fcf) {
+			if (fcf->uses_vararg_model) fargstuff[c] = F;
+			else { WRITE(", "); CodeGen::FC::frame(gen, F); }
+		} else {
+			WRITE(", ");
+			CodeGen::FC::frame(gen, F);
+		}
+		c++;
 	}
-}
-void CFunctionModel::end_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
-	if (GENERAL_POINTER_IS_NULL(fn->translation_data)) {
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE(")");
-	} else {
-		final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
-		text_stream *OUT = CodeGen::current(gen);
+
+	if (fcf) {
 		if (fcf->uses_vararg_model) {
 			WRITE(", (");
 			for (int i=argc-1; i >= 0; i--) {
@@ -261,8 +253,8 @@ void CFunctionModel::end_function_call(code_generation_target *cgt, code_generat
 			WRITE(", 0");
 			argc++;
 		}
-		WRITE(")");
 	}
+	WRITE(")");
 }
 
 void CFunctionModel::declare_local_variable(code_generation_target *cgt, int pass,

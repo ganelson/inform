@@ -1321,6 +1321,12 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 	if (z) *z = rv;
 }
 
+i7val fn_i7_mgl_IndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_DefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CIndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CDefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_PrintShortName(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+
 void i7_print_def_art(i7val x) {
 	fn_i7_mgl_DefArt(1, x, 0);
 }

@@ -98,9 +98,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CodeGen::I6::begin_function_code);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, CodeGen::I6::place_label);
 	METHOD_ADD(cgt, END_FUNCTION_MTID, CodeGen::I6::end_function);
-	METHOD_ADD(cgt, BEGIN_FUNCTION_CALL_MTID, CodeGen::I6::begin_function_call);
-	METHOD_ADD(cgt, ARGUMENT_MTID, CodeGen::I6::argument);
-	METHOD_ADD(cgt, END_FUNCTION_CALL_MTID, CodeGen::I6::end_function_call);
+	METHOD_ADD(cgt, FUNCTION_CALL_MTID, CodeGen::I6::function_call);
 	METHOD_ADD(cgt, ASSEMBLY_MTID, CodeGen::I6::assembly);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CodeGen::I6::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CodeGen::I6::array_entry);
@@ -813,18 +811,15 @@ void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_gener
 	}
 }
 
-void CodeGen::I6::begin_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
+void CodeGen::I6::function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", fn_name);
-}
-void CodeGen::I6::argument(code_generation_target *cgt, code_generation *gen, inter_tree_node *F, inter_symbol *fn, int argc, int of_argc) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (argc > 0) WRITE(", ");
-	CodeGen::FC::frame(gen, F);
-}
-void CodeGen::I6::end_function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, int argc) {
-	text_stream *OUT = CodeGen::current(gen);
+	int c = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P) {
+		if (c++ > 0) WRITE(", ");
+		CodeGen::FC::frame(gen, F);
+	}
 	WRITE(")");
 }
 
