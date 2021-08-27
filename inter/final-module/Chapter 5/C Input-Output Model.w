@@ -400,6 +400,71 @@ void i7_print_decimal(i7val x) {
 	i7_print_C_string(room);
 }
 
+#define evtype_None (0)
+#define evtype_Timer (1)
+#define evtype_CharInput (2)
+#define evtype_LineInput (3)
+#define evtype_MouseInput (4)
+#define evtype_Arrange (5)
+#define evtype_Redraw (6)
+#define evtype_SoundNotify (7)
+#define evtype_Hyperlink (8)
+#define evtype_VolumeNotify (9)
+
+typedef struct i7_glk_event {
+	i7val type;
+	i7val win_id;
+	i7val val1;
+	i7val val2;
+} i7_glk_event;
+
+i7_glk_event i7_events_ring_buffer[32];
+int i7_rb_back = 0, i7_rb_front = 0;
+
+i7_glk_event *i7_next_event(void) {
+	if (i7_rb_front == i7_rb_back) return NULL;
+	i7_glk_event *e = &(i7_events_ring_buffer[i7_rb_back]);
+	i7_rb_back++; if (i7_rb_back == 32) i7_rb_back = 0;
+	return e;
+}
+
+void i7_make_event(i7_glk_event e) {
+	i7_events_ring_buffer[i7_rb_front] = e;
+	i7_rb_front++; if (i7_rb_front == 32) i7_rb_front = 0;
+}
+
+i7val i7_do_glk_select(i7val structure) {
+	i7_glk_event *e = i7_next_event();
+	if (e == NULL) {
+		fprintf(stderr, "No events available to select\n"); i7_fatal_exit();
+	}
+	if (structure == -1) {
+		i7_push(e->type);
+		i7_push(e->win_id);
+		i7_push(e->val1);
+		i7_push(e->val2);
+	} else {
+		if (structure) {
+			i7_write_word(i7mem, structure, 0, e->type, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 0, e->win_id, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 0, e->val1, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 0, e->val2, i7_lvalue_SET);
+		}
+	}
+}
+
+i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len) {
+	i7_glk_event e;
+	e.type = evtype_LineInput;
+	e.win_id = window_id;
+	e.val1 = 1;
+	e.val2 = 0;
+	i7mem[buffer + init_len] = 'q';
+	i7mem[buffer + init_len+1] = 0;
+	i7_make_event(e);
+	return 0;
+}
+
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -553,8 +618,20 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = 0; break;
 		case i7_glk_schannel_create:
 			rv = 0; break;
+		case i7_glk_set_style:
+			rv = 0; break;
+		case i7_glk_window_move_cursor:
+			rv = 0; break;
 		case i7_glk_stream_get_position:
 			rv = i7_do_glk_stream_get_position(args[0]); break;
+		case i7_glk_window_get_size:
+			if (args[0]) i7_write_word(i7mem, args[0], 0, 80, i7_lvalue_SET);
+			if (args[1]) i7_write_word(i7mem, args[1], 0, 8, i7_lvalue_SET);
+			rv = 0; break;
+		case i7_glk_request_line_event:
+			rv = i7_do_glk_request_line_event(args[0], args[1], args[2], args[3]); break;
+		case i7_glk_select:
+			rv = i7_do_glk_select(args[0]); break;
 		case i7_glk_stream_close:
 			i7_do_glk_stream_close(args[0], args[1]); break;
 		case i7_glk_stream_set_current:

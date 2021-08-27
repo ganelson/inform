@@ -137,6 +137,14 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 }
 =
 
+@ "Short" 16-bit numbers can also be accessed:
+
+= (text to inform7_clib.h)
+void glulx_aloads(i7val x, i7val y, i7val *z) {
+	if (z) *z = 0x100*((i7val) i7mem[x+2*y]) + ((i7val) i7mem[x+2*y+1]);
+}
+=
+
 @ A Glulx assembly opcode is provided for fast memory copies:
 
 = (text to inform7_clib.h)

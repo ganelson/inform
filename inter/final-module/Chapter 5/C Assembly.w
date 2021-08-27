@@ -151,14 +151,10 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 @
 
 = (text to inform7_clib.h)
-void glulx_accelfunc(i7val x, i7val y) {
-	printf("Unimplemented: glulx_accelfunc.\n");
-	i7_fatal_exit();
+void glulx_accelfunc(i7val x, i7val y) { /* Intentionally ignore */
 }
 
-void glulx_accelparam(i7val x, i7val y) {
-	printf("Unimplemented: glulx_accelparam.\n");
-	i7_fatal_exit();
+void glulx_accelparam(i7val x, i7val y) { /* Intentionally ignore */
 }
 
 void glulx_copy(i7val x, i7val *y) {
@@ -234,11 +230,6 @@ void glulx_aload(i7val x, i7val y, i7val *z) {
 
 void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloadb\n");
-	i7_fatal_exit();
-}
-
-void glulx_aloads(i7val x, i7val y, i7val *z) {
-	printf("Unimplemented: glulx_aloads\n");
 	i7_fatal_exit();
 }
 
