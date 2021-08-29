@@ -268,15 +268,15 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 		case QUIT_BIP: 			WRITE("quit"); break;
 		case RESTORE_BIP: 		WRITE("restore "); INV_A1; break;
 
-		case INDIRECT0_BIP: case INDIRECT0V_BIP:
+		case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
 								WRITE("("); INV_A1; WRITE(")()"); break;
-		case INDIRECT1_BIP: case INDIRECT1V_BIP:
+		case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
 								WRITE("("); INV_A1; WRITE(")(");
 								INV_A2; WRITE(")"); break;
-		case INDIRECT2_BIP: case INDIRECT2V_BIP:
+		case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
 								WRITE("("); INV_A1; WRITE(")(");
 								INV_A2; WRITE(","); INV_A3; WRITE(")"); break;
-		case INDIRECT3_BIP: case INDIRECT3V_BIP:
+		case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
 								WRITE("("); INV_A1; WRITE(")(");
 								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE(")"); break;
 		case INDIRECT4_BIP: case INDIRECT4V_BIP:
@@ -294,14 +294,6 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 								INV_A3; WRITE(","); INV_A4; WRITE("))"); break;
 		case MESSAGE3_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("(");
 								INV_A3; WRITE(","); INV_A4; WRITE(","); INV_A5; WRITE("))"); break;
-		case CALLMESSAGE0_BIP: 	WRITE("("); INV_A1; WRITE(".call())"); break;
-		case CALLMESSAGE1_BIP: 	WRITE("("); INV_A1; WRITE(".call(");
-								INV_A2; WRITE("))"); break;
-		case CALLMESSAGE2_BIP: 	WRITE("("); INV_A1; WRITE(".call(");
-								INV_A2; WRITE(","); INV_A3; WRITE("))"); break;
-		case CALLMESSAGE3_BIP: 	WRITE("("); INV_A1; WRITE(".call(");
-								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE("))"); break;
-
 		case SPACES_BIP:		WRITE("spaces "); INV_A1; break;
 		case FONT_BIP:
 			WRITE("if ("); INV_A1; WRITE(") { font on; } else { font off; }");

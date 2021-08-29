@@ -338,10 +338,6 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 	S->memory_used = 0;
 }
 
-i7val i7_do_glk_char_to_upper(i7val c) {
-	return toupper(c);
-}
-
 void i7_do_glk_put_char_stream(i7val stream_id, i7val x) {
 	i7_stream *S = &(i7_memory_streams[stream_id]);
 	if (S->to_file) {
@@ -446,13 +442,14 @@ i7val i7_do_glk_select(i7val structure) {
 	} else {
 		if (structure) {
 			i7_write_word(i7mem, structure, 0, e->type, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->win_id, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->val1, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->val2, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 1, e->win_id, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 2, e->val1, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
 		}
 	}
 }
 
+int i7_no_lr = 0;
 i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len) {
 	i7_glk_event e;
 	e.type = evtype_LineInput;
@@ -462,6 +459,9 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 	i7mem[buffer + init_len] = 'q';
 	i7mem[buffer + init_len+1] = 0;
 	i7_make_event(e);
+	if (i7_no_lr++ == 10) {
+		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
+	}
 	return 0;
 }
 
@@ -642,8 +642,6 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = i7_do_glk_stream_open_memory(args[0], args[1], args[2], args[3]); break;
 		case i7_glk_stream_open_memory_uni:
 			rv = i7_do_glk_stream_open_memory_uni(args[0], args[1], args[2], args[3]); break;
-		case i7_glk_char_to_upper:
-			rv = i7_do_glk_char_to_upper(args[0]); break;
 		case i7_glk_fileref_create_by_name:
 			rv = i7_do_glk_fileref_create_by_name(args[0], args[1], args[2]); break;
 		case i7_glk_fileref_does_file_exist:
@@ -652,6 +650,18 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = i7_do_glk_stream_open_file(args[0], args[1], args[2]); break;
 		case i7_glk_fileref_destroy:
 			rv = 0; break;
+		case i7_glk_char_to_lower:
+			rv = args[0];
+			if (((rv >= 0x41) && (rv <= 0x5A)) ||
+				((rv >= 0xC0) && (rv <= 0xD6)) ||
+				((rv >= 0xD8) && (rv <= 0xDE))) rv += 32;
+			break;
+		case i7_glk_char_to_upper:
+			rv = args[0];
+			if (((rv >= 0x61) && (rv <= 0x7A)) ||
+				((rv >= 0xE0) && (rv <= 0xF6)) ||
+				((rv >= 0xF8) && (rv <= 0xFE))) rv -= 32;
+			break;
 		case i7_glk_stream_set_position:
 			i7_do_glk_stream_set_position(args[0], args[1], args[2]); break;
 		case i7_glk_put_char_stream:

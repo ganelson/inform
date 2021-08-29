@@ -402,14 +402,14 @@ int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 									WRITE("i7_read_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")");
 								}
 								break;
-		case MESSAGE0_BIP: 		WRITE("i7_call_0(i7_read_prop_value("); INV_A1;
+		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(i7_read_prop_value("); INV_A1;
 								WRITE(", "); INV_A2; WRITE("))"); break;
-		case MESSAGE1_BIP: 		WRITE("i7_call_1(i7_read_prop_value("); INV_A1;
+		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(i7_read_prop_value("); INV_A1;
 								WRITE(", "); INV_A2; WRITE("), "); INV_A3; WRITE(")"); break;
-		case MESSAGE2_BIP: 		WRITE("i7_call_2(i7_read_prop_value("); INV_A1;
+		case MESSAGE2_BIP: 		WRITE("i7_mcall_2(i7_read_prop_value("); INV_A1;
 								WRITE(", "); INV_A2; WRITE("), ");
 								INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
-		case MESSAGE3_BIP: 		WRITE("i7_call_3(i7_read_prop_value("); INV_A1;
+		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(i7_read_prop_value("); INV_A1;
 								WRITE(", "); INV_A2; WRITE("), ");
 								INV_A3; WRITE(", "); INV_A4; WRITE(", "); INV_A5; WRITE(")"); break;
 		case GIVE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
@@ -481,8 +481,7 @@ i7val i7_prop_len(i7val obj, i7val pr) {
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_addr.\n");
-	return 0;
+	return i7_read_prop_value(obj, pr);
 }
 =
 
@@ -551,7 +550,35 @@ i7val fn_i7_mgl_sibling(int n, i7val id) {
 }
 
 void i7_move(i7val obj, i7val to) {
-	printf("Unimplemented: i7_move.\n");
+	if ((obj <= 0) || (obj >= i7_max_objects)) return;
+	int p = i7_object_tree_parent[obj];
+	if (p) {
+		if (i7_object_tree_child[p] == obj) i7_object_tree_child[p] = 0;
+		else {
+			int c = i7_object_tree_child[p];
+			while (c != 0) {
+				if (i7_object_tree_sibling[c] == obj) {
+					i7_object_tree_sibling[c] = i7_object_tree_sibling[obj];
+					break;
+				}
+				c = i7_object_tree_sibling[c];
+			}
+		}
+	}
+	i7_object_tree_parent[obj] = to;
+	i7_object_tree_sibling[obj] = 0;
+	if (to) {
+		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
+		else {
+			int c = i7_object_tree_child[to];
+			while (c != 0) {
+				if (i7_object_tree_sibling[c] == 0) {
+					i7_object_tree_sibling[c] = obj;
+					break;
+				}
+				c = i7_object_tree_sibling[c];
+			}
+		}
+	}
 }
-
 =

@@ -239,9 +239,99 @@ void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	i7_fatal_exit();
 }
 
-void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
-	printf("Unimplemented: glulx_binarysearch\n");
-	i7_fatal_exit();
+#define serop_KeyIndirect (0x01)
+#define serop_ZeroKeyTerminates (0x02)
+#define serop_ReturnIndex (0x04)
+
+void fetchkey(unsigned char *keybuf, i7val key, i7val keysize, i7val options)
+{
+  int ix;
+
+  if (options & serop_KeyIndirect) {
+    if (keysize <= 4) {
+      for (ix=0; ix<keysize; ix++)
+        keybuf[ix] = i7mem[key + ix];
+    }
+  }
+  else {
+    switch (keysize) {
+    case 4:
+		keybuf[0]   = I7BYTE_0(key);
+		keybuf[1] = I7BYTE_1(key);
+		keybuf[2] = I7BYTE_2(key);
+		keybuf[3] = I7BYTE_3(key);
+      break;
+    case 2:
+		keybuf[0]  = I7BYTE_0(key);
+		keybuf[1] = I7BYTE_1(key);
+      break;
+    case 1:
+      keybuf[0]   = key;
+      break;
+    }
+  }
+}
+
+void glulx_binarysearch(i7val key, i7val keysize, i7val start, i7val structsize,
+	i7val numstructs, i7val keyoffset, i7val options, i7val *s1) {
+	if (s1 == NULL) return;
+
+  unsigned char keybuf[4];
+  unsigned char byte, byte2;
+  i7val top, bot, val, addr;
+  int ix;
+  int retindex = ((options & serop_ReturnIndex) != 0);
+
+  fetchkey(keybuf, key, keysize, options);
+
+  bot = 0;
+  top = numstructs;
+  while (bot < top) {
+    int cmp = 0;
+    val = (top+bot) / 2;
+    addr = start + val * structsize;
+
+    if (keysize <= 4) {
+      for (ix=0; (!cmp) && ix<keysize; ix++) {
+        byte = i7mem[addr + keyoffset + ix];
+        byte2 = keybuf[ix];
+        if (byte < byte2)
+          cmp = -1;
+        else if (byte > byte2)
+          cmp = 1;
+      }
+    }
+    else {
+      for (ix=0; (!cmp) && ix<keysize; ix++) {
+        byte = i7mem[addr + keyoffset + ix];
+        byte2 = i7mem[key + ix];
+        if (byte < byte2)
+          cmp = -1;
+        else if (byte > byte2)
+          cmp = 1;
+      }
+    }
+
+    if (!cmp) {
+      if (retindex)
+        *s1 = val;
+      else
+        *s1 = addr;
+    	return;
+    }
+
+    if (cmp < 0) {
+      bot = val+1;
+    }
+    else {
+      top = val;
+    }
+  }
+
+  if (retindex)
+    *s1 = -1;
+  else
+    *s1 = 0;
 }
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
@@ -250,13 +340,9 @@ void glulx_shiftl(i7val x, i7val y, i7val *z) {
 }
 
 void glulx_restoreundo(i7val x) {
-	printf("Unimplemented: glulx_restoreundo\n");
-	i7_fatal_exit();
 }
 
 void glulx_saveundo(i7val x) {
-	printf("Unimplemented: glulx_saveundo\n");
-	i7_fatal_exit();
 }
 
 void glulx_restart(void) {
@@ -657,8 +743,7 @@ i7val i7_prop_len(i7val obj, i7val pr) {
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_addr.\n");
-	return 0;
+	return i7_read_prop_value(obj, pr);
 }
 int i7_has(i7val obj, i7val attr) {
 	if (i7_read_prop_value(obj, attr)) return 1;
@@ -707,77 +792,113 @@ i7val fn_i7_mgl_sibling(int n, i7val id) {
 }
 
 void i7_move(i7val obj, i7val to) {
-	printf("Unimplemented: i7_move.\n");
+	if ((obj <= 0) || (obj >= i7_max_objects)) return;
+	int p = i7_object_tree_parent[obj];
+	if (p) {
+		if (i7_object_tree_child[p] == obj) i7_object_tree_child[p] = 0;
+		else {
+			int c = i7_object_tree_child[p];
+			while (c != 0) {
+				if (i7_object_tree_sibling[c] == obj) {
+					i7_object_tree_sibling[c] = i7_object_tree_sibling[obj];
+					break;
+				}
+				c = i7_object_tree_sibling[c];
+			}
+		}
+	}
+	i7_object_tree_parent[obj] = to;
+	i7_object_tree_sibling[obj] = 0;
+	if (to) {
+		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
+		else {
+			int c = i7_object_tree_child[to];
+			while (c != 0) {
+				if (i7_object_tree_sibling[c] == 0) {
+					i7_object_tree_sibling[c] = obj;
+					break;
+				}
+				c = i7_object_tree_sibling[c];
+			}
+		}
+	}
 }
-
 i7val i7_mgl_self = 0;
 
 i7val i7_call_0(i7val fn_ref) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 0);
+	return i7_gen_call(fn_ref, args, 0);
 }
 
-i7val fn_i7_mgl_indirect(int n, i7val v) {
-	return i7_call_0(v);
+i7val i7_mcall_0(i7val fn_ref) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 0);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_1(i7val fn_ref, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 0);
+	return i7_gen_call(fn_ref, args, 1);
+}
+
+i7val i7_mcall_1(i7val fn_ref, i7val v) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 1);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 0);
+	return i7_gen_call(fn_ref, args, 2);
+}
+
+i7val i7_mcall_2(i7val fn_ref, i7val v, i7val v2) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 2);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 0);
+	return i7_gen_call(fn_ref, args, 3);
+}
+
+i7val i7_mcall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 3);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_4(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
-	return i7_gen_call(fn_ref, args, 4, 0);
+	return i7_gen_call(fn_ref, args, 4);
 }
 
 i7val i7_call_5(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
-	return i7_gen_call(fn_ref, args, 5, 0);
-}
-
-i7val i7_ccall_0(i7val fn_ref) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 1);
-}
-
-i7val i7_ccall_1(i7val fn_ref, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 1);
-}
-
-i7val i7_ccall_2(i7val fn_ref, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 1);
-}
-
-i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 1);
+	return i7_gen_call(fn_ref, args, 5);
 }
 
 void glulx_call(i7val fn_ref, i7val varargc, i7val *z) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull();
-	i7val rv = i7_gen_call(fn_ref, args, varargc, 0);
+	i7val rv = i7_gen_call(fn_ref, args, varargc);
 	if (z) *z = rv;
 }
 #define i7_bold 1
@@ -1065,10 +1186,6 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 	S->memory_used = 0;
 }
 
-i7val i7_do_glk_char_to_upper(i7val c) {
-	return toupper(c);
-}
-
 void i7_do_glk_put_char_stream(i7val stream_id, i7val x) {
 	i7_stream *S = &(i7_memory_streams[stream_id]);
 	if (S->to_file) {
@@ -1173,13 +1290,14 @@ i7val i7_do_glk_select(i7val structure) {
 	} else {
 		if (structure) {
 			i7_write_word(i7mem, structure, 0, e->type, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->win_id, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->val1, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 0, e->val2, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 1, e->win_id, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 2, e->val1, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
 		}
 	}
 }
 
+int i7_no_lr = 0;
 i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len) {
 	i7_glk_event e;
 	e.type = evtype_LineInput;
@@ -1189,6 +1307,9 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 	i7mem[buffer + init_len] = 'q';
 	i7mem[buffer + init_len+1] = 0;
 	i7_make_event(e);
+	if (i7_no_lr++ == 10) {
+		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
+	}
 	return 0;
 }
 
@@ -1369,8 +1490,6 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = i7_do_glk_stream_open_memory(args[0], args[1], args[2], args[3]); break;
 		case i7_glk_stream_open_memory_uni:
 			rv = i7_do_glk_stream_open_memory_uni(args[0], args[1], args[2], args[3]); break;
-		case i7_glk_char_to_upper:
-			rv = i7_do_glk_char_to_upper(args[0]); break;
 		case i7_glk_fileref_create_by_name:
 			rv = i7_do_glk_fileref_create_by_name(args[0], args[1], args[2]); break;
 		case i7_glk_fileref_does_file_exist:
@@ -1379,6 +1498,18 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 			rv = i7_do_glk_stream_open_file(args[0], args[1], args[2]); break;
 		case i7_glk_fileref_destroy:
 			rv = 0; break;
+		case i7_glk_char_to_lower:
+			rv = args[0];
+			if (((rv >= 0x41) && (rv <= 0x5A)) ||
+				((rv >= 0xC0) && (rv <= 0xD6)) ||
+				((rv >= 0xD8) && (rv <= 0xDE))) rv += 32;
+			break;
+		case i7_glk_char_to_upper:
+			rv = args[0];
+			if (((rv >= 0x61) && (rv <= 0x7A)) ||
+				((rv >= 0xE0) && (rv <= 0xF6)) ||
+				((rv >= 0xF8) && (rv <= 0xFE))) rv -= 32;
+			break;
 		case i7_glk_stream_set_position:
 			i7_do_glk_stream_set_position(args[0], args[1], args[2]); break;
 		case i7_glk_put_char_stream:

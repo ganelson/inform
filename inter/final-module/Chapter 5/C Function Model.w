@@ -69,14 +69,14 @@ void CFunctionModel::end(code_generation *gen) {
 
 	saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message);\n");
+	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc);\n");
 	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc, int call_message) {\n"); INDENT;
-	WRITE("if (call_message) printf(\"message!\\n\");\n");
+	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc) {\n"); INDENT;
 	WRITE("switch (fn_ref) {\n"); INDENT;
+	WRITE("case 0: return 0;\n");
 	final_c_function *fcf;
 	LOOP_OVER(fcf, final_c_function) {
 		WRITE("case ");
@@ -285,70 +285,78 @@ i7val i7_mgl_self = 0;
 
 i7val i7_call_0(i7val fn_ref) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 0);
+	return i7_gen_call(fn_ref, args, 0);
 }
 
-i7val fn_i7_mgl_indirect(int n, i7val v) {
-	return i7_call_0(v);
+i7val i7_mcall_0(i7val fn_ref) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 0);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_1(i7val fn_ref, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 0);
+	return i7_gen_call(fn_ref, args, 1);
+}
+
+i7val i7_mcall_1(i7val fn_ref, i7val v) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 1);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 0);
+	return i7_gen_call(fn_ref, args, 2);
+}
+
+i7val i7_mcall_2(i7val fn_ref, i7val v, i7val v2) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 2);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 0);
+	return i7_gen_call(fn_ref, args, 3);
+}
+
+i7val i7_mcall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3;
+	i7val saved = i7_mgl_self;
+	i7val rv = i7_gen_call(fn_ref, args, 3);
+	i7_mgl_self = saved;
+	return rv;
 }
 
 i7val i7_call_4(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
-	return i7_gen_call(fn_ref, args, 4, 0);
+	return i7_gen_call(fn_ref, args, 4);
 }
 
 i7val i7_call_5(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
-	return i7_gen_call(fn_ref, args, 5, 0);
-}
-
-i7val i7_ccall_0(i7val fn_ref) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(fn_ref, args, 0, 1);
-}
-
-i7val i7_ccall_1(i7val fn_ref, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v;
-	return i7_gen_call(fn_ref, args, 1, 1);
-}
-
-i7val i7_ccall_2(i7val fn_ref, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2;
-	return i7_gen_call(fn_ref, args, 2, 1);
-}
-
-i7val i7_ccall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(fn_ref, args, 3, 1);
+	return i7_gen_call(fn_ref, args, 5);
 }
 
 void glulx_call(i7val fn_ref, i7val varargc, i7val *z) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull();
-	i7val rv = i7_gen_call(fn_ref, args, varargc, 0);
+	i7val rv = i7_gen_call(fn_ref, args, varargc);
 	if (z) *z = rv;
 }
 =

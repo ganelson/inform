@@ -263,12 +263,12 @@ ROOT_NT
                     SENTENCE_NT'use max_labels of 10000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                         UNPARSED_NOUN_NT'max_labels of 10000'
-                    SENTENCE_NT'use max_zcode_size of 500000' {unit: 0} {classified}
+                    SENTENCE_NT'use max_zcode_size of 1000000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
-                        UNPARSED_NOUN_NT'max_zcode_size of 500000'
-                    SENTENCE_NT'use max_static_data of 180000' {unit: 0} {classified}
+                        UNPARSED_NOUN_NT'max_zcode_size of 1000000'
+                    SENTENCE_NT'use max_static_data of 500000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
-                        UNPARSED_NOUN_NT'max_static_data of 180000'
+                        UNPARSED_NOUN_NT'max_static_data of 500000'
                     SENTENCE_NT'use max_prop_table_size of 200000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                         UNPARSED_NOUN_NT'max_prop_table_size of 200000'

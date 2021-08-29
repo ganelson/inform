@@ -233,9 +233,99 @@ void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	i7_fatal_exit();
 }
 
-void glulx_binarysearch(i7val l1, i7val l2, i7val l3, i7val l4, i7val l5, i7val l6, i7val l7, i7val *s1) {
-	printf("Unimplemented: glulx_binarysearch\n");
-	i7_fatal_exit();
+#define serop_KeyIndirect (0x01)
+#define serop_ZeroKeyTerminates (0x02)
+#define serop_ReturnIndex (0x04)
+
+void fetchkey(unsigned char *keybuf, i7val key, i7val keysize, i7val options)
+{
+  int ix;
+
+  if (options & serop_KeyIndirect) {
+    if (keysize <= 4) {
+      for (ix=0; ix<keysize; ix++)
+        keybuf[ix] = i7mem[key + ix];
+    }
+  }
+  else {
+    switch (keysize) {
+    case 4:
+		keybuf[0]   = I7BYTE_0(key);
+		keybuf[1] = I7BYTE_1(key);
+		keybuf[2] = I7BYTE_2(key);
+		keybuf[3] = I7BYTE_3(key);
+      break;
+    case 2:
+		keybuf[0]  = I7BYTE_0(key);
+		keybuf[1] = I7BYTE_1(key);
+      break;
+    case 1:
+      keybuf[0]   = key;
+      break;
+    }
+  }
+}
+
+void glulx_binarysearch(i7val key, i7val keysize, i7val start, i7val structsize,
+	i7val numstructs, i7val keyoffset, i7val options, i7val *s1) {
+	if (s1 == NULL) return;
+
+  unsigned char keybuf[4];
+  unsigned char byte, byte2;
+  i7val top, bot, val, addr;
+  int ix;
+  int retindex = ((options & serop_ReturnIndex) != 0);
+
+  fetchkey(keybuf, key, keysize, options);
+  
+  bot = 0;
+  top = numstructs;
+  while (bot < top) {
+    int cmp = 0;
+    val = (top+bot) / 2;
+    addr = start + val * structsize;
+
+    if (keysize <= 4) {
+      for (ix=0; (!cmp) && ix<keysize; ix++) {
+        byte = i7mem[addr + keyoffset + ix];
+        byte2 = keybuf[ix];
+        if (byte < byte2)
+          cmp = -1;
+        else if (byte > byte2)
+          cmp = 1;
+      }
+    }
+    else {
+      for (ix=0; (!cmp) && ix<keysize; ix++) {
+        byte = i7mem[addr + keyoffset + ix];
+        byte2 = i7mem[key + ix];
+        if (byte < byte2)
+          cmp = -1;
+        else if (byte > byte2)
+          cmp = 1;
+      }
+    }
+
+    if (!cmp) {
+      if (retindex)
+        *s1 = val;
+      else
+        *s1 = addr;
+    	return;
+    }
+
+    if (cmp < 0) {
+      bot = val+1;
+    }
+    else {
+      top = val;
+    }
+  }
+
+  if (retindex)
+    *s1 = -1;
+  else
+    *s1 = 0;
 }
 
 void glulx_shiftl(i7val x, i7val y, i7val *z) {
@@ -244,13 +334,9 @@ void glulx_shiftl(i7val x, i7val y, i7val *z) {
 }
 
 void glulx_restoreundo(i7val x) {
-	printf("Unimplemented: glulx_restoreundo\n");
-	i7_fatal_exit();
 }
 
 void glulx_saveundo(i7val x) {
-	printf("Unimplemented: glulx_saveundo\n");
-	i7_fatal_exit();
 }
 
 void glulx_restart(void) {
