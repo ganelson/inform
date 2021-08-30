@@ -15,7 +15,6 @@ void CLiteralsModel::initialise(code_generation_target *cgt) {
 typedef struct C_generation_literals_model_data {
 	text_stream *double_quoted_C;
 	int no_double_quoted_C_strings;
-	text_stream *single_quoted_C;
 	int C_dword_count;
 	struct linked_list *words; /* of |C_dword| */
 	struct dictionary *C_vm_dictionary; /* ditto */
@@ -24,7 +23,6 @@ typedef struct C_generation_literals_model_data {
 void CLiteralsModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(litdata.double_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.no_double_quoted_C_strings) = 0;
-	C_GEN_DATA(litdata.single_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.C_dword_count) = 0;
 	C_GEN_DATA(litdata.words) = NEW_LINKED_LIST(C_dword);
 	C_GEN_DATA(litdata.C_vm_dictionary) = Dictionaries::new(1024, FALSE);
@@ -39,11 +37,6 @@ void CLiteralsModel::end(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
-	CodeGen::deselect(gen, saved);
-
-	saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("char *sqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.single_quoted_C));
 	CodeGen::deselect(gen, saved);
 }
 
@@ -94,9 +87,9 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7val i7_ss_dict_par1 = 9;\n");
-	WRITE("i7val i7_ss_dict_par2 = 10;\n");
-	WRITE("i7val i7_ss_dict_par3 = 11;\n");
+	WRITE("i7val i7_ss_dict_par1 = 11;\n");
+	WRITE("i7val i7_ss_dict_par2 = 13;\n");
+	WRITE("i7val i7_ss_dict_par3 = 15;\n");
 	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT);
 	for (int b=0; b<4; b++) {
 		TEMPORARY_TEXT(N)
@@ -114,37 +107,44 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 	qsort(sorted, (size_t) LinkedLists::len(C_GEN_DATA(litdata.words)), sizeof(C_dword *), CLiteralsModel::compare_dwords);
 	for (int i=0; i<dictlen; i++) {
 		dw = sorted[i];
-		WRITE("#define %S %d /* %S */\n", sorted[i]->identifier, i, sorted[i]->text);
-		WRITE_TO(C_GEN_DATA(litdata.single_quoted_C), "\"%S\", ", sorted[i]->text);
 		CMemoryModel::begin_array(NULL, gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT);
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "%d", Str::len(dw->text));
+		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
+		DISCARD_TEXT(N);
 		for (int i=0; i<9; i++) {
 			TEMPORARY_TEXT(N)
-			if (i < Str::len(dw->text)) 
+			if (i < Str::len(dw->text))
 				WRITE_TO(N, "'%c'", Str::get_at(dw->text, i));
 			else
 				WRITE_TO(N, "0");
 			CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
 			DISCARD_TEXT(N);
 		}
-		TEMPORARY_TEXT(DP1)
-		TEMPORARY_TEXT(DP2)
+		TEMPORARY_TEXT(DP1H)
+		TEMPORARY_TEXT(DP1L)
+		TEMPORARY_TEXT(DP2H)
+		TEMPORARY_TEXT(DP2L)
 		int f = 0;
 		if (dw->verb_number > 0) f += 1;
 		if (dw->meta) f += 2;
 		if (dw->pluralise) f += 4;
 		if (dw->preplike) f += 8;
 		if (dw->nounlike) f += 128;
-		WRITE_TO(DP1, "%d", f);
-		WRITE_TO(DP2, "%d", dw->verb_number);
-		CMemoryModel::array_entry(NULL, gen, DP1, BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, DP2, BYTE_ARRAY_FORMAT);
+		WRITE_TO(DP1H, "(%d)/256", f);
+		WRITE_TO(DP1L, "(%d)%%256", f);
+		WRITE_TO(DP2H, "(%d)/256", dw->verb_number);
+		WRITE_TO(DP2L, "(%d)%%256", dw->verb_number);
+		CMemoryModel::array_entry(NULL, gen, DP1H, BYTE_ARRAY_FORMAT);
+		CMemoryModel::array_entry(NULL, gen, DP1L, BYTE_ARRAY_FORMAT);
+		CMemoryModel::array_entry(NULL, gen, DP2H, BYTE_ARRAY_FORMAT);
+		CMemoryModel::array_entry(NULL, gen, DP2L, BYTE_ARRAY_FORMAT);
 		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		DISCARD_TEXT(DP1)
-		DISCARD_TEXT(DP2)
 		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
+		DISCARD_TEXT(DP1H)
+		DISCARD_TEXT(DP1L)
+		DISCARD_TEXT(DP2H)
+		DISCARD_TEXT(DP2L)
 		CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
 	}
 	Memory::I7_free(sorted, CODE_GENERATION_MREASON, dictlen);
@@ -161,7 +161,7 @@ void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_g
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	C_dword *dw = CLiteralsModel::text_to_dword(gen, S, pluralise);
-	WRITE("%S", dw->identifier);
+	CNamespace::mangle(cgt, OUT, dw->identifier);
 }
 
 @
@@ -424,7 +424,7 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case PRINTSTRING_BIP: WRITE("i7_print_C_string(dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_C_string(sqs["); INV_A1; WRITE("])"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_C_string("); INV_A1; WRITE(")"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;

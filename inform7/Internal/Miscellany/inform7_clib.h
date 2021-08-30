@@ -272,7 +272,6 @@ void fetchkey(unsigned char *keybuf, i7val key, i7val keysize, i7val options)
 void glulx_binarysearch(i7val key, i7val keysize, i7val start, i7val structsize,
 	i7val numstructs, i7val keyoffset, i7val options, i7val *s1) {
 	if (s1 == NULL) return;
-
   unsigned char keybuf[4];
   unsigned char byte, byte2;
   i7val top, bot, val, addr;
@@ -299,7 +298,7 @@ void glulx_binarysearch(i7val key, i7val keysize, i7val start, i7val structsize,
       }
     }
     else {
-      for (ix=0; (!cmp) && ix<keysize; ix++) {
+       for (ix=0; (!cmp) && ix<keysize; ix++) {
         byte = i7mem[addr + keyoffset + ix];
         byte2 = i7mem[key + ix];
         if (byte < byte2)
