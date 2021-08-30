@@ -447,6 +447,7 @@ i7val i7_do_glk_select(i7val structure) {
 			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
 		}
 	}
+	return 0;
 }
 
 int i7_no_lr = 0;

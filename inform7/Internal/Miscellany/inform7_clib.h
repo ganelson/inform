@@ -23,10 +23,7 @@ i7val i7_ss_cpv__start = 0;
 i7val i7_ss_identifiers_table = 0;
 i7val i7_ss_globals_array = 0;
 i7val i7_ss_gself = 0;
-i7val i7_ss_dict_par1 = 0;
-i7val i7_ss_dict_par2 = 0;
 i7val i7_ss_actions_table = 0;
-i7val i7_ss_dictionary_table = 0;
 i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
@@ -1295,6 +1292,7 @@ i7val i7_do_glk_select(i7val structure) {
 			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
 		}
 	}
+	return 0;
 }
 
 int i7_no_lr = 0;

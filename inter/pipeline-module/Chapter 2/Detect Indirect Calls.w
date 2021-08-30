@@ -44,7 +44,6 @@ void DetectIndirectCalls::traverse_code_tree(inter_tree_node *P) {
 				inter_ti bip = Primitives::indirect_interp(arity);
 				inter_symbol *prim_symb = Primitives::get(I, bip);
 				F->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_F(F, NULL, prim_symb);
-				WRITE_TO(STDERR, "Yes %S arity %d\n", CodeGen::CL::name(routine), arity);
 				inter_bookmark IBM = Inter::Bookmarks::first_child_of_this_node(I, F);
 				inter_ti val1 = 0, val2 = 0;
 				Inter::Symbols::to_data(Inter::Bookmarks::tree(&IBM), Inter::Bookmarks::package(&IBM), routine, &val1, &val2);

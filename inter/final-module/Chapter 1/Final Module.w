@@ -14,12 +14,14 @@ which use this module:
 @e kov_value_stick_CLASS
 @e I6_generation_data_CLASS
 @e C_generation_data_CLASS
+@e C_dword_CLASS
 
 =
 DECLARE_CLASS(final_c_function)
 DECLARE_CLASS(kov_value_stick)
 DECLARE_CLASS(I6_generation_data)
 DECLARE_CLASS(C_generation_data)
+DECLARE_CLASS(C_dword)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -178,13 +178,13 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 }
 
 int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
-	CMemoryModel::end(gen);
 	CFunctionModel::end(gen);
 	CObjectModel::end(gen);
 	CLiteralsModel::end(gen);
 	CGlobals::end(gen);
 	CAssembly::end(gen);
 	CInputOutputModel::end(gen);
+	CMemoryModel::end(gen); /* must be last to end */
 
 	return FALSE;
 }
@@ -255,10 +255,7 @@ i7val i7_ss_cpv__start = 0;
 i7val i7_ss_identifiers_table = 0;
 i7val i7_ss_globals_array = 0;
 i7val i7_ss_gself = 0;
-i7val i7_ss_dict_par1 = 0;
-i7val i7_ss_dict_par2 = 0;
 i7val i7_ss_actions_table = 0;
-i7val i7_ss_dictionary_table = 0;
 i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0

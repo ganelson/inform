@@ -237,7 +237,6 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 					if (to_call) {
 						inter_tree_node *D = to_call->definition;
 						if ((D) && (D->W.data[ID_IFLD] == VARIABLE_IST)) {
-							WRITE_TO(STDERR, "Yes %S\n", tok->material);
 							to_call = NULL;
 						}
 					}
