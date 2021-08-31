@@ -132,7 +132,7 @@
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
 
-		step: $STORYFILE >$A 2>&1
+		step: $STORYFILE <$SCRIPT >$A 2>&1
 		or: 'failed to run C program' $A
 
 		show: $A

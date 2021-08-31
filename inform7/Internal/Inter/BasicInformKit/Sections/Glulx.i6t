@@ -1391,7 +1391,6 @@ languages of play, and is not called in the template.
     cx numwords len bx ix wx wpos wlen val res dictlen entrylen;
     len = buf-->0;
     buf = buf+WORDSIZE;
-
     ! First, split the buffer up into words. We use the standard Infocom
     ! list of word separators (comma, period, double-quote).
 
@@ -1427,7 +1426,6 @@ languages of play, and is not called in the template.
         cx = wpos - WORDSIZE;
         for (ix=0 : ix<wlen : ix++) gg_tokenbuf->ix = VM_UpperToLowerCase(buf->(cx+ix));
         for (: ix<DICT_WORD_SIZE : ix++) gg_tokenbuf->ix = 0;
-
         val = #dictionary_table + WORDSIZE;
         @binarysearch gg_tokenbuf DICT_WORD_SIZE val entrylen dictlen 1 1 res;
         tab-->(wx*3+1) = res;

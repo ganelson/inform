@@ -31,21 +31,13 @@ void CLiteralsModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(litdata.double_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.no_double_quoted_C_strings) = 0;
 	C_GEN_DATA(litdata.C_dword_count) = 0;
-	C_GEN_DATA(litdata.verb_count) = 1;
+	C_GEN_DATA(litdata.verb_count) = 0;
 	C_GEN_DATA(litdata.C_action_count) = 0;
 	C_GEN_DATA(litdata.C_fake_action_count) = 4096;
 	C_GEN_DATA(litdata.words) = NEW_LINKED_LIST(C_dword);
 	C_GEN_DATA(litdata.verbs) = NEW_LINKED_LIST(C_dword);
 	C_GEN_DATA(litdata.actions) = NEW_LINKED_LIST(text_stream);
 	C_GEN_DATA(litdata.verb_grammar) = NEW_LINKED_LIST(text_stream);
-
-	ADD_TO_LINKED_LIST(I"1", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* no grammar lines */
-
-	ADD_TO_LINKED_LIST(I"I7BYTE_2(i7_ss_Quit)", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* action (big end) */
-	ADD_TO_LINKED_LIST(I"I7BYTE_3(i7_ss_Quit)", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* action (lil end) */
-	ADD_TO_LINKED_LIST(I"0", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* reverse flag */
-
-	ADD_TO_LINKED_LIST(I"i7_mgl_ENDIT_TOKEN", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* ENDIT */
 
 	C_GEN_DATA(litdata.C_vm_dictionary) = Dictionaries::new(1024, FALSE);
 }
@@ -196,7 +188,40 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 	inter_symbol *array_s, inter_tree_node *P) {
 	inter_tree *I = gen->from;
 	int verbnum = C_GEN_DATA(litdata.verb_count)++;
-	int stage = 1, synonyms = 0;
+	
+	inter_symbol *line_actions[128];
+	int line_reverse[128];
+	
+	int lines = 0;
+	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+			inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+			if (aliased == NULL) internal_error("bad aliased symbol");
+			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+				line_reverse[lines] = FALSE;
+				line_actions[lines++] = NULL;
+			}
+			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+				inter_ti val1 = P->W.data[i+2], val2 = P->W.data[i+3];
+				inter_symbol *res = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+				if (res == NULL) internal_error("bad aliased symbol");
+				line_actions[lines-1] = res;
+			}
+			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) {
+				inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+				inter_symbol *res = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+				if (res == NULL) internal_error("bad aliased symbol");
+				line_reverse[lines-1] = TRUE;
+			}
+		}
+	}
+	
+	int address = LinkedLists::len(C_GEN_DATA(litdata.verb_grammar));
+	CLiteralsModel::grammar_byte(gen, lines); /* no grammar lines */
+
+	int stage = 1, synonyms = 0, started = FALSE;
+	lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
 		if (stage == 1) {
@@ -209,18 +234,151 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 				if (synonyms == 1) {
 					ADD_TO_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs));
 				}
-				dw->grammar_table_offset = 0;
-				stage = 2;
+				dw->grammar_table_offset = address;
 			} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 				if (aliased == NULL) internal_error("bad aliased symbol");
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) stage = 2;
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) { stage = 2; i -= 2; continue; }
 				else internal_error("not a divider");
 			} else {
 				internal_error("not a dword");
 			}
 		}
+		if (stage == 2) {
+			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+				if (aliased == NULL) internal_error("bad aliased symbol");
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+					if (started) CLiteralsModel::grammar_byte_textual(gen, I"i7_mgl_ENDIT_TOKEN");
+					TEMPORARY_TEXT(NT)
+					CNamespace::mangle(cgt, NT, line_actions[lines]->symbol_name);
+					TEMPORARY_TEXT(A)
+					TEMPORARY_TEXT(B)
+					WRITE_TO(A, "I7BYTE_2(%S)", NT);
+					WRITE_TO(B, "I7BYTE_3(%S)", NT);
+					CLiteralsModel::grammar_byte_textual(gen, A); /* action (big end) */
+					CLiteralsModel::grammar_byte_textual(gen, B); /* action (lil end) */
+					DISCARD_TEXT(A)
+					DISCARD_TEXT(B)
+					DISCARD_TEXT(NT)
+					if (line_reverse[lines])
+						CLiteralsModel::grammar_byte(gen, 1);
+					else
+						CLiteralsModel::grammar_byte(gen, 0);
+					lines++;
+					started = TRUE;
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+					i += 2;
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
+				
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_HELD")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 1);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTI")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 2);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIHELD")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 3);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIEXCEPT")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 4);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIINSIDE")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 5);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_CREATURE")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 6);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SPECIAL")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 7);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_NUMBER")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 8);
+					continue;
+				}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_TOPIC")) {
+					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_word(gen, 9);
+					continue;
+				}
+
+				CLiteralsModel::grammar_byte(gen, 0x86);
+				TEMPORARY_TEXT(MG)
+				CNamespace::mangle(cgt, MG, CodeGen::CL::name(aliased));
+				CLiteralsModel::grammar_word_textual(gen, MG);
+				DISCARD_TEXT(MG)
+				continue;
+			}
+			if (val1 == DWORD_IVAL) {
+				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, FALSE);
+				CLiteralsModel::grammar_byte(gen, 0x42);
+				TEMPORARY_TEXT(MG)
+				CNamespace::mangle(cgt, MG, dw->identifier);
+				CLiteralsModel::grammar_word_textual(gen, MG);
+				DISCARD_TEXT(MG)
+				continue;
+			}
+			if (val1 == PDWORD_IVAL) {
+				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, TRUE);
+				CLiteralsModel::grammar_byte(gen, 0x42);
+				TEMPORARY_TEXT(MG)
+				CNamespace::mangle(cgt, MG, dw->identifier);
+				CLiteralsModel::grammar_word_textual(gen, MG);
+				DISCARD_TEXT(MG)
+				continue;
+			}
+		}
 	}
+	if (started) CLiteralsModel::grammar_byte_textual(gen, I"i7_mgl_ENDIT_TOKEN");
+}
+
+void CLiteralsModel::grammar_byte(code_generation *gen, int N) {
+	TEMPORARY_TEXT(NT)
+	WRITE_TO(NT, "%d", N);
+	CLiteralsModel::grammar_byte_textual(gen, NT);
+	DISCARD_TEXT(NT)
+}
+
+void CLiteralsModel::grammar_word(code_generation *gen, int N) {
+	TEMPORARY_TEXT(NT)
+	WRITE_TO(NT, "%d", N);
+	CLiteralsModel::grammar_word_textual(gen, NT);
+	DISCARD_TEXT(NT)
+}
+
+void CLiteralsModel::grammar_word_textual(code_generation *gen, text_stream *NT) {
+	for (int b=0; b<4; b++) {
+		TEMPORARY_TEXT(BT)
+		WRITE_TO(BT, "I7BYTE_%d(%S)", b, NT);
+		CLiteralsModel::grammar_byte_textual(gen, BT);
+		DISCARD_TEXT(BT)
+	}
+}
+
+void CLiteralsModel::grammar_byte_textual(code_generation *gen, text_stream *NT) {
+	NT = Str::duplicate(NT);
+	ADD_TO_LINKED_LIST(NT, text_stream, C_GEN_DATA(litdata.verb_grammar));
 }
 
 void CLiteralsModel::compile_verb_table(code_generation *gen) {
@@ -229,10 +387,10 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 	WRITE_TO(N, "%d", C_GEN_DATA(litdata.verb_count) - 1);
 	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 	DISCARD_TEXT(N)
-	C_dword *dw;
+	C_dword *dw; int c = 1;
 	LOOP_OVER_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs)) {
 		TEMPORARY_TEXT(N)
-		WRITE_TO(N, "%d + i7_ss_grammar_table_cont", dw->grammar_table_offset);
+		WRITE_TO(N, "(i7_ss_grammar_table_cont+%d /* %d: %S */ )", dw->grammar_table_offset, c++, dw->text);
 		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}

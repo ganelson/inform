@@ -1299,8 +1299,16 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 	e.win_id = window_id;
 	e.val1 = 1;
 	e.val2 = 0;
-	i7mem[buffer + init_len] = 'q';
-	i7mem[buffer + init_len+1] = 0;
+	wchar_t c; int pos = init_len;
+	while (1) {
+		c = getchar();
+		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		if (pos < max_len) i7mem[buffer + pos++] = c;
+	}
+	if (pos < max_len) i7mem[buffer + pos++] = 0; else i7mem[buffer + max_len-1] = 0;
+	e.val1 = pos;
+	i7_print_C_string((char *) (i7mem + buffer));
+	i7_print_char('\n');
 	i7_make_event(e);
 	if (i7_no_lr++ == 10) {
 		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
