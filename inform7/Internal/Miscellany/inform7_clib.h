@@ -23,8 +23,6 @@ i7val i7_ss_cpv__start = 0;
 i7val i7_ss_identifiers_table = 0;
 i7val i7_ss_globals_array = 0;
 i7val i7_ss_gself = 0;
-i7val i7_ss_actions_table = 0;
-i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
 

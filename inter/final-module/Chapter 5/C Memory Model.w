@@ -184,6 +184,11 @@ int CMemoryModel::begin_array(code_generation_target *cgt, code_generation *gen,
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
 
+	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
+		CLiteralsModel::verb_grammar(cgt, gen, array_s, P);
+		return FALSE;
+	}
+
 	text_stream *format_name = I"unknown";
 	@<Work out the format name@>;
 	@<Define a constant for the byte address in memory where the array begins@>;

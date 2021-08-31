@@ -27,7 +27,6 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
 	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
 	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
-	METHOD_ADD(c_target, NEW_ACTION_MTID, CTarget::new_action);
 	METHOD_ADD(c_target, WORLD_MODEL_ESSENTIALS_MTID, CTarget::world_model_essentials);
 }
 
@@ -125,7 +124,6 @@ int C_target_segments[] = {
 
 =
 typedef struct C_generation_data {
-	int C_action_count;
 	struct C_generation_memory_model_data memdata;
 	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
@@ -141,7 +139,6 @@ void CTarget::initialise_data(code_generation *gen) {
 	CGlobals::initialise_data(gen);
 	CAssembly::initialise_data(gen);
 	CInputOutputModel::initialise_data(gen);
-	C_GEN_DATA(C_action_count) = 0;
 }
 
 @h Begin and end.
@@ -224,13 +221,6 @@ int CTarget::tl_segment(code_generation_target *cgt) {
 }
 
 @ =
-void CTarget::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(C_action_count)++);
-	CodeGen::deselect(gen, saved);
-}
-
 void CTarget::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", -1, FALSE);
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", -1, FALSE);
@@ -255,8 +245,6 @@ i7val i7_ss_cpv__start = 0;
 i7val i7_ss_identifiers_table = 0;
 i7val i7_ss_globals_array = 0;
 i7val i7_ss_gself = 0;
-i7val i7_ss_actions_table = 0;
-i7val i7_ss_grammar_table = 0;
 
 #define i7_mgl_FLOAT_NAN 0
 

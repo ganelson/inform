@@ -329,7 +329,7 @@ the I6 library. This was only put right in March 2009, and the following
 routine was added to concentrate lookups of this field in one place.
 
 =
-[ DictionaryWordToVerbNum dword verbnum;
+[ DictionaryWordToVerbNum dword verbnum i;
 #Ifdef TARGET_ZCODE;
 	verbnum = $ff-(dword->#dict_par2);
 #Ifnot; ! GLULX
@@ -339,7 +339,6 @@ routine was added to concentrate lookups of this field in one place.
 #Endif;
 	return verbnum;
 ];
-
 
 [ RegardingSingleObject obj;
 	prior_named_list = 1;
@@ -352,6 +351,7 @@ routine was added to concentrate lookups of this field in one place.
 	prior_named_list_gender = -1;
 	prior_named_noun = nothing;
 ];
+
 @h Say One Of.
 These routines are described in the Extensions chapter of the Inform
 documentation.

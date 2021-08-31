@@ -385,7 +385,7 @@ routine was added to concentrate lookups of this field in one place.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">$ff</span><span class="plain-syntax">-(</span><span class="identifier-syntax">dword</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">; </span><span class="comment-syntax">GLULX</span>
@@ -395,7 +395,6 @@ routine was added to concentrate lookups of this field in one place.
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
-
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RegardingSingleObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>

@@ -10,13 +10,20 @@ void CLiteralsModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CLiteralsModel::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, CLiteralsModel::compile_literal_real);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CLiteralsModel::compile_literal_text);
+	METHOD_ADD(cgt, NEW_ACTION_MTID, CLiteralsModel::new_action);
 }
 
 typedef struct C_generation_literals_model_data {
 	text_stream *double_quoted_C;
 	int no_double_quoted_C_strings;
 	int C_dword_count;
+	int verb_count;
+	int C_action_count;
+	int C_fake_action_count;
 	struct linked_list *words; /* of |C_dword| */
+	struct linked_list *verbs; /* of |C_dword| */
+	struct linked_list *actions; /* of |text_stream| */
+	struct linked_list *verb_grammar; /* of |text_stream| */
 	struct dictionary *C_vm_dictionary; /* ditto */
 } C_generation_literals_model_data;
 
@@ -24,7 +31,22 @@ void CLiteralsModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(litdata.double_quoted_C) = Str::new();
 	C_GEN_DATA(litdata.no_double_quoted_C_strings) = 0;
 	C_GEN_DATA(litdata.C_dword_count) = 0;
+	C_GEN_DATA(litdata.verb_count) = 1;
+	C_GEN_DATA(litdata.C_action_count) = 0;
+	C_GEN_DATA(litdata.C_fake_action_count) = 4096;
 	C_GEN_DATA(litdata.words) = NEW_LINKED_LIST(C_dword);
+	C_GEN_DATA(litdata.verbs) = NEW_LINKED_LIST(C_dword);
+	C_GEN_DATA(litdata.actions) = NEW_LINKED_LIST(text_stream);
+	C_GEN_DATA(litdata.verb_grammar) = NEW_LINKED_LIST(text_stream);
+
+	ADD_TO_LINKED_LIST(I"1", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* no grammar lines */
+
+	ADD_TO_LINKED_LIST(I"I7BYTE_2(i7_ss_Quit)", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* action (big end) */
+	ADD_TO_LINKED_LIST(I"I7BYTE_3(i7_ss_Quit)", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* action (lil end) */
+	ADD_TO_LINKED_LIST(I"0", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* reverse flag */
+
+	ADD_TO_LINKED_LIST(I"i7_mgl_ENDIT_TOKEN", text_stream, C_GEN_DATA(litdata.verb_grammar)); /* ENDIT */
+
 	C_GEN_DATA(litdata.C_vm_dictionary) = Dictionaries::new(1024, FALSE);
 }
 
@@ -34,6 +56,8 @@ void CLiteralsModel::begin(code_generation *gen) {
 
 void CLiteralsModel::end(code_generation *gen) {
 	CLiteralsModel::compile_dwords(gen);
+	CLiteralsModel::compile_verb_table(gen);
+	CLiteralsModel::compile_actions_table(gen);
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
@@ -50,7 +74,9 @@ typedef struct C_dword {
 	int meta;
 	int preplike;
 	int nounlike;
+	int verblike;
 	int verb_number;
+	int grammar_table_offset;
 	CLASS_DEFINITION
 } C_dword;
 
@@ -73,7 +99,9 @@ C_dword *CLiteralsModel::text_to_dword(code_generation *gen, text_stream *S, int
 		dw->meta = FALSE;
 		dw->preplike = FALSE;
 		dw->nounlike = FALSE;
+		dw->verblike = FALSE;
 		dw->verb_number = 0;
+		dw->grammar_table_offset = 0;
 		ADD_TO_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.words));
 		Dictionaries::create(C_GEN_DATA(litdata.C_vm_dictionary), K);
 		Dictionaries::write_value(C_GEN_DATA(litdata.C_vm_dictionary), K, dw);
@@ -126,15 +154,15 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 		TEMPORARY_TEXT(DP2H)
 		TEMPORARY_TEXT(DP2L)
 		int f = 0;
-		if (dw->verb_number > 0) f += 1;
+		if (dw->verblike) f += 1;
 		if (dw->meta) f += 2;
 		if (dw->pluralise) f += 4;
 		if (dw->preplike) f += 8;
 		if (dw->nounlike) f += 128;
-		WRITE_TO(DP1H, "(%d)/256", f);
-		WRITE_TO(DP1L, "(%d)%%256", f);
-		WRITE_TO(DP2H, "(%d)/256", dw->verb_number);
-		WRITE_TO(DP2L, "(%d)%%256", dw->verb_number);
+		WRITE_TO(DP1H, "((%d)/256)", f);
+		WRITE_TO(DP1L, "((%d)%%256)", f);
+		WRITE_TO(DP2H, "((%d)/256)", 0xFFFF - dw->verb_number);
+		WRITE_TO(DP2L, "((%d)%%256)", 0xFFFF - dw->verb_number);
 		CMemoryModel::array_entry(NULL, gen, DP1H, BYTE_ARRAY_FORMAT);
 		CMemoryModel::array_entry(NULL, gen, DP1L, BYTE_ARRAY_FORMAT);
 		CMemoryModel::array_entry(NULL, gen, DP2H, BYTE_ARRAY_FORMAT);
@@ -162,6 +190,90 @@ void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_g
 	text_stream *OUT = CodeGen::current(gen);
 	C_dword *dw = CLiteralsModel::text_to_dword(gen, S, pluralise);
 	CNamespace::mangle(cgt, OUT, dw->identifier);
+}
+
+void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *gen,
+	inter_symbol *array_s, inter_tree_node *P) {
+	inter_tree *I = gen->from;
+	int verbnum = C_GEN_DATA(litdata.verb_count)++;
+	int stage = 1, synonyms = 0;
+	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+		if (stage == 1) {
+			if (val1 == DWORD_IVAL) {
+				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, FALSE);
+				dw->verb_number = verbnum; dw->verblike = TRUE;
+				if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
+				synonyms++;
+				if (synonyms == 1) {
+					ADD_TO_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs));
+				}
+				dw->grammar_table_offset = 0;
+				stage = 2;
+			} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+				if (aliased == NULL) internal_error("bad aliased symbol");
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) stage = 2;
+				else internal_error("not a divider");
+			} else {
+				internal_error("not a dword");
+			}
+		}
+	}
+}
+
+void CLiteralsModel::compile_verb_table(code_generation *gen) {
+	CMemoryModel::begin_array(NULL, gen, I"#grammar_table", NULL, NULL, WORD_ARRAY_FORMAT);
+	TEMPORARY_TEXT(N)
+	WRITE_TO(N, "%d", C_GEN_DATA(litdata.verb_count) - 1);
+	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(N)
+	C_dword *dw;
+	LOOP_OVER_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs)) {
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "%d + i7_ss_grammar_table_cont", dw->grammar_table_offset);
+		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+		DISCARD_TEXT(N)
+	}
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);
+	CMemoryModel::begin_array(NULL, gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, C_GEN_DATA(litdata.verb_grammar)) {
+		CMemoryModel::array_entry(NULL, gen, entry, BYTE_ARRAY_FORMAT);
+	}
+	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
+
+	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT);
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);
+}
+
+void CLiteralsModel::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
+	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	if (true_action) {
+		WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(litdata.C_action_count)++);
+		ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, C_GEN_DATA(litdata.actions));
+	} else {
+		WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(litdata.C_fake_action_count)++);
+	}
+	CodeGen::deselect(gen, saved);
+}
+
+void CLiteralsModel::compile_actions_table(code_generation *gen) {
+	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT);
+	TEMPORARY_TEXT(N)
+	WRITE_TO(N, "%d", C_GEN_DATA(litdata.C_action_count));
+	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(N)
+	text_stream *an;
+	LOOP_OVER_LINKED_LIST(an, text_stream, C_GEN_DATA(litdata.actions)) {
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "i7_mgl_%SSub", an);
+		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+		DISCARD_TEXT(N)
+	}
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);	
 }
 
 @
@@ -424,7 +536,7 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case PRINTSTRING_BIP: WRITE("i7_print_C_string(dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_C_string("); INV_A1; WRITE(")"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_C_string((char *) (i7mem + "); INV_A1; WRITE("))"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;
