@@ -33,15 +33,8 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case PRINT_BIP:          WRITE("i7_print_C_string("); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTRET_BIP:       WRITE("i7_print_C_string("); INV_A1_PRINTMODE; WRITE("); return 1"); break;
 		case PRINTCHAR_BIP:      WRITE("i7_print_char("); INV_A1; WRITE(")"); break;
-		case PRINTNAME_BIP:      WRITE("i7_print_name("); INV_A1; WRITE(")"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object("); INV_A1; WRITE(")"); break;
-		case PRINTPROPERTY_BIP:  WRITE("i7_print_property("); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal("); INV_A1; WRITE(")"); break;
-		case PRINTNLNUMBER_BIP:  WRITE("fn_i7_mgl_EnglishNumber(1, "); INV_A1; WRITE(")"); break;
-		case PRINTDEF_BIP:       WRITE("i7_print_def_art("); INV_A1; WRITE(")"); break;
-		case PRINTCDEF_BIP:      WRITE("i7_print_cdef_art("); INV_A1; WRITE(")"); break;
-		case PRINTINDEF_BIP:     WRITE("i7_print_indef_art("); INV_A1; WRITE(")"); break;
-		case PRINTCINDEF_BIP:    WRITE("i7_print_cindef_art("); INV_A1; WRITE(")"); break;
 		case BOX_BIP:            WRITE("i7_print_box("); INV_A1_BOXMODE; WRITE(")"); break;
 		case READ_BIP:           WRITE("i7_read("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
 
@@ -690,33 +683,12 @@ i7val fn_i7_mgl_CIndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local
 i7val fn_i7_mgl_CDefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
 i7val fn_i7_mgl_PrintShortName(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
 
-void i7_print_def_art(i7val x) {
-	fn_i7_mgl_DefArt(1, x, 0);
-}
-
-void i7_print_cdef_art(i7val x) {
-	fn_i7_mgl_CDefArt(1, x, 0);
-}
-
-void i7_print_indef_art(i7val x) {
-	fn_i7_mgl_IndefArt(1, x, 0);
-}
-
-void i7_print_cindef_art(i7val x) {
-	fn_i7_mgl_CIndefArt(1, x, 0);
-}
-
 void i7_print_name(i7val x) {
 	fn_i7_mgl_PrintShortName(1, x, 0);
 }
 
 void i7_print_object(i7val x) {
 	printf("Unimplemented: i7_print_object.\n");
-	i7_fatal_exit();
-}
-
-void i7_print_property(i7val x) {
-	printf("Unimplemented: i7_print_property.\n");
 	i7_fatal_exit();
 }
 

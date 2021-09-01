@@ -12,17 +12,10 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!print", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printret", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printchar", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printname", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printobj", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printproperty", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printnumber", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printdword", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printstring", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printnlnumber", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printdef", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printcdef", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printindef", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printcindef", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!box", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!push", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!pull", I"ref -> void");
@@ -231,17 +224,10 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e PRINT_BIP
 @e PRINTRET_BIP
 @e PRINTCHAR_BIP
-@e PRINTNAME_BIP
 @e PRINTOBJ_BIP
-@e PRINTPROPERTY_BIP
 @e PRINTNUMBER_BIP
 @e PRINTDWORD_BIP
 @e PRINTSTRING_BIP
-@e PRINTNLNUMBER_BIP
-@e PRINTDEF_BIP
-@e PRINTCDEF_BIP
-@e PRINTINDEF_BIP
-@e PRINTCINDEF_BIP
 @e BOX_BIP
 @e PUSH_BIP
 @e PULL_BIP
@@ -344,17 +330,10 @@ text_stream *Primitives::name(inter_ti bip) {
 		case PRINT_BIP: return I"!print";
 		case PRINTRET_BIP: return I"!printret";
 		case PRINTCHAR_BIP: return I"!printchar";
-		case PRINTNAME_BIP: return I"!printname";
 		case PRINTOBJ_BIP: return I"!printobj";
-		case PRINTPROPERTY_BIP: return I"!printproperty";
 		case PRINTNUMBER_BIP: return I"!printnumber";
 		case PRINTDWORD_BIP: return I"!printdword";
 		case PRINTSTRING_BIP: return I"!printstring";
-		case PRINTNLNUMBER_BIP: return I"!printnlnumber";
-		case PRINTDEF_BIP: return I"!printdef";
-		case PRINTCDEF_BIP: return I"!printcdef";
-		case PRINTINDEF_BIP: return I"!printindef";
-		case PRINTCINDEF_BIP: return I"!printcindef";
 		case BOX_BIP: return I"!box";
 		case PUSH_BIP: return I"!push";
 		case PULL_BIP: return I"!pull";
@@ -472,17 +451,10 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
 	if (Str::eq(symb->symbol_name, I"!printret")) bip = PRINTRET_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
-	if (Str::eq(symb->symbol_name, I"!printname")) bip = PRINTNAME_BIP;
 	if (Str::eq(symb->symbol_name, I"!printobj")) bip = PRINTOBJ_BIP;
-	if (Str::eq(symb->symbol_name, I"!printproperty")) bip = PRINTPROPERTY_BIP;
 	if (Str::eq(symb->symbol_name, I"!printnumber")) bip = PRINTNUMBER_BIP;
 	if (Str::eq(symb->symbol_name, I"!printdword")) bip = PRINTDWORD_BIP;
 	if (Str::eq(symb->symbol_name, I"!printstring")) bip = PRINTSTRING_BIP;
-	if (Str::eq(symb->symbol_name, I"!printnlnumber")) bip = PRINTNLNUMBER_BIP;
-	if (Str::eq(symb->symbol_name, I"!printdef")) bip = PRINTDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printcdef")) bip = PRINTCDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printindef")) bip = PRINTINDEF_BIP;
-	if (Str::eq(symb->symbol_name, I"!printcindef")) bip = PRINTCINDEF_BIP;
 	if (Str::eq(symb->symbol_name, I"!box")) bip = BOX_BIP;
 	if (Str::eq(symb->symbol_name, I"!push")) bip = PUSH_BIP;
 	if (Str::eq(symb->symbol_name, I"!pull")) bip = PULL_BIP;

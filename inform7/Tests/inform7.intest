@@ -243,10 +243,13 @@
 
 	if: $TOC YES
 		set: $PIPELINE = test_basic_c
+		if: $CASE Red%c*
+			set: $PIPELINE = test_reduced_basic_c
+		endif
 	else
 		set: $PIPELINE = test_basic
 	endif
-	
+
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
 
@@ -269,7 +272,6 @@
 		mkdir: $PATH/_C
 
 		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
-		set: $PIPELINE = test_basic_c
 		set: $I7CLIB = inform7/Internal/Miscellany
 	
 		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt

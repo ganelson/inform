@@ -1482,22 +1482,6 @@ i7val fn_i7_mgl_CIndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local
 i7val fn_i7_mgl_CDefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
 i7val fn_i7_mgl_PrintShortName(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
 
-void i7_print_def_art(i7val x) {
-	fn_i7_mgl_DefArt(1, x, 0);
-}
-
-void i7_print_cdef_art(i7val x) {
-	fn_i7_mgl_CDefArt(1, x, 0);
-}
-
-void i7_print_indef_art(i7val x) {
-	fn_i7_mgl_IndefArt(1, x, 0);
-}
-
-void i7_print_cindef_art(i7val x) {
-	fn_i7_mgl_CIndefArt(1, x, 0);
-}
-
 void i7_print_name(i7val x) {
 	fn_i7_mgl_PrintShortName(1, x, 0);
 }

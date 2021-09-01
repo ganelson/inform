@@ -1,0 +1,16 @@
+read <- *in
+link
+merge-template <- none
+parse-linked-matter
+resolve-conditional-compilation
+assimilate
+consolidate-text
+resolve-external-symbols
+inspect-plugs
+detect-indirect-calls
+make-identifiers-unique
+reconcile-verbs
+eliminate-redundant-labels
+eliminate-redundant-code
+generate text -> *tout
+generate c -> *cout

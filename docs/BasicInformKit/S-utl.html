@@ -113,8 +113,24 @@ the final code-generation for Glulx injects code into <span class="extract"><spa
 to use accelerated VM support for certain veneer functions.
 </p>
 
+<p class="commentary">The other three are also misleading, in that final code-generation can add more
+helpful code here: the fallbacks here are basic.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FINAL_CODE_STARTUP_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DebugAction</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">anames</span><span class="plain-syntax"> </span><span class="identifier-syntax">str</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">4096</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;fake action "</span><span class="plain-syntax">, </span><span class="identifier-syntax">a</span><span class="plain-syntax">-4096, </span><span class="string-syntax">"&gt;"</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;action "</span><span class="plain-syntax">, </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="string-syntax">"&gt;"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DebugAttribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">anames</span><span class="plain-syntax"> </span><span class="identifier-syntax">str</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;attribute "</span><span class="plain-syntax">, </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="string-syntax">"&gt;"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DebugProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">pnames</span><span class="plain-syntax"> </span><span class="identifier-syntax">str</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;property "</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="string-syntax">"&gt;"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Firebreak. </b></p>

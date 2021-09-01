@@ -312,14 +312,6 @@ out the I6 command verb grammar for the supplied command.
     ParaContent();
 ];
 
-[ DebugAction a anames str;
-    if (a >= 4096) print "<fake action ", a-4096, ">"; else print "<action ", a, ">";
-];
-
-[ DebugAttribute a anames str;
-	print "<attribute ", a, ">";
-];
-
 [ DebugGrammarLine pcount;
     print " * ";
     for (: line_token-->pcount ~= ENDIT_TOKEN : pcount++) {

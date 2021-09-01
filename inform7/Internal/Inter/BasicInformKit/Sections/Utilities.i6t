@@ -57,8 +57,23 @@ final code-generator can inject code of its own into the body here: for example,
 the final code-generation for Glulx injects code into |FINAL_CODE_STARTUP_R|
 to use accelerated VM support for certain veneer functions.
 
+The other three are also misleading, in that final code-generation can add more
+helpful code here: the fallbacks here are basic.
+
 =
 [ FINAL_CODE_STARTUP_R addr res;
+];
+
+[ DebugAction a anames str;
+    if (a >= 4096) print "<fake action ", a-4096, ">"; else print "<action ", a, ">";
+];
+
+[ DebugAttribute a anames str;
+	print "<attribute ", a, ">";
+];
+
+[ DebugProperty p pnames str;
+	print "<property ", p, ">";
 ];
 
 @h Firebreak.

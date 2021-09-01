@@ -65,7 +65,7 @@ void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, vo
 		text_stream *N = Inter::Packages::name(pack);
 		if (Str::eq(N, I"Main_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
-		else if (Str::eq(N, I"DefArt_fn"))
+/*		else if (Str::eq(N, I"DefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
 		else if (Str::eq(N, I"CDefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
@@ -79,6 +79,7 @@ void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, vo
 			CodeGen::Eliminate::require(pack, NULL, I"it's DebugAttribute");
 		else if (Str::eq(N, I"TestScriptSub_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's TestScriptSub");
+*/
 	}
 }
 

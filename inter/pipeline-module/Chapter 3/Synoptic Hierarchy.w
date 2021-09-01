@@ -320,6 +320,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 @e DA_NAME_HL
 @e DB_RULE_HL
 @e DEADFLAG_HL
+@e DEBUGPROPERTY_HL
 @e DEBUG_RULES_HL
 @e DEBUG_SCENES_HL
 @e DECIMALNUMBER_HL
@@ -414,6 +415,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 @e PNTOVP_HL
 @e PRESENT_CHRONOLOGICAL_RECORD_HL
 @e PRINTORRUN_HL
+@e PRINTSHORTNAME_HL
 @e PRIOR_NAMED_LIST_HL
 @e PRIOR_NAMED_LIST_GENDER_HL
 @e PRIOR_NAMED_NOUN_HL
@@ -560,6 +562,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 		KIT_PROVIDED(DA_NAME_HL,                          I"DA_Name")
 		KIT_PROVIDED(DB_RULE_HL,                          I"DB_Rule")
 		KIT_PROVIDED(DEADFLAG_HL,                         I"deadflag")
+		KIT_PROVIDED(DEBUGPROPERTY_HL,                    I"DebugProperty")
 		KIT_PROVIDED(DEBUG_RULES_HL,                      I"debug_rules")
 		KIT_PROVIDED(DEBUG_SCENES_HL,                     I"debug_scenes")
 		KIT_PROVIDED(DECIMALNUMBER_HL,                    I"DecimalNumber")
@@ -654,6 +657,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 		KIT_PROVIDED(PNTOVP_HL,                           I"PNToVP")
 		KIT_PROVIDED(PRESENT_CHRONOLOGICAL_RECORD_HL,     I"present_chronological_record")
 		KIT_PROVIDED(PRINTORRUN_HL,                       I"PrintOrRun")
+		KIT_PROVIDED(PRINTSHORTNAME_HL,                   I"PrintShortName")
 		KIT_PROVIDED(PRIOR_NAMED_LIST_HL,                 I"prior_named_list")
 		KIT_PROVIDED(PRIOR_NAMED_LIST_GENDER_HL,          I"prior_named_list_gender")
 		KIT_PROVIDED(PRIOR_NAMED_NOUN_HL,                 I"prior_named_noun")

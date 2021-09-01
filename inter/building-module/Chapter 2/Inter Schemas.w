@@ -1965,37 +1965,23 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 									if (Str::eq(pr->material, I"address")) {
 										subordinate_to = PRINTDWORD_BIP;
 										operand1 = n;
-									} else if (Str::eq(pr->material, I"number")) {
-										subordinate_to = PRINTNLNUMBER_BIP;
-										operand1 = n;
 									} else if (Str::eq(pr->material, I"char")) {
 										subordinate_to = PRINTCHAR_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"string")) {
 										subordinate_to = PRINTSTRING_BIP;
 										operand1 = n;
-									} else if (Str::eq(pr->material, I"name")) {
-										subordinate_to = PRINTNAME_BIP;
-										operand1 = n;
 									} else if (Str::eq(pr->material, I"object")) {
 										subordinate_to = PRINTOBJ_BIP;
 										operand1 = n;
-									} else if (Str::eq(pr->material, I"property")) {
-										subordinate_to = PRINTPROPERTY_BIP;
-										operand1 = n;
-									} else if (Str::eq(pr->material, I"the")) {
-										subordinate_to = PRINTDEF_BIP;
-										operand1 = n;
-									} else if (Str::eq(pr->material, I"The")) {
-										subordinate_to = PRINTCDEF_BIP;
-										operand1 = n;
-									} else if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) {
-										subordinate_to = PRINTINDEF_BIP;
-										operand1 = n;
-									} else if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) {
-										subordinate_to = PRINTCINDEF_BIP;
-										operand1 = n;
 									} else {
+										if (Str::eq(pr->material, I"the")) pr->material = I"DefArt";
+										if (Str::eq(pr->material, I"The")) pr->material = I"CDefArt";
+										if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) pr->material = I"IndefArt";
+										if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) pr->material = I"CIndefArt";
+										if (Str::eq(pr->material, I"number")) pr->material = I"LanguageNumber";
+										if (Str::eq(pr->material, I"name")) pr->material = I"PrintShortName";
+										if (Str::eq(pr->material, I"property")) pr->material = I"DebugProperty";
 										isn->expression_tokens = pr;
 										inter_schema_token *open_b =
 											InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);

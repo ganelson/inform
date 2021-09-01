@@ -73,17 +73,6 @@ These print data of various kinds:
 (d) |primitive !printdword val -> void|. Print a dictionary word.
 (e) |primitive !printstring val -> void|. Print a packed string.
 
-While these correspond to standard I6 library functions, they should probably
-be removed from the set of primitives, but there are issues here to do with
-the Inform 6 "veneer":
-
-(a) |primitive !printnlnumber val -> void|. Print number but in natural language.
-(b) |primitive !printname val -> void|. Print name of an object.
-(c) |primitive !printdef val -> void|. Print name of an object, preceded by definite article.
-(d) |primitive !printcdef val -> void|. Print name of an object, preceded by capitalised definite article.
-(e) |primitive !printindef val -> void|.  Print name of an object, preceded by indefinite article.
-(f) |primitive !printcindef val -> void|.  Print name of an object, preceded by capitalised indefinite article.
-
 There are also primitive ways to change the visual style of text:
 
 (a) |primitive !font val -> void|. Change to fixed-width font if value is 1, or regular if 0.

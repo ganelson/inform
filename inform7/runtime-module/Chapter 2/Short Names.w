@@ -128,7 +128,8 @@ void ShortNames::compilation_agent(compilation_subtask *t) {
 			EmitCode::up();
 		EmitCode::up();
 	} else {
-		EmitCode::inv(PRINTNAME_BIP);
+		inter_name *psnname = Hierarchy::find(PRINTSHORTNAME_HL);
+		EmitCode::call(psnname);
 		EmitCode::down();
 			EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 		EmitCode::up();

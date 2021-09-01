@@ -396,17 +396,10 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 		case PRINT_BIP: WRITE("print "); INV_A1_PRINTMODE; break;
 		case PRINTRET_BIP: INV_A1_PRINTMODE; break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
-		case PRINTNAME_BIP: WRITE("print (name) "); INV_A1; break;
 		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
-		case PRINTPROPERTY_BIP: WRITE("print (property) "); INV_A1; break;
 		case PRINTNUMBER_BIP: WRITE("print "); INV_A1; break;
 		case PRINTDWORD_BIP: WRITE("print (address) "); INV_A1; break;
 		case PRINTSTRING_BIP: WRITE("print (string) "); INV_A1; break;
-		case PRINTNLNUMBER_BIP: WRITE("print (number) "); INV_A1; break;
-		case PRINTDEF_BIP: WRITE("print (the) "); INV_A1; break;
-		case PRINTCDEF_BIP: WRITE("print (The) "); INV_A1; break;
-		case PRINTINDEF_BIP: WRITE("print (a) "); INV_A1; break;
-		case PRINTCINDEF_BIP: WRITE("print (A) "); INV_A1; break;
 		case BOX_BIP: WRITE("box "); INV_A1_BOXMODE; break;
 
 		case IF_BIP: @<Generate primitive for if@>; break;
@@ -878,6 +871,7 @@ void CodeGen::I6::begin_function(code_generation_target *cgt, int pass, code_gen
 		if (Str::eq(fn_name, I"Main")) this_is_I6_Main = 1;
 		if (Str::eq(fn_name, I"DebugAction")) this_is_I6_Main = 2;
 		if (Str::eq(fn_name, I"DebugAttribute")) { this_is_I6_Main = 3; I6_DebugAttribute_seen = TRUE; }
+		if (Str::eq(fn_name, I"DebugProperty")) this_is_I6_Main = 4;
 	}
 }
 void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generation *gen) {
@@ -927,6 +921,10 @@ void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generati
 			WRITE("return;\n");
 			WRITE("#endif;\n");
 			break;
+		case 4:
+			WRITE("print (property) p;\n");
+			WRITE("return;\n");
+			break;			
 	}
 }
 void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
