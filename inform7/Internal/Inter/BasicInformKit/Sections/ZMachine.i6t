@@ -35,14 +35,6 @@ Global dict_start;
 Global dict_entry_size;
 Global dict_end;
 
-@h Enable Acceleration.
-This rule enables use of March 2009 extension to Glulx which optimises the speed
-of Inform-compiled story files, so for the Z-machine it has no effect.
-
-=
-[ ENABLE_GLULX_ACCEL_R;
-];
-
 @h Release Number.
 Like all software, IF story files have release numbers to mark revised
 versions being circulated: unlike most software, and partly for traditional
@@ -195,28 +187,6 @@ recognised by the parser.
         if (da->(j*9 + 14) == $ff-i)
         	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
 ];
-
-@h SHOWVERB support.
-Further VM-specific tables cover actions and attributes, and these are
-used by the SHOWVERB testing command.
-
-=
-#Ifdef DEBUG;
-[ DebugAction a anames;
-    if (a >= 4096) { print "<fake action ", a-4096, ">"; return; }
-    anames = #identifiers_table;
-    anames = anames + 2*(anames-->0) + 2*48;
-    print (string) anames-->a;
-];
-
-[ DebugAttribute a anames;
-    if (a < 0 || a >= 48) print "<invalid attribute ", a, ">";
-    else {
-        anames = #identifiers_table; anames = anames + 2*(anames-->0);
-        print (string) anames-->a;
-    }
-];
-#Endif;
 
 @h RNG.
 No routine is needed for extracting a random number, since I6's built-in

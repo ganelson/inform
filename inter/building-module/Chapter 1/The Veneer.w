@@ -10,7 +10,6 @@
 @e DICT_PAR1_VSYMB
 @e DICT_PAR2_VSYMB
 @e ACTIONS_TABLE_VSYMB
-@e IDENTIFIERS_TABLE_VSYMB
 @e GRAMMAR_TABLE_VSYMB
 @e SELF_VSYMB
 @e NUM_ATTR_BYTES_VSYMB
@@ -53,11 +52,10 @@
 void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, NOTHING_VSYMB, I"nothing", NULL);
 
-	Veneer::index(I, DICTIONARY_TABLE_VSYMB, I"#dictionary_table", NULL);
 	Veneer::index(I, DICT_PAR1_VSYMB, I"#dict_par1", NULL);
 	Veneer::index(I, DICT_PAR2_VSYMB, I"#dict_par2", NULL);
+	Veneer::index(I, DICTIONARY_TABLE_VSYMB, I"#dictionary_table", NULL);
 	Veneer::index(I, ACTIONS_TABLE_VSYMB, I"#actions_table", NULL);
-	Veneer::index(I, IDENTIFIERS_TABLE_VSYMB, I"#identifiers_table", NULL);
 	Veneer::index(I, GRAMMAR_TABLE_VSYMB, I"#grammar_table", NULL);
 	Veneer::index(I, SELF_VSYMB, I"self", NULL);
 	Veneer::index(I, NUM_ATTR_BYTES_VSYMB, I"NUM_ATTR_BYTES", NULL);

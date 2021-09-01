@@ -53,6 +53,7 @@ void CLiteralsModel::end(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
+	WRITE("#define i7_mgl_Grammar__Version 2\n");
 	CodeGen::deselect(gen, saved);
 }
 

@@ -1120,19 +1120,6 @@ light to the Dark Room.")
     IdentifyGlkObject(2);
 ];
 
-@h Enable Acceleration.
-This enables use of March 2009 extension to Glulx which optimises the speed
-of Inform-compiled story files by moving the work of I6 veneer routines into
-the interpreter itself. The empty function declaration here is misleading: its
-actual contents are written out longhand during final code compilation to
-Glulx, but not during e.g. final code compilation to C. This means that the
-Inter tree doesn't need to refer to eldritch Glulx-only symbols like |#g$self|
-or implement assembly-language operations like |@accelparam|. (See //final//.)
-
-=
-[ ENABLE_GLULX_ACCEL_R addr res;
-];
-
 @h Release Number.
 Like all software, IF story files have release numbers to mark revised
 versions being circulated: unlike most software, and partly for traditional
@@ -1465,32 +1452,6 @@ Array gg_tokenbuf -> DICT_WORD_SIZE;
     }
     return 0;
 ];
-
-@h SHOWVERB support.
-Further VM-specific tables cover actions and attributes, and these are
-used by the SHOWVERB testing command.
-
-=
-#Ifdef DEBUG;
-[ DebugAction a str;
-    if (a >= 4096) { print "<fake action ", a-4096, ">"; return; }
-    if (a < 0 || a >= #identifiers_table-->7) print "<invalid action ", a, ">";
-    else {
-        str = #identifiers_table-->6;
-        str = str-->a;
-        if (str) print (string) str; else print "<unnamed action ", a, ">";
-    }
-];
-
-[ DebugAttribute a str;
-    if (a < 0 || a >= NUM_ATTR_BYTES*8) print "<invalid attribute ", a, ">";
-    else {
-        str = #identifiers_table-->4;
-        str = str-->a;
-        if (str) print (string) str; else print "<unnamed attribute ", a, ">";
-    }
-];
-#Endif;
 
 @h Command Tables.
 The VM is also generated containing a data structure for the grammar

@@ -49,28 +49,21 @@ Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
 
 Global standard_interpreter = 0;
 
-@h Language of Play.
-The equivalent of I6's language definition file, though here the idea is
-that a translation should have an inclusion to replace the "Language.i6t"
-segment, which contains the English definition.
-
-=
-
 Default LanguageCases 1;
 
-
-@h VM-Specific Code.
-These sections of code contain different definitions of the same routines,
-and in some cases the same arrays, to handle low-level functions in the
-virtual machine -- saving the game, performing UNDO, parsing typed text into
-dictionary word addresses and so on.
-
-=
-
-@h More.
+@h Final Code Dependencies.
+This function definition is a little misleading. The idea is that the
+final code-generator can inject code of its own into the body here: for example,
+the final code-generation for Glulx injects code into |FINAL_CODE_STARTUP_R|
+to use accelerated VM support for certain veneer functions.
 
 =
+[ FINAL_CODE_STARTUP_R addr res;
+];
 
+@h Firebreak.
+
+=
 Array Protect_I7_Arrays --> 16339 12345;
 
 @h Print Decimal Number.

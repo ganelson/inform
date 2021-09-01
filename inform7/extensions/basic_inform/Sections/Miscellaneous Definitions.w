@@ -84,8 +84,8 @@ Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
 
 Starting the virtual machine (documented at act_startvm) is an activity.
-The enable Glulx acceleration rule is listed first in for starting the virtual machine.
-The enable Glulx acceleration rule translates into Inter as "ENABLE_GLULX_ACCEL_R".
+The final code startup rule is listed first in for starting the virtual machine.
+The final code startup rule translates into Inter as "FINAL_CODE_STARTUP_R".
 
 @ However, the two activities for printing names of objects are indeed
 functional in Basic Inform.

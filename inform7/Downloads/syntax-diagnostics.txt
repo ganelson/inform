@@ -420,14 +420,14 @@ ROOT_NT
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                         UNPARSED_NOUN_NT'starting the virtual machine ( documented at act_startvm )'
                         UNPARSED_NOUN_NT'an activity'
-                    SENTENCE_NT'the enable glulx acceleration rule is listed first in for st' {unit: 0} {classified}
+                    SENTENCE_NT'the final code startup rule is listed first in for starting ' {unit: 0} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
-                        UNPARSED_NOUN_NT'the enable glulx acceleration rule'
+                        UNPARSED_NOUN_NT'the final code startup rule'
                         UNPARSED_NOUN_NT'first in for starting the virtual machine'
-                    SENTENCE_NT'the enable glulx acceleration rule translates into inter as ' {unit: 0} {classified}
+                    SENTENCE_NT'the final code startup rule translates into inter as FINAL_C' {unit: 0} {classified}
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: into} {prep2: as} {special meaning: translates-into-i6} {category: 2}
-                        UNPARSED_NOUN_NT'enable glulx acceleration rule' {definite 'the' n/m/f s/p nom/acc}
-                        UNPARSED_NOUN_NT'ENABLE_GLULX_ACCEL_R'
+                        UNPARSED_NOUN_NT'final code startup rule' {definite 'the' n/m/f s/p nom/acc}
+                        UNPARSED_NOUN_NT'FINAL_CODE_STARTUP_R'
                     SENTENCE_NT'printing the name of something ( documented at act_pn ) is a' {unit: 0} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                         UNPARSED_NOUN_NT'printing the name of something ( documented at act_pn )'

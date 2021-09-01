@@ -219,6 +219,7 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	return FALSE;
 }
 
+int I6_DebugAttribute_seen = FALSE;
 int CodeGen::I6::end_generation(code_generation_target *cgt, code_generation *gen) {
 	if (I6_GEN_DATA(I6_property_offsets_made) > 0) {
 		generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
@@ -227,6 +228,16 @@ int CodeGen::I6::end_generation(code_generation_target *cgt, code_generation *ge
 		WRITE("];\n");
 		CodeGen::deselect(gen, saved);
 	}
+	
+	if (I6_DebugAttribute_seen == FALSE) {
+		generated_segment *saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("[ DebugAttribute a anames str;\n");
+		WRITE("    print \"<attribute \", a, \">\";\n");
+		WRITE("];\n");
+		CodeGen::deselect(gen, saved);
+	}
+	
 	return FALSE;
 }
 
@@ -849,31 +860,86 @@ void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen
 	if (ifndef_me) WRITE("#endif;\n");
 }
 
-int this_is_I6_Main = FALSE;
+int this_is_I6_Main = 0;
 void CodeGen::I6::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	text_stream *fn_name = CodeGen::CL::name(fn);
-	this_is_I6_Main = FALSE;
+	this_is_I6_Main = 0;
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("[ %S", fn_name);
-		if (Str::eq(fn_name, I"Main")) this_is_I6_Main = TRUE;
+		if (Str::eq(fn_name, I"Main")) this_is_I6_Main = 1;
+		if (Str::eq(fn_name, I"DebugAction")) this_is_I6_Main = 2;
+		if (Str::eq(fn_name, I"DebugAttribute")) { this_is_I6_Main = 3; I6_DebugAttribute_seen = TRUE; }
 	}
 }
 void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";");
-	if (this_is_I6_Main)
-		WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
+	switch (this_is_I6_Main) {
+		case 1:
+			WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
+			break;
+		case 2:
+			WRITE("#ifdef TARGET_GLULX;\n");
+			WRITE("if (a < 4096) {\n");
+			WRITE("    if (a < 0 || a >= #identifiers_table-->7) print \"<invalid action \", a, \">\";\n");
+			WRITE("    else {\n");
+			WRITE("        str = #identifiers_table-->6;\n");
+			WRITE("        str = str-->a;\n");
+			WRITE("        if (str) print (string) str; else print \"<unnamed action \", a, \">\";\n");
+			WRITE("        return;\n");
+			WRITE("    }\n");
+			WRITE("}\n");
+			WRITE("#endif;\n");
+			WRITE("#ifdef TARGET_ZCODE;\n");
+			WRITE("if (a < 4096) {\n");
+			WRITE("    anames = #identifiers_table;\n");
+			WRITE("    anames = anames + 2*(anames-->0) + 2*48;\n");
+			WRITE("    print (string) anames-->a;\n");
+			WRITE("    return;\n");
+			WRITE("}\n");
+			WRITE("#endif;\n");
+			break;
+		case 3:
+			WRITE("#ifdef TARGET_GLULX;\n");
+			WRITE("if (a < 0 || a >= NUM_ATTR_BYTES*8) print \"<invalid attribute \", a, \">\";\n");
+			WRITE("else {\n");
+			WRITE("    str = #identifiers_table-->4;\n");
+			WRITE("    str = str-->a;\n");
+			WRITE("    if (str) print (string) str; else print \"<unnamed attribute \", a, \">\";\n");
+			WRITE("}\n");
+			WRITE("return;\n");
+			WRITE("#endif;\n");
+			WRITE("#ifdef TARGET_ZCODE;\n");
+			WRITE("if (a < 0 || a >= 48) print \"<invalid attribute \", a, \">\";\n");
+			WRITE("else {\n");
+			WRITE("    anames = #identifiers_table; anames = anames + 2*(anames-->0);\n");
+			WRITE("    print (string) anames-->a;\n");
+			WRITE("}\n");
+			WRITE("return;\n");
+			WRITE("#endif;\n");
+			break;
+	}
 }
 void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S;\n", label_name);
 }
+
+@ This enables use of March 2009 extension to Glulx which optimises the speed
+of Inform-compiled story files by moving the work of I6 veneer routines into
+the interpreter itself. The empty function declaration here is misleading: its
+actual contents are written out longhand during final code compilation to
+Glulx, but not during e.g. final code compilation to C. This means that the
+Inter tree doesn't need to refer to eldritch Glulx-only symbols like |#g$self|
+or implement assembly-language operations like |@accelparam|. (See //final//.)
+
+=
 void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
 		text_stream *fn_name = CodeGen::CL::name(fn);
-		if (Str::eq(fn_name, I"ENABLE_GLULX_ACCEL_R")) {
+		if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
 			WRITE("#ifdef TARGET_GLULX;\n");
 			WRITE("@gestalt 9 0 res;\n");
 			WRITE("if (res == 0) rfalse;\n");
