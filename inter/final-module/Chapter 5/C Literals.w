@@ -107,10 +107,6 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 	int dictlen = C_GEN_DATA(litdata.C_dword_count);
 
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7val i7_ss_dict_par1 = 11;\n");
-	WRITE("i7val i7_ss_dict_par2 = 13;\n");
-	WRITE("i7val i7_ss_dict_par3 = 15;\n");
 	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT);
 	for (int b=0; b<4; b++) {
 		TEMPORARY_TEXT(N)

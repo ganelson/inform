@@ -4,15 +4,10 @@
 
 @d MAX_VSYMBS 100
 
-@e NOTHING_VSYMB from 0
-
-@e DICTIONARY_TABLE_VSYMB
-@e DICT_PAR1_VSYMB
-@e DICT_PAR2_VSYMB
+@e DICTIONARY_TABLE_VSYMB from 0
 @e ACTIONS_TABLE_VSYMB
 @e GRAMMAR_TABLE_VSYMB
 @e SELF_VSYMB
-@e NUM_ATTR_BYTES_VSYMB
 
 @e CHILDREN_VSYMB
 @e PARENT_VSYMB
@@ -36,8 +31,6 @@
 @e ASM_NEG_RTRUE_VSYMB
 @e ASM_NEG_RFALSE_VSYMB
 
-@e FLOAT_NAN_VSYMB
-
 @e PROPERTY_METADATA_VSYMB
 @e FBNA_PROP_NUMBER_VSYMB
 @e VALUE_PROPERTY_HOLDERS_VSYMB
@@ -50,15 +43,10 @@
 
 =
 void Veneer::create_indexes(inter_tree *I) {
-	Veneer::index(I, NOTHING_VSYMB, I"nothing", NULL);
-
-	Veneer::index(I, DICT_PAR1_VSYMB, I"#dict_par1", NULL);
-	Veneer::index(I, DICT_PAR2_VSYMB, I"#dict_par2", NULL);
 	Veneer::index(I, DICTIONARY_TABLE_VSYMB, I"#dictionary_table", NULL);
 	Veneer::index(I, ACTIONS_TABLE_VSYMB, I"#actions_table", NULL);
 	Veneer::index(I, GRAMMAR_TABLE_VSYMB, I"#grammar_table", NULL);
 	Veneer::index(I, SELF_VSYMB, I"self", NULL);
-	Veneer::index(I, NUM_ATTR_BYTES_VSYMB, I"NUM_ATTR_BYTES", NULL);
 	
 	Veneer::index(I, PARENT_VSYMB, I"parent", NULL);
 	Veneer::index(I, CHILD_VSYMB, I"child", NULL);
@@ -80,8 +68,6 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, ASM_NEG_VSYMB, I"__assembly_negated_label", I"~");
 	Veneer::index(I, ASM_NEG_RTRUE_VSYMB, I"__assembly_negated_rtrue_label", I"?~rtrue");
 	Veneer::index(I, ASM_NEG_RFALSE_VSYMB, I"__assembly_negated_rfalse_label", I"?~rfalse");
-
-	Veneer::index(I, FLOAT_NAN_VSYMB, I"FLOAT_NAN", NULL);
 
 	Veneer::index(I, PROPERTY_METADATA_VSYMB, I"property_metadata", NULL);
 	Veneer::index(I, FBNA_PROP_NUMBER_VSYMB, I"FBNA_PROP_NUMBER", NULL);

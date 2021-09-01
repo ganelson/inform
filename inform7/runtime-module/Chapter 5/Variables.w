@@ -173,7 +173,7 @@ void RTVariables::compile_NVE_as_val(nonlocal_variable *nlv, nonlocal_variable_e
 	} else if (nve->use_own_iname) {
 		EmitCode::val_iname(K_value, RTVariables::iname(nlv));
 	} else if (nve->nothing_form) {
-		EmitCode::val_symbol(K_value, Emit::get_veneer_symbol(NOTHING_VSYMB));
+		EmitCode::val_iname(K_value, Hierarchy::find(NOTHING_HL));
 	} else {
 		internal_error("improperly formed nve");
 	}

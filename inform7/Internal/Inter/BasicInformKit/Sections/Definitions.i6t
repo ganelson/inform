@@ -54,6 +54,9 @@ Constant HDR_EXTENSION        = $36;     ! word
 Constant HDR_UNUSED           = $38;     ! two words
 Constant HDR_INFORMVERSION    = $3C;     ! four ASCII characters
 
+Constant #dict_par1 = 6;
+Constant #dict_par2 = 7;
+
 #Endif;
 
 @h Glulx Definitions.
@@ -85,7 +88,17 @@ Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
 Constant ROM_GAMERELEASE      = $34;     ! short word
 Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
+Constant #dict_par1 = 11;
+Constant #dict_par2 = 13;
+
 #Endif;
+
+@h Nothing.
+This is defined automatically by the Inform 6 compiler, but not by other final
+compilation platforms (such as C).
+
+=
+Constant nothing = 0;
 
 @h Powers of Two.
 I6 lacks support for logical shifts, and the Z-machine opcodes which bear

@@ -955,7 +955,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::inv(EQ_BIP);
 		EmitCode::down();
 			EmitCode::val_symbol(K_value, gprk.x_s);
-			EmitCode::val_symbol(K_value, Emit::get_veneer_symbol(FLOAT_NAN_VSYMB));
+			EmitCode::val_iname(K_value, Hierarchy::find(FLOAT_NAN_HL));
 		EmitCode::up();
 		EmitCode::code();
 		EmitCode::down();

@@ -310,6 +310,13 @@ cases used to check the floating-point extensions to Glulx.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">M_NAN</span><span class="plain-syntax">  = </span><span class="constant-syntax">$7F800001</span><span class="plain-syntax">; </span><span class="comment-syntax">one of many NaN values</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">M_NNAN</span><span class="plain-syntax"> = </span><span class="constant-syntax">$FF800001</span><span class="plain-syntax">; </span><span class="comment-syntax">another, with a sign bit</span>
 
+<span class="comment-syntax">The Inform 6 compiler auto-defines these, but we're defining them here for</span>
+<span class="comment-syntax">the benefit of other final compilation targets where that won't be the case.</span>
+
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_INFINITY</span><span class="plain-syntax">  = </span><span class="constant-syntax">$7F800000</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_NINFINITY</span><span class="plain-syntax"> = </span><span class="constant-syntax">$FF800000</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FLOAT_NAN</span><span class="plain-syntax">       = </span><span class="constant-syntax">$7FC00000</span><span class="plain-syntax">;</span>
+
 <span class="comment-syntax">Floating-point parsing routines.</span>
 
 <span class="comment-syntax">Parse a float from a text buffer. Returns a float value, or FLOAT_NAN if</span>

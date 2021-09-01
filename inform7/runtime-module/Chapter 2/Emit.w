@@ -305,7 +305,7 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 	inter_symbol *val_s = (val_iname)?InterNames::to_symbol(val_iname):NULL;
 	if (val_s == NULL) {
 		if (Kinds::Behaviour::is_object(K))
-			val_s = Emit::get_veneer_symbol(NOTHING_VSYMB);
+			val_s = InterNames::to_symbol(Hierarchy::find(NOTHING_HL));
 		else
 			internal_error("can't handle a null alias");
 	}

@@ -15,9 +15,7 @@ void i7_fatal_exit(void) {
 	exit(1);
 }
 
-i7val i7_mgl_debug_flag = 0;
-i7val i7_mgl_NUM_ATTR_BYTES = 0;
-#define i7_mgl_FLOAT_NAN 0
+// i7val i7_mgl_NUM_ATTR_BYTES = 0;
 i7val i7_tmp = 0;
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2

@@ -127,6 +127,7 @@ code is in |CA__Pr|, defined in the |veneer.c| section of I6.)
 
 |debug_flag| is traditionally called so, but is actually
 now a bitmap of flags for tracing actions, calls to object routines, and so on.
+It's used in the I6 veneer, and need not exist on any other final compilation target.
 
 @d I6_GEN_DATA(x) ((I6_generation_data *) (gen->target_specific_data))->x
 
@@ -821,6 +822,13 @@ int CodeGen::I6::begin_constant(code_generation_target *cgt, code_generation *ge
 	text_stream *OUT = CodeGen::current(gen);
 
 	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1)) return FALSE;
+
+	if (Str::eq(const_name, I"FLOAT_INFINITY")) return FALSE;
+	if (Str::eq(const_name, I"FLOAT_NINFINITY")) return FALSE;
+	if (Str::eq(const_name, I"FLOAT_NAN")) return FALSE;
+	if (Str::eq(const_name, I"nothing")) return FALSE;
+	if (Str::eq(const_name, I"#dict_par1")) return FALSE;
+	if (Str::eq(const_name, I"#dict_par2")) return FALSE;
 
 	if (Str::eq(const_name, I"Release")) {
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];

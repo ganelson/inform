@@ -82,7 +82,7 @@ void EmitArrays::numeric_entry(inter_ti N) {
 
 void EmitArrays::iname_entry(inter_name *iname) {
 	inter_symbol *alias;
-	if (iname == NULL) alias = Emit::get_veneer_symbol(NOTHING_VSYMB);
+	if (iname == NULL) alias = InterNames::to_symbol(Hierarchy::find(NOTHING_HL));
 	else alias = InterNames::to_symbol(iname);
 	inter_ti v1 = 0, v2 = 0;
 	Emit::symbol_to_value_pair(&v1, &v2, alias);

@@ -339,6 +339,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 @e EXISTSTABLELOOKUPCORR_HL
 @e EXISTSTABLELOOKUPENTRY_HL
 @e EXISTSTABLEROWCORR_HL
+@e FLOAT_NAN_HL
 @e FLOATPARSE_HL
 @e FOLLOWRULEBOOK_HL
 @e formal_par0_HL
@@ -390,6 +391,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 @e NEXTBEST_ETYPE_HL
 @e NEXTWORDSTOPPED_HL
 @e NOARTICLE_BIT_HL
+@e NOTHING_HL
 @e NOTINCONTEXTPE_HL
 @e NOUN_HL
 @e NUMBER_TY_ABS_HL
@@ -577,6 +579,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 		KIT_PROVIDED(EXISTSTABLELOOKUPCORR_HL,            I"ExistsTableLookUpCorr")
 		KIT_PROVIDED(EXISTSTABLELOOKUPENTRY_HL,           I"ExistsTableLookUpEntry")
 		KIT_PROVIDED(EXISTSTABLEROWCORR_HL,               I"ExistsTableRowCorr")
+		KIT_PROVIDED(FLOAT_NAN_HL,                        I"FLOAT_NAN")
 		KIT_PROVIDED(FLOATPARSE_HL,                       I"FloatParse")
 		KIT_PROVIDED(FOLLOWRULEBOOK_HL,                   I"FollowRulebook")
 		KIT_PROVIDED(formal_par0_HL,                      I"formal_par0")
@@ -629,6 +632,7 @@ need to know which kit; we simply leaves them as "plugs" to be connected to
 		KIT_PROVIDED(NEXTWORDSTOPPED_HL,                  I"NextWordStopped")
 		KIT_PROVIDED(NOARTICLE_BIT_HL,                    I"NOARTICLE_BIT")
 		KIT_PROVIDED(NOTINCONTEXTPE_HL,                   I"NOTINCONTEXT_PE")
+		KIT_PROVIDED(NOTHING_HL,                          I"nothing")
 		KIT_PROVIDED(NOUN_HL,                             I"noun")
 		KIT_PROVIDED(NUMBER_TY_ABS_HL,                    I"NUMBER_TY_Abs")
 		KIT_PROVIDED(NUMBER_TY_TO_REAL_NUMBER_TY_HL,      I"NUMBER_TY_to_REAL_NUMBER_TY")

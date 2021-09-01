@@ -252,6 +252,13 @@ Constant M_NINF = $FF800000; ! negative infinity
 Constant M_NAN  = $7F800001; ! one of many NaN values
 Constant M_NNAN = $FF800001; ! another, with a sign bit
 
+! The Inform 6 compiler auto-defines these, but we're defining them here for
+! the benefit of other final compilation targets where that won't be the case.
+
+Constant FLOAT_INFINITY  = $7F800000;
+Constant FLOAT_NINFINITY = $FF800000;
+Constant FLOAT_NAN       = $7FC00000;
+
 ! Floating-point parsing routines.
 
 ! Parse a float from a text buffer. Returns a float value, or FLOAT_NAN if
