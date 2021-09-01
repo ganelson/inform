@@ -834,7 +834,7 @@ Get the verb: try all the syntax lines for that verb.
 
     #Ifdef DEBUG;
     if (parser_trace >= 1)
-    	print "[Parsing for verb ", i, " '", (address) verb_word, "' (", num_lines+1, " lines)]^";
+    	print "[Parsing for the verb '", (address) verb_word, "' (", num_lines+1, " lines)]^";
     #Endif; ! DEBUG
 
     best_etype = STUCK_PE; nextbest_etype = STUCK_PE;
@@ -3404,12 +3404,7 @@ so it retains its old I6 library interpretation.)
     ad = domain.&add_to_scope;
     if (ad ~= 0) {
         ! Test if the property value is not an object.
-        #Ifdef TARGET_ZCODE;
-        i = (UnsignedCompare(ad-->0, top_object) > 0);
-        #Ifnot; ! TARGET_GLULX
-        i = (((ad-->0)->0) ~= $70);
-        #Endif; ! TARGET_
-
+        i = (metaclass(ad-->0) == Object);
         if (i) {
             ats_flag = 2+context;
             RunRoutines(domain, add_to_scope);

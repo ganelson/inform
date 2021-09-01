@@ -20,7 +20,6 @@ wants out of these arrays.
 @h Variables and Arrays.
 
 =
-Global top_object; ! largest valid number of any tree object
 Global xcommsdir; ! true if command recording is on
 Global transcript_mode; ! true if game scripting is on
 
@@ -42,7 +41,6 @@ of Inform-compiled story files, so for the Z-machine it has no effect.
 
 =
 [ ENABLE_GLULX_ACCEL_R;
-	rfalse;
 ];
 
 @h Release Number.

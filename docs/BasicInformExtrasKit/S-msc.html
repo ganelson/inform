@@ -73,7 +73,6 @@ before it is known how they will be used.
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Main</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">; </span><span class="identifier-syntax">max_z_object</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">largest_object</span><span class="plain-syntax"> - </span><span class="constant-syntax">255</span><span class="plain-syntax">; #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VM_Initialise</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">INITIALISE_MEMORY_R</span><span class="plain-syntax">();</span>
@@ -104,7 +103,6 @@ before it is known how they will be used.
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Initialise</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">standard_interpreter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HDR_TERPSTANDARD</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">top_object</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">largest_object</span><span class="plain-syntax">-255;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">FIX_RNG_TCBIT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -112,58 +110,6 @@ before it is known how they will be used.
 <span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"[Random number generator seed is "</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="string-syntax">"]^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">OC__Cl</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">objflag</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jl</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">NotObj</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jg</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_z_object</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">NotObj</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">inc</span><span class="plain-syntax"> </span><span class="identifier-syntax">objflag</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    .</span><span class="identifier-syntax">NotObj</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    @</span><span class="identifier-syntax">je</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> </span><span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">Class</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">ObjOrClass</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">je</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> </span><span class="identifier-syntax">Routine</span><span class="plain-syntax"> </span><span class="identifier-syntax">String</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">RoutOrStr</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jin</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> ?~</span><span class="identifier-syntax">Mistake</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jz</span><span class="plain-syntax"> </span><span class="identifier-syntax">objflag</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">get_prop_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">a</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jz</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">get_prop_len</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    @</span><span class="identifier-syntax">div</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    .</span><span class="identifier-syntax">Loop</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">loadw</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">je</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">inc</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jl</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">Loop</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    .</span><span class="identifier-syntax">ObjOrClass</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jz</span><span class="plain-syntax"> </span><span class="identifier-syntax">objflag</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">je</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> </span><span class="identifier-syntax">Object</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">JustObj</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="comment-syntax">So now cla is Class</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jg</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">String</span><span class="plain-syntax"> ?~</span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jin</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">Class</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    .</span><span class="identifier-syntax">JustObj</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">So now cla is Object</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jg</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">String</span><span class="plain-syntax"> ?~</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jin</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">Class</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    .</span><span class="identifier-syntax">RoutOrStr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">jz</span><span class="plain-syntax"> </span><span class="identifier-syntax">objflag</span><span class="plain-syntax"> ?~</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">call_2s</span><span class="plain-syntax"> </span><span class="identifier-syntax">Z__Region</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">inc</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">je</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="identifier-syntax">cla</span><span class="plain-syntax"> ?</span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    .</span><span class="identifier-syntax">Mistake</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RT__Err</span><span class="plain-syntax">(</span><span class="string-syntax">"apply 'ofclass' for"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cla</span><span class="plain-syntax">, -1);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>

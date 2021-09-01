@@ -25,73 +25,12 @@ To provide Z-specific actions.
 	parse->0   = 15;
 	parse2->0  = 15;
 
-	top_object = #largest_object-255;
-
 	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
 		@random 10000 -> i;
 		i = -i-2000;
 		print "[Random number generator seed is ", i, "]^";
 		@random i -> i;
 	}
-];
-
-[ OC__Cl obj cla j a n objflag;
-
-	@jl obj 1 ?NotObj;
-	@jg obj max_z_object ?NotObj;
-	@inc objflag;
-	@je cla K1_room ?~NotRoom;
-	@test_attr obj mark_as_room ?rtrue;
-	@rfalse;
-	.NotRoom;
-	@je cla K2_thing ?~NotObj;
-	@test_attr obj mark_as_thing ?rtrue;
-	@rfalse;
-	.NotObj;
-
-	@je cla Object Class ?ObjOrClass;
-	@je cla Routine String ?RoutOrStr;
-
-	@jin cla 1 ?~Mistake;
-
-	@jz objflag ?rfalse;
-	@get_prop_addr obj 2 -> a;
-	@jz a ?rfalse;
-	@get_prop_len a -> n;
-
-	@div n 2 -> n;
-	.Loop;
-	@loadw a j -> sp;
-	@je sp cla ?rtrue;
-	@inc j;
-	@jl j n ?Loop;
-	@rfalse;
-
-	.ObjOrClass;
-	@jz objflag ?rfalse;
-	@je cla Object ?JustObj;
-
-	! So now cla is Class
-	@jg obj String ?~rtrue;
-	@jin obj Class ?rtrue;
-	@rfalse;
-
-	.JustObj;
-	! So now cla is Object
-	@jg obj String ?~rfalse;
-	@jin obj Class ?rfalse;
-	@rtrue;
-
-	.RoutOrStr;
-	@jz objflag ?~rfalse;
-	@call_2s Z__Region obj -> sp;
-	@inc sp;
-	@je sp cla ?rtrue;
-	@rfalse;
-
-	.Mistake;
-	RT__Err("apply 'ofclass' for", cla, -1);
-	rfalse;
 ];
 
 @h Quit The Game Rule.

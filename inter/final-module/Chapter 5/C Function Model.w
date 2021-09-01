@@ -38,14 +38,6 @@ void CFunctionModel::begin(code_generation *gen) {
 	WRITE("fn_"); CNamespace::mangle(NULL, OUT, I"Main");
 	WRITE("(0); return 0; }\n");
 	CodeGen::deselect(gen, saved);
-	CFunctionModel::make_veneer_fcf(gen, I"Z__Region");
-	CFunctionModel::make_veneer_fcf(gen, I"CP__Tab");
-	CFunctionModel::make_veneer_fcf(gen, I"RA__Pr");
-	CFunctionModel::make_veneer_fcf(gen, I"RL__Pr");
-	CFunctionModel::make_veneer_fcf(gen, I"OC__Cl");
-	CFunctionModel::make_veneer_fcf(gen, I"RV__Pr");
-	CFunctionModel::make_veneer_fcf(gen, I"OP__Pr");
-	CFunctionModel::make_veneer_fcf(gen, I"CA__Pr");
 }
 
 void CFunctionModel::end(code_generation *gen) {

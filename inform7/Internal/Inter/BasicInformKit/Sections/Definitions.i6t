@@ -16,8 +16,6 @@ but not for Z.
 =
 #Ifdef TARGET_ZCODE;
 
-Global max_z_object;
-
 Constant INDIV_PROP_START 64;
 
 ! Offsets into Z-machine header:

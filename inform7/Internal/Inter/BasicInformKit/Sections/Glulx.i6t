@@ -1123,34 +1123,14 @@ light to the Dark Room.")
 @h Enable Acceleration.
 This enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files by moving the work of I6 veneer routines into
-the interpreter itself. It should have no effect on earlier versions of the
-Glulx VM, which will lack the gestalt for this feature, but nor should it
-do any harm.
+the interpreter itself. The empty function declaration here is misleading: its
+actual contents are written out longhand during final code compilation to
+Glulx, but not during e.g. final code compilation to C. This means that the
+Inter tree doesn't need to refer to eldritch Glulx-only symbols like |#g$self|
+or implement assembly-language operations like |@accelparam|. (See //final//.)
 
 =
 [ ENABLE_GLULX_ACCEL_R addr res;
-	@gestalt 9 0 res;
-	if (res == 0) return;
-	addr = #classes_table;
-	@accelparam 0 addr;
-	@accelparam 1 INDIV_PROP_START;
-	@accelparam 2 Class;
-	@accelparam 3 Object;
-	@accelparam 4 Routine;
-	@accelparam 5 String;
-	addr = #globals_array + WORDSIZE * #g$self;
-	@accelparam 6 addr;
-	@accelparam 7 NUM_ATTR_BYTES;
-	addr = #cpv__start;
-	@accelparam 8 addr;
-	@accelfunc 1 Z__Region;
-	@accelfunc 2 CP__Tab;
-	@accelfunc 3 RA__Pr;
-	@accelfunc 4 RL__Pr;
-	@accelfunc 5 OC__Cl;
-	@accelfunc 6 RV__Pr;
-	@accelfunc 7 OP__Pr;
-	rfalse;
 ];
 
 @h Release Number.
@@ -1641,6 +1621,8 @@ do in any case.
 
 |Glulx_PrintAnything| handles strings, functions (with optional arguments),
 objects, object properties (with optional arguments), and dictionary words.
+(Object property printing has been somewhat simplified from the ideal version
+of this function in order to avoid calling the CA__Pr veneer function.)
 
 |Glulx_PrintAnyToArray| does the same, but the output is sent to a byte
 array in memory. The first two arguments must be the array address and
@@ -1662,8 +1644,8 @@ set stored here is once again ZSCII, not Unicode.
 ! Glulx_PrintAnything("string");           print (string) "string";
 ! Glulx_PrintAnything('word')              print (address) 'word';
 ! Glulx_PrintAnything(obj)                 print (name) obj;
-! Glulx_PrintAnything(obj, prop)           obj.prop();
-! Glulx_PrintAnything(obj, prop, args...)  obj.prop(args...);
+! Glulx_PrintAnything(obj, prop)           obj.prop();  NOTE: Using PrintOrRun
+! Glulx_PrintAnything(obj, prop, args...)  obj.prop(args...); NOTE: Unsupported
 ! Glulx_PrintAnything(func)                func();
 ! Glulx_PrintAnything(func, args...)       func(args...);
 
@@ -1700,7 +1682,7 @@ set stored here is once again ZSCII, not Unicode.
             ! veneer routine that handles obj.prop() calls.
             @copy obj sp;
             _vararg_count++;
-            @call CA__Pr _vararg_count 0;
+            @call PrintOrRun _vararg_count 0;
         }
         return;
     }

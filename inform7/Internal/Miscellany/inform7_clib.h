@@ -17,56 +17,12 @@ void i7_fatal_exit(void) {
 
 #define i7_mgl_Grammar__Version 2
 i7val i7_mgl_debug_flag = 0;
-i7val i7_ss_classes_table = 0;
 i7val i7_mgl_NUM_ATTR_BYTES = 0;
-i7val i7_ss_cpv__start = 0;
 i7val i7_ss_identifiers_table = 0;
-i7val i7_ss_globals_array = 0;
-i7val i7_ss_gself = 0;
 
 #define i7_mgl_FLOAT_NAN 0
 
 i7val i7_tmp = 0;
-
-i7val fn_i7_mgl_Z__Region(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_Z__Region.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_CP__Tab(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_CP__Tab.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RA__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RA__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RL__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RL__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_OC__Cl(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_OC__Cl.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_RV__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_RV__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_OP__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_OP__Pr.\n");
-	return 0;
-}
-
-i7val fn_i7_mgl_CA__Pr(int argc, i7val x) {
-	printf("Unimplemented: fn_i7_mgl_CA__Pr.\n");
-	return 0;
-}
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3

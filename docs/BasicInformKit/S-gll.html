@@ -1179,35 +1179,15 @@ light to the Dark Room.")
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Enable Acceleration. </b>This enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files by moving the work of I6 veneer routines into
-the interpreter itself. It should have no effect on earlier versions of the
-Glulx VM, which will lack the gestalt for this feature, but nor should it
-do any harm.
+the interpreter itself. The empty function declaration here is misleading: its
+actual contents are written out longhand during final code compilation to
+Glulx, but not during e.g. final code compilation to C. This means that the
+Inter tree doesn't need to refer to eldritch Glulx-only symbols like <span class="extract"><span class="extract-syntax">#g$self</span></span>
+or implement assembly-language operations like <span class="extract"><span class="extract-syntax">@accelparam</span></span>. (See <a href="../final-module/index.html" class="internal">final</a>.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ENABLE_GLULX_ACCEL_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">gestalt</span><span class="plain-syntax"> </span><span class="constant-syntax">9</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">res</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">addr</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">classes_table</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">addr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">INDIV_PROP_START</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="identifier-syntax">Class</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">Object</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">Routine</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="identifier-syntax">String</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">addr</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">globals_array</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> * #</span><span class="identifier-syntax">g</span><span class="constant-syntax">$</span><span class="identifier-syntax">self</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">addr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="identifier-syntax">NUM_ATTR_BYTES</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">addr</span><span class="plain-syntax"> = #</span><span class="identifier-syntax">cpv__start</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelparam</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span><span class="plain-syntax"> </span><span class="identifier-syntax">addr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">Z__Region</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="identifier-syntax">CP__Tab</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">RA__Pr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">RL__Pr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="identifier-syntax">OC__Cl</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">RV__Pr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">accelfunc</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="identifier-syntax">OP__Pr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Release Number. </b>Like all software, IF story files have release numbers to mark revised
@@ -1705,6 +1685,8 @@ do in any case.
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">Glulx_PrintAnything</span></span> handles strings, functions (with optional arguments),
 objects, object properties (with optional arguments), and dictionary words.
+(Object property printing has been somewhat simplified from the ideal version
+of this function in order to avoid calling the CA__Pr veneer function.)
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">Glulx_PrintAnyToArray</span></span> does the same, but the output is sent to a byte
@@ -1729,8 +1711,8 @@ set stored here is once again ZSCII, not Unicode.
 <span class="comment-syntax">Glulx_PrintAnything("string");           print (string) "string";</span>
 <span class="comment-syntax">Glulx_PrintAnything('word')              print (address) 'word';</span>
 <span class="comment-syntax">Glulx_PrintAnything(obj)                 print (name) obj;</span>
-<span class="comment-syntax">Glulx_PrintAnything(obj, prop)           obj.prop();</span>
-<span class="comment-syntax">Glulx_PrintAnything(obj, prop, args...)  obj.prop(args...);</span>
+<span class="comment-syntax">Glulx_PrintAnything(obj, prop)           obj.prop();  NOTE: Using PrintOrRun</span>
+<span class="comment-syntax">Glulx_PrintAnything(obj, prop, args...)  obj.prop(args...); NOTE: Unsupported</span>
 <span class="comment-syntax">Glulx_PrintAnything(func)                func();</span>
 <span class="comment-syntax">Glulx_PrintAnything(func, args...)       func(args...);</span>
 
@@ -1767,7 +1749,7 @@ set stored here is once again ZSCII, not Unicode.
 <span class="plain-syntax">            </span><span class="comment-syntax">veneer routine that handles obj.prop() calls.</span>
 <span class="plain-syntax">            @</span><span class="identifier-syntax">copy</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">            @</span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">CA__Pr</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            @</span><span class="identifier-syntax">call</span><span class="plain-syntax"> </span><span class="identifier-syntax">PrintOrRun</span><span class="plain-syntax"> </span><span class="identifier-syntax">_vararg_count</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>

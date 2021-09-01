@@ -32,7 +32,6 @@ before it is known how they will be used.
 ];
 
 [ Main;
-	#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;
 	VM_Initialise();
 	print "^";
 	INITIALISE_MEMORY_R();
@@ -63,7 +62,6 @@ Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
 #Ifdef TARGET_ZCODE;
 [ VM_Initialise i;
 	standard_interpreter = HDR_TERPSTANDARD-->0;
-	top_object = #largest_object-255;
 
 	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
 		@random 10000 -> i;
@@ -72,60 +70,7 @@ Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
 		@random i -> i;
 	}
 ];
-
-[ OC__Cl obj cla j a n objflag;
-
-	@jl obj 1 ?NotObj;
-	@jg obj max_z_object ?NotObj;
-	@inc objflag;
-	.NotObj;
-
-	@je cla Object Class ?ObjOrClass;
-	@je cla Routine String ?RoutOrStr;
-
-	@jin cla 1 ?~Mistake;
-
-	@jz objflag ?rfalse;
-	@get_prop_addr obj 2 -> a;
-	@jz a ?rfalse;
-	@get_prop_len a -> n;
-
-	@div n 2 -> n;
-	.Loop;
-	@loadw a j -> sp;
-	@je sp cla ?rtrue;
-	@inc j;
-	@jl j n ?Loop;
-	@rfalse;
-
-	.ObjOrClass;
-	@jz objflag ?rfalse;
-	@je cla Object ?JustObj;
-
-	! So now cla is Class
-	@jg obj String ?~rtrue;
-	@jin obj Class ?rtrue;
-	@rfalse;
-
-	.JustObj;
-	! So now cla is Object
-	@jg obj String ?~rfalse;
-	@jin obj Class ?rfalse;
-	@rtrue;
-
-	.RoutOrStr;
-	@jz objflag ?~rfalse;
-	@call_2s Z__Region obj -> sp;
-	@inc sp;
-	@je sp cla ?rtrue;
-	@rfalse;
-
-	.Mistake;
-	RT__Err("apply 'ofclass' for", cla, -1);
-	rfalse;
-];
 #Endif;
-
 
 @h Short Name Storage.
 None of the following functions should be called for the Z-machine if the

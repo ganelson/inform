@@ -274,54 +274,71 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
+
+				int lookahead = 0;
+				if (i+2 < P->W.extent) {
+					inter_ti laval1 = P->W.data[i+2], laval2 = P->W.data[i+3];
+					if (Inter::Symbols::is_stored_in_data(laval1, laval2)) {
+						inter_symbol *aliased =
+							InterSymbolsTables::symbol_from_data_pair_and_table(laval1, laval2, Inter::Packages::scope_of(P));
+						if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
+							i += 2;
+							lookahead = 0x20;
+						}
+					}
+				}
 				
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_HELD")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 1);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTI")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 2);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIHELD")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 3);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIEXCEPT")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 4);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIINSIDE")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 5);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_CREATURE")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 6);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SPECIAL")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 7);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_NUMBER")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 8);
 					continue;
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_TOPIC")) {
-					CLiteralsModel::grammar_byte(gen, 1);
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 9);
 					continue;
 				}
-
-				CLiteralsModel::grammar_byte(gen, 0x86);
+				int bc = 0x86;				
+				if (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1)
+					bc = 0x85;
+				if (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1)
+					bc = 0x83;
+				CLiteralsModel::grammar_byte(gen, bc + lookahead);
 				TEMPORARY_TEXT(MG)
 				CNamespace::mangle(cgt, MG, CodeGen::CL::name(aliased));
 				CLiteralsModel::grammar_word_textual(gen, MG);

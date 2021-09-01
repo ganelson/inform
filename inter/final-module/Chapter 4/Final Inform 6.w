@@ -148,6 +148,74 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	WRITE("Global debug_flag;\n");
 	CodeGen::deselect(gen, saved);
 
+	saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("#Ifdef TARGET_ZCODE;\n");
+	WRITE("Global max_z_object;\n");
+	WRITE("[ OC__Cl obj cla j a n objflag;\n"); INDENT;
+	WRITE("@jl obj 1 ?NotObj;\n");
+	WRITE("@jg obj max_z_object ?NotObj;\n");
+	WRITE("@inc objflag;\n");
+	WRITE("#Ifdef K1_room;\n");
+	WRITE("@je cla K1_room ?~NotRoom;\n");
+	WRITE("@test_attr obj mark_as_room ?rtrue;\n");
+	WRITE("@rfalse;\n");
+	WRITE(".NotRoom;\n");
+	WRITE("#Endif;\n");
+	WRITE("#Ifdef K2_thing;\n");
+	WRITE("@je cla K2_thing ?~NotObj;\n");
+	WRITE("@test_attr obj mark_as_thing ?rtrue;\n");
+	WRITE("@rfalse;\n");
+	WRITE("#Endif;\n");
+	WRITE(".NotObj;\n");
+	WRITE("\n");
+	WRITE("@je cla Object Class ?ObjOrClass;\n");
+	WRITE("@je cla Routine String ?RoutOrStr;\n");
+	WRITE("\n");
+	WRITE("@jin cla 1 ?~Mistake;\n");
+	WRITE("\n");
+	WRITE("@jz objflag ?rfalse;\n");
+	WRITE("@get_prop_addr obj 2 -> a;\n");
+	WRITE("@jz a ?rfalse;\n");
+	WRITE("@get_prop_len a -> n;\n");
+	WRITE("\n");
+	WRITE("@div n 2 -> n;\n");
+	WRITE(".Loop;\n");
+	WRITE("@loadw a j -> sp;\n");
+	WRITE("@je sp cla ?rtrue;\n");
+	WRITE("@inc j;\n");
+	WRITE("@jl j n ?Loop;\n");
+	WRITE("@rfalse;\n");
+	WRITE("\n");
+	WRITE(".ObjOrClass;\n");
+	WRITE("@jz objflag ?rfalse;\n");
+	WRITE("@je cla Object ?JustObj;\n");
+	WRITE("\n");
+	WRITE("! So now cla is Class\n");
+	WRITE("@jg obj String ?~rtrue;\n");
+	WRITE("@jin obj Class ?rtrue;\n");
+	WRITE("@rfalse;\n");
+	WRITE("\n");
+	WRITE(".JustObj;\n");
+	WRITE("! So now cla is Object\n");
+	WRITE("@jg obj String ?~rfalse;\n");
+	WRITE("@jin obj Class ?rfalse;\n");
+	WRITE("@rtrue;\n");
+	WRITE("\n");
+	WRITE(".RoutOrStr;\n");
+	WRITE("@jz objflag ?~rfalse;\n");
+	WRITE("@call_2s Z__Region obj -> sp;\n");
+	WRITE("@inc sp;\n");
+	WRITE("@je sp cla ?rtrue;\n");
+	WRITE("@rfalse;\n");
+	WRITE("\n");
+	WRITE(".Mistake;\n");
+	WRITE("RT__Err(\"apply 'ofclass' for\", cla, -1);\n");
+	WRITE("rfalse;\n");
+	OUTDENT; WRITE("];\n");
+	WRITE("#Endif;\n");
+	CodeGen::deselect(gen, saved);
+
 	return FALSE;
 }
 
@@ -781,16 +849,21 @@ void CodeGen::I6::end_constant(code_generation_target *cgt, code_generation *gen
 	if (ifndef_me) WRITE("#endif;\n");
 }
 
+int this_is_I6_Main = FALSE;
 void CodeGen::I6::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	text_stream *fn_name = CodeGen::CL::name(fn);
+	this_is_I6_Main = FALSE;
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("[ %S", fn_name);
+		if (Str::eq(fn_name, I"Main")) this_is_I6_Main = TRUE;
 	}
 }
 void CodeGen::I6::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";");
+	if (this_is_I6_Main)
+		WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
 }
 void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -799,6 +872,33 @@ void CodeGen::I6::place_label(code_generation_target *cgt, code_generation *gen,
 void CodeGen::I6::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
+		text_stream *fn_name = CodeGen::CL::name(fn);
+		if (Str::eq(fn_name, I"ENABLE_GLULX_ACCEL_R")) {
+			WRITE("#ifdef TARGET_GLULX;\n");
+			WRITE("@gestalt 9 0 res;\n");
+			WRITE("if (res == 0) rfalse;\n");
+			WRITE("addr = #classes_table;\n");
+			WRITE("@accelparam 0 addr;\n");
+			WRITE("@accelparam 1 INDIV_PROP_START;\n");
+			WRITE("@accelparam 2 Class;\n");
+			WRITE("@accelparam 3 Object;\n");
+			WRITE("@accelparam 4 Routine;\n");
+			WRITE("@accelparam 5 String;\n");
+			WRITE("addr = #globals_array + WORDSIZE * #g$self;\n");
+			WRITE("@accelparam 6 addr;\n");
+			WRITE("@accelparam 7 NUM_ATTR_BYTES;\n");
+			WRITE("addr = #cpv__start;\n");
+			WRITE("@accelparam 8 addr;\n");
+			WRITE("@accelfunc 1 Z__Region;\n");
+			WRITE("@accelfunc 2 CP__Tab;\n");
+			WRITE("@accelfunc 3 RA__Pr;\n");
+			WRITE("@accelfunc 4 RL__Pr;\n");
+			WRITE("@accelfunc 5 OC__Cl;\n");
+			WRITE("@accelfunc 6 RV__Pr;\n");
+			WRITE("@accelfunc 7 OP__Pr;\n");
+			WRITE("#endif;\n");
+			WRITE("rfalse;\n");
+		}
 		WRITE("];\n");
 	}
 }
