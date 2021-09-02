@@ -15,8 +15,8 @@ void i7_fatal_exit(void) {
 	exit(1);
 }
 
-// i7val i7_mgl_NUM_ATTR_BYTES = 0;
 i7val i7_tmp = 0;
+
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -1488,11 +1488,6 @@ void i7_print_name(i7val x) {
 
 void i7_print_object(i7val x) {
 	printf("Unimplemented: i7_print_object.\n");
-	i7_fatal_exit();
-}
-
-void i7_print_property(i7val x) {
-	printf("Unimplemented: i7_print_property.\n");
 	i7_fatal_exit();
 }
 

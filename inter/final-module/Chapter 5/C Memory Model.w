@@ -58,6 +58,8 @@ void CMemoryModel::begin(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7byte i7mem[] = {\n");
+	for (int i=0; i<64; i++) WRITE("0, "); WRITE("/* header */\n");
+	C_GEN_DATA(memdata.himem) += 64;
 	CodeGen::deselect(gen, saved);
 }
 
@@ -70,6 +72,24 @@ void CMemoryModel::end(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("0, 0 };\n");
+	
+	WRITE("void i7_initialise_header(void) {\n");
+	WRITE("    #ifdef i7_mgl_Release\n");
+	WRITE("    i7mem[0x34] = I7BYTE_2(i7_mgl_Release);\n");
+	WRITE("    i7mem[0x35] = I7BYTE_3(i7_mgl_Release);\n");
+	WRITE("    #endif\n");
+	WRITE("    #ifndef i7_mgl_Release\n");
+	WRITE("    i7mem[0x34] = I7BYTE_2(1);\n");
+	WRITE("    i7mem[0x35] = I7BYTE_3(1);\n");
+	WRITE("    #endif\n");
+	WRITE("    #ifdef i7_mgl_Serial\n");
+	WRITE("    for (int i=0; i<6; i++) i7mem[0x36 + i] = (dqs[i7_mgl_Serial - I7VAL_STRINGS_BASE])[i];\n");
+	WRITE("    #endif\n");
+	WRITE("    #ifndef i7_mgl_Serial\n");
+	WRITE("    for (int i=0; i<6; i++) i7mem[0x36 + i] = '0';\n");
+	WRITE("    #endif\n");
+	WRITE("}\n");
+	
 	CodeGen::deselect(gen, saved);
 	
 	saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);

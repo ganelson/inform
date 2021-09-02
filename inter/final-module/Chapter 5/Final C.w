@@ -52,6 +52,14 @@ first of those:
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
+
+void i7_fatal_exit(void) {
+	printf("*** Fatal error: halted ***\n");
+	int x = 0; printf("%d", 1/x);
+	exit(1);
+}
+
+i7val i7_tmp = 0;
 =
 
 @h Segmentation.
@@ -227,16 +235,3 @@ void CTarget::world_model_essentials(code_generation_target *cgt, code_generatio
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", -1, FALSE);
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", -1, FALSE);
 }
-
-@
-
-= (text to inform7_clib.h)
-void i7_fatal_exit(void) {
-	printf("*** Fatal error: halted ***\n");
-	int x = 0; printf("%d", 1/x);
-	exit(1);
-}
-
-// i7val i7_mgl_NUM_ATTR_BYTES = 0;
-i7val i7_tmp = 0;
-=
