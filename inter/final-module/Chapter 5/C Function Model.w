@@ -34,8 +34,8 @@ void CFunctionModel::begin(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("void i7_initializer(void);\n");
 	WRITE("void i7_initialise_header(void);\n");
-	WRITE("void i7_initialise_streams(void);\n");
-	WRITE("int main(int argc, char **argv) { i7_initializer(); i7_initialise_header(); i7_initialise_streams(); ");
+	WRITE("void i7_initialise_streams(void (*receiver)(int id, wchar_t c));\n");
+	WRITE("int begin_execution(void (*receiver)(int id, wchar_t c)) { i7_initializer(); i7_initialise_header(); i7_initialise_streams(receiver); ");
 	WRITE("fn_"); CNamespace::mangle(NULL, OUT, I"Main");
 	WRITE("(0); return 0; }\n");
 	CodeGen::deselect(gen, saved);

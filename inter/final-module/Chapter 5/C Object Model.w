@@ -29,6 +29,7 @@ typedef struct C_generation_object_model_data {
 typedef struct C_property_owner {
 	struct text_stream *name;
 	struct text_stream *class;
+	struct linked_list *property_values;
 	int is_class;
 } C_property_owner;
 
@@ -38,16 +39,17 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.C_property_offsets_made) = 0;
 	C_GEN_DATA(objdata.owners) = NULL;
 	C_GEN_DATA(objdata.owners_capacity) = 0;
-	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, TRUE);
+	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, FALSE);
 }
 
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
-	CObjectModel::declare_property_by_name(gen, I"value_range", TRUE);
+	CObjectModel::property_by_name(gen, I"value_range", TRUE);
 }
 
 void CObjectModel::end(code_generation *gen) {
+	CObjectModel::write_property_values_table(gen);
 	@<Complete the initialiser function@>;
 	@<Complete the property-offset creator function@>;
 	@<Predeclare the object count and class array@>;
@@ -82,6 +84,7 @@ void CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
 	C_GEN_DATA(objdata.owners)[id].name = Str::duplicate(name);
 	C_GEN_DATA(objdata.owners)[id].class = Str::duplicate(class_name);
 	C_GEN_DATA(objdata.owners)[id].is_class = is_class;
+	C_GEN_DATA(objdata.owners)[id].property_values = NEW_LINKED_LIST(C_pv_pair);
 	C_GEN_DATA(objdata.current_owner_id) = id;
 }
 
@@ -249,29 +252,43 @@ that references to it will not fail to compile.
 void CObjectModel::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
-	CObjectModel::declare_property_by_name(gen, name, used);
+	CObjectModel::property_by_name(gen, name, used);
 }
 void CObjectModel::declare_attribute(code_generation_target *cgt, code_generation *gen,
 	text_stream *prop_name) {
-	CObjectModel::declare_property_by_name(gen, prop_name, TRUE);
+	CObjectModel::property_by_name(gen, prop_name, TRUE);
 }
 
 @ Property IDs count upwards from 0 in declaration order, though they really
 only need to be unique, so the order is not significant.
 
 =
-void CObjectModel::declare_property_by_name(code_generation *gen, text_stream *name, int used) {
+typedef struct C_property {
+	struct text_stream *name;
+	int id;
+	CLASS_DEFINITION
+} C_property;
+
+C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int used) {
 	dictionary *D = C_GEN_DATA(objdata.declared_properties);
-	text_stream *X = Dictionaries::get_text(D, name);
-	if (X == NULL) {
+	C_property *cp;
+	if (Dictionaries::find(D, name) == NULL) {
+		cp = CREATE(C_property);
+		cp->name = Str::duplicate(name);
+		cp->id = C_GEN_DATA(objdata.property_id_counter)++;
 		Dictionaries::create(D, name);
+		Dictionaries::write_value(D, name, (void *) cp);
+		
 		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
-		CNamespace::mangle(NULL, OUT, name);
-		WRITE(" %d\n", C_GEN_DATA(objdata.property_id_counter)++);
+		CNamespace::mangle(NULL, OUT, cp->name);
+		WRITE(" %d\n", cp->id);
 		CodeGen::deselect(gen, saved);
+	} else {
+		cp = Dictionaries::read_value(D, name);;
 	}
+	return cp;
 }
 
 @h Property offsets arrays.
@@ -341,9 +358,8 @@ initialiser function which runs early and sets the property values up by hand:
 	WRITE("void i7_initializer(void) {\n"); INDENT;
 	WRITE("for (int id=0; id<i7_max_objects; id++) {\n"); INDENT;
 	WRITE("for (int p=0; p<i7_no_property_ids; p++) {\n"); INDENT;
-	WRITE("i7_properties[id].value[p] = 0;\n");
-	WRITE("if (id == 1) i7_properties[id].value_set[p] = 1;\n");
-	WRITE("else i7_properties[id].value_set[p] = 0;\n");
+	WRITE("i7_properties[id].address[p] = 0;\n");
+	WRITE("i7_properties[id].len[p] = 0;\n");
 	OUTDENT; WRITE("}\n");
 	WRITE("i7_object_tree_parent[id] = 0;\n");
 	WRITE("i7_object_tree_child[id] = 0;\n");
@@ -369,15 +385,46 @@ owner. Note that it must be called after the owner's declaration call, and befor
 the next owner is declared.
 
 =
+typedef struct C_pv_pair {
+	struct C_property *prop;
+	struct text_stream *val;
+	CLASS_DEFINITION
+} C_pv_pair;
+
 void CObjectModel::assign_property(code_generation_target *cgt, code_generation *gen,
 	text_stream *property_name, text_stream *val, int as_att) {
+	C_property_owner *owner = &(C_GEN_DATA(objdata.owners)[C_GEN_DATA(objdata.current_owner_id)]);
+	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE);
+	C_pv_pair *pair = CREATE(C_pv_pair);
+	pair->prop = prop;
+	pair->val = Str::duplicate(val);
+	ADD_TO_LINKED_LIST(pair, C_pv_pair, owner->property_values);
+
+//	WRITE("i7_write_prop_value(");
+//	CNamespace::mangle(cgt, OUT, owner->name);
+//	WRITE(", ");
+//	CNamespace::mangle(cgt, OUT, property_name);
+//	WRITE(", %S);\n", val);
+
+}
+
+void CObjectModel::write_property_values_table(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7_write_prop_value(");
-	CNamespace::mangle(cgt, OUT, C_GEN_DATA(objdata.owners)[C_GEN_DATA(objdata.current_owner_id)].name);
-	WRITE(", ");
-	CNamespace::mangle(cgt, OUT, property_name);
-	WRITE(", %S);\n", val);
+	for (int i=0; i<C_GEN_DATA(objdata.owners_capacity); i++) {
+		C_property_owner *owner = &(C_GEN_DATA(objdata.owners)[i]);
+		while (owner->is_class == FALSE) {
+			C_pv_pair *pair;
+			LOOP_OVER_LINKED_LIST(pair, C_pv_pair, owner->property_values) {
+				WRITE("i7_properties[");
+				CNamespace::mangle(cgt, OUT, owner->name);
+				WRITE("].address[");
+				CNamespace::mangle(cgt, OUT, pair->prop->name);
+				WRITE("] = %d;\n", C_GEN_DATA(memdata.himem));
+				CMemoryModel::array_entry(cgt, gen, pair->val, WORD_ARRAY_FORMAT);
+			}
+		}
+	}
 	CodeGen::deselect(gen, saved);
 }
 
@@ -424,13 +471,12 @@ int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 
 @h Reading and writing properties.
 So here is the run-time storage for property values, and simple code to read
-and write them. Note that, unlike in the Z-machine or Glulx implementations,
-property values are not stored in the memory map.
+and write them.
 
 = (text to inform7_clib.h)
 typedef struct i7_property_set {
-	i7val value[i7_no_property_ids];
-	int value_set[i7_no_property_ids];
+	i7val address[i7_no_property_ids];
+	i7val len[i7_no_property_ids];
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
@@ -440,8 +486,12 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
 		i7_fatal_exit();
 	}
-	i7_properties[(int) owner_id].value[(int) prop_id] = val;
-	i7_properties[(int) owner_id].value_set[(int) prop_id] = 1;
+	i7val address = i7_properties[(int) owner_id].address[(int) prop_id];
+	if (address) i7_write_word(i7mem, address, 0, val, i7_lvalue_SET);
+	else {
+		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
+		i7_fatal_exit();
+	}
 }
 =
 
@@ -451,10 +501,12 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].value_set[(int) prop_id] == 0) {
+	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
 		owner_id = i7_class_of[owner_id];
+		if (owner_id == i7_mgl_Class) return 0;
 	}
-	return i7_properties[(int) owner_id].value[(int) prop_id];
+	i7val address = i7_properties[(int) owner_id].address[(int) prop_id];
+	return i7_read_word(i7mem, address, 0);
 }
 
 i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way) {
@@ -476,8 +528,7 @@ void i7_give(i7val owner, i7val prop, i7val val) {
 }
 
 i7val i7_prop_len(i7val obj, i7val pr) {
-	printf("Unimplemented: i7_prop_len.\n");
-	return 0;
+	return i7_read_word(i7mem, i7_read_prop_value(obj, pr), 0);
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
@@ -512,7 +563,7 @@ int i7_provides(i7val owner_id, i7val prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (owner_id != 1) {
-		if (i7_properties[(int) owner_id].value_set[(int) prop_id] == 1)
+		if (i7_properties[(int) owner_id].address[(int) prop_id] != 0)
 			return 1;
 		owner_id = i7_class_of[owner_id];
 	}

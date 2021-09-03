@@ -53,6 +53,18 @@ first of those:
 #include <time.h>
 #include <ctype.h>
 
+int begin_execution(void (*receiver)(int id, wchar_t c));
+
+#ifndef I7_NO_MAIN
+void default_receiver(int id, wchar_t c) {
+	if (id == 201) fputc(c, stdout);
+}
+
+int main(int argc, char **argv) {
+	return begin_execution(default_receiver);
+}
+#endif
+
 void i7_fatal_exit(void) {
 	printf("*** Fatal error: halted ***\n");
 	int x = 0; printf("%d", 1/x);

@@ -181,6 +181,7 @@ typedef struct i7_stream {
 	int chars_read;
 	int read_position;
 	int end_position;
+	int owned_by_window_id;
 } i7_stream;
 
 #define I7_MAX_STREAMS 128
@@ -198,7 +199,7 @@ void i7_do_glk_stream_set_current(i7val id) {
 	i7_str_id = id;
 }
 
-i7_stream i7_new_stream(FILE *F) {
+i7_stream i7_new_stream(FILE *F, int win_id) {
 	i7_stream S;
 	S.to_file = F;
 	S.to_file_id = -1;
@@ -214,24 +215,28 @@ i7_stream i7_new_stream(FILE *F) {
 	S.chars_read = 0;
 	S.read_position = 0;
 	S.end_position = 0;
+	S.owned_by_window_id = win_id;
 	return S;
 }
 
-void i7_initialise_streams(void) {
-	for (int i=0; i<I7_MAX_STREAMS; i++) i7_memory_streams[i] = i7_new_stream(NULL);
-	i7_memory_streams[i7_stdout_id] = i7_new_stream(stdout);
+void (*i7_receiver)(int id, wchar_t c) = NULL;
+
+void i7_initialise_streams(void (*receiver)(int id, wchar_t c)) {
+	for (int i=0; i<I7_MAX_STREAMS; i++) i7_memory_streams[i] = i7_new_stream(NULL, 0);
+	i7_memory_streams[i7_stdout_id] = i7_new_stream(stdout, 0);
 	i7_memory_streams[i7_stdout_id].active = 1;
 	i7_memory_streams[i7_stdout_id].encode_UTF8 = 1;
-	i7_memory_streams[i7_stderr_id] = i7_new_stream(stderr);
+	i7_memory_streams[i7_stderr_id] = i7_new_stream(stderr, 0);
 	i7_memory_streams[i7_stderr_id].active = 1;
 	i7_memory_streams[i7_stderr_id].encode_UTF8 = 1;
 	i7_do_glk_stream_set_current(i7_stdout_id);
+	i7_receiver = receiver;
 }
 
-i7val i7_open_stream(FILE *F) {
+i7val i7_open_stream(FILE *F, int win_id) {
 	for (int i=0; i<I7_MAX_STREAMS; i++)
 		if (i7_memory_streams[i].active == 0) {
-			i7_memory_streams[i] = i7_new_stream(F);
+			i7_memory_streams[i] = i7_new_stream(F, win_id);
 			i7_memory_streams[i].active = 1;
 			i7_memory_streams[i].previous_id = i7_str_id;
 			return i;
@@ -242,7 +247,7 @@ i7val i7_open_stream(FILE *F) {
 
 i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val rock) {
 	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(); }
-	i7val id = i7_open_stream(NULL);
+	i7val id = i7_open_stream(NULL, 0);
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 1;
@@ -252,7 +257,7 @@ i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val r
 
 i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7val rock) {
 	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(); }
-	i7val id = i7_open_stream(NULL);
+	i7val id = i7_open_stream(NULL, 0);
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 4;
@@ -261,7 +266,7 @@ i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7v
 }
 
 i7val i7_do_glk_stream_open_file(i7val fileref, i7val usage, i7val rock) {
-	i7val id = i7_open_stream(NULL);
+	i7val id = i7_open_stream(NULL, 0);
 	i7_memory_streams[id].to_file_id = fileref;
 	if (i7_fopen(fileref, usage) == 0) return 0;
 	return id;
@@ -331,22 +336,60 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 	S->memory_used = 0;
 }
 
+typedef struct i7_winref {
+	i7val type;
+	i7val stream_id;
+	i7val rock;
+} i7_winref;
+
+i7_winref winrefs[128];
+int i7_no_winrefs = 1;
+
+i7val i7_do_glk_window_open(i7val split, i7val method, i7val size, i7val wintype, i7val rock) {
+	if (i7_no_winrefs >= 128) {
+		fprintf(stderr, "Out of windows\n"); i7_fatal_exit();
+	}
+	int id = i7_no_winrefs++;
+	winrefs[id].type = wintype;
+	winrefs[id].stream_id = i7_open_stream(stdout, id);
+	winrefs[id].rock = rock;
+	return id;
+}
+
+i7val i7_stream_of_window(i7val id) {
+	if ((id < 0) || (id >= i7_no_winrefs)) { fprintf(stderr, "Window ID %d out of range\n", id); i7_fatal_exit(); }
+	return winrefs[id].stream_id;
+}
+
+i7val i7_rock_of_window(i7val id) {
+	if ((id < 0) || (id >= i7_no_winrefs)) { fprintf(stderr, "Window ID %d out of range\n", id); i7_fatal_exit(); }
+	return winrefs[id].rock;
+}
+
+void i7_to_receiver(i7val rock, wchar_t c) {
+	if (i7_receiver == NULL) fputc(c, stdout);
+	(*i7_receiver)(rock, c);
+}
+
 void i7_do_glk_put_char_stream(i7val stream_id, i7val x) {
 	i7_stream *S = &(i7_memory_streams[stream_id]);
 	if (S->to_file) {
+		int win_id = S->owned_by_window_id;
+		int rock = -1;
+		if (win_id >= 1) rock = i7_rock_of_window(win_id);
 		unsigned int c = (unsigned int) x;
-		if (S->encode_UTF8) {
+//		if (S->encode_UTF8) {
 			if (c >= 0x800) {
-				fputc(0xE0 + (c >> 12), S->to_file);
-				fputc(0x80 + ((c >> 6) & 0x3f), S->to_file);
-				fputc(0x80 + (c & 0x3f), S->to_file);
+				i7_to_receiver(rock, 0xE0 + (c >> 12));
+				i7_to_receiver(rock, 0x80 + ((c >> 6) & 0x3f));
+				i7_to_receiver(rock, 0x80 + (c & 0x3f));
 			} else if (c >= 0x80) {
-				fputc(0xC0 + (c >> 6), S->to_file);
-				fputc(0x80 + (c & 0x3f), S->to_file);
-			} else fputc((int) c, S->to_file);
-		} else {
-			fputc((int) c, S->to_file);
-		}
+				i7_to_receiver(rock, 0xC0 + (c >> 6));
+				i7_to_receiver(rock, 0x80 + (c & 0x3f));
+			} else i7_to_receiver(rock, (int) c);
+//		} else {
+//			i7_to_receiver(rock, (int) c);
+//		}
 	} else if (S->to_file_id >= 0) {
 		i7_fputc((int) x, S->to_file_id);
 		S->end_position++;
@@ -593,10 +636,10 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 
 void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 	i7_debug_stack("glulx_glk");
-	i7val args[4] = { 0, 0, 0, 0 }, argc = 0;
+	i7val args[5] = { 0, 0, 0, 0, 0 }, argc = 0;
 	while (varargc > 0) {
 		i7val v = i7_pull();
-		if (argc < 4) args[argc++] = v;
+		if (argc < 5) args[argc++] = v;
 		varargc--;
 	}
 	
@@ -607,9 +650,9 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 		case i7_glk_window_iterate:
 			rv = 0; break;
 		case i7_glk_window_open:
-			rv = 1; break;
+			rv = i7_do_glk_window_open(args[0], args[1], args[2], args[3], args[4]); break;
 		case i7_glk_set_window:
-			rv = 0; break;
+			i7_do_glk_stream_set_current(i7_stream_of_window(args[0])); break;
 		case i7_glk_stream_iterate:
 			rv = 0; break;
 		case i7_glk_fileref_iterate:

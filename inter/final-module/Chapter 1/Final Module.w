@@ -15,6 +15,8 @@ which use this module:
 @e I6_generation_data_CLASS
 @e C_generation_data_CLASS
 @e C_dword_CLASS
+@e C_property_CLASS
+@e C_pv_pair_CLASS
 
 =
 DECLARE_CLASS(final_c_function)
@@ -22,6 +24,8 @@ DECLARE_CLASS(kov_value_stick)
 DECLARE_CLASS(I6_generation_data)
 DECLARE_CLASS(C_generation_data)
 DECLARE_CLASS(C_dword)
+DECLARE_CLASS(C_property)
+DECLARE_CLASS(C_pv_pair)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

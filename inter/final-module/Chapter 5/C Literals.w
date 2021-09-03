@@ -131,9 +131,10 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 		DISCARD_TEXT(N);
 		for (int i=0; i<9; i++) {
 			TEMPORARY_TEXT(N)
-			if (i < Str::len(dw->text))
-				WRITE_TO(N, "'%c'", Str::get_at(dw->text, i));
-			else
+			if (i < Str::len(dw->text)) {
+				if (Str::get_at(dw->text, i) == '\'') WRITE_TO(N, "'\\''");
+				else WRITE_TO(N, "'%c'", Str::get_at(dw->text, i));
+			} else
 				WRITE_TO(N, "0");
 			CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
 			DISCARD_TEXT(N);
