@@ -1,0 +1,32 @@
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+
+Counting House
+You can see an abacus and the King here.
+
+>(Testing.)
+
+>[1] showme
+Counting House - room
+    yourself - person
+    abacus
+    King - man
+        crown (worn)
+
+>[2] examine me
+As good-looking as ever.
+
+>[3] examine abacus
+You see nothing special about the abacus.
+
+>[4] examine king
+You see nothing special about the King.
+
+>[5] examine crown
+You see nothing special about the crown.
+
+>Are you sure you want to quit? 

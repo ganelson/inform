@@ -93,7 +93,7 @@ void CFunctionModel::end(code_generation *gen) {
 		WRITE(");\n");
 	}
 	OUTDENT; WRITE("}\n");
-	WRITE("printf(\"function not found\\n\");\n");
+	WRITE("printf(\"function %%d not found\\n\", fn_ref);\n");
 	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 }

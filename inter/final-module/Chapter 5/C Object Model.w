@@ -18,34 +18,42 @@ void CObjectModel::initialise(code_generation_target *cgt) {
 
 typedef struct C_generation_object_model_data {
 	int owner_id_count;
-	struct C_property_owner *owners;
-	int owners_capacity;
+	struct C_property_owner *arrow_chain[128];
 	int property_id_counter;
 	int C_property_offsets_made;
-	int current_owner_id;
+	struct C_property_owner *current_owner;
 	struct dictionary *declared_properties;
+	struct linked_list *declared_objects; /* of |C_property_owner| */
+	int inline_this;
 } C_generation_object_model_data;
 
 typedef struct C_property_owner {
 	struct text_stream *name;
 	struct text_stream *class;
+	struct text_stream *identifier;
 	struct linked_list *property_values;
+	struct C_property_owner *initial_parent;
+	struct C_property_owner *initial_sibling;
+	struct C_property_owner *initial_child;
 	int is_class;
+	int id;
+	CLASS_DEFINITION
 } C_property_owner;
 
 void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.owner_id_count) = 0;
 	C_GEN_DATA(objdata.property_id_counter) = 0;
 	C_GEN_DATA(objdata.C_property_offsets_made) = 0;
-	C_GEN_DATA(objdata.owners) = NULL;
-	C_GEN_DATA(objdata.owners_capacity) = 0;
 	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, FALSE);
+	C_GEN_DATA(objdata.inline_this) = FALSE;
+	C_GEN_DATA(objdata.declared_objects) = NEW_LINKED_LIST(C_property_owner);
+	for (int i=0; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 }
 
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
-	CObjectModel::property_by_name(gen, I"value_range", TRUE);
+	CObjectModel::property_by_name(gen, I"value_range", TRUE, FALSE);
 }
 
 void CObjectModel::end(code_generation *gen) {
@@ -65,27 +73,22 @@ Here we create an owner. They are listed in a dynamically resized array in
 the model data:
 
 =
-void CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
+C_property_owner *CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
 	text_stream *class_name, int is_class) {
-	while (id >= C_GEN_DATA(objdata.owners_capacity)) {
-		int old_capacity = C_GEN_DATA(objdata.owners_capacity);
-		int new_capacity = 4 * old_capacity;
-		if (old_capacity == 0) new_capacity = 8;
-		C_property_owner *new_array = (Memory::calloc(new_capacity,
-			sizeof(C_property_owner), CODE_GENERATION_MREASON));
-		for (int i=0; i<old_capacity; i++) 
-			new_array[i] = C_GEN_DATA(objdata.owners)[i];
-		if (old_capacity > 0) Memory::I7_array_free(C_GEN_DATA(objdata.owners),
-			CODE_GENERATION_MREASON, old_capacity, sizeof(C_property_owner));
-		C_GEN_DATA(objdata.owners) = new_array;		
-		C_GEN_DATA(objdata.owners_capacity) = new_capacity;
-	}
+	C_property_owner *co = CREATE(C_property_owner);
 	if (Str::len(name) == 0) internal_error("nameless instance");
-	C_GEN_DATA(objdata.owners)[id].name = Str::duplicate(name);
-	C_GEN_DATA(objdata.owners)[id].class = Str::duplicate(class_name);
-	C_GEN_DATA(objdata.owners)[id].is_class = is_class;
-	C_GEN_DATA(objdata.owners)[id].property_values = NEW_LINKED_LIST(C_pv_pair);
-	C_GEN_DATA(objdata.current_owner_id) = id;
+	co->name = Str::duplicate(name);
+	co->class = Str::duplicate(class_name);
+	co->is_class = is_class;
+	co->property_values = NEW_LINKED_LIST(C_pv_pair);
+	co->initial_parent = NULL;
+	co->initial_sibling = NULL;
+	co->initial_child = NULL;
+	co->identifier = Str::new(); CNamespace::mangle(NULL, co->identifier, co->name);
+	co->id = id;
+	C_GEN_DATA(objdata.current_owner) = co;
+	ADD_TO_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects));
+	return co;
 }
 
 @h Owner IDs.
@@ -130,15 +133,16 @@ overlap.
 	WRITE("#define i7_max_objects %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
 
 	WRITE("i7val i7_metaclass_of[] = { 0");
-	for (int i=1; i<=C_GEN_DATA(objdata.owner_id_count); i++) {
-		if (C_GEN_DATA(objdata.owners)[i].is_class) WRITE(", i7_mgl_Class");
+	C_property_owner *co;
+	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		if (co->is_class) WRITE(", i7_mgl_Class");
 		else WRITE(", i7_mgl_Object");
 	}
 	WRITE(" };\n");
 
 	WRITE("i7val i7_class_of[] = { 0");
-	for (int i=1; i<=C_GEN_DATA(objdata.owner_id_count); i++) {
-		WRITE(", "); CNamespace::mangle(NULL, OUT, C_GEN_DATA(objdata.owners)[i].class);
+	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		WRITE(", "); CNamespace::mangle(NULL, OUT, co->class);
 	}
 	WRITE(" };\n");
 
@@ -174,7 +178,24 @@ void CObjectModel::declare_instance(code_generation_target *cgt, code_generation
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
 	CObjectModel::define_constant_for_owner_id(gen, instance_name, id);
-	CObjectModel::assign_owner(gen, id, instance_name, class_name, FALSE);
+	C_property_owner *this = CObjectModel::assign_owner(gen, id, instance_name, class_name, FALSE);
+	if (acount >= 0) {
+		this->initial_parent = NULL;
+		if (acount > 0) {
+			C_property_owner *par = C_GEN_DATA(objdata.arrow_chain)[acount-1];
+			if (par == NULL) internal_error("arrows misaligned");
+			if (par->initial_child == NULL) {
+				par->initial_child = this;
+			} else {
+				C_property_owner *older = par->initial_child;
+				while ((older) && (older->initial_sibling)) older = older->initial_sibling;
+				older->initial_sibling = this;
+			}
+			this->initial_parent = par;
+		}
+		C_GEN_DATA(objdata.arrow_chain)[acount] = this;
+		for (int i=acount+1; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
+	}
 }
 
 @ So it is finally time to compile a |#define| for the owner's identifier,
@@ -252,11 +273,11 @@ that references to it will not fail to compile.
 void CObjectModel::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
-	CObjectModel::property_by_name(gen, name, used);
+	CObjectModel::property_by_name(gen, name, used, FALSE);
 }
 void CObjectModel::declare_attribute(code_generation_target *cgt, code_generation *gen,
 	text_stream *prop_name) {
-	CObjectModel::property_by_name(gen, prop_name, TRUE);
+	CObjectModel::property_by_name(gen, prop_name, TRUE, TRUE);
 }
 
 @ Property IDs count upwards from 0 in declaration order, though they really
@@ -266,15 +287,17 @@ only need to be unique, so the order is not significant.
 typedef struct C_property {
 	struct text_stream *name;
 	int id;
+	int attr;
 	CLASS_DEFINITION
 } C_property;
 
-C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int used) {
+C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int used, int attr) {
 	dictionary *D = C_GEN_DATA(objdata.declared_properties);
 	C_property *cp;
 	if (Dictionaries::find(D, name) == NULL) {
 		cp = CREATE(C_property);
 		cp->name = Str::duplicate(name);
+		cp->attr = attr;
 		cp->id = C_GEN_DATA(objdata.property_id_counter)++;
 		Dictionaries::create(D, name);
 		Dictionaries::write_value(D, name, (void *) cp);
@@ -370,6 +393,14 @@ initialiser function which runs early and sets the property values up by hand:
 @<Complete the initialiser function@> =
 	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+
+	C_property_owner *co;
+	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		if (co->initial_parent) WRITE("i7_object_tree_parent[%S] = %S;\n", co->identifier, co->initial_parent->identifier);
+		if (co->initial_sibling) WRITE("i7_object_tree_sibling[%S] = %S;\n", co->identifier, co->initial_sibling->identifier);
+		if (co->initial_child) WRITE("i7_object_tree_child[%S] = %S;\n", co->identifier, co->initial_child->identifier);
+	}
+
 	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 
@@ -377,6 +408,13 @@ initialiser function which runs early and sets the property values up by hand:
 
 =
 int CObjectModel::optimise_property_value(code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+	C_GEN_DATA(objdata.inline_this) = FALSE;
+	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
+		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
+		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
+			C_GEN_DATA(objdata.inline_this) = TRUE;
+		}
+	}	
 	return FALSE;
 }
 
@@ -388,40 +426,86 @@ the next owner is declared.
 typedef struct C_pv_pair {
 	struct C_property *prop;
 	struct text_stream *val;
+	int inlined;
 	CLASS_DEFINITION
 } C_pv_pair;
 
 void CObjectModel::assign_property(code_generation_target *cgt, code_generation *gen,
 	text_stream *property_name, text_stream *val, int as_att) {
-	C_property_owner *owner = &(C_GEN_DATA(objdata.owners)[C_GEN_DATA(objdata.current_owner_id)]);
-	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE);
+	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
+	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE, FALSE);
 	C_pv_pair *pair = CREATE(C_pv_pair);
 	pair->prop = prop;
 	pair->val = Str::duplicate(val);
+	pair->inlined = C_GEN_DATA(objdata.inline_this);
+	C_GEN_DATA(objdata.inline_this) = FALSE;
 	ADD_TO_LINKED_LIST(pair, C_pv_pair, owner->property_values);
+}
 
-//	WRITE("i7_write_prop_value(");
-//	CNamespace::mangle(cgt, OUT, owner->name);
-//	WRITE(", ");
-//	CNamespace::mangle(cgt, OUT, property_name);
-//	WRITE(", %S);\n", val);
+C_property_owner *CObjectModel::super(code_generation *gen, C_property_owner *owner) {
+	C_property_owner *co;
+	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		if (Str::eq(co->name,  owner->class)) return co;
+	}
+	return NULL;
+}
 
+int not_added_ops_yet = TRUE;
+void CObjectModel::gather_properties(code_generation *gen, C_property_owner *owner, C_pv_pair **vals) {
+	C_property_owner *super = CObjectModel::super(gen, owner);
+	if ((Str::eq(owner->name, I"Class")) && (not_added_ops_yet)) {
+		C_property *prop;
+		LOOP_OVER(prop, C_property) {
+			if (prop->attr) {
+				C_pv_pair *np = CREATE(C_pv_pair);
+				np->prop = prop;
+				np->val = I"0";
+				np->inlined = FALSE;
+				ADD_TO_LINKED_LIST(np, C_pv_pair, owner->property_values);
+			}
+		}
+		not_added_ops_yet = FALSE;
+	}
+	if (super != owner) CObjectModel::gather_properties(gen, super, vals);
+	C_pv_pair *pair;
+	LOOP_OVER_LINKED_LIST(pair, C_pv_pair, owner->property_values) {
+		vals[pair->prop->id] = pair;
+	}
 }
 
 void CObjectModel::write_property_values_table(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	for (int i=0; i<C_GEN_DATA(objdata.owners_capacity); i++) {
-		C_property_owner *owner = &(C_GEN_DATA(objdata.owners)[i]);
-		while (owner->is_class == FALSE) {
-			C_pv_pair *pair;
-			LOOP_OVER_LINKED_LIST(pair, C_pv_pair, owner->property_values) {
+	C_property_owner *owner;
+	LOOP_OVER_LINKED_LIST(owner, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		C_pv_pair *vals[1024];
+		for (int i=0; i<1024; i++) vals[i] = NULL;
+		CObjectModel::gather_properties(gen, owner, vals);
+		for (int i=0; i<1024; i++) if (vals[i]) {
+			C_pv_pair *pair = vals[i];
+			if (pair->inlined) {
 				WRITE("i7_properties[");
-				CNamespace::mangle(cgt, OUT, owner->name);
+				CNamespace::mangle(NULL, OUT, owner->name);
 				WRITE("].address[");
-				CNamespace::mangle(cgt, OUT, pair->prop->name);
-				WRITE("] = %d;\n", C_GEN_DATA(memdata.himem));
-				CMemoryModel::array_entry(cgt, gen, pair->val, WORD_ARRAY_FORMAT);
+				CNamespace::mangle(NULL, OUT, pair->prop->name);
+				WRITE("] = %S;\n", pair->val);
+				WRITE("i7_properties[");
+				CNamespace::mangle(NULL, OUT, owner->name);
+				WRITE("].len[");
+				CNamespace::mangle(NULL, OUT, pair->prop->name);
+				WRITE("] = xt_%S;\n", pair->val);
+			} else {
+				WRITE("i7_properties[");
+				CNamespace::mangle(NULL, OUT, owner->name);
+				WRITE("].address[");
+				CNamespace::mangle(NULL, OUT, pair->prop->name);
+				WRITE("] = %d; // %S\n", C_GEN_DATA(memdata.himem), pair->val);
+				CMemoryModel::array_entry(NULL, gen, pair->val, WORD_ARRAY_FORMAT);
+				WRITE("i7_properties[");
+				CNamespace::mangle(NULL, OUT, owner->name);
+				WRITE("].len[");
+				CNamespace::mangle(NULL, OUT, pair->prop->name);
+				WRITE("] = 1;\n");
 			}
 		}
 	}
@@ -528,11 +612,15 @@ void i7_give(i7val owner, i7val prop, i7val val) {
 }
 
 i7val i7_prop_len(i7val obj, i7val pr) {
-	return i7_read_word(i7mem, i7_read_prop_value(obj, pr), 0);
+	if ((obj <= 0) || (obj >= i7_max_objects) ||
+		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
+	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
-	return i7_read_prop_value(obj, pr);
+	if ((obj <= 0) || (obj >= i7_max_objects) ||
+		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
+	return i7_properties[(int) obj].address[(int) pr];
 }
 =
 
@@ -619,7 +707,9 @@ void i7_move(i7val obj, i7val to) {
 	i7_object_tree_parent[obj] = to;
 	i7_object_tree_sibling[obj] = 0;
 	if (to) {
-		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
+		i7_object_tree_sibling[obj] = i7_object_tree_child[to];
+		i7_object_tree_child[to] = obj;
+/*		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
 		else {
 			int c = i7_object_tree_child[to];
 			while (c != 0) {
@@ -630,6 +720,7 @@ void i7_move(i7val obj, i7val to) {
 				c = i7_object_tree_sibling[c];
 			}
 		}
+*/
 	}
 }
 =

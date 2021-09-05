@@ -24,7 +24,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case INVERSION_BIP:	     break; /* we won't support this in C */
-		case SPACES_BIP:		 WRITE("for (int j = "); INV_A1; WRITE("; j >= 0; j--) i7_print_char(32);"); break;
+		case SPACES_BIP:		 WRITE("for (int j = "); INV_A1; WRITE("; j > 0; j--) i7_print_char(32);"); break;
 		case FONT_BIP:           WRITE("i7_font("); INV_A1; WRITE(")"); break;
 		case STYLEROMAN_BIP:     WRITE("i7_style(i7_roman)"); break;
 		case STYLEBOLD_BIP:      WRITE("i7_style(i7_bold)"); break;
@@ -499,12 +499,12 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
 		if (pos < max_len) i7mem[buffer + pos++] = c;
 	}
-	if (pos < max_len) i7mem[buffer + pos++] = 0; else i7mem[buffer + max_len-1] = 0;
+	if (pos < max_len) i7mem[buffer + pos] = 0; else i7mem[buffer + max_len-1] = 0;
 	e.val1 = pos;
-	i7_print_C_string((char *) (i7mem + buffer));
-	i7_print_char('\n');
+//	i7_print_C_string((char *) (i7mem + buffer));
+//	i7_print_char('\n');
 	i7_make_event(e);
-	if (i7_no_lr++ == 10) {
+	if (i7_no_lr++ == 1000) {
 		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
 	}
 	return 0;
@@ -731,8 +731,7 @@ void i7_print_name(i7val x) {
 }
 
 void i7_print_object(i7val x) {
-	printf("Unimplemented: i7_print_object.\n");
-	i7_fatal_exit();
+	i7_print_decimal(x);
 }
 
 void i7_print_box(i7val x) {

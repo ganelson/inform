@@ -2990,11 +2990,11 @@ for some function $f$.)
     !  "name" (i.e. property no. 1) properties.  (Note that the following allows
     !  for repeated words and words in different orders.)
 
-    p1 = o1.&1; n1 = (o1.#1)/WORDSIZE;
-    p2 = o2.&1; n2 = (o2.#1)/WORDSIZE;
+    p1 = o1.&name; n1 = (o1.#name)/WORDSIZE;
+    p2 = o2.&name; n2 = (o2.#name)/WORDSIZE;
 
-    !  for (i=0 : i<n1 : i++) { print (address) p1-->i, " "; } new_line;
-    !  for (i=0 : i<n2 : i++) { print (address) p2-->i, " "; } new_line;
+    !   for (i=0 : i<n1 : i++) { print (address) p1-->i, " "; } new_line;
+    !   for (i=0 : i<n2 : i++) { print (address) p2-->i, " "; } new_line;
 
     for (i=0 : i<n1 : i++) {
         flag = 0;
@@ -3010,7 +3010,7 @@ for some function $f$.)
         if (flag == 0) rfalse;
     }
 
-    !  print "Which are identical!^";
+    !   print "Which are identical!^";
     rtrue;
 ];
 
@@ -3503,8 +3503,6 @@ if it was a match because of inadequate input).
 
 	if (nomatch && obj == 0) return 0;
 
-! if (nomatch) print "*** TryGivenObject *** on ", (the) obj, " at wn = ", wn, "^";
-
     dict_flags_of_noun = 0;
 
 !  If input has run out then always match, with only quality 0 (this saves
@@ -3616,8 +3614,8 @@ complex in languages other than English.
 ];
 
 [ WordInProperty wd obj prop k l m;
-    k = obj.&prop; l = (obj.#prop)/WORDSIZE-1;
-    for (m=0 : m<=l : m++)
+    k = obj.&prop; l = (obj.#prop)/WORDSIZE;
+    for (m=0 : m<l : m++)
         if (wd == k-->m) rtrue;
     rfalse;
 ];

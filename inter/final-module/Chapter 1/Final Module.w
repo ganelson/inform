@@ -17,6 +17,7 @@ which use this module:
 @e C_dword_CLASS
 @e C_property_CLASS
 @e C_pv_pair_CLASS
+@e C_property_owner_CLASS
 
 =
 DECLARE_CLASS(final_c_function)
@@ -26,6 +27,7 @@ DECLARE_CLASS(C_generation_data)
 DECLARE_CLASS(C_dword)
 DECLARE_CLASS(C_property)
 DECLARE_CLASS(C_pv_pair)
+DECLARE_CLASS(C_property_owner)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -700,11 +700,15 @@ void i7_give(i7val owner, i7val prop, i7val val) {
 }
 
 i7val i7_prop_len(i7val obj, i7val pr) {
-	return i7_read_word(i7mem, i7_read_prop_value(obj, pr), 0);
+	if ((obj <= 0) || (obj >= i7_max_objects) ||
+		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
+	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
 i7val i7_prop_addr(i7val obj, i7val pr) {
-	return i7_read_prop_value(obj, pr);
+	if ((obj <= 0) || (obj >= i7_max_objects) ||
+		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
+	return i7_properties[(int) obj].address[(int) pr];
 }
 int i7_has(i7val obj, i7val attr) {
 	if (i7_read_prop_value(obj, attr)) return 1;
@@ -771,7 +775,9 @@ void i7_move(i7val obj, i7val to) {
 	i7_object_tree_parent[obj] = to;
 	i7_object_tree_sibling[obj] = 0;
 	if (to) {
-		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
+		i7_object_tree_sibling[obj] = i7_object_tree_child[to];
+		i7_object_tree_child[to] = obj;
+/*		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
 		else {
 			int c = i7_object_tree_child[to];
 			while (c != 0) {
@@ -782,6 +788,7 @@ void i7_move(i7val obj, i7val to) {
 				c = i7_object_tree_sibling[c];
 			}
 		}
+*/
 	}
 }
 i7val i7_mgl_self = 0;
@@ -861,6 +868,13 @@ void glulx_call(i7val fn_ref, i7val varargc, i7val *z) {
 	for (int i=0; i<varargc; i++) args[i] = i7_pull();
 	i7val rv = i7_gen_call(fn_ref, args, varargc);
 	if (z) *z = rv;
+}
+void i7_print_dword(i7val at) {
+	i7byte *x = i7mem + at;
+	for (i7byte i=1; i<=9; i++) {
+		if (x[i] == 0) break;
+		i7_print_char(x[i]);
+	}
 }
 #define i7_bold 1
 #define i7_roman 2
@@ -1315,12 +1329,12 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
 		if (pos < max_len) i7mem[buffer + pos++] = c;
 	}
-	if (pos < max_len) i7mem[buffer + pos++] = 0; else i7mem[buffer + max_len-1] = 0;
+	if (pos < max_len) i7mem[buffer + pos] = 0; else i7mem[buffer + max_len-1] = 0;
 	e.val1 = pos;
-	i7_print_C_string((char *) (i7mem + buffer));
-	i7_print_char('\n');
+//	i7_print_C_string((char *) (i7mem + buffer));
+//	i7_print_char('\n');
 	i7_make_event(e);
-	if (i7_no_lr++ == 10) {
+	if (i7_no_lr++ == 1000) {
 		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
 	}
 	return 0;
@@ -1547,8 +1561,7 @@ void i7_print_name(i7val x) {
 }
 
 void i7_print_object(i7val x) {
-	printf("Unimplemented: i7_print_object.\n");
-	i7_fatal_exit();
+	i7_print_decimal(x);
 }
 
 void i7_print_box(i7val x) {

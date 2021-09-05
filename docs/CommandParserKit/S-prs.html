@@ -3070,11 +3070,11 @@ for some function \(f\).)
 <span class="plain-syntax">    </span><span class="comment-syntax"> "name" (i.e. property no. 1) properties.  (Note that the following allows</span>
 <span class="plain-syntax">    </span><span class="comment-syntax"> for repeated words and words in different orders.)</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">p1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o1</span><span class="plain-syntax">.&amp;1; </span><span class="identifier-syntax">n1</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.#1)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">p2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.&amp;1; </span><span class="identifier-syntax">n2</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o2</span><span class="plain-syntax">.#1)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">p1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o1</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="identifier-syntax">n1</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.#</span><span class="identifier-syntax">name</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">p2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="identifier-syntax">n2</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">o2</span><span class="plain-syntax">.#</span><span class="identifier-syntax">name</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> for (i=0 : i&lt;n1 : i++) { print (address) p1--&gt;i, " "; } new_line;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax"> for (i=0 : i&lt;n2 : i++) { print (address) p2--&gt;i, " "; } new_line;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">  for (i=0 : i&lt;n1 : i++) { print (address) p1--&gt;i, " "; } new_line;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">  for (i=0 : i&lt;n2 : i++) { print (address) p2--&gt;i, " "; } new_line;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">n1</span><span class="plain-syntax"> : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">flag</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -3090,7 +3090,7 @@ for some function \(f\).)
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">flag</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> print "Which are identical!^";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">  print "Which are identical!^";</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -3599,8 +3599,6 @@ if it was a match because of inadequate input).
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nomatch</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
-<span class="comment-syntax">if (nomatch) print "*** TryGivenObject *** on ", (the) obj, " at wn = ", wn, "^";</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">dict_flags_of_noun</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
 <span class="comment-syntax"> If input has run out then always match, with only quality 0 (this saves</span>
@@ -3712,8 +3710,8 @@ complex in languages other than English.
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WordInProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">wd</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="identifier-syntax">obj</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">prop</span><span class="plain-syntax">; </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.#</span><span class="identifier-syntax">prop</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">m</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">m</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">l</span><span class="plain-syntax"> : </span><span class="identifier-syntax">m</span><span class="plain-syntax">++)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="identifier-syntax">obj</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">prop</span><span class="plain-syntax">; </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.#</span><span class="identifier-syntax">prop</span><span class="plain-syntax">)/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">m</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">m</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">l</span><span class="plain-syntax"> : </span><span class="identifier-syntax">m</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wd</span><span class="plain-syntax"> == </span><span class="identifier-syntax">k</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">m</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>

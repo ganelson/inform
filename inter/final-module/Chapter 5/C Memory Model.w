@@ -248,7 +248,8 @@ predefine when the array ends.
 
 @<Place the extent entry N at index 0@> =
 	TEMPORARY_TEXT(extname)
-	WRITE_TO(extname, "xt_%S", array_name);
+	WRITE_TO(extname, "xt_");
+	CNamespace::mangle(cgt, extname, array_name);
 	CMemoryModel::array_entry(cgt, gen, extname, format);
 	DISCARD_TEXT(extname)
 
@@ -305,13 +306,14 @@ except to predeclare the extent constant, if one was used.
 
 =
 void CMemoryModel::end_array(code_generation_target *cgt, code_generation *gen, int format) {
-	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT)) {
+//	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT)) {
 		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("#define xt_%S %d\n",
-			C_GEN_DATA(memdata.array_name), C_GEN_DATA(memdata.entry_count)-1);
+		WRITE("#define xt_");
+		CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
+		WRITE(" %d\n", C_GEN_DATA(memdata.entry_count)-1);
 		CodeGen::deselect(gen, saved);
-	}
+//	}
 }
 
 @h Primitives for byte and word lookup.

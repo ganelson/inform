@@ -126,7 +126,7 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 		dw = sorted[i];
 		CMemoryModel::begin_array(NULL, gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT);
 		TEMPORARY_TEXT(N)
-		WRITE_TO(N, "%d", Str::len(dw->text));
+		WRITE_TO(N, "0x60");
 		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
 		DISCARD_TEXT(N);
 		for (int i=0; i<9; i++) {
@@ -179,6 +179,7 @@ void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_g
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	C_dword *dw = CLiteralsModel::text_to_dword(gen, S, pluralise);
+	dw->nounlike = TRUE;
 	CNamespace::mangle(cgt, OUT, dw->identifier);
 }
 
@@ -243,6 +244,21 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 			}
 		}
 		if (stage == 2) {
+			int lookahead = 0;
+			if (i+2 < P->W.extent) {
+				inter_ti laval1 = P->W.data[i+2], laval2 = P->W.data[i+3];
+				if (Inter::Symbols::is_stored_in_data(laval1, laval2)) {
+					inter_symbol *aliased =
+						InterSymbolsTables::symbol_from_data_pair_and_table(laval1, laval2, Inter::Packages::scope_of(P));
+						WRITE_TO(STDERR, "See ahead to %S!\n", aliased->symbol_name);
+					if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
+						i += 2;
+						lookahead = 0x10;
+						WRITE_TO(STDERR, "VDS!\n");
+					}
+				}
+			}
+				
 			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 				if (aliased == NULL) internal_error("bad aliased symbol");
@@ -273,19 +289,11 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 				}
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
 
-				int lookahead = 0;
-				if (i+2 < P->W.extent) {
-					inter_ti laval1 = P->W.data[i+2], laval2 = P->W.data[i+3];
-					if (Inter::Symbols::is_stored_in_data(laval1, laval2)) {
-						inter_symbol *aliased =
-							InterSymbolsTables::symbol_from_data_pair_and_table(laval1, laval2, Inter::Packages::scope_of(P));
-						if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
-							i += 2;
-							lookahead = 0x20;
-						}
-					}
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_NOUN")) {
+					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
+					CLiteralsModel::grammar_word(gen, 0);
+					continue;
 				}
-				
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_HELD")) {
 					CLiteralsModel::grammar_byte(gen, 1 + lookahead);
 					CLiteralsModel::grammar_word(gen, 1);
@@ -346,7 +354,8 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 			if (val1 == DWORD_IVAL) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, FALSE);
-				CLiteralsModel::grammar_byte(gen, 0x42);
+				dw->preplike = TRUE;
+				CLiteralsModel::grammar_byte(gen, 0x42 + lookahead);
 				TEMPORARY_TEXT(MG)
 				CNamespace::mangle(cgt, MG, dw->identifier);
 				CLiteralsModel::grammar_word_textual(gen, MG);
@@ -356,7 +365,8 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 			if (val1 == PDWORD_IVAL) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, TRUE);
-				CLiteralsModel::grammar_byte(gen, 0x42);
+				dw->preplike = TRUE;
+				CLiteralsModel::grammar_byte(gen, 0x42 + lookahead);
 				TEMPORARY_TEXT(MG)
 				CNamespace::mangle(cgt, MG, dw->identifier);
 				CLiteralsModel::grammar_word_textual(gen, MG);
@@ -709,8 +719,20 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case PRINTSTRING_BIP: WRITE("i7_print_C_string(dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_C_string((char *) (i7mem + "); INV_A1; WRITE("))"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_dword("); INV_A1; WRITE(")"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;
 }
+
+@
+
+= (text to inform7_clib.h)
+void i7_print_dword(i7val at) {
+	i7byte *x = i7mem + at;
+	for (i7byte i=1; i<=9; i++) {
+		if (x[i] == 0) break;
+		i7_print_char(x[i]);
+	}
+}
+=

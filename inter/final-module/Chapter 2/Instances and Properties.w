@@ -419,7 +419,7 @@ bother to force them.)
 
 @<Compile the property numberspace forcer@> =
 	if (properties_found) {
-		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer", 0, FALSE);
+		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer", -1, FALSE);
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
@@ -516,7 +516,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
-							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name, 0, FALSE);
+							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name, -1, FALSE);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
 							CodeGen::Targets::assign_property(gen, I"value_range", N, FALSE);
@@ -968,6 +968,7 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 //		text_stream *OUT = CodeGen::current(gen);
 //		WRITE("Object ");
 		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
+		if (c < 0) c = 0;
 		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
 		CodeGen::Targets::declare_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name), c, is_dir);
 
