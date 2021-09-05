@@ -150,15 +150,19 @@ void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_
 
 void CFunctionModel::begin_function_code(code_generation_target *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(") {");
+	WRITE(") {\n");
 	if (C_GEN_DATA(fndata.current_fcf)) {
-		if (FALSE) {
-			WRITE("printf(\"called %S\\n\");\n", C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
+		text_stream *fn_name = C_GEN_DATA(fndata.current_fcf)->identifier_as_constant;
+		WRITE("i7_debug_stack(\"%S\");\n", fn_name);
+		if (Str::eq(fn_name, I"DebugAction")) {
+			WRITE("switch (i7_mgl_local_a) {\n");
+			text_stream *aname;
+			LOOP_OVER_LINKED_LIST(aname, text_stream, C_GEN_DATA(litdata.actions)) {
+				WRITE("case i7_ss_%S", aname);
+				WRITE(": printf(\"%S\"); return 1;\n", aname);
+			}
+			WRITE("}\n");
 		}
-//		if (C_GEN_DATA(fndata.current_fcf)->uses_vararg_model) {
-//			WRITE("for (int i=0; i<i7_mgl_local__vararg_count; i++) i7_push(i7_mgl__varargs.args[i]);\n");
-//		}
-		WRITE("i7_debug_stack(\"%S\");", C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
 	}
 	C_GEN_DATA(fndata.compiling_function) = TRUE;
 }
@@ -281,9 +285,11 @@ i7val i7_call_0(i7val fn_ref) {
 	return i7_gen_call(fn_ref, args, 0);
 }
 
-i7val i7_mcall_0(i7val fn_ref) {
+i7val i7_mcall_0(i7val to, i7val prop) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 0);
 	i7_mgl_self = saved;
 	return rv;
@@ -295,10 +301,12 @@ i7val i7_call_1(i7val fn_ref, i7val v) {
 	return i7_gen_call(fn_ref, args, 1);
 }
 
-i7val i7_mcall_1(i7val fn_ref, i7val v) {
+i7val i7_mcall_1(i7val to, i7val prop, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 1);
 	i7_mgl_self = saved;
 	return rv;
@@ -310,10 +318,12 @@ i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
 	return i7_gen_call(fn_ref, args, 2);
 }
 
-i7val i7_mcall_2(i7val fn_ref, i7val v, i7val v2) {
+i7val i7_mcall_2(i7val to, i7val prop, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 2);
 	i7_mgl_self = saved;
 	return rv;
@@ -325,10 +335,12 @@ i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	return i7_gen_call(fn_ref, args, 3);
 }
 
-i7val i7_mcall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+i7val i7_mcall_3(i7val to, i7val prop, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 3);
 	i7_mgl_self = saved;
 	return rv;

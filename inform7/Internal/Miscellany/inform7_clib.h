@@ -364,7 +364,7 @@ void glulx_mul(i7val x, i7val y, i7val *z) {
 }
 
 void glulx_div(i7val x, i7val y, i7val *z) {
-	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 1; return; }
+	if (y == 0) { printf("Division of %d by 0\n", x); i7_fatal_exit(); return; }
 	int result, ax, ay;
 	/* Since C doesn't guarantee the results of division of negative
 	   numbers, we carefully convert everything to positive values
@@ -399,7 +399,7 @@ i7val glulx_div_r(i7val x, i7val y) {
 }
 
 void glulx_mod(i7val x, i7val y, i7val *z) {
-	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 0; return; }
+	if (y == 0) { printf("Division of %d by 0\n", x); i7_fatal_exit(); return; }
 	int result, ax, ay;
 	if (y < 0) {
 		ay = -y;
@@ -760,8 +760,9 @@ void i7_move(i7val obj, i7val to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
 	int p = i7_object_tree_parent[obj];
 	if (p) {
-		if (i7_object_tree_child[p] == obj) i7_object_tree_child[p] = 0;
-		else {
+		if (i7_object_tree_child[p] == obj) {
+			i7_object_tree_child[p] = i7_object_tree_sibling[obj];
+		} else {
 			int c = i7_object_tree_child[p];
 			while (c != 0) {
 				if (i7_object_tree_sibling[c] == obj) {
@@ -777,18 +778,6 @@ void i7_move(i7val obj, i7val to) {
 	if (to) {
 		i7_object_tree_sibling[obj] = i7_object_tree_child[to];
 		i7_object_tree_child[to] = obj;
-/*		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
-		else {
-			int c = i7_object_tree_child[to];
-			while (c != 0) {
-				if (i7_object_tree_sibling[c] == 0) {
-					i7_object_tree_sibling[c] = obj;
-					break;
-				}
-				c = i7_object_tree_sibling[c];
-			}
-		}
-*/
 	}
 }
 i7val i7_mgl_self = 0;
@@ -798,9 +787,11 @@ i7val i7_call_0(i7val fn_ref) {
 	return i7_gen_call(fn_ref, args, 0);
 }
 
-i7val i7_mcall_0(i7val fn_ref) {
+i7val i7_mcall_0(i7val to, i7val prop) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 0);
 	i7_mgl_self = saved;
 	return rv;
@@ -812,10 +803,12 @@ i7val i7_call_1(i7val fn_ref, i7val v) {
 	return i7_gen_call(fn_ref, args, 1);
 }
 
-i7val i7_mcall_1(i7val fn_ref, i7val v) {
+i7val i7_mcall_1(i7val to, i7val prop, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 1);
 	i7_mgl_self = saved;
 	return rv;
@@ -827,10 +820,12 @@ i7val i7_call_2(i7val fn_ref, i7val v, i7val v2) {
 	return i7_gen_call(fn_ref, args, 2);
 }
 
-i7val i7_mcall_2(i7val fn_ref, i7val v, i7val v2) {
+i7val i7_mcall_2(i7val to, i7val prop, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 2);
 	i7_mgl_self = saved;
 	return rv;
@@ -842,10 +837,12 @@ i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
 	return i7_gen_call(fn_ref, args, 3);
 }
 
-i7val i7_mcall_3(i7val fn_ref, i7val v, i7val v2, i7val v3) {
+i7val i7_mcall_3(i7val to, i7val prop, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
 	i7val saved = i7_mgl_self;
+	i7_mgl_self = to;
+	i7val fn_ref = i7_read_prop_value(to, prop);
 	i7val rv = i7_gen_call(fn_ref, args, 3);
 	i7_mgl_self = saved;
 	return rv;

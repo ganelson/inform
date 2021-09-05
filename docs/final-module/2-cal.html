@@ -194,8 +194,7 @@ is 20. We instead compile this as
 <span class="string-syntax">            int X = (P-&gt;W.extent - DATA_CONST_IFLD)/2;</span>
 <span class="string-syntax">            if (X == 1) do_not_bracket = TRUE;</span>
 <span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;</span>
-<span class="string-syntax">            if ((Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) ||</span>
-<span class="string-syntax">                (Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1)) {</span>
+<span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) {</span>
 <span class="string-syntax">                format = TABLE_ARRAY_FORMAT;</span>
 <span class="string-syntax">                if (P-&gt;W.extent - DATA_CONST_IFLD == 2) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }</span>
 <span class="string-syntax">            }</span>

@@ -27,7 +27,6 @@ void CTarget::create_target(void) {
 	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
 	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
 	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
-	METHOD_ADD(c_target, WORLD_MODEL_ESSENTIALS_MTID, CTarget::world_model_essentials);
 }
 
 @h Static supporting code.
@@ -238,12 +237,4 @@ int CTarget::basic_constant_segment(code_generation_target *cgt, code_generation
 }
 int CTarget::tl_segment(code_generation_target *cgt) {
 	return c_text_literals_code_I7CGS;
-}
-
-@ =
-void CTarget::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", -1, FALSE);
 }

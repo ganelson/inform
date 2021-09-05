@@ -1,6 +1,5 @@
 x tightrope
 x bicycle
-trace 3
 get on bicycle
 get out
 x sky

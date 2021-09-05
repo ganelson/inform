@@ -6,6 +6,7 @@ How objects, classes and properties are compiled to C.
 
 =
 void CObjectModel::initialise(code_generation_target *cgt) {
+	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, CObjectModel::world_model_essentials);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CObjectModel::declare_class);
 
@@ -24,6 +25,8 @@ typedef struct C_generation_object_model_data {
 	struct C_property_owner *current_owner;
 	struct dictionary *declared_properties;
 	struct linked_list *declared_objects; /* of |C_property_owner| */
+	struct C_property_owner *compass_instance;
+	struct C_property_owner *direction_kind;
 	int inline_this;
 } C_generation_object_model_data;
 
@@ -48,6 +51,7 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.inline_this) = FALSE;
 	C_GEN_DATA(objdata.declared_objects) = NEW_LINKED_LIST(C_property_owner);
 	for (int i=0; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
+	C_GEN_DATA(objdata.compass_instance) = NULL;
 }
 
 void CObjectModel::begin(code_generation *gen) {
@@ -173,7 +177,14 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 @ And each instance here:
 
 =
-void CObjectModel::declare_instance(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
+	C_GEN_DATA(objdata.compass_instance) = CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", -1, FALSE);
+}
+
+C_property_owner *CObjectModel::declare_instance(code_generation_target *cgt, code_generation *gen,
 	text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
@@ -192,10 +203,23 @@ void CObjectModel::declare_instance(code_generation_target *cgt, code_generation
 				older->initial_sibling = this;
 			}
 			this->initial_parent = par;
+		} else if (is_dir) {
+			C_property_owner *par = C_GEN_DATA(objdata.compass_instance);
+			if (par) {
+				if (par->initial_child == NULL) {
+					par->initial_child = this;
+				} else {
+					C_property_owner *older = par->initial_child;
+					while ((older) && (older->initial_sibling)) older = older->initial_sibling;
+					older->initial_sibling = this;
+				}
+				this->initial_parent = par;			
+			}
 		}
 		C_GEN_DATA(objdata.arrow_chain)[acount] = this;
 		for (int i=acount+1; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 	}
+	return this;
 }
 
 @ So it is finally time to compile a |#define| for the owner's identifier,
@@ -493,7 +517,7 @@ void CObjectModel::write_property_values_table(code_generation *gen) {
 				CNamespace::mangle(NULL, OUT, owner->name);
 				WRITE("].len[");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE("] = xt_%S;\n", pair->val);
+				WRITE("] = xt_%S + 1;\n", pair->val);
 			} else {
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
@@ -533,15 +557,12 @@ int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 									WRITE("i7_read_prop_value("); INV_A1; WRITE(", "); INV_A2; WRITE(")");
 								}
 								break;
-		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(i7_read_prop_value("); INV_A1;
-								WRITE(", "); INV_A2; WRITE("))"); break;
-		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(i7_read_prop_value("); INV_A1;
-								WRITE(", "); INV_A2; WRITE("), "); INV_A3; WRITE(")"); break;
-		case MESSAGE2_BIP: 		WRITE("i7_mcall_2(i7_read_prop_value("); INV_A1;
-								WRITE(", "); INV_A2; WRITE("), ");
+		case MESSAGE0_BIP: 		WRITE("i7_mcall_0("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case MESSAGE1_BIP: 		WRITE("i7_mcall_1("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+								INV_A3; WRITE(")"); break;
+		case MESSAGE2_BIP: 		WRITE("i7_mcall_2("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
 								INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
-		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(i7_read_prop_value("); INV_A1;
-								WRITE(", "); INV_A2; WRITE("), ");
+		case MESSAGE3_BIP: 		WRITE("i7_mcall_3("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
 								INV_A3; WRITE(", "); INV_A4; WRITE(", "); INV_A5; WRITE(")"); break;
 		case GIVE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
 		case TAKE_BIP: 			WRITE("i7_give("); INV_A1; WRITE(", "); INV_A2; WRITE(", 0)"); break;
@@ -692,8 +713,9 @@ void i7_move(i7val obj, i7val to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
 	int p = i7_object_tree_parent[obj];
 	if (p) {
-		if (i7_object_tree_child[p] == obj) i7_object_tree_child[p] = 0;
-		else {
+		if (i7_object_tree_child[p] == obj) {
+			i7_object_tree_child[p] = i7_object_tree_sibling[obj];
+		} else {
 			int c = i7_object_tree_child[p];
 			while (c != 0) {
 				if (i7_object_tree_sibling[c] == obj) {
@@ -709,18 +731,6 @@ void i7_move(i7val obj, i7val to) {
 	if (to) {
 		i7_object_tree_sibling[obj] = i7_object_tree_child[to];
 		i7_object_tree_child[to] = obj;
-/*		if (i7_object_tree_child[to] == 0) i7_object_tree_child[to] = obj;
-		else {
-			int c = i7_object_tree_child[to];
-			while (c != 0) {
-				if (i7_object_tree_sibling[c] == 0) {
-					i7_object_tree_sibling[c] = obj;
-					break;
-				}
-				c = i7_object_tree_sibling[c];
-			}
-		}
-*/
 	}
 }
 =

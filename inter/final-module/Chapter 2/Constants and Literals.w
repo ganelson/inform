@@ -120,8 +120,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			int X = (P->W.extent - DATA_CONST_IFLD)/2;
 			if (X == 1) do_not_bracket = TRUE;
 			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;
-			if ((Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) ||
-				(Inter::Symbols::read_annotation(con_name, INLINE_ARRAY_IANN) == 1)) {
+			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) {
 				format = TABLE_ARRAY_FORMAT;
 				if (P->W.extent - DATA_CONST_IFLD == 2) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }
 			}

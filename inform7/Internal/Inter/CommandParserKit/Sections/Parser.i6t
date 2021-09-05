@@ -835,6 +835,7 @@ Get the verb: try all the syntax lines for that verb.
     #Ifdef DEBUG;
     if (parser_trace >= 1)
     	print "[Parsing for the verb '", (address) verb_word, "' (", num_lines+1, " lines)]^";
+print (the) location, ": ", (the) child(location), "^";
     #Endif; ! DEBUG
 
     best_etype = STUCK_PE; nextbest_etype = STUCK_PE;
@@ -1531,6 +1532,9 @@ Analyse token; handle all not involving object lists, break down others.
         }
 
       PREPOSITION_TT:
+    	#Ifdef DEBUG;
+        if (parser_trace>=5) print "  [Preposition token]^";
+        #Endif; ! DEBUG
         ! Is it an unnecessary alternative preposition, when a previous choice
         ! has already been matched?
         if ((token->0) & $10) return GPR_PREPOSITION;
@@ -2892,8 +2896,8 @@ Constant PREFER_HELD;
 
             match_scores-->i = match_scores-->i + its_score;
             #Ifdef DEBUG;
-            if (parser_trace >= 4) print "     ", (The) match_list-->i, " (", match_list-->i,
-              ") in ", (the) its_owner, " : ", match_scores-->i, " points^";
+            if (parser_trace >= 4) print "     ", (The) match_list-->i,
+              " in ", (the) its_owner, " : ", match_scores-->i, " points^";
             #Endif; ! DEBUG
         }
      }
@@ -2928,8 +2932,7 @@ It returns $-1$ if there are no possible choices.
     #Ifdef DEBUG;
     if (parser_trace >= 4)
       if (best < 0) print "   Best guess ran out of choices^";
-      else print "   Best guess ", (the) match_list-->earliest,
-      	" (", match_list-->earliest, ")^";
+      else print "   Best guess ", (the) match_list-->earliest, "^";
     #Endif; ! DEBUG
     if (best < 0) return -1;
     i = match_list-->earliest;
@@ -3348,7 +3351,6 @@ code doing so.
 =
 [ ScopeWithin domain nosearch context obj next_obj;
     if (domain == 0) rtrue;
-
     ! Look through the objects in the domain, avoiding "objectloop" in case
     ! movements occur.
     obj = child(domain);
@@ -3498,7 +3500,7 @@ if it was a match because of inadequate input).
 =
 [ TryGivenObject obj nomatch threshold k w j;
     #Ifdef DEBUG;
-    if (parser_trace >= 5) print "    Trying ", (the) obj, " (", obj, ") at word ", wn, "^";
+    if (parser_trace >= 5) print "    Trying ", (the) obj, " at word ", wn, "^";
     #Endif; ! DEBUG
 
 	if (nomatch && obj == 0) return 0;
@@ -3614,9 +3616,13 @@ complex in languages other than English.
 ];
 
 [ WordInProperty wd obj prop k l m;
+!if (obj == 0) print "Crash! ", 1/obj;
     k = obj.&prop; l = (obj.#prop)/WORDSIZE;
-    for (m=0 : m<l : m++)
-        if (wd == k-->m) rtrue;
+! print "WIP wd = ", wd, " prop ", prop, " for ", (the) obj, " k = ", k, " l = ", l, "^";
+    for (m=0 : m<l : m++) {
+! print "WIP tried ", m, "/", l, ": ", k-->m, "^";
+        if (wd == k-->m) { rtrue; }
+    }
     rfalse;
 ];
 

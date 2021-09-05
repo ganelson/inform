@@ -244,24 +244,34 @@ void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *
 			}
 		}
 		if (stage == 2) {
-			int lookahead = 0;
-			if (i+2 < P->W.extent) {
-				inter_ti laval1 = P->W.data[i+2], laval2 = P->W.data[i+3];
-				if (Inter::Symbols::is_stored_in_data(laval1, laval2)) {
-					inter_symbol *aliased =
-						InterSymbolsTables::symbol_from_data_pair_and_table(laval1, laval2, Inter::Packages::scope_of(P));
-						WRITE_TO(STDERR, "See ahead to %S!\n", aliased->symbol_name);
+			int lookahead = 0, slash_before = FALSE, slash_after = FALSE;
+			if (i > DATA_CONST_IFLD) {
+				inter_ti val1 = P->W.data[i-2], val2 = P->W.data[i-1];
+				if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+					inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+					if (aliased == NULL) internal_error("bad aliased symbol");
 					if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
-						i += 2;
-						lookahead = 0x10;
-						WRITE_TO(STDERR, "VDS!\n");
+						slash_before = TRUE;
 					}
 				}
 			}
+			if (i+2 < P->W.extent) {
+				inter_ti val1 = P->W.data[i+2], val2 = P->W.data[i+3];
+				if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+					inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+					if (aliased == NULL) internal_error("bad aliased symbol");
+					if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
+						slash_after = TRUE;
+					}
+				}
+			}
+			if (slash_before) lookahead += 0x10;
+			if (slash_after) lookahead += 0x20;
 				
 			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 				if (aliased == NULL) internal_error("bad aliased symbol");
+				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) continue;
 				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
 					if (started) CLiteralsModel::grammar_byte_textual(gen, I"i7_mgl_ENDIT_TOKEN");
 					TEMPORARY_TEXT(NT)

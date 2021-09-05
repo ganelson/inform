@@ -96,7 +96,7 @@ void glulx_mul(i7val x, i7val y, i7val *z) {
 }
 
 void glulx_div(i7val x, i7val y, i7val *z) {
-	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 1; return; }
+	if (y == 0) { printf("Division of %d by 0\n", x); i7_fatal_exit(); return; }
 	int result, ax, ay;
 	/* Since C doesn't guarantee the results of division of negative
 	   numbers, we carefully convert everything to positive values
@@ -131,7 +131,7 @@ i7val glulx_div_r(i7val x, i7val y) {
 }
 
 void glulx_mod(i7val x, i7val y, i7val *z) {
-	if (y == 0) { printf("Division of %d by 0\n", x); if (z) *z = 0; return; }
+	if (y == 0) { printf("Division of %d by 0\n", x); i7_fatal_exit(); return; }
 	int result, ax, ay;
 	if (y < 0) {
 		ay = -y;
