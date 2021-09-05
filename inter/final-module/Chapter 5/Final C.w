@@ -66,6 +66,7 @@ int main(int argc, char **argv) {
 
 void i7_fatal_exit(void) {
 	printf("*** Fatal error: halted ***\n");
+	fflush(stdout); fflush(stderr);
 	int x = 0; printf("%d", 1/x);
 	exit(1);
 }

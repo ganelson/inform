@@ -40,6 +40,7 @@ i
 drop bone
 clark, take the bone
 x clark
+showme
 look
 close cage
 take all from cage
@@ -557,4 +558,5 @@ clark, save
 clark, restore
 clark, undo
 clark, undo pants
-
+quit
+y

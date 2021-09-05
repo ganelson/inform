@@ -835,7 +835,6 @@ Get the verb: try all the syntax lines for that verb.
     #Ifdef DEBUG;
     if (parser_trace >= 1)
     	print "[Parsing for the verb '", (address) verb_word, "' (", num_lines+1, " lines)]^";
-print (the) location, ": ", (the) child(location), "^";
     #Endif; ! DEBUG
 
     best_etype = STUCK_PE; nextbest_etype = STUCK_PE;

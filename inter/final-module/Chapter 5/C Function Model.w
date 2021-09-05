@@ -68,8 +68,10 @@ void CFunctionModel::end(code_generation *gen) {
 	saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
 	OUT = CodeGen::current(gen);
 	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc) {\n"); INDENT;
+	WRITE("int ssp = i7_asm_stack_pointer;\n");
+	WRITE("i7val rv = 0;\n");
 	WRITE("switch (fn_ref) {\n"); INDENT;
-	WRITE("case 0: return 0;\n");
+	WRITE("case 0: rv = 0; break;\n");
 	final_c_function *fcf;
 	LOOP_OVER(fcf, final_c_function) {
 		WRITE("case ");
@@ -78,7 +80,7 @@ void CFunctionModel::end(code_generation *gen) {
 		if (fcf->uses_vararg_model) {
 			WRITE("for (int i=argc-1; i>=0; i--) i7_push(args[i]); ");
 		}		
-		WRITE("return fn_");
+		WRITE("rv = fn_");
 		CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
 		WRITE("(");		
 		if (fcf->uses_vararg_model) {
@@ -90,10 +92,12 @@ void CFunctionModel::end(code_generation *gen) {
 			for (int i=0; i<fcf->max_arity; i++)
 				WRITE(", args[%d]", i);
 		}
-		WRITE(");\n");
+		WRITE("); break;\n");
 	}
+	WRITE("default: printf(\"function %%d not found\\n\", fn_ref); break;\n");
 	OUTDENT; WRITE("}\n");
-	WRITE("printf(\"function %%d not found\\n\", fn_ref);\n");
+	WRITE("i7_asm_stack_pointer = ssp;\n");
+	WRITE("return rv;\n");
 	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 }
