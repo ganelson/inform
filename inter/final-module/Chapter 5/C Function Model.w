@@ -30,21 +30,12 @@ void CFunctionModel::initialise_data(code_generation *gen) {
 
 void CFunctionModel::begin(code_generation *gen) {
 	CFunctionModel::initialise_data(gen);
-	generated_segment *saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("void i7_initializer(void);\n");
-	WRITE("void i7_initialise_header(void);\n");
-	WRITE("void i7_initialise_streams(void (*receiver)(int id, wchar_t c));\n");
-	WRITE("int begin_execution(void (*receiver)(int id, wchar_t c)) { i7_initializer(); i7_initialise_header(); i7_initialise_streams(receiver); ");
-	WRITE("fn_"); CNamespace::mangle(NULL, OUT, I"Main");
-	WRITE("(0); return 0; }\n");
-	CodeGen::deselect(gen, saved);
 }
 
 void CFunctionModel::end(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_globals_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#ifdef i7_defined_i7_mgl_I7S_Comp\n");
+/*	WRITE("#ifdef i7_defined_i7_mgl_I7S_Comp\n");
 	WRITE("#ifndef fn_i7_mgl_I7S_Comp\n");
 	WRITE("i7val fn_i7_mgl_I7S_Comp(int argc, i7val a1, i7val a2, i7val a3, i7val a4, i7val a5) {\n");
 	WRITE("    return i7_call_5(i7_mgl_I7S_Comp, a1, a2, a3, a4, a5);\n");
@@ -58,11 +49,12 @@ void CFunctionModel::end(code_generation *gen) {
 	WRITE("}\n");
 	WRITE("#endif\n");
 	WRITE("#endif\n");
+*/
 	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc);\n");
+//	WRITE("i7val i7_gen_call(i7val fn_ref, i7val *args, int argc);\n");
 	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
@@ -282,6 +274,21 @@ void CFunctionModel::declare_local_variable(code_generation_target *cgt, int pas
 @
 
 = (text to inform7_clib.h)
+i7val i7_call_0(i7val fn_ref);
+i7val i7_call_1(i7val fn_ref, i7val v);
+i7val i7_call_2(i7val fn_ref, i7val v, i7val v2);
+i7val i7_call_3(i7val fn_ref, i7val v, i7val v2, i7val v3);
+i7val i7_call_4(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4);
+i7val i7_call_5(i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5);
+i7val i7_mcall_0(i7val to, i7val prop);
+i7val i7_mcall_1(i7val to, i7val prop, i7val v);
+i7val i7_mcall_2(i7val to, i7val prop, i7val v, i7val v2);
+i7val i7_mcall_3(i7val to, i7val prop, i7val v, i7val v2, i7val v3);
+i7val i7_gen_call(i7val fn_ref, i7val *args, int argc);
+void glulx_call(i7val fn_ref, i7val varargc, i7val *z);
+=
+
+= (text to inform7_clib.c)
 i7val i7_mgl_self = 0;
 
 i7val i7_call_0(i7val fn_ref) {

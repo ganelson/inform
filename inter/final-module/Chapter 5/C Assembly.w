@@ -23,6 +23,12 @@ void CAssembly::end(code_generation *gen) {
 @
 
 = (text to inform7_clib.h)
+void i7_debug_stack(char *N);
+i7val i7_pull(void);
+void i7_push(i7val x);
+=
+
+= (text to inform7_clib.c)
 i7val i7_mgl_sp = 0;
 #define I7_ASM_STACK_CAPACITY 128
 i7val i7_asm_stack[I7_ASM_STACK_CAPACITY];
@@ -151,6 +157,39 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 @
 
 = (text to inform7_clib.h)
+void glulx_accelfunc(i7val x, i7val y);
+void glulx_accelparam(i7val x, i7val y);
+void glulx_copy(i7val x, i7val *y);
+void glulx_gestalt(i7val x, i7val y, i7val *z);
+int glulx_jeq(i7val x, i7val y);
+void glulx_nop(void);
+int glulx_jleu(i7val x, i7val y);
+int glulx_jnz(i7val x);
+int glulx_jz(i7val x);
+void glulx_quit(void);
+void glulx_setiosys(i7val x, i7val y);
+void glulx_streamchar(i7val x);
+void glulx_streamnum(i7val x);
+void glulx_streamstr(i7val x);
+void glulx_streamunichar(i7val x);
+void glulx_ushiftr(i7val x, i7val y, i7val z);
+void glulx_aload(i7val x, i7val y, i7val *z);
+void glulx_aloadb(i7val x, i7val y, i7val *z);
+#define serop_KeyIndirect (0x01)
+#define serop_ZeroKeyTerminates (0x02)
+#define serop_ReturnIndex (0x04)
+void glulx_binarysearch(i7val key, i7val keysize, i7val start, i7val structsize,
+	i7val numstructs, i7val keyoffset, i7val options, i7val *s1);
+void glulx_shiftl(i7val x, i7val y, i7val *z);
+void glulx_restoreundo(i7val x);
+void glulx_saveundo(i7val x);
+void glulx_restart(void);
+void glulx_restore(i7val x, i7val y);
+void glulx_save(i7val x, i7val y);
+void glulx_verify(i7val x);
+=
+
+= (text to inform7_clib.c)
 void glulx_accelfunc(i7val x, i7val y) { /* Intentionally ignore */
 }
 
@@ -199,12 +238,10 @@ void glulx_setiosys(i7val x, i7val y) {
 	// Deliberately ignored: we are using stdout, not glk
 }
 
-void i7_print_char(i7val x);
 void glulx_streamchar(i7val x) {
 	i7_print_char(x);
 }
 
-void i7_print_decimal(i7val x);
 void glulx_streamnum(i7val x) {
 	i7_print_decimal(x);
 }
@@ -232,10 +269,6 @@ void glulx_aloadb(i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_aloadb\n");
 	i7_fatal_exit();
 }
-
-#define serop_KeyIndirect (0x01)
-#define serop_ZeroKeyTerminates (0x02)
-#define serop_ReturnIndex (0x04)
 
 void fetchkey(unsigned char *keybuf, i7val key, i7val keysize, i7val options)
 {
@@ -358,4 +391,3 @@ void glulx_verify(i7val x) {
 	i7_fatal_exit();
 }
 =
-

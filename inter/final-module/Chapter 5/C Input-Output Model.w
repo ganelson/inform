@@ -50,12 +50,8 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 #define i7_roman 2
 #define i7_underline 3
 #define i7_reverse 4
-
-void i7_style(int what) {
-}
-
-void i7_font(int what) {
-}
+void i7_style(int what);
+void i7_font(int what);
 
 #define fileusage_Data (0x00)
 #define fileusage_SavedGame (0x01)
@@ -78,6 +74,42 @@ typedef struct i7_fileref {
 	char leafname[128];
 	FILE *handle;
 } i7_fileref;
+
+i7val i7_do_glk_fileref_create_by_name(i7val usage, i7val name, i7val rock);
+int i7_fseek(int id, int pos, int origin);
+int i7_ftell(int id);
+int i7_fopen(int id, int mode);
+void i7_fclose(int id);
+i7val i7_do_glk_fileref_does_file_exist(i7val id);
+void i7_fputc(int c, int id);
+int i7_fgetc(int id);
+typedef struct i7_stream {
+	FILE *to_file;
+	i7val to_file_id;
+	wchar_t *to_memory;
+	size_t memory_used;
+	size_t memory_capacity;
+	i7val previous_id;
+	i7val write_here_on_closure;
+	size_t write_limit;
+	int active;
+	int encode_UTF8;
+	int char_size;
+	int chars_read;
+	int read_position;
+	int end_position;
+	int owned_by_window_id;
+} i7_stream;
+i7val i7_do_glk_stream_get_current(void);
+i7_stream i7_new_stream(FILE *F, int win_id);
+=
+
+= (text to inform7_clib.c)
+void i7_style(int what) {
+}
+
+void i7_font(int what) {
+}
 
 i7_fileref filerefs[128 + 32];
 int i7_no_filerefs = 0;
@@ -142,6 +174,7 @@ void i7_fclose(int id) {
 // printf("Close\n");
 }
 
+
 i7val i7_do_glk_fileref_does_file_exist(i7val id) {
 	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(); }
 	if (filerefs[id].handle) return 1;
@@ -165,24 +198,6 @@ int i7_fgetc(int id) {
 // printf("Get %c\n", c);
 	return c;
 }
-
-typedef struct i7_stream {
-	FILE *to_file;
-	i7val to_file_id;
-	wchar_t *to_memory;
-	size_t memory_used;
-	size_t memory_capacity;
-	i7val previous_id;
-	i7val write_here_on_closure;
-	size_t write_limit;
-	int active;
-	int encode_UTF8;
-	int char_size;
-	int chars_read;
-	int read_position;
-	int end_position;
-	int owned_by_window_id;
-} i7_stream;
 
 #define I7_MAX_STREAMS 128
 
@@ -220,7 +235,40 @@ i7_stream i7_new_stream(FILE *F, int win_id) {
 }
 
 void (*i7_receiver)(int id, wchar_t c) = NULL;
+=
 
+@
+
+= (text to inform7_clib.h)
+void i7_initialise_streams(void (*receiver)(int id, wchar_t c));
+i7val i7_open_stream(FILE *F, int win_id);
+i7val i7_do_glk_stream_open_memory(i7val buffer, i7val len, i7val fmode, i7val rock);
+i7val i7_do_glk_stream_open_memory_uni(i7val buffer, i7val len, i7val fmode, i7val rock);
+i7val i7_do_glk_stream_open_file(i7val fileref, i7val usage, i7val rock);
+#define seekmode_Start (0)
+#define seekmode_Current (1)
+#define seekmode_End (2)
+void i7_do_glk_stream_set_position(i7val id, i7val pos, i7val seekmode);
+i7val i7_do_glk_stream_get_position(i7val id);
+void i7_do_glk_stream_close(i7val id, i7val result);
+typedef struct i7_winref {
+	i7val type;
+	i7val stream_id;
+	i7val rock;
+} i7_winref;
+i7val i7_do_glk_window_open(i7val split, i7val method, i7val size, i7val wintype, i7val rock);
+i7val i7_stream_of_window(i7val id);
+i7val i7_rock_of_window(i7val id);
+void i7_to_receiver(i7val rock, wchar_t c);
+void i7_do_glk_put_char_stream(i7val stream_id, i7val x);
+i7val i7_do_glk_get_char_stream(i7val stream_id);
+void i7_print_char(i7val x);
+void i7_print_C_string(char *c_string);
+void i7_print_decimal(i7val x);
+
+=
+
+= (text to inform7_clib.c)
 void i7_initialise_streams(void (*receiver)(int id, wchar_t c)) {
 	for (int i=0; i<I7_MAX_STREAMS; i++) i7_memory_streams[i] = i7_new_stream(NULL, 0);
 	i7_memory_streams[i7_stdout_id] = i7_new_stream(stdout, 0);
@@ -271,10 +319,6 @@ i7val i7_do_glk_stream_open_file(i7val fileref, i7val usage, i7val rock) {
 	if (i7_fopen(fileref, usage) == 0) return 0;
 	return id;
 }
-
-#define seekmode_Start (0)
-#define seekmode_Current (1)
-#define seekmode_End (2)
 
 void i7_do_glk_stream_set_position(i7val id, i7val pos, i7val seekmode) {
 	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(); }
@@ -335,12 +379,6 @@ void i7_do_glk_stream_close(i7val id, i7val result) {
 	S->active = 0;
 	S->memory_used = 0;
 }
-
-typedef struct i7_winref {
-	i7val type;
-	i7val stream_id;
-	i7val rock;
-} i7_winref;
 
 i7_winref winrefs[128];
 int i7_no_winrefs = 1;
@@ -431,7 +469,9 @@ void i7_print_decimal(i7val x) {
 	sprintf(room, "%d", (int) x);
 	i7_print_C_string(room);
 }
+=
 
+= (text to inform7_clib.h)
 #define evtype_None (0)
 #define evtype_Timer (1)
 #define evtype_CharInput (2)
@@ -449,67 +489,10 @@ typedef struct i7_glk_event {
 	i7val val1;
 	i7val val2;
 } i7_glk_event;
-
-i7_glk_event i7_events_ring_buffer[32];
-int i7_rb_back = 0, i7_rb_front = 0;
-
-i7_glk_event *i7_next_event(void) {
-	if (i7_rb_front == i7_rb_back) return NULL;
-	i7_glk_event *e = &(i7_events_ring_buffer[i7_rb_back]);
-	i7_rb_back++; if (i7_rb_back == 32) i7_rb_back = 0;
-	return e;
-}
-
-void i7_make_event(i7_glk_event e) {
-	i7_events_ring_buffer[i7_rb_front] = e;
-	i7_rb_front++; if (i7_rb_front == 32) i7_rb_front = 0;
-}
-
-i7val i7_do_glk_select(i7val structure) {
-	i7_glk_event *e = i7_next_event();
-	if (e == NULL) {
-		fprintf(stderr, "No events available to select\n"); i7_fatal_exit();
-	}
-	if (structure == -1) {
-		i7_push(e->type);
-		i7_push(e->win_id);
-		i7_push(e->val1);
-		i7_push(e->val2);
-	} else {
-		if (structure) {
-			i7_write_word(i7mem, structure, 0, e->type, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 1, e->win_id, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 2, e->val1, i7_lvalue_SET);
-			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
-		}
-	}
-	return 0;
-}
-
-int i7_no_lr = 0;
-i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len) {
-	i7_glk_event e;
-	e.type = evtype_LineInput;
-	e.win_id = window_id;
-	e.val1 = 1;
-	e.val2 = 0;
-	wchar_t c; int pos = init_len;
-	while (1) {
-		c = getchar();
-		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
-		if (pos < max_len) i7mem[buffer + pos++] = c;
-	}
-	if (pos < max_len) i7mem[buffer + pos] = 0; else i7mem[buffer + max_len-1] = 0;
-	e.val1 = pos;
-//	i7_print_C_string((char *) (i7mem + buffer));
-//	i7_print_char('\n');
-	i7_make_event(e);
-	if (i7_no_lr++ == 1000) {
-		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
-	}
-	return 0;
-}
-
+i7_glk_event *i7_next_event(void);
+void i7_make_event(i7_glk_event e);
+i7val i7_do_glk_select(i7val structure);
+i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len);
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -633,6 +616,79 @@ i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len,
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
+void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z);
+i7val fn_i7_mgl_IndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_DefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CIndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CDefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_PrintShortName(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+void i7_print_name(i7val x);
+void i7_print_object(i7val x);
+void i7_print_box(i7val x);
+void i7_read(i7val x);
+=
+
+= (text to inform7_clib.c)
+i7_glk_event i7_events_ring_buffer[32];
+int i7_rb_back = 0, i7_rb_front = 0;
+
+i7_glk_event *i7_next_event(void) {
+	if (i7_rb_front == i7_rb_back) return NULL;
+	i7_glk_event *e = &(i7_events_ring_buffer[i7_rb_back]);
+	i7_rb_back++; if (i7_rb_back == 32) i7_rb_back = 0;
+	return e;
+}
+
+void i7_make_event(i7_glk_event e) {
+	i7_events_ring_buffer[i7_rb_front] = e;
+	i7_rb_front++; if (i7_rb_front == 32) i7_rb_front = 0;
+}
+
+i7val i7_do_glk_select(i7val structure) {
+	i7_glk_event *e = i7_next_event();
+	if (e == NULL) {
+		fprintf(stderr, "No events available to select\n"); i7_fatal_exit();
+	}
+	if (structure == -1) {
+		i7_push(e->type);
+		i7_push(e->win_id);
+		i7_push(e->val1);
+		i7_push(e->val2);
+	} else {
+		if (structure) {
+			i7_write_word(i7mem, structure, 0, e->type, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 1, e->win_id, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 2, e->val1, i7_lvalue_SET);
+			i7_write_word(i7mem, structure, 3, e->val2, i7_lvalue_SET);
+		}
+	}
+	return 0;
+}
+
+int i7_no_lr = 0;
+i7val i7_do_glk_request_line_event(i7val window_id, i7val buffer, i7val max_len, i7val init_len) {
+	i7_glk_event e;
+	e.type = evtype_LineInput;
+	e.win_id = window_id;
+	e.val1 = 1;
+	e.val2 = 0;
+	wchar_t c; int pos = init_len;
+	while (1) {
+		c = getchar();
+		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		if (pos < max_len) i7mem[buffer + pos++] = c;
+	}
+	if (pos < max_len) i7mem[buffer + pos] = 0; else i7mem[buffer + max_len-1] = 0;
+	e.val1 = pos;
+//	i7_print_C_string((char *) (i7mem + buffer));
+//	i7_print_char('\n');
+	i7_make_event(e);
+	if (i7_no_lr++ == 1000) {
+		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
+	}
+	return 0;
+}
+
 
 void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 	i7_debug_stack("glulx_glk");
@@ -719,12 +775,6 @@ void glulx_glk(i7val glk_api_selector, i7val varargc, i7val *z) {
 	}
 	if (z) *z = rv;
 }
-
-i7val fn_i7_mgl_IndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_DefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_CIndefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_CDefArt(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_PrintShortName(int __argc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
 
 void i7_print_name(i7val x) {
 	fn_i7_mgl_PrintShortName(1, x, 0);

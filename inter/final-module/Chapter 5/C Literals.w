@@ -436,9 +436,6 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 		CMemoryModel::array_entry(NULL, gen, entry, BYTE_ARRAY_FORMAT);
 	}
 	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
-
-	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT);
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);
 }
 
 void CLiteralsModel::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
@@ -738,6 +735,10 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 @
 
 = (text to inform7_clib.h)
+void i7_print_dword(i7val at);
+=
+
+= (text to inform7_clib.c)
 void i7_print_dword(i7val at) {
 	i7byte *x = i7mem + at;
 	for (i7byte i=1; i<=9; i++) {

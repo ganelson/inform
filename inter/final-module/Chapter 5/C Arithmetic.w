@@ -40,6 +40,12 @@ int CArithmetic::compile_primitive(code_generation *gen, inter_ti bip, inter_tre
 @ Random integers:
 
 = (text to inform7_clib.h)
+void glulx_random(i7val x, i7val *y);
+i7val fn_i7_mgl_random(int n, i7val x);
+void glulx_setrandom(i7val s);
+=
+
+= (text to inform7_clib.c)
 /* Return a random number in the range 0 to 2^32-1. */
 uint32_t i7_random() {
 	return (random() << 16) ^ random();
@@ -79,6 +85,46 @@ Note that floating-point numbers are stored in |i7val| values at runtime by
 storing |float| (not, alas, |double|) values as if they were four-byte integers.
 
 = (text to inform7_clib.h)
+void glulx_add(i7val x, i7val y, i7val *z);
+void glulx_sub(i7val x, i7val y, i7val *z);
+void glulx_neg(i7val x, i7val *y);
+void glulx_mul(i7val x, i7val y, i7val *z);
+void glulx_div(i7val x, i7val y, i7val *z);
+i7val glulx_div_r(i7val x, i7val y);
+void glulx_mod(i7val x, i7val y, i7val *z);
+i7val glulx_mod_r(i7val x, i7val y);
+typedef float gfloat32;
+i7val encode_float(gfloat32 val);
+gfloat32 decode_float(i7val val);
+void glulx_exp(i7val x, i7val *y);
+void glulx_fadd(i7val x, i7val y, i7val *z);
+void glulx_fdiv(i7val x, i7val y, i7val *z);
+void glulx_floor(i7val x, i7val *y);
+void glulx_fmod(i7val x, i7val y, i7val *z, i7val *w);
+void glulx_fmul(i7val x, i7val y, i7val *z);
+void glulx_fsub(i7val x, i7val y, i7val *z);
+void glulx_ftonumn(i7val x, i7val *y);
+void glulx_ftonumz(i7val x, i7val *y);
+void glulx_numtof(i7val x, i7val *y);
+int glulx_jfeq(i7val x, i7val y, i7val z);
+int glulx_jfne(i7val x, i7val y, i7val z);
+int glulx_jfge(i7val x, i7val y);
+int glulx_jflt(i7val x, i7val y);
+int glulx_jisinf(i7val x);
+int glulx_jisnan(i7val x);
+void glulx_log(i7val x, i7val *y);
+void glulx_acos(i7val x, i7val *y);
+void glulx_asin(i7val x, i7val *y);
+void glulx_atan(i7val x, i7val *y);
+void glulx_ceil(i7val x, i7val *y);
+void glulx_cos(i7val x, i7val *y);
+void glulx_pow(i7val x, i7val y, i7val *z);
+void glulx_sin(i7val x, i7val *y);
+void glulx_sqrt(i7val x, i7val *y);
+void glulx_tan(i7val x, i7val *y);
+=
+
+= (text to inform7_clib.c)
 void glulx_add(i7val x, i7val y, i7val *z) {
 	if (z) *z = x + y;
 }
@@ -153,8 +199,6 @@ i7val glulx_mod_r(i7val x, i7val y) {
 	glulx_mod(x, y, &z);
 	return z;
 }
-
-typedef float gfloat32;
 
 i7val encode_float(gfloat32 val) {
     i7val res;

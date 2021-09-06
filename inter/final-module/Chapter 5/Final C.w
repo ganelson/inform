@@ -51,18 +51,45 @@ first of those:
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
+#include <stdint.h>
 
-int begin_execution(void (*receiver)(int id, wchar_t c));
+typedef int32_t i7val;
+typedef uint32_t i7uval;
+typedef unsigned char i7byte;
 
+typedef struct i7process {
+	int termination_code;
+} i7process;
+
+void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
+void i7_initializer(void);
+void i7_initialise_header(void);
+void i7_initialise_streams(void (*receiver)(int id, wchar_t c));
+void i7_fatal_exit(void);
+i7val i7_tmp = 0;
+=
+
+= (text to inform7_clib.c)
 #ifndef I7_NO_MAIN
 void default_receiver(int id, wchar_t c) {
 	if (id == 201) fputc(c, stdout);
 }
 
 int main(int argc, char **argv) {
-	return begin_execution(default_receiver);
+	i7process proc;
+	i7_run_process(&proc, default_receiver);
+	return proc.termination_code;
 }
 #endif
+
+i7val fn_i7_mgl_Main(int __argc);
+void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c)) {
+	i7_initializer();
+	i7_initialise_header();
+	i7_initialise_streams(receiver);
+	fn_i7_mgl_Main(0);
+	proc->termination_code = 0; /* terminated normally */
+}
 
 void i7_fatal_exit(void) {
 	printf("*** Fatal error: halted ***\n");
@@ -70,15 +97,14 @@ void i7_fatal_exit(void) {
 	int x = 0; printf("%d", 1/x);
 	exit(1);
 }
-
-i7val i7_tmp = 0;
 =
 
 @h Segmentation.
 
+@e c_header_inclusion_I7CGS
 @e c_fundamental_types_I7CGS
 @e c_ids_and_maxima_I7CGS
-@e c_header_matter_I7CGS
+@e c_library_inclusion_I7CGS
 @e c_predeclarations_I7CGS
 @e c_very_early_matter_I7CGS
 @e c_constants_1_I7CGS
@@ -107,9 +133,10 @@ i7val i7_tmp = 0;
 
 =
 int C_target_segments[] = {
+	c_header_inclusion_I7CGS,
 	c_fundamental_types_I7CGS,
 	c_ids_and_maxima_I7CGS,
-	c_header_matter_I7CGS,
+	c_library_inclusion_I7CGS,
 	c_predeclarations_I7CGS,
 	c_very_early_matter_I7CGS,
 	c_constants_1_I7CGS,
@@ -170,17 +197,22 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 
 	CNamespace::fix_locals(gen);
 
-	generated_segment *saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
+	generated_segment *saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#include <stdint.h>\n");
-	WRITE("typedef int32_t i7val;\n");
-	WRITE("typedef uint32_t i7uval;\n");
-	WRITE("typedef unsigned char i7byte;\n");
+	WRITE("#include \"inform7_clib.h\"\n");
 	CodeGen::deselect(gen, saved);
 
-	saved = CodeGen::select(gen, c_header_matter_I7CGS);
+//	generated_segment *saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
+//	text_stream *OUT = CodeGen::current(gen);
+//	WRITE("#include <stdint.h>\n");
+//	WRITE("typedef int32_t i7val;\n");
+//	WRITE("typedef uint32_t i7uval;\n");
+//	WRITE("typedef unsigned char i7byte;\n");
+//	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_library_inclusion_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("#include \"inform7_clib.h\"\n");
+	WRITE("#include \"inform7_clib.c\"\n");
 	CodeGen::deselect(gen, saved);
 
 	CMemoryModel::begin(gen);

@@ -240,6 +240,11 @@ the calling conventions of other functions. It says which of five possible value
 an ID belongs to: 0, |Class|, |Object|, |String| or |Routine|.
 
 = (text to inform7_clib.h)
+i7val fn_i7_mgl_metaclass(int n, i7val id);
+int i7_ofclass(i7val id, i7val cl_id);
+=
+
+= (text to inform7_clib.c)
 i7val fn_i7_mgl_metaclass(int n, i7val id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
@@ -247,13 +252,11 @@ i7val fn_i7_mgl_metaclass(int n, i7val id) {
 	return i7_metaclass_of[id];
 }
 =
-
 This function implements |OFCLASS_BIP| for us at runtime, and is a little harder,
 because we may need to recurse up the class hierarchy. If A is of class B whose
 superclass is C, then |i7_ofclass(A, B)| and |i7_ofclass(A, C)| are both true,
 as it |i7_ofclass(B, C)|.
-
-= (text to inform7_clib.h)
+= (text to inform7_clib.c)
 int i7_ofclass(i7val id, i7val cl_id) {
 	if ((id <= 0) || (cl_id <= 0)) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) {
@@ -386,7 +389,7 @@ By fiat, that will be 0.
 
 		saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
 		OUT = CodeGen::current(gen);
-		WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(int argc);\n");
+//		WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(int argc);\n");
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -579,10 +582,21 @@ So here is the run-time storage for property values, and simple code to read
 and write them.
 
 = (text to inform7_clib.h)
+i7val fn_i7_mgl_CreatePropertyOffsets(int argc);
+#define I7_MAX_PROPERTY_IDS 1000
 typedef struct i7_property_set {
-	i7val address[i7_no_property_ids];
-	i7val len[i7_no_property_ids];
+	i7val address[I7_MAX_PROPERTY_IDS];
+	i7val len[I7_MAX_PROPERTY_IDS];
 } i7_property_set;
+void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val);
+i7val i7_read_prop_value(i7val owner_id, i7val prop_id);
+i7val i7_change_prop_value(i7val obj, i7val pr, i7val to, int way);
+void i7_give(i7val owner, i7val prop, i7val val);
+i7val i7_prop_len(i7val obj, i7val pr);
+i7val i7_prop_addr(i7val obj, i7val pr);
+=
+
+= (text to inform7_clib.c)
 i7_property_set i7_properties[i7_max_objects];
 
 void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
@@ -602,7 +616,7 @@ void i7_write_prop_value(i7val owner_id, i7val prop_id, i7val val) {
 
 @ And here sre the functions called by the above primitives:
 
-= (text to inform7_clib.h)
+= (text to inform7_clib.c)
 i7val i7_read_prop_value(i7val owner_id, i7val prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
@@ -663,6 +677,17 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 @
 
 = (text to inform7_clib.h)
+int i7_has(i7val obj, i7val attr);
+int i7_provides(i7val owner_id, i7val prop_id);
+int i7_in(i7val obj1, i7val obj2);
+i7val fn_i7_mgl_parent(int n, i7val id);
+i7val fn_i7_mgl_child(int n, i7val id);
+i7val fn_i7_mgl_children(int n, i7val id);
+i7val fn_i7_mgl_sibling(int n, i7val id);
+void i7_move(i7val obj, i7val to);
+=
+
+= (text to inform7_clib.c)
 int i7_has(i7val obj, i7val attr) {
 	if (i7_read_prop_value(obj, attr)) return 1;
 	return 0;

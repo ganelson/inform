@@ -73,23 +73,6 @@ void CMemoryModel::end(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("0, 0 };\n");
 	
-	WRITE("void i7_initialise_header(void) {\n");
-	WRITE("    #ifdef i7_mgl_Release\n");
-	WRITE("    i7mem[0x34] = I7BYTE_2(i7_mgl_Release);\n");
-	WRITE("    i7mem[0x35] = I7BYTE_3(i7_mgl_Release);\n");
-	WRITE("    #endif\n");
-	WRITE("    #ifndef i7_mgl_Release\n");
-	WRITE("    i7mem[0x34] = I7BYTE_2(1);\n");
-	WRITE("    i7mem[0x35] = I7BYTE_3(1);\n");
-	WRITE("    #endif\n");
-	WRITE("    #ifdef i7_mgl_Serial\n");
-	WRITE("    for (int i=0; i<6; i++) i7mem[0x36 + i] = (dqs[i7_mgl_Serial - I7VAL_STRINGS_BASE])[i];\n");
-	WRITE("    #endif\n");
-	WRITE("    #ifndef i7_mgl_Serial\n");
-	WRITE("    for (int i=0; i<6; i++) i7mem[0x36 + i] = '0';\n");
-	WRITE("    #endif\n");
-	WRITE("}\n");
-	
 	CodeGen::deselect(gen, saved);
 	
 	saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
@@ -97,6 +80,27 @@ void CMemoryModel::end(code_generation *gen) {
 	WRITE("#define i7_himem %d\n", C_GEN_DATA(memdata.himem));
 	CodeGen::deselect(gen, saved);
 }
+
+@
+
+= (text to inform7_clib.c)
+void i7_initialise_header(void) {
+    #ifdef i7_mgl_Release
+    i7mem[0x34] = I7BYTE_2(i7_mgl_Release);
+    i7mem[0x35] = I7BYTE_3(i7_mgl_Release);
+    #endif
+    #ifndef i7_mgl_Release
+    i7mem[0x34] = I7BYTE_2(1);
+    i7mem[0x35] = I7BYTE_3(1);
+    #endif
+    #ifdef i7_mgl_Serial
+    for (int i=0; i<6; i++) i7mem[0x36 + i] = (dqs[i7_mgl_Serial - I7VAL_STRINGS_BASE])[i];
+    #endif
+    #ifndef i7_mgl_Serial
+    for (int i=0; i<6; i++) i7mem[0x36 + i] = '0';
+    #endif
+}
+=
 
 @h Reading and writing memory.
 Given the above array, it's easy to read and write bytes: if |a| is the address
@@ -111,6 +115,10 @@ with |data| set to |i7mem|.
 The equivalent for reading a byte entry is |data[array_address + array_index]|.
 
 = (text to inform7_clib.h)
+i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index);
+=
+
+= (text to inform7_clib.c)
 i7val i7_read_word(i7byte data[], i7val array_address, i7val array_index) {
 	int byte_position = array_address + 4*array_index;
 	if ((byte_position < 0) || (byte_position >= i7_himem)) {
@@ -133,6 +141,10 @@ express a packed word in constant context, which we will need later.
 #define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
+i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val new_val, int way);
+=
+
+= (text to inform7_clib.c)
 i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val new_val, int way) {
 	i7val old_val = i7_read_word(data, array_address, array_index);
 	i7val return_val = new_val;
@@ -160,6 +172,10 @@ i7val i7_write_word(i7byte data[], i7val array_address, i7val array_index, i7val
 @ "Short" 16-bit numbers can also be accessed:
 
 = (text to inform7_clib.h)
+void glulx_aloads(i7val x, i7val y, i7val *z);
+=
+
+= (text to inform7_clib.c)
 void glulx_aloads(i7val x, i7val y, i7val *z) {
 	if (z) *z = 0x100*((i7val) i7mem[x+2*y]) + ((i7val) i7mem[x+2*y+1]);
 }
@@ -168,6 +184,12 @@ void glulx_aloads(i7val x, i7val y, i7val *z) {
 @ A Glulx assembly opcode is provided for fast memory copies:
 
 = (text to inform7_clib.h)
+void glulx_mcopy(i7val x, i7val y, i7val z);
+void glulx_malloc(i7val x, i7val y);
+void glulx_mfree(i7val x);
+=
+
+= (text to inform7_clib.c)
 void glulx_mcopy(i7val x, i7val y, i7val z) {
     if (z < y)
 		for (i7val i=0; i<x; i++) i7mem[z+i] = i7mem[y+i];
@@ -306,14 +328,12 @@ except to predeclare the extent constant, if one was used.
 
 =
 void CMemoryModel::end_array(code_generation_target *cgt, code_generation *gen, int format) {
-//	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT)) {
-		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE("#define xt_");
-		CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
-		WRITE(" %d\n", C_GEN_DATA(memdata.entry_count)-1);
-		CodeGen::deselect(gen, saved);
-//	}
+	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define xt_");
+	CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
+	WRITE(" %d\n", C_GEN_DATA(memdata.entry_count)-1);
+	CodeGen::deselect(gen, saved);
 }
 
 @h Primitives for byte and word lookup.
