@@ -725,8 +725,8 @@ int CLiteralsModel::no_strings(code_generation *gen) {
 int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PRINTSTRING_BIP: WRITE("i7_print_C_string(dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_dword("); INV_A1; WRITE(")"); break;
+		case PRINTSTRING_BIP: WRITE("i7_print_C_string(proc, dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_dword(proc, "); INV_A1; WRITE(")"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;
@@ -735,15 +735,15 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 @
 
 = (text to inform7_clib.h)
-void i7_print_dword(i7val at);
+void i7_print_dword(i7process *proc, i7val at);
 =
 
 = (text to inform7_clib.c)
-void i7_print_dword(i7val at) {
-	i7byte *x = i7mem + at;
+void i7_print_dword(i7process *proc, i7val at) {
 	for (i7byte i=1; i<=9; i++) {
-		if (x[i] == 0) break;
-		i7_print_char(x[i]);
+		i7byte c = i7_read_byte(proc, at+i);
+		if (c == 0) break;
+		i7_print_char(proc, c);
 	}
 }
 =

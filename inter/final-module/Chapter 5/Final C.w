@@ -45,6 +45,9 @@ first of those:
    tp ANSI C. It was generated mechanically from the Inter source code, so to
    change it, edit that and not this. */
 
+#ifndef I7_CLIB_H_INCLUDED
+#define I7_CLIB_H_INCLUDED 1
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -52,57 +55,95 @@ first of those:
 #include <time.h>
 #include <ctype.h>
 #include <stdint.h>
+#include <setjmp.h>
 
 typedef int32_t i7val;
 typedef uint32_t i7uval;
 typedef unsigned char i7byte;
 
+#define I7_ASM_STACK_CAPACITY 128
+
+typedef struct i7state {
+	i7byte *memory;
+	i7val stack[I7_ASM_STACK_CAPACITY];
+	int stack_pointer;
+	i7val *i7_object_tree_parent;
+	i7val *i7_object_tree_child;
+	i7val *i7_object_tree_sibling;
+	i7val tmp;
+} i7state;
 typedef struct i7process {
+	i7state state;
+	jmp_buf execution_env;
 	int termination_code;
 } i7process;
 
+i7state i7_new_state(void);
+i7process i7_new_process(void);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
-void i7_initializer(void);
-void i7_initialise_header(void);
-void i7_initialise_streams(void (*receiver)(int id, wchar_t c));
-void i7_fatal_exit(void);
-i7val i7_tmp = 0;
+void i7_initializer(i7process *proc);
+void i7_fatal_exit(i7process *proc);
 =
 
 = (text to inform7_clib.c)
+#ifndef I7_CLIB_C_INCLUDED
+#define I7_CLIB_C_INCLUDED 1
+
+i7state i7_new_state(void) {
+	i7state S;
+	S.memory = NULL;
+	S.tmp = 0;
+	S.stack_pointer = 0;
+	S.i7_object_tree_parent = NULL;
+	S.i7_object_tree_child = NULL;
+	S.i7_object_tree_sibling = NULL;
+	return S;
+}
+
+i7process i7_new_process(void) {
+	i7process proc;
+	proc.state = i7_new_state();
+	return proc;
+}
+
 #ifndef I7_NO_MAIN
 void default_receiver(int id, wchar_t c) {
 	if (id == 201) fputc(c, stdout);
 }
 
 int main(int argc, char **argv) {
-	i7process proc;
+	i7process proc = i7_new_process();
 	i7_run_process(&proc, default_receiver);
+	if (proc.termination_code == 1) {
+		printf("*** Fatal error: halted ***\n");
+		fflush(stdout); fflush(stderr);
+	}
 	return proc.termination_code;
 }
 #endif
 
-i7val fn_i7_mgl_Main(int __argc);
+i7val fn_i7_mgl_Main(i7process *proc);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c)) {
-	i7_initializer();
-	i7_initialise_header();
-	i7_initialise_streams(receiver);
-	fn_i7_mgl_Main(0);
-	proc->termination_code = 0; /* terminated normally */
+	if (setjmp(proc->execution_env)) {
+		proc->termination_code = 1; /* terminated abnormally */
+    } else {
+		i7_initialise_state(proc);
+		i7_initializer(proc);
+		i7_initialise_streams(proc, receiver);
+		fn_i7_mgl_Main(proc);
+		proc->termination_code = 0; /* terminated normally */
+    }
 }
 
-void i7_fatal_exit(void) {
-	printf("*** Fatal error: halted ***\n");
-	fflush(stdout); fflush(stderr);
-	int x = 0; printf("%d", 1/x);
-	exit(1);
+void i7_fatal_exit(i7process *proc) {
+//	int x = 0; printf("%d", 1/x);
+	longjmp(proc->execution_env, 1);
 }
 =
 
 @h Segmentation.
 
 @e c_header_inclusion_I7CGS
-@e c_fundamental_types_I7CGS
 @e c_ids_and_maxima_I7CGS
 @e c_library_inclusion_I7CGS
 @e c_predeclarations_I7CGS
@@ -134,7 +175,6 @@ void i7_fatal_exit(void) {
 =
 int C_target_segments[] = {
 	c_header_inclusion_I7CGS,
-	c_fundamental_types_I7CGS,
 	c_ids_and_maxima_I7CGS,
 	c_library_inclusion_I7CGS,
 	c_predeclarations_I7CGS,
@@ -201,14 +241,6 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#include \"inform7_clib.h\"\n");
 	CodeGen::deselect(gen, saved);
-
-//	generated_segment *saved = CodeGen::select(gen, c_fundamental_types_I7CGS);
-//	text_stream *OUT = CodeGen::current(gen);
-//	WRITE("#include <stdint.h>\n");
-//	WRITE("typedef int32_t i7val;\n");
-//	WRITE("typedef uint32_t i7uval;\n");
-//	WRITE("typedef unsigned char i7byte;\n");
-//	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, c_library_inclusion_I7CGS);
 	OUT = CodeGen::current(gen);

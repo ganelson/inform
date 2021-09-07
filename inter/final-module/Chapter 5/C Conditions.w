@@ -41,7 +41,7 @@ void CConditions::comparison_r(code_generation *gen,
 			inter_ti ybip = Primitives::to_bip(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				text_stream *OUT = CodeGen::current(gen);
-				if (depth == 0) { WRITE("(i7_tmp = "); CodeGen::FC::frame(gen, X); WRITE(", ("); }
+				if (depth == 0) { WRITE("(proc->state.tmp = "); CodeGen::FC::frame(gen, X); WRITE(", ("); }
 				CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(Y), depth+1);
 				if ((bip == NE_BIP) || (bip == NOTIN_BIP) || (bip == HASNT_BIP)) WRITE(" && ");
 				else WRITE(" || ");
@@ -55,7 +55,7 @@ void CConditions::comparison_r(code_generation *gen,
 	int positive = TRUE;
 	text_stream *test_fn = CObjectModel::test_with_function(bip, &positive);
 	if (Str::len(test_fn) > 0) {
-		WRITE("(%S(", test_fn);
+		WRITE("(%S(proc, ", test_fn);
 		@<Compile first compared@>;
 		WRITE(", ");
 		@<Compile second compared@>;
@@ -77,7 +77,7 @@ void CConditions::comparison_r(code_generation *gen,
 }
 
 @<Compile first compared@> =
-	if (X) CodeGen::FC::frame(gen, X); else WRITE("i7_tmp");
+	if (X) CodeGen::FC::frame(gen, X); else WRITE("proc->state.tmp");
 
 @<Compile second compared@> =
 	CodeGen::FC::frame(gen, Y);

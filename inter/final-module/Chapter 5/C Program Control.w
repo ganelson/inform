@@ -36,8 +36,8 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	switch (bip) {
-		case PUSH_BIP:			WRITE("i7_push("); INV_A1; WRITE(")"); break;
-		case PULL_BIP:			INV_A1; WRITE(" = i7_pull()"); break;
+		case PUSH_BIP:			WRITE("i7_push(proc, "); INV_A1; WRITE(")"); break;
+		case PULL_BIP:			INV_A1; WRITE(" = i7_pull(proc)"); break;
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
@@ -46,22 +46,22 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		case RESTORE_BIP: 		break; /* we won't support this in C */
 
 		case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
-								WRITE("i7_call_0("); INV_A1; WRITE(")"); break;
+								WRITE("i7_call_0(proc, "); INV_A1; WRITE(")"); break;
 		case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
-								WRITE("i7_call_1("); INV_A1; WRITE(", ");
+								WRITE("i7_call_1(proc, "); INV_A1; WRITE(", ");
 								INV_A2; WRITE(")"); break;
 		case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
-								WRITE("i7_call_2("); INV_A1; WRITE(", ");
+								WRITE("i7_call_2(proc, "); INV_A1; WRITE(", ");
 								INV_A2; WRITE(", "); INV_A3; WRITE(")"); break;
 		case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
-								WRITE("i7_call_3("); INV_A1; WRITE(", ");
+								WRITE("i7_call_3(proc, "); INV_A1; WRITE(", ");
 								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
 		case INDIRECT4_BIP: case INDIRECT4V_BIP:
-								WRITE("i7_call_4("); INV_A1; WRITE(", ");
+								WRITE("i7_call_4(proc, "); INV_A1; WRITE(", ");
 								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(", ");
 								INV_A5; WRITE(")"); break;
 		case INDIRECT5_BIP: case INDIRECT5V_BIP:
-								WRITE("i7_call_5("); INV_A1; WRITE(", ");
+								WRITE("i7_call_5(proc, "); INV_A1; WRITE(", ");
 								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(", ");
 								INV_A5; WRITE(", "); INV_A6; WRITE(")"); break;
 
@@ -153,7 +153,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	WRITE(" < i7_max_objects; "); INV_A1;
 	WRITE("++) ");
 	if (in_flag == FALSE) {
-		WRITE("if (i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
+		WRITE("if (i7_ofclass(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
 	}
 	WRITE("if (");
 	INV_A3;
@@ -166,7 +166,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	WRITE(" = 1; "); INV_A1;
 	WRITE(" < i7_max_objects; "); INV_A1;
 	WRITE("++) ");
-	WRITE("if (i7_ofclass("); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
+	WRITE("if (i7_ofclass(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
 	WRITE(" {\n"); INDENT; INV_A3;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;

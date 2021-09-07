@@ -27,6 +27,7 @@ Chapter 5: C
 	Final C
 	C Namespace
 	C References
+	C Global Variables
 	C Memory Model
 	C Assembly
 	C Program Control
@@ -34,6 +35,5 @@ Chapter 5: C
 	C Conditions
 	C Object Model
 	C Function Model
-	C Global Variables
 	C Literals
 	C Input-Output Model
