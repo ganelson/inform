@@ -238,7 +238,7 @@ we assume that's the name of an attribute already declared (for example
 in the I6 template, or some extension), and we therefore do nothing.
 
 @<Declare as an I6 attribute@> =
-	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, 1));
+	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, prop_name, 1));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
 		if (A == NULL) A = CodeGen::CL::name(prop_name);
@@ -880,7 +880,7 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, 1));
+		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, inst_name, 1));
 		text_stream *OUT = CodeGen::current(gen);
 		if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), inst_name, P, defined, FALSE)) {
 			if (defined) {

@@ -86,7 +86,9 @@ final_c_function *CFunctionModel::new_fcf(text_stream *unmangled_name) {
 }
 
 void CFunctionModel::declare_fcf(code_generation *gen, final_c_function *fcf) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	int seg = c_predeclarations_I7CGS;
+	if (Str::eq(fcf->identifier_as_constant, I"DealWithUndo")) seg = c_ids_and_maxima_I7CGS;
+	generated_segment *saved = CodeGen::select(gen, seg);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
 	CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);

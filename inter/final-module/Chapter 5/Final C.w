@@ -65,6 +65,7 @@ typedef unsigned char i7byte;
 
 typedef struct i7state {
 	i7byte *memory;
+	i7val himem;
 	i7val stack[I7_ASM_STACK_CAPACITY];
 	int stack_pointer;
 	i7val *i7_object_tree_parent;
@@ -73,17 +74,37 @@ typedef struct i7state {
 	i7val *variables;
 	i7val tmp;
 } i7state;
+
+typedef struct i7snapshot {
+	int valid;
+	struct i7state then;
+	jmp_buf env;
+} i7snapshot;
+
+#define I7_MAX_SNAPSHOTS 10
+
 typedef struct i7process {
 	i7state state;
+	i7snapshot snapshots[I7_MAX_SNAPSHOTS];
+	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
+	int just_undid;
 } i7process;
 
 i7state i7_new_state(void);
 i7process i7_new_process(void);
+i7snapshot i7_new_snapshot(void);
+void i7_save_snapshot(i7process *proc);
+int i7_has_snapshot(i7process *proc);
+void i7_restore_snapshot(i7process *proc);
+void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
+int i7_destroy_latest_snapshot(i7process *proc);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
 void i7_initializer(i7process *proc);
 void i7_fatal_exit(i7process *proc);
+void i7_destroy_state(i7process *proc, i7state *s);
+void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
 =
 
 = (text to inform7_clib.c)
@@ -93,6 +114,7 @@ void i7_fatal_exit(i7process *proc);
 i7state i7_new_state(void) {
 	i7state S;
 	S.memory = NULL;
+	S.himem = 0;
 	S.tmp = 0;
 	S.stack_pointer = 0;
 	S.i7_object_tree_parent = NULL;
@@ -102,10 +124,115 @@ i7state i7_new_state(void) {
 	return S;
 }
 
+void i7_copy_state(i7process *proc, i7state *to, i7state *from) {
+	to->himem = from->himem;
+	to->memory = calloc(i7_static_himem, sizeof(i7byte));
+	if (to->memory == NULL) { 
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
+	to->tmp = from->tmp;
+	to->stack_pointer = from->stack_pointer;
+	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
+	to->i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7val));
+	to->i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7val));
+	to->i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7val));
+	
+	if ((to->i7_object_tree_parent == NULL) ||
+		(to->i7_object_tree_child == NULL) ||
+		(to->i7_object_tree_sibling == NULL)) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_max_objects; i++) {
+		to->i7_object_tree_parent[i] = from->i7_object_tree_parent[i];
+		to->i7_object_tree_child[i] = from->i7_object_tree_child[i];
+		to->i7_object_tree_sibling[i] = from->i7_object_tree_sibling[i];
+	}
+	to->variables = calloc(i7_no_variables, sizeof(i7val));
+	if (to->variables == NULL) { 
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_no_variables; i++)
+		to->variables[i] = from->variables[i];
+}
+
+void i7_destroy_state(i7process *proc, i7state *s) {
+	free(s->memory);
+	s->himem = 0;
+	free(s->i7_object_tree_parent);
+	free(s->i7_object_tree_child);
+	free(s->i7_object_tree_sibling);
+	s->stack_pointer = 0;
+	free(s->variables);
+}
+
+void i7_destroy_snapshot(i7process *proc, i7snapshot *old) {
+	i7_destroy_state(proc, &(old->then));
+	old->valid = 0;
+}
+
+i7snapshot i7_new_snapshot(void) {
+	i7snapshot SS;
+	SS.valid = 0;
+	SS.then = i7_new_state();
+	return SS;
+}
+
 i7process i7_new_process(void) {
 	i7process proc;
 	proc.state = i7_new_state();
+	for (int i=0; i<I7_MAX_SNAPSHOTS; i++) proc.snapshots[i] = i7_new_snapshot();
+	proc.just_undid = 0;
+	proc.snapshot_pos = 0;
 	return proc;
+}
+
+void i7_save_snapshot(i7process *proc) {
+	if (proc->snapshots[proc->snapshot_pos].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
+	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
+	proc->snapshots[proc->snapshot_pos].valid = 1;
+	i7_copy_state(proc, &(proc->snapshots[proc->snapshot_pos].then), &(proc->state));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos++;
+	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
+//	if (setjmp(proc->snapshots[was].env)) fprintf(stdout, "*** Restore! %d ***\n", proc->just_undid);
+}
+
+int i7_has_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	return proc->snapshots[will_be].valid;
+}
+
+int i7_destroy_latest_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid == 0) {
+		printf("Restore impossible\n");
+		i7_fatal_exit(proc);
+	}
+	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos = will_be;
+//	longjmp(proc->snapshots[was].env, 1);
+}
+
+void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss) {
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
 #ifndef I7_NO_MAIN
@@ -298,7 +425,9 @@ int CTarget::default_segment(code_generation_target *cgt) {
 int CTarget::constant_segment(code_generation_target *cgt, code_generation *gen) {
 	return c_early_matter_I7CGS;
 }
-int CTarget::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
+int CTarget::basic_constant_segment(code_generation_target *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
+	if (Str::eq(CodeGen::CL::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
+	if (Str::eq(CodeGen::CL::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
 	if (depth >= 10) depth = 10;
 	return c_constants_1_I7CGS + depth - 1;
 }

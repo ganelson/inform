@@ -77,7 +77,7 @@ void CMemoryModel::end(code_generation *gen) {
 	
 	saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("#define i7_himem %d\n", C_GEN_DATA(memdata.himem));
+	WRITE("#define i7_static_himem %d\n", C_GEN_DATA(memdata.himem));
 	CodeGen::deselect(gen, saved);
 }
 
@@ -90,13 +90,14 @@ void i7_initialise_state(i7process *proc);
 = (text to inform7_clib.c)
 void i7_initialise_state(i7process *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
-	i7byte *mem = calloc(i7_himem, sizeof(i7byte));
+	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));
 	if (mem == NULL) { 
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
 	}
 	proc->state.memory = mem;
-	for (int i=0; i<i7_himem; i++) mem[i] = i7_initial_memory[i];
+	proc->state.himem = i7_static_himem;
+	for (int i=0; i<i7_static_himem; i++) mem[i] = i7_initial_memory[i];
     #ifdef i7_mgl_Release
     mem[0x34] = I7BYTE_2(i7_mgl_Release);
     mem[0x35] = I7BYTE_3(i7_mgl_Release);
@@ -106,7 +107,8 @@ void i7_initialise_state(i7process *proc) {
     mem[0x35] = I7BYTE_3(1);
     #endif
     #ifdef i7_mgl_Serial
-    for (int i=0; i<6; i++) mem[0x36 + i] = (dqs[i7_mgl_Serial - I7VAL_STRINGS_BASE])[i];
+    char *p = i7_text_of_string(i7_mgl_Serial);
+    for (int i=0; i<6; i++) mem[0x36 + i] = p[i];
     #endif
     #ifndef i7_mgl_Serial
     for (int i=0; i<6; i++) mem[0x36 + i] = '0';
@@ -159,7 +161,7 @@ i7byte i7_read_byte(i7process *proc, i7val address) {
 i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index) {
 	i7byte *data = proc->state.memory;
 	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
 		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
@@ -216,7 +218,7 @@ i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7v
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
 	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
 		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}

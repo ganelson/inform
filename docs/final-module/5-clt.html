@@ -813,6 +813,7 @@ function togglePopup(material_id) {
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_print_dword</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">at</span><span class="Extracts-plain-syntax">);</span>
+<span class="Extracts-identifier-syntax">char</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_text_of_string</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">str</span><span class="Extracts-plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
 <pre class="Extracts-displayed-code all-displayed-code code-font">
@@ -822,6 +823,11 @@ function togglePopup(material_id) {
 <span class="Extracts-plain-syntax">        </span><span class="Extracts-identifier-syntax">if</span><span class="Extracts-plain-syntax"> (</span><span class="Extracts-identifier-syntax">c</span><span class="Extracts-plain-syntax"> == </span><span class="Extracts-constant-syntax">0</span><span class="Extracts-plain-syntax">) </span><span class="Extracts-identifier-syntax">break</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">        </span><span class="Extracts-identifier-syntax">i7_print_char</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">c</span><span class="Extracts-plain-syntax">);</span>
 <span class="Extracts-plain-syntax">    }</span>
+<span class="Extracts-plain-syntax">}</span>
+
+<span class="Extracts-identifier-syntax">char</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">dqs</span><span class="Extracts-plain-syntax">[];</span>
+<span class="Extracts-identifier-syntax">char</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_text_of_string</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">str</span><span class="Extracts-plain-syntax">) {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">return</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">dqs</span><span class="Extracts-plain-syntax">[</span><span class="Extracts-identifier-syntax">str</span><span class="Extracts-plain-syntax"> - </span><span class="Extracts-identifier-syntax">I7VAL_STRINGS_BASE</span><span class="Extracts-plain-syntax">];</span>
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>

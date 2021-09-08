@@ -65,7 +65,7 @@ int CodeGen::Targets::end_generation(code_generation *gen) {
 =
 INT_METHOD_TYPE(GENERAL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P)
 INT_METHOD_TYPE(DEFAULT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
-INT_METHOD_TYPE(BASIC_CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, int depth)
+INT_METHOD_TYPE(BASIC_CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *con_name, int depth)
 INT_METHOD_TYPE(CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 INT_METHOD_TYPE(TL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 
@@ -87,9 +87,9 @@ int CodeGen::Targets::constant_segment(code_generation *gen) {
 	return rv;
 }
 
-int CodeGen::Targets::basic_constant_segment(code_generation *gen, int depth) {
+int CodeGen::Targets::basic_constant_segment(code_generation *gen, inter_symbol *con_name, int depth) {
 	int rv = 0;
-	INT_METHOD_CALL(rv, gen->target, BASIC_CONSTANT_SEGMENT_MTID, gen, depth);
+	INT_METHOD_CALL(rv, gen->target, BASIC_CONSTANT_SEGMENT_MTID, gen, con_name, depth);
 	return rv;
 }
 

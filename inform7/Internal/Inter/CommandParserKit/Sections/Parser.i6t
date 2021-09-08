@@ -449,16 +449,24 @@ The return value is the number of words typed.
 		if (i == -1) undo_flag = 0;
 		if (i == 0) undo_flag = 1;
 		if (i == 2) {
-			VM_RestoreWindowColours();
-			VM_Style(SUBHEADER_VMSTY);
-			SL_Location(); print "^";
-			! print (name) location, "^";
-			VM_Style(NORMAL_VMSTY);
-			IMMEDIATELY_UNDO_RM('E'); new_line;
+			DealWithUndo();
+!			VM_RestoreWindowColours();
+!			VM_Style(SUBHEADER_VMSTY);
+!			SL_Location(); print "^";
+!			VM_Style(NORMAL_VMSTY);
+!			IMMEDIATELY_UNDO_RM('E'); new_line;
 			continue;
 		}
 		return nw;
 	}
+];
+
+[ DealWithUndo;
+	VM_RestoreWindowColours();
+	VM_Style(SUBHEADER_VMSTY);
+	SL_Location(); print "^";
+	VM_Style(NORMAL_VMSTY);
+	IMMEDIATELY_UNDO_RM('E'); new_line;
 ];
 
 @h Parser Proper.

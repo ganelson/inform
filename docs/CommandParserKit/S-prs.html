@@ -512,16 +512,24 @@ yes/no questions and the like, without invoking the rest of the parser.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == -1) </span><span class="identifier-syntax">undo_flag</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">undo_flag</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">VM_RestoreWindowColours</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">VM_Style</span><span class="plain-syntax">(</span><span class="identifier-syntax">SUBHEADER_VMSTY</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">SL_Location</span><span class="plain-syntax">(); </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="comment-syntax">print (name) location, "^";</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">VM_Style</span><span class="plain-syntax">(</span><span class="identifier-syntax">NORMAL_VMSTY</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'E'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">DealWithUndo</span><span class="plain-syntax">();</span>
+<span class="comment-syntax">		VM_RestoreWindowColours();</span>
+<span class="comment-syntax">		VM_Style(SUBHEADER_VMSTY);</span>
+<span class="comment-syntax">		SL_Location(); print "^";</span>
+<span class="comment-syntax">		VM_Style(NORMAL_VMSTY);</span>
+<span class="comment-syntax">		IMMEDIATELY_UNDO_RM('E'); new_line;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nw</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DealWithUndo</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VM_RestoreWindowColours</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VM_Style</span><span class="plain-syntax">(</span><span class="identifier-syntax">SUBHEADER_VMSTY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SL_Location</span><span class="plain-syntax">(); </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VM_Style</span><span class="plain-syntax">(</span><span class="identifier-syntax">NORMAL_VMSTY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'E'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Parser Proper. </b>The main parser routine is something of a leviathan, and it has traditionally

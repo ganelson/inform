@@ -269,7 +269,7 @@ int CodeGen::I6::default_segment(code_generation_target *cgt) {
 int CodeGen::I6::constant_segment(code_generation_target *cgt, code_generation *gen) {
 	return early_matter_I7CGS;
 }
-int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
+int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
 	if (depth >= 10) depth = 10;
 	return constants_1_I7CGS + depth - 1;
 }

@@ -168,7 +168,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 					"Con %S has depth %d\n", con_name->symbol_name, depth);
 				CodeGen::CL::constant_depth(con_name);
 			}
-			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
+			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));
 			text_stream *OUT = CodeGen::current(gen);
 			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
 				WRITE("(");
@@ -195,7 +195,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			int depth = CodeGen::CL::constant_depth(con_name);
 			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
 				"Con %S has depth %d\n", con_name->symbol_name, depth);
-			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
+			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));
 			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {
 				inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 				inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];

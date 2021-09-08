@@ -736,6 +736,7 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 
 = (text to inform7_clib.h)
 void i7_print_dword(i7process *proc, i7val at);
+char *i7_text_of_string(i7val str);
 =
 
 = (text to inform7_clib.c)
@@ -745,5 +746,10 @@ void i7_print_dword(i7process *proc, i7val at) {
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}
+}
+
+char *dqs[];
+char *i7_text_of_string(i7val str) {
+	return dqs[str - I7VAL_STRINGS_BASE];
 }
 =

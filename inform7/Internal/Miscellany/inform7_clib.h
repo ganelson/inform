@@ -22,6 +22,7 @@ typedef unsigned char i7byte;
 
 typedef struct i7state {
 	i7byte *memory;
+	i7val himem;
 	i7val stack[I7_ASM_STACK_CAPACITY];
 	int stack_pointer;
 	i7val *i7_object_tree_parent;
@@ -30,17 +31,37 @@ typedef struct i7state {
 	i7val *variables;
 	i7val tmp;
 } i7state;
+
+typedef struct i7snapshot {
+	int valid;
+	struct i7state then;
+	jmp_buf env;
+} i7snapshot;
+
+#define I7_MAX_SNAPSHOTS 10
+
 typedef struct i7process {
 	i7state state;
+	i7snapshot snapshots[I7_MAX_SNAPSHOTS];
+	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
+	int just_undid;
 } i7process;
 
 i7state i7_new_state(void);
 i7process i7_new_process(void);
+i7snapshot i7_new_snapshot(void);
+void i7_save_snapshot(i7process *proc);
+int i7_has_snapshot(i7process *proc);
+void i7_restore_snapshot(i7process *proc);
+void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
+int i7_destroy_latest_snapshot(i7process *proc);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
 void i7_initializer(i7process *proc);
 void i7_fatal_exit(i7process *proc);
+void i7_destroy_state(i7process *proc, i7state *s);
+void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -90,12 +111,14 @@ void glulx_aloadb(i7process *proc, i7val x, i7val y, i7val *z);
 void glulx_binarysearch(i7process *proc, i7val key, i7val keysize, i7val start, i7val structsize,
 	i7val numstructs, i7val keyoffset, i7val options, i7val *s1);
 void glulx_shiftl(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_restoreundo(i7process *proc, i7val x);
-void glulx_saveundo(i7process *proc, i7val x);
+void glulx_restoreundo(i7process *proc, i7val *x);
+void glulx_saveundo(i7process *proc, i7val *x);
 void glulx_restart(i7process *proc);
 void glulx_restore(i7process *proc, i7val x, i7val y);
 void glulx_save(i7process *proc, i7val x, i7val y);
 void glulx_verify(i7process *proc, i7val x);
+void glulx_hasundo(i7process *proc, i7val *x);
+void glulx_discardundo(i7process *proc);
 void glulx_random(i7process *proc, i7val x, i7val *y);
 i7val fn_i7_mgl_random(i7process *proc, i7val x);
 void glulx_setrandom(i7process *proc, i7val s);
@@ -166,6 +189,7 @@ i7val i7_mcall_3(i7process *proc, i7val to, i7val prop, i7val v, i7val v2, i7val
 i7val i7_gen_call(i7process *proc, i7val fn_ref, i7val *args, int argc);
 void glulx_call(i7process *proc, i7val fn_ref, i7val varargc, i7val *z);
 void i7_print_dword(i7process *proc, i7val at);
+char *i7_text_of_string(i7val str);
 #define i7_bold 1
 #define i7_roman 2
 #define i7_underline 3

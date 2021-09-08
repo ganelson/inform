@@ -92,6 +92,7 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 		store_this_operand[3] = TRUE;
 		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
 	}
+	if (Str::eq(opcode, I"@hasundo")) store_this_operand[1] = TRUE;
 	if (Str::eq(opcode, I"@log")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@mod")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@mul")) store_this_operand[3] = TRUE;
@@ -99,6 +100,8 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	if (Str::eq(opcode, I"@numtof")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@pow")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@random")) store_this_operand[2] = TRUE;
+	if (Str::eq(opcode, I"@restoreundo")) store_this_operand[1] = TRUE;
+	if (Str::eq(opcode, I"@saveundo")) store_this_operand[1] = TRUE;
 	if (Str::eq(opcode, I"@shiftl")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@sin")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@sqrt")) store_this_operand[2] = TRUE;
@@ -170,12 +173,14 @@ void glulx_aloadb(i7process *proc, i7val x, i7val y, i7val *z);
 void glulx_binarysearch(i7process *proc, i7val key, i7val keysize, i7val start, i7val structsize,
 	i7val numstructs, i7val keyoffset, i7val options, i7val *s1);
 void glulx_shiftl(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_restoreundo(i7process *proc, i7val x);
-void glulx_saveundo(i7process *proc, i7val x);
+void glulx_restoreundo(i7process *proc, i7val *x);
+void glulx_saveundo(i7process *proc, i7val *x);
 void glulx_restart(i7process *proc);
 void glulx_restore(i7process *proc, i7val x, i7val y);
 void glulx_save(i7process *proc, i7val x, i7val y);
 void glulx_verify(i7process *proc, i7val x);
+void glulx_hasundo(i7process *proc, i7val *x);
+void glulx_discardundo(i7process *proc);
 =
 
 = (text to inform7_clib.c)
@@ -354,10 +359,32 @@ void glulx_shiftl(i7process *proc, i7val x, i7val y, i7val *z) {
 	i7_fatal_exit(proc);
 }
 
-void glulx_restoreundo(i7process *proc, i7val x) {
+void glulx_restoreundo(i7process *proc, i7val *x) {
+	proc->just_undid = 1;
+	if (i7_has_snapshot(proc)) {
+		i7_restore_snapshot(proc);
+		if (x) *x = 0;
+		#ifdef i7_mgl_DealWithUndo
+		fn_i7_mgl_DealWithUndo(proc);
+		#endif
+	} else {
+		if (x) *x = 1;
+	}
 }
 
-void glulx_saveundo(i7process *proc, i7val x) {
+void glulx_saveundo(i7process *proc, i7val *x) {
+	proc->just_undid = 0;
+	i7_save_snapshot(proc);
+	if (x) *x = 0;
+}
+
+void glulx_hasundo(i7process *proc, i7val *x) {
+	i7val rv = 0; if (i7_has_snapshot(proc)) rv = 1;
+	if (x) *x = rv;
+}
+
+void glulx_discardundo(i7process *proc) {
+	i7_destroy_latest_snapshot(proc);
 }
 
 void glulx_restart(i7process *proc) {

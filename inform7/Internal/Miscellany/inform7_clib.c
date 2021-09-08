@@ -4,6 +4,7 @@
 i7state i7_new_state(void) {
 	i7state S;
 	S.memory = NULL;
+	S.himem = 0;
 	S.tmp = 0;
 	S.stack_pointer = 0;
 	S.i7_object_tree_parent = NULL;
@@ -13,10 +14,115 @@ i7state i7_new_state(void) {
 	return S;
 }
 
+void i7_copy_state(i7process *proc, i7state *to, i7state *from) {
+	to->himem = from->himem;
+	to->memory = calloc(i7_static_himem, sizeof(i7byte));
+	if (to->memory == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
+	to->tmp = from->tmp;
+	to->stack_pointer = from->stack_pointer;
+	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
+	to->i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7val));
+	to->i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7val));
+	to->i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7val));
+
+	if ((to->i7_object_tree_parent == NULL) ||
+		(to->i7_object_tree_child == NULL) ||
+		(to->i7_object_tree_sibling == NULL)) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_max_objects; i++) {
+		to->i7_object_tree_parent[i] = from->i7_object_tree_parent[i];
+		to->i7_object_tree_child[i] = from->i7_object_tree_child[i];
+		to->i7_object_tree_sibling[i] = from->i7_object_tree_sibling[i];
+	}
+	to->variables = calloc(i7_no_variables, sizeof(i7val));
+	if (to->variables == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_no_variables; i++)
+		to->variables[i] = from->variables[i];
+}
+
+void i7_destroy_state(i7process *proc, i7state *s) {
+	free(s->memory);
+	s->himem = 0;
+	free(s->i7_object_tree_parent);
+	free(s->i7_object_tree_child);
+	free(s->i7_object_tree_sibling);
+	s->stack_pointer = 0;
+	free(s->variables);
+}
+
+void i7_destroy_snapshot(i7process *proc, i7snapshot *old) {
+	i7_destroy_state(proc, &(old->then));
+	old->valid = 0;
+}
+
+i7snapshot i7_new_snapshot(void) {
+	i7snapshot SS;
+	SS.valid = 0;
+	SS.then = i7_new_state();
+	return SS;
+}
+
 i7process i7_new_process(void) {
 	i7process proc;
 	proc.state = i7_new_state();
+	for (int i=0; i<I7_MAX_SNAPSHOTS; i++) proc.snapshots[i] = i7_new_snapshot();
+	proc.just_undid = 0;
+	proc.snapshot_pos = 0;
 	return proc;
+}
+
+void i7_save_snapshot(i7process *proc) {
+	if (proc->snapshots[proc->snapshot_pos].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
+	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
+	proc->snapshots[proc->snapshot_pos].valid = 1;
+	i7_copy_state(proc, &(proc->snapshots[proc->snapshot_pos].then), &(proc->state));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos++;
+	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
+//	if (setjmp(proc->snapshots[was].env)) fprintf(stdout, "*** Restore! %d ***\n", proc->just_undid);
+}
+
+int i7_has_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	return proc->snapshots[will_be].valid;
+}
+
+int i7_destroy_latest_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot(i7process *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid == 0) {
+		printf("Restore impossible\n");
+		i7_fatal_exit(proc);
+	}
+	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos = will_be;
+//	longjmp(proc->snapshots[was].env, 1);
+}
+
+void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss) {
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
 #ifndef I7_NO_MAIN
@@ -55,13 +161,14 @@ void i7_fatal_exit(i7process *proc) {
 
 void i7_initialise_state(i7process *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
-	i7byte *mem = calloc(i7_himem, sizeof(i7byte));
+	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));
 	if (mem == NULL) {
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
 	}
 	proc->state.memory = mem;
-	for (int i=0; i<i7_himem; i++) mem[i] = i7_initial_memory[i];
+	proc->state.himem = i7_static_himem;
+	for (int i=0; i<i7_static_himem; i++) mem[i] = i7_initial_memory[i];
     #ifdef i7_mgl_Release
     mem[0x34] = I7BYTE_2(i7_mgl_Release);
     mem[0x35] = I7BYTE_3(i7_mgl_Release);
@@ -71,7 +178,8 @@ void i7_initialise_state(i7process *proc) {
     mem[0x35] = I7BYTE_3(1);
     #endif
     #ifdef i7_mgl_Serial
-    for (int i=0; i<6; i++) mem[0x36 + i] = (dqs[i7_mgl_Serial - I7VAL_STRINGS_BASE])[i];
+    char *p = i7_text_of_string(i7_mgl_Serial);
+    for (int i=0; i<6; i++) mem[0x36 + i] = p[i];
     #endif
     #ifndef i7_mgl_Serial
     for (int i=0; i<6; i++) mem[0x36 + i] = '0';
@@ -109,7 +217,7 @@ i7byte i7_read_byte(i7process *proc, i7val address) {
 i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index) {
 	i7byte *data = proc->state.memory;
 	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
 		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
@@ -150,7 +258,7 @@ i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7v
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
 	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_himem)) {
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
 		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
@@ -373,10 +481,32 @@ void glulx_shiftl(i7process *proc, i7val x, i7val y, i7val *z) {
 	i7_fatal_exit(proc);
 }
 
-void glulx_restoreundo(i7process *proc, i7val x) {
+void glulx_restoreundo(i7process *proc, i7val *x) {
+	proc->just_undid = 1;
+	if (i7_has_snapshot(proc)) {
+		i7_restore_snapshot(proc);
+		if (x) *x = 0;
+		#ifdef i7_mgl_DealWithUndo
+		fn_i7_mgl_DealWithUndo(proc);
+		#endif
+	} else {
+		if (x) *x = 1;
+	}
 }
 
-void glulx_saveundo(i7process *proc, i7val x) {
+void glulx_saveundo(i7process *proc, i7val *x) {
+	proc->just_undid = 0;
+	i7_save_snapshot(proc);
+	if (x) *x = 0;
+}
+
+void glulx_hasundo(i7process *proc, i7val *x) {
+	i7val rv = 0; if (i7_has_snapshot(proc)) rv = 1;
+	if (x) *x = rv;
+}
+
+void glulx_discardundo(i7process *proc) {
+	i7_destroy_latest_snapshot(proc);
 }
 
 void glulx_restart(i7process *proc) {
@@ -943,6 +1073,11 @@ void i7_print_dword(i7process *proc, i7val at) {
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}
+}
+
+char *dqs[];
+char *i7_text_of_string(i7val str) {
+	return dqs[str - I7VAL_STRINGS_BASE];
 }
 void i7_style(i7process *proc, int what) {
 }
