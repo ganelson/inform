@@ -128,6 +128,14 @@ void i7_initialise_state(i7process *proc) {
 		proc->state.i7_object_tree_child[i] = 0;
 		proc->state.i7_object_tree_sibling[i] = 0;
 	}
+	
+	proc->state.variables = calloc(i7_no_variables, sizeof(i7val));
+	if (proc->state.variables == NULL) { 
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_no_variables; i++)
+		proc->state.variables[i] = i7_initial_variable_values[i];
 }
 =
 

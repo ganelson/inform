@@ -9,6 +9,7 @@ i7state i7_new_state(void) {
 	S.i7_object_tree_parent = NULL;
 	S.i7_object_tree_child = NULL;
 	S.i7_object_tree_sibling = NULL;
+	S.variables = NULL;
 	return S;
 }
 
@@ -52,8 +53,6 @@ void i7_fatal_exit(i7process *proc) {
 	longjmp(proc->execution_env, 1);
 }
 
-i7val i7_mgl_self = 0;
-
 void i7_initialise_state(i7process *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
 	i7byte *mem = calloc(i7_himem, sizeof(i7byte));
@@ -94,6 +93,14 @@ void i7_initialise_state(i7process *proc) {
 		proc->state.i7_object_tree_child[i] = 0;
 		proc->state.i7_object_tree_sibling[i] = 0;
 	}
+
+	proc->state.variables = calloc(i7_no_variables, sizeof(i7val));
+	if (proc->state.variables == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	for (int i=0; i<i7_no_variables; i++)
+		proc->state.variables[i] = i7_initial_variable_values[i];
 }
 i7byte i7_read_byte(i7process *proc, i7val address) {
 	return proc->state.memory[address];
@@ -853,11 +860,11 @@ i7val i7_call_0(i7process *proc, i7val fn_ref) {
 
 i7val i7_mcall_0(i7process *proc, i7val to, i7val prop) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 0);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -870,11 +877,11 @@ i7val i7_call_1(i7process *proc, i7val fn_ref, i7val v) {
 i7val i7_mcall_1(i7process *proc, i7val to, i7val prop, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 1);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -887,11 +894,11 @@ i7val i7_call_2(i7process *proc, i7val fn_ref, i7val v, i7val v2) {
 i7val i7_mcall_2(i7process *proc, i7val to, i7val prop, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 2);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -904,11 +911,11 @@ i7val i7_call_3(i7process *proc, i7val fn_ref, i7val v, i7val v2, i7val v3) {
 i7val i7_mcall_3(i7process *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 3);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 

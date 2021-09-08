@@ -85,6 +85,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CodeGen::I6::property_offset);
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CodeGen::I6::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CodeGen::I6::declare_variable);
+	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, CodeGen::I6::evaluate_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CodeGen::I6::declare_class);
 	METHOD_ADD(cgt, END_CLASS_MTID, CodeGen::I6::end_class);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CodeGen::I6::declare_instance);
@@ -751,6 +752,11 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 		CodeGen::deselect(gen, saved);
 	}
 	return k;
+}
+
+void CodeGen::I6::evaluate_variable(code_generation_target *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("%S", CodeGen::CL::name(var_name));
 }
 
 void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *super_class) {

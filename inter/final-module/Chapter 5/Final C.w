@@ -70,6 +70,7 @@ typedef struct i7state {
 	i7val *i7_object_tree_parent;
 	i7val *i7_object_tree_child;
 	i7val *i7_object_tree_sibling;
+	i7val *variables;
 	i7val tmp;
 } i7state;
 typedef struct i7process {
@@ -97,6 +98,7 @@ i7state i7_new_state(void) {
 	S.i7_object_tree_parent = NULL;
 	S.i7_object_tree_child = NULL;
 	S.i7_object_tree_sibling = NULL;
+	S.variables = NULL;
 	return S;
 }
 
@@ -162,7 +164,6 @@ void i7_fatal_exit(i7process *proc) {
 @e c_text_literals_code_I7CGS
 @e c_summations_at_eof_I7CGS
 @e c_arrays_at_eof_I7CGS
-@e c_globals_array_I7CGS
 @e c_main_matter_I7CGS
 @e c_functions_at_eof_I7CGS
 @e c_code_at_eof_I7CGS
@@ -170,6 +171,7 @@ void i7_fatal_exit(i7process *proc) {
 @e c_stubs_at_eof_I7CGS
 @e c_property_offset_creator_I7CGS
 @e c_mem_I7CGS
+@e c_globals_array_I7CGS
 @e c_initialiser_I7CGS
 
 =
@@ -193,7 +195,6 @@ int C_target_segments[] = {
 	c_text_literals_code_I7CGS,
 	c_summations_at_eof_I7CGS,
 	c_arrays_at_eof_I7CGS,
-	c_globals_array_I7CGS,
 	c_main_matter_I7CGS,
 	c_functions_at_eof_I7CGS,
 	c_code_at_eof_I7CGS,
@@ -201,6 +202,7 @@ int C_target_segments[] = {
 	c_stubs_at_eof_I7CGS,
 	c_property_offset_creator_I7CGS,
 	c_mem_I7CGS,
+	c_globals_array_I7CGS,
 	c_initialiser_I7CGS,
 	-1
 };

@@ -272,11 +272,11 @@ i7val i7_call_0(i7process *proc, i7val fn_ref) {
 
 i7val i7_mcall_0(i7process *proc, i7val to, i7val prop) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 0);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -289,11 +289,11 @@ i7val i7_call_1(i7process *proc, i7val fn_ref, i7val v) {
 i7val i7_mcall_1(i7process *proc, i7val to, i7val prop, i7val v) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 1);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -306,11 +306,11 @@ i7val i7_call_2(i7process *proc, i7val fn_ref, i7val v, i7val v2) {
 i7val i7_mcall_2(i7process *proc, i7val to, i7val prop, i7val v, i7val v2) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 2);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
@@ -323,11 +323,11 @@ i7val i7_call_3(i7process *proc, i7val fn_ref, i7val v, i7val v2, i7val v3) {
 i7val i7_mcall_3(i7process *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3) {
 	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
-	i7val saved = i7_mgl_self;
-	i7_mgl_self = to;
+	i7val saved = proc->state.variables[i7_var_self];
+	proc->state.variables[i7_var_self] = to;
 	i7val fn_ref = i7_read_prop_value(proc, to, prop);
 	i7val rv = i7_gen_call(proc, fn_ref, args, 3);
-	i7_mgl_self = saved;
+	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 

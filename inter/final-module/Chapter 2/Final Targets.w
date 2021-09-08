@@ -176,11 +176,13 @@ void CodeGen::Targets::declare_attribute(code_generation *gen, text_stream *prop
 @e PREPARE_VARIABLE_MTID
 @e DECLARE_VARIABLE_MTID
 @e DECLARE_LOCAL_VARIABLE_MTID
+@e EVALUATE_VARIABLE_MTID
 
 =
 INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
 INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
 VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *var_name, int as_reference)
 int CodeGen::Targets::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->target, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
@@ -193,6 +195,9 @@ int CodeGen::Targets::declare_variable(code_generation *gen, inter_tree_node *P,
 }
 void CodeGen::Targets::declare_local_variable(int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
 	VOID_METHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, pass, gen, P, var_name);
+}
+void CodeGen::Targets::evaluate_variable(code_generation *gen, inter_symbol *var_name, int as_reference) {
+	VOID_METHOD_CALL(gen->target, EVALUATE_VARIABLE_MTID, gen, var_name, as_reference);
 }
 
 @

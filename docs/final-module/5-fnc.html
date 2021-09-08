@@ -145,6 +145,7 @@ first of those:
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_object_tree_parent</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_object_tree_child</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_object_tree_sibling</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">variables</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7val</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">tmp</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">} </span><span class="Extracts-identifier-syntax">i7state</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">struct</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7process</span><span class="Extracts-plain-syntax"> {</span>
@@ -172,6 +173,7 @@ first of those:
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">i7_object_tree_parent</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">i7_object_tree_child</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">i7_object_tree_sibling</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">variables</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">return</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">}</span>
 
@@ -237,7 +239,6 @@ first of those:
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_text_literals_code_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_summations_at_eof_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_arrays_at_eof_I7CGS</span>
-<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_globals_array_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_main_matter_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_functions_at_eof_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_code_at_eof_I7CGS</span>
@@ -245,6 +246,7 @@ first of those:
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_stubs_at_eof_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_property_offset_creator_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_mem_I7CGS</span>
+<span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_globals_array_I7CGS</span>
 <span class="definition-keyword">enum</span> <span class="Extracts-constant-syntax">c_initialiser_I7CGS</span>
 </pre>
 <pre class="Extracts-displayed-code all-displayed-code code-font">
@@ -268,7 +270,6 @@ first of those:
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_text_literals_code_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_summations_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_arrays_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_globals_array_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_main_matter_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_functions_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_code_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
@@ -276,6 +277,7 @@ first of those:
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_stubs_at_eof_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_property_offset_creator_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_mem_I7CGS</span><span class="Extracts-plain-syntax">,</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_globals_array_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-constant-syntax">c_initialiser_I7CGS</span><span class="Extracts-plain-syntax">,</span>
 <span class="Extracts-plain-syntax">    -1</span>
 <span class="Extracts-plain-syntax">};</span>

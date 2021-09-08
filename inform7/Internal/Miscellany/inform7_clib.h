@@ -27,6 +27,7 @@ typedef struct i7state {
 	i7val *i7_object_tree_parent;
 	i7val *i7_object_tree_child;
 	i7val *i7_object_tree_sibling;
+	i7val *variables;
 	i7val tmp;
 } i7state;
 typedef struct i7process {

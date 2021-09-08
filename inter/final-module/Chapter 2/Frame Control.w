@@ -250,8 +250,14 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 			inter_symbol *symb = InterSymbolsTables::local_symbol_from_id(pack, val2);
 			if (symb == NULL) symb = InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 			if (symb == NULL) internal_error("bad val");
-			text_stream *OUT = CodeGen::current(gen);
-			CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(symb));
+			if ((Str::eq(CodeGen::CL::name(symb), I"self")) ||
+				((symb->definition) &&
+					(symb->definition->W.data[ID_IFLD] == VARIABLE_IST))) {
+				CodeGen::Targets::evaluate_variable(gen, symb, (P->W.data[ID_IFLD] == REF_IST)?TRUE:FALSE);
+			} else {
+				text_stream *OUT = CodeGen::current(gen);
+				CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(symb));
+			}
 			return;
 		}
 		switch (val1) {
