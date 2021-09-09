@@ -41,6 +41,9 @@ Tests/Test Index/_Indices_Actual/Gelix/
 Tests/Test Inter/_Inter_Actual/
 Tests/Test Inter/_Inter_Textual/
 Tests/Test Inter/_Inter_Binary/
+Tests/Test Externals/_Build/
+Tests/Test Externals/_Executables/
+Tests/Test Externals/_Textual/
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
 Tests/Documentation/

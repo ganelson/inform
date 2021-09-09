@@ -1,4 +1,4 @@
-[CTarget::] Generating C.
+[CTarget::] Final C.
 
 Managing, or really just delegating, the generation of ANSI C code from a tree of Inter.
 
@@ -99,12 +99,13 @@ void i7_save_snapshot(i7process *proc);
 int i7_has_snapshot(i7process *proc);
 void i7_restore_snapshot(i7process *proc);
 void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
-int i7_destroy_latest_snapshot(i7process *proc);
+void i7_destroy_latest_snapshot(i7process *proc);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
 void i7_initializer(i7process *proc);
 void i7_fatal_exit(i7process *proc);
 void i7_destroy_state(i7process *proc, i7state *s);
 void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
+void i7_default_receiver(int id, wchar_t c);
 =
 
 = (text to inform7_clib.c)
@@ -208,7 +209,7 @@ int i7_has_snapshot(i7process *proc) {
 	return proc->snapshots[will_be].valid;
 }
 
-int i7_destroy_latest_snapshot(i7process *proc) {
+void i7_destroy_latest_snapshot(i7process *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	if (proc->snapshots[will_be].valid)
@@ -235,14 +236,14 @@ void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss) {
 	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
-#ifndef I7_NO_MAIN
-void default_receiver(int id, wchar_t c) {
+void i7_default_receiver(int id, wchar_t c) {
 	if (id == 201) fputc(c, stdout);
 }
 
+#ifndef I7_NO_MAIN
 int main(int argc, char **argv) {
 	i7process proc = i7_new_process();
-	i7_run_process(&proc, default_receiver);
+	i7_run_process(&proc, i7_default_receiver);
 	if (proc.termination_code == 1) {
 		printf("*** Fatal error: halted ***\n");
 		fflush(stdout); fflush(stderr);

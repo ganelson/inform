@@ -779,7 +779,7 @@ void i7_print_box(i7process *proc, i7val x) {
 }
 
 void i7_read(i7process *proc, i7val x) {
-	printf("Unimplemented: i7_read.\n");
+	printf("Only available on 16-bit architectures, which this is not: i7_read.\n");
 	i7_fatal_exit(proc);
 }
 

@@ -56,12 +56,13 @@ void i7_save_snapshot(i7process *proc);
 int i7_has_snapshot(i7process *proc);
 void i7_restore_snapshot(i7process *proc);
 void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
-int i7_destroy_latest_snapshot(i7process *proc);
+void i7_destroy_latest_snapshot(i7process *proc);
 void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
 void i7_initializer(i7process *proc);
 void i7_fatal_exit(i7process *proc);
 void i7_destroy_state(i7process *proc, i7state *s);
 void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
+void i7_default_receiver(int id, wchar_t c);
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -69,7 +70,6 @@ void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-i7byte i7_initial_memory[];
 void i7_initialise_state(i7process *proc);
 i7byte i7_read_byte(i7process *proc, i7val address);
 i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index);

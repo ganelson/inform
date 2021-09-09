@@ -45,11 +45,7 @@ of 2 or 4.
 (f) Arrays in memory are free to contain a mixture of bytes and words: some do.
 (g) Data may be written in byte form and read back in word form, or vice versa.
 
-We will manage that with a single C array. This is first predeclared here:
-
-= (text to inform7_clib.h)
-i7byte i7_initial_memory[];
-=
+We will manage that with a single C array.
 
 @ Declaring that array is our main task in this section.
 
@@ -88,6 +84,7 @@ void i7_initialise_state(i7process *proc);
 =
 
 = (text to inform7_clib.c)
+i7byte i7_initial_memory[];
 void i7_initialise_state(i7process *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
 	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));

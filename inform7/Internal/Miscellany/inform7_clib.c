@@ -98,7 +98,7 @@ int i7_has_snapshot(i7process *proc) {
 	return proc->snapshots[will_be].valid;
 }
 
-int i7_destroy_latest_snapshot(i7process *proc) {
+void i7_destroy_latest_snapshot(i7process *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	if (proc->snapshots[will_be].valid)
@@ -125,14 +125,14 @@ void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss) {
 	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
-#ifndef I7_NO_MAIN
-void default_receiver(int id, wchar_t c) {
+void i7_default_receiver(int id, wchar_t c) {
 	if (id == 201) fputc(c, stdout);
 }
 
+#ifndef I7_NO_MAIN
 int main(int argc, char **argv) {
 	i7process proc = i7_new_process();
-	i7_run_process(&proc, default_receiver);
+	i7_run_process(&proc, i7_default_receiver);
 	if (proc.termination_code == 1) {
 		printf("*** Fatal error: halted ***\n");
 		fflush(stdout); fflush(stderr);
@@ -159,6 +159,7 @@ void i7_fatal_exit(i7process *proc) {
 	longjmp(proc->execution_env, 1);
 }
 
+i7byte i7_initial_memory[];
 void i7_initialise_state(i7process *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
 	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));
@@ -1562,7 +1563,7 @@ void i7_print_box(i7process *proc, i7val x) {
 }
 
 void i7_read(i7process *proc, i7val x) {
-	printf("Unimplemented: i7_read.\n");
+	printf("Only available on 16-bit architectures, which this is not: i7_read.\n");
 	i7_fatal_exit(proc);
 }
 
