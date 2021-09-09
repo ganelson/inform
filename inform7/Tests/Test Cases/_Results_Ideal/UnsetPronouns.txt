@@ -1,7 +1,7 @@
    Home
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Home
   
@@ -10,6 +10,7 @@
   
   >[1] pronouns
   At the moment, "it" is unset, "him" is unset, "her" is unset, "them" is unset and "me" means Kate.
+  [** Programming error: tried to print (char) 10, which is not a valid ZSCII character code for output **]
   
   >[2] trace 5
   [Parser tracing set to level 5.]
@@ -33,6 +34,7 @@
    [line 0 token 1 word 2 : END]
   [Line successfully parsed]
   At the moment, "it" is unset, "him" is unset, "her" is unset, "them" is unset and "me" means Kate.
+  [** Programming error: tried to print (char) 10, which is not a valid ZSCII character code for output **]
   
   >[5] x him
   [ "x" x / "him" him ]
@@ -57,50 +59,50 @@
      seeking indefinite object: owner:(Inform Parser)
      number wanted: 0
      most likely GNAs of names: 4095
-      Trying yourself (43) at word 3
+      Trying yourself at word 3
       Matched (0)
      [ND made 1 matches]
     [ND returned yourself]
     [Calling NounDomain on location and actor]
      [NounDomain called at word 2
      seeking definite object
-      Trying the north (29) at word 2
+      Trying the north at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the northeast (30) at word 2
+      Trying the northeast at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the northwest (31) at word 2
+      Trying the northwest at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the south (32) at word 2
+      Trying the south at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the southeast (33) at word 2
+      Trying the southeast at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the southwest (34) at word 2
+      Trying the southwest at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the east (35) at word 2
+      Trying the east at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the west (36) at word 2
+      Trying the west at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the up (37) at word 2
+      Trying the up at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the down (38) at word 2
+      Trying the down at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the inside (39) at word 2
+      Trying the inside at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying the outside (40) at word 2
+      Trying the outside at word 2
   Parse_name called
   Pass 1: 0 Pass 2: 0 Pass 3: 0
-      Trying yourself (43) at word 2
+      Trying yourself at word 2
      [ND made 0 matches]
     [token resulted in failure with error type 14]
   I'm not sure what 'her' refers to.

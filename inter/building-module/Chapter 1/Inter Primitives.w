@@ -10,7 +10,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!stylereverse", I"void -> void");
 	Primitives::emit_one(I, IBM, I"!styleroman", I"void -> void");
 	Primitives::emit_one(I, IBM, I"!print", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!printret", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printchar", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printobj", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printnumber", I"val -> void");
@@ -222,7 +221,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e STYLEUNDERLINE_BIP
 @e STYLEREVERSE_BIP
 @e PRINT_BIP
-@e PRINTRET_BIP
 @e PRINTCHAR_BIP
 @e PRINTOBJ_BIP
 @e PRINTNUMBER_BIP
@@ -328,7 +326,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case STYLEUNDERLINE_BIP: return I"!styleunderline";
 		case STYLEREVERSE_BIP: return I"!stylereverse";
 		case PRINT_BIP: return I"!print";
-		case PRINTRET_BIP: return I"!printret";
 		case PRINTCHAR_BIP: return I"!printchar";
 		case PRINTOBJ_BIP: return I"!printobj";
 		case PRINTNUMBER_BIP: return I"!printnumber";
@@ -449,7 +446,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!styleunderline")) bip = STYLEUNDERLINE_BIP;
 	if (Str::eq(symb->symbol_name, I"!stylereverse")) bip = STYLEREVERSE_BIP;
 	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
-	if (Str::eq(symb->symbol_name, I"!printret")) bip = PRINTRET_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
 	if (Str::eq(symb->symbol_name, I"!printobj")) bip = PRINTOBJ_BIP;
 	if (Str::eq(symb->symbol_name, I"!printnumber")) bip = PRINTNUMBER_BIP;

@@ -31,7 +31,6 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case STYLEUNDERLINE_BIP: WRITE("i7_style(proc, i7_underline)"); break;
 		case STYLEREVERSE_BIP:   WRITE("i7_style(proc, i7_reverse)"); break;
 		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); INV_A1_PRINTMODE; WRITE(")"); break;
-		case PRINTRET_BIP:       WRITE("i7_print_C_string(proc, "); INV_A1_PRINTMODE; WRITE("); i7_print_char(proc, '\\n'); return 1"); break;
 		case PRINTCHAR_BIP:      WRITE("i7_print_char(proc, "); INV_A1; WRITE(")"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); INV_A1; WRITE(")"); break;

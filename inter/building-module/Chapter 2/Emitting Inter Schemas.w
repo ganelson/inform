@@ -489,12 +489,17 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				break;
 			case DQUOTED_ISTT:
 				if (print_ret_me) {
-					Produce::inv_primitive(I, PRINTRET_BIP);
+					Produce::inv_primitive(I, PRINT_BIP);
 					Produce::down(I);
 				}
 				Produce::val_text(I, t->material);
 				if (print_ret_me) {
 					Produce::up(I);
+					Produce::inv_primitive(I, PRINTCHAR_BIP);
+					Produce::down(I);
+						Produce::val_char(I, '\n');
+					Produce::up(I);
+					Produce::rtrue(I);					
 				}
 				break;
 			case SQUOTED_ISTT:

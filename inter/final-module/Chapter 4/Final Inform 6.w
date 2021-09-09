@@ -395,7 +395,6 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
 		case PRINT_BIP: WRITE("print "); INV_A1_PRINTMODE; break;
-		case PRINTRET_BIP: INV_A1_PRINTMODE; break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
 		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
 		case PRINTNUMBER_BIP: WRITE("print "); INV_A1; break;
