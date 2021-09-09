@@ -23,7 +23,6 @@ void CInputOutputModel::end(code_generation *gen) {
 int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case INVERSION_BIP:	     break; /* we won't support this in C */
 		case SPACES_BIP:		 WRITE("for (int j = "); INV_A1; WRITE("; j > 0; j--) i7_print_char(proc, 32);"); break;
 		case FONT_BIP:           WRITE("i7_font(proc, "); INV_A1; WRITE(")"); break;
 		case STYLEROMAN_BIP:     WRITE("i7_style(proc, i7_roman)"); break;
@@ -36,7 +35,6 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); INV_A1; WRITE(")"); break;
 		case BOX_BIP:            WRITE("i7_print_box(proc, "); INV_A1_BOXMODE; WRITE(")"); break;
 		case READ_BIP:           WRITE("i7_read(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-
 		default: 				 return NOT_APPLICABLE;
 	}
 	return FALSE;

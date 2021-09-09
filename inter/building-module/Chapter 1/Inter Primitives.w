@@ -103,7 +103,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!propertyvalue", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!notin", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!read", I"val val -> void");
-	Primitives::emit_one(I, IBM, I"!inversion", I"void -> void");
 }
 
 inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
@@ -276,7 +275,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e PROVIDES_BIP
 @e PROPERTYVALUE_BIP
 @e READ_BIP
-@e INVERSION_BIP
 
 =
 text_stream *Primitives::name(inter_ti bip) {
@@ -381,7 +379,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case PROVIDES_BIP: return I"!provides";
 		case PROPERTYVALUE_BIP: return I"!propertyvalue";
 		case READ_BIP: return I"!read";
-		case INVERSION_BIP: return I"!inversion";
 	}
 	return I"<none>";
 }
@@ -501,7 +498,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
 	if (Str::eq(symb->symbol_name, I"!read")) bip = READ_BIP;
-	if (Str::eq(symb->symbol_name, I"!inversion")) bip = INVERSION_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(symb, BIP_CODE_IANN, bip);
 		return bip;

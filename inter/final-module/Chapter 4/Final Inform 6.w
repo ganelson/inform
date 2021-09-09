@@ -298,8 +298,6 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 	switch (bip) {
-		case INVERSION_BIP:		WRITE("inversion"); break;
-
 		case PLUS_BIP:			WRITE("("); INV_A1; WRITE(" + "); INV_A2; WRITE(")"); break;
 		case MINUS_BIP:			WRITE("("); INV_A1; WRITE(" - "); INV_A2; WRITE(")"); break;
 		case UNARYMINUS_BIP:	WRITE("(-("); INV_A1; WRITE("))"); break;

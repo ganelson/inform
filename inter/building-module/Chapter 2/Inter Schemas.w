@@ -2031,7 +2031,8 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						break;
 					}
 					case INVERSION_I6RW:
-						subordinate_to = INVERSION_BIP;
+						subordinate_to = PRINT_BIP;
+						dangle_text = I"v6";
 						break;
 					case FONT_I6RW: {
 						subordinate_to = FONT_BIP;
@@ -2946,8 +2947,7 @@ int InterSchemas::ip_arity(inter_ti O) {
 	if ((O == STYLEROMAN_BIP) ||
 		(O == STYLEBOLD_BIP) ||
 		(O == STYLEUNDERLINE_BIP) ||
-		(O == STYLEREVERSE_BIP) ||
-		(O == INVERSION_BIP)) arity = 0;
+		(O == STYLEREVERSE_BIP)) arity = 0;
 	if (O == BREAK_BIP) arity = 0;
 	if (O == CONTINUE_BIP) arity = 0;
 	if (O == QUIT_BIP) arity = 0;
