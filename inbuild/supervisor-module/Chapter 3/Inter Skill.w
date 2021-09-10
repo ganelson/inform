@@ -86,7 +86,7 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 		CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 	if (SS) {
 		linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
-		CodeGen::Pipeline::run(NULL, SS, inter_paths, requirements_list);
+		CodeGen::Pipeline::run(NULL, SS, inter_paths, requirements_list, S->for_vm);
 		return TRUE;
 	} else {
 		Errors::nowhere("assimilate pipeline could not be parsed");
@@ -140,7 +140,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());
 	CodeGen::Pipeline::run(Filenames::up(S->vertex->as_file),
 		SS, Kits::inter_paths(Projects::nest_list(project)),
-		Projects::list_of_link_instructions(project));
+		Projects::list_of_link_instructions(project), S->for_vm);
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
 	#ifdef CORE_MODULE

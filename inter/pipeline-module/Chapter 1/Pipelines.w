@@ -13,6 +13,7 @@ typedef struct pipeline_step {
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
 	struct code_generation_target *target_argument;
+	int take_target_argument_from_VM;
 	struct text_stream *package_argument;
 	struct filename *parsed_filename;
 	struct linked_list *the_PP; /* of |pathname| */
@@ -23,6 +24,7 @@ typedef struct pipeline_step {
 	struct linked_list *requirements_list; /* of |inter_library| */
 	struct inter_tree *repository;
 	struct codegen_pipeline *pipeline;
+	struct target_vm *for_VM;
 	CLASS_DEFINITION
 } pipeline_step;
 
@@ -32,6 +34,8 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 	step->step_argument = NULL;
 	step->package_argument = NULL;
 	step->repository_argument = 0;
+	step->target_argument = NULL;
+	step->take_target_argument_from_VM = FALSE;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
 }
@@ -48,6 +52,7 @@ void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->repository = NULL;
 	step->pipeline = NULL;
 	step->requirements_list = NEW_LINKED_LIST(inter_library);
+	step->for_VM = NULL;
 }
 
 @ Here we write a textual description to a string, which is useful for
@@ -85,7 +90,7 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		}
 		Str::copy(step, mr.exp[0]);
 		left_arrow_used = TRUE;
-	} else if (Regexp::match(&mr, step, L"(%c+?) *(%C*) *-> *(%c*)")) {
+	} else if (Regexp::match(&mr, step, L"(%c+?) (%C+) *-> *(%c*)")) {
 		code_generation_target *cgt;
 		LOOP_OVER(cgt, code_generation_target)
 			if (Str::eq(mr.exp[1], cgt->target_name))
@@ -97,6 +102,12 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 			DISCARD_TEXT(ERR)
 			return NULL;
 		}
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+		if (ST->step_argument == NULL) return NULL;
+		Str::copy(step, mr.exp[0]);
+	} else if (Regexp::match(&mr, step, L"(%c+?) *-> *(%c*)")) {
+		ST->target_argument = NULL;
+		ST->take_target_argument_from_VM = TRUE;
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
@@ -236,7 +247,7 @@ void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
 }
 
 void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
-	linked_list *requirements_list) {
+	linked_list *requirements_list, target_vm *VM) {
 	if (S == NULL) return;
 	stopwatch_timer *within = NULL;
 	#ifdef CORE_MODULE
@@ -269,6 +280,22 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			step->repository = I;
 			step->pipeline = S;
 			step->requirements_list = requirements_list;
+			step->for_VM = VM;
+			if ((VM) && (step->take_target_argument_from_VM)) {
+				code_generation_target *cgt;
+				LOOP_OVER(cgt, code_generation_target)
+					if (Str::eq_insensitive(VM->format_name, cgt->target_name))
+						step->target_argument = cgt;
+				if (step->target_argument == NULL) {
+					#ifdef PROBLEMS_MODULE
+					Problems::fatal("Unable to guess target format");
+					#endif
+					#ifndef PROBLEMS_MODULE
+					Errors::fatal("Unable to guess target format");
+					exit(1);
+					#endif
+				}
+			}
 			Time::stop_stopwatch(prep_timer);
 
 			int skip_step = FALSE;

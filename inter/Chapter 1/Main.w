@@ -100,7 +100,7 @@ form, which would be written to |*outt|.
 	else
 		SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
 	linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
-	if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list);
+	if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list, NULL);
 	else Errors::fatal("pipeline could not be parsed");
 
 @<Read the list of inter files, and perhaps transcode them@> =

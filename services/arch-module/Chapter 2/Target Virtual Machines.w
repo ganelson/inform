@@ -28,14 +28,16 @@ typedef struct target_vm {
 	int max_locals; /* upper limit on local variables per stack frame */
 	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
 	struct text_stream *iFiction_format_name; /* e.g., "zcode": see the Treaty of Babel */
+	struct text_stream *format_name; /* transpiler format, e.g., "Inform6" or "C" */
+	struct linked_list *format_options; /* of |text_stream| */
 	int supports_floating_point;
 	CLASS_DEFINITION
 } target_vm;
 
 @ =
 target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version_number V,
-	text_stream *image, text_stream *interpreter, text_stream *blorbed, text_stream *arch,
-	int debug, int max_locals, text_stream *iFiction) {
+	text_stream *image, text_stream *interpreter, text_stream *blorbed, inter_architecture *arch,
+	int debug, int max_locals, text_stream *iFiction, text_stream *format) {
 	target_vm *VM = CREATE(target_vm);
 	VM->family_name = Str::duplicate(code);
 	VM->version = V;
@@ -45,12 +47,14 @@ target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version
 	VM->VM_image = Str::duplicate(image);
 	VM->max_locals = max_locals;
 	VM->default_browser_interpreter = Str::duplicate(interpreter);
-	VM->architecture = Architectures::from_codename(arch);
+	VM->architecture = arch;
 	if (VM->architecture == NULL) internal_error("no such architecture");
 	VM->with_debugging_enabled = debug;
 	VM->supports_floating_point = TRUE;
 	if (Architectures::is_16_bit(VM->architecture)) VM->supports_floating_point = FALSE;
 	VM->iFiction_format_name = Str::duplicate(iFiction);
+	VM->format_name = Str::duplicate(format);
+	VM->format_options = NEW_LINKED_LIST(text_stream);
 	return VM;
 }
 
@@ -62,20 +66,25 @@ are ever made.
 void TargetVMs::create(void) {
 	/* hat tip: Joel Berez and Marc Blank, 1979, and later hands */
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16", FALSE, 15, I"zcode");
+		I"vm_z5.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16"), FALSE, 15, I"zcode", I"Inform6");
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16d", TRUE, 15, I"zcode");
+		I"vm_z5.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16d"), TRUE, 15, I"zcode", I"Inform6");
 
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16", FALSE, 15, I"zcode");
+		I"vm_z8.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16"), FALSE, 15, I"zcode", I"Inform6");
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16d", TRUE, 15, I"zcode");
+		I"vm_z8.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16d"), TRUE, 15, I"zcode", I"Inform6");
 
 	/* hat tip: Andrew Plotkin, 2000 */
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32", FALSE, 256, I"glulx");
+		I"vm_glulx.png", I"Quixe", I"gblorb", Architectures::from_codename(I"32"), FALSE, 256, I"glulx", I"Inform6");
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32d", TRUE, 256, I"glulx");
+		I"vm_glulx.png", I"Quixe", I"gblorb", Architectures::from_codename(I"32d"), TRUE, 256, I"glulx", I"Inform6");
+
+	TargetVMs::new(I"C", I"c", VersionNumbers::from_text(I"1"),
+		I"vm_glulx.png", I"", I"", Architectures::from_codename(I"32"), FALSE, 256, I"inform7-c", I"C");
+	TargetVMs::new(I"C", I"c", VersionNumbers::from_text(I"1"),
+		I"vm_glulx.png", I"", I"", Architectures::from_codename(I"32d"), TRUE, 256, I"inform7-c", I"C");
 }
 
 @h Describing and finding.
@@ -97,7 +106,7 @@ clumsy way that VMs are referred to on the //inform7// command line. For
 example, |ulx| produces one of the Glulx VMs.
 
 =
-target_vm *TargetVMs::find(text_stream *ext, int debug) {
+target_vm *TargetVMs::find_by_extension(text_stream *ext, int debug) {
 	target_vm *result = NULL;
 	if (Str::len(ext) == 0) ext = I"ulx";
 	TEMPORARY_TEXT(file_extension)
@@ -130,6 +139,85 @@ target_vm *TargetVMs::find_in_family(text_stream *family, semantic_version_numbe
 			((debug == NOT_APPLICABLE) || (debug == VM->with_debugging_enabled)))
 			return VM;
 	return NULL;
+}
+
+@ And a device for discovering (or making) a target VM given a more general
+format,
+
+=
+target_vm *TargetVMs::find(text_stream *format, int debug) {
+	text_stream *wanted = NULL;
+	inter_architecture *wanted_arch = NULL;
+	linked_list *segs = NEW_LINKED_LIST(text_stream);
+	TEMPORARY_TEXT(segment)
+	LOOP_THROUGH_TEXT(pos, format) {
+		if (Str::get(pos) == '/') {
+			if (Str::len(segment) > 0) @<Accept segment@>;
+			Str::clear(segment);
+		}
+	}
+	if (Str::len(segment) > 0) @<Accept segment@>
+	DISCARD_TEXT(segment)
+	target_vm *result = NULL;
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if ((Str::eq_insensitive(VM->format_name, wanted)) &&
+			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
+			(VM->with_debugging_enabled == debug) &&
+			(TargetVMs::options_match(VM, segs)))
+			result = VM;
+	if (result) return result;
+	LOOP_OVER(VM, target_vm)
+		if ((Str::eq_insensitive(VM->format_name, wanted)) &&
+			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
+			(VM->with_debugging_enabled == debug))
+			result = VM;
+	if (result) {
+		target_vm *new_VM = TargetVMs::new(result->family_name, result->VM_extension, result->version,
+			result->VM_image, result->default_browser_interpreter, result->VM_blorbed_extension, result->architecture,
+			result->with_debugging_enabled, result->max_locals, result->iFiction_format_name, result->format_name);
+		new_VM->format_options = segs;
+		return new_VM;
+	}
+	result = TargetVMs::find_by_extension(format, debug);
+	if (result) {
+		WRITE_TO(STDOUT, "(warning: that use of -format is deprecated: try -format=%S/%S instead)\n",
+			result->format_name, Architectures::to_codename(result->architecture));
+	}
+	return result;
+}
+
+@<Accept segment@> =
+	if (wanted == NULL) wanted = Str::duplicate(segment);
+	else {
+		inter_architecture *arch = Architectures::from_codename(segment);
+		if (arch) wanted_arch = arch;
+		else {
+			ADD_TO_LINKED_LIST(Str::duplicate(segment), text_stream, segs);
+		}
+	}
+
+@
+
+=
+int TargetVMs::options_match(target_vm *VM, linked_list *supplied) {
+	if ((TargetVMs::ll_of_text_is_subset(supplied, VM->format_options)) &&
+		(TargetVMs::ll_of_text_is_subset(VM->format_options, supplied)))
+		return TRUE;
+	return FALSE;
+}
+
+int TargetVMs::ll_of_text_is_subset(linked_list *A, linked_list *B) {
+	text_stream *opt;
+	LOOP_OVER_LINKED_LIST(opt, text_stream, A) {
+		int found = FALSE;
+		text_stream *opt2;
+		LOOP_OVER_LINKED_LIST(opt2, text_stream, B) {
+			if (Str::eq(opt, opt2)) found = TRUE;
+		}
+		if (found == FALSE) return FALSE;
+	}
+	return TRUE;
 }
 
 @h Miscellaneous provisions.
