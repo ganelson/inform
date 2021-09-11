@@ -582,7 +582,7 @@ void ExtensionIndex::write_key(OUTPUT_STREAM) {
 	int i = 0;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm) {
-		if (VM->with_debugging_enabled) continue; /* avoids listing twice */
+		if (TargetVMs::debug_enabled(VM)) continue; /* avoids listing twice */
     	if (i++ > 0) WRITE(", ");
     	ExtensionIndex::plot_icon(OUT, VM);
 		TargetVMs::write(OUT, VM);

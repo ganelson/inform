@@ -41,9 +41,22 @@ what the Inform UI apps typically call when the user clicks "Go":
 = (text as ConsoleText)
 	$ inform7/Tangled/inform7 -internal I -external E -project P -format=F
 =
-for suitable pathnames |I|, |E|, |P| and a choice of |F|. To dispose of this
-first, |-format=ulx| tells Inform to compile to the Glulx story file, and
-|-format=z8| to (version 8 of) the Z-machine.
+for suitable pathnames |I|, |E|, |P| and a choice of |F|.
+
+The format |F| can have quite a complex syntax. It takes the form of a
+sequence of criteria divided by slashes. The first will be the name of the
+language which //inform7// is writing as its output; the second will be the
+architecture used. Thus, |inform6/32d| means "32-bit Inform 6 code with
+debugging enabled", and this in practice is what the Inform UI apps make
+when Glulx is the preferred virtual machine, as it is by default. But other
+alternatives are available at the command line, and it's also possible for
+|-format| to specify a semantic version number for the target, or some
+compilation options. See //arch// for a fuller description.
+
+In previous releases of Inform, |-format=F| had a cruder syntax in which only
+|-format=ulx|, |-format=z5| and |-format=z8| were allowed. Those are still
+recognised, but deprecated. Inform will print a warning about this and supply
+the equivalent modern notation if one is used.
 
 The project |P| is the directory holding the project to compile, such as
 |Bronze.inform|. On MacOS, this will be a bundle, and will look like an

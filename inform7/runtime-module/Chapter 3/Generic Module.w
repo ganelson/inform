@@ -22,26 +22,9 @@ void GenericModule::compile_basic_constants(void) {
 
 	if (TargetVMs::debug_enabled(VM)) GenericModule::emit_one(DEBUG_HL, 1);
 
-	@<Special constants for Z-machine and Glulx VMs@>;
 	if (TargetVMs::is_16_bit(VM)) @<16-bit constants@>
 	else @<32-bit constants@>;
 }	
-
-@ These constants may be predefined in the veneer of the Inform 6 compiler,
-if that is being used further down the compilation chain, but we want to define
-them here regardless of that: and then linking can work properly, and the code
-will make sense even if I6 is not the final code-generator.
-
-@<Special constants for Z-machine and Glulx VMs@> =
-	if (Str::eq(VM->family_name, I"Z-Machine")) {
-		GenericModule::emit_one(TARGET_ZCODE_HL,     1);
-		GenericModule::emit_one(DICT_WORD_SIZE_HL,   6);
-	}
-	if (Str::eq(VM->family_name, I"Glulx")) {
-		GenericModule::emit_one(TARGET_GLULX_HL,     1);
-		GenericModule::emit_one(DICT_WORD_SIZE_HL,   9);
-		GenericModule::emit_one(INDIV_PROP_START_HL, 0);
-	}
 
 @ These constants mostly have obvious meanings, but a few notes:
 
@@ -69,6 +52,8 @@ in the VM can be added to it without it becoming negative.
 	GenericModule::emit_hex(REPARSE_CODE_HL,                 10000);
 	GenericModule::emit_one(MAX_POSITIVE_NUMBER_HL,          32767);
 	GenericModule::emit_signed(MIN_NEGATIVE_NUMBER_HL,      -32768);
+	GenericModule::emit_one(TARGET_ZCODE_HL,                     1);
+	GenericModule::emit_one(DICT_WORD_SIZE_HL,                   6);
 
 @<32-bit constants@> =
 	GenericModule::emit_one(WORDSIZE_HL,                         4);
@@ -79,6 +64,9 @@ in the VM can be added to it without it becoming negative.
 	GenericModule::emit_hex(REPARSE_CODE_HL,            0x40000000);
 	GenericModule::emit_one(MAX_POSITIVE_NUMBER_HL,     2147483647);
 	GenericModule::emit_signed(MIN_NEGATIVE_NUMBER_HL, -2147483648);
+	GenericModule::emit_one(TARGET_GLULX_HL,                     1);
+	GenericModule::emit_one(DICT_WORD_SIZE_HL,                   9);
+	GenericModule::emit_one(INDIV_PROP_START_HL,                 0);
 
 @ Note that all of these constants are made available for linking:
 

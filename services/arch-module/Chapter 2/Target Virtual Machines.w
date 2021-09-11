@@ -2,202 +2,277 @@
 
 To deal with multiple object code formats.
 
-@h Object code.
-The end result of compilation is traditionally called "object code" and
-people tend to use words like "binary" or even "machine code" about it,
-though in fact the world is more diverse nowadays. Inform 7 has always
-generated "object code" which is itself a program for a virtual machine;
-for example, it makes Glulx bytecode rather than x86 or ARM instructions.
-Because of that, we use the customary term "virtual machine" for the format
-of the end product of the Inform build process. But it doesn't have to be
-virtual. If Inter-to-x86-via-C is properly implemented, we will probably
-want to add a VM to represent something like "32-bit binary via ANSI C".
+@h Target VMs.
+For a fuller explanation of these, see //What This Module Does//, but briefly:
+a //target_vm// object represents a choice of both Inter architecture and
+also a format for final code-generation from Inter. For example, it might
+represent "16-bit with debugging enabled to be generated to Inform 6 code",
+or, say, "32-bit to be generated to ANSI C code".
 
-Each different target VM is represented by one of these objects:
-
-=
-typedef struct target_vm {
-	struct text_stream *family_name; /* such as |Glulx| */
-	int with_debugging_enabled;
-	struct inter_architecture *architecture; /* such as 32d */
-	struct semantic_version_number version; /* such as 0.8.7 */
-	struct text_stream *VM_extension; /* canonical filename extension */
-	struct text_stream *VM_unblorbed_extension; /* such as |z8| */
-	struct text_stream *VM_blorbed_extension; /* when blorbed up */
-	struct text_stream *VM_image; /* filename of image for icon denoting VM */
-	int max_locals; /* upper limit on local variables per stack frame */
-	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
-	struct text_stream *iFiction_format_name; /* e.g., "zcode": see the Treaty of Babel */
-	struct text_stream *format_name; /* transpiler format, e.g., "Inform6" or "C" */
-	struct linked_list *format_options; /* of |text_stream| */
-	int supports_floating_point;
-	CLASS_DEFINITION
-} target_vm;
-
-@ =
-target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version_number V,
-	text_stream *image, text_stream *interpreter, text_stream *blorbed, inter_architecture *arch,
-	int debug, int max_locals, text_stream *iFiction, text_stream *format) {
-	target_vm *VM = CREATE(target_vm);
-	VM->family_name = Str::duplicate(code);
-	VM->version = V;
-	VM->VM_extension = Str::duplicate(nick);
-	VM->VM_unblorbed_extension = Str::duplicate(nick);
-	VM->VM_blorbed_extension = Str::duplicate(blorbed);
-	VM->VM_image = Str::duplicate(image);
-	VM->max_locals = max_locals;
-	VM->default_browser_interpreter = Str::duplicate(interpreter);
-	VM->architecture = arch;
-	if (VM->architecture == NULL) internal_error("no such architecture");
-	VM->with_debugging_enabled = debug;
-	VM->supports_floating_point = TRUE;
-	if (Architectures::is_16_bit(VM->architecture)) VM->supports_floating_point = FALSE;
-	VM->iFiction_format_name = Str::duplicate(iFiction);
-	VM->format_name = Str::duplicate(format);
-	VM->format_options = NEW_LINKED_LIST(text_stream);
-	return VM;
-}
-
-@h Standard set.
-This is called when the //arch// module starts up; no other architectures
-are ever made.
+The basic set of possible target VMs is made when the //arch// module starts up:
 
 =
 void TargetVMs::create(void) {
 	/* hat tip: Joel Berez and Marc Blank, 1979, and later hands */
-	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16"), FALSE, 15, I"zcode", I"Inform6");
-	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16d"), TRUE, 15, I"zcode", I"Inform6");
+	TargetVMs::new(Architectures::from_codename(I"16"), I"Inform6",
+		VersionNumbers::from_text(I"5"), I"z5", I"zblorb", I"Parchment", NULL);
+	TargetVMs::new(Architectures::from_codename(I"16d"), I"Inform6",
+		VersionNumbers::from_text(I"5"), I"z5", I"zblorb", I"Parchment", NULL);
 
-	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16"), FALSE, 15, I"zcode", I"Inform6");
-	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", Architectures::from_codename(I"16d"), TRUE, 15, I"zcode", I"Inform6");
+	TargetVMs::new(Architectures::from_codename(I"16"), I"Inform6",
+		VersionNumbers::from_text(I"8"), I"z8", I"zblorb", I"Parchment", NULL);
+	TargetVMs::new(Architectures::from_codename(I"16d"), I"Inform6",
+		VersionNumbers::from_text(I"8"), I"z8", I"zblorb", I"Parchment", NULL);
 
 	/* hat tip: Andrew Plotkin, 2000 */
-	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", Architectures::from_codename(I"32"), FALSE, 256, I"glulx", I"Inform6");
-	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", Architectures::from_codename(I"32d"), TRUE, 256, I"glulx", I"Inform6");
+	TargetVMs::new(Architectures::from_codename(I"32"), I"Inform6",
+		VersionNumbers::from_text(I"3.1.2"), I"ulx", I"gblorb", I"Quixe", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"Inform6",
+		VersionNumbers::from_text(I"3.1.2"), I"ulx", I"gblorb", I"Quixe", NULL);
 
-	TargetVMs::new(I"C", I"c", VersionNumbers::from_text(I"1"),
-		I"vm_glulx.png", I"", I"", Architectures::from_codename(I"32"), FALSE, 256, I"inform7-c", I"C");
-	TargetVMs::new(I"C", I"c", VersionNumbers::from_text(I"1"),
-		I"vm_glulx.png", I"", I"", Architectures::from_codename(I"32d"), TRUE, 256, I"inform7-c", I"C");
+	/* C support added September 2021 */
+	TargetVMs::new(Architectures::from_codename(I"32"), I"C",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"C",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", NULL);
 }
 
-@h Describing and finding.
-This is the longhand form of the VM name:
+@ The //target_vm// structure contains two arguably architectural doohickies:
+potential limits on the use of floating-point arithmetic or on local variables.
+These are indeed currently derived only from the choice of |architecture|, but
+we're keeping them here in case there is some day a need for a 32-bit format
+with integer-only arithmetic, say.
+
+=
+typedef struct target_vm {
+	struct inter_architecture *architecture; /* such as 32d */
+	struct semantic_version_number version; /* such as 0.8.7 */
+	struct text_stream *VM_unblorbed_extension; /* such as |z8| */
+	struct text_stream *VM_blorbed_extension; /* when blorbed up */
+	struct text_stream *VM_image; /* filename of image for icon used in the index */
+	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
+	struct text_stream *iFiction_format_name; /* e.g., "zcode": see the Treaty of Babel */
+	struct text_stream *transpiler_family; /* transpiler format, e.g., "Inform6" or "C" */
+	struct text_stream *full_format; /* e.g., "Inform6/32d/v3.1.2" */
+	int supports_floating_point;
+	int max_locals; /* upper limit on local variables per stack frame */
+	struct linked_list *format_options; /* of |text_stream| */
+	CLASS_DEFINITION
+} target_vm;
+
+@ =
+target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
+	semantic_version_number V, text_stream *unblorbed, text_stream *blorbed,
+	text_stream *interpreter, linked_list *opts) {
+	target_vm *VM = CREATE(target_vm);
+	VM->version = V;
+	VM->VM_unblorbed_extension = Str::duplicate(unblorbed);
+	VM->VM_blorbed_extension = Str::duplicate(blorbed);
+	VM->default_browser_interpreter = Str::duplicate(interpreter);
+	VM->architecture = arch;
+	if (VM->architecture == NULL) internal_error("no such architecture");
+	if (Architectures::is_16_bit(VM->architecture)) {
+		VM->supports_floating_point = FALSE;
+		VM->max_locals = 15;
+		if (Str::eq(unblorbed, I"z5")) VM->VM_image = I"vm_z8.png";
+		else VM->VM_image = I"vm_z5.png";
+	} else {
+		VM->supports_floating_point = TRUE;
+		VM->max_locals = 256;
+		VM->VM_image = I"vm_glulx.png";
+	}
+	VM->iFiction_format_name = Str::new();
+	if (Str::eq(format, I"Inform6")) {
+		if (Architectures::is_16_bit(VM->architecture)) {
+			VM->iFiction_format_name = I"zcode";
+		} else {
+			VM->iFiction_format_name = I"glulx";
+		}
+	} else {
+		WRITE_TO(VM->iFiction_format_name, "Inform+%S", format);
+	}
+	VM->transpiler_family = Str::duplicate(format);
+	VM->format_options = NEW_LINKED_LIST(text_stream);
+	VM->full_format = Str::new();
+	WRITE_TO(VM->full_format, "%S/%S/v%v",
+		VM->transpiler_family, Architectures::to_codename(VM->architecture), &V);
+	if (opts) {
+		text_stream *opt;
+		LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
+			WRITE_TO(VM->full_format, "/%S", opt);
+			ADD_TO_LINKED_LIST(opt, text_stream, VM->format_options);
+		}
+	}
+	return VM;
+}
+
+@ Plumbing is included here to add "options" to a VM's textual description. The
+idea is that these allow for the user to specify additional and VM-specific
+command-line options (using |-format|) which are then picked up by //final//.
+Thus, a request for |-format=C/32d/no-halt/stack=240| would cause a new variant of
+|C/32d| to be created which would have the (purely hypothetical) list of
+options |I"no-halt", I"stack=240"|. It is then up to the C final code generator
+to understand what these mean, if indeed they mean anything.
+
+=
+target_vm *TargetVMs::new_variant(target_vm *existing, linked_list *opts) {
+	return TargetVMs::new(existing->architecture, existing->transpiler_family,
+		existing->version, existing->VM_unblorbed_extension,
+		existing->VM_blorbed_extension, existing->default_browser_interpreter, opts);
+}
+
+@h To and from text.
+First, writing. This is the longhand form of the VM name:
 
 =
 void TargetVMs::write(OUTPUT_STREAM, target_vm *VM) {
 	if (VM == NULL) WRITE("none");
-	else {
-		WRITE("%S", VM->family_name);
-		semantic_version_number V = VM->version;
-		if (VersionNumbers::is_null(V) == FALSE) WRITE(" version %v", &V);	
-		if (VM->with_debugging_enabled) WRITE(" with debugging");
-	}
+	else WRITE("%S", VM->full_format);
 }
 
-@ Here we deduce a VM from the given filename extension, which is the rather
-clumsy way that VMs are referred to on the //inform7// command line. For
-example, |ulx| produces one of the Glulx VMs.
+text_stream *TargetVMs::get_full_format_text(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->full_format;
+}
+
+@ And now for reading. The following is used by //inbuild// when reading the
+command-line option |-format=T|: the text |T| is supplied as a parameter here.
+
+Note however that it actually calls //TargetVMs::find_with_hint//. The |debug|
+hint, if set, says to make the architecture have debugging enabled or not according
+to this hint: thus |"C"| plus the hint |FALSE| will return the VM |C/32|, while
+|"C"| plus the hint |TRUE| will return the VM |C/32d|. The hint |NOT_APPLICABLE|
+is ignored; and the hint is also ignored if the supplied text already definitely
+specifies debugging. Thus |"C/32d"| plus hint |FALSE| will return |C/32d|.
 
 =
-target_vm *TargetVMs::find_by_extension(text_stream *ext, int debug) {
+target_vm *TargetVMs::find(text_stream *format) {
+	return TargetVMs::find_with_hint(format, NOT_APPLICABLE); /* i.e., no hint */
+}
+
+target_vm *TargetVMs::find_with_hint(text_stream *format, int debug) {
+	if (Str::len(format) == 0) format = I"Inform6";
+	text_stream *wanted_language = NULL;
+	inter_architecture *wanted_arch = NULL;
+	semantic_version_number wanted_version = VersionNumbers::null();
+	linked_list *wanted_opts = NEW_LINKED_LIST(text_stream);
+	@<Parse the text supplied into these variables@>;
+	if ((wanted_arch) && (Architectures::debug_enabled(wanted_arch))) debug = TRUE;
+	@<Try to find a VM which is a perfect match@>;
+	@<Try to find a VM which would be a match except for the options@>;
+	@<Try to find a VM in the now-deprecated old notation@>;
+	return NULL;
+}
+
+@ Format text is a list of criteria divided by slashes:
+
+@<Parse the text supplied into these variables@> =
+	TEMPORARY_TEXT(criterion)
+	LOOP_THROUGH_TEXT(pos, format) {
+		if (Str::get(pos) == '/') {
+			if (Str::len(criterion) > 0) @<Accept criterion@>;
+			Str::clear(criterion);
+		} else {
+			PUT_TO(criterion, Str::get(pos));
+		}
+	}
+	if (Str::len(criterion) > 0) @<Accept criterion@>;
+	DISCARD_TEXT(criterion)
+
+@ The first criterion is the only compulsory one, and must be something like
+|Inform6| or |C|. After that, any criterion in the form of an architecture code,
+like |32d|, is interpreted as such; and any criterion opening with |v| plus a
+digit is read as a semantic version number. If any criteria are left after all
+that, they are considered options (see above).
+
+@<Accept criterion@> =
+	if (wanted_language == NULL) wanted_language = Str::duplicate(criterion);
+	else {
+		inter_architecture *arch = Architectures::from_codename(criterion);
+		if (arch) wanted_arch = arch;
+		else {
+			if (((Str::get_at(criterion, 0) == 'v') || (Str::get_at(criterion, 0) == 'V')) &&
+				(Characters::isdigit(Str::get_at(criterion, 1)))) {
+				Str::delete_first_character(criterion);
+				wanted_version = VersionNumbers::from_text(criterion);
+			} else {
+				ADD_TO_LINKED_LIST(Str::duplicate(criterion), text_stream, wanted_opts);
+			}
+		}
+	}
+
+@<Try to find a VM which is a perfect match@> =
 	target_vm *result = NULL;
-	if (Str::len(ext) == 0) ext = I"ulx";
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if ((Str::eq_insensitive(VM->transpiler_family, wanted_language)) &&
+			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
+			((debug == NOT_APPLICABLE) || (TargetVMs::debug_enabled(VM) == debug)) &&
+			(TargetVMs::versions_match(VM, wanted_version)) &&
+			(TargetVMs::options_match(VM, wanted_opts)))
+			result = VM;
+	if (result) return result;
+
+@ If we're given, say, |C/32d/no-pointer-nonsense| and we can't find that exact
+thing, but can find |C/32d|, then we construct a variant of it which does have
+the option |no-pointer-nonsense| and return that.
+
+@<Try to find a VM which would be a match except for the options@> =
+	target_vm *result = NULL;
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if ((Str::eq_insensitive(VM->transpiler_family, wanted_language)) &&
+			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
+			((debug == NOT_APPLICABLE) || (TargetVMs::debug_enabled(VM) == debug)) &&
+			(TargetVMs::versions_match(VM, wanted_version)))
+			result = VM;
+	if (result) return TargetVMs::new_variant(result, wanted_opts);
+
+@ If we get here, we've failed to make any match using the modern notation.
+
+So next we try to deduce a VM from the given filename extension, which is the
+clumsy way that VMs used to be referred to on the //inform7// command line. For
+example, |-format=ulx| produces |Inform6/32| or |Inform6/32d| (depending on
+the |debug| hint).
+
+=
+@<Try to find a VM in the now-deprecated old notation@> =
+	target_vm *result = NULL;
 	TEMPORARY_TEXT(file_extension)
-	Str::copy(file_extension, ext);
+	Str::copy(file_extension, format);
 	if (Str::get_first_char(file_extension) == '.')
 		Str::delete_first_character(file_extension);
 	LOOP_THROUGH_TEXT(pos, file_extension)
 		Str::put(pos, Characters::tolower(Str::get(pos)));
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm)
-		if ((Str::eq_insensitive(VM->VM_unblorbed_extension, ext)) &&
-			(VM->with_debugging_enabled == debug))
+		if ((Str::eq_insensitive(VM->VM_unblorbed_extension, file_extension)) &&
+			(TargetVMs::debug_enabled(VM) == debug))
 			result = VM;
 	DISCARD_TEXT(file_extension)
-	return result;
-}
+	if (result) {
+		WRITE_TO(STDOUT, "(-format=%S is deprecated: try -format=%S/%S instead)\n",
+			format, result->transpiler_family,
+			Architectures::to_codename(result->architecture));
+		return result;
+	}
 
-@ A somewhat sharper method finds specific versions: for example, it can pick
-out version 5 rather than version 8 of the Z-machine. Note that the version
-numbers must match exactly, and not simply be compatible according to semver
-rules.
+@ Semantic version rules apply if the user supplies a format text with a given
+version requirement. If the user asks for |v3.1.0| and we've got |v3.1.2|,
+no problem: there's a match. But |v2.9.3| or |3.2.1| would not match.
 
 =
-target_vm *TargetVMs::find_in_family(text_stream *family, semantic_version_number V,
-	int debug) {
-	target_vm *VM;
-	LOOP_OVER(VM, target_vm)
-		if ((Str::eq_insensitive(VM->family_name, family)) &&
-			(VersionNumbers::eq(VM->version, V)) &&
-			((debug == NOT_APPLICABLE) || (debug == VM->with_debugging_enabled)))
-			return VM;
-	return NULL;
+int TargetVMs::versions_match(target_vm *VM, semantic_version_number wanted) {
+	if (VersionNumbers::is_null(wanted)) return TRUE;
+	if (VersionNumberRanges::in_range(VM->version,
+		VersionNumberRanges::compatibility_range(wanted))) return TRUE;
+	return FALSE;
 }
 
-@ And a device for discovering (or making) a target VM given a more general
-format,
-
-=
-target_vm *TargetVMs::find(text_stream *format, int debug) {
-	text_stream *wanted = NULL;
-	inter_architecture *wanted_arch = NULL;
-	linked_list *segs = NEW_LINKED_LIST(text_stream);
-	TEMPORARY_TEXT(segment)
-	LOOP_THROUGH_TEXT(pos, format) {
-		if (Str::get(pos) == '/') {
-			if (Str::len(segment) > 0) @<Accept segment@>;
-			Str::clear(segment);
-		}
-	}
-	if (Str::len(segment) > 0) @<Accept segment@>
-	DISCARD_TEXT(segment)
-	target_vm *result = NULL;
-	target_vm *VM;
-	LOOP_OVER(VM, target_vm)
-		if ((Str::eq_insensitive(VM->format_name, wanted)) &&
-			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
-			(VM->with_debugging_enabled == debug) &&
-			(TargetVMs::options_match(VM, segs)))
-			result = VM;
-	if (result) return result;
-	LOOP_OVER(VM, target_vm)
-		if ((Str::eq_insensitive(VM->format_name, wanted)) &&
-			((wanted_arch == NULL) || (VM->architecture == wanted_arch)) &&
-			(VM->with_debugging_enabled == debug))
-			result = VM;
-	if (result) {
-		target_vm *new_VM = TargetVMs::new(result->family_name, result->VM_extension, result->version,
-			result->VM_image, result->default_browser_interpreter, result->VM_blorbed_extension, result->architecture,
-			result->with_debugging_enabled, result->max_locals, result->iFiction_format_name, result->format_name);
-		new_VM->format_options = segs;
-		return new_VM;
-	}
-	result = TargetVMs::find_by_extension(format, debug);
-	if (result) {
-		WRITE_TO(STDOUT, "(warning: that use of -format is deprecated: try -format=%S/%S instead)\n",
-			result->format_name, Architectures::to_codename(result->architecture));
-	}
-	return result;
-}
-
-@<Accept segment@> =
-	if (wanted == NULL) wanted = Str::duplicate(segment);
-	else {
-		inter_architecture *arch = Architectures::from_codename(segment);
-		if (arch) wanted_arch = arch;
-		else {
-			ADD_TO_LINKED_LIST(Str::duplicate(segment), text_stream, segs);
-		}
-	}
-
-@
+@ That just leaves how to tell whether or not a VM has exactly the right options,
+given that (a) there can be any number of them, including 0, and (b) they can
+be specified in any order. Speed is unimportant here: in effect we test whether
+two lists of options give rise to sets which are subsets of each other.
 
 =
 int TargetVMs::options_match(target_vm *VM, linked_list *supplied) {
@@ -220,27 +295,24 @@ int TargetVMs::ll_of_text_is_subset(linked_list *A, linked_list *B) {
 	return TRUE;
 }
 
-@h Miscellaneous provisions.
+@h Architectural provisions.
 
 =
 int TargetVMs::is_16_bit(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return Architectures::is_16_bit(VM->architecture);
 }
+
 int TargetVMs::debug_enabled(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return Architectures::debug_enabled(VM->architecture);
 }
+
 int TargetVMs::supports_floating_point(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return VM->supports_floating_point;
 }
 
-@ The limits on local variables per routine are different on each platform.
-On Z, the maximum is fixed at 15, but Glulx allows it to be set with an I6
-memory setting.
-
-=
 int TargetVMs::allow_this_many_locals(target_vm *VM, int N) {
 	if (VM == NULL) internal_error("no VM");
 	if ((VM->max_locals >= 0) && (VM->max_locals < N)) return FALSE;
@@ -252,10 +324,18 @@ int TargetVMs::allow_MAX_LOCAL_VARIABLES(target_vm *VM) {
 	return FALSE;
 }
 
-@ When releasing a blorbed story file, the file extension depends on the
+@h File extension provisions.
+The normal or unblorbed file extension is just a hint for what would make a
+natural filename for our output: for example, |py| would be a natural choice
+for a Python VN, if there were one.
+
+When releasing a blorbed story file, the file extension used depends on the
 story file wrapped inside. (This is a dubious idea, in the opinion of
 the author of Inform -- should not "blorb" be one unified wrapper? -- but
 that ship seems to have sailed.)
+
+Note that for VMs not using Inform 6, blorbing is essentially meaningless,
+and then the blorbed extension may be the empty text.
 
 =
 text_stream *TargetVMs::get_unblorbed_extension(target_vm *VM) {
@@ -272,6 +352,10 @@ text_stream *TargetVMs::get_blorbed_extension(target_vm *VM) {
 where it's not meaningful to talk about debugging features or the number
 of bits, and where it's currently not possible to express a VM version number.
 
+It's also unclear what to write to this if we're compiling, say, an Inform 7
+source text into C: the Treaty of Babel is unclear on that. For now, we write
+|Inform7+C|.
+
 =
 text_stream *TargetVMs::get_iFiction_format(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
@@ -284,11 +368,43 @@ inter_architecture *TargetVMs::get_architecture(target_vm *VM) {
 }
 
 @ Different VMs have different in-browser interpreters, which means that
-Inblorb needs to be given different release instructions for them. If the
-user doesn't specify any particular interpreter, she gets:
+//inblorb// needs to be given different release instructions for them. If the
+user doesn't specify any particular interpreter, she gets the following.
+
+On some platforms this will make no sense, and in those cases the function
+will return the empty text.
 
 =
 text_stream *TargetVMs::get_default_interpreter(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return VM->default_browser_interpreter;
+}
+
+@h Family compatibility.
+This is used when, for example, source text headings are said to be "for
+Glulx only". How are we to interpret that? The full story is at //Compatibility//,
+but here we do at least match whether a given |VM| is, or is not, "Glulx"
+(or whatever may be).
+
+=
+text_stream *TargetVMs::family(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->transpiler_family;
+}
+
+int TargetVMs::compatible_with(target_vm *VM, text_stream *token) {
+	if (Str::eq_insensitive(token, I"Glulx")) {
+		if ((Str::eq_insensitive(VM->transpiler_family, I"Inform6")) &&
+			(TargetVMs::is_16_bit(VM) == FALSE))
+			 return TRUE;
+		return TRUE;
+	}
+	if (Str::eq_insensitive(token, I"Z-Machine")) {
+		if ((Str::eq_insensitive(VM->transpiler_family, I"Inform6")) &&
+			(TargetVMs::is_16_bit(VM) == TRUE))
+			 return TRUE;
+		return TRUE;
+	}
+	if (Str::eq_insensitive(VM->transpiler_family, token)) return TRUE;
+	return FALSE;
 }

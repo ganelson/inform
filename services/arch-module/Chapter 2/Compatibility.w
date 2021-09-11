@@ -291,7 +291,7 @@ int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int
 	target_vm *VM;
 	int seen = FALSE;
 	LOOP_OVER(VM, target_vm)
-		if (Str::eq_insensitive(VM->family_name, cps->current_family)) {
+		if (TargetVMs::compatible_with(VM, cps->current_family)) {
 			seen = TRUE;
 			if ((VersionNumbers::eq(VM->version, V)) &&
 				((with == NOT_APPLICABLE) || (TargetVMs::debug_enabled(VM) == with)))
@@ -314,7 +314,7 @@ int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int
 	int seen = FALSE;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm)
-		if (Str::eq_insensitive(VM->family_name, token)) {
+		if (TargetVMs::compatible_with(VM, token)) {
 			seen = TRUE;
 			if (TargetVMs::debug_enabled(VM) == with)
 				Compatibility::add_exception(cps->C, VM);
@@ -326,8 +326,8 @@ int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int
 @<Construe token as a family name@> =
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm)
-		if (Str::eq_insensitive(VM->family_name, token)) {
-			cps->current_family = VM->family_name;
+		if (TargetVMs::compatible_with(VM, token)) {
+			cps->current_family = TargetVMs::family(VM);
 			return TRUE;
 		}
 	return FALSE;
@@ -336,7 +336,7 @@ int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int
 	if ((cps->family_used == FALSE) && (Str::len(cps->current_family) > 0)) {
 		target_vm *VM;
 		LOOP_OVER(VM, target_vm)
-			if (Str::eq_insensitive(cps->current_family, VM->family_name))
+			if (TargetVMs::compatible_with(VM, cps->current_family))
 				Compatibility::add_exception(cps->C, VM);
 	}
 	return TRUE;

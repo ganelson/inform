@@ -112,9 +112,24 @@ what the Inform UI apps typically call when the user clicks "Go":
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> I</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> E</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> P</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=F</span>
 </pre>
-<p class="commentary">for suitable pathnames <span class="extract"><span class="ConsoleText-extract-syntax">I</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">E</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span> and a choice of <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span>. To dispose of this
-first, <span class="extract"><span class="ConsoleText-extract-syntax">-format=ulx</span></span> tells Inform to compile to the Glulx story file, and
-<span class="extract"><span class="ConsoleText-extract-syntax">-format=z8</span></span> to (version 8 of) the Z-machine.
+<p class="commentary">for suitable pathnames <span class="extract"><span class="ConsoleText-extract-syntax">I</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">E</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span> and a choice of <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span>.
+</p>
+
+<p class="commentary">The format <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span> can have quite a complex syntax. It takes the form of a
+sequence of criteria divided by slashes. The first will be the name of the
+language which <a href="index.html" class="internal">inform7</a> is writing as its output; the second will be the
+architecture used. Thus, <span class="extract"><span class="ConsoleText-extract-syntax">inform6/32d</span></span> means "32-bit Inform 6 code with
+debugging enabled", and this in practice is what the Inform UI apps make
+when Glulx is the preferred virtual machine, as it is by default. But other
+alternatives are available at the command line, and it's also possible for
+<span class="extract"><span class="ConsoleText-extract-syntax">-format</span></span> to specify a semantic version number for the target, or some
+compilation options. See <a href="../arch-module/index.html" class="internal">arch</a> for a fuller description.
+</p>
+
+<p class="commentary">In previous releases of Inform, <span class="extract"><span class="ConsoleText-extract-syntax">-format=F</span></span> had a cruder syntax in which only
+<span class="extract"><span class="ConsoleText-extract-syntax">-format=ulx</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-format=z5</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">-format=z8</span></span> were allowed. Those are still
+recognised, but deprecated. Inform will print a warning about this and supply
+the equivalent modern notation if one is used.
 </p>
 
 <p class="commentary">The project <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span> is the directory holding the project to compile, such as

@@ -108,7 +108,7 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 	} else if (Regexp::match(&mr, step, L"(%c+?) *-> *(%c*)")) {
 		ST->target_argument = NULL;
 		ST->take_target_argument_from_VM = TRUE;
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
@@ -284,7 +284,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			if ((VM) && (step->take_target_argument_from_VM)) {
 				code_generation_target *cgt;
 				LOOP_OVER(cgt, code_generation_target)
-					if (Str::eq_insensitive(VM->format_name, cgt->target_name))
+					if (Str::eq_insensitive(TargetVMs::family(VM), cgt->target_name))
 						step->target_argument = cgt;
 				if (step->target_argument == NULL) {
 					#ifdef PROBLEMS_MODULE

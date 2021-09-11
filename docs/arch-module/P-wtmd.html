@@ -81,52 +81,69 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Architecture versus VM. </b>The Inform 7 build process ultimately wants to make code for some target
-virtual machine &mdash; traditionally, the Z or Glulx machines. But it does this
-in two stages: first generating abstract Inter code, then further generating
-VM code from that.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Architecture versus VM. </b>The Inform 7 build process works in two stages: first it generates abstract
+Inter code, then it further generates "final code" from that.
 </p>
 
-<p class="commentary">It's an appealing notion that this first stage might be VM-independent: that
+<p class="commentary">It's an appealing notion that this first stage might be universal: that
 is, that <a href="../inform7/index.html" class="internal">inform7</a> could generate the same Inter code regardless of the
-final VM, and that only the second stage would vary according to target.
-And this is nearly true, but not quite. There are (currently) two reasons
-why not:
+eventual build product needed, and that only the second stage would vary
+according to this.
+</p>
+
+<p class="commentary">Which is very nearly true, but not quite. Here's why not:
 </p>
 
 <ul class="items"><li>(a) <a href="../inform7/index.html" class="internal">inform7</a> has to generate different code if integers are 16 rather
 than 32 bits wide, and
-</li><li>(b) it also generates different code with debugging enabled than without.
+</li><li>(b) kits of Inter code normally used in compilation make certain other
+architectural assumptions based on the integer size (for example, the
+assembly-language syntax and semantics are different in these cases);
+</li><li>(c) it also generates different code with debugging enabled than without.
 </li></ul>
-<p class="commentary">Reason (b) could be avoided, at some cost in complexity, but reason (a) is
-something we cannot sensibly avoid without making Inter a much higher-level
+<p class="commentary">Reason (c) could be avoided, at some cost in complexity, but reasons (a) and (b)
+are something we cannot sensibly avoid without making Inter a much higher-level
 form of bytecode. Instead, we have "architectures" for Inter: for example,
 32-bit with debugging enabled is the <span class="extract"><span class="extract-syntax">32d</span></span> architecture. See <a href="2-arc.html" class="internal">Architectures</a>;
 if ever we introduce a 64-bit VM, that will need new architectures, and
 this is where they would go.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A <a href="2-tvm.html#SP1" class="internal">target_vm</a> object, on the other hand, represents an actual choice of
-virtual machine. For example, Glulx is a <a href="2-tvm.html#SP1" class="internal">target_vm</a>. The compilation
-process thus involves a combination of both architecture and target:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A <a href="2-tvm.html#SP2" class="internal">target_vm</a> object, on the other hand, expresses the choices made at
+the second stage too. The term "VM" is traditional here, and stands for
+"virtual machine", because until 2021, Inform could only generate code which
+would ultimately run on virtual machines called Glulx and the Z-machine. But it
+can now, for example, also generate C.
+</p>
+
+<p class="commentary">As a result, "VM" now has a more general meaning, and really means "form of
+final code generation". The Glulx format used to be specified by supplying the
+command-line option <span class="extract"><span class="extract-syntax">-format=ulx</span></span> to <a href="../inform7/index.html" class="internal">inform7</a> or <a href="../inter/index.html" class="internal">inter</a>: that still works,
+though it is deprecated, and <span class="extract"><span class="extract-syntax">-format=Inform6/32d</span></span> is better. But equally
+possible now would be <span class="extract"><span class="extract-syntax">-format=C/32d</span></span>. Here the target is a native executable
+to be compiled with a C compiler.
+</p>
+
+<p class="commentary">As these new-style <span class="extract"><span class="extract-syntax">-format</span></span> options suggest, the compilation process thus
+involves a combination of both architecture and target:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">Source</span><span class="plain-syntax"> </span><span class="element-syntax">text</span><span class="plain-syntax"> -----------&gt; </span><span class="element-syntax">Inter</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">       --------------&gt; </span><span class="element-syntax">Bytecode</span><span class="plain-syntax"> </span><span class="element-syntax">for</span>
-<span class="plain-syntax">                  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">    </span><span class="element-syntax">for</span><span class="plain-syntax"> </span><span class="element-syntax">architecture</span><span class="plain-syntax">   </span><span class="element-syntax">via</span><span class="plain-syntax"> </span><span class="function-syntax">INFORM6</span><span class="plain-syntax">   </span><span class="element-syntax">target</span><span class="plain-syntax"> </span><span class="element-syntax">virtual</span><span class="plain-syntax"> </span><span class="element-syntax">machine</span>
+<span class="plain-syntax">                             </span><span class="element-syntax">depends</span><span class="plain-syntax"> </span><span class="element-syntax">on</span><span class="plain-syntax"> </span><span class="element-syntax">architecture</span><span class="plain-syntax">:           </span><span class="element-syntax">depends</span><span class="plain-syntax"> </span><span class="element-syntax">on</span><span class="plain-syntax"> </span><span class="element-syntax">target</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="element-syntax">Source</span><span class="plain-syntax"> </span><span class="element-syntax">text</span><span class="plain-syntax"> -----------&gt; </span><span class="element-syntax">Inter</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">       ----------------&gt; </span><span class="element-syntax">Bytecode</span><span class="plain-syntax"> </span><span class="element-syntax">for</span>
+<span class="plain-syntax">                  </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">                       </span><span class="element-syntax">via</span><span class="plain-syntax"> </span><span class="function-syntax">INFORM6</span><span class="plain-syntax">     </span><span class="element-syntax">target</span><span class="plain-syntax"> </span><span class="element-syntax">virtual</span><span class="plain-syntax"> </span><span class="element-syntax">machine</span>
+<span class="plain-syntax">                                              ----------------&gt; </span><span class="element-syntax">Executable</span>
+<span class="plain-syntax">                                                </span><span class="element-syntax">via</span><span class="plain-syntax"> </span><span class="function-syntax">CLANG</span><span class="plain-syntax">/</span><span class="function-syntax">GCC</span>
+<span class="plain-syntax">                                              ...</span>
 </pre>
-<p class="commentary">Each VM can be used with just one architecture: use the function
-<a href="2-tvm.html#SP12" class="internal">TargetVMs::get_architecture</a> to obtain this. It might seem reasonable
-to say that Glulx ought to be viable with both <span class="extract"><span class="extract-syntax">32</span></span> and <span class="extract"><span class="extract-syntax">32d</span></span> architectures,
-but in fact "Glulx" is not a single virtual machine but a family of them.
-A specific member of this family would be the <a href="2-tvm.html#SP1" class="internal">target_vm</a> representing
-Glulx version 3.1.2 with debugging enabled, and that can be used with the
-<span class="extract"><span class="extract-syntax">32d</span></span> but not the <span class="extract"><span class="extract-syntax">32</span></span> architecture.
-</p>
-
-<p class="commentary">There can in principle be numerous VMs in any given family; see
-<a href="2-tvm.html#SP6" class="internal">TargetVMs::find_in_family</a> to obtain family members with given behaviour,
-and in general see <a href="2-tvm.html" class="internal">Target Virtual Machines</a> for more.
+<p class="commentary">Note that a single <a href="2-tvm.html#SP2" class="internal">target_vm</a> object can be used with just one architecture:
+use the function <a href="2-tvm.html#SP11" class="internal">TargetVMs::get_architecture</a> to obtain this. If a target supports
+multiple architectures, then there will be multiple <a href="2-tvm.html#SP2" class="internal">target_vm</a> objects for it,
+one for each architecture it supports. For example, the Glulx VM can be reached
+by <span class="extract"><span class="extract-syntax">Inform6/32</span></span> or <span class="extract"><span class="extract-syntax">Inform6/32d</span></span>. There can also be multiple versions: for example,
+<span class="extract"><span class="extract-syntax">Inform6/16/v8</span></span> is a valid target. The function <a href="2-tvm.html#SP6" class="internal">TargetVMs::find</a> finds the
+<a href="2-tvm.html#SP2" class="internal">target_vm</a> object associated with a given textual form like <span class="extract"><span class="extract-syntax">"C/32d"</span></span>, if
+the toolchain supports this.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Compatibility. </b>Not all software in the Inform stack &mdash; source text from the user, extensions,

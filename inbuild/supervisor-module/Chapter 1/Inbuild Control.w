@@ -308,11 +308,11 @@ line, which is why we couldn't work this out earlier:
 
 @<Find the virtual machine@> =
 	text_stream *ext = story_filename_extension;
-	if (Str::len(ext) == 0) ext = I"ulx";
 	int with_debugging = FALSE;
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		with_debugging = TRUE;
-	Supervisor::set_current_vm(TargetVMs::find(ext, with_debugging));
+	if (Str::len(ext) == 0) ext = I"Inform6";
+	Supervisor::set_current_vm(TargetVMs::find_with_hint(ext, with_debugging));
 
 @ =
 target_vm *current_target_VM = NULL;
