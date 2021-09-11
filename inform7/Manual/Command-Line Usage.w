@@ -110,11 +110,14 @@ the switch |-rng| to the above command-line call.
 Inter code, which have to be merged in. This process is carried out by a copy
 of the Inter tool inside |inform7|, and the choice of which kits are needed is
 managed by Inbuild. The |inform7| command line allows this process to be
-customised. In particular, |-kit BasicInformKit| will cause Inform to compile
+customised. In particular, |-basic| will cause Inform to compile
 a "basic" project with no command parser or world model, and in general no
 interactive fiction-related infrastructure: it converts Inform into a
 general-purpose programming language. For examples of Basic Inform programs,
 see the test cases in |inform7/Tests/Test Basic|.
+
+|-basic| is actually just an abbreviation for |-kit BasicInformKit|, and
+other kits can also be included. See //inbuild// for more on kits.
 
 The three commands |-pipeline|, |-pipeline-file| and |-variable| control
 the way Inter performs code-generation on the output from |inform7|. Again,

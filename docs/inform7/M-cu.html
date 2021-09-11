@@ -193,11 +193,15 @@ the switch <span class="extract"><span class="ConsoleText-extract-syntax">-rng</
 Inter code, which have to be merged in. This process is carried out by a copy
 of the Inter tool inside <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span>, and the choice of which kits are needed is
 managed by Inbuild. The <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span> command line allows this process to be
-customised. In particular, <span class="extract"><span class="ConsoleText-extract-syntax">-kit BasicInformKit</span></span> will cause Inform to compile
+customised. In particular, <span class="extract"><span class="ConsoleText-extract-syntax">-basic</span></span> will cause Inform to compile
 a "basic" project with no command parser or world model, and in general no
 interactive fiction-related infrastructure: it converts Inform into a
 general-purpose programming language. For examples of Basic Inform programs,
 see the test cases in <span class="extract"><span class="ConsoleText-extract-syntax">inform7/Tests/Test Basic</span></span>.
+</p>
+
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-basic</span></span> is actually just an abbreviation for <span class="extract"><span class="ConsoleText-extract-syntax">-kit BasicInformKit</span></span>, and
+other kits can also be included. See <a href="../inbuild/index.html" class="internal">inbuild</a> for more on kits.
 </p>
 
 <p class="commentary">The three commands <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-file</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">-variable</span></span> control

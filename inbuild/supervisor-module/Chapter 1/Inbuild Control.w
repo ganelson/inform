@@ -150,12 +150,15 @@ but |-pipeline-file| and |-variable| have the same effect as they would there.
 @e INBUILD_INTER_CLSG
 
 @e KIT_CLSW
+@e BASIC_CLSW
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
 
 @<Declare Inter-related options@> =
 	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
+	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
+		L"use Basic Inform language (same as -kit BasicInformKit)");
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
 		L"include Inter code from the kit called X");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
@@ -220,6 +223,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
+		case BASIC_CLSW: Supervisor::request_kit(I"BasicInformKit"); break;
 		case KIT_CLSW: Supervisor::request_kit(arg); break;
 		case PROJECT_CLSW:
 			if (Supervisor::set_I7_bundle(arg) == FALSE)

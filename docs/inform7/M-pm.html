@@ -84,41 +84,41 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     54.0% in compilation to Inter</span>
-<span class="plain-syntax">         39.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          3.3% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          2.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">     54.3% in compilation to Inter</span>
+<span class="plain-syntax">         39.6% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          2.6% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">          1.4% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
 <span class="plain-syntax">          1.3% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
-<span class="plain-syntax">          1.3% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
-<span class="plain-syntax">          1.2% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
-<span class="plain-syntax">          0.4% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
+<span class="plain-syntax">          1.1% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
 <span class="plain-syntax">          0.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
 <span class="plain-syntax">          0.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
 <span class="plain-syntax">          0.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
 <span class="plain-syntax">          0.4% in </span><a href="../knowledge-module/5-tmw.html#SP5" class="internal">World::stage_V</a>
-<span class="plain-syntax">          0.2% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
+<span class="plain-syntax">          0.2% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
+<span class="plain-syntax">          0.1% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
 <span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/4-is.html#SP27" class="internal">InferenceSubjects::emit_all</a>
 <span class="plain-syntax">          0.1% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
 <span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/5-tmw.html#SP3" class="internal">World::stages_II_and_III</a>
 <span class="plain-syntax">          1.9% not specifically accounted for</span>
-<span class="plain-syntax">     44.0% in running Inter pipeline</span>
-<span class="plain-syntax">         11.6% in step preparation</span>
-<span class="plain-syntax">         10.1% in inter step 7/15: consolidate-text</span>
-<span class="plain-syntax">          8.1% in inter step 2/15: link</span>
-<span class="plain-syntax">          7.8% in inter step 15/15: generate inform6 -&gt; auto.inf</span>
-<span class="plain-syntax">          1.6% in inter step 11/15: make-identifiers-unique</span>
+<span class="plain-syntax">     43.6% in running Inter pipeline</span>
+<span class="plain-syntax">         11.9% in step preparation</span>
+<span class="plain-syntax">          9.5% in inter step 7/15: consolidate-text</span>
+<span class="plain-syntax">          7.9% in inter step 15/15: generate inform6 -&gt; auto.inf</span>
+<span class="plain-syntax">          7.9% in inter step 2/15: link</span>
+<span class="plain-syntax">          1.5% in inter step 11/15: make-identifiers-unique</span>
 <span class="plain-syntax">          0.4% in inter step 12/15: reconcile-verbs</span>
-<span class="plain-syntax">          0.2% in inter step 10/15: detect-indirect-calls</span>
 <span class="plain-syntax">          0.2% in inter step 14/15: eliminate-redundant-operations</span>
 <span class="plain-syntax">          0.2% in inter step 6/15: assimilate</span>
 <span class="plain-syntax">          0.2% in inter step 8/15: resolve-external-symbols</span>
 <span class="plain-syntax">          0.2% in inter step 9/15: inspect-plugs</span>
+<span class="plain-syntax">          0.1% in inter step 10/15: detect-indirect-calls</span>
 <span class="plain-syntax">          0.1% in inter step 13/15: eliminate-redundant-labels</span>
 <span class="plain-syntax">          0.1% in inter step 4/15: parse-linked-matter</span>
 <span class="plain-syntax">          0.1% in inter step 5/15: resolve-conditional-compilation</span>
-<span class="plain-syntax">          2.5% not specifically accounted for</span>
-<span class="plain-syntax">      1.6% in supervisor</span>
+<span class="plain-syntax">          2.4% not specifically accounted for</span>
+<span class="plain-syntax">      1.7% in supervisor</span>
 <span class="plain-syntax">      0.3% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
@@ -130,7 +130,7 @@ represent less than 1/1000th of the total.
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">Total memory consumption was 383663K = 375 MB</span>
 
-<span class="plain-syntax">61.5% was used for 1991443 objects, in 368767 frames in 295 x 800K = 236000K = 230 MB:</span>
+<span class="plain-syntax">61.5% was used for 1991444 objects, in 368768 frames in 295 x 800K = 236000K = 230 MB:</span>
 
 <span class="plain-syntax">    10.6%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
 <span class="plain-syntax">     7.3%  text_stream_array                        5126 x 100 = 512600 objects, 28869632 bytes</span>
@@ -259,7 +259,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  activity                                 35 objects, 3920 bytes</span>
 <span class="plain-syntax">     ----  submodule_request                        94 objects, 3760 bytes</span>
 <span class="plain-syntax">     ----  parse_node_annotation_type               114 objects, 3648 bytes</span>
-<span class="plain-syntax">     ----  command_line_switch                      43 objects, 3440 bytes</span>
+<span class="plain-syntax">     ----  command_line_switch                      44 objects, 3520 bytes</span>
 <span class="plain-syntax">     ----  compatibility_specification              70 objects, 3360 bytes</span>
 <span class="plain-syntax">     ----  property_setting_bp_data                 84 objects, 3360 bytes</span>
 <span class="plain-syntax">     ----  method_set                               103 objects, 3296 bytes</span>
@@ -364,7 +364,7 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">38.4% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    19.1%  text stream storage                      75429500 bytes in 530079 claims</span>
+<span class="plain-syntax">    19.1%  text stream storage                      75429976 bytes in 530083 claims</span>
 <span class="plain-syntax">     4.6%  dictionary storage                       18098176 bytes in 33115 claims</span>
 <span class="plain-syntax">     ----  sorting                                  744 bytes in 3 claims</span>
 <span class="plain-syntax">     1.8%  source text                              7200000 bytes in 3 claims</span>
@@ -382,7 +382,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  code generation workspace for objects    9600 bytes in 9 claims</span>
 <span class="plain-syntax">     ----  emitter array storage                    160512 bytes in 2042 claims</span>
 
-<span class="plain-syntax">18.4% was overhead - 72309928 bytes = 70615K = 68 MB</span>
+<span class="plain-syntax">18.4% was overhead - 72309848 bytes = 70615K = 68 MB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Preform grammar. </b>The full annotated description of the Preform grammar (see <a href="../words-module/4-ap.html" class="internal">About Preform (in words)</a>),
 with optimisation details and hit/miss statistics added, is also long: it's

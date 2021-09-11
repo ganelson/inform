@@ -1,6 +1,6 @@
 Total memory consumption was 383663K = 375 MB
 
-61.5% was used for 1991443 objects, in 368767 frames in 295 x 800K = 236000K = 230 MB:
+61.5% was used for 1991444 objects, in 368768 frames in 295 x 800K = 236000K = 230 MB:
 
     10.6%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.3%  text_stream_array                        5126 x 100 = 512600 objects, 28869632 bytes
@@ -129,7 +129,7 @@ Total memory consumption was 383663K = 375 MB
      ----  activity                                 35 objects, 3920 bytes
      ----  submodule_request                        94 objects, 3760 bytes
      ----  parse_node_annotation_type               114 objects, 3648 bytes
-     ----  command_line_switch                      43 objects, 3440 bytes
+     ----  command_line_switch                      44 objects, 3520 bytes
      ----  compatibility_specification              70 objects, 3360 bytes
      ----  property_setting_bp_data                 84 objects, 3360 bytes
      ----  method_set                               103 objects, 3296 bytes
@@ -234,7 +234,7 @@ Total memory consumption was 383663K = 375 MB
 
 38.4% was used for memory not allocated for objects:
 
-    19.1%  text stream storage                      75429500 bytes in 530079 claims
+    19.1%  text stream storage                      75429976 bytes in 530083 claims
      4.6%  dictionary storage                       18098176 bytes in 33115 claims
      ----  sorting                                  744 bytes in 3 claims
      1.8%  source text                              7200000 bytes in 3 claims
@@ -252,5 +252,5 @@ Total memory consumption was 383663K = 375 MB
      ----  code generation workspace for objects    9600 bytes in 9 claims
      ----  emitter array storage                    160512 bytes in 2042 claims
 
-18.4% was overhead - 72309928 bytes = 70615K = 68 MB
+18.4% was overhead - 72309848 bytes = 70615K = 68 MB
 
