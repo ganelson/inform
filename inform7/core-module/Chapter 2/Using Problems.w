@@ -6,6 +6,20 @@ Interface to the Problems module.
 
 @d PROBLEMS_HTML_EMITTER HTML::put
 
+@ In "silence-is-goldem" mode, we want our Problem messages to look more like
+traditional Unix errors, even if they're long ones:
+
+@d FORMAT_CONSOLE_PROBLEMS_CALLBACK Problems::Using::console_format
+
+=
+void Problems::Using::console_format(int *sig_mode, int *break_width, filename **fallback) {
+	if (Main::silence_is_golden()) {
+		*sig_mode = TRUE;
+		*break_width = 10000000; /* i.e., do not word-wrap problem messages at all */
+		*fallback = Projects::get_primary_source(Task::project());
+	}
+}
+
 @ Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
 
@@ -25,15 +39,15 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 	int total_words = 0;
 
 	if (problem_count > 0) {
-		ProblemBuffer::redirect_problem_stream(problems_file);
+		if (problems_file_active) ProblemBuffer::redirect_problem_stream(problems_file);
 		Problems::issue_problem_begin(Task::syntax_tree(), "*");
 		if (disaster_struck) @<Issue problem summary for an internal error@>
 		else @<Issue problem summary for a run with problem messages@>;
 		Problems::issue_problem_end();
-		ProblemBuffer::redirect_problem_stream(NULL);
+		if (problems_file_active) ProblemBuffer::redirect_problem_stream(NULL);
 	} else {
 		int rooms = 0, things = 0;
-		Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
+		if (problems_file_active) Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
 		#ifdef IF_MODULE
 		Spatial::get_world_size(&rooms, &things);
 		#endif
@@ -49,7 +63,7 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 
 @ One of the slightly annoying things about internal errors is that Inform's
 users persistently refer to them as "crashes" on bug report forms. I mean,
-the effort we go to! They are entirely clean exits from the program! The
+the effort we go to! These are entirely clean exits from the program! The
 ingratitude of some -- oh, all right.
 
 @<Issue problem summary for an internal error@> =
@@ -129,9 +143,8 @@ command line -- deserves the truth.
 	WRITE_TO(STDOUT, "\n");
 	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
-		"The %5-word source text has successfully been translated "
-		"into an intermediate description which can be run through "
-		"Inform 6 to complete compilation. There were %1 %2 and %3 %4.");
+		"The %5-word source text has successfully been translated. "
+		"There were %1 %2 and %3 %4.");
 	Problems::issue_problem_end();
 	STREAM_FLUSH(STDOUT);
 	ProblemBuffer::redirect_problem_stream(NULL);
@@ -205,12 +218,13 @@ void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdi
 }
 
 void Problems::Using::outcome_image_tail(OUTPUT_STREAM) {
-	if (outcome_image_style == SIDE_OUTCOME_IMAGE_STYLE) {
-		HTML::comment(OUT, I"PROBLEMS END");
-		HTML::end_html_row(OUT);
-		HTML::end_html_table(OUT);
-		HTML::comment(OUT, I"FOOTNOTE");
-	}
+	if (problems_file_active)
+		if (outcome_image_style == SIDE_OUTCOME_IMAGE_STYLE) {
+			HTML::comment(OUT, I"PROBLEMS END");
+			HTML::end_html_row(OUT);
+			HTML::end_html_table(OUT);
+			HTML::comment(OUT, I"FOOTNOTE");
+		}
 }
 
 @ This is a more elaborate form of the standard |StandardProblems::sentence_problem|,

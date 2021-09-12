@@ -35,7 +35,7 @@ non-empty, we use that.
 (d) And if all else fails, we assume that the location is indeed |inform7|,
 with respect to the current working directory.
 
-@h Basic usage.
+@h How the UI apps call Inform 7.
 The full range of options is complex, so it seems helpful to start by showing
 what the Inform UI apps typically call when the user clicks "Go":
 = (text as ConsoleText)
@@ -152,6 +152,74 @@ The usage for this is:
 	$ inform7/Tangled/inform7 -internal I -external E -transient T -census
 =
 (The caller has the obligation to provide the Transient directory.)
+
+@h Using Inform 7 without projects.
+To users of Inform UI apps, projects seem essential. On Mac OS, they are
+sealed boxes, looking like files in the Finder, but on all platforms they
+are in reality directories, containing not only the source code but also a
+variety of other things.
+
+But it is also perfectly possible to use Inform 7 on isolated, single files of
+source code, rather as a C compiler might work on a single source file for
+a simple program. At its simplest, for example:
+= (text as ConsoleText)
+	$ ls
+	helloworld.i7
+	$ cat helloworld.i7
+	To begin:
+	    say "Hello world."
+	$ inform7/Tangled/inform7 -basic helloworld.i7
+	Inform 7 v10.1.0 has started.
+	I've now read your source text, which is 5 words long.
+	I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+	I've also read English Language by Graham Nelson, which is 2328 words long.
+
+	  The 5-word source text has successfully been translated into an intermediate
+		description which can be run through Inform 6 to complete compilation.
+		There were 0 rooms and 0 things.
+	Inform 7 has finished.
+	$ ls
+	helloworld.i6       helloworld.i7
+=
+(This was a Basic Inform program, hence |-basic|.) That produced quite a bit of
+console chatter: the traditional Unix doctrine is that command-line tools should
+shut up when they operate without errors -- "silence is golden", as the usual
+slogan has it. Use |-silence| to impose this on Inform:
+= (text as ConsoleText)
+	$ ls
+	helloworld.i7
+	$ cat helloworld.i7
+	To begin:
+	    say "Hello world."
+	$ inform7/Tangled/inform7 -basic -silence helloworld.i7
+	$ ls
+	helloworld.i6       helloworld.i7
+=
+In |-silence| mode, any problem messages will also be rendered in a conventional
+Unix style, opening with |filename:line:| for the convenience of text editors
+or IDEs which throw back to source lines where errors occur.
+
+As can be seen, |helloworld.i7| was translated to |helloworld.i6|, and no other
+files were written: no Index, no Problems report page. This is because the options
+|-no-index| and |-no-problems| were automatically engaged. |-log nothing| was
+also implied, and no debugging log was produced. (All of these could be reactivated
+by command line settings, however.)
+
+The output file can be specified with the traditional Unix compiler switch |-o|
+for "output":
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -o my-fancy-file.txt
+	$ ls
+	helloworld.i7       my-fancy-file.txt
+=
+The default output filename is the source filename but with the file extension
+changed from |i7| to whatever is standard for the format being output. For
+example,
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -format C
+	$ ls
+	helloworld.c        helloworld.i7
+=
 
 @h Testing and debugging switches.
 The following switches are used only when testing or maintaining Inform,

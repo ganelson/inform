@@ -53,6 +53,10 @@ is about to end, and can be used to append some extra wording. See
 issued, and takes as an argument the |text_stream *| to which problems are
 being written. See //Problems::show_problem_location//.
 
+@ |FORMAT_CONSOLE_PROBLEMS_CALLBACK| is called when a Problem message is to
+be printed to the |stderr| console (it has no effect on the rendering of Problems
+in HTML). See //ProblemBuffer::output_problem_buffer_to//.
+
 @ |GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK| is called to add a note
 like "in the extension Locksmith by Emily Short"; see //Problems::show_problem_location//.
 

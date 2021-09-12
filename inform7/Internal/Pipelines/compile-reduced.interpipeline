@@ -10,6 +10,8 @@ inspect-plugs
 detect-indirect-calls
 make-identifiers-unique
 reconcile-verbs
+eliminate-redundant-code
 eliminate-redundant-labels
-generate text -> *tout
-generate c -> *cout
+eliminate-redundant-operations
+optionally-generate text -> *tout
+generate -> *out

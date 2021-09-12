@@ -81,11 +81,7 @@
 		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
-	if: $TOC YES
-		set: $PIPELINE = test_c
-	else
-		set: $PIPELINE = test
-	endif
+	set: $PIPELINE = 
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -93,8 +89,8 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
-		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE >$A 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform $PIPELINE -crash-all
+		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform $PIPELINE >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
 		exists: $I
@@ -116,7 +112,7 @@
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *cout=$COUT -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *out=$COUT $PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
@@ -142,8 +138,8 @@
 
 		pass: 'passed'
 	else
-		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable -pipeline $PIPELINE -crash-all
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable $PIPELINE -crash-all
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 		show: $I7CONSOLE
 
@@ -236,18 +232,16 @@
 	mkdir: $PATH/_Results_Ideal
 
 	if: $CASE PM_Map%c*
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
+	set: $PIPELINE = 
 	if: $TOC YES
-		set: $PIPELINE = test_basic_c
-		if: $CASE Red%c*
-			set: $PIPELINE = test_reduced_basic_c
+		if: $CASE Red-%c*
+			set: $PIPELINE = -pipeline compile-reduced
 		endif
-	else
-		set: $PIPELINE = test_basic
 	endif
 
 	! First, problem message cases, where we require ni to fail and with the
@@ -256,8 +250,8 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
-		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline $PIPELINE >$A 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform $PIPELINE -crash-all
+		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform $PIPELINE >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
 		exists: $I
@@ -271,14 +265,14 @@
 		mkdir: $PATH/_Textual
 		mkdir: $PATH/_C
 
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 		set: $I7CLIB = inform7/Internal/Miscellany
 	
 		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *cout=$COUT -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *out=$COUT $PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
@@ -307,8 +301,8 @@
 		! And then the general case.
 
 		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -crash-all
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE >$I7CONSOLE 2>&1
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -crash-all
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 		show: $I7CONSOLE
 
@@ -380,20 +374,19 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
+	set: $PIPELINE = 
 	if: $CASE %c*-BIP
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
-		set: $PIPELINE = test_basic
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	else
 		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
-		set: $PIPELINE = test
 	endif
 
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -crash-all -test-output $A
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -test-output $A >$I7CONSOLE 2>&1
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -crash-all -test-output $A
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -test-output $A >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $A
 
@@ -493,12 +486,12 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
-	set: $PIPELINE = test
+	set: $PIPELINE = 
 	set: $DIAGS = inform7/Figures
 	
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -diagnostics $DIAGS -crash-all
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -diagnostics $DIAGS -crash-all
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
 -end

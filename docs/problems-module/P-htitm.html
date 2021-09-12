@@ -127,25 +127,30 @@ issued, and takes as an argument the <span class="extract"><span class="extract-
 being written. See <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><span class="extract"><span class="extract-syntax">GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK</span></span> is called to add a note
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><span class="extract"><span class="extract-syntax">FORMAT_CONSOLE_PROBLEMS_CALLBACK</span></span> is called when a Problem message is to
+be printed to the <span class="extract"><span class="extract-syntax">stderr</span></span> console (it has no effect on the rendering of Problems
+in HTML). See <a href="2-pl1.html#SP5" class="internal">ProblemBuffer::output_problem_buffer_to</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK</span></span> is called to add a note
 like "in the extension Locksmith by Emily Short"; see <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK</span></span> is called just before a problems
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK</span></span> is called just before a problems
 report closes, to give it a chance to add informational messages. (<a href="../core-module/index.html" class="internal">core</a>
 uses this mechanism to append text such as "There were 3 rooms and 27 things.")
 Such addenda are not problems, and do not affect the program's exit code.
 See <a href="2-pl1.html#SP7" class="internal">ProblemBuffer::write_reports</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">START_PROBLEM_FILE_PROBLEMS_CALLBACK</span></span> is called when <a href="index.html" class="internal">problems</a> wants
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b><span class="extract"><span class="extract-syntax">START_PROBLEM_FILE_PROBLEMS_CALLBACK</span></span> is called when <a href="index.html" class="internal">problems</a> wants
 to open some kind of file for problem messages, with two arguments: the
 filename <span class="extract"><span class="extract-syntax">F</span></span> and the stream <span class="extract"><span class="extract-syntax">P</span></span> to open to it. If the callback function wants
 this to come to anything, it must perform the file-open, and write any header
 material it would like. See <a href="2-pl3.html#SP19" class="internal">StandardProblems::start_problems_report</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b><span class="extract"><span class="extract-syntax">WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK</span></span> is called to ask what wording
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b><span class="extract"><span class="extract-syntax">WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK</span></span> is called to ask what wording
 should be used to describe a heading in problem messages. See
 <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
 </p>

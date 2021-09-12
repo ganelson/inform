@@ -364,7 +364,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 					exit(1);
 					#endif
 				}
-if (step->parsed_filename) WRITE_TO(STDOUT, "Sooo %f\n", step->parsed_filename);
 				step->text_out_file = T;
 			}
 

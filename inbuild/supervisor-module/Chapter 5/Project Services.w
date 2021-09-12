@@ -155,6 +155,10 @@ void Projects::set_primary_source(inform_project *proj, filename *F) {
 	proj->primary_source = F;
 }
 
+filename *Projects::get_primary_source(inform_project *proj) {
+	return proj->primary_source;
+}
+
 @ The following constructs the list of "source vertices" -- vertices in the
 build graph representing the source files -- on demand. The reason this isn't
 done automatically when the |proj| is created is that we needed to give time

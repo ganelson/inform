@@ -101,10 +101,13 @@ chunk of text, not a single line. The unprintable |SOURCE_REF_CHAR| and
 |FORCE_NEW_PARA_CHAR| are simply filtered out for plain text output: for
 HTML, they are dealt with elsewhere.
 
+@d PROBLEM_WORD_WRAP_WIDTH 80
+
 =
 int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
 text_stream *problems_file = &problems_file_struct; /* As a |text_sream *| */
+int problems_file_active = FALSE; /* Currently in use */
 
 #ifndef PROBLEMS_HTML_EMITTER
 #define PROBLEMS_HTML_EMITTER PUT_TO
@@ -112,11 +115,21 @@ text_stream *problems_file = &problems_file_struct; /* As a |text_sream *| */
 
 void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	int line_width = 0, html_flag = FALSE;
+	int sig_mode = FALSE, break_width = PROBLEM_WORD_WRAP_WIDTH; filename *fallback = NULL;
+	#ifdef FORMAT_CONSOLE_PROBLEMS_CALLBACK
+	FORMAT_CONSOLE_PROBLEMS_CALLBACK(&sig_mode, &break_width, &fallback);
+	#endif
 	if (OUT == problems_file) html_flag = TRUE;
-	for (int k=0; k<indentation; k++) { WRITE("  "); line_width+=2; }
+	if (sig_mode == FALSE)
+		for (int k=0; k<indentation; k++) { WRITE("  "); line_width+=2; }
+	TEMPORARY_TEXT(first)
+	TEMPORARY_TEXT(second)
+	TEMPORARY_TEXT(third)
+	@<Extract details of the first source code reference, if there is one@>;
 	for (int i=0, L=Str::len(PBUFF); i<L; i++) {
 		int c = Str::get_at(PBUFF, i);
 		@<In HTML mode, convert drawing-your-attention arrows@>;
+		@<In SIG mode, convert drawing-your-attention arrows@>;
 		@<In plain text mode, remove bold and italic HTML tags@>;
 		if ((html_flag == FALSE) && (c == SOURCE_REF_CHAR))
 			@<Issue plain text paraphrase of source reference@>
@@ -124,7 +137,22 @@ void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	}
 	if (html_flag) HTML_CLOSE("p")
 	else WRITE("\n");
+	DISCARD_TEXT(first)
+	DISCARD_TEXT(second)
+	DISCARD_TEXT(third)
 }
+
+@ In "silence is golden" mode, we will need a filename and line number to
+report at: we pick this out as the first source reference in the message.
+
+@<Extract details of the first source code reference, if there is one@> =
+	for (int i=0, f=0, L=Str::len(PBUFF); i<L; i++) {
+		int c = Str::get_at(PBUFF, i);
+		if (c == SOURCE_REF_CHAR) f++;
+		else if (f == 1) PUT_TO(first, c);
+		else if (f == 2) PUT_TO(second, c);
+		else if (f == 3) PUT_TO(third, c);
+	}
 
 @ The plain text "may I draw your attention to the following paragraph"
 marker,
@@ -161,6 +189,20 @@ indentation. And similarly for |>++>|, used to mark continuations.
 	if (Str::includes_wide_string_at(PBUFF, L">++++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "class=\"tightin3\"") else WRITE("  ");
 		i+=5; continue;
+	}
+
+@<In SIG mode, convert drawing-your-attention arrows@> =
+	if ((sig_mode) && (Str::includes_wide_string_at(PBUFF, L">-->", i))) {
+		WRITE("\033[1m");
+		if (Str::len(second) > 0) {
+			WRITE("%p%S:%S: ", HTML::get_link_abbreviation_path(), second, third);
+		} else if (fallback) {
+			WRITE("%f:1: ", fallback);
+		}
+		WRITE("\033[31m");
+		WRITE("problem: ");
+		WRITE("\033[0m");
+		i+=3; continue;
 	}
 
 @ The problem messages are put together (by Level 2 below) in a plain text
@@ -242,14 +284,12 @@ and Windows caused by the slashes going the wrong way, and so on.
 @ At this point, |l| is the position of the first non-whitespace character
 after the sequence of whitespace.
 
-@d PROBLEM_WORD_WRAP_WIDTH 80
-
 @<In plain text mode, wrap the line or print a space as necessary@> =
 	int word_width = 0;
 	while ((!Characters::is_whitespace(Str::get_at(PBUFF, l))) && (Str::get_at(PBUFF, l) != 0)
 		&& (Str::get_at(PBUFF, l) != SOURCE_REF_CHAR))
 		l++, word_width++;
-	if (line_width + word_width + 1 >= PROBLEM_WORD_WRAP_WIDTH) {
+	if (line_width + word_width + 1 >= break_width) {
 		WRITE("\n"); line_width = 0;
 		for (l=0; l<indentation+1; l++) { line_width+=2; WRITE("  "); }
 	} else {
@@ -309,5 +349,5 @@ void ProblemBuffer::write_reports(int disaster_struck) {
 	INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK(disaster_struck, problem_count);
 	problem_count = pc;
 	#endif
-	HTML::end_body(problems_file);
+	if (problems_file_active) HTML::end_body(problems_file);
 }

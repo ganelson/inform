@@ -78,7 +78,9 @@ int Task::carry_out(build_step *S) {
 	inform7_task->project = project;
 	inform7_task->path = S->associated_copy->location_if_path;
 	inform7_task->build = Projects::build_path(project);
-	if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
+	if (inform7_task->build) {
+		if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
+	}
 	inform7_task->materials = Projects::materials_path(project);
 	inform7_task->existing_storyfile = NULL;
 	inform7_task->stage_of_compilation = -1;
@@ -331,7 +333,9 @@ it to, and this is where:
 
 =
 void Task::write_XML_headings_file(void) {
-	Headings::write_as_XML(Task::syntax_tree(), IndexLocations::xml_headings_filename());
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (inform7_task->project->stand_alone == FALSE)
+		Headings::write_as_XML(Task::syntax_tree(), IndexLocations::xml_headings_filename());
 }
 
 @ That's it for the project folder, but other project-related stuff is in
@@ -430,9 +434,17 @@ int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option
 void Task::disable_or_enable_index(int which) {
 	do_not_generate_index = which;
 }
+int do_not_generate_problems = FALSE; /* Set by the |-no-problems| command line option */
+void Task::disable_or_enable_problems(int which) {
+	do_not_generate_problems = which;
+}
 int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
 void Task::disable_or_enable_census(int which) {
 	do_not_update_census = which;
+}
+
+int Task::problems_enabled(void) {
+	return do_not_generate_problems?FALSE:TRUE;
 }
 
 @ And so, finally, the following triggers the indexing process.

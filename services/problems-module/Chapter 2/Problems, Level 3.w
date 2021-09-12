@@ -398,9 +398,14 @@ Problems report; and this completes the code for errors. In my end is my beginni
 
 =
 void StandardProblems::start_problems_report(filename *F) {
-	#ifdef START_PROBLEM_FILE_PROBLEMS_CALLBACK
-	START_PROBLEM_FILE_PROBLEMS_CALLBACK(F, problems_file);
-	#endif
+	if (F) {
+		#ifdef START_PROBLEM_FILE_PROBLEMS_CALLBACK
+		START_PROBLEM_FILE_PROBLEMS_CALLBACK(F, problems_file);
+		#endif
+		problems_file_active = TRUE;
+	} else {
+		problems_file_active = FALSE;
+	}
 }
 
 void StandardProblems::issue_problems_banner(OUTPUT_STREAM, char *verdict) {

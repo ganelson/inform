@@ -50,7 +50,8 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 		} else {
 			fclose(handle);
 			#ifdef CORE_MODULE
-			if (documentation_only == FALSE) @<Tell console output about the file@>;
+			if ((documentation_only == FALSE) && (Main::silence_is_golden() == FALSE))
+				@<Tell console output about the file@>;
 			#endif
 		}
 	}

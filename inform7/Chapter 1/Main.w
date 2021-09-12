@@ -27,14 +27,17 @@ upshot is that //Main::deputy// is now a manager in name only, reduced to the
 equivalent of unlocking the doors and turning the lights on in the morning.
 
 =
+int silence_is_golden = FALSE;
+int index_explicitly_set = FALSE, problems_explicitly_set = FALSE;
 pathname *diagnostics_path = NULL;
 
 int Main::deputy(int argc, char *argv[]) {
-    @<Start up the modules@>;
-	@<Banner and startup@>;
+	@<Start up@>;
 	int proceed = Main::read_command_line(argc, argv);
 	PluginManager::start();
 	if (proceed) {
+		if (silence_is_golden == FALSE)
+			PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 		inform_project *proj = NULL;
 		@<Find the project identified for us by Inbuild@>;
 		@<Open the debugging log and the problems report@>;
@@ -48,6 +51,16 @@ int Main::deputy(int argc, char *argv[]) {
 	@<Shut down the modules@>;
 	return 0;
 }
+
+@ We need to make sure that internal errors, though they should never happen,
+are reported as problem messages (fed to our HTML problems report) rather than
+simply causing an abrupt exit with only a plain text error written to |stderr|.
+See the |problems| module for more.
+
+@<Start up@> =
+    @<Start up the modules@>;
+	Errors::set_internal_handler(&StandardProblems::internal_error_fn);
+	Task::start_timers();
 
 @<Start up the modules@> =
 	Foundation::start(argc, argv); /* must be started first */
@@ -76,16 +89,6 @@ int Main::deputy(int argc, char *argv[]) {
 	FinalModule::start();
 	SupervisorModule::start();
 
-@ The very first thing we do is to make sure internal errors, though they
-should never happen, are reported as problem messages (fed to our HTML
-problems report) rather than simply causing an abrupt exit with only a
-plain text error written to |stderr|. See the |problems| module for more.
-
-@<Banner and startup@> =
-	Errors::set_internal_handler(&StandardProblems::internal_error_fn);
-	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
-	Task::start_timers();
-
 @ The //supervisor// would happily send us instructions to compile multiple
 projects, but we can only accept one; and in fact the //inform7// command line
 isn't set up to allow more, so this error is not easy to generate.
@@ -97,6 +100,16 @@ isn't set up to allow more, so this error is not easy to generate.
 		proj = P;
 	}
 	if (proj == NULL) Problems::fatal("Nothing to compile");
+	if (proj->stand_alone) {
+		if (index_explicitly_set == FALSE)
+			Task::disable_or_enable_index(TRUE); /* disable it */
+		if (problems_explicitly_set == FALSE)
+			Task::disable_or_enable_problems(TRUE); /* disable it */
+		ProgressBar::enable_or_disable(FALSE); /* disable it */
+		if (Log::get_debug_log_filename() == NULL)
+			Log::set_aspect_from_command_line(I"nothing", TRUE);
+	}
+	if (silence_is_golden) Task::disable_or_enable_problems(TRUE); /* disable it */
 
 @ //supervisor// supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success
@@ -105,21 +118,28 @@ This folder will usually be the |Build| subfolder of the project folder,
 but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
-	pathname *build_folder = Projects::build_path(proj);
-	if (Pathnames::create_in_file_system(build_folder) == 0)
-		Problems::fatal(
-			"Unable to create Build folder for project: is it read-only?");
+	if ((proj->stand_alone == FALSE) || (Log::get_debug_log_filename())) {
+		pathname *build_folder = Projects::build_path(proj);
+		if (Pathnames::create_in_file_system(build_folder) == 0)
+			Problems::fatal(
+				"Unable to create Build folder for project: is it read-only?");
 
-	filename *DF = Filenames::in(build_folder, I"Debug log.txt");
-	Log::set_debug_log_filename(DF);
-	Log::open();
-	LOG("inform7 was called as:");
-	for (int i=0; i<argc; i++) LOG(" %s", argv[i]);
-	LOG("\n");
-	CommandLine::play_back_log();
+		filename *DF = Filenames::in(build_folder, I"Debug log.txt");
+		Log::set_debug_log_filename(DF);
+		Log::open();
+		LOG("inform7 was called as:");
+		for (int i=0; i<argc; i++) LOG(" %s", argv[i]);
+		LOG("\n");
+		CommandLine::play_back_log();
+	}
 
-	filename *PF = Filenames::in(build_folder, I"Problems.html");
-	StandardProblems::start_problems_report(PF);
+	if (Task::problems_enabled()) {
+		pathname *build_folder = Projects::build_path(proj);
+		filename *PF = Filenames::in(build_folder, I"Problems.html");
+		StandardProblems::start_problems_report(PF);
+	} else {
+		StandardProblems::start_problems_report(NULL);
+	}
 
 	HTML::set_link_abbreviation_path(Projects::path(proj));
 
@@ -130,17 +150,20 @@ students have been getting stuck on. In any case, it needs to be activated
 with a use option, so by default this file will never be written.
 
 @<Name the telemetry@> =
-	pathname *P = Pathnames::down(Supervisor::transient(), I"Telemetry");
-	if (Pathnames::create_in_file_system(P)) {
-		TEMPORARY_TEXT(leafname_of_telemetry)
-		int this_month = the_present->tm_mon + 1;
-		int this_day = the_present->tm_mday;
-		int this_year = the_present->tm_year + 1900;
-		WRITE_TO(leafname_of_telemetry,
-			"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
-		filename *F = Filenames::in(P, leafname_of_telemetry);
-		Telemetry::locate_telemetry_file(F);
-		DISCARD_TEXT(leafname_of_telemetry)
+	pathname *T = Supervisor::transient();
+	if (T) {
+		pathname *P = Pathnames::down(T, I"Telemetry");
+		if (Pathnames::create_in_file_system(P)) {
+			TEMPORARY_TEXT(leafname_of_telemetry)
+			int this_month = the_present->tm_mon + 1;
+			int this_day = the_present->tm_mday;
+			int this_year = the_present->tm_year + 1900;
+			WRITE_TO(leafname_of_telemetry,
+				"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
+			filename *F = Filenames::in(P, leafname_of_telemetry);
+			Telemetry::locate_telemetry_file(F);
+			DISCARD_TEXT(leafname_of_telemetry)
+		}
 	}
 
 @ The compiler is now ready for use. We ask //supervisor// to go ahead and
@@ -186,10 +209,12 @@ they can be rather lengthy.
 	}
 
 @<Shutdown and rennab@> =
-	ProblemBuffer::write_reports(FALSE);
-	LOG("Total of %d files written as streams.\n", total_file_writes);
-	Writers::log_escape_usage();
-	WRITE_TO(STDOUT, "Inform 7 has finished.\n");
+	if (silence_is_golden == FALSE) {
+		ProblemBuffer::write_reports(FALSE);
+		LOG("Total of %d files written as streams.\n", total_file_writes);
+		Writers::log_escape_usage();
+		WRITE_TO(STDOUT, "Inform 7 has finished.\n");
+	}
 
 @<Shut down the modules@> =
 	WordsModule::end();
@@ -258,7 +283,13 @@ int Main::read_command_line(int argc, char *argv[]) {
 	@<Register command-line arguments@>;
 	Supervisor::declare_options();
 	int proceed = CommandLine::read(argc, argv, NULL, &Main::switch, &Main::bareword);
-	if (proceed) Supervisor::optioneering_complete(NULL, TRUE, &CorePreform::load);
+	if (proceed) {
+		if (shared_internal_nest == NULL) {
+			pathname *path_to_inform = Pathnames::installation_path("INFORM7_PATH", I"inform7");
+			Supervisor::add_nest(Pathnames::down(path_to_inform, I"Internal"), INTERNAL_NEST_TAG);
+		}
+		Supervisor::optioneering_complete(NULL, TRUE, &CorePreform::load);
+	}
 	return proceed;
 }
 
@@ -270,11 +301,13 @@ compiler via Delia scripts in |intest|.
 @e CRASHALL_CLSW
 @e DIAGNOSTICS_CLSW
 @e INDEX_CLSW
+@e PROBLEMS_CLSW
 @e CENSUS_UPDATE_CLSW
 @e PROGRESS_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e SIGILS_CLSW
 @e TEST_OUTPUT_CLSW
+@e SILENCE_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
@@ -282,6 +315,8 @@ compiler via Delia scripts in |intest|.
 		L"intentionally crash on Problem messages, for backtracing", FALSE);
 	CommandLine::declare_boolean_switch(INDEX_CLSW, L"index", 1,
 		L"produce an Index", TRUE);
+	CommandLine::declare_boolean_switch(PROBLEMS_CLSW, L"problems", 1,
+		L"produce (an HTML) Problems report page", TRUE);
 	CommandLine::declare_boolean_switch(CENSUS_UPDATE_CLSW, L"census-update", 1,
 		L"update the extensions census", TRUE);
 	CommandLine::declare_boolean_switch(PROGRESS_CLSW, L"progress", 1,
@@ -294,6 +329,8 @@ compiler via Delia scripts in |intest|.
 		L"return 0 unless exactly this Problem message is generated");
 	CommandLine::declare_switch(TEST_OUTPUT_CLSW, L"test-output", 2,
 		L"write output of internal tests to file X");
+	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
+		L"practice 'silence is golden': print only Unix-style errors", FALSE);
 	CommandLine::end_group();
 
 @ Three of the five options here actually configure the |problems| module
@@ -304,13 +341,17 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case CRASHALL_CLSW: debugger_mode = val;
 			ProblemSigils::crash_on_problems(val); break;
-		case INDEX_CLSW: Task::disable_or_enable_index(val?FALSE:TRUE); break;
+		case INDEX_CLSW: Task::disable_or_enable_index(val?FALSE:TRUE);
+			index_explicitly_set = TRUE; break;
+		case PROBLEMS_CLSW: Task::disable_or_enable_problems(val?FALSE:TRUE);
+			problems_explicitly_set = TRUE; break;
 		case CENSUS_UPDATE_CLSW: Task::disable_or_enable_census(val?FALSE:TRUE); break;
 		case PROGRESS_CLSW: ProgressBar::enable_or_disable(val); break;
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
 		case TEST_OUTPUT_CLSW: InternalTests::set_file(Filenames::from_text(arg)); break;
+		case SILENCE_CLSW: silence_is_golden = TRUE; break;
 	}
 	Supervisor::option(id, val, arg, state);
 }
@@ -318,4 +359,8 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 void Main::bareword(int id, text_stream *opt, void *state) {
 	if (Supervisor::set_I7_source(opt) == FALSE)
 		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
+}
+
+int Main::silence_is_golden(void) {
+	return silence_is_golden;
 }

@@ -21,9 +21,6 @@ inform7/Tests/Test\ Externals/_Build/XText-I.o: inform7/Tests/Test\ Externals/_B
 		-Wno-parentheses-equality -D DEBUG -D I7_NO_MAIN -I inform7/Internal/Miscellany
 
 inform7/Tests/Test\ Externals/_Build/XText-I.c: inform7/Tests/Test\ Externals/_Source/XText.i7
-	inform7/Tangled/inform7 -basic -format=C \
+	inform7/Tangled/inform7 -silence -basic -format=C \
 		-o inform7/Tests/Test\ Externals/_Build/XText-I.c \
-		inform7/Tests/Test\ Externals/_Source/XText.i7 \
-		-no-progress -log nothing -external inform7/Tests \
-		-transient ../intest/Workspace/T0/Transient -no-index \
-		-internal inform7/Internal -pipeline test_any
+		inform7/Tests/Test\ Externals/_Source/XText.i7

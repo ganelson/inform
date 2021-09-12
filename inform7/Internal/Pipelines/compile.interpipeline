@@ -12,4 +12,5 @@ make-identifiers-unique
 reconcile-verbs
 eliminate-redundant-labels
 eliminate-redundant-operations
-generate inform6 -> *out
+optionally-generate text -> *tout
+generate -> *out
