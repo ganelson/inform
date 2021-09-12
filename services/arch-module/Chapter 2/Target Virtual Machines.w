@@ -15,26 +15,26 @@ The basic set of possible target VMs is made when the //arch// module starts up:
 void TargetVMs::create(void) {
 	/* hat tip: Joel Berez and Marc Blank, 1979, and later hands */
 	TargetVMs::new(Architectures::from_codename(I"16"), I"Inform6",
-		VersionNumbers::from_text(I"5"), I"z5", I"zblorb", I"Parchment", NULL);
+		VersionNumbers::from_text(I"5"), I"i6", I"z5", I"zblorb", I"Parchment", NULL);
 	TargetVMs::new(Architectures::from_codename(I"16d"), I"Inform6",
-		VersionNumbers::from_text(I"5"), I"z5", I"zblorb", I"Parchment", NULL);
+		VersionNumbers::from_text(I"5"), I"i6", I"z5", I"zblorb", I"Parchment", NULL);
 
 	TargetVMs::new(Architectures::from_codename(I"16"), I"Inform6",
-		VersionNumbers::from_text(I"8"), I"z8", I"zblorb", I"Parchment", NULL);
+		VersionNumbers::from_text(I"8"), I"i6", I"z8", I"zblorb", I"Parchment", NULL);
 	TargetVMs::new(Architectures::from_codename(I"16d"), I"Inform6",
-		VersionNumbers::from_text(I"8"), I"z8", I"zblorb", I"Parchment", NULL);
+		VersionNumbers::from_text(I"8"), I"i6", I"z8", I"zblorb", I"Parchment", NULL);
 
 	/* hat tip: Andrew Plotkin, 2000 */
 	TargetVMs::new(Architectures::from_codename(I"32"), I"Inform6",
-		VersionNumbers::from_text(I"3.1.2"), I"ulx", I"gblorb", I"Quixe", NULL);
+		VersionNumbers::from_text(I"3.1.2"), I"i6", I"ulx", I"gblorb", I"Quixe", NULL);
 	TargetVMs::new(Architectures::from_codename(I"32d"), I"Inform6",
-		VersionNumbers::from_text(I"3.1.2"), I"ulx", I"gblorb", I"Quixe", NULL);
+		VersionNumbers::from_text(I"3.1.2"), I"i6", I"ulx", I"gblorb", I"Quixe", NULL);
 
 	/* C support added September 2021 */
 	TargetVMs::new(Architectures::from_codename(I"32"), I"C",
-		VersionNumbers::from_text(I"1"), I"c", I"", I"", NULL);
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
 	TargetVMs::new(Architectures::from_codename(I"32d"), I"C",
-		VersionNumbers::from_text(I"1"), I"c", I"", I"", NULL);
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
 }
 
 @ The //target_vm// structure contains two arguably architectural doohickies:
@@ -47,6 +47,7 @@ with integer-only arithmetic, say.
 typedef struct target_vm {
 	struct inter_architecture *architecture; /* such as 32d */
 	struct semantic_version_number version; /* such as 0.8.7 */
+	struct text_stream *transpiled_extension; /* such as |i6| */
 	struct text_stream *VM_unblorbed_extension; /* such as |z8| */
 	struct text_stream *VM_blorbed_extension; /* when blorbed up */
 	struct text_stream *VM_image; /* filename of image for icon used in the index */
@@ -62,10 +63,11 @@ typedef struct target_vm {
 
 @ =
 target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
-	semantic_version_number V, text_stream *unblorbed, text_stream *blorbed,
-	text_stream *interpreter, linked_list *opts) {
+	semantic_version_number V, text_stream *trans, text_stream *unblorbed,
+	text_stream *blorbed, text_stream *interpreter, linked_list *opts) {
 	target_vm *VM = CREATE(target_vm);
 	VM->version = V;
+	VM->transpiled_extension = Str::duplicate(trans);
 	VM->VM_unblorbed_extension = Str::duplicate(unblorbed);
 	VM->VM_blorbed_extension = Str::duplicate(blorbed);
 	VM->default_browser_interpreter = Str::duplicate(interpreter);
@@ -117,7 +119,7 @@ to understand what these mean, if indeed they mean anything.
 =
 target_vm *TargetVMs::new_variant(target_vm *existing, linked_list *opts) {
 	return TargetVMs::new(existing->architecture, existing->transpiler_family,
-		existing->version, existing->VM_unblorbed_extension,
+		existing->version, existing->transpiled_extension, existing->VM_unblorbed_extension,
 		existing->VM_blorbed_extension, existing->default_browser_interpreter, opts);
 }
 
@@ -338,6 +340,11 @@ Note that for VMs not using Inform 6, blorbing is essentially meaningless,
 and then the blorbed extension may be the empty text.
 
 =
+text_stream *TargetVMs::get_transpiled_extension(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->transpiled_extension;
+}
+
 text_stream *TargetVMs::get_unblorbed_extension(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return VM->VM_unblorbed_extension;

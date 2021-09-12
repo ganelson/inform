@@ -96,6 +96,7 @@ isn't set up to allow more, so this error is not easy to generate.
 		if (proj) Problems::fatal("Multiple projects given on the command line");
 		proj = P;
 	}
+	if (proj == NULL) Problems::fatal("Nothing to compile");
 
 @ //supervisor// supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success

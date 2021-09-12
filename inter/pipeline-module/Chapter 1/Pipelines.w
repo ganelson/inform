@@ -80,9 +80,11 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
 	int left_arrow_used = FALSE;
+	int allow_unknown_variables = FALSE;
+	if (Regexp::match(&mr, step, L"optionally-%c+")) allow_unknown_variables = TRUE;
 	if (Regexp::match(&mr, step, L"(%c+?) *<- *(%c*)")) {
 		if (Str::len(mr.exp[1]) > 0) {
-			ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
+			ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
 			if (ST->step_argument == NULL) return NULL;
 		} else {
 			Errors::in_text_file_S(I"no source to right of arrow", tfp);
@@ -102,13 +104,13 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 			DISCARD_TEXT(ERR)
 			return NULL;
 		}
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%c+?) *-> *(%c*)")) {
 		ST->target_argument = NULL;
 		ST->take_target_argument_from_VM = TRUE;
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
@@ -118,12 +120,12 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%d):(%c*)")) {
 		ST->repository_argument = Str::atoi(mr.exp[1], 0);
 		if (Str::len(mr.exp[2]) > 0) {
-			ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+			ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
 			if (ST->package_argument == NULL) return NULL;
 		}
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
-		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
+		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
 		if (ST->package_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
@@ -156,14 +158,18 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 }
 
 text_stream *CodeGen::Pipeline::read_parameter(text_stream *from, dictionary *D,
-	text_file_position *tfp) {
+	text_file_position *tfp, int allow_unknown_variables) {
 	if (Str::get_first_char(from) == '*') {
-		text_stream *find = Dictionaries::get_text(D, from);
-		if (find) return Str::duplicate(find);
-		TEMPORARY_TEXT(ERR)
-		WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
-		Errors::in_text_file_S(ERR, tfp);
-		DISCARD_TEXT(ERR)
+		if (allow_unknown_variables == FALSE) {
+			text_stream *find = Dictionaries::get_text(D, from);
+			if (find) return Str::duplicate(find);
+			TEMPORARY_TEXT(ERR)
+			WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
+			Errors::in_text_file_S(ERR, tfp);
+			DISCARD_TEXT(ERR)
+		} else {
+			return I"";
+		}
 	}
 	return Str::duplicate(from);
 }
@@ -307,23 +313,37 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 				Time::start_stopwatch(pipeline_timer, STAGE_NAME);
 			DISCARD_TEXT(STAGE_NAME)
 
-
 			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
 				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
-				if (Str::eq(step->step_argument, I"*log")) {
-					step->to_debugging_log = TRUE;
-				} else if (Str::eq(step->step_argument, I"*memory")) {
-					S->repositories[step->repository_argument] = S->memory_repository;
-					skip_step = TRUE;
+				if (Str::len(step->step_argument) == 0) {
+					if (step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) {
+						skip_step = TRUE;
+					} else {
+						#ifdef PROBLEMS_MODULE
+						Problems::fatal("No filename given in pipeline step");
+						#endif
+						#ifndef PROBLEMS_MODULE
+						Errors::fatal("No filename given in pipeline step");
+						exit(1);
+						#endif
+					}
 				} else {
-					int slashes = FALSE;
-					LOOP_THROUGH_TEXT(pos, step->step_argument)
-						if (Str::get(pos) == '/')
-							slashes = TRUE;
-					if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
-					else step->parsed_filename = Filenames::in(P, step->step_argument);
+					if (Str::eq(step->step_argument, I"*log")) {
+						step->to_debugging_log = TRUE;
+					} else if (Str::eq(step->step_argument, I"*memory")) {
+						S->repositories[step->repository_argument] = S->memory_repository;
+						skip_step = TRUE;
+					} else {
+						int slashes = FALSE;
+						LOOP_THROUGH_TEXT(pos, step->step_argument)
+							if (Str::get(pos) == '/')
+								slashes = TRUE;
+						if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
+						else step->parsed_filename = Filenames::in(P, step->step_argument);
+					}
 				}
 			}
 
@@ -332,8 +352,10 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			if (step->to_debugging_log) {
 				step->text_out_file = DL;
 			} else if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+				(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
-				if (STREAM_OPEN_TO_FILE(T, step->parsed_filename, ISO_ENC) == FALSE) {
+				if ((step->parsed_filename) &&
+					(STREAM_OPEN_TO_FILE(T, step->parsed_filename, ISO_ENC) == FALSE)) {
 					#ifdef PROBLEMS_MODULE
 					Problems::fatal_on_file("Can't open output file", step->parsed_filename);
 					#endif
@@ -342,6 +364,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 					exit(1);
 					#endif
 				}
+if (step->parsed_filename) WRITE_TO(STDOUT, "Sooo %f\n", step->parsed_filename);
 				step->text_out_file = T;
 			}
 

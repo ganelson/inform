@@ -7,6 +7,7 @@ To generate final code from intermediate code.
 =
 void CodeGen::create_pipeline_stage(void) {
 	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG, FALSE);
+	CodeGen::Stage::new(I"optionally-generate", CodeGen::run_pipeline_stage, OPTIONAL_TEXT_OUT_STAGE_ARG, FALSE);
 }
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {

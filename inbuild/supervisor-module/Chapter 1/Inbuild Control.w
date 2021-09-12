@@ -95,10 +95,12 @@ better way to choose a virtual machine to compile to.
 @e INBUILD_INFORM_CLSG
 
 @e PROJECT_CLSW
+@e BASIC_CLSW
 @e DEBUG_CLSW
 @e RELEASE_CLSW
 @e FORMAT_CLSW
 @e SOURCE_CLSW
+@e O_CLSW
 @e CENSUS_CLSW
 @e RNG_CLSW
 @e CASE_CLSW
@@ -107,6 +109,8 @@ better way to choose a virtual machine to compile to.
 	CommandLine::begin_group(INBUILD_INFORM_CLSG, I"for translating Inform source text to Inter");
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
+	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
+		L"use Basic Inform language (same as -kit BasicInformKit)");
 	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
 		L"compile with debugging features even on a Release", FALSE);
 	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
@@ -115,6 +119,8 @@ better way to choose a virtual machine to compile to.
 		L"compile I6 code suitable for the virtual machine X");
 	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
 		L"use file X as the Inform source text");
+	CommandLine::declare_switch(O_CLSW, L"o", 2,
+		L"use file X as the compiled output (not for use with -project)");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
 		L"perform an extensions census", FALSE);
 	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
@@ -150,15 +156,12 @@ but |-pipeline-file| and |-variable| have the same effect as they would there.
 @e INBUILD_INTER_CLSG
 
 @e KIT_CLSW
-@e BASIC_CLSW
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
 
 @<Declare Inter-related options@> =
 	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
-	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
-		L"use Basic Inform language (same as -kit BasicInformKit)");
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
 		L"include Inter code from the kit called X");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
@@ -174,6 +177,7 @@ set appropriately.
 
 =
 filename *inter_pipeline_file = NULL;
+filename *transpiled_output_file = NULL;
 dictionary *pipeline_vars = NULL;
 pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
@@ -206,7 +210,7 @@ void Supervisor::set_inter_pipeline(text_stream *name) {
 
 @ The //supervisor// module itself doesn't parse command-line options: that's for
 the parent to do, using code from Foundation. When the parent finds an option
-it doesn't know about, that will be one of ourse, so it should call the following:
+it doesn't know about, that will be one of ours, so it should call the following:
 
 =
 void Supervisor::option(int id, int val, text_stream *arg, void *state) {
@@ -233,6 +237,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			if (Supervisor::set_I7_source(arg) == FALSE)
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
+		case O_CLSW: transpiled_output_file = Filenames::from_text(arg); break;
 		case CENSUS_CLSW: census_mode = val; break;
 		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
@@ -559,7 +564,10 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 		else if (C->edition->work->genre == project_file_genre)
 			proj = ProjectFileManager::from_copy(C);
 		else internal_error("chosen project is not a project");
-		if (F) Projects::set_primary_source(proj, F);
+		if (F) {
+			Projects::set_primary_source(proj, F);
+			Projects::set_primary_output(proj, transpiled_output_file);
+		}
 	}
 }
 

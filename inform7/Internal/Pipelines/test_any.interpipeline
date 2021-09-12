@@ -12,5 +12,5 @@ make-identifiers-unique
 reconcile-verbs
 eliminate-redundant-labels
 eliminate-redundant-operations
-generate text -> *tout
+optionally-generate text -> *tout
 generate -> *out

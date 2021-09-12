@@ -89,6 +89,7 @@ to build. As we recurse, we pass a bitmap of the following:
 @d BUILD_DEPENDENCIES_MATTER_GB 1 /* We will need all your build dependencies too */
 @d USE_DEPENDENCIES_MATTER_GB 2 /* We will need all your use dependencies too */
 @d IGNORE_TIMESTAMPS_GB 4 /* Don't be incremental: trust nothing, rebuild everything */
+@d FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB 8 /* Don't be incremental: trust nothing, rebuild everything */
 
 =
 int IncrementalBuild::build(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
@@ -181,24 +182,30 @@ building V is itself a use of W, and therefore of X. So we always enable the
 |USE_DEPENDENCIES_MATTER_GB| bit when recursing through an edge.
 
 @<Build the build dependencies of the node@> =
+	int b = gb | USE_DEPENDENCIES_MATTER_GB;
+	if (b & FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB) b -= FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB;
+	if (V->always_build_dependencies) b |= FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB;
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 		if (rv)
 			rv = IncrementalBuild::recurse(OUT, T,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
+				b, W, BM, changes, generation, search_list);
 
 @<Build the use dependencies of the node@> =
+	int b = gb | USE_DEPENDENCIES_MATTER_GB;
+	if (b & FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB) b -= FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB;
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
 		if (rv)
 			rv = IncrementalBuild::recurse(OUT, T,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
+				b | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
 
 @ Now for the node |V| itself.
 
 @<Build the node itself, if necessary@> =
 	int needs_building = FALSE;
-	if ((gb & IGNORE_TIMESTAMPS_GB) || (V->always_build_this)) needs_building = TRUE;
+	if ((gb & IGNORE_TIMESTAMPS_GB) || (gb & FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB) ||
+		(V->always_build_this)) needs_building = TRUE;
 	else @<Decide based on timestamps@>;
 
 	if (needs_building) {

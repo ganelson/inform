@@ -9,9 +9,11 @@ in the following structure.
 =
 typedef struct inform_project {
 	struct inbuild_copy *as_copy;
+	int stand_alone; /* rather than being in a .inform project bundle */
 	struct inbuild_nest *materials_nest;
 	struct linked_list *search_list; /* of |inbuild_nest| */
 	struct filename *primary_source;
+	struct filename *primary_output;
 	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
 	struct linked_list *kits_to_include; /* of |kit_dependency| */
@@ -40,7 +42,7 @@ void Projects::scan(inbuild_copy *C) {
 	proj->as_copy = C;
 	if (C == NULL) internal_error("no copy to scan");
 	Copies::set_metadata(C, STORE_POINTER_inform_project(proj));
-
+	proj->stand_alone = FALSE;
 	proj->version = VersionNumbers::null();
 	proj->source_vertices = NEW_LINKED_LIST(build_vertex);
 	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
@@ -62,8 +64,6 @@ void Projects::scan(inbuild_copy *C) {
 		M = Projects::materialise_pathname(
 			P, Filenames::get_leafname(proj->as_copy->location_if_file));
 	proj->materials_nest = Supervisor::add_nest(M, MATERIALS_NEST_TAG);
-//	proj->materials_nest = Nests::new(M);
-//	Nests::set_tag(proj->materials_nest, MATERIALS_NEST_TAG);
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
@@ -85,6 +85,16 @@ pathname *Projects::materialise_pathname(pathname *in, text_stream *leaf) {
 	pathname *materials = Pathnames::down(in, mf);
 	DISCARD_TEXT(mf)
 	return materials;
+}
+
+@ Returns |TRUE| for a project arising from a single file, |FALSE| for a
+project in a |.inform| bundle. (Withing the UI apps, then, all projects return
+|FALSE| here; it's only command-line use of Inform which involves stand-alone files.)
+
+=
+int Projects::stand_alone(inform_project *proj) {
+	if (proj == NULL) return FALSE;
+	return proj->stand_alone;
 }
 
 @ The file-system path to the project. For a "bundle" made by the Inform GUI
@@ -490,6 +500,25 @@ linked_list *Projects::list_of_link_instructions(inform_project *project) {
 }
 #endif
 
+@h File to write to.
+
+=
+void Projects::set_primary_output(inform_project *proj, filename *F) {
+	proj->primary_output = F;
+}
+
+filename *Projects::get_primary_output(inform_project *proj) {
+	if (proj->primary_output) return proj->primary_output;
+	if (proj->stand_alone) {
+		return Filenames::set_extension(proj->primary_source,
+			TargetVMs::get_transpiled_extension(
+				Supervisor::current_vm()));
+	} else {
+		pathname *build_folder = Projects::build_path(proj);
+		return Filenames::in(build_folder, I"auto.inf");
+	}
+}
+
 @h The full graph.
 This can be quite grandiose even though most of it will never come to anything,
 rather like a family tree for a minor European royal family.
@@ -548,8 +577,7 @@ for a release of a blorbed one.
 
 @<Construct the graph upstream of V@> =
 	target_vm *VM = Supervisor::current_vm();
-	pathname *build_folder = Projects::build_path(proj);
-	filename *inf_F = Filenames::in(build_folder, I"auto.inf");
+	filename *inf_F = Projects::get_primary_output(proj);
 
 	/* vertex for the inter code put together in memory */
 	build_vertex *inter_V = Graphs::file_vertex(inf_F);
@@ -557,36 +585,44 @@ for a release of a blorbed one.
 	BuildSteps::attach(inter_V, compile_using_inform7_skill,
 		proj->compile_for_release, VM, NULL, proj->as_copy);
 
-	/* vertex for the Inform 6 code file code-generated from that */
+	/* vertex for the final code file code-generated from that */
 	build_vertex *inf_V = Graphs::file_vertex(inf_F);
+	inf_V->always_build_dependencies = TRUE;
 	Graphs::need_this_to_build(inf_V, inter_V);
 	BuildSteps::attach(inf_V, code_generate_using_inter_skill,
 		proj->compile_for_release, VM, NULL, proj->as_copy);
 
-	TEMPORARY_TEXT(story_file_leafname)
-	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
-	filename *unblorbed_F = Filenames::in(build_folder, story_file_leafname);
-	DISCARD_TEXT(story_file_leafname)
-	proj->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
-	Graphs::need_this_to_build(proj->unblorbed_vertex, inf_V);
-	BuildSteps::attach(proj->unblorbed_vertex, compile_using_inform6_skill,
-		proj->compile_for_release, VM, NULL, proj->as_copy);
+	if (Str::eq(TargetVMs::family(VM), I"Inform6")) {
+		pathname *build_folder = Projects::build_path(proj);
 
-	TEMPORARY_TEXT(story_file_leafname2)
-	WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
-	filename *blorbed_F = Filenames::in(build_folder, story_file_leafname2);
-	DISCARD_TEXT(story_file_leafname2)
-	proj->blorbed_vertex = Graphs::file_vertex(blorbed_F);
-	proj->blorbed_vertex->always_build_this = TRUE;
-	Graphs::need_this_to_build(proj->blorbed_vertex, proj->unblorbed_vertex);
-	BuildSteps::attach(proj->blorbed_vertex, package_using_inblorb_skill,
-		proj->compile_for_release, VM, NULL, proj->as_copy);
+		TEMPORARY_TEXT(story_file_leafname)
+		WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
+		filename *unblorbed_F = Filenames::in(build_folder, story_file_leafname);
+		DISCARD_TEXT(story_file_leafname)
+		proj->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
+		Graphs::need_this_to_build(proj->unblorbed_vertex, inf_V);
+		BuildSteps::attach(proj->unblorbed_vertex, compile_using_inform6_skill,
+			proj->compile_for_release, VM, NULL, proj->as_copy);
 
-	if (proj->compile_only) {
+		TEMPORARY_TEXT(story_file_leafname2)
+		WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
+		filename *blorbed_F = Filenames::in(build_folder, story_file_leafname2);
+		DISCARD_TEXT(story_file_leafname2)
+		proj->blorbed_vertex = Graphs::file_vertex(blorbed_F);
+		proj->blorbed_vertex->always_build_this = TRUE;
+		Graphs::need_this_to_build(proj->blorbed_vertex, proj->unblorbed_vertex);
+		BuildSteps::attach(proj->blorbed_vertex, package_using_inblorb_skill,
+			proj->compile_for_release, VM, NULL, proj->as_copy);
+
+		if (proj->compile_only) {
+			proj->chosen_build_target = inf_V;
+			inf_V->always_build_this = TRUE;
+		} else if (proj->compile_for_release) proj->chosen_build_target = proj->blorbed_vertex;
+		else proj->chosen_build_target = proj->unblorbed_vertex;
+	} else {
 		proj->chosen_build_target = inf_V;
 		inf_V->always_build_this = TRUE;
-	} else if (proj->compile_for_release) proj->chosen_build_target = proj->blorbed_vertex;
-	else proj->chosen_build_target = proj->unblorbed_vertex;
+	}
 
 @ The graph also extends downstream of |V|, representing the things we will
 need before we can run //inform7// on the project: and this is not a linear
