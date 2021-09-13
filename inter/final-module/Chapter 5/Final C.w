@@ -83,29 +83,32 @@ typedef struct i7snapshot {
 
 #define I7_MAX_SNAPSHOTS 10
 
-typedef struct i7process {
+typedef struct i7process_t {
 	i7state state;
 	i7snapshot snapshots[I7_MAX_SNAPSHOTS];
 	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
 	int just_undid;
-} i7process;
+	void (*receiver)(int id, wchar_t c);
+} i7process_t;
 
 i7state i7_new_state(void);
-i7process i7_new_process(void);
+i7process_t i7_new_process(void);
 i7snapshot i7_new_snapshot(void);
-void i7_save_snapshot(i7process *proc);
-int i7_has_snapshot(i7process *proc);
-void i7_restore_snapshot(i7process *proc);
-void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
-void i7_destroy_latest_snapshot(i7process *proc);
-void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
-void i7_initializer(i7process *proc);
-void i7_fatal_exit(i7process *proc);
-void i7_destroy_state(i7process *proc, i7state *s);
-void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
+void i7_save_snapshot(i7process_t *proc);
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
+void i7_destroy_latest_snapshot(i7process_t *proc);
+int i7_run_process(i7process_t *proc);
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c));
+void i7_initializer(i7process_t *proc);
+void i7_fatal_exit(i7process_t *proc);
+void i7_destroy_state(i7process_t *proc, i7state *s);
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 void i7_default_receiver(int id, wchar_t c);
+int default_main(int argc, char **argv);
 =
 
 = (text to inform7_clib.c)
@@ -125,7 +128,7 @@ i7state i7_new_state(void) {
 	return S;
 }
 
-void i7_copy_state(i7process *proc, i7state *to, i7state *from) {
+void i7_copy_state(i7process_t *proc, i7state *to, i7state *from) {
 	to->himem = from->himem;
 	to->memory = calloc(i7_static_himem, sizeof(i7byte));
 	if (to->memory == NULL) { 
@@ -160,7 +163,7 @@ void i7_copy_state(i7process *proc, i7state *to, i7state *from) {
 		to->variables[i] = from->variables[i];
 }
 
-void i7_destroy_state(i7process *proc, i7state *s) {
+void i7_destroy_state(i7process_t *proc, i7state *s) {
 	free(s->memory);
 	s->himem = 0;
 	free(s->i7_object_tree_parent);
@@ -170,7 +173,7 @@ void i7_destroy_state(i7process *proc, i7state *s) {
 	free(s->variables);
 }
 
-void i7_destroy_snapshot(i7process *proc, i7snapshot *old) {
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old) {
 	i7_destroy_state(proc, &(old->then));
 	old->valid = 0;
 }
@@ -182,16 +185,17 @@ i7snapshot i7_new_snapshot(void) {
 	return SS;
 }
 
-i7process i7_new_process(void) {
-	i7process proc;
+i7process_t i7_new_process(void) {
+	i7process_t proc;
 	proc.state = i7_new_state();
 	for (int i=0; i<I7_MAX_SNAPSHOTS; i++) proc.snapshots[i] = i7_new_snapshot();
 	proc.just_undid = 0;
 	proc.snapshot_pos = 0;
+	proc.receiver = i7_default_receiver;
 	return proc;
 }
 
-void i7_save_snapshot(i7process *proc) {
+void i7_save_snapshot(i7process_t *proc) {
 	if (proc->snapshots[proc->snapshot_pos].valid)
 		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
 	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
@@ -203,13 +207,13 @@ void i7_save_snapshot(i7process *proc) {
 //	if (setjmp(proc->snapshots[was].env)) fprintf(stdout, "*** Restore! %d ***\n", proc->just_undid);
 }
 
-int i7_has_snapshot(i7process *proc) {
+int i7_has_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	return proc->snapshots[will_be].valid;
 }
 
-void i7_destroy_latest_snapshot(i7process *proc) {
+void i7_destroy_latest_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	if (proc->snapshots[will_be].valid)
@@ -217,7 +221,7 @@ void i7_destroy_latest_snapshot(i7process *proc) {
 	proc->snapshot_pos = will_be;
 }
 
-void i7_restore_snapshot(i7process *proc) {
+void i7_restore_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	if (proc->snapshots[will_be].valid == 0) {
@@ -231,7 +235,7 @@ void i7_restore_snapshot(i7process *proc) {
 //	longjmp(proc->snapshots[was].env, 1);
 }
 
-void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss) {
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss) {
 	i7_destroy_state(proc, &(proc->state));
 	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
@@ -240,32 +244,34 @@ void i7_default_receiver(int id, wchar_t c) {
 	if (id == 201) fputc(c, stdout);
 }
 
-#ifndef I7_NO_MAIN
-int main(int argc, char **argv) {
-	i7process proc = i7_new_process();
-	i7_run_process(&proc, i7_default_receiver);
+int default_main(int argc, char **argv) {
+	i7process_t proc = i7_new_process();
+	i7_run_process(&proc);
 	if (proc.termination_code == 1) {
 		printf("*** Fatal error: halted ***\n");
 		fflush(stdout); fflush(stderr);
 	}
 	return proc.termination_code;
 }
-#endif
 
-i7val fn_i7_mgl_Main(i7process *proc);
-void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c)) {
+i7val fn_i7_mgl_Main(i7process_t *proc);
+int i7_run_process(i7process_t *proc) {
 	if (setjmp(proc->execution_env)) {
 		proc->termination_code = 1; /* terminated abnormally */
     } else {
 		i7_initialise_state(proc);
 		i7_initializer(proc);
-		i7_initialise_streams(proc, receiver);
+		i7_initialise_streams(proc);
 		fn_i7_mgl_Main(proc);
 		proc->termination_code = 0; /* terminated normally */
     }
+    return proc->termination_code;
+}
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c)) {
+	proc->receiver = receiver;
 }
 
-void i7_fatal_exit(i7process *proc) {
+void i7_fatal_exit(i7process_t *proc) {
 //	int x = 0; printf("%d", 1/x);
 	longjmp(proc->execution_env, 1);
 }
@@ -369,7 +375,30 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 
 	generated_segment *saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+	int compile_main = TRUE;
+	target_vm *VM = gen->from_step->for_VM;
+	linked_list *opts = TargetVMs::option_list(VM);
+	text_stream *opt;
+	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
+		if (Str::eq_insensitive(opt, I"main")) compile_main = TRUE;
+		else if (Str::eq_insensitive(opt, I"no-main")) compile_main = FALSE;
+		else {
+			#ifdef PROBLEMS_MODULE
+			Problems::fatal("Unknown compilation format option");
+			#endif
+			#ifndef PROBLEMS_MODULE
+			Errors::fatal("Unknown compilation format option");
+			exit(1);
+			#endif
+		}
+	}
+	if (Architectures::debug_enabled(TargetVMs::get_architecture(VM)))
+		WRITE("#define DEBUG\n");
 	WRITE("#include \"inform7_clib.h\"\n");
+	if (compile_main)
+		WRITE("int main(int argc, char **argv) { return default_main(argc, argv); }\n");
+	WRITE("#pragma clang diagnostic push\n");
+	WRITE("#pragma clang diagnostic ignored \"-Wparentheses-equality\"\n");
 	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, c_library_inclusion_I7CGS);
@@ -396,6 +425,11 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	CAssembly::end(gen);
 	CInputOutputModel::end(gen);
 	CMemoryModel::end(gen); /* must be last to end */
+
+	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#pragma clang diagnostic pop\n");
+	CodeGen::deselect(gen, saved);
 
 	return FALSE;
 }

@@ -84,12 +84,12 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     53.7% in compilation to Inter</span>
-<span class="plain-syntax">         39.0% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          3.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          2.6% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
-<span class="plain-syntax">          1.4% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
-<span class="plain-syntax">          1.4% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
+<span class="plain-syntax">     53.8% in compilation to Inter</span>
+<span class="plain-syntax">         39.3% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          2.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">          1.2% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
+<span class="plain-syntax">          1.2% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
 <span class="plain-syntax">          1.1% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
 <span class="plain-syntax">          0.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
 <span class="plain-syntax">          0.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
@@ -101,24 +101,24 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.1% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
 <span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/5-tmw.html#SP3" class="internal">World::stages_II_and_III</a>
-<span class="plain-syntax">          1.9% not specifically accounted for</span>
-<span class="plain-syntax">     44.3% in running Inter pipeline</span>
-<span class="plain-syntax">         12.5% in step preparation</span>
-<span class="plain-syntax">          9.5% in inter step 7/16: consolidate-text</span>
+<span class="plain-syntax">          2.1% not specifically accounted for</span>
+<span class="plain-syntax">     44.2% in running Inter pipeline</span>
+<span class="plain-syntax">         12.6% in step preparation</span>
+<span class="plain-syntax">          9.6% in inter step 7/16: consolidate-text</span>
 <span class="plain-syntax">          8.0% in inter step 16/16: generate inform6 -&gt; auto.inf</span>
-<span class="plain-syntax">          8.0% in inter step 2/16: link</span>
+<span class="plain-syntax">          7.9% in inter step 2/16: link</span>
 <span class="plain-syntax">          1.5% in inter step 11/16: make-identifiers-unique</span>
 <span class="plain-syntax">          0.4% in inter step 12/16: reconcile-verbs</span>
-<span class="plain-syntax">          0.2% in inter step 10/16: detect-indirect-calls</span>
 <span class="plain-syntax">          0.2% in inter step 14/16: eliminate-redundant-operations</span>
 <span class="plain-syntax">          0.2% in inter step 6/16: assimilate</span>
 <span class="plain-syntax">          0.2% in inter step 8/16: resolve-external-symbols</span>
 <span class="plain-syntax">          0.2% in inter step 9/16: inspect-plugs</span>
+<span class="plain-syntax">          0.1% in inter step 10/16: detect-indirect-calls</span>
 <span class="plain-syntax">          0.1% in inter step 13/16: eliminate-redundant-labels</span>
 <span class="plain-syntax">          0.1% in inter step 4/16: parse-linked-matter</span>
 <span class="plain-syntax">          0.1% in inter step 5/16: resolve-conditional-compilation</span>
-<span class="plain-syntax">          2.5% not specifically accounted for</span>
-<span class="plain-syntax">      1.6% in supervisor</span>
+<span class="plain-syntax">          2.2% not specifically accounted for</span>
+<span class="plain-syntax">      1.7% in supervisor</span>
 <span class="plain-syntax">      0.2% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
@@ -364,7 +364,7 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">38.4% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    19.1%  text stream storage                      75431748 bytes in 530098 claims</span>
+<span class="plain-syntax">    19.1%  text stream storage                      75431976 bytes in 530100 claims</span>
 <span class="plain-syntax">     4.5%  dictionary storage                       18098176 bytes in 33115 claims</span>
 <span class="plain-syntax">     ----  sorting                                  744 bytes in 3 claims</span>
 <span class="plain-syntax">     1.8%  source text                              7200000 bytes in 3 claims</span>
@@ -1652,7 +1652,7 @@ that is, with the content of extensions excluded, and with the content of
 
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresscurrent">pm</li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="1-mn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresssection"><a href="M-cifc.html">cifc</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresscurrent">pm</li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="1-mn.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

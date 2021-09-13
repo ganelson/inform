@@ -735,12 +735,12 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 @
 
 = (text to inform7_clib.h)
-void i7_print_dword(i7process *proc, i7val at);
+void i7_print_dword(i7process_t *proc, i7val at);
 char *i7_text_of_string(i7val str);
 =
 
 = (text to inform7_clib.c)
-void i7_print_dword(i7process *proc, i7val at) {
+void i7_print_dword(i7process_t *proc, i7val at) {
 	for (i7byte i=1; i<=9; i++) {
 		i7byte c = i7_read_byte(proc, at+i);
 		if (c == 0) break;

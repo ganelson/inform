@@ -415,3 +415,12 @@ int TargetVMs::compatible_with(target_vm *VM, text_stream *token) {
 	if (Str::eq_insensitive(VM->transpiler_family, token)) return TRUE;
 	return FALSE;
 }
+
+@h Ootions.
+Final code-generators can call this to see what special requests were made.
+
+=
+linked_list *TargetVMs::option_list(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->format_options;
+}

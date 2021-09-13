@@ -48,13 +48,15 @@
 	! On the basis of which:
 
 	if: $VM G
-		set: $FORMAT 		= ulx
+		set: $FORMAT 		= Inform6/32
+		set: $EXT           = ulx
 		set: $I6OPTIONS		= -E2SDwGx
 		set: $INT			= $GINT
 		set: $INTNAME		= dumb-glulxe
 		set: $INTOPTIONS	= -u -q
 	else
-		set: $FORMAT		= z8
+		set: $FORMAT		= Inform6/16
+		set: $EXT           = z8
 		set: $I6OPTIONS		= -E2SDwv8x
 		set: $INT			= $ZINT
 		set: $INTNAME		= dumb-frotz
@@ -113,14 +115,14 @@
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *out=$COUT $PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
 		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality -Wno-unused-value -D DEBUG -I $I7CLIB >$CCCONSOLE 2>&1
+		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-unused-value -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
 		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
@@ -150,7 +152,7 @@
 		or: 'passed (matching cached I6 known to work)'
 
 		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
-		set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+		set: $STORYFILE = $WORK/Example.inform/Build/output.$EXT
 
 		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 		or: 'failed to pass through Inform 6' $I6CONSOLE
@@ -204,13 +206,15 @@
 	! On the basis of which:
 
 	if: $VM G
-		set: $FORMAT 		= ulx
+		set: $FORMAT 		= Inform6/32
+		set: $EXT           = ulx
 		set: $I6OPTIONS		= -E2SDwGx
 		set: $INT			= $GINT
 		set: $INTNAME		= dumb-glulxe
 		set: $INTOPTIONS	= -u -q
 	else
-		set: $FORMAT		= z8
+		set: $FORMAT		= Inform6/16
+		set: $EXT           = z8
 		set: $I6OPTIONS		= -E2SDwv8x
 		set: $INT			= $ZINT
 		set: $INTNAME		= dumb-frotz
@@ -273,14 +277,14 @@
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *tout=$TOUT -variable *out=$COUT $PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 -basic -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
 		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-parentheses-equality -D DEBUG -I $I7CLIB >$CCCONSOLE 2>&1
+		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
 		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
@@ -313,7 +317,7 @@
 		or: 'passed (matching cached I6 known to work)'
 
 		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
-		set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
+		set: $STORYFILE = $WORK/Example.inform/Build/output.$EXT
 
 		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 		or: 'failed to pass through Inform 6' $I6CONSOLE
@@ -361,9 +365,11 @@
 	! On the basis of which:
 
 	if: $VM G
-		set: $FORMAT 		= ulx
+		set: $FORMAT 		= Inform6/32
+		set: $EXT           = ulx
 	else
-		set: $FORMAT		= z8
+		set: $FORMAT		= Inform6/16
+		set: $EXT           = z8
 	endif
 
 	! Now we extract the source text from whatever file originated the test
@@ -410,9 +416,11 @@
 		set: $VM = Z
 	endif
 	if: $VM G
-		set: $FORMAT 		= ulx
+		set: $FORMAT 		= Inform6/32
+		set: $EXT           = ulx
 	else
-		set: $FORMAT		= z8
+		set: $FORMAT		= Inform6/16
+		set: $EXT           = z8
 	endif
 
 	extract: $WORK/Example.inform/Source/story.ni $VM
@@ -469,9 +477,11 @@
 	! On the basis of which:
 
 	if: $VM G
-		set: $FORMAT 		= ulx
+		set: $FORMAT 		= Inform6/32
+		set: $EXT           = ulx
 	else
-		set: $FORMAT		= z8
+		set: $FORMAT		= Inform6/16
+		set: $EXT           = z8
 	endif
 	set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 

@@ -80,12 +80,12 @@ void CMemoryModel::end(code_generation *gen) {
 @
 
 = (text to inform7_clib.h)
-void i7_initialise_state(i7process *proc);
+void i7_initialise_state(i7process_t *proc);
 =
 
 = (text to inform7_clib.c)
 i7byte i7_initial_memory[];
-void i7_initialise_state(i7process *proc) {
+void i7_initialise_state(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
 	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));
 	if (mem == NULL) { 
@@ -146,16 +146,16 @@ The following function reads a word which is in entry |array_index| (counting
 0, 1, 2, ...) in the array which begins at the byte address |array_address|.
 
 = (text to inform7_clib.h)
-i7byte i7_read_byte(i7process *proc, i7val address);
-i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index);
+i7byte i7_read_byte(i7process_t *proc, i7val address);
+i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index);
 =
 
 = (text to inform7_clib.c)
-i7byte i7_read_byte(i7process *proc, i7val address) {
+i7byte i7_read_byte(i7process_t *proc, i7val address) {
 	return proc->state.memory[address];
 }
 
-i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index) {
+i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index) {
 	i7byte *data = proc->state.memory;
 	int byte_position = array_address + 4*array_index;
 	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
@@ -178,16 +178,16 @@ express a packed word in constant context, which we will need later.
 #define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
-void i7_write_byte(i7process *proc, i7val address, i7byte new_val);
-i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7val new_val, int way);
+void i7_write_byte(i7process_t *proc, i7val address, i7byte new_val);
+i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i7val new_val, int way);
 =
 
 = (text to inform7_clib.c)
-void i7_write_byte(i7process *proc, i7val address, i7byte new_val) {
+void i7_write_byte(i7process_t *proc, i7val address, i7byte new_val) {
 	proc->state.memory[address] = new_val;
 }
 
-i7byte i7_change_byte(i7process *proc, i7val address, i7byte new_val, int way) {
+i7byte i7_change_byte(i7process_t *proc, i7val address, i7byte new_val, int way) {
 	i7byte old_val = i7_read_byte(proc, address);
 	i7byte return_val = new_val;
 	switch (way) {
@@ -202,7 +202,7 @@ i7byte i7_change_byte(i7process *proc, i7val address, i7byte new_val, int way) {
 	return return_val;
 }
 
-i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7val new_val, int way) {
+i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i7val new_val, int way) {
 	i7byte *data = proc->state.memory;
 	i7val old_val = i7_read_word(proc, array_address, array_index);
 	i7val return_val = new_val;
@@ -230,11 +230,11 @@ i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7v
 @ "Short" 16-bit numbers can also be accessed:
 
 = (text to inform7_clib.h)
-void glulx_aloads(i7process *proc, i7val x, i7val y, i7val *z);
+void glulx_aloads(i7process_t *proc, i7val x, i7val y, i7val *z);
 =
 
 = (text to inform7_clib.c)
-void glulx_aloads(i7process *proc, i7val x, i7val y, i7val *z) {
+void glulx_aloads(i7process_t *proc, i7val x, i7val y, i7val *z) {
 	if (z) *z = 0x100*((i7val) i7_read_byte(proc, x+2*y)) + ((i7val) i7_read_byte(proc, x+2*y+1));
 }
 =
@@ -242,13 +242,13 @@ void glulx_aloads(i7process *proc, i7val x, i7val y, i7val *z) {
 @ A Glulx assembly opcode is provided for fast memory copies:
 
 = (text to inform7_clib.h)
-void glulx_mcopy(i7process *proc, i7val x, i7val y, i7val z);
-void glulx_malloc(i7process *proc, i7val x, i7val y);
-void glulx_mfree(i7process *proc, i7val x);
+void glulx_mcopy(i7process_t *proc, i7val x, i7val y, i7val z);
+void glulx_malloc(i7process_t *proc, i7val x, i7val y);
+void glulx_mfree(i7process_t *proc, i7val x);
 =
 
 = (text to inform7_clib.c)
-void glulx_mcopy(i7process *proc, i7val x, i7val y, i7val z) {
+void glulx_mcopy(i7process_t *proc, i7val x, i7val y, i7val z) {
     if (z < y)
 		for (i7val i=0; i<x; i++)
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
@@ -257,12 +257,12 @@ void glulx_mcopy(i7process *proc, i7val x, i7val y, i7val z) {
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
 }
 
-void glulx_malloc(i7process *proc, i7val x, i7val y) {
+void glulx_malloc(i7process_t *proc, i7val x, i7val y) {
 	printf("Unimplemented: glulx_malloc.\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_mfree(i7process *proc, i7val x) {
+void glulx_mfree(i7process_t *proc, i7val x) {
 	printf("Unimplemented: glulx_mfree.\n");
 	i7_fatal_exit(proc);
 }

@@ -33,7 +33,7 @@ before it is known how they will be used.
 
 [ Main;
 	VM_Initialise();
-	print "^";
+print "^";
 	INITIALISE_MEMORY_R();
 	SEED_RANDOM_NUMBER_GENERATOR_R();
 	Submain();

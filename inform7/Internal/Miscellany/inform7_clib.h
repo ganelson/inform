@@ -40,29 +40,32 @@ typedef struct i7snapshot {
 
 #define I7_MAX_SNAPSHOTS 10
 
-typedef struct i7process {
+typedef struct i7process_t {
 	i7state state;
 	i7snapshot snapshots[I7_MAX_SNAPSHOTS];
 	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
 	int just_undid;
-} i7process;
+	void (*receiver)(int id, wchar_t c);
+} i7process_t;
 
 i7state i7_new_state(void);
-i7process i7_new_process(void);
+i7process_t i7_new_process(void);
 i7snapshot i7_new_snapshot(void);
-void i7_save_snapshot(i7process *proc);
-int i7_has_snapshot(i7process *proc);
-void i7_restore_snapshot(i7process *proc);
-void i7_restore_snapshot_from(i7process *proc, i7snapshot *ss);
-void i7_destroy_latest_snapshot(i7process *proc);
-void i7_run_process(i7process *proc, void (*receiver)(int id, wchar_t c));
-void i7_initializer(i7process *proc);
-void i7_fatal_exit(i7process *proc);
-void i7_destroy_state(i7process *proc, i7state *s);
-void i7_destroy_snapshot(i7process *proc, i7snapshot *old);
+void i7_save_snapshot(i7process_t *proc);
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
+void i7_destroy_latest_snapshot(i7process_t *proc);
+int i7_run_process(i7process_t *proc);
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c));
+void i7_initializer(i7process_t *proc);
+void i7_fatal_exit(i7process_t *proc);
+void i7_destroy_state(i7process_t *proc, i7state *s);
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 void i7_default_receiver(int id, wchar_t c);
+int default_main(int argc, char **argv);
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -70,132 +73,132 @@ void i7_default_receiver(int id, wchar_t c);
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-void i7_initialise_state(i7process *proc);
-i7byte i7_read_byte(i7process *proc, i7val address);
-i7val i7_read_word(i7process *proc, i7val array_address, i7val array_index);
+void i7_initialise_state(i7process_t *proc);
+i7byte i7_read_byte(i7process_t *proc, i7val address);
+i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index);
 #define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_1(V) ((V & 0x00FF0000) >> 16)
 #define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
-void i7_write_byte(i7process *proc, i7val address, i7byte new_val);
-i7val i7_write_word(i7process *proc, i7val array_address, i7val array_index, i7val new_val, int way);
-void glulx_aloads(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_mcopy(i7process *proc, i7val x, i7val y, i7val z);
-void glulx_malloc(i7process *proc, i7val x, i7val y);
-void glulx_mfree(i7process *proc, i7val x);
+void i7_write_byte(i7process_t *proc, i7val address, i7byte new_val);
+i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i7val new_val, int way);
+void glulx_aloads(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_mcopy(i7process_t *proc, i7val x, i7val y, i7val z);
+void glulx_malloc(i7process_t *proc, i7val x, i7val y);
+void glulx_mfree(i7process_t *proc, i7val x);
 void i7_debug_stack(char *N);
-i7val i7_pull(i7process *proc);
-void i7_push(i7process *proc, i7val x);
-void glulx_accelfunc(i7process *proc, i7val x, i7val y);
-void glulx_accelparam(i7process *proc, i7val x, i7val y);
-void glulx_copy(i7process *proc, i7val x, i7val *y);
-void glulx_gestalt(i7process *proc, i7val x, i7val y, i7val *z);
-int glulx_jeq(i7process *proc, i7val x, i7val y);
-void glulx_nop(i7process *proc);
-int glulx_jleu(i7process *proc, i7val x, i7val y);
-int glulx_jnz(i7process *proc, i7val x);
-int glulx_jz(i7process *proc, i7val x);
-void glulx_quit(i7process *proc);
-void glulx_setiosys(i7process *proc, i7val x, i7val y);
-void glulx_streamchar(i7process *proc, i7val x);
-void glulx_streamnum(i7process *proc, i7val x);
-void glulx_streamstr(i7process *proc, i7val x);
-void glulx_streamunichar(i7process *proc, i7val x);
-void glulx_ushiftr(i7process *proc, i7val x, i7val y, i7val z);
-void glulx_aload(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_aloadb(i7process *proc, i7val x, i7val y, i7val *z);
+i7val i7_pull(i7process_t *proc);
+void i7_push(i7process_t *proc, i7val x);
+void glulx_accelfunc(i7process_t *proc, i7val x, i7val y);
+void glulx_accelparam(i7process_t *proc, i7val x, i7val y);
+void glulx_copy(i7process_t *proc, i7val x, i7val *y);
+void glulx_gestalt(i7process_t *proc, i7val x, i7val y, i7val *z);
+int glulx_jeq(i7process_t *proc, i7val x, i7val y);
+void glulx_nop(i7process_t *proc);
+int glulx_jleu(i7process_t *proc, i7val x, i7val y);
+int glulx_jnz(i7process_t *proc, i7val x);
+int glulx_jz(i7process_t *proc, i7val x);
+void glulx_quit(i7process_t *proc);
+void glulx_setiosys(i7process_t *proc, i7val x, i7val y);
+void glulx_streamchar(i7process_t *proc, i7val x);
+void glulx_streamnum(i7process_t *proc, i7val x);
+void glulx_streamstr(i7process_t *proc, i7val x);
+void glulx_streamunichar(i7process_t *proc, i7val x);
+void glulx_ushiftr(i7process_t *proc, i7val x, i7val y, i7val z);
+void glulx_aload(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_aloadb(i7process_t *proc, i7val x, i7val y, i7val *z);
 #define serop_KeyIndirect (0x01)
 #define serop_ZeroKeyTerminates (0x02)
 #define serop_ReturnIndex (0x04)
-void glulx_binarysearch(i7process *proc, i7val key, i7val keysize, i7val start, i7val structsize,
+void glulx_binarysearch(i7process_t *proc, i7val key, i7val keysize, i7val start, i7val structsize,
 	i7val numstructs, i7val keyoffset, i7val options, i7val *s1);
-void glulx_shiftl(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_restoreundo(i7process *proc, i7val *x);
-void glulx_saveundo(i7process *proc, i7val *x);
-void glulx_restart(i7process *proc);
-void glulx_restore(i7process *proc, i7val x, i7val y);
-void glulx_save(i7process *proc, i7val x, i7val y);
-void glulx_verify(i7process *proc, i7val x);
-void glulx_hasundo(i7process *proc, i7val *x);
-void glulx_discardundo(i7process *proc);
-void glulx_random(i7process *proc, i7val x, i7val *y);
-i7val fn_i7_mgl_random(i7process *proc, i7val x);
-void glulx_setrandom(i7process *proc, i7val s);
-void glulx_add(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_sub(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_neg(i7process *proc, i7val x, i7val *y);
-void glulx_mul(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_div(i7process *proc, i7val x, i7val y, i7val *z);
-i7val glulx_div_r(i7process *proc, i7val x, i7val y);
-void glulx_mod(i7process *proc, i7val x, i7val y, i7val *z);
-i7val glulx_mod_r(i7process *proc, i7val x, i7val y);
+void glulx_shiftl(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_restoreundo(i7process_t *proc, i7val *x);
+void glulx_saveundo(i7process_t *proc, i7val *x);
+void glulx_restart(i7process_t *proc);
+void glulx_restore(i7process_t *proc, i7val x, i7val y);
+void glulx_save(i7process_t *proc, i7val x, i7val y);
+void glulx_verify(i7process_t *proc, i7val x);
+void glulx_hasundo(i7process_t *proc, i7val *x);
+void glulx_discardundo(i7process_t *proc);
+void glulx_random(i7process_t *proc, i7val x, i7val *y);
+i7val fn_i7_mgl_random(i7process_t *proc, i7val x);
+void glulx_setrandom(i7process_t *proc, i7val s);
+void glulx_add(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_sub(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_neg(i7process_t *proc, i7val x, i7val *y);
+void glulx_mul(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_div(i7process_t *proc, i7val x, i7val y, i7val *z);
+i7val glulx_div_r(i7process_t *proc, i7val x, i7val y);
+void glulx_mod(i7process_t *proc, i7val x, i7val y, i7val *z);
+i7val glulx_mod_r(i7process_t *proc, i7val x, i7val y);
 typedef float gfloat32;
 i7val encode_float(gfloat32 val);
 gfloat32 decode_float(i7val val);
-void glulx_exp(i7process *proc, i7val x, i7val *y);
-void glulx_fadd(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_fdiv(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_floor(i7process *proc, i7val x, i7val *y);
-void glulx_fmod(i7process *proc, i7val x, i7val y, i7val *z, i7val *w);
-void glulx_fmul(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_fsub(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_ftonumn(i7process *proc, i7val x, i7val *y);
-void glulx_ftonumz(i7process *proc, i7val x, i7val *y);
-void glulx_numtof(i7process *proc, i7val x, i7val *y);
-int glulx_jfeq(i7process *proc, i7val x, i7val y, i7val z);
-int glulx_jfne(i7process *proc, i7val x, i7val y, i7val z);
-int glulx_jfge(i7process *proc, i7val x, i7val y);
-int glulx_jflt(i7process *proc, i7val x, i7val y);
-int glulx_jisinf(i7process *proc, i7val x);
-int glulx_jisnan(i7process *proc, i7val x);
-void glulx_log(i7process *proc, i7val x, i7val *y);
-void glulx_acos(i7process *proc, i7val x, i7val *y);
-void glulx_asin(i7process *proc, i7val x, i7val *y);
-void glulx_atan(i7process *proc, i7val x, i7val *y);
-void glulx_ceil(i7process *proc, i7val x, i7val *y);
-void glulx_cos(i7process *proc, i7val x, i7val *y);
-void glulx_pow(i7process *proc, i7val x, i7val y, i7val *z);
-void glulx_sin(i7process *proc, i7val x, i7val *y);
-void glulx_sqrt(i7process *proc, i7val x, i7val *y);
-void glulx_tan(i7process *proc, i7val x, i7val *y);
-i7val fn_i7_mgl_metaclass(i7process *proc, i7val id);
-int i7_ofclass(i7process *proc, i7val id, i7val cl_id);
-i7val fn_i7_mgl_CreatePropertyOffsets(i7process *proc);
-void i7_write_prop_value(i7process *proc, i7val owner_id, i7val prop_id, i7val val);
-i7val i7_read_prop_value(i7process *proc, i7val owner_id, i7val prop_id);
-i7val i7_change_prop_value(i7process *proc, i7val obj, i7val pr, i7val to, int way);
-void i7_give(i7process *proc, i7val owner, i7val prop, i7val val);
+void glulx_exp(i7process_t *proc, i7val x, i7val *y);
+void glulx_fadd(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_fdiv(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_floor(i7process_t *proc, i7val x, i7val *y);
+void glulx_fmod(i7process_t *proc, i7val x, i7val y, i7val *z, i7val *w);
+void glulx_fmul(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_fsub(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_ftonumn(i7process_t *proc, i7val x, i7val *y);
+void glulx_ftonumz(i7process_t *proc, i7val x, i7val *y);
+void glulx_numtof(i7process_t *proc, i7val x, i7val *y);
+int glulx_jfeq(i7process_t *proc, i7val x, i7val y, i7val z);
+int glulx_jfne(i7process_t *proc, i7val x, i7val y, i7val z);
+int glulx_jfge(i7process_t *proc, i7val x, i7val y);
+int glulx_jflt(i7process_t *proc, i7val x, i7val y);
+int glulx_jisinf(i7process_t *proc, i7val x);
+int glulx_jisnan(i7process_t *proc, i7val x);
+void glulx_log(i7process_t *proc, i7val x, i7val *y);
+void glulx_acos(i7process_t *proc, i7val x, i7val *y);
+void glulx_asin(i7process_t *proc, i7val x, i7val *y);
+void glulx_atan(i7process_t *proc, i7val x, i7val *y);
+void glulx_ceil(i7process_t *proc, i7val x, i7val *y);
+void glulx_cos(i7process_t *proc, i7val x, i7val *y);
+void glulx_pow(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_sin(i7process_t *proc, i7val x, i7val *y);
+void glulx_sqrt(i7process_t *proc, i7val x, i7val *y);
+void glulx_tan(i7process_t *proc, i7val x, i7val *y);
+i7val fn_i7_mgl_metaclass(i7process_t *proc, i7val id);
+int i7_ofclass(i7process_t *proc, i7val id, i7val cl_id);
+i7val fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
+void i7_write_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id, i7val val);
+i7val i7_read_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id);
+i7val i7_change_prop_value(i7process_t *proc, i7val obj, i7val pr, i7val to, int way);
+void i7_give(i7process_t *proc, i7val owner, i7val prop, i7val val);
 i7val i7_prop_len(i7val obj, i7val pr);
 i7val i7_prop_addr(i7val obj, i7val pr);
-int i7_has(i7process *proc, i7val obj, i7val attr);
-int i7_provides(i7process *proc, i7val owner_id, i7val prop_id);
-int i7_in(i7process *proc, i7val obj1, i7val obj2);
-i7val fn_i7_mgl_parent(i7process *proc, i7val id);
-i7val fn_i7_mgl_child(i7process *proc, i7val id);
-i7val fn_i7_mgl_children(i7process *proc, i7val id);
-i7val fn_i7_mgl_sibling(i7process *proc, i7val id);
-void i7_move(i7process *proc, i7val obj, i7val to);
-i7val i7_call_0(i7process *proc, i7val fn_ref);
-i7val i7_call_1(i7process *proc, i7val fn_ref, i7val v);
-i7val i7_call_2(i7process *proc, i7val fn_ref, i7val v, i7val v2);
-i7val i7_call_3(i7process *proc, i7val fn_ref, i7val v, i7val v2, i7val v3);
-i7val i7_call_4(i7process *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4);
-i7val i7_call_5(i7process *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5);
-i7val i7_mcall_0(i7process *proc, i7val to, i7val prop);
-i7val i7_mcall_1(i7process *proc, i7val to, i7val prop, i7val v);
-i7val i7_mcall_2(i7process *proc, i7val to, i7val prop, i7val v, i7val v2);
-i7val i7_mcall_3(i7process *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3);
-i7val i7_gen_call(i7process *proc, i7val fn_ref, i7val *args, int argc);
-void glulx_call(i7process *proc, i7val fn_ref, i7val varargc, i7val *z);
-void i7_print_dword(i7process *proc, i7val at);
+int i7_has(i7process_t *proc, i7val obj, i7val attr);
+int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id);
+int i7_in(i7process_t *proc, i7val obj1, i7val obj2);
+i7val fn_i7_mgl_parent(i7process_t *proc, i7val id);
+i7val fn_i7_mgl_child(i7process_t *proc, i7val id);
+i7val fn_i7_mgl_children(i7process_t *proc, i7val id);
+i7val fn_i7_mgl_sibling(i7process_t *proc, i7val id);
+void i7_move(i7process_t *proc, i7val obj, i7val to);
+i7val i7_call_0(i7process_t *proc, i7val fn_ref);
+i7val i7_call_1(i7process_t *proc, i7val fn_ref, i7val v);
+i7val i7_call_2(i7process_t *proc, i7val fn_ref, i7val v, i7val v2);
+i7val i7_call_3(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3);
+i7val i7_call_4(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4);
+i7val i7_call_5(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5);
+i7val i7_mcall_0(i7process_t *proc, i7val to, i7val prop);
+i7val i7_mcall_1(i7process_t *proc, i7val to, i7val prop, i7val v);
+i7val i7_mcall_2(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2);
+i7val i7_mcall_3(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3);
+i7val i7_gen_call(i7process_t *proc, i7val fn_ref, i7val *args, int argc);
+void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z);
+void i7_print_dword(i7process_t *proc, i7val at);
 char *i7_text_of_string(i7val str);
 #define i7_bold 1
 #define i7_roman 2
 #define i7_underline 3
 #define i7_reverse 4
-void i7_style(i7process *proc, int what);
-void i7_font(i7process *proc, int what);
+void i7_style(i7process_t *proc, int what);
+void i7_font(i7process_t *proc, int what);
 
 #define fileusage_Data (0x00)
 #define fileusage_SavedGame (0x01)
@@ -219,14 +222,14 @@ typedef struct i7_fileref {
 	FILE *handle;
 } i7_fileref;
 
-i7val i7_do_glk_fileref_create_by_name(i7process *proc, i7val usage, i7val name, i7val rock);
-int i7_fseek(i7process *proc, int id, int pos, int origin);
-int i7_ftell(i7process *proc, int id);
-int i7_fopen(i7process *proc, int id, int mode);
-void i7_fclose(i7process *proc, int id);
-i7val i7_do_glk_fileref_does_file_exist(i7process *proc, i7val id);
-void i7_fputc(i7process *proc, int c, int id);
-int i7_fgetc(i7process *proc, int id);
+i7val i7_do_glk_fileref_create_by_name(i7process_t *proc, i7val usage, i7val name, i7val rock);
+int i7_fseek(i7process_t *proc, int id, int pos, int origin);
+int i7_ftell(i7process_t *proc, int id);
+int i7_fopen(i7process_t *proc, int id, int mode);
+void i7_fclose(i7process_t *proc, int id);
+i7val i7_do_glk_fileref_does_file_exist(i7process_t *proc, i7val id);
+void i7_fputc(i7process_t *proc, int c, int id);
+int i7_fgetc(i7process_t *proc, int id);
 typedef struct i7_stream {
 	FILE *to_file;
 	i7val to_file_id;
@@ -244,33 +247,33 @@ typedef struct i7_stream {
 	int end_position;
 	int owned_by_window_id;
 } i7_stream;
-i7val i7_do_glk_stream_get_current(i7process *proc);
-i7_stream i7_new_stream(i7process *proc, FILE *F, int win_id);
-void i7_initialise_streams(i7process *proc, void (*receiver)(int id, wchar_t c));
-i7val i7_open_stream(i7process *proc, FILE *F, int win_id);
-i7val i7_do_glk_stream_open_memory(i7process *proc, i7val buffer, i7val len, i7val fmode, i7val rock);
-i7val i7_do_glk_stream_open_memory_uni(i7process *proc, i7val buffer, i7val len, i7val fmode, i7val rock);
-i7val i7_do_glk_stream_open_file(i7process *proc, i7val fileref, i7val usage, i7val rock);
+i7val i7_do_glk_stream_get_current(i7process_t *proc);
+i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);
+void i7_initialise_streams(i7process_t *proc);
+i7val i7_open_stream(i7process_t *proc, FILE *F, int win_id);
+i7val i7_do_glk_stream_open_memory(i7process_t *proc, i7val buffer, i7val len, i7val fmode, i7val rock);
+i7val i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7val buffer, i7val len, i7val fmode, i7val rock);
+i7val i7_do_glk_stream_open_file(i7process_t *proc, i7val fileref, i7val usage, i7val rock);
 #define seekmode_Start (0)
 #define seekmode_Current (1)
 #define seekmode_End (2)
-void i7_do_glk_stream_set_position(i7process *proc, i7val id, i7val pos, i7val seekmode);
-i7val i7_do_glk_stream_get_position(i7process *proc, i7val id);
-void i7_do_glk_stream_close(i7process *proc, i7val id, i7val result);
+void i7_do_glk_stream_set_position(i7process_t *proc, i7val id, i7val pos, i7val seekmode);
+i7val i7_do_glk_stream_get_position(i7process_t *proc, i7val id);
+void i7_do_glk_stream_close(i7process_t *proc, i7val id, i7val result);
 typedef struct i7_winref {
 	i7val type;
 	i7val stream_id;
 	i7val rock;
 } i7_winref;
-i7val i7_do_glk_window_open(i7process *proc, i7val split, i7val method, i7val size, i7val wintype, i7val rock);
-i7val i7_stream_of_window(i7process *proc, i7val id);
-i7val i7_rock_of_window(i7process *proc, i7val id);
-void i7_to_receiver(i7process *proc, i7val rock, wchar_t c);
-void i7_do_glk_put_char_stream(i7process *proc, i7val stream_id, i7val x);
-i7val i7_do_glk_get_char_stream(i7process *proc, i7val stream_id);
-void i7_print_char(i7process *proc, i7val x);
-void i7_print_C_string(i7process *proc, char *c_string);
-void i7_print_decimal(i7process *proc, i7val x);
+i7val i7_do_glk_window_open(i7process_t *proc, i7val split, i7val method, i7val size, i7val wintype, i7val rock);
+i7val i7_stream_of_window(i7process_t *proc, i7val id);
+i7val i7_rock_of_window(i7process_t *proc, i7val id);
+void i7_to_receiver(i7process_t *proc, i7val rock, wchar_t c);
+void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x);
+i7val i7_do_glk_get_char_stream(i7process_t *proc, i7val stream_id);
+void i7_print_char(i7process_t *proc, i7val x);
+void i7_print_C_string(i7process_t *proc, char *c_string);
+void i7_print_decimal(i7process_t *proc, i7val x);
 
 #define evtype_None (0)
 #define evtype_Timer (1)
@@ -289,10 +292,10 @@ typedef struct i7_glk_event {
 	i7val val1;
 	i7val val2;
 } i7_glk_event;
-i7_glk_event *i7_next_event(i7process *proc);
-void i7_make_event(i7process *proc, i7_glk_event e);
-i7val i7_do_glk_select(i7process *proc, i7val structure);
-i7val i7_do_glk_request_line_event(i7process *proc, i7val window_id, i7val buffer, i7val max_len, i7val init_len);
+i7_glk_event *i7_next_event(i7process_t *proc);
+void i7_make_event(i7process_t *proc, i7_glk_event e);
+i7val i7_do_glk_select(i7process_t *proc, i7val structure);
+i7val i7_do_glk_request_line_event(i7process_t *proc, i7val window_id, i7val buffer, i7val max_len, i7val init_len);
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -416,14 +419,14 @@ i7val i7_do_glk_request_line_event(i7process *proc, i7val window_id, i7val buffe
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-void glulx_glk(i7process *proc, i7val glk_api_selector, i7val varargc, i7val *z);
-i7val fn_i7_mgl_IndefArt(i7process *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_DefArt(i7process *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_CIndefArt(i7process *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_CDefArt(i7process *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-i7val fn_i7_mgl_PrintShortName(i7process *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
-void i7_print_name(i7process *proc, i7val x);
-void i7_print_object(i7process *proc, i7val x);
-void i7_print_box(i7process *proc, i7val x);
-void i7_read(i7process *proc, i7val x);
+void glulx_glk(i7process_t *proc, i7val glk_api_selector, i7val varargc, i7val *z);
+i7val fn_i7_mgl_IndefArt(i7process_t *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_DefArt(i7process_t *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CIndefArt(i7process_t *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_CDefArt(i7process_t *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+i7val fn_i7_mgl_PrintShortName(i7process_t *proc, i7val i7_mgl_local_obj, i7val i7_mgl_local_i);
+void i7_print_name(i7process_t *proc, i7val x);
+void i7_print_object(i7process_t *proc, i7val x);
+void i7_print_box(i7process_t *proc, i7val x);
+void i7_read(i7process_t *proc, i7val x);
 #endif

@@ -1,3 +1,2 @@
-Welcome to this hybrid program!
-
-Hello to my external C friend.
+Hello from the C source code.
+Hello from the Inform source.

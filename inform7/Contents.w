@@ -36,6 +36,7 @@ Import: inter/index
 Manual
 	Command-Line Usage
 	Interacting with the GUI
+	Calling Inform from C
 	Reference Card
 	Performance Metrics
 
