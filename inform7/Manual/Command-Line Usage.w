@@ -174,9 +174,8 @@ a simple program. At its simplest, for example:
 	I've also read Basic Inform by Graham Nelson, which is 7687 words long.
 	I've also read English Language by Graham Nelson, which is 2328 words long.
 
-	  The 5-word source text has successfully been translated into an intermediate
-		description which can be run through Inform 6 to complete compilation.
-		There were 0 rooms and 0 things.
+	  The 5-word source text has successfully been translated. There were 0 rooms
+	  and 0 things.
 	Inform 7 has finished.
 	$ ls
 	helloworld.i6       helloworld.i7
@@ -216,7 +215,7 @@ The default output filename is the source filename but with the file extension
 changed from |i7| to whatever is standard for the format being output. For
 example,
 = (text as ConsoleText)
-	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -format C
+	$ inform7/Tangled/inform7 -basic -silence helloworld.i7 -format=C
 	$ ls
 	helloworld.c        helloworld.i7
 =

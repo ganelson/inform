@@ -1,5 +1,5 @@
 #include "inform7_clib.h"
-asdkfjalkgalg;
+
 int main(int argc, char **argv) {
 	printf("Welcome to this hybrid program!\n");
 	i7process proc = i7_new_process();

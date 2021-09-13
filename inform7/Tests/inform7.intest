@@ -9,6 +9,7 @@
 -if osx -cases	[Release] 'inform7/Tests/Test Releases'
 -cases			[Basic] 'inform7/Tests/Test Basic'
 -cases			[Internal] 'inform7/Tests/Test Internals'
+-cases			[Make] 'inform7/Tests/Test Makes'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Complex Listing.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
@@ -494,4 +495,30 @@
 	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
+-end
+
+-recipe [Make]
+	set: $MAKERSPACE = $PATH/$CASE
+
+	step: make -C $MAKERSPACE -s clean
+	or: 'failed to clean example make'
+	
+	set: $LOG = $MAKERSPACE/build_log.txt
+	set: $RLOG = $MAKERSPACE/actual_output.txt
+	set: $ILOG = $MAKERSPACE/ideal_output.txt
+
+	step: make -C $MAKERSPACE >$LOG 2>&1
+	or: 'failed to build example make' $LOG
+	step: make -C $MAKERSPACE -s run >$RLOG 2>&1
+	or: 'failed to run example make' $RLOG
+	
+	match text: $RLOG $ILOG
+	or: 'made, but produced the wrong output'
+
+	show: $RLOG	
+
+	step: make -C $MAKERSPACE -s clean
+	or: 'failed to clean example make'
+	
+	pass: 'passed'
 -end
