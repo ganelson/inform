@@ -1,4 +1,3 @@
-
 relation of numbers: vague connection
 "whether or not the vague connection relation is empty" = truth state: true
 "R" = relation of numbers: vague connection

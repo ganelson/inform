@@ -1,4 +1,3 @@
-  
   Complete test set.
   test 1: matching ^ in ABC case insensitive --> <0>
   test 2: matching $ in ABC case insensitive --> <0>
@@ -237,8 +236,8 @@
   test 232: matching <a<:>b<:c> in abc case sensitive --> <0> abc
   test 233: matching <a<:>b<:c> in abc case sensitive --> <0> abc
   test 234: matching ((?>a+)b) in aaab case sensitive --> <1> aaab
-  test 221: matching (a*)b+ in caab case sensitive --> <2> aab
   test 235: matching (?>(a+))b in aaab case sensitive --> <1> aaab
+  test 221: matching (a*)b+ in caab case sensitive --> <2> aab
   test 236: matching ((?><^()>+)|\(<^()>*\))+ in ((abc(ade)ufh()()x case sensitive --> <21> abc(ade)ufh()()x
   test 237: compiling (?<=x+)y to error Variable length lookbehind not implemented --> *** Regular expression error: variable length lookbehind not implemented ***
   test 238: compiling a{37,17} to error Can't do {n,m} with n > m --> *** Regular expression error: {x,y} with x greater than y ***

@@ -1,4 +1,3 @@
-  
   Complete test set.
   test 1: matching ab|cd in abc case sensitive --> <0> ab
   test 2: matching ab|cd in abcd case sensitive --> <0> ab

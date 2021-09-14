@@ -1,4 +1,3 @@
-
 relation of numbers: joint magnitude relation
 phrase text -> text: txtng
 phrase (number, number) -> number: maximizing

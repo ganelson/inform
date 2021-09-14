@@ -1,4 +1,3 @@
-
 "number of fruits" = number: 3
 "fruit after the pear" = fruit: orange
 "fruit after the orange" = fruit: apple

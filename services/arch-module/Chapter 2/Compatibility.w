@@ -278,7 +278,9 @@ int Compatibility::parse_token(compat_parser_state *cps, text_stream *token, int
 
 	int bits = NOT_APPLICABLE;
 	if (Str::eq_insensitive(token, I"16-bit")) bits = TRUE;
+	if (Str::eq_insensitive(token, I"z-machine")) bits = TRUE;
 	if (Str::eq_insensitive(token, I"32-bit")) bits = FALSE;
+	if (Str::eq_insensitive(token, I"glulx")) bits = FALSE;
 	if (bits != NOT_APPLICABLE) @<Construe token as a bit count@>;
 
 	if (with != NOT_APPLICABLE) @<Construe token as a family name subject to debugging@>;

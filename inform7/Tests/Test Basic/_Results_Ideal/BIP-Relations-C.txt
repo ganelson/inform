@@ -1,4 +1,3 @@
-
 relation of fruits: affinity relation
 Affinity relates various fruits to various fruits:
   The apple  >=>  the orange

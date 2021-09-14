@@ -1,12 +1,12 @@
-adjective: 133 items
+adjective: 137 items
 article: 2 items
-noun: 2360 items
+noun: 2380 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3292
+total in all categories: 3316
 
 adjective: 'even'
 adjective: 'odd'
@@ -31,6 +31,10 @@ adjective: 'one-to-one'
 adjective: 'one-to-various'
 adjective: 'various-to-one'
 adjective: 'various-to-various'
+adjective: 'infinite'
+adjective: 'finite'
+adjective: 'nonexistent'
+adjective: 'existent'
 adjective: 'worn'
 adjective: 'carried'
 adjective: 'held'
@@ -218,6 +222,26 @@ noun: proper: 'printed plural name'
 noun: proper: 'property printed plural name'
 noun: proper: 'indefinite article'
 noun: proper: 'property indefinite article'
+noun: proper: 'abs function'
+noun: proper: 'root function'
+noun: proper: 'rsqr function'
+noun: proper: 'ceiling function'
+noun: proper: 'floor function'
+noun: proper: 'int function'
+noun: proper: 'log function'
+noun: proper: 'exp function'
+noun: proper: 'sin function'
+noun: proper: 'cos function'
+noun: proper: 'tan function'
+noun: proper: 'arcsin function'
+noun: proper: 'arccos function'
+noun: proper: 'arctan function'
+noun: proper: 'sinh function'
+noun: proper: 'cosh function'
+noun: proper: 'tanh function'
+noun: proper: 'arcsinh function'
+noun: proper: 'arccosh function'
+noun: proper: 'arctanh function'
 noun: proper: 'adaptive text viewpoint'
 noun: proper: 'property adaptive text viewpoint'
 noun: proper: 'description'

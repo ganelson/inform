@@ -115,7 +115,7 @@
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 -fixtime -rng -sigils -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
@@ -277,7 +277,7 @@
 		set: $TOUT = $PATH/_Textual/$CASE.intert
 		set: $COUT = $PATH/_C/$CASE.c
 		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-		step: $I7 -basic -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
+		step: $I7 -fixtime -rng -sigils -basic -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 
 		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt

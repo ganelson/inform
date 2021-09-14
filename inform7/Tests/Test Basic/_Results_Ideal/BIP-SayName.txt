@@ -1,4 +1,3 @@
-  
   object: planet Mars
   Look! It's planet Mars. Yes, the planet Mars; not just a planet Mars. The planet Mars. A planet Mars? Nope.
   object: asteroid Ceres

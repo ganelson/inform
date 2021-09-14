@@ -1,4 +1,3 @@
-  
   This has a
   sudden line break.
   There's no skipped line above this one. And we didn't break a line just then.

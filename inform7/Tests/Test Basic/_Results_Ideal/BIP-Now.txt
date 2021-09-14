@@ -1,4 +1,3 @@
-  
   "tally" = number: 0
   "tally" = number: 7
   "whether or not the apple is ripe" = truth state: false

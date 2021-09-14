@@ -1,6 +1,4 @@
-  
   nothing based rule: watching paint dry rule
-  
   You watch some paint dry.
   numbers based rulebook: Grading rulebook
   Grading 1: There's something odd about 1.

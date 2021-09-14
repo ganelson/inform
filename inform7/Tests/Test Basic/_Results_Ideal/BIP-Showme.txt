@@ -1,4 +1,3 @@
-  
   number: 7
   number: -6
   truth state: true

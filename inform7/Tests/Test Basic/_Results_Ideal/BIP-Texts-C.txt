@@ -1,4 +1,3 @@
-
 "number of characters in T" = number: 38
 "number of words in T" = number: 7
 "number of punctuated words in T" = number: 8

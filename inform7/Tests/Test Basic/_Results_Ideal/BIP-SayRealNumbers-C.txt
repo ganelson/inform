@@ -1,4 +1,3 @@
-
 Consider: 3.1416.
 Consider: 312.0.
 Consider: 123456.0.

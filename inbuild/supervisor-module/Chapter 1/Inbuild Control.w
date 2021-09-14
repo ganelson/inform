@@ -321,7 +321,9 @@ line, which is why we couldn't work this out earlier:
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		with_debugging = TRUE;
 	if (Str::len(ext) == 0) ext = I"Inform6";
-	Supervisor::set_current_vm(TargetVMs::find_with_hint(ext, with_debugging));
+	target_vm *VM = TargetVMs::find_with_hint(ext, with_debugging);
+	Supervisor::set_current_vm(VM);
+	if (VM == NULL) Errors::fatal("unrecognised compilation format");
 
 @ =
 target_vm *current_target_VM = NULL;

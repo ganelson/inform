@@ -81,6 +81,17 @@ inter_architecture *Architectures::from_codename(text_stream *name) {
 	return NULL;
 }
 
+inter_architecture *Architectures::from_codename_with_hint(text_stream *name, int debug) {
+	inter_architecture *A = Architectures::from_codename(name);
+	if ((A) && (debug)) {
+		inter_architecture *B;
+		LOOP_OVER(B, inter_architecture)
+			if ((B->sixteen_bit == A->sixteen_bit) && (B->debug_enabled) && (debug == TRUE)) 
+				return B;
+	}
+	return A;
+}
+
 @h What an architecture offers.
 At present, this all there is, so in a sense all possible architectures exist:
 

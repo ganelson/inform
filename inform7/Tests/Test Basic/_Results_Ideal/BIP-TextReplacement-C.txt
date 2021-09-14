@@ -1,4 +1,3 @@
-
 "whether or not "fish" exactly matches the text "FIsH"" = truth state: false
 "whether or not "fish" exactly matches the text "FIsH", case insensitively" = truth state: true
 "whether or not "Go fish!" matches the text "fish"" = truth state: true

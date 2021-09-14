@@ -1,4 +1,3 @@
-  
   "magic number" = number: 417
   "whether or not 31 pleases us" = truth state: true
   "whether or not -417 displeases us" = truth state: false

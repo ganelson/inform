@@ -1,4 +1,3 @@
-
 "cosine of 2" = real number: -0.41615
 "cosine of 2.0" = real number: -0.41615
 "sine of 0" = real number: 0.0

@@ -1,4 +1,3 @@
-
 "default value of number" = number: 0
 "default value of colour" = colour: red
 "default value of fruit" = fruit: apple

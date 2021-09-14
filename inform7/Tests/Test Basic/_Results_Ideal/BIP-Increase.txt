@@ -1,4 +1,3 @@
-  
   "total raised" = number: 900
   "total raised" = number: 910
   "total raised" = number: 911

@@ -1,4 +1,3 @@
-
 "hyperbolic sine of 1" = real number: 1.54308
 "hyperbolic cosine of 1" = real number: 1.1752
 "hyperbolic tangent of 1" = real number: 1.31304

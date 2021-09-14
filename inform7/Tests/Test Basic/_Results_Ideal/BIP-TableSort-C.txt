@@ -1,4 +1,3 @@
-
 Table of Selected Numbers
 (row 1)  | 3 | three |
 (row 2)  | 4 | four |

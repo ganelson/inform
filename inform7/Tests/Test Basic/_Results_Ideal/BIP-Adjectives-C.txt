@@ -1,4 +1,3 @@
-
 Now testing N = -3.
 "whether or not N is positive" = truth state: false
 "whether or not N is negative" = truth state: true

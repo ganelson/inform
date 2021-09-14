@@ -1,4 +1,3 @@
-  
   verb imply has infinitive "imply".
   verb imply has past participle "implied".
   verb imply has present participle "implying".
@@ -237,8 +236,8 @@
   perfect tense, third person plural: have whinged.
   perfect tense, third person plural: have not whinged.
   past perfect tense, first person singular: had whinged.
-  second person plural: whinge.
   past perfect tense, first person singular: had not whinged.
+  second person plural: whinge.
   past perfect tense, second person singular: had whinged.
   past perfect tense, second person singular: had not whinged.
   past perfect tense, third person singular: had whinged.

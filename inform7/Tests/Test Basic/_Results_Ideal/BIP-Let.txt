@@ -1,4 +1,3 @@
-  
   "paint colour" = text: Cerulean Blue
   "colour number" = number: 117
   "colour number" = number: 41

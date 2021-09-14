@@ -190,7 +190,7 @@ that, they are considered options (see above).
 @<Accept criterion@> =
 	if (wanted_language == NULL) wanted_language = Str::duplicate(criterion);
 	else {
-		inter_architecture *arch = Architectures::from_codename(criterion);
+		inter_architecture *arch = Architectures::from_codename_with_hint(criterion, debug);
 		if (arch) wanted_arch = arch;
 		else {
 			if (((Str::get_at(criterion, 0) == 'v') || (Str::get_at(criterion, 0) == 'V')) &&
@@ -388,10 +388,6 @@ text_stream *TargetVMs::get_default_interpreter(target_vm *VM) {
 }
 
 @h Family compatibility.
-This is used when, for example, source text headings are said to be "for
-Glulx only". How are we to interpret that? The full story is at //Compatibility//,
-but here we do at least match whether a given |VM| is, or is not, "Glulx"
-(or whatever may be).
 
 =
 text_stream *TargetVMs::family(target_vm *VM) {
@@ -399,19 +395,7 @@ text_stream *TargetVMs::family(target_vm *VM) {
 	return VM->transpiler_family;
 }
 
-int TargetVMs::compatible_with(target_vm *VM, text_stream *token) {
-	if (Str::eq_insensitive(token, I"Glulx")) {
-		if ((Str::eq_insensitive(VM->transpiler_family, I"Inform6")) &&
-			(TargetVMs::is_16_bit(VM) == FALSE))
-			 return TRUE;
-		return TRUE;
-	}
-	if (Str::eq_insensitive(token, I"Z-Machine")) {
-		if ((Str::eq_insensitive(VM->transpiler_family, I"Inform6")) &&
-			(TargetVMs::is_16_bit(VM) == TRUE))
-			 return TRUE;
-		return TRUE;
-	}
+int TargetVMs::compatible_with(target_vm *VM, text_stream *token) {	
 	if (Str::eq_insensitive(VM->transpiler_family, token)) return TRUE;
 	return FALSE;
 }

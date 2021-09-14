@@ -1,4 +1,3 @@
-  
   "whether or not "fish" is in lower case" = truth state: true
   "whether or not "fish" is in upper case" = truth state: false
   "whether or not "FISH" is in lower case" = truth state: false
