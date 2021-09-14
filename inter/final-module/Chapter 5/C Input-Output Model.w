@@ -394,7 +394,7 @@ i7val i7_rock_of_window(i7process_t *proc, i7val id) {
 
 void i7_to_receiver(i7process_t *proc, i7val rock, wchar_t c) {
 	if (proc->receiver == NULL) fputc(c, stdout);
-	(proc->receiver)(rock, c);
+	(proc->receiver)(rock, c, "");
 }
 
 void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x) {

@@ -126,7 +126,7 @@ void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss) {
 	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
-void i7_default_receiver(int id, wchar_t c) {
+void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == 201) fputc(c, stdout);
 }
 
@@ -153,7 +153,7 @@ int i7_run_process(i7process_t *proc) {
     }
     return proc->termination_code;
 }
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c)) {
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style)) {
 	proc->receiver = receiver;
 }
 
@@ -1341,7 +1341,7 @@ i7val i7_rock_of_window(i7process_t *proc, i7val id) {
 
 void i7_to_receiver(i7process_t *proc, i7val rock, wchar_t c) {
 	if (proc->receiver == NULL) fputc(c, stdout);
-	(proc->receiver)(rock, c);
+	(proc->receiver)(rock, c, "");
 }
 
 void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x) {

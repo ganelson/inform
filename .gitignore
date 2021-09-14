@@ -6,6 +6,7 @@ gameinfo.dbg
 gametext.txt
 
 makefile
+!inform7/Tests/Test Makes/Eg*/makefile
 tags
 *.glkdata
 

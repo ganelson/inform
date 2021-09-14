@@ -90,7 +90,7 @@ typedef struct i7process_t {
 	jmp_buf execution_env;
 	int termination_code;
 	int just_undid;
-	void (*receiver)(int id, wchar_t c);
+	void (*receiver)(int id, wchar_t c, char *style);
 } i7process_t;
 
 i7state i7_new_state(void);
@@ -102,12 +102,12 @@ void i7_restore_snapshot(i7process_t *proc);
 void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
 void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c));
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style));
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
-void i7_default_receiver(int id, wchar_t c);
+void i7_default_receiver(int id, wchar_t c, char *style);
 int default_main(int argc, char **argv);
 =
 
@@ -240,7 +240,7 @@ void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss) {
 	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 
-void i7_default_receiver(int id, wchar_t c) {
+void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == 201) fputc(c, stdout);
 }
 
@@ -267,7 +267,7 @@ int i7_run_process(i7process_t *proc) {
     }
     return proc->termination_code;
 }
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c)) {
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style)) {
 	proc->receiver = receiver;
 }
 
