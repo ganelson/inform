@@ -71,7 +71,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Calling Inform from C</b></li></ul></div>
 <p class="purpose">In 2021, Inform gained the ability to generate C code which could be used as part of a larger program, for example in a framework such as Unity.</p>
 
-<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Users of the Inform UI apps make programs which are usually textual simulations,
 and which are in any case sealed boxes running on virtual machines such as Glulx.
@@ -335,6 +335,76 @@ to <span class="extract"><span class="ConsoleText-extract-syntax">stderr</span><
 </pre>
 <p class="commentary">Example 2 is in fact so simple that it is impossible for the exit code to be
 other than 0, but checking the exit code is good practice.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Example 3: HTML Receiver. </b>This third example demonstrates a "receiver" function. The text printed by
+Inform 7 can be captured, processed, and in general handled however the C
+program would like. This is done by assigning a receiver to the process,
+after it is created, but before it is run:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_receiver</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">my_receiver</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+</pre>
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">my_receiver</span></span> is a function. The default receiver looks like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_default_receiver</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">style</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">I7_BODY_TEXT_ID</span><span class="plain-syntax">) </span><span class="identifier-syntax">fputc</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">stdout</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary">This receives the text printed by the Inform process, one character at a time.
+</p>
+
+<ul class="items"><li>&#9679; The <span class="extract"><span class="extract-syntax">id</span></span> is a "window ID", a detail which doesn't matter to a Basic Inform
+project &mdash; it will always in fact be <span class="extract"><span class="extract-syntax">I7_BODY_TEXT_ID</span></span>. For a full Inform project
+such as an IF work, it might be any of three possibilities:
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">I7_BODY_TEXT_ID</span></span>, the main transcript of text in the story;
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">I7_STATUS_TEXT_ID</span></span>, the "status line" header at the top of a traditional
+Terminal-window-style presentation of this text;
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">I7_BOX_TEXT_ID</span></span>, a quotation printed in a box which overlies the main text.
+</li></ul>
+<li>&#9679; The <span class="extract"><span class="extract-syntax">style</span></span> is a stylistic markup. It will always be a valid C string, of
+length at most 256, but is often the empty C string and of length 0, meaning
+"this is plain text with no styling applied".
+<ul class="items"><li>&#9679; The three main styles are <span class="extract"><span class="extract-syntax">italic</span></span>, <span class="extract"><span class="extract-syntax">bold</span></span>, <span class="extract"><span class="extract-syntax">reverse</span></span> and <span class="extract"><span class="extract-syntax">fixedpitch</span></span>.
+</li><li>&#9679; Plain styling and these three can all be combined with a "fixed-pitch type"
+request, thus: <span class="extract"><span class="extract-syntax">fixedpitch</span></span>, <span class="extract"><span class="extract-syntax">italic,fixedpitch</span></span>, <span class="extract"><span class="extract-syntax">bold,fixedpitch</span></span>, <span class="extract"><span class="extract-syntax">reverse,fixedpitch</span></span>.
+</li></ul>
+</li></ul>
+<p class="commentary">As can be seen, the default receiver ignores all text not sent to the main window,
+and ignores all styling even on that.
+</p>
+
+<p class="commentary">The significance of the 1 in the call <span class="extract"><span class="extract-syntax">i7_set_process_receiver(&amp;proc, my_receiver, 1)</span></span>
+is that it asked for text to be sent to the receiver encoded as UTF-8. This in fact
+is the default receiver's arrangement, too. Call <span class="extract"><span class="extract-syntax">i7_set_process_receiver(&amp;proc, my_receiver, 0)</span></span>
+to have the characters arrive raw as a series of unencoded Unicode code-points.
+</p>
+
+<p class="commentary">In Example 3, the Inform source is:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello &amp; [italic type]welcome[roman type] from &lt;Inform code&gt;!"</span>
+</pre>
+<p class="commentary">The example receiver function converts this to HTML:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;html&gt;&lt;body&gt;</span>
+<span class="plain-syntax">Hello &amp;amp; &lt;span class="italic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
+<span class="plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
+</pre>
+<p class="commentary">The word "welcome" here was printed with the style <span class="extract"><span class="extract-syntax">"italic"</span></span>; all else was
+plain.
+</p>
+
+<p class="commentary">This example just prints the result, of course, but a receiver function could
+equally opt to bottle up the text for use later on.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

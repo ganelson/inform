@@ -1,0 +1,3 @@
+<html><body>
+Hello &amp; <span class="italic">welcome</span> from &lt;Inform code&gt;!
+</html></body>

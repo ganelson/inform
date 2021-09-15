@@ -78,6 +78,7 @@ i7process_t i7_new_process(void) {
 	proc.just_undid = 0;
 	proc.snapshot_pos = 0;
 	proc.receiver = i7_default_receiver;
+	proc.use_UTF8 = 1;
 	return proc;
 }
 
@@ -127,7 +128,7 @@ void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss) {
 }
 
 void i7_default_receiver(int id, wchar_t c, char *style) {
-	if (id == 201) fputc(c, stdout);
+	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
 
 int default_main(int argc, char **argv) {
@@ -153,8 +154,9 @@ int i7_run_process(i7process_t *proc) {
     }
     return proc->termination_code;
 }
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style)) {
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
+	proc->use_UTF8 = UTF8;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
@@ -1083,10 +1085,31 @@ char *dqs[];
 char *i7_text_of_string(i7val str) {
 	return dqs[str - I7VAL_STRINGS_BASE];
 }
-void i7_style(i7process_t *proc, int what) {
+#define I7_MAX_STREAMS 128
+
+i7_stream i7_memory_streams[I7_MAX_STREAMS];
+
+void i7_style(i7process_t *proc, char *what) {
+	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
+	if ((what == NULL) || (strlen(what) > 128)) {
+		fprintf(stderr, "Style name too long\n"); i7_fatal_exit(proc);
+	}
+	S->style = what;
+	sprintf(S->composite_style, "%s", S->style);
+	if (S->fixed_pitch) {
+		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
+		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
+	}
 }
 
 void i7_font(i7process_t *proc, int what) {
+	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
+	S->fixed_pitch = what;
+	sprintf(S->composite_style, "%s", S->style);
+	if (S->fixed_pitch) {
+		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
+		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
+	}
 }
 
 i7_fileref filerefs[128 + 32];
@@ -1171,19 +1194,15 @@ int i7_fgetc(i7process_t *proc, int id) {
 	return c;
 }
 
-#define I7_MAX_STREAMS 128
-
-i7_stream i7_memory_streams[I7_MAX_STREAMS];
-
-i7val i7_stdout_id = 0, i7_stderr_id = 1, i7_str_id = 0;
+i7val i7_stdout_id = 0, i7_stderr_id = 1;
 
 i7val i7_do_glk_stream_get_current(i7process_t *proc) {
-	return i7_str_id;
+	return proc->state.i7_str_id;
 }
 
 void i7_do_glk_stream_set_current(i7process_t *proc, i7val id) {
 	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	i7_str_id = id;
+	proc->state.i7_str_id = id;
 }
 
 i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
@@ -1203,6 +1222,9 @@ i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	S.read_position = 0;
 	S.end_position = 0;
 	S.owned_by_window_id = win_id;
+	S.style = "";
+	S.fixed_pitch = 0;
+	S.composite_style[0] = 0;
 	return S;
 }
 void i7_initialise_streams(i7process_t *proc) {
@@ -1221,7 +1243,7 @@ i7val i7_open_stream(i7process_t *proc, FILE *F, int win_id) {
 		if (i7_memory_streams[i].active == 0) {
 			i7_memory_streams[i] = i7_new_stream(proc, F, win_id);
 			i7_memory_streams[i].active = 1;
-			i7_memory_streams[i].previous_id = i7_str_id;
+			i7_memory_streams[i].previous_id = proc->state.i7_str_id;
 			return i;
 		}
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
@@ -1234,7 +1256,7 @@ i7val i7_do_glk_stream_open_memory(i7process_t *proc, i7val buffer, i7val len, i
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 1;
-			i7_str_id = id;
+	proc->state.i7_str_id = id;
 	return id;
 }
 
@@ -1244,7 +1266,7 @@ i7val i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7val buffer, i7val le
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 4;
-			i7_str_id = id;
+	proc->state.i7_str_id = id;
 	return id;
 }
 
@@ -1287,7 +1309,7 @@ void i7_do_glk_stream_close(i7process_t *proc, i7val id, i7val result) {
 	if (id == 1) { fprintf(stderr, "Cannot close stderr\n"); i7_fatal_exit(proc); }
 	i7_stream *S = &(i7_memory_streams[id]);
 	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); i7_fatal_exit(proc); }
-	if (i7_str_id == id) i7_str_id = S->previous_id;
+	if (proc->state.i7_str_id == id) proc->state.i7_str_id = S->previous_id;
 	if (S->write_here_on_closure != 0) {
 		if (S->char_size == 4) {
 			for (size_t i = 0; i < S->write_limit; i++)
@@ -1340,8 +1362,9 @@ i7val i7_rock_of_window(i7process_t *proc, i7val id) {
 }
 
 void i7_to_receiver(i7process_t *proc, i7val rock, wchar_t c) {
+	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
 	if (proc->receiver == NULL) fputc(c, stdout);
-	(proc->receiver)(rock, c, "");
+	(proc->receiver)(rock, c, S->composite_style);
 }
 
 void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x) {
@@ -1351,7 +1374,7 @@ void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x) {
 		int rock = -1;
 		if (win_id >= 1) rock = i7_rock_of_window(proc, win_id);
 		unsigned int c = (unsigned int) x;
-//		if (S->encode_UTF8) {
+		if (proc->use_UTF8) {
 			if (c >= 0x800) {
 				i7_to_receiver(proc, rock, 0xE0 + (c >> 12));
 				i7_to_receiver(proc, rock, 0x80 + ((c >> 6) & 0x3f));
@@ -1360,9 +1383,9 @@ void i7_do_glk_put_char_stream(i7process_t *proc, i7val stream_id, i7val x) {
 				i7_to_receiver(proc, rock, 0xC0 + (c >> 6));
 				i7_to_receiver(proc, rock, 0x80 + (c & 0x3f));
 			} else i7_to_receiver(proc, rock, (int) c);
-//		} else {
-//			i7_to_receiver(proc, rock, (int) c);
-//		}
+		} else {
+			i7_to_receiver(proc, rock, (int) c);
+		}
 	} else if (S->to_file_id >= 0) {
 		i7_fputc(proc, (int) x, S->to_file_id);
 		S->end_position++;
@@ -1390,7 +1413,7 @@ i7val i7_do_glk_get_char_stream(i7process_t *proc, i7val stream_id) {
 }
 
 void i7_print_char(i7process_t *proc, i7val x) {
-	i7_do_glk_put_char_stream(proc, i7_str_id, x);
+	i7_do_glk_put_char_stream(proc, proc->state.i7_str_id, x);
 }
 
 void i7_print_C_string(i7process_t *proc, char *c_string) {

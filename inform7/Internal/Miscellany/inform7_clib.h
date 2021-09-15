@@ -30,6 +30,7 @@ typedef struct i7state {
 	i7val *i7_object_tree_sibling;
 	i7val *variables;
 	i7val tmp;
+	i7val i7_str_id;
 } i7state;
 
 typedef struct i7snapshot {
@@ -48,6 +49,7 @@ typedef struct i7process_t {
 	int termination_code;
 	int just_undid;
 	void (*receiver)(int id, wchar_t c, char *style);
+	int use_UTF8;
 } i7process_t;
 
 i7state i7_new_state(void);
@@ -59,7 +61,7 @@ void i7_restore_snapshot(i7process_t *proc);
 void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
 void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style));
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
@@ -193,11 +195,11 @@ i7val i7_gen_call(i7process_t *proc, i7val fn_ref, i7val *args, int argc);
 void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z);
 void i7_print_dword(i7process_t *proc, i7val at);
 char *i7_text_of_string(i7val str);
-#define i7_bold 1
-#define i7_roman 2
-#define i7_underline 3
-#define i7_reverse 4
-void i7_style(i7process_t *proc, int what);
+#define I7_BODY_TEXT_ID    201
+#define I7_STATUS_TEXT_ID  202
+#define I7_BOX_TEXT_ID     203
+
+void i7_style(i7process_t *proc, char *what);
 void i7_font(i7process_t *proc, int what);
 
 #define fileusage_Data (0x00)
@@ -246,6 +248,9 @@ typedef struct i7_stream {
 	int read_position;
 	int end_position;
 	int owned_by_window_id;
+	int fixed_pitch;
+	char *style;
+	char composite_style[256];
 } i7_stream;
 i7val i7_do_glk_stream_get_current(i7process_t *proc);
 i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);

@@ -229,3 +229,60 @@ int main(int argc, char **argv) {
 =
 Example 2 is in fact so simple that it is impossible for the exit code to be
 other than 0, but checking the exit code is good practice.
+
+@h Example 3: HTML Receiver.
+This third example demonstrates a "receiver" function. The text printed by
+Inform 7 can be captured, processed, and in general handled however the C
+program would like. This is done by assigning a receiver to the process,
+after it is created, but before it is run:
+= (text as C)
+	i7process_t proc = i7_new_process();
+	i7_set_process_receiver(&proc, my_receiver, 1);
+=
+Here |my_receiver| is a function. The default receiver looks like this:
+= (text as C)
+void i7_default_receiver(int id, wchar_t c, char *style) {
+	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
+}
+=
+This receives the text printed by the Inform process, one character at a time.
+
+(*) The |id| is a "window ID", a detail which doesn't matter to a Basic Inform
+project -- it will always in fact be |I7_BODY_TEXT_ID|. For a full Inform project
+such as an IF work, it might be any of three possibilities:
+(-*) |I7_BODY_TEXT_ID|, the main transcript of text in the story;
+(-*) |I7_STATUS_TEXT_ID|, the "status line" header at the top of a traditional
+Terminal-window-style presentation of this text;
+(-*) |I7_BOX_TEXT_ID|, a quotation printed in a box which overlies the main text.
+
+(*) The |style| is a stylistic markup. It will always be a valid C string, of
+length at most 256, but is often the empty C string and of length 0, meaning
+"this is plain text with no styling applied".
+(-*) The three main styles are |italic|, |bold|, |reverse| and |fixedpitch|.
+(-*) Plain styling and these three can all be combined with a "fixed-pitch type"
+request, thus: |fixedpitch|, |italic,fixedpitch|, |bold,fixedpitch|, |reverse,fixedpitch|.
+
+As can be seen, the default receiver ignores all text not sent to the main window,
+and ignores all styling even on that.
+
+The significance of the 1 in the call |i7_set_process_receiver(&proc, my_receiver, 1)|
+is that it asked for text to be sent to the receiver encoded as UTF-8. This in fact
+is the default receiver's arrangement, too. Call |i7_set_process_receiver(&proc, my_receiver, 0)|
+to have the characters arrive raw as a series of unencoded Unicode code-points.
+
+In Example 3, the Inform source is:
+= (text as Inform 7)
+To begin:
+	say "Hello & [italic type]welcome[roman type] from <Inform code>!"
+=
+The example receiver function converts this to HTML:
+= (text)
+<html><body>
+Hello &amp; <span class="italic">welcome</span> from &lt;Inform code&gt;!
+</html></body>
+=
+The word "welcome" here was printed with the style |"italic"|; all else was
+plain.
+
+This example just prints the result, of course, but a receiver function could
+equally opt to bottle up the text for use later on.
