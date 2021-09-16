@@ -1,0 +1,14 @@
+A text style is a kind of value.
+The text styles are decorative, calligraphic and enlarged.
+
+To begin:
+	say "[style as enlarged]Hello[end style] & [style as calligraphic]welcome[end style] from <Inform code>!"
+
+To say style as (T - text style):
+	style text with "[T]".
+
+To style text with (T - text):
+	(- style {T}; -).
+
+To say end style:
+	(- style roman; -).

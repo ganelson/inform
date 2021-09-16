@@ -56,7 +56,6 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 	pathname *kit_path = S->associated_copy->location_if_path;
 	dictionary *pipeline_vars = CodeGen::Pipeline::basic_dictionary(NULL);
-
 	inbuild_requirement *req =
 		Requirements::any_version_of(
 			Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));

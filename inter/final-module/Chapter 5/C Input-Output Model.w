@@ -25,10 +25,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 	switch (bip) {
 		case SPACES_BIP:		 WRITE("for (int j = "); INV_A1; WRITE("; j > 0; j--) i7_print_char(proc, 32);"); break;
 		case FONT_BIP:           WRITE("i7_font(proc, "); INV_A1; WRITE(")"); break;
-		case STYLEROMAN_BIP:     WRITE("i7_style(proc, \"\")"); break;
-		case STYLEBOLD_BIP:      WRITE("i7_style(proc, \"bold\")"); break;
-		case STYLEUNDERLINE_BIP: WRITE("i7_style(proc, \"italic\")"); break;
-		case STYLEREVERSE_BIP:   WRITE("i7_style(proc, \"reverse\")"); break;
+		case STYLE_BIP:    		 WRITE("i7_style(proc, "); INV_A1; WRITE(")"); break;
 		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTCHAR_BIP:      WRITE("i7_print_char(proc, "); INV_A1; WRITE(")"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); INV_A1; WRITE(")"); break;
@@ -47,7 +44,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 #define I7_STATUS_TEXT_ID  202
 #define I7_BOX_TEXT_ID     203
 
-void i7_style(i7process_t *proc, char *what);
+void i7_style(i7process_t *proc, i7val what);
 void i7_font(i7process_t *proc, int what);
 
 #define fileusage_Data (0x00)
@@ -97,8 +94,8 @@ typedef struct i7_stream {
 	int end_position;
 	int owned_by_window_id;
 	int fixed_pitch;
-	char *style;
-	char composite_style[256];
+	char style[128];
+	char composite_style[300];
 } i7_stream;
 i7val i7_do_glk_stream_get_current(i7process_t *proc);
 i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);
@@ -109,12 +106,23 @@ i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);
 
 i7_stream i7_memory_streams[I7_MAX_STREAMS];
 
-void i7_style(i7process_t *proc, char *what) {
+i7val fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7val i7_mgl_local_txt, i7val i7_mgl_local_ch, i7val i7_mgl_local_i, i7val i7_mgl_local_dsize, i7val i7_mgl_local_p, i7val i7_mgl_local_cp, i7val i7_mgl_local_r);
+i7val fn_i7_mgl_BlkValueRead(i7process_t *proc, i7val i7_mgl_local_from, i7val i7_mgl_local_pos, i7val i7_mgl_local_do_not_indirect, i7val i7_mgl_local_long_block, i7val i7_mgl_local_chunk_size_in_bytes, i7val i7_mgl_local_header_size_in_bytes, i7val i7_mgl_local_flags, i7val i7_mgl_local_entry_size_in_bytes, i7val i7_mgl_local_seek_byte_position);
+void i7_style(i7process_t *proc, i7val what_v) {
 	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
-	if ((what == NULL) || (strlen(what) > 128)) {
-		fprintf(stderr, "Style name too long\n"); i7_fatal_exit(proc);
+	S->style[0] = 0;
+	switch (what_v) {
+		case 0: break;
+		case 1: sprintf(S->style, "bold"); break;
+		case 2: sprintf(S->style, "italic"); break;
+		case 3: sprintf(S->style, "reverse"); break;
+		default: {
+			int L = fn_i7_mgl_TEXT_TY_CharacterLength(proc, what_v, 0, 0, 0, 0, 0, 0);
+			if (L > 127) L = 127;
+			for (int i=0; i<L; i++) S->style[i] = fn_i7_mgl_BlkValueRead(proc, what_v, i, 0, 0, 0, 0, 0, 0, 0);
+			S->style[L] = 0;
+		}
 	}
-	S->style = what;
 	sprintf(S->composite_style, "%s", S->style);
 	if (S->fixed_pitch) {
 		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
@@ -242,7 +250,7 @@ i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	S.read_position = 0;
 	S.end_position = 0;
 	S.owned_by_window_id = win_id;
-	S.style = "";
+	S.style[0] = 0;
 	S.fixed_pitch = 0;
 	S.composite_style[0] = 0;
 	return S;

@@ -1944,6 +1944,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 			inter_schema_token *operand1 = NULL, *operand2 = NULL;
 			inter_schema_node *operand2_node = NULL;
 			int dangle = NOT_APPLICABLE;
+			int dangle_number = -1;
 			text_stream *dangle_text = NULL;
 			if (isn->expression_tokens->ist_type == RESERVED_ISTT) {
 				switch (isn->expression_tokens->reserved_word) {
@@ -2023,11 +2024,21 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					case STYLE_I6RW: {
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (Str::eq(n->material, I"roman"))) subordinate_to = STYLEROMAN_BIP;
-						if ((n) && (Str::eq(n->material, I"bold"))) subordinate_to = STYLEBOLD_BIP;
-						if ((n) && (Str::eq(n->material, I"underline"))) subordinate_to = STYLEUNDERLINE_BIP;
-						if ((n) && (Str::eq(n->material, I"reverse"))) subordinate_to = STYLEREVERSE_BIP;
-						if (subordinate_to) isn->expression_tokens->next = NULL;
+						if ((n) && (Str::eq(n->material, I"roman"))) {
+							subordinate_to = STYLE_BIP;
+							dangle_number = 0;
+						} else if ((n) && (Str::eq(n->material, I"bold"))) {
+							subordinate_to = STYLE_BIP;
+							dangle_number = 1;
+						} else if ((n) && (Str::eq(n->material, I"underline"))) {
+							subordinate_to = STYLE_BIP;
+							dangle_number = 2;
+						} else if ((n) && (Str::eq(n->material, I"reverse"))) {
+							subordinate_to = STYLE_BIP;
+							dangle_number = 3;
+						} else {
+							subordinate_to = STYLE_BIP;
+						}
 						break;
 					}
 					case INVERSION_I6RW:
@@ -2246,6 +2257,12 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				if (dangle != NOT_APPLICABLE) {
 					text_stream *T = Str::new();
 					WRITE_TO(T, "%d", dangle);
+					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+					new_isn->expression_tokens->owner = new_isn;
+				}
+				if (dangle_number >= 0) {
+					text_stream *T = Str::new();
+					WRITE_TO(T, "%d", dangle_number);
 					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
 					new_isn->expression_tokens->owner = new_isn;
 				}
@@ -2944,10 +2961,6 @@ int InterSchemas::right_associative(inter_ti O) {
 =
 int InterSchemas::ip_arity(inter_ti O) {
 	int arity = 1;
-	if ((O == STYLEROMAN_BIP) ||
-		(O == STYLEBOLD_BIP) ||
-		(O == STYLEUNDERLINE_BIP) ||
-		(O == STYLEREVERSE_BIP)) arity = 0;
 	if (O == BREAK_BIP) arity = 0;
 	if (O == CONTINUE_BIP) arity = 0;
 	if (O == QUIT_BIP) arity = 0;

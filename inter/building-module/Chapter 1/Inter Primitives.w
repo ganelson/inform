@@ -5,10 +5,7 @@
 =
 void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!font", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!stylebold", I"void -> void");
-	Primitives::emit_one(I, IBM, I"!styleunderline", I"void -> void");
-	Primitives::emit_one(I, IBM, I"!stylereverse", I"void -> void");
-	Primitives::emit_one(I, IBM, I"!styleroman", I"void -> void");
+	Primitives::emit_one(I, IBM, I"!style", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!print", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printchar", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!printobj", I"val -> void");
@@ -214,11 +211,8 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e SPACES_BIP
 @e BREAK_BIP
 @e CONTINUE_BIP
-@e STYLEROMAN_BIP
+@e STYLE_BIP
 @e FONT_BIP
-@e STYLEBOLD_BIP
-@e STYLEUNDERLINE_BIP
-@e STYLEREVERSE_BIP
 @e PRINT_BIP
 @e PRINTCHAR_BIP
 @e PRINTOBJ_BIP
@@ -319,10 +313,7 @@ text_stream *Primitives::name(inter_ti bip) {
 		case BREAK_BIP: return I"!break";
 		case CONTINUE_BIP: return I"!continue";
 		case FONT_BIP: return I"!font";
-		case STYLEROMAN_BIP: return I"!styleroman";
-		case STYLEBOLD_BIP: return I"!stylebold";
-		case STYLEUNDERLINE_BIP: return I"!styleunderline";
-		case STYLEREVERSE_BIP: return I"!stylereverse";
+		case STYLE_BIP: return I"!style";
 		case PRINT_BIP: return I"!print";
 		case PRINTCHAR_BIP: return I"!printchar";
 		case PRINTOBJ_BIP: return I"!printobj";
@@ -438,10 +429,7 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!break")) bip = BREAK_BIP;
 	if (Str::eq(symb->symbol_name, I"!continue")) bip = CONTINUE_BIP;
 	if (Str::eq(symb->symbol_name, I"!font")) bip = FONT_BIP;
-	if (Str::eq(symb->symbol_name, I"!styleroman")) bip = STYLEROMAN_BIP;
-	if (Str::eq(symb->symbol_name, I"!stylebold")) bip = STYLEBOLD_BIP;
-	if (Str::eq(symb->symbol_name, I"!styleunderline")) bip = STYLEUNDERLINE_BIP;
-	if (Str::eq(symb->symbol_name, I"!stylereverse")) bip = STYLEREVERSE_BIP;
+	if (Str::eq(symb->symbol_name, I"!style")) bip = STYLE_BIP;
 	if (Str::eq(symb->symbol_name, I"!print")) bip = PRINT_BIP;
 	if (Str::eq(symb->symbol_name, I"!printchar")) bip = PRINTCHAR_BIP;
 	if (Str::eq(symb->symbol_name, I"!printobj")) bip = PRINTOBJ_BIP;

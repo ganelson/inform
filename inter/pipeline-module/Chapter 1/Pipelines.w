@@ -160,9 +160,9 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 text_stream *CodeGen::Pipeline::read_parameter(text_stream *from, dictionary *D,
 	text_file_position *tfp, int allow_unknown_variables) {
 	if (Str::get_first_char(from) == '*') {
+		text_stream *find = Dictionaries::get_text(D, from);
+		if (find) return Str::duplicate(find);
 		if (allow_unknown_variables == FALSE) {
-			text_stream *find = Dictionaries::get_text(D, from);
-			if (find) return Str::duplicate(find);
 			TEMPORARY_TEXT(ERR)
 			WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
 			Errors::in_text_file_S(ERR, tfp);
@@ -320,6 +320,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				if (Str::len(step->step_argument) == 0) {
 					if (step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) {
+WRITE_TO(STDOUT, "Hi therr!\n");
 						skip_step = TRUE;
 					} else {
 						#ifdef PROBLEMS_MODULE

@@ -378,10 +378,22 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 			WRITE("if ("); INV_A1; WRITE(") { font on; } else { font off; }");
 			suppress_terminal_semicolon = TRUE;
 			break;
-		case STYLEROMAN_BIP: WRITE("style roman"); break;
-		case STYLEBOLD_BIP: WRITE("style bold"); break;
-		case STYLEUNDERLINE_BIP: WRITE("style underline"); break;
-		case STYLEREVERSE_BIP: WRITE("style reverse"); break;
+		case STYLE_BIP: {
+			inter_tree_node *N = InterTree::first_child(P);
+			if ((N->W.data[ID_IFLD] == CONSTANT_IST) &&
+				(N->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+				inter_ti val2 = N->W.data[DATA_CONST_IFLD + 1];
+				switch (val2) {
+					case 1: WRITE("style bold"); break;
+					case 2: WRITE("style underline"); break;
+					case 3: WRITE("style reverse"); break;
+					default: WRITE("style roman");
+				}
+			} else {
+				WRITE("style roman");
+			}
+			break;
+		}
 
 		case MOVE_BIP: WRITE("move "); INV_A1; WRITE(" to "); INV_A2; break;
 		case REMOVE_BIP: WRITE("remove "); INV_A1; break;

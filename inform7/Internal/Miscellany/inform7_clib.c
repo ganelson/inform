@@ -1089,12 +1089,23 @@ char *i7_text_of_string(i7val str) {
 
 i7_stream i7_memory_streams[I7_MAX_STREAMS];
 
-void i7_style(i7process_t *proc, char *what) {
+i7val fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7val i7_mgl_local_txt, i7val i7_mgl_local_ch, i7val i7_mgl_local_i, i7val i7_mgl_local_dsize, i7val i7_mgl_local_p, i7val i7_mgl_local_cp, i7val i7_mgl_local_r);
+i7val fn_i7_mgl_BlkValueRead(i7process_t *proc, i7val i7_mgl_local_from, i7val i7_mgl_local_pos, i7val i7_mgl_local_do_not_indirect, i7val i7_mgl_local_long_block, i7val i7_mgl_local_chunk_size_in_bytes, i7val i7_mgl_local_header_size_in_bytes, i7val i7_mgl_local_flags, i7val i7_mgl_local_entry_size_in_bytes, i7val i7_mgl_local_seek_byte_position);
+void i7_style(i7process_t *proc, i7val what_v) {
 	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
-	if ((what == NULL) || (strlen(what) > 128)) {
-		fprintf(stderr, "Style name too long\n"); i7_fatal_exit(proc);
+	S->style[0] = 0;
+	switch (what_v) {
+		case 0: break;
+		case 1: sprintf(S->style, "bold"); break;
+		case 2: sprintf(S->style, "italic"); break;
+		case 3: sprintf(S->style, "reverse"); break;
+		default: {
+			int L = fn_i7_mgl_TEXT_TY_CharacterLength(proc, what_v, 0, 0, 0, 0, 0, 0);
+			if (L > 127) L = 127;
+			for (int i=0; i<L; i++) S->style[i] = fn_i7_mgl_BlkValueRead(proc, what_v, i, 0, 0, 0, 0, 0, 0, 0);
+			S->style[L] = 0;
+		}
 	}
-	S->style = what;
 	sprintf(S->composite_style, "%s", S->style);
 	if (S->fixed_pitch) {
 		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
@@ -1222,7 +1233,7 @@ i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	S.read_position = 0;
 	S.end_position = 0;
 	S.owned_by_window_id = win_id;
-	S.style = "";
+	S.style[0] = 0;
 	S.fixed_pitch = 0;
 	S.composite_style[0] = 0;
 	return S;

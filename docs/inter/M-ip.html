@@ -139,14 +139,20 @@ then the second, then the third value, producing that third value.
 </li><li>(d) <span class="extract"><span class="extract-syntax">primitive !printdword val -&gt; void</span></span>. Print a dictionary word.
 </li><li>(e) <span class="extract"><span class="extract-syntax">primitive !printstring val -&gt; void</span></span>. Print a packed string.
 </li></ul>
-<p class="commentary">There are also primitive ways to change the visual style of text:
+<p class="commentary">There are also two primitive ways to change the visual style of text:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !font val -&gt; void</span></span>. Change to fixed-width font if value is 1, or regular if 0.
-</li><li>(b) <span class="extract"><span class="extract-syntax">primitive !stylebold void -&gt; void</span></span>. Change to bold type.
-</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !styleunderline void -&gt; void</span></span>. Change to underlined type.
-</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !styleroman void -&gt; void</span></span>. Change to roman (i.e., not bold, not underlined) type.
+</li><li>(b) <span class="extract"><span class="extract-syntax">primitive !style val -&gt; void</span></span>. Change to this text style.
 </li></ul>
+<p class="commentary">The effect of these will depend on the platform the final Inter code is generated
+for. If the value supplied to <span class="extract"><span class="extract-syntax">!style</span></span> is 0, 1, 2 or 3, then this should make an
+effort to achieve roman, bold, italic, or reverse-video type, respectively, and
+that should apply across all platforms. Use of any other value is likely to be
+less portable. On C, for example, all other uses of <span class="extract"><span class="extract-syntax">!style</span></span> are (Inform) text
+values which supply names for styles.
+</p>
+
 <p class="commentary">Lastly, a primitive for a rum feature of Inform 6 allowing for the display of
 "box quotations" on screen:
 </p>

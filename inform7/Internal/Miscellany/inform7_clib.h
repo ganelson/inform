@@ -199,7 +199,7 @@ char *i7_text_of_string(i7val str);
 #define I7_STATUS_TEXT_ID  202
 #define I7_BOX_TEXT_ID     203
 
-void i7_style(i7process_t *proc, char *what);
+void i7_style(i7process_t *proc, i7val what);
 void i7_font(i7process_t *proc, int what);
 
 #define fileusage_Data (0x00)
@@ -249,8 +249,8 @@ typedef struct i7_stream {
 	int end_position;
 	int owned_by_window_id;
 	int fixed_pitch;
-	char *style;
-	char composite_style[256];
+	char style[128];
+	char composite_style[300];
 } i7_stream;
 i7val i7_do_glk_stream_get_current(i7process_t *proc);
 i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);

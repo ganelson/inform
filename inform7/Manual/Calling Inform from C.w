@@ -286,3 +286,49 @@ plain.
 
 This example just prints the result, of course, but a receiver function could
 equally opt to bottle up the text for use later on.
+
+@h Example 4: CSS Receiver.
+Example 4 builds on Example 3 but allows arbitrary named CSS styles to applied,
+i.e., it is not limited to bold and italic markup.
+
+The C program from Example 3 is unchanged, but the Inform program does something
+more interesting. We're going to need to do something unusual here, and define
+two new phrases using inline definitions as raw Inter code, written in Inform 6
+notation:
+= (text as Inform 7)
+To style text with (T - text):
+	(- style {T}; -).
+=
+The result of this will be something which Inform 6 would not compile, because
+in I6 the only legal uses of |style| are |style bold| and so on: there is no
+legal way for |style| to be followed by an arbitrary value, as it is here. But
+Inform 6 will not be compiling this: Inform will convert |style V;| directly to
+the Inter statement |!style V|, which will then be translated to C as the function
+call |i7_style(proc, V)| -- and that function, in our library of C code supporting
+Inform, can handle any textual value of |V|.
+
+With that bit of fancy footwork out of the way, we can make a pair of text
+substitutions |[style NAME]| and |[end style]|, with the possible range of
+styles enumerated by name, like so:
+= (text as Inform 7)
+A text style is a kind of value.
+The text styles are decorative, calligraphic and enlarged.
+
+To say style as (T - text style):
+	style text with "[T]".
+
+To say end style:
+	(- style roman; -).
+=
+
+Finally, then, we can have:
+= (text as Inform 7)
+To begin:
+	say "[style as enlarged]Hello[end style] & [style as calligraphic]welcome[end style] from <Inform code>!"
+=
+And the result is:
+= (text as Inform 7)
+<html><body>
+<span class="enlarged">Hello</span> &amp; <span class="calligraphic">welcome</span> from &lt;Inform code&gt;!
+</html></body>
+=

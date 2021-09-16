@@ -73,12 +73,17 @@ These print data of various kinds:
 (d) |primitive !printdword val -> void|. Print a dictionary word.
 (e) |primitive !printstring val -> void|. Print a packed string.
 
-There are also primitive ways to change the visual style of text:
+There are also two primitive ways to change the visual style of text:
 
 (a) |primitive !font val -> void|. Change to fixed-width font if value is 1, or regular if 0.
-(b) |primitive !stylebold void -> void|. Change to bold type.
-(c) |primitive !styleunderline void -> void|. Change to underlined type.
-(d) |primitive !styleroman void -> void|. Change to roman (i.e., not bold, not underlined) type.
+(b) |primitive !style val -> void|. Change to this text style.
+
+The effect of these will depend on the platform the final Inter code is generated
+for. If the value supplied to |!style| is 0, 1, 2 or 3, then this should make an
+effort to achieve roman, bold, italic, or reverse-video type, respectively, and
+that should apply across all platforms. Use of any other value is likely to be
+less portable. On C, for example, all other uses of |!style| are (Inform) text
+values which supply names for styles.
 
 Lastly, a primitive for a rum feature of Inform 6 allowing for the display of
 "box quotations" on screen:

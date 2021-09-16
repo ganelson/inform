@@ -71,7 +71,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Calling Inform from C</b></li></ul></div>
 <p class="purpose">In 2021, Inform gained the ability to generate C code which could be used as part of a larger program, for example in a framework such as Unity.</p>
 
-<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li><li><a href="M-cifc.html#SP9">&#167;9. Example 4: CSS Receiver</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Users of the Inform UI apps make programs which are usually textual simulations,
 and which are in any case sealed boxes running on virtual machines such as Glulx.
@@ -407,6 +407,59 @@ plain.
 equally opt to bottle up the text for use later on.
 </p>
 
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Example 4: CSS Receiver. </b>Example 4 builds on Example 3 but allows arbitrary named CSS styles to applied,
+i.e., it is not limited to bold and italic markup.
+</p>
+
+<p class="commentary">The C program from Example 3 is unchanged, but the Inform program does something
+more interesting. We're going to need to do something unusual here, and define
+two new phrases using inline definitions as raw Inter code, written in Inform 6
+notation:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax">):</span>
+<span class="plain-syntax">    (- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> {</span><span class="identifier-syntax">T</span><span class="plain-syntax">}; -).</span>
+</pre>
+<p class="commentary">The result of this will be something which Inform 6 would not compile, because
+in I6 the only legal uses of <span class="extract"><span class="extract-syntax">style</span></span> are <span class="extract"><span class="extract-syntax">style bold</span></span> and so on: there is no
+legal way for <span class="extract"><span class="extract-syntax">style</span></span> to be followed by an arbitrary value, as it is here. But
+Inform 6 will not be compiling this: Inform will convert <span class="extract"><span class="extract-syntax">style V;</span></span> directly to
+the Inter statement <span class="extract"><span class="extract-syntax">!style V</span></span>, which will then be translated to C as the function
+call <span class="extract"><span class="extract-syntax">i7_style(proc, V)</span></span> &mdash; and that function, in our library of C code supporting
+Inform, can handle any textual value of <span class="extract"><span class="extract-syntax">V</span></span>.
+</p>
+
+<p class="commentary">With that bit of fancy footwork out of the way, we can make a pair of text
+substitutions <span class="extract"><span class="extract-syntax">[style NAME]</span></span> and <span class="extract"><span class="extract-syntax">[end style]</span></span>, with the possible range of
+styles enumerated by name, like so:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">styles</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">decorative</span><span class="plain-syntax">, </span><span class="identifier-syntax">calligraphic</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">enlarged</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> - </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">):</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"[T]"</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">style</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    (- </span><span class="identifier-syntax">style</span><span class="plain-syntax"> </span><span class="identifier-syntax">roman</span><span class="plain-syntax">; -).</span>
+</pre>
+<p class="commentary">Finally, then, we can have:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[style as enlarged]Hello[end style] &amp; [style as calligraphic]welcome[end style] from &lt;Inform code&gt;!"</span>
+</pre>
+<p class="commentary">And the result is:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">html</span><span class="plain-syntax">&gt;&lt;</span><span class="identifier-syntax">body</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">span</span><span class="plain-syntax"> </span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="string-syntax">"enlarged"</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">Hello</span><span class="plain-syntax">&lt;/</span><span class="identifier-syntax">span</span><span class="plain-syntax">&gt; &amp;</span><span class="identifier-syntax">amp</span><span class="plain-syntax">; &lt;</span><span class="identifier-syntax">span</span><span class="plain-syntax"> </span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="string-syntax">"calligraphic"</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">welcome</span><span class="plain-syntax">&lt;/</span><span class="identifier-syntax">span</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">from</span><span class="plain-syntax"> &amp;</span><span class="identifier-syntax">lt</span><span class="plain-syntax">;</span><span class="identifier-syntax">Inform</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax">&amp;</span><span class="identifier-syntax">gt</span><span class="plain-syntax">;!</span>
+<span class="plain-syntax">&lt;/</span><span class="identifier-syntax">html</span><span class="plain-syntax">&gt;&lt;/</span><span class="identifier-syntax">body</span><span class="plain-syntax">&gt;</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iwtg.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresscurrent">cifc</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresssection"><a href="M-pm.html">pm</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
