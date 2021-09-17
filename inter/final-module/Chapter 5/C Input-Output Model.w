@@ -693,9 +693,11 @@ i7val i7_do_glk_request_line_event(i7process_t *proc, i7val window_id, i7val buf
 	e.val1 = 1;
 	e.val2 = 0;
 	wchar_t c; int pos = init_len;
+	char *s = (proc->sender)(proc->send_count++);
+	int i = 0;
 	while (1) {
-		c = getchar();
-		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		c = s[i++];
+		if ((c == EOF) || (c == 0) || (c == '\n') || (c == '\r')) break;
 		if (pos < max_len) i7_write_byte(proc, buffer + pos++, c);
 	}
 	if (pos < max_len) i7_write_byte(proc, buffer + pos, 0); else i7_write_byte(proc, buffer + max_len-1, 0);

@@ -359,6 +359,10 @@ void glulx_shiftl(i7process_t *proc, i7val x, i7val y, i7val *z) {
 	i7_fatal_exit(proc);
 }
 
+#ifdef i7_mgl_DealWithUndo
+i7val fn_i7_mgl_DealWithUndo(i7process_t *proc);
+#endif
+
 void glulx_restoreundo(i7process_t *proc, i7val *x) {
 	proc->just_undid = 1;
 	if (i7_has_snapshot(proc)) {

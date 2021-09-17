@@ -1,0 +1,13 @@
+
+
+
+Sir Arthur Evans, hero and archeologist, invites you to explore...
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210917 / Inform 7 v10.1.0 / D
+
+Jarn Mound
+
+>quit
+Are you sure you want to quit? y

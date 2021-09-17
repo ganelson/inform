@@ -276,7 +276,7 @@ To begin:
 	say "Hello & [italic type]welcome[roman type] from <Inform code>!"
 =
 The example receiver function converts this to HTML:
-= (text)
+= (text as ConsoleText)
 <html><body>
 Hello &amp; <span class="italic">welcome</span> from &lt;Inform code&gt;!
 </html></body>
@@ -327,8 +327,63 @@ To begin:
 	say "[style as enlarged]Hello[end style] & [style as calligraphic]welcome[end style] from <Inform code>!"
 =
 And the result is:
-= (text as Inform 7)
+= (text as ConsoleText)
 <html><body>
 <span class="enlarged">Hello</span> &amp; <span class="calligraphic">welcome</span> from &lt;Inform code&gt;!
 </html></body>
 =
+
+@h Example 5: Sender.
+It's now time to make a traditional piece of interactive fiction with Inform,
+with a world model, a command parser, and the standard command-and-response
+play loop. But we will call this from C, and decide the commands there.
+
+This means a small change to the makefile, to remove |-basic| from the options
+for |inform7|, since we're no longer confining ourselves to Basic Inform.
+
+The I7 source could be that for almost any game -- any of the examples in the
+Inform documentation would do. The C source is more interesting here. Just as
+an |i7_process| can be given a "receiver" function, which receives text from
+it, it can also be given a "sender" which sends text to it. Thus:
+= (text as C)
+	i7process_t proc = i7_new_process();
+	i7_set_process_sender(&proc, the_quitter);
+=
+Here |the_quitter| is the following sender function:
+= (text as C)
+char *the_quitter(int count) {
+	char *cmd = "";
+	switch (count) {
+		case 0: cmd = "quit"; break;
+		case 1: cmd = "y"; break;
+	}
+	printf("%s\n", cmd);
+	return cmd;
+}
+=
+This must return a C string (that is, a |char *| pointer to a null-terminated
+sequence of non-control ASCII characters) which represents a whole line of
+imaginary "typing" by the player. The argument |count| counts upwards from 0,
+incrementing after each call to the sender. So the effect of |the_quitter|
+is to simulate the effect of typing "quit" and then "y".
+
+The resulting transcript of play looks like this:
+= (text as ConsoleText)
+Sir Arthur Evans, hero and archeologist, invites you to explore...
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210917 / Inform 7 v10.1.0 / D
+
+Jarn Mound
+
+>quit
+Are you sure you want to quit? y
+=
+Thus, the "y" is needed in order to respond to the followup question "Are you
+sure...?".
+
+Note that the process is stalled while waiting for the sender to return a
+line of input: it's not working away in the background. The default sender
+uses |getchar|, from the C standard library, to receive a genuinely typed
+command terminated by a new-line.

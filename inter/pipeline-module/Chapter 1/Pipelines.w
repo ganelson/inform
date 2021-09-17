@@ -320,7 +320,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				if (Str::len(step->step_argument) == 0) {
 					if (step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) {
-WRITE_TO(STDOUT, "Hi therr!\n");
 						skip_step = TRUE;
 					} else {
 						#ifdef PROBLEMS_MODULE

@@ -92,6 +92,8 @@ typedef struct i7process_t {
 	int termination_code;
 	int just_undid;
 	void (*receiver)(int id, wchar_t c, char *style);
+	int send_count;
+	char *(*sender)(int count);
 	int use_UTF8;
 } i7process_t;
 
@@ -105,10 +107,12 @@ void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
 void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
+void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
+char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
 int default_main(int argc, char **argv);
 =
@@ -194,6 +198,8 @@ i7process_t i7_new_process(void) {
 	proc.just_undid = 0;
 	proc.snapshot_pos = 0;
 	proc.receiver = i7_default_receiver;
+	proc.send_count = 0;
+	proc.sender = i7_default_sender;
 	proc.use_UTF8 = 1;
 	return proc;
 }
@@ -247,6 +253,18 @@ void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
 
+char i7_default_sender_buffer[256];
+char *i7_default_sender(int count) {
+	int pos = 0;
+	while (1) {
+		int c = getchar();
+		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		if (pos < 255) i7_default_sender_buffer[pos++] = c;
+	}
+	i7_default_sender_buffer[pos++] = 0;
+	return i7_default_sender_buffer;
+}
+
 int default_main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_run_process(&proc);
@@ -273,6 +291,9 @@ int i7_run_process(i7process_t *proc) {
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
 	proc->use_UTF8 = UTF8;
+}
+void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
+	proc->sender = sender;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
@@ -402,6 +423,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	if (compile_main)
 		WRITE("int main(int argc, char **argv) { return default_main(argc, argv); }\n");
 	WRITE("#pragma clang diagnostic push\n");
+	WRITE("#pragma clang diagnostic ignored \"-Wunused-value\"\n");
 	WRITE("#pragma clang diagnostic ignored \"-Wparentheses-equality\"\n");
 	CodeGen::deselect(gen, saved);
 

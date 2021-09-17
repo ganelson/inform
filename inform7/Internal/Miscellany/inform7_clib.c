@@ -78,6 +78,8 @@ i7process_t i7_new_process(void) {
 	proc.just_undid = 0;
 	proc.snapshot_pos = 0;
 	proc.receiver = i7_default_receiver;
+	proc.send_count = 0;
+	proc.sender = i7_default_sender;
 	proc.use_UTF8 = 1;
 	return proc;
 }
@@ -131,6 +133,18 @@ void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
 
+char i7_default_sender_buffer[256];
+char *i7_default_sender(int count) {
+	int pos = 0;
+	while (1) {
+		int c = getchar();
+		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		if (pos < 255) i7_default_sender_buffer[pos++] = c;
+	}
+	i7_default_sender_buffer[pos++] = 0;
+	return i7_default_sender_buffer;
+}
+
 int default_main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_run_process(&proc);
@@ -157,6 +171,9 @@ int i7_run_process(i7process_t *proc) {
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
 	proc->use_UTF8 = UTF8;
+}
+void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
+	proc->sender = sender;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
@@ -486,6 +503,10 @@ void glulx_shiftl(i7process_t *proc, i7val x, i7val y, i7val *z) {
 	printf("Unimplemented: glulx_shiftl\n");
 	i7_fatal_exit(proc);
 }
+
+#ifdef i7_mgl_DealWithUndo
+i7val fn_i7_mgl_DealWithUndo(i7process_t *proc);
+#endif
 
 void glulx_restoreundo(i7process_t *proc, i7val *x) {
 	proc->just_undid = 1;
@@ -1482,9 +1503,11 @@ i7val i7_do_glk_request_line_event(i7process_t *proc, i7val window_id, i7val buf
 	e.val1 = 1;
 	e.val2 = 0;
 	wchar_t c; int pos = init_len;
+	char *s = (proc->sender)(proc->send_count++);
+	int i = 0;
 	while (1) {
-		c = getchar();
-		if ((c == EOF) || (c == '\n') || (c == '\r')) break;
+		c = s[i++];
+		if ((c == EOF) || (c == 0) || (c == '\n') || (c == '\r')) break;
 		if (pos < max_len) i7_write_byte(proc, buffer + pos++, c);
 	}
 	if (pos < max_len) i7_write_byte(proc, buffer + pos, 0); else i7_write_byte(proc, buffer + max_len-1, 0);

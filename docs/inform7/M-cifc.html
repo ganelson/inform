@@ -71,7 +71,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Calling Inform from C</b></li></ul></div>
 <p class="purpose">In 2021, Inform gained the ability to generate C code which could be used as part of a larger program, for example in a framework such as Unity.</p>
 
-<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li><li><a href="M-cifc.html#SP9">&#167;9. Example 4: CSS Receiver</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li><li><a href="M-cifc.html#SP9">&#167;9. Example 4: CSS Receiver</a></li><li><a href="M-cifc.html#SP10">&#167;10. Example 5: Sender</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Users of the Inform UI apps make programs which are usually textual simulations,
 and which are in any case sealed boxes running on virtual machines such as Glulx.
@@ -394,12 +394,12 @@ to have the characters arrive raw as a series of unencoded Unicode code-points.
 <p class="commentary">The example receiver function converts this to HTML:
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;html&gt;&lt;body&gt;</span>
-<span class="plain-syntax">Hello &amp;amp; &lt;span class="italic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
-<span class="plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;</span>
+<span class="ConsoleText-plain-syntax">Hello &amp;amp; &lt;span class="italic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
+<span class="ConsoleText-plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
 </pre>
-<p class="commentary">The word "welcome" here was printed with the style <span class="extract"><span class="extract-syntax">"italic"</span></span>; all else was
+<p class="commentary">The word "welcome" here was printed with the style <span class="extract"><span class="ConsoleText-extract-syntax">"italic"</span></span>; all else was
 plain.
 </p>
 
@@ -455,11 +455,76 @@ styles enumerated by name, like so:
 <p class="commentary">And the result is:
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">html</span><span class="plain-syntax">&gt;&lt;</span><span class="identifier-syntax">body</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">span</span><span class="plain-syntax"> </span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="string-syntax">"enlarged"</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">Hello</span><span class="plain-syntax">&lt;/</span><span class="identifier-syntax">span</span><span class="plain-syntax">&gt; &amp;</span><span class="identifier-syntax">amp</span><span class="plain-syntax">; &lt;</span><span class="identifier-syntax">span</span><span class="plain-syntax"> </span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="string-syntax">"calligraphic"</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">welcome</span><span class="plain-syntax">&lt;/</span><span class="identifier-syntax">span</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">from</span><span class="plain-syntax"> &amp;</span><span class="identifier-syntax">lt</span><span class="plain-syntax">;</span><span class="identifier-syntax">Inform</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax">&amp;</span><span class="identifier-syntax">gt</span><span class="plain-syntax">;!</span>
-<span class="plain-syntax">&lt;/</span><span class="identifier-syntax">html</span><span class="plain-syntax">&gt;&lt;/</span><span class="identifier-syntax">body</span><span class="plain-syntax">&gt;</span>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">&lt;html&gt;&lt;body&gt;</span>
+<span class="ConsoleText-plain-syntax">&lt;span class="enlarged"&gt;Hello&lt;/span&gt; &amp;amp; &lt;span class="calligraphic"&gt;welcome&lt;/span&gt; from &amp;lt;Inform code&amp;gt;!</span>
+<span class="ConsoleText-plain-syntax">&lt;/html&gt;&lt;/body&gt;</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Example 5: Sender. </b>It's now time to make a traditional piece of interactive fiction with Inform,
+with a world model, a command parser, and the standard command-and-response
+play loop. But we will call this from C, and decide the commands there.
+</p>
+
+<p class="commentary">This means a small change to the makefile, to remove <span class="extract"><span class="ConsoleText-extract-syntax">-basic</span></span> from the options
+for <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span>, since we're no longer confining ourselves to Basic Inform.
+</p>
+
+<p class="commentary">The I7 source could be that for almost any game &mdash; any of the examples in the
+Inform documentation would do. The C source is more interesting here. Just as
+an <span class="extract"><span class="ConsoleText-extract-syntax">i7_process</span></span> can be given a "receiver" function, which receives text from
+it, it can also be given a "sender" which sends text to it. Thus:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">);</span>
+</pre>
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">the_quitter</span></span> is the following sender function:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_quitter</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"quit"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">cmd</span><span class="plain-syntax"> = </span><span class="string-syntax">"y"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary">This must return a C string (that is, a <span class="extract"><span class="extract-syntax">char *</span></span> pointer to a null-terminated
+sequence of non-control ASCII characters) which represents a whole line of
+imaginary "typing" by the player. The argument <span class="extract"><span class="extract-syntax">count</span></span> counts upwards from 0,
+incrementing after each call to the sender. So the effect of <span class="extract"><span class="extract-syntax">the_quitter</span></span>
+is to simulate the effect of typing "quit" and then "y".
+</p>
+
+<p class="commentary">The resulting transcript of play looks like this:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archeologist, invites you to explore...</span>
+
+<span class="ConsoleText-plain-syntax">Welcome</span>
+<span class="ConsoleText-plain-syntax">An Interactive Fiction</span>
+<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210917 / Inform 7 v10.1.0 / D</span>
+
+<span class="ConsoleText-plain-syntax">Jarn Mound</span>
+
+<span class="ConsoleText-plain-syntax">&gt;quit</span>
+<span class="ConsoleText-plain-syntax">Are you sure you want to quit? y</span>
+</pre>
+<p class="commentary">Thus, the "y" is needed in order to respond to the followup question "Are you
+sure...?".
+</p>
+
+<p class="commentary">Note that the process is stalled while waiting for the sender to return a
+line of input: it's not working away in the background. The default sender
+uses <span class="extract"><span class="ConsoleText-extract-syntax">getchar</span></span>, from the C standard library, to receive a genuinely typed
+command terminated by a new-line.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iwtg.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresscurrent">cifc</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresssection"><a href="M-pm.html">pm</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -345,6 +345,7 @@ of writing the same thing.
 
 =
 void ReleaseInstructions::write_ifiction_and_blurb(void) {
+	if (Projects::stand_alone(Task::project())) return;
 	release_instructions *rel = my_instructions;
 	if (ReleaseInstructions::ensure_Materials(rel) == FALSE) return;
 	if (ReleaseInstructions::check_cover_art(rel) == FALSE) return;
