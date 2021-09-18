@@ -1,10 +1,10 @@
-Total memory consumption was 393954K = 385 MB
+Total memory consumption was 393955K = 385 MB
 
-60.7% was used for 1997511 objects, in 371254 frames in 299 x 800K = 239200K = 233 MB:
+60.7% was used for 1997513 objects, in 371256 frames in 299 x 800K = 239200K = 233 MB:
 
     10.3%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.1%  text_stream_array                        5142 x 100 = 514200 objects, 28959744 bytes
-     4.2%  linked_list                              30853 objects, 17277680 bytes
+     4.2%  linked_list                              30854 objects, 17278240 bytes
      3.9%  inter_symbol_array                       139 x 1024 = 142336 objects, 15946080 bytes
      2.5%  parse_node                               129399 objects, 10351920 bytes
      1.8%  verb_conjugation                         160 objects, 7425280 bytes
@@ -96,7 +96,7 @@ Total memory consumption was 393954K = 385 MB
      ----  nonlocal_variable                        93 objects, 20088 bytes
      ----  property                                 146 objects, 19856 bytes
      ----  timed_rules_rfd_data                     400 objects, 19200 bytes
-     ----  method                                   394 objects, 18912 bytes
+     ----  method                                   395 objects, 18960 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
      ----  instance                                 167 objects, 17368 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
@@ -168,7 +168,7 @@ Total memory consumption was 393954K = 385 MB
      ----  pipeline_stage                           21 objects, 1008 bytes
      ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  submodule_identity                       30 objects, 960 bytes
-     ----  code_generation                          1 object, 888 bytes
+     ----  code_generation                          1 object, 896 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
      ----  generated_segment                        27 objects, 864 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
@@ -238,7 +238,7 @@ Total memory consumption was 393954K = 385 MB
 
 39.2% was used for memory not allocated for objects:
 
-    20.4%  text stream storage                      82592864 bytes in 532362 claims
+    20.4%  text stream storage                      82593612 bytes in 532368 claims
      4.5%  dictionary storage                       18177024 bytes in 33269 claims
      ----  sorting                                  744 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -256,5 +256,5 @@ Total memory consumption was 393954K = 385 MB
      ----  code generation workspace for objects    9648 bytes in 9 claims
      ----  emitter array storage                    161920 bytes in 2064 claims
 
-18.5% was overhead - 75013952 bytes = 73255K = 71 MB
+18.5% was overhead - 75013336 bytes = 73255K = 71 MB
 

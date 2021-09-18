@@ -387,3 +387,72 @@ Note that the process is stalled while waiting for the sender to return a
 line of input: it's not working away in the background. The default sender
 uses |getchar|, from the C standard library, to receive a genuinely typed
 command terminated by a new-line.
+
+@h Example 6: Directing actions.
+More radically, it's possible to take textual input away entirely, by setting
+the sender function to |NULL|.
+
+What will happen then is that the |i7_run_process| function will return at
+the point where a command would have been requested. The C function can then
+trigger whatever actions it wants, in the world model, without the need to
+feed a textual command back to I7 which would then be parsed into actions.
+
+In this example the C program is:
+= (text as C)
+#include "inform7_clib.h"
+#include "inform7_symbols.h"
+
+int main(int argc, char **argv) {
+	i7process_t proc = i7_new_process();
+	i7_set_process_sender(&proc, NULL);
+	if (i7_run_process(&proc) == 0) {
+		i7_try(&proc, i7_A_Take, i7_I_Linear_B_tablet, 0);	
+		i7_try(&proc, i7_A_Inv, 0, 0);	
+	} else {
+		printf("*** Fatal error: halted ***\n");
+		fflush(stdout); fflush(stderr);
+	}
+	return exit_code;
+}
+=
+Note that a header file called |inform7_symbols.h| is included. This defines
+useful constants like |i7_A_Take| (for the "taking" action) and |i7_I_Linear_B_tablet|
+(for the object called "Linear B tablet"). But where did this header come from?
+
+The answer is that this file can ootionally be created when //inform7// is
+generating C. In Example 5 we ran Inform with |-format=C/no-main|; this time
+we use |-format=C/no-main/symbols-header|. This also needs a subtle change to
+the makefile logic; the difference being that |Eg6-C.o| is now dependent on
+|Eg6-I.c|. This forces |make| to create |Eg6-I.c|, and as a byproduct |inform7_symbols.h|,
+before compiling |Eg6-C.c| to make |Eg6-C.o|.
+= (text)
+Eg6: Eg6-C.o Eg6-I.o
+	$(LINK) -o Eg6 Eg6-C.o Eg6-I.o
+
+Eg6-C.o: Eg6.c Eg6-I.c
+	$(CC) -o Eg6-C.o Eg6.c
+
+Eg6-I.o: Eg6-I.c
+	$(CC) -o Eg6-I.o Eg6-I.c
+
+Eg6-I.c: Eg6.i7
+	$(INFORM) -format=C/no-main/symbols-header -o Eg6-I.c Eg6.i7
+=
+
+Anyway, the result of this is:
+= (text as ConsoleText)
+Sir Arthur Evans, hero and archeologist, invites you to explore...
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210918 / Inform 7 v10.1.0 / D
+
+Jarn Mound
+You can see a Linear B tablet here.
+
+Taken.
+
+You are carrying:
+  a Linear B tablet
+  an iPhone
+=

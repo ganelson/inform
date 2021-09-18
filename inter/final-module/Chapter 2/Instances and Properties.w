@@ -419,7 +419,7 @@ bother to force them.)
 
 @<Compile the property numberspace forcer@> =
 	if (properties_found) {
-		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer", -1, FALSE);
+		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE);
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
@@ -516,7 +516,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
-							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name, -1, FALSE);
+							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
 							CodeGen::Targets::assign_property(gen, I"value_range", N, FALSE);
@@ -555,7 +555,7 @@ legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
 
 @<Define the I6 VPH class@> =
-	CodeGen::Targets::declare_class(gen, I"VPH_Class", I"Class");
+	CodeGen::Targets::declare_class(gen, I"VPH_Class", NULL, I"Class");
 	CodeGen::Targets::end_class(gen, I"VPH_Class");
 
 @<Decide who gets a VPH@> =
@@ -712,7 +712,7 @@ because I6 doesn't allow function calls in a constant context.
 			text_stream *super_class = NULL;
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) super_class = CodeGen::CL::name(super_name);
-			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name), super_class);
+			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
 			CodeGen::IP::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));
@@ -880,17 +880,19 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
+		TEMPORARY_TEXT(val)
+		if (defined) WRITE_TO(val, "%d", val2);
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, inst_name, 1));
 		text_stream *OUT = CodeGen::current(gen);
 		if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), inst_name, P, defined, FALSE)) {
-			if (defined) {
-				int hex = FALSE;
-				if (Inter::Annotations::find(&(inst_name->ann_set), HEX_IANN)) hex = TRUE;
-				if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
-			}
+			WRITE("%S", val);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
 		}
 		CodeGen::deselect(gen, saved);
+		CodeGen::Targets::declare_value_instance(gen, CodeGen::CL::name(inst_name),
+			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"),
+			val);
+		DISCARD_TEXT(val)
 	}
 }
 
@@ -964,24 +966,19 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
-	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
-//		text_stream *OUT = CodeGen::current(gen);
-//		WRITE("Object ");
+	int is_obj = FALSE;
+	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) is_obj = TRUE;
+	if (is_obj) {
 		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
 		if (c < 0) c = 0;
 		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
-		CodeGen::Targets::declare_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name), c, is_dir);
-
-//		for (int i=0; i<c; i++) WRITE("-> ");
-//		WRITE("%S \"\"", CodeGen::CL::name(inst_name));
-//		if (Inter::Kind::is_a(inst_kind, direction_kind_symbol)) { WRITE(" Compass"); }
-//		WRITE("\n    class %S\n", CodeGen::CL::name(inst_kind));
+		CodeGen::Targets::declare_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name),
+			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir);
 		CodeGen::IP::append(gen, inst_name);
 		inter_node_list *FL =
 			Inode::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		CodeGen::IP::plist(gen, FL);
-//		WRITE(";\n\n");
 		CodeGen::Targets::end_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name));
 	}
 }

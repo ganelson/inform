@@ -197,6 +197,7 @@ i7val i7_mcall_2(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2);
 i7val i7_mcall_3(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3);
 i7val i7_gen_call(i7process_t *proc, i7val fn_ref, i7val *args, int argc);
 void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z);
+i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s);
 void i7_print_dword(i7process_t *proc, i7val at);
 char *i7_text_of_string(i7val str);
 #define I7_BODY_TEXT_ID    201

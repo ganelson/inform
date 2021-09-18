@@ -768,7 +768,7 @@ void CodeGen::I6::evaluate_variable(code_generation_target *cgt, code_generation
 	WRITE("%S", CodeGen::CL::name(var_name));
 }
 
-void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *super_class) {
+void CodeGen::I6::declare_class(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
 	if (Str::len(super_class) > 0) WRITE("  class %S\n", super_class);
@@ -779,7 +779,7 @@ void CodeGen::I6::end_class(code_generation_target *cgt, code_generation *gen, t
 	WRITE(";\n");
 }
 
-void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
+void CodeGen::I6::declare_instance(code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", class_name);
 	for (int i=0; i<acount; i++) WRITE(" ->");

@@ -8,6 +8,7 @@ How objects, classes and properties are compiled to C.
 void CObjectModel::initialise(code_generation_target *cgt) {
 	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, CObjectModel::world_model_essentials);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
+	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, CObjectModel::declare_value_instance);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CObjectModel::declare_class);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
@@ -28,6 +29,7 @@ typedef struct C_generation_object_model_data {
 	struct C_property_owner *compass_instance;
 	struct C_property_owner *direction_kind;
 	int inline_this;
+	struct dictionary *header_constants;
 } C_generation_object_model_data;
 
 typedef struct C_property_owner {
@@ -52,6 +54,7 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.declared_objects) = NEW_LINKED_LIST(C_property_owner);
 	for (int i=0; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 	C_GEN_DATA(objdata.compass_instance) = NULL;
+	C_GEN_DATA(objdata.header_constants) = Dictionaries::new(1024, TRUE);
 }
 
 void CObjectModel::begin(code_generation *gen) {
@@ -108,13 +111,13 @@ here as special cases. After that, it's first come, first served.
 int CObjectModel::next_owner_id(code_generation *gen) {
 	C_GEN_DATA(objdata.owner_id_count)++;
 	if (C_GEN_DATA(objdata.owner_id_count) == 1) {
-		CObjectModel::declare_class_inner(gen, I"Class", 1, I"Class");
+		CObjectModel::declare_class_inner(gen, I"Class", NULL, 1, I"Class");
 		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"Object", 2, I"Class");
+		CObjectModel::declare_class_inner(gen, I"Object", NULL, 2, I"Class");
 		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"String", 3, I"Class");
+		CObjectModel::declare_class_inner(gen, I"String", NULL, 3, I"Class");
 		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"Routine", 4, I"Class");
+		CObjectModel::declare_class_inner(gen, I"Routine", NULL, 4, I"Class");
 		C_GEN_DATA(objdata.owner_id_count)++;
 	}
 	return C_GEN_DATA(objdata.owner_id_count);
@@ -162,15 +165,16 @@ Each proper base kind in the Inter tree produces an owner as follows:
 
 =
 void CObjectModel::declare_class(code_generation_target *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *super_class) {
+	text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
 	if (Str::len(super_class) == 0) super_class = I"Class";
-	CObjectModel::declare_class_inner(gen, class_name,
+	CObjectModel::declare_class_inner(gen, class_name, printed_name,
 		CObjectModel::next_owner_id(gen), super_class);
 }
 
 void CObjectModel::declare_class_inner(code_generation *gen,
-	text_stream *class_name, int id, text_stream *super_class) {
+	text_stream *class_name, text_stream *printed_name, int id, text_stream *super_class) {
 	CObjectModel::define_constant_for_owner_id(gen, class_name, id);
+	if (printed_name) CObjectModel::define_header_constant_for_kind(gen, class_name, printed_name, id);
 	CObjectModel::assign_owner(gen, id, class_name, super_class, TRUE);
 }
 
@@ -178,17 +182,23 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 
 =
 void CObjectModel::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
-	C_GEN_DATA(objdata.compass_instance) = CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", -1, FALSE);
+	C_GEN_DATA(objdata.compass_instance) = CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", I"Compass", -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", NULL, -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", NULL, -1, FALSE);
+	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", NULL, -1, FALSE);
 }
 
 C_property_owner *CObjectModel::declare_instance(code_generation_target *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
+	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
 	CObjectModel::define_constant_for_owner_id(gen, instance_name, id);
+	if (printed_name) {
+		TEMPORARY_TEXT(val)
+		WRITE_TO(val, "%d", id);
+		CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, FALSE);
+		DISCARD_TEXT(val)
+	}
 	C_property_owner *this = CObjectModel::assign_owner(gen, id, instance_name, class_name, FALSE);
 	if (acount >= 0) {
 		this->initial_parent = NULL;
@@ -222,6 +232,11 @@ C_property_owner *CObjectModel::declare_instance(code_generation_target *cgt, co
 	return this;
 }
 
+void CObjectModel::declare_value_instance(code_generation_target *cgt,
+	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
+	CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, TRUE);
+}
+
 @ So it is finally time to compile a |#define| for the owner's identifier,
 defining this as a constant equal to its ID.
 
@@ -231,6 +246,57 @@ void CObjectModel::define_constant_for_owner_id(code_generation *gen, text_strea
 	generated_segment *saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define "); CNamespace::mangle(NULL, OUT, owner_name); WRITE(" %d\n", id);
+	CodeGen::deselect(gen, saved);
+}
+
+text_stream *CObjectModel::new_header_name(code_generation *gen, text_stream *prefix, text_stream *raw) {
+	dictionary *D = C_GEN_DATA(objdata.header_constants);
+	text_stream *key = Str::new();
+	WRITE_TO(key, "i7_%S_", prefix);
+	LOOP_THROUGH_TEXT(pos, raw)
+		if (Characters::isalnum(Str::get(pos)))
+			PUT_TO(key, Str::get(pos));
+		else
+			PUT_TO(key, '_');
+	text_stream *dv = Dictionaries::get_text(D, key);
+	if (dv) {
+		TEMPORARY_TEXT(keyx)
+		int n = 2;
+		while (TRUE) {
+			Str::clear(keyx);
+			WRITE_TO(keyx, "%S_%d", key, n);
+			if (Dictionaries::get_text(D, keyx) == NULL) break;
+			n++;
+		}
+		DISCARD_TEXT(keyx)
+		WRITE_TO(key, "_%d", n);
+	}
+	Dictionaries::create_text(D, key);
+	return key;
+}
+
+void CObjectModel::define_header_constant_for_instance(code_generation *gen, text_stream *owner_name,
+	text_stream *printed_name, text_stream *val, int enumerated) {
+	int seg = (enumerated)?c_enum_symbols_I7CGS:c_instances_symbols_I7CGS;
+	generated_segment *saved = CodeGen::select(gen, seg);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %S\n", CObjectModel::new_header_name(gen, I"I", printed_name), val);
+	CodeGen::deselect(gen, saved);
+}
+
+void CObjectModel::define_header_constant_for_kind(code_generation *gen, text_stream *owner_name,
+	text_stream *printed_name, int id) {
+	generated_segment *saved = CodeGen::select(gen, c_kinds_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"K", printed_name), id);
+	CodeGen::deselect(gen, saved);
+}
+
+void CObjectModel::define_header_constant_for_action(code_generation *gen, text_stream *action_name,
+	text_stream *printed_name, int id) {
+	generated_segment *saved = CodeGen::select(gen, c_actions_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"A", printed_name), id);
 	CodeGen::deselect(gen, saved);
 }
 

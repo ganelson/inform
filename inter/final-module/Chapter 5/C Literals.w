@@ -442,6 +442,7 @@ void CLiteralsModel::new_action(code_generation_target *cgt, code_generation *ge
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if (true_action) {
+		CObjectModel::define_header_constant_for_action(gen, name, name, C_GEN_DATA(litdata.C_action_count));
 		WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(litdata.C_action_count)++);
 		ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, C_GEN_DATA(litdata.actions));
 	} else {
@@ -465,6 +466,21 @@ void CLiteralsModel::compile_actions_table(code_generation *gen) {
 	}
 	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);	
 }
+
+@
+
+= (text to inform7_clib.h)
+i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s);
+=
+
+= (text to inform7_clib.c)
+#ifdef i7_mgl_TryAction
+i7val fn_i7_mgl_TryAction(i7process_t *proc, i7val i7_mgl_local_req, i7val i7_mgl_local_by, i7val i7_mgl_local_ac, i7val i7_mgl_local_n, i7val i7_mgl_local_s, i7val i7_mgl_local_stora, i7val i7_mgl_local_smeta, i7val i7_mgl_local_tbits, i7val i7_mgl_local_saved_command, i7val i7_mgl_local_text_of_command);
+i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s) {
+	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+}
+#endif
+=
 
 @
 

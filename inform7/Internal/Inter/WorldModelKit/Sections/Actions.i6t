@@ -120,6 +120,7 @@ This is method (ii) in the summary above.
 	req = req & 1;
 	@push actor; @push act_requester; @push inp1; @push inp2;
 	@push parsed_number; smeta = meta;
+	if (by == 0) by = player;
 	actor = by; if (req) act_requester = player; else act_requester = 0;
 
 	by = FindAction(ac);

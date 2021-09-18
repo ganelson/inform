@@ -157,8 +157,10 @@ int default_main(int argc, char **argv) {
 
 i7val fn_i7_mgl_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
-	if (setjmp(proc->execution_env)) {
-		proc->termination_code = 1; /* terminated abnormally */
+	int tc = setjmp(proc->execution_env);
+	if (tc) {
+		if (tc == 2) tc = 0;
+		proc->termination_code = tc; /* terminated abnormally */
     } else {
 		i7_initialise_state(proc);
 		i7_initializer(proc);
@@ -180,6 +182,11 @@ void i7_fatal_exit(i7process_t *proc) {
 //	int x = 0; printf("%d", 1/x);
 	longjmp(proc->execution_env, 1);
 }
+
+void i7_benign_exit(i7process_t *proc) {
+	longjmp(proc->execution_env, 2);
+}
+
 
 i7byte i7_initial_memory[];
 void i7_initialise_state(i7process_t *proc) {
@@ -1094,6 +1101,12 @@ void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z) {
 	i7val rv = i7_gen_call(proc, fn_ref, args, varargc);
 	if (z) *z = rv;
 }
+#ifdef i7_mgl_TryAction
+i7val fn_i7_mgl_TryAction(i7process_t *proc, i7val i7_mgl_local_req, i7val i7_mgl_local_by, i7val i7_mgl_local_ac, i7val i7_mgl_local_n, i7val i7_mgl_local_s, i7val i7_mgl_local_stora, i7val i7_mgl_local_smeta, i7val i7_mgl_local_tbits, i7val i7_mgl_local_saved_command, i7val i7_mgl_local_text_of_command);
+i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s) {
+	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+}
+#endif
 void i7_print_dword(i7process_t *proc, i7val at) {
 	for (i7byte i=1; i<=9; i++) {
 		i7byte c = i7_read_byte(proc, at+i);
@@ -1503,6 +1516,7 @@ i7val i7_do_glk_request_line_event(i7process_t *proc, i7val window_id, i7val buf
 	e.val1 = 1;
 	e.val2 = 0;
 	wchar_t c; int pos = init_len;
+	if (proc->sender == NULL) i7_benign_exit(proc);
 	char *s = (proc->sender)(proc->send_count++);
 	int i = 0;
 	while (1) {

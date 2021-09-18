@@ -62,6 +62,7 @@ typedef struct code_generation {
 	struct inter_package *just_this_package;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
 	struct linked_list *segment_sequence; /* of |generated_segment| */
+	struct linked_list *additional_segment_sequence; /* of |generated_segment| */
 	struct generated_segment *current_segment; /* an entry in that array, or null */
 	int temporarily_diverted; /* to the temporary segment */
 	void *target_specific_data; /* depending on the target generated to */
@@ -78,6 +79,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	else gen->just_this_package = Site::main_package(I);
 	gen->current_segment = NULL;
 	gen->segment_sequence = NEW_LINKED_LIST(generated_segment);
+	gen->additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
 	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
 	return gen;
@@ -109,6 +111,16 @@ void CodeGen::create_segments(code_generation *gen, void *data, int codes[]) {
 	gen->target_specific_data = data;
 }
 
+void CodeGen::additional_segments(code_generation *gen, int codes[]) {
+	gen->additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
+	for (int i=0; codes[i] >= 0; i++) {
+		if ((codes[i] >= MAX_CG_SEGMENTS) ||
+			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
+		gen->segments[codes[i]] = CodeGen::new_segment();
+		ADD_TO_LINKED_LIST(gen->segments[codes[i]], generated_segment, gen->additional_segment_sequence);
+	}
+}
+
 @ And then all we do is concatenate them in order:
 
 =
@@ -133,6 +145,11 @@ generated_segment *CodeGen::select(code_generation *gen, int i) {
 void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
 	if (gen->temporarily_diverted) internal_error("poorly timed deselection");
 	gen->current_segment = saved;
+}
+
+text_stream *CodeGen::content(code_generation *gen, int i) {
+	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	return gen->segments[i]->generated_code;
 }
 
 @ The procedure for selecting the temporary segment is different, because

@@ -206,26 +206,31 @@ void CodeGen::Targets::evaluate_variable(code_generation *gen, inter_symbol *var
 @e END_CLASS_MTID
 @e DECLARE_INSTANCE_MTID
 @e END_INSTANCE_MTID
+@e DECLARE_VALUE_INSTANCE_MTID
 @e OPTIMISE_PROPERTY_MTID
 @e ASSIGN_PROPERTY_MTID
 @e PROPERTY_OFFSET_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *super_class)
+VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class)
 VOID_METHOD_TYPE(END_CLASS_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name)
-void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_name, text_stream *super_class) {
-	VOID_METHOD_CALL(gen->target, DECLARE_CLASS_MTID, gen, class_name, super_class);
+void CodeGen::Targets::declare_class(code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
+	VOID_METHOD_CALL(gen->target, DECLARE_CLASS_MTID, gen, class_name, printed_name, super_class);
 }
 void CodeGen::Targets::end_class(code_generation *gen, text_stream *class_name) {
 	VOID_METHOD_CALL(gen->target, END_CLASS_MTID, gen, class_name);
 }
-VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir)
+VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir)
 VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name)
-void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
-	VOID_METHOD_CALL(gen->target, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, acount, is_dir);
+void CodeGen::Targets::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
+	VOID_METHOD_CALL(gen->target, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, printed_name, acount, is_dir);
 }
 void CodeGen::Targets::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
 	VOID_METHOD_CALL(gen->target, END_INSTANCE_MTID, gen, class_name, instance_name);
+}
+VOID_METHOD_TYPE(DECLARE_VALUE_INSTANCE_MTID, code_generation_target *cgt, code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val)
+void CodeGen::Targets::declare_value_instance(code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
+	VOID_METHOD_CALL(gen->target, DECLARE_VALUE_INSTANCE_MTID, gen, instance_name, printed_name, val);
 }
 INT_METHOD_TYPE(OPTIMISE_PROPERTY_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X)
 int CodeGen::Targets::optimise_property_value(code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {

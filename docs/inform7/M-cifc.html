@@ -71,7 +71,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Calling Inform from C</b></li></ul></div>
 <p class="purpose">In 2021, Inform gained the ability to generate C code which could be used as part of a larger program, for example in a framework such as Unity.</p>
 
-<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li><li><a href="M-cifc.html#SP9">&#167;9. Example 4: CSS Receiver</a></li><li><a href="M-cifc.html#SP10">&#167;10. Example 5: Sender</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-cifc.html#SP1">&#167;1. Introduction</a></li><li><a href="M-cifc.html#SP2">&#167;2. Example makes</a></li><li><a href="M-cifc.html#SP3">&#167;3. Example 1: Hello World</a></li><li><a href="M-cifc.html#SP4">&#167;4. Example 2: Hello Hello</a></li><li><a href="M-cifc.html#SP8">&#167;8. Example 3: HTML Receiver</a></li><li><a href="M-cifc.html#SP9">&#167;9. Example 4: CSS Receiver</a></li><li><a href="M-cifc.html#SP10">&#167;10. Example 5: Sender</a></li><li><a href="M-cifc.html#SP11">&#167;11. Example 6: Directing actions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Users of the Inform UI apps make programs which are usually textual simulations,
 and which are in any case sealed boxes running on virtual machines such as Glulx.
@@ -525,6 +525,81 @@ uses <span class="extract"><span class="ConsoleText-extract-syntax">getchar</spa
 command terminated by a new-line.
 </p>
 
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Example 6: Directing actions. </b>More radically, it's possible to take textual input away entirely, by setting
+the sender function to <span class="extract"><span class="ConsoleText-extract-syntax">NULL</span></span>.
+</p>
+
+<p class="commentary">What will happen then is that the <span class="extract"><span class="ConsoleText-extract-syntax">i7_run_process</span></span> function will return at
+the point where a command would have been requested. The C function can then
+trigger whatever actions it wants, in the world model, without the need to
+feed a textual command back to I7 which would then be parsed into actions.
+</p>
+
+<p class="commentary">In this example the C program is:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_clib.h"</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="string-syntax">"inform7_symbols.h"</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Take</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Inv</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary">Note that a header file called <span class="extract"><span class="extract-syntax">inform7_symbols.h</span></span> is included. This defines
+useful constants like <span class="extract"><span class="extract-syntax">i7_A_Take</span></span> (for the "taking" action) and <span class="extract"><span class="extract-syntax">i7_I_Linear_B_tablet</span></span>
+(for the object called "Linear B tablet"). But where did this header come from?
+</p>
+
+<p class="commentary">The answer is that this file can ootionally be created when <a href="index.html" class="internal">inform7</a> is
+generating C. In Example 5 we ran Inform with <span class="extract"><span class="extract-syntax">-format=C/no-main</span></span>; this time
+we use <span class="extract"><span class="extract-syntax">-format=C/no-main/symbols-header</span></span>. This also needs a subtle change to
+the makefile logic; the difference being that <span class="extract"><span class="extract-syntax">Eg6-C.o</span></span> is now dependent on
+<span class="extract"><span class="extract-syntax">Eg6-I.c</span></span>. This forces <span class="extract"><span class="extract-syntax">make</span></span> to create <span class="extract"><span class="extract-syntax">Eg6-I.c</span></span>, and as a byproduct <span class="extract"><span class="extract-syntax">inform7_symbols.h</span></span>,
+before compiling <span class="extract"><span class="extract-syntax">Eg6-C.c</span></span> to make <span class="extract"><span class="extract-syntax">Eg6-C.o</span></span>.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Eg6: Eg6-C.o Eg6-I.o</span>
+<span class="plain-syntax">    $(LINK) -o Eg6 Eg6-C.o Eg6-I.o</span>
+
+<span class="plain-syntax">Eg6-C.o: Eg6.c Eg6-I.c</span>
+<span class="plain-syntax">    $(CC) -o Eg6-C.o Eg6.c</span>
+
+<span class="plain-syntax">Eg6-I.o: Eg6-I.c</span>
+<span class="plain-syntax">    $(CC) -o Eg6-I.o Eg6-I.c</span>
+
+<span class="plain-syntax">Eg6-I.c: Eg6.i7</span>
+<span class="plain-syntax">    $(INFORM) -format=C/no-main/symbols-header -o Eg6-I.c Eg6.i7</span>
+</pre>
+<p class="commentary">Anyway, the result of this is:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">Sir Arthur Evans, hero and archeologist, invites you to explore...</span>
+
+<span class="ConsoleText-plain-syntax">Welcome</span>
+<span class="ConsoleText-plain-syntax">An Interactive Fiction</span>
+<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210918 / Inform 7 v10.1.0 / D</span>
+
+<span class="ConsoleText-plain-syntax">Jarn Mound</span>
+<span class="ConsoleText-plain-syntax">You can see a Linear B tablet here.</span>
+
+<span class="ConsoleText-plain-syntax">Taken.</span>
+
+<span class="ConsoleText-plain-syntax">You are carrying:</span>
+<span class="ConsoleText-plain-syntax">  a Linear B tablet</span>
+<span class="ConsoleText-plain-syntax">  an iPhone</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iwtg.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresscurrent">cifc</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresssection"><a href="M-pm.html">pm</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -1,0 +1,11 @@
+Jarn Mound is a room.
+
+Age is a kind of value. The ages are modern, antique and ancient. A thing has
+an age. The age of a thing is usually modern.
+
+The player is carrying an iPhone. In the Mound is a Linear B tablet.
+The tablet is ancient.
+
+When play begins:
+	now the command prompt is "";
+	say "Sir Arthur Evans, hero and archeologist, invites you to explore..."

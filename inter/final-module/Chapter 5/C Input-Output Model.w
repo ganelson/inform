@@ -693,6 +693,7 @@ i7val i7_do_glk_request_line_event(i7process_t *proc, i7val window_id, i7val buf
 	e.val1 = 1;
 	e.val2 = 0;
 	wchar_t c; int pos = init_len;
+	if (proc->sender == NULL) i7_benign_exit(proc);
 	char *s = (proc->sender)(proc->send_count++);
 	int i = 0;
 	while (1) {

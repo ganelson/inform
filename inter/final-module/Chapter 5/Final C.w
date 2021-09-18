@@ -277,8 +277,10 @@ int default_main(int argc, char **argv) {
 
 i7val fn_i7_mgl_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
-	if (setjmp(proc->execution_env)) {
-		proc->termination_code = 1; /* terminated abnormally */
+	int tc = setjmp(proc->execution_env);
+	if (tc) {
+		if (tc == 2) tc = 0;
+		proc->termination_code = tc; /* terminated abnormally */
     } else {
 		i7_initialise_state(proc);
 		i7_initializer(proc);
@@ -299,6 +301,10 @@ void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 void i7_fatal_exit(i7process_t *proc) {
 //	int x = 0; printf("%d", 1/x);
 	longjmp(proc->execution_env, 1);
+}
+
+void i7_benign_exit(i7process_t *proc) {
+	longjmp(proc->execution_env, 2);
 }
 =
 
@@ -333,6 +339,11 @@ void i7_fatal_exit(i7process_t *proc) {
 @e c_globals_array_I7CGS
 @e c_initialiser_I7CGS
 
+@e c_instances_symbols_I7CGS
+@e c_enum_symbols_I7CGS
+@e c_kinds_symbols_I7CGS
+@e c_actions_symbols_I7CGS
+
 =
 int C_target_segments[] = {
 	c_header_inclusion_I7CGS,
@@ -366,6 +377,14 @@ int C_target_segments[] = {
 	-1
 };
 
+int C_symbols_header_segments[] = {
+	c_instances_symbols_I7CGS,
+	c_enum_symbols_I7CGS,
+	c_kinds_symbols_I7CGS,
+	c_actions_symbols_I7CGS,
+	-1
+};
+
 @h State data.
 
 @d C_GEN_DATA(x) ((C_generation_data *) (gen->target_specific_data))->x
@@ -394,6 +413,7 @@ void CTarget::initialise_data(code_generation *gen) {
 =
 int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
+	CodeGen::additional_segments(gen, C_symbols_header_segments);
 	CTarget::initialise_data(gen);
 
 	CNamespace::fix_locals(gen);
@@ -407,6 +427,8 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
 		if (Str::eq_insensitive(opt, I"main")) compile_main = TRUE;
 		else if (Str::eq_insensitive(opt, I"no-main")) compile_main = FALSE;
+		else if (Str::eq_insensitive(opt, I"symbols-header")) ;
+		else if (Str::eq_insensitive(opt, I"no-symbols-header")) ;
 		else {
 			#ifdef PROBLEMS_MODULE
 			Problems::fatal("Unknown compilation format option");
@@ -457,6 +479,41 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	WRITE("#pragma clang diagnostic pop\n");
 	CodeGen::deselect(gen, saved);
 
+	filename *F = gen->from_step->parsed_filename;
+	if (F) {
+		int compile_symbols = FALSE;
+		target_vm *VM = gen->from_step->for_VM;
+		linked_list *opts = TargetVMs::option_list(VM);
+		text_stream *opt;
+		LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
+			if (Str::eq_insensitive(opt, I"symbols-header")) compile_symbols = TRUE;
+			if (Str::eq_insensitive(opt, I"no-symbols-header")) compile_symbols = FALSE;
+		}
+		if (compile_symbols) {
+			filename *G = Filenames::in(Filenames::up(F), I"inform7_symbols.h");
+			text_stream HF;
+			if (STREAM_OPEN_TO_FILE(&HF, G, ISO_ENC) == FALSE) {
+				#ifdef PROBLEMS_MODULE
+				Problems::fatal_on_file("Can't open output file", G);
+				#endif
+				#ifndef PROBLEMS_MODULE
+				Errors::fatal_with_file("Can't open output file", G);
+				exit(1);
+				#endif
+			}
+			WRITE_TO(&HF, "/* Symbols derived mechanically from Inform 7 source: do not edit */\n\n");
+			WRITE_TO(&HF, "/* (1) Instance IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_instances_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (2) Values of enumerated kinds */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_enum_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (3) Kind IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_kinds_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (4) Action IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_actions_symbols_I7CGS));
+			STREAM_CLOSE(&HF);
+		}
+	}
+	
 	return FALSE;
 }
 
