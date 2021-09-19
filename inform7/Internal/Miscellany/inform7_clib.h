@@ -79,6 +79,10 @@ int default_main(int argc, char **argv);
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
+char *i7_read_string(i7process_t *proc, i7val S);
+void i7_write_string(i7process_t *proc, i7val S, char *A);
+i7val *i7_read_list(i7process_t *proc, i7val S, int *N);
+void i7_write_list(i7process_t *proc, i7val S, i7val *A, int L);
 i7val i7_read_variable(i7process_t *proc, i7val var_id);
 void i7_write_variable(i7process_t *proc, i7val var_id, i7val val);
 void i7_initialise_state(i7process_t *proc);

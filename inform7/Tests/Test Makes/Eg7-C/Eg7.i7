@@ -8,8 +8,10 @@ a watch.
 
 The meaning is a text that varies. The meaning is "4 oxen, 1 broken tripod table."
 
+The dial is a list of numbers that varies. The dial is { 3, 6, 9, 12 }.
+
 Instead of examining the watch:
-	say "It is approximately [time of day]."
+	say "It is approximately [time of day], according to a dial showing [dial]."
 
 Instead of examining the tablet:
 	say "It is [age of tablet], and translates to '[meaning]'."

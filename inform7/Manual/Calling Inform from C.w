@@ -534,3 +534,72 @@ Finally, properties of objects can similarly be read or written:
 If you need access to other data inside the Inform program, it's better to
 process it at the Inform end. These functions are just a convenience for what's
 most often needed.
+
+@h Example 7: Reading and writing lists and texts from C.
+Following on from Example 6, suppose we want to deal with Inform variables (or
+property values) containing texts, or lists -- these, for instance:
+= (text as Inform 7)
+The meaning is a text that varies. The meaning is "4 oxen, 1 broken tripod table."
+
+The dial is a list of numbers that varies. The dial is { 3, 6, 9, 12 }.
+=
+If we call, say, |i7_read_variable| on |i7_V_meaning| then the return value is
+an |i7val| which is, in fact, an address somewhere in the Inform process memory.
+What are we to do with this? In fact, it's easy to convert to and from a C string:
+= (text as C)
+char *M = i7_read_string(&proc, i7_read_variable(&proc, i7_V_meaning));
+printf("[C program reads 'meaning' as %s]\n", M);
+i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
+i7_write_string(&proc, i7_read_variable(&proc, i7_V_meaning),
+	"the goddess of the winds beckons you!");
+i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
+=
+And this produces the following:
+= (text as ConsoleText)
+[C program reads 'meaning' as 4 oxen, 1 broken tripod table.]
+It is ancient, and translates to "4 oxen, 1 broken tripod table.".
+
+It is ancient, and translates to "the goddess of the winds beckons you!".
+=
+Here we repeat the action of examining the tablet: we examine once before changing
+the "meaning" and once after.
+
+Similarly for lists:
+= (text as C)
+int L = 0;
+i7val *D = i7_read_list(&proc, i7_read_variable(&proc, i7_V_dial), &L);
+printf("[C program reads 'dial' as");
+for (int i=0; i<L; i++) printf(" %d", D[i]);
+printf("]\n");
+i7_try(&proc, i7_A_Examine, i7_I_watch, 0);
+D[0] = 2;
+D[1] = 10;
+i7_write_list(&proc, i7_read_variable(&proc, i7_V_dial), D, 2);
+i7_try(&proc, i7_A_Examine, i7_I_watch, 0);	
+=
+which produces:
+= (text as ConsoleText)
+[C program reads 'dial' as 3 6 9 12]
+It is approximately 9:00 am, according to a dial showing 3, 6, 9 and 12.
+
+It is approximately 9:00 am, according to a dial showing 2 and 10.
+=
+
+@ The following functions are available:
+
+(*) |i7_read_string(proc, T)| returns a newly-allocated null terminated C
+string with the contents of the text T. If you're doing a lot of this, you
+may want to |free| the returned string pointer. If memory allocation fails,
+the Inform process halts with a fatal error, so you need not check yourself.
+(*) |i7_write_string(proc, T, string)| sets the text T to the null-terminated
+C string given; if this is |NULL|, T is set to the empty text.
+(*) |i7_read_list(proc, L, length)| returns a newly-allocated C array of |i7val|
+values, which are the current contents of the Inform list (whose address is) |L|.
+If |length| is given, it should be a pointer to an |int|, in which is stored the
+length of the list. If you're doing a lot of this, you may want to |free| the
+returned array pointer. If memory allocation fails, the Inform process halts
+with a fatal error, so you need not check yourself.
+(*) |i7_write_list(proc, L, array, length)| sets the Inform list |L| to have
+length |length| and contents given by |array[0], ..., array[length-1]|, where
+the |array| must be of |i7val| values. If |array| is |NULL| or |length| is 0,
+then |L| is left as the empty list.

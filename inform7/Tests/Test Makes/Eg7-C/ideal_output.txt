@@ -1,0 +1,22 @@
+
+
+
+Sir Arthur Evans, hero and archeologist, invites you to explore...
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D
+
+Jarn Mound
+You can see a Linear B tablet here.
+
+[C program reads 'meaning' as 4 oxen, 1 broken tripod table.]
+It is ancient, and translates to "4 oxen, 1 broken tripod table.".
+
+It is ancient, and translates to "the goddess of the winds beckons you!".
+
+[C program reads 'dial' as 3 6 9 12]
+It is approximately 9:00 am, according to a dial showing 3, 6, 9 and 12.
+
+It is approximately 9:00 am, according to a dial showing 2 and 10.
+
