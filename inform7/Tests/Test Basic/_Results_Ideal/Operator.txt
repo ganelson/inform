@@ -1,4 +1,3 @@
-  
   "whether or not 10 && 5" = truth state: true
   "whether or not 10 && 15" = truth state: false
   "whether or not 10 && 10" = truth state: false

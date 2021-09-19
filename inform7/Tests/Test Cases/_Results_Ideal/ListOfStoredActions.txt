@@ -1,7 +1,7 @@
    Brahms Conservatoire
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Brahms Conservatoire
   You can see a tuba and a trombone here.
@@ -39,14 +39,14 @@
   Taken.
   
   >[8] i
-  You have thus far tried the actions: taking yourself, taking the tuba, taking the trombone, dropping the tuba, looking and waiting.
+  You have thus far tried the actions: waiting, taking yourself, taking the tuba, taking the trombone, dropping the tuba and looking.
   
   You are carrying:
     a tuba
     a trombone
   
   >[9] i
-  You have thus far tried the actions: taking yourself, taking the tuba, taking the trombone, dropping the tuba, looking and waiting.
+  You have thus far tried the actions: waiting, taking yourself, taking the tuba, taking the trombone, dropping the tuba and looking.
   
   You are carrying:
     a tuba

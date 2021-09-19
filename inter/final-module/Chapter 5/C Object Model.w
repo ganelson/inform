@@ -300,6 +300,22 @@ void CObjectModel::define_header_constant_for_action(code_generation *gen, text_
 	CodeGen::deselect(gen, saved);
 }
 
+void CObjectModel::define_header_constant_for_property(code_generation *gen, text_stream *prop_name,
+	int id) {
+	generated_segment *saved = CodeGen::select(gen, c_property_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"P", prop_name), id);
+	CodeGen::deselect(gen, saved);
+}
+
+void CObjectModel::define_header_constant_for_variable(code_generation *gen, text_stream *var_name,
+	int id) {
+	generated_segment *saved = CodeGen::select(gen, c_variable_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"V", var_name), id);
+	CodeGen::deselect(gen, saved);
+}
+
 @h Code to compute ofclass and metaclass.
 The easier case is metaclass. This is a built-in function, so we make it follow
 the calling conventions of other functions. It says which of five possible values
@@ -366,7 +382,10 @@ that references to it will not fail to compile.
 void CObjectModel::declare_property(code_generation_target *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
-	CObjectModel::property_by_name(gen, name, used, FALSE);
+	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
+	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
+	if (pname)
+		CObjectModel::define_header_constant_for_property(gen, pname, cp->id);
 }
 void CObjectModel::declare_attribute(code_generation_target *cgt, code_generation *gen,
 	text_stream *prop_name) {
@@ -739,9 +758,12 @@ int i7_has(i7process_t *proc, i7val obj, i7val attr);
 int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id);
 int i7_in(i7process_t *proc, i7val obj1, i7val obj2);
 i7val fn_i7_mgl_parent(i7process_t *proc, i7val id);
+#define i7_parent fn_i7_mgl_parent
 i7val fn_i7_mgl_child(i7process_t *proc, i7val id);
+#define i7_child fn_i7_mgl_child
 i7val fn_i7_mgl_children(i7process_t *proc, i7val id);
 i7val fn_i7_mgl_sibling(i7process_t *proc, i7val id);
+#define i7_sibling fn_i7_mgl_sibling
 void i7_move(i7process_t *proc, i7val obj, i7val to);
 =
 

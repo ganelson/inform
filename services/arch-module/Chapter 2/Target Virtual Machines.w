@@ -76,8 +76,7 @@ target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
 	if (Architectures::is_16_bit(VM->architecture)) {
 		VM->supports_floating_point = FALSE;
 		VM->max_locals = 15;
-		if (Str::eq(unblorbed, I"z5")) VM->VM_image = I"vm_z8.png";
-		else VM->VM_image = I"vm_z5.png";
+		VM->VM_image = I"vm_z8.png";
 	} else {
 		VM->supports_floating_point = TRUE;
 		VM->max_locals = 256;

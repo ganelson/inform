@@ -2,15 +2,13 @@ Inform 7 v10.1.0 has started.
 I've now read your source text, which is 17 words long.
 I've also read Basic Inform by Graham Nelson, which is 7687 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 32067 words long.
+I've also read Standard Rules by Graham Nelson, which is 32075 words long.
 Problem__ PM_MeaningRecursive
-In Part Seven - Phrasebook, Chapter 5 - Understanding, Section SR5/8/1 -
-  Message support - Issuance - in the extension Standard Rules by Graham
-  Nelson:
-  >--> The sentence 'The pronoun reference object is an object that varies' (the
-    Standard Rules, line 4740) tells me that 'Zog', which should be an object
-    that varies, is to have an initial value which can't be worked out without
-    going round in circles.
+In Part Five - Actions, Section 4 - Standard actions concerning the actor's
+  vision in the extension Standard Rules by Graham Nelson:
+  >--> The sentence 'Wog is always Zog' (source text, line 2) tells me that
+    'Zog', which should be an object that varies, is to have an initial value
+    which can't be worked out without going round in circles.
 Problem__ PM_MeaningRecursive
  In the main source text:
   >--> The sentence 'Wog is always Zog' (source text, line 2) tells me that

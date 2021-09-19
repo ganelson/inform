@@ -48,6 +48,11 @@ int CGlobals::prepare_variable(code_generation_target *cgt, code_generation *gen
 int CGlobals::declare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
 	CGlobals::declare_variable_by_name(gen, CodeGen::CL::name(var_name), P);
+	text_stream *name = Metadata::read_optional_textual(Inter::Packages::container(var_name->definition), I"^name");
+	if (name)
+		CObjectModel::define_header_constant_for_variable(gen, name, C_var_count - 1);
+	else 
+		CObjectModel::define_header_constant_for_variable(gen,  CodeGen::CL::name(var_name), C_var_count - 1);
 	return k;
 }
 
@@ -71,3 +76,18 @@ void CGlobals::evaluate_variable(code_generation_target *cgt, code_generation *g
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("proc->state.variables[i7_var_%S]", CodeGen::CL::name(var_name));
 }
+@
+
+= (text to inform7_clib.h)
+i7val i7_read_variable(i7process_t *proc, i7val var_id);
+void i7_write_variable(i7process_t *proc, i7val var_id, i7val val);
+=
+
+= (text to inform7_clib.c)
+i7val i7_read_variable(i7process_t *proc, i7val var_id) {
+	return proc->state.variables[var_id];
+}
+void i7_write_variable(i7process_t *proc, i7val var_id, i7val val) {
+	proc->state.variables[var_id] = val;
+}
+=

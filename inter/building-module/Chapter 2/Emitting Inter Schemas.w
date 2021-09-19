@@ -495,10 +495,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				Produce::val_text(I, t->material);
 				if (print_ret_me) {
 					Produce::up(I);
-					Produce::inv_primitive(I, PRINTCHAR_BIP);
-					Produce::down(I);
-						Produce::val_char(I, '\n');
-					Produce::up(I);
+					Produce::inv_primitive(I, PRINTNL_BIP);
 					Produce::rtrue(I);					
 				}
 				break;

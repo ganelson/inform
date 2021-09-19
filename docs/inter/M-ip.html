@@ -135,9 +135,11 @@ then the second, then the third value, producing that third value.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !print val -&gt; void</span></span>. Print text.
 </li><li>(b) <span class="extract"><span class="extract-syntax">primitive !printnumber val -&gt; void</span></span>. Print a (signed) number in decimal.
-</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !printchar val -&gt; void</span></span>. Print a character value, from the ZSCII character set.
-</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !printdword val -&gt; void</span></span>. Print a dictionary word.
-</li><li>(e) <span class="extract"><span class="extract-syntax">primitive !printstring val -&gt; void</span></span>. Print a packed string.
+</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !printchar val -&gt; void</span></span>. Print a character value.
+</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !printnl void -&gt; void</span></span>. Print a newline. (This is needed because
+some of our VMs use character 10 for newline, and crash on 13, and others vice versa.)
+</li><li>(e) <span class="extract"><span class="extract-syntax">primitive !printdword val -&gt; void</span></span>. Print a dictionary word.
+</li><li>(f) <span class="extract"><span class="extract-syntax">primitive !printstring val -&gt; void</span></span>. Print a packed string.
 </li></ul>
 <p class="commentary">There are also two primitive ways to change the visual style of text:
 </p>

@@ -456,3 +456,10 @@ You are carrying:
   a Linear B tablet
   an iPhone
 =
+Though this example doesn't use them, the following functions are also
+available:
+
+(*) |i7_move(&proc, obj, to)| moves object |obj| to become a child of |to|;
+(*) |i7_parent(&proc, obj)| returns the current parent object of |obj|;
+(*) |i7_child(&proc, obj)| returns its first child;
+(*) |i7_sibling(&proc, obj)| returns the next child of the same parent as |obj|.

@@ -5,14 +5,24 @@ Sir Arthur Evans, hero and archeologist, invites you to explore...
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 210918 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D
 
 Jarn Mound
 You can see a Linear B tablet here.
 
+[C program reads 'time of day' as 540]
+[C program reads 'age of Linear B tablet' as 3]
 Taken.
 
 You are carrying:
   a Linear B tablet
-  an iPhone
+  a watch (being worn)
+
+It is approximately 4:25 pm.
+
+It is approximately 4:35 pm.
+
+You see nothing special about the Linear B tablet.
+
+It is modern, and translates to "4 oxen, 1 broken tripod table.".
 

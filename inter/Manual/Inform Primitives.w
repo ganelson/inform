@@ -69,9 +69,11 @@ These print data of various kinds:
 
 (a) |primitive !print val -> void|. Print text.
 (b) |primitive !printnumber val -> void|. Print a (signed) number in decimal.
-(c) |primitive !printchar val -> void|. Print a character value, from the ZSCII character set.
-(d) |primitive !printdword val -> void|. Print a dictionary word.
-(e) |primitive !printstring val -> void|. Print a packed string.
+(c) |primitive !printchar val -> void|. Print a character value.
+(d) |primitive !printnl void -> void|. Print a newline. (This is needed because
+some of our VMs use character 10 for newline, and crash on 13, and others vice versa.)
+(e) |primitive !printdword val -> void|. Print a dictionary word.
+(f) |primitive !printstring val -> void|. Print a packed string.
 
 There are also two primitive ways to change the visual style of text:
 

@@ -330,11 +330,18 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 		if ((RTVariables::stored_in_own_iname(nlv)) ||
 			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
-			if (RTVariables::stored_in_own_iname(nlv) == FALSE)
+			if (nlv->compilation_data.nlv_name_translated == FALSE) {
 				Produce::annotate_i(iname, EXPLICIT_VARIABLE_IANN, 1);
-			inter_ti v1 = 0, v2 = 0;
-			RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
-			Emit::variable(iname, nlv->nlv_kind, v1, v2);
+				inter_ti v1 = 0, v2 = 0;
+				RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
+				Emit::variable(iname, nlv->nlv_kind, v1, v2);
+			} else {
+				if (nlv->compilation_data.lvalue_nve.iname_form) {
+					inter_symbol *S = InterNames::to_symbol(iname);
+					inter_symbol *H = InterNames::to_symbol(nlv->compilation_data.lvalue_nve.iname_form);
+					InterSymbolsTables::equate(S, H);
+				}
+			}
 			@<Add any anomalous extras@>;
 		}
 		if (nlv == max_score_VAR) {

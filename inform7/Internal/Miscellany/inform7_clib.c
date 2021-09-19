@@ -188,6 +188,12 @@ void i7_benign_exit(i7process_t *proc) {
 }
 
 
+i7val i7_read_variable(i7process_t *proc, i7val var_id) {
+	return proc->state.variables[var_id];
+}
+void i7_write_variable(i7process_t *proc, i7val var_id, i7val val) {
+	proc->state.variables[var_id] = val;
+}
 i7byte i7_initial_memory[];
 void i7_initialise_state(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
@@ -1458,6 +1464,7 @@ i7val i7_do_glk_get_char_stream(i7process_t *proc, i7val stream_id) {
 }
 
 void i7_print_char(i7process_t *proc, i7val x) {
+	if (x == 13) x = 10;
 	i7_do_glk_put_char_stream(proc, proc->state.i7_str_id, x);
 }
 

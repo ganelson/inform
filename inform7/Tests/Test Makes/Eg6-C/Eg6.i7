@@ -3,8 +3,16 @@ Jarn Mound is a room.
 Age is a kind of value. The ages are modern, antique and ancient. A thing has
 an age. The age of a thing is usually modern.
 
-The player is carrying an iPhone. In the Mound is a Linear B tablet.
-The tablet is ancient.
+In the Mound is a Linear B tablet. The tablet is ancient. The player is wearing
+a watch.
+
+The meaning is a text that varies. The meaning is "4 oxen, 1 broken tripod table."
+
+Instead of examining the watch:
+	say "It is approximately [time of day]."
+
+Report examining the tablet:
+	say "It is [age of tablet], and translates to '[meaning]'."
 
 When play begins:
 	now the command prompt is "";

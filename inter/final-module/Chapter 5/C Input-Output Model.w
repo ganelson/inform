@@ -28,6 +28,7 @@ int CInputOutputModel::compile_primitive(code_generation *gen, inter_ti bip, int
 		case STYLE_BIP:    		 WRITE("i7_style(proc, "); INV_A1; WRITE(")"); break;
 		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); INV_A1_PRINTMODE; WRITE(")"); break;
 		case PRINTCHAR_BIP:      WRITE("i7_print_char(proc, "); INV_A1; WRITE(")"); break;
+		case PRINTNL_BIP:        WRITE("i7_print_char(proc, '\\n')"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); INV_A1; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); INV_A1; WRITE(")"); break;
 		case BOX_BIP:            WRITE("i7_print_box(proc, "); INV_A1_BOXMODE; WRITE(")"); break;
@@ -475,6 +476,7 @@ i7val i7_do_glk_get_char_stream(i7process_t *proc, i7val stream_id) {
 }
 
 void i7_print_char(i7process_t *proc, i7val x) {
+	if (x == 13) x = 10;
 	i7_do_glk_put_char_stream(proc, proc->state.i7_str_id, x);
 }
 

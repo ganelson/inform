@@ -406,6 +406,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 
 		case PRINT_BIP: WRITE("print "); INV_A1_PRINTMODE; break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
+		case PRINTNL_BIP: WRITE("new_line"); break;
 		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
 		case PRINTNUMBER_BIP: WRITE("print "); INV_A1; break;
 		case PRINTDWORD_BIP: WRITE("print (address) "); INV_A1; break;
@@ -724,14 +725,14 @@ void CodeGen::I6::property_offset(code_generation_target *cgt, code_generation *
 =
 int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k) {
-	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+//	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			text_stream *S = Str::new();
 			WRITE_TO(S, "(Global_Vars-->%d)", k);
 			Inter::Symbols::set_translate(var_name, S);
+			k++;
 		}
-		k++;
-	}
+//	}
 	return k;
 }
 
@@ -744,8 +745,8 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
-	}
-	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+	} else {
+//	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		if (k == 0) WRITE("Array Global_Vars -->\n");

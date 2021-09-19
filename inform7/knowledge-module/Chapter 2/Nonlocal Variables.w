@@ -331,7 +331,7 @@ parse_node *NonlocalVariables::substitute_constants(parse_node *spec) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(spec);
 		if ((nlv) && (nlv->constant_at_run_time)) {
 			if (nlv->substitution_marker == substitution_session_id) {
-				Problems::quote_source(1, current_sentence);
+				Problems::quote_source(1, nlv->nlv_created_at);
 				Problems::quote_wording(2, nlv->name);
 				Problems::quote_kind(3, nlv->nlv_kind);
 				StandardProblems::handmade_problem(Task::syntax_tree(),

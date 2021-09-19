@@ -79,6 +79,8 @@ int default_main(int argc, char **argv);
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
+i7val i7_read_variable(i7process_t *proc, i7val var_id);
+void i7_write_variable(i7process_t *proc, i7val var_id, i7val val);
 void i7_initialise_state(i7process_t *proc);
 i7byte i7_read_byte(i7process_t *proc, i7val address);
 i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index);
@@ -181,9 +183,12 @@ int i7_has(i7process_t *proc, i7val obj, i7val attr);
 int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id);
 int i7_in(i7process_t *proc, i7val obj1, i7val obj2);
 i7val fn_i7_mgl_parent(i7process_t *proc, i7val id);
+#define i7_parent fn_i7_mgl_parent
 i7val fn_i7_mgl_child(i7process_t *proc, i7val id);
+#define i7_child fn_i7_mgl_child
 i7val fn_i7_mgl_children(i7process_t *proc, i7val id);
 i7val fn_i7_mgl_sibling(i7process_t *proc, i7val id);
+#define i7_sibling fn_i7_mgl_sibling
 void i7_move(i7process_t *proc, i7val obj, i7val to);
 i7val i7_call_0(i7process_t *proc, i7val fn_ref);
 i7val i7_call_1(i7process_t *proc, i7val fn_ref, i7val v);

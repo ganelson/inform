@@ -1,5 +1,5 @@
 1. In
-<a name=STORYFILE></a><p>Story file format: <img border=0 src=inform:/doc_images/vm_z8.png>&nbsp;Z-Machine version 8 with debugging</p>
+<a name=STORYFILE></a><p>Story file format: <img border=0 src=inform:/doc_images/vm_z8.png>&nbsp;Inform6/16d/v8</p>
 <p>The following use options are in force:</p>
 <p class="tightin2"><span style="color:#808080">Set from the Options.txt configuration file, or automatically&nbsp;<a href=inform:/doc22.html><img border=0 src=inform:/doc_images/help.png></a>:</span></p>
 <p class="tightin3">Use maximum text length of at least 1024&nbsp;<a href="javascript:pasteCode('Use maximum text length of at least 2048.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;<i>Double this</i></p>

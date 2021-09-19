@@ -343,6 +343,8 @@ void i7_benign_exit(i7process_t *proc) {
 @e c_enum_symbols_I7CGS
 @e c_kinds_symbols_I7CGS
 @e c_actions_symbols_I7CGS
+@e c_property_symbols_I7CGS
+@e c_variable_symbols_I7CGS
 
 =
 int C_target_segments[] = {
@@ -382,6 +384,8 @@ int C_symbols_header_segments[] = {
 	c_enum_symbols_I7CGS,
 	c_kinds_symbols_I7CGS,
 	c_actions_symbols_I7CGS,
+	c_property_symbols_I7CGS,
+	c_variable_symbols_I7CGS,
 	-1
 };
 
@@ -510,6 +514,10 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_kinds_symbols_I7CGS));
 			WRITE_TO(&HF, "\n/* (4) Action IDs */\n\n");
 			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_actions_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (5) Property IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_property_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (6) Variable IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_variable_symbols_I7CGS));
 			STREAM_CLOSE(&HF);
 		}
 	}
