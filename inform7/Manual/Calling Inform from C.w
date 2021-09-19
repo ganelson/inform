@@ -396,6 +396,31 @@ What will happen then is that the |i7_run_process| function will return at
 the point where a command would have been requested. The C function can then
 trigger whatever actions it wants, in the world model, without the need to
 feed a textual command back to I7 which would then be parsed into actions.
+In this example we do just that, and also examine and modify the data belonging
+to the I7 program from C.
+
+The story, such as it is:
+= (text as Inform 7)
+Jarn Mound is a room.
+
+Age is a kind of value. The ages are modern, antique and ancient. A thing has
+an age. The age of a thing is usually modern.
+
+In the Mound is a Linear B tablet. The tablet is ancient. The player is wearing
+a watch.
+
+The meaning is a text that varies. The meaning is "4 oxen, 1 broken tripod table."
+
+Instead of examining the watch:
+	say "It is approximately [time of day]."
+
+Report examining the tablet:
+	say "It is [age of tablet], and translates to '[meaning]'."
+
+When play begins:
+	now the command prompt is "";
+	say "Sir Arthur Evans, hero and archeologist, invites you to explore..."
+=
 
 In this example the C program is:
 = (text as C)
@@ -406,13 +431,24 @@ int main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_set_process_sender(&proc, NULL);
 	if (i7_run_process(&proc) == 0) {
+		i7val t = i7_read_variable(&proc, i7_V_the_time);
+		printf("[C program reads 'time of day' as %d]\n", t);
+		i7val A = i7_read_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age);
+		printf("[C program reads 'age of Linear B tablet' as %d]\n", A);
 		i7_try(&proc, i7_A_Take, i7_I_Linear_B_tablet, 0);	
-		i7_try(&proc, i7_A_Inv, 0, 0);	
+		i7_try(&proc, i7_A_Inv, 0, 0);
+		i7_write_variable(&proc, i7_V_the_time, 985);
+		i7_try(&proc, i7_A_Examine, i7_I_watch, 0);	
+		i7_write_variable(&proc, i7_V_the_time, 995);
+		i7_try(&proc, i7_A_Examine, i7_I_watch, 0);	
+		i7_write_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age, i7_I_modern);
+		i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
+		return 0;
 	} else {
 		printf("*** Fatal error: halted ***\n");
 		fflush(stdout); fflush(stderr);
+		return 1;
 	}
-	return exit_code;
 }
 =
 Note that a header file called |inform7_symbols.h| is included. This defines
@@ -445,21 +481,56 @@ Sir Arthur Evans, hero and archeologist, invites you to explore...
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 210918 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D
 
 Jarn Mound
 You can see a Linear B tablet here.
 
+[C program reads 'time of day' as 540]
+[C program reads 'age of Linear B tablet' as 3]
 Taken.
 
 You are carrying:
   a Linear B tablet
-  an iPhone
+  a watch (being worn)
+
+It is approximately 4:25 pm.
+
+It is approximately 4:35 pm.
+
+You see nothing special about the Linear B tablet.
+
+It is modern, and translates to "4 oxen, 1 broken tripod table.".
 =
-Though this example doesn't use them, the following functions are also
-available:
+Here we see a run of responses, as if to unheard commands: those of course
+are the actions sent directly to the process by |i7_try|.
+
+@ Example 6 used most of the following suite of functions for looking at or
+altering the Inform data.
+
+First, some functions which can only be applied to instances of |object|:
 
 (*) |i7_move(&proc, obj, to)| moves object |obj| to become a child of |to|;
 (*) |i7_parent(&proc, obj)| returns the current parent object of |obj|;
 (*) |i7_child(&proc, obj)| returns its first child;
 (*) |i7_sibling(&proc, obj)| returns the next child of the same parent as |obj|.
+
+Second, functions to look at global variables:
+
+(*) |i7_read_variable(&proc, var)| returns the current value of the variable |var|;
+(*) |i7_write_variable(&proc, var, val)| sets the value to |val|.
+
+Note that where variables are created by kits such as WorldModelKit, their ID
+constants have names based on the names they have in those kits: thus |i7_V_the_time|
+refers to the time of day, not |i7_V_time_of_day|. Browsing |inform7_symbols.h| 
+will usually make things clear, anyway.
+
+Finally, properties of objects can similarly be read or written:
+
+(*) |i7_read_prop_value(&proc, obj, prop)| returns the current value of property
+|prop| for the object |obj|;
+(*) |i7_write_prop_value(&proc, obj, prop, val)| sets it to |val|.
+
+If you need access to other data inside the Inform program, it's better to
+process it at the Inform end. These functions are just a convenience for what's
+most often needed.

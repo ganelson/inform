@@ -533,8 +533,34 @@ the sender function to <span class="extract"><span class="ConsoleText-extract-sy
 the point where a command would have been requested. The C function can then
 trigger whatever actions it wants, in the world model, without the need to
 feed a textual command back to I7 which would then be parsed into actions.
+In this example we do just that, and also examine and modify the data belonging
+to the I7 program from C.
 </p>
 
+<p class="commentary">The story, such as it is:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Jarn</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">Age</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ages</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">, </span><span class="identifier-syntax">antique</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span>
+<span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">age</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">modern</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">In</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mound</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">Linear</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancient</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">wearing</span>
+<span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"4 oxen, 1 broken tripod table."</span>
+
+<span class="identifier-syntax">Instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">watch</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is approximately [time of day]."</span>
+
+<span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">examining</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tablet</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"It is [age of tablet], and translates to '[meaning]'."</span>
+
+<span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">prompt</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"Sir Arthur Evans, hero and archeologist, invites you to explore..."</span>
+</pre>
 <p class="commentary">In this example the C program is:
 </p>
 
@@ -546,13 +572,24 @@ feed a textual command back to I7 which would then be parsed into actions.
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_new_process</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_set_process_sender</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i7_run_process</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'time of day' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7val</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'age of Linear B tablet' as %d]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Take</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Inv</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">985</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_the_time</span><span class="plain-syntax">, </span><span class="constant-syntax">995</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_watch</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_write_prop_value</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_P_age</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_modern</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"*** Fatal error: halted ***\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stdout</span><span class="plain-syntax">); </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stderr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">exit_code</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary">Note that a header file called <span class="extract"><span class="extract-syntax">inform7_symbols.h</span></span> is included. This defines
@@ -589,19 +626,36 @@ before compiling <span class="extract"><span class="extract-syntax">Eg6-C.c</spa
 
 <span class="ConsoleText-plain-syntax">Welcome</span>
 <span class="ConsoleText-plain-syntax">An Interactive Fiction</span>
-<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210918 / Inform 7 v10.1.0 / D</span>
+<span class="ConsoleText-plain-syntax">Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D</span>
 
 <span class="ConsoleText-plain-syntax">Jarn Mound</span>
 <span class="ConsoleText-plain-syntax">You can see a Linear B tablet here.</span>
 
+<span class="ConsoleText-plain-syntax">[C program reads 'time of day' as 540]</span>
+<span class="ConsoleText-plain-syntax">[C program reads 'age of Linear B tablet' as 3]</span>
 <span class="ConsoleText-plain-syntax">Taken.</span>
 
 <span class="ConsoleText-plain-syntax">You are carrying:</span>
 <span class="ConsoleText-plain-syntax">  a Linear B tablet</span>
-<span class="ConsoleText-plain-syntax">  an iPhone</span>
+<span class="ConsoleText-plain-syntax">  a watch (being worn)</span>
+
+<span class="ConsoleText-plain-syntax">It is approximately 4:25 pm.</span>
+
+<span class="ConsoleText-plain-syntax">It is approximately 4:35 pm.</span>
+
+<span class="ConsoleText-plain-syntax">You see nothing special about the Linear B tablet.</span>
+
+<span class="ConsoleText-plain-syntax">It is modern, and translates to "4 oxen, 1 broken tripod table.".</span>
 </pre>
-<p class="commentary">Though this example doesn't use them, the following functions are also
-available:
+<p class="commentary">Here we see a run of responses, as if to unheard commands: those of course
+are the actions sent directly to the process by <span class="extract"><span class="ConsoleText-extract-syntax">i7_try</span></span>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Example 6 used most of the following suite of functions for looking at or
+altering the Inform data.
+</p>
+
+<p class="commentary">First, some functions which can only be applied to instances of <span class="extract"><span class="ConsoleText-extract-syntax">object</span></span>:
 </p>
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_move(&amp;proc, obj, to)</span></span> moves object <span class="extract"><span class="ConsoleText-extract-syntax">obj</span></span> to become a child of <span class="extract"><span class="ConsoleText-extract-syntax">to</span></span>;
@@ -609,6 +663,30 @@ available:
 </li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_child(&amp;proc, obj)</span></span> returns its first child;
 </li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_sibling(&amp;proc, obj)</span></span> returns the next child of the same parent as <span class="extract"><span class="ConsoleText-extract-syntax">obj</span></span>.
 </li></ul>
+<p class="commentary">Second, functions to look at global variables:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_read_variable(&amp;proc, var)</span></span> returns the current value of the variable <span class="extract"><span class="ConsoleText-extract-syntax">var</span></span>;
+</li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_write_variable(&amp;proc, var, val)</span></span> sets the value to <span class="extract"><span class="ConsoleText-extract-syntax">val</span></span>.
+</li></ul>
+<p class="commentary">Note that where variables are created by kits such as WorldModelKit, their ID
+constants have names based on the names they have in those kits: thus <span class="extract"><span class="ConsoleText-extract-syntax">i7_V_the_time</span></span>
+refers to the time of day, not <span class="extract"><span class="ConsoleText-extract-syntax">i7_V_time_of_day</span></span>. Browsing <span class="extract"><span class="ConsoleText-extract-syntax">inform7_symbols.h</span></span>
+will usually make things clear, anyway.
+</p>
+
+<p class="commentary">Finally, properties of objects can similarly be read or written:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_read_prop_value(&amp;proc, obj, prop)</span></span> returns the current value of property
+<span class="extract"><span class="ConsoleText-extract-syntax">prop</span></span> for the object <span class="extract"><span class="ConsoleText-extract-syntax">obj</span></span>;
+</li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">i7_write_prop_value(&amp;proc, obj, prop, val)</span></span> sets it to <span class="extract"><span class="ConsoleText-extract-syntax">val</span></span>.
+</li></ul>
+<p class="commentary">If you need access to other data inside the Inform program, it's better to
+process it at the Inform end. These functions are just a convenience for what's
+most often needed.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iwtg.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresscurrent">cifc</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresssection"><a href="M-pm.html">pm</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

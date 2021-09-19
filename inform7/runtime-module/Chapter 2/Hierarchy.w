@@ -1808,6 +1808,7 @@ void Hierarchy::establish(void) {
 @e VARIABLE_UNDERSTOOD_MD_HL
 @e VARIABLE_CONTENTS_MD_HL
 @e VARIABLE_DOCUMENTATION_MD_HL
+@e VARIABLE_COUNTERPART_MD_HL
 @e VARIABLE_HL
 @e COMMANDPROMPTTEXT_HL
 @e INITIAL_MAX_SCORE_HL
@@ -1824,6 +1825,7 @@ void Hierarchy::establish(void) {
 			H_C_U(VARIABLE_UNDERSTOOD_MD_HL,  I"^understood")
 			H_C_U(VARIABLE_CONTENTS_MD_HL,    I"^contents")
 			H_C_U(VARIABLE_DOCUMENTATION_MD_HL, I"^documentation")
+			H_C_U(VARIABLE_COUNTERPART_MD_HL, I"^counterpart")
 			H_C_G(VARIABLE_HL,                I"V")
 			H_F_T(COMMANDPROMPTTEXT_HL,       I"command_prompt_text_fn", I"CommandPromptText")
 			H_C_T(INITIAL_MAX_SCORE_HL,       I"INITIAL_MAX_SCORE")
