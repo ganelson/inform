@@ -57,23 +57,23 @@ first of those:
 #include <stdint.h>
 #include <setjmp.h>
 
-typedef int32_t i7val;
+typedef int32_t i7word_t;
 typedef uint32_t i7uval;
-typedef unsigned char i7byte;
+typedef unsigned char i7byte_t;
 
 #define I7_ASM_STACK_CAPACITY 128
 
 typedef struct i7state {
-	i7byte *memory;
-	i7val himem;
-	i7val stack[I7_ASM_STACK_CAPACITY];
+	i7byte_t *memory;
+	i7word_t himem;
+	i7word_t stack[I7_ASM_STACK_CAPACITY];
 	int stack_pointer;
-	i7val *i7_object_tree_parent;
-	i7val *i7_object_tree_child;
-	i7val *i7_object_tree_sibling;
-	i7val *variables;
-	i7val tmp;
-	i7val i7_str_id;
+	i7word_t *i7_object_tree_parent;
+	i7word_t *i7_object_tree_child;
+	i7word_t *i7_object_tree_sibling;
+	i7word_t *variables;
+	i7word_t tmp;
+	i7word_t i7_str_id;
 } i7state;
 
 typedef struct i7snapshot {
@@ -94,7 +94,7 @@ typedef struct i7process_t {
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
-	i7val (*communicator)(struct i7process_t *proc, char *id, int argc, i7val *args);
+	i7word_t (*communicator)(struct i7process_t *proc, char *id, int argc, i7word_t *args);
 	int use_UTF8;
 } i7process_t;
 
@@ -109,14 +109,14 @@ void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
-void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args));
+void i7_set_process_communicator(i7process_t *proc, i7word_t (*communicator)(i7process_t *proc, char *id, int argc, i7word_t *args));
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
-i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args);
+i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args);
 int default_main(int argc, char **argv);
 =
 
@@ -139,7 +139,7 @@ i7state i7_new_state(void) {
 
 void i7_copy_state(i7process_t *proc, i7state *to, i7state *from) {
 	to->himem = from->himem;
-	to->memory = calloc(i7_static_himem, sizeof(i7byte));
+	to->memory = calloc(i7_static_himem, sizeof(i7byte_t));
 	if (to->memory == NULL) { 
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
@@ -148,9 +148,9 @@ void i7_copy_state(i7process_t *proc, i7state *to, i7state *from) {
 	to->tmp = from->tmp;
 	to->stack_pointer = from->stack_pointer;
 	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
-	to->i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7val));
-	to->i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7val));
-	to->i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7val));
+	to->i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
+	to->i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
+	to->i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
 	
 	if ((to->i7_object_tree_parent == NULL) ||
 		(to->i7_object_tree_child == NULL) ||
@@ -163,7 +163,7 @@ void i7_copy_state(i7process_t *proc, i7state *to, i7state *from) {
 		to->i7_object_tree_child[i] = from->i7_object_tree_child[i];
 		to->i7_object_tree_sibling[i] = from->i7_object_tree_sibling[i];
 	}
-	to->variables = calloc(i7_no_variables, sizeof(i7val));
+	to->variables = calloc(i7_no_variables, sizeof(i7word_t));
 	if (to->variables == NULL) { 
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
@@ -208,7 +208,7 @@ i7process_t i7_new_process(void) {
 	return proc;
 }
 
-i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args) {
+i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args) {
 	printf("No communicator: external function calls not allowed from thus process\n");
 	i7_fatal_exit(proc);
 	return 0;
@@ -285,7 +285,7 @@ int default_main(int argc, char **argv) {
 	return proc.termination_code;
 }
 
-i7val fn_i7_mgl_Main(i7process_t *proc);
+i7word_t fn_i7_mgl_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
 	int tc = setjmp(proc->execution_env);
 	if (tc) {
@@ -307,7 +307,7 @@ void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
 }
-void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args)) {
+void i7_set_process_communicator(i7process_t *proc, i7word_t (*communicator)(i7process_t *proc, char *id, int argc, i7word_t *args)) {
 	proc->communicator = communicator;
 }
 

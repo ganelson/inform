@@ -110,7 +110,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	switch (rboolean) {
 		case FALSE: WRITE("return 0"); break;
 		case TRUE: WRITE("return 1"); break;
-		case NOT_APPLICABLE: WRITE("return (i7val) "); CodeGen::FC::frame(gen, V); break;
+		case NOT_APPLICABLE: WRITE("return (i7word_t) "); CodeGen::FC::frame(gen, V); break;
 	}
 
 @<Generate primitive for if@> =
@@ -159,7 +159,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
-	WRITE("for (i7val "); INV_A1;
+	WRITE("for (i7word_t "); INV_A1;
 	WRITE(" = 1; "); INV_A1;
 	WRITE(" < i7_max_objects; "); INV_A1;
 	WRITE("++) ");
@@ -173,7 +173,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
-	WRITE("for (i7val "); INV_A1;
+	WRITE("for (i7word_t "); INV_A1;
 	WRITE(" = 1; "); INV_A1;
 	WRITE(" < i7_max_objects; "); INV_A1;
 	WRITE("++) ");

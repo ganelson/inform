@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 		i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
 
 		int L = 0;
-		i7val *D = i7_read_list(&proc, i7_read_variable(&proc, i7_V_dial), &L);
+		i7word_t *D = i7_read_list(&proc, i7_read_variable(&proc, i7_V_dial), &L);
 		printf("[C program reads 'dial' as");
 		for (int i=0; i<L; i++) printf(" %d", D[i]);
 		printf("]\n");

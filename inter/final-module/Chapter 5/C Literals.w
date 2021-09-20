@@ -470,13 +470,13 @@ void CLiteralsModel::compile_actions_table(code_generation *gen) {
 @
 
 = (text to inform7_clib.h)
-i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s);
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
 =
 
 = (text to inform7_clib.c)
 #ifdef i7_mgl_TryAction
-i7val fn_i7_mgl_TryAction(i7process_t *proc, i7val i7_mgl_local_req, i7val i7_mgl_local_by, i7val i7_mgl_local_ac, i7val i7_mgl_local_n, i7val i7_mgl_local_s, i7val i7_mgl_local_stora, i7val i7_mgl_local_smeta, i7val i7_mgl_local_tbits, i7val i7_mgl_local_saved_command, i7val i7_mgl_local_text_of_command);
-i7val i7_try(i7process_t *proc, i7val action_id, i7val n, i7val s) {
+i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
 	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
 }
 #endif
@@ -667,7 +667,7 @@ void CLiteralsModel::compile_literal_real(code_generation_target *cgt,
 	}
 	uint32_t n = CLiteralsModel::construct_float(signbit, intv, fracv, expo);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("(i7val) 0x%08x", n);
+	WRITE("(i7word_t) 0x%08x", n);
 }
 
 @
@@ -751,21 +751,21 @@ int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_
 @
 
 = (text to inform7_clib.h)
-void i7_print_dword(i7process_t *proc, i7val at);
-char *i7_text_of_string(i7val str);
+void i7_print_dword(i7process_t *proc, i7word_t at);
+char *i7_text_of_string(i7word_t str);
 =
 
 = (text to inform7_clib.c)
-void i7_print_dword(i7process_t *proc, i7val at) {
-	for (i7byte i=1; i<=9; i++) {
-		i7byte c = i7_read_byte(proc, at+i);
+void i7_print_dword(i7process_t *proc, i7word_t at) {
+	for (i7byte_t i=1; i<=9; i++) {
+		i7byte_t c = i7_read_byte(proc, at+i);
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}
 }
 
 char *dqs[];
-char *i7_text_of_string(i7val str) {
+char *i7_text_of_string(i7word_t str) {
 	return dqs[str - I7VAL_STRINGS_BASE];
 }
 =

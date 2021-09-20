@@ -139,7 +139,7 @@ overlap.
 
 	WRITE("#define i7_max_objects %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
 
-	WRITE("i7val i7_metaclass_of[] = { 0");
+	WRITE("i7word_t i7_metaclass_of[] = { 0");
 	C_property_owner *co;
 	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
 		if (co->is_class) WRITE(", i7_mgl_Class");
@@ -147,7 +147,7 @@ overlap.
 	}
 	WRITE(" };\n");
 
-	WRITE("i7val i7_class_of[] = { 0");
+	WRITE("i7word_t i7_class_of[] = { 0");
 	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
 		WRITE(", "); CNamespace::mangle(NULL, OUT, co->class);
 	}
@@ -330,12 +330,12 @@ the calling conventions of other functions. It says which of five possible value
 an ID belongs to: 0, |Class|, |Object|, |String| or |Routine|.
 
 = (text to inform7_clib.h)
-i7val fn_i7_mgl_metaclass(i7process_t *proc, i7val id);
-int i7_ofclass(i7process_t *proc, i7val id, i7val cl_id);
+i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id);
+int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
 =
 
 = (text to inform7_clib.c)
-i7val fn_i7_mgl_metaclass(i7process_t *proc, i7val id) {
+i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
 	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
@@ -347,7 +347,7 @@ because we may need to recurse up the class hierarchy. If A is of class B whose
 superclass is C, then |i7_ofclass(A, B)| and |i7_ofclass(A, C)| are both true,
 as it |i7_ofclass(B, C)|.
 = (text to inform7_clib.c)
-int i7_ofclass(i7process_t *proc, i7val id, i7val cl_id) {
+int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	if ((id <= 0) || (cl_id <= 0)) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) {
 		if (cl_id == i7_mgl_Routine) return 1;
@@ -461,7 +461,7 @@ that avoids a meaningless function being created in small test runs of |inter|
 not deriving from an Inform program.
 
 @<Begin the property-offset creator function@> =
-	WRITE("i7val fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc) {\n"); INDENT;
+	WRITE("i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc) {\n"); INDENT;
 	WRITE("for (int i=0; i<i7_mgl_attributed_property_offsets_SIZE; i++)\n"); INDENT;
 	WRITE("i7_write_word(proc, i7_mgl_attributed_property_offsets, i, -1, i7_lvalue_SET);\n"); OUTDENT;
 	WRITE("for (int i=0; i<i7_mgl_valued_property_offsets_SIZE; i++)\n"); INDENT;
@@ -667,30 +667,30 @@ So here is the run-time storage for property values, and simple code to read
 and write them.
 
 = (text to inform7_clib.h)
-i7val fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
-void i7_write_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id, i7val val);
-i7val i7_read_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id);
-i7val i7_change_prop_value(i7process_t *proc, i7val obj, i7val pr, i7val to, int way);
-void i7_give(i7process_t *proc, i7val owner, i7val prop, i7val val);
-i7val i7_prop_len(i7val obj, i7val pr);
-i7val i7_prop_addr(i7val obj, i7val pr);
+i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
+void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way);
+void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
+i7word_t i7_prop_len(i7word_t obj, i7word_t pr);
+i7word_t i7_prop_addr(i7word_t obj, i7word_t pr);
 =
 
 = (text to inform7_clib.c)
 #define I7_MAX_PROPERTY_IDS 1000
 typedef struct i7_property_set {
-	i7val address[I7_MAX_PROPERTY_IDS];
-	i7val len[I7_MAX_PROPERTY_IDS];
+	i7word_t address[I7_MAX_PROPERTY_IDS];
+	i7word_t len[I7_MAX_PROPERTY_IDS];
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
-void i7_write_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id, i7val val) {
+void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
 		i7_fatal_exit(proc);
 	}
-	i7val address = i7_properties[(int) owner_id].address[(int) prop_id];
+	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
 	if (address) i7_write_word(proc, address, 0, val, i7_lvalue_SET);
 	else {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
@@ -702,19 +702,19 @@ void i7_write_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id, i7val
 @ And here sre the functions called by the above primitives:
 
 = (text to inform7_clib.c)
-i7val i7_read_prop_value(i7process_t *proc, i7val owner_id, i7val prop_id) {
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
 		owner_id = i7_class_of[owner_id];
 		if (owner_id == i7_mgl_Class) return 0;
 	}
-	i7val address = i7_properties[(int) owner_id].address[(int) prop_id];
+	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
 	return i7_read_word(proc, address, 0);
 }
 
-i7val i7_change_prop_value(i7process_t *proc, i7val obj, i7val pr, i7val to, int way) {
-	i7val val = i7_read_prop_value(proc, obj, pr), new_val = val;
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way) {
+	i7word_t val = i7_read_prop_value(proc, obj, pr), new_val = val;
 	switch (way) {
 		case i7_lvalue_SET:      i7_write_prop_value(proc, obj, pr, to); new_val = to; break;
 		case i7_lvalue_PREDEC:   new_val = val-1; i7_write_prop_value(proc, obj, pr, val-1); break;
@@ -727,17 +727,17 @@ i7val i7_change_prop_value(i7process_t *proc, i7val obj, i7val pr, i7val to, int
 	return new_val;
 }
 
-void i7_give(i7process_t *proc, i7val owner, i7val prop, i7val val) {
+void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val) {
 	i7_write_prop_value(proc, owner, prop, val);
 }
 
-i7val i7_prop_len(i7val obj, i7val pr) {
+i7word_t i7_prop_len(i7word_t obj, i7word_t pr) {
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
-i7val i7_prop_addr(i7val obj, i7val pr) {
+i7word_t i7_prop_addr(i7word_t obj, i7word_t pr) {
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return i7_properties[(int) obj].address[(int) pr];
@@ -762,26 +762,26 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 @
 
 = (text to inform7_clib.h)
-int i7_has(i7process_t *proc, i7val obj, i7val attr);
-int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id);
-int i7_in(i7process_t *proc, i7val obj1, i7val obj2);
-i7val fn_i7_mgl_parent(i7process_t *proc, i7val id);
+int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
+int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
+i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id);
 #define i7_parent fn_i7_mgl_parent
-i7val fn_i7_mgl_child(i7process_t *proc, i7val id);
+i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id);
 #define i7_child fn_i7_mgl_child
-i7val fn_i7_mgl_children(i7process_t *proc, i7val id);
-i7val fn_i7_mgl_sibling(i7process_t *proc, i7val id);
+i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id);
+i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id);
 #define i7_sibling fn_i7_mgl_sibling
-void i7_move(i7process_t *proc, i7val obj, i7val to);
+void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
 =
 
 = (text to inform7_clib.c)
-int i7_has(i7process_t *proc, i7val obj, i7val attr) {
+int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr) {
 	if (i7_read_prop_value(proc, obj, attr)) return 1;
 	return 0;
 }
 
-int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id) {
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (owner_id != 1) {
@@ -792,33 +792,33 @@ int i7_provides(i7process_t *proc, i7val owner_id, i7val prop_id) {
 	return 0;
 }
 
-int i7_in(i7process_t *proc, i7val obj1, i7val obj2) {
+int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
 	if (fn_i7_mgl_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
 	if (proc->state.i7_object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
 
-i7val fn_i7_mgl_parent(i7process_t *proc, i7val id) {
+i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.i7_object_tree_parent[id];
 }
-i7val fn_i7_mgl_child(i7process_t *proc, i7val id) {
+i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.i7_object_tree_child[id];
 }
-i7val fn_i7_mgl_children(i7process_t *proc, i7val id) {
+i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	i7val c=0;
+	i7word_t c=0;
 	for (int i=0; i<i7_max_objects; i++) if (proc->state.i7_object_tree_parent[i] == id) c++;
 	return c;
 }
-i7val fn_i7_mgl_sibling(i7process_t *proc, i7val id) {
+i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.i7_object_tree_sibling[id];
 }
 
-void i7_move(i7process_t *proc, i7val obj, i7val to) {
+void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
 	int p = proc->state.i7_object_tree_parent[obj];
 	if (p) {

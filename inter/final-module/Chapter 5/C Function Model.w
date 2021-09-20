@@ -37,9 +37,9 @@ void CFunctionModel::begin(code_generation *gen) {
 void CFunctionModel::end(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7val i7_gen_call(i7process_t *proc, i7val fn_ref, i7val *args, int argc) {\n"); INDENT;
+	WRITE("i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc) {\n"); INDENT;
 	WRITE("int ssp = proc->state.stack_pointer;\n");
-	WRITE("i7val rv = 0;\n");
+	WRITE("i7word_t rv = 0;\n");
 	WRITE("switch (fn_ref) {\n"); INDENT;
 	WRITE("case 0: rv = 0; break;\n");
 	final_c_function *fcf;
@@ -72,13 +72,13 @@ void CFunctionModel::end(code_generation *gen) {
 
 	LOOP_OVER(fcf, final_c_function) {
 		if (fcf->formal_arity >= 0) {
-			WRITE("i7val xfn_");
+			WRITE("i7word_t xfn_");
 			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
 			WRITE("(i7process_t *proc");
 			if (fcf->formal_arity > 0) {
 				for (int i=0; i<fcf->formal_arity; i++) {
 					WRITE(", ");
-					WRITE("i7val p%d", i);
+					WRITE("i7word_t p%d", i);
 				}
 			}
 			WRITE(") {\n"); INDENT;
@@ -101,13 +101,13 @@ void CFunctionModel::end(code_generation *gen) {
 	OUT = CodeGen::current(gen);
 	LOOP_OVER(fcf, final_c_function) {
 		if (fcf->formal_arity >= 0) {
-			WRITE("i7val xfn_");
+			WRITE("i7word_t xfn_");
 			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
 			WRITE("(i7process_t *proc");
 			if (fcf->formal_arity > 0) {
 				for (int i=0; i<fcf->formal_arity; i++) {
 					WRITE(", ");
-					WRITE("i7val p%d", i);
+					WRITE("i7word_t p%d", i);
 				}
 			}
 			WRITE(");\n");
@@ -126,7 +126,7 @@ text_stream *CFunctionModel::external_function(code_generation *gen, text_stream
 		Dictionaries::create_text(D, key);
 		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE_TO(OUT, "i7val %S(i7process_t *proc, i7val arg);\n", key);
+		WRITE_TO(OUT, "i7word_t %S(i7process_t *proc, i7word_t arg);\n", key);
 		CodeGen::deselect(gen, saved);		
 	}
 	return key;
@@ -180,7 +180,7 @@ void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_
 		C_GEN_DATA(fndata.current_fcf)->syntax_md = Str::duplicate(md);
 		fn->translation_data = STORE_POINTER_final_c_function(C_GEN_DATA(fndata.current_fcf));
 		Str::clear(C_GEN_DATA(fndata.prototype));
-		WRITE_TO(C_GEN_DATA(fndata.prototype), "i7val fn_");
+		WRITE_TO(C_GEN_DATA(fndata.prototype), "i7word_t fn_");
 		CNamespace::mangle(cgt, C_GEN_DATA(fndata.prototype), fn_name);
 		WRITE_TO(C_GEN_DATA(fndata.prototype), "(i7process_t *proc");
 
@@ -212,7 +212,7 @@ void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_
 	if (pass == 2) {
 		C_GEN_DATA(fndata.current_fcf) = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("i7val fn_");
+		WRITE("i7word_t fn_");
 		CNamespace::mangle(cgt, OUT, fn_name);
 		WRITE("(i7process_t *proc");
 	}
@@ -333,15 +333,15 @@ void CFunctionModel::declare_local_variable(code_generation_target *cgt, int pas
 	if (pass == 1) {
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			C_GEN_DATA(fndata.current_fcf)->uses_vararg_model = TRUE;
-			WRITE_TO(C_GEN_DATA(fndata.prototype), ", i7val %S", name);
+			WRITE_TO(C_GEN_DATA(fndata.prototype), ", i7word_t %S", name);
 		} else {
-			WRITE_TO(C_GEN_DATA(fndata.prototype), ", i7val %S", name);
+			WRITE_TO(C_GEN_DATA(fndata.prototype), ", i7word_t %S", name);
 		}
 		C_GEN_DATA(fndata.current_fcf)->max_arity++;
 	}
 	if (pass == 2) {
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE(", i7val %S", name);
+		WRITE(", i7word_t %S", name);
 	}
 	DISCARD_TEXT(name)
 }
@@ -349,103 +349,103 @@ void CFunctionModel::declare_local_variable(code_generation_target *cgt, int pas
 @
 
 = (text to inform7_clib.h)
-i7val i7_call_0(i7process_t *proc, i7val fn_ref);
-i7val i7_call_1(i7process_t *proc, i7val fn_ref, i7val v);
-i7val i7_call_2(i7process_t *proc, i7val fn_ref, i7val v, i7val v2);
-i7val i7_call_3(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3);
-i7val i7_call_4(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4);
-i7val i7_call_5(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5);
-i7val i7_mcall_0(i7process_t *proc, i7val to, i7val prop);
-i7val i7_mcall_1(i7process_t *proc, i7val to, i7val prop, i7val v);
-i7val i7_mcall_2(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2);
-i7val i7_mcall_3(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3);
-i7val i7_gen_call(i7process_t *proc, i7val fn_ref, i7val *args, int argc);
-void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z);
+i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref);
+i7word_t i7_call_1(i7process_t *proc, i7word_t fn_ref, i7word_t v);
+i7word_t i7_call_2(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2);
+i7word_t i7_call_3(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3);
+i7word_t i7_call_4(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4);
+i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4, i7word_t v5);
+i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop);
+i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
+i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
+i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
+i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
+void glulx_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
-i7val i7_call_0(i7process_t *proc, i7val fn_ref) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	return i7_gen_call(proc, fn_ref, args, 0);
 }
 
-i7val i7_mcall_0(i7process_t *proc, i7val to, i7val prop) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	i7val saved = proc->state.variables[i7_var_self];
+i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7val fn_ref = i7_read_prop_value(proc, to, prop);
-	i7val rv = i7_gen_call(proc, fn_ref, args, 0);
+	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, fn_ref, args, 0);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7val i7_call_1(i7process_t *proc, i7val fn_ref, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_1(i7process_t *proc, i7word_t fn_ref, i7word_t v) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
 	return i7_gen_call(proc, fn_ref, args, 1);
 }
 
-i7val i7_mcall_1(i7process_t *proc, i7val to, i7val prop, i7val v) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v;
-	i7val saved = proc->state.variables[i7_var_self];
+	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7val fn_ref = i7_read_prop_value(proc, to, prop);
-	i7val rv = i7_gen_call(proc, fn_ref, args, 1);
+	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, fn_ref, args, 1);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7val i7_call_2(i7process_t *proc, i7val fn_ref, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_2(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
 	return i7_gen_call(proc, fn_ref, args, 2);
 }
 
-i7val i7_mcall_2(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
-	i7val saved = proc->state.variables[i7_var_self];
+	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7val fn_ref = i7_read_prop_value(proc, to, prop);
-	i7val rv = i7_gen_call(proc, fn_ref, args, 2);
+	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, fn_ref, args, 2);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7val i7_call_3(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_3(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
 	return i7_gen_call(proc, fn_ref, args, 3);
 }
 
-i7val i7_mcall_3(i7process_t *proc, i7val to, i7val prop, i7val v, i7val v2, i7val v3) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
-	i7val saved = proc->state.variables[i7_var_self];
+	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7val fn_ref = i7_read_prop_value(proc, to, prop);
-	i7val rv = i7_gen_call(proc, fn_ref, args, 3);
+	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, fn_ref, args, 3);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7val i7_call_4(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_4(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
 	return i7_gen_call(proc, fn_ref, args, 4);
 }
 
-i7val i7_call_5(i7process_t *proc, i7val fn_ref, i7val v, i7val v2, i7val v3, i7val v4, i7val v5) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4, i7word_t v5) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
 	return i7_gen_call(proc, fn_ref, args, 5);
 }
 
-void glulx_call(i7process_t *proc, i7val fn_ref, i7val varargc, i7val *z) {
-	i7val args[10]; for (int i=0; i<10; i++) args[i] = 0;
+void glulx_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull(proc);
-	i7val rv = i7_gen_call(proc, fn_ref, args, varargc);
+	i7word_t rv = i7_gen_call(proc, fn_ref, args, varargc);
 	if (z) *z = rv;
 }
 =

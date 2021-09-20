@@ -24,12 +24,12 @@ void CAssembly::end(code_generation *gen) {
 
 = (text to inform7_clib.h)
 void i7_debug_stack(char *N);
-i7val i7_pull(i7process_t *proc);
-void i7_push(i7process_t *proc, i7val x);
+i7word_t i7_pull(i7process_t *proc);
+void i7_push(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-// i7val i7_mgl_sp = 0;
+// i7word_t i7_mgl_sp = 0;
 
 void i7_debug_stack(char *N) {
 //	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
@@ -37,12 +37,12 @@ void i7_debug_stack(char *N) {
 //	printf("\n");
 }
 
-i7val i7_pull(i7process_t *proc) {
-	if (proc->state.stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7val) 0; }
+i7word_t i7_pull(i7process_t *proc) {
+	if (proc->state.stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7word_t) 0; }
 	return proc->state.stack[--(proc->state.stack_pointer)];
 }
 
-void i7_push(i7process_t *proc, i7val x) {
+void i7_push(i7process_t *proc, i7word_t x) {
 	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
 	proc->state.stack[proc->state.stack_pointer++] = x;
 }
@@ -154,74 +154,74 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 @
 
 = (text to inform7_clib.h)
-void glulx_accelfunc(i7process_t *proc, i7val x, i7val y);
-void glulx_accelparam(i7process_t *proc, i7val x, i7val y);
-void glulx_copy(i7process_t *proc, i7val x, i7val *y);
-void glulx_gestalt(i7process_t *proc, i7val x, i7val y, i7val *z);
-int glulx_jeq(i7process_t *proc, i7val x, i7val y);
+void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_accelparam(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_copy(i7process_t *proc, i7word_t x, i7word_t *y);
+void glulx_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+int glulx_jeq(i7process_t *proc, i7word_t x, i7word_t y);
 void glulx_nop(i7process_t *proc);
-int glulx_jleu(i7process_t *proc, i7val x, i7val y);
-int glulx_jnz(i7process_t *proc, i7val x);
-int glulx_jz(i7process_t *proc, i7val x);
+int glulx_jleu(i7process_t *proc, i7word_t x, i7word_t y);
+int glulx_jnz(i7process_t *proc, i7word_t x);
+int glulx_jz(i7process_t *proc, i7word_t x);
 void glulx_quit(i7process_t *proc);
-void glulx_setiosys(i7process_t *proc, i7val x, i7val y);
-void glulx_streamchar(i7process_t *proc, i7val x);
-void glulx_streamnum(i7process_t *proc, i7val x);
-void glulx_streamstr(i7process_t *proc, i7val x);
-void glulx_streamunichar(i7process_t *proc, i7val x);
-void glulx_ushiftr(i7process_t *proc, i7val x, i7val y, i7val z);
-void glulx_aload(i7process_t *proc, i7val x, i7val y, i7val *z);
-void glulx_aloadb(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_setiosys(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_streamchar(i7process_t *proc, i7word_t x);
+void glulx_streamnum(i7process_t *proc, i7word_t x);
+void glulx_streamstr(i7process_t *proc, i7word_t x);
+void glulx_streamunichar(i7process_t *proc, i7word_t x);
+void glulx_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+void glulx_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void glulx_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 #define serop_KeyIndirect (0x01)
 #define serop_ZeroKeyTerminates (0x02)
 #define serop_ReturnIndex (0x04)
-void glulx_binarysearch(i7process_t *proc, i7val key, i7val keysize, i7val start, i7val structsize,
-	i7val numstructs, i7val keyoffset, i7val options, i7val *s1);
-void glulx_shiftl(i7process_t *proc, i7val x, i7val y, i7val *z);
-void glulx_restoreundo(i7process_t *proc, i7val *x);
-void glulx_saveundo(i7process_t *proc, i7val *x);
+void glulx_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize, i7word_t start, i7word_t structsize,
+	i7word_t numstructs, i7word_t keyoffset, i7word_t options, i7word_t *s1);
+void glulx_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void glulx_restoreundo(i7process_t *proc, i7word_t *x);
+void glulx_saveundo(i7process_t *proc, i7word_t *x);
 void glulx_restart(i7process_t *proc);
-void glulx_restore(i7process_t *proc, i7val x, i7val y);
-void glulx_save(i7process_t *proc, i7val x, i7val y);
-void glulx_verify(i7process_t *proc, i7val x);
-void glulx_hasundo(i7process_t *proc, i7val *x);
+void glulx_restore(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_save(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_verify(i7process_t *proc, i7word_t x);
+void glulx_hasundo(i7process_t *proc, i7word_t *x);
 void glulx_discardundo(i7process_t *proc);
 
-void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z);
+void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
-void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z) {
+void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
 	if (proc->communicator == NULL) {
 		if (z) *z = 0;
 	} else {
-		i7val args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
+		i7word_t args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
 		while (varargc > 0) {
-			i7val v = i7_pull(proc);
+			i7word_t v = i7_pull(proc);
 			if (argc < 10) args[argc++] = v;
 			varargc--;
 		}
-		i7val rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
+		i7word_t rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
 		if (z) *z = rv;
 	}
 }
 
-void glulx_accelfunc(i7process_t *proc, i7val x, i7val y) { /* Intentionally ignore */
+void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y) { /* Intentionally ignore */
 }
 
-void glulx_accelparam(i7process_t *proc, i7val x, i7val y) { /* Intentionally ignore */
+void glulx_accelparam(i7process_t *proc, i7word_t x, i7word_t y) { /* Intentionally ignore */
 }
 
-void glulx_copy(i7process_t *proc, i7val x, i7val *y) {
+void glulx_copy(i7process_t *proc, i7word_t x, i7word_t *y) {
 	i7_debug_stack("glulx_copy");
 	if (y) *y = x;
 }
 
-void glulx_gestalt(i7process_t *proc, i7val x, i7val y, i7val *z) {
+void glulx_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	*z = 1;
 }
 
-int glulx_jeq(i7process_t *proc, i7val x, i7val y) {
+int glulx_jeq(i7process_t *proc, i7word_t x, i7word_t y) {
 	if (x == y) return 1;
 	return 0;
 }
@@ -229,19 +229,19 @@ int glulx_jeq(i7process_t *proc, i7val x, i7val y) {
 void glulx_nop(i7process_t *proc) {
 }
 
-int glulx_jleu(i7process_t *proc, i7val x, i7val y) {
+int glulx_jleu(i7process_t *proc, i7word_t x, i7word_t y) {
 	i7uval ux, uy;
-	*((i7val *) &ux) = x; *((i7val *) &uy) = y;
+	*((i7word_t *) &ux) = x; *((i7word_t *) &uy) = y;
 	if (ux <= uy) return 1;
 	return 0;
 }
 
-int glulx_jnz(i7process_t *proc, i7val x) {
+int glulx_jnz(i7process_t *proc, i7word_t x) {
 	if (x != 0) return 1;
 	return 0;
 }
 
-int glulx_jz(i7process_t *proc, i7val x) {
+int glulx_jz(i7process_t *proc, i7word_t x) {
 	if (x == 0) return 1;
 	return 0;
 }
@@ -250,43 +250,43 @@ void glulx_quit(i7process_t *proc) {
 	i7_fatal_exit(proc);
 }
 
-void glulx_setiosys(i7process_t *proc, i7val x, i7val y) {
+void glulx_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 	// Deliberately ignored: we are using stdout, not glk
 }
 
-void glulx_streamchar(i7process_t *proc, i7val x) {
+void glulx_streamchar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
 
-void glulx_streamnum(i7process_t *proc, i7val x) {
+void glulx_streamnum(i7process_t *proc, i7word_t x) {
 	i7_print_decimal(proc, x);
 }
 
-void glulx_streamstr(i7process_t *proc, i7val x) {
+void glulx_streamstr(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: glulx_streamstr.\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_streamunichar(i7process_t *proc, i7val x) {
+void glulx_streamunichar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
 
-void glulx_ushiftr(i7process_t *proc, i7val x, i7val y, i7val z) {
+void glulx_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 	printf("Unimplemented: glulx_ushiftr.\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_aload(i7process_t *proc, i7val x, i7val y, i7val *z) {
+void glulx_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	printf("Unimplemented: glulx_aload\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_aloadb(i7process_t *proc, i7val x, i7val y, i7val *z) {
+void glulx_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	printf("Unimplemented: glulx_aloadb\n");
 	i7_fatal_exit(proc);
 }
 
-void fetchkey(i7process_t *proc, unsigned char *keybuf, i7val key, i7val keysize, i7val options)
+void fetchkey(i7process_t *proc, unsigned char *keybuf, i7word_t key, i7word_t keysize, i7word_t options)
 {
   int ix;
 
@@ -315,12 +315,12 @@ void fetchkey(i7process_t *proc, unsigned char *keybuf, i7val key, i7val keysize
   }
 }
 
-void glulx_binarysearch(i7process_t *proc, i7val key, i7val keysize, i7val start, i7val structsize,
-	i7val numstructs, i7val keyoffset, i7val options, i7val *s1) {
+void glulx_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize, i7word_t start, i7word_t structsize,
+	i7word_t numstructs, i7word_t keyoffset, i7word_t options, i7word_t *s1) {
 	if (s1 == NULL) return;
   unsigned char keybuf[4];
   unsigned char byte, byte2;
-  i7val top, bot, val, addr;
+  i7word_t top, bot, val, addr;
   int ix;
   int retindex = ((options & serop_ReturnIndex) != 0);
 
@@ -376,16 +376,16 @@ void glulx_binarysearch(i7process_t *proc, i7val key, i7val keysize, i7val start
     *s1 = 0;
 }
 
-void glulx_shiftl(i7process_t *proc, i7val x, i7val y, i7val *z) {
+void glulx_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	printf("Unimplemented: glulx_shiftl\n");
 	i7_fatal_exit(proc);
 }
 
 #ifdef i7_mgl_DealWithUndo
-i7val fn_i7_mgl_DealWithUndo(i7process_t *proc);
+i7word_t fn_i7_mgl_DealWithUndo(i7process_t *proc);
 #endif
 
-void glulx_restoreundo(i7process_t *proc, i7val *x) {
+void glulx_restoreundo(i7process_t *proc, i7word_t *x) {
 	proc->just_undid = 1;
 	if (i7_has_snapshot(proc)) {
 		i7_restore_snapshot(proc);
@@ -398,14 +398,14 @@ void glulx_restoreundo(i7process_t *proc, i7val *x) {
 	}
 }
 
-void glulx_saveundo(i7process_t *proc, i7val *x) {
+void glulx_saveundo(i7process_t *proc, i7word_t *x) {
 	proc->just_undid = 0;
 	i7_save_snapshot(proc);
 	if (x) *x = 0;
 }
 
-void glulx_hasundo(i7process_t *proc, i7val *x) {
-	i7val rv = 0; if (i7_has_snapshot(proc)) rv = 1;
+void glulx_hasundo(i7process_t *proc, i7word_t *x) {
+	i7word_t rv = 0; if (i7_has_snapshot(proc)) rv = 1;
 	if (x) *x = rv;
 }
 
@@ -418,17 +418,17 @@ void glulx_restart(i7process_t *proc) {
 	i7_fatal_exit(proc);
 }
 
-void glulx_restore(i7process_t *proc, i7val x, i7val y) {
+void glulx_restore(i7process_t *proc, i7word_t x, i7word_t y) {
 	printf("Unimplemented: glulx_restore\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_save(i7process_t *proc, i7val x, i7val y) {
+void glulx_save(i7process_t *proc, i7word_t x, i7word_t y) {
 	printf("Unimplemented: glulx_save\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_verify(i7process_t *proc, i7val x) {
+void glulx_verify(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: glulx_verify\n");
 	i7_fatal_exit(proc);
 }

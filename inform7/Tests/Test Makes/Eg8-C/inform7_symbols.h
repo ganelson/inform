@@ -138,10 +138,10 @@
 #define i7_F_decide_which_real_number_is_the_hyperbolic_arctangent_of_X xfn_i7_mgl_call_U123
 #define i7_F_begin xfn_i7_mgl_call_U165
 #define i7_F_run_the_collatz_algorithm_on_X xfn_i7_mgl_call_U166
-i7val xfn_i7_mgl_call_U119(i7process_t *proc);
-i7val xfn_i7_mgl_call_U120(i7process_t *proc, i7val p0);
-i7val xfn_i7_mgl_call_U121(i7process_t *proc, i7val p0);
-i7val xfn_i7_mgl_call_U122(i7process_t *proc, i7val p0);
-i7val xfn_i7_mgl_call_U123(i7process_t *proc, i7val p0);
-i7val xfn_i7_mgl_call_U165(i7process_t *proc);
-i7val xfn_i7_mgl_call_U166(i7process_t *proc, i7val p0);
+i7word_t xfn_i7_mgl_call_U119(i7process_t *proc);
+i7word_t xfn_i7_mgl_call_U120(i7process_t *proc, i7word_t p0);
+i7word_t xfn_i7_mgl_call_U121(i7process_t *proc, i7word_t p0);
+i7word_t xfn_i7_mgl_call_U122(i7process_t *proc, i7word_t p0);
+i7word_t xfn_i7_mgl_call_U123(i7process_t *proc, i7word_t p0);
+i7word_t xfn_i7_mgl_call_U165(i7process_t *proc);
+i7word_t xfn_i7_mgl_call_U166(i7process_t *proc, i7word_t p0);

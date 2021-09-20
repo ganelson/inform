@@ -5,9 +5,9 @@ int main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_set_process_sender(&proc, NULL);
 	if (i7_run_process(&proc) == 0) {
-		i7val t = i7_read_variable(&proc, i7_V_the_time);
+		i7word_t t = i7_read_variable(&proc, i7_V_the_time);
 		printf("[C program reads 'time of day' as %d]\n", t);
-		i7val A = i7_read_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age);
+		i7word_t A = i7_read_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age);
 		printf("[C program reads 'age of Linear B tablet' as %d]\n", A);
 		i7_try(&proc, i7_A_Take, i7_I_Linear_B_tablet, 0);	
 		i7_try(&proc, i7_A_Inv, 0, 0);

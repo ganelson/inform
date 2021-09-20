@@ -1,7 +1,7 @@
 #include "inform7_clib.h"
 #include "inform7_symbols.h"
 
-i7val collatz(i7process_t *proc, i7val x) {
+i7word_t collatz(i7process_t *proc, i7word_t x) {
 	printf("MR C: My friend Mrs I calls my attention to %d, ", x);
 	if (x == 1) {
 		printf("so I win! Haha!\n");

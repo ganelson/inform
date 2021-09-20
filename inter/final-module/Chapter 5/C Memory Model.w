@@ -38,7 +38,7 @@ fit into an Inter value.
 (c) When an array name is compiled, its runtime value must be its address.
 (d) When an Inter value is stored in byte-accessible memory, it occupies either
 2 or 4 consecutive bytes, with the little end first. The result is called a
-"word". (For C, always 4, which is always |sizeof(i7val)|.) Conversion between
+"word". (For C, always 4, which is always |sizeof(i7word_t)|.) Conversion between
 a word stored in memory and an Inter value must be faithful in both directions.
 (e) Words can be stored at any byte position, and not only at (say) multiples
 of 2 or 4.
@@ -53,7 +53,7 @@ We will manage that with a single C array.
 void CMemoryModel::begin(code_generation *gen) {
 	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("i7byte i7_initial_memory[] = {\n");
+	WRITE("i7byte_t i7_initial_memory[] = {\n");
 	for (int i=0; i<64; i++) WRITE("0, "); WRITE("/* header */\n");
 	C_GEN_DATA(memdata.himem) += 64;
 	CodeGen::deselect(gen, saved);
@@ -84,10 +84,10 @@ void i7_initialise_state(i7process_t *proc);
 =
 
 = (text to inform7_clib.c)
-i7byte i7_initial_memory[];
+i7byte_t i7_initial_memory[];
 void i7_initialise_state(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
-	i7byte *mem = calloc(i7_static_himem, sizeof(i7byte));
+	i7byte_t *mem = calloc(i7_static_himem, sizeof(i7byte_t));
 	if (mem == NULL) { 
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
@@ -112,9 +112,9 @@ void i7_initialise_state(i7process_t *proc) {
     #endif
     proc->state.stack_pointer = 0;
     
-	proc->state.i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7val));
-	proc->state.i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7val));
-	proc->state.i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7val));
+	proc->state.i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
 	
 	if ((proc->state.i7_object_tree_parent == NULL) ||
 		(proc->state.i7_object_tree_child == NULL) ||
@@ -128,7 +128,7 @@ void i7_initialise_state(i7process_t *proc) {
 		proc->state.i7_object_tree_sibling[i] = 0;
 	}
 	
-	proc->state.variables = calloc(i7_no_variables, sizeof(i7val));
+	proc->state.variables = calloc(i7_no_variables, sizeof(i7word_t));
 	if (proc->state.variables == NULL) { 
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
@@ -146,26 +146,26 @@ The following function reads a word which is in entry |array_index| (counting
 0, 1, 2, ...) in the array which begins at the byte address |array_address|.
 
 = (text to inform7_clib.h)
-i7byte i7_read_byte(i7process_t *proc, i7val address);
-i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index);
+i7byte_t i7_read_byte(i7process_t *proc, i7word_t address);
+i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 =
 
 = (text to inform7_clib.c)
-i7byte i7_read_byte(i7process_t *proc, i7val address) {
+i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
 	return proc->state.memory[address];
 }
 
-i7val i7_read_word(i7process_t *proc, i7val array_address, i7val array_index) {
-	i7byte *data = proc->state.memory;
+i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
+	i7byte_t *data = proc->state.memory;
 	int byte_position = array_address + 4*array_index;
 	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
 		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
-	return             (i7val) data[byte_position + 3]      +
-	            0x100*((i7val) data[byte_position + 2]) +
-		      0x10000*((i7val) data[byte_position + 1]) +
-		    0x1000000*((i7val) data[byte_position + 0]);
+	return             (i7word_t) data[byte_position + 3]      +
+	            0x100*((i7word_t) data[byte_position + 2]) +
+		      0x10000*((i7word_t) data[byte_position + 1]) +
+		    0x1000000*((i7word_t) data[byte_position + 0]);
 }
 =
 
@@ -178,18 +178,18 @@ express a packed word in constant context, which we will need later.
 #define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
-void i7_write_byte(i7process_t *proc, i7val address, i7byte new_val);
-i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i7val new_val, int way);
+void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val);
+i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way);
 =
 
 = (text to inform7_clib.c)
-void i7_write_byte(i7process_t *proc, i7val address, i7byte new_val) {
+void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
 }
 
-i7byte i7_change_byte(i7process_t *proc, i7val address, i7byte new_val, int way) {
-	i7byte old_val = i7_read_byte(proc, address);
-	i7byte return_val = new_val;
+i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
+	i7byte_t old_val = i7_read_byte(proc, address);
+	i7byte_t return_val = new_val;
 	switch (way) {
 		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
 		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
@@ -202,10 +202,10 @@ i7byte i7_change_byte(i7process_t *proc, i7val address, i7byte new_val, int way)
 	return return_val;
 }
 
-i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i7val new_val, int way) {
-	i7byte *data = proc->state.memory;
-	i7val old_val = i7_read_word(proc, array_address, array_index);
-	i7val return_val = new_val;
+i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way) {
+	i7byte_t *data = proc->state.memory;
+	i7word_t old_val = i7_read_word(proc, array_address, array_index);
+	i7word_t return_val = new_val;
 	switch (way) {
 		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
 		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
@@ -230,39 +230,39 @@ i7val i7_write_word(i7process_t *proc, i7val array_address, i7val array_index, i
 @ "Short" 16-bit numbers can also be accessed:
 
 = (text to inform7_clib.h)
-void glulx_aloads(i7process_t *proc, i7val x, i7val y, i7val *z);
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
-void glulx_aloads(i7process_t *proc, i7val x, i7val y, i7val *z) {
-	if (z) *z = 0x100*((i7val) i7_read_byte(proc, x+2*y)) + ((i7val) i7_read_byte(proc, x+2*y+1));
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = 0x100*((i7word_t) i7_read_byte(proc, x+2*y)) + ((i7word_t) i7_read_byte(proc, x+2*y+1));
 }
 =
 
 @ A Glulx assembly opcode is provided for fast memory copies:
 
 = (text to inform7_clib.h)
-void glulx_mcopy(i7process_t *proc, i7val x, i7val y, i7val z);
-void glulx_malloc(i7process_t *proc, i7val x, i7val y);
-void glulx_mfree(i7process_t *proc, i7val x);
+void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y);
+void glulx_mfree(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-void glulx_mcopy(i7process_t *proc, i7val x, i7val y, i7val z) {
+void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
-		for (i7val i=0; i<x; i++)
+		for (i7word_t i=0; i<x; i++)
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
     else
-		for (i7val i=x-1; i>=0; i--)
+		for (i7word_t i=x-1; i>=0; i--)
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
 }
 
-void glulx_malloc(i7process_t *proc, i7val x, i7val y) {
+void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
 	printf("Unimplemented: glulx_malloc.\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_mfree(i7process_t *proc, i7val x) {
+void glulx_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: glulx_mfree.\n");
 	i7_fatal_exit(proc);
 }
@@ -351,7 +351,7 @@ void CMemoryModel::array_entry(code_generation_target *cgt, code_generation *gen
 }
 
 @<This is a byte entry@> =
-	WRITE("    (i7byte) %S, /* %d */\n", entry, C_GEN_DATA(memdata.himem));
+	WRITE("    (i7byte_t) %S, /* %d */\n", entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 1;
 
 @ Now we see why it was important for |I7BYTE_0| and so on to be macros: they

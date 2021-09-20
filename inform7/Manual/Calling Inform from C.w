@@ -431,9 +431,9 @@ int main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_set_process_sender(&proc, NULL);
 	if (i7_run_process(&proc) == 0) {
-		i7val t = i7_read_variable(&proc, i7_V_the_time);
+		i7word_t t = i7_read_variable(&proc, i7_V_the_time);
 		printf("[C program reads 'time of day' as %d]\n", t);
-		i7val A = i7_read_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age);
+		i7word_t A = i7_read_prop_value(&proc, i7_I_Linear_B_tablet, i7_P_age);
 		printf("[C program reads 'age of Linear B tablet' as %d]\n", A);
 		i7_try(&proc, i7_A_Take, i7_I_Linear_B_tablet, 0);	
 		i7_try(&proc, i7_A_Inv, 0, 0);
@@ -505,6 +505,14 @@ It is modern, and translates to "4 oxen, 1 broken tripod table.".
 Here we see a run of responses, as if to unheard commands: those of course
 are the actions sent directly to the process by |i7_try|.
 
+The data inside the Inform program is represented in C by values of the type
+|i7word_t|. (In practice, this is probably a 32-bit integer, but it's best to
+make no assumptions.) Inform at run-time is typeless, so it's up to the C
+programmer to know what is meant. For example, we know the result of the call
+|i7_read_variable(&proc, i7_V_the_time)| will be an integer from 0 to 1439,
+because the variable has kind "time" in Inform 7, and this is how Inform stores
+times of day (in minutes since midnight).
+
 @ Example 6 used most of the following suite of functions for looking at or
 altering the Inform data.
 
@@ -544,7 +552,7 @@ The meaning is a text that varies. The meaning is "4 oxen, 1 broken tripod table
 The dial is a list of numbers that varies. The dial is { 3, 6, 9, 12 }.
 =
 If we call, say, |i7_read_variable| on |i7_V_meaning| then the return value is
-an |i7val| which is, in fact, an address somewhere in the Inform process memory.
+an |i7word_t| which is, in fact, an address somewhere in the Inform process memory.
 What are we to do with this? In fact, it's easy to convert to and from a C string:
 = (text as C)
 char *M = i7_read_string(&proc, i7_read_variable(&proc, i7_V_meaning));
@@ -567,7 +575,7 @@ the "meaning" and once after.
 Similarly for lists:
 = (text as C)
 int L = 0;
-i7val *D = i7_read_list(&proc, i7_read_variable(&proc, i7_V_dial), &L);
+i7word_t *D = i7_read_list(&proc, i7_read_variable(&proc, i7_V_dial), &L);
 printf("[C program reads 'dial' as");
 for (int i=0; i<L; i++) printf(" %d", D[i]);
 printf("]\n");
@@ -593,7 +601,7 @@ may want to |free| the returned string pointer. If memory allocation fails,
 the Inform process halts with a fatal error, so you need not check yourself.
 (*) |i7_write_string(proc, T, string)| sets the text T to the null-terminated
 C string given; if this is |NULL|, T is set to the empty text.
-(*) |i7_read_list(proc, L, length)| returns a newly-allocated C array of |i7val|
+(*) |i7_read_list(proc, L, length)| returns a newly-allocated C array of |i7word_t|
 values, which are the current contents of the Inform list (whose address is) |L|.
 If |length| is given, it should be a pointer to an |int|, in which is stored the
 length of the list. If you're doing a lot of this, you may want to |free| the
@@ -601,7 +609,7 @@ returned array pointer. If memory allocation fails, the Inform process halts
 with a fatal error, so you need not check yourself.
 (*) |i7_write_list(proc, L, array, length)| sets the Inform list |L| to have
 length |length| and contents given by |array[0], ..., array[length-1]|, where
-the |array| must be of |i7val| values. If |array| is |NULL| or |length| is 0,
+the |array| must be of |i7word_t| values. If |array| is |NULL| or |length| is 0,
 then |L| is left as the empty list.
 
 @h Example 8: Direct function calls between C and Inform programs.
@@ -611,7 +619,7 @@ functions, albeit with some minor restrictions.
 First, we have a C function called |collatz|, and we want to call it from Inform.
 This function must have a prototype like so:
 = (text as C)
-i7val collatz(i7process_t *proc, i7val x) {
+i7word_t collatz(i7process_t *proc, i7word_t x) {
 	...
 }
 =

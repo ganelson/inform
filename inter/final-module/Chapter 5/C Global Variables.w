@@ -28,12 +28,12 @@ void CGlobals::end(code_generation *gen) {
 
 	WRITE("#define i7_no_variables %d\n", C_var_count);
 	WRITE("#define i7_var_self 0\n");
-	WRITE("i7val i7_initial_variable_values[];\n");
+	WRITE("i7word_t i7_initial_variable_values[];\n");
 	CodeGen::deselect(gen, saved);
 	
 	saved = CodeGen::select(gen, c_globals_array_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("i7val i7_initial_variable_values[] = { 0 %S };\n", C_var_vals);
+	WRITE("i7word_t i7_initial_variable_values[] = { 0 %S };\n", C_var_vals);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -79,15 +79,15 @@ void CGlobals::evaluate_variable(code_generation_target *cgt, code_generation *g
 @
 
 = (text to inform7_clib.h)
-i7val i7_read_variable(i7process_t *proc, i7val var_id);
-void i7_write_variable(i7process_t *proc, i7val var_id, i7val val);
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
 =
 
 = (text to inform7_clib.c)
-i7val i7_read_variable(i7process_t *proc, i7val var_id) {
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
 	return proc->state.variables[var_id];
 }
-void i7_write_variable(i7process_t *proc, i7val var_id, i7val val) {
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
 	proc->state.variables[var_id] = val;
 }
 =
