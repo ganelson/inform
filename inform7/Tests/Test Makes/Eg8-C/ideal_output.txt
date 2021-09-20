@@ -1,0 +1,13 @@
+MR C: My friend Mrs I calls my attention to 17, so I triple and add one.
+MRS I: I have heard Mr C tell that 52 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 26, so I divide by two.
+MRS I: I have heard Mr C tell that 13 is an interesting number. And so I treble and add 1.
+MR C: My friend Mrs I calls my attention to 40, so I divide by two.
+MRS I: I have heard Mr C tell that 20 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 10, so I divide by two.
+MRS I: I have heard Mr C tell that 5 is an interesting number. And so I treble and add 1.
+MR C: My friend Mrs I calls my attention to 16, so I divide by two.
+MRS I: I have heard Mr C tell that 8 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 4, so I divide by two.
+MRS I: I have heard Mr C tell that 2 is an interesting number. And so I halve.
+MR C: My friend Mrs I calls my attention to 1, so I win! Haha!

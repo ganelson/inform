@@ -224,12 +224,16 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 
 @<Call@> =
 	if (isn->child_node) {
+		inter_schema_token *external_tok = NULL;
 		inter_schema_node *at = isn->child_node;
 		inter_symbol *to_call = NULL;
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
 			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL)) {
-				if (Str::eq(tok->material, I"indirect")) { 
+				if (Str::prefix_eq(tok->material, I"external__", 10)) { 
+					external_tok = tok;
+					tok->ist_type = DQUOTED_ISTT;
+				} else if (Str::eq(tok->material, I"indirect")) { 
 					at = at->next_node;
 				} else {
 					to_call = EmitInterSchemas::find_identifier(I, tok, first_call, second_call);
@@ -246,6 +250,8 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		if (to_call) {
 			Produce::inv_call(I, to_call);
 			at = at->next_node;
+		} else if (external_tok) {
+			Produce::inv_primitive(I, EXTERNALCALL_BIP);
 		} else {
 			int argc = 0;
 			for (inter_schema_node *n = isn->child_node; n; n=n->next_node) {
@@ -267,6 +273,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
 		Produce::up(I);
+		if (external_tok) external_tok->ist_type = IDENTIFIER_ISTT;
 	}
 
 @<Message@> =

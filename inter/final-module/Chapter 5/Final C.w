@@ -94,6 +94,7 @@ typedef struct i7process_t {
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
+	i7val (*communicator)(struct i7process_t *proc, char *id, int argc, i7val *args);
 	int use_UTF8;
 } i7process_t;
 
@@ -108,12 +109,14 @@ void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
+void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args));
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
+i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args);
 int default_main(int argc, char **argv);
 =
 
@@ -201,7 +204,14 @@ i7process_t i7_new_process(void) {
 	proc.send_count = 0;
 	proc.sender = i7_default_sender;
 	proc.use_UTF8 = 1;
+	proc.communicator = i7_default_communicator;
 	return proc;
+}
+
+i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args) {
+	printf("No communicator: external function calls not allowed from thus process\n");
+	i7_fatal_exit(proc);
+	return 0;
 }
 
 void i7_save_snapshot(i7process_t *proc) {
@@ -297,6 +307,9 @@ void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
 }
+void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args)) {
+	proc->communicator = communicator;
+}
 
 void i7_fatal_exit(i7process_t *proc) {
 //	int x = 0; printf("%d", 1/x);
@@ -345,6 +358,7 @@ void i7_benign_exit(i7process_t *proc) {
 @e c_actions_symbols_I7CGS
 @e c_property_symbols_I7CGS
 @e c_variable_symbols_I7CGS
+@e c_function_symbols_I7CGS
 
 =
 int C_target_segments[] = {
@@ -386,6 +400,7 @@ int C_symbols_header_segments[] = {
 	c_actions_symbols_I7CGS,
 	c_property_symbols_I7CGS,
 	c_variable_symbols_I7CGS,
+	c_function_symbols_I7CGS,
 	-1
 };
 
@@ -518,6 +533,8 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_property_symbols_I7CGS));
 			WRITE_TO(&HF, "\n/* (6) Variable IDs */\n\n");
 			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_variable_symbols_I7CGS));
+			WRITE_TO(&HF, "\n/* (7) Function IDs */\n\n");
+			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_function_symbols_I7CGS));
 			STREAM_CLOSE(&HF);
 		}
 	}

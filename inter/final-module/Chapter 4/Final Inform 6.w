@@ -373,6 +373,9 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 								INV_A3; WRITE(","); INV_A4; WRITE("))"); break;
 		case MESSAGE3_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("(");
 								INV_A3; WRITE(","); INV_A4; WRITE(","); INV_A5; WRITE("))"); break;
+
+		case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
+
 		case SPACES_BIP:		WRITE("spaces "); INV_A1; break;
 		case FONT_BIP:
 			WRITE("if ("); INV_A1; WRITE(") { font on; } else { font off; }");

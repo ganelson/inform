@@ -95,6 +95,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!callmessage1", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!callmessage2", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!callmessage3", I"val val val val -> val");
+	Primitives::emit_one(I, IBM, I"!externalcall", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyaddress", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertylength", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!provides", I"val val -> val");
@@ -266,6 +267,7 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e CALLMESSAGE1_BIP
 @e CALLMESSAGE2_BIP
 @e CALLMESSAGE3_BIP
+@e EXTERNALCALL_BIP
 @e PROPERTYADDRESS_BIP
 @e PROPERTYLENGTH_BIP
 @e PROVIDES_BIP
@@ -368,6 +370,7 @@ text_stream *Primitives::name(inter_ti bip) {
 		case CALLMESSAGE1_BIP: return I"!callmessage1";
 		case CALLMESSAGE2_BIP: return I"!callmessage2";
 		case CALLMESSAGE3_BIP: return I"!callmessage3";
+		case EXTERNALCALL_BIP: return I"!externalcall";
 		case PROPERTYADDRESS_BIP: return I"!propertyaddress";
 		case PROPERTYLENGTH_BIP: return I"!propertylength";
 		case PROVIDES_BIP: return I"!provides";
@@ -485,6 +488,7 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!callmessage1")) bip = CALLMESSAGE1_BIP;
 	if (Str::eq(symb->symbol_name, I"!callmessage2")) bip = CALLMESSAGE2_BIP;
 	if (Str::eq(symb->symbol_name, I"!callmessage3")) bip = CALLMESSAGE3_BIP;
+	if (Str::eq(symb->symbol_name, I"!externalcall")) bip = EXTERNALCALL_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;

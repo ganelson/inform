@@ -37,6 +37,7 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	current_sentence = code_at;
 	stack_frame *frame = &(idb->compilation_data.id_stack_frame);
 	inter_name *iname = req?(req->req_iname):(CompileImperativeDefn::iname(idb));
+	inter_name *md_iname = req?(req->md_iname):NULL;
 
 	@<Set up the stack frame for this compilation request@>;
 	
@@ -45,6 +46,12 @@ void CompileImperativeDefn::go(id_body *idb, shared_variable_access_list *legibl
 	@<Compile the body of the function@>;
 	Functions::end(save);
 
+	if (md_iname) {
+		TEMPORARY_TEXT(syn)
+		WRITE_TO(syn, "%W", idb->head_of_defn->log_text);
+		Emit::text_constant(md_iname, syn);
+		DISCARD_TEXT(syn)
+	}
 	current_sentence = NULL;
 }
 

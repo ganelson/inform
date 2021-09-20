@@ -51,6 +51,7 @@ typedef struct i7process_t {
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
+	i7val (*communicator)(struct i7process_t *proc, char *id, int argc, i7val *args);
 	int use_UTF8;
 } i7process_t;
 
@@ -65,12 +66,14 @@ void i7_destroy_latest_snapshot(i7process_t *proc);
 int i7_run_process(i7process_t *proc);
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
+void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args));
 void i7_initializer(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_destroy_state(i7process_t *proc, i7state *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
+i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args);
 int default_main(int argc, char **argv);
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
@@ -134,6 +137,8 @@ void glulx_save(i7process_t *proc, i7val x, i7val y);
 void glulx_verify(i7process_t *proc, i7val x);
 void glulx_hasundo(i7process_t *proc, i7val *x);
 void glulx_discardundo(i7process_t *proc);
+
+void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z);
 void glulx_random(i7process_t *proc, i7val x, i7val *y);
 i7val fn_i7_mgl_random(i7process_t *proc, i7val x);
 void glulx_setrandom(i7process_t *proc, i7val s);

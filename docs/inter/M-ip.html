@@ -65,7 +65,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inter</a></li><li><a href="index.html#M">Manual</a></li><li><b>Inform Primitives</b></li></ul></div>
 <p class="purpose">The standard set of primitive invocations used within Inform.</p>
 
-<ul class="toc"><li><a href="M-ip.html#SP1">&#167;1. Status</a></li><li><a href="M-ip.html#SP2">&#167;2. Arithmetic</a></li><li><a href="M-ip.html#SP3">&#167;3. Logical operators</a></li><li><a href="M-ip.html#SP4">&#167;4. Bitwise operators</a></li><li><a href="M-ip.html#SP5">&#167;5. Numerical comparison</a></li><li><a href="M-ip.html#SP6">&#167;6. Sequential evaluation</a></li><li><a href="M-ip.html#SP7">&#167;7. Random numbers</a></li><li><a href="M-ip.html#SP8">&#167;8. Printing</a></li><li><a href="M-ip.html#SP9">&#167;9. Stack access</a></li><li><a href="M-ip.html#SP10">&#167;10. Accessing storage</a></li><li><a href="M-ip.html#SP11">&#167;11. Indirect function calls</a></li><li><a href="M-ip.html#SP12">&#167;12. Control flow</a></li><li><a href="M-ip.html#SP13">&#167;13. Interactive fiction-only primitives</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-ip.html#SP1">&#167;1. Status</a></li><li><a href="M-ip.html#SP2">&#167;2. Arithmetic</a></li><li><a href="M-ip.html#SP3">&#167;3. Logical operators</a></li><li><a href="M-ip.html#SP4">&#167;4. Bitwise operators</a></li><li><a href="M-ip.html#SP5">&#167;5. Numerical comparison</a></li><li><a href="M-ip.html#SP6">&#167;6. Sequential evaluation</a></li><li><a href="M-ip.html#SP7">&#167;7. Random numbers</a></li><li><a href="M-ip.html#SP8">&#167;8. Printing</a></li><li><a href="M-ip.html#SP9">&#167;9. Stack access</a></li><li><a href="M-ip.html#SP10">&#167;10. Accessing storage</a></li><li><a href="M-ip.html#SP11">&#167;11. Indirect function calls</a></li><li><a href="M-ip.html#SP12">&#167;12. External function calls</a></li><li><a href="M-ip.html#SP13">&#167;13. Control flow</a></li><li><a href="M-ip.html#SP14">&#167;14. Interactive fiction-only primitives</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The Inter specification allows for any number of primitive invocations to
 be declared and used; none are built-in or required.
@@ -211,7 +211,21 @@ first value is the function address, and subsequent ones are arguments.
 </li><li>(k) <span class="extract"><span class="extract-syntax">primitive !indirect4 val val val val val -&gt; val</span></span>.
 </li><li>(l) <span class="extract"><span class="extract-syntax">primitive !indirect5 val val val val val val -&gt; val</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Control flow. </b>The simplest control statement is an "if". Note that a different primitive
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. External function calls. </b>The following calls a function which is not part of the program itself, and
+which is assumed to be provided by code written in a different programming
+language. It cannot be used when Inter is being generated to Inform 6
+code, because I6 has no ability to link with external code; but it can be
+used when generating C, for example.
+</p>
+
+<p class="commentary">The first value must be a literal double-quoted text, and is the name of
+the external function. The second value is an argument to pass to it; and
+the result is whatever value it returns.
+</p>
+
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !externalcall val val -&gt; val</span></span>.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Control flow. </b>The simplest control statement is an "if". Note that a different primitive
 is used if there is an "else" attached: it would be impossible to use the
 same primitive for both because they couldn't have the same signature.
 </p>
@@ -292,7 +306,7 @@ context, and throwing it away if not.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !jump lab -&gt; void</span></span>. Jumo to this label in the current function.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Interactive fiction-only primitives. </b>The following would make no sense in a general-purpose program. Most mirror
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Interactive fiction-only primitives. </b>The following would make no sense in a general-purpose program. Most mirror
 very low-level I6 features, and Inform uses them mainly when converting
 I6 code into inter: in almost all cases it's better to call routines in the
 template rather than to use these. First, the spatial containment object tree:

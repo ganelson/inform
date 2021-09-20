@@ -92,6 +92,7 @@ typedef struct to_phrase_request {
 	struct kind *req_kind;
 	struct kind *kv_interpretation[27];
 	struct inter_name *req_iname;
+	struct inter_name *md_iname;
 	CLASS_DEFINITION
 } to_phrase_request;
 
@@ -140,6 +141,7 @@ list is a list of. The result would be:
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP,
 		CompileImperativeDefn::requests_package(idb));
 	req->req_iname = Hierarchy::make_iname_in(PHRASE_FN_HL, P);
+	req->md_iname = Hierarchy::make_iname_in(PHRASE_SYNTAX_MD_HL, P);
 	text_stream *desc = Str::new();
 	WRITE_TO(desc, "phrase request (%u) for '%W'",
 		K, Node::get_text(req->compile_from->head_of_defn->at));

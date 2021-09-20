@@ -16,7 +16,8 @@ void Problems::Using::console_format(int *sig_mode, int *break_width, filename *
 	if (Main::silence_is_golden()) {
 		*sig_mode = TRUE;
 		*break_width = 10000000; /* i.e., do not word-wrap problem messages at all */
-		*fallback = Projects::get_primary_source(Task::project());
+		if ((inform7_task) && (inform7_task->project))
+			*fallback = Projects::get_primary_source(inform7_task->project);
 	}
 }
 

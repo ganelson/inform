@@ -1375,6 +1375,7 @@ void Hierarchy::establish(void) {
 @e CLOSURE_DATA_HL
 @e PHRASES_HAP
 @e REQUESTS_HAP
+@e PHRASE_SYNTAX_MD_HL
 @e PHRASE_FN_HL
 @e LABEL_STORAGES_HAP
 @e LABEL_ASSOCIATED_STORAGE_HL
@@ -1394,6 +1395,7 @@ void Hierarchy::establish(void) {
 				H_C_U(CLOSURE_DATA_HL,        I"closure_data")
 			H_END
 			H_BEGIN_AP(REQUESTS_HAP,          I"request", I"_request")
+				H_C_U(PHRASE_SYNTAX_MD_HL,    I"^phrase_syntax")
 				H_F_U(PHRASE_FN_HL,           I"phrase_fn")
 			H_END
 		H_END

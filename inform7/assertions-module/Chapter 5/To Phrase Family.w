@@ -115,6 +115,7 @@ void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 		wording PW = GET_RW(<to-phrase-preamble>, 1);
 		tfd->ph_documentation_symbol = DocReferences::position_of_symbol(&PW);
 		tfd->prototype_text = PW;
+		id->log_text = PW;
 	}
 }
 

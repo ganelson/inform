@@ -141,6 +141,19 @@ first value is the function address, and subsequent ones are arguments.
 (k) |primitive !indirect4 val val val val val -> val|. 
 (l) |primitive !indirect5 val val val val val val -> val|. 
 
+@h External function calls.
+The following calls a function which is not part of the program itself, and
+which is assumed to be provided by code written in a different programming
+language. It cannot be used when Inter is being generated to Inform 6
+code, because I6 has no ability to link with external code; but it can be
+used when generating C, for example.
+
+The first value must be a literal double-quoted text, and is the name of
+the external function. The second value is an argument to pass to it; and
+the result is whatever value it returns.
+
+(a) |primitive !externalcall val val -> val|.
+
 @h Control flow.
 The simplest control statement is an "if". Note that a different primitive
 is used if there is an "else" attached: it would be impossible to use the

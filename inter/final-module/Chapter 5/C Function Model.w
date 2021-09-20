@@ -19,6 +19,7 @@ typedef struct C_generation_function_model_data {
 	int argument_count;
 	struct final_c_function *current_fcf;
 	int compiling_function;
+	struct dictionary *external_functions;
 } C_generation_function_model_data;
 
 void CFunctionModel::initialise_data(code_generation *gen) {
@@ -26,6 +27,7 @@ void CFunctionModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(fndata.argument_count) = 0;
 	C_GEN_DATA(fndata.current_fcf) = NULL;
 	C_GEN_DATA(fndata.compiling_function) = FALSE;
+	C_GEN_DATA(fndata.external_functions) = Dictionaries::new(1024, TRUE);
 }
 
 void CFunctionModel::begin(code_generation *gen) {
@@ -67,21 +69,85 @@ void CFunctionModel::end(code_generation *gen) {
 	WRITE("proc->state.stack_pointer = ssp;\n");
 	WRITE("return rv;\n");
 	OUTDENT; WRITE("}\n");
+
+	LOOP_OVER(fcf, final_c_function) {
+		if (fcf->formal_arity >= 0) {
+			WRITE("i7val xfn_");
+			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
+			WRITE("(i7process_t *proc");
+			if (fcf->formal_arity > 0) {
+				for (int i=0; i<fcf->formal_arity; i++) {
+					WRITE(", ");
+					WRITE("i7val p%d", i);
+				}
+			}
+			WRITE(") {\n"); INDENT;
+			WRITE("return fn_");
+			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
+			WRITE("(proc");
+			for (int i=0; i<fcf->max_arity; i++) {
+				WRITE(", ");
+				if (i < fcf->formal_arity) WRITE("p%d", i);
+				else WRITE("0");
+			}
+			WRITE(");\n");			
+			OUTDENT; WRITE("}\n");
+		}
+	}
+
 	CodeGen::deselect(gen, saved);
+
+	saved = CodeGen::select(gen, c_function_symbols_I7CGS);
+	OUT = CodeGen::current(gen);
+	LOOP_OVER(fcf, final_c_function) {
+		if (fcf->formal_arity >= 0) {
+			WRITE("i7val xfn_");
+			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
+			WRITE("(i7process_t *proc");
+			if (fcf->formal_arity > 0) {
+				for (int i=0; i<fcf->formal_arity; i++) {
+					WRITE(", ");
+					WRITE("i7val p%d", i);
+				}
+			}
+			WRITE(");\n");
+		}
+	}	
+	CodeGen::deselect(gen, saved);
+}
+
+text_stream *CFunctionModel::external_function(code_generation *gen, text_stream *fn) {
+	dictionary *D = C_GEN_DATA(fndata.external_functions);
+	text_stream *key = Str::new();
+	for (int i=10; i<Str::len(fn); i++)
+		PUT_TO(key, Str::get_at(fn, i));
+	text_stream *dv = Dictionaries::get_text(D, key);
+	if (dv == NULL) {
+		Dictionaries::create_text(D, key);
+		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE_TO(OUT, "i7val %S(i7process_t *proc, i7val arg);\n", key);
+		CodeGen::deselect(gen, saved);		
+	}
+	return key;
 }
 
 typedef struct final_c_function {
 	struct text_stream *identifier_as_constant;
+	struct text_stream *syntax_md;
 	int uses_vararg_model;
 	int max_arity;
+	int formal_arity;
 	CLASS_DEFINITION
 } final_c_function;
 
 final_c_function *CFunctionModel::new_fcf(text_stream *unmangled_name) {
 	final_c_function *fcf = CREATE(final_c_function);
 	fcf->max_arity = 0;
+	fcf->formal_arity = -1;
 	fcf->uses_vararg_model = FALSE;
 	fcf->identifier_as_constant = Str::duplicate(unmangled_name);
+	fcf->syntax_md = NULL;
 	return fcf;
 }
 
@@ -107,12 +173,41 @@ void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	C_GEN_DATA(fndata.argument_count) = 0;
 	if (pass == 1) {
+		inter_package *P = Inter::Packages::container(fn->definition);
+		inter_package *PP = Inter::Packages::parent(P);
+		text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
 		C_GEN_DATA(fndata.current_fcf) = CFunctionModel::new_fcf(fn_name);
+		C_GEN_DATA(fndata.current_fcf)->syntax_md = Str::duplicate(md);
 		fn->translation_data = STORE_POINTER_final_c_function(C_GEN_DATA(fndata.current_fcf));
 		Str::clear(C_GEN_DATA(fndata.prototype));
 		WRITE_TO(C_GEN_DATA(fndata.prototype), "i7val fn_");
 		CNamespace::mangle(cgt, C_GEN_DATA(fndata.prototype), fn_name);
 		WRITE_TO(C_GEN_DATA(fndata.prototype), "(i7process_t *proc");
+
+		if (Str::len(C_GEN_DATA(fndata.current_fcf)->syntax_md) > 0) {
+			text_stream *md = C_GEN_DATA(fndata.current_fcf)->syntax_md;
+			C_GEN_DATA(fndata.current_fcf)->formal_arity = 0;
+			TEMPORARY_TEXT(synopsis)
+			TEMPORARY_TEXT(val)
+			for (int i=3, bracketed=0; i<Str::len(md); i++) {
+				wchar_t c = Str::get_at(md, i);
+				if (bracketed) {
+					if (c == ')') bracketed=0;
+				} else {
+					if (c == '(') {
+						PUT_TO(synopsis, 'X');
+						C_GEN_DATA(fndata.current_fcf)->formal_arity++;
+						bracketed=1;
+					} else if (Characters::isalpha(c)) PUT_TO(synopsis, c);
+					else PUT_TO(synopsis, '_');
+				}
+			}
+			WRITE_TO(val, "xfn_");
+			CNamespace::mangle(NULL, val, C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
+			CObjectModel::define_header_constant_for_function(gen, synopsis, val);
+			DISCARD_TEXT(synopsis)
+			DISCARD_TEXT(val)
+		}
 	}
 	if (pass == 2) {
 		C_GEN_DATA(fndata.current_fcf) = RETRIEVE_POINTER_final_c_function(fn->translation_data);
@@ -166,6 +261,7 @@ void CFunctionModel::end_function(code_generation_target *cgt, int pass, code_ge
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("return 1;\n");
 		WRITE("\n}\n");
+		
 		C_GEN_DATA(fndata.compiling_function) = FALSE;
 	}
 }

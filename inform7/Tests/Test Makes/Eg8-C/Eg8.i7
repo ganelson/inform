@@ -1,0 +1,17 @@
+To begin:
+	call C collatz function with 17.
+
+To run the Collatz algorithm on (N - a number):
+	say "MRS I: I have heard Mr C tell that [N] is an interesting number. ";
+	if N is 1:
+		say "And so I triumph!";
+	else:
+		if N is even:
+			say "And so I halve.";
+			call C collatz function with N divided by two;
+		else:
+			say "And so I treble and add 1.";
+			call C collatz function with ( N times 3 plus 1).
+
+To call C collatz function with (N - a number):
+	(- external__collatz({N}); -).

@@ -81,7 +81,14 @@ i7process_t i7_new_process(void) {
 	proc.send_count = 0;
 	proc.sender = i7_default_sender;
 	proc.use_UTF8 = 1;
+	proc.communicator = i7_default_communicator;
 	return proc;
+}
+
+i7val i7_default_communicator(i7process_t *proc, char *id, int argc, i7val *args) {
+	printf("No communicator: external function calls not allowed from thus process\n");
+	i7_fatal_exit(proc);
+	return 0;
 }
 
 void i7_save_snapshot(i7process_t *proc) {
@@ -176,6 +183,9 @@ void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t
 }
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
+}
+void i7_set_process_communicator(i7process_t *proc, i7val (*communicator)(i7process_t *proc, char *id, int argc, i7val *args)) {
+	proc->communicator = communicator;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
@@ -392,6 +402,21 @@ void i7_push(i7process_t *proc, i7val x) {
 	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
 	proc->state.stack[proc->state.stack_pointer++] = x;
 }
+void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z) {
+	if (proc->communicator == NULL) {
+		if (z) *z = 0;
+	} else {
+		i7val args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
+		while (varargc > 0) {
+			i7val v = i7_pull(proc);
+			if (argc < 10) args[argc++] = v;
+			varargc--;
+		}
+		i7val rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
+		if (z) *z = rv;
+	}
+}
+
 void glulx_accelfunc(i7process_t *proc, i7val x, i7val y) { /* Intentionally ignore */
 }
 

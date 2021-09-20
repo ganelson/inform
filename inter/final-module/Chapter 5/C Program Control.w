@@ -65,6 +65,17 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(", ");
 								INV_A5; WRITE(", "); INV_A6; WRITE(")"); break;
 
+		case EXTERNALCALL_BIP:  {
+			inter_tree_node *N = InterTree::first_child(P);
+			if ((N) && (N->W.data[ID_IFLD] == VAL_IST) && (N->W.data[VAL1_VAL_IFLD] == LITERAL_TEXT_IVAL)) {
+				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), N->W.data[VAL1_VAL_IFLD + 1]);
+				WRITE("%S(proc, ", CFunctionModel::external_function(gen, glob_text)); INV_A2; WRITE(")");
+			} else {
+				internal_error("unimplemented form of !externalcall");
+			}
+			break;
+		}
+
 		case IF_BIP: @<Generate primitive for if@>; break;
 		case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
 		case IFSTRICT_BIP: @<Generate primitive for ifstrict@>; break;

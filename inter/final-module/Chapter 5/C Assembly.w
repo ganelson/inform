@@ -108,6 +108,11 @@ void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
 	if (Str::eq(opcode, I"@sub")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@tan")) store_this_operand[2] = TRUE;
 
+	if (Str::eq(opcode, I"@xfunction")) {
+		store_this_operand[3] = TRUE;
+		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
+	}
+
 	int pushed_result = FALSE;
 	int num = 1;
 	if (Str::eq(opcode, I"@return")) {
@@ -181,9 +186,26 @@ void glulx_save(i7process_t *proc, i7val x, i7val y);
 void glulx_verify(i7process_t *proc, i7val x);
 void glulx_hasundo(i7process_t *proc, i7val *x);
 void glulx_discardundo(i7process_t *proc);
+
+void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z);
 =
 
 = (text to inform7_clib.c)
+void glulx_xfunction(i7process_t *proc, i7val selector, i7val varargc, i7val *z) {
+	if (proc->communicator == NULL) {
+		if (z) *z = 0;
+	} else {
+		i7val args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
+		while (varargc > 0) {
+			i7val v = i7_pull(proc);
+			if (argc < 10) args[argc++] = v;
+			varargc--;
+		}
+		i7val rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
+		if (z) *z = rv;
+	}
+}
+
 void glulx_accelfunc(i7process_t *proc, i7val x, i7val y) { /* Intentionally ignore */
 }
 

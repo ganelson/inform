@@ -316,6 +316,14 @@ void CObjectModel::define_header_constant_for_variable(code_generation *gen, tex
 	CodeGen::deselect(gen, saved);
 }
 
+void CObjectModel::define_header_constant_for_function(code_generation *gen, text_stream *fn_name,
+	text_stream *val) {
+	generated_segment *saved = CodeGen::select(gen, c_function_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %S\n", CObjectModel::new_header_name(gen, I"F", fn_name), val);
+	CodeGen::deselect(gen, saved);
+}
+
 @h Code to compute ofclass and metaclass.
 The easier case is metaclass. This is a built-in function, so we make it follow
 the calling conventions of other functions. It says which of five possible values
