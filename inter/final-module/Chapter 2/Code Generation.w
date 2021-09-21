@@ -3,44 +3,62 @@
 To generate final code from intermediate code.
 
 @h Pipeline stage.
+This whole module exists to provide a single pipeline stage, making the final
+generation of code from a tree of fully-linked and generally complete Inter.
+
+It comes in two forms (the optional one writes nothing if no filename is supplied
+to it; the compulsory one throws an error in that case), but note that both call
+the same function.
 
 =
 void CodeGen::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage, TEXT_OUT_STAGE_ARG, FALSE);
-	CodeGen::Stage::new(I"optionally-generate", CodeGen::run_pipeline_stage, OPTIONAL_TEXT_OUT_STAGE_ARG, FALSE);
+	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage,
+		TEXT_OUT_STAGE_ARG, FALSE);
+	CodeGen::Stage::new(I"optionally-generate", CodeGen::run_pipeline_stage, 
+		OPTIONAL_TEXT_OUT_STAGE_ARG, FALSE);
 }
 
-int CodeGen::run_pipeline_stage(pipeline_step *step) {
-	if (step->target_argument == NULL) internal_error("no target specified");
-	inter_package *which = NULL;
-	if (Str::len(step->package_argument) > 0) {
-		which = Inter::Packages::by_url(step->repository,
-			step->package_argument);
-		if (which == NULL) {
-			LOG("Arg %S\n", step->package_argument);
-			internal_error("no such package name");
-		}
-	}
+@ Which is here. Three arguments can be supplied:
+(a) The |target_argument|, which is something like |Inform6| or |C/no-main|.
+Note that this must have validly parsed as a recognisable target already:
+see //CodeGen::Targets::make_targets// for where the possibilities are set up.
+(b) The |package_argument|, which can tell us to generate code from just a
+single package of the Inter tree, rather than the whole thing. Some targets
+recognise this, but most do not, and generate from the whole tree regardless.
+(c) The |text_out_file| to write to.
 
-	code_generation *gen =
-		CodeGen::new_generation(step, step->repository, which, step->target_argument);
-	if (CodeGen::Targets::begin_generation(gen) == FALSE) {
-		CodeGen::generate(gen);
-		CodeGen::Targets::end_generation(gen);
-		CodeGen::write(step->text_out_file, gen);
+=
+int CodeGen::run_pipeline_stage(pipeline_step *step) {
+	if (step->target_argument) {
+		inter_package *this_package_only = NULL;
+		@<Parse package from its argument@>;
+
+		code_generation *gen = CodeGen::new_generation(step->parsed_filename, step->text_out_file,
+			step->repository, this_package_only, step->target_argument, step->for_VM);
+		if (CodeGen::Targets::begin_generation(gen) == FALSE) {
+			CodeGen::generate(gen);
+			CodeGen::Targets::end_generation(gen);
+			CodeGen::write(step->text_out_file, gen);
+		}
 	}
 	return TRUE;
 }
 
+@<Parse package from its argument@> =
+	if (Str::len(step->package_argument) > 0) {
+		this_package_only =
+			Inter::Packages::by_url(step->repository, step->package_argument);
+		if (this_package_only == NULL)
+			CodeGen::Pipeline::error_with(
+				"no such package name as '%S'", step->package_argument);
+			return FALSE;
+	}
+
 @h Generations.
 A "generation" is a single act of translating inter code into final code.
-That final code will be a text file written in some other programming
-language, though probably a low-level one.
-
-The "target" of a generation is the final language: for example, Inform 6.
 
 During a generation, textual output is assembled as a set of "segments".
-Different targets may need different segments. This is all to facilitate
+(Different targets need different sets of segments.) This is all to facilitate
 rearranging content as necessary to get it to compile in the target language:
 for example, one might need to have all constants defined first, then all
 arrays, and one could do this by creating two segments, one to accumulate
@@ -52,15 +70,17 @@ only when assembling other material, and not for the final output.
 
 @e temporary_I7CGS from 0
 
-@d MAX_CG_SEGMENTS 100
-
 =
 typedef struct code_generation {
-	struct pipeline_step *from_step;
+	struct filename *to_file;          /* for binary output, or... */
+	struct text_stream *text_out_file; /* for textual output */
+
 	struct inter_tree *from;
-	struct code_generation_target *target;
 	struct inter_package *just_this_package;
-	struct generated_segment *segments[MAX_CG_SEGMENTS];
+	struct target_vm *for_VM;
+
+	struct code_generation_target *target;
+	struct generated_segment *segments[NO_DEFINED_I7CGS_VALUES];
 	struct linked_list *segment_sequence; /* of |generated_segment| */
 	struct linked_list *additional_segment_sequence; /* of |generated_segment| */
 	struct generated_segment *current_segment; /* an entry in that array, or null */
@@ -69,10 +89,14 @@ typedef struct code_generation {
 	CLASS_DEFINITION
 } code_generation;
 
-code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
-	inter_package *just, code_generation_target *target) {
+code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree *I,
+	inter_package *just, code_generation_target *target, target_vm *VM) {
 	code_generation *gen = CREATE(code_generation);
-	gen->from_step = step;
+	gen->to_file = F;
+	gen->text_out_file = T;
+	if ((VM == NULL) && (target == NULL)) internal_error("no way to determine format");
+	if (VM == NULL) VM = TargetVMs::find(target->target_name);
+	gen->for_VM = VM;
 	gen->from = I;
 	gen->target = target;
 	if (just) gen->just_this_package = just;
@@ -81,7 +105,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	gen->segment_sequence = NEW_LINKED_LIST(generated_segment);
 	gen->additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
 	gen->temporarily_diverted = FALSE;
-	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
+	for (int i=0; i<NO_DEFINED_I7CGS_VALUES; i++) gen->segments[i] = NULL;
 	return gen;
 }
 
@@ -103,7 +127,7 @@ generated_segment *CodeGen::new_segment(void) {
 void CodeGen::create_segments(code_generation *gen, void *data, int codes[]) {
 	gen->segment_sequence = NEW_LINKED_LIST(generated_segment);
 	for (int i=0; codes[i] >= 0; i++) {
-		if ((codes[i] >= MAX_CG_SEGMENTS) ||
+		if ((codes[i] >= NO_DEFINED_I7CGS_VALUES) ||
 			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
 		gen->segments[codes[i]] = CodeGen::new_segment();
 		ADD_TO_LINKED_LIST(gen->segments[codes[i]], generated_segment, gen->segment_sequence);
@@ -114,7 +138,7 @@ void CodeGen::create_segments(code_generation *gen, void *data, int codes[]) {
 void CodeGen::additional_segments(code_generation *gen, int codes[]) {
 	gen->additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
 	for (int i=0; codes[i] >= 0; i++) {
-		if ((codes[i] >= MAX_CG_SEGMENTS) ||
+		if ((codes[i] >= NO_DEFINED_I7CGS_VALUES) ||
 			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
 		gen->segments[codes[i]] = CodeGen::new_segment();
 		ADD_TO_LINKED_LIST(gen->segments[codes[i]], generated_segment, gen->additional_segment_sequence);
@@ -136,7 +160,7 @@ always be done in a way which is then undone, restoring the previous state:
 =
 generated_segment *CodeGen::select(code_generation *gen, int i) {
 	generated_segment *saved = gen->current_segment;
-	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
 	if (gen->temporarily_diverted) internal_error("poorly timed selection");
 	gen->current_segment = gen->segments[i];
 	return saved;
@@ -148,7 +172,7 @@ void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
 }
 
 text_stream *CodeGen::content(code_generation *gen, int i) {
-	if ((i < 0) || (i >= MAX_CG_SEGMENTS)) internal_error("out of range");
+	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
 	return gen->segments[i]->generated_code;
 }
 

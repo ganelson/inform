@@ -211,11 +211,14 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 			PUT(Str::get(pos));
 }
 
-void CodeGen::FC::val_to_I6(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {
+void CodeGen::FC::val_to_I6(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2, target_vm *VM) {
 	if (temporary_generation == NULL) {
+		if (VM == NULL) internal_error("no VM given");
 		CodeGen::Targets::make_targets();
+		code_generation_target *cgt = CodeGen::Targets::find(TargetVMs::family(VM));
+		if (cgt == NULL) internal_error("VM family with no final generation target");
 		temporary_generation =
-			CodeGen::new_generation(NULL, Inter::Bookmarks::tree(IBM), NULL, CodeGen::I6::target());
+			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM), NULL, cgt, VM);
 	}
 	CodeGen::select_temporary(temporary_generation, OUT);
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {

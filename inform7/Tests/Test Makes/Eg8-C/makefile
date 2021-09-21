@@ -34,5 +34,6 @@ clean:
 	rm -f Eg8-I.c
 	rm -f *.o
 	rm -f Eg8
-	rm -f actual_output.txt
+	rm -f inform7_symbols.h
 	rm -f build_log.txt
+	rm -f actual_output.txt

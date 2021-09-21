@@ -440,7 +440,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	generated_segment *saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	int compile_main = TRUE;
-	target_vm *VM = gen->from_step->for_VM;
+	target_vm *VM = gen->for_VM;
 	linked_list *opts = TargetVMs::option_list(VM);
 	text_stream *opt;
 	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
@@ -498,10 +498,10 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	WRITE("#pragma clang diagnostic pop\n");
 	CodeGen::deselect(gen, saved);
 
-	filename *F = gen->from_step->parsed_filename;
+	filename *F = gen->to_file;
 	if (F) {
 		int compile_symbols = FALSE;
-		target_vm *VM = gen->from_step->for_VM;
+		target_vm *VM = gen->for_VM;
 		linked_list *opts = TargetVMs::option_list(VM);
 		text_stream *opt;
 		LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {

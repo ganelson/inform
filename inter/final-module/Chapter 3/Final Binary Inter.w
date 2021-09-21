@@ -13,7 +13,6 @@ void CodeGen::Binary::create_target(void) {
 }
 
 int CodeGen::Binary::text(code_generation_target *cgt, code_generation *gen) {
-	if (gen->from_step == NULL) internal_error("temporary generations cannot be output");
-	Inter::Binary::write(gen->from_step->parsed_filename, gen->from);
+	if (gen->to_file) Inter::Binary::write(gen->to_file, gen->from);
 	return TRUE;
 }

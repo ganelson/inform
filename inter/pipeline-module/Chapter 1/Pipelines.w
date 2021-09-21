@@ -93,16 +93,15 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		Str::copy(step, mr.exp[0]);
 		left_arrow_used = TRUE;
 	} else if (Regexp::match(&mr, step, L"(%c+?) (%C+) *-> *(%c*)")) {
-		code_generation_target *cgt;
-		LOOP_OVER(cgt, code_generation_target)
-			if (Str::eq(mr.exp[1], cgt->target_name))
-				ST->target_argument = cgt;
-		if (ST->target_argument == NULL) {
+		code_generation_target *cgt = CodeGen::Targets::find(mr.exp[1]);
+		if (cgt == NULL) {
 			TEMPORARY_TEXT(ERR)
 			WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
 			Errors::in_text_file_S(ERR, tfp);
 			DISCARD_TEXT(ERR)
 			return NULL;
+		} else {
+			ST->target_argument = cgt;
 		}
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
@@ -475,4 +474,40 @@ void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) 
 inter_symbol *CodeGen::Pipeline::uks(void) {
 	if (unchecked_kind_symbol == NULL) internal_error("no unchecked kind symbol");
 	return unchecked_kind_symbol;
+}
+
+void CodeGen::Pipeline::error(char *erm) {
+	#ifdef PROBLEMS_MODULE
+	TEMPORARY_TEXT(full)
+	WRITE_TO(full, "%s", erm);
+	do_not_locate_problems = TRUE;
+	Problems::quote_stream(1, full);
+	Problems::issue_problem_begin(NULL, erm);
+	Problems::issue_problem_segment("I was unable to perform final code-generation: %1");
+	Problems::issue_problem_end();
+	do_not_locate_problems = FALSE;
+	DISCARD_TEXT(full)
+	#endif
+	#ifndef PROBLEMS_MODULE
+	Errors::fatal(erm);
+	exit(1);
+	#endif
+}
+
+void CodeGen::Pipeline::error_with(char *erm, text_stream *quoted) {
+	#ifdef PROBLEMS_MODULE
+	TEMPORARY_TEXT(full)
+	WRITE_TO(full, erm, quoted);
+	do_not_locate_problems = TRUE;
+	Problems::quote_stream(1, full);
+	Problems::issue_problem_begin(NULL, erm);
+	Problems::issue_problem_segment("I was unable to perform final code-generation: %1");
+	Problems::issue_problem_end();
+	do_not_locate_problems = FALSE;
+	DISCARD_TEXT(full)
+	#endif
+	#ifndef PROBLEMS_MODULE
+	Errors::fatal_with_text(erm, quoted);
+	exit(1);
+	#endif
 }

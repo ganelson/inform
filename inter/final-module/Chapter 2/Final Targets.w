@@ -19,6 +19,14 @@ code_generation_target *CodeGen::Targets::new(text_stream *name) {
 	return cgt;
 }
 
+code_generation_target *CodeGen::Targets::find(text_stream *name) {
+	code_generation_target *cgt;
+	LOOP_OVER(cgt, code_generation_target)
+		if (Str::eq_insensitive(cgt->target_name, name))
+			return cgt;
+	return NULL;
+}
+
 @ And they are mass-produced here:
 
 =

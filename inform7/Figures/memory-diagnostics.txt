@@ -143,8 +143,8 @@ Total memory consumption was 394747K = 385 MB
      ----  parentage_inference_data                 79 objects, 2528 bytes
      ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
-     ----  equation_symbol                          30 objects, 2400 bytes
      ----  inter_construct                          30 objects, 2400 bytes
+     ----  equation_symbol                          30 objects, 2400 bytes
      ----  semver_range                             22 objects, 2288 bytes
      ----  pipeline_step                            16 objects, 2176 bytes
      ----  scene                                    1 object, 2096 bytes
@@ -153,8 +153,8 @@ Total memory consumption was 394747K = 385 MB
      ----  plugin                                   25 objects, 1600 bytes
      ----  cached_kind_declaration                  38 objects, 1520 bytes
      ----  noun_filter_token                        22 objects, 1408 bytes
-     ----  inter_tree_location_list                 34 objects, 1360 bytes
      ----  inter_annotation_form                    34 objects, 1360 bytes
+     ----  inter_tree_location_list                 34 objects, 1360 bytes
      ----  special_meaning_holder                   33 objects, 1320 bytes
      ----  table_column                             16 objects, 1280 bytes
      ----  constant_phrase                          20 objects, 1280 bytes
@@ -166,9 +166,8 @@ Total memory consumption was 394747K = 385 MB
      ----  runtime_kind_structure                   13 objects, 1040 bytes
      ----  quantifier                               16 objects, 1024 bytes
      ----  pipeline_stage                           21 objects, 1008 bytes
-     ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  submodule_identity                       30 objects, 960 bytes
-     ----  code_generation                          1 object, 896 bytes
+     ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
      ----  generated_segment                        27 objects, 864 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
@@ -180,6 +179,7 @@ Total memory consumption was 394747K = 385 MB
      ----  I6T_intervention                         8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  inter_warehouse_room                     10 objects, 640 bytes
+     ----  code_generation                          1 object, 608 bytes
      ----  inbuild_search_result                    15 objects, 600 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
@@ -256,5 +256,5 @@ Total memory consumption was 394747K = 385 MB
      ----  code generation workspace for objects    9624 bytes in 9 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 75829912 bytes = 74052K = 72 MB
+18.7% was overhead - 75830200 bytes = 74052K = 72 MB
 

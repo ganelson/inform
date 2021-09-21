@@ -113,10 +113,6 @@ void CodeGen::I6::create_target(void) {
 	inform6_target = cgt;
 }
 
-code_generation_target *CodeGen::I6::target(void) {
-	return inform6_target;
-}
-
 @h Segmentation.
 The loss of |life| is so appalling that I6 will not even compile a story
 file which doesn't define the property number |life| (well, strictly
