@@ -5,9 +5,9 @@ Managing, or really just delegating, the generation of ANSI C code from a tree o
 @h Target.
 
 =
-code_generation_target *c_target = NULL;
-void CTarget::create_target(void) {
-	c_target = CodeGen::Targets::new(I"c");
+code_generator *c_target = NULL;
+void CTarget::create_generator(void) {
+	c_target = Generators::new(I"c");
 
 	METHOD_ADD(c_target, BEGIN_GENERATION_MTID, CTarget::begin_generation);
 	METHOD_ADD(c_target, END_GENERATION_MTID, CTarget::end_generation);
@@ -406,7 +406,7 @@ int C_symbols_header_segments[] = {
 
 @h State data.
 
-@d C_GEN_DATA(x) ((C_generation_data *) (gen->target_specific_data))->x
+@d C_GEN_DATA(x) ((C_generation_data *) (gen->generator_private_data))->x
 
 =
 typedef struct C_generation_data {
@@ -430,7 +430,7 @@ void CTarget::initialise_data(code_generation *gen) {
 @h Begin and end.
 
 =
-int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen) {
+int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
 	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
 	CodeGen::additional_segments(gen, C_symbols_header_segments);
 	CTarget::initialise_data(gen);
@@ -484,7 +484,7 @@ int CTarget::begin_generation(code_generation_target *cgt, code_generation *gen)
 	return FALSE;
 }
 
-int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
+int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
 	CFunctionModel::end(gen);
 	CObjectModel::end(gen);
 	CLiteralsModel::end(gen);
@@ -542,7 +542,7 @@ int CTarget::end_generation(code_generation_target *cgt, code_generation *gen) {
 	return FALSE;
 }
 
-int CTarget::general_segment(code_generation_target *cgt, code_generation *gen, inter_tree_node *P) {
+int CTarget::general_segment(code_generator *cgt, code_generation *gen, inter_tree_node *P) {
 	switch (P->W.data[ID_IFLD]) {
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
@@ -562,18 +562,18 @@ int CTarget::general_segment(code_generation_target *cgt, code_generation *gen, 
 	return CTarget::default_segment(cgt);
 }
 
-int CTarget::default_segment(code_generation_target *cgt) {
+int CTarget::default_segment(code_generator *cgt) {
 	return c_main_matter_I7CGS;
 }
-int CTarget::constant_segment(code_generation_target *cgt, code_generation *gen) {
+int CTarget::constant_segment(code_generator *cgt, code_generation *gen) {
 	return c_early_matter_I7CGS;
 }
-int CTarget::basic_constant_segment(code_generation_target *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
+int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
 	if (Str::eq(CodeGen::CL::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
 	if (Str::eq(CodeGen::CL::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
 	if (depth >= 10) depth = 10;
 	return c_constants_1_I7CGS + depth - 1;
 }
-int CTarget::tl_segment(code_generation_target *cgt) {
+int CTarget::tl_segment(code_generator *cgt) {
 	return c_text_literals_code_I7CGS;
 }

@@ -5,7 +5,7 @@ How C programs print text out, really.
 @h Setting up the model.
 
 =
-void CInputOutputModel::initialise(code_generation_target *cgt) {
+void CInputOutputModel::initialise(code_generator *cgt) {
 }
 
 void CInputOutputModel::initialise_data(code_generation *gen) {

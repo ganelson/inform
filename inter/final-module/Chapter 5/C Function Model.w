@@ -5,7 +5,7 @@ Translating functions into C, and the calling conventions needed for them.
 @
 
 =
-void CFunctionModel::initialise(code_generation_target *cgt) {
+void CFunctionModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, CFunctionModel::begin_function);
 	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, CFunctionModel::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, CFunctionModel::begin_function_code);
@@ -169,7 +169,7 @@ void CFunctionModel::make_veneer_fcf(code_generation *gen, text_stream *unmangle
 	CFunctionModel::declare_fcf(gen, fcf);
 }
 
-void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
+void CFunctionModel::begin_function(code_generator *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	text_stream *fn_name = CodeGen::CL::name(fn);
 	C_GEN_DATA(fndata.argument_count) = 0;
 	if (pass == 1) {
@@ -218,7 +218,7 @@ void CFunctionModel::begin_function(code_generation_target *cgt, int pass, code_
 	}
 }
 
-void CFunctionModel::begin_function_code(code_generation_target *cgt, code_generation *gen) {
+void CFunctionModel::begin_function_code(code_generator *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(") {\n");
 	if (C_GEN_DATA(fndata.current_fcf)) {
@@ -237,7 +237,7 @@ void CFunctionModel::begin_function_code(code_generation_target *cgt, code_gener
 	C_GEN_DATA(fndata.compiling_function) = TRUE;
 }
 
-void CFunctionModel::place_label(code_generation_target *cgt, code_generation *gen, text_stream *label_name) {
+void CFunctionModel::place_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	LOOP_THROUGH_TEXT(pos, label_name)
 		if (Str::get(pos) != '.')
@@ -245,7 +245,7 @@ void CFunctionModel::place_label(code_generation_target *cgt, code_generation *g
 	WRITE(": ;\n", label_name);
 }
 
-void CFunctionModel::end_function(code_generation_target *cgt, int pass, code_generation *gen, inter_symbol *fn) {
+void CFunctionModel::end_function(code_generator *cgt, int pass, code_generation *gen, inter_symbol *fn) {
 	if (pass == 1) {
 		WRITE_TO(C_GEN_DATA(fndata.prototype), ")");
 
@@ -271,7 +271,7 @@ int CFunctionModel::inside_function(code_generation *gen) {
 	return FALSE;
 }
 
-void CFunctionModel::function_call(code_generation_target *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
+void CFunctionModel::function_call(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
 	inter_tree_node *D = fn->definition;
 	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) && (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
@@ -325,7 +325,7 @@ void CFunctionModel::function_call(code_generation_target *cgt, code_generation 
 	WRITE(")");
 }
 
-void CFunctionModel::declare_local_variable(code_generation_target *cgt, int pass,
+void CFunctionModel::declare_local_variable(code_generator *cgt, int pass,
 	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
 	TEMPORARY_TEXT(name)
 	CNamespace::mangle(cgt, name, CodeGen::CL::name(var_name));

@@ -14,7 +14,7 @@ void CodeGen::Var::prepare(code_generation *gen) {
 void CodeGen::Var::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-	prepare_counter = CodeGen::Targets::prepare_variable(gen, P, var_name, prepare_counter);
+	prepare_counter = Generators::prepare_variable(gen, P, var_name, prepare_counter);
 }
 
 void CodeGen::Var::knowledge(code_generation *gen) {
@@ -27,5 +27,5 @@ void CodeGen::Var::knowledge(code_generation *gen) {
 void CodeGen::Var::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-	knowledge_counter = CodeGen::Targets::declare_variable(gen, P, var_name, knowledge_counter, prepare_counter);
+	knowledge_counter = Generators::declare_variable(gen, P, var_name, knowledge_counter, prepare_counter);
 }

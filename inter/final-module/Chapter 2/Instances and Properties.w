@@ -56,9 +56,9 @@ void CodeGen::IP::store(inter_tree *I, inter_tree_node *P, void *state) {
 
 void CodeGen::IP::write_properties(code_generation *gen) {
 	if (properties_written == FALSE) {
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::default_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, Generators::default_segment(gen));
 		if (CodeGen::CL::quartet_present())
-			CodeGen::Targets::world_model_essentials(gen);
+			Generators::world_model_essentials(gen);
 		CodeGen::IP::knowledge(gen);
 		CodeGen::deselect(gen, saved);
 		properties_written = TRUE;		
@@ -238,14 +238,14 @@ we assume that's the name of an attribute already declared (for example
 in the I6 template, or some extension), and we therefore do nothing.
 
 @<Declare as an I6 attribute@> =
-	generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, prop_name, 1));
+	generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, prop_name, 1));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
 		if (A == NULL) A = CodeGen::CL::name(prop_name);
-		CodeGen::Targets::declare_attribute(gen, A);
+		Generators::declare_attribute(gen, A);
 	} else {
 		if (translated == FALSE)
-			CodeGen::Targets::declare_attribute(gen, CodeGen::CL::name(prop_name));
+			Generators::declare_attribute(gen, CodeGen::CL::name(prop_name));
 	}
 	CodeGen::deselect(gen, saved);
 
@@ -270,10 +270,10 @@ compiles an I6 constant for this value.
 @<Worry about the FBNA@> =
 	if (FBNA_found == FALSE) {
 		FBNA_found = TRUE;
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
-		CodeGen::Targets::mangle(gen, CodeGen::current(gen), CodeGen::CL::name(prop_name));
-		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
+		generated_segment *saved = CodeGen::select(gen, Generators::constant_segment(gen));
+		Generators::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
+		Generators::mangle(gen, CodeGen::current(gen), CodeGen::CL::name(prop_name));
+		Generators::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}
 
@@ -285,10 +285,10 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
-		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
+		generated_segment *saved = CodeGen::select(gen, Generators::constant_segment(gen));
+		Generators::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
 		WRITE_TO(CodeGen::current(gen), "MAX_POSITIVE_NUMBER");
-		CodeGen::Targets::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
+		Generators::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}
 	inter_symbol **all_props_in_source_order = NULL;
@@ -362,7 +362,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
 				(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
-				CodeGen::Targets::declare_property(gen, prop_name, TRUE);
+				Generators::declare_property(gen, prop_name, TRUE);
 			}
 		}
 	}
@@ -419,17 +419,17 @@ bother to force them.)
 
 @<Compile the property numberspace forcer@> =
 	if (properties_found) {
-		CodeGen::Targets::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE);
+		Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE);
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
 				inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
 				if (kind_name == truth_state_kind_symbol) {
-					CodeGen::Targets::assign_property(gen, CodeGen::CL::name(prop_name), I"0", FALSE);
+					Generators::assign_property(gen, CodeGen::CL::name(prop_name), I"0", FALSE);
 				}
 			}
 		}
-		CodeGen::Targets::end_instance(gen, I"Object", I"property_numberspace_forcer");
+		Generators::end_instance(gen, I"Object", I"property_numberspace_forcer");
 	}
 
 @<Annotate kinds of object with a sequence counter@> =
@@ -458,30 +458,30 @@ property usage is legal.
 		if (CodeGen::IP::is_kind_of_object(kind_name)) no_kos++;
 	}
 
-	CodeGen::Targets::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT);
+	Generators::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT);
 	if (no_kos > 0) {
-		CodeGen::Targets::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		for (int i=0; i<no_kind_frames; i++) {
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (CodeGen::IP::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
-				CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+				Generators::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 				if ((super_name) && (super_name != object_kind_symbol)) {
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%d", CodeGen::IP::kind_of_object_count(super_name));
-					CodeGen::Targets::array_entry(gen, N, WORD_ARRAY_FORMAT);
+					Generators::array_entry(gen, N, WORD_ARRAY_FORMAT);
 					DISCARD_TEXT(N);
 				} else {
-					CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+					Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 				}
 			}
 		}
 	} else {
-		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-		CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT);
 
 @h Lookup mechanism for properties of value instances.
 As noted above, if |K| is a kind which can have properties but is not a subkind
@@ -516,10 +516,10 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
-							CodeGen::Targets::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE);
+							Generators::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
-							CodeGen::Targets::assign_property(gen, I"value_range", N, FALSE);
+							Generators::assign_property(gen, I"value_range", N, FALSE);
 							DISCARD_TEXT(N)
 							for (int p=0; p<no_properties; p++) {
 								inter_symbol *prop_name = props_in_source_order[p];
@@ -536,7 +536,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 									@<Work through this frame list of permissions@>;
 								}
 							}
-							CodeGen::Targets::end_instance(gen, I"VPH_Class", instance_name);
+							Generators::end_instance(gen, I"VPH_Class", instance_name);
 							DISCARD_TEXT(instance_name)
 						}
 					}
@@ -555,8 +555,8 @@ legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
 
 @<Define the I6 VPH class@> =
-	CodeGen::Targets::declare_class(gen, I"VPH_Class", NULL, I"Class");
-	CodeGen::Targets::end_class(gen, I"VPH_Class");
+	Generators::declare_class(gen, I"VPH_Class", NULL, I"Class");
+	Generators::end_class(gen, I"VPH_Class");
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<no_kind_frames; i++) {
@@ -585,8 +585,8 @@ words, the number of instances of this kind.
 doesn't have a VPH, or the object number of its VPH if it has.
 
 @<Write the VPH lookup array@> =
-	CodeGen::Targets::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT);
-	CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	Generators::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	int vph = 0;
 	for (int w=1; w<M; w++) {
 		int written = FALSE;
@@ -597,14 +597,14 @@ doesn't have a VPH, or the object number of its VPH if it has.
 					written = TRUE;
 					TEMPORARY_TEXT(vph)
 					WRITE_TO(vph, "VPH_%d", w);
-					CodeGen::Targets::mangled_array_entry(gen, vph, WORD_ARRAY_FORMAT);
+					Generators::mangled_array_entry(gen, vph, WORD_ARRAY_FORMAT);
 					DISCARD_TEXT(vph)
 				}
 			}
 		}
-		if (written) vph++; else CodeGen::Targets::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		if (written) vph++; else Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT);
 	@<Stub a faux VPH if none have otherwise been created@>;
 
 @ In the event that no value instances have properties, there'll be no
@@ -627,7 +627,7 @@ just to force the property into being.
 			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				CodeGen::Targets::assign_mangled_property(gen, call_it, CodeGen::CL::name(store), FALSE);
+				Generators::assign_mangled_property(gen, call_it, CodeGen::CL::name(store), FALSE);
 			} else {
 				TEMPORARY_TEXT(ident)
 				kov_value_stick *kvs = CREATE(kov_value_stick);
@@ -637,7 +637,7 @@ just to force the property into being.
 				kvs->kind_name = kind_name;
 				kvs->node = X;
 				ADD_TO_LINKED_LIST(kvs, kov_value_stick, stick_list);
-				CodeGen::Targets::assign_mangled_property(gen, call_it, kvs->identifier, FALSE);
+				Generators::assign_mangled_property(gen, call_it, kvs->identifier, FALSE);
 				DISCARD_TEXT(ident)
 			}
 		}
@@ -668,9 +668,9 @@ brackets: thus |(4) (-5)|. This cannot be confused with function calling
 because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
-	CodeGen::Targets::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT);
-	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
-	CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
+	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	for (int j=0; j<no_instance_frames; j++) {
 		inter_symbol *inst_name = instances_in_declaration_order[j];
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
@@ -682,10 +682,10 @@ because I6 doesn't allow function calls in a constant context.
 			PVL = Inode::ID_to_frame_list(X,
 					Inter::Kind::properties_list(kind_name));
 			@<Work through this frame list of values@>;
-			if (found == 0) CodeGen::Targets::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
+			if (found == 0) Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
 	}
-	CodeGen::Targets::end_array(gen, TABLE_ARRAY_FORMAT);
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT);
 
 @<Work through this frame list of values@> =
 	inter_tree_node *Y;
@@ -699,7 +699,7 @@ because I6 doesn't allow function calls in a constant context.
 			CodeGen::select_temporary(gen, val);
 			CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
 			CodeGen::deselect_temporary(gen);
-			CodeGen::Targets::array_entry(gen, val, TABLE_ARRAY_FORMAT);
+			Generators::array_entry(gen, val, TABLE_ARRAY_FORMAT);
 			DISCARD_TEXT(val)
 		}
 	}
@@ -712,12 +712,12 @@ because I6 doesn't allow function calls in a constant context.
 			text_stream *super_class = NULL;
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) super_class = CodeGen::CL::name(super_name);
-			CodeGen::Targets::declare_class(gen, CodeGen::CL::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
+			Generators::declare_class(gen, CodeGen::CL::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
 			CodeGen::IP::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(gen, FL);
-			CodeGen::Targets::end_class(gen, CodeGen::CL::name(kind_name));
+			Generators::end_class(gen, CodeGen::CL::name(kind_name));
 		}
 	}
 
@@ -752,20 +752,20 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
 	if (properties_found) {
-		CodeGen::Targets::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT);
+		Generators::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT);
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
-				CodeGen::Targets::property_offset(gen, CodeGen::CL::name(prop_name), pos, TRUE);
+				Generators::property_offset(gen, CodeGen::CL::name(prop_name), pos, TRUE);
 			else
-				CodeGen::Targets::property_offset(gen, CodeGen::CL::name(prop_name), pos, FALSE);
+				Generators::property_offset(gen, CodeGen::CL::name(prop_name), pos, FALSE);
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
-			CodeGen::Targets::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+			Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
 			pos++;
 		}
-		CodeGen::Targets::end_array(gen, WORD_ARRAY_FORMAT);
+		Generators::end_array(gen, WORD_ARRAY_FORMAT);
 	}
 
 @<Write the property name in double quotes@> =
@@ -774,9 +774,9 @@ though this won't happen for any property created by I7 source text.
 	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
-	CodeGen::Targets::compile_literal_text(gen, pname, FALSE, FALSE, TRUE);
+	Generators::compile_literal_text(gen, pname, FALSE, FALSE, TRUE);
 	CodeGen::deselect_temporary(gen);
-	CodeGen::Targets::array_entry(gen, entry, WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, entry, WORD_ARRAY_FORMAT);
 	DISCARD_TEXT(entry)
 	pos++;
 
@@ -817,7 +817,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
-					CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+					Generators::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -831,7 +831,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
-					CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(inst_name), WORD_ARRAY_FORMAT);
+					Generators::mangled_array_entry(gen, CodeGen::CL::name(inst_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -845,12 +845,12 @@ linearly with the size of the source text, even though $N$ does.
 			inter_symbol *owner_name =
 				InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
-				CodeGen::Targets::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+				Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 				pos++;
 				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						CodeGen::Targets::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
+						Generators::mangled_array_entry(gen, CodeGen::CL::name(kind_name), WORD_ARRAY_FORMAT);
 						pos++;
 					}
 				}
@@ -864,7 +864,7 @@ linearly with the size of the source text, even though $N$ does.
 	for (int p=0; p<no_properties; p++) {
 		inter_symbol *prop_name = props_in_source_order[p];
 		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1) {
-			CodeGen::Targets::declare_property(gen, prop_name, FALSE);
+			Generators::declare_property(gen, prop_name, FALSE);
 		}
 	}
 
@@ -882,14 +882,14 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		if (val1 == UNDEF_IVAL) defined = FALSE;
 		TEMPORARY_TEXT(val)
 		if (defined) WRITE_TO(val, "%d", val2);
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, inst_name, 1));
+		generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, inst_name, 1));
 		text_stream *OUT = CodeGen::current(gen);
-		if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), inst_name, P, defined, FALSE)) {
+		if (Generators::begin_constant(gen, CodeGen::CL::name(inst_name), inst_name, P, defined, FALSE)) {
 			WRITE("%S", val);
-			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
+			Generators::end_constant(gen, CodeGen::CL::name(inst_name), FALSE);
 		}
 		CodeGen::deselect(gen, saved);
-		CodeGen::Targets::declare_value_instance(gen, CodeGen::CL::name(inst_name),
+		Generators::declare_value_instance(gen, CodeGen::CL::name(inst_name),
 			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"),
 			val);
 		DISCARD_TEXT(val)
@@ -972,14 +972,14 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
 		if (c < 0) c = 0;
 		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
-		CodeGen::Targets::declare_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name),
+		Generators::declare_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name),
 			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir);
 		CodeGen::IP::append(gen, inst_name);
 		inter_node_list *FL =
 			Inode::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		CodeGen::IP::plist(gen, FL);
-		CodeGen::Targets::end_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name));
+		Generators::end_instance(gen, CodeGen::CL::name(inst_kind), CodeGen::CL::name(inst_name));
 	}
 }
 
@@ -993,19 +993,19 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
 				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
-				CodeGen::Targets::assign_property(gen, call_it, I"0", TRUE);
+				Generators::assign_property(gen, call_it, I"0", TRUE);
 			} else {
-				CodeGen::Targets::assign_property(gen, call_it, I"1", TRUE);
+				Generators::assign_property(gen, call_it, I"1", TRUE);
 			}
 		} else {
 			TEMPORARY_TEXT(OUT)
 			CodeGen::select_temporary(gen, OUT);
-			if (CodeGen::Targets::optimise_property_value(gen, prop_name, X) == FALSE) {
+			if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
 				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(X),
 					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], FALSE);
 			}
 			CodeGen::deselect_temporary(gen);
-			CodeGen::Targets::assign_property(gen, call_it, OUT, FALSE);
+			Generators::assign_property(gen, call_it, OUT, FALSE);
 			DISCARD_TEXT(OUT)
 		}
 	}

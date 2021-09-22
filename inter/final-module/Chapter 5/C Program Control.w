@@ -5,11 +5,11 @@ Generating C code to effect loops, branches and the like.
 @
 
 =
-void CProgramControl::initialise(code_generation_target *cgt) {
+void CProgramControl::initialise(code_generator *cgt) {
 	METHOD_ADD(c_target, COMPILE_PRIMITIVE_MTID, CProgramControl::compile_primitive);
 }
 
-int CProgramControl::compile_primitive(code_generation_target *cgt, code_generation *gen,
+int CProgramControl::compile_primitive(code_generator *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P) {
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);

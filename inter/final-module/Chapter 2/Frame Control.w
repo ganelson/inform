@@ -18,17 +18,17 @@ void CodeGen::FC::pre_iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =
-			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+			CodeGen::select(gen, Generators::general_segment(gen, P));
 		switch (P->W.data[ID_IFLD]) {
 			case CONSTANT_IST: {
 				inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 				if (Inter::Constant::is_routine(con_name)) {
 					inter_package *code_block = Inter::Constant::code_block(con_name);
-					CodeGen::Targets::begin_function(1, gen, con_name);
+					Generators::begin_function(1, gen, con_name);
 					void_level = Inter::Defn::get_level(P) + 2;
 					inter_tree_node *D = Inter::Packages::definition(code_block);
 					CodeGen::FC::seek_locals(gen, D);
-					CodeGen::Targets::end_function(1, gen, con_name);
+					Generators::end_function(1, gen, con_name);
 					return;
 				}
 				break;
@@ -47,7 +47,7 @@ void CodeGen::FC::seek_locals(code_generation *gen, inter_tree_node *P) {
 			inter_package *pack = Inter::Packages::container(P);
 			inter_symbol *var_name =
 				InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-			CodeGen::Targets::declare_local_variable(1, gen, P, var_name);
+			Generators::declare_local_variable(1, gen, P, var_name);
 			break;
 		}
 	}
@@ -60,7 +60,7 @@ void CodeGen::FC::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =
-			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
+			CodeGen::select(gen, Generators::general_segment(gen, P));
 		switch (P->W.data[ID_IFLD]) {
 			case CONSTANT_IST:
 			case INSTANCE_IST:
@@ -151,13 +151,13 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 void CodeGen::FC::local(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-	CodeGen::Targets::declare_local_variable(2, gen, P, var_name);
+	Generators::declare_local_variable(2, gen, P, var_name);
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
-	CodeGen::Targets::place_label(gen, lab_name->symbol_name);
+	Generators::place_label(gen, lab_name->symbol_name);
 }
 
 void CodeGen::FC::block(code_generation *gen, inter_tree_node *P) {
@@ -173,7 +173,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	if (PAR == NULL) internal_error("misplaced code node");
 	if (PAR->W.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
-	if (function_code_block) { CodeGen::Targets::begin_function_code(gen); WRITE("\n"); INDENT; }
+	if (function_code_block) { Generators::begin_function_code(gen); WRITE("\n"); INDENT; }
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
@@ -214,8 +214,8 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 void CodeGen::FC::val_to_I6(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2, target_vm *VM) {
 	if (temporary_generation == NULL) {
 		if (VM == NULL) internal_error("no VM given");
-		CodeGen::Targets::make_targets();
-		code_generation_target *cgt = CodeGen::Targets::find(TargetVMs::family(VM));
+		Generators::make_all();
+		code_generator *cgt = Generators::find(TargetVMs::family(VM));
 		if (cgt == NULL) internal_error("VM family with no final generation target");
 		temporary_generation =
 			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM), NULL, cgt, VM);
@@ -225,7 +225,7 @@ void CodeGen::FC::val_to_I6(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, i
 		inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(
 			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
-		CodeGen::Targets::mangle(temporary_generation, OUT, CodeGen::CL::name(symb));
+		Generators::mangle(temporary_generation, OUT, CodeGen::CL::name(symb));
 	} else {
 		switch (val1) {
 			case UNDEF_IVAL:
@@ -256,10 +256,10 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 			if ((Str::eq(CodeGen::CL::name(symb), I"self")) ||
 				((symb->definition) &&
 					(symb->definition->W.data[ID_IFLD] == VARIABLE_IST))) {
-				CodeGen::Targets::evaluate_variable(gen, symb, (P->W.data[ID_IFLD] == REF_IST)?TRUE:FALSE);
+				Generators::evaluate_variable(gen, symb, (P->W.data[ID_IFLD] == REF_IST)?TRUE:FALSE);
 			} else {
 				text_stream *OUT = CodeGen::current(gen);
-				CodeGen::Targets::mangle(gen, OUT, CodeGen::CL::name(symb));
+				Generators::mangle(gen, OUT, CodeGen::CL::name(symb));
 			}
 			return;
 		}
@@ -301,7 +301,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			if (prim == NULL) internal_error("bad prim");
-			suppress_terminal_semicolon = CodeGen::Targets::compile_primitive(gen, prim, P);
+			suppress_terminal_semicolon = Generators::compile_primitive(gen, prim, P);
 			break;
 		}
 		case INVOKED_ROUTINE: {
@@ -309,7 +309,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			if (routine == NULL) internal_error("bad routine");
 			int argc = 0;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) argc++;
-			CodeGen::Targets::function_call(gen, routine, P, argc);
+			Generators::function_call(gen, routine, P, argc);
 			break;
 		} 
 		case INVOKED_OPCODE: {
@@ -336,7 +336,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 				}
 				operands[operand_count++] = F;
 			}
-			CodeGen::Targets::assembly(gen, S, operand_count, operands, label, label_sense);
+			Generators::assembly(gen, S, operand_count, operands, label, label_sense);
 			break;
 		}
 		default: internal_error("bad inv");

@@ -5,7 +5,7 @@ Text and dictionary words translated to C.
 @h Setting up the model.
 
 =
-void CLiteralsModel::initialise(code_generation_target *cgt) {
+void CLiteralsModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CLiteralsModel::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CLiteralsModel::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, CLiteralsModel::compile_literal_real);
@@ -175,7 +175,7 @@ int CLiteralsModel::compare_dwords(const void *ent1, const void *ent2) {
 	return Str::cmp_insensitive(tx1, tx2);
 }
 
-void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_generation *gen,
+void CLiteralsModel::compile_dictionary_word(code_generator *cgt, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	C_dword *dw = CLiteralsModel::text_to_dword(gen, S, pluralise);
@@ -183,7 +183,7 @@ void CLiteralsModel::compile_dictionary_word(code_generation_target *cgt, code_g
 	CNamespace::mangle(cgt, OUT, dw->identifier);
 }
 
-void CLiteralsModel::verb_grammar(code_generation_target *cgt, code_generation *gen,
+void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 	inter_symbol *array_s, inter_tree_node *P) {
 	inter_tree *I = gen->from;
 	int verbnum = C_GEN_DATA(litdata.verb_count)++;
@@ -438,7 +438,7 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
 }
 
-void CLiteralsModel::new_action(code_generation_target *cgt, code_generation *gen, text_stream *name, int true_action) {
+void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if (true_action) {
@@ -485,7 +485,7 @@ i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
 @
 
 =
-void CLiteralsModel::compile_literal_number(code_generation_target *cgt,
+void CLiteralsModel::compile_literal_number(code_generator *cgt,
 	code_generation *gen, inter_ti val, int hex_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (hex_mode) WRITE("0x%x", val);
@@ -615,7 +615,7 @@ int CLiteralsModel::character_digit_value(wchar_t c) {
 	return 10;
 }
 
-void CLiteralsModel::compile_literal_real(code_generation_target *cgt,
+void CLiteralsModel::compile_literal_real(code_generator *cgt,
 	code_generation *gen, text_stream *textual) {
 	int at = 0;
 	wchar_t lookahead = Str::get_at(textual, at++);
@@ -679,7 +679,7 @@ int CLiteralsModel::hex_val(wchar_t c) {
 	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
 	return -1;
 }
-void CLiteralsModel::compile_literal_text(code_generation_target *cgt, code_generation *gen,
+void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *gen,
 	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	

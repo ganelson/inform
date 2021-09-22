@@ -27,7 +27,7 @@ void Hierarchy::log(void) {
 		LOG("Inventory of current Inter tree:\n");
 		LOG("+--------------------------------------------------------------+\n");
 		LOG_INDENT;
-		CodeGen::Inventory::inv_to(DL, Emit::tree());
+		InvTarget::inv_to(DL, Emit::tree());
 		LOG_OUTDENT;
 		LOG("+==============================================================+\n\n");
 	}

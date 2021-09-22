@@ -12,15 +12,16 @@ have no meaningful contents when the step is not running.
 typedef struct pipeline_step {
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
-	struct code_generation_target *target_argument;
+	struct code_generator *generator_argument;
 	int take_target_argument_from_VM;
-	struct text_stream *package_argument;
+	struct text_stream *package_URL_argument;
+	struct inter_package *package_argument;
 	struct filename *parsed_filename;
 	struct linked_list *the_PP; /* of |pathname| */
 	int to_debugging_log;
 	int from_memory;
 	int repository_argument;
-	struct text_stream *text_out_file;
+	struct text_stream *to_stream;
 	struct linked_list *requirements_list; /* of |inter_library| */
 	struct inter_tree *repository;
 	struct codegen_pipeline *pipeline;
@@ -32,9 +33,10 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 	pipeline_step *step = CREATE(pipeline_step);
 	step->step_stage = NULL;
 	step->step_argument = NULL;
+	step->package_URL_argument = NULL;
 	step->package_argument = NULL;
 	step->repository_argument = 0;
-	step->target_argument = NULL;
+	step->generator_argument = NULL;
 	step->take_target_argument_from_VM = FALSE;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
@@ -45,7 +47,7 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 =
 void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->parsed_filename = NULL;
-	step->text_out_file = NULL;
+	step->to_stream = NULL;
 	step->to_debugging_log = FALSE;
 	step->from_memory = FALSE;
 	step->the_PP = NULL;
@@ -64,19 +66,19 @@ void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
 	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
 		if (step->repository_argument > 0) {
 			WRITE(" %d", step->repository_argument);
-			if (Str::len(step->package_argument) > 0) WRITE(":%S", step->package_argument);
+			if (Str::len(step->package_URL_argument) > 0) WRITE(":%S", step->package_URL_argument);
 		} else {
-			if (Str::len(step->package_argument) > 0) WRITE(" %S", step->package_argument);
+			if (Str::len(step->package_URL_argument) > 0) WRITE(" %S", step->package_URL_argument);
 		}
 		if (step->step_stage->takes_repository) WRITE(" <- %S", step->step_argument);
-		if (step->target_argument) WRITE(" %S -> %S", step->target_argument->target_name, step->step_argument);
+		if (step->generator_argument) WRITE(" %S -> %S", step->generator_argument->generator_name, step->step_argument);
 	}
 }
 
 pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 	text_file_position *tfp) {
 	CodeGen::Stage::make_stages();
-	CodeGen::Targets::make_targets();
+	Generators::make_all();
 	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
 	int left_arrow_used = FALSE;
@@ -93,7 +95,7 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		Str::copy(step, mr.exp[0]);
 		left_arrow_used = TRUE;
 	} else if (Regexp::match(&mr, step, L"(%c+?) (%C+) *-> *(%c*)")) {
-		code_generation_target *cgt = CodeGen::Targets::find(mr.exp[1]);
+		code_generator *cgt = Generators::find(mr.exp[1]);
 		if (cgt == NULL) {
 			TEMPORARY_TEXT(ERR)
 			WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
@@ -101,13 +103,13 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 			DISCARD_TEXT(ERR)
 			return NULL;
 		} else {
-			ST->target_argument = cgt;
+			ST->generator_argument = cgt;
 		}
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%c+?) *-> *(%c*)")) {
-		ST->target_argument = NULL;
+		ST->generator_argument = NULL;
 		ST->take_target_argument_from_VM = TRUE;
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
@@ -119,13 +121,13 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%d):(%c*)")) {
 		ST->repository_argument = Str::atoi(mr.exp[1], 0);
 		if (Str::len(mr.exp[2]) > 0) {
-			ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
-			if (ST->package_argument == NULL) return NULL;
+			ST->package_URL_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp, allow_unknown_variables);
+			if (ST->package_URL_argument == NULL) return NULL;
 		}
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
-		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
-		if (ST->package_argument == NULL) return NULL;
+		ST->package_URL_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
+		if (ST->package_URL_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
 
@@ -287,11 +289,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			step->requirements_list = requirements_list;
 			step->for_VM = VM;
 			if ((VM) && (step->take_target_argument_from_VM)) {
-				code_generation_target *cgt;
-				LOOP_OVER(cgt, code_generation_target)
-					if (Str::eq_insensitive(TargetVMs::family(VM), cgt->target_name))
-						step->target_argument = cgt;
-				if (step->target_argument == NULL) {
+				step->generator_argument = Generators::find(TargetVMs::family(VM));
+				if (step->generator_argument == NULL) {
 					#ifdef PROBLEMS_MODULE
 					Problems::fatal("Unable to guess target format");
 					#endif
@@ -301,6 +300,17 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 					#endif
 				}
 			}
+			
+			step->package_argument = NULL;
+			if (Str::len(step->package_URL_argument) > 0) {
+				step->package_argument =
+					Inter::Packages::by_url(step->repository, step->package_URL_argument);
+				if (step->package_argument == NULL) {
+					CodeGen::Pipeline::error_with("no such package as '%S'", step->package_URL_argument);
+					continue;
+				}
+			}
+			
 			Time::stop_stopwatch(prep_timer);
 
 			int skip_step = FALSE;
@@ -349,7 +359,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			text_stream text_output_struct; /* For any text file we might write */
 			text_stream *T = &text_output_struct;
 			if (step->to_debugging_log) {
-				step->text_out_file = DL;
+				step->to_stream = DL;
 			} else if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
@@ -363,7 +373,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 					exit(1);
 					#endif
 				}
-				step->text_out_file = T;
+				step->to_stream = T;
 			}
 
 			if (skip_step == FALSE)

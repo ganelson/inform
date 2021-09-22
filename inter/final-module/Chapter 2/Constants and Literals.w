@@ -47,7 +47,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
 		Str::delete_first_character(fa);
-		CodeGen::Targets::new_action(gen, fa, TRUE);
+		Generators::new_action(gen, fa, TRUE);
 		return;
 	}
 
@@ -55,7 +55,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		text_stream *fa = Str::duplicate(con_name->symbol_name);
 		Str::delete_first_character(fa);
 		Str::delete_first_character(fa);
-		CodeGen::Targets::new_action(gen, fa, FALSE);
+		Generators::new_action(gen, fa, FALSE);
 		return;
 	}
 
@@ -75,42 +75,42 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_ti ID = P->W.data[DATA_CONST_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		CodeGen::Targets::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT);
+		Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE_TO(content, "%c", Characters::toupper(Str::get_at(S, i)));
 		WRITE_TO(content, "//");
 		TEMPORARY_TEXT(length)
 		WRITE_TO(length, "%d", (int) Str::len(content));
-		CodeGen::Targets::array_entry(gen, length, BYTE_ARRAY_FORMAT);
+		Generators::array_entry(gen, length, BYTE_ARRAY_FORMAT);
 		DISCARD_TEXT(length)
 		LOOP_THROUGH_TEXT(pos, content) {
 			TEMPORARY_TEXT(ch)
 			WRITE_TO(ch, "'%c'", Str::get(pos));
-			CodeGen::Targets::array_entry(gen, ch, BYTE_ARRAY_FORMAT);
+			Generators::array_entry(gen, ch, BYTE_ARRAY_FORMAT);
 			DISCARD_TEXT(ch)
 		}
 		DISCARD_TEXT(content)
-		CodeGen::Targets::end_array(gen, BYTE_ARRAY_FORMAT);
+		Generators::end_array(gen, BYTE_ARRAY_FORMAT);
 		return;
 	}
 
 	if (Inter::Constant::is_routine(con_name)) {
 		inter_package *code_block = Inter::Constant::code_block(con_name);
-		CodeGen::Targets::begin_function(2, gen, con_name);
+		Generators::begin_function(2, gen, con_name);
 		void_level = Inter::Defn::get_level(P) + 2;
 		inter_tree_node *D = Inter::Packages::definition(code_block);
 		CodeGen::FC::frame(gen, D);
-		CodeGen::Targets::end_function(2, gen, con_name);
+		Generators::end_function(2, gen, con_name);
 		return;
 	}
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
-				CodeGen::Targets::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
-				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
+			if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
+				Generators::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
+				Generators::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			}
 			break;
 		}
@@ -126,8 +126,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			}
 			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
 				format = BUFFER_ARRAY_FORMAT;
-			if (CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), con_name, P, format)) {
-				if (hang_one) CodeGen::Targets::array_entry(gen, I"1", format);
+			if (Generators::begin_array(gen, CodeGen::CL::name(con_name), con_name, P, format)) {
+				if (hang_one) Generators::array_entry(gen, I"1", format);
 				int entry_count = 0;
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
 					if (P->W.data[i] != DIVIDER_IVAL)
@@ -140,7 +140,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				}
 				if (e > 1) {
 					LOG("Entry count 1 on %S masks %d blanks\n", CodeGen::CL::name(con_name), e);
-					CodeGen::Targets::array_entries(gen, (int) e, ips, format);
+					Generators::array_entries(gen, (int) e, ips, format);
 				} else {
 					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 						if (P->W.data[i] != DIVIDER_IVAL) {
@@ -148,12 +148,12 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 							CodeGen::select_temporary(gen, entry);
 							CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], unsub);
 							CodeGen::deselect_temporary(gen);
-							CodeGen::Targets::array_entry(gen, entry, format);
+							Generators::array_entry(gen, entry, format);
 							DISCARD_TEXT(entry)
 						}
 					}
 				}
-				CodeGen::Targets::end_array(gen, format);
+				Generators::end_array(gen, format);
 			}
 			WRITE("\n");
 			break;
@@ -168,9 +168,9 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 					"Con %S has depth %d\n", con_name->symbol_name, depth);
 				CodeGen::CL::constant_depth(con_name);
 			}
-			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));
+			generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));
 			text_stream *OUT = CodeGen::current(gen);
-			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
+			if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {
 				WRITE("(");
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i>DATA_CONST_IFLD) {
@@ -186,7 +186,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 					if (bracket) WRITE(")");
 				}
 				WRITE(")");
-				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
+				Generators::end_constant(gen, CodeGen::CL::name(con_name), FALSE);
 			}
 			CodeGen::deselect(gen, saved);
 			break;
@@ -195,12 +195,12 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			int depth = CodeGen::CL::constant_depth(con_name);
 			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
 				"Con %S has depth %d\n", con_name->symbol_name, depth);
-			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));
-			if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {
+			generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));
+			if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {
 				inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 				inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 				CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
-				CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);
+				Generators::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);
 			}
 			CodeGen::deselect(gen, saved);
 			break;
@@ -285,7 +285,7 @@ void CodeGen::CL::sort_literals(code_generation *gen) {
 	qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *), CodeGen::CL::compare_tlh);
 	for (int i=0; i<no_tlh; i++) {
 		text_literal_holder *tlh = sorted[i];
-		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::tl_segment(gen));
+		generated_segment *saved = CodeGen::select(gen, Generators::tl_segment(gen));
 		text_stream *TO = CodeGen::current(gen);
 		WRITE_TO(TO, "%S", tlh->definition_code);
 		CodeGen::deselect(gen, saved);
@@ -355,26 +355,26 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 	if (val1 == LITERAL_IVAL) {
 		int hex = FALSE;
 		if ((con_name) && (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN))) hex = TRUE;
-		CodeGen::Targets::compile_literal_number(gen, val2, hex);
+		Generators::compile_literal_number(gen, val2, hex);
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
-		CodeGen::Targets::compile_literal_symbol(gen, aliased, unsub);
+		Generators::compile_literal_symbol(gen, aliased, unsub);
 	} else if (val1 == DIVIDER_IVAL) {
 		text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE(" ! %S\n\t", divider_text);
 	} else if (val1 == REAL_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		CodeGen::Targets::compile_literal_real(gen, glob_text);
+		Generators::compile_literal_real(gen, glob_text);
 	} else if (val1 == DWORD_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		CodeGen::Targets::compile_dictionary_word(gen, glob_text, FALSE);
+		Generators::compile_dictionary_word(gen, glob_text, FALSE);
 	} else if (val1 == PDWORD_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		CodeGen::Targets::compile_dictionary_word(gen, glob_text, TRUE);
+		Generators::compile_dictionary_word(gen, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);
+		Generators::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);
 	} else if (val1 == GLOB_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("%S", glob_text);

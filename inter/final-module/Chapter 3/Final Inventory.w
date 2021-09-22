@@ -1,4 +1,4 @@
-[CodeGen::Inventory::] Final Inventory.
+[InvTarget::] Final Inventory.
 
 To print a summary of the contents of a repository.
 
@@ -7,23 +7,23 @@ we simply ask the Inter module to output some text, and return true to
 tell the generator that nothing more need be done.
 
 =
-void CodeGen::Inventory::create_target(void) {
-	code_generation_target *inv_cgt = CodeGen::Targets::new(I"inventory");
-	METHOD_ADD(inv_cgt, BEGIN_GENERATION_MTID, CodeGen::Inventory::inv);
+void InvTarget::create_generator(void) {
+	code_generator *inv_cgt = Generators::new(I"inventory");
+	METHOD_ADD(inv_cgt, BEGIN_GENERATION_MTID, InvTarget::inv);
 }
 
-int CodeGen::Inventory::inv(code_generation_target *cgt, code_generation *gen) {
-	if (gen->to_file)
-		InterTree::traverse(gen->from, CodeGen::Inventory::visitor,
-			gen->to_file, gen->just_this_package, 0);
+int InvTarget::inv(code_generator *cgt, code_generation *gen) {
+	if (gen->to_stream)
+		InterTree::traverse(gen->from, InvTarget::visitor,
+			gen->to_stream, gen->just_this_package, 0);
 	return TRUE;
 }
 
-void CodeGen::Inventory::inv_to(OUTPUT_STREAM, inter_tree *I) {
-	InterTree::traverse(I, CodeGen::Inventory::visitor, OUT, NULL, 0);
+void InvTarget::inv_to(OUTPUT_STREAM, inter_tree *I) {
+	InterTree::traverse(I, InvTarget::visitor, OUT, NULL, 0);
 }
 
-void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *OUT = (text_stream *) state;
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *from = Inter::Package::defined_by_frame(P);

@@ -1,0 +1,450 @@
+[Generators::] Code Generators.
+
+To create the range of possible targets into which Inter can be converted.
+
+@h Creation.
+Single, steel-cut artisanal code generators are made here.
+
+=
+typedef struct code_generator {
+	struct text_stream *generator_name;
+	struct method_set *methods;
+	CLASS_DEFINITION
+} code_generator;
+
+code_generator *Generators::new(text_stream *name) {
+	code_generator *generator = CREATE(code_generator);
+	generator->generator_name = Str::duplicate(name);
+	generator->methods = Methods::new_set();
+	return generator;
+}
+
+@ Note that some code-generators, like the ones for C of Inform 6, correspond
+to families of |target_vm|: others, like the one for printing an inventory of
+what is in an Inter tree, are not tied to VMs. But those which are tied to VMs
+must have the same names as the family names for those VMs.
+
+=
+code_generator *Generators::find(text_stream *name) {
+	code_generator *generator;
+	LOOP_OVER(generator, code_generator)
+		if (Str::eq_insensitive(generator->generator_name, name))
+			return generator;
+	return NULL;
+}
+
+@ And they are mass-produced here:
+
+=
+int cgts_made = FALSE;
+
+void Generators::make_all(void) {
+	if (cgts_made == FALSE) {
+		cgts_made = TRUE;
+		TextualTarget::create_generator();
+		BinaryTarget::create_generator();
+		InvTarget::create_generator();
+		I6Target::create_generator();
+		CTarget::create_generator();
+	}
+}
+
+@h Standard operating procedure.
+
+=
+void Generators::go(code_generation *gen) {
+	CodeGen::clear_all_transients(gen->from);
+	if (Generators::begin_generation(gen)) return;
+	@<Phase one - preparation@>;
+	@<Phase two - traverse@>;
+	@<Phase three - consolidation@>;
+	if (Generators::end_generation(gen)) return;
+	CodeGen::write_segments(gen->to_stream, gen);
+}
+
+@<Phase one - preparation@> =
+	CodeGen::FC::prepare(gen);
+	CodeGen::CL::prepare(gen);
+	CodeGen::Var::prepare(gen);
+	CodeGen::IP::prepare(gen);
+
+@<Phase two - traverse@> =
+	InterTree::traverse_root_only(gen->from, Generators::pragma, gen, PRAGMA_IST);
+	InterTree::traverse(gen->from, CodeGen::FC::pre_iterate, gen, NULL, -PACKAGE_IST);
+	InterTree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
+
+@<Phase three - consolidation@> =
+	CodeGen::IP::write_properties(gen);
+	CodeGen::CL::sort_literals(gen);
+
+@
+
+=
+void Generators::pragma(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_symbol *target_symbol = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	if (target_symbol == NULL) internal_error("bad pragma");
+	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
+	text_stream *S = Inode::ID_to_text(P, ID);
+	Generators::offer_pragma(gen, P, target_symbol->symbol_name, S);
+}
+
+@h Method calls.
+
+@e BEGIN_GENERATION_MTID
+@e END_GENERATION_MTID
+
+=
+INT_METHOD_TYPE(BEGIN_GENERATION_MTID, code_generator *generator, code_generation *gen)
+INT_METHOD_TYPE(END_GENERATION_MTID, code_generator *generator, code_generation *gen)
+int Generators::begin_generation(code_generation *gen) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, BEGIN_GENERATION_MTID, gen);
+	return rv;
+}
+int Generators::end_generation(code_generation *gen) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, END_GENERATION_MTID, gen);
+	return rv;
+}
+
+@
+
+@e GENERAL_SEGMENT_MTID
+@e DEFAULT_SEGMENT_MTID
+@e BASIC_CONSTANT_SEGMENT_MTID
+@e CONSTANT_SEGMENT_MTID
+@e TL_SEGMENT_MTID
+
+=
+INT_METHOD_TYPE(GENERAL_SEGMENT_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P)
+INT_METHOD_TYPE(DEFAULT_SEGMENT_MTID, code_generator *generator, code_generation *gen)
+INT_METHOD_TYPE(BASIC_CONSTANT_SEGMENT_MTID, code_generator *generator, code_generation *gen, inter_symbol *con_name, int depth)
+INT_METHOD_TYPE(CONSTANT_SEGMENT_MTID, code_generator *generator, code_generation *gen)
+INT_METHOD_TYPE(TL_SEGMENT_MTID, code_generator *generator, code_generation *gen)
+
+int Generators::general_segment(code_generation *gen, inter_tree_node *P) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, GENERAL_SEGMENT_MTID, gen, P);
+	return rv;
+}
+
+int Generators::default_segment(code_generation *gen) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, DEFAULT_SEGMENT_MTID, gen);
+	return rv;
+}
+
+int Generators::constant_segment(code_generation *gen) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, CONSTANT_SEGMENT_MTID, gen);
+	return rv;
+}
+
+int Generators::basic_constant_segment(code_generation *gen, inter_symbol *con_name, int depth) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, BASIC_CONSTANT_SEGMENT_MTID, gen, con_name, depth);
+	return rv;
+}
+
+int Generators::tl_segment(code_generation *gen) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, TL_SEGMENT_MTID, gen);
+	return rv;
+}
+
+@
+
+@e MANGLE_IDENTIFIER_MTID
+
+=
+VOID_METHOD_TYPE(MANGLE_IDENTIFIER_MTID, code_generator *generator, text_stream *OUT, text_stream *identifier)
+void Generators::mangle(code_generation *gen, text_stream *OUT, text_stream *identifier) {
+	VOID_METHOD_CALL(gen->generator, MANGLE_IDENTIFIER_MTID, OUT, identifier);
+}
+
+@
+
+@e COMPILE_PRIMITIVE_MTID
+
+=
+INT_METHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generator *generator, code_generation *gen, inter_symbol *prim_name, inter_tree_node *P)
+int Generators::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_tree_node *P) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, COMPILE_PRIMITIVE_MTID, gen, prim_name, P);
+	return rv;
+}
+
+@
+
+@e COMPILE_DICTIONARY_WORD_MTID
+
+=
+VOID_METHOD_TYPE(COMPILE_DICTIONARY_WORD_MTID, code_generator *generator, code_generation *gen, text_stream *S, int pluralise)
+void Generators::compile_dictionary_word(code_generation *gen, text_stream *S, int pluralise) {
+	VOID_METHOD_CALL(gen->generator, COMPILE_DICTIONARY_WORD_MTID, gen, S, pluralise);
+}
+
+@
+
+@e COMPILE_LITERAL_NUMBER_MTID
+@e COMPILE_LITERAL_REAL_MTID
+
+=
+VOID_METHOD_TYPE(COMPILE_LITERAL_NUMBER_MTID, code_generator *generator, code_generation *gen, inter_ti val, int hex_mode)
+VOID_METHOD_TYPE(COMPILE_LITERAL_REAL_MTID, code_generator *generator, code_generation *gen, text_stream *textual)
+void Generators::compile_literal_number(code_generation *gen, inter_ti val, int hex_mode) {
+	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_NUMBER_MTID, gen, val, hex_mode);
+}
+void Generators::compile_literal_real(code_generation *gen, text_stream *textual) {
+	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_REAL_MTID, gen, textual);
+}
+
+@
+
+@e COMPILE_LITERAL_TEXT_MTID
+
+=
+VOID_METHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generator *generator, code_generation *gen, text_stream *S, int print_mode, int box_mode, int escape_mode)
+void Generators::compile_literal_text(code_generation *gen, text_stream *S, int print_mode, int box_mode, int escape_mode) {
+	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_TEXT_MTID, gen, S, print_mode, box_mode, escape_mode);
+}
+
+@
+
+@e DECLARE_PROPERTY_MTID
+@e DECLARE_ATTRIBUTE_MTID
+
+=
+VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, int used)
+VOID_METHOD_TYPE(DECLARE_ATTRIBUTE_MTID, code_generator *generator, code_generation *gen, text_stream *prop_name)
+void Generators::declare_property(code_generation *gen, inter_symbol *prop_name, int used) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_PROPERTY_MTID, gen, prop_name, used);
+}
+void Generators::declare_attribute(code_generation *gen, text_stream *prop_name) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_ATTRIBUTE_MTID, gen, prop_name);
+}
+
+@
+
+@e PREPARE_VARIABLE_MTID
+@e DECLARE_VARIABLE_MTID
+@e DECLARE_LOCAL_VARIABLE_MTID
+@e EVALUATE_VARIABLE_MTID
+
+=
+INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
+INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
+VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator, int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_symbol *var_name, int as_reference)
+int Generators::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
+	return rv;
+}
+int Generators::declare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of) {
+	int rv = 0;
+	INT_METHOD_CALL(rv, gen->generator, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
+	return rv;
+}
+void Generators::declare_local_variable(int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_LOCAL_VARIABLE_MTID, pass, gen, P, var_name);
+}
+void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name, int as_reference) {
+	VOID_METHOD_CALL(gen->generator, EVALUATE_VARIABLE_MTID, gen, var_name, as_reference);
+}
+
+@
+
+@e DECLARE_CLASS_MTID
+@e END_CLASS_MTID
+@e DECLARE_INSTANCE_MTID
+@e END_INSTANCE_MTID
+@e DECLARE_VALUE_INSTANCE_MTID
+@e OPTIMISE_PROPERTY_MTID
+@e ASSIGN_PROPERTY_MTID
+@e PROPERTY_OFFSET_MTID
+
+=
+VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class)
+VOID_METHOD_TYPE(END_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name)
+void Generators::declare_class(code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_CLASS_MTID, gen, class_name, printed_name, super_class);
+}
+void Generators::end_class(code_generation *gen, text_stream *class_name) {
+	VOID_METHOD_CALL(gen->generator, END_CLASS_MTID, gen, class_name);
+}
+VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir)
+VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name)
+void Generators::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, printed_name, acount, is_dir);
+}
+void Generators::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
+	VOID_METHOD_CALL(gen->generator, END_INSTANCE_MTID, gen, class_name, instance_name);
+}
+VOID_METHOD_TYPE(DECLARE_VALUE_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val)
+void Generators::declare_value_instance(code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_VALUE_INSTANCE_MTID, gen, instance_name, printed_name, val);
+}
+INT_METHOD_TYPE(OPTIMISE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X)
+int Generators::optimise_property_value(code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, OPTIMISE_PROPERTY_MTID, gen, prop_name, X);
+	return rv;
+}
+VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, text_stream *property_name, text_stream *val, int as_att)
+void Generators::assign_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, property_name, val, as_att);
+}
+void Generators::assign_mangled_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+	TEMPORARY_TEXT(mangled)
+	Generators::mangle(gen, mangled, val);
+	Generators::assign_property(gen, property_name, mangled, as_att);
+	DISCARD_TEXT(mangled)
+}
+
+VOID_METHOD_TYPE(PROPERTY_OFFSET_MTID, code_generator *generator, code_generation *gen, text_stream *property_name, int pos, int as_att)
+void Generators::property_offset(code_generation *gen, text_stream *property_name, int pos, int as_att) {
+	VOID_METHOD_CALL(gen->generator, PROPERTY_OFFSET_MTID, gen, property_name, pos, as_att);
+}
+
+@
+
+@e OFFER_PRAGMA_MTID
+
+=
+VOID_METHOD_TYPE(OFFER_PRAGMA_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content)
+void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content) {
+	VOID_METHOD_CALL(gen->generator, OFFER_PRAGMA_MTID, gen, P, tag, content);
+}
+
+@
+
+@e BEGIN_CONSTANT_MTID
+@e END_CONSTANT_MTID
+
+=
+INT_METHOD_TYPE(BEGIN_CONSTANT_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me)
+VOID_METHOD_TYPE(END_CONSTANT_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, int ifndef_me)
+int Generators::begin_constant(code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, BEGIN_CONSTANT_MTID, gen, const_name, const_s, P, continues, ifndef_me);
+	return rv;
+}
+void Generators::end_constant(code_generation *gen, text_stream *const_name, int ifndef_me) {
+	VOID_METHOD_CALL(gen->generator, END_CONSTANT_MTID, gen, const_name, ifndef_me);
+}
+
+@
+
+@e BEGIN_FUNCTION_MTID
+@e BEGIN_FUNCTION_CODE_MTID
+@e PLACE_LABEL_MTID
+@e END_FUNCTION_MTID
+
+=
+VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
+VOID_METHOD_TYPE(BEGIN_FUNCTION_CODE_MTID, code_generator *generator, code_generation *gen)
+VOID_METHOD_TYPE(PLACE_LABEL_MTID, code_generator *generator, code_generation *gen, text_stream *label_name)
+VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
+void Generators::begin_function(int pass, code_generation *gen, inter_symbol *fn) {
+	VOID_METHOD_CALL(gen->generator, BEGIN_FUNCTION_MTID, pass, gen, fn);
+}
+void Generators::begin_function_code(code_generation *gen) {
+	VOID_METHOD_CALL(gen->generator, BEGIN_FUNCTION_CODE_MTID, gen);
+}
+void Generators::place_label(code_generation *gen, text_stream *label_name) {
+	VOID_METHOD_CALL(gen->generator, PLACE_LABEL_MTID, gen, label_name);
+}
+void Generators::end_function(int pass, code_generation *gen, inter_symbol *fn) {
+	VOID_METHOD_CALL(gen->generator, END_FUNCTION_MTID, pass, gen, fn);
+}
+
+@
+
+@e FUNCTION_CALL_MTID
+
+=
+VOID_METHOD_TYPE(FUNCTION_CALL_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc)
+void Generators::function_call(code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
+	VOID_METHOD_CALL(gen->generator, FUNCTION_CALL_MTID, gen, fn, P, argc);
+}
+
+@
+
+@e ASSEMBLY_MTID
+
+=
+VOID_METHOD_TYPE(ASSEMBLY_MTID, code_generator *generator, code_generation *gen,
+	text_stream *opcode, int operand_count, inter_tree_node **operands,
+	inter_tree_node *label, int label_sense)
+
+void Generators::assembly(code_generation *gen, text_stream *opcode, int operand_count,
+	inter_tree_node **operands, inter_tree_node *label, int label_sense) {
+	VOID_METHOD_CALL(gen->generator, ASSEMBLY_MTID, gen, opcode, operand_count,
+		operands, label, label_sense);
+}
+
+@
+
+@e BEGIN_ARRAY_MTID
+@e ARRAY_ENTRY_MTID
+@e ARRAY_ENTRIES_MTID
+@e COMPILE_LITERAL_SYMBOL_MTID
+@e END_ARRAY_MTID
+
+@d WORD_ARRAY_FORMAT 1
+@d BYTE_ARRAY_FORMAT 2
+@d TABLE_ARRAY_FORMAT 3
+@d BUFFER_ARRAY_FORMAT 4
+
+=
+INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format)
+VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generator *generator, code_generation *gen, text_stream *entry, int format)
+VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generator *generator, code_generation *gen, int how_many, int plus_ips, int format)
+VOID_METHOD_TYPE(COMPILE_LITERAL_SYMBOL_MTID, code_generator *generator, code_generation *gen, inter_symbol *aliased, int unsub)
+VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen, int format)
+int Generators::begin_array(code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s, P, format);
+	return rv;
+}
+void Generators::array_entry(code_generation *gen, text_stream *entry, int format) {
+	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRY_MTID, gen, entry, format);
+}
+void Generators::array_entries(code_generation *gen, int how_many, int plus_ips, int format) {
+	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRIES_MTID, gen, how_many, plus_ips, format);
+}
+void Generators::mangled_array_entry(code_generation *gen, text_stream *entry, int format) {
+	TEMPORARY_TEXT(mangled)
+	Generators::mangle(gen, mangled, entry);
+	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRY_MTID, gen, mangled, format);
+	DISCARD_TEXT(mangled)
+}
+void Generators::compile_literal_symbol(code_generation *gen, inter_symbol *aliased, int unsub) {
+	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_SYMBOL_MTID, gen, aliased, unsub);
+}
+
+void Generators::end_array(code_generation *gen, int format) {
+	VOID_METHOD_CALL(gen->generator, END_ARRAY_MTID, gen, format);
+}
+
+@
+
+@e WORLD_MODEL_ESSENTIALS_MTID
+
+=
+VOID_METHOD_TYPE(WORLD_MODEL_ESSENTIALS_MTID, code_generator *generator, code_generation *gen)
+void Generators::world_model_essentials(code_generation *gen) {
+	VOID_METHOD_CALL(gen->generator, WORLD_MODEL_ESSENTIALS_MTID, gen);
+}
+
+@
+
+@e NEW_ACTION_MTID
+
+=
+VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generator *generator, code_generation *gen, text_stream *name, int true_action)
+void Generators::new_action(code_generation *gen, text_stream *name, int true_action) {
+	VOID_METHOD_CALL(gen->generator, NEW_ACTION_MTID, gen, name, true_action);
+}

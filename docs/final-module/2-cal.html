@@ -79,7 +79,7 @@ function togglePopup(material_id) {
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">box_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">printing_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::CL::prepare</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CodeGen::CL::prepare</span></span>:<br/>Code Generation - <a href="2-cg.html#SP9_1">&#167;9.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::CL::prepare</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CodeGen::CL::prepare</span></span>:<br/>Code Generators - <a href="2-cg2.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">box_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">printing_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">InterTree::traverse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><a href="2-cal.html#SP1" class="function-link"><span class="function-syntax">CodeGen::CL::quartet_visitor</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONSTANT_IST</span><span class="plain-syntax">);</span>
@@ -114,14 +114,14 @@ is 20. We instead compile this as
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::CL::constant</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">CodeGen::CL::constant</span></span>:<br/>Frame Control - <a href="2-fc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP8" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONST_IFLD</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ACTION_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">)  {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-ft.html#SP20" class="function-link"><span class="function-syntax">CodeGen::Targets::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-cg2.html#SP23" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
@@ -129,7 +129,7 @@ is 20. We instead compile this as
 <span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-ft.html#SP20" class="function-link"><span class="function-syntax">CodeGen::Targets::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-cg2.html#SP23" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
@@ -149,42 +149,42 @@ is 20. We instead compile this as
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inode::ID_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">ID</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-ft.html#SP18" class="function-link"><span class="function-syntax">CodeGen::Targets::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-cg2.html#SP21" class="function-link"><span class="function-syntax">Generators::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">, </span><span class="string-syntax">"UUID:</span><span class="comment-syntax">");</span>
 <span class="string-syntax">        for (int i=0, L=Str::len(S); i&lt;L; i++) WRITE_TO(content, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">c</span><span class="string-syntax">", Characters::toupper(Str::get_at(S, i)));</span>
 <span class="string-syntax">        WRITE_TO(content, "</span><span class="plain-syntax">//</span><span class="string-syntax">");</span>
 <span class="string-syntax">        TEMPORARY_TEXT(length)</span>
 <span class="string-syntax">        WRITE_TO(length, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">d</span><span class="string-syntax">", (int) Str::len(content));</span>
-<span class="string-syntax">        CodeGen::Targets::array_entry(gen, length, BYTE_ARRAY_FORMAT);</span>
+<span class="string-syntax">        Generators::array_entry(gen, length, BYTE_ARRAY_FORMAT);</span>
 <span class="string-syntax">        DISCARD_TEXT(length)</span>
 <span class="string-syntax">        LOOP_THROUGH_TEXT(pos, content) {</span>
 <span class="string-syntax">            TEMPORARY_TEXT(ch)</span>
 <span class="string-syntax">            WRITE_TO(ch, "</span><span class="character-syntax">'%c'</span><span class="string-syntax">", Str::get(pos));</span>
-<span class="string-syntax">            CodeGen::Targets::array_entry(gen, ch, BYTE_ARRAY_FORMAT);</span>
+<span class="string-syntax">            Generators::array_entry(gen, ch, BYTE_ARRAY_FORMAT);</span>
 <span class="string-syntax">            DISCARD_TEXT(ch)</span>
 <span class="string-syntax">        }</span>
 <span class="string-syntax">        DISCARD_TEXT(content)</span>
-<span class="string-syntax">        CodeGen::Targets::end_array(gen, BYTE_ARRAY_FORMAT);</span>
+<span class="string-syntax">        Generators::end_array(gen, BYTE_ARRAY_FORMAT);</span>
 <span class="string-syntax">        return;</span>
 <span class="string-syntax">    }</span>
 
 <span class="string-syntax">    if (Inter::Constant::is_routine(con_name)) {</span>
 <span class="string-syntax">        inter_package *code_block = Inter::Constant::code_block(con_name);</span>
-<span class="string-syntax">        CodeGen::Targets::begin_function(2, gen, con_name);</span>
+<span class="string-syntax">        Generators::begin_function(2, gen, con_name);</span>
 <span class="string-syntax">        void_level = Inter::Defn::get_level(P) + 2;</span>
 <span class="string-syntax">        inter_tree_node *D = Inter::Packages::definition(code_block);</span>
 <span class="string-syntax">        CodeGen::FC::frame(gen, D);</span>
-<span class="string-syntax">        CodeGen::Targets::end_function(2, gen, con_name);</span>
+<span class="string-syntax">        Generators::end_function(2, gen, con_name);</span>
 <span class="string-syntax">        return;</span>
 <span class="string-syntax">    }</span>
 <span class="string-syntax">    switch (P-&gt;W.data[FORMAT_CONST_IFLD]) {</span>
 <span class="string-syntax">        case CONSTANT_INDIRECT_TEXT: {</span>
 <span class="string-syntax">            inter_ti ID = P-&gt;W.data[DATA_CONST_IFLD];</span>
 <span class="string-syntax">            text_stream *S = Inode::ID_to_text(P, ID);</span>
-<span class="string-syntax">            if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {</span>
-<span class="string-syntax">                CodeGen::Targets::compile_literal_text(gen, S, FALSE, FALSE, FALSE);</span>
-<span class="string-syntax">                CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {</span>
+<span class="string-syntax">                Generators::compile_literal_text(gen, S, FALSE, FALSE, FALSE);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::CL::name(con_name), FALSE);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            break;</span>
 <span class="string-syntax">        }</span>
@@ -200,8 +200,8 @@ is 20. We instead compile this as
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)</span>
 <span class="string-syntax">                format = BUFFER_ARRAY_FORMAT;</span>
-<span class="string-syntax">            if (CodeGen::Targets::begin_array(gen, CodeGen::CL::name(con_name), con_name, P, format)) {</span>
-<span class="string-syntax">                if (hang_one) CodeGen::Targets::array_entry(gen, I"</span><span class="constant-syntax">1</span><span class="string-syntax">", format);</span>
+<span class="string-syntax">            if (Generators::begin_array(gen, CodeGen::CL::name(con_name), con_name, P, format)) {</span>
+<span class="string-syntax">                if (hang_one) Generators::array_entry(gen, I"</span><span class="constant-syntax">1</span><span class="string-syntax">", format);</span>
 <span class="string-syntax">                int entry_count = 0;</span>
 <span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2)</span>
 <span class="string-syntax">                    if (P-&gt;W.data[i] != DIVIDER_IVAL)</span>
@@ -214,7 +214,7 @@ is 20. We instead compile this as
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                if (e &gt; 1) {</span>
 <span class="string-syntax">                    LOG("</span><span class="identifier-syntax">Entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">masks</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax"> </span><span class="identifier-syntax">blanks</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", CodeGen::CL::name(con_name), e);</span>
-<span class="string-syntax">                    CodeGen::Targets::array_entries(gen, (int) e, ips, format);</span>
+<span class="string-syntax">                    Generators::array_entries(gen, (int) e, ips, format);</span>
 <span class="string-syntax">                } else {</span>
 <span class="string-syntax">                    for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
 <span class="string-syntax">                        if (P-&gt;W.data[i] != DIVIDER_IVAL) {</span>
@@ -222,12 +222,12 @@ is 20. We instead compile this as
 <span class="string-syntax">                            CodeGen::select_temporary(gen, entry);</span>
 <span class="string-syntax">                            CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), P-&gt;W.data[i], P-&gt;W.data[i+1], unsub);</span>
 <span class="string-syntax">                            CodeGen::deselect_temporary(gen);</span>
-<span class="string-syntax">                            CodeGen::Targets::array_entry(gen, entry, format);</span>
+<span class="string-syntax">                            Generators::array_entry(gen, entry, format);</span>
 <span class="string-syntax">                            DISCARD_TEXT(entry)</span>
 <span class="string-syntax">                        }</span>
 <span class="string-syntax">                    }</span>
 <span class="string-syntax">                }</span>
-<span class="string-syntax">                CodeGen::Targets::end_array(gen, format);</span>
+<span class="string-syntax">                Generators::end_array(gen, format);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            WRITE("</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
 <span class="string-syntax">            break;</span>
@@ -242,9 +242,9 @@ is 20. We instead compile this as
 <span class="string-syntax">                    "</span><span class="identifier-syntax">Con</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con_name-&gt;symbol_name, depth);</span>
 <span class="string-syntax">                CodeGen::CL::constant_depth(con_name);</span>
 <span class="string-syntax">            }</span>
-<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));</span>
+<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
 <span class="string-syntax">            text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">            if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, FALSE)) {</span>
 <span class="string-syntax">                WRITE("</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
 <span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
 <span class="string-syntax">                    if (i&gt;DATA_CONST_IFLD) {</span>
@@ -260,7 +260,7 @@ is 20. We instead compile this as
 <span class="string-syntax">                    if (bracket) WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
-<span class="string-syntax">                CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), FALSE);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::CL::name(con_name), FALSE);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
 <span class="string-syntax">            break;</span>
@@ -269,12 +269,12 @@ is 20. We instead compile this as
 <span class="string-syntax">            int depth = CodeGen::CL::constant_depth(con_name);</span>
 <span class="string-syntax">            if (depth &gt; 1) LOGIF(CONSTANT_DEPTH_CALCULATION,</span>
 <span class="string-syntax">                "</span><span class="identifier-syntax">Con</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con_name-&gt;symbol_name, depth);</span>
-<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, con_name, depth));</span>
-<span class="string-syntax">            if (CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {</span>
+<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::CL::name(con_name), con_name, P, TRUE, ifndef_me)) {</span>
 <span class="string-syntax">                inter_ti val1 = P-&gt;W.data[DATA_CONST_IFLD];</span>
 <span class="string-syntax">                inter_ti val2 = P-&gt;W.data[DATA_CONST_IFLD + 1];</span>
 <span class="string-syntax">                CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);</span>
-<span class="string-syntax">                CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::CL::name(con_name), ifndef_me);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
 <span class="string-syntax">            break;</span>
@@ -359,7 +359,7 @@ is 20. We instead compile this as
 <span class="string-syntax">    qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *), CodeGen::CL::compare_tlh);</span>
 <span class="string-syntax">    for (int i=0; i&lt;no_tlh; i++) {</span>
 <span class="string-syntax">        text_literal_holder *tlh = sorted[i];</span>
-<span class="string-syntax">        generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::tl_segment(gen));</span>
+<span class="string-syntax">        generated_segment *saved = CodeGen::select(gen, Generators::tl_segment(gen));</span>
 <span class="string-syntax">        text_stream *TO = CodeGen::current(gen);</span>
 <span class="string-syntax">        WRITE_TO(TO, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", tlh-&gt;definition_code);</span>
 <span class="string-syntax">        CodeGen::deselect(gen, saved);</span>
@@ -429,26 +429,26 @@ is 20. We instead compile this as
 <span class="string-syntax">    if (val1 == LITERAL_IVAL) {</span>
 <span class="string-syntax">        int hex = FALSE;</span>
 <span class="string-syntax">        if ((con_name) &amp;&amp; (Inter::Annotations::find(&amp;(con_name-&gt;ann_set), HEX_IANN))) hex = TRUE;</span>
-<span class="string-syntax">        CodeGen::Targets::compile_literal_number(gen, val2, hex);</span>
+<span class="string-syntax">        Generators::compile_literal_number(gen, val2, hex);</span>
 <span class="string-syntax">    } else if (Inter::Symbols::is_stored_in_data(val1, val2)) {</span>
 <span class="string-syntax">        inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);</span>
 <span class="string-syntax">        if (aliased == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">aliased</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        CodeGen::Targets::compile_literal_symbol(gen, aliased, unsub);</span>
+<span class="string-syntax">        Generators::compile_literal_symbol(gen, aliased, unsub);</span>
 <span class="string-syntax">    } else if (val1 == DIVIDER_IVAL) {</span>
 <span class="string-syntax">        text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
 <span class="string-syntax">        WRITE("</span><span class="plain-syntax"> ! %</span><span class="identifier-syntax">S</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="plain-syntax">\</span><span class="identifier-syntax">t</span><span class="string-syntax">", divider_text);</span>
 <span class="string-syntax">    } else if (val1 == REAL_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        CodeGen::Targets::compile_literal_real(gen, glob_text);</span>
+<span class="string-syntax">        Generators::compile_literal_real(gen, glob_text);</span>
 <span class="string-syntax">    } else if (val1 == DWORD_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        CodeGen::Targets::compile_dictionary_word(gen, glob_text, FALSE);</span>
+<span class="string-syntax">        Generators::compile_dictionary_word(gen, glob_text, FALSE);</span>
 <span class="string-syntax">    } else if (val1 == PDWORD_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        CodeGen::Targets::compile_dictionary_word(gen, glob_text, TRUE);</span>
+<span class="string-syntax">        Generators::compile_dictionary_word(gen, glob_text, TRUE);</span>
 <span class="string-syntax">    } else if (val1 == LITERAL_TEXT_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        CodeGen::Targets::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);</span>
+<span class="string-syntax">        Generators::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);</span>
 <span class="string-syntax">    } else if (val1 == GLOB_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
 <span class="string-syntax">        WRITE("</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", glob_text);</span>
@@ -461,7 +461,7 @@ is 20. We instead compile this as
 <span class="string-syntax">    return symb-&gt;symbol_name;</span>
 <span class="string-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The function CodeGen::CL::constant_depth appears nowhere else.</li><li>The function CodeGen::CL::constant_depth_inner appears nowhere else.</li><li>The function CodeGen::CL::literal_text_at is used in Frame Control (<a href="2-fc.html#SP1">&#167;1</a>).</li><li>The function CodeGen::CL::compare_tlh appears nowhere else.</li><li>The function CodeGen::CL::sort_literals is used in Code Generation (<a href="2-cg.html#SP9_3">&#167;9.3</a>).</li><li>The function CodeGen::CL::enter_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::enter_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::evaluate appears nowhere else.</li><li>The function CodeGen::CL::literal is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The function CodeGen::CL::name is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP4_5">&#167;4.5</a>, <a href="2-iap.html#SP4_6">&#167;4.6</a>, <a href="2-iap.html#SP5_5">&#167;5.5</a>, <a href="2-iap.html#SP5_7">&#167;5.7</a>, <a href="2-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="2-iap.html#SP5_9">&#167;5.9</a>, <a href="2-iap.html#SP5_11">&#167;5.11</a>, <a href="2-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="2-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="2-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="2-iap.html#SP6">&#167;6</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), Final C (<a href="5-fnc.html#SP5">&#167;5</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>), C Memory Model (<a href="5-cmm.html#SP12">&#167;12</a>), C Object Model (<a href="5-com.html#SP6">&#167;6</a>), C Function Model (<a href="5-cfm.html#SP1">&#167;1</a>), C Literals (<a href="5-clt.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The function CodeGen::CL::constant_depth appears nowhere else.</li><li>The function CodeGen::CL::constant_depth_inner appears nowhere else.</li><li>The function CodeGen::CL::literal_text_at is used in Frame Control (<a href="2-fc.html#SP1">&#167;1</a>).</li><li>The function CodeGen::CL::compare_tlh appears nowhere else.</li><li>The function CodeGen::CL::sort_literals is used in Code Generators (<a href="2-cg2.html#SP4_3">&#167;4.3</a>).</li><li>The function CodeGen::CL::enter_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_box_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::enter_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::exit_print_mode is used in Frame Control (<a href="2-fc.html#SP3">&#167;3</a>).</li><li>The function CodeGen::CL::evaluate appears nowhere else.</li><li>The function CodeGen::CL::literal is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The function CodeGen::CL::name is used in Frame Control (<a href="2-fc.html#SP2">&#167;2</a>), Instances and Properties (<a href="2-iap.html#SP4_5">&#167;4.5</a>, <a href="2-iap.html#SP4_6">&#167;4.6</a>, <a href="2-iap.html#SP5_5">&#167;5.5</a>, <a href="2-iap.html#SP5_7">&#167;5.7</a>, <a href="2-iap.html#SP5_8_4">&#167;5.8.4</a>, <a href="2-iap.html#SP5_9">&#167;5.9</a>, <a href="2-iap.html#SP5_11">&#167;5.11</a>, <a href="2-iap.html#SP5_11_2">&#167;5.11.2</a>, <a href="2-iap.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="2-iap.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="2-iap.html#SP6">&#167;6</a>, <a href="2-iap.html#SP8">&#167;8</a>), Generating Inform 6 (<a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), Final C (<a href="5-fnc.html#SP5">&#167;5</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>), C Memory Model (<a href="5-cmm.html#SP12">&#167;12</a>), C Object Model (<a href="5-com.html#SP6">&#167;6</a>), C Function Model (<a href="5-cfm.html#SP1">&#167;1</a>), C Literals (<a href="5-clt.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -482,7 +482,7 @@ is 20. We instead compile this as
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-fc.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-fc.html">fc</a></li><li class="progresscurrent">cal</li><li class="progresssection"><a href="2-iap.html">iap</a></li><li class="progresssection"><a href="2-vrb.html">vrb</a></li><li class="progresssection"><a href="2-ft.html">ft</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-iap.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-fc.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-fc.html">fc</a></li><li class="progresscurrent">cal</li><li class="progresssection"><a href="2-iap.html">iap</a></li><li class="progresssection"><a href="2-vrb.html">vrb</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-iap.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

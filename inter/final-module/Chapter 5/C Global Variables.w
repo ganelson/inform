@@ -5,7 +5,7 @@ Global variables translated to C.
 @h Setting up the model.
 
 =
-void CGlobals::initialise(code_generation_target *cgt) {
+void CGlobals::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CGlobals::prepare_variable);
 	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CGlobals::declare_variable);
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, CGlobals::evaluate_variable);
@@ -40,12 +40,12 @@ void CGlobals::end(code_generation *gen) {
 @
 
 =
-int CGlobals::prepare_variable(code_generation_target *cgt, code_generation *gen,
+int CGlobals::prepare_variable(code_generator *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k) {
 	return k;
 }
 
-int CGlobals::declare_variable(code_generation_target *cgt, code_generation *gen,
+int CGlobals::declare_variable(code_generator *cgt, code_generation *gen,
 	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
 	CGlobals::declare_variable_by_name(gen, CodeGen::CL::name(var_name), P);
 	text_stream *name = Metadata::read_optional_textual(Inter::Packages::container(var_name->definition), I"^name");
@@ -72,7 +72,7 @@ void CGlobals::declare_variable_by_name(code_generation *gen, text_stream *name,
 	WRITE_TO(C_var_vals, " /* %S */\n", name);
 }
 
-void CGlobals::evaluate_variable(code_generation_target *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
+void CGlobals::evaluate_variable(code_generator *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("proc->state.variables[i7_var_%S]", CodeGen::CL::name(var_name));
 }

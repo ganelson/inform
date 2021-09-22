@@ -9,13 +9,13 @@ Chapter 1: Setting Up
 
 Chapter 2: Mechanism
 	Code Generation
+	Code Generators
 	Frame Control
 	Constants and Literals
 	Instances and Properties
 	Variables
-	Final Targets
 
-Chapter 3: Final Code
+Chapter 3: Other Generators
 	Final Textual Inter
 	Final Binary Inter
 	Final Inventory

@@ -5,7 +5,7 @@ How objects, classes and properties are compiled to C.
 @h Setting up the model.
 
 =
-void CObjectModel::initialise(code_generation_target *cgt) {
+void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, CObjectModel::world_model_essentials);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
 	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, CObjectModel::declare_value_instance);
@@ -164,7 +164,7 @@ overlap.
 Each proper base kind in the Inter tree produces an owner as follows:
 
 =
-void CObjectModel::declare_class(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::declare_class(code_generator *cgt, code_generation *gen,
 	text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
 	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::declare_class_inner(gen, class_name, printed_name,
@@ -181,14 +181,14 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 @ And each instance here:
 
 =
-void CObjectModel::world_model_essentials(code_generation_target *cgt, code_generation *gen) {
+void CObjectModel::world_model_essentials(code_generator *cgt, code_generation *gen) {
 	C_GEN_DATA(objdata.compass_instance) = CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", I"Compass", -1, FALSE);
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", NULL, -1, FALSE);
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", NULL, -1, FALSE);
 	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", NULL, -1, FALSE);
 }
 
-C_property_owner *CObjectModel::declare_instance(code_generation_target *cgt, code_generation *gen,
+C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
 	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
@@ -232,7 +232,7 @@ C_property_owner *CObjectModel::declare_instance(code_generation_target *cgt, co
 	return this;
 }
 
-void CObjectModel::declare_value_instance(code_generation_target *cgt,
+void CObjectModel::declare_value_instance(code_generator *cgt,
 	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
 	CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, TRUE);
 }
@@ -387,7 +387,7 @@ set false, so that a suitable constant is |#sefine|d in the code, and therefore
 that references to it will not fail to compile.
 
 =
-void CObjectModel::declare_property(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = CodeGen::CL::name(prop_name);
 	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
@@ -395,7 +395,7 @@ void CObjectModel::declare_property(code_generation_target *cgt, code_generation
 	if (pname)
 		CObjectModel::define_header_constant_for_property(gen, pname, cp->id);
 }
-void CObjectModel::declare_attribute(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::declare_attribute(code_generator *cgt, code_generation *gen,
 	text_stream *prop_name) {
 	CObjectModel::property_by_name(gen, prop_name, TRUE, TRUE);
 }
@@ -439,7 +439,7 @@ Here we compile a function which creates arrays of where to find metadata on
 properties at runtime.
 
 =
-void CObjectModel::property_offset(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::property_offset(code_generator *cgt, code_generation *gen,
 	text_stream *prop, int pos, int as_attr) {
 	generated_segment *saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -519,7 +519,7 @@ initialiser function which runs early and sets the property values up by hand:
 @
 
 =
-int CObjectModel::optimise_property_value(code_generation_target *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
+int CObjectModel::optimise_property_value(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
 	C_GEN_DATA(objdata.inline_this) = FALSE;
 	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
 		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
@@ -542,7 +542,7 @@ typedef struct C_pv_pair {
 	CLASS_DEFINITION
 } C_pv_pair;
 
-void CObjectModel::assign_property(code_generation_target *cgt, code_generation *gen,
+void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 	text_stream *property_name, text_stream *val, int as_att) {
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE, FALSE);

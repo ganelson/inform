@@ -5,7 +5,7 @@ The problem of assembly language.
 @
 
 =
-void CAssembly::initialise(code_generation_target *cgt) {
+void CAssembly::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, ASSEMBLY_MTID, CAssembly::assembly);
 }
 
@@ -51,7 +51,7 @@ void i7_push(i7process_t *proc, i7word_t x) {
 @
 
 =
-void CAssembly::assembly(code_generation_target *cgt, code_generation *gen,
+void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense) {
 	text_stream *OUT = CodeGen::current(gen);

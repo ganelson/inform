@@ -5,7 +5,7 @@ How arrays of all kinds are stored in C.
 @h Setting up the model.
 
 =
-void CMemoryModel::initialise(code_generation_target *cgt) {
+void CMemoryModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
 	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, CMemoryModel::compile_literal_symbol);
@@ -280,7 +280,7 @@ word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 =
 
 =
-int CMemoryModel::begin_array(code_generation_target *cgt, code_generation *gen,
+int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
@@ -338,7 +338,7 @@ predefine when the array ends.
 @ The call to |CMemoryModel::begin_array| is then followed by a series of calls to:
 
 =
-void CMemoryModel::array_entry(code_generation_target *cgt, code_generation *gen,
+void CMemoryModel::array_entry(code_generator *cgt, code_generation *gen,
 	text_stream *entry, int format) {
 	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -367,17 +367,17 @@ and therefore if |X| is a valid constant-context expression in C then so is
 @
 
 =
-void CMemoryModel::compile_literal_symbol(code_generation_target *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
+void CMemoryModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
 	text_stream *OUT = CodeGen::current(gen);
 	text_stream *S = CodeGen::CL::name(aliased);
-	CodeGen::Targets::mangle(gen, OUT, S);
+	Generators::mangle(gen, OUT, S);
 }
 
 @ Alternatively, we can just specify how many entries there will be: they will
 then be initialised to 0.
 
 =
-void CMemoryModel::array_entries(code_generation_target *cgt, code_generation *gen,
+void CMemoryModel::array_entries(code_generator *cgt, code_generation *gen,
 	int how_many, int plus_ips, int format) {
 	if (plus_ips) how_many += 64;
 	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(cgt, gen, I"0", format);
@@ -387,7 +387,7 @@ void CMemoryModel::array_entries(code_generation_target *cgt, code_generation *g
 except to predeclare the extent constant, if one was used.
 
 =
-void CMemoryModel::end_array(code_generation_target *cgt, code_generation *gen, int format) {
+void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format) {
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define xt_");

@@ -5,13 +5,13 @@ How identifiers are used in the C code we generate.
 @
 
 =
-void CNamespace::initialise(code_generation_target *cgt) {
+void CNamespace::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CNamespace::mangle);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CNamespace::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, CNamespace::end_constant);
 }
 
-void CNamespace::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream *identifier) {
+void CNamespace::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifier) {
 	if (Str::get_first_char(identifier) == '(') WRITE("%S", identifier);
 	else if (Str::get_first_char(identifier) == '#') {
 		WRITE("i7_ss_");
@@ -21,7 +21,7 @@ void CNamespace::mangle(code_generation_target *cgt, OUTPUT_STREAM, text_stream 
 	} else WRITE("i7_mgl_%S", identifier);
 }
 
-void CNamespace::mangle_opcode(code_generation_target *cgt, OUTPUT_STREAM, text_stream *opcode) {
+void CNamespace::mangle_opcode(code_generator *cgt, OUTPUT_STREAM, text_stream *opcode) {
 	WRITE("glulx_");
 	LOOP_THROUGH_TEXT(pos, opcode)
 		if (Str::get(pos) != '@')
@@ -48,7 +48,7 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 @
 
 =
-int CNamespace::begin_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
+int CNamespace::begin_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (ifndef_me) {
 		WRITE("#ifndef ");
@@ -60,7 +60,7 @@ int CNamespace::begin_constant(code_generation_target *cgt, code_generation *gen
 	if (continues) WRITE(" ");
 	return TRUE;
 }
-void CNamespace::end_constant(code_generation_target *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
+void CNamespace::end_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\n");
 	if (ifndef_me) WRITE("#endif\n");
