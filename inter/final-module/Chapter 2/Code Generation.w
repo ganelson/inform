@@ -18,15 +18,6 @@ void CodeGen::create_pipeline_stage(void) {
 		OPTIONAL_TEXT_OUT_STAGE_ARG, FALSE);
 }
 
-@ Which is here. Three arguments can be supplied:
-(a) The |generator_argument|: which code generator is to be used here. See
-//Generators::make_all// for where the possibilities are set up.
-(b) The |package_URL_argument|, which can tell us to generate code from just a
-single package of the Inter tree, rather than the whole thing. Some generators
-recognise this, but most do not, and generate from the whole tree regardless.
-(c) The |to_stream| to write to.
-
-=
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->generator_argument) {
 		code_generation *gen = CodeGen::new_generation(step->parsed_filename,
@@ -54,6 +45,7 @@ typedef struct code_generation {
 	struct inter_package *just_this_package;
 
 	struct segmentation_data segmentation;
+	int void_level;
 	CLASS_DEFINITION
 } code_generation;
 
@@ -70,7 +62,48 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	if (just) gen->just_this_package = just;
 	else gen->just_this_package = Site::main_package(I);
 	gen->segmentation = CodeGen::new_segmentation_data();
+	gen->void_level = -1;
 	return gen;
+}
+
+@h Ad hoc generation.
+This module would be more elegant if the following function did not exist. But
+it is a consequence of the |(+| ... |+)| feature of Inform, which plunges
+right through all kinds of conceptual barriers better left unplunged-through.
+Happily, it's both limited and little-used. The task is to turn a single Inter
+value-pair into the text of an expression which will represent it at run-time.
+
+This is called by Inform 7 during a drastically earlier phase of compilation,
+long before the //final// module would otherwise be involved, and there's no
+question of performing a full generation of an entire Inter tree. So we make
+a sort of mock-generation object, the |ad_hoc_generation|, just for the purpose
+of this function call. We could make a new mock object every time, because there
+aren't such a lot of calls to this function, but instead we make just one and
+re-use it.
+
+The mock generator makes no use of segmentation (see below) except for the
+single temporary segement, which is set to |OUT|.
+
+=
+code_generation *ad_hoc_generation = NULL;
+
+void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
+	inter_ti val1, inter_ti val2, target_vm *VM) {
+	if (ad_hoc_generation == NULL) {
+		if (VM == NULL) internal_error("no VM given");
+		code_generator *generator = Generators::find_for(VM);
+		if (generator == NULL) internal_error("VM family with no generator");
+		ad_hoc_generation =
+			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM), NULL, generator, VM);
+	}
+	code_generator *generator = Generators::find_for(VM);
+	if (generator == NULL) internal_error("VM family with no generator");
+	ad_hoc_generation->for_VM = VM;
+	ad_hoc_generation->generator = generator;
+	
+	CodeGen::select_temporary(ad_hoc_generation, OUT);
+	VanillaConstants::val_to_text(ad_hoc_generation, IBM, val1, val2);
+	CodeGen::deselect_temporary(ad_hoc_generation);
 }
 
 @h Segmentation.

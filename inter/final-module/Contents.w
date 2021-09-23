@@ -10,10 +10,11 @@ Chapter 1: Setting Up
 Chapter 2: Mechanism
 	Code Generation
 	Code Generators
-	Frame Control
-	Constants and Literals
-	Instances and Properties
-	Variables
+	The Vanilla Generator
+	Vanilla Constants
+	Vanilla Objects
+	Vanilla Variables
+	Vanilla Code
 
 Chapter 3: Other Generators
 	Final Textual Inter

@@ -356,7 +356,7 @@ void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 					bc = 0x83;
 				CLiteralsModel::grammar_byte(gen, bc + lookahead);
 				TEMPORARY_TEXT(MG)
-				CNamespace::mangle(cgt, MG, CodeGen::CL::name(aliased));
+				CNamespace::mangle(cgt, MG, VanillaConstants::name(aliased));
 				CLiteralsModel::grammar_word_textual(gen, MG);
 				DISCARD_TEXT(MG)
 				continue;
@@ -741,8 +741,8 @@ int CLiteralsModel::no_strings(code_generation *gen) {
 int CLiteralsModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PRINTSTRING_BIP: WRITE("i7_print_C_string(proc, dqs["); INV_A1; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_dword(proc, "); INV_A1; WRITE(")"); break;
+		case PRINTSTRING_BIP: WRITE("i7_print_C_string(proc, dqs["); VNODE_1C; WRITE(" - I7VAL_STRINGS_BASE])"); break;
+		case PRINTDWORD_BIP:  WRITE("i7_print_dword(proc, "); VNODE_1C; WRITE(")"); break;
 		default:              return NOT_APPLICABLE;
 	}
 	return FALSE;

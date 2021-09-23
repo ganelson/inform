@@ -240,7 +240,7 @@ void Emit::pragma(text_stream *text) {
 	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), text);
 	inter_symbol *target_name =
 		InterSymbolsTables::symbol_from_name_creating(
-			InterTree::global_scope(I), I"target_I6");
+			InterTree::global_scope(I), I"Inform6");
 	Produce::guard(Inter::Pragma::new(Site::pragmas(I), target_name, ID, 0, NULL));
 }
 

@@ -569,8 +569,8 @@ int CTarget::constant_segment(code_generator *cgt, code_generation *gen) {
 	return c_early_matter_I7CGS;
 }
 int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
-	if (Str::eq(CodeGen::CL::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
-	if (Str::eq(CodeGen::CL::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
+	if (Str::eq(VanillaConstants::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
+	if (Str::eq(VanillaConstants::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
 	if (depth >= 10) depth = 10;
 	return c_constants_1_I7CGS + depth - 1;
 }

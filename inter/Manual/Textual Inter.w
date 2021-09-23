@@ -70,14 +70,14 @@ type |_adjective|.
 @ |pragma TARGET "WHATEVER"| does not change the meaning of the inter file;
 it simply provides pragmatic advice to the eventual compiler of code
 generated from this file. |TARGET| indicates the context for which this
-is intended; at present, the only possible choice is |target_I6|, meaning,
+is intended; at present, the only possible choice is |Inform6|, meaning,
 "if you are compiling me to Inform 6".
 
 Convention. Inform uses this to pass on ICL (Inform Command Language)
 commands to Inform 6, such as memory settings or command-line switches.
 For example,
 = (text as Inter)
-	pragma target_I6 "$MAX_LABELS=200000"
+	pragma Inform6 "$MAX_LABELS=200000"
 =
 (This would be meaningless if we were compiling to some other format.)
 

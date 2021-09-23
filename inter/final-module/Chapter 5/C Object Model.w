@@ -389,7 +389,7 @@ that references to it will not fail to compile.
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = CodeGen::CL::name(prop_name);
+	text_stream *name = VanillaConstants::name(prop_name);
 	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname)
@@ -630,32 +630,32 @@ which we will then need to write in |inform7_clib.h|.
 
 =
 int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
-	if (CodeGen::CL::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) return TRUE;
+	if (VanillaConstants::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) return TRUE;
 	return FALSE;
 }
 
 int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
+		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
-									WRITE("i7_change_prop_value(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+									WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								} else {
-									WRITE("i7_read_prop_value(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+									WRITE("i7_read_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 								}
 								break;
-		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
-								INV_A3; WRITE(")"); break;
-		case MESSAGE2_BIP: 		WRITE("i7_mcall_2(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
-								INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
-		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
-								INV_A3; WRITE(", "); INV_A4; WRITE(", "); INV_A5; WRITE(")"); break;
-		case GIVE_BIP: 			WRITE("i7_give(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", 1)"); break;
-		case TAKE_BIP: 			WRITE("i7_give(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", 0)"); break;
-		case MOVE_BIP:          WRITE("i7_move(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")"); break;
-		case REMOVE_BIP:        WRITE("i7_move(proc, "); INV_A1; WRITE(", 0)"); break;
+		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+								VNODE_3C; WRITE(")"); break;
+		case MESSAGE2_BIP: 		WRITE("i7_mcall_2(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
+		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", "); VNODE_5C; WRITE(")"); break;
+		case GIVE_BIP: 			WRITE("i7_give(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 1)"); break;
+		case TAKE_BIP: 			WRITE("i7_give(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 0)"); break;
+		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
 
 		default: return NOT_APPLICABLE;
 	}

@@ -9,29 +9,29 @@ easy.
 int CArithmetic::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PLUS_BIP:				WRITE("("); INV_A1; WRITE(" + "); INV_A2; WRITE(")"); break;
-		case MINUS_BIP:				WRITE("("); INV_A1; WRITE(" - "); INV_A2; WRITE(")"); break;
-		case UNARYMINUS_BIP:		WRITE("(-("); INV_A1; WRITE("))"); break;
-		case TIMES_BIP:				WRITE("("); INV_A1; WRITE(" * "); INV_A2; WRITE(")"); break;
+		case PLUS_BIP:				WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
+		case MINUS_BIP:				WRITE("("); VNODE_1C; WRITE(" - "); VNODE_2C; WRITE(")"); break;
+		case UNARYMINUS_BIP:		WRITE("(-("); VNODE_1C; WRITE("))"); break;
+		case TIMES_BIP:				WRITE("("); VNODE_1C; WRITE(" * "); VNODE_2C; WRITE(")"); break;
 		case DIVIDE_BIP:			if (CFunctionModel::inside_function(gen)) {
-										WRITE("glulx_div_r(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+										WRITE("glulx_div_r(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 									} else {
-										WRITE("("); INV_A1; WRITE(" / "); INV_A2; WRITE(")"); break;
+										WRITE("("); VNODE_1C; WRITE(" / "); VNODE_2C; WRITE(")"); break;
 									}
 									break; 
 		case MODULO_BIP:			if (CFunctionModel::inside_function(gen)) {
-										WRITE("glulx_mod_r(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+										WRITE("glulx_mod_r(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 									} else {
-										WRITE("("); INV_A1; WRITE(" %% "); INV_A2; WRITE(")");
+										WRITE("("); VNODE_1C; WRITE(" %% "); VNODE_2C; WRITE(")");
 									}
 									break;
-		case BITWISEAND_BIP:		WRITE("(("); INV_A1; WRITE(")&("); INV_A2; WRITE("))"); break;
-		case BITWISEOR_BIP:			WRITE("(("); INV_A1; WRITE(")|("); INV_A2; WRITE("))"); break;
-		case BITWISENOT_BIP:		WRITE("(~("); INV_A1; WRITE("))"); break;
-		case SEQUENTIAL_BIP:	    WRITE("("); INV_A1; WRITE(","); INV_A2; WRITE(")"); break;
-		case TERNARYSEQUENTIAL_BIP: WRITE("("); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
-									INV_A3; WRITE(")"); break;
-		case RANDOM_BIP:    	    WRITE("fn_i7_mgl_random(proc, "); INV_A1; WRITE(")"); break;
+		case BITWISEAND_BIP:		WRITE("(("); VNODE_1C; WRITE(")&("); VNODE_2C; WRITE("))"); break;
+		case BITWISEOR_BIP:			WRITE("(("); VNODE_1C; WRITE(")|("); VNODE_2C; WRITE("))"); break;
+		case BITWISENOT_BIP:		WRITE("(~("); VNODE_1C; WRITE("))"); break;
+		case SEQUENTIAL_BIP:	    WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
+		case TERNARYSEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+									VNODE_3C; WRITE(")"); break;
+		case RANDOM_BIP:    	    WRITE("fn_i7_mgl_random(proc, "); VNODE_1C; WRITE(")"); break;
 		default: 					return NOT_APPLICABLE;
 	}
 	return FALSE;

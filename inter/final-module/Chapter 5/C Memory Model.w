@@ -369,7 +369,7 @@ and therefore if |X| is a valid constant-context expression in C then so is
 =
 void CMemoryModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
 	text_stream *OUT = CodeGen::current(gen);
-	text_stream *S = CodeGen::CL::name(aliased);
+	text_stream *S = VanillaConstants::name(aliased);
 	Generators::mangle(gen, OUT, S);
 }
 
@@ -406,8 +406,8 @@ primitive !lookupbyte val val -> val
 
 =
 int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
-	if (CodeGen::CL::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
-	if (CodeGen::CL::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
+	if (VanillaConstants::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
+	if (VanillaConstants::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
 	return FALSE;
 }
 
@@ -425,13 +425,13 @@ int CMemoryModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tr
 }
 
 @<Word value as value@> =
-	WRITE("i7_read_word(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")");
+	WRITE("i7_read_word(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 
 @<Word value as reference@> =
-	WRITE("i7_write_word(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(", ");
+	WRITE("i7_write_word(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 	
 @<Byte value as value@> =
-	WRITE("i7_read_byte(proc, "); INV_A1; WRITE(" + "); INV_A2; WRITE(")");
+	WRITE("i7_read_byte(proc, "); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")");
 	
 @<Byte value as reference@> =
-	WRITE("i7_change_byte(proc, "); INV_A1; WRITE(" + "); INV_A2; WRITE(", ");
+	WRITE("i7_change_byte(proc, "); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(", ");

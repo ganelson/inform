@@ -26,6 +26,7 @@ must have the same names as the family names for those VMs.
 
 =
 code_generator *Generators::find(text_stream *name) {
+	Generators::make_all();
 	code_generator *generator;
 	LOOP_OVER(generator, code_generator)
 		if (Str::eq_insensitive(generator->generator_name, name))
@@ -33,14 +34,18 @@ code_generator *Generators::find(text_stream *name) {
 	return NULL;
 }
 
-@ And they are mass-produced here:
+code_generator *Generators::find_for(target_vm *VM) {
+	return Generators::find(TargetVMs::family(VM));
+}
+
+@ And generators are mass-produced here:
 
 =
-int cgts_made = FALSE;
+int generators_have_been_made = FALSE;
 
 void Generators::make_all(void) {
-	if (cgts_made == FALSE) {
-		cgts_made = TRUE;
+	if (generators_have_been_made == FALSE) {
+		generators_have_been_made = TRUE;
 		TextualTarget::create_generator();
 		BinaryTarget::create_generator();
 		InvTarget::create_generator();
@@ -49,47 +54,17 @@ void Generators::make_all(void) {
 	}
 }
 
-@h Standard operating procedure.
-
-=
-void Generators::go(code_generation *gen) {
-	CodeGen::clear_all_transients(gen->from);
-	if (Generators::begin_generation(gen)) return;
-	@<Phase one - preparation@>;
-	@<Phase two - traverse@>;
-	@<Phase three - consolidation@>;
-	if (Generators::end_generation(gen)) return;
-	CodeGen::write_segments(gen->to_stream, gen);
-}
-
-@<Phase one - preparation@> =
-	CodeGen::FC::prepare(gen);
-	CodeGen::CL::prepare(gen);
-	CodeGen::Var::prepare(gen);
-	CodeGen::IP::prepare(gen);
-
-@<Phase two - traverse@> =
-	InterTree::traverse_root_only(gen->from, Generators::pragma, gen, PRAGMA_IST);
-	InterTree::traverse(gen->from, CodeGen::FC::pre_iterate, gen, NULL, -PACKAGE_IST);
-	InterTree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
-
-@<Phase three - consolidation@> =
-	CodeGen::IP::write_properties(gen);
-	CodeGen::CL::sort_literals(gen);
-
-@
-
-=
-void Generators::pragma(inter_tree *I, inter_tree_node *P, void *state) {
-	code_generation *gen = (code_generation *) state;
-	inter_symbol *target_symbol = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
-	if (target_symbol == NULL) internal_error("bad pragma");
-	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inode::ID_to_text(P, ID);
-	Generators::offer_pragma(gen, P, target_symbol->symbol_name, S);
-}
-
 @h Method calls.
+Generators can be extremely simple: only one method is compulsory, which is that
+they must respond to |BEGIN_GENERATION_MTID|. If they return |FALSE| to this, the
+process stops: it's assumed that they have gone their own way and completed the
+business. If they return |TRUE|, however, the "vanilla" algorithm for generating
+imperative code is run for them, in which case a host of further method calls
+will be made -- see below.
+
+In practice, then, some generators provide |BEGIN_GENERATION_MTID| and nothing
+else, and do their own thing; others provide basically the entire suite below,
+and dovetail with the vanilla algorithm.
 
 @e BEGIN_GENERATION_MTID
 @e END_GENERATION_MTID
@@ -97,15 +72,32 @@ void Generators::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 =
 INT_METHOD_TYPE(BEGIN_GENERATION_MTID, code_generator *generator, code_generation *gen)
 INT_METHOD_TYPE(END_GENERATION_MTID, code_generator *generator, code_generation *gen)
-int Generators::begin_generation(code_generation *gen) {
+
+void Generators::go(code_generation *gen) {
+	CodeGen::clear_all_transients(gen->from);
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, gen->generator, BEGIN_GENERATION_MTID, gen);
-	return rv;
-}
-int Generators::end_generation(code_generation *gen) {
-	int rv = FALSE;
+	if (rv) return;
+	Vanilla::go(gen);
 	INT_METHOD_CALL(rv, gen->generator, END_GENERATION_MTID, gen);
-	return rv;
+	if (rv) return;
+	CodeGen::write_segments(gen->to_stream, gen);
+}
+
+@ This method is called early in generation to give the generator a chance to
+act on any |pragma| instructions at the top of the Inter tree. These are like
+C compiler |#pragma| directives: a generator is free to completely ignore any
+that it doesn't recognise or like. They are each "tagged" with a textual
+indication of the generator intended to get the message -- thus, for example,
+|Inform6| for |pragma| instructions expected to be useful only when generating
+I6 code. Still, all pragmas are offered to all generators.
+
+@e OFFER_PRAGMA_MTID
+
+=
+VOID_METHOD_TYPE(OFFER_PRAGMA_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content)
+void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content) {
+	VOID_METHOD_CALL(gen->generator, OFFER_PRAGMA_MTID, gen, P, tag, content);
 }
 
 @
@@ -229,13 +221,12 @@ void Generators::declare_attribute(code_generation *gen, text_stream *prop_name)
 
 @e PREPARE_VARIABLE_MTID
 @e DECLARE_VARIABLE_MTID
-@e DECLARE_LOCAL_VARIABLE_MTID
 @e EVALUATE_VARIABLE_MTID
 
 =
 INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
 INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
-VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator, int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
 VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_symbol *var_name, int as_reference)
 int Generators::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
 	int rv = 0;
@@ -246,9 +237,6 @@ int Generators::declare_variable(code_generation *gen, inter_tree_node *P, inter
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->generator, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
 	return rv;
-}
-void Generators::declare_local_variable(int pass, code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_LOCAL_VARIABLE_MTID, pass, gen, P, var_name);
 }
 void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name, int as_reference) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_VARIABLE_MTID, gen, var_name, as_reference);
@@ -310,16 +298,6 @@ void Generators::property_offset(code_generation *gen, text_stream *property_nam
 
 @
 
-@e OFFER_PRAGMA_MTID
-
-=
-VOID_METHOD_TYPE(OFFER_PRAGMA_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content)
-void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content) {
-	VOID_METHOD_CALL(gen->generator, OFFER_PRAGMA_MTID, gen, P, tag, content);
-}
-
-@
-
 @e BEGIN_CONSTANT_MTID
 @e END_CONSTANT_MTID
 
@@ -337,21 +315,22 @@ void Generators::end_constant(code_generation *gen, text_stream *const_name, int
 
 @
 
-@e BEGIN_FUNCTION_MTID
+@e PREDECLARE_FUNCTION_MTID
+@e DECLARE_FUNCTION_MTID
 @e BEGIN_FUNCTION_CODE_MTID
 @e PLACE_LABEL_MTID
 @e END_FUNCTION_MTID
 
 =
-VOID_METHOD_TYPE(BEGIN_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
-VOID_METHOD_TYPE(BEGIN_FUNCTION_CODE_MTID, code_generator *generator, code_generation *gen)
+VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
+VOID_METHOD_TYPE(DECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
 VOID_METHOD_TYPE(PLACE_LABEL_MTID, code_generator *generator, code_generation *gen, text_stream *label_name)
 VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
-void Generators::begin_function(int pass, code_generation *gen, inter_symbol *fn) {
-	VOID_METHOD_CALL(gen->generator, BEGIN_FUNCTION_MTID, pass, gen, fn);
+void Generators::predeclare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
+	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, fn, code);
 }
-void Generators::begin_function_code(code_generation *gen) {
-	VOID_METHOD_CALL(gen->generator, BEGIN_FUNCTION_CODE_MTID, gen);
+void Generators::declare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_FUNCTION_MTID, gen, fn, code);
 }
 void Generators::place_label(code_generation *gen, text_stream *label_name) {
 	VOID_METHOD_CALL(gen->generator, PLACE_LABEL_MTID, gen, label_name);

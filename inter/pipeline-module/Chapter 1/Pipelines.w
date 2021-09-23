@@ -13,7 +13,7 @@ typedef struct pipeline_step {
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
 	struct code_generator *generator_argument;
-	int take_target_argument_from_VM;
+	int take_generator_argument_from_VM;
 	struct text_stream *package_URL_argument;
 	struct inter_package *package_argument;
 	struct filename *parsed_filename;
@@ -37,7 +37,7 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 	step->package_argument = NULL;
 	step->repository_argument = 0;
 	step->generator_argument = NULL;
-	step->take_target_argument_from_VM = FALSE;
+	step->take_generator_argument_from_VM = FALSE;
 	CodeGen::Pipeline::clean_step(step);
 	return step;
 }
@@ -110,7 +110,7 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%c+?) *-> *(%c*)")) {
 		ST->generator_argument = NULL;
-		ST->take_target_argument_from_VM = TRUE;
+		ST->take_generator_argument_from_VM = TRUE;
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp, allow_unknown_variables);
 		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
@@ -288,8 +288,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			step->pipeline = S;
 			step->requirements_list = requirements_list;
 			step->for_VM = VM;
-			if ((VM) && (step->take_target_argument_from_VM)) {
-				step->generator_argument = Generators::find(TargetVMs::family(VM));
+			if ((VM) && (step->take_generator_argument_from_VM)) {
+				step->generator_argument = Generators::find_for(VM);
 				if (step->generator_argument == NULL) {
 					#ifdef PROBLEMS_MODULE
 					Problems::fatal("Unable to guess target format");

@@ -92,13 +92,10 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6Target::end_instance);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6Target::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6Target::assign_property);
-	METHOD_ADD(cgt, DECLARE_LOCAL_VARIABLE_MTID, I6Target::declare_local_variable);
 	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, I6Target::begin_constant);
 	METHOD_ADD(cgt, END_CONSTANT_MTID, I6Target::end_constant);
-	METHOD_ADD(cgt, BEGIN_FUNCTION_MTID, I6Target::begin_function);
-	METHOD_ADD(cgt, BEGIN_FUNCTION_CODE_MTID, I6Target::begin_function_code);
+	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, I6Target::declare_function);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, I6Target::place_label);
-	METHOD_ADD(cgt, END_FUNCTION_MTID, I6Target::end_function);
 	METHOD_ADD(cgt, FUNCTION_CALL_MTID, I6Target::function_call);
 	METHOD_ADD(cgt, ASSEMBLY_MTID, I6Target::assembly);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, I6Target::begin_array);
@@ -256,7 +253,7 @@ int I6Target::general_segment(code_generator *cgt, code_generation *gen, inter_t
 			return choice;
 		}
 	}
-	return I6Target::default_segment(cgt);
+	return main_matter_I7CGS;
 }
 
 int I6Target::default_segment(code_generator *cgt) {
@@ -275,7 +272,7 @@ int I6Target::tl_segment(code_generator *cgt) {
 
 void I6Target::offer_pragma(code_generator *cgt, code_generation *gen,
 	inter_tree_node *P, text_stream *tag, text_stream *content) {
-	if (Str::eq(tag, I"target_I6")) {
+	if (Str::eq(tag, I"Inform6")) {
 		generated_segment *saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("!%% %S\n", content);
@@ -294,87 +291,87 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 	switch (bip) {
-		case PLUS_BIP:			WRITE("("); INV_A1; WRITE(" + "); INV_A2; WRITE(")"); break;
-		case MINUS_BIP:			WRITE("("); INV_A1; WRITE(" - "); INV_A2; WRITE(")"); break;
-		case UNARYMINUS_BIP:	WRITE("(-("); INV_A1; WRITE("))"); break;
-		case TIMES_BIP:			WRITE("("); INV_A1; WRITE("*"); INV_A2; WRITE(")"); break;
-		case DIVIDE_BIP:		WRITE("("); INV_A1; WRITE("/"); INV_A2; WRITE(")"); break;
-		case MODULO_BIP:		WRITE("("); INV_A1; WRITE("%%"); INV_A2; WRITE(")"); break;
-		case BITWISEAND_BIP:	WRITE("(("); INV_A1; WRITE(")&("); INV_A2; WRITE("))"); break;
-		case BITWISEOR_BIP:		WRITE("(("); INV_A1; WRITE(")|("); INV_A2; WRITE("))"); break;
-		case BITWISENOT_BIP:	WRITE("(~("); INV_A1; WRITE("))"); break;
+		case PLUS_BIP:			WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
+		case MINUS_BIP:			WRITE("("); VNODE_1C; WRITE(" - "); VNODE_2C; WRITE(")"); break;
+		case UNARYMINUS_BIP:	WRITE("(-("); VNODE_1C; WRITE("))"); break;
+		case TIMES_BIP:			WRITE("("); VNODE_1C; WRITE("*"); VNODE_2C; WRITE(")"); break;
+		case DIVIDE_BIP:		WRITE("("); VNODE_1C; WRITE("/"); VNODE_2C; WRITE(")"); break;
+		case MODULO_BIP:		WRITE("("); VNODE_1C; WRITE("%%"); VNODE_2C; WRITE(")"); break;
+		case BITWISEAND_BIP:	WRITE("(("); VNODE_1C; WRITE(")&("); VNODE_2C; WRITE("))"); break;
+		case BITWISEOR_BIP:		WRITE("(("); VNODE_1C; WRITE(")|("); VNODE_2C; WRITE("))"); break;
+		case BITWISENOT_BIP:	WRITE("(~("); VNODE_1C; WRITE("))"); break;
 
-		case NOT_BIP:			WRITE("(~~("); INV_A1; WRITE("))"); break;
-		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
-		case OR_BIP: 			WRITE("(("); INV_A1; WRITE(") || ("); INV_A2; WRITE("))"); break;
-		case EQ_BIP: 			WRITE("("); INV_A1; WRITE(" == "); INV_A2; WRITE(")"); break;
-		case NE_BIP: 			WRITE("("); INV_A1; WRITE(" ~= "); INV_A2; WRITE(")"); break;
-		case GT_BIP: 			WRITE("("); INV_A1; WRITE(" > "); INV_A2; WRITE(")"); break;
-		case GE_BIP: 			WRITE("("); INV_A1; WRITE(" >= "); INV_A2; WRITE(")"); break;
-		case LT_BIP: 			WRITE("("); INV_A1; WRITE(" < "); INV_A2; WRITE(")"); break;
-		case LE_BIP: 			WRITE("("); INV_A1; WRITE(" <= "); INV_A2; WRITE(")"); break;
-		case OFCLASS_BIP:		WRITE("("); INV_A1; WRITE(" ofclass "); INV_A2; WRITE(")"); break;
-		case HAS_BIP:			WRITE("("); INV_A1; WRITE(" has "); INV_A2; WRITE(")"); break;
-		case HASNT_BIP:			WRITE("("); INV_A1; WRITE(" hasnt "); INV_A2; WRITE(")"); break;
-		case IN_BIP:			WRITE("("); INV_A1; WRITE(" in "); INV_A2; WRITE(")"); break;
-		case NOTIN_BIP:			WRITE("("); INV_A1; WRITE(" notin "); INV_A2; WRITE(")"); break;
-		case PROVIDES_BIP:		WRITE("("); INV_A1; WRITE(" provides "); INV_A2; WRITE(")"); break;
-		case ALTERNATIVE_BIP:	INV_A1; WRITE(" or "); INV_A2; break;
+		case NOT_BIP:			WRITE("(~~("); VNODE_1C; WRITE("))"); break;
+		case AND_BIP:			WRITE("(("); VNODE_1C; WRITE(") && ("); VNODE_2C; WRITE("))"); break;
+		case OR_BIP: 			WRITE("(("); VNODE_1C; WRITE(") || ("); VNODE_2C; WRITE("))"); break;
+		case EQ_BIP: 			WRITE("("); VNODE_1C; WRITE(" == "); VNODE_2C; WRITE(")"); break;
+		case NE_BIP: 			WRITE("("); VNODE_1C; WRITE(" ~= "); VNODE_2C; WRITE(")"); break;
+		case GT_BIP: 			WRITE("("); VNODE_1C; WRITE(" > "); VNODE_2C; WRITE(")"); break;
+		case GE_BIP: 			WRITE("("); VNODE_1C; WRITE(" >= "); VNODE_2C; WRITE(")"); break;
+		case LT_BIP: 			WRITE("("); VNODE_1C; WRITE(" < "); VNODE_2C; WRITE(")"); break;
+		case LE_BIP: 			WRITE("("); VNODE_1C; WRITE(" <= "); VNODE_2C; WRITE(")"); break;
+		case OFCLASS_BIP:		WRITE("("); VNODE_1C; WRITE(" ofclass "); VNODE_2C; WRITE(")"); break;
+		case HAS_BIP:			WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); break;
+		case HASNT_BIP:			WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); break;
+		case IN_BIP:			WRITE("("); VNODE_1C; WRITE(" in "); VNODE_2C; WRITE(")"); break;
+		case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
+		case PROVIDES_BIP:		WRITE("("); VNODE_1C; WRITE(" provides "); VNODE_2C; WRITE(")"); break;
+		case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
 
-		case PUSH_BIP:			WRITE("@push "); INV_A1; break;
-		case PULL_BIP:			WRITE("@pull "); INV_A1; break;
-		case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
-		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
-		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
-		case POSTDECREMENT_BIP:	WRITE("("); INV_A1; WRITE(")--"); break;
-		case STORE_BIP:			WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")"); break;
-		case SETBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" | "); INV_A2; break;
-		case CLEARBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" &~ ("); INV_A2; WRITE(")"); break;
-		case LOOKUP_BIP:		WRITE("("); INV_A1; WRITE("-->("); INV_A2; WRITE("))"); break;
-		case LOOKUPBYTE_BIP:	WRITE("("); INV_A1; WRITE("->("); INV_A2; WRITE("))"); break;
-		case PROPERTYADDRESS_BIP: WRITE("("); INV_A1; WRITE(".& "); INV_A2; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("("); INV_A1; WRITE(".# "); INV_A2; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE(")"); break;
+		case PUSH_BIP:			WRITE("@push "); VNODE_1C; break;
+		case PULL_BIP:			WRITE("@pull "); VNODE_1C; break;
+		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
+		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
+		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
+		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
+		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
+		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
+		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
+		case LOOKUP_BIP:		WRITE("("); VNODE_1C; WRITE("-->("); VNODE_2C; WRITE("))"); break;
+		case LOOKUPBYTE_BIP:	WRITE("("); VNODE_1C; WRITE("->("); VNODE_2C; WRITE("))"); break;
+		case PROPERTYADDRESS_BIP: WRITE("("); VNODE_1C; WRITE(".& "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("("); VNODE_1C; WRITE(".# "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYVALUE_BIP:	WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
 
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
-		case JUMP_BIP: 			WRITE("jump "); INV_A1; break;
+		case JUMP_BIP: 			WRITE("jump "); VNODE_1C; break;
 		case QUIT_BIP: 			WRITE("quit"); break;
-		case RESTORE_BIP: 		WRITE("restore "); INV_A1; break;
+		case RESTORE_BIP: 		WRITE("restore "); VNODE_1C; break;
 
 		case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
-								WRITE("("); INV_A1; WRITE(")()"); break;
+								WRITE("("); VNODE_1C; WRITE(")()"); break;
 		case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
-								WRITE("("); INV_A1; WRITE(")(");
-								INV_A2; WRITE(")"); break;
+								WRITE("("); VNODE_1C; WRITE(")(");
+								VNODE_2C; WRITE(")"); break;
 		case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
-								WRITE("("); INV_A1; WRITE(")(");
-								INV_A2; WRITE(","); INV_A3; WRITE(")"); break;
+								WRITE("("); VNODE_1C; WRITE(")(");
+								VNODE_2C; WRITE(","); VNODE_3C; WRITE(")"); break;
 		case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
-								WRITE("("); INV_A1; WRITE(")(");
-								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE(")"); break;
+								WRITE("("); VNODE_1C; WRITE(")(");
+								VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(")"); break;
 		case INDIRECT4_BIP: case INDIRECT4V_BIP:
-								WRITE("("); INV_A1; WRITE(")(");
-								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE(",");
-								INV_A5; WRITE(")"); break;
+								WRITE("("); VNODE_1C; WRITE(")(");
+								VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
+								VNODE_5C; WRITE(")"); break;
 		case INDIRECT5_BIP: case INDIRECT5V_BIP:
-								WRITE("("); INV_A1; WRITE(")(");
-								INV_A2; WRITE(","); INV_A3; WRITE(","); INV_A4; WRITE(",");
-								INV_A5; WRITE(","); INV_A6; WRITE(")"); break;
-		case MESSAGE0_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("())"); break;
-		case MESSAGE1_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("(");
-								INV_A3; WRITE("))"); break;
-		case MESSAGE2_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("(");
-								INV_A3; WRITE(","); INV_A4; WRITE("))"); break;
-		case MESSAGE3_BIP: 		WRITE("("); INV_A1; WRITE("."); INV_A2; WRITE("(");
-								INV_A3; WRITE(","); INV_A4; WRITE(","); INV_A5; WRITE("))"); break;
+								WRITE("("); VNODE_1C; WRITE(")(");
+								VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
+								VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
+		case MESSAGE0_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("())"); break;
+		case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+								VNODE_3C; WRITE("))"); break;
+		case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+								VNODE_3C; WRITE(","); VNODE_4C; WRITE("))"); break;
+		case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+								VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE("))"); break;
 
 		case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
 
-		case SPACES_BIP:		WRITE("spaces "); INV_A1; break;
+		case SPACES_BIP:		WRITE("spaces "); VNODE_1C; break;
 		case FONT_BIP:
-			WRITE("if ("); INV_A1; WRITE(") { font on; } else { font off; }");
+			WRITE("if ("); VNODE_1C; WRITE(") { font on; } else { font off; }");
 			suppress_terminal_semicolon = TRUE;
 			break;
 		case STYLE_BIP: {
@@ -394,23 +391,23 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 			break;
 		}
 
-		case MOVE_BIP: WRITE("move "); INV_A1; WRITE(" to "); INV_A2; break;
-		case REMOVE_BIP: WRITE("remove "); INV_A1; break;
-		case GIVE_BIP: WRITE("give "); INV_A1; WRITE(" "); INV_A2; break;
-		case TAKE_BIP: WRITE("give "); INV_A1; WRITE(" ~"); INV_A2; break;
+		case MOVE_BIP: WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
+		case REMOVE_BIP: WRITE("remove "); VNODE_1C; break;
+		case GIVE_BIP: WRITE("give "); VNODE_1C; WRITE(" "); VNODE_2C; break;
+		case TAKE_BIP: WRITE("give "); VNODE_1C; WRITE(" ~"); VNODE_2C; break;
 
-		case ALTERNATIVECASE_BIP: INV_A1; WRITE(", "); INV_A2; break;
-		case SEQUENTIAL_BIP: WRITE("("); INV_A1; WRITE(","); INV_A2; WRITE(")"); break;
+		case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
+		case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
-		case PRINT_BIP: WRITE("print "); INV_A1_PRINTMODE; break;
-		case PRINTCHAR_BIP: WRITE("print (char) "); INV_A1; break;
+		case PRINT_BIP: WRITE("print "); VanillaConstants::enter_print_mode(); VNODE_1C; VanillaConstants::exit_print_mode(); break;
+		case PRINTCHAR_BIP: WRITE("print (char) "); VNODE_1C; break;
 		case PRINTNL_BIP: WRITE("new_line"); break;
-		case PRINTOBJ_BIP: WRITE("print (object) "); INV_A1; break;
-		case PRINTNUMBER_BIP: WRITE("print "); INV_A1; break;
-		case PRINTDWORD_BIP: WRITE("print (address) "); INV_A1; break;
-		case PRINTSTRING_BIP: WRITE("print (string) "); INV_A1; break;
-		case BOX_BIP: WRITE("box "); INV_A1_BOXMODE; break;
+		case PRINTOBJ_BIP: WRITE("print (object) "); VNODE_1C; break;
+		case PRINTNUMBER_BIP: WRITE("print "); VNODE_1C; break;
+		case PRINTDWORD_BIP: WRITE("print (address) "); VNODE_1C; break;
+		case PRINTSTRING_BIP: WRITE("print (string) "); VNODE_1C; break;
+		case BOX_BIP: WRITE("box "); VanillaConstants::enter_box_mode(); VNODE_1C; VanillaConstants::exit_box_mode(); break;
 
 		case IF_BIP: @<Generate primitive for if@>; break;
 		case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
@@ -426,9 +423,9 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 		case CASE_BIP: @<Generate primitive for case@>; break;
 		case DEFAULT_BIP: @<Generate primitive for default@>; break;
 
-		case RANDOM_BIP: WRITE("random("); INV_A1; WRITE(")"); break;
+		case RANDOM_BIP: WRITE("random("); VNODE_1C; WRITE(")"); break;
 
-		case READ_BIP: WRITE("read "); INV_A1; WRITE(" "); INV_A2; break;
+		case READ_BIP: WRITE("read "); VNODE_1C; WRITE(" "); VNODE_2C; break;
 
 		default: LOG("Prim: %S\n", prim_name->symbol_name); internal_error("unimplemented prim");
 	}
@@ -449,7 +446,7 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 	switch (rboolean) {
 		case FALSE: WRITE("rfalse"); break;
 		case TRUE: WRITE("rtrue"); break;
-		case NOT_APPLICABLE: WRITE("return "); CodeGen::FC::frame(gen, V); break;
+		case NOT_APPLICABLE: WRITE("return "); Vanilla::node(gen, V); break;
 	}
 	
 
@@ -483,53 +480,53 @@ then the result.
 
 @<Generate primitive for ternarysequential@> =
 	WRITE("(\n"); INDENT;
-	WRITE("! This value evaluates third (i.e., last)\n"); INV_A3;
+	WRITE("! This value evaluates third (i.e., last)\n"); VNODE_3C;
 	OUTDENT; WRITE("+\n"); INDENT;
 	WRITE("0*(\n"); INDENT;
 	WRITE("! The following condition evaluates second\n");
-	WRITE("((\n"); INDENT; INV_A2;
+	WRITE("((\n"); INDENT; VNODE_2C;
 	OUTDENT; WRITE("\n))\n");
 	OUTDENT; WRITE("+\n"); INDENT;
 	WRITE("! The following assignments evaluate first\n");
-	WRITE("("); INV_A1; WRITE(")");
+	WRITE("("); VNODE_1C; WRITE(")");
 	OUTDENT; WRITE(")\n");
 	OUTDENT; WRITE(")\n");
 
 @<Generate primitive for if@> =
-	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2;
+	WRITE("if ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifdebug@> =
-	WRITE("#ifdef DEBUG;\n"); INDENT; INV_A1; OUTDENT; WRITE("#endif;\n");
+	WRITE("#ifdef DEBUG;\n"); INDENT; VNODE_1C; OUTDENT; WRITE("#endif;\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifstrict@> =
-	WRITE("#ifdef STRICT_MODE;\n"); INDENT; INV_A1; OUTDENT; WRITE("#endif;\n");
+	WRITE("#ifdef STRICT_MODE;\n"); INDENT; VNODE_1C; OUTDENT; WRITE("#endif;\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifelse@> =
-	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2; OUTDENT;
-	WRITE("} else {\n"); INDENT; INV_A3; OUTDENT; WRITE("}\n");
+	WRITE("if ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT;
+	WRITE("} else {\n"); INDENT; VNODE_3C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for while@> =
-	WRITE("while ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2; OUTDENT; WRITE("}\n");
+	WRITE("while ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for do@> =
-	WRITE("do {"); INV_A2; WRITE("} until (\n"); INDENT; INV_A1; OUTDENT; WRITE(")\n");
+	WRITE("do {"); VNODE_2C; WRITE("} until (\n"); INDENT; VNODE_1C; OUTDENT; WRITE(")\n");
 
 @<Generate primitive for for@> =
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
-	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) INV_A1;
-	WRITE(":"); INV_A2;
+	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+	WRITE(":"); VNODE_2C;
 	WRITE(":");
 	inter_tree_node *U = InterTree::third_child(P);
 	if (U->W.data[ID_IFLD] != VAL_IST)
-	CodeGen::FC::frame(gen, U);
-	WRITE(") {\n"); INDENT; INV_A4;
+	Vanilla::node(gen, U);
+	WRITE(") {\n"); INDENT; VNODE_4C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
@@ -543,36 +540,36 @@ then the result.
 
 	WRITE("objectloop ");
 	if (in_flag == FALSE) {
-		WRITE("("); INV_A1; WRITE(" ofclass "); INV_A2;
+		WRITE("("); VNODE_1C; WRITE(" ofclass "); VNODE_2C;
 		WRITE(" && ");
-	} INV_A3;
+	} VNODE_3C;
 	if (in_flag == FALSE) {
 		WRITE(")");
 	}
-	WRITE(" {\n"); INDENT; INV_A4;
+	WRITE(" {\n"); INDENT; VNODE_4C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
-	WRITE("objectloop ("); INV_A1; WRITE(" ofclass "); INV_A2;
-	WRITE(") {\n"); INDENT; INV_A3; OUTDENT; WRITE("}\n");
+	WRITE("objectloop ("); VNODE_1C; WRITE(" ofclass "); VNODE_2C;
+	WRITE(") {\n"); INDENT; VNODE_3C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for loop@> =
-	WRITE("{\n"); INDENT; INV_A1; OUTDENT; WRITE("}\n");
+	WRITE("{\n"); INDENT; VNODE_1C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for switch@> =
-	WRITE("switch ("); INV_A1;
-	WRITE(") {\n"); INDENT; INV_A2; OUTDENT; WRITE("}\n");
+	WRITE("switch ("); VNODE_1C;
+	WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for case@> =
-	INV_A1; WRITE(":\n"); INDENT; INV_A2; WRITE(";\n"); OUTDENT;
+	VNODE_1C; WRITE(":\n"); INDENT; VNODE_2C; WRITE(";\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for default@> =
-	WRITE("default:\n"); INDENT; INV_A1; WRITE(";\n"); OUTDENT;
+	WRITE("default:\n"); INDENT; VNODE_1C; WRITE(";\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @
@@ -686,7 +683,7 @@ trick called "stubbing", these being "stub definitions".)
 =
 void I6Target::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = CodeGen::CL::name(prop_name);
+	text_stream *name = VanillaConstants::name(prop_name);
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
@@ -740,8 +737,8 @@ int I6Target::declare_variable(code_generator *cgt, code_generation *gen,
 	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
 		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		WRITE("Global %S = ", CodeGen::CL::name(var_name));
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+		WRITE("Global %S = ", VanillaConstants::name(var_name));
+		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
 	} else {
@@ -751,8 +748,8 @@ int I6Target::declare_variable(code_generator *cgt, code_generation *gen,
 		if (k == 0) WRITE("Array Global_Vars -->\n");
 		WRITE("  (");
 		inter_symbols_table *globals = Inter::Packages::scope_of(P);
-		CodeGen::CL::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
-		WRITE(") ! -->%d = %S (%S)\n", k, CodeGen::CL::name(var_name), var_name->symbol_name);
+		VanillaConstants::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+		WRITE(") ! -->%d = %S (%S)\n", k, VanillaConstants::name(var_name), var_name->symbol_name);
 		k++;
 		if (k == of) {
 			if (k < 2) WRITE("  NULL NULL");
@@ -765,7 +762,7 @@ int I6Target::declare_variable(code_generator *cgt, code_generation *gen,
 
 void I6Target::evaluate_variable(code_generator *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", CodeGen::CL::name(var_name));
+	WRITE("%S", VanillaConstants::name(var_name));
 }
 
 void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
@@ -800,7 +797,7 @@ int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen,
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) WRITE(" ");
-				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
+				VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
 			}
 			return TRUE;
 		}
@@ -818,12 +815,15 @@ void I6Target::assign_property(code_generator *cgt, code_generation *gen, text_s
 	}
 }
 
-void I6Target::declare_local_variable(code_generator *cgt, int pass,
-	code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
-	if (pass == 2) {
+void I6Target::seek_locals(code_generation *gen, inter_tree_node *P) {
+	if (P->W.data[ID_IFLD] == LOCAL_IST) {
+		inter_package *pack = Inter::Packages::container(P);
+		inter_symbol *var_name =
+			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE(" %S", var_name->symbol_name);
 	}
+	LOOP_THROUGH_INTER_CHILDREN(F, P) I6Target::seek_locals(gen, F);
 }
 
 int I6Target::begin_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
@@ -842,7 +842,7 @@ int I6Target::begin_constant(code_generator *cgt, code_generation *gen, text_str
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Release ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return FALSE;
 	}
@@ -851,7 +851,7 @@ int I6Target::begin_constant(code_generator *cgt, code_generation *gen, text_str
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Global Story = ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return FALSE;
 	}
@@ -860,7 +860,7 @@ int I6Target::begin_constant(code_generator *cgt, code_generation *gen, text_str
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Serial ");
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
 		return FALSE;
 	}
@@ -877,20 +877,16 @@ void I6Target::end_constant(code_generator *cgt, code_generation *gen, text_stre
 }
 
 int this_is_I6_Main = 0;
-void I6Target::begin_function(code_generator *cgt, int pass, code_generation *gen, inter_symbol *fn) {
-	text_stream *fn_name = CodeGen::CL::name(fn);
+void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
+	text_stream *fn_name = VanillaConstants::name(fn);
 	this_is_I6_Main = 0;
-	if (pass == 2) {
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE("[ %S", fn_name);
-		if (Str::eq(fn_name, I"Main")) this_is_I6_Main = 1;
-		if (Str::eq(fn_name, I"DebugAction")) this_is_I6_Main = 2;
-		if (Str::eq(fn_name, I"DebugAttribute")) { this_is_I6_Main = 3; I6_DebugAttribute_seen = TRUE; }
-		if (Str::eq(fn_name, I"DebugProperty")) this_is_I6_Main = 4;
-	}
-}
-void I6Target::begin_function_code(code_generator *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE("[ %S", fn_name);
+	if (Str::eq(fn_name, I"Main")) this_is_I6_Main = 1;
+	if (Str::eq(fn_name, I"DebugAction")) this_is_I6_Main = 2;
+	if (Str::eq(fn_name, I"DebugAttribute")) { this_is_I6_Main = 3; I6_DebugAttribute_seen = TRUE; }
+	if (Str::eq(fn_name, I"DebugProperty")) this_is_I6_Main = 4;
+	I6Target::seek_locals(gen, D);
 	WRITE(";");
 	switch (this_is_I6_Main) {
 		case 1:
@@ -941,6 +937,36 @@ void I6Target::begin_function_code(code_generator *cgt, code_generation *gen) {
 			WRITE("return;\n");
 			break;			
 	}
+	Vanilla::node(gen, D);
+//	text_stream *OUT = CodeGen::current(gen);
+//	text_stream *fn_name = VanillaConstants::name(fn);
+	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
+		WRITE("#ifdef TARGET_GLULX;\n");
+		WRITE("@gestalt 9 0 res;\n");
+		WRITE("if (res == 0) rfalse;\n");
+		WRITE("addr = #classes_table;\n");
+		WRITE("@accelparam 0 addr;\n");
+		WRITE("@accelparam 1 INDIV_PROP_START;\n");
+		WRITE("@accelparam 2 Class;\n");
+		WRITE("@accelparam 3 Object;\n");
+		WRITE("@accelparam 4 Routine;\n");
+		WRITE("@accelparam 5 String;\n");
+		WRITE("addr = #globals_array + WORDSIZE * #g$self;\n");
+		WRITE("@accelparam 6 addr;\n");
+		WRITE("@accelparam 7 NUM_ATTR_BYTES;\n");
+		WRITE("addr = #cpv__start;\n");
+		WRITE("@accelparam 8 addr;\n");
+		WRITE("@accelfunc 1 Z__Region;\n");
+		WRITE("@accelfunc 2 CP__Tab;\n");
+		WRITE("@accelfunc 3 RA__Pr;\n");
+		WRITE("@accelfunc 4 RL__Pr;\n");
+		WRITE("@accelfunc 5 OC__Cl;\n");
+		WRITE("@accelfunc 6 RV__Pr;\n");
+		WRITE("@accelfunc 7 OP__Pr;\n");
+		WRITE("#endif;\n");
+		WRITE("rfalse;\n");
+	}
+	WRITE("];\n");
 }
 void I6Target::place_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -956,48 +982,14 @@ Inter tree doesn't need to refer to eldritch Glulx-only symbols like |#g$self|
 or implement assembly-language operations like |@accelparam|. (See //final//.)
 
 =
-void I6Target::end_function(code_generator *cgt, int pass, code_generation *gen, inter_symbol *fn) {
-	if (pass == 2) {
-		text_stream *OUT = CodeGen::current(gen);
-		text_stream *fn_name = CodeGen::CL::name(fn);
-		if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
-			WRITE("#ifdef TARGET_GLULX;\n");
-			WRITE("@gestalt 9 0 res;\n");
-			WRITE("if (res == 0) rfalse;\n");
-			WRITE("addr = #classes_table;\n");
-			WRITE("@accelparam 0 addr;\n");
-			WRITE("@accelparam 1 INDIV_PROP_START;\n");
-			WRITE("@accelparam 2 Class;\n");
-			WRITE("@accelparam 3 Object;\n");
-			WRITE("@accelparam 4 Routine;\n");
-			WRITE("@accelparam 5 String;\n");
-			WRITE("addr = #globals_array + WORDSIZE * #g$self;\n");
-			WRITE("@accelparam 6 addr;\n");
-			WRITE("@accelparam 7 NUM_ATTR_BYTES;\n");
-			WRITE("addr = #cpv__start;\n");
-			WRITE("@accelparam 8 addr;\n");
-			WRITE("@accelfunc 1 Z__Region;\n");
-			WRITE("@accelfunc 2 CP__Tab;\n");
-			WRITE("@accelfunc 3 RA__Pr;\n");
-			WRITE("@accelfunc 4 RL__Pr;\n");
-			WRITE("@accelfunc 5 OC__Cl;\n");
-			WRITE("@accelfunc 6 RV__Pr;\n");
-			WRITE("@accelfunc 7 OP__Pr;\n");
-			WRITE("#endif;\n");
-			WRITE("rfalse;\n");
-		}
-		WRITE("];\n");
-	}
-}
-
 void I6Target::function_call(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
-	text_stream *fn_name = CodeGen::CL::name(fn);
+	text_stream *fn_name = VanillaConstants::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", fn_name);
 	int c = 0;
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		if (c++ > 0) WRITE(", ");
-		CodeGen::FC::frame(gen, F);
+		Vanilla::node(gen, F);
 	}
 	WRITE(")");
 }
@@ -1009,12 +1001,12 @@ void I6Target::assembly(code_generator *cgt, code_generation *gen,
 	WRITE("%S", opcode);
 	for (int opc = 0; opc < operand_count; opc++) {
 		WRITE(" ");
-		CodeGen::FC::frame(gen, operands[opc]);
+		Vanilla::node(gen, operands[opc]);
 	}
 	if (label) {
 		WRITE(" ?");
 		if (label_sense == FALSE) WRITE("~");
-		CodeGen::FC::frame(gen, label);
+		Vanilla::node(gen, label);
 	}
 }
 
@@ -1026,7 +1018,7 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
 		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 			WRITE(" ");
-			CodeGen::CL::literal(gen, array_s, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], TRUE);
+			VanillaConstants::literal(gen, array_s, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], TRUE);
 		}
 		WRITE(";");
 		return FALSE;
@@ -1067,7 +1059,7 @@ void I6Target::compile_literal_symbol(code_generator *cgt, code_generation *gen,
 			WRITE("scope=");
 		if ((unsub) && (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1))
 			WRITE("noun=");
-		text_stream *S = CodeGen::CL::name(aliased);
+		text_stream *S = VanillaConstants::name(aliased);
 		if ((unsub) && (Str::begins_with_wide_string(S, L"##"))) {
 			LOOP_THROUGH_TEXT(pos, S)
 				if (pos.index >= 2)
@@ -1102,7 +1094,7 @@ void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream
 }
 
 void I6Target::world_model_essentials(code_generator *cgt, code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, Generators::default_segment(gen));
+	generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Object Compass \"compass\" has concealed;\n");
 	WRITE("Object thedark \"(darkness object)\";\n");

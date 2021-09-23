@@ -128,7 +128,7 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 		if (opc > num) WRITE(", ");
 		TEMPORARY_TEXT(write_to)
 		CodeGen::select_temporary(gen, write_to);
-		CodeGen::FC::frame(gen, operands[opc-1]);
+		Vanilla::node(gen, operands[opc-1]);
 		CodeGen::deselect_temporary(gen);
 		if (store_this_operand[opc]) {
 			if (Str::eq(write_to, I"i7_mgl_sp")) { WRITE("&(proc->state.tmp)", write_to); pushed_result = TRUE; }
@@ -145,7 +145,7 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 		if (label_sense == FALSE) WRITE(" == FALSE");
 		WRITE(") goto ");
 		if (label == NULL) internal_error("no branch label");
-		CodeGen::FC::frame(gen, label);
+		Vanilla::node(gen, label);
 	}
 	if (pushed_result) WRITE("; i7_push(proc, proc->state.tmp)");
 

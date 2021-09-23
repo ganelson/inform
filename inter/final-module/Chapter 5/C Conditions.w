@@ -8,9 +8,9 @@ Evaluating conditions.
 int CConditions::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case NOT_BIP:			WRITE("(!("); INV_A1; WRITE("))"); break;
-		case AND_BIP:			WRITE("(("); INV_A1; WRITE(") && ("); INV_A2; WRITE("))"); break;
-		case OR_BIP: 			WRITE("(("); INV_A1; WRITE(") || ("); INV_A2; WRITE("))"); break;
+		case NOT_BIP:			WRITE("(!("); VNODE_1C; WRITE("))"); break;
+		case AND_BIP:			WRITE("(("); VNODE_1C; WRITE(") && ("); VNODE_2C; WRITE("))"); break;
+		case OR_BIP: 			WRITE("(("); VNODE_1C; WRITE(") || ("); VNODE_2C; WRITE("))"); break;
 		case EQ_BIP: 			@<Generate comparison@>; break;
 		case NE_BIP: 			@<Generate comparison@>; break;
 		case GT_BIP: 			@<Generate comparison@>; break;
@@ -41,7 +41,7 @@ void CConditions::comparison_r(code_generation *gen,
 			inter_ti ybip = Primitives::to_bip(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				text_stream *OUT = CodeGen::current(gen);
-				if (depth == 0) { WRITE("(proc->state.tmp = "); CodeGen::FC::frame(gen, X); WRITE(", ("); }
+				if (depth == 0) { WRITE("(proc->state.tmp = "); Vanilla::node(gen, X); WRITE(", ("); }
 				CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(Y), depth+1);
 				if ((bip == NE_BIP) || (bip == NOTIN_BIP) || (bip == HASNT_BIP)) WRITE(" && ");
 				else WRITE(" || ");
@@ -77,7 +77,7 @@ void CConditions::comparison_r(code_generation *gen,
 }
 
 @<Compile first compared@> =
-	if (X) CodeGen::FC::frame(gen, X); else WRITE("proc->state.tmp");
+	if (X) Vanilla::node(gen, X); else WRITE("proc->state.tmp");
 
 @<Compile second compared@> =
-	CodeGen::FC::frame(gen, Y);
+	Vanilla::node(gen, Y);

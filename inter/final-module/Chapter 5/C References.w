@@ -39,7 +39,7 @@ function should be used to generate from it:
 =
 void CReferences::A1_as_ref(code_generation *gen, inter_tree_node *P) {
 	C_GEN_DATA(memdata.next_node_is_a_ref) = TRUE;
-	CodeGen::FC::frame(gen, InterTree::first_child(P));
+	Vanilla::node(gen, InterTree::first_child(P));
 	C_GEN_DATA(memdata.next_node_is_a_ref) = FALSE;
 }
 
@@ -103,18 +103,18 @@ That's what is done by the "A1 as ref" mode set up above.
 
 @<Handle the ref using the incomplete-function mode@> =
 	WRITE("("); CReferences::A1_as_ref(gen, P);
-	if (bip == STORE_BIP) { INV_A2; } else { WRITE("0"); }
+	if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
 	WRITE(", %S))", store_form);
 
 @<Handle the ref with C code working either as lvalue or rvalue@> =
 	switch (bip) {
-		case PREINCREMENT_BIP:	WRITE("++("); INV_A1; WRITE(")"); break;
-		case POSTINCREMENT_BIP:	WRITE("("); INV_A1; WRITE(")++"); break;
-		case PREDECREMENT_BIP:	WRITE("--("); INV_A1; WRITE(")"); break;
-		case POSTDECREMENT_BIP:	WRITE("("); INV_A1; WRITE(")--"); break;
-		case STORE_BIP:			WRITE("("); INV_A1; WRITE(" = "); INV_A2; WRITE(")"); break;
-		case SETBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" | "); INV_A2; break;
-		case CLEARBIT_BIP:		INV_A1; WRITE(" = "); INV_A1; WRITE(" &~ ("); INV_A2; WRITE(")"); break;
+		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
+		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
+		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
+		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
+		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
+		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
+		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
 	}
 
 @

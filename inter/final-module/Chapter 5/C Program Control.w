@@ -36,40 +36,40 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	switch (bip) {
-		case PUSH_BIP:			WRITE("i7_push(proc, "); INV_A1; WRITE(")"); break;
-		case PULL_BIP:			INV_A1; WRITE(" = i7_pull(proc)"); break;
+		case PUSH_BIP:			WRITE("i7_push(proc, "); VNODE_1C; WRITE(")"); break;
+		case PULL_BIP:			VNODE_1C; WRITE(" = i7_pull(proc)"); break;
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
 		case RETURN_BIP: 		@<Generate primitive for return@>; break;
-		case JUMP_BIP: 			WRITE("goto "); INV_A1; break;
+		case JUMP_BIP: 			WRITE("goto "); VNODE_1C; break;
 		case QUIT_BIP: 			WRITE("exit(0)"); break;
 		case RESTORE_BIP: 		break; /* we won't support this in C */
 
 		case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
-								WRITE("i7_call_0(proc, "); INV_A1; WRITE(")"); break;
+								WRITE("i7_call_0(proc, "); VNODE_1C; WRITE(")"); break;
 		case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
-								WRITE("i7_call_1(proc, "); INV_A1; WRITE(", ");
-								INV_A2; WRITE(")"); break;
+								WRITE("i7_call_1(proc, "); VNODE_1C; WRITE(", ");
+								VNODE_2C; WRITE(")"); break;
 		case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
-								WRITE("i7_call_2(proc, "); INV_A1; WRITE(", ");
-								INV_A2; WRITE(", "); INV_A3; WRITE(")"); break;
+								WRITE("i7_call_2(proc, "); VNODE_1C; WRITE(", ");
+								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
 		case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
-								WRITE("i7_call_3(proc, "); INV_A1; WRITE(", ");
-								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(")"); break;
+								WRITE("i7_call_3(proc, "); VNODE_1C; WRITE(", ");
+								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
 		case INDIRECT4_BIP: case INDIRECT4V_BIP:
-								WRITE("i7_call_4(proc, "); INV_A1; WRITE(", ");
-								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(", ");
-								INV_A5; WRITE(")"); break;
+								WRITE("i7_call_4(proc, "); VNODE_1C; WRITE(", ");
+								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
+								VNODE_5C; WRITE(")"); break;
 		case INDIRECT5_BIP: case INDIRECT5V_BIP:
-								WRITE("i7_call_5(proc, "); INV_A1; WRITE(", ");
-								INV_A2; WRITE(", "); INV_A3; WRITE(", "); INV_A4; WRITE(", ");
-								INV_A5; WRITE(", "); INV_A6; WRITE(")"); break;
+								WRITE("i7_call_5(proc, "); VNODE_1C; WRITE(", ");
+								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
+								VNODE_5C; WRITE(", "); VNODE_6C; WRITE(")"); break;
 
 		case EXTERNALCALL_BIP:  {
 			inter_tree_node *N = InterTree::first_child(P);
 			if ((N) && (N->W.data[ID_IFLD] == VAL_IST) && (N->W.data[VAL1_VAL_IFLD] == LITERAL_TEXT_IVAL)) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), N->W.data[VAL1_VAL_IFLD + 1]);
-				WRITE("%S(proc, ", CFunctionModel::external_function(gen, glob_text)); INV_A2; WRITE(")");
+				WRITE("%S(proc, ", CFunctionModel::external_function(gen, glob_text)); VNODE_2C; WRITE(")");
 			} else {
 				internal_error("unimplemented form of !externalcall");
 			}
@@ -88,7 +88,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		case LOOP_BIP: @<Generate primitive for loop@>; break;
 		case SWITCH_BIP: @<Generate primitive for switch@>; break;
 		case CASE_BIP: @<Generate primitive for case@>; break;
-		case ALTERNATIVECASE_BIP: INV_A1; WRITE(", "); INV_A2; break;
+		case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
 		case DEFAULT_BIP: @<Generate primitive for default@>; break;
 
 		default: internal_error("unimplemented prim");
@@ -110,44 +110,44 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	switch (rboolean) {
 		case FALSE: WRITE("return 0"); break;
 		case TRUE: WRITE("return 1"); break;
-		case NOT_APPLICABLE: WRITE("return (i7word_t) "); CodeGen::FC::frame(gen, V); break;
+		case NOT_APPLICABLE: WRITE("return (i7word_t) "); Vanilla::node(gen, V); break;
 	}
 
 @<Generate primitive for if@> =
-	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2;
+	WRITE("if ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifdebug@> =
-	WRITE("#ifdef DEBUG\n"); INDENT; INV_A1; OUTDENT; WRITE("#endif\n");
+	WRITE("#ifdef DEBUG\n"); INDENT; VNODE_1C; OUTDENT; WRITE("#endif\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifstrict@> =
-	WRITE("#ifdef STRICT_MODE\n"); INDENT; INV_A1; OUTDENT; WRITE("#endif\n");
+	WRITE("#ifdef STRICT_MODE\n"); INDENT; VNODE_1C; OUTDENT; WRITE("#endif\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for ifelse@> =
-	WRITE("if ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2; OUTDENT;
-	WRITE("} else {\n"); INDENT; INV_A3; OUTDENT; WRITE("}\n");
+	WRITE("if ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT;
+	WRITE("} else {\n"); INDENT; VNODE_3C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for while@> =
-	WRITE("while ("); INV_A1; WRITE(") {\n"); INDENT; INV_A2; OUTDENT; WRITE("}\n");
+	WRITE("while ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for do@> =
-	WRITE("do {"); INV_A2; WRITE("} while (!(\n"); INDENT; INV_A1; OUTDENT; WRITE("))\n");
+	WRITE("do {"); VNODE_2C; WRITE("} while (!(\n"); INDENT; VNODE_1C; OUTDENT; WRITE("))\n");
 
 @<Generate primitive for for@> =
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
-	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) INV_A1;
-	WRITE(";"); INV_A2;
+	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+	WRITE(";"); VNODE_2C;
 	WRITE(";");
 	inter_tree_node *U = InterTree::third_child(P);
 	if (U->W.data[ID_IFLD] != VAL_IST)
-	CodeGen::FC::frame(gen, U);
-	WRITE(") {\n"); INDENT; INV_A4;
+	Vanilla::node(gen, U);
+	WRITE(") {\n"); INDENT; VNODE_4C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
@@ -159,45 +159,45 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
-	WRITE("for (i7word_t "); INV_A1;
-	WRITE(" = 1; "); INV_A1;
-	WRITE(" < i7_max_objects; "); INV_A1;
+	WRITE("for (i7word_t "); VNODE_1C;
+	WRITE(" = 1; "); VNODE_1C;
+	WRITE(" < i7_max_objects; "); VNODE_1C;
 	WRITE("++) ");
 	if (in_flag == FALSE) {
-		WRITE("if (i7_ofclass(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
+		WRITE("if (i7_ofclass(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")) ");
 	}
 	WRITE("if (");
-	INV_A3;
-	WRITE(") {\n"); INDENT; INV_A4;
+	VNODE_3C;
+	WRITE(") {\n"); INDENT; VNODE_4C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
-	WRITE("for (i7word_t "); INV_A1;
-	WRITE(" = 1; "); INV_A1;
-	WRITE(" < i7_max_objects; "); INV_A1;
+	WRITE("for (i7word_t "); VNODE_1C;
+	WRITE(" = 1; "); VNODE_1C;
+	WRITE(" < i7_max_objects; "); VNODE_1C;
 	WRITE("++) ");
-	WRITE("if (i7_ofclass(proc, "); INV_A1; WRITE(", "); INV_A2; WRITE(")) ");
-	WRITE(" {\n"); INDENT; INV_A3;
+	WRITE("if (i7_ofclass(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")) ");
+	WRITE(" {\n"); INDENT; VNODE_3C;
 	OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for loop@> =
-	WRITE("{\n"); INDENT; INV_A1; OUTDENT; WRITE("}\n");
+	WRITE("{\n"); INDENT; VNODE_1C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for switch@> =
-	WRITE("switch ("); INV_A1;
-	WRITE(") {\n"); INDENT; INV_A2; OUTDENT; WRITE("}\n");
+	WRITE("switch ("); VNODE_1C;
+	WRITE(") {\n"); INDENT; VNODE_2C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for case@> =
 	CProgramControl::caser(gen,  InterTree::first_child(P));
-	INDENT; INV_A2; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
+	INDENT; VNODE_2C; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for default@> =
-	WRITE("default:\n"); INDENT; INV_A1; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
+	WRITE("default:\n"); INDENT; VNODE_1C; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
 @ =
@@ -215,6 +215,6 @@ void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
 	}
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("case ");
-	CodeGen::FC::frame(gen, X);
+	Vanilla::node(gen, X);
 	WRITE(": ");
 }
