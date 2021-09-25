@@ -1661,13 +1661,6 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 		WRITE("%n", RTProperties::iname(<<rp>>));
 		return;
 	}
-	if (<k-kind>(LW)) {
-		kind *K = <<rp>>;
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			WRITE("%n", RTKindDeclarations::iname(K));
-			return;
-		}
-	}
 	if (<instance-of-object>(LW)) {
 		instance *I = <<rp>>;
 		WRITE("%~I", I);
@@ -1684,6 +1677,13 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 				"defining an adjective, but it was an adjective with no definition.");
 		}
 		return;
+	}
+	if (<k-kind>(LW)) {
+		kind *K = <<rp>>;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			WRITE("%n", RTKindDeclarations::iname(K));
+			return;
+		}
 	}
 	nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
 	if (nlv) {

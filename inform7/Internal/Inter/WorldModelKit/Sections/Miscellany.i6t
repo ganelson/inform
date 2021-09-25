@@ -11,14 +11,6 @@ are more important to understand.
 (1) The first three variables to be defined are special in that they are
 significant to very early-style Z-machine interpreters, where they are
 used to produce the status line display (hence |sline1| and |sline2|).
-The first variable must always equal a valid object number, which is why
-we -- pretty weirdly -- set it equal to the placeholder object |InformLibrary|,
-which takes no part in play, and is not a valid I7 object. This is not
-typesafe in I7 terms, but that doesn't matter because initialisation
-will correct it to a typesafe value before any I7 source text can execute.
-(|sline1| and |sline2| are entirely unused on when we target Glulx.)
-Once these variables are defined, the sequence of definition of the rest
-is not significant.
 
 (2) The |say__*| are used for the finite state machine used in printing
 text, which keeps track of automatic paragraph breaking and the like. For
@@ -98,7 +90,7 @@ based on character cells.
 
 =
 ! (1)
-Global location = InformLibrary; ! does not = I7 "location": see below
+Global location = 0; ! does not = I7 "location": see below
 Global sline1; Global sline2;
 
 ! (2)
@@ -241,14 +233,10 @@ Global MAX_SCORE = INITIAL_MAX_SCORE;
 @h Other odds and ends.
 
 =
-Object InformParser "(Inform Parser)" has proper;
-
 [ ParserError error_type;
 	if (error_type) PrintSingleParagraph(error_type);
 	rfalse;
 ];
-
-Object InformLibrary "(Inform Library)" has proper;
 
 [ UnknownVerb v;
 	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {

@@ -98,26 +98,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">box_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">printing_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::prepare</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::prepare</span></span>:<br/>The Vanilla Generator - <a href="2-tvg.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">box_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">printing_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">InterTree::traverse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><a href="2-vc.html#SP1" class="function-link"><span class="function-syntax">VanillaConstants::quartet_visitor</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONSTANT_IST</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::quartet_visitor</span><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONST_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"thedark"</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"InformLibrary"</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"InformParser"</span><span class="plain-syntax">)) ||</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Compass"</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::quartet_present</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::quartet_present</span></span>:<br/>Vanilla Objects - <a href="2-vo.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_quartet_found</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
@@ -135,7 +116,7 @@ is 20. We instead compile this as
 <span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax">;</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::constant_inner</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::constant_inner</span></span>:<br/><a href="2-vc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::constant_inner</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::constant_inner</span></span>:<br/><a href="2-vc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONST_IFLD</span><span class="plain-syntax">);</span>
 
@@ -166,7 +147,9 @@ is 20. We instead compile this as
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"cap_short_name"</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ifndef_me</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">OBJECT_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">OBJECT_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
@@ -201,9 +184,9 @@ is 20. We instead compile this as
 <span class="string-syntax">        case CONSTANT_INDIRECT_TEXT: {</span>
 <span class="string-syntax">            inter_ti ID = P-&gt;W.data[DATA_CONST_IFLD];</span>
 <span class="string-syntax">            text_stream *S = Inode::ID_to_text(P, ID);</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, FALSE)) {</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {</span>
 <span class="string-syntax">                Generators::compile_literal_text(gen, S, FALSE, FALSE, FALSE);</span>
-<span class="string-syntax">                Generators::end_constant(gen, VanillaConstants::name(con_name), FALSE);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), FALSE);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            break;</span>
 <span class="string-syntax">        }</span>
@@ -219,7 +202,7 @@ is 20. We instead compile this as
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)</span>
 <span class="string-syntax">                format = BUFFER_ARRAY_FORMAT;</span>
-<span class="string-syntax">            if (Generators::begin_array(gen, VanillaConstants::name(con_name), con_name, P, format)) {</span>
+<span class="string-syntax">            if (Generators::begin_array(gen, CodeGen::name(con_name), con_name, P, format)) {</span>
 <span class="string-syntax">                if (hang_one) Generators::array_entry(gen, I"</span><span class="constant-syntax">1</span><span class="string-syntax">", format);</span>
 <span class="string-syntax">                int entry_count = 0;</span>
 <span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2)</span>
@@ -232,7 +215,7 @@ is 20. We instead compile this as
 <span class="string-syntax">                    e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(P), val1, val2, &amp;ips);</span>
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                if (e &gt; 1) {</span>
-<span class="string-syntax">                    LOG("</span><span class="identifier-syntax">Entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">masks</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax"> </span><span class="identifier-syntax">blanks</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", VanillaConstants::name(con_name), e);</span>
+<span class="string-syntax">                    LOG("</span><span class="identifier-syntax">Entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">masks</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax"> </span><span class="identifier-syntax">blanks</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", CodeGen::name(con_name), e);</span>
 <span class="string-syntax">                    Generators::array_entries(gen, (int) e, ips, format);</span>
 <span class="string-syntax">                } else {</span>
 <span class="string-syntax">                    for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
@@ -263,7 +246,7 @@ is 20. We instead compile this as
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
 <span class="string-syntax">            text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, FALSE)) {</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {</span>
 <span class="string-syntax">                WRITE("</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
 <span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
 <span class="string-syntax">                    if (i&gt;DATA_CONST_IFLD) {</span>
@@ -279,7 +262,7 @@ is 20. We instead compile this as
 <span class="string-syntax">                    if (bracket) WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
-<span class="string-syntax">                Generators::end_constant(gen, VanillaConstants::name(con_name), FALSE);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), FALSE);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
 <span class="string-syntax">            break;</span>
@@ -289,11 +272,11 @@ is 20. We instead compile this as
 <span class="string-syntax">            if (depth &gt; 1) LOGIF(CONSTANT_DEPTH_CALCULATION,</span>
 <span class="string-syntax">                "</span><span class="identifier-syntax">Con</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con_name-&gt;symbol_name, depth);</span>
 <span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, ifndef_me)) {</span>
+<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, ifndef_me)) {</span>
 <span class="string-syntax">                inter_ti val1 = P-&gt;W.data[DATA_CONST_IFLD];</span>
 <span class="string-syntax">                inter_ti val2 = P-&gt;W.data[DATA_CONST_IFLD + 1];</span>
 <span class="string-syntax">                VanillaConstants::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);</span>
-<span class="string-syntax">                Generators::end_constant(gen, VanillaConstants::name(con_name), ifndef_me);</span>
+<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), ifndef_me);</span>
 <span class="string-syntax">            }</span>
 <span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
 <span class="string-syntax">            break;</span>
@@ -350,7 +333,7 @@ is 20. We instead compile this as
 <span class="string-syntax">        inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(</span>
 <span class="string-syntax">            val1, val2, Inter::Bookmarks::scope(IBM));</span>
 <span class="string-syntax">        if (symb == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        Generators::mangle(gen, OUT, VanillaConstants::name(symb));</span>
+<span class="string-syntax">        Generators::mangle(gen, OUT, CodeGen::name(symb));</span>
 <span class="string-syntax">    } else {</span>
 <span class="string-syntax">        switch (val1) {</span>
 <span class="string-syntax">            case UNDEF_IVAL:</span>
@@ -408,20 +391,20 @@ is 20. We instead compile this as
 <span class="string-syntax">    }</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void VanillaConstants::enter_box_mode(void) {</span>
-<span class="string-syntax">    box_mode = TRUE;</span>
+<span class="string-syntax">void VanillaConstants::enter_box_mode(code_generation *gen) {</span>
+<span class="string-syntax">    gen-&gt;literal_text_mode = 1;</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void VanillaConstants::exit_box_mode(void) {</span>
-<span class="string-syntax">    box_mode = FALSE;</span>
+<span class="string-syntax">void VanillaConstants::exit_box_mode(code_generation *gen) {</span>
+<span class="string-syntax">    gen-&gt;literal_text_mode = 0;</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void VanillaConstants::enter_print_mode(void) {</span>
-<span class="string-syntax">    printing_mode = TRUE;</span>
+<span class="string-syntax">void VanillaConstants::enter_print_mode(code_generation *gen) {</span>
+<span class="string-syntax">    gen-&gt;literal_text_mode = 2;</span>
 <span class="string-syntax">}</span>
 
-<span class="string-syntax">void VanillaConstants::exit_print_mode(void) {</span>
-<span class="string-syntax">    printing_mode = FALSE;</span>
+<span class="string-syntax">void VanillaConstants::exit_print_mode(code_generation *gen) {</span>
+<span class="string-syntax">    gen-&gt;literal_text_mode = 0;</span>
 <span class="string-syntax">}</span>
 
 <span class="string-syntax">inter_ti VanillaConstants::evaluate(code_generation *gen, inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {</span>
@@ -437,7 +420,7 @@ is 20. We instead compile this as
 <span class="string-syntax">                inter_ti dval2 = D-&gt;W.data[DATA_CONST_IFLD + 1];</span>
 <span class="string-syntax">                inter_ti e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(D), dval1, dval2, ips);</span>
 <span class="string-syntax">                if (e == 0) {</span>
-<span class="string-syntax">                    text_stream *S = VanillaConstants::name(aliased);</span>
+<span class="string-syntax">                    text_stream *S = CodeGen::name(aliased);</span>
 <span class="string-syntax">                    if (Str::eq(S, I"</span><span class="identifier-syntax">INDIV_PROP_START</span><span class="string-syntax">")) *ips = TRUE;</span>
 <span class="string-syntax">                }</span>
 <span class="string-syntax">                LOG("</span><span class="identifier-syntax">Eval</span><span class="plain-syntax"> </span><span class="reserved-syntax">const</span><span class="plain-syntax"> $3 = %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", aliased, e);</span>
@@ -465,6 +448,11 @@ is 20. We instead compile this as
 <span class="string-syntax">    return 0;</span>
 <span class="string-syntax">}</span>
 
+<span class="string-syntax">void VanillaConstants::nonliteral(code_generation *gen, inter_symbol *con_name) {</span>
+<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
+<span class="string-syntax">    Generators::mangle(gen, OUT, CodeGen::name(con_name));</span>
+<span class="string-syntax">}</span>
+
 <span class="string-syntax">void VanillaConstants::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {</span>
 <span class="string-syntax">    inter_tree *I = gen-&gt;from;</span>
 <span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
@@ -490,24 +478,19 @@ is 20. We instead compile this as
 <span class="string-syntax">        Generators::compile_dictionary_word(gen, glob_text, TRUE);</span>
 <span class="string-syntax">    } else if (val1 == LITERAL_TEXT_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        Generators::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);</span>
+<span class="string-syntax">        Generators::compile_literal_text(gen, glob_text, (gen-&gt;literal_text_mode == 2)?TRUE:FALSE,</span>
+<span class="string-syntax">            (gen-&gt;literal_text_mode == 1)?TRUE:FALSE, TRUE);</span>
 <span class="string-syntax">    } else if (val1 == GLOB_IVAL) {</span>
 <span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
 <span class="string-syntax">        WRITE("</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", glob_text);</span>
 <span class="string-syntax">    } else internal_error("</span><span class="identifier-syntax">unimplemented</span><span class="plain-syntax"> </span><span class="identifier-syntax">direct</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant</span><span class="string-syntax">");</span>
 <span class="string-syntax">}</span>
-
-<span class="string-syntax">text_stream *VanillaConstants::name(inter_symbol *symb) {</span>
-<span class="string-syntax">    if (symb == NULL) return NULL;</span>
-<span class="string-syntax">    if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);</span>
-<span class="string-syntax">    return symb-&gt;symbol_name;</span>
-<span class="string-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The function VanillaConstants::constant_depth appears nowhere else.</li><li>The function VanillaConstants::constant_depth_inner appears nowhere else.</li><li>The function VanillaConstants::val_to_text is used in Code Generation (<a href="2-cg.html#SP3">&#167;3</a>).</li><li>The function VanillaConstants::literal_text_at is used in <a href="2-vc.html#SP1">&#167;1</a>.</li><li>The function VanillaConstants::compare_tlh appears nowhere else.</li><li>The function VanillaConstants::consolidate is used in The Vanilla Generator (<a href="2-tvg.html#SP1_8">&#167;1.8</a>).</li><li>The function VanillaConstants::enter_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::enter_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::evaluate appears nowhere else.</li><li>The function VanillaConstants::literal is used in Vanilla Objects (<a href="2-vo.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-vo.html#SP8">&#167;8</a>), Vanilla Code (<a href="2-vc2.html#SP2">&#167;2</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::name is used in Vanilla Objects (<a href="2-vo.html#SP4_5">&#167;4.5</a>, <a href="2-vo.html#SP4_6">&#167;4.6</a>, <a href="2-vo.html#SP5_5">&#167;5.5</a>, <a href="2-vo.html#SP5_7">&#167;5.7</a>, <a href="2-vo.html#SP5_8_4">&#167;5.8.4</a>, <a href="2-vo.html#SP5_9">&#167;5.9</a>, <a href="2-vo.html#SP5_11">&#167;5.11</a>, <a href="2-vo.html#SP5_11_2">&#167;5.11.2</a>, <a href="2-vo.html#SP5_11_2_1">&#167;5.11.2.1</a>, <a href="2-vo.html#SP5_11_2_2">&#167;5.11.2.2</a>, <a href="2-vo.html#SP6">&#167;6</a>, <a href="2-vo.html#SP8">&#167;8</a>), Vanilla Code (<a href="2-vc2.html#SP2">&#167;2</a>), Generating Inform 6 (<a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), Final C (<a href="5-fnc.html#SP5">&#167;5</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>), C Memory Model (<a href="5-cmm.html#SP12">&#167;12</a>), C Object Model (<a href="5-com.html#SP6">&#167;6</a>), C Function Model (<a href="5-cfm.html#SP1">&#167;1</a>), C Literals (<a href="5-clt.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The function VanillaConstants::constant_depth appears nowhere else.</li><li>The function VanillaConstants::constant_depth_inner appears nowhere else.</li><li>The function VanillaConstants::val_to_text is used in Code Generation (<a href="2-cg.html#SP3">&#167;3</a>).</li><li>The function VanillaConstants::literal_text_at is used in <a href="2-vc.html#SP1">&#167;1</a>.</li><li>The function VanillaConstants::compare_tlh appears nowhere else.</li><li>The function VanillaConstants::consolidate is used in The Vanilla Generator (<a href="2-tvg.html#SP1_10">&#167;1.10</a>).</li><li>The function VanillaConstants::enter_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::enter_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::evaluate appears nowhere else.</li><li>The function VanillaConstants::nonliteral is used in Vanilla Code (<a href="2-vc2.html#SP4">&#167;4</a>).</li><li>The function VanillaConstants::literal is used in Vanilla Objects (<a href="2-vo.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-vo.html#SP8">&#167;8</a>), Vanilla Code (<a href="2-vc2.html#SP4">&#167;4</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::node_is_ref_to</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::node_is_ref_to</span></span>:<br/>C Memory Model - <a href="5-cmm.html#SP15">&#167;15</a><br/>C Object Model - <a href="5-com.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::node_is_ref_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::node_is_ref_to</span></span>:<br/>C Memory Model - <a href="5-cmm.html#SP15">&#167;15</a><br/>C Object Model - <a href="5-com.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reffed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">REFERENCE_IST</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterTree::first_child</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
@@ -524,7 +507,7 @@ is 20. We instead compile this as
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-tvg.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-tvg.html">tvg</a></li><li class="progresscurrent">vc</li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vv.html">vv</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vo.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-tvg.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-tvg.html">tvg</a></li><li class="progresscurrent">vc</li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vo.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

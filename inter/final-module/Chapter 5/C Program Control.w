@@ -6,29 +6,26 @@ Generating C code to effect loops, branches and the like.
 
 =
 void CProgramControl::initialise(code_generator *cgt) {
-	METHOD_ADD(c_target, COMPILE_PRIMITIVE_MTID, CProgramControl::compile_primitive);
+	METHOD_ADD(c_target, INVOKE_PRIMITIVE_MTID, CProgramControl::invoke_primitive);
 }
 
-int CProgramControl::compile_primitive(code_generator *cgt, code_generation *gen,
-	inter_symbol *prim_name, inter_tree_node *P) {
+void CProgramControl::invoke_primitive(code_generator *cgt, code_generation *gen,
+	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 
-	int r = CReferences::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CArithmetic::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CMemoryModel::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CObjectModel::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CLiteralsModel::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CInputOutputModel::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	r = CConditions::compile_primitive(gen, bip, P);
-	if (r != NOT_APPLICABLE) return r;
-	return CProgramControl::compile_control_primitive(gen, bip, P);
+	int r = CReferences::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CArithmetic::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CMemoryModel::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CObjectModel::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CLiteralsModel::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CInputOutputModel::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CConditions::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CProgramControl::compile_control_primitive(gen, bip, P);
+	if ((void_context) && (r == FALSE)) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE(";\n");
+	}
 }
 
 int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {

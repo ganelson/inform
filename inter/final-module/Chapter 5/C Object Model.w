@@ -6,7 +6,7 @@ How objects, classes and properties are compiled to C.
 
 =
 void CObjectModel::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, CObjectModel::world_model_essentials);
+	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, CObjectModel::pseudo_object);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
 	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, CObjectModel::declare_value_instance);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CObjectModel::declare_class);
@@ -181,11 +181,9 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 @ And each instance here:
 
 =
-void CObjectModel::world_model_essentials(code_generator *cgt, code_generation *gen) {
-	C_GEN_DATA(objdata.compass_instance) = CObjectModel::declare_instance(cgt, gen, I"Object", I"Compass", I"Compass", -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"thedark", NULL, -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformParser", NULL, -1, FALSE);
-	CObjectModel::declare_instance(cgt, gen, I"Object", I"InformLibrary", NULL, -1, FALSE);
+void CObjectModel::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
+	C_property_owner *obj = CObjectModel::declare_instance(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE);
+	if (Str::eq(obj_name, I"Compass")) C_GEN_DATA(objdata.compass_instance) = obj;
 }
 
 C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
@@ -389,7 +387,7 @@ that references to it will not fail to compile.
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = VanillaConstants::name(prop_name);
+	text_stream *name = CodeGen::name(prop_name);
 	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname)
@@ -634,7 +632,7 @@ int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref
 	return FALSE;
 }
 
-int CObjectModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;

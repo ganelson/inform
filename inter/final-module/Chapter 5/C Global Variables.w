@@ -6,8 +6,7 @@ Global variables translated to C.
 
 =
 void CGlobals::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, CGlobals::prepare_variable);
-	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, CGlobals::declare_variable);
+	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, CGlobals::declare_variables);
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, CGlobals::evaluate_variable);
 }
 
@@ -40,20 +39,17 @@ void CGlobals::end(code_generation *gen) {
 @
 
 =
-int CGlobals::prepare_variable(code_generator *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name, int k) {
-	return k;
-}
-
-int CGlobals::declare_variable(code_generator *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
-	CGlobals::declare_variable_by_name(gen, VanillaConstants::name(var_name), P);
-	text_stream *name = Metadata::read_optional_textual(Inter::Packages::container(var_name->definition), I"^name");
-	if (name)
-		CObjectModel::define_header_constant_for_variable(gen, name, C_var_count - 1);
-	else 
-		CObjectModel::define_header_constant_for_variable(gen,  VanillaConstants::name(var_name), C_var_count - 1);
-	return k;
+void CGlobals::declare_variables(code_generator *cgt, code_generation *gen, linked_list *L) {
+	inter_symbol *var_name;
+	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
+		inter_tree_node *P = var_name->definition;
+		CGlobals::declare_variable_by_name(gen, CodeGen::name(var_name), P);
+		text_stream *name = Metadata::read_optional_textual(Inter::Packages::container(var_name->definition), I"^name");
+		if (name)
+			CObjectModel::define_header_constant_for_variable(gen, name, C_var_count - 1);
+		else 
+			CObjectModel::define_header_constant_for_variable(gen,  CodeGen::name(var_name), C_var_count - 1);
+	}
 }
 
 void CGlobals::declare_variable_by_name(code_generation *gen, text_stream *name, 
@@ -74,7 +70,7 @@ void CGlobals::declare_variable_by_name(code_generation *gen, text_stream *name,
 
 void CGlobals::evaluate_variable(code_generator *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("proc->state.variables[i7_var_%S]", VanillaConstants::name(var_name));
+	WRITE("proc->state.variables[i7_var_%S]", CodeGen::name(var_name));
 }
 @
 

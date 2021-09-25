@@ -59,13 +59,19 @@ void VanillaObjects::propertyvalue(code_generation *gen, inter_tree_node *P) {
 
 void VanillaObjects::consolidate(code_generation *gen) {
 	if (properties_written == FALSE) {
-		if (VanillaConstants::quartet_present())
-			Generators::world_model_essentials(gen);
+		InterTree::traverse(gen->from, VanillaObjects::pseudo_object_visitor, gen, NULL, CONSTANT_IST);
 		generated_segment *saved = CodeGen::select(gen, Generators::default_segment(gen));
 		VanillaObjects::knowledge(gen);
 		CodeGen::deselect(gen, saved);
 		properties_written = TRUE;		
 	}
+}
+
+void VanillaObjects::pseudo_object_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0)
+		Generators::pseudo_object(gen, CodeGen::name(con_name));
 }
 
 @h Representing instances in I6.
@@ -244,11 +250,11 @@ in the I6 template, or some extension), and we therefore do nothing.
 	generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, prop_name, 1));
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
 		text_stream *A = Inter::Symbols::get_translate(prop_name);
-		if (A == NULL) A = VanillaConstants::name(prop_name);
+		if (A == NULL) A = CodeGen::name(prop_name);
 		Generators::declare_attribute(gen, A);
 	} else {
 		if (translated == FALSE)
-			Generators::declare_attribute(gen, VanillaConstants::name(prop_name));
+			Generators::declare_attribute(gen, CodeGen::name(prop_name));
 	}
 	CodeGen::deselect(gen, saved);
 
@@ -275,7 +281,7 @@ compiles an I6 constant for this value.
 		FBNA_found = TRUE;
 		generated_segment *saved = CodeGen::select(gen, Generators::constant_segment(gen));
 		Generators::begin_constant(gen, I"FBNA_PROP_NUMBER", NULL, NULL, TRUE, FALSE);
-		Generators::mangle(gen, CodeGen::current(gen), VanillaConstants::name(prop_name));
+		Generators::mangle(gen, CodeGen::current(gen), CodeGen::name(prop_name));
 		Generators::end_constant(gen, I"FBNA_PROP_NUMBER", FALSE);
 		CodeGen::deselect(gen, saved);
 	}
@@ -428,7 +434,7 @@ bother to force them.)
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
 				inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
 				if (kind_name == truth_state_kind_symbol) {
-					Generators::assign_property(gen, VanillaConstants::name(prop_name), I"0", FALSE);
+					Generators::assign_property(gen, CodeGen::name(prop_name), I"0", FALSE);
 				}
 			}
 		}
@@ -469,7 +475,7 @@ property usage is legal.
 			inter_symbol *kind_name = kinds_in_source_order[i];
 			if (VanillaObjects::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
-				Generators::mangled_array_entry(gen, VanillaConstants::name(kind_name), WORD_ARRAY_FORMAT);
+				Generators::mangled_array_entry(gen, CodeGen::name(kind_name), WORD_ARRAY_FORMAT);
 				if ((super_name) && (super_name != object_kind_symbol)) {
 					TEMPORARY_TEXT(N);
 					WRITE_TO(N, "%d", VanillaObjects::kind_of_object_count(super_name));
@@ -626,11 +632,11 @@ just to force the property into being.
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
-			text_stream *call_it = VanillaConstants::name(prop_name);
+			text_stream *call_it = CodeGen::name(prop_name);
 			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				Generators::assign_mangled_property(gen, call_it, VanillaConstants::name(store), FALSE);
+				Generators::assign_mangled_property(gen, call_it, CodeGen::name(store), FALSE);
 			} else {
 				TEMPORARY_TEXT(ident)
 				kov_value_stick *kvs = CREATE(kov_value_stick);
@@ -714,13 +720,13 @@ because I6 doesn't allow function calls in a constant context.
 			(VanillaObjects::is_kind_of_object(kind_name))) {
 			text_stream *super_class = NULL;
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
-			if (super_name) super_class = VanillaConstants::name(super_name);
-			Generators::declare_class(gen, VanillaConstants::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
+			if (super_name) super_class = CodeGen::name(super_name);
+			Generators::declare_class(gen, CodeGen::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
 			VanillaObjects::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));
 			VanillaObjects::plist(gen, FL);
-			Generators::end_class(gen, VanillaConstants::name(kind_name));
+			Generators::end_class(gen, CodeGen::name(kind_name));
 		}
 	}
 
@@ -760,9 +766,9 @@ though this won't happen for any property created by I7 source text.
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
-				Generators::property_offset(gen, VanillaConstants::name(prop_name), pos, TRUE);
+				Generators::property_offset(gen, CodeGen::name(prop_name), pos, TRUE);
 			else
-				Generators::property_offset(gen, VanillaConstants::name(prop_name), pos, FALSE);
+				Generators::property_offset(gen, CodeGen::name(prop_name), pos, FALSE);
 			@<Write the property name in double quotes@>;
 			@<Write a list of kinds or objects which are permitted to have this property@>;
 			Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
@@ -801,7 +807,7 @@ linearly with the size of the source text, even though $N$ does.
 @<Write a list of kinds or objects which are permitted to have this property@> =
 	for (int e=0; e<no_properties; e++) {
 		inter_symbol *eprop_name = props_in_source_order[e];
-		if (Str::eq(VanillaConstants::name(eprop_name), VanillaConstants::name(prop_name))) {
+		if (Str::eq(CodeGen::name(eprop_name), CodeGen::name(prop_name))) {
 			inter_node_list *EVL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
 					Inter::Property::permissions_list(eprop_name));
@@ -820,7 +826,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
-					Generators::mangled_array_entry(gen, VanillaConstants::name(kind_name), WORD_ARRAY_FORMAT);
+					Generators::mangled_array_entry(gen, CodeGen::name(kind_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -834,7 +840,7 @@ linearly with the size of the source text, even though $N$ does.
 				inter_symbol *owner_name =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
-					Generators::mangled_array_entry(gen, VanillaConstants::name(inst_name), WORD_ARRAY_FORMAT);
+					Generators::mangled_array_entry(gen, CodeGen::name(inst_name), WORD_ARRAY_FORMAT);
 					pos++;
 				}
 			}
@@ -853,7 +859,7 @@ linearly with the size of the source text, even though $N$ does.
 				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						Generators::mangled_array_entry(gen, VanillaConstants::name(kind_name), WORD_ARRAY_FORMAT);
+						Generators::mangled_array_entry(gen, CodeGen::name(kind_name), WORD_ARRAY_FORMAT);
 						pos++;
 					}
 				}
@@ -887,12 +893,12 @@ void VanillaObjects::instance(code_generation *gen, inter_tree_node *P) {
 		if (defined) WRITE_TO(val, "%d", val2);
 		generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, inst_name, 1));
 		text_stream *OUT = CodeGen::current(gen);
-		if (Generators::begin_constant(gen, VanillaConstants::name(inst_name), inst_name, P, defined, FALSE)) {
+		if (Generators::begin_constant(gen, CodeGen::name(inst_name), inst_name, P, defined, FALSE)) {
 			WRITE("%S", val);
-			Generators::end_constant(gen, VanillaConstants::name(inst_name), FALSE);
+			Generators::end_constant(gen, CodeGen::name(inst_name), FALSE);
 		}
 		CodeGen::deselect(gen, saved);
-		Generators::declare_value_instance(gen, VanillaConstants::name(inst_name),
+		Generators::declare_value_instance(gen, CodeGen::name(inst_name),
 			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"),
 			val);
 		DISCARD_TEXT(val)
@@ -975,14 +981,14 @@ void VanillaObjects::object_instance(code_generation *gen, inter_tree_node *P) {
 		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
 		if (c < 0) c = 0;
 		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
-		Generators::declare_instance(gen, VanillaConstants::name(inst_kind), VanillaConstants::name(inst_name),
+		Generators::declare_instance(gen, CodeGen::name(inst_kind), CodeGen::name(inst_name),
 			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir);
 		VanillaObjects::append(gen, inst_name);
 		inter_node_list *FL =
 			Inode::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		VanillaObjects::plist(gen, FL);
-		Generators::end_instance(gen, VanillaConstants::name(inst_kind), VanillaConstants::name(inst_name));
+		Generators::end_instance(gen, CodeGen::name(inst_kind), CodeGen::name(inst_name));
 	}
 }
 
@@ -992,7 +998,7 @@ void VanillaObjects::plist(code_generation *gen, inter_node_list *FL) {
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
-		text_stream *call_it = VanillaConstants::name(prop_name);
+		text_stream *call_it = CodeGen::name(prop_name);
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
 				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
@@ -1031,7 +1037,7 @@ void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
 				PUT_TO(T, c);
 			}
 			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
-			WRITE("%S", VanillaConstants::name(symb));
+			WRITE("%S", CodeGen::name(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);
 		if ((c == '\n') && (i != Str::len(S)-1)) WRITE("    ");

@@ -6,7 +6,7 @@ Integer and floating-point calculations translated to C.
 easy.
 
 =
-int CArithmetic::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+int CArithmetic::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case PLUS_BIP:				WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;

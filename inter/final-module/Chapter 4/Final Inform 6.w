@@ -74,7 +74,7 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, I6Target::default_segment);
 	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, I6Target::basic_constant_segment);
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, I6Target::constant_segment);
-	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, I6Target::compile_primitive);
+	METHOD_ADD(cgt, INVOKE_PRIMITIVE_MTID, I6Target::invoke_primitive);
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, I6Target::compile_dictionary_word);
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, I6Target::compile_literal_number);
@@ -83,8 +83,7 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, I6Target::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, I6Target::declare_attribute);
 	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, I6Target::property_offset);
-	METHOD_ADD(cgt, PREPARE_VARIABLE_MTID, I6Target::prepare_variable);
-	METHOD_ADD(cgt, DECLARE_VARIABLE_MTID, I6Target::declare_variable);
+	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, I6Target::declare_variables);
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, I6Target::evaluate_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, I6Target::declare_class);
 	METHOD_ADD(cgt, END_CLASS_MTID, I6Target::end_class);
@@ -96,8 +95,9 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, END_CONSTANT_MTID, I6Target::end_constant);
 	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, I6Target::declare_function);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, I6Target::place_label);
-	METHOD_ADD(cgt, FUNCTION_CALL_MTID, I6Target::function_call);
-	METHOD_ADD(cgt, ASSEMBLY_MTID, I6Target::assembly);
+	METHOD_ADD(cgt, EVALUATE_LABEL_MTID, I6Target::evaluate_label);
+	METHOD_ADD(cgt, INVOKE_FUNCTION_MTID, I6Target::invoke_function);
+	METHOD_ADD(cgt, INVOKE_OPCODE_MTID, I6Target::invoke_opcode);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, I6Target::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, I6Target::array_entry);
 	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, I6Target::compile_literal_symbol);
@@ -105,7 +105,7 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, END_ARRAY_MTID, I6Target::end_array);
 	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, I6Target::offer_pragma)
 	METHOD_ADD(cgt, END_GENERATION_MTID, I6Target::end_generation);
-	METHOD_ADD(cgt, WORLD_MODEL_ESSENTIALS_MTID, I6Target::world_model_essentials);
+	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, I6Target::pseudo_object);
 	METHOD_ADD(cgt, NEW_ACTION_MTID, I6Target::new_action);
 	inform6_target = cgt;
 }
@@ -284,8 +284,8 @@ void I6Target::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifie
 	WRITE("%S", identifier);
 }
 
-int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
-	inter_symbol *prim_name, inter_tree_node *P) {
+void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
+	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
@@ -400,14 +400,14 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 		case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
-		case PRINT_BIP: WRITE("print "); VanillaConstants::enter_print_mode(); VNODE_1C; VanillaConstants::exit_print_mode(); break;
+		case PRINT_BIP: WRITE("print "); VanillaConstants::enter_print_mode(gen); VNODE_1C; VanillaConstants::exit_print_mode(gen); break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); VNODE_1C; break;
 		case PRINTNL_BIP: WRITE("new_line"); break;
 		case PRINTOBJ_BIP: WRITE("print (object) "); VNODE_1C; break;
 		case PRINTNUMBER_BIP: WRITE("print "); VNODE_1C; break;
 		case PRINTDWORD_BIP: WRITE("print (address) "); VNODE_1C; break;
 		case PRINTSTRING_BIP: WRITE("print (string) "); VNODE_1C; break;
-		case BOX_BIP: WRITE("box "); VanillaConstants::enter_box_mode(); VNODE_1C; VanillaConstants::exit_box_mode(); break;
+		case BOX_BIP: WRITE("box "); VanillaConstants::enter_box_mode(gen); VNODE_1C; VanillaConstants::exit_box_mode(gen); break;
 
 		case IF_BIP: @<Generate primitive for if@>; break;
 		case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
@@ -429,7 +429,7 @@ int I6Target::compile_primitive(code_generator *cgt, code_generation *gen,
 
 		default: LOG("Prim: %S\n", prim_name->symbol_name); internal_error("unimplemented prim");
 	}
-	return suppress_terminal_semicolon;
+	if ((void_context) && (suppress_terminal_semicolon == FALSE)) WRITE(";\n");
 }
 
 @<Generate primitive for return@> =
@@ -683,7 +683,7 @@ trick called "stubbing", these being "stub definitions".)
 =
 void I6Target::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = VanillaConstants::name(prop_name);
+	text_stream *name = CodeGen::name(prop_name);
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
@@ -719,50 +719,47 @@ void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_s
 @
 
 =
-int I6Target::prepare_variable(code_generator *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name, int k) {
-//	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
+	linked_list *L) {
+	int k = 0;
+	inter_symbol *var_name;
+	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
+		inter_tree_node *P = var_name->definition;
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			text_stream *S = Str::new();
 			WRITE_TO(S, "(Global_Vars-->%d)", k);
 			Inter::Symbols::set_translate(var_name, S);
+			generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+			text_stream *OUT = CodeGen::current(gen);
+			if (k == 0) WRITE("Array Global_Vars -->\n");
+			WRITE("  (");
+			inter_symbols_table *globals = Inter::Packages::scope_of(P);
+			VanillaConstants::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+			WRITE(") ! -->%d = %S (%S)\n", k, CodeGen::name(var_name), var_name->symbol_name);
+			CodeGen::deselect(gen, saved);
 			k++;
+		} else {
+			generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
+			text_stream *OUT = CodeGen::current(gen);
+			WRITE("Global %S = ", CodeGen::name(var_name));
+			VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+			WRITE(";\n");
+			CodeGen::deselect(gen, saved);
 		}
-//	}
-	return k;
-}
+	}
 
-int I6Target::declare_variable(code_generator *cgt, code_generation *gen,
-	inter_tree_node *P, inter_symbol *var_name, int k, int of) {
-	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
-		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE("Global %S = ", VanillaConstants::name(var_name));
-		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
-		WRITE(";\n");
-		CodeGen::deselect(gen, saved);
-	} else {
-//	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
+	if (k > 0) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
-		if (k == 0) WRITE("Array Global_Vars -->\n");
-		WRITE("  (");
-		inter_symbols_table *globals = Inter::Packages::scope_of(P);
-		VanillaConstants::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
-		WRITE(") ! -->%d = %S (%S)\n", k, VanillaConstants::name(var_name), var_name->symbol_name);
-		k++;
-		if (k == of) {
-			if (k < 2) WRITE("  NULL NULL");
-			WRITE(";\n");
-		}
+		while (k++ < 2) WRITE(" NULL");
+		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
 	}
-	return k;
 }
 
 void I6Target::evaluate_variable(code_generator *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", VanillaConstants::name(var_name));
+	WRITE("%S", CodeGen::name(var_name));
 }
 
 void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
@@ -878,7 +875,7 @@ void I6Target::end_constant(code_generator *cgt, code_generation *gen, text_stre
 
 int this_is_I6_Main = 0;
 void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = VanillaConstants::name(fn);
+	text_stream *fn_name = CodeGen::name(fn);
 	this_is_I6_Main = 0;
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ %S", fn_name);
@@ -939,7 +936,7 @@ void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter
 	}
 	Vanilla::node(gen, D);
 //	text_stream *OUT = CodeGen::current(gen);
-//	text_stream *fn_name = VanillaConstants::name(fn);
+//	text_stream *fn_name = CodeGen::name(fn);
 	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
 		WRITE("#ifdef TARGET_GLULX;\n");
 		WRITE("@gestalt 9 0 res;\n");
@@ -972,6 +969,12 @@ void I6Target::place_label(code_generator *cgt, code_generation *gen, text_strea
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S;\n", label_name);
 }
+void I6Target::evaluate_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	LOOP_THROUGH_TEXT(pos, label_name)
+		if (Str::get(pos) != '.')
+			PUT(Str::get(pos));
+}
 
 @ This enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files by moving the work of I6 veneer routines into
@@ -982,8 +985,8 @@ Inter tree doesn't need to refer to eldritch Glulx-only symbols like |#g$self|
 or implement assembly-language operations like |@accelparam|. (See //final//.)
 
 =
-void I6Target::function_call(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
-	text_stream *fn_name = VanillaConstants::name(fn);
+void I6Target::invoke_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int void_context) {
+	text_stream *fn_name = CodeGen::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", fn_name);
 	int c = 0;
@@ -992,11 +995,12 @@ void I6Target::function_call(code_generator *cgt, code_generation *gen, inter_sy
 		Vanilla::node(gen, F);
 	}
 	WRITE(")");
+	if (void_context) WRITE(";\n");
 }
 
-void I6Target::assembly(code_generator *cgt, code_generation *gen,
+void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
-	inter_tree_node *label, int label_sense) {
+	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", opcode);
 	for (int opc = 0; opc < operand_count; opc++) {
@@ -1008,6 +1012,7 @@ void I6Target::assembly(code_generator *cgt, code_generation *gen,
 		if (label_sense == FALSE) WRITE("~");
 		Vanilla::node(gen, label);
 	}
+	if (void_context) WRITE(";\n");
 }
 
 int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
@@ -1059,7 +1064,7 @@ void I6Target::compile_literal_symbol(code_generator *cgt, code_generation *gen,
 			WRITE("scope=");
 		if ((unsub) && (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1))
 			WRITE("noun=");
-		text_stream *S = VanillaConstants::name(aliased);
+		text_stream *S = CodeGen::name(aliased);
 		if ((unsub) && (Str::begins_with_wide_string(S, L"##"))) {
 			LOOP_THROUGH_TEXT(pos, S)
 				if (pos.index >= 2)
@@ -1093,12 +1098,9 @@ void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream
 	}
 }
 
-void I6Target::world_model_essentials(code_generator *cgt, code_generation *gen) {
+void I6Target::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
 	generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Object Compass \"compass\" has concealed;\n");
-	WRITE("Object thedark \"(darkness object)\";\n");
-	WRITE("Object InformParser \"(Inform Parser)\" has proper;\n");
-	WRITE("Object InformLibrary \"(Inform Library)\" has proper;\n");
+	WRITE("Object %S \"(%S object)\" has concealed;\n", obj_name, obj_name);
 	CodeGen::deselect(gen, saved);
 }

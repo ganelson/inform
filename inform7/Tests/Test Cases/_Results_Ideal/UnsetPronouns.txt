@@ -54,7 +54,7 @@
     [Object list from word 2]
     [Calling NounDomain on location and actor]
      [NounDomain called at word 3
-     seeking indefinite object: owner:(Inform Parser)
+     seeking indefinite object:
      number wanted: 0
      most likely GNAs of names: 4095
       Trying yourself at word 3

@@ -1988,7 +1988,7 @@ is set; it returns a parser error number, or 0 if no error occurred.
                       1: indef_type = indef_type | THAT_BIT;
                       default:
                         indef_owner = PronounValue(cto);
-                        if (indef_owner == NULL) indef_owner = InformParser;
+                        if (indef_owner == NULL) indef_owner = nothing;
                     }
                 }
 

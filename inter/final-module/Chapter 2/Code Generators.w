@@ -95,9 +95,57 @@ I6 code. Still, all pragmas are offered to all generators.
 @e OFFER_PRAGMA_MTID
 
 =
-VOID_METHOD_TYPE(OFFER_PRAGMA_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content)
-void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content) {
+VOID_METHOD_TYPE(OFFER_PRAGMA_MTID, code_generator *generator, code_generation *gen,
+	inter_tree_node *P, text_stream *tag, text_stream *content)
+void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag,
+	text_stream *content) {
 	VOID_METHOD_CALL(gen->generator, OFFER_PRAGMA_MTID, gen, P, tag, content);
+}
+
+@h Methods for code inside functions.
+Labels are identified by name only, and are potential |!jump| destinations:
+
+@e PLACE_LABEL_MTID
+@e EVALUATE_LABEL_MTID
+
+=
+VOID_METHOD_TYPE(PLACE_LABEL_MTID, code_generator *generator, code_generation *gen,
+	text_stream *label_name)
+VOID_METHOD_TYPE(EVALUATE_LABEL_MTID, code_generator *generator, code_generation *gen,
+	text_stream *label_name)
+void Generators::place_label(code_generation *gen, text_stream *label_name) {
+	VOID_METHOD_CALL(gen->generator, PLACE_LABEL_MTID, gen, label_name);
+}
+void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
+	VOID_METHOD_CALL(gen->generator, EVALUATE_LABEL_MTID, gen, label_name);
+}
+
+@ The three ways to invoke:
+
+@e INVOKE_PRIMITIVE_MTID
+@e INVOKE_FUNCTION_MTID
+@e INVOKE_OPCODE_MTID
+
+=
+VOID_METHOD_TYPE(INVOKE_PRIMITIVE_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *prim_name, inter_tree_node *P, int void_context)
+VOID_METHOD_TYPE(INVOKE_FUNCTION_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *fn, inter_tree_node *P, int void_context)
+VOID_METHOD_TYPE(INVOKE_OPCODE_MTID, code_generator *generator, code_generation *gen,
+	text_stream *opcode, int operand_count, inter_tree_node **operands,
+	inter_tree_node *label, int label_sense, int void_context)
+void Generators::invoke_primitive(code_generation *gen, inter_symbol *prim_name,
+	inter_tree_node *P, int void_context) {
+	VOID_METHOD_CALL(gen->generator, INVOKE_PRIMITIVE_MTID, gen, prim_name, P, void_context);
+}
+void Generators::invoke_function(code_generation *gen, inter_symbol *fn, inter_tree_node *P,
+	int void_context) {
+	VOID_METHOD_CALL(gen->generator, INVOKE_FUNCTION_MTID, gen, fn, P, void_context);
+}
+void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int operand_count,
+	inter_tree_node **operands, inter_tree_node *label, int label_sense, int void_context) {
+	VOID_METHOD_CALL(gen->generator, INVOKE_OPCODE_MTID, gen, opcode, operand_count,
+		operands, label, label_sense, void_context);
 }
 
 @
@@ -157,18 +205,6 @@ void Generators::mangle(code_generation *gen, text_stream *OUT, text_stream *ide
 
 @
 
-@e COMPILE_PRIMITIVE_MTID
-
-=
-INT_METHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generator *generator, code_generation *gen, inter_symbol *prim_name, inter_tree_node *P)
-int Generators::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_tree_node *P) {
-	int rv = FALSE;
-	INT_METHOD_CALL(rv, gen->generator, COMPILE_PRIMITIVE_MTID, gen, prim_name, P);
-	return rv;
-}
-
-@
-
 @e COMPILE_DICTIONARY_WORD_MTID
 
 =
@@ -221,11 +257,13 @@ void Generators::declare_attribute(code_generation *gen, text_stream *prop_name)
 
 @e PREPARE_VARIABLE_MTID
 @e DECLARE_VARIABLE_MTID
+@e DECLARE_VARIABLES_MTID
 @e EVALUATE_VARIABLE_MTID
 
 =
 INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
 INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
+VOID_METHOD_TYPE(DECLARE_VARIABLES_MTID, code_generator *generator, code_generation *gen, linked_list *L)
 VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
 VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_symbol *var_name, int as_reference)
 int Generators::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
@@ -238,8 +276,21 @@ int Generators::declare_variable(code_generation *gen, inter_tree_node *P, inter
 	INT_METHOD_CALL(rv, gen->generator, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
 	return rv;
 }
+void Generators::declare_variables(code_generation *gen, linked_list *L) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_VARIABLES_MTID, gen, L);
+}
 void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name, int as_reference) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_VARIABLE_MTID, gen, var_name, as_reference);
+}
+
+@
+
+@e PSEUDO_OBJECT_MTID
+
+=
+VOID_METHOD_TYPE(PSEUDO_OBJECT_MTID, code_generator *generator, code_generation *gen, text_stream *obj_name)
+void Generators::pseudo_object(code_generation *gen, text_stream *obj_name) {
+	VOID_METHOD_CALL(gen->generator, PSEUDO_OBJECT_MTID, gen, obj_name);
 }
 
 @
@@ -318,13 +369,11 @@ void Generators::end_constant(code_generation *gen, text_stream *const_name, int
 @e PREDECLARE_FUNCTION_MTID
 @e DECLARE_FUNCTION_MTID
 @e BEGIN_FUNCTION_CODE_MTID
-@e PLACE_LABEL_MTID
 @e END_FUNCTION_MTID
 
 =
 VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
 VOID_METHOD_TYPE(DECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
-VOID_METHOD_TYPE(PLACE_LABEL_MTID, code_generator *generator, code_generation *gen, text_stream *label_name)
 VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
 void Generators::predeclare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
 	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, fn, code);
@@ -332,36 +381,8 @@ void Generators::predeclare_function(code_generation *gen, inter_symbol *fn, int
 void Generators::declare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_FUNCTION_MTID, gen, fn, code);
 }
-void Generators::place_label(code_generation *gen, text_stream *label_name) {
-	VOID_METHOD_CALL(gen->generator, PLACE_LABEL_MTID, gen, label_name);
-}
 void Generators::end_function(int pass, code_generation *gen, inter_symbol *fn) {
 	VOID_METHOD_CALL(gen->generator, END_FUNCTION_MTID, pass, gen, fn);
-}
-
-@
-
-@e FUNCTION_CALL_MTID
-
-=
-VOID_METHOD_TYPE(FUNCTION_CALL_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc)
-void Generators::function_call(code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
-	VOID_METHOD_CALL(gen->generator, FUNCTION_CALL_MTID, gen, fn, P, argc);
-}
-
-@
-
-@e ASSEMBLY_MTID
-
-=
-VOID_METHOD_TYPE(ASSEMBLY_MTID, code_generator *generator, code_generation *gen,
-	text_stream *opcode, int operand_count, inter_tree_node **operands,
-	inter_tree_node *label, int label_sense)
-
-void Generators::assembly(code_generation *gen, text_stream *opcode, int operand_count,
-	inter_tree_node **operands, inter_tree_node *label, int label_sense) {
-	VOID_METHOD_CALL(gen->generator, ASSEMBLY_MTID, gen, opcode, operand_count,
-		operands, label, label_sense);
 }
 
 @

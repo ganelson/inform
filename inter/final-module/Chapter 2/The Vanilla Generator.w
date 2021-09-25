@@ -15,6 +15,7 @@ be sent |END_GENERATION_MTID|.
 void Vanilla::go(code_generation *gen) {
 	@<Prepare@>;
 	@<Traverse for pragmas@>;
+	@<Traverse for global variables@>;
 	@<Traverse to make function predeclarations@>;
 	@<General traverse@>;
 	@<Consolidate@>;
@@ -23,7 +24,6 @@ void Vanilla::go(code_generation *gen) {
 @<Prepare@> =
 	gen->void_level = -1;
 	VanillaConstants::prepare(gen);
-	VanillaVariables::prepare(gen);
 	VanillaObjects::prepare(gen);
 
 @<Traverse for pragmas@> =
@@ -37,6 +37,18 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	Generators::offer_pragma(gen, P, target_symbol->symbol_name, S);
+}
+
+@<Traverse for global variables@> =
+	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
+	InterTree::traverse(gen->from, Vanilla::gather_variables, gen, NULL, VARIABLE_IST);
+	Generators::declare_variables(gen, gen->global_variables);
+
+@ =
+void Vanilla::gather_variables(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
+	ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
 }
 
 @<Traverse to make function predeclarations@> =
@@ -96,7 +108,6 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 }
 
 @<Consolidate@> =
-	VanillaVariables::consolidate(gen);
 	VanillaConstants::consolidate(gen);
 	VanillaObjects::consolidate(gen);
 
@@ -123,9 +134,8 @@ It is so often used recursively that the following abbreviation macros are helpf
 void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 	switch (P->W.data[ID_IFLD]) {
 		case CONSTANT_IST:      VanillaConstants::constant(gen, P); break;
-		case VARIABLE_IST:      VanillaVariables::variable(gen, P); break;
 		case INSTANCE_IST:      VanillaObjects::instance(gen, P); break;
-		case SPLAT_IST:         VanillaCode::splat(gen, P); break;
+		case PROPERTYVALUE_IST: VanillaObjects::propertyvalue(gen, P); break;
 		case LABEL_IST:         VanillaCode::label(gen, P); break;
 		case CODE_IST:          VanillaCode::code(gen, P); break;
 		case EVALUATION_IST:    VanillaCode::evaluation(gen, P); break;
@@ -136,8 +146,9 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case VAL_IST:           VanillaCode::val_or_ref(gen, P, FALSE); break;
 		case REF_IST:           VanillaCode::val_or_ref(gen, P, TRUE); break;
 		case LAB_IST:           VanillaCode::lab(gen, P); break;
-		case PROPERTYVALUE_IST: VanillaObjects::propertyvalue(gen, P); break;
+		case SPLAT_IST:         Vanilla::splat(gen, P); break;
 
+		case VARIABLE_IST:      break;
 		case SYMBOL_IST:        break;
 		case LOCAL_IST:         break;
 		case NOP_IST:           break;
@@ -146,5 +157,39 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		default:
 			Inter::Defn::write_construct_text(DL, P);
 			internal_error("unexpected node type in Inter tree");
+	}
+}
+
+@ |splat| nodes are the joker in the pack. They copy material verbatim to the
+output, regardless of the language being generated. (In practice, of course, this
+means that the content of a |splat| must carefully have been pre-generated in
+the right format.) Inform uses such nodes as little as it possibly can.
+
+A wrinkle, though, is that the special |URL_SYMBOL_CHAR| is used to mark out
+a URL for a symbol in the Inter tree: this is replaced with its properly
+generated name. So a splat is not quite generator-independent after all.
+
+@d URL_SYMBOL_CHAR 0x00A7
+
+=
+void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_tree *I = gen->from;
+	text_stream *S =
+		Inter::Warehouse::get_text(InterTree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
+	int L = Str::len(S);
+	for (int i=0; i<L; i++) {
+		wchar_t c = Str::get_at(S, i);
+		if (c == URL_SYMBOL_CHAR) {
+			TEMPORARY_TEXT(T)
+			for (i++; i<L; i++) {
+				wchar_t c = Str::get_at(S, i);
+				if (c == URL_SYMBOL_CHAR) break;
+				PUT_TO(T, c);
+			}
+			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
+			WRITE("%S", CodeGen::name(symb));
+			DISCARD_TEXT(T)
+		} else PUT(c);
 	}
 }

@@ -63,7 +63,7 @@ int CReferences::am_I_a_ref(code_generation *gen) {
 @ So, then, here goes:
 
 =
-int CReferences::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+int CReferences::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	text_stream *store_form = NULL;
 	switch (bip) {

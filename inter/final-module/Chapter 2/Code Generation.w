@@ -46,6 +46,8 @@ typedef struct code_generation {
 
 	struct segmentation_data segmentation;
 	int void_level;
+	int literal_text_mode;
+	struct linked_list *global_variables;
 	CLASS_DEFINITION
 } code_generation;
 
@@ -63,6 +65,8 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	else gen->just_this_package = Site::main_package(I);
 	gen->segmentation = CodeGen::new_segmentation_data();
 	gen->void_level = -1;
+	gen->literal_text_mode = 0;
+	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	return gen;
 }
 
@@ -290,4 +294,14 @@ void CodeGen::mark(inter_symbol *symb_name) {
 
 void CodeGen::unmark(inter_symbol *symb_name) {
 	Inter::Symbols::clear_flag(symb_name, TRAVERSE_MARK_BIT);
+}
+
+@h Names.
+Finally, this function is frequently needed:
+
+=
+text_stream *CodeGen::name(inter_symbol *symb) {
+	if (symb == NULL) return NULL;
+	if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);
+	return symb->symbol_name;
 }

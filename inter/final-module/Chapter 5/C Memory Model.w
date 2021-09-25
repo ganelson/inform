@@ -369,7 +369,7 @@ and therefore if |X| is a valid constant-context expression in C then so is
 =
 void CMemoryModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
 	text_stream *OUT = CodeGen::current(gen);
-	text_stream *S = VanillaConstants::name(aliased);
+	text_stream *S = CodeGen::name(aliased);
 	Generators::mangle(gen, OUT, S);
 }
 
@@ -411,7 +411,7 @@ int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref
 	return FALSE;
 }
 
-int CMemoryModel::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+int CMemoryModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case LOOKUP_BIP:     if (CReferences::am_I_a_ref(gen)) @<Word value as reference@>

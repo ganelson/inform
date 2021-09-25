@@ -21,10 +21,10 @@ To decide if (T - a thing) radiates:
 	(- ( (+ radioactive +)({T}) ) -).
 
 To decide if (T - a thing) helps:
-	(- ( {T} has (+ supporter +) ) -).
+	(- ( {T} ofclass (+ supporter +) ) -).
 
 To decide if (T - a thing) helps:
-	(- ( {T} has (+ supporter +) ) -).
+	(- ( {T} ofclass (+ supporter +) ) -).
 
 To decide if (T - a thing) sacks:
 	(- ( {T} == (+ sack of pitchblende +) ) -).

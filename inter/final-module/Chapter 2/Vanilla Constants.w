@@ -28,26 +28,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	}
 }
 
-int the_quartet_found = FALSE;
-int box_mode = FALSE, printing_mode = FALSE;
-
 void VanillaConstants::prepare(code_generation *gen) {
-	the_quartet_found = FALSE;
-	box_mode = FALSE; printing_mode = FALSE;
-	InterTree::traverse(gen->from, VanillaConstants::quartet_visitor, NULL, NULL, CONSTANT_IST);
-}
-
-void VanillaConstants::quartet_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-	if ((Str::eq(con_name->symbol_name, I"thedark")) ||
-		(Str::eq(con_name->symbol_name, I"InformLibrary")) ||
-		(Str::eq(con_name->symbol_name, I"InformParser")) ||
-		(Str::eq(con_name->symbol_name, I"Compass")))
-		the_quartet_found = TRUE;
-}
-
-int VanillaConstants::quartet_present(void) {
-	return the_quartet_found;
 }
 
 @ There's a contrivance here to get around an awkward point of I6 syntax:
@@ -93,7 +74,9 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 		(Str::eq(con_name->symbol_name, I"cap_short_name")))
 		ifndef_me = TRUE;
 
-	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) return;
+	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) {
+		return;
+	}
 	
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_ti ID = P->W.data[DATA_CONST_IFLD];
@@ -128,9 +111,9 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
-			if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, FALSE)) {
+			if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {
 				Generators::compile_literal_text(gen, S, FALSE, FALSE, FALSE);
-				Generators::end_constant(gen, VanillaConstants::name(con_name), FALSE);
+				Generators::end_constant(gen, CodeGen::name(con_name), FALSE);
 			}
 			break;
 		}
@@ -146,7 +129,7 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 			}
 			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
 				format = BUFFER_ARRAY_FORMAT;
-			if (Generators::begin_array(gen, VanillaConstants::name(con_name), con_name, P, format)) {
+			if (Generators::begin_array(gen, CodeGen::name(con_name), con_name, P, format)) {
 				if (hang_one) Generators::array_entry(gen, I"1", format);
 				int entry_count = 0;
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
@@ -159,7 +142,7 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 					e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(P), val1, val2, &ips);
 				}
 				if (e > 1) {
-					LOG("Entry count 1 on %S masks %d blanks\n", VanillaConstants::name(con_name), e);
+					LOG("Entry count 1 on %S masks %d blanks\n", CodeGen::name(con_name), e);
 					Generators::array_entries(gen, (int) e, ips, format);
 				} else {
 					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
@@ -190,7 +173,7 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 			}
 			generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));
 			text_stream *OUT = CodeGen::current(gen);
-			if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, FALSE)) {
+			if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {
 				WRITE("(");
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i>DATA_CONST_IFLD) {
@@ -206,7 +189,7 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 					if (bracket) WRITE(")");
 				}
 				WRITE(")");
-				Generators::end_constant(gen, VanillaConstants::name(con_name), FALSE);
+				Generators::end_constant(gen, CodeGen::name(con_name), FALSE);
 			}
 			CodeGen::deselect(gen, saved);
 			break;
@@ -216,11 +199,11 @@ void VanillaConstants::constant_inner(code_generation *gen, inter_tree_node *P) 
 			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
 				"Con %S has depth %d\n", con_name->symbol_name, depth);
 			generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));
-			if (Generators::begin_constant(gen, VanillaConstants::name(con_name), con_name, P, TRUE, ifndef_me)) {
+			if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, ifndef_me)) {
 				inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 				inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 				VanillaConstants::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
-				Generators::end_constant(gen, VanillaConstants::name(con_name), ifndef_me);
+				Generators::end_constant(gen, CodeGen::name(con_name), ifndef_me);
 			}
 			CodeGen::deselect(gen, saved);
 			break;
@@ -277,7 +260,7 @@ void VanillaConstants::val_to_text(code_generation *gen, inter_bookmark *IBM, in
 		inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(
 			val1, val2, Inter::Bookmarks::scope(IBM));
 		if (symb == NULL) internal_error("bad symbol");
-		Generators::mangle(gen, OUT, VanillaConstants::name(symb));
+		Generators::mangle(gen, OUT, CodeGen::name(symb));
 	} else {
 		switch (val1) {
 			case UNDEF_IVAL:
@@ -335,20 +318,20 @@ void VanillaConstants::consolidate(code_generation *gen) {
 	}
 }
 
-void VanillaConstants::enter_box_mode(void) {
-	box_mode = TRUE;
+void VanillaConstants::enter_box_mode(code_generation *gen) {
+	gen->literal_text_mode = 1;
 }
 
-void VanillaConstants::exit_box_mode(void) {
-	box_mode = FALSE;
+void VanillaConstants::exit_box_mode(code_generation *gen) {
+	gen->literal_text_mode = 0;
 }
 
-void VanillaConstants::enter_print_mode(void) {
-	printing_mode = TRUE;
+void VanillaConstants::enter_print_mode(code_generation *gen) {
+	gen->literal_text_mode = 2;
 }
 
-void VanillaConstants::exit_print_mode(void) {
-	printing_mode = FALSE;
+void VanillaConstants::exit_print_mode(code_generation *gen) {
+	gen->literal_text_mode = 0;
 }
 
 inter_ti VanillaConstants::evaluate(code_generation *gen, inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {
@@ -364,7 +347,7 @@ inter_ti VanillaConstants::evaluate(code_generation *gen, inter_symbols_table *T
 				inter_ti dval2 = D->W.data[DATA_CONST_IFLD + 1];
 				inter_ti e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(D), dval1, dval2, ips);
 				if (e == 0) {
-					text_stream *S = VanillaConstants::name(aliased);
+					text_stream *S = CodeGen::name(aliased);
 					if (Str::eq(S, I"INDIV_PROP_START")) *ips = TRUE;
 				}
 				LOG("Eval const $3 = %d\n", aliased, e);
@@ -392,6 +375,11 @@ inter_ti VanillaConstants::evaluate(code_generation *gen, inter_symbols_table *T
 	return 0;
 }
 
+void VanillaConstants::nonliteral(code_generation *gen, inter_symbol *con_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	Generators::mangle(gen, OUT, CodeGen::name(con_name));
+}
+
 void VanillaConstants::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
@@ -417,17 +405,12 @@ void VanillaConstants::literal(code_generation *gen, inter_symbol *con_name, int
 		Generators::compile_dictionary_word(gen, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-		Generators::compile_literal_text(gen, glob_text, printing_mode, box_mode, TRUE);
+		Generators::compile_literal_text(gen, glob_text, (gen->literal_text_mode == 2)?TRUE:FALSE,
+			(gen->literal_text_mode == 1)?TRUE:FALSE, TRUE);
 	} else if (val1 == GLOB_IVAL) {
 		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("%S", glob_text);
 	} else internal_error("unimplemented direct constant");
-}
-
-text_stream *VanillaConstants::name(inter_symbol *symb) {
-	if (symb == NULL) return NULL;
-	if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);
-	return symb->symbol_name;
 }
 
 @ =

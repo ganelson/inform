@@ -34,9 +34,6 @@ it is always an actual room, and I7 has nothing corresponding to I6's
 flag which the I6 library would have stored as the |visited| attribute for the
 |thedark| object.
 
-The "maximum score" is, rather cheekily, translated to an I6 constant:
-and this cannot be changed at run-time.
-
 =
 The location -- documented at var_location -- is an object that varies.
 The score -- documented at var_score -- is a number that varies.

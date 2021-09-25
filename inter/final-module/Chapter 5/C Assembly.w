@@ -6,7 +6,7 @@ The problem of assembly language.
 
 =
 void CAssembly::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, ASSEMBLY_MTID, CAssembly::assembly);
+	METHOD_ADD(cgt, INVOKE_OPCODE_MTID, CAssembly::assembly);
 }
 
 void CAssembly::initialise_data(code_generation *gen) {
@@ -53,7 +53,7 @@ void i7_push(i7process_t *proc, i7word_t x) {
 =
 void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
-	inter_tree_node *label, int label_sense) {
+	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 
 	int vararg_operands_from = 0, vararg_operands_to = 0;
@@ -149,6 +149,7 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	}
 	if (pushed_result) WRITE("; i7_push(proc, proc->state.tmp)");
 
+	if (void_context) WRITE(";\n");
 }
 
 @

@@ -5,7 +5,7 @@ Evaluating conditions.
 @
 
 =
-int CConditions::compile_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
+int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
 		case NOT_BIP:			WRITE("(!("); VNODE_1C; WRITE("))"); break;

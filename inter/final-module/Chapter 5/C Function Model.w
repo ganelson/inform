@@ -9,7 +9,8 @@ void CFunctionModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, PREDECLARE_FUNCTION_MTID, CFunctionModel::predeclare_function);
 	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, CFunctionModel::declare_function);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, CFunctionModel::place_label);
-	METHOD_ADD(cgt, FUNCTION_CALL_MTID, CFunctionModel::function_call);
+	METHOD_ADD(cgt, EVALUATE_LABEL_MTID, CFunctionModel::evaluate_label);
+	METHOD_ADD(cgt, INVOKE_FUNCTION_MTID, CFunctionModel::invoke_function);
 }
 
 typedef struct C_generation_function_model_data {
@@ -167,7 +168,7 @@ void CFunctionModel::make_veneer_fcf(code_generation *gen, text_stream *unmangle
 
 void CFunctionModel::predeclare_function(code_generator *cgt, code_generation *gen,
 	inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = VanillaConstants::name(fn);
+	text_stream *fn_name = CodeGen::name(fn);
 	inter_package *P = Inter::Packages::container(fn->definition);
 	inter_package *PP = Inter::Packages::parent(P);
 	text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
@@ -221,7 +222,7 @@ void CFunctionModel::seek_locals(code_generation *gen, inter_tree_node *P) {
 		inter_symbol *var_name =
 			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 		TEMPORARY_TEXT(name)
-		CNamespace::mangle(gen->generator, name, VanillaConstants::name(var_name));
+		CNamespace::mangle(gen->generator, name, CodeGen::name(var_name));
 		final_c_function *fcf = C_GEN_DATA(fndata.current_fcf);
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			fcf->uses_vararg_model = TRUE;
@@ -236,7 +237,7 @@ void CFunctionModel::seek_locals(code_generation *gen, inter_tree_node *P) {
 }
 
 void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = VanillaConstants::name(fn);
+	text_stream *fn_name = CodeGen::name(fn);
 	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 	C_GEN_DATA(fndata.current_fcf) = fcf;
 		text_stream *OUT = CodeGen::current(gen);
@@ -266,13 +267,22 @@ void CFunctionModel::place_label(code_generator *cgt, code_generation *gen, text
 			PUT(Str::get(pos));
 	WRITE(": ;\n", label_name);
 }
+void CFunctionModel::evaluate_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {
+	text_stream *OUT = CodeGen::current(gen);
+	LOOP_THROUGH_TEXT(pos, label_name)
+		if (Str::get(pos) != '.')
+			PUT(Str::get(pos));
+}
 
 int CFunctionModel::inside_function(code_generation *gen) {
 	if (C_GEN_DATA(fndata.compiling_function)) return TRUE;
 	return FALSE;
 }
 
-void CFunctionModel::function_call(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int argc) {
+void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int void_context) {
+	int argc = 0;
+	LOOP_THROUGH_INTER_CHILDREN(F, P) argc++;
+
 	inter_tree_node *D = fn->definition;
 	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) && (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
@@ -286,7 +296,7 @@ void CFunctionModel::function_call(code_generator *cgt, code_generation *gen, in
 	if (GENERAL_POINTER_IS_NULL(fn->translation_data) == FALSE)
 		fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 
-	text_stream *fn_name = VanillaConstants::name(fn);
+	text_stream *fn_name = CodeGen::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	
 	inter_tree_node *fargstuff[128];
@@ -324,6 +334,7 @@ void CFunctionModel::function_call(code_generator *cgt, code_generation *gen, in
 		}
 	}
 	WRITE(")");
+	if (void_context) WRITE(";\n");
 }
 
 @

@@ -13,7 +13,6 @@ Chapter 2: Mechanism
 	The Vanilla Generator
 	Vanilla Constants
 	Vanilla Objects
-	Vanilla Variables
 	Vanilla Code
 
 Chapter 3: Other Generators
