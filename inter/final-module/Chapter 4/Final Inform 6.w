@@ -70,7 +70,6 @@ void I6Target::create_generator(void) {
 	code_generator *cgt = Generators::new(I"inform6");
 	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, I6Target::begin_generation);
 	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, I6Target::general_segment);
-	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, I6Target::default_segment);
 	METHOD_ADD(cgt, INVOKE_PRIMITIVE_MTID, I6Target::invoke_primitive);
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, I6Target::compile_dictionary_word);
@@ -252,9 +251,6 @@ int I6Target::general_segment(code_generator *cgt, code_generation *gen, inter_t
 	return main_matter_I7CGS;
 }
 
-int I6Target::default_segment(code_generator *cgt) {
-	return main_matter_I7CGS;
-}
 int I6Target::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
 	if (depth >= 10) depth = 10;
 	return constants_1_I7CGS + depth - 1;

@@ -60,9 +60,7 @@ void VanillaObjects::propertyvalue(code_generation *gen, inter_tree_node *P) {
 void VanillaObjects::consolidate(code_generation *gen) {
 	if (properties_written == FALSE) {
 		InterTree::traverse(gen->from, VanillaObjects::pseudo_object_visitor, gen, NULL, CONSTANT_IST);
-//		generated_segment *saved = CodeGen::select(gen, Generators::default_segment(gen));
 		VanillaObjects::knowledge(gen);
-//		CodeGen::deselect(gen, saved);
 		properties_written = TRUE;		
 	}
 }

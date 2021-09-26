@@ -23,7 +23,6 @@ void CTarget::create_generator(void) {
 	CInputOutputModel::initialise(c_target);
 
 	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
-	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
 }
 
 @h Static supporting code.
@@ -556,12 +555,9 @@ int CTarget::general_segment(code_generator *cgt, code_generation *gen, inter_tr
 			return choice;
 		}
 	}
-	return CTarget::default_segment(cgt);
-}
-
-int CTarget::default_segment(code_generator *cgt) {
 	return c_main_matter_I7CGS;
 }
+
 int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
 	if (con_name) {
 		if (Str::eq(Inter::Symbols::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;

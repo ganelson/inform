@@ -155,17 +155,10 @@ void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int op
 
 =
 INT_METHOD_TYPE(GENERAL_SEGMENT_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P)
-INT_METHOD_TYPE(DEFAULT_SEGMENT_MTID, code_generator *generator, code_generation *gen)
 
 int Generators::general_segment(code_generation *gen, inter_tree_node *P) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->generator, GENERAL_SEGMENT_MTID, gen, P);
-	return rv;
-}
-
-int Generators::default_segment(code_generation *gen) {
-	int rv = 0;
-	INT_METHOD_CALL(rv, gen->generator, DEFAULT_SEGMENT_MTID, gen);
 	return rv;
 }
 
