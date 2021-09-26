@@ -127,13 +127,12 @@ void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) 
 		if (named_s == NULL) named_s =
 			InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 		if (named_s == NULL) internal_error("unknown constant in val/ref in Inter tree");
-		if ((Str::eq(CodeGen::name(named_s), I"self")) ||
+		if ((Str::eq(Inter::Symbols::name(named_s), I"self")) ||
 			((named_s->definition) &&
 				(named_s->definition->W.data[ID_IFLD] == VARIABLE_IST))) {
 			Generators::evaluate_variable(gen, named_s, ref);
 		} else {
-//			if (ref) internal_error("named constant as ref in Inter tree");
-			VanillaConstants::nonliteral(gen, named_s);
+			Generators::compile_literal_symbol(gen, named_s);
 		}
 	} else switch (val1) {
 		case UNDEF_IVAL: internal_error("undef val/ref in Inter tree");
@@ -144,7 +143,7 @@ void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) 
 		case REAL_IVAL:
 		case PDWORD_IVAL:
 			if (ref) internal_error("literal constant as ref in Inter tree");
-			VanillaConstants::literal(gen, NULL, NULL, val1, val2, FALSE);
+			CodeGen::pair(gen, P, val1, val2);
 			break;
 		default: internal_error("unknown ival field in val/ref in Inter tree");
 	}	

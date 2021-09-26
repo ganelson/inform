@@ -23,7 +23,6 @@ void Vanilla::go(code_generation *gen) {
 
 @<Prepare@> =
 	gen->void_level = -1;
-	VanillaConstants::prepare(gen);
 	VanillaObjects::prepare(gen);
 
 @<Traverse for pragmas@> =
@@ -188,7 +187,7 @@ void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
 				PUT_TO(T, c);
 			}
 			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
-			WRITE("%S", CodeGen::name(symb));
+			WRITE("%S", Inter::Symbols::name(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);
 	}

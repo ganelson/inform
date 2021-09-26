@@ -1724,17 +1724,11 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 =
 void CSIInline::emit_showme(parse_node *spec) {
 	TEMPORARY_TEXT(OUT)
-//	itc_save_OUT = OUT;
 	if (Node::is(spec, PROPERTY_VALUE_NT))
 		spec = Lvalues::underlying_property(spec);
 	kind *K = Specifications::to_kind(spec);
 	if (Node::is(spec, CONSTANT_NT) == FALSE)
 		WRITE("\"%+W\" = ", Node::get_text(spec));
-//	itc_save_DL = DL; DL = itc_save_OUT;
-//	Streams::enable_debugging(DL);
-//	Kinds::Textual::log(K);
-//	Streams::disable_debugging(DL);
-//	DL = itc_save_DL;
 	WRITE("%u: ", K);
 	EmitCode::inv(PRINT_BIP);
 	EmitCode::down();

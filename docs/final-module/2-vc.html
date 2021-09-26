@@ -73,6 +73,8 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#2">Chapter 2: Mechanism</a></li><li><b>Vanilla Constants</b></li></ul></div>
 <p class="purpose">How the vanilla code generation strategy handles constants, including literal texts, lists, and arrays.</p>
 
+<ul class="toc"><li><a href="2-vc.html#SP3">&#167;3. Text literals</a></li></ul><hr class="tocbar">
+
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -80,64 +82,154 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONST_IFLD</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no constant"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">metadata_key</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">) == </span><span class="identifier-syntax">Site::main_package_if_it_exists</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"Bad constant: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"constant defined in main"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">metadata_key</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ACTION_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">)  {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Declare this constant as an action name</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">FAKE_ACTION_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Declare this constant as a fake action name</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">VENEER_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            ;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">OBJECT_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            ;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Constant::is_routine</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Declare this constant as a function</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Declare this constant as the special UUID string array</span><span class="named-paragraph-number">1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">FORMAT_CONST_IFLD</span><span class="plain-syntax">]) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_INDIRECT_TEXT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Declare this as a textual constant</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_INDIRECT_LIST:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Declare this as a list constant</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_SUM_LIST:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PRODUCT_LIST:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_DIFFERENCE_LIST:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_QUOTIENT_LIST:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_7" class="named-paragraph-link"><span class="named-paragraph">Declare this as a computed constant</span><span class="named-paragraph-number">1.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_DIRECT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-vc.html#SP1_8" class="named-paragraph-link"><span class="named-paragraph">Declare this as an explicit constant</span><span class="named-paragraph-number">1.8</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"ungenerated constant format"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEXT_LITERAL_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><a href="2-vc.html#SP2" class="function-link"><span class="function-syntax">VanillaConstants::literal_text_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Inode::ID_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">ID</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><a href="2-cg.html#SP9" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-vc.html#SP2" class="function-link"><span class="function-syntax">VanillaConstants::constant_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg.html#SP9" class="function-link"><span class="function-syntax">CodeGen::deselect_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><a href="2-vc.html#SP2" class="function-link"><span class="function-syntax">VanillaConstants::constant_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::prepare</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::prepare</span></span>:<br/>The Vanilla Generator - <a href="2-tvg.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>There's a contrivance here to get around an awkward point of I6 syntax:
-an array written in the form
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this constant as an action name</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP21" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
-<p class="commentary">makes a table with 20 entries, not a table with one entry whose initial value
-is 20. We instead compile this as
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this constant as a fake action name</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP21" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this constant as a function</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::constant_inner</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::constant_inner</span></span>:<br/><a href="2-vc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_CONST_IFLD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">code_block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Constant::code_block</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Packages::definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">code_block</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::declare_function</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this constant as the special UUID string array</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+</p>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ACTION_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">)  {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP21" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inode::ID_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">ID</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">, </span><span class="string-syntax">"UUID:</span><span class="comment-syntax">");</span>
+<span class="string-syntax">    for (int i=0, L=Str::len(S); i&lt;L; i++)</span>
+<span class="string-syntax">        WRITE_TO(content, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">c</span><span class="string-syntax">", Characters::toupper(Str::get_at(S, i)));</span>
+<span class="string-syntax">    WRITE_TO(content, "</span><span class="plain-syntax">//</span><span class="string-syntax">");</span>
+<span class="string-syntax">    TEMPORARY_TEXT(length)</span>
+<span class="string-syntax">    WRITE_TO(length, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">d</span><span class="string-syntax">", (int) Str::len(content));</span>
+<span class="string-syntax">    Generators::array_entry(gen, length, BYTE_ARRAY_FORMAT);</span>
+<span class="string-syntax">    DISCARD_TEXT(length)</span>
+<span class="string-syntax">    LOOP_THROUGH_TEXT(pos, content) {</span>
+<span class="string-syntax">        TEMPORARY_TEXT(ch)</span>
+<span class="string-syntax">        WRITE_TO(ch, "</span><span class="character-syntax">'%c'</span><span class="string-syntax">", Str::get(pos));</span>
+<span class="string-syntax">        Generators::array_entry(gen, ch, BYTE_ARRAY_FORMAT);</span>
+<span class="string-syntax">        DISCARD_TEXT(ch)</span>
+<span class="string-syntax">    }</span>
+<span class="string-syntax">    DISCARD_TEXT(content)</span>
+<span class="string-syntax">    Generators::end_array(gen, BYTE_ARRAY_FORMAT);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this as a textual constant</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inode::ID_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">ID</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-vc.html#SP3" class="function-link"><span class="function-syntax">VanillaConstants::literal_text_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this as a list constant</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">, </span><span class="identifier-syntax">hang_one</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">do_not_bracket</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax"> - </span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">)/2;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">do_not_bracket</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">BYTEARRAY_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">TABLEARRAY_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="constant-syntax">TABLE_ARRAY_FORMAT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax"> - </span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) { </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">; </span><span class="identifier-syntax">hang_one</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    }</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">FAKE_ACTION_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">fa</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP21" class="function-link"><span class="function-syntax">Generators::new_action</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fa</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">BUFFERARRAY_IANN</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="constant-syntax">BUFFER_ARRAY_FORMAT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">hang_one</span><span class="plain-syntax">) </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"1"</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">entry_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;P-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] != </span><span class="identifier-syntax">DIVIDER_IVAL</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">entry_count</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">hang_one</span><span class="plain-syntax">) </span><span class="identifier-syntax">entry_count</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ips</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">entry_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ASSIMILATED_IANN</span><span class="plain-syntax">) &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">], </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">+1];</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">e</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Constant::evaluate</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::scope_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">val1</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">ips</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">e</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Entry count 1 on %S masks %d blanks\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">e</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::array_entries</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">e</span><span class="plain-syntax">, </span><span class="identifier-syntax">ips</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;P-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] != </span><span class="identifier-syntax">DIVIDER_IVAL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">entry</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                    </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="2-cg.html#SP15" class="function-link"><span class="function-syntax">CodeGen::pair</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">], </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">+1]);</span>
+<span class="plain-syntax">                    </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::deselect_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">entry</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::end_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this as a computed constant</span><span class="named-paragraph-number">1.7</span></span><span class="comment-syntax"> =</span>
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP17" class="function-link"><span class="function-syntax">Generators::declare_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="constant-syntax">COMPUTED_GDCFORM</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_8" class="paragraph-anchor"></a><b>&#167;1.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare this as an explicit constant</span><span class="named-paragraph-number">1.8</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ifndef_me</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">VENEER_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"WORDSIZE"</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"TARGET_ZCODE"</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"INDIV_PROP_START"</span><span class="plain-syntax">)) ||</span>
@@ -146,366 +238,102 @@ is 20. We instead compile this as
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"DEBUG"</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"cap_short_name"</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ifndef_me</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">OBJECT_IANN</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">symbol_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inode::ID_to_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">ID</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP19" class="function-link"><span class="function-syntax">Generators::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"UUID_ARRAY"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">BYTE_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">, </span><span class="string-syntax">"UUID:</span><span class="comment-syntax">");</span>
-<span class="string-syntax">        for (int i=0, L=Str::len(S); i&lt;L; i++) WRITE_TO(content, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">c</span><span class="string-syntax">", Characters::toupper(Str::get_at(S, i)));</span>
-<span class="string-syntax">        WRITE_TO(content, "</span><span class="plain-syntax">//</span><span class="string-syntax">");</span>
-<span class="string-syntax">        TEMPORARY_TEXT(length)</span>
-<span class="string-syntax">        WRITE_TO(length, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">d</span><span class="string-syntax">", (int) Str::len(content));</span>
-<span class="string-syntax">        Generators::array_entry(gen, length, BYTE_ARRAY_FORMAT);</span>
-<span class="string-syntax">        DISCARD_TEXT(length)</span>
-<span class="string-syntax">        LOOP_THROUGH_TEXT(pos, content) {</span>
-<span class="string-syntax">            TEMPORARY_TEXT(ch)</span>
-<span class="string-syntax">            WRITE_TO(ch, "</span><span class="character-syntax">'%c'</span><span class="string-syntax">", Str::get(pos));</span>
-<span class="string-syntax">            Generators::array_entry(gen, ch, BYTE_ARRAY_FORMAT);</span>
-<span class="string-syntax">            DISCARD_TEXT(ch)</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        DISCARD_TEXT(content)</span>
-<span class="string-syntax">        Generators::end_array(gen, BYTE_ARRAY_FORMAT);</span>
-<span class="string-syntax">        return;</span>
-<span class="string-syntax">    }</span>
-
-<span class="string-syntax">    if (Inter::Constant::is_routine(con_name)) {</span>
-<span class="string-syntax">        inter_package *code_block = Inter::Constant::code_block(con_name);</span>
-<span class="string-syntax">        inter_tree_node *D = Inter::Packages::definition(code_block);</span>
-<span class="string-syntax">        Generators::declare_function(gen, con_name, D);</span>
-<span class="string-syntax">        return;</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">    switch (P-&gt;W.data[FORMAT_CONST_IFLD]) {</span>
-<span class="string-syntax">        case CONSTANT_INDIRECT_TEXT: {</span>
-<span class="string-syntax">            inter_ti ID = P-&gt;W.data[DATA_CONST_IFLD];</span>
-<span class="string-syntax">            text_stream *S = Inode::ID_to_text(P, ID);</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {</span>
-<span class="string-syntax">                Generators::compile_literal_text(gen, S, FALSE, FALSE, FALSE);</span>
-<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), FALSE);</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            break;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        case CONSTANT_INDIRECT_LIST: {</span>
-<span class="string-syntax">            int format = WORD_ARRAY_FORMAT, hang_one = FALSE;</span>
-<span class="string-syntax">            int do_not_bracket = FALSE, unsub = FALSE;</span>
-<span class="string-syntax">            int X = (P-&gt;W.extent - DATA_CONST_IFLD)/2;</span>
-<span class="string-syntax">            if (X == 1) do_not_bracket = TRUE;</span>
-<span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;</span>
-<span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) {</span>
-<span class="string-syntax">                format = TABLE_ARRAY_FORMAT;</span>
-<span class="string-syntax">                if (P-&gt;W.extent - DATA_CONST_IFLD == 2) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)</span>
-<span class="string-syntax">                format = BUFFER_ARRAY_FORMAT;</span>
-<span class="string-syntax">            if (Generators::begin_array(gen, CodeGen::name(con_name), con_name, P, format)) {</span>
-<span class="string-syntax">                if (hang_one) Generators::array_entry(gen, I"</span><span class="constant-syntax">1</span><span class="string-syntax">", format);</span>
-<span class="string-syntax">                int entry_count = 0;</span>
-<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2)</span>
-<span class="string-syntax">                    if (P-&gt;W.data[i] != DIVIDER_IVAL)</span>
-<span class="string-syntax">                        entry_count++;</span>
-<span class="string-syntax">                if (hang_one) entry_count++;</span>
-<span class="string-syntax">                inter_ti e = 0; int ips = FALSE;</span>
-<span class="string-syntax">                if ((entry_count == 1) &amp;&amp; (Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) &gt;= 0)) {</span>
-<span class="string-syntax">                    inter_ti val1 = P-&gt;W.data[DATA_CONST_IFLD], val2 = P-&gt;W.data[DATA_CONST_IFLD+1];</span>
-<span class="string-syntax">                    e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(P), val1, val2, &amp;ips);</span>
-<span class="string-syntax">                }</span>
-<span class="string-syntax">                if (e &gt; 1) {</span>
-<span class="string-syntax">                    LOG("</span><span class="identifier-syntax">Entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">masks</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax"> </span><span class="identifier-syntax">blanks</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", CodeGen::name(con_name), e);</span>
-<span class="string-syntax">                    Generators::array_entries(gen, (int) e, ips, format);</span>
-<span class="string-syntax">                } else {</span>
-<span class="string-syntax">                    for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
-<span class="string-syntax">                        if (P-&gt;W.data[i] != DIVIDER_IVAL) {</span>
-<span class="string-syntax">                            TEMPORARY_TEXT(entry)</span>
-<span class="string-syntax">                            CodeGen::select_temporary(gen, entry);</span>
-<span class="string-syntax">                            VanillaConstants::literal(gen, con_name, Inter::Packages::scope_of(P), P-&gt;W.data[i], P-&gt;W.data[i+1], unsub);</span>
-<span class="string-syntax">                            CodeGen::deselect_temporary(gen);</span>
-<span class="string-syntax">                            Generators::array_entry(gen, entry, format);</span>
-<span class="string-syntax">                            DISCARD_TEXT(entry)</span>
-<span class="string-syntax">                        }</span>
-<span class="string-syntax">                    }</span>
-<span class="string-syntax">                }</span>
-<span class="string-syntax">                Generators::end_array(gen, format);</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            WRITE("</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">");</span>
-<span class="string-syntax">            break;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        case CONSTANT_SUM_LIST:</span>
-<span class="string-syntax">        case CONSTANT_PRODUCT_LIST:</span>
-<span class="string-syntax">        case CONSTANT_DIFFERENCE_LIST:</span>
-<span class="string-syntax">        case CONSTANT_QUOTIENT_LIST: {</span>
-<span class="string-syntax">            int depth = VanillaConstants::constant_depth(con_name);</span>
-<span class="string-syntax">            if (depth &gt; 1) {</span>
-<span class="string-syntax">                LOGIF(CONSTANT_DEPTH_CALCULATION,</span>
-<span class="string-syntax">                    "</span><span class="identifier-syntax">Con</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con_name-&gt;symbol_name, depth);</span>
-<span class="string-syntax">                VanillaConstants::constant_depth(con_name);</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
-<span class="string-syntax">            text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, FALSE)) {</span>
-<span class="string-syntax">                WRITE("</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
-<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;P-&gt;W.extent; i=i+2) {</span>
-<span class="string-syntax">                    if (i&gt;DATA_CONST_IFLD) {</span>
-<span class="string-syntax">                        if (P-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE("</span><span class="plain-syntax"> + </span><span class="string-syntax">");</span>
-<span class="string-syntax">                        if (P-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE("</span><span class="plain-syntax"> * </span><span class="string-syntax">");</span>
-<span class="string-syntax">                        if (P-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE("</span><span class="plain-syntax"> - </span><span class="string-syntax">");</span>
-<span class="string-syntax">                        if (P-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE("</span><span class="plain-syntax"> / </span><span class="string-syntax">");</span>
-<span class="string-syntax">                    }</span>
-<span class="string-syntax">                    int bracket = TRUE;</span>
-<span class="string-syntax">                    if ((P-&gt;W.data[i] == LITERAL_IVAL) || (Inter::Symbols::is_stored_in_data(P-&gt;W.data[i], P-&gt;W.data[i+1]))) bracket = FALSE;</span>
-<span class="string-syntax">                    if (bracket) WRITE("</span><span class="plain-syntax">(</span><span class="string-syntax">");</span>
-<span class="string-syntax">                    VanillaConstants::literal(gen, con_name, Inter::Packages::scope_of(P), P-&gt;W.data[i], P-&gt;W.data[i+1], FALSE);</span>
-<span class="string-syntax">                    if (bracket) WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
-<span class="string-syntax">                }</span>
-<span class="string-syntax">                WRITE("</span><span class="plain-syntax">)</span><span class="string-syntax">");</span>
-<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), FALSE);</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
-<span class="string-syntax">            break;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        case CONSTANT_DIRECT: {</span>
-<span class="string-syntax">            int depth = VanillaConstants::constant_depth(con_name);</span>
-<span class="string-syntax">            if (depth &gt; 1) LOGIF(CONSTANT_DEPTH_CALCULATION,</span>
-<span class="string-syntax">                "</span><span class="identifier-syntax">Con</span><span class="plain-syntax"> %</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con_name-&gt;symbol_name, depth);</span>
-<span class="string-syntax">            generated_segment *saved = CodeGen::select(gen, Generators::basic_constant_segment(gen, con_name, depth));</span>
-<span class="string-syntax">            if (Generators::begin_constant(gen, CodeGen::name(con_name), con_name, P, TRUE, ifndef_me)) {</span>
-<span class="string-syntax">                inter_ti val1 = P-&gt;W.data[DATA_CONST_IFLD];</span>
-<span class="string-syntax">                inter_ti val2 = P-&gt;W.data[DATA_CONST_IFLD + 1];</span>
-<span class="string-syntax">                VanillaConstants::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);</span>
-<span class="string-syntax">                Generators::end_constant(gen, CodeGen::name(con_name), ifndef_me);</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            CodeGen::deselect(gen, saved);</span>
-<span class="string-syntax">            break;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        default: internal_error("</span><span class="identifier-syntax">ungenerated</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">format</span><span class="string-syntax">");</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">int VanillaConstants::constant_depth(inter_symbol *con) {</span>
-<span class="string-syntax">    LOG_INDENT;</span>
-<span class="string-syntax">    int d = VanillaConstants::constant_depth_inner(con);</span>
-<span class="string-syntax">    LOGIF(CONSTANT_DEPTH_CALCULATION, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", con-&gt;symbol_name, d);</span>
-<span class="string-syntax">    LOG_OUTDENT;</span>
-<span class="string-syntax">    return d;</span>
-<span class="string-syntax">}</span>
-<span class="string-syntax">int VanillaConstants::constant_depth_inner(inter_symbol *con) {</span>
-<span class="string-syntax">    if (con == NULL) return 1;</span>
-<span class="string-syntax">    inter_tree_node *D = Inter::Symbols::definition(con);</span>
-<span class="string-syntax">    if (D-&gt;W.data[ID_IFLD] != CONSTANT_IST) return 1;</span>
-<span class="string-syntax">    if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {</span>
-<span class="string-syntax">        inter_ti val1 = D-&gt;W.data[DATA_CONST_IFLD];</span>
-<span class="string-syntax">        inter_ti val2 = D-&gt;W.data[DATA_CONST_IFLD + 1];</span>
-<span class="string-syntax">        if (val1 == ALIAS_IVAL) {</span>
-<span class="string-syntax">            inter_symbol *alias =</span>
-<span class="string-syntax">                InterSymbolsTables::symbol_from_data_pair_and_table(</span>
-<span class="string-syntax">                    val1, val2, Inter::Packages::scope(D-&gt;package));</span>
-<span class="string-syntax">            return VanillaConstants::constant_depth(alias) + 1;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        return 1;</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">    if ((D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) ||</span>
-<span class="string-syntax">        (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) ||</span>
-<span class="string-syntax">        (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) ||</span>
-<span class="string-syntax">        (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {</span>
-<span class="string-syntax">        int total = 0;</span>
-<span class="string-syntax">        for (int i=DATA_CONST_IFLD; i&lt;D-&gt;W.extent; i=i+2) {</span>
-<span class="string-syntax">            inter_ti val1 = D-&gt;W.data[i];</span>
-<span class="string-syntax">            inter_ti val2 = D-&gt;W.data[i + 1];</span>
-<span class="string-syntax">            if (val1 == ALIAS_IVAL) {</span>
-<span class="string-syntax">                inter_symbol *alias =</span>
-<span class="string-syntax">                    InterSymbolsTables::symbol_from_data_pair_and_table(</span>
-<span class="string-syntax">                        val1, val2, Inter::Packages::scope(D-&gt;package));</span>
-<span class="string-syntax">                total += VanillaConstants::constant_depth(alias);</span>
-<span class="string-syntax">            } else total++;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">        return 1 + total;</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">    return 1;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::val_to_text(code_generation *gen, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {</span>
-<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    if (Inter::Symbols::is_stored_in_data(val1, val2)) {</span>
-<span class="string-syntax">        inter_symbol *symb = InterSymbolsTables::symbol_from_data_pair_and_table(</span>
-<span class="string-syntax">            val1, val2, Inter::Bookmarks::scope(IBM));</span>
-<span class="string-syntax">        if (symb == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        Generators::mangle(gen, OUT, CodeGen::name(symb));</span>
-<span class="string-syntax">    } else {</span>
-<span class="string-syntax">        switch (val1) {</span>
-<span class="string-syntax">            case UNDEF_IVAL:</span>
-<span class="string-syntax">                internal_error("</span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">undefined</span><span class="string-syntax">");</span>
-<span class="string-syntax">            case LITERAL_IVAL:</span>
-<span class="string-syntax">            case LITERAL_TEXT_IVAL:</span>
-<span class="string-syntax">            case GLOB_IVAL:</span>
-<span class="string-syntax">            case DWORD_IVAL:</span>
-<span class="string-syntax">            case REAL_IVAL:</span>
-<span class="string-syntax">            case PDWORD_IVAL:</span>
-<span class="string-syntax">                VanillaConstants::literal(gen, NULL, NULL, val1, val2, FALSE);</span>
-<span class="string-syntax">                break;</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">typedef struct text_literal_holder {</span>
-<span class="string-syntax">    struct text_stream *definition_code;</span>
-<span class="string-syntax">    struct text_stream *literal_content;</span>
-<span class="string-syntax">    CLASS_DEFINITION</span>
-<span class="string-syntax">} text_literal_holder;</span>
-
-<span class="string-syntax">text_stream *VanillaConstants::literal_text_at(code_generation *gen, text_stream *S) {</span>
-<span class="string-syntax">    text_literal_holder *tlh = CREATE(text_literal_holder);</span>
-<span class="string-syntax">    tlh-&gt;definition_code = Str::new();</span>
-<span class="string-syntax">    tlh-&gt;literal_content = S;</span>
-<span class="string-syntax">    return tlh-&gt;definition_code;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">int VanillaConstants::compare_tlh(const void *elem1, const void *elem2) {</span>
-<span class="string-syntax">    const text_literal_holder **e1 = (const text_literal_holder **) elem1;</span>
-<span class="string-syntax">    const text_literal_holder **e2 = (const text_literal_holder **) elem2;</span>
-<span class="string-syntax">    if ((*e1 == NULL) || (*e2 == NULL))</span>
-<span class="string-syntax">        internal_error("</span><span class="identifier-syntax">Disaster</span><span class="plain-syntax"> </span><span class="reserved-syntax">while</span><span class="plain-syntax"> </span><span class="identifier-syntax">sorting</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">literals</span><span class="string-syntax">");</span>
-<span class="string-syntax">    text_stream *s1 = (*e1)-&gt;literal_content;</span>
-<span class="string-syntax">    text_stream *s2 = (*e2)-&gt;literal_content;</span>
-<span class="string-syntax">    return Str::cmp(s1, s2);</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::consolidate(code_generation *gen) {</span>
-<span class="string-syntax">    int no_tlh = NUMBER_CREATED(text_literal_holder);</span>
-<span class="string-syntax">    text_literal_holder **sorted = (text_literal_holder **)</span>
-<span class="string-syntax">            (Memory::calloc(no_tlh, sizeof(text_literal_holder *), CODE_GENERATION_MREASON));</span>
-<span class="string-syntax">    int i = 0;</span>
-<span class="string-syntax">    text_literal_holder *tlh;</span>
-<span class="string-syntax">    LOOP_OVER(tlh, text_literal_holder) sorted[i++] = tlh;</span>
-
-<span class="string-syntax">    qsort(sorted, (size_t) no_tlh, sizeof(text_literal_holder *), VanillaConstants::compare_tlh);</span>
-<span class="string-syntax">    for (int i=0; i&lt;no_tlh; i++) {</span>
-<span class="string-syntax">        text_literal_holder *tlh = sorted[i];</span>
-<span class="string-syntax">        generated_segment *saved = CodeGen::select(gen, Generators::tl_segment(gen));</span>
-<span class="string-syntax">        text_stream *TO = CodeGen::current(gen);</span>
-<span class="string-syntax">        WRITE_TO(TO, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", tlh-&gt;definition_code);</span>
-<span class="string-syntax">        CodeGen::deselect(gen, saved);</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::enter_box_mode(code_generation *gen) {</span>
-<span class="string-syntax">    gen-&gt;literal_text_mode = 1;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::exit_box_mode(code_generation *gen) {</span>
-<span class="string-syntax">    gen-&gt;literal_text_mode = 0;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::enter_print_mode(code_generation *gen) {</span>
-<span class="string-syntax">    gen-&gt;literal_text_mode = 2;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::exit_print_mode(code_generation *gen) {</span>
-<span class="string-syntax">    gen-&gt;literal_text_mode = 0;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">inter_ti VanillaConstants::evaluate(code_generation *gen, inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {</span>
-<span class="string-syntax">    if (val1 == LITERAL_IVAL) return val2;</span>
-<span class="string-syntax">    if (Inter::Symbols::is_stored_in_data(val1, val2)) {</span>
-<span class="string-syntax">        inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);</span>
-<span class="string-syntax">        if (aliased == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">aliased</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        inter_tree_node *D = aliased-&gt;definition;</span>
-<span class="string-syntax">        if (D == NULL) internal_error("</span><span class="identifier-syntax">undefined</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        switch (D-&gt;W.data[FORMAT_CONST_IFLD]) {</span>
-<span class="string-syntax">            case CONSTANT_DIRECT: {</span>
-<span class="string-syntax">                inter_ti dval1 = D-&gt;W.data[DATA_CONST_IFLD];</span>
-<span class="string-syntax">                inter_ti dval2 = D-&gt;W.data[DATA_CONST_IFLD + 1];</span>
-<span class="string-syntax">                inter_ti e = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(D), dval1, dval2, ips);</span>
-<span class="string-syntax">                if (e == 0) {</span>
-<span class="string-syntax">                    text_stream *S = CodeGen::name(aliased);</span>
-<span class="string-syntax">                    if (Str::eq(S, I"</span><span class="identifier-syntax">INDIV_PROP_START</span><span class="string-syntax">")) *ips = TRUE;</span>
-<span class="string-syntax">                }</span>
-<span class="string-syntax">                LOG("</span><span class="identifier-syntax">Eval</span><span class="plain-syntax"> </span><span class="reserved-syntax">const</span><span class="plain-syntax"> $3 = %</span><span class="identifier-syntax">d</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="string-syntax">", aliased, e);</span>
-<span class="string-syntax">                return e;</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">            case CONSTANT_SUM_LIST:</span>
-<span class="string-syntax">            case CONSTANT_PRODUCT_LIST:</span>
-<span class="string-syntax">            case CONSTANT_DIFFERENCE_LIST:</span>
-<span class="string-syntax">            case CONSTANT_QUOTIENT_LIST: {</span>
-<span class="string-syntax">                inter_ti result = 0;</span>
-<span class="string-syntax">                for (int i=DATA_CONST_IFLD; i&lt;D-&gt;W.extent; i=i+2) {</span>
-<span class="string-syntax">                    inter_ti extra = VanillaConstants::evaluate(gen, Inter::Packages::scope_of(D), D-&gt;W.data[i], D-&gt;W.data[i+1], ips);</span>
-<span class="string-syntax">                    if (i == DATA_CONST_IFLD) result = extra;</span>
-<span class="string-syntax">                    else {</span>
-<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;</span>
-<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) result = result * extra;</span>
-<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) result = result - extra;</span>
-<span class="string-syntax">                        if (D-&gt;W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) result = result / extra;</span>
-<span class="string-syntax">                    }</span>
-<span class="string-syntax">                }</span>
-<span class="string-syntax">                return result;</span>
-<span class="string-syntax">            }</span>
-<span class="string-syntax">        }</span>
-<span class="string-syntax">    }</span>
-<span class="string-syntax">    return 0;</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::nonliteral(code_generation *gen, inter_symbol *con_name) {</span>
-<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    Generators::mangle(gen, OUT, CodeGen::name(con_name));</span>
-<span class="string-syntax">}</span>
-
-<span class="string-syntax">void VanillaConstants::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {</span>
-<span class="string-syntax">    inter_tree *I = gen-&gt;from;</span>
-<span class="string-syntax">    text_stream *OUT = CodeGen::current(gen);</span>
-<span class="string-syntax">    if (val1 == LITERAL_IVAL) {</span>
-<span class="string-syntax">        int hex = FALSE;</span>
-<span class="string-syntax">        if ((con_name) &amp;&amp; (Inter::Annotations::find(&amp;(con_name-&gt;ann_set), HEX_IANN))) hex = TRUE;</span>
-<span class="string-syntax">        Generators::compile_literal_number(gen, val2, hex);</span>
-<span class="string-syntax">    } else if (Inter::Symbols::is_stored_in_data(val1, val2)) {</span>
-<span class="string-syntax">        inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);</span>
-<span class="string-syntax">        if (aliased == NULL) internal_error("</span><span class="identifier-syntax">bad</span><span class="plain-syntax"> </span><span class="identifier-syntax">aliased</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbol</span><span class="string-syntax">");</span>
-<span class="string-syntax">        Generators::compile_literal_symbol(gen, aliased, unsub);</span>
-<span class="string-syntax">    } else if (val1 == DIVIDER_IVAL) {</span>
-<span class="string-syntax">        text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        WRITE("</span><span class="plain-syntax"> ! %</span><span class="identifier-syntax">S</span><span class="plain-syntax">\</span><span class="identifier-syntax">n</span><span class="plain-syntax">\</span><span class="identifier-syntax">t</span><span class="string-syntax">", divider_text);</span>
-<span class="string-syntax">    } else if (val1 == REAL_IVAL) {</span>
-<span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        Generators::compile_literal_real(gen, glob_text);</span>
-<span class="string-syntax">    } else if (val1 == DWORD_IVAL) {</span>
-<span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        Generators::compile_dictionary_word(gen, glob_text, FALSE);</span>
-<span class="string-syntax">    } else if (val1 == PDWORD_IVAL) {</span>
-<span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        Generators::compile_dictionary_word(gen, glob_text, TRUE);</span>
-<span class="string-syntax">    } else if (val1 == LITERAL_TEXT_IVAL) {</span>
-<span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        Generators::compile_literal_text(gen, glob_text, (gen-&gt;literal_text_mode == 2)?TRUE:FALSE,</span>
-<span class="string-syntax">            (gen-&gt;literal_text_mode == 1)?TRUE:FALSE, TRUE);</span>
-<span class="string-syntax">    } else if (val1 == GLOB_IVAL) {</span>
-<span class="string-syntax">        text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);</span>
-<span class="string-syntax">        WRITE("</span><span class="plain-syntax">%</span><span class="identifier-syntax">S</span><span class="string-syntax">", glob_text);</span>
-<span class="string-syntax">    } else internal_error("</span><span class="identifier-syntax">unimplemented</span><span class="plain-syntax"> </span><span class="identifier-syntax">direct</span><span class="plain-syntax"> </span><span class="identifier-syntax">constant</span><span class="string-syntax">");</span>
-<span class="string-syntax">}</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP17" class="function-link"><span class="function-syntax">Generators::declare_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="constant-syntax">DATA_GDCFORM</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">ifndef_me</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>The function VanillaConstants::constant_depth appears nowhere else.</li><li>The function VanillaConstants::constant_depth_inner appears nowhere else.</li><li>The function VanillaConstants::val_to_text is used in Code Generation (<a href="2-cg.html#SP3">&#167;3</a>).</li><li>The function VanillaConstants::literal_text_at is used in <a href="2-vc.html#SP1">&#167;1</a>.</li><li>The function VanillaConstants::compare_tlh appears nowhere else.</li><li>The function VanillaConstants::consolidate is used in The Vanilla Generator (<a href="2-tvg.html#SP1_10">&#167;1.10</a>).</li><li>The function VanillaConstants::enter_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_box_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::enter_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::exit_print_mode is used in Generating Inform 6 (<a href="4-fi6.html#SP3">&#167;3</a>), C Input-Output Model (<a href="5-cim.html#SP2">&#167;2</a>).</li><li>The function VanillaConstants::evaluate appears nowhere else.</li><li>The function VanillaConstants::nonliteral is used in Vanilla Code (<a href="2-vc2.html#SP4">&#167;4</a>).</li><li>The function VanillaConstants::literal is used in Vanilla Objects (<a href="2-vo.html#SP5_8_5_1_1">&#167;5.8.5.1.1</a>, <a href="2-vo.html#SP8">&#167;8</a>), Vanilla Code (<a href="2-vc2.html#SP4">&#167;4</a>), Generating Inform 6 (<a href="4-fi6.html#SP8">&#167;8</a>, <a href="4-fi6.html#SP9">&#167;9</a>), C Global Variables (<a href="5-cgv.html#SP2">&#167;2</a>).</li><li>The structure text_literal_holder is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vc.html#SP1">&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::node_is_ref_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::node_is_ref_to</span></span>:<br/>C Memory Model - <a href="5-cmm.html#SP15">&#167;15</a><br/>C Object Model - <a href="5-com.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reffed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">REFERENCE_IST</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterTree::first_child</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">reffed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">INV_IST</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">METHOD_INV_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">INVOKED_PRIMITIVE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prim</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Inv::invokee</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">bip</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Primitives::to_bip</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">prim</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">bip</span><span class="plain-syntax"> == </span><span class="identifier-syntax">seek_bip</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">reffed</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::definition_value</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::definition_value</span></span>:<br/>Generating Inform 6 - <a href="4-fi6.html#SP8">&#167;8</a><br/>C Namespace - <a href="5-cnm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP11" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">form</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">RAW_GDCFORM:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                </span><a href="2-cg2.html#SP11" class="function-link"><span class="function-syntax">Generators::compile_literal_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DATA_GDCFORM:</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">val1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">HEX_IANN</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">                </span><a href="2-cg2.html#SP11" class="function-link"><span class="function-syntax">Generators::compile_literal_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">                </span><a href="2-cg.html#SP15" class="function-link"><span class="function-syntax">CodeGen::pair</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">val1</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMPUTED_GDCFORM:</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"("</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;P-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">extent</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">DATA_CONST_IFLD</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">FORMAT_CONST_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">CONSTANT_SUM_LIST</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" + "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">FORMAT_CONST_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">CONSTANT_PRODUCT_LIST</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" * "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">FORMAT_CONST_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">CONSTANT_DIFFERENCE_LIST</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" - "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">FORMAT_CONST_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">CONSTANT_QUOTIENT_LIST</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" / "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bracket</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] == </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">) ||</span>
+<span class="plain-syntax">                    (</span><span class="identifier-syntax">Inter::Symbols::is_stored_in_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">], </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">+1]))) </span><span class="identifier-syntax">bracket</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bracket</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"("</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><a href="2-cg.html#SP15" class="function-link"><span class="function-syntax">CodeGen::pair</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">], </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">+1]);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bracket</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">LITERAL_TEXT_GDCFORM:</span>
+<span class="plain-syntax">            </span><a href="2-cg2.html#SP12" class="function-link"><span class="function-syntax">Generators::compile_literal_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Text literals. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">literal_content</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::literal_text_at</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::literal_text_at</span></span>:<br/><a href="2-vc.html#SP1_5">&#167;1.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_name</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tlh</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">literal_content</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">con_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">con_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">tlh</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_literals</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::compare_tlh</span><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">elem1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">elem2</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **</span><span class="identifier-syntax">e1</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">elem1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **</span><span class="identifier-syntax">e2</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">elem2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((*</span><span class="identifier-syntax">e1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (*</span><span class="identifier-syntax">e2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Disaster while sorting text literals"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">s1</span><span class="plain-syntax"> = (*</span><span class="identifier-syntax">e1</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">literal_content</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">s2</span><span class="plain-syntax"> = (*</span><span class="identifier-syntax">e2</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">literal_content</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Str::cmp</span><span class="plain-syntax">(</span><span class="identifier-syntax">s1</span><span class="plain-syntax">, </span><span class="identifier-syntax">s2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaConstants::consolidate</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaConstants::consolidate</span></span>:<br/>The Vanilla Generator - <a href="2-tvg.html#SP1_10">&#167;1.10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_tlh</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LinkedLists::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_literals</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">no_tlh</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **</span><span class="identifier-syntax">sorted</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> **)</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">Memory::calloc</span><span class="plain-syntax">(</span><span class="identifier-syntax">no_tlh</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> *), </span><span class="constant-syntax">CODE_GENERATION_MREASON</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tlh</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">tlh</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_literals</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">sorted</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">qsort</span><span class="plain-syntax">(</span><span class="identifier-syntax">sorted</span><span class="plain-syntax">, (</span><span class="identifier-syntax">size_t</span><span class="plain-syntax">) </span><span class="identifier-syntax">no_tlh</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> *), </span><a href="2-vc.html#SP3" class="function-link"><span class="function-syntax">VanillaConstants::compare_tlh</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">no_tlh</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">text_literal_holder</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tlh</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sorted</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">            </span><a href="2-cg2.html#SP17" class="function-link"><span class="function-syntax">Generators::declare_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">con_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">con_name</span><span class="plain-syntax">, </span><span class="constant-syntax">LITERAL_TEXT_GDCFORM</span><span class="plain-syntax">, </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">con_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">, </span><span class="identifier-syntax">tlh</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">literal_content</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>The structure text_literal_holder is private to this section.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-tvg.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-tvg.html">tvg</a></li><li class="progresscurrent">vc</li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vo.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

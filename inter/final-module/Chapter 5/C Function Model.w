@@ -168,7 +168,7 @@ void CFunctionModel::make_veneer_fcf(code_generation *gen, text_stream *unmangle
 
 void CFunctionModel::predeclare_function(code_generator *cgt, code_generation *gen,
 	inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = CodeGen::name(fn);
+	text_stream *fn_name = Inter::Symbols::name(fn);
 	inter_package *P = Inter::Packages::container(fn->definition);
 	inter_package *PP = Inter::Packages::parent(P);
 	text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
@@ -222,7 +222,7 @@ void CFunctionModel::seek_locals(code_generation *gen, inter_tree_node *P) {
 		inter_symbol *var_name =
 			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 		TEMPORARY_TEXT(name)
-		CNamespace::mangle(gen->generator, name, CodeGen::name(var_name));
+		CNamespace::mangle(gen->generator, name, Inter::Symbols::name(var_name));
 		final_c_function *fcf = C_GEN_DATA(fndata.current_fcf);
 		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
 			fcf->uses_vararg_model = TRUE;
@@ -237,7 +237,7 @@ void CFunctionModel::seek_locals(code_generation *gen, inter_tree_node *P) {
 }
 
 void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = CodeGen::name(fn);
+	text_stream *fn_name = Inter::Symbols::name(fn);
 	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 	C_GEN_DATA(fndata.current_fcf) = fcf;
 		text_stream *OUT = CodeGen::current(gen);
@@ -296,7 +296,7 @@ void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen, 
 	if (GENERAL_POINTER_IS_NULL(fn->translation_data) == FALSE)
 		fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 
-	text_stream *fn_name = CodeGen::name(fn);
+	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	
 	inter_tree_node *fargstuff[128];

@@ -70,10 +70,7 @@ void I6Target::create_generator(void) {
 	code_generator *cgt = Generators::new(I"inform6");
 	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, I6Target::begin_generation);
 	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, I6Target::general_segment);
-	METHOD_ADD(cgt, TL_SEGMENT_MTID, I6Target::tl_segment);
 	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, I6Target::default_segment);
-	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, I6Target::basic_constant_segment);
-	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, I6Target::constant_segment);
 	METHOD_ADD(cgt, INVOKE_PRIMITIVE_MTID, I6Target::invoke_primitive);
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, I6Target::compile_dictionary_word);
@@ -91,8 +88,7 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6Target::end_instance);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6Target::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6Target::assign_property);
-	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, I6Target::begin_constant);
-	METHOD_ADD(cgt, END_CONSTANT_MTID, I6Target::end_constant);
+	METHOD_ADD(cgt, DECLARE_CONSTANT_MTID, I6Target::declare_constant);
 	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, I6Target::declare_function);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, I6Target::place_label);
 	METHOD_ADD(cgt, EVALUATE_LABEL_MTID, I6Target::evaluate_label);
@@ -259,15 +255,9 @@ int I6Target::general_segment(code_generator *cgt, code_generation *gen, inter_t
 int I6Target::default_segment(code_generator *cgt) {
 	return main_matter_I7CGS;
 }
-int I6Target::constant_segment(code_generator *cgt, code_generation *gen) {
-	return early_matter_I7CGS;
-}
 int I6Target::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
 	if (depth >= 10) depth = 10;
 	return constants_1_I7CGS + depth - 1;
-}
-int I6Target::tl_segment(code_generator *cgt) {
-	return text_literals_code_I7CGS;
 }
 
 void I6Target::offer_pragma(code_generator *cgt, code_generation *gen,
@@ -400,14 +390,14 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 		case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
-		case PRINT_BIP: WRITE("print "); VanillaConstants::enter_print_mode(gen); VNODE_1C; VanillaConstants::exit_print_mode(gen); break;
+		case PRINT_BIP: WRITE("print "); CodeGen::lt_mode(gen, PRINTING_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
 		case PRINTCHAR_BIP: WRITE("print (char) "); VNODE_1C; break;
 		case PRINTNL_BIP: WRITE("new_line"); break;
 		case PRINTOBJ_BIP: WRITE("print (object) "); VNODE_1C; break;
 		case PRINTNUMBER_BIP: WRITE("print "); VNODE_1C; break;
 		case PRINTDWORD_BIP: WRITE("print (address) "); VNODE_1C; break;
 		case PRINTSTRING_BIP: WRITE("print (string) "); VNODE_1C; break;
-		case BOX_BIP: WRITE("box "); VanillaConstants::enter_box_mode(gen); VNODE_1C; VanillaConstants::exit_box_mode(gen); break;
+		case BOX_BIP: WRITE("box "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
 
 		case IF_BIP: @<Generate primitive for if@>; break;
 		case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
@@ -617,7 +607,7 @@ void I6Target::compile_literal_real(code_generator *cgt,
 
 =
 void I6Target::compile_literal_text(code_generator *cgt, code_generation *gen,
-	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
+	text_stream *S, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\"");
 	if (escape_mode == FALSE) {
@@ -626,7 +616,7 @@ void I6Target::compile_literal_text(code_generator *cgt, code_generation *gen,
 		int esc_char = FALSE;
 		LOOP_THROUGH_TEXT(pos, S) {
 			wchar_t c = Str::get(pos);
-			if (box_mode) {
+			if (gen->literal_text_mode == BOX_LTM) {
 				switch(c) {
 					case '@': WRITE("@{40}"); break;
 					case '"': WRITE("~"); break;
@@ -641,18 +631,18 @@ void I6Target::compile_literal_text(code_generator *cgt, code_generation *gen,
 			} else {
 				switch(c) {
 					case '@':
-						if (printing_mode) {
+						if (gen->literal_text_mode == PRINTING_LTM) {
 							WRITE("@@64"); esc_char = TRUE; continue;
 						}
 						WRITE("@{40}"); break;
 					case '"': WRITE("~"); break;
 					case '^':
-						if (printing_mode) {
+						if (gen->literal_text_mode == PRINTING_LTM) {
 							WRITE("@@94"); esc_char = TRUE; continue;
 						}
 						WRITE("@{5E}"); break;
 					case '~':
-						if (printing_mode) {
+						if (gen->literal_text_mode == PRINTING_LTM) {
 							WRITE("@@126"); esc_char = TRUE; continue;
 						}
 						WRITE("@{7E}"); break;
@@ -683,7 +673,7 @@ trick called "stubbing", these being "stub definitions".)
 =
 void I6Target::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = CodeGen::name(prop_name);
+	text_stream *name = Inter::Symbols::name(prop_name);
 	if (used) {
 		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
@@ -695,9 +685,10 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen,
 	}
 }
 
-void I6Target::declare_attribute(code_generator *cgt, code_generation *gen,
-	text_stream *prop_name) {
+void I6Target::declare_attribute(code_generator *cgt, code_generation *gen, text_stream *prop_name) {
+	generated_segment *saved = CodeGen::select(gen, I6Target::basic_constant_segment(cgt, gen, NULL, 1));
 	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", prop_name);
+	CodeGen::deselect(gen, saved);
 }
 
 void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
@@ -733,16 +724,15 @@ void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
 			text_stream *OUT = CodeGen::current(gen);
 			if (k == 0) WRITE("Array Global_Vars -->\n");
 			WRITE("  (");
-			inter_symbols_table *globals = Inter::Packages::scope_of(P);
-			VanillaConstants::literal(gen, NULL, globals, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
-			WRITE(") ! -->%d = %S (%S)\n", k, CodeGen::name(var_name), var_name->symbol_name);
+			CodeGen::pair(gen, P, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD]);
+			WRITE(") ! -->%d = %S (%S)\n", k, Inter::Symbols::name(var_name), var_name->symbol_name);
 			CodeGen::deselect(gen, saved);
 			k++;
 		} else {
 			generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
-			WRITE("Global %S = ", CodeGen::name(var_name));
-			VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], FALSE);
+			WRITE("Global %S = ", Inter::Symbols::name(var_name));
+			CodeGen::pair(gen, P, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD]);
 			WRITE(";\n");
 			CodeGen::deselect(gen, saved);
 		}
@@ -759,7 +749,7 @@ void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
 
 void I6Target::evaluate_variable(code_generator *cgt, code_generation *gen, inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", CodeGen::name(var_name));
+	WRITE("%S", Inter::Symbols::name(var_name));
 }
 
 void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
@@ -794,7 +784,7 @@ int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen,
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) WRITE(" ");
-				VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
+				CodeGen::pair(gen, P, P->W.data[i], P->W.data[i+1]);
 			}
 			return TRUE;
 		}
@@ -823,59 +813,59 @@ void I6Target::seek_locals(code_generation *gen, inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P) I6Target::seek_locals(gen, F);
 }
 
-int I6Target::begin_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
+void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val, int ifndef_me) {
+	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1)) return;
+
+	if (Str::eq(const_name, I"FLOAT_INFINITY")) return;
+	if (Str::eq(const_name, I"FLOAT_NINFINITY")) return;
+	if (Str::eq(const_name, I"FLOAT_NAN")) return;
+	if (Str::eq(const_name, I"nothing")) return;
+	if (Str::eq(const_name, I"#dict_par1")) return;
+	if (Str::eq(const_name, I"#dict_par2")) return;
+
+	int depth = 1;
+	if (const_s) depth = Inter::Constant::constant_depth(const_s);
+	generated_segment *saved = CodeGen::select(gen, I6Target::basic_constant_segment(cgt, gen, const_s, depth));
 	text_stream *OUT = CodeGen::current(gen);
-
-	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1)) return FALSE;
-
-	if (Str::eq(const_name, I"FLOAT_INFINITY")) return FALSE;
-	if (Str::eq(const_name, I"FLOAT_NINFINITY")) return FALSE;
-	if (Str::eq(const_name, I"FLOAT_NAN")) return FALSE;
-	if (Str::eq(const_name, I"nothing")) return FALSE;
-	if (Str::eq(const_name, I"#dict_par1")) return FALSE;
-	if (Str::eq(const_name, I"#dict_par2")) return FALSE;
 
 	if (Str::eq(const_name, I"Release")) {
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Release ");
-		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::pair(gen, P, val1, val2);
 		WRITE(";\n");
-		return FALSE;
+		return;
 	}
 
 	if (Str::eq(const_name, I"Story")) {
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Global Story = ");
-		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::pair(gen, P, val1, val2);
 		WRITE(";\n");
-		return FALSE;
+		return;
 	}
 
 	if (Str::eq(const_name, I"Serial")) {
 		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Serial ");
-		VanillaConstants::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
+		CodeGen::pair(gen, P, val1, val2);
 		WRITE(";\n");
-		return FALSE;
+		return;
 	}
 
 	if (ifndef_me) WRITE("#ifndef %S;\n", const_name);
-	WRITE("Constant %S", const_name);
-	if (continues) WRITE(" = ");
-	return TRUE;
-}
-void I6Target::end_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
-	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Constant %S = ", const_name);
+	VanillaConstants::definition_value(gen, form, P, const_s, val);
 	WRITE(";\n");
 	if (ifndef_me) WRITE("#endif;\n");
+	CodeGen::deselect(gen, saved);
 }
 
 int this_is_I6_Main = 0;
 void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = CodeGen::name(fn);
+	text_stream *fn_name = Inter::Symbols::name(fn);
 	this_is_I6_Main = 0;
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ %S", fn_name);
@@ -936,7 +926,7 @@ void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter
 	}
 	Vanilla::node(gen, D);
 //	text_stream *OUT = CodeGen::current(gen);
-//	text_stream *fn_name = CodeGen::name(fn);
+//	text_stream *fn_name = Inter::Symbols::name(fn);
 	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
 		WRITE("#ifdef TARGET_GLULX;\n");
 		WRITE("@gestalt 9 0 res;\n");
@@ -986,7 +976,7 @@ or implement assembly-language operations like |@accelparam|. (See //final//.)
 
 =
 void I6Target::invoke_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int void_context) {
-	text_stream *fn_name = CodeGen::name(fn);
+	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", fn_name);
 	int c = 0;
@@ -1023,7 +1013,39 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
 		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 			WRITE(" ");
-			VanillaConstants::literal(gen, array_s, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], TRUE);
+			inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+				if (aliased == NULL) internal_error("bad aliased symbol");
+				if (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1)
+					WRITE("scope=");
+				if (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1)
+					WRITE("noun=");
+				text_stream *S = Inter::Symbols::name(aliased);
+				if (Str::begins_with_wide_string(S, L"##")) {
+					LOOP_THROUGH_TEXT(pos, S)
+						if (pos.index >= 2)
+							PUT(Str::get(pos));
+				} else {
+					if (aliased == verb_directive_divider_symbol) WRITE("\n\t*");
+					else if (aliased == verb_directive_reverse_symbol) WRITE("reverse");
+					else if (aliased == verb_directive_slash_symbol) WRITE("/");
+					else if (aliased == verb_directive_result_symbol) WRITE("->");
+					else if (aliased == verb_directive_special_symbol) WRITE("special");
+					else if (aliased == verb_directive_number_symbol) WRITE("number");
+					else if (aliased == verb_directive_noun_symbol) WRITE("noun");
+					else if (aliased == verb_directive_multi_symbol) WRITE("multi");
+					else if (aliased == verb_directive_multiinside_symbol) WRITE("multiinside");
+					else if (aliased == verb_directive_multiheld_symbol) WRITE("multiheld");
+					else if (aliased == verb_directive_held_symbol) WRITE("held");
+					else if (aliased == verb_directive_creature_symbol) WRITE("creature");
+					else if (aliased == verb_directive_topic_symbol) WRITE("topic");
+					else if (aliased == verb_directive_multiexcept_symbol) WRITE("multiexcept");
+					else I6Target::compile_literal_symbol(cgt, gen, aliased);
+				}
+			} else {
+				CodeGen::pair(gen, P, val1, val2);
+			}
 		}
 		WRITE(";");
 		return FALSE;
@@ -1043,36 +1065,10 @@ void I6Target::array_entry(code_generator *cgt, code_generation *gen, text_strea
 	WRITE(" (%S)", entry);
 }
 
-void I6Target::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
+void I6Target::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (aliased == verb_directive_divider_symbol) WRITE("\n\t*");
-	else if (aliased == verb_directive_reverse_symbol) WRITE("reverse");
-	else if (aliased == verb_directive_slash_symbol) WRITE("/");
-	else if (aliased == verb_directive_result_symbol) WRITE("->");
-	else if (aliased == verb_directive_special_symbol) WRITE("special");
-	else if (aliased == verb_directive_number_symbol) WRITE("number");
-	else if (aliased == verb_directive_noun_symbol) WRITE("noun");
-	else if (aliased == verb_directive_multi_symbol) WRITE("multi");
-	else if (aliased == verb_directive_multiinside_symbol) WRITE("multiinside");
-	else if (aliased == verb_directive_multiheld_symbol) WRITE("multiheld");
-	else if (aliased == verb_directive_held_symbol) WRITE("held");
-	else if (aliased == verb_directive_creature_symbol) WRITE("creature");
-	else if (aliased == verb_directive_topic_symbol) WRITE("topic");
-	else if (aliased == verb_directive_multiexcept_symbol) WRITE("multiexcept");
-	else {
-		if ((unsub) && (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1))
-			WRITE("scope=");
-		if ((unsub) && (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1))
-			WRITE("noun=");
-		text_stream *S = CodeGen::name(aliased);
-		if ((unsub) && (Str::begins_with_wide_string(S, L"##"))) {
-			LOOP_THROUGH_TEXT(pos, S)
-				if (pos.index >= 2)
-					PUT(Str::get(pos));
-		} else {
-			Generators::mangle(gen, OUT, S);
-		}
-	}
+	text_stream *S = Inter::Symbols::name(aliased);
+	Generators::mangle(gen, OUT, S);
 }
 
 @ Alternatively, we can just specify how many entries there will be: they will

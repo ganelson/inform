@@ -23,10 +23,7 @@ void CTarget::create_generator(void) {
 	CInputOutputModel::initialise(c_target);
 
 	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
-	METHOD_ADD(c_target, TL_SEGMENT_MTID, CTarget::tl_segment);
 	METHOD_ADD(c_target, DEFAULT_SEGMENT_MTID, CTarget::default_segment);
-	METHOD_ADD(c_target, BASIC_CONSTANT_SEGMENT_MTID, CTarget::basic_constant_segment);
-	METHOD_ADD(c_target, CONSTANT_SEGMENT_MTID, CTarget::constant_segment);
 }
 
 @h Static supporting code.
@@ -565,15 +562,11 @@ int CTarget::general_segment(code_generator *cgt, code_generation *gen, inter_tr
 int CTarget::default_segment(code_generator *cgt) {
 	return c_main_matter_I7CGS;
 }
-int CTarget::constant_segment(code_generator *cgt, code_generation *gen) {
-	return c_early_matter_I7CGS;
-}
 int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
-	if (Str::eq(CodeGen::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
-	if (Str::eq(CodeGen::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
+	if (con_name) {
+		if (Str::eq(Inter::Symbols::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
+		if (Str::eq(Inter::Symbols::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
+	}
 	if (depth >= 10) depth = 10;
 	return c_constants_1_I7CGS + depth - 1;
-}
-int CTarget::tl_segment(code_generator *cgt) {
-	return c_text_literals_code_I7CGS;
 }

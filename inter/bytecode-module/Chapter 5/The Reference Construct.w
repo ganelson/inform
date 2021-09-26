@@ -63,3 +63,19 @@ void Inter::Reference::verify_children(inter_construct *IC, inter_tree_node *P, 
 		}
 	}
 }
+
+int Inter::Reference::node_is_ref_to(inter_tree *I, inter_tree_node *P, inter_ti seek_bip) {
+	int reffed = FALSE;
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) {
+		P = InterTree::first_child(P);
+		reffed = TRUE;
+	}
+	if (P->W.data[ID_IFLD] == INV_IST) {
+		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(P);
+			inter_ti bip = Primitives::to_bip(I, prim);
+			if ((bip == seek_bip) && (reffed)) return TRUE;
+		}
+	}
+	return FALSE;
+}

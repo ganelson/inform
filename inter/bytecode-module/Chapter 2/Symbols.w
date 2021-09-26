@@ -347,3 +347,9 @@ int Inter::Symbols::is_connector(inter_symbol *S) {
 		return TRUE;
 	return FALSE;
 }
+
+text_stream *Inter::Symbols::name(inter_symbol *symb) {
+	if (symb == NULL) return NULL;
+	if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);
+	return symb->symbol_name;
+}

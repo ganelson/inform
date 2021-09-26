@@ -472,3 +472,86 @@ int Inter::Constant::char_acceptable(int c) {
 	if ((c < 0x20) && (c != 0x09) && (c != 0x0a)) return FALSE;
 	return TRUE;
 }
+
+int Inter::Constant::constant_depth(inter_symbol *con) {
+	LOG_INDENT;
+	int d = Inter::Constant::constant_depth_r(con);
+	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", con->symbol_name, d);
+	LOG_OUTDENT;
+	return d;
+}
+int Inter::Constant::constant_depth_r(inter_symbol *con) {
+	if (con == NULL) return 1;
+	inter_tree_node *D = Inter::Symbols::definition(con);
+	if (D->W.data[ID_IFLD] != CONSTANT_IST) return 1;
+	if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
+		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
+		if (val1 == ALIAS_IVAL) {
+			inter_symbol *alias =
+				InterSymbolsTables::symbol_from_data_pair_and_table(
+					val1, val2, Inter::Packages::scope(D->package));
+			return Inter::Constant::constant_depth(alias) + 1;
+		}
+		return 1;
+	}
+	if ((D->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {
+		int total = 0;
+		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
+			inter_ti val1 = D->W.data[i];
+			inter_ti val2 = D->W.data[i + 1];
+			if (val1 == ALIAS_IVAL) {
+				inter_symbol *alias =
+					InterSymbolsTables::symbol_from_data_pair_and_table(
+						val1, val2, Inter::Packages::scope(D->package));
+				total += Inter::Constant::constant_depth(alias);
+			} else total++;
+		}
+		return 1 + total;
+	}
+	return 1;
+}
+
+inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {
+	if (val1 == LITERAL_IVAL) return val2;
+	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
+		if (aliased == NULL) internal_error("bad aliased symbol");
+		inter_tree_node *D = aliased->definition;
+		if (D == NULL) internal_error("undefined symbol");
+		switch (D->W.data[FORMAT_CONST_IFLD]) {
+			case CONSTANT_DIRECT: {
+				inter_ti dval1 = D->W.data[DATA_CONST_IFLD];
+				inter_ti dval2 = D->W.data[DATA_CONST_IFLD + 1];
+				inter_ti e = Inter::Constant::evaluate(Inter::Packages::scope_of(D), dval1, dval2, ips);
+				if (e == 0) {
+					text_stream *S = Inter::Symbols::name(aliased);
+					if (Str::eq(S, I"INDIV_PROP_START")) *ips = TRUE;
+				}
+				LOG("Eval const $3 = %d\n", aliased, e);
+				return e;
+			}
+			case CONSTANT_SUM_LIST:
+			case CONSTANT_PRODUCT_LIST:
+			case CONSTANT_DIFFERENCE_LIST:
+			case CONSTANT_QUOTIENT_LIST: {
+				inter_ti result = 0;
+				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
+					inter_ti extra = Inter::Constant::evaluate(Inter::Packages::scope_of(D), D->W.data[i], D->W.data[i+1], ips);
+					if (i == DATA_CONST_IFLD) result = extra;
+					else {
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) result = result * extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) result = result - extra;
+						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) result = result / extra;
+					}
+				}
+				return result;
+			}
+		}
+	}
+	return 0;
+}

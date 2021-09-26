@@ -367,9 +367,9 @@ and therefore if |X| is a valid constant-context expression in C then so is
 @
 
 =
-void CMemoryModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased, int unsub) {
+void CMemoryModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased) {
 	text_stream *OUT = CodeGen::current(gen);
-	text_stream *S = CodeGen::name(aliased);
+	text_stream *S = Inter::Symbols::name(aliased);
 	Generators::mangle(gen, OUT, S);
 }
 
@@ -406,8 +406,8 @@ primitive !lookupbyte val val -> val
 
 =
 int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
-	if (VanillaConstants::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
-	if (VanillaConstants::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
+	if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
+	if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
 	return FALSE;
 }
 

@@ -48,6 +48,7 @@ typedef struct code_generation {
 	int void_level;
 	int literal_text_mode;
 	struct linked_list *global_variables;
+	struct linked_list *text_literals;
 	CLASS_DEFINITION
 } code_generation;
 
@@ -65,8 +66,9 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	else gen->just_this_package = Site::main_package(I);
 	gen->segmentation = CodeGen::new_segmentation_data();
 	gen->void_level = -1;
-	gen->literal_text_mode = 0;
+	gen->literal_text_mode = REGULAR_LTM;
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
+	gen->text_literals = NEW_LINKED_LIST(text_literal_holder);
 	return gen;
 }
 
@@ -106,8 +108,23 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
 	ad_hoc_generation->generator = generator;
 	
 	CodeGen::select_temporary(ad_hoc_generation, OUT);
-	VanillaConstants::val_to_text(ad_hoc_generation, IBM, val1, val2);
+	CodeGen::pair_at_bookmark(ad_hoc_generation, IBM, val1, val2);
 	CodeGen::deselect_temporary(ad_hoc_generation);
+}
+
+@h Literal text modes.
+There are three of these. |PRINTING_LTM| is used when text is needed only
+immediately as an operand for, say, |!print| and will therefore never be a
+value at runtime; |BOX_LTM| for "quotation box" text; |REGULAR_LTM| for
+everything else.
+
+@d REGULAR_LTM 0
+@d BOX_LTM 1
+@d PRINTING_LTM 2
+
+=
+void CodeGen::lt_mode(code_generation *gen, int m) {
+	gen->literal_text_mode = m;
 }
 
 @h Segmentation.
@@ -262,8 +279,6 @@ text_stream *CodeGen::content(code_generation *gen, int i) {
 }
 
 @h Transients.
-One other optional service for the use of generators:
-
 Transient flags on symbols are used temporarily during code generation, but do
 not change the meaning of the tree: they're just a way to keep track of, say,
 what we've worked on so far.
@@ -296,12 +311,48 @@ void CodeGen::unmark(inter_symbol *symb_name) {
 	Inter::Symbols::clear_flag(symb_name, TRAVERSE_MARK_BIT);
 }
 
-@h Names.
-Finally, this function is frequently needed:
+@h Value pairs.
+We will very often need to compile an expression from a pair |val1|, |val2|
+extracted from some Inter instruction.
 
 =
-text_stream *CodeGen::name(inter_symbol *symb) {
-	if (symb == NULL) return NULL;
-	if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);
-	return symb->symbol_name;
+void CodeGen::pair_at_bookmark(code_generation *gen, inter_bookmark *IBM,
+	inter_ti val1, inter_ti val2) {
+	inter_symbols_table *T = IBM?(Inter::Bookmarks::scope(IBM)):NULL;
+	@<Generate from a value pair@>;
 }
+
+void CodeGen::pair(code_generation *gen, inter_tree_node *P,
+	inter_ti val1, inter_ti val2) {
+	inter_symbols_table *T = P?(Inter::Packages::scope_of(P)):NULL;
+	@<Generate from a value pair@>;
+}
+
+@<Generate from a value pair@> =
+	inter_tree *I = gen->from;
+	text_stream *OUT = CodeGen::current(gen);
+	if (val1 == LITERAL_IVAL) {
+		Generators::compile_literal_number(gen, val2, FALSE);
+	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *s = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
+		if (s == NULL) internal_error("bad symbol in Inter pair");
+		Generators::compile_literal_symbol(gen, s);
+	} else if (val1 == DIVIDER_IVAL) {
+		text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		WRITE(" ! %S\n\t", divider_text);
+	} else if (val1 == REAL_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		Generators::compile_literal_real(gen, glob_text);
+	} else if (val1 == DWORD_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		Generators::compile_dictionary_word(gen, glob_text, FALSE);
+	} else if (val1 == PDWORD_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		Generators::compile_dictionary_word(gen, glob_text, TRUE);
+	} else if (val1 == LITERAL_TEXT_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		Generators::compile_literal_text(gen, glob_text, TRUE);
+	} else if (val1 == GLOB_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		WRITE("%S", glob_text);
+	} else internal_error("unimplemented data pair");

@@ -7,8 +7,7 @@ How identifiers are used in the C code we generate.
 =
 void CNamespace::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CNamespace::mangle);
-	METHOD_ADD(cgt, BEGIN_CONSTANT_MTID, CNamespace::begin_constant);
-	METHOD_ADD(cgt, END_CONSTANT_MTID, CNamespace::end_constant);
+	METHOD_ADD(cgt, DECLARE_CONSTANT_MTID, CNamespace::declare_constant);
 }
 
 void CNamespace::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifier) {
@@ -48,7 +47,10 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 @
 
 =
-int CNamespace::begin_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, inter_tree_node *P, int continues, int ifndef_me) {
+void CNamespace::declare_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val, int ifndef_me) {
+	int depth = 1;
+	if (const_s) depth = Inter::Constant::constant_depth(const_s);
+	generated_segment *saved = CodeGen::select(gen, CTarget::basic_constant_segment(cgt, gen, const_s, depth));
 	text_stream *OUT = CodeGen::current(gen);
 	if (ifndef_me) {
 		WRITE("#ifndef ");
@@ -57,11 +59,9 @@ int CNamespace::begin_constant(code_generator *cgt, code_generation *gen, text_s
 	}
 	WRITE("#define ");
 	CNamespace::mangle(cgt, OUT, const_name);
-	if (continues) WRITE(" ");
-	return TRUE;
-}
-void CNamespace::end_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, int ifndef_me) {
-	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" ");
+	VanillaConstants::definition_value(gen, form, P, const_s, val);
 	WRITE("\n");
 	if (ifndef_me) WRITE("#endif\n");
+	CodeGen::deselect(gen, saved);
 }

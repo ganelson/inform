@@ -387,7 +387,7 @@ that references to it will not fail to compile.
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
-	text_stream *name = CodeGen::name(prop_name);
+	text_stream *name = Inter::Symbols::name(prop_name);
 	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname)
@@ -427,7 +427,7 @@ C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *na
 		WRITE(" %d\n", cp->id);
 		CodeGen::deselect(gen, saved);
 	} else {
-		cp = Dictionaries::read_value(D, name);;
+		cp = Dictionaries::read_value(D, name);
 	}
 	return cp;
 }
@@ -628,7 +628,7 @@ which we will then need to write in |inform7_clib.h|.
 
 =
 int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
-	if (VanillaConstants::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) return TRUE;
+	if (Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) return TRUE;
 	return FALSE;
 }
 

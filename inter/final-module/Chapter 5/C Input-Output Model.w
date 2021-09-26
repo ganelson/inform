@@ -26,12 +26,12 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 		case SPACES_BIP:		 WRITE("for (int j = "); VNODE_1C; WRITE("; j > 0; j--) i7_print_char(proc, 32);"); break;
 		case FONT_BIP:           WRITE("i7_font(proc, "); VNODE_1C; WRITE(")"); break;
 		case STYLE_BIP:    		 WRITE("i7_style(proc, "); VNODE_1C; WRITE(")"); break;
-		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); VanillaConstants::enter_print_mode(gen); VNODE_1C; VanillaConstants::exit_print_mode(gen); WRITE(")"); break;
+		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); CodeGen::lt_mode(gen, PRINTING_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
 		case PRINTCHAR_BIP:      WRITE("i7_print_char(proc, "); VNODE_1C; WRITE(")"); break;
 		case PRINTNL_BIP:        WRITE("i7_print_char(proc, '\\n')"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); VNODE_1C; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); VNODE_1C; WRITE(")"); break;
-		case BOX_BIP:            WRITE("i7_print_box(proc, "); VanillaConstants::enter_box_mode(gen); VNODE_1C; VanillaConstants::exit_box_mode(gen); WRITE(")"); break;
+		case BOX_BIP:            WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
 		case READ_BIP:           WRITE("i7_read(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		default: 				 return NOT_APPLICABLE;
 	}

@@ -356,7 +356,7 @@ void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 					bc = 0x83;
 				CLiteralsModel::grammar_byte(gen, bc + lookahead);
 				TEMPORARY_TEXT(MG)
-				CNamespace::mangle(cgt, MG, CodeGen::name(aliased));
+				CNamespace::mangle(cgt, MG, Inter::Symbols::name(aliased));
 				CLiteralsModel::grammar_word_textual(gen, MG);
 				DISCARD_TEXT(MG)
 				continue;
@@ -680,10 +680,10 @@ int CLiteralsModel::hex_val(wchar_t c) {
 	return -1;
 }
 void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *gen,
-	text_stream *S, int printing_mode, int box_mode, int escape_mode) {
+	text_stream *S, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	
-	if (printing_mode == FALSE) {
+	if (gen->literal_text_mode != PRINTING_LTM) {
 		WRITE("(I7VAL_STRINGS_BASE + %d)", C_GEN_DATA(litdata.no_double_quoted_C_strings)++);
 		OUT = C_GEN_DATA(litdata.double_quoted_C);
 	}
@@ -731,7 +731,7 @@ void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *
 		}
 	}
 	WRITE("\"");
-	if (printing_mode == FALSE) WRITE(",\n");
+	if (gen->literal_text_mode != PRINTING_LTM) WRITE(",\n");
 }
 
 int CLiteralsModel::no_strings(code_generation *gen) {
