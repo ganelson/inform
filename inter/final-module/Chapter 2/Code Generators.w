@@ -150,20 +150,6 @@ void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int op
 
 @
 
-@e GENERAL_SEGMENT_MTID
-@e DEFAULT_SEGMENT_MTID
-
-=
-INT_METHOD_TYPE(GENERAL_SEGMENT_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P)
-
-int Generators::general_segment(code_generation *gen, inter_tree_node *P) {
-	int rv = 0;
-	INT_METHOD_CALL(rv, gen->generator, GENERAL_SEGMENT_MTID, gen, P);
-	return rv;
-}
-
-@
-
 @e MANGLE_IDENTIFIER_MTID
 
 =
@@ -274,21 +260,21 @@ void Generators::pseudo_object(code_generation *gen, text_stream *obj_name) {
 @e PROPERTY_OFFSET_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class)
-VOID_METHOD_TYPE(END_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name)
-void Generators::declare_class(code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_CLASS_MTID, gen, class_name, printed_name, super_class);
+VOID_METHOD_TYPE(DECLARE_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class, generated_segment **saved)
+VOID_METHOD_TYPE(END_CLASS_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, generated_segment *saved)
+void Generators::declare_class(code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class, generated_segment **saved) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_CLASS_MTID, gen, class_name, printed_name, super_class, saved);
 }
-void Generators::end_class(code_generation *gen, text_stream *class_name) {
-	VOID_METHOD_CALL(gen->generator, END_CLASS_MTID, gen, class_name);
+void Generators::end_class(code_generation *gen, text_stream *class_name, generated_segment *saved) {
+	VOID_METHOD_CALL(gen->generator, END_CLASS_MTID, gen, class_name, saved);
 }
-VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir)
-VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name)
-void Generators::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, printed_name, acount, is_dir);
+VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, generated_segment **saved)
+VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved)
+void Generators::declare_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, generated_segment **saved) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_INSTANCE_MTID, gen, class_name, instance_name, printed_name, acount, is_dir, saved);
 }
-void Generators::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name) {
-	VOID_METHOD_CALL(gen->generator, END_INSTANCE_MTID, gen, class_name, instance_name);
+void Generators::end_instance(code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved) {
+	VOID_METHOD_CALL(gen->generator, END_INSTANCE_MTID, gen, class_name, instance_name, saved);
 }
 VOID_METHOD_TYPE(DECLARE_VALUE_INSTANCE_MTID, code_generator *generator, code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val)
 void Generators::declare_value_instance(code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
@@ -366,14 +352,14 @@ void Generators::end_function(int pass, code_generation *gen, inter_symbol *fn) 
 @d BUFFER_ARRAY_FORMAT 4
 
 =
-INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format)
+INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved)
 VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generator *generator, code_generation *gen, text_stream *entry, int format)
 VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generator *generator, code_generation *gen, int how_many, int plus_ips, int format)
 VOID_METHOD_TYPE(COMPILE_LITERAL_SYMBOL_MTID, code_generator *generator, code_generation *gen, inter_symbol *aliased)
-VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen, int format)
-int Generators::begin_array(code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format) {
+VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen, int format, generated_segment *saved)
+int Generators::begin_array(code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved) {
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s, P, format);
+	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s, P, format, saved);
 	return rv;
 }
 void Generators::array_entry(code_generation *gen, text_stream *entry, int format) {
@@ -392,8 +378,8 @@ void Generators::compile_literal_symbol(code_generation *gen, inter_symbol *alia
 	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_SYMBOL_MTID, gen, aliased);
 }
 
-void Generators::end_array(code_generation *gen, int format) {
-	VOID_METHOD_CALL(gen->generator, END_ARRAY_MTID, gen, format);
+void Generators::end_array(code_generation *gen, int format, generated_segment *saved) {
+	VOID_METHOD_CALL(gen->generator, END_ARRAY_MTID, gen, format, saved);
 }
 
 @

@@ -8,8 +8,10 @@ How objects, classes and properties are compiled to C.
 void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, CObjectModel::pseudo_object);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
+	METHOD_ADD(cgt, END_INSTANCE_MTID, CObjectModel::end_instance);
 	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, CObjectModel::declare_value_instance);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CObjectModel::declare_class);
+	METHOD_ADD(cgt, END_CLASS_MTID, CObjectModel::end_class);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
 	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CObjectModel::declare_attribute);
@@ -165,10 +167,15 @@ Each proper base kind in the Inter tree produces an owner as follows:
 
 =
 void CObjectModel::declare_class(code_generator *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
+	text_stream *class_name, text_stream *printed_name, text_stream *super_class, generated_segment **saved) {
+	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::declare_class_inner(gen, class_name, printed_name,
 		CObjectModel::next_owner_id(gen), super_class);
+}
+
+void CObjectModel::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, generated_segment *saved) {
+	CodeGen::deselect(gen, saved);
 }
 
 void CObjectModel::declare_class_inner(code_generation *gen,
@@ -182,12 +189,15 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 
 =
 void CObjectModel::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
-	C_property_owner *obj = CObjectModel::declare_instance(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE);
+	generated_segment *saved;
+	C_property_owner *obj = CObjectModel::declare_instance(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE, &saved);
+	CodeGen::deselect(gen, saved);
 	if (Str::eq(obj_name, I"Compass")) C_GEN_DATA(objdata.compass_instance) = obj;
 }
 
 C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
+	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, generated_segment **saved) {
+	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
 	CObjectModel::define_constant_for_owner_id(gen, instance_name, id);
@@ -228,6 +238,10 @@ C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_gener
 		for (int i=acount+1; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 	}
 	return this;
+}
+
+void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved) {
+	CodeGen::deselect(gen, saved);
 }
 
 void CObjectModel::declare_value_instance(code_generator *cgt,

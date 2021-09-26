@@ -56,7 +56,8 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 @<Declare this constant as the special UUID string array@> =
 	inter_ti ID = P->W.data[DATA_CONST_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
-	Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT);
+	generated_segment *saved;
+	Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT, &saved);
 	TEMPORARY_TEXT(content)
 	WRITE_TO(content, "UUID://");
 	for (int i=0, L=Str::len(S); i<L; i++)
@@ -73,7 +74,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		DISCARD_TEXT(ch)
 	}
 	DISCARD_TEXT(content)
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, saved);
 
 @<Declare this as a textual constant@> =
 	inter_ti ID = P->W.data[DATA_CONST_IFLD];
@@ -92,7 +93,8 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	}
 	if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
 		format = BUFFER_ARRAY_FORMAT;
-	if (Generators::begin_array(gen, Inter::Symbols::name(con_name), con_name, P, format)) {
+	generated_segment *saved;
+	if (Generators::begin_array(gen, Inter::Symbols::name(con_name), con_name, P, format, &saved)) {
 		if (hang_one) Generators::array_entry(gen, I"1", format);
 		int entry_count = 0;
 		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
@@ -119,7 +121,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 				}
 			}
 		}
-		Generators::end_array(gen, format);
+		Generators::end_array(gen, format, saved);
 	}
 
 @<Declare this as a computed constant@> =

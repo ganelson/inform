@@ -107,14 +107,14 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 	int dictlen = C_GEN_DATA(litdata.C_dword_count);
 
 	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT);
+	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
 	for (int b=0; b<4; b++) {
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "I7BYTE_%d(%d)", b, dictlen);
 		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}
-	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
+	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
 
 	if (dictlen == 0) return;
 	C_dword **sorted = (C_dword **)
@@ -124,7 +124,7 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 	qsort(sorted, (size_t) LinkedLists::len(C_GEN_DATA(litdata.words)), sizeof(C_dword *), CLiteralsModel::compare_dwords);
 	for (int i=0; i<dictlen; i++) {
 		dw = sorted[i];
-		CMemoryModel::begin_array(NULL, gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT);
+		CMemoryModel::begin_array(NULL, gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "0x60");
 		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
@@ -163,7 +163,7 @@ void CLiteralsModel::compile_dwords(code_generation *gen) {
 		DISCARD_TEXT(DP1L)
 		DISCARD_TEXT(DP2H)
 		DISCARD_TEXT(DP2L)
-		CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
+		CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
 	}
 	Memory::I7_free(sorted, CODE_GENERATION_MREASON, dictlen);
 	CodeGen::deselect(gen, saved);
@@ -417,7 +417,7 @@ void CLiteralsModel::grammar_byte_textual(code_generation *gen, text_stream *NT)
 }
 
 void CLiteralsModel::compile_verb_table(code_generation *gen) {
-	CMemoryModel::begin_array(NULL, gen, I"#grammar_table", NULL, NULL, WORD_ARRAY_FORMAT);
+	CMemoryModel::begin_array(NULL, gen, I"#grammar_table", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
 	TEMPORARY_TEXT(N)
 	WRITE_TO(N, "%d", C_GEN_DATA(litdata.verb_count) - 1);
 	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
@@ -429,13 +429,13 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);
-	CMemoryModel::begin_array(NULL, gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT);
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::begin_array(NULL, gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, C_GEN_DATA(litdata.verb_grammar)) {
 		CMemoryModel::array_entry(NULL, gen, entry, BYTE_ARRAY_FORMAT);
 	}
-	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT);
+	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
 }
 
 void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
@@ -452,7 +452,7 @@ void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen, text_
 }
 
 void CLiteralsModel::compile_actions_table(code_generation *gen) {
-	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT);
+	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
 	TEMPORARY_TEXT(N)
 	WRITE_TO(N, "%d", C_GEN_DATA(litdata.C_action_count));
 	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
@@ -464,7 +464,7 @@ void CLiteralsModel::compile_actions_table(code_generation *gen) {
 		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT);	
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);	
 }
 
 @

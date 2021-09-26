@@ -286,7 +286,7 @@ above has been tried on all properties:
 
 =
 void VanillaObjects::knowledge(code_generation *gen) {
-	text_stream *OUT = CodeGen::current(gen);
+//	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
 		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, RAW_GDCFORM, NULL, I"MAX_POSITIVE_NUMBER", FALSE);
@@ -419,7 +419,8 @@ bother to force them.)
 
 @<Compile the property numberspace forcer@> =
 	if (properties_found) {
-		Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE);
+		generated_segment *saved;
+		Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE, &saved);
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
@@ -429,7 +430,7 @@ bother to force them.)
 				}
 			}
 		}
-		Generators::end_instance(gen, I"Object", I"property_numberspace_forcer");
+		Generators::end_instance(gen, I"Object", I"property_numberspace_forcer", saved);
 	}
 
 @<Annotate kinds of object with a sequence counter@> =
@@ -458,7 +459,8 @@ property usage is legal.
 		if (VanillaObjects::is_kind_of_object(kind_name)) no_kos++;
 	}
 
-	Generators::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT);
+	generated_segment *saved;
+	Generators::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
 	if (no_kos > 0) {
 		Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
@@ -481,7 +483,7 @@ property usage is legal.
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT, saved);
 
 @h Lookup mechanism for properties of value instances.
 As noted above, if |K| is a kind which can have properties but is not a subkind
@@ -516,7 +518,8 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
-							Generators::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE);
+							generated_segment *saved;
+							Generators::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE, &saved);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
 							Generators::assign_property(gen, I"value_range", N, FALSE);
@@ -536,7 +539,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 									@<Work through this frame list of permissions@>;
 								}
 							}
-							Generators::end_instance(gen, I"VPH_Class", instance_name);
+							Generators::end_instance(gen, I"VPH_Class", instance_name, saved);
 							DISCARD_TEXT(instance_name)
 						}
 					}
@@ -555,8 +558,9 @@ legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
 
 @<Define the I6 VPH class@> =
-	Generators::declare_class(gen, I"VPH_Class", NULL, I"Class");
-	Generators::end_class(gen, I"VPH_Class");
+	generated_segment *saved;
+	Generators::declare_class(gen, I"VPH_Class", NULL, I"Class", &saved);
+	Generators::end_class(gen, I"VPH_Class", saved);
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<no_kind_frames; i++) {
@@ -585,7 +589,8 @@ words, the number of instances of this kind.
 doesn't have a VPH, or the object number of its VPH if it has.
 
 @<Write the VPH lookup array@> =
-	Generators::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT);
+	generated_segment *saved;
+	Generators::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
 	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	int vph = 0;
 	for (int w=1; w<M; w++) {
@@ -604,7 +609,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 		}
 		if (written) vph++; else Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT, saved);
 	@<Stub a faux VPH if none have otherwise been created@>;
 
 @ In the event that no value instances have properties, there'll be no
@@ -614,7 +619,7 @@ I6 error. We don't want that, so if necessary we compile a useless VPH object
 just to force the property into being.
 
 @<Stub a faux VPH if none have otherwise been created@> =
-	if (vph == 0) WRITE("VPH_Class UnusedVPH with value_range 0;\n");
+	/* if (vph == 0) WRITE("VPH_Class UnusedVPH with value_range 0;\n"); */
 
 @<Work through this frame list of permissions@> =
 	inter_tree_node *X;
@@ -668,7 +673,8 @@ brackets: thus |(4) (-5)|. This cannot be confused with function calling
 because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
-	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT);
+	generated_segment *saved;
+	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT, &saved);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	for (int j=0; j<no_instance_frames; j++) {
@@ -685,7 +691,7 @@ because I6 doesn't allow function calls in a constant context.
 			if (found == 0) Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
 	}
-	Generators::end_array(gen, TABLE_ARRAY_FORMAT);
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT, saved);
 
 @<Work through this frame list of values@> =
 	inter_tree_node *Y;
@@ -712,12 +718,13 @@ because I6 doesn't allow function calls in a constant context.
 			text_stream *super_class = NULL;
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if (super_name) super_class = Inter::Symbols::name(super_name);
-			Generators::declare_class(gen, Inter::Symbols::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class);
+			generated_segment *saved;
+			Generators::declare_class(gen, Inter::Symbols::name(kind_name), Metadata::read_optional_textual(Inter::Packages::container(kind_name->definition), I"^printed_name"), super_class, &saved);
 			VanillaObjects::append(gen, kind_name);
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::properties_list(kind_name));
 			VanillaObjects::plist(gen, FL);
-			Generators::end_class(gen, Inter::Symbols::name(kind_name));
+			Generators::end_class(gen, Inter::Symbols::name(kind_name), saved);
 		}
 	}
 
@@ -752,7 +759,8 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
 	if (properties_found) {
-		Generators::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT);
+		generated_segment *saved;
+		Generators::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
 		int pos = 0;
 		for (int p=0; p<no_properties; p++) {
 			inter_symbol *prop_name = props_in_source_order[p];
@@ -765,7 +773,7 @@ though this won't happen for any property created by I7 source text.
 			Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
 			pos++;
 		}
-		Generators::end_array(gen, WORD_ARRAY_FORMAT);
+		Generators::end_array(gen, WORD_ARRAY_FORMAT, saved);
 	}
 
 @<Write the property name in double quotes@> =
@@ -966,14 +974,15 @@ void VanillaObjects::object_instance(code_generation *gen, inter_tree_node *P) {
 		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
 		if (c < 0) c = 0;
 		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
+		generated_segment *saved;
 		Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name),
-			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir);
+			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir, &saved);
 		VanillaObjects::append(gen, inst_name);
 		inter_node_list *FL =
 			Inode::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		VanillaObjects::plist(gen, FL);
-		Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name));
+		Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name), saved);
 	}
 }
 

@@ -240,7 +240,8 @@ void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen,
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 	C_GEN_DATA(fndata.current_fcf) = fcf;
-		text_stream *OUT = CodeGen::current(gen);
+	generated_segment *saved = CodeGen::select(gen, c_functions_at_eof_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", fcf->prototype);
 	WRITE(" {\n");
 	WRITE("i7_debug_stack(\"%S\");\n", fn_name);
@@ -258,6 +259,7 @@ void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen,
 	C_GEN_DATA(fndata.compiling_function) = FALSE;
 	WRITE("return 1;\n");
 	WRITE("\n}\n\n");
+	CodeGen::deselect(gen, saved);
 }
 
 void CFunctionModel::place_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {

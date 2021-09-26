@@ -281,7 +281,19 @@ word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 
 =
 int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
-	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
+	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved) {
+	if (saved) {
+		int choice = c_early_matter_I7CGS;
+		if (array_s) {
+			if (Str::eq(array_s->symbol_name, I"DynamicMemoryAllocation")) choice = c_very_early_matter_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, LATE_IANN) == 1) choice = c_code_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, BUFFERARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, BYTEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, TABLEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1) choice = c_verbs_at_eof_I7CGS;
+		}
+		*saved = CodeGen::select(gen, choice);
+	}
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
@@ -387,13 +399,14 @@ void CMemoryModel::array_entries(code_generator *cgt, code_generation *gen,
 except to predeclare the extent constant, if one was used.
 
 =
-void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format, generated_segment *saved) {
+	generated_segment *x_saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define xt_");
 	CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
 	WRITE(" %d\n", C_GEN_DATA(memdata.entry_count)-1);
-	CodeGen::deselect(gen, saved);
+	CodeGen::deselect(gen, x_saved);
+	if (saved) CodeGen::deselect(gen, saved);
 }
 
 @h Primitives for byte and word lookup.

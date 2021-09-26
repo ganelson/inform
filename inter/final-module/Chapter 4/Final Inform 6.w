@@ -69,7 +69,6 @@ code_generator *inform6_target = NULL;
 void I6Target::create_generator(void) {
 	code_generator *cgt = Generators::new(I"inform6");
 	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, I6Target::begin_generation);
-	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, I6Target::general_segment);
 	METHOD_ADD(cgt, INVOKE_PRIMITIVE_MTID, I6Target::invoke_primitive);
 	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
 	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, I6Target::compile_dictionary_word);
@@ -229,26 +228,6 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	}
 	
 	return FALSE;
-}
-
-int I6Target::general_segment(code_generator *cgt, code_generation *gen, inter_tree_node *P) {
-	switch (P->W.data[ID_IFLD]) {
-		case CONSTANT_IST: {
-			inter_symbol *con_name =
-				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			int choice = early_matter_I7CGS;
-			if (Str::eq(con_name->symbol_name, I"DynamicMemoryAllocation")) choice = very_early_matter_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = code_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
-			if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) choice = verbs_at_eof_I7CGS;
-			if (Inter::Constant::is_routine(con_name)) choice = routines_at_eof_I7CGS;
-			return choice;
-		}
-	}
-	return main_matter_I7CGS;
 }
 
 int I6Target::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
@@ -748,18 +727,23 @@ void I6Target::evaluate_variable(code_generator *cgt, code_generation *gen, inte
 	WRITE("%S", Inter::Symbols::name(var_name));
 }
 
-void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class) {
+void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class,
+	generated_segment **saved) {
+	*saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
 	if (Str::len(super_class) > 0) WRITE("  class %S\n", super_class);
 }
 
-void I6Target::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name) {
+void I6Target::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, generated_segment *saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
+	CodeGen::deselect(gen, saved);
 }
 
-void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir) {
+void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
+	generated_segment **saved) {
+	*saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", class_name);
 	for (int i=0; i<acount; i++) WRITE(" ->");
@@ -767,9 +751,10 @@ void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_
 	if (is_dir) WRITE(" Compass");
 }
 
-void I6Target::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name) {
+void I6Target::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
+	CodeGen::deselect(gen, saved);
 }
 
 int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
@@ -861,6 +846,7 @@ void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_
 
 int this_is_I6_Main = 0;
 void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
+	generated_segment *saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	this_is_I6_Main = 0;
 	text_stream *OUT = CodeGen::current(gen);
@@ -950,6 +936,7 @@ void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter
 		WRITE("rfalse;\n");
 	}
 	WRITE("];\n");
+	CodeGen::deselect(gen, saved);
 }
 void I6Target::place_label(code_generator *cgt, code_generation *gen, text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -1001,7 +988,19 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	if (void_context) WRITE(";\n");
 }
 
-int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format) {
+int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved) {
+	if (saved) {
+		int choice = early_matter_I7CGS;
+		if (array_s) {
+			if (Str::eq(array_s->symbol_name, I"DynamicMemoryAllocation")) choice = very_early_matter_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, LATE_IANN) == 1) choice = code_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, BUFFERARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, BYTEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, TABLEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
+			if (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1) choice = verbs_at_eof_I7CGS;
+		}
+		*saved = CodeGen::select(gen, choice);
+	}
 	text_stream *OUT = CodeGen::current(gen);
 	
 	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
@@ -1078,15 +1077,18 @@ void I6Target::array_entries(code_generator *cgt, code_generation *gen,
 	else WRITE(" (%d)", how_many);
 }
 
-void I6Target::end_array(code_generator *cgt, code_generation *gen, int format) {
+void I6Target::end_array(code_generator *cgt, code_generation *gen, int format, generated_segment *saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
+	if (saved) CodeGen::deselect(gen, saved);
 }
 
 void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
 	if (true_action == FALSE) {
+		generated_segment *saved = CodeGen::select(gen, early_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Fake_Action %S;\n", name);
+		CodeGen::deselect(gen, saved);
 	}
 }
 

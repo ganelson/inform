@@ -21,8 +21,6 @@ void CTarget::create_generator(void) {
 	CGlobals::initialise(c_target);
 	CAssembly::initialise(c_target);
 	CInputOutputModel::initialise(c_target);
-
-	METHOD_ADD(c_target, GENERAL_SEGMENT_MTID, CTarget::general_segment);
 }
 
 @h Static supporting code.
@@ -536,26 +534,6 @@ int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
 	}
 	
 	return FALSE;
-}
-
-int CTarget::general_segment(code_generator *cgt, code_generation *gen, inter_tree_node *P) {
-	switch (P->W.data[ID_IFLD]) {
-		case CONSTANT_IST: {
-			inter_symbol *con_name =
-				InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-			int choice = c_early_matter_I7CGS;
-			if (Str::eq(con_name->symbol_name, I"DynamicMemoryAllocation")) choice = c_very_early_matter_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = c_code_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) choice = c_verbs_at_eof_I7CGS;
-			if (Inter::Constant::is_routine(con_name)) choice = c_functions_at_eof_I7CGS;
-			return choice;
-		}
-	}
-	return c_main_matter_I7CGS;
 }
 
 int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {

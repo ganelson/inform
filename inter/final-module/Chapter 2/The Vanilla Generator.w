@@ -62,8 +62,6 @@ void Vanilla::predeclare_functions(inter_tree *I, inter_tree_node *P, void *stat
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
-		generated_segment *saved =
-			CodeGen::select(gen, Generators::general_segment(gen, P));
 		switch (P->W.data[ID_IFLD]) {
 			case CONSTANT_IST: {
 				inter_symbol *con_name =
@@ -77,7 +75,6 @@ void Vanilla::predeclare_functions(inter_tree *I, inter_tree_node *P, void *stat
 				break;
 			}
 		}
-		CodeGen::deselect(gen, saved);
 	}
 }
 
@@ -92,17 +89,15 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
-		generated_segment *saved = CodeGen::select(gen, Generators::general_segment(gen, P));
 		switch (P->W.data[ID_IFLD]) {
 			case CONSTANT_IST:
-			case INSTANCE_IST:
-			case PROPERTYVALUE_IST:
 			case VARIABLE_IST:
 			case SPLAT_IST:
+			case INSTANCE_IST:
+			case PROPERTYVALUE_IST:
 				Vanilla::node(gen, P);
 				break;
 		}
-		CodeGen::deselect(gen, saved);
 	}
 }
 
