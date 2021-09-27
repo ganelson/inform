@@ -199,10 +199,10 @@ void Generators::compile_literal_text(code_generation *gen, text_stream *S, int 
 @e DECLARE_ATTRIBUTE_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, int used)
+VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name)
 VOID_METHOD_TYPE(DECLARE_ATTRIBUTE_MTID, code_generator *generator, code_generation *gen, text_stream *prop_name)
-void Generators::declare_property(code_generation *gen, inter_symbol *prop_name, int used) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_PROPERTY_MTID, gen, prop_name, used);
+void Generators::declare_property(code_generation *gen, inter_symbol *prop_name) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_PROPERTY_MTID, gen, prop_name);
 }
 void Generators::declare_attribute(code_generation *gen, text_stream *prop_name) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_ATTRIBUTE_MTID, gen, prop_name);
@@ -310,6 +310,7 @@ void Generators::property_offset(code_generation *gen, text_stream *property_nam
 @d COMPUTED_GDCFORM 2
 @d LITERAL_TEXT_GDCFORM 3
 @d RAW_GDCFORM 4
+@d MANGLED_GDCFORM 5
 
 =
 VOID_METHOD_TYPE(DECLARE_CONSTANT_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val, int ifndef_me)

@@ -624,18 +624,30 @@ property names which don't exist as constant symbols with the harmless value
 trick called "stubbing", these being "stub definitions".)
 
 =
-void I6Target::declare_property(code_generator *cgt, code_generation *gen,
-	inter_symbol *prop_name, int used) {
+void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name) {
+
 	text_stream *name = Inter::Symbols::name(prop_name);
-	if (used) {
-		segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
-		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
-		CodeGen::deselect(gen, saved);
+
+	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) {
+		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == 0) {
+			segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+			WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
+			CodeGen::deselect(gen, saved);
+		}
 	} else {
 		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
 		CodeGen::deselect(gen, saved);
 	}
+
+		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+			int translated = FALSE;
+			if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
+			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) translated = TRUE;
+			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
+				(translated == FALSE))
+				Generators::declare_attribute(gen, Inter::Symbols::name(prop_name));
+		}
 }
 
 void I6Target::declare_attribute(code_generator *cgt, code_generation *gen, text_stream *prop_name) {

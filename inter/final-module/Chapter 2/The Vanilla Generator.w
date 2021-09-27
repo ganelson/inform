@@ -51,7 +51,14 @@ void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
 			break;
 		}
-		case PROPERTY_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->properties); break;
+		case PROPERTY_IST: {
+			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
+				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
+			else
+				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties);
+			break;
+		}
 		case INSTANCE_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->instances); break;
 		case KIND_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->kinds); break;
 	}
@@ -110,7 +117,7 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 
 @<Consolidate@> =
 	VanillaConstants::consolidate(gen);
-	VanillaObjects::consolidate(gen);
+	VanillaObjects::generate(gen);
 
 @ The function //Vanilla::node// is a sort of handle-any-node function, and is
 the main way we iterate through the Inter tree.

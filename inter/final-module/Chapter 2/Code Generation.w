@@ -49,7 +49,8 @@ typedef struct code_generation {
 	int literal_text_mode;
 	struct linked_list *global_variables;
 	struct linked_list *text_literals;
-	struct linked_list *properties;
+	struct linked_list *assimilated_properties;
+	struct linked_list *unassimilated_properties;
 	struct linked_list *instances;
 	struct linked_list *kinds;
 
@@ -73,7 +74,8 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->literal_text_mode = REGULAR_LTM;
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	gen->text_literals = NEW_LINKED_LIST(text_literal_holder);
-	gen->properties = NEW_LINKED_LIST(inter_tree_node);
+	gen->assimilated_properties = NEW_LINKED_LIST(inter_symbol);
+	gen->unassimilated_properties = NEW_LINKED_LIST(inter_symbol);
 	gen->instances = NEW_LINKED_LIST(inter_tree_node);
 	gen->kinds = NEW_LINKED_LIST(inter_tree_node);
 	return gen;

@@ -38,8 +38,6 @@ before it is known how they will be used.
 	Submain();
 ];
 
-Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
-
 [ INITIALISE_MEMORY_R;
 	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
 	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;

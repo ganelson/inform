@@ -2,164 +2,100 @@
 
 How the vanilla code generation strategy handles instances, kinds, and properties.
 
-@
+@ The object model of objects, kinds, properties and their values is made all
+at once, towards the end of code generation, when the following function is
+called exactly once.
 
 =
-typedef struct kov_value_stick {
-	struct inter_symbol *prop;
-	struct inter_symbol *kind_name;
-	struct text_stream *identifier;
-	struct inter_tree_node *node;
-	CLASS_DEFINITION
-} kov_value_stick;
-
-@h Instances.
-
-=
-void VanillaObjects::instance(code_generation *gen, inter_tree_node *P) {
-	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
-
-	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
-		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
-		if (c < 0) c = 0;
-		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
-		segmentation_pos saved;
-		Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name),
-			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir, &saved);
-		VanillaObjects::append(gen, inst_name);
-		inter_node_list *FL =
-			Inode::ID_to_frame_list(P,
-				Inter::Instance::properties_list(inst_name));
-		VanillaObjects::plist(gen, FL);
-		Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name), saved);
-	} else {
-		inter_ti val1 = P->W.data[VAL1_INST_IFLD];
-		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
-		int defined = TRUE;
-		if (val1 == UNDEF_IVAL) defined = FALSE;
-		TEMPORARY_TEXT(val)
-		if (defined) WRITE_TO(val, "%d", val2);
-		Generators::declare_value_instance(gen, Inter::Symbols::name(inst_name),
-			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), val);
-		DISCARD_TEXT(val)
-	}
-}
-
-void VanillaObjects::plist(code_generation *gen, inter_node_list *FL) {
-	if (FL == NULL) internal_error("no properties list");
-	inter_tree_node *X;
-	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
-		if (prop_name == NULL) internal_error("no property");
-		text_stream *call_it = Inter::Symbols::name(prop_name);
-		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
-				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
-				Generators::assign_property(gen, call_it, I"0", TRUE);
-			} else {
-				Generators::assign_property(gen, call_it, I"1", TRUE);
-			}
-		} else {
-			TEMPORARY_TEXT(OUT)
-			CodeGen::select_temporary(gen, OUT);
-			if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
-				CodeGen::pair(gen, X,
-					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
-			}
-			CodeGen::deselect_temporary(gen);
-			Generators::assign_property(gen, call_it, OUT, FALSE);
-			DISCARD_TEXT(OUT)
-		}
-	}
-}
-
-void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
-	text_stream *OUT = CodeGen::current(gen);
+void VanillaObjects::generate(code_generation *gen) {
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::Symbols::read_annotation_t(symb, I, APPEND_IANN);
-	if (Str::len(S) == 0) return;
-	WRITE("    ");
-	Vanilla::splat_matter(OUT, I, S);
+
+	inter_symbol **kinds_in_source_order = NULL;
+	inter_symbol **kinds_in_declaration_order = NULL;
+	@<Make a list of kinds in source order@>;
+	@<Make a list of kinds in declaration order@>;
+
+	inter_symbol **instances_in_declaration_order = NULL;
+	@<Make a list of instances in declaration order@>;
+
+	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
+		@<Declare and allocate properties@>;
+		@<Compile the property numberspace forcer@>;
+		@<Write Value Property Holder objects for each kind of value instance@>;
+	}
+
+	@<Annotate kinds of object with a sequence counter@>;
+	@<Write the KindHierarchy array@>;
+	@<Write an I6 Class definition for each kind of object@>;
+	@<Write an I6 Object definition for each object instance@>;
+	@<Write the property metadata array@>;
 }
 
+@<Make a list of kinds in source order@> =
+	if (LinkedLists::len(gen->kinds) > 0) {
+		kinds_in_source_order = (inter_symbol **)
+			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i = 0;
+		inter_tree_node *P;
+		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
+			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+			kinds_in_source_order[i++] = kind_name;
+		}
+		qsort(kinds_in_source_order, (size_t) i, sizeof(inter_symbol *),
+			VanillaObjects::compare_kind_symbols);
+	}
 
-@h Representing instances in I6.
-Partly for historical reasons, partly to squeeze performance out of the
-virtual machines used in traditional parser IF, the I6 run-time
-implementation of instances and their properties is complicated.
+@<Make a list of kinds in declaration order@> =
+	if (LinkedLists::len(gen->kinds) > 0) {
+		kinds_in_declaration_order = (inter_symbol **)
+			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i = 0;
+		inter_tree_node *P;
+		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
+			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+			kinds_in_declaration_order[i++] = kind_name;
+		}
+		qsort(kinds_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
+			VanillaObjects::compare_kind_symbols_decl);
+	}
 
-The main complication is that there are two sorts of instance: objects,
-such as doors and people, and everything else, such as scenes. The two
-sorts are handled equally in Inter, but have completely different run-time
-representations in I6:
+@<Make a list of instances in declaration order@> =
+	if (LinkedLists::len(gen->instances) > 0) {
+		instances_in_declaration_order = (inter_symbol **)
+			(Memory::calloc(LinkedLists::len(gen->instances), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i=0;
+		inter_tree_node *P;
+		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->instances) {
+			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			instances_in_declaration_order[i++] = inst_name;
+		}
+		qsort(instances_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
+			VanillaObjects::compare_kind_symbols_decl);
+	}
 
-(a) "Object instances" are instances of a kind which is a subkind, perhaps
-indirectly, of "object". These are stored as I6 objects, and the I6 classes
-of these objects correspond exactly to their I7 kinds (except that the kind
-"object" itself is mapped to the I6 class "Class").
+@<Declare and allocate properties@> =
+	inter_symbol *first_either_or_not_an_attribute = NULL;
+	int attribute_slots_used = 0;
 
-(b) "Value instances" are instances of kinds which are not objects but can
-nevertheless have properties. The scene "entire game" is a value instance; the
-number 27 is not. Value instances are stored as enumerated constants. For
-example, if there are scenes called "entire game", "Overture" and "Grand
-Finale", then these are stored as the constants 1, 2, 3; and I6 constants are
-defined to represent them.
+	inter_symbol *prop_name;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
+		@<Consider this property for attribute allocation@>;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+		@<Consider this property for attribute allocation@>;
 
-@h Representing properties in I6.
-Both sorts of instance can have properties; for example:
+	if (first_either_or_not_an_attribute == NULL)
+		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, MANGLED_GDCFORM,
+			NULL, I"MAX_POSITIVE_NUMBER", FALSE);
+	else
+		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, MANGLED_GDCFORM,
+			NULL, Inter::Symbols::name(first_either_or_not_an_attribute), FALSE);
 
->> A supporter has a number called carrying capacity.
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
+		Generators::declare_property(gen, prop_name);
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+		Generators::declare_property(gen, prop_name);
 
->> A scene has a number called completion score.
-
-allows a property to be held by object instances (supporters) and value
-instances (scenes). To the writer of I7 source text, no distinction between
-these cases is visible, and the same is true of Inter code.
-
-How to store these at run-time is not so straightforward. Speed and
-compactness are unusually important here, and constraints imposed by the
-virtual machine targeted by I6 add further complications.
-
-(a) Properties of object instances are stored as either I6 properties or I6
-attributes of their I6 objects. As far as possible, this is a direct mapping
-from I7 instances and kinds onto I6 objects and classes. It is a little
-bulkier in memory than using flat arrays, but the Glulx and Z-machine virtual
-machines offer a very rapid lookup operation. Thus "the carrying capacity of
-the player" can be compiled to the I6 expression |player.capacity|, which
-compiles to a single short call to the I6 veneer -- and one which many
-interpreters today have optimised out as a basic operation, taking only a
-single VM clock cycle.
-
-(b) The properties of value instances are stored in flat arrays called
-"sticks", with each property having its own stick. For example, the property
-"recurring" for a scene would have a stick holding three values, one each for
-the three scenes. Sticks have the same run-time format as table columns and
-this is not a coincidence, because some kinds of value instances are created
-by table in I7, and this lets us use the table as a ready-made set of sticks.
-But now we don't have run-time lookup mechanisms already provided for us, so
-we will need to set up some metadata structures to make it possible to seek
-property values for value instances quickly.
-
-In practice, property access is slightly faster for object instances, and
-property storage is slightly more compact for value instances, which is
-probably the right bargain.
-
-@h Properties.
-Properties in I7 are of two sorts: either-or, which behave adjectivally,
-such as "open"; and value, which behave as nouns, such as "carrying capacity".
-We can distinguish these because the I7 compiler annotates the property name
-symbols with the |EITHER_OR_IANN| flag. It also always gives either-or
-properties the kind |K_truth_state|, but note that a few value properties
-also have this kind, so the annotation is the only way to be sure.
-
-Some either-or properties of object instances can be stored as I6
-"attributes". This is memory-efficient and fast at run-time: but only a
-limited number can be stored this way. Here we choose which.
-
-=
-void VanillaObjects::property(inter_tree *I, inter_symbol *prop_name, code_generation *gen, int *FBNA_found, int *attribute_slots_used) {
-	if (prop_name == NULL) internal_error("bad property");
+@<Consider this property for attribute allocation@> =
 	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
 		int translated = FALSE;
 		if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
@@ -169,16 +105,19 @@ void VanillaObjects::property(inter_tree *I, inter_symbol *prop_name, code_gener
 		@<Any either/or property which can belong to a value instance is ineligible@>;
 		@<An either/or property translated to an attribute declared in the I6 template must be chosen@>;
 		@<Otherwise give away attribute slots on a first-come-first-served basis@>;
-		if (make_attribute == TRUE) Inter::Symbols::set_flag(prop_name, ATTRIBUTE_MARK_BIT);
 		@<Check against the I7 compiler's beliefs@>;
 
 		if (make_attribute) {
-			@<Declare as an I6 attribute@>;
+			Inter::Symbols::set_flag(prop_name, ATTRIBUTE_MARK_BIT);
+//			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
+//				(translated == FALSE))
+//				Generators::declare_attribute(gen, Inter::Symbols::name(prop_name));
 		} else {
-			@<Worry about the FBNA@>;
+			Inter::Symbols::clear_flag(prop_name, ATTRIBUTE_MARK_BIT);
+			if (first_either_or_not_an_attribute == NULL)
+				first_either_or_not_an_attribute = prop_name;
 		}
 	}
-}
 
 @ The dodge of using an attribute to store an either-or property won't work
 for properties of value instances, because then the value-property-holder
@@ -230,7 +169,7 @@ to be frequently used.
 
 @<Otherwise give away attribute slots on a first-come-first-served basis@> =
 	if (make_attribute == NOT_APPLICABLE) {
-		if (*attribute_slots_used++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
+		if (attribute_slots_used++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
 			make_attribute = TRUE;
 		else
 			make_attribute = FALSE;
@@ -248,22 +187,6 @@ check that here. (It tells us by marking the property name with the
 	if (made_attribute != make_attribute) {
 		LOG("Disagree on %S: %d vs %d\n", prop_name->symbol_name, made_attribute, make_attribute);
 		internal_error("attribute allocation dispute");
-	}
-
-@ A curiosity of I6 is that attributes must be declared before use, whereas
-properties need not be. We generate suitable |Attribute| statements here.
-Note that if the property has been translated onto an existing I6 name, then
-we assume that's the name of an attribute already declared (for example
-in the I6 template, or some extension), and we therefore do nothing.
-
-@<Declare as an I6 attribute@> =
-	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) {
-		text_stream *A = Inter::Symbols::get_translate(prop_name);
-		if (A == NULL) A = Inter::Symbols::name(prop_name);
-		Generators::declare_attribute(gen, A);
-	} else {
-		if (translated == FALSE)
-			Generators::declare_attribute(gen, Inter::Symbols::name(prop_name));
 	}
 
 @ The weak point in our scheme for making some either/or properties into
@@ -284,165 +207,21 @@ This cutoff value |F| is customarily called FBNA, the "first boolean not
 an attribute". (Perhaps she ought to be called FEONA.) The following
 compiles an I6 constant for this value.
 
-@<Worry about the FBNA@> =
-	if (*FBNA_found == FALSE) {
-		*FBNA_found = TRUE;
-		TEMPORARY_TEXT(val)
-		Generators::mangle(gen, val, Inter::Symbols::name(prop_name));
-		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, RAW_GDCFORM, NULL, val, FALSE);
-		DISCARD_TEXT(val)
-	}
-
-@ It's unlikely, but just possible, that no FBNAs ever exist, so after the
-above has been tried on all properties:
-
-=
-void VanillaObjects::consolidate(code_generation *gen) {
-	inter_tree *I = gen->from;
-	inter_symbol **all_props_in_source_order = NULL;
-	inter_symbol **props_in_source_order = NULL;
-	int no_unassimilated_properties = 0;
-	@<Make a list of properties in source order@>;
-	@<Compile the property numberspace forcer@>;
-
-	inter_symbol **kinds_in_source_order = NULL;
-	inter_symbol **kinds_in_declaration_order = NULL;
-	@<Make a list of kinds in source order@>;
-
-	inter_symbol **instances_in_declaration_order = NULL;
-	@<Make a list of instances in declaration order@>;
-
-	if (no_unassimilated_properties > 0) @<Write Value Property Holder objects for each kind of value instance@>;
-	@<Make a list of kinds in declaration order@>;
-	@<Annotate kinds of object with a sequence counter@>;
-	@<Write the KindHierarchy array@>;
-	@<Write an I6 Class definition for each kind of object@>;
-	@<Write an I6 Object definition for each object instance@>;
-	@<Write the property metadata array@>;
-
-	@<Stub the properties@>;
-}
-
-@<Make a list of properties in source order@> =
-	inter_tree_node *P;
-	LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->properties) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-			no_unassimilated_properties++;
-	}
-
-	if (no_unassimilated_properties > 0) {
-		int FBNA_found = FALSE;
-		int attribute_slots_used = 0;
-		all_props_in_source_order = (inter_symbol **)
-			(Memory::calloc(no_unassimilated_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int c = 0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->properties) {
-			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-				all_props_in_source_order[c++] = prop_name;
-			else
-				VanillaObjects::property(I, prop_name, gen, &FBNA_found, &attribute_slots_used);
-		}
-		qsort(all_props_in_source_order, (size_t) no_unassimilated_properties, sizeof(inter_symbol *),
-			VanillaObjects::compare_kind_symbols);
-		for (int p=0; p<no_unassimilated_properties; p++) {
-			inter_symbol *prop_name = all_props_in_source_order[p];
-			VanillaObjects::property(I, prop_name, gen, &FBNA_found, &attribute_slots_used);
-		}
-		if (FBNA_found == FALSE)
-			Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, RAW_GDCFORM, NULL, I"MAX_POSITIVE_NUMBER", FALSE);
-	}
-
-	if (no_unassimilated_properties > 0) {
-		props_in_source_order = (inter_symbol **)
-			(Memory::calloc(no_unassimilated_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int c = 0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->properties) {
-			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
-				props_in_source_order[c++] = prop_name;
-		}
-
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->properties) {
-			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
-				(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
-				Generators::declare_property(gen, prop_name, TRUE);
-			}
-		}
-	}
-
-@<Make a list of kinds in source order@> =
-	if (LinkedLists::len(gen->kinds) == 0) return;
-
-	kinds_in_source_order = (inter_symbol **)
-		(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-	int i = 0;
-	inter_tree_node *P;
-	LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
-		inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-		kinds_in_source_order[i++] = kind_name;
-	}
-	qsort(kinds_in_source_order, (size_t) i, sizeof(inter_symbol *),
-		VanillaObjects::compare_kind_symbols);
-
-@<Make a list of kinds in declaration order@> =
-	kinds_in_declaration_order = (inter_symbol **)
-		(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-	int i = 0;
-	inter_tree_node *P;
-	LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
-		inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-		kinds_in_declaration_order[i++] = kind_name;
-	}
-	qsort(kinds_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
-		VanillaObjects::compare_kind_symbols_decl);
-
-@<Make a list of instances in declaration order@> =
-	if (LinkedLists::len(gen->instances) > 0) {
-		instances_in_declaration_order = (inter_symbol **)
-			(Memory::calloc(LinkedLists::len(gen->instances), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int i=0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->instances) {
-			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-			instances_in_declaration_order[i++] = inst_name;
-		}
-		qsort(instances_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
-			VanillaObjects::compare_kind_symbols_decl);
-	}
-
-@ But there's a snag. The above assumes that property values will have the
-same ordering at run-time as their definition order here, but that isn't
-necessarily true. The run-time ordering depends on how early in the I6
-source code they appear, and that in turn depends on which objects have
-which properties, and so on -- nothing we can rely on.
-
-We finesse this by creating the following spurious object before the
-class hierarchy and object tree are created: its properties are therefore
-all new creations, and since we declare them in I7 creation order, they
-are now allocated I6 property numbers in a sequence matching this. (We
-don't care about the numbering of non-either/or properties, so we don't
-bother to force them.)
+@ 
 
 @<Compile the property numberspace forcer@> =
-	if (no_unassimilated_properties > 0) {
-		segmentation_pos saved;
-		Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE, &saved);
-		for (int p=0; p<no_unassimilated_properties; p++) {
-			inter_symbol *prop_name = props_in_source_order[p];
-			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
-				inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
-				if (kind_name == truth_state_kind_symbol) {
-					Generators::assign_property(gen, Inter::Symbols::name(prop_name), I"0", FALSE);
-				}
+	segmentation_pos saved;
+	Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE, &saved);
+	inter_symbol *prop_name;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties) {
+		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
+			inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
+			if (kind_name == truth_state_kind_symbol) {
+				Generators::assign_property(gen, Inter::Symbols::name(prop_name), I"0", FALSE);
 			}
 		}
-		Generators::end_instance(gen, I"Object", I"property_numberspace_forcer", saved);
 	}
+	Generators::end_instance(gen, I"Object", I"property_numberspace_forcer", saved);
 
 @<Annotate kinds of object with a sequence counter@> =
 	inter_ti c = 1;
@@ -535,10 +314,9 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
 							Generators::assign_property(gen, I"value_range", N, FALSE);
 							DISCARD_TEXT(N)
-							for (int p=0; p<no_unassimilated_properties; p++) {
-								inter_symbol *prop_name = props_in_source_order[p];
+							inter_symbol *prop_name;
+							LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 								CodeGen::unmark(prop_name);
-							}
 							inter_node_list *FL =
 								Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 							@<Work through this frame list of permissions@>;
@@ -767,12 +545,12 @@ The dummy value |-1| means that the relevant property has no metadata record,
 though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
-	if (no_unassimilated_properties > 0) {
+	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
 		segmentation_pos saved;
 		Generators::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
 		int pos = 0;
-		for (int p=0; p<no_unassimilated_properties; p++) {
-			inter_symbol *prop_name = props_in_source_order[p];
+		inter_symbol *prop_name;
+		LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties) {
 			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
 				Generators::property_offset(gen, Inter::Symbols::name(prop_name), pos, TRUE);
 			else
@@ -813,8 +591,8 @@ number of objects, but we can live with that. $P$ does not in practice rise
 linearly with the size of the source text, even though $N$ does.
 
 @<Write a list of kinds or objects which are permitted to have this property@> =
-	for (int e=0; e<no_unassimilated_properties; e++) {
-		inter_symbol *eprop_name = props_in_source_order[e];
+	inter_symbol *eprop_name;
+	LOOP_OVER_LINKED_LIST(eprop_name, inter_symbol, gen->unassimilated_properties) {
 		if (Str::eq(Inter::Symbols::name(eprop_name), Inter::Symbols::name(prop_name))) {
 			inter_node_list *EVL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
@@ -872,16 +650,6 @@ linearly with the size of the source text, even though $N$ does.
 					}
 				}
 			}
-		}
-	}
-
-@ 
-
-@<Stub the properties@> =
-	for (int p=0; p<no_unassimilated_properties; p++) {
-		inter_symbol *prop_name = props_in_source_order[p];
-		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1) {
-			Generators::declare_property(gen, prop_name, FALSE);
 		}
 	}
 
@@ -969,3 +737,161 @@ inter_ti VanillaObjects::kind_of_object_count(inter_symbol *kind_name) {
 	if (N >= 0) return (inter_ti) N;
 	return 0;
 }
+
+@
+
+=
+typedef struct kov_value_stick {
+	struct inter_symbol *prop;
+	struct inter_symbol *kind_name;
+	struct text_stream *identifier;
+	struct inter_tree_node *node;
+	CLASS_DEFINITION
+} kov_value_stick;
+
+@h Instances.
+
+=
+void VanillaObjects::instance(code_generation *gen, inter_tree_node *P) {
+	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+
+	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
+		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
+		if (c < 0) c = 0;
+		int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
+		segmentation_pos saved;
+		Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name),
+			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir, &saved);
+		VanillaObjects::append(gen, inst_name);
+		inter_node_list *FL =
+			Inode::ID_to_frame_list(P,
+				Inter::Instance::properties_list(inst_name));
+		VanillaObjects::plist(gen, FL);
+		Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name), saved);
+	} else {
+		inter_ti val1 = P->W.data[VAL1_INST_IFLD];
+		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
+		int defined = TRUE;
+		if (val1 == UNDEF_IVAL) defined = FALSE;
+		TEMPORARY_TEXT(val)
+		if (defined) WRITE_TO(val, "%d", val2);
+		Generators::declare_value_instance(gen, Inter::Symbols::name(inst_name),
+			Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), val);
+		DISCARD_TEXT(val)
+	}
+}
+
+void VanillaObjects::plist(code_generation *gen, inter_node_list *FL) {
+	if (FL == NULL) internal_error("no properties list");
+	inter_tree_node *X;
+	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
+		if (prop_name == NULL) internal_error("no property");
+		text_stream *call_it = Inter::Symbols::name(prop_name);
+		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
+				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
+				Generators::assign_property(gen, call_it, I"0", TRUE);
+			} else {
+				Generators::assign_property(gen, call_it, I"1", TRUE);
+			}
+		} else {
+			TEMPORARY_TEXT(OUT)
+			CodeGen::select_temporary(gen, OUT);
+			if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
+				CodeGen::pair(gen, X,
+					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
+			}
+			CodeGen::deselect_temporary(gen);
+			Generators::assign_property(gen, call_it, OUT, FALSE);
+			DISCARD_TEXT(OUT)
+		}
+	}
+}
+
+void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
+	text_stream *OUT = CodeGen::current(gen);
+	inter_tree *I = gen->from;
+	text_stream *S = Inter::Symbols::read_annotation_t(symb, I, APPEND_IANN);
+	if (Str::len(S) == 0) return;
+	WRITE("    ");
+	Vanilla::splat_matter(OUT, I, S);
+}
+
+
+@h Representing instances in I6.
+Partly for historical reasons, partly to squeeze performance out of the
+virtual machines used in traditional parser IF, the I6 run-time
+implementation of instances and their properties is complicated.
+
+The main complication is that there are two sorts of instance: objects,
+such as doors and people, and everything else, such as scenes. The two
+sorts are handled equally in Inter, but have completely different run-time
+representations in I6:
+
+(a) "Object instances" are instances of a kind which is a subkind, perhaps
+indirectly, of "object". These are stored as I6 objects, and the I6 classes
+of these objects correspond exactly to their I7 kinds (except that the kind
+"object" itself is mapped to the I6 class "Class").
+
+(b) "Value instances" are instances of kinds which are not objects but can
+nevertheless have properties. The scene "entire game" is a value instance; the
+number 27 is not. Value instances are stored as enumerated constants. For
+example, if there are scenes called "entire game", "Overture" and "Grand
+Finale", then these are stored as the constants 1, 2, 3; and I6 constants are
+defined to represent them.
+
+@h Representing properties in I6.
+Both sorts of instance can have properties; for example:
+
+>> A supporter has a number called carrying capacity.
+
+>> A scene has a number called completion score.
+
+allows a property to be held by object instances (supporters) and value
+instances (scenes). To the writer of I7 source text, no distinction between
+these cases is visible, and the same is true of Inter code.
+
+How to store these at run-time is not so straightforward. Speed and
+compactness are unusually important here, and constraints imposed by the
+virtual machine targeted by I6 add further complications.
+
+(a) Properties of object instances are stored as either I6 properties or I6
+attributes of their I6 objects. As far as possible, this is a direct mapping
+from I7 instances and kinds onto I6 objects and classes. It is a little
+bulkier in memory than using flat arrays, but the Glulx and Z-machine virtual
+machines offer a very rapid lookup operation. Thus "the carrying capacity of
+the player" can be compiled to the I6 expression |player.capacity|, which
+compiles to a single short call to the I6 veneer -- and one which many
+interpreters today have optimised out as a basic operation, taking only a
+single VM clock cycle.
+
+(b) The properties of value instances are stored in flat arrays called
+"sticks", with each property having its own stick. For example, the property
+"recurring" for a scene would have a stick holding three values, one each for
+the three scenes. Sticks have the same run-time format as table columns and
+this is not a coincidence, because some kinds of value instances are created
+by table in I7, and this lets us use the table as a ready-made set of sticks.
+But now we don't have run-time lookup mechanisms already provided for us, so
+we will need to set up some metadata structures to make it possible to seek
+property values for value instances quickly.
+
+In practice, property access is slightly faster for object instances, and
+property storage is slightly more compact for value instances, which is
+probably the right bargain.
+
+@h Properties.
+Properties in I7 are of two sorts: either-or, which behave adjectivally,
+such as "open"; and value, which behave as nouns, such as "carrying capacity".
+We can distinguish these because the I7 compiler annotates the property name
+symbols with the |EITHER_OR_IANN| flag. It also always gives either-or
+properties the kind |K_truth_state|, but note that a few value properties
+also have this kind, so the annotation is the only way to be sure.
+
+Some either-or properties of object instances can be stored as I6
+"attributes". This is memory-efficient and fast at run-time: but only a
+limited number can be stored this way. Here we choose which.
+
+=
+

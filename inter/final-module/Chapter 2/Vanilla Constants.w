@@ -156,6 +156,13 @@ void VanillaConstants::definition_value(code_generation *gen, int form, inter_tr
 				Generators::compile_literal_number(gen, 1, FALSE);
 			}
 			break;
+		case MANGLED_GDCFORM:
+			if (Str::len(val) > 0) {
+				Generators::mangle(gen, OUT, val);
+			} else {
+				Generators::compile_literal_number(gen, 1, FALSE);
+			}
+			break;
 		case DATA_GDCFORM: {
 			inter_ti val1 = P->W.data[DATA_CONST_IFLD];
 			inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];

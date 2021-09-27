@@ -62,7 +62,7 @@ void CObjectModel::initialise_data(code_generation *gen) {
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
-	CObjectModel::property_by_name(gen, I"value_range", TRUE, FALSE);
+	CObjectModel::property_by_name(gen, I"value_range", FALSE);
 }
 
 void CObjectModel::end(code_generation *gen) {
@@ -401,16 +401,24 @@ that references to it will not fail to compile.
 
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
-	inter_symbol *prop_name, int used) {
+	inter_symbol *prop_name) {
+	int attr = FALSE;
+	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+		int translated = FALSE;
+		if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
+		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) translated = TRUE;
+		if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
+			(translated == FALSE)) attr = TRUE;
+	}
 	text_stream *name = Inter::Symbols::name(prop_name);
-	C_property *cp = CObjectModel::property_by_name(gen, name, used, FALSE);
+	C_property *cp = CObjectModel::property_by_name(gen, name, attr);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname)
 		CObjectModel::define_header_constant_for_property(gen, pname, cp->id);
 }
 void CObjectModel::declare_attribute(code_generator *cgt, code_generation *gen,
 	text_stream *prop_name) {
-	CObjectModel::property_by_name(gen, prop_name, TRUE, TRUE);
+	CObjectModel::property_by_name(gen, prop_name, TRUE);
 }
 
 @ Property IDs count upwards from 0 in declaration order, though they really
@@ -424,7 +432,7 @@ typedef struct C_property {
 	CLASS_DEFINITION
 } C_property;
 
-C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int used, int attr) {
+C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int attr) {
 	dictionary *D = C_GEN_DATA(objdata.declared_properties);
 	C_property *cp;
 	if (Dictionaries::find(D, name) == NULL) {
@@ -558,7 +566,7 @@ typedef struct C_pv_pair {
 void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 	text_stream *property_name, text_stream *val, int as_att) {
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
-	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE, FALSE);
+	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE);
 	C_pv_pair *pair = CREATE(C_pv_pair);
 	pair->prop = prop;
 	pair->val = Str::duplicate(val);
