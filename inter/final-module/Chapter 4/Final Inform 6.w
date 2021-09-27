@@ -9,15 +9,6 @@ To generate I6 code from intermediate code.
 @e predeclarations_I7CGS
 @e very_early_matter_I7CGS
 @e constants_1_I7CGS
-@e constants_2_I7CGS
-@e constants_3_I7CGS
-@e constants_4_I7CGS
-@e constants_5_I7CGS
-@e constants_6_I7CGS
-@e constants_7_I7CGS
-@e constants_8_I7CGS
-@e constants_9_I7CGS
-@e constants_10_I7CGS
 @e predeclarations_2_I7CGS
 @e early_matter_I7CGS
 @e text_literals_code_I7CGS
@@ -39,15 +30,6 @@ int I6_target_segments[] = {
 	predeclarations_2_I7CGS,
 	very_early_matter_I7CGS,
 	constants_1_I7CGS,
-	constants_2_I7CGS,
-	constants_3_I7CGS,
-	constants_4_I7CGS,
-	constants_5_I7CGS,
-	constants_6_I7CGS,
-	constants_7_I7CGS,
-	constants_8_I7CGS,
-	constants_9_I7CGS,
-	constants_10_I7CGS,
 	early_matter_I7CGS,
 	text_literals_code_I7CGS,
 	summations_at_eof_I7CGS,
@@ -82,6 +64,7 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, I6Target::evaluate_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, I6Target::declare_class);
 	METHOD_ADD(cgt, END_CLASS_MTID, I6Target::end_class);
+	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, I6Target::declare_value_instance);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, I6Target::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6Target::end_instance);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6Target::optimise_property_value);
@@ -131,7 +114,7 @@ int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 
 	CodeGen::create_segments(gen, data, I6_target_segments);
 
-	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
@@ -211,7 +194,7 @@ int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 int I6_DebugAttribute_seen = FALSE;
 int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	if (I6_GEN_DATA(I6_property_offsets_made) > 0) {
-		generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		OUTDENT;
 		WRITE("];\n");
@@ -219,7 +202,7 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	}
 	
 	if (I6_DebugAttribute_seen == FALSE) {
-		generated_segment *saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("[ DebugAttribute a anames str;\n");
 		WRITE("    print \"<attribute \", a, \">\";\n");
@@ -230,15 +213,10 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	return FALSE;
 }
 
-int I6Target::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
-	if (depth >= 10) depth = 10;
-	return constants_1_I7CGS + depth - 1;
-}
-
 void I6Target::offer_pragma(code_generator *cgt, code_generation *gen,
 	inter_tree_node *P, text_stream *tag, text_stream *content) {
 	if (Str::eq(tag, I"Inform6")) {
-		generated_segment *saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("!%% %S\n", content);
 		CodeGen::deselect(gen, saved);
@@ -650,24 +628,24 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, int used) {
 	text_stream *name = Inter::Symbols::name(prop_name);
 	if (used) {
-		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
 		CodeGen::deselect(gen, saved);
 	} else {
-		generated_segment *saved = CodeGen::select(gen, code_at_eof_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
 		CodeGen::deselect(gen, saved);
 	}
 }
 
 void I6Target::declare_attribute(code_generator *cgt, code_generation *gen, text_stream *prop_name) {
-	generated_segment *saved = CodeGen::select(gen, I6Target::basic_constant_segment(cgt, gen, NULL, 1));
+	segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
 	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", prop_name);
 	CodeGen::deselect(gen, saved);
 }
 
 void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
-	generated_segment *saved = CodeGen::select(gen, property_offset_creator_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if (I6_GEN_DATA(I6_property_offsets_made)++ == 0) {
 		WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
@@ -695,7 +673,7 @@ void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
 			text_stream *S = Str::new();
 			WRITE_TO(S, "(Global_Vars-->%d)", k);
 			Inter::Symbols::set_translate(var_name, S);
-			generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+			segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
 			if (k == 0) WRITE("Array Global_Vars -->\n");
 			WRITE("  (");
@@ -704,7 +682,7 @@ void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
 			CodeGen::deselect(gen, saved);
 			k++;
 		} else {
-			generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
+			segmentation_pos saved = CodeGen::select(gen, main_matter_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
 			WRITE("Global %S = ", Inter::Symbols::name(var_name));
 			CodeGen::pair(gen, P, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD]);
@@ -714,7 +692,7 @@ void I6Target::declare_variables(code_generator *cgt, code_generation *gen,
 	}
 
 	if (k > 0) {
-		generated_segment *saved = CodeGen::select(gen, predeclarations_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		while (k++ < 2) WRITE(" NULL");
 		WRITE(";\n");
@@ -728,21 +706,26 @@ void I6Target::evaluate_variable(code_generator *cgt, code_generation *gen, inte
 }
 
 void I6Target::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class,
-	generated_segment **saved) {
+	segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
 	if (Str::len(super_class) > 0) WRITE("  class %S\n", super_class);
 }
 
-void I6Target::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, generated_segment *saved) {
+void I6Target::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, segmentation_pos saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
 }
 
+void I6Target::declare_value_instance(code_generator *cgt,
+	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
+	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val, FALSE);
+}
+
 void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
-	generated_segment **saved) {
+	segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", class_name);
@@ -751,7 +734,7 @@ void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_
 	if (is_dir) WRITE(" Compass");
 }
 
-void I6Target::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved) {
+void I6Target::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, segmentation_pos saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
@@ -806,7 +789,7 @@ void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_
 
 	int depth = 1;
 	if (const_s) depth = Inter::Constant::constant_depth(const_s);
-	generated_segment *saved = CodeGen::select(gen, I6Target::basic_constant_segment(cgt, gen, const_s, depth));
+	segmentation_pos saved = CodeGen::select_layered(gen, constants_1_I7CGS, depth);
 	text_stream *OUT = CodeGen::current(gen);
 
 	if (Str::eq(const_name, I"Release")) {
@@ -846,7 +829,7 @@ void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_
 
 int this_is_I6_Main = 0;
 void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	generated_segment *saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	this_is_I6_Main = 0;
 	text_stream *OUT = CodeGen::current(gen);
@@ -988,7 +971,7 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	if (void_context) WRITE(";\n");
 }
 
-int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved) {
+int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
 	if (saved) {
 		int choice = early_matter_I7CGS;
 		if (array_s) {
@@ -1077,15 +1060,15 @@ void I6Target::array_entries(code_generator *cgt, code_generation *gen,
 	else WRITE(" (%d)", how_many);
 }
 
-void I6Target::end_array(code_generator *cgt, code_generation *gen, int format, generated_segment *saved) {
+void I6Target::end_array(code_generator *cgt, code_generation *gen, int format, segmentation_pos *saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
-	if (saved) CodeGen::deselect(gen, saved);
+	if (saved) CodeGen::deselect(gen, *saved);
 }
 
 void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
 	if (true_action == FALSE) {
-		generated_segment *saved = CodeGen::select(gen, early_matter_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, early_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Fake_Action %S;\n", name);
 		CodeGen::deselect(gen, saved);
@@ -1093,7 +1076,7 @@ void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream
 }
 
 void I6Target::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
-	generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Object %S \"(%S object)\" has concealed;\n", obj_name, obj_name);
 	CodeGen::deselect(gen, saved);

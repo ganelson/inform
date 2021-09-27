@@ -50,7 +50,7 @@ void CLiteralsModel::end(code_generation *gen) {
 	CLiteralsModel::compile_dwords(gen);
 	CLiteralsModel::compile_verb_table(gen);
 	CLiteralsModel::compile_actions_table(gen);
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
 	WRITE("#define i7_mgl_Grammar__Version 2\n");
@@ -106,7 +106,7 @@ C_dword *CLiteralsModel::text_to_dword(code_generation *gen, text_stream *S, int
 void CLiteralsModel::compile_dwords(code_generation *gen) {
 	int dictlen = C_GEN_DATA(litdata.C_dword_count);
 
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
 	for (int b=0; b<4; b++) {
 		TEMPORARY_TEXT(N)
@@ -439,7 +439,7 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 }
 
 void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if (true_action) {
 		CObjectModel::define_header_constant_for_action(gen, name, name, C_GEN_DATA(litdata.C_action_count));

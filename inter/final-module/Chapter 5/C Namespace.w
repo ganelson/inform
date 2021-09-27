@@ -48,9 +48,13 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 
 =
 void CNamespace::declare_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val, int ifndef_me) {
-	int depth = 1;
-	if (const_s) depth = Inter::Constant::constant_depth(const_s);
-	generated_segment *saved = CodeGen::select(gen, CTarget::basic_constant_segment(cgt, gen, const_s, depth));
+	int depth = 1, id = c_constants_1_I7CGS;
+	if (const_s) {
+		depth = Inter::Constant::constant_depth(const_s);
+		if (Str::eq(Inter::Symbols::name(const_s), I"Release")) { id = c_ids_and_maxima_I7CGS; depth = 1; }
+		if (Str::eq(Inter::Symbols::name(const_s), I"Serial")) { id = c_ids_and_maxima_I7CGS; depth = 1; }
+	}
+	segmentation_pos saved = CodeGen::select_layered(gen, id, depth);
 	text_stream *OUT = CodeGen::current(gen);
 	if (ifndef_me) {
 		WRITE("#ifndef ");

@@ -51,7 +51,7 @@ We will manage that with a single C array.
 
 =
 void CMemoryModel::begin(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7byte_t i7_initial_memory[] = {\n");
 	for (int i=0; i<64; i++) WRITE("0, "); WRITE("/* header */\n");
@@ -65,7 +65,7 @@ in C.
 
 =
 void CMemoryModel::end(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("0, 0 };\n");
 	
@@ -281,7 +281,7 @@ word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 
 =
 int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
-	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, generated_segment **saved) {
+	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
 	if (saved) {
 		int choice = c_early_matter_I7CGS;
 		if (array_s) {
@@ -328,7 +328,7 @@ Object, class and function names can also legally appear as array entries,
 because they too are defined constants, equal to their IDs: see //C Object Model//.
 
 @<Define a constant for the byte address in memory where the array begins@> =
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
 	CNamespace::mangle(cgt, OUT, array_name);
@@ -352,7 +352,7 @@ predefine when the array ends.
 =
 void CMemoryModel::array_entry(code_generator *cgt, code_generation *gen,
 	text_stream *entry, int format) {
-	generated_segment *saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if ((format == TABLE_ARRAY_FORMAT) || (format == WORD_ARRAY_FORMAT))
 		@<This is a word entry@>
@@ -399,14 +399,14 @@ void CMemoryModel::array_entries(code_generator *cgt, code_generation *gen,
 except to predeclare the extent constant, if one was used.
 
 =
-void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format, generated_segment *saved) {
-	generated_segment *x_saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format, segmentation_pos *saved) {
+	segmentation_pos x_saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define xt_");
 	CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
 	WRITE(" %d\n", C_GEN_DATA(memdata.entry_count)-1);
 	CodeGen::deselect(gen, x_saved);
-	if (saved) CodeGen::deselect(gen, saved);
+	if (saved) CodeGen::deselect(gen, *saved);
 }
 
 @h Primitives for byte and word lookup.

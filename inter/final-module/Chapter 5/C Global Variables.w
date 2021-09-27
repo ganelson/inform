@@ -22,7 +22,7 @@ void CGlobals::begin(code_generation *gen) {
 }
 
 void CGlobals::end(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 
 	WRITE("#define i7_no_variables %d\n", C_var_count);
@@ -54,7 +54,7 @@ void CGlobals::declare_variables(code_generator *cgt, code_generation *gen, link
 
 void CGlobals::declare_variable_by_name(code_generation *gen, text_stream *name, 
 	inter_tree_node *P) {
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define i7_var_%S %d\n", name, C_var_count);
 	CodeGen::deselect(gen, saved);

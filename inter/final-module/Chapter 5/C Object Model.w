@@ -136,7 +136,7 @@ literal string, and each distinct function, has an ID; and none of these IDs
 overlap.
 
 @<Predeclare the object count and class array@> =
-	generated_segment *saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 
 	WRITE("#define i7_max_objects %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
@@ -167,14 +167,14 @@ Each proper base kind in the Inter tree produces an owner as follows:
 
 =
 void CObjectModel::declare_class(code_generator *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *printed_name, text_stream *super_class, generated_segment **saved) {
+	text_stream *class_name, text_stream *printed_name, text_stream *super_class, segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::declare_class_inner(gen, class_name, printed_name,
 		CObjectModel::next_owner_id(gen), super_class);
 }
 
-void CObjectModel::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, generated_segment *saved) {
+void CObjectModel::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, segmentation_pos saved) {
 	CodeGen::deselect(gen, saved);
 }
 
@@ -189,14 +189,14 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 
 =
 void CObjectModel::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
-	generated_segment *saved;
+	segmentation_pos saved;
 	C_property_owner *obj = CObjectModel::declare_instance(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE, &saved);
 	CodeGen::deselect(gen, saved);
 	if (Str::eq(obj_name, I"Compass")) C_GEN_DATA(objdata.compass_instance) = obj;
 }
 
 C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, generated_segment **saved) {
+	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
 	int id = CObjectModel::next_owner_id(gen);
@@ -240,12 +240,13 @@ C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_gener
 	return this;
 }
 
-void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, generated_segment *saved) {
+void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, segmentation_pos saved) {
 	CodeGen::deselect(gen, saved);
 }
 
 void CObjectModel::declare_value_instance(code_generator *cgt,
 	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
+	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val, FALSE);
 	CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, TRUE);
 }
 
@@ -255,7 +256,7 @@ defining this as a constant equal to its ID.
 =
 void CObjectModel::define_constant_for_owner_id(code_generation *gen, text_stream *owner_name,
 	int id) {
-	generated_segment *saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define "); CNamespace::mangle(NULL, OUT, owner_name); WRITE(" %d\n", id);
 	CodeGen::deselect(gen, saved);
@@ -290,7 +291,7 @@ text_stream *CObjectModel::new_header_name(code_generation *gen, text_stream *pr
 void CObjectModel::define_header_constant_for_instance(code_generation *gen, text_stream *owner_name,
 	text_stream *printed_name, text_stream *val, int enumerated) {
 	int seg = (enumerated)?c_enum_symbols_I7CGS:c_instances_symbols_I7CGS;
-	generated_segment *saved = CodeGen::select(gen, seg);
+	segmentation_pos saved = CodeGen::select(gen, seg);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %S\n", CObjectModel::new_header_name(gen, I"I", printed_name), val);
 	CodeGen::deselect(gen, saved);
@@ -298,7 +299,7 @@ void CObjectModel::define_header_constant_for_instance(code_generation *gen, tex
 
 void CObjectModel::define_header_constant_for_kind(code_generation *gen, text_stream *owner_name,
 	text_stream *printed_name, int id) {
-	generated_segment *saved = CodeGen::select(gen, c_kinds_symbols_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_kinds_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"K", printed_name), id);
 	CodeGen::deselect(gen, saved);
@@ -306,7 +307,7 @@ void CObjectModel::define_header_constant_for_kind(code_generation *gen, text_st
 
 void CObjectModel::define_header_constant_for_action(code_generation *gen, text_stream *action_name,
 	text_stream *printed_name, int id) {
-	generated_segment *saved = CodeGen::select(gen, c_actions_symbols_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_actions_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"A", printed_name), id);
 	CodeGen::deselect(gen, saved);
@@ -314,7 +315,7 @@ void CObjectModel::define_header_constant_for_action(code_generation *gen, text_
 
 void CObjectModel::define_header_constant_for_property(code_generation *gen, text_stream *prop_name,
 	int id) {
-	generated_segment *saved = CodeGen::select(gen, c_property_symbols_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_property_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"P", prop_name), id);
 	CodeGen::deselect(gen, saved);
@@ -322,7 +323,7 @@ void CObjectModel::define_header_constant_for_property(code_generation *gen, tex
 
 void CObjectModel::define_header_constant_for_variable(code_generation *gen, text_stream *var_name,
 	int id) {
-	generated_segment *saved = CodeGen::select(gen, c_variable_symbols_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_variable_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"V", var_name), id);
 	CodeGen::deselect(gen, saved);
@@ -330,7 +331,7 @@ void CObjectModel::define_header_constant_for_variable(code_generation *gen, tex
 
 void CObjectModel::define_header_constant_for_function(code_generation *gen, text_stream *fn_name,
 	text_stream *val) {
-	generated_segment *saved = CodeGen::select(gen, c_function_symbols_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_function_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define %S %S\n", CObjectModel::new_header_name(gen, I"F", fn_name), val);
 	CodeGen::deselect(gen, saved);
@@ -434,7 +435,7 @@ C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *na
 		Dictionaries::create(D, name);
 		Dictionaries::write_value(D, name, (void *) cp);
 		
-		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
 		CNamespace::mangle(NULL, OUT, cp->name);
@@ -453,7 +454,7 @@ properties at runtime.
 =
 void CObjectModel::property_offset(code_generator *cgt, code_generation *gen,
 	text_stream *prop, int pos, int as_attr) {
-	generated_segment *saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 
 	if (C_GEN_DATA(objdata.C_property_offsets_made)++ == 0)
@@ -485,7 +486,7 @@ By fiat, that will be 0.
 
 @<Complete the property-offset creator function@> =
 	if (C_GEN_DATA(objdata.C_property_offsets_made) > 0) {
-		generated_segment *saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("return 0;\n");
 		OUTDENT;
@@ -503,7 +504,7 @@ arrays which already have the right contents. Instead we will compile an
 initialiser function which runs early and sets the property values up by hand:
 
 @<Begin the initialiser function@> =
-	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("void i7_initializer(i7process_t *proc) {\n"); INDENT;
 	WRITE("for (int id=0; id<i7_max_objects; id++) {\n"); INDENT;
@@ -515,7 +516,7 @@ initialiser function which runs early and sets the property values up by hand:
 	CodeGen::deselect(gen, saved);
 
 @<Complete the initialiser function@> =
-	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 
 	C_property_owner *co;
@@ -598,7 +599,7 @@ void CObjectModel::gather_properties(code_generation *gen, C_property_owner *own
 }
 
 void CObjectModel::write_property_values_table(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	C_property_owner *owner;
 	LOOP_OVER_LINKED_LIST(owner, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {

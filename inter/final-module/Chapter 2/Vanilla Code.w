@@ -28,7 +28,6 @@ void VanillaCode::code(code_generation *gen, inter_tree_node *P) {
 	gen->void_level = old_level;
 }
 
-void VanillaCode::block(code_generation *gen, inter_tree_node *P)      { VNODE_ALLC; }
 void VanillaCode::evaluation(code_generation *gen, inter_tree_node *P) { VNODE_ALLC; }
 void VanillaCode::reference(code_generation *gen, inter_tree_node *P)  { VNODE_ALLC; }
 void VanillaCode::cast(code_generation *gen, inter_tree_node *P)       { VNODE_ALLC; }

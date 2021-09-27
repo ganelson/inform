@@ -15,7 +15,7 @@ be sent |END_GENERATION_MTID|.
 void Vanilla::go(code_generation *gen) {
 	@<Prepare@>;
 	@<Traverse for pragmas@>;
-	@<Traverse for global variables@>;
+	@<Traverse for global bric-a-brac@>;
 	@<Traverse to make function predeclarations@>;
 	@<General traverse@>;
 	@<Consolidate@>;
@@ -23,7 +23,6 @@ void Vanilla::go(code_generation *gen) {
 
 @<Prepare@> =
 	gen->void_level = -1;
-	VanillaObjects::prepare(gen);
 
 @<Traverse for pragmas@> =
 	InterTree::traverse_root_only(gen->from, Vanilla::pragma, gen, PRAGMA_IST);
@@ -38,16 +37,24 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	Generators::offer_pragma(gen, P, target_symbol->symbol_name, S);
 }
 
-@<Traverse for global variables@> =
+@<Traverse for global bric-a-brac@> =
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
-	InterTree::traverse(gen->from, Vanilla::gather_variables, gen, NULL, VARIABLE_IST);
+	InterTree::traverse(gen->from, Vanilla::gather_up, gen, NULL, 0);
 	Generators::declare_variables(gen, gen->global_variables);
 
 @ =
-void Vanilla::gather_variables(inter_tree *I, inter_tree_node *P, void *state) {
+void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-	ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
+	switch (P->W.data[ID_IFLD]) {
+		case VARIABLE_IST: {
+			inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
+			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
+			break;
+		}
+		case PROPERTY_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->properties); break;
+		case INSTANCE_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->instances); break;
+		case KIND_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->kinds); break;
+	}
 }
 
 @<Traverse to make function predeclarations@> =
@@ -128,21 +135,23 @@ It is so often used recursively that the following abbreviation macros are helpf
 void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 	switch (P->W.data[ID_IFLD]) {
 		case CONSTANT_IST:      VanillaConstants::constant(gen, P); break;
-		case INSTANCE_IST:      VanillaObjects::instance(gen, P); break;
-		case PROPERTYVALUE_IST: VanillaObjects::propertyvalue(gen, P); break;
+
 		case LABEL_IST:         VanillaCode::label(gen, P); break;
 		case CODE_IST:          VanillaCode::code(gen, P); break;
 		case EVALUATION_IST:    VanillaCode::evaluation(gen, P); break;
 		case REFERENCE_IST:     VanillaCode::reference(gen, P); break;
-		case PACKAGE_IST:       VanillaCode::block(gen, P); break;
 		case INV_IST:           VanillaCode::inv(gen, P); break;
 		case CAST_IST:          VanillaCode::cast(gen, P); break;
 		case VAL_IST:           VanillaCode::val_or_ref(gen, P, FALSE); break;
 		case REF_IST:           VanillaCode::val_or_ref(gen, P, TRUE); break;
 		case LAB_IST:           VanillaCode::lab(gen, P); break;
-		case SPLAT_IST:         Vanilla::splat(gen, P); break;
 
+		case SPLAT_IST:         Vanilla::splat(gen, P); break;
+		case PACKAGE_IST:       VNODE_ALLC; break;
+
+		case INSTANCE_IST:      break;
 		case VARIABLE_IST:      break;
+		case PROPERTYVALUE_IST: break;
 		case SYMBOL_IST:        break;
 		case LOCAL_IST:         break;
 		case NOP_IST:           break;
@@ -171,6 +180,10 @@ void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
 	inter_tree *I = gen->from;
 	text_stream *S =
 		Inter::Warehouse::get_text(InterTree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
+	Vanilla::splat_matter(OUT, I, S);
+}
+
+void Vanilla::splat_matter(OUTPUT_STREAM, inter_tree *I, text_stream *S) {
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);

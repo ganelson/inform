@@ -30,7 +30,7 @@ void CFunctionModel::begin(code_generation *gen) {
 }
 
 void CFunctionModel::end(code_generation *gen) {
-	generated_segment *saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc) {\n"); INDENT;
 	WRITE("int ssp = proc->state.stack_pointer;\n");
@@ -119,7 +119,7 @@ text_stream *CFunctionModel::external_function(code_generation *gen, text_stream
 	text_stream *dv = Dictionaries::get_text(D, key);
 	if (dv == NULL) {
 		Dictionaries::create_text(D, key);
-		generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+		segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE_TO(OUT, "i7word_t %S(i7process_t *proc, i7word_t arg);\n", key);
 		CodeGen::deselect(gen, saved);		
@@ -152,7 +152,7 @@ void CFunctionModel::declare_fcf(code_generation *gen, final_c_function *fcf) {
 	int seg = c_predeclarations_I7CGS;
 	if (Str::eq(fcf->identifier_as_constant, I"DealWithUndo")) seg = c_ids_and_maxima_I7CGS;
 	if (Str::eq(fcf->identifier_as_constant, I"TryAction")) seg = c_ids_and_maxima_I7CGS;
-	generated_segment *saved = CodeGen::select(gen, seg);
+	segmentation_pos saved = CodeGen::select(gen, seg);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
 	CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
@@ -207,7 +207,7 @@ void CFunctionModel::predeclare_function(code_generator *cgt, code_generation *g
 	CFunctionModel::seek_locals(gen, D);
 	WRITE_TO(fcf->prototype, ")");
 
-	generated_segment *saved = CodeGen::select(gen, c_predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S;\n", fcf->prototype);
 	CodeGen::deselect(gen, saved);
@@ -240,7 +240,7 @@ void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen,
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 	C_GEN_DATA(fndata.current_fcf) = fcf;
-	generated_segment *saved = CodeGen::select(gen, c_functions_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_functions_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", fcf->prototype);
 	WRITE(" {\n");

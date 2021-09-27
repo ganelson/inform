@@ -18,7 +18,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		} else if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) > 0) {
 			;
 		} else if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) {
-			;
+			@<Declare this constant as a pseudo-object@>;
 		} else if (Inter::Constant::is_routine(con_name)) {
 			@<Declare this constant as a function@>;
 		} else if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
@@ -48,6 +48,9 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	Str::delete_first_character(fa);
 	Generators::new_action(gen, fa, FALSE);
 
+@<Declare this constant as a pseudo-object@> =
+	Generators::pseudo_object(gen, Inter::Symbols::name(con_name));
+
 @<Declare this constant as a function@> =
 	inter_package *code_block = Inter::Constant::code_block(con_name);
 	inter_tree_node *D = Inter::Packages::definition(code_block);
@@ -56,7 +59,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 @<Declare this constant as the special UUID string array@> =
 	inter_ti ID = P->W.data[DATA_CONST_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
-	generated_segment *saved;
+	segmentation_pos saved;
 	Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT, &saved);
 	TEMPORARY_TEXT(content)
 	WRITE_TO(content, "UUID://");
@@ -74,7 +77,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		DISCARD_TEXT(ch)
 	}
 	DISCARD_TEXT(content)
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, saved);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, &saved);
 
 @<Declare this as a textual constant@> =
 	inter_ti ID = P->W.data[DATA_CONST_IFLD];
@@ -93,7 +96,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	}
 	if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1)
 		format = BUFFER_ARRAY_FORMAT;
-	generated_segment *saved;
+	segmentation_pos saved;
 	if (Generators::begin_array(gen, Inter::Symbols::name(con_name), con_name, P, format, &saved)) {
 		if (hang_one) Generators::array_entry(gen, I"1", format);
 		int entry_count = 0;
@@ -121,7 +124,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 				}
 			}
 		}
-		Generators::end_array(gen, format, saved);
+		Generators::end_array(gen, format, &saved);
 	}
 
 @<Declare this as a computed constant@> =

@@ -49,6 +49,10 @@ typedef struct code_generation {
 	int literal_text_mode;
 	struct linked_list *global_variables;
 	struct linked_list *text_literals;
+	struct linked_list *properties;
+	struct linked_list *instances;
+	struct linked_list *kinds;
+
 	CLASS_DEFINITION
 } code_generation;
 
@@ -69,6 +73,9 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->literal_text_mode = REGULAR_LTM;
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	gen->text_literals = NEW_LINKED_LIST(text_literal_holder);
+	gen->properties = NEW_LINKED_LIST(inter_tree_node);
+	gen->instances = NEW_LINKED_LIST(inter_tree_node);
+	gen->kinds = NEW_LINKED_LIST(inter_tree_node);
 	return gen;
 }
 
@@ -134,23 +141,31 @@ following system may be a convenience. It allows text to be assembled as a set
 of "segments" which can be appended to in any order, and which are then put
 together in a logical order at the end.
 
-Segments are identified by ID numbers counting up from 0, 1, 2, ...: one of
-them, numbered 0, is the special "temporary" segment. This is used only as a
-stash for text not going into the final output but needed for some intermediate
-calculations. Sgements are, at present, just wrappers for tect streams, but one
-could imagine them becoming more elaborate.
+Segments are identified by ID numbers counting up from 0, 1, 2, ...: but
+ID number 0 is |no_I7CGS|, reserved to mean "not a segment".
 
-@e temporary_I7CGS from 0
+A segment is itself internally stratified into numbered "layers", and these
+are used to help generators cope with more nuanced ordering issues -- e.g.,
+where two declarations are of basically the same sort of thing, and should
+be in the same segment as each other; but where one must nevertheless precede
+the other. This can be achieved by putting the one to come first at a
+lower-numbered level.
+
+@e no_I7CGS from 0
+
+@d MAX_LAYERS_PER_SEGMENT 128
 
 =
 typedef struct generated_segment {
-	struct text_stream *generated_code;
+	int layers;
+	struct text_stream *generated_code[MAX_LAYERS_PER_SEGMENT];
 	CLASS_DEFINITION
 } generated_segment;
 
 generated_segment *CodeGen::new_segment(void) {
 	generated_segment *seg = CREATE(generated_segment);
-	seg->generated_code = Str::new();
+	seg->layers = MAX_LAYERS_PER_SEGMENT;
+	for (int i=0; i<seg->layers; i++) seg->generated_code[i] = Str::new();
 	return seg;
 }
 
@@ -162,17 +177,25 @@ typedef struct segmentation_data {
 	struct generated_segment *segments[NO_DEFINED_I7CGS_VALUES];
 	struct linked_list *segment_sequence; /* of |generated_segment| */
 	struct linked_list *additional_segment_sequence; /* of |generated_segment| */
+	struct text_stream *temporarily_diverted_to;
 	int temporarily_diverted; /* to the temporary segment */
-	struct generated_segment *current_segment; /* the one currently being written to */
+	struct segmentation_pos pos;
 } segmentation_data;
+
+typedef struct segmentation_pos {
+	struct generated_segment *current_segment; /* the one currently being written to */
+	int current_layer; /* within that segment: in the range 0 to current_segment->layers - 1 */
+} segmentation_pos;
 
 segmentation_data CodeGen::new_segmentation_data(void) {
 	segmentation_data sd;
-	sd.current_segment = NULL;
 	sd.segment_sequence = NEW_LINKED_LIST(generated_segment);
 	sd.additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
 	sd.temporarily_diverted = FALSE;
+	sd.temporarily_diverted_to = NULL;
 	for (int i=0; i<NO_DEFINED_I7CGS_VALUES; i++) sd.segments[i] = NULL;
+	sd.pos.current_segment = NULL;
+	sd.pos.current_layer = 1;
 	return sd;
 }
 
@@ -186,7 +209,7 @@ void CodeGen::create_segments(code_generation *gen, void *data, int codes[]) {
 	gen->segmentation.segment_sequence = NEW_LINKED_LIST(generated_segment);
 	for (int i=0; codes[i] >= 0; i++) {
 		if ((codes[i] >= NO_DEFINED_I7CGS_VALUES) ||
-			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
+			(codes[i] == no_I7CGS)) internal_error("bad segment sequence");
 		gen->segmentation.segments[codes[i]] = CodeGen::new_segment();
 		ADD_TO_LINKED_LIST(gen->segmentation.segments[codes[i]], generated_segment,
 			gen->segmentation.segment_sequence);
@@ -201,7 +224,7 @@ void CodeGen::additional_segments(code_generation *gen, int codes[]) {
 	gen->segmentation.additional_segment_sequence = NEW_LINKED_LIST(generated_segment);
 	for (int i=0; codes[i] >= 0; i++) {
 		if ((codes[i] >= NO_DEFINED_I7CGS_VALUES) ||
-			(codes[i] == temporary_I7CGS)) internal_error("bad segment sequence");
+			(codes[i] == no_I7CGS)) internal_error("bad segment sequence");
 		gen->segmentation.segments[codes[i]] = CodeGen::new_segment();
 		ADD_TO_LINKED_LIST(gen->segmentation.segments[codes[i]], generated_segment,
 			gen->segmentation.additional_segment_sequence);
@@ -213,20 +236,30 @@ being written. The generator should use //CodeGen::select// to switch to a given
 segment, which must be one of those it has created, and then use //CodeGen::deselect//
 to go back to where it was. These calls must be made in properly nested pairs.
 
+At some point we may want to make the cap on the number of layers flexible,
+but for now about 10 layers is plenty.
+
 =
-generated_segment *CodeGen::select(code_generation *gen, int i) {
-	generated_segment *saved = gen->segmentation.current_segment;
-	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
-	if (gen->segmentation.temporarily_diverted) internal_error("poorly timed selection");
-	gen->segmentation.current_segment = gen->segmentation.segments[i];
-	if (gen->segmentation.current_segment == NULL)
-		internal_error("generator does not use this segment ID");
-	return saved;
+segmentation_pos CodeGen::select(code_generation *gen, int i) {
+	return CodeGen::select_layered(gen, i, 1);
 }
 
-void CodeGen::deselect(code_generation *gen, generated_segment *saved) {
+segmentation_pos CodeGen::select_layered(code_generation *gen, int i, int layer) {
+	segmentation_pos previous_pos = gen->segmentation.pos;
+	if (gen->segmentation.temporarily_diverted) internal_error("poorly timed selection");
+	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
+	if (gen->segmentation.segments[i] == NULL)
+		internal_error("generator does not use this segment ID");
+	if (layer >= gen->segmentation.segments[i]->layers)
+		internal_error("too many layers");
+	gen->segmentation.pos.current_segment = gen->segmentation.segments[i];
+	gen->segmentation.pos.current_layer = layer;
+	return previous_pos;
+}
+
+void CodeGen::deselect(code_generation *gen, segmentation_pos saved) {
 	if (gen->segmentation.temporarily_diverted) internal_error("poorly timed deselection");
-	gen->segmentation.current_segment = saved;
+	gen->segmentation.pos = saved;
 }
 
 @ However, we can also temporarily divert the whole system to send its text to
@@ -234,16 +267,13 @@ some temporary stream somewhere. For that, use the following pair:
 
 =
 void CodeGen::select_temporary(code_generation *gen, text_stream *T) {
-	if (gen->segmentation.segments[temporary_I7CGS] == NULL) {
-		gen->segmentation.segments[temporary_I7CGS] = CodeGen::new_segment();
-		gen->segmentation.segments[temporary_I7CGS]->generated_code = NULL;
-	}
 	if (gen->segmentation.temporarily_diverted) internal_error("nested temporary segments");
+	gen->segmentation.temporarily_diverted_to = T;
 	gen->segmentation.temporarily_diverted = TRUE;
-	gen->segmentation.segments[temporary_I7CGS]->generated_code = T;
 }
 
 void CodeGen::deselect_temporary(code_generation *gen) {
+	gen->segmentation.temporarily_diverted_to = NULL;
 	gen->segmentation.temporarily_diverted = FALSE;
 }
 
@@ -253,9 +283,10 @@ if it has been "temporarily diverted" then the regiular selection is ignored.
 =
 text_stream *CodeGen::current(code_generation *gen) {
 	if (gen->segmentation.temporarily_diverted)
-		return gen->segmentation.segments[temporary_I7CGS]->generated_code;
-	if (gen->segmentation.current_segment == NULL) return NULL;
-	return gen->segmentation.current_segment->generated_code;
+		return gen->segmentation.temporarily_diverted_to;
+	if (gen->segmentation.pos.current_segment == NULL) return NULL;
+	return gen->segmentation.pos.current_segment->
+		generated_code[gen->segmentation.pos.current_layer];
 }
 
 @ And then all we do is concatenate them in order:
@@ -263,19 +294,21 @@ text_stream *CodeGen::current(code_generation *gen) {
 =
 void CodeGen::write_segments(OUTPUT_STREAM, code_generation *gen) {
 	generated_segment *seg;
-	LOOP_OVER_LINKED_LIST(seg, generated_segment, gen->segmentation.segment_sequence)
-		WRITE("%S", seg->generated_code);
+	LOOP_OVER_LINKED_LIST(seg, generated_segment,
+		gen->segmentation.segment_sequence)
+			CodeGen::write_segment(OUT, seg);
 }
 
 void CodeGen::write_additional_segments(OUTPUT_STREAM, code_generation *gen) {
 	generated_segment *seg;
-	LOOP_OVER_LINKED_LIST(seg, generated_segment, gen->segmentation.additional_segment_sequence)
-		WRITE("%S", seg->generated_code);
+	LOOP_OVER_LINKED_LIST(seg, generated_segment,
+		gen->segmentation.additional_segment_sequence)
+			CodeGen::write_segment(OUT, seg);
 }
 
-text_stream *CodeGen::content(code_generation *gen, int i) {
-	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
-	return gen->segmentation.segments[i]->generated_code;
+void CodeGen::write_segment(OUTPUT_STREAM, generated_segment *seg) {
+	for (int i=0; i<seg->layers; i++)
+		WRITE("%S", seg->generated_code[i]);
 }
 
 @h Transients.

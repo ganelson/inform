@@ -323,15 +323,6 @@ void i7_benign_exit(i7process_t *proc) {
 @e c_predeclarations_I7CGS
 @e c_very_early_matter_I7CGS
 @e c_constants_1_I7CGS
-@e c_constants_2_I7CGS
-@e c_constants_3_I7CGS
-@e c_constants_4_I7CGS
-@e c_constants_5_I7CGS
-@e c_constants_6_I7CGS
-@e c_constants_7_I7CGS
-@e c_constants_8_I7CGS
-@e c_constants_9_I7CGS
-@e c_constants_10_I7CGS
 @e c_early_matter_I7CGS
 @e c_text_literals_code_I7CGS
 @e c_summations_at_eof_I7CGS
@@ -362,15 +353,6 @@ int C_target_segments[] = {
 	c_predeclarations_I7CGS,
 	c_very_early_matter_I7CGS,
 	c_constants_1_I7CGS,
-	c_constants_2_I7CGS,
-	c_constants_3_I7CGS,
-	c_constants_4_I7CGS,
-	c_constants_5_I7CGS,
-	c_constants_6_I7CGS,
-	c_constants_7_I7CGS,
-	c_constants_8_I7CGS,
-	c_constants_9_I7CGS,
-	c_constants_10_I7CGS,
 	c_early_matter_I7CGS,
 	c_text_literals_code_I7CGS,
 	c_summations_at_eof_I7CGS,
@@ -431,7 +413,7 @@ int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
 
 	CNamespace::fix_locals(gen);
 
-	generated_segment *saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	int compile_main = TRUE;
 	target_vm *VM = gen->for_VM;
@@ -487,7 +469,7 @@ int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
 	CInputOutputModel::end(gen);
 	CMemoryModel::end(gen); /* must be last to end */
 
-	generated_segment *saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#pragma clang diagnostic pop\n");
 	CodeGen::deselect(gen, saved);
@@ -516,31 +498,22 @@ int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
 			}
 			WRITE_TO(&HF, "/* Symbols derived mechanically from Inform 7 source: do not edit */\n\n");
 			WRITE_TO(&HF, "/* (1) Instance IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_instances_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_instances_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (2) Values of enumerated kinds */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_enum_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_enum_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (3) Kind IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_kinds_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_kinds_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (4) Action IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_actions_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_actions_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (5) Property IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_property_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_property_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (6) Variable IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_variable_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_variable_symbols_I7CGS]);
 			WRITE_TO(&HF, "\n/* (7) Function IDs */\n\n");
-			WRITE_TO(&HF, "%S", CodeGen::content(gen, c_function_symbols_I7CGS));
+			CodeGen::write_segment(&HF, gen->segmentation.segments[c_function_symbols_I7CGS]);
 			STREAM_CLOSE(&HF);
 		}
 	}
 	
 	return FALSE;
-}
-
-int CTarget::basic_constant_segment(code_generator *cgt, code_generation *gen, inter_symbol *con_name, int depth) {
-	if (con_name) {
-		if (Str::eq(Inter::Symbols::name(con_name), I"Release")) return c_ids_and_maxima_I7CGS;
-		if (Str::eq(Inter::Symbols::name(con_name), I"Serial")) return c_ids_and_maxima_I7CGS;
-	}
-	if (depth >= 10) depth = 10;
-	return c_constants_1_I7CGS + depth - 1;
 }
