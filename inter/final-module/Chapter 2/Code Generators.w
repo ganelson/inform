@@ -196,16 +196,11 @@ void Generators::compile_literal_text(code_generation *gen, text_stream *S, int 
 @
 
 @e DECLARE_PROPERTY_MTID
-@e DECLARE_ATTRIBUTE_MTID
 
 =
 VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name)
-VOID_METHOD_TYPE(DECLARE_ATTRIBUTE_MTID, code_generator *generator, code_generation *gen, text_stream *prop_name)
 void Generators::declare_property(code_generation *gen, inter_symbol *prop_name) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_PROPERTY_MTID, gen, prop_name);
-}
-void Generators::declare_attribute(code_generation *gen, text_stream *prop_name) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_ATTRIBUTE_MTID, gen, prop_name);
 }
 
 @

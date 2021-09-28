@@ -130,14 +130,11 @@ void EmitCode::test_if_iname_has_property(kind *K, inter_name *N, property *prn)
 void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *prn) {
 	if (RTProperties::recommended_as_attribute(prn)) {
 		if (RTProperties::stored_in_negation(prn)) {
-			EmitCode::inv(NOT_BIP);
+			EmitCode::inv(HASNT_BIP);
 			EmitCode::down();
-				EmitCode::inv(HAS_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K, S);
-					EmitCode::val_iname(K_value,
-						RTProperties::iname(EitherOrProperties::get_negation(prn)));
-				EmitCode::up();
+				EmitCode::val_symbol(K, S);
+				EmitCode::val_iname(K_value,
+					RTProperties::iname(EitherOrProperties::get_negation(prn)));
 			EmitCode::up();
 		} else {
 			EmitCode::inv(HAS_BIP);

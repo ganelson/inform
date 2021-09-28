@@ -14,7 +14,6 @@ void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, END_CLASS_MTID, CObjectModel::end_class);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
-	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, CObjectModel::declare_attribute);
 	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CObjectModel::property_offset);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
@@ -404,21 +403,14 @@ void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name) {
 	int attr = FALSE;
 	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-		int translated = FALSE;
-		if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
-		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) translated = TRUE;
 		if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-			(translated == FALSE)) attr = TRUE;
+			(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) attr = TRUE;
 	}
 	text_stream *name = Inter::Symbols::name(prop_name);
 	C_property *cp = CObjectModel::property_by_name(gen, name, attr);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname)
 		CObjectModel::define_header_constant_for_property(gen, pname, cp->id);
-}
-void CObjectModel::declare_attribute(code_generator *cgt, code_generation *gen,
-	text_stream *prop_name) {
-	CObjectModel::property_by_name(gen, prop_name, TRUE);
 }
 
 @ Property IDs count upwards from 0 in declaration order, though they really

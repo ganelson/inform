@@ -7,6 +7,12 @@ at once, towards the end of code generation, when the following function is
 called exactly once.
 
 =
+void VanillaObjects::optimise_properties(code_generation *gen) {
+	inter_tree *I = gen->from;
+	if (LinkedLists::len(gen->unassimilated_properties) > 0)
+		@<Declare and allocate properties@>;
+}
+
 void VanillaObjects::generate(code_generation *gen) {
 	inter_tree *I = gen->from;
 
@@ -19,7 +25,6 @@ void VanillaObjects::generate(code_generation *gen) {
 	@<Make a list of instances in declaration order@>;
 
 	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
-		@<Declare and allocate properties@>;
 		@<Compile the property numberspace forcer@>;
 		@<Write Value Property Holder objects for each kind of value instance@>;
 	}
@@ -109,9 +114,6 @@ void VanillaObjects::generate(code_generation *gen) {
 
 		if (make_attribute) {
 			Inter::Symbols::set_flag(prop_name, ATTRIBUTE_MARK_BIT);
-//			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-//				(translated == FALSE))
-//				Generators::declare_attribute(gen, Inter::Symbols::name(prop_name));
 		} else {
 			Inter::Symbols::clear_flag(prop_name, ATTRIBUTE_MARK_BIT);
 			if (first_either_or_not_an_attribute == NULL)

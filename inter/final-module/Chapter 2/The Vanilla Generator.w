@@ -41,6 +41,7 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	InterTree::traverse(gen->from, Vanilla::gather_up, gen, NULL, 0);
 	Generators::declare_variables(gen, gen->global_variables);
+	VanillaObjects::optimise_properties(gen);
 
 @ =
 void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {

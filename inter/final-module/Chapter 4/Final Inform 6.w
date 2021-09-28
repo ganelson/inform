@@ -58,7 +58,6 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, I6Target::compile_literal_real);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, I6Target::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, I6Target::declare_property);
-	METHOD_ADD(cgt, DECLARE_ATTRIBUTE_MTID, I6Target::declare_attribute);
 	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, I6Target::property_offset);
 	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, I6Target::declare_variables);
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, I6Target::evaluate_variable);
@@ -118,6 +117,7 @@ int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
+	WRITE("Global or_tmp_var;\n");
 	CodeGen::deselect(gen, saved);
 
 	saved = CodeGen::select(gen, routines_at_eof_I7CGS);
@@ -209,6 +209,34 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 		WRITE("];\n");
 		CodeGen::deselect(gen, saved);
 	}
+
+	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("Array property_is_attribute --> valued_property_offsets_SIZE;\n");
+	WRITE("[ _final_read_pval o p;\n");
+	WRITE("    if (property_is_attribute-->p) { if (o has p) rtrue; rfalse; }\n");
+	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
+	WRITE("];\n");
+	WRITE("Constant i7_lvalue_SET = 1;\n");
+	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
+	WRITE("Constant i7_lvalue_POSTDEC = 3;\n");
+	WRITE("Constant i7_lvalue_PREINC = 4;\n");
+	WRITE("Constant i7_lvalue_POSTINC = 5;\n");
+	WRITE("Constant i7_lvalue_SETBIT = 6;\n");
+	WRITE("Constant i7_lvalue_CLEARBIT = 7;\n");
+	WRITE("[ _final_write_pval o p v m;\n");
+	WRITE("    if (property_is_attribute-->p) { if (v == 0) give v ~p; else give v p; return v; }\n");
+	WRITE("    if (o provides p) { switch (m) {\n");
+	WRITE("    	i7_lvalue_SET:      o.p = v; return v;\n");
+	WRITE("    	i7_lvalue_PREDEC:   return --o.p;\n");
+	WRITE("    	i7_lvalue_POSTDEC:  return o.p--;\n");
+	WRITE("    	i7_lvalue_PREINC:   return ++o.p;\n");
+	WRITE("    	i7_lvalue_POSTINC:  return o.p++;\n");
+	WRITE("    	i7_lvalue_SETBIT:   o.p = (o.p) | v; return o.p;\n");
+	WRITE("    	i7_lvalue_CLEARBIT: o.p = (o.p) &~ v; return o.p;\n");
+	WRITE("    } return v; }\n");
+	WRITE("];\n");
+	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
 }
@@ -227,12 +255,15 @@ void I6Target::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifie
 	WRITE("%S", identifier);
 }
 
+int i6_next_is_a_ref = FALSE;
 void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
+	text_stream *store_form = NULL;
+	
 	switch (bip) {
 		case PLUS_BIP:			WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
 		case MINUS_BIP:			WRITE("("); VNODE_1C; WRITE(" - "); VNODE_2C; WRITE(")"); break;
@@ -254,27 +285,31 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case LT_BIP: 			WRITE("("); VNODE_1C; WRITE(" < "); VNODE_2C; WRITE(")"); break;
 		case LE_BIP: 			WRITE("("); VNODE_1C; WRITE(" <= "); VNODE_2C; WRITE(")"); break;
 		case OFCLASS_BIP:		WRITE("("); VNODE_1C; WRITE(" ofclass "); VNODE_2C; WRITE(")"); break;
-		case HAS_BIP:			WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); break;
-		case HASNT_BIP:			WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); break;
+		case HAS_BIP:			@<Evaluate property value@>;
+								/* WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); */ break;
+		case HASNT_BIP:			WRITE("("); @<Evaluate property value@>; WRITE(" == 0)"); break;
+								/* WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); */
 		case IN_BIP:			WRITE("("); VNODE_1C; WRITE(" in "); VNODE_2C; WRITE(")"); break;
 		case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
 		case PROVIDES_BIP:		WRITE("("); VNODE_1C; WRITE(" provides "); VNODE_2C; WRITE(")"); break;
 		case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
 
+		case STORE_BIP:			store_form = I"i7_lvalue_SET"; @<Perform a store@>; break;
+		case PREINCREMENT_BIP:	store_form = I"i7_lvalue_PREINC"; @<Perform a store@>; break;
+		case POSTINCREMENT_BIP:	store_form = I"i7_lvalue_POSTINC"; @<Perform a store@>; break;
+		case PREDECREMENT_BIP:	store_form = I"i7_lvalue_PREDEC"; @<Perform a store@>; break;
+		case POSTDECREMENT_BIP:	store_form = I"i7_lvalue_POSTDEC"; @<Perform a store@>; break;
+		case SETBIT_BIP:		store_form = I"i7_lvalue_SETBIT"; @<Perform a store@>; break;
+		case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; @<Perform a store@>; break;
+
 		case PUSH_BIP:			WRITE("@push "); VNODE_1C; break;
 		case PULL_BIP:			WRITE("@pull "); VNODE_1C; break;
-		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
-		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
-		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
-		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
-		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
-		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
-		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
 		case LOOKUP_BIP:		WRITE("("); VNODE_1C; WRITE("-->("); VNODE_2C; WRITE("))"); break;
 		case LOOKUPBYTE_BIP:	WRITE("("); VNODE_1C; WRITE("->("); VNODE_2C; WRITE("))"); break;
 		case PROPERTYADDRESS_BIP: WRITE("("); VNODE_1C; WRITE(".& "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("("); VNODE_1C; WRITE(".# "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
+		case PROPERTYVALUE_BIP:	@<Evaluate property value@>;
+								/* WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); */ break;
 
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
@@ -373,6 +408,93 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		default: LOG("Prim: %S\n", prim_name->symbol_name); internal_error("unimplemented prim");
 	}
 	if ((void_context) && (suppress_terminal_semicolon == FALSE)) WRITE(";\n");
+}
+
+@<Perform a store@> =
+	inter_tree_node *ref = InterTree::first_child(P);
+	if ((Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) &&
+		(I6Target::pval_case(ref) == 3)) {
+		@<Handle the ref using the incomplete-function mode@>;
+	} else {
+		@<Handle the ref with code working either as lvalue or rvalue@>;
+	}
+
+@<Handle the ref using the incomplete-function mode@> =
+	WRITE("("); i6_next_is_a_ref = TRUE; VNODE_1C; i6_next_is_a_ref = FALSE; 
+	if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
+	WRITE(", %S))", store_form);
+
+@<Handle the ref with code working either as lvalue or rvalue@> =
+	switch (bip) {
+		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
+		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
+		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
+		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
+		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
+		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
+		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
+	}
+
+@<Evaluate property value@> =
+	switch (I6Target::pval_case(P)) {
+		case 1: WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); break;
+		case 2: WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
+		case 3:
+			if (i6_next_is_a_ref) {
+				i6_next_is_a_ref = FALSE;
+				WRITE("_final_write_pval("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+			} else {
+				I6Target::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), 0);
+			}
+			break;
+	}
+
+@ =
+void I6Target::comparison_r(code_generation *gen,
+	inter_tree_node *X, inter_tree_node *Y, int depth) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (Y->W.data[ID_IFLD] == INV_IST) {
+		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(Y);
+			inter_ti ybip = Primitives::to_bip(gen->from, prim);
+			if (ybip == ALTERNATIVE_BIP) {
+				if (depth == 0) { WRITE("(or_tmp_var = "); Vanilla::node(gen, X); WRITE(", (("); }
+				I6Target::comparison_r(gen, NULL, InterTree::first_child(Y), depth+1);
+				WRITE(") || (");
+				I6Target::comparison_r(gen, NULL, InterTree::second_child(Y), depth+1);
+				if (depth == 0) { WRITE(")))"); }
+				return;
+			}
+		}
+	}
+	WRITE("_final_read_pval(");
+	if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
+	WRITE(", "); 
+	Vanilla::node(gen, Y);
+	WRITE(")");
+}
+
+@
+
+=
+int I6Target::pval_case(inter_tree_node *P) {
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
+	inter_tree_node *prop_node = InterTree::second_child(P);
+	inter_symbol *prop_symbol = NULL;
+	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
+		if (Inter::Symbols::is_stored_in_data(val1, val2))
+			prop_symbol =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
+	}
+	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+		return 1;
+	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
+		return 2;
+	} else {
+		return 3;
+	}
 }
 
 @<Generate primitive for return@> =
@@ -641,12 +763,12 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 	}
 
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-			int translated = FALSE;
-			if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) translated = TRUE;
 			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-				(translated == FALSE))
-				Generators::declare_attribute(gen, Inter::Symbols::name(prop_name));
+				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) {
+				segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
+				WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", Inter::Symbols::name(prop_name));
+				CodeGen::deselect(gen, saved);
+			}
 		}
 }
 
@@ -665,10 +787,13 @@ void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_s
 		WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
 		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
 		WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
+		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
+		WRITE("property_is_attribute-->i = 0;\n"); OUTDENT;
 	}	
 	if (as_attr) WRITE("attributed_property_offsets");
 	else WRITE("valued_property_offsets");
 	WRITE("-->%S = %d;\n", prop, pos);
+	WRITE("property_is_attribute-->%S = %d;\n", prop, as_attr);
 	CodeGen::deselect(gen, saved);
 }
 
