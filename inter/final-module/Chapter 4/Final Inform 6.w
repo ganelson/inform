@@ -214,8 +214,12 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array property_is_attribute --> valued_property_offsets_SIZE;\n");
 	WRITE("[ _final_read_pval o p;\n");
-	WRITE("    if (property_is_attribute-->p) { if (o has p) rtrue; rfalse; }\n");
+	WRITE("    if (p < FBNA_PROP_NUMBER) { if (o has p) rtrue; rfalse; }\n");
 	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
+	WRITE("];\n");
+	WRITE("[ _final_write_eopval o p v;\n");
+	WRITE("    if (p < FBNA_PROP_NUMBER) { if (v) give o p; else give o ~p; }\n");
+	WRITE("    else { if (o provides p) o.p = v; }\n");
 	WRITE("];\n");
 	WRITE("Constant i7_lvalue_SET = 1;\n");
 	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
@@ -285,9 +289,9 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case LT_BIP: 			WRITE("("); VNODE_1C; WRITE(" < "); VNODE_2C; WRITE(")"); break;
 		case LE_BIP: 			WRITE("("); VNODE_1C; WRITE(" <= "); VNODE_2C; WRITE(")"); break;
 		case OFCLASS_BIP:		WRITE("("); VNODE_1C; WRITE(" ofclass "); VNODE_2C; WRITE(")"); break;
-		case HAS_BIP:			@<Evaluate property value@>;
+		case HAS_BIP:			@<Evaluate either-or property value@>;
 								/* WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); */ break;
-		case HASNT_BIP:			WRITE("("); @<Evaluate property value@>; WRITE(" == 0)"); break;
+		case HASNT_BIP:			WRITE("("); @<Evaluate either-or property value@>; WRITE(" == 0)"); break;
 								/* WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); */
 		case IN_BIP:			WRITE("("); VNODE_1C; WRITE(" in "); VNODE_2C; WRITE(")"); break;
 		case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
@@ -308,8 +312,7 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case LOOKUPBYTE_BIP:	WRITE("("); VNODE_1C; WRITE("->("); VNODE_2C; WRITE("))"); break;
 		case PROPERTYADDRESS_BIP: WRITE("("); VNODE_1C; WRITE(".& "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("("); VNODE_1C; WRITE(".# "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	@<Evaluate property value@>;
-								/* WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); */ break;
+		case PROPERTYVALUE_BIP:	WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
 
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
@@ -371,8 +374,10 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 
 		case MOVE_BIP: WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
 		case REMOVE_BIP: WRITE("remove "); VNODE_1C; break;
-		case GIVE_BIP: WRITE("give "); VNODE_1C; WRITE(" "); VNODE_2C; break;
-		case TAKE_BIP: WRITE("give "); VNODE_1C; WRITE(" ~"); VNODE_2C; break;
+		case GIVE_BIP: @<Set either-or property value@>; break;
+//			WRITE("give "); VNODE_1C; WRITE(" "); VNODE_2C; break;
+		case TAKE_BIP: @<Set either-or property value@>; break;
+//			WRITE("give "); VNODE_1C; WRITE(" ~"); VNODE_2C; break;
 
 		case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
 		case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
@@ -413,7 +418,7 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 @<Perform a store@> =
 	inter_tree_node *ref = InterTree::first_child(P);
 	if ((Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) &&
-		(I6Target::pval_case(ref) == 3)) {
+		(I6Target::pval_case(ref) == 300000)) {
 		@<Handle the ref using the incomplete-function mode@>;
 	} else {
 		@<Handle the ref with code working either as lvalue or rvalue@>;
@@ -435,16 +440,31 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
 	}
 
-@<Evaluate property value@> =
+@<Evaluate either-or property value@> =
 	switch (I6Target::pval_case(P)) {
 		case 1: WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); break;
 		case 2: WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
+		case 3: I6Target::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), 0); break;
+	}
+
+@<Set either-or property value@> =
+	switch (I6Target::pval_case(P)) {
+		case 1:
+			switch (bip) {
+				case GIVE_BIP: WRITE("give "); VNODE_1C; WRITE(" "); VNODE_2C; break;
+				case TAKE_BIP: WRITE("give "); VNODE_1C; WRITE(" ~"); VNODE_2C; break;
+			}
+			break;
+		case 2:
+			switch (bip) {
+				case GIVE_BIP: VNODE_1C; WRITE("."); VNODE_2C; WRITE(" = 1"); break;
+				case TAKE_BIP: VNODE_1C; WRITE("."); VNODE_2C; WRITE(" = 0"); break;
+			}
+			break;
 		case 3:
-			if (i6_next_is_a_ref) {
-				i6_next_is_a_ref = FALSE;
-				WRITE("_final_write_pval("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
-			} else {
-				I6Target::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), 0);
+			switch (bip) {
+				case GIVE_BIP: WRITE("_final_write_eopval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(",1)"); break;
+				case TAKE_BIP: WRITE("_final_write_eopval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(",0)"); break;
 			}
 			break;
 	}
@@ -458,7 +478,7 @@ void I6Target::comparison_r(code_generation *gen,
 			inter_symbol *prim = Inter::Inv::invokee(Y);
 			inter_ti ybip = Primitives::to_bip(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
-				if (depth == 0) { WRITE("(or_tmp_var = "); Vanilla::node(gen, X); WRITE(", (("); }
+				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
 				I6Target::comparison_r(gen, NULL, InterTree::first_child(Y), depth+1);
 				WRITE(") || (");
 				I6Target::comparison_r(gen, NULL, InterTree::second_child(Y), depth+1);
@@ -467,11 +487,16 @@ void I6Target::comparison_r(code_generation *gen,
 			}
 		}
 	}
-	WRITE("_final_read_pval(");
-	if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
-	WRITE(", "); 
-	Vanilla::node(gen, Y);
-	WRITE(")");
+	switch (I6Target::pval_case_inner(Y)) {
+		case 1: WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var"); WRITE(" has "); Vanilla::node(gen, Y);; WRITE(")"); break;
+		case 2: WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var"); WRITE("."); Vanilla::node(gen, Y);; WRITE(")"); break;
+		case 3:
+			WRITE("_final_read_pval(");
+			if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
+			WRITE(", "); 
+			Vanilla::node(gen, Y);
+			WRITE(")"); break;
+	}
 }
 
 @
@@ -493,6 +518,26 @@ int I6Target::pval_case(inter_tree_node *P) {
 	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
 		return 2;
 	} else {
+//		return 1;
+		return 3;
+	}
+}
+
+int I6Target::pval_case_inner(inter_tree_node *prop_node) {
+	inter_symbol *prop_symbol = NULL;
+	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
+		if (Inter::Symbols::is_stored_in_data(val1, val2))
+			prop_symbol =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
+	}
+	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+		return 1;
+	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
+		return 2;
+	} else {
+//		return 1;
 		return 3;
 	}
 }
@@ -794,6 +839,7 @@ void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_s
 	else WRITE("valued_property_offsets");
 	WRITE("-->%S = %d;\n", prop, pos);
 	WRITE("property_is_attribute-->%S = %d;\n", prop, as_attr);
+//	WRITE("print \"property_is_attribute-->%S = property_is_attribute-->\", %S, \" = \", %d, \"^\";\n", prop, prop, as_attr);
 	CodeGen::deselect(gen, saved);
 }
 
