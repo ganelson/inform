@@ -260,21 +260,25 @@ have the property in question at an I6 level -- having permission to have
 it doesn't mean it actually does have.
 
 =
-[ WhetherProvides obj either_or p issue_rtp  off i textual a l;
+[ WhetherProvides obj either_or q issue_rtp  p off i textual a l;
 	if (metaclass(obj) ~= Object) rfalse;
-	if (p<0) p = ~p;
+	if (q<0) q = ~q;
+	p = q-->1;
+!print "WhetherProvides ", obj, " and ", q, " with --> ", q-->0, ", ", q-->1, "^";
 	if (either_or) {
-		if (p < FBNA_PROP_NUMBER) off = attributed_property_offsets-->p;
-		else off = valued_property_offsets-->p;
-	} else off = valued_property_offsets-->p;
+		if (p < FBNA_PROP_NUMBER) off = attributed_property_offsets-->(p);
+		else off = valued_property_offsets-->(p);
+	} else off = valued_property_offsets-->(p);
 	if (off<0) {
 		if (issue_rtp) RunTimeProblem(RTP_BADPROPERTY, obj);
 		rfalse;
 	}
+!print "off = ", off, " eo = ", either_or, "^";
 	textual = property_metadata-->off; off++;
 
 	if (ScanPropertyMetadata(obj, off)) jump PermissionFound;
 	if (obj provides KD_Count) {
+!print "obj provides KD_Count^";
 		l = obj.KD_Count;
 		while (l > 0) {
 			a = l*2;
@@ -288,7 +292,7 @@ it doesn't mean it actually does have.
 
 	.PermissionFound;
 		if (either_or) rtrue;
-		if (obj provides p) rtrue;
+		if (obj provides q) rtrue;
 		if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, textual);
 		rfalse;
 ];
@@ -336,7 +340,7 @@ normally valid for doors and containers.
 	if (o == nothing) rfalse;
 	if (p<0) p = ~p;
 	if (WhetherProvides(o, true, p, false)) {
-		if (p<FBNA_PROP_NUMBER) { if (o has p) rtrue; rfalse; }
+		if (p-->1 < FBNA_PROP_NUMBER) { if (o has p) rtrue; rfalse; }
 		if ((o provides p) && (o.p)) rtrue;
 	}
 	rfalse;
@@ -353,9 +357,9 @@ however, always produce a run-time problem.
 		(adj)(o);
 	} else if (WhetherProvides(o, true, p, true)) {
 		if (negate) {
-			if (p<FBNA_PROP_NUMBER) give o ~p; else o.p = false;
+			if (p-->1 < FBNA_PROP_NUMBER) give o ~p; else o.p = false;
 		} else {
-			if (p<FBNA_PROP_NUMBER) give o p; else o.p = true;
+			if (p-->1 < FBNA_PROP_NUMBER) give o p; else o.p = true;
 		}
 	}
 ];

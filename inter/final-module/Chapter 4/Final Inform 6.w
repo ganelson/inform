@@ -130,13 +130,13 @@ int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("@inc objflag;\n");
 	WRITE("#Ifdef K1_room;\n");
 	WRITE("@je cla K1_room ?~NotRoom;\n");
-	WRITE("@test_attr obj mark_as_room ?rtrue;\n");
+	WRITE("@test_attr obj mark_as_room_D ?rtrue;\n");
 	WRITE("@rfalse;\n");
 	WRITE(".NotRoom;\n");
 	WRITE("#Endif;\n");
 	WRITE("#Ifdef K2_thing;\n");
 	WRITE("@je cla K2_thing ?~NotObj;\n");
-	WRITE("@test_attr obj mark_as_thing ?rtrue;\n");
+	WRITE("@test_attr obj mark_as_thing_D ?rtrue;\n");
 	WRITE("@rfalse;\n");
 	WRITE("#Endif;\n");
 	WRITE(".NotObj;\n");
@@ -212,12 +212,13 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 
 	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Array property_is_attribute --> valued_property_offsets_SIZE;\n");
-	WRITE("[ _final_read_pval o p;\n");
-	WRITE("    if (p < FBNA_PROP_NUMBER) { if (o has p) rtrue; rfalse; }\n");
+	WRITE("[ _final_read_pval o p a;\n");
+	WRITE("    p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
+	WRITE("    if (p < FBNA_PROP_NUMBER) { if (o has p) a = 1; return a; }\n");
 	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
 	WRITE("];\n");
 	WRITE("[ _final_write_eopval o p v;\n");
+	WRITE("    p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
 	WRITE("    if (p < FBNA_PROP_NUMBER) { if (v) give o p; else give o ~p; }\n");
 	WRITE("    else { if (o provides p) o.p = v; }\n");
 	WRITE("];\n");
@@ -228,7 +229,7 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("Constant i7_lvalue_POSTINC = 5;\n");
 	WRITE("Constant i7_lvalue_SETBIT = 6;\n");
 	WRITE("Constant i7_lvalue_CLEARBIT = 7;\n");
-	WRITE("[ _final_write_pval o p v m;\n");
+/*	WRITE("[ _final_write_pval o p v m;\n");
 	WRITE("    if (property_is_attribute-->p) { if (v == 0) give v ~p; else give v p; return v; }\n");
 	WRITE("    if (o provides p) { switch (m) {\n");
 	WRITE("    	i7_lvalue_SET:      o.p = v; return v;\n");
@@ -240,6 +241,7 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("    	i7_lvalue_CLEARBIT: o.p = (o.p) &~ v; return o.p;\n");
 	WRITE("    } return v; }\n");
 	WRITE("];\n");
+*/
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -295,7 +297,7 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 								/* WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); */
 		case IN_BIP:			WRITE("("); VNODE_1C; WRITE(" in "); VNODE_2C; WRITE(")"); break;
 		case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
-		case PROVIDES_BIP:		WRITE("("); VNODE_1C; WRITE(" provides "); VNODE_2C; WRITE(")"); break;
+		case PROVIDES_BIP:		WRITE("("); VNODE_1C; WRITE(" provides ("); VNODE_2C; WRITE("-->1))"); break;
 		case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
 
 		case STORE_BIP:			store_form = I"i7_lvalue_SET"; @<Perform a store@>; break;
@@ -310,9 +312,9 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case PULL_BIP:			WRITE("@pull "); VNODE_1C; break;
 		case LOOKUP_BIP:		WRITE("("); VNODE_1C; WRITE("-->("); VNODE_2C; WRITE("))"); break;
 		case LOOKUPBYTE_BIP:	WRITE("("); VNODE_1C; WRITE("->("); VNODE_2C; WRITE("))"); break;
-		case PROPERTYADDRESS_BIP: WRITE("("); VNODE_1C; WRITE(".& "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("("); VNODE_1C; WRITE(".# "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE(")"); break;
+		case PROPERTYADDRESS_BIP: WRITE("("); VNODE_1C; WRITE(".&("); VNODE_2C; WRITE("-->1))"); break;
+		case PROPERTYLENGTH_BIP: WRITE("("); VNODE_1C; WRITE(".#("); VNODE_2C; WRITE("-->1))"); break;
+		case PROPERTYVALUE_BIP:	WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1))"); break;
 
 		case BREAK_BIP:			WRITE("break"); break;
 		case CONTINUE_BIP:		WRITE("continue"); break;
@@ -340,12 +342,12 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 								WRITE("("); VNODE_1C; WRITE(")(");
 								VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
 								VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
-		case MESSAGE0_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("())"); break;
-		case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+		case MESSAGE0_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)())"); break;
+		case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
 								VNODE_3C; WRITE("))"); break;
-		case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+		case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
 								VNODE_3C; WRITE(","); VNODE_4C; WRITE("))"); break;
-		case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE("."); VNODE_2C; WRITE("(");
+		case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
 								VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE("))"); break;
 
 		case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
@@ -503,6 +505,7 @@ void I6Target::comparison_r(code_generation *gen,
 
 =
 int I6Target::pval_case(inter_tree_node *P) {
+		return 3;
 	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
 	inter_tree_node *prop_node = InterTree::second_child(P);
 	inter_symbol *prop_symbol = NULL;
@@ -524,6 +527,7 @@ int I6Target::pval_case(inter_tree_node *P) {
 }
 
 int I6Target::pval_case_inner(inter_tree_node *prop_node) {
+		return 3;
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
@@ -791,30 +795,58 @@ property names which don't exist as constant symbols with the harmless value
 trick called "stubbing", these being "stub definitions".)
 
 =
+int i6dpcount = 0;
+dictionary *i6dps_dict = NULL;
+
+void I6Target::dp_array(code_generation *gen, text_stream *name, int t) {
+	if (i6dps_dict == NULL) i6dps_dict = Dictionaries::new(1024, FALSE);
+	dictionary *D = i6dps_dict;
+	if (Dictionaries::find(D, name) == NULL) {
+		Dictionaries::create(D, name);
+		Dictionaries::write_value(D, name, (void *) Str::duplicate(name));
+		
+		segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
+		if (i6dpcount++ == 0) WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 value_range_D;\n");
+		WRITE_TO(CodeGen::current(gen), "Array %S --> %d %S_D;\n", name, t, name);
+		CodeGen::deselect(gen, saved);
+	}
+}
+
 void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name) {
 
 	text_stream *name = Inter::Symbols::name(prop_name);
-
+	int t = 1;
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) {
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == 0) {
 			segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
-			WRITE_TO(CodeGen::current(gen), "Property %S;\n", prop_name->symbol_name);
+			WRITE_TO(CodeGen::current(gen), "Property %S_D;\n", prop_name->symbol_name);
 			CodeGen::deselect(gen, saved);
 		}
-	} else {
-		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
-		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", name, name);
-		CodeGen::deselect(gen, saved);
-	}
+	} 
 
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
 				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) {
 				segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-				WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", Inter::Symbols::name(prop_name));
+				WRITE_TO(CodeGen::current(gen), "Attribute %S_D;\n", prop_name->symbol_name);
 				CodeGen::deselect(gen, saved);
+				t = 2;
 			}
 		}
+	I6Target::dp_array(gen, prop_name->symbol_name, t);
+	if (TRUE) {
+		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
+		WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", name, name);
+		WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", prop_name->symbol_name, prop_name->symbol_name);
+		if (Str::prefix_eq(prop_name->symbol_name, I"P_", 2)) {
+			WRITE_TO(CodeGen::current(gen), "#ifndef ");
+			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
+			WRITE_TO(CodeGen::current(gen), "; Constant ");
+			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
+			WRITE_TO(CodeGen::current(gen), " = %S; #endif;\n", prop_name->symbol_name);
+		}
+		CodeGen::deselect(gen, saved);
+	}
 }
 
 void I6Target::declare_attribute(code_generator *cgt, code_generation *gen, text_stream *prop_name) {
@@ -832,14 +864,10 @@ void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_s
 		WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
 		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
 		WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
-		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
-		WRITE("property_is_attribute-->i = 0;\n"); OUTDENT;
 	}	
 	if (as_attr) WRITE("attributed_property_offsets");
 	else WRITE("valued_property_offsets");
-	WRITE("-->%S = %d;\n", prop, pos);
-	WRITE("property_is_attribute-->%S = %d;\n", prop, as_attr);
-//	WRITE("print \"property_is_attribute-->%S = property_is_attribute-->\", %S, \" = \", %d, \"^\";\n", prop, prop, as_attr);
+	WRITE("-->%S_D = %d;\n", prop, pos);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -942,10 +970,10 @@ int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen,
 void I6Target::assign_property(code_generator *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (as_att) {
-		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
-		else WRITE("    has %S\n", property_name);
+		if (Str::eq(val, I"0")) WRITE("    has ~%S_D\n", property_name);
+		else WRITE("    has %S_D\n", property_name);
 	} else {
-		WRITE("    with %S %S\n", property_name, val);
+		WRITE("    with %S_D %S\n", property_name, val);
 	}
 }
 
@@ -1261,6 +1289,6 @@ void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream
 void I6Target::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
 	segmentation_pos saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Object %S \"(%S object)\" has concealed;\n", obj_name, obj_name);
+	WRITE("Object %S \"(%S object)\" has concealed_D;\n", obj_name, obj_name);
 	CodeGen::deselect(gen, saved);
 }

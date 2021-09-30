@@ -203,14 +203,15 @@ Constant PARA_NORULEBOOKBREAKS   = 8;
 Constant PARA_CONTENTEXPECTED    = 16;
 
 @h Descriptors in the Language of Play.
-The following constants, which must be different in value from the number
-of any I6 attribute, are used in the |LanguageDescriptors| table found
+The following constants are used in the |LanguageDescriptors| table found
 in the definition of the language of play.
 
 =
-Constant POSSESS_PK  = $100;
-Constant DEFART_PK   = $101;
-Constant INDEFART_PK = $102;
+Constant POSSESS_PK   = $100;
+Constant DEFART_PK    = $101;
+Constant INDEFART_PK  = $102;
+Constant LIGHTED_PK   = $103;
+Constant UNLIGHTED_PK = $104;
 
 @h Run-Time Problem Numbers.
 The enumeration sequence here must correspond to that in the file of RTP

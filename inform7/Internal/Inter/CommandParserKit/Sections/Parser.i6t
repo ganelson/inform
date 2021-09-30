@@ -1992,8 +1992,8 @@ is set; it returns a parser error number, or 0 if no error occurred.
                     }
                 }
 
-                if (type == light)  indef_type = indef_type | LIT_BIT;
-                if (type == -light) indef_type = indef_type | UNLIT_BIT;
+                if (type == LIGHTED_PK)  indef_type = indef_type | LIT_BIT;
+                if (type == UNLIGHTED_PK) indef_type = indef_type | UNLIT_BIT;
             }
 
         if (o == OTHER1__WD or OTHER2__WD or OTHER3__WD) {

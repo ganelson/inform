@@ -78,7 +78,7 @@ Array LanguagePronouns table
 =
 Array LanguageDescriptors table
 
-  ! word        possible GNAs   descriptor      connected
+  ! word        possible GNAs   descriptor      connected 
   !             to follow:      type:           to:
   !             a     i
   !             s  p  s  p
@@ -97,9 +97,9 @@ Array LanguageDescriptors table
     'a//'     $$111000111000    INDEFART_PK     NULL
     'an'      $$111000111000    INDEFART_PK     NULL
     'some'    $$000111000111    INDEFART_PK     NULL
-    'lit'     $$111111111111    light           NULL
-    'lighted' $$111111111111    light           NULL
-    'unlit'   $$111111111111    (-light)        NULL;
+    'lit'     $$111111111111    LIGHTED_PK      NULL
+    'lighted' $$111111111111    LIGHTED_PK      NULL
+    'unlit'   $$111111111111    UNLIGHTED_PK    NULL;
 
 @h Numbers.
 
