@@ -28,6 +28,7 @@ Global best_etype;                  ! Preferred error number so far
 Global nextbest_etype;              ! Preferred one, if ASKSCOPE_PE disallowed
 
 Global parser_inflection;           ! A property (usually "name") to find object names in
+Global indirect_parser_inflection;  ! Set this to have parser_inflection called
 
 Array pattern --> 32;               ! For the current pattern match
 Global pcount;                      ! and a marker within it
@@ -3609,7 +3610,7 @@ complex in languages other than English.
 
     k = wn; wn = wnum; wd = NextWordStopped(); wn = k;
 
-    if (parser_inflection >= 256) {
+    if (indirect_parser_inflection) {
         k = indirect(parser_inflection, obj, wd);
         if (k >= 0) return k;
         m = -k;
@@ -3623,11 +3624,8 @@ complex in languages other than English.
 ];
 
 [ WordInProperty wd obj prop k l m;
-!if (obj == 0) print "Crash! ", 1/obj;
     k = obj.&prop; l = (obj.#prop)/WORDSIZE;
-! print "WIP wd = ", wd, " prop ", prop, " for ", (the) obj, " k = ", k, " l = ", l, "^";
     for (m=0 : m<l : m++) {
-! print "WIP tried ", m, "/", l, ": ", k-->m, "^";
         if (wd == k-->m) { rtrue; }
     }
     rfalse;
@@ -4085,7 +4083,7 @@ address, returned by the |.&| operator, is zero).
 =
 [ RunRoutines obj prop;
     if (obj == thedark) obj = real_location;
-    if ((obj.&prop == 0) && (prop >= INDIV_PROP_START)) rfalse;
+    if ((obj.&prop == 0) && (prop-->1 >= INDIV_PROP_START)) rfalse;
     return obj.prop();
 ];
 

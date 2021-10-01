@@ -264,7 +264,6 @@ it doesn't mean it actually does have.
 	if (metaclass(obj) ~= Object) rfalse;
 	if (q<0) q = ~q;
 	p = q-->1;
-!print "WhetherProvides ", obj, " and ", q, " with --> ", q-->0, ", ", q-->1, "^";
 	if (either_or) {
 		if (p < FBNA_PROP_NUMBER) off = attributed_property_offsets-->(p);
 		else off = valued_property_offsets-->(p);
@@ -273,12 +272,10 @@ it doesn't mean it actually does have.
 		if (issue_rtp) RunTimeProblem(RTP_BADPROPERTY, obj);
 		rfalse;
 	}
-!print "off = ", off, " eo = ", either_or, "^";
 	textual = property_metadata-->off; off++;
 
 	if (ScanPropertyMetadata(obj, off)) jump PermissionFound;
 	if (obj provides KD_Count) {
-!print "obj provides KD_Count^";
 		l = obj.KD_Count;
 		while (l > 0) {
 			a = l*2;

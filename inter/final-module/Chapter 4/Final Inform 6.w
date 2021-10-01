@@ -222,6 +222,11 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("    if (p < FBNA_PROP_NUMBER) { if (v) give o p; else give o ~p; }\n");
 	WRITE("    else { if (o provides p) o.p = v; }\n");
 	WRITE("];\n");
+	WRITE("[ _final_message0 o p q x a rv;\n");
+	WRITE("    ! print \"Message send \", (the) o, \" --> \", p, \" \", p-->1, \" addr \", o.(p-->1), \"^\";\n");
+	WRITE("    q = p-->1; a = o.q; if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
+	WRITE("    return rv;\n");
+	WRITE("];\n");
 	WRITE("Constant i7_lvalue_SET = 1;\n");
 	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
 	WRITE("Constant i7_lvalue_POSTDEC = 3;\n");
@@ -342,7 +347,7 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 								WRITE("("); VNODE_1C; WRITE(")(");
 								VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
 								VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
-		case MESSAGE0_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)())"); break;
+		case MESSAGE0_BIP: 		WRITE("_final_message0("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
 								VNODE_3C; WRITE("))"); break;
 		case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
@@ -806,7 +811,9 @@ void I6Target::dp_array(code_generation *gen, text_stream *name, int t) {
 		Dictionaries::write_value(D, name, (void *) Str::duplicate(name));
 		
 		segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-		if (i6dpcount++ == 0) WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 value_range_D;\n");
+		if (i6dpcount++ == 0) {
+			WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 value_range_D;\n");
+		}
 		WRITE_TO(CodeGen::current(gen), "Array %S --> %d %S_D;\n", name, t, name);
 		CodeGen::deselect(gen, saved);
 	}
@@ -815,6 +822,13 @@ void I6Target::dp_array(code_generation *gen, text_stream *name, int t) {
 void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name) {
 
 	text_stream *name = Inter::Symbols::name(prop_name);
+	
+	if (Str::eq(name, I"name")) {
+		Inter::Symbols::set_translate(prop_name, I"nameX");
+		I6Target::dp_array(gen, I"nameX", 1);
+		return;
+	}
+	
 	int t = 1;
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) {
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == 0) {
@@ -837,13 +851,25 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 	if (TRUE) {
 		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
 		WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", name, name);
-		WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", prop_name->symbol_name, prop_name->symbol_name);
 		if (Str::prefix_eq(prop_name->symbol_name, I"P_", 2)) {
+			WRITE_TO(CodeGen::current(gen), "#ifndef %S_D;\n", prop_name->symbol_name);
+			WRITE_TO(CodeGen::current(gen), "#ifdef ");
+			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
+			WRITE_TO(CodeGen::current(gen), "_D;\n");
+			WRITE_TO(CodeGen::current(gen), "Constant %S_D = ", prop_name->symbol_name);
+			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
+			WRITE_TO(CodeGen::current(gen), "_D;\n");
+			WRITE_TO(CodeGen::current(gen), "#ifnot;");
+			WRITE_TO(CodeGen::current(gen), "Constant %S_D = 0;\n", prop_name->symbol_name);
+			WRITE_TO(CodeGen::current(gen), "#endif;");
+			WRITE_TO(CodeGen::current(gen), "#endif;");
 			WRITE_TO(CodeGen::current(gen), "#ifndef ");
 			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
 			WRITE_TO(CodeGen::current(gen), "; Constant ");
 			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
 			WRITE_TO(CodeGen::current(gen), " = %S; #endif;\n", prop_name->symbol_name);
+		} else {
+			WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", prop_name->symbol_name, prop_name->symbol_name);
 		}
 		CodeGen::deselect(gen, saved);
 	}
