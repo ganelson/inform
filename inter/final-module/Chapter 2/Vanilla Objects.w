@@ -9,6 +9,14 @@ called exactly once.
 =
 void VanillaObjects::optimise_properties(code_generation *gen) {
 	inter_tree *I = gen->from;
+	gen->kinds_in_source_order = NULL;
+	gen->kinds_in_declaration_order = NULL;
+	@<Make a list of kinds in source order@>;
+	@<Make a list of kinds in declaration order@>;
+
+	gen->instances_in_declaration_order = NULL;
+	@<Make a list of instances in declaration order@>;
+
 	if (LinkedLists::len(gen->unassimilated_properties) > 0)
 		@<Declare and allocate properties@>;
 }
@@ -16,16 +24,7 @@ void VanillaObjects::optimise_properties(code_generation *gen) {
 void VanillaObjects::generate(code_generation *gen) {
 	inter_tree *I = gen->from;
 
-	inter_symbol **kinds_in_source_order = NULL;
-	inter_symbol **kinds_in_declaration_order = NULL;
-	@<Make a list of kinds in source order@>;
-	@<Make a list of kinds in declaration order@>;
-
-	inter_symbol **instances_in_declaration_order = NULL;
-	@<Make a list of instances in declaration order@>;
-
 	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
-		@<Compile the property numberspace forcer@>;
 		@<Write Value Property Holder objects for each kind of value instance@>;
 	}
 
@@ -33,53 +32,51 @@ void VanillaObjects::generate(code_generation *gen) {
 	@<Write the KindHierarchy array@>;
 	@<Write an I6 Class definition for each kind of object@>;
 	@<Write an I6 Object definition for each object instance@>;
-	@<Write the property metadata array@>;
 }
 
 @<Make a list of kinds in source order@> =
 	if (LinkedLists::len(gen->kinds) > 0) {
-		kinds_in_source_order = (inter_symbol **)
+		gen->kinds_in_source_order = (inter_symbol **)
 			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int i = 0;
 		inter_tree_node *P;
 		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
 			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			kinds_in_source_order[i++] = kind_name;
+			gen->kinds_in_source_order[i++] = kind_name;
 		}
-		qsort(kinds_in_source_order, (size_t) i, sizeof(inter_symbol *),
+		qsort(gen->kinds_in_source_order, (size_t) i, sizeof(inter_symbol *),
 			VanillaObjects::compare_kind_symbols);
 	}
 
 @<Make a list of kinds in declaration order@> =
 	if (LinkedLists::len(gen->kinds) > 0) {
-		kinds_in_declaration_order = (inter_symbol **)
+		gen->kinds_in_declaration_order = (inter_symbol **)
 			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int i = 0;
 		inter_tree_node *P;
 		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
 			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			kinds_in_declaration_order[i++] = kind_name;
+			gen->kinds_in_declaration_order[i++] = kind_name;
 		}
-		qsort(kinds_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
+		qsort(gen->kinds_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
 			VanillaObjects::compare_kind_symbols_decl);
 	}
 
 @<Make a list of instances in declaration order@> =
 	if (LinkedLists::len(gen->instances) > 0) {
-		instances_in_declaration_order = (inter_symbol **)
+		gen->instances_in_declaration_order = (inter_symbol **)
 			(Memory::calloc(LinkedLists::len(gen->instances), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int i=0;
 		inter_tree_node *P;
 		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->instances) {
 			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-			instances_in_declaration_order[i++] = inst_name;
+			gen->instances_in_declaration_order[i++] = inst_name;
 		}
-		qsort(instances_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
+		qsort(gen->instances_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
 			VanillaObjects::compare_kind_symbols_decl);
 	}
 
 @<Declare and allocate properties@> =
-	inter_symbol *first_either_or_not_an_attribute = NULL;
 	int attribute_slots_used = 0;
 
 	inter_symbol *prop_name;
@@ -88,17 +85,14 @@ void VanillaObjects::generate(code_generation *gen) {
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 		@<Consider this property for attribute allocation@>;
 
-	if (first_either_or_not_an_attribute == NULL)
-		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, MANGLED_GDCFORM,
-			NULL, I"MAX_POSITIVE_NUMBER", FALSE);
-	else
-		Generators::declare_constant(gen, I"FBNA_PROP_NUMBER", NULL, MANGLED_GDCFORM,
-			NULL, Inter::Symbols::name(first_either_or_not_an_attribute), FALSE);
-
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
-		Generators::declare_property(gen, prop_name);
+		VanillaObjects::predeclare_property(gen, prop_name);
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-		Generators::declare_property(gen, prop_name);
+		VanillaObjects::predeclare_property(gen, prop_name);
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
+		VanillaObjects::declare_property(gen, prop_name);
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+		VanillaObjects::declare_property(gen, prop_name);
 
 @<Consider this property for attribute allocation@> =
 	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
@@ -110,14 +104,11 @@ void VanillaObjects::generate(code_generation *gen) {
 		@<Any either/or property which can belong to a value instance is ineligible@>;
 		@<An either/or property translated to an attribute declared in the I6 template must be chosen@>;
 		@<Otherwise give away attribute slots on a first-come-first-served basis@>;
-		@<Check against the I7 compiler's beliefs@>;
 
 		if (make_attribute) {
 			Inter::Symbols::set_flag(prop_name, ATTRIBUTE_MARK_BIT);
 		} else {
 			Inter::Symbols::clear_flag(prop_name, ATTRIBUTE_MARK_BIT);
-			if (first_either_or_not_an_attribute == NULL)
-				first_either_or_not_an_attribute = prop_name;
 		}
 	}
 
@@ -177,58 +168,10 @@ to be frequently used.
 			make_attribute = FALSE;
 	}
 
-@ At present the I7 compiler makes a decision matching this one for its
-own internal needs. We want to make sure its decision matches ours, so we
-check that here. (It tells us by marking the property name with the
-|ATTRIBUTE_IANN| annotation.) But this code will eventually go.
-
-@<Check against the I7 compiler's beliefs@> =
-	int made_attribute = FALSE;
-	if (Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) >= 0)
-		made_attribute = TRUE;
-	if (made_attribute != make_attribute) {
-		LOG("Disagree on %S: %d vs %d\n", prop_name->symbol_name, made_attribute, make_attribute);
-		internal_error("attribute allocation dispute");
-	}
-
-@ The weak point in our scheme for making some either/or properties into
-Attributes is that run-time code is going to need a fast way to determine
-which, since they have to be accessed differently. We rely on the facts that
-
-(a) at run-time, attribute numbers are all numerically lower than property
-numbers, and
-
-(b) property numbers increase in order of their first appearances in the
-I6 source code.
-
-Thus an either/or property |P| must be an I6 attribute if |P < F| and must be
-an I6 property if |P >= F|, where |F| is the earliest-defined either/or
-property which isn't stored as an attribute.
-
-This cutoff value |F| is customarily called FBNA, the "first boolean not
-an attribute". (Perhaps she ought to be called FEONA.) The following
-compiles an I6 constant for this value.
-
-@ 
-
-@<Compile the property numberspace forcer@> =
-	segmentation_pos saved;
-	Generators::declare_instance(gen, I"Object", I"property_numberspace_forcer", NULL, -1, FALSE, &saved);
-	inter_symbol *prop_name;
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties) {
-		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == FALSE) {
-			inter_symbol *kind_name = Inter::Property::kind_of(prop_name);
-			if (kind_name == truth_state_kind_symbol) {
-				Generators::assign_property(gen, Inter::Symbols::name(prop_name), I"0", FALSE);
-			}
-		}
-	}
-	Generators::end_instance(gen, I"Object", I"property_numberspace_forcer", saved);
-
 @<Annotate kinds of object with a sequence counter@> =
 	inter_ti c = 1;
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = kinds_in_source_order[i];
+		inter_symbol *kind_name = gen->kinds_in_source_order[i];
 		if (VanillaObjects::is_kind_of_object(kind_name))
 			Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
 	}
@@ -247,7 +190,7 @@ property usage is legal.
 @<Write the KindHierarchy array@> =
 	int no_kos = 0;
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = kinds_in_source_order[i];
+		inter_symbol *kind_name = gen->kinds_in_source_order[i];
 		if (VanillaObjects::is_kind_of_object(kind_name)) no_kos++;
 	}
 
@@ -257,7 +200,7 @@ property usage is legal.
 		Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-			inter_symbol *kind_name = kinds_in_source_order[i];
+			inter_symbol *kind_name = gen->kinds_in_source_order[i];
 			if (VanillaObjects::is_kind_of_object(kind_name)) {
 				inter_symbol *super_name = Inter::Kind::super(kind_name);
 				Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
@@ -305,7 +248,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 			@<Write the VPH lookup array@>;
 			for (int w=1; w<M; w++) {
 				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-					inter_symbol *kind_name = kinds_in_source_order[i];
+					inter_symbol *kind_name = gen->kinds_in_source_order[i];
 					if (VanillaObjects::weak_id(kind_name) == w) {
 						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
@@ -314,7 +257,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							Generators::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE, &saved);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
-							Generators::assign_property(gen, I"value_range", N, FALSE);
+							Generators::assign_property(gen, NULL, N); /* I"value_range" */
 							DISCARD_TEXT(N)
 							inter_symbol *prop_name;
 							LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
@@ -323,7 +266,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 								Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 							@<Work through this frame list of permissions@>;
 							for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-								inter_symbol *inst_name = instances_in_declaration_order[in];
+								inter_symbol *inst_name = gen->instances_in_declaration_order[in];
 								if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 									inter_node_list *FL =
 										Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
@@ -355,7 +298,7 @@ words, the number of instances of this kind.
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = kinds_in_source_order[i];
+		inter_symbol *kind_name = gen->kinds_in_source_order[i];
 		if (VanillaObjects::is_kind_of_object(kind_name)) continue;
 		if (kind_name == object_kind_symbol) continue;
 		if (kind_name == unchecked_kind_symbol) continue;
@@ -364,7 +307,7 @@ words, the number of instances of this kind.
 			Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 		if (FL->first_in_inl) vph_me = TRUE;
 		else for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-			inter_symbol *inst_name = instances_in_declaration_order[in];
+			inter_symbol *inst_name = gen->instances_in_declaration_order[in];
 			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 				inter_node_list *FL =
 					Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
@@ -385,7 +328,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 	for (int w=1; w<M; w++) {
 		int written = FALSE;
 		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-			inter_symbol *kind_name = kinds_in_source_order[i];
+			inter_symbol *kind_name = gen->kinds_in_source_order[i];
 			if (VanillaObjects::weak_id(kind_name) == w) {
 				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 					written = TRUE;
@@ -417,11 +360,10 @@ just to force the property into being.
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
-			text_stream *call_it = Inter::Symbols::name(prop_name);
 			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				Generators::assign_mangled_property(gen, call_it, Inter::Symbols::name(store), FALSE);
+				Generators::assign_mangled_property(gen, prop_name, Inter::Symbols::name(store));
 			} else {
 				TEMPORARY_TEXT(ident)
 				kov_value_stick *kvs = CREATE(kov_value_stick);
@@ -431,7 +373,7 @@ just to force the property into being.
 				kvs->kind_name = kind_name;
 				kvs->node = X;
 				ADD_TO_LINKED_LIST(kvs, kov_value_stick, stick_list);
-				Generators::assign_mangled_property(gen, call_it, kvs->identifier, FALSE);
+				Generators::assign_mangled_property(gen, prop_name, kvs->identifier);
 				DISCARD_TEXT(ident)
 			}
 		}
@@ -467,7 +409,7 @@ because I6 doesn't allow function calls in a constant context.
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	for (int j=0; j<LinkedLists::len(gen->instances); j++) {
-		inter_symbol *inst_name = instances_in_declaration_order[j];
+		inter_symbol *inst_name = gen->instances_in_declaration_order[j];
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
 			inter_node_list *PVL =
@@ -501,7 +443,7 @@ because I6 doesn't allow function calls in a constant context.
 
 @<Write an I6 Class definition for each kind of object@> =
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = kinds_in_declaration_order[i];
+		inter_symbol *kind_name = gen->kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
 			(VanillaObjects::is_kind_of_object(kind_name))) {
 			text_stream *super_class = NULL;
@@ -519,7 +461,7 @@ because I6 doesn't allow function calls in a constant context.
 
 @<Write an I6 Object definition for each object instance@> =
 	for (int i=0; i<LinkedLists::len(gen->instances); i++) {
-		inter_symbol *inst_name = instances_in_declaration_order[i];
+		inter_symbol *inst_name = gen->instances_in_declaration_order[i];
 		inter_tree_node *D = Inter::Symbols::definition(inst_name);
 		VanillaObjects::instance(gen, D);
 	}
@@ -538,32 +480,6 @@ direction, and so on. So the finer access controls for properties of
 objects are left until run-time (whereas no such regime is needed for
 properties of values). To make this possible, we need to tell the run-time
 code what is and is not allowed.
-
-The |property_metadata| array is organised as a sequence of variable-sized
-records. Because of that, we also need arrays telling us where to find
-the start of the record for a given I6 property (or attribute): we have two
-of these, called |attributed_property_offsets| and |valued_property_offsets|.
-The dummy value |-1| means that the relevant property has no metadata record,
-though this won't happen for any property created by I7 source text.
-
-@<Write the property metadata array@> =
-	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
-		segmentation_pos saved;
-		Generators::begin_array(gen, I"property_metadata", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
-		int pos = 0;
-		inter_symbol *prop_name;
-		LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties) {
-			if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT))
-				Generators::property_offset(gen, Inter::Symbols::name(prop_name), pos, TRUE);
-			else
-				Generators::property_offset(gen, Inter::Symbols::name(prop_name), pos, FALSE);
-			@<Write the property name in double quotes@>;
-			@<Write a list of kinds or objects which are permitted to have this property@>;
-			Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
-			pos++;
-		}
-		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
-	}
 
 @<Write the property name in double quotes@> =
 	text_stream *pname = I"<nameless>";
@@ -607,7 +523,7 @@ linearly with the size of the source text, even though $N$ does.
 
 @<List any O with an explicit permission@> =
 	for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-		inter_symbol *kind_name = kinds_in_source_order[k];
+		inter_symbol *kind_name = gen->kinds_in_source_order[k];
 		if (VanillaObjects::is_kind_of_object(kind_name)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
@@ -621,7 +537,7 @@ linearly with the size of the source text, even though $N$ does.
 		}
 	}
 	for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-		inter_symbol *inst_name = instances_in_declaration_order[in];
+		inter_symbol *inst_name = gen->instances_in_declaration_order[in];
 		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
@@ -645,7 +561,7 @@ linearly with the size of the source text, even though $N$ does.
 				Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 				pos++;
 				for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-					inter_symbol *kind_name = kinds_in_source_order[k];
+					inter_symbol *kind_name = gen->kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
 						Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
 						pos++;
@@ -790,25 +706,15 @@ void VanillaObjects::plist(code_generation *gen, inter_node_list *FL) {
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
-		text_stream *call_it = Inter::Symbols::name(prop_name);
-		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
-				(X->W.data[DVAL2_PVAL_IFLD] == 0)) {
-				Generators::assign_property(gen, call_it, I"0", TRUE);
-			} else {
-				Generators::assign_property(gen, call_it, I"1", TRUE);
-			}
-		} else {
-			TEMPORARY_TEXT(OUT)
-			CodeGen::select_temporary(gen, OUT);
-			if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
-				CodeGen::pair(gen, X,
-					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
-			}
-			CodeGen::deselect_temporary(gen);
-			Generators::assign_property(gen, call_it, OUT, FALSE);
-			DISCARD_TEXT(OUT)
+		TEMPORARY_TEXT(OUT)
+		CodeGen::select_temporary(gen, OUT);
+		if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
+			CodeGen::pair(gen, X,
+				X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
 		}
+		CodeGen::deselect_temporary(gen);
+		Generators::assign_property(gen, prop_name, OUT);
+		DISCARD_TEXT(OUT)
 	}
 }
 
@@ -896,4 +802,86 @@ Some either-or properties of object instances can be stored as I6
 limited number can be stored this way. Here we choose which.
 
 =
+dictionary *i6dps_dict = NULL;
+dictionary *pre_i6dps_dict = NULL;
+
+void VanillaObjects::predeclare_property(code_generation *gen, inter_symbol *prop_name) {
+	if (pre_i6dps_dict == NULL) pre_i6dps_dict = Dictionaries::new(1024, FALSE);
+	dictionary *D = pre_i6dps_dict;
+	text_stream *name = Inter::Symbols::name(prop_name);
+	if (Dictionaries::find(D, name) == NULL) {
+		text_stream *inner_name = Str::duplicate(name);
+		Dictionaries::create(D, inner_name);
+		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+	} else {
+		Dictionaries::write_value(D, name, (void *) prop_name);
+	}
+}
+
+void VanillaObjects::declare_property(code_generation *gen, inter_symbol *prop_name) {
+	if (i6dps_dict == NULL) i6dps_dict = Dictionaries::new(1024, FALSE);
+	dictionary *D = i6dps_dict;
+	text_stream *name = Inter::Symbols::name(prop_name);
+	if (Dictionaries::find(D, name) == NULL) {
+		if (TRUE) {
+			LOG("! NEW name=%S   sname=%S   assim=%d   expl=%d\n",
+				name, prop_name->symbol_name,
+				Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN),
+				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN)));
+		}
+		text_stream *inner_name = Str::duplicate(name);
+		Dictionaries::create(D, inner_name);
+		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+		
+		text_stream *array_name = Str::new();
+		WRITE_TO(array_name, "A_%S", inner_name);
+
+		Inter::Symbols::set_translate(prop_name, array_name);
+		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+
+		segmentation_pos saved;
+		Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
+		Generators::declare_property(gen, prop_name);
+		@<Do permissions@>;
+		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+		if (TRUE) {
+			LOG("! SO  %S --> %S\n", Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
+		}
+	} else {
+		if (TRUE) {
+			LOG("! OLD name=%S   sname=%S   assim=%d   expl=%d\n",
+				name, prop_name->symbol_name,
+				Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN),
+				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN)));
+		}
+		inter_symbol *existing_prop_name = 
+			(inter_symbol *) Dictionaries::read_value(D, name);
+		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
+		text_stream *inner_name = I"<nameless>";
+		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
+		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+		if (TRUE) {
+			LOG("! SO  %S --> %S\n", Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
+		}
+	}
+}
+
+@<Do permissions@> =
+	inter_symbol *prop_name = 
+		(inter_symbol *) Dictionaries::read_value(pre_i6dps_dict, name);
+	int pos = 0; inter_tree *I = gen->from;
+	@<Write the property name in double quotes@>;
+	@<Write a list of kinds or objects which are permitted to have this property@>;
+	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+
+@ =
+text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {
+	text_stream *inner_name = I"<nameless>";
+	int N = Inter::Symbols::read_annotation(prop_name, INNER_PROPERTY_NAME_IANN);
+	if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+	return inner_name;
+}
 

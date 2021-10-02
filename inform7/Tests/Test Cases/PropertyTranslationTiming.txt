@@ -7,6 +7,6 @@ The first room is through the magic door.
 The second room is a room.
 
 When play begins:
-    now the second room is through the magic door.
+	now the second room is through the magic door.
 
 Test me with "open door/enter door".

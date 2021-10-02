@@ -979,7 +979,8 @@ typedef struct i7_property_set {
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
-void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val) {
+void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array, i7word_t val) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
@@ -992,7 +993,8 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
 		i7_fatal_exit(proc);
 	}
 }
-i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
@@ -1021,13 +1023,15 @@ void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val) {
 	i7_write_prop_value(proc, owner, prop, val);
 }
 
-i7word_t i7_prop_len(i7word_t obj, i7word_t pr) {
+i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
-i7word_t i7_prop_addr(i7word_t obj, i7word_t pr) {
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return i7_properties[(int) obj].address[(int) pr];
@@ -1037,7 +1041,8 @@ int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr) {
 	return 0;
 }
 
-int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (owner_id != 1) {

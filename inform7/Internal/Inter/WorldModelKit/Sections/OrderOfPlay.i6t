@@ -110,7 +110,7 @@ where he is, the surprise will not be spoiled.
 	real_location = nothing;
 	location = nothing;
 
-	CreatePropertyOffsets();
+!	CreatePropertyOffsets();
 	HeapInitialise(); ! Create a completely unused memory allocation heap
 	StackFramingInitialise(); ! Create an empty stack
 	CreateDynamicRelations(); ! Create relation structures on the heap

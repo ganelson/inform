@@ -334,6 +334,8 @@ because they too are defined constants, equal to their IDs: see //C Object Model
 	CNamespace::mangle(cgt, OUT, array_name);
 	WRITE(" %d /* = position in memory of %S array %S */\n",
 		C_GEN_DATA(memdata.himem), format_name, array_name);
+	if (array_s)
+		Inter::Symbols::annotate_i(array_s, C_ARRAY_ADDRESS_IANN, (inter_ti) C_GEN_DATA(memdata.himem));
 	CodeGen::deselect(gen, saved);
 
 @ Of course, right now we don't know |N|, the extent of the array. So we will

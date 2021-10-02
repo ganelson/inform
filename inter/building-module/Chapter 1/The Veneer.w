@@ -31,14 +31,11 @@
 @e ASM_NEG_RTRUE_VSYMB
 @e ASM_NEG_RFALSE_VSYMB
 
-@e PROPERTY_METADATA_VSYMB
-@e FBNA_PROP_NUMBER_VSYMB
 @e VALUE_PROPERTY_HOLDERS_VSYMB
 @e VALUE_RANGE_VSYMB
 @e RESPONSETEXTS_VSYMB
 @e CREATEPROPERTYOFFSETS_VSYMB
 @e KINDHIERARCHY_VSYMB
-@e SAVED_SHORT_NAME_VSYMB
 @e NO_RESPONSES_VSYMB
 
 =
@@ -69,14 +66,11 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, ASM_NEG_RTRUE_VSYMB, I"__assembly_negated_rtrue_label", I"?~rtrue");
 	Veneer::index(I, ASM_NEG_RFALSE_VSYMB, I"__assembly_negated_rfalse_label", I"?~rfalse");
 
-	Veneer::index(I, PROPERTY_METADATA_VSYMB, I"property_metadata", NULL);
-	Veneer::index(I, FBNA_PROP_NUMBER_VSYMB, I"FBNA_PROP_NUMBER", NULL);
 	Veneer::index(I, VALUE_PROPERTY_HOLDERS_VSYMB, I"value_property_holders", NULL);
 	Veneer::index(I, VALUE_RANGE_VSYMB, I"value_range", NULL);
 	Veneer::index(I, RESPONSETEXTS_VSYMB, I"ResponseTexts", NULL);
 	Veneer::index(I, CREATEPROPERTYOFFSETS_VSYMB, I"CreatePropertyOffsets", NULL);
 	Veneer::index(I, KINDHIERARCHY_VSYMB, I"KindHierarchy", NULL);
-	Veneer::index(I, SAVED_SHORT_NAME_VSYMB, I"saved_short_name", NULL);
 	Veneer::index(I, NO_RESPONSES_VSYMB, I"NO_RESPONSES", NULL);
 }
 

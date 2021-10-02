@@ -30,7 +30,7 @@ int PL::Devices::new_base_kind_notify(kind *new_base, text_stream *name, wording
 int PL::Devices::IF_complete_model(int stage) {
 	if (stage == WORLD_STAGE_III) {
 		property *P_switchable = EitherOrProperties::new_nameless(I"switchable");
-		RTProperties::recommend_storing_as_attribute(P_switchable, TRUE);
+//		RTProperties::recommend_storing_as_attribute(P_switchable, TRUE);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
 			if (Instances::of_kind(I, K_device))

@@ -58,7 +58,6 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, I6Target::compile_literal_real);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, I6Target::compile_literal_text);
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, I6Target::declare_property);
-	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, I6Target::property_offset);
 	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, I6Target::declare_variables);
 	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, I6Target::evaluate_variable);
 	METHOD_ADD(cgt, DECLARE_CLASS_MTID, I6Target::declare_class);
@@ -130,13 +129,13 @@ int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("@inc objflag;\n");
 	WRITE("#Ifdef K1_room;\n");
 	WRITE("@je cla K1_room ?~NotRoom;\n");
-	WRITE("@test_attr obj mark_as_room_D ?rtrue;\n");
+	WRITE("@test_attr obj mark_as_room ?rtrue;\n");
 	WRITE("@rfalse;\n");
 	WRITE(".NotRoom;\n");
 	WRITE("#Endif;\n");
 	WRITE("#Ifdef K2_thing;\n");
 	WRITE("@je cla K2_thing ?~NotObj;\n");
-	WRITE("@test_attr obj mark_as_thing_D ?rtrue;\n");
+	WRITE("@test_attr obj mark_as_thing ?rtrue;\n");
 	WRITE("@rfalse;\n");
 	WRITE("#Endif;\n");
 	WRITE(".NotObj;\n");
@@ -212,19 +211,19 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 
 	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("[ _final_read_pval o p a;\n");
-	WRITE("    p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
-	WRITE("    if (p < FBNA_PROP_NUMBER) { if (o has p) a = 1; return a; }\n");
+	WRITE("[ _final_read_pval o p a t;\n");
+	WRITE("    t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
+	WRITE("    if (t == 2) { if (o has p) a = 1; return a; }\n");
 	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
 	WRITE("];\n");
-	WRITE("[ _final_write_eopval o p v;\n");
-	WRITE("    p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
-	WRITE("    if (p < FBNA_PROP_NUMBER) { if (v) give o p; else give o ~p; }\n");
+	WRITE("[ _final_write_eopval o p v t;\n");
+	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
+	WRITE("    if (t == 2) { if (v) give o p; else give o ~p; }\n");
 	WRITE("    else { if (o provides p) o.p = v; }\n");
 	WRITE("];\n");
 	WRITE("[ _final_message0 o p q x a rv;\n");
 	WRITE("    ! print \"Message send \", (the) o, \" --> \", p, \" \", p-->1, \" addr \", o.(p-->1), \"^\";\n");
-	WRITE("    q = p-->1; a = o.q; if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
+	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
 	WRITE("    return rv;\n");
 	WRITE("];\n");
 	WRITE("Constant i7_lvalue_SET = 1;\n");
@@ -801,100 +800,51 @@ trick called "stubbing", these being "stub definitions".)
 
 =
 int i6dpcount = 0;
-dictionary *i6dps_dict = NULL;
-
-void I6Target::dp_array(code_generation *gen, text_stream *name, int t) {
-	if (i6dps_dict == NULL) i6dps_dict = Dictionaries::new(1024, FALSE);
-	dictionary *D = i6dps_dict;
-	if (Dictionaries::find(D, name) == NULL) {
-		Dictionaries::create(D, name);
-		Dictionaries::write_value(D, name, (void *) Str::duplicate(name));
-		
-		segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-		if (i6dpcount++ == 0) {
-			WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 value_range_D;\n");
-		}
-		WRITE_TO(CodeGen::current(gen), "Array %S --> %d %S_D;\n", name, t, name);
-		CodeGen::deselect(gen, saved);
-	}
-}
 
 void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name) {
-
-	text_stream *name = Inter::Symbols::name(prop_name);
-	
-	if (Str::eq(name, I"name")) {
-		Inter::Symbols::set_translate(prop_name, I"nameX");
-		I6Target::dp_array(gen, I"nameX", 1);
-		return;
-	}
-	
-	int t = 1;
+	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	int t = 1, def = FALSE;
 	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) {
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == 0) {
 			segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
-			WRITE_TO(CodeGen::current(gen), "Property %S_D;\n", prop_name->symbol_name);
+			WRITE_TO(CodeGen::current(gen), "Property %S;\n", inner_name);
 			CodeGen::deselect(gen, saved);
+			def = TRUE;
 		}
 	} 
 
-		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) {
-				segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-				WRITE_TO(CodeGen::current(gen), "Attribute %S_D;\n", prop_name->symbol_name);
-				CodeGen::deselect(gen, saved);
-				t = 2;
-			}
+	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+		if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
+			(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) {
+			segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
+			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", inner_name);
+			CodeGen::deselect(gen, saved);
+			t = 2;
+			def = TRUE;
 		}
-	I6Target::dp_array(gen, prop_name->symbol_name, t);
-	if (TRUE) {
-		segmentation_pos saved = CodeGen::select(gen, code_at_eof_I7CGS);
-		WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", name, name);
-		if (Str::prefix_eq(prop_name->symbol_name, I"P_", 2)) {
-			WRITE_TO(CodeGen::current(gen), "#ifndef %S_D;\n", prop_name->symbol_name);
-			WRITE_TO(CodeGen::current(gen), "#ifdef ");
-			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
-			WRITE_TO(CodeGen::current(gen), "_D;\n");
-			WRITE_TO(CodeGen::current(gen), "Constant %S_D = ", prop_name->symbol_name);
-			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
-			WRITE_TO(CodeGen::current(gen), "_D;\n");
-			WRITE_TO(CodeGen::current(gen), "#ifnot;");
-			WRITE_TO(CodeGen::current(gen), "Constant %S_D = 0;\n", prop_name->symbol_name);
-			WRITE_TO(CodeGen::current(gen), "#endif;");
-			WRITE_TO(CodeGen::current(gen), "#endif;");
-			WRITE_TO(CodeGen::current(gen), "#ifndef ");
-			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
-			WRITE_TO(CodeGen::current(gen), "; Constant ");
-			for (int i=2; i<Str::len(prop_name->symbol_name); i++) PUT_TO(CodeGen::current(gen), Str::get_at(prop_name->symbol_name, i));
-			WRITE_TO(CodeGen::current(gen), " = %S; #endif;\n", prop_name->symbol_name);
-		} else {
-			WRITE_TO(CodeGen::current(gen), "#ifndef %S_D; Constant %S_D = 0; #endif;\n", prop_name->symbol_name, prop_name->symbol_name);
-		}
+	}
+	
+	segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
+	if (i6dpcount++ == 0) {
+		WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 Xvalue_range 0;\n");
+	}
+	WRITE_TO(CodeGen::current(gen), "Constant subterfuge_%d = %S;\n", i6dpcount, inner_name);
+	CodeGen::deselect(gen, saved);
+
+	TEMPORARY_TEXT(val)
+	WRITE_TO(val, "%d", t);
+	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+	Str::clear(val);
+	WRITE_TO(val, "subterfuge_%d", i6dpcount);
+	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(val)
+
+	if (def == FALSE) {
+		saved = CodeGen::select(gen, code_at_eof_I7CGS);
+		WRITE_TO(CodeGen::current(gen), "#ifndef %S; Constant %S = 0; #endif;\n", inner_name, inner_name);
 		CodeGen::deselect(gen, saved);
 	}
-}
-
-void I6Target::declare_attribute(code_generator *cgt, code_generation *gen, text_stream *prop_name) {
-	segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", prop_name);
-	CodeGen::deselect(gen, saved);
-}
-
-void I6Target::property_offset(code_generator *cgt, code_generation *gen, text_stream *prop, int pos, int as_attr) {
-	segmentation_pos saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	if (I6_GEN_DATA(I6_property_offsets_made)++ == 0) {
-		WRITE("[ CreatePropertyOffsets i;\n"); INDENT;
-		WRITE("for (i=0: i<attributed_property_offsets_SIZE: i++)\n"); INDENT;
-		WRITE("attributed_property_offsets-->i = -1;\n"); OUTDENT;
-		WRITE("for (i=0: i<valued_property_offsets_SIZE: i++)\n"); INDENT;
-		WRITE("valued_property_offsets-->i = -1;\n"); OUTDENT;
-	}	
-	if (as_attr) WRITE("attributed_property_offsets");
-	else WRITE("valued_property_offsets");
-	WRITE("-->%S_D = %d;\n", prop, pos);
-	CodeGen::deselect(gen, saved);
 }
 
 @
@@ -993,13 +943,20 @@ int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen,
 	return FALSE;
 }
 
-void I6Target::assign_property(code_generator *cgt, code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+void I6Target::assign_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (as_att) {
-		if (Str::eq(val, I"0")) WRITE("    has ~%S_D\n", property_name);
-		else WRITE("    has %S_D\n", property_name);
+
+	if (prop_name == NULL) {
+		WRITE("    with Xvalue_range %S\n", val);
+		return;
+	}
+
+	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
+	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
+		else WRITE("    has %S\n", property_name);
 	} else {
-		WRITE("    with %S_D %S\n", property_name, val);
+		WRITE("    with %S %S\n", property_name, val);
 	}
 }
 
@@ -1315,6 +1272,6 @@ void I6Target::new_action(code_generator *cgt, code_generation *gen, text_stream
 void I6Target::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
 	segmentation_pos saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Object %S \"(%S object)\" has concealed_D;\n", obj_name, obj_name);
+	WRITE("Object %S \"(%S object)\" has concealed;\n", obj_name, obj_name);
 	CodeGen::deselect(gen, saved);
 }

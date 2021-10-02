@@ -883,7 +883,7 @@ trust that there is nothing surprising here.
 
 @<Assert found-in, door-to and door-dir properties for doors@> =
 	P_door = EitherOrProperties::new_nameless(I"door");
-	RTProperties::recommend_storing_as_attribute(P_door, TRUE);
+//	RTProperties::recommend_storing_as_attribute(P_door, TRUE);
 	P_door_dir = ValueProperties::new_nameless(I"door_dir", K_value);
 	P_door_to = ValueProperties::new_nameless(I"door_to", K_value);
 

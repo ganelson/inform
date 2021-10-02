@@ -659,6 +659,7 @@ Property plural; ! used as in I6 to implement plural names for duplicate objects
 Property regional_found_in; ! new in I7
 Property room_index; ! new in I7: storage for route-finding
 Property short_name 0; ! = I7 "printed name"
+Property saved_short_name 0; ! cache for ChangePlayer
 Property vector; ! new in I7: storage for route-finding
 Property with_key; ! = I7 "matching key"
 

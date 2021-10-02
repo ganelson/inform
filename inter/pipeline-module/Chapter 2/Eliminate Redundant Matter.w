@@ -52,34 +52,10 @@ void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, vo
 		if (Str::eq(N, I"proper_prop"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's proper");
 	}
-	else if (ptype == plain_ptype_symbol) {
-		text_stream *N = Inter::Packages::name(pack);
-		if (Str::eq(N, I"attributed_property_offsets_arr"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's attributed_property_offsets_arr");
-		if (Str::eq(N, I"valued_property_offsets_arr"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's valued_property_offsets_arr");
-		if (Str::eq(N, I"FBNA_PROP_NUMBER_con"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's FBNA_PROP_NUMBER");
-	}
 	else if (ptype == function_ptype_symbol) {
 		text_stream *N = Inter::Packages::name(pack);
 		if (Str::eq(N, I"Main_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
-/*		else if (Str::eq(N, I"DefArt_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(N, I"CDefArt_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(N, I"IndefArt_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(N, I"CIndefArt_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(N, I"EnglishNumber_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(N, I"DebugAttribute_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's DebugAttribute");
-		else if (Str::eq(N, I"TestScriptSub_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's TestScriptSub");
-*/
 	}
 }
 

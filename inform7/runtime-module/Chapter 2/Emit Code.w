@@ -128,44 +128,19 @@ void EmitCode::test_if_iname_has_property(kind *K, inter_name *N, property *prn)
 	EmitCode::test_if_symbol_has_property(K, InterNames::to_symbol(N), prn);
 }
 void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *prn) {
-	if (RTProperties::recommended_as_attribute(prn)) {
-		if (RTProperties::stored_in_negation(prn)) {
-			EmitCode::inv(HASNT_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K, S);
-				EmitCode::val_iname(K_value,
-					RTProperties::iname(EitherOrProperties::get_negation(prn)));
-			EmitCode::up();
-		} else {
-			EmitCode::inv(HAS_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K, S);
-				EmitCode::val_iname(K_value, RTProperties::iname(prn));
-			EmitCode::up();
-		}
+	if (RTProperties::stored_in_negation(prn)) {
+		EmitCode::inv(HASNT_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K, S);
+			EmitCode::val_iname(K_value,
+				RTProperties::iname(EitherOrProperties::get_negation(prn)));
+		EmitCode::up();
 	} else {
-		if (RTProperties::stored_in_negation(prn)) {
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::inv(PROPERTYVALUE_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K, S);
-					EmitCode::val_iname(K_value,
-						RTProperties::iname(EitherOrProperties::get_negation(prn)));
-				EmitCode::up();
-				EmitCode::val_false();
-			EmitCode::up();
-		} else {
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::inv(PROPERTYVALUE_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K, S);
-					EmitCode::val_iname(K_value, RTProperties::iname(prn));
-				EmitCode::up();
-				EmitCode::val_true();
-			EmitCode::up();
-		}
+		EmitCode::inv(HAS_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K, S);
+			EmitCode::val_iname(K_value, RTProperties::iname(prn));
+		EmitCode::up();
 	}
 }
 

@@ -7,6 +7,7 @@ Defining the one true set of Inter annotation codes.
 @e INVALID_IANN from 0
 
 @e PROPERTY_NAME_IANN
+@e INNER_PROPERTY_NAME_IANN
 @e HEX_IANN
 @e SIGNED_IANN
 @e CALL_PARAMETER_IANN
@@ -16,7 +17,6 @@ Defining the one true set of Inter annotation codes.
 @e APPEND_IANN
 @e ARROW_COUNT_IANN
 @e ASSIMILATED_IANN
-@e ATTRIBUTE_IANN
 @e BIP_CODE_IANN
 @e BUFFERARRAY_IANN
 @e BYTEARRAY_IANN
@@ -40,6 +40,7 @@ Defining the one true set of Inter annotation codes.
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
 @e SYNOPTIC_IANN
+@e C_ARRAY_ADDRESS_IANN
 
 @ And also the canonical set of bits to use in the flags word for an Inter
 symbol.
@@ -71,6 +72,7 @@ void Inter::Canon::declare(void) {
 	invalid_IAF = Inter::Annotations::form(INVALID_IANN, I"__invalid", FALSE);
 
 	name_IAF = Inter::Annotations::form(PROPERTY_NAME_IANN, I"__property_name", TRUE);
+	inner_pname_IAF = Inter::Annotations::form(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TRUE);
 	Inter::Annotations::form(HEX_IANN, I"__hex", FALSE);
 	Inter::Annotations::form(SIGNED_IANN, I"__signed", FALSE);
 	Inter::Annotations::form(CALL_PARAMETER_IANN, I"__call_parameter", FALSE);
@@ -80,7 +82,6 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(APPEND_IANN, I"__append", TRUE);
 	Inter::Annotations::form(ARROW_COUNT_IANN, I"__arrow_count", FALSE);
 	Inter::Annotations::form(ASSIMILATED_IANN, I"__assimilated", FALSE);
-	Inter::Annotations::form(ATTRIBUTE_IANN, I"__attribute", FALSE);
 	Inter::Annotations::form(BIP_CODE_IANN, I"__bip", FALSE);
 	Inter::Annotations::form(BUFFERARRAY_IANN, I"__buffer_array", FALSE);
 	Inter::Annotations::form(BYTEARRAY_IANN, I"__byte_array", FALSE);
@@ -104,4 +105,5 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
 	Inter::Annotations::form(VENEER_IANN, I"__veneer", FALSE);
 	Inter::Annotations::form(SYNOPTIC_IANN, I"__synoptic", FALSE);
+	Inter::Annotations::form(C_ARRAY_ADDRESS_IANN, I"__array_address", FALSE);
 }

@@ -24,6 +24,7 @@ typedef struct inter_annotation_set {
 
 inter_annotation_form *invalid_IAF = NULL;
 inter_annotation_form *name_IAF = NULL;
+inter_annotation_form *inner_pname_IAF = NULL;
 
 @ =
 inter_annotation_set Inter::Annotations::new_set(void) {

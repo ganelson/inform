@@ -262,7 +262,6 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
 					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
 					(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-				Inter::Symbols::annotate_i(attr_symbol, ATTRIBUTE_IANN, 1);
 				Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
 				Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
 				if (Str::ne(attr_symbol->symbol_name, con_name->symbol_name)) {

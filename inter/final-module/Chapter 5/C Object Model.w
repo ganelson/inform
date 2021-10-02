@@ -14,7 +14,6 @@ void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, END_CLASS_MTID, CObjectModel::end_class);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
-	METHOD_ADD(cgt, PROPERTY_OFFSET_MTID, CObjectModel::property_offset);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
 }
@@ -61,7 +60,20 @@ void CObjectModel::initialise_data(code_generation *gen) {
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
-	CObjectModel::property_by_name(gen, I"value_range", FALSE);
+	CObjectModel::property_by_name(gen, I"Xvalue_range", I"value_range", FALSE);
+	segmentation_pos saved;
+	CMemoryModel::begin_array(gen->generator, gen,
+		I"Xvalue_range", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
+	TEMPORARY_TEXT(val)
+	WRITE_TO(val, "%d", 1);
+	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+	Str::clear(val);
+	CNamespace::mangle(NULL, val, I"value_range");
+	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	Generators::array_entry(gen, I"i7_mgl_NULL", WORD_ARRAY_FORMAT);
+	CMemoryModel::end_array(gen->generator, gen, WORD_ARRAY_FORMAT, &saved);
 }
 
 void CObjectModel::end(code_generation *gen) {
@@ -313,10 +325,10 @@ void CObjectModel::define_header_constant_for_action(code_generation *gen, text_
 }
 
 void CObjectModel::define_header_constant_for_property(code_generation *gen, text_stream *prop_name,
-	int id) {
+	text_stream *equiv) {
 	segmentation_pos saved = CodeGen::select(gen, c_property_symbols_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#define %S %d\n", CObjectModel::new_header_name(gen, I"P", prop_name), id);
+	WRITE("#define %S %S\n", CObjectModel::new_header_name(gen, I"P", prop_name), equiv);
 	CodeGen::deselect(gen, saved);
 }
 
@@ -401,16 +413,19 @@ that references to it will not fail to compile.
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name) {
-	int attr = FALSE;
-	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-		if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-			(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) attr = TRUE;
-	}
 	text_stream *name = Inter::Symbols::name(prop_name);
-	C_property *cp = CObjectModel::property_by_name(gen, name, attr);
+	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	CObjectModel::property_by_name(gen, name, inner_name, FALSE);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
-	if (pname)
-		CObjectModel::define_header_constant_for_property(gen, pname, cp->id);
+	if (pname) {
+		int A = Inter::Symbols::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
+		if (A > 0) {
+			TEMPORARY_TEXT(m)
+			WRITE_TO(m, "%d", A);
+			CObjectModel::define_header_constant_for_property(gen, pname, m);
+			DISCARD_TEXT(m)
+		}
+	}
 }
 
 @ Property IDs count upwards from 0 in declaration order, though they really
@@ -424,13 +439,13 @@ typedef struct C_property {
 	CLASS_DEFINITION
 } C_property;
 
-C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, int attr) {
+C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *name, text_stream *inner_name, int attr) {
 	dictionary *D = C_GEN_DATA(objdata.declared_properties);
 	C_property *cp;
 	if (Dictionaries::find(D, name) == NULL) {
 		cp = CREATE(C_property);
 		cp->name = Str::duplicate(name);
-		cp->attr = attr;
+		cp->attr = FALSE;
 		cp->id = C_GEN_DATA(objdata.property_id_counter)++;
 		Dictionaries::create(D, name);
 		Dictionaries::write_value(D, name, (void *) cp);
@@ -438,35 +453,22 @@ C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *na
 		segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("#define ");
-		CNamespace::mangle(NULL, OUT, cp->name);
+		CNamespace::mangle(NULL, OUT, inner_name);
 		WRITE(" %d\n", cp->id);
 		CodeGen::deselect(gen, saved);
+
+		TEMPORARY_TEXT(val)
+		WRITE_TO(val, "%d", (attr)?2:1);
+		Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+		Str::clear(val);
+		CNamespace::mangle(NULL, val, inner_name);
+		Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
+		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		DISCARD_TEXT(val)
 	} else {
 		cp = Dictionaries::read_value(D, name);
 	}
 	return cp;
-}
-
-@h Property offsets arrays.
-Here we compile a function which creates arrays of where to find metadata on
-properties at runtime.
-
-=
-void CObjectModel::property_offset(code_generator *cgt, code_generation *gen,
-	text_stream *prop, int pos, int as_attr) {
-	segmentation_pos saved = CodeGen::select(gen, c_property_offset_creator_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-
-	if (C_GEN_DATA(objdata.C_property_offsets_made)++ == 0)
-		@<Begin the property-offset creator function@>;
-
-	WRITE("i7_write_word(proc, ");
-	if (as_attr) CNamespace::mangle(cgt, OUT, I"attributed_property_offsets");
-	else CNamespace::mangle(cgt, OUT, I"valued_property_offsets");
-	WRITE(", ");
-	CNamespace::mangle(cgt, OUT, prop);
-	WRITE(", %d, i7_lvalue_SET);\n", pos);
-	CodeGen::deselect(gen, saved);
 }
 
 @ This function is created only if properties actually exist to have offsets;
@@ -556,9 +558,18 @@ typedef struct C_pv_pair {
 } C_pv_pair;
 
 void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
-	text_stream *property_name, text_stream *val, int as_att) {
+	inter_symbol *prop_name, text_stream *val) {
+	text_stream *property_name;
+	text_stream *inner_name;
+	if (prop_name) {
+		property_name = Inter::Symbols::name(prop_name);
+		inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	} else {
+		property_name = I"Xvalue_range";
+		inner_name = I"value_range";
+	}
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
-	C_property *prop = CObjectModel::property_by_name(gen, property_name, FALSE);
+	C_property *prop = CObjectModel::property_by_name(gen, property_name, inner_name, FALSE);
 	C_pv_pair *pair = CREATE(C_pv_pair);
 	pair->prop = prop;
 	pair->val = Str::duplicate(val);
@@ -611,26 +622,26 @@ void CObjectModel::write_property_values_table(code_generation *gen) {
 			if (pair->inlined) {
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
-				WRITE("].address[");
+				WRITE("].address[i7_read_word(proc, ");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE("] = %S;\n", pair->val);
+				WRITE(", 1)] = %S;\n", pair->val);
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
-				WRITE("].len[");
+				WRITE("].len[i7_read_word(proc, ");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE("] = xt_%S + 1;\n", pair->val);
+				WRITE(", 1)] = xt_%S + 1;\n", pair->val);
 			} else {
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
-				WRITE("].address[");
+				WRITE("].address[i7_read_word(proc, ");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE("] = %d; // %S\n", C_GEN_DATA(memdata.himem), pair->val);
+				WRITE(", 1)] = %d; // %S\n", C_GEN_DATA(memdata.himem), pair->val);
 				CMemoryModel::array_entry(NULL, gen, pair->val, WORD_ARRAY_FORMAT);
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
-				WRITE("].len[");
+				WRITE("].len[i7_read_word(proc, ");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE("] = 1;\n");
+				WRITE(", 1)] = 1;\n");
 			}
 		}
 	}
@@ -650,8 +661,8 @@ int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref
 int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
 									WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								} else {
@@ -682,11 +693,11 @@ and write them.
 = (text to inform7_clib.h)
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
-i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
 i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
-i7word_t i7_prop_len(i7word_t obj, i7word_t pr);
-i7word_t i7_prop_addr(i7word_t obj, i7word_t pr);
+i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr);
 =
 
 = (text to inform7_clib.c)
@@ -697,7 +708,8 @@ typedef struct i7_property_set {
 } i7_property_set;
 i7_property_set i7_properties[i7_max_objects];
 
-void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val) {
+void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array, i7word_t val) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
@@ -715,7 +727,8 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
 @ And here sre the functions called by the above primitives:
 
 = (text to inform7_clib.c)
-i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
@@ -744,13 +757,15 @@ void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val) {
 	i7_write_prop_value(proc, owner, prop, val);
 }
 
-i7word_t i7_prop_len(i7word_t obj, i7word_t pr) {
+i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
-i7word_t i7_prop_addr(i7word_t obj, i7word_t pr) {
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return i7_properties[(int) obj].address[(int) pr];
@@ -794,7 +809,8 @@ int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr) {
 	return 0;
 }
 
-int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id) {
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
 	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
 		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
 	while (owner_id != 1) {

@@ -281,20 +281,15 @@ int Generators::optimise_property_value(code_generation *gen, inter_symbol *prop
 	INT_METHOD_CALL(rv, gen->generator, OPTIMISE_PROPERTY_MTID, gen, prop_name, X);
 	return rv;
 }
-VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, text_stream *property_name, text_stream *val, int as_att)
-void Generators::assign_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
-	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, property_name, val, as_att);
+VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, text_stream *val)
+void Generators::assign_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
+	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val);
 }
-void Generators::assign_mangled_property(code_generation *gen, text_stream *property_name, text_stream *val, int as_att) {
+void Generators::assign_mangled_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	TEMPORARY_TEXT(mangled)
 	Generators::mangle(gen, mangled, val);
-	Generators::assign_property(gen, property_name, mangled, as_att);
+	Generators::assign_property(gen, prop_name, mangled);
 	DISCARD_TEXT(mangled)
-}
-
-VOID_METHOD_TYPE(PROPERTY_OFFSET_MTID, code_generator *generator, code_generation *gen, text_stream *property_name, int pos, int as_att)
-void Generators::property_offset(code_generation *gen, text_stream *property_name, int pos, int as_att) {
-	VOID_METHOD_CALL(gen->generator, PROPERTY_OFFSET_MTID, gen, property_name, pos, as_att);
 }
 
 @
