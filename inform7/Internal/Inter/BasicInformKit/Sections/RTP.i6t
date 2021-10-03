@@ -261,6 +261,10 @@ it doesn't mean it actually does have.
 
 =
 [ WhetherProvides obj either_or q issue_rtp  p i textual a l;
+	if (obj == 0) {
+		if (issue_rtp) RunTimeProblem(RTP_PROPOFNOTHING, 0, q);
+		rfalse;
+	}
 	if (metaclass(obj) ~= Object) rfalse;
 	if (q<0) q = ~q;
 	p = q-->1;
@@ -366,25 +370,24 @@ this enables it to be an I6 routine returning the other side of the door from
 the one which the player is on.
 
 =
-[ GProperty K V pr obj;
-	if (K == OBJECT_TY) obj = V; else obj = value_property_holders-->K;
-	if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }
-	if (obj provides pr) {
-		if (K == OBJECT_TY) {
-			if (pr == door_to) return obj.pr();
-			if (WhetherProvides(V, false, pr, true)) return obj.pr;
-			rfalse;
+[ GProperty K V pr holder;
+	if (K == OBJECT_TY) {
+		if (WhetherProvides(V, false, pr, true)) {
+			if (pr == door_to) return V.pr();
+			return V.pr;
 		}
-		if (obj ofclass K0_kind)
-			WhetherProvides(V, false, pr, true); ! to force a run-time problem
-		if ((V < 1) || (V > value_ranges-->K)) {
-			RunTimeProblem(RTP_BADVALUEPROPERTY); return 0; }
-		return (obj.pr)-->(V+COL_HSIZE);
+		return 0;
 	} else {
-		if (obj ofclass K0_kind)
-			WhetherProvides(V, false, pr, true); ! to force a run-time problem
+		if ((V < 1) || (V > value_ranges-->K)) {
+			RunTimeProblem(RTP_BADVALUEPROPERTY);
+			return 0;
+		}
+		holder = value_property_holders-->K;
+		if ((holder) && (holder provides pr)) {
+			return (holder.pr)-->(V+COL_HSIZE);
+		}
+		return 0;
 	}
-    rfalse;
 ];
 
 @h Write Value Property.
@@ -393,15 +396,22 @@ with the prefix |Write|, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 
 =
-[ WriteGProperty K V pr val obj;
-	if (K == OBJECT_TY) obj = V; else obj = value_property_holders-->K;
-	if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }
+[ WriteGProperty K V pr val holder;
 	if (K == OBJECT_TY) {
-		if (WhetherProvides(V, false, pr, true)) obj.pr = val;
+		if (WhetherProvides(V, false, pr, true)) {
+			V.pr = val;
+		}
 	} else {
-		if ((V < 1) || (V > value_ranges-->K))
-			return RunTimeProblem(RTP_BADVALUEPROPERTY);
-		if (obj provides pr) { (obj.pr)-->(V+COL_HSIZE) = val; }
+		if ((V < 1) || (V > value_ranges-->K)) {
+			RunTimeProblem(RTP_BADVALUEPROPERTY);
+			return;
+		}
+		holder = value_property_holders-->K;
+		if (holder == 0) {
+			RunTimeProblem(RTP_PROPOFNOTHING, holder, pr);
+			return;
+		}
+		if (holder provides pr) { (holder.pr)-->(V+COL_HSIZE) = val; }
 	}
 ];
 
