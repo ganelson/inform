@@ -8,7 +8,6 @@ called exactly once.
 
 =
 void VanillaObjects::optimise_properties(code_generation *gen) {
-	inter_tree *I = gen->from;
 	gen->kinds_in_source_order = NULL;
 	gen->kinds_in_declaration_order = NULL;
 	@<Make a list of kinds in source order@>;
@@ -77,15 +76,8 @@ void VanillaObjects::generate(code_generation *gen) {
 	}
 
 @<Declare and allocate properties@> =
-	int attribute_slots_used = 0;
-
 	inter_symbol *prop_name;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
-		@<Consider this property for attribute allocation@>;
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-		@<Consider this property for attribute allocation@>;
-
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
 		VanillaObjects::predeclare_property(gen, prop_name);
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 		VanillaObjects::predeclare_property(gen, prop_name);
@@ -93,80 +85,6 @@ void VanillaObjects::generate(code_generation *gen) {
 		VanillaObjects::declare_property(gen, prop_name);
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 		VanillaObjects::declare_property(gen, prop_name);
-
-@<Consider this property for attribute allocation@> =
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
-		int translated = FALSE;
-		if (Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) >= 0) translated = TRUE;
-		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) translated = TRUE;
-
-		int make_attribute = NOT_APPLICABLE;
-		@<Any either/or property which can belong to a value instance is ineligible@>;
-		@<An either/or property translated to an attribute declared in the I6 template must be chosen@>;
-		@<Otherwise give away attribute slots on a first-come-first-served basis@>;
-
-		if (make_attribute) {
-			Inter::Symbols::set_flag(prop_name, ATTRIBUTE_MARK_BIT);
-		} else {
-			Inter::Symbols::clear_flag(prop_name, ATTRIBUTE_MARK_BIT);
-		}
-	}
-
-@ The dodge of using an attribute to store an either-or property won't work
-for properties of value instances, because then the value-property-holder
-object couldn't store the necessary table address (see next section). So we
-must rule out any property which might belong to any value.
-
-@<Any either/or property which can belong to a value instance is ineligible@> =
-	inter_node_list *PL =
-		Inter::Warehouse::get_frame_list(
-			InterTree::warehouse(I),
-			Inter::Property::permissions_list(prop_name));
-	if (PL == NULL) internal_error("no permissions list");
-	inter_tree_node *X;
-	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
-		inter_symbol *owner_name =
-			InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
-		if (owner_name == NULL) internal_error("bad owner");
-		inter_symbol *owner_kind = NULL;
-		inter_tree_node *D = Inter::Symbols::definition(owner_name);
-		if ((D) && (D->W.data[ID_IFLD] == INSTANCE_IST)) {
-			owner_kind = Inter::Instance::kind_of(owner_name);
-		} else {
-			owner_kind = owner_name;
-		}
-		if (VanillaObjects::is_kind_of_object(owner_kind) == FALSE) make_attribute = FALSE;
-	}
-
-@ An either/or property which has been deliberately equated to an I6
-template attribute with a sentence like...
-
->> The fixed in place property translates into I6 as "static".
-
-...is (we must assume) already declared as an |Attribute|, so we need to
-remember that it's implemented as an attribute when compiling references
-to it.
-
-@<An either/or property translated to an attribute declared in the I6 template must be chosen@> =
-	if (translated) make_attribute = TRUE;
-
-@ We have in theory 48 Attribute slots to use up, that being the number
-available in versions 5 and higher of the Z-machine, but the I6 template
-layer consumes so many that only a few slots remain for the user's own
-creations. Giving these away to the first-created properties is the
-simplest way to allocate them, and in fact it works pretty well, because
-the first such either/or properties tend to be created in extensions and
-to be frequently used.
-
-@d ATTRIBUTE_SLOTS_TO_GIVE_AWAY 11
-
-@<Otherwise give away attribute slots on a first-come-first-served basis@> =
-	if (make_attribute == NOT_APPLICABLE) {
-		if (attribute_slots_used++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
-			make_attribute = TRUE;
-		else
-			make_attribute = FALSE;
-	}
 
 @<Annotate kinds of object with a sequence counter@> =
 	inter_ti c = 1;
@@ -238,7 +156,6 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Write Value Property Holder objects for each kind of value instance@> =
 	linked_list *stick_list = NEW_LINKED_LIST(kov_value_stick);
-	@<Define the I6 VPH class@>;
 	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(I, NULL, 
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
@@ -254,7 +171,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
 							segmentation_pos saved;
-							Generators::declare_instance(gen, I"VPH_Class", instance_name, NULL, -1, FALSE, &saved);
+							Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &saved);
 							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
 							Generators::assign_property(gen, NULL, N); /* I"value_range" */
@@ -273,7 +190,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 									@<Work through this frame list of permissions@>;
 								}
 							}
-							Generators::end_instance(gen, I"VPH_Class", instance_name, saved);
+							Generators::end_instance(gen, I"Object", instance_name, saved);
 							DISCARD_TEXT(instance_name)
 						}
 					}
@@ -284,17 +201,11 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 	@<Compile the property stick arrays@>;
 
 @ It's convenient to be able to distinguish, at run-time, which objects are
-the VPH objects used only for kind-property indexing; we can test if |O| is
-such an object with the I6 condition |(O ofclass VPH_Class)|.
+the VPH objects used only for kind-property indexing.
 
 The property |value_range| for a VPH object is the number |N| such that the
 legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
 words, the number of instances of this kind.
-
-@<Define the I6 VPH class@> =
-	segmentation_pos saved;
-	Generators::declare_class(gen, I"VPH_Class", NULL, I"Class", &saved);
-	Generators::end_class(gen, I"VPH_Class", saved);
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
@@ -342,16 +253,6 @@ doesn't have a VPH, or the object number of its VPH if it has.
 		if (written) vph++; else Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
 	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
-	@<Stub a faux VPH if none have otherwise been created@>;
-
-@ In the event that no value instances have properties, there'll be no
-instances of the |VPH_Class|, and no I6 object will be compiled with a
-|value_range| property; that means I6 code referring to this will fail with an
-I6 error. We don't want that, so if necessary we compile a useless VPH object
-just to force the property into being.
-
-@<Stub a faux VPH if none have otherwise been created@> =
-	/* if (vph == 0) WRITE("VPH_Class UnusedVPH with value_range 0;\n"); */
 
 @<Work through this frame list of permissions@> =
 	inter_tree_node *X;
@@ -552,20 +453,18 @@ linearly with the size of the source text, even though $N$ does.
 	}
 
 @<List all top-level kinds if "object" itself has an explicit permission@> =
-	if (Inter::Symbols::read_annotation(eprop_name, RTO_IANN) < 0) {
-		inter_tree_node *X;
-		LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-			inter_symbol *owner_name =
-				InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-			if (owner_name == object_kind_symbol) {
-				Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-				pos++;
-				for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-					inter_symbol *kind_name = gen->kinds_in_source_order[k];
-					if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-						Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-						pos++;
-					}
+	inter_tree_node *X;
+	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
+		inter_symbol *owner_name =
+			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+		if (owner_name == object_kind_symbol) {
+			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+			pos++;
+			for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
+				inter_symbol *kind_name = gen->kinds_in_source_order[k];
+				if (Inter::Kind::super(kind_name) == object_kind_symbol) {
+					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
+					pos++;
 				}
 			}
 		}
@@ -804,17 +703,26 @@ limited number can be stored this way. Here we choose which.
 =
 dictionary *i6dps_dict = NULL;
 dictionary *pre_i6dps_dict = NULL;
+dictionary *af_i6dps_dict = NULL;
 
 void VanillaObjects::predeclare_property(code_generation *gen, inter_symbol *prop_name) {
 	if (pre_i6dps_dict == NULL) pre_i6dps_dict = Dictionaries::new(1024, FALSE);
+	if (af_i6dps_dict == NULL) af_i6dps_dict = Dictionaries::new(1024, FALSE);
 	dictionary *D = pre_i6dps_dict;
+	dictionary *D2 = af_i6dps_dict;
 	text_stream *name = Inter::Symbols::name(prop_name);
 	if (Dictionaries::find(D, name) == NULL) {
 		text_stream *inner_name = Str::duplicate(name);
 		Dictionaries::create(D, inner_name);
 		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+		linked_list *L = NEW_LINKED_LIST(inter_symbol);
+		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
+		Dictionaries::create(D2, inner_name);
+		Dictionaries::write_value(D2, inner_name, (void *) L);
 	} else {
 		Dictionaries::write_value(D, name, (void *) prop_name);
+		linked_list *L = Dictionaries::read_value(D2, name);
+		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
 	}
 }
 
@@ -823,12 +731,10 @@ void VanillaObjects::declare_property(code_generation *gen, inter_symbol *prop_n
 	dictionary *D = i6dps_dict;
 	text_stream *name = Inter::Symbols::name(prop_name);
 	if (Dictionaries::find(D, name) == NULL) {
-		if (TRUE) {
-			LOG("! NEW name=%S   sname=%S   assim=%d   expl=%d\n",
-				name, prop_name->symbol_name,
-				Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN),
-				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN)));
-		}
+		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
+			name, prop_name->symbol_name,
+			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
+			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
 		text_stream *inner_name = Str::duplicate(name);
 		Dictionaries::create(D, inner_name);
 		Dictionaries::write_value(D, inner_name, (void *) prop_name);
@@ -840,21 +746,19 @@ void VanillaObjects::declare_property(code_generation *gen, inter_symbol *prop_n
 		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 
+		linked_list *all_forms = 
+			(linked_list *) Dictionaries::read_value(af_i6dps_dict, name);
+
 		segmentation_pos saved;
 		Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
-		Generators::declare_property(gen, prop_name);
+		Generators::declare_property(gen, prop_name, all_forms);
 		@<Do permissions@>;
 		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
-		if (TRUE) {
-			LOG("! SO  %S --> %S\n", Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
-		}
 	} else {
-		if (TRUE) {
-			LOG("! OLD name=%S   sname=%S   assim=%d   expl=%d\n",
-				name, prop_name->symbol_name,
-				Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN),
-				(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN)));
-		}
+		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
+			name, prop_name->symbol_name,
+			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
+			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
 			(inter_symbol *) Dictionaries::read_value(D, name);
 		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
@@ -863,10 +767,9 @@ void VanillaObjects::declare_property(code_generation *gen, inter_symbol *prop_n
 		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
 		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
-		if (TRUE) {
-			LOG("! SO  %S --> %S\n", Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
-		}
 	}
+	LOGIF(PROPERTY_ALLOCATION, "! SO  %S --> %S\n",
+		Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
 }
 
 @<Do permissions@> =

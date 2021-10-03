@@ -209,14 +209,10 @@ package metadata instead?
 
 @<Annotate the property iname@> =
 	Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
-	if (prn->compilation_data.translated)
-		Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
 	if (Properties::is_either_or(prn))
 		Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
 	if (Wordings::nonempty(prn->name))
 		Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
-	if (prn->Inter_level_only)
-		Produce::annotate_i(RTProperties::iname(prn), RTO_IANN, 0);
 
 @h Non-typesafe 0.
 When a property is used to store certain forms of relation, it then needs

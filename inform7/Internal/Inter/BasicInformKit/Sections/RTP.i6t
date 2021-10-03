@@ -353,9 +353,9 @@ however, always produce a run-time problem.
 
 @h Value Property.
 Some value properties belong to other values (those created in tables), and
-these are detected by being properties of a special |VPH_Class| pseudo-object
-|V| -- an I6 object which is not part of the world model, and not a valid I7
-"object" value, but which is used in order that properties belonging to values
+these are stored indirectly through a pseudo-object |V| -- an I6 object which
+is not part of the world model, and not a valid I7 "object" value, but which is
+used in order that properties belonging to values
 are still I6 property numbers. |V.P| is the table column address for this
 property; |obj| is then a value for the kind of value created by the table, so
 it is used as an index into the table column to get the address of the memory

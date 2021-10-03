@@ -57,8 +57,10 @@ void FinalModule::end(void) {
 @<Register this module's stream writers@> =
 	;
 
+@e PROPERTY_ALLOCATION_DA
+
 @<Register this module's debugging log aspects@> =
-	;
+	Log::declare_aspect(PROPERTY_ALLOCATION_DA, L"property allocation", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	;

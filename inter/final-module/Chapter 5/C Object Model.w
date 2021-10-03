@@ -412,10 +412,12 @@ that references to it will not fail to compile.
 
 =
 void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
-	inter_symbol *prop_name) {
+	inter_symbol *prop_name, linked_list *all_forms) {
 	text_stream *name = Inter::Symbols::name(prop_name);
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
-	CObjectModel::property_by_name(gen, name, inner_name, FALSE);
+	int attr = FALSE;
+	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) attr = TRUE;
+	CObjectModel::property_by_name(gen, name, inner_name, attr);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname) {
 		int A = Inter::Symbols::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
@@ -445,7 +447,7 @@ C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *na
 	if (Dictionaries::find(D, name) == NULL) {
 		cp = CREATE(C_property);
 		cp->name = Str::duplicate(name);
-		cp->attr = FALSE;
+		cp->attr = attr;
 		cp->id = C_GEN_DATA(objdata.property_id_counter)++;
 		Dictionaries::create(D, name);
 		Dictionaries::write_value(D, name, (void *) cp);
@@ -676,8 +678,8 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
 		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", "); VNODE_5C; WRITE(")"); break;
-		case GIVE_BIP: 			WRITE("i7_give(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 1)"); break;
-		case TAKE_BIP: 			WRITE("i7_give(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 0)"); break;
+		case GIVE_BIP: 			WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 1, i7_lvalue_SET)"); break;
+		case TAKE_BIP: 			WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 0, i7_lvalue_SET)"); break;
 		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
 

@@ -295,10 +295,8 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case LT_BIP: 			WRITE("("); VNODE_1C; WRITE(" < "); VNODE_2C; WRITE(")"); break;
 		case LE_BIP: 			WRITE("("); VNODE_1C; WRITE(" <= "); VNODE_2C; WRITE(")"); break;
 		case OFCLASS_BIP:		WRITE("("); VNODE_1C; WRITE(" ofclass "); VNODE_2C; WRITE(")"); break;
-		case HAS_BIP:			@<Evaluate either-or property value@>;
-								/* WRITE("("); VNODE_1C; WRITE(" has "); VNODE_2C; WRITE(")"); */ break;
+		case HAS_BIP:			@<Evaluate either-or property value@>; break;
 		case HASNT_BIP:			WRITE("("); @<Evaluate either-or property value@>; WRITE(" == 0)"); break;
-								/* WRITE("("); VNODE_1C; WRITE(" hasnt "); VNODE_2C; WRITE(")"); */
 		case IN_BIP:			WRITE("("); VNODE_1C; WRITE(" in "); VNODE_2C; WRITE(")"); break;
 		case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
 		case PROVIDES_BIP:		WRITE("("); VNODE_1C; WRITE(" provides ("); VNODE_2C; WRITE("-->1))"); break;
@@ -381,9 +379,7 @@ void I6Target::invoke_primitive(code_generator *cgt, code_generation *gen,
 		case MOVE_BIP: WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
 		case REMOVE_BIP: WRITE("remove "); VNODE_1C; break;
 		case GIVE_BIP: @<Set either-or property value@>; break;
-//			WRITE("give "); VNODE_1C; WRITE(" "); VNODE_2C; break;
 		case TAKE_BIP: @<Set either-or property value@>; break;
-//			WRITE("give "); VNODE_1C; WRITE(" ~"); VNODE_2C; break;
 
 		case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
 		case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
@@ -525,7 +521,6 @@ int I6Target::pval_case(inter_tree_node *P) {
 	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
 		return 2;
 	} else {
-//		return 1;
 		return 3;
 	}
 }
@@ -545,7 +540,6 @@ int I6Target::pval_case_inner(inter_tree_node *prop_node) {
 	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
 		return 2;
 	} else {
-//		return 1;
 		return 3;
 	}
 }
@@ -800,28 +794,45 @@ trick called "stubbing", these being "stub definitions".)
 
 =
 int i6dpcount = 0;
+int attribute_slots_used = 0;
 
-void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name) {
+void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, linked_list *all_forms) {
+	inter_tree *I = gen->from;
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+
+	int explicitly_defined_in_kit = FALSE;
+	inter_symbol *p;
+	LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
+		if (Inter::Symbols::read_annotation(p, ASSIMILATED_IANN) >= 0)
+			explicitly_defined_in_kit = TRUE;
+
+	int make_attribute = NOT_APPLICABLE;
+	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0)
+		@<Consider this property for attribute allocation@>;
+
 	int t = 1, def = FALSE;
-	if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) {
-		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT) == 0) {
+
+	if (make_attribute == TRUE) {
+		inter_symbol *p;
+		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
+			Inter::Symbols::set_flag(p, ATTRIBUTE_MARK_BIT);
+
+		segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
+		WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", inner_name);
+		CodeGen::deselect(gen, saved);
+		t = 2;
+		def = TRUE;
+	} else {
+		inter_symbol *p;
+		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
+			Inter::Symbols::clear_flag(p, ATTRIBUTE_MARK_BIT);
+
+		if (explicitly_defined_in_kit) {
 			segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
 			WRITE_TO(CodeGen::current(gen), "Property %S;\n", inner_name);
 			CodeGen::deselect(gen, saved);
 			def = TRUE;
-		}
-	} 
-
-	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-		if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) >= 0) ||
-			(Inter::Symbols::read_annotation(prop_name, EXPLICIT_ATTRIBUTE_IANN) < 0)) {
-			segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-			WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", inner_name);
-			CodeGen::deselect(gen, saved);
-			t = 2;
-			def = TRUE;
-		}
+		} 
 	}
 	
 	segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
@@ -846,6 +857,71 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 		CodeGen::deselect(gen, saved);
 	}
 }
+
+@<Consider this property for attribute allocation@> =
+	@<Any either/or property which can belong to a value instance is ineligible@>;
+	@<An either/or property translated to an attribute declared in the I6 template must be chosen@>;
+	@<Otherwise give away attribute slots on a first-come-first-served basis@>;
+
+@ The dodge of using an attribute to store an either-or property won't work
+for properties of value instances, because then the value-property-holder
+object couldn't store the necessary table address (see next section). So we
+must rule out any property which might belong to any value.
+
+@<Any either/or property which can belong to a value instance is ineligible@> =
+	inter_symbol *p;
+	LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms) {
+		inter_node_list *PL =
+			Inter::Warehouse::get_frame_list(
+				InterTree::warehouse(I),
+				Inter::Property::permissions_list(p));
+		if (PL == NULL) internal_error("no permissions list");
+		inter_tree_node *X;
+		LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
+			inter_symbol *owner_name =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
+			if (owner_name == NULL) internal_error("bad owner");
+			inter_symbol *owner_kind = NULL;
+			inter_tree_node *D = Inter::Symbols::definition(owner_name);
+			if ((D) && (D->W.data[ID_IFLD] == INSTANCE_IST)) {
+				owner_kind = Inter::Instance::kind_of(owner_name);
+			} else {
+				owner_kind = owner_name;
+			}
+			if (VanillaObjects::is_kind_of_object(owner_kind) == FALSE) make_attribute = FALSE;
+		}
+	}
+
+@ An either/or property which has been deliberately equated to an I6
+template attribute with a sentence like...
+
+>> The fixed in place property translates into I6 as "static".
+
+...is (we must assume) already declared as an |Attribute|, so we need to
+remember that it's implemented as an attribute when compiling references
+to it.
+
+@<An either/or property translated to an attribute declared in the I6 template must be chosen@> =
+	if (explicitly_defined_in_kit)
+		make_attribute = TRUE;
+
+@ We have in theory 48 Attribute slots to use up, that being the number
+available in versions 5 and higher of the Z-machine, but the I6 template
+layer consumes so many that only a few slots remain for the user's own
+creations. Giving these away to the first-created properties is the
+simplest way to allocate them, and in fact it works pretty well, because
+the first such either/or properties tend to be created in extensions and
+to be frequently used.
+
+@d ATTRIBUTE_SLOTS_TO_GIVE_AWAY 11
+
+@<Otherwise give away attribute slots on a first-come-first-served basis@> =
+	if (make_attribute == NOT_APPLICABLE) {
+		if (attribute_slots_used++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
+			make_attribute = TRUE;
+		else
+			make_attribute = FALSE;
+	}
 
 @
 

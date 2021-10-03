@@ -30,12 +30,10 @@ Defining the one true set of Inter annotation codes.
 @e METAVERB_IANN
 @e NOUN_FILTER_IANN
 @e OBJECT_KIND_COUNTER_IANN
-@e RTO_IANN
 @e SCOPE_FILTER_IANN
 @e SOURCE_ORDER_IANN
 @e TABLEARRAY_IANN
 @e VERBARRAY_IANN
-@e EXPLICIT_ATTRIBUTE_IANN
 @e EXPLICIT_VARIABLE_IANN
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
@@ -95,12 +93,10 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(METAVERB_IANN, I"__meta_verb", FALSE);
 	Inter::Annotations::form(NOUN_FILTER_IANN, I"__noun_filter", FALSE);
 	Inter::Annotations::form(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", FALSE);
-	Inter::Annotations::form(RTO_IANN, I"__rto", FALSE);
 	Inter::Annotations::form(SCOPE_FILTER_IANN, I"__scope_filter", FALSE);
 	Inter::Annotations::form(SOURCE_ORDER_IANN, I"__source_order", FALSE);
 	Inter::Annotations::form(TABLEARRAY_IANN, I"__table_array", FALSE);
 	Inter::Annotations::form(VERBARRAY_IANN, I"__verb", FALSE);
-	Inter::Annotations::form(EXPLICIT_ATTRIBUTE_IANN, I"__explicit_attribute", FALSE);
 	Inter::Annotations::form(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", FALSE);
 	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
 	Inter::Annotations::form(VENEER_IANN, I"__veneer", FALSE);
