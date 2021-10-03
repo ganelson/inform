@@ -172,10 +172,6 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							WRITE_TO(instance_name, "VPH_%d", w);
 							segmentation_pos saved;
 							Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &saved);
-							TEMPORARY_TEXT(N)
-							WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
-							Generators::assign_property(gen, NULL, N); /* I"value_range" */
-							DISCARD_TEXT(N)
 							inter_symbol *prop_name;
 							LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 								CodeGen::unmark(prop_name);
@@ -202,10 +198,6 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @ It's convenient to be able to distinguish, at run-time, which objects are
 the VPH objects used only for kind-property indexing.
-
-The property |value_range| for a VPH object is the number |N| such that the
-legal values at run-time for this kind are |1, 2, 3, ..., N|: or in other
-words, the number of instances of this kind.
 
 @<Decide who gets a VPH@> =
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
@@ -243,14 +235,33 @@ doesn't have a VPH, or the object number of its VPH if it has.
 			if (VanillaObjects::weak_id(kind_name) == w) {
 				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
 					written = TRUE;
-					TEMPORARY_TEXT(vph)
-					WRITE_TO(vph, "VPH_%d", w);
-					Generators::mangled_array_entry(gen, vph, WORD_ARRAY_FORMAT);
-					DISCARD_TEXT(vph)
+					TEMPORARY_TEXT(E)
+					WRITE_TO(E, "VPH_%d", w);
+					Generators::mangled_array_entry(gen, E, WORD_ARRAY_FORMAT);
+					DISCARD_TEXT(E)
 				}
 			}
 		}
 		if (written) vph++; else Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	}
+	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+	Generators::begin_array(gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
+	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+	for (int w=1; w<M; w++) {
+		int written = FALSE;
+		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+			inter_symbol *kind_name = gen->kinds_in_source_order[i];
+			if (VanillaObjects::weak_id(kind_name) == w) {
+				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
+					written = TRUE;
+					TEMPORARY_TEXT(E)
+					WRITE_TO(E, "%d", Inter::Kind::instance_count(kind_name));
+					Generators::array_entry(gen, E, WORD_ARRAY_FORMAT);
+					DISCARD_TEXT(E)
+				}
+			}
+		}
+		if (written == FALSE) Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	}
 	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
 
@@ -605,15 +616,15 @@ void VanillaObjects::plist(code_generation *gen, inter_node_list *FL) {
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
-		TEMPORARY_TEXT(OUT)
-		CodeGen::select_temporary(gen, OUT);
+		TEMPORARY_TEXT(val)
+		CodeGen::select_temporary(gen, val);
 		if (Generators::optimise_property_value(gen, prop_name, X) == FALSE) {
 			CodeGen::pair(gen, X,
 				X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
 		}
 		CodeGen::deselect_temporary(gen);
-		Generators::assign_property(gen, prop_name, OUT);
-		DISCARD_TEXT(OUT)
+		Generators::assign_property(gen, prop_name, val);
+		DISCARD_TEXT(val)
 	}
 }
 

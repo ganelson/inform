@@ -377,7 +377,7 @@ the one which the player is on.
 		}
 		if (obj ofclass K0_kind)
 			WhetherProvides(V, false, pr, true); ! to force a run-time problem
-		if ((V < 1) || (V > obj.value_range)) {
+		if ((V < 1) || (V > value_ranges-->K)) {
 			RunTimeProblem(RTP_BADVALUEPROPERTY); return 0; }
 		return (obj.pr)-->(V+COL_HSIZE);
 	} else {
@@ -399,7 +399,7 @@ converted from an rvalue to an lvalue.
 	if (K == OBJECT_TY) {
 		if (WhetherProvides(V, false, pr, true)) obj.pr = val;
 	} else {
-		if ((V < 1) || (V > obj.value_range))
+		if ((V < 1) || (V > value_ranges-->K))
 			return RunTimeProblem(RTP_BADVALUEPROPERTY);
 		if (obj provides pr) { (obj.pr)-->(V+COL_HSIZE) = val; }
 	}

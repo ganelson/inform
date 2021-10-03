@@ -60,20 +60,6 @@ void CObjectModel::initialise_data(code_generation *gen) {
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
-	CObjectModel::property_by_name(gen, I"Xvalue_range", I"value_range", FALSE);
-	segmentation_pos saved;
-	CMemoryModel::begin_array(gen->generator, gen,
-		I"Xvalue_range", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
-	TEMPORARY_TEXT(val)
-	WRITE_TO(val, "%d", 1);
-	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
-	Str::clear(val);
-	CNamespace::mangle(NULL, val, I"value_range");
-	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
-	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	Generators::array_entry(gen, I"i7_mgl_NULL", WORD_ARRAY_FORMAT);
-	CMemoryModel::end_array(gen->generator, gen, WORD_ARRAY_FORMAT, &saved);
 }
 
 void CObjectModel::end(code_generation *gen) {
@@ -563,13 +549,8 @@ void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 	inter_symbol *prop_name, text_stream *val) {
 	text_stream *property_name;
 	text_stream *inner_name;
-	if (prop_name) {
-		property_name = Inter::Symbols::name(prop_name);
-		inner_name = VanillaObjects::inner_property_name(gen, prop_name);
-	} else {
-		property_name = I"Xvalue_range";
-		inner_name = I"value_range";
-	}
+	property_name = Inter::Symbols::name(prop_name);
+	inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::property_by_name(gen, property_name, inner_name, FALSE);
 	C_pv_pair *pair = CREATE(C_pv_pair);

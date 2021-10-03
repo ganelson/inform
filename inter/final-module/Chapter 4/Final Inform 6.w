@@ -793,8 +793,8 @@ property names which don't exist as constant symbols with the harmless value
 trick called "stubbing", these being "stub definitions".)
 
 =
-int i6dpcount = 0;
 int attribute_slots_used = 0;
+int i6dpcount = 0;
 
 void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, linked_list *all_forms) {
 	inter_tree *I = gen->from;
@@ -836,9 +836,7 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 	}
 	
 	segmentation_pos saved = CodeGen::select(gen, constants_1_I7CGS);
-	if (i6dpcount++ == 0) {
-		WRITE_TO(CodeGen::current(gen), "Array value_range --> 1 Xvalue_range 0;\n");
-	}
+	i6dpcount++;
 	WRITE_TO(CodeGen::current(gen), "Constant subterfuge_%d = %S;\n", i6dpcount, inner_name);
 	CodeGen::deselect(gen, saved);
 
@@ -1021,12 +1019,6 @@ int I6Target::optimise_property_value(code_generator *cgt, code_generation *gen,
 
 void I6Target::assign_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	text_stream *OUT = CodeGen::current(gen);
-
-	if (prop_name == NULL) {
-		WRITE("    with Xvalue_range %S\n", val);
-		return;
-	}
-
 	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
 	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
