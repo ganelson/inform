@@ -36,30 +36,10 @@ inter_symbol **VanillaObjects::sorted_array(linked_list *L,
 
 int VanillaObjects::in_source_order(const void *elem1, const void *elem2) {
 	return VanillaObjects::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
-/*	const inter_symbol **e1 = (const inter_symbol **) elem1;
-	const inter_symbol **e2 = (const inter_symbol **) elem2;
-	if ((*e1 == NULL) || (*e2 == NULL))
-		internal_error("Disaster while sorting kinds");
-	int s1 = VanillaObjects::kind_sequence_number(*e1);
-	int s2 = VanillaObjects::kind_sequence_number(*e2);
-	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
-*/
 }
-
 int VanillaObjects::in_declaration_order(const void *elem1, const void *elem2) {
 	return VanillaObjects::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
-/*	const inter_symbol **e1 = (const inter_symbol **) elem1;
-	const inter_symbol **e2 = (const inter_symbol **) elem2;
-	if ((*e1 == NULL) || (*e2 == NULL))
-		internal_error("Disaster while sorting kinds");
-	int s1 = VanillaObjects::kind_sequence_number_decl(*e1);
-	int s2 = VanillaObjects::kind_sequence_number_decl(*e2);
-	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
-*/
 }
-
 int VanillaObjects::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
 	const inter_symbol **e1 = (const inter_symbol **) elem1;
 	const inter_symbol **e2 = (const inter_symbol **) elem2;
@@ -70,21 +50,6 @@ int VanillaObjects::in_annotation_order(const void *elem1, const void *elem2, in
 	if (s1 != s2) return s1-s2;
 	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
 }
-
-/*
-int VanillaObjects::kind_sequence_number(const inter_symbol *kind_name) {
-	int N = Inter::Symbols::read_annotation(kind_name, SOURCE_ORDER_IANN);
-	if (N >= 0) return N;
-	return 100000000;
-}
-
-int VanillaObjects::kind_sequence_number_decl(const inter_symbol *kind_name) {
-	int N = Inter::Symbols::read_annotation(kind_name, DECLARATION_ORDER_IANN);
-	if (N >= 0) return N;
-	return 100000000;
-}
-*/
-
 int VanillaObjects::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
 	int N = Inter::Symbols::read_annotation(kind_name, annot);
 	if (N >= 0) return N;
