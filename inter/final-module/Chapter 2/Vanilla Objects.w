@@ -2,24 +2,289 @@
 
 How the vanilla code generation strategy handles instances, kinds, and properties.
 
-@ The object model of objects, kinds, properties and their values is made all
-at once, towards the end of code generation, when the following function is
-called exactly once.
+@h Properties.
+Early in code-generation, we declare the properties. This entails some housekeeping,
+putting together lists of kinds and instances as well.
 
 =
-void VanillaObjects::optimise_properties(code_generation *gen) {
-	gen->kinds_in_source_order = NULL;
-	gen->kinds_in_declaration_order = NULL;
-	@<Make a list of kinds in source order@>;
-	@<Make a list of kinds in declaration order@>;
-
-	gen->instances_in_declaration_order = NULL;
-	@<Make a list of instances in declaration order@>;
-
+void VanillaObjects::declare_properties(code_generation *gen) {
+	gen->kinds_in_source_order =
+		VanillaObjects::sorted_array(gen->kinds, VanillaObjects::in_source_order);
+	gen->kinds_in_declaration_order =
+		VanillaObjects::sorted_array(gen->kinds, VanillaObjects::in_declaration_order);
+	gen->instances_in_declaration_order =
+		VanillaObjects::sorted_array(gen->instances, VanillaObjects::in_declaration_order);
 	if (LinkedLists::len(gen->unassimilated_properties) > 0)
 		@<Declare and allocate properties@>;
 }
 
+@ =
+inter_symbol **VanillaObjects::sorted_array(linked_list *L,
+	int (*sorter)(const void *elem1, const void *elem2)) {
+	int N = LinkedLists::len(L);
+	inter_symbol **array = NULL;
+	if (N > 0) {
+		array = (inter_symbol **)
+			(Memory::calloc(N, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i=0;
+		inter_symbol *sym;
+		LOOP_OVER_LINKED_LIST(sym, inter_symbol, L) array[i++] = sym;
+		qsort(array, (size_t) N, sizeof(inter_symbol *), sorter);
+	}
+	return array;
+}
+
+int VanillaObjects::in_source_order(const void *elem1, const void *elem2) {
+	return VanillaObjects::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
+/*	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = VanillaObjects::kind_sequence_number(*e1);
+	int s2 = VanillaObjects::kind_sequence_number(*e2);
+	if (s1 != s2) return s1-s2;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+*/
+}
+
+int VanillaObjects::in_declaration_order(const void *elem1, const void *elem2) {
+	return VanillaObjects::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
+/*	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = VanillaObjects::kind_sequence_number_decl(*e1);
+	int s2 = VanillaObjects::kind_sequence_number_decl(*e2);
+	if (s1 != s2) return s1-s2;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+*/
+}
+
+int VanillaObjects::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = VanillaObjects::sequence_number(*e1, annot);
+	int s2 = VanillaObjects::sequence_number(*e2, annot);
+	if (s1 != s2) return s1-s2;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+}
+
+/*
+int VanillaObjects::kind_sequence_number(const inter_symbol *kind_name) {
+	int N = Inter::Symbols::read_annotation(kind_name, SOURCE_ORDER_IANN);
+	if (N >= 0) return N;
+	return 100000000;
+}
+
+int VanillaObjects::kind_sequence_number_decl(const inter_symbol *kind_name) {
+	int N = Inter::Symbols::read_annotation(kind_name, DECLARATION_ORDER_IANN);
+	if (N >= 0) return N;
+	return 100000000;
+}
+*/
+
+int VanillaObjects::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
+	int N = Inter::Symbols::read_annotation(kind_name, annot);
+	if (N >= 0) return N;
+	return 100000000;
+}
+
+@<Declare and allocate properties@> =
+	dictionary *i6dps_dict = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
+	dictionary *pre_i6dps_dict = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
+	dictionary *lists = Dictionaries::new(1024, FALSE); /* of |linked_list| of |inter_symbol| */
+
+	inter_symbol *prop_name;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
+		@<Group the properties by their unmangled identifier names@>;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+		@<Group the properties by their unmangled identifier names@>;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
+		@<Declare one property for each name group@>;
+	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+		@<Declare one property for each name group@>;
+
+@<Group the properties by their unmangled identifier names@> =
+	dictionary *D = pre_i6dps_dict;
+	dictionary *D2 = lists;
+	text_stream *name = Inter::Symbols::name(prop_name);
+	if (Dictionaries::find(D, name) == NULL) {
+		text_stream *inner_name = Str::duplicate(name);
+		Dictionaries::create(D, inner_name);
+		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+		linked_list *L = NEW_LINKED_LIST(inter_symbol);
+		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
+		Dictionaries::create(D2, inner_name);
+		Dictionaries::write_value(D2, inner_name, (void *) L);
+	} else {
+		Dictionaries::write_value(D, name, (void *) prop_name);
+		linked_list *L = Dictionaries::read_value(D2, name);
+		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
+	}
+
+@<Declare one property for each name group@> =
+	dictionary *D = i6dps_dict;
+	text_stream *name = Inter::Symbols::name(prop_name);
+	if (Dictionaries::find(D, name) == NULL) {
+		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
+			name, prop_name->symbol_name,
+			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
+			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
+		text_stream *inner_name = Str::duplicate(name);
+		Dictionaries::create(D, inner_name);
+		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+		
+		text_stream *array_name = Str::new();
+		WRITE_TO(array_name, "A_%S", inner_name);
+
+		Inter::Symbols::set_translate(prop_name, array_name);
+		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+
+		linked_list *all_forms = (linked_list *) Dictionaries::read_value(lists, name);
+
+		segmentation_pos saved;
+		Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
+		Generators::declare_property(gen, prop_name, all_forms);
+		if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN))
+			Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
+		else
+			Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+		@<Do permissions@>;
+		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+	} else {
+		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
+			name, prop_name->symbol_name,
+			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
+			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
+		inter_symbol *existing_prop_name = 
+			(inter_symbol *) Dictionaries::read_value(D, name);
+		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
+		text_stream *inner_name = I"<nameless>";
+		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
+		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+	}
+	LOGIF(PROPERTY_ALLOCATION, "! SO  %S --> %S\n",
+		Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
+
+@<Do permissions@> =
+	inter_symbol *prop_name = 
+		(inter_symbol *) Dictionaries::read_value(pre_i6dps_dict, name);
+	int pos = 0; inter_tree *I = gen->from;
+	@<Write the property name in double quotes@>;
+	@<Write a list of kinds or objects which are permitted to have this property@>;
+	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+
+@ The following lets the run-time environment know what properties are
+called, and which kinds of object are allowed to have them. This might look
+a little odd: why does the run-time code need to know any of that?
+
+The answer is that the Inform compiler will prevent grossly type-unsafe
+property accesses at compile time -- for example, asking if a number is
+"recurring" (an either/or property of scenes), which can be ruled out
+because numbers and scenes are wholly disjoint as values. But it will allow
+any object property of any object to be accessed, because it's not usually
+possible for the typechecker to know if an object value |O| is a vehicle, a
+direction, and so on. So the finer access controls for properties of
+objects are left until run-time (whereas no such regime is needed for
+properties of values). To make this possible, we need to tell the run-time
+code what is and is not allowed.
+
+@<Write the property name in double quotes@> =
+	text_stream *pname = I"<nameless>";
+	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
+	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
+	TEMPORARY_TEXT(entry)
+	CodeGen::select_temporary(gen, entry);
+	Generators::compile_literal_text(gen, pname, TRUE);
+	CodeGen::deselect_temporary(gen);
+	Generators::array_entry(gen, entry, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(entry)
+	pos++;
+
+@ A complete list here would be wasteful both of space and run-time
+checking time, but we only need a list $O_1, O_2, ..., O_k$ such that for
+each $W$ allowed to have the property, either $W = O_i$ for some $i$, or
+$W$ is of kind $O_i$ for some $i$ (perhaps indirectly).
+
+In a tricksy complication, we need to allow for the possibility that two
+or more different I7 properties are actually equal at run-time. This wouldn't
+happen by itself, but does happen if two different properties are translated
+to the same I6 property, and in fact the template does this: "lighted" and
+"lit" both translate to I6 |light|. The only way to reconcile this is to
+make the list a union of the lists of both. This does mean the routine
+runs in $O(P^2N)$ time, where $P$ is the number of properties and $N$ the
+number of objects, but we can live with that. $P$ does not in practice rise
+linearly with the size of the source text, even though $N$ does.
+
+@<Write a list of kinds or objects which are permitted to have this property@> =
+	inter_symbol *eprop_name;
+	LOOP_OVER_LINKED_LIST(eprop_name, inter_symbol, gen->unassimilated_properties) {
+		if (Str::eq(Inter::Symbols::name(eprop_name), Inter::Symbols::name(prop_name))) {
+			inter_node_list *EVL =
+				Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+					Inter::Property::permissions_list(eprop_name));
+
+			@<List any O with an explicit permission@>;
+			@<List all top-level kinds if "object" itself has an explicit permission@>;
+		}
+	}
+
+@<List any O with an explicit permission@> =
+	for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
+		inter_symbol *kind_name = gen->kinds_in_source_order[k];
+		if (VanillaObjects::is_kind_of_object(kind_name)) {
+			inter_tree_node *X;
+			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
+				inter_symbol *owner_name =
+					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				if (owner_name == kind_name) {
+					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
+					pos++;
+				}
+			}
+		}
+	}
+	for (int in=0; in<LinkedLists::len(gen->instances); in++) {
+		inter_symbol *inst_name = gen->instances_in_declaration_order[in];
+		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
+			inter_tree_node *X;
+			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
+				inter_symbol *owner_name =
+					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+				if (owner_name == inst_name) {
+					Generators::mangled_array_entry(gen, Inter::Symbols::name(inst_name), WORD_ARRAY_FORMAT);
+					pos++;
+				}
+			}
+		}
+	}
+
+@<List all top-level kinds if "object" itself has an explicit permission@> =
+	inter_tree_node *X;
+	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
+		inter_symbol *owner_name =
+			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+		if (owner_name == object_kind_symbol) {
+			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
+			pos++;
+			for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
+				inter_symbol *kind_name = gen->kinds_in_source_order[k];
+				if (Inter::Kind::super(kind_name) == object_kind_symbol) {
+					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
+					pos++;
+				}
+			}
+		}
+	}
+
+@h Instances and kinds.
+
+=
 void VanillaObjects::generate(code_generation *gen) {
 	inter_tree *I = gen->from;
 
@@ -32,59 +297,6 @@ void VanillaObjects::generate(code_generation *gen) {
 	@<Write an I6 Class definition for each kind of object@>;
 	@<Write an I6 Object definition for each object instance@>;
 }
-
-@<Make a list of kinds in source order@> =
-	if (LinkedLists::len(gen->kinds) > 0) {
-		gen->kinds_in_source_order = (inter_symbol **)
-			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int i = 0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
-			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			gen->kinds_in_source_order[i++] = kind_name;
-		}
-		qsort(gen->kinds_in_source_order, (size_t) i, sizeof(inter_symbol *),
-			VanillaObjects::compare_kind_symbols);
-	}
-
-@<Make a list of kinds in declaration order@> =
-	if (LinkedLists::len(gen->kinds) > 0) {
-		gen->kinds_in_declaration_order = (inter_symbol **)
-			(Memory::calloc(LinkedLists::len(gen->kinds), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int i = 0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->kinds) {
-			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-			gen->kinds_in_declaration_order[i++] = kind_name;
-		}
-		qsort(gen->kinds_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
-			VanillaObjects::compare_kind_symbols_decl);
-	}
-
-@<Make a list of instances in declaration order@> =
-	if (LinkedLists::len(gen->instances) > 0) {
-		gen->instances_in_declaration_order = (inter_symbol **)
-			(Memory::calloc(LinkedLists::len(gen->instances), sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int i=0;
-		inter_tree_node *P;
-		LOOP_OVER_LINKED_LIST(P, inter_tree_node, gen->instances) {
-			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-			gen->instances_in_declaration_order[i++] = inst_name;
-		}
-		qsort(gen->instances_in_declaration_order, (size_t) i, sizeof(inter_symbol *),
-			VanillaObjects::compare_kind_symbols_decl);
-	}
-
-@<Declare and allocate properties@> =
-	inter_symbol *prop_name;
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
-		VanillaObjects::predeclare_property(gen, prop_name);
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-		VanillaObjects::predeclare_property(gen, prop_name);
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
-		VanillaObjects::declare_property(gen, prop_name);
-	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-		VanillaObjects::declare_property(gen, prop_name);
 
 @<Annotate kinds of object with a sequence counter@> =
 	inter_ti c = 1;
@@ -378,148 +590,11 @@ because I6 doesn't allow function calls in a constant context.
 		VanillaObjects::instance(gen, D);
 	}
 
-@ The following lets the run-time environment know what properties are
-called, and which kinds of object are allowed to have them. This might look
-a little odd: why does the run-time code need to know any of that?
-
-The answer is that the Inform compiler will prevent grossly type-unsafe
-property accesses at compile time -- for example, asking if a number is
-"recurring" (an either/or property of scenes), which can be ruled out
-because numbers and scenes are wholly disjoint as values. But it will allow
-any object property of any object to be accessed, because it's not usually
-possible for the typechecker to know if an object value |O| is a vehicle, a
-direction, and so on. So the finer access controls for properties of
-objects are left until run-time (whereas no such regime is needed for
-properties of values). To make this possible, we need to tell the run-time
-code what is and is not allowed.
-
-@<Write the property name in double quotes@> =
-	text_stream *pname = I"<nameless>";
-	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
-	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
-	TEMPORARY_TEXT(entry)
-	CodeGen::select_temporary(gen, entry);
-	Generators::compile_literal_text(gen, pname, TRUE);
-	CodeGen::deselect_temporary(gen);
-	Generators::array_entry(gen, entry, WORD_ARRAY_FORMAT);
-	DISCARD_TEXT(entry)
-	pos++;
-
-@ A complete list here would be wasteful both of space and run-time
-checking time, but we only need a list $O_1, O_2, ..., O_k$ such that for
-each $W$ allowed to have the property, either $W = O_i$ for some $i$, or
-$W$ is of kind $O_i$ for some $i$ (perhaps indirectly).
-
-In a tricksy complication, we need to allow for the possibility that two
-or more different I7 properties are actually equal at run-time. This wouldn't
-happen by itself, but does happen if two different properties are translated
-to the same I6 property, and in fact the template does this: "lighted" and
-"lit" both translate to I6 |light|. The only way to reconcile this is to
-make the list a union of the lists of both. This does mean the routine
-runs in $O(P^2N)$ time, where $P$ is the number of properties and $N$ the
-number of objects, but we can live with that. $P$ does not in practice rise
-linearly with the size of the source text, even though $N$ does.
-
-@<Write a list of kinds or objects which are permitted to have this property@> =
-	inter_symbol *eprop_name;
-	LOOP_OVER_LINKED_LIST(eprop_name, inter_symbol, gen->unassimilated_properties) {
-		if (Str::eq(Inter::Symbols::name(eprop_name), Inter::Symbols::name(prop_name))) {
-			inter_node_list *EVL =
-				Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-					Inter::Property::permissions_list(eprop_name));
-
-			@<List any O with an explicit permission@>;
-			@<List all top-level kinds if "object" itself has an explicit permission@>;
-		}
-	}
-
-@<List any O with an explicit permission@> =
-	for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[k];
-		if (VanillaObjects::is_kind_of_object(kind_name)) {
-			inter_tree_node *X;
-			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name =
-					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				if (owner_name == kind_name) {
-					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-					pos++;
-				}
-			}
-		}
-	}
-	for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-		inter_symbol *inst_name = gen->instances_in_declaration_order[in];
-		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
-			inter_tree_node *X;
-			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name =
-					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				if (owner_name == inst_name) {
-					Generators::mangled_array_entry(gen, Inter::Symbols::name(inst_name), WORD_ARRAY_FORMAT);
-					pos++;
-				}
-			}
-		}
-	}
-
-@<List all top-level kinds if "object" itself has an explicit permission@> =
-	inter_tree_node *X;
-	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-		inter_symbol *owner_name =
-			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-		if (owner_name == object_kind_symbol) {
-			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-			pos++;
-			for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-				inter_symbol *kind_name = gen->kinds_in_source_order[k];
-				if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-					pos++;
-				}
-			}
-		}
-	}
-
 @ =
 int VanillaObjects::pnum(inter_symbol *prop_name) {
 	int N = Inter::Symbols::read_annotation(prop_name, SOURCE_ORDER_IANN);
 	if (N >= 0) return N;
 	return 0;
-}
-
-int VanillaObjects::compare_kind_symbols(const void *elem1, const void *elem2) {
-	const inter_symbol **e1 = (const inter_symbol **) elem1;
-	const inter_symbol **e2 = (const inter_symbol **) elem2;
-	if ((*e1 == NULL) || (*e2 == NULL))
-		internal_error("Disaster while sorting kinds");
-	int s1 = VanillaObjects::kind_sequence_number(*e1);
-	int s2 = VanillaObjects::kind_sequence_number(*e2);
-	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
-}
-
-int VanillaObjects::compare_kind_symbols_decl(const void *elem1, const void *elem2) {
-	const inter_symbol **e1 = (const inter_symbol **) elem1;
-	const inter_symbol **e2 = (const inter_symbol **) elem2;
-	if ((*e1 == NULL) || (*e2 == NULL))
-		internal_error("Disaster while sorting kinds");
-	int s1 = VanillaObjects::kind_sequence_number_decl(*e1);
-	int s2 = VanillaObjects::kind_sequence_number_decl(*e2);
-	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
-}
-
-int VanillaObjects::kind_sequence_number(const inter_symbol *kind_name) {
-	int N = Inter::Symbols::read_annotation(kind_name, SOURCE_ORDER_IANN);
-	if (N >= 0) return N;
-	return 100000000;
-}
-
-int VanillaObjects::kind_sequence_number_decl(const inter_symbol *kind_name) {
-	int N = Inter::Symbols::read_annotation(kind_name, DECLARATION_ORDER_IANN);
-	if (N >= 0) return N;
-	return 100000000;
 }
 
 int VanillaObjects::weak_id(inter_symbol *kind_name) {
@@ -712,84 +787,6 @@ Some either-or properties of object instances can be stored as I6
 limited number can be stored this way. Here we choose which.
 
 =
-dictionary *i6dps_dict = NULL;
-dictionary *pre_i6dps_dict = NULL;
-dictionary *af_i6dps_dict = NULL;
-
-void VanillaObjects::predeclare_property(code_generation *gen, inter_symbol *prop_name) {
-	if (pre_i6dps_dict == NULL) pre_i6dps_dict = Dictionaries::new(1024, FALSE);
-	if (af_i6dps_dict == NULL) af_i6dps_dict = Dictionaries::new(1024, FALSE);
-	dictionary *D = pre_i6dps_dict;
-	dictionary *D2 = af_i6dps_dict;
-	text_stream *name = Inter::Symbols::name(prop_name);
-	if (Dictionaries::find(D, name) == NULL) {
-		text_stream *inner_name = Str::duplicate(name);
-		Dictionaries::create(D, inner_name);
-		Dictionaries::write_value(D, inner_name, (void *) prop_name);
-		linked_list *L = NEW_LINKED_LIST(inter_symbol);
-		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
-		Dictionaries::create(D2, inner_name);
-		Dictionaries::write_value(D2, inner_name, (void *) L);
-	} else {
-		Dictionaries::write_value(D, name, (void *) prop_name);
-		linked_list *L = Dictionaries::read_value(D2, name);
-		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
-	}
-}
-
-void VanillaObjects::declare_property(code_generation *gen, inter_symbol *prop_name) {
-	if (i6dps_dict == NULL) i6dps_dict = Dictionaries::new(1024, FALSE);
-	dictionary *D = i6dps_dict;
-	text_stream *name = Inter::Symbols::name(prop_name);
-	if (Dictionaries::find(D, name) == NULL) {
-		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
-			name, prop_name->symbol_name,
-			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
-			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
-		text_stream *inner_name = Str::duplicate(name);
-		Dictionaries::create(D, inner_name);
-		Dictionaries::write_value(D, inner_name, (void *) prop_name);
-		
-		text_stream *array_name = Str::new();
-		WRITE_TO(array_name, "A_%S", inner_name);
-
-		Inter::Symbols::set_translate(prop_name, array_name);
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
-			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
-
-		linked_list *all_forms = 
-			(linked_list *) Dictionaries::read_value(af_i6dps_dict, name);
-
-		segmentation_pos saved;
-		Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
-		Generators::declare_property(gen, prop_name, all_forms);
-		@<Do permissions@>;
-		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
-	} else {
-		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
-			name, prop_name->symbol_name,
-			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
-			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
-		inter_symbol *existing_prop_name = 
-			(inter_symbol *) Dictionaries::read_value(D, name);
-		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
-		text_stream *inner_name = I"<nameless>";
-		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
-		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
-			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
-	}
-	LOGIF(PROPERTY_ALLOCATION, "! SO  %S --> %S\n",
-		Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
-}
-
-@<Do permissions@> =
-	inter_symbol *prop_name = 
-		(inter_symbol *) Dictionaries::read_value(pre_i6dps_dict, name);
-	int pos = 0; inter_tree *I = gen->from;
-	@<Write the property name in double quotes@>;
-	@<Write a list of kinds or objects which are permitted to have this property@>;
-	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
 
 @ =
 text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {

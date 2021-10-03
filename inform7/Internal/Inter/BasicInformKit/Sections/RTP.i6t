@@ -72,10 +72,10 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 			print "Tried to access non-existent property for ", (the) par1, ".^";
 		RTP_UNPROVIDED:
 			print "Since ", (the) par1, " is not allowed the property ~",
-					(string) par2, "~, it is against the rules to try to use it.^";
+					(PrintPropertyName) par2, "~, it is against the rules to try to use it.^";
 		RTP_UNSET:
 			print "Although ", (the) par1, " is allowed to have the property ~",
-				(string) par2, "~, no value was ever given, so it can't now be used.^";
+				(PrintPropertyName) par2, "~, no value was ever given, so it can't now be used.^";
 		RTP_TOOMANYACTS:
 			print "Too many activities are going on at once.^";
 		RTP_CANTABANDON:
@@ -260,15 +260,22 @@ have the property in question at an I6 level -- having permission to have
 it doesn't mean it actually does have.
 
 =
-[ WhetherProvides obj either_or q issue_rtp  p i textual a l;
+[ WhetherProvides K obj q issue_rtp  a l holder;
+	if (K ~= OBJECT_TY) {
+		if ((obj < 1) || (obj > value_ranges-->K)) {
+			if (issue_rtp) RunTimeProblem(RTP_BADVALUEPROPERTY);
+		} else {
+			holder = value_property_holders-->K;
+			if ((holder) && (holder provides q)) rtrue;
+		}
+		rfalse;
+	}
 	if (obj == 0) {
 		if (issue_rtp) RunTimeProblem(RTP_PROPOFNOTHING, 0, q);
 		rfalse;
 	}
 	if (metaclass(obj) ~= Object) rfalse;
 	if (q<0) q = ~q;
-	p = q-->1;
-	textual = q-->3;
 
 	if (ScanPropertyMetadata(obj, q, 4)) jump PermissionFound;
 	if (obj provides KD_Count) {
@@ -280,13 +287,15 @@ it doesn't mean it actually does have.
 		}
 	}
 	if (ScanPropertyMetadata(K0_kind, q, 4)) jump PermissionFound;
-	if (issue_rtp) RunTimeProblem(RTP_UNPROVIDED, obj, textual);
+	if (issue_rtp) RunTimeProblem(RTP_UNPROVIDED, obj, q);
 	rfalse;
 
 	.PermissionFound;
-		if (either_or) rtrue;
+!		if (either_or ~= q-->2) { print (PrintPropertyName) q, " differs: ", either_or, " vs ", q-->2, "^"; }
+		if (q-->2) rtrue;
+! if (either_or) rtrue;
 		if (obj provides q) rtrue;
-		if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, textual);
+		if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
 		rfalse;
 ];
 
@@ -329,9 +338,10 @@ normally valid for doors and containers.
 
 =
 [ GetEitherOrProperty o p;
+!	return GProperty(OBJECT_TY, o, p);
 	if (o == nothing) rfalse;
 	if (p<0) p = ~p;
-	if (WhetherProvides(o, true, p, false)) {
+	if (WhetherProvides(OBJECT_TY, o, p, false)) {
 		if (o has p) rtrue; rfalse;
 	}
 	rfalse;
@@ -343,10 +353,12 @@ however, always produce a run-time problem.
 
 =
 [ SetEitherOrProperty o p negate adj;
+!	if (negate) WriteGProperty(OBJECT_TY, o, p, 0);
+!	else WriteGProperty(OBJECT_TY, o, p, 1);
 	if (p<0) { p = ~p; negate = ~negate; }
 	if (adj) {
 		(adj)(o);
-	} else if (WhetherProvides(o, true, p, true)) {
+	} else if (WhetherProvides(OBJECT_TY, o, p, true)) {
 		if (negate) {
 			give o ~p;
 		} else {
@@ -371,23 +383,16 @@ the one which the player is on.
 
 =
 [ GProperty K V pr holder;
-	if (K == OBJECT_TY) {
-		if (WhetherProvides(V, false, pr, true)) {
+	if (WhetherProvides(K, V, pr, true)) {
+		if (K == OBJECT_TY) {
 			if (pr == door_to) return V.pr();
 			return V.pr;
-		}
-		return 0;
-	} else {
-		if ((V < 1) || (V > value_ranges-->K)) {
-			RunTimeProblem(RTP_BADVALUEPROPERTY);
-			return 0;
-		}
-		holder = value_property_holders-->K;
-		if ((holder) && (holder provides pr)) {
+		} else {
+			holder = value_property_holders-->K;
 			return (holder.pr)-->(V+COL_HSIZE);
 		}
-		return 0;
 	}
+	return 0;
 ];
 
 @h Write Value Property.
@@ -397,21 +402,13 @@ converted from an rvalue to an lvalue.
 
 =
 [ WriteGProperty K V pr val holder;
-	if (K == OBJECT_TY) {
-		if (WhetherProvides(V, false, pr, true)) {
+	if (WhetherProvides(K, V, pr, true)) {
+		if (K == OBJECT_TY) {
 			V.pr = val;
+		} else {
+			holder = value_property_holders-->K;
+			(holder.pr)-->(V+COL_HSIZE) = val;
 		}
-	} else {
-		if ((V < 1) || (V > value_ranges-->K)) {
-			RunTimeProblem(RTP_BADVALUEPROPERTY);
-			return;
-		}
-		holder = value_property_holders-->K;
-		if (holder == 0) {
-			RunTimeProblem(RTP_PROPOFNOTHING, holder, pr);
-			return;
-		}
-		if (holder provides pr) { (holder.pr)-->(V+COL_HSIZE) = val; }
 	}
 ];
 

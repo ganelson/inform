@@ -807,7 +807,7 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 			explicitly_defined_in_kit = TRUE;
 
 	int make_attribute = NOT_APPLICABLE;
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0)
+	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) == 1)
 		@<Consider this property for attribute allocation@>;
 
 	int t = 1, def = FALSE;
@@ -846,7 +846,6 @@ void I6Target::declare_property(code_generator *cgt, code_generation *gen, inter
 	Str::clear(val);
 	WRITE_TO(val, "subterfuge_%d", i6dpcount);
 	Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
-	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 	DISCARD_TEXT(val)
 
 	if (def == FALSE) {

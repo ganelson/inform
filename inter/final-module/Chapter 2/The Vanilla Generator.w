@@ -41,7 +41,7 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	InterTree::traverse(gen->from, Vanilla::gather_up, gen, NULL, 0);
 	Generators::declare_variables(gen, gen->global_variables);
-	VanillaObjects::optimise_properties(gen);
+	VanillaObjects::declare_properties(gen);
 
 @ =
 void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
@@ -60,8 +60,16 @@ void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties);
 			break;
 		}
-		case INSTANCE_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->instances); break;
-		case KIND_IST: ADD_TO_LINKED_LIST(P, inter_tree_node, gen->kinds); break;
+		case INSTANCE_IST: {
+			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+			ADD_TO_LINKED_LIST(inst_name, inter_symbol, gen->instances);
+			break;
+		}
+		case KIND_IST: {
+			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			ADD_TO_LINKED_LIST(kind_name, inter_symbol, gen->kinds);
+			break;
+		}
 	}
 }
 

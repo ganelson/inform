@@ -402,7 +402,7 @@ void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
 	text_stream *name = Inter::Symbols::name(prop_name);
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 	int attr = FALSE;
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) attr = TRUE;
+	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) == 1) attr = TRUE;
 	CObjectModel::property_by_name(gen, name, inner_name, attr);
 	text_stream *pname = Metadata::read_optional_textual(Inter::Packages::container(prop_name->definition), I"^name");
 	if (pname) {
@@ -451,7 +451,6 @@ C_property *CObjectModel::property_by_name(code_generation *gen, text_stream *na
 		Str::clear(val);
 		CNamespace::mangle(NULL, val, inner_name);
 		Generators::array_entry(gen, val, WORD_ARRAY_FORMAT);
-		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
 		DISCARD_TEXT(val)
 	} else {
 		cp = Dictionaries::read_value(D, name);

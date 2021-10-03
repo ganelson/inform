@@ -210,7 +210,7 @@ package metadata instead?
 @<Annotate the property iname@> =
 	Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
 	if (Properties::is_either_or(prn))
-		Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 0);
+		Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 1);
 	if (Wordings::nonempty(prn->name))
 		Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 
@@ -358,10 +358,7 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 		} else if (Kinds::Behaviour::is_object(K)) {
 			kind *PK = Cinders::kind_of_term(asch->pt1);
 			if (Kinds::get_construct(PK) == CON_property) {
-				if (Kinds::eq(K_truth_state, Kinds::unary_construction_material(PK)))
-					Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
-				else
-					Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, false, *2)");
+				Calculus::Schemas::modify(asch->schema, "WhetherProvides(%k, *1, *2)", K);
 				return TRUE;
 			}
 		}
@@ -373,10 +370,7 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 of object the left operand is, we can only test property provision at run-time:
 
 @<Compile a run-time test of property provision@> =
-	if (Properties::is_value_property(prn))
-		Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, false, *2)");
-	else
-		Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
+	Calculus::Schemas::modify(asch->schema, "WhetherProvides(%k, *1, *2)", K);
 
 @ For all other kinds, type-checking is strong enough that we can prove the
 answer now.

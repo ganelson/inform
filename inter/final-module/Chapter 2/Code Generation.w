@@ -79,8 +79,8 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->text_literals = NEW_LINKED_LIST(text_literal_holder);
 	gen->assimilated_properties = NEW_LINKED_LIST(inter_symbol);
 	gen->unassimilated_properties = NEW_LINKED_LIST(inter_symbol);
-	gen->instances = NEW_LINKED_LIST(inter_tree_node);
-	gen->kinds = NEW_LINKED_LIST(inter_tree_node);
+	gen->instances = NEW_LINKED_LIST(inter_symbol);
+	gen->kinds = NEW_LINKED_LIST(inter_symbol);
 	gen->kinds_in_source_order = NULL;
 	gen->kinds_in_declaration_order = NULL;
 	gen->instances_in_declaration_order = NULL;
