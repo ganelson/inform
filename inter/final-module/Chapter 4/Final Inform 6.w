@@ -1219,6 +1219,9 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
+	if (Str::eq(opcode, I"@provides_gprop")) @<Invoke special provides_gprop@>;
+	if (Str::eq(opcode, I"@read_gprop")) @<Invoke special read_gprop@>;
+	if (Str::eq(opcode, I"@write_gprop")) @<Invoke special write_gprop@>;
 	WRITE("%S", opcode);
 	for (int opc = 0; opc < operand_count; opc++) {
 		WRITE(" ");
@@ -1232,6 +1235,118 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	if (void_context) WRITE(";\n");
 }
 
+@<Invoke special provides_gprop@> =
+	TEMPORARY_TEXT(K)
+	TEMPORARY_TEXT(obj)
+	TEMPORARY_TEXT(p)
+	TEMPORARY_TEXT(val)
+	CodeGen::select_temporary(gen, K);
+	Vanilla::node(gen, operands[0]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, obj);
+	Vanilla::node(gen, operands[1]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, p);
+	Vanilla::node(gen, operands[2]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, val);
+	Vanilla::node(gen, operands[3]);
+	CodeGen::deselect_temporary(gen);
+
+	WRITE("if (%S == OBJECT_TY) {\n", K);
+	WRITE("    if ((%S) && (metaclass(%S) == Object)) {\n", obj, obj);
+	WRITE("        if ((%S-->0 == 2) || (%S provides %S-->1)) {\n", p, obj, p);
+	WRITE("            %S = 1;\n", val);
+	WRITE("        } else {\n");
+	WRITE("            %S = 0;\n", val);
+	WRITE("        }\n");
+	WRITE("    } else {\n");
+	WRITE("        %S = 0;\n", val);
+	WRITE("    }\n");
+	WRITE("} else {\n");
+	WRITE("    if ((%S >= 1) && (%S <= value_ranges-->%S)) {\n", obj, obj, K);
+	WRITE("        holder = value_property_holders-->%S;\n", K);
+	WRITE("        if ((holder) && (holder provides %S-->1)) {\n", p);
+	WRITE("            %S = 1;\n", val);
+	WRITE("        } else {\n");
+	WRITE("            %S = 0;\n", val);
+	WRITE("        }\n");
+	WRITE("    } else {\n");
+	WRITE("        %S = 0;\n", val);
+	WRITE("    }\n");
+	WRITE("}\n");
+
+	DISCARD_TEXT(K)
+	DISCARD_TEXT(obj)
+	DISCARD_TEXT(p)
+	DISCARD_TEXT(val)
+	return;
+
+@<Invoke special read_gprop@> =
+	TEMPORARY_TEXT(K)
+	TEMPORARY_TEXT(obj)
+	TEMPORARY_TEXT(p)
+	CodeGen::select_temporary(gen, K);
+	Vanilla::node(gen, operands[0]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, obj);
+	Vanilla::node(gen, operands[1]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, p);
+	Vanilla::node(gen, operands[2]);
+	CodeGen::deselect_temporary(gen);
+
+	WRITE("if (%S == OBJECT_TY) {\n", K);
+	WRITE("    if (%S-->0 == 2) {\n", p);
+	WRITE("        if (%S has %S-->1) rtrue; rfalse;\n", obj, p);
+	WRITE("    }\n");
+	WRITE("    if (%S == door_to) return (%S-->1).%S();\n", p, obj, p);
+	WRITE("    return %S.(%S-->1);\n", obj, p);
+	WRITE("} else {\n");
+	WRITE("    holder = value_property_holders-->%S;\n", K);
+	WRITE("    return (holder.(%S-->1))-->(%S+COL_HSIZE);\n", p, obj);
+	WRITE("}\n");
+
+	DISCARD_TEXT(K)
+	DISCARD_TEXT(obj)
+	DISCARD_TEXT(p)
+	return;
+
+@<Invoke special write_gprop@> =
+	TEMPORARY_TEXT(K)
+	TEMPORARY_TEXT(obj)
+	TEMPORARY_TEXT(p)
+	TEMPORARY_TEXT(val)
+	CodeGen::select_temporary(gen, K);
+	Vanilla::node(gen, operands[0]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, obj);
+	Vanilla::node(gen, operands[1]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, p);
+	Vanilla::node(gen, operands[2]);
+	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, val);
+	Vanilla::node(gen, operands[3]);
+	CodeGen::deselect_temporary(gen);
+
+	WRITE("if (%S == OBJECT_TY) {\n", K);
+	WRITE("    if (%S-->0 == 2) {\n", p);
+	WRITE("        if (%S) give %S %S-->1; else give %S ~(%S-->1);\n", val, obj, p, obj, p);
+	WRITE("    } else {\n");
+	WRITE("        %S.(%S-->1) = %S;\n", obj, p, val);
+	WRITE("    }\n");
+	WRITE("} else {\n");
+	WRITE("    ((value_property_holders-->%S).(%S-->1))-->(%S+COL_HSIZE) = %S;\n", K, p, obj, val);
+	WRITE("}\n");
+
+	DISCARD_TEXT(K)
+	DISCARD_TEXT(obj)
+	DISCARD_TEXT(p)
+	DISCARD_TEXT(val)
+	return;
+
+@ =
 int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
 	if (saved) {
 		int choice = early_matter_I7CGS;

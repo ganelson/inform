@@ -268,78 +268,44 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 	return TRUE;
 }
 
-@ Either-or properties are trickier, though only because they use a different
-pair of functions at runtime for EO properties of objects than for EO properties
-of anything else:
+@ Either-or properties work analogously, though note that on reading, |GProperty|
+is called slightly differently so that objects are allowed access to read (though
+not write) either/or properties which they do not possess. The result is always
+|false|, but run-time errors do not occur. (This all goes back to the way
+attributes were handled on the Z-machine VM, but is an assumption made by some
+of the kit code inherited from early days of Inform, and does no actual harm.)
 
 =
 void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn, int T) {
 	kind *K = AdjectiveMeaningDomains::get_kind(am);
-	if (Kinds::Behaviour::is_object(K))
-		@<Set the schemata for an either/or property adjective with objects as domain@>
-	else
-		@<Set the schemata for an either/or property adjective with some other domain@>;
+	if (RTProperties::stored_in_negation(prn)) {
+		property *neg = EitherOrProperties::get_negation(prn);
+
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n, 1) == false", K,
+			RTProperties::iname(neg));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, 0)", K,
+			RTProperties::iname(neg));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, 1)", K,
+			RTProperties::iname(neg));
+	} else {
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n, 1)", K,
+			RTProperties::iname(prn));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, 1)", K,
+			RTProperties::iname(prn));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, 0)", K,
+			RTProperties::iname(prn));
+	}
 }
-
-@ The "objects" domain is not really very different, but it's the one used
-overwhelmingly most often, so we will call the relevant routines directly rather
-than accessing them via the unifying routines |GProperty| and |WriteGProperty| --
-which would work just as well, but more slowly.
-
-@<Set the schemata for an either/or property adjective with objects as domain@> =
-	if (RTProperties::stored_in_negation(prn)) {
-		property *neg = EitherOrProperties::get_negation(prn);
-		inter_name *identifier = RTProperties::iname(neg);
-
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(OBJECT_TY, *1, %n, true) == false", identifier);
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 0)", identifier);
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 1)", identifier);
-	} else {
-		inter_name *identifier = RTProperties::iname(prn);
-
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(OBJECT_TY, *1, %n, true)", identifier);
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 1)", identifier);
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 0)", identifier);
-	}
-
-@<Set the schemata for an either/or property adjective with some other domain@> =
-	if (RTProperties::stored_in_negation(prn)) {
-		property *neg = EitherOrProperties::get_negation(prn);
-
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n) == false", K,
-			RTProperties::iname(neg));
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
-			RTProperties::iname(neg));
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
-			RTProperties::iname(neg));
-	} else {
-		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n)", K,
-			RTProperties::iname(prn));
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
-			RTProperties::iname(prn));
-
-		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
-			RTProperties::iname(prn));
-	}
 
 @ And finally, provision of a property can be tested at runtime with the
 following schemas:
@@ -358,7 +324,7 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 		} else if (Kinds::Behaviour::is_object(K)) {
 			kind *PK = Cinders::kind_of_term(asch->pt1);
 			if (Kinds::get_construct(PK) == CON_property) {
-				Calculus::Schemas::modify(asch->schema, "WhetherProvides(%k, *1, *2)", K);
+				Calculus::Schemas::modify(asch->schema, "ProvidesProperty(%k, *1, *2)", K);
 				return TRUE;
 			}
 		}
@@ -370,7 +336,7 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 of object the left operand is, we can only test property provision at run-time:
 
 @<Compile a run-time test of property provision@> =
-	Calculus::Schemas::modify(asch->schema, "WhetherProvides(%k, *1, *2)", K);
+	Calculus::Schemas::modify(asch->schema, "ProvidesProperty(%k, *1, *2)", K);
 
 @ For all other kinds, type-checking is strong enough that we can prove the
 answer now.
