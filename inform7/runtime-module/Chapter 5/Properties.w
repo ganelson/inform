@@ -292,24 +292,24 @@ which would work just as well, but more slowly.
 		inter_name *identifier = RTProperties::iname(neg);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n) == false", identifier);
+		Calculus::Schemas::modify(sch, "GProperty(OBJECT_TY, *1, %n, true) == false", identifier);
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
+		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 0)", identifier);
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
+		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 1)", identifier);
 	} else {
 		inter_name *identifier = RTProperties::iname(prn);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n)", identifier);
+		Calculus::Schemas::modify(sch, "GProperty(OBJECT_TY, *1, %n, true)", identifier);
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
-		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
+		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 1)", identifier);
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
-		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
+		Calculus::Schemas::modify(sch, "WriteGProperty(OBJECT_TY, *1, %n, 0)", identifier);
 	}
 
 @<Set the schemata for an either/or property adjective with some other domain@> =

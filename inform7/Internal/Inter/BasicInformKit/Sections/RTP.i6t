@@ -264,11 +264,11 @@ it doesn't mean it actually does have.
 	if (K ~= OBJECT_TY) {
 		if ((obj < 1) || (obj > value_ranges-->K)) {
 			if (issue_rtp) RunTimeProblem(RTP_BADVALUEPROPERTY);
+			rfalse;
 		} else {
 			holder = value_property_holders-->K;
 			if ((holder) && (holder provides q)) rtrue;
 		}
-		rfalse;
 	}
 	if (obj == 0) {
 		if (issue_rtp) RunTimeProblem(RTP_PROPOFNOTHING, 0, q);
@@ -291,9 +291,7 @@ it doesn't mean it actually does have.
 	rfalse;
 
 	.PermissionFound;
-!		if (either_or ~= q-->2) { print (PrintPropertyName) q, " differs: ", either_or, " vs ", q-->2, "^"; }
 		if (q-->2) rtrue;
-! if (either_or) rtrue;
 		if (obj provides q) rtrue;
 		if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
 		rfalse;
@@ -318,56 +316,7 @@ The following searches from a given offset.
 	rfalse;
 ];
 
-@h Get Either-Or Property.
-If |p| represents a property, then |~p| (its bitwise negation) represents its
-logical negation. The bitwise negation will change the sign bit; since all
-properties are ordinarily positive, we can detect bitwise negation by looking
-for negative property numbers. (This could fail on Glulx story files above
-1GB in size, but that's about 1000 times the size of the record-sized file
-created thus far.)
-
-FBNA stands for First Boolean Not to be an Attribute, in the I6 sense. Some
-either/or (i.e., boolean) properties are stored as I6 attributes, others as
-I6 properties whose values are always |true| or |false|.
-
-Note that we allow either/or properties to be {\it read} for any object,
-regardless of permissions, returning |false| if the object does not have
-the property. This is so that a description such as "open things" can be
-applied against any object without run-time errors, even though it is only
-normally valid for doors and containers.
-
-=
-[ GetEitherOrProperty o p;
-!	return GProperty(OBJECT_TY, o, p);
-	if (o == nothing) rfalse;
-	if (p<0) p = ~p;
-	if (WhetherProvides(OBJECT_TY, o, p, false)) {
-		if (o has p) rtrue; rfalse;
-	}
-	rfalse;
-];
-
-@h Set Either-Or Property.
-An attempt to {\it write} an either/or property which is not provided will,
-however, always produce a run-time problem.
-
-=
-[ SetEitherOrProperty o p negate adj;
-!	if (negate) WriteGProperty(OBJECT_TY, o, p, 0);
-!	else WriteGProperty(OBJECT_TY, o, p, 1);
-	if (p<0) { p = ~p; negate = ~negate; }
-	if (adj) {
-		(adj)(o);
-	} else if (WhetherProvides(OBJECT_TY, o, p, true)) {
-		if (negate) {
-			give o ~p;
-		} else {
-			give o p;
-		}
-	}
-];
-
-@h Value Property.
+@h Read Property.
 Some value properties belong to other values (those created in tables), and
 these are stored indirectly through a pseudo-object |V| -- an I6 object which
 is not part of the world model, and not a valid I7 "object" value, but which is
@@ -382,9 +331,12 @@ this enables it to be an I6 routine returning the other side of the door from
 the one which the player is on.
 
 =
-[ GProperty K V pr holder;
-	if (WhetherProvides(K, V, pr, true)) {
+[ GProperty K V pr err holder;
+	if (WhetherProvides(K, V, pr, 1-err)) {
 		if (K == OBJECT_TY) {
+			if (pr-->0 == 2) {
+				if (V has pr) rtrue; rfalse;
+			}
 			if (pr == door_to) return V.pr();
 			return V.pr;
 		} else {
@@ -395,7 +347,7 @@ the one which the player is on.
 	return 0;
 ];
 
-@h Write Value Property.
+@h Write Property.
 This routine's name must consist of the read-value-property routine's name
 with the prefix |Write|, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
@@ -404,7 +356,11 @@ converted from an rvalue to an lvalue.
 [ WriteGProperty K V pr val holder;
 	if (WhetherProvides(K, V, pr, true)) {
 		if (K == OBJECT_TY) {
-			V.pr = val;
+			if (pr-->0 == 2) {
+				if (val) give V pr; else give V ~pr;
+			} else {
+				V.pr = val;
+			}
 		} else {
 			holder = value_property_holders-->K;
 			(holder.pr)-->(V+COL_HSIZE) = val;

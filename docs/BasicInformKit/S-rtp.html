@@ -42,7 +42,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>RTP Template</b></li></ul></div>
 <p class="purpose">To issue run-time problem messages, and to perform some run-time type checking which may issue such messages.</p>
 
-<ul class="toc"><li><a href="S-rtp.html#SP1">&#167;1. Reporting</a></li><li><a href="S-rtp.html#SP2">&#167;2. Low-Level Errors</a></li><li><a href="S-rtp.html#SP3">&#167;3. Argument Type Checking Failed</a></li><li><a href="S-rtp.html#SP4">&#167;4. Return Type Checking Failed</a></li><li><a href="S-rtp.html#SP5">&#167;5. Whether Provides</a></li><li><a href="S-rtp.html#SP6">&#167;6. Scan Property Metadata</a></li><li><a href="S-rtp.html#SP7">&#167;7. Get Either-Or Property</a></li><li><a href="S-rtp.html#SP8">&#167;8. Set Either-Or Property</a></li><li><a href="S-rtp.html#SP9">&#167;9. Value Property</a></li><li><a href="S-rtp.html#SP10">&#167;10. Write Value Property</a></li><li><a href="S-rtp.html#SP11">&#167;11. Printing Property Names</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-rtp.html#SP1">&#167;1. Reporting</a></li><li><a href="S-rtp.html#SP2">&#167;2. Low-Level Errors</a></li><li><a href="S-rtp.html#SP3">&#167;3. Argument Type Checking Failed</a></li><li><a href="S-rtp.html#SP4">&#167;4. Return Type Checking Failed</a></li><li><a href="S-rtp.html#SP5">&#167;5. Whether Provides</a></li><li><a href="S-rtp.html#SP6">&#167;6. Scan Property Metadata</a></li><li><a href="S-rtp.html#SP7">&#167;7. Read Property</a></li><li><a href="S-rtp.html#SP8">&#167;8. Write Property</a></li><li><a href="S-rtp.html#SP9">&#167;9. Printing Property Names</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reporting. </b>All RTPs are produced by calling the following routine, which takes one
 compulsory argument: <span class="extract"><span class="extract-syntax">n</span></span>, the RTP number. When I7 is being used with the
@@ -307,11 +307,11 @@ it doesn't mean it actually does have.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">value_ranges</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">issue_rtp</span><span class="plain-syntax">) </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_BADVALUEPROPERTY</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">holder</span><span class="plain-syntax"> = </span><span class="identifier-syntax">value_property_holders</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">holder</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">holder</span><span class="plain-syntax"> </span><span class="reserved-syntax">provides</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">issue_rtp</span><span class="plain-syntax">) </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_PROPOFNOTHING</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
@@ -334,9 +334,7 @@ it doesn't mean it actually does have.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    .</span><span class="identifier-syntax">PermissionFound</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">	if (either_or ~= q--&gt;2) { print (PrintPropertyName) q, " differs: ", either_or, " vs ", q--&gt;2, "^"; }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">q</span><span class="plain-syntax">--&gt;2) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">if (either_or) rtrue;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">provides</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">issue_rtp</span><span class="plain-syntax">) </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_UNSET</span><span class="plain-syntax">, </span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
@@ -361,58 +359,7 @@ The following searches from a given offset.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Get Either-Or Property. </b>If <span class="extract"><span class="extract-syntax">p</span></span> represents a property, then <span class="extract"><span class="extract-syntax">~p</span></span> (its bitwise negation) represents its
-logical negation. The bitwise negation will change the sign bit; since all
-properties are ordinarily positive, we can detect bitwise negation by looking
-for negative property numbers. (This could fail on Glulx story files above
-1GB in size, but that's about 1000 times the size of the record-sized file
-created thus far.)
-</p>
-
-<p class="commentary">FBNA stands for First Boolean Not to be an Attribute, in the I6 sense. Some
-either/or (i.e., boolean) properties are stored as I6 attributes, others as
-I6 properties whose values are always <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>.
-</p>
-
-<p class="commentary">Note that we allow either/or properties to be {\it read} for any object,
-regardless of permissions, returning <span class="extract"><span class="extract-syntax">false</span></span> if the object does not have
-the property. This is so that a description such as "open things" can be
-applied against any object without run-time errors, even though it is only
-normally valid for doors and containers.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">GetEitherOrProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">return GProperty(OBJECT_TY, o, p);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o</span><span class="plain-syntax"> == </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">&lt;0) </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = ~</span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WhetherProvides</span><span class="plain-syntax">(</span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">o</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">false</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Set Either-Or Property. </b>An attempt to {\it write} an either/or property which is not provided will,
-however, always produce a run-time problem.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">SetEitherOrProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="identifier-syntax">negate</span><span class="plain-syntax"> </span><span class="identifier-syntax">adj</span><span class="plain-syntax">;</span>
-<span class="comment-syntax">if (negate) WriteGProperty(OBJECT_TY, o, p, 0);</span>
-<span class="comment-syntax">else WriteGProperty(OBJECT_TY, o, p, 1);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">&lt;0) { </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = ~</span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">negate</span><span class="plain-syntax"> = ~</span><span class="identifier-syntax">negate</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">adj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">adj</span><span class="plain-syntax">)(</span><span class="identifier-syntax">o</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WhetherProvides</span><span class="plain-syntax">(</span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">o</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negate</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Value Property. </b>Some value properties belong to other values (those created in tables), and
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Read Property. </b>Some value properties belong to other values (those created in tables), and
 these are stored indirectly through a pseudo-object <span class="extract"><span class="extract-syntax">V</span></span> &mdash; an I6 object which
 is not part of the world model, and not a valid I7 "object" value, but which is
 used in order that properties belonging to values
@@ -428,9 +375,12 @@ the one which the player is on.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">GProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax"> </span><span class="identifier-syntax">holder</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WhetherProvides</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">GProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax"> </span><span class="identifier-syntax">err</span><span class="plain-syntax"> </span><span class="identifier-syntax">holder</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WhetherProvides</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">-</span><span class="identifier-syntax">err</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pr</span><span class="plain-syntax">--&gt;0 == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pr</span><span class="plain-syntax"> == </span><span class="identifier-syntax">door_to</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">pr</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">pr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -441,7 +391,7 @@ the one which the player is on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Write Value Property. </b>This routine's name must consist of the read-value-property routine's name
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Write Property. </b>This routine's name must consist of the read-value-property routine's name
 with the prefix <span class="extract"><span class="extract-syntax">Write</span></span>, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 </p>
@@ -450,7 +400,11 @@ converted from an rvalue to an lvalue.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WriteGProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">holder</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WhetherProvides</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">pr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pr</span><span class="plain-syntax">--&gt;0 == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax">) </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">pr</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">pr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">holder</span><span class="plain-syntax"> = </span><span class="identifier-syntax">value_property_holders</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">holder</span><span class="plain-syntax">.</span><span class="identifier-syntax">pr</span><span class="plain-syntax">)--&gt;(</span><span class="identifier-syntax">V</span><span class="plain-syntax">+</span><span class="identifier-syntax">COL_HSIZE</span><span class="plain-syntax">) = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
@@ -458,7 +412,7 @@ converted from an rvalue to an lvalue.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Printing Property Names. </b>Inform doesn't print property names prettily; it more or less prints them
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Printing Property Names. </b>Inform doesn't print property names prettily; it more or less prints them
 only as decimal numbers.
 </p>
 
