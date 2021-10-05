@@ -1286,6 +1286,7 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	TEMPORARY_TEXT(K)
 	TEMPORARY_TEXT(obj)
 	TEMPORARY_TEXT(p)
+	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, K);
 	Vanilla::node(gen, operands[0]);
 	CodeGen::deselect_temporary(gen);
@@ -1295,21 +1296,26 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	CodeGen::select_temporary(gen, p);
 	Vanilla::node(gen, operands[2]);
 	CodeGen::deselect_temporary(gen);
+	CodeGen::select_temporary(gen, val);
+	Vanilla::node(gen, operands[3]);
+	CodeGen::deselect_temporary(gen);
 
 	WRITE("if (%S == OBJECT_TY) {\n", K);
 	WRITE("    if (%S-->0 == 2) {\n", p);
-	WRITE("        if (%S has %S-->1) rtrue; rfalse;\n", obj, p);
+	WRITE("        if (%S has %S-->1) %S = 1; else %S = 0;\n", obj, p, val, val);
+	WRITE("    } else {\n");
+	WRITE("        if (%S-->1 == door_to) %S = %S.(%S-->1)();\n", p, val, obj, p);
+	WRITE("        else %S = %S.(%S-->1);\n", val, obj, p);
 	WRITE("    }\n");
-	WRITE("    if (%S == door_to) return (%S-->1).%S();\n", p, obj, p);
-	WRITE("    return %S.(%S-->1);\n", obj, p);
 	WRITE("} else {\n");
 	WRITE("    holder = value_property_holders-->%S;\n", K);
-	WRITE("    return (holder.(%S-->1))-->(%S+COL_HSIZE);\n", p, obj);
+	WRITE("    %S = (holder.(%S-->1))-->(%S+COL_HSIZE);\n", val, p, obj);
 	WRITE("}\n");
 
 	DISCARD_TEXT(K)
 	DISCARD_TEXT(obj)
 	DISCARD_TEXT(p)
+	DISCARD_TEXT(val)
 	return;
 
 @<Invoke special write_gprop@> =

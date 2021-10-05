@@ -402,6 +402,70 @@ void i7_push(i7process_t *proc, i7word_t x) {
 	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
 	proc->state.stack[proc->state.stack_pointer++] = x;
 }
+void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	if (K == i7_mgl_OBJECT_TY) {
+		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
+			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	} else {
+		if ((((obj >= 1)) && ((obj <= i7_read_word(proc, i7_mgl_value_ranges, K))))) {
+			i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+			if (((holder) && ((i7_provides(proc, holder, pr))))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	}
+}
+
+void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if ((i7_has(proc, obj, pr))) {
+                if (val) *val =  1;
+            } else {
+            	if (val) *val =  0;
+            }
+        } else {
+	        if ((pr == i7_mgl_A_door_to)) {
+	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
+	        } else {
+		        if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
+		    }
+		}
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        if (val) *val = (i7word_t) i7_read_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
+    }
+}
+void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if (val) {
+                i7_change_prop_value(proc, obj, pr, 1, i7_lvalue_SET);
+            } else {
+                i7_change_prop_value(proc, obj, pr, 0, i7_lvalue_SET);
+            }
+        } else {
+            (i7_change_prop_value(proc, obj, pr, val, i7_lvalue_SET));
+        }
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, i7_lvalue_SET));
+    }
+}
 void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
 	if (proc->communicator == NULL) {
 		if (z) *z = 0;

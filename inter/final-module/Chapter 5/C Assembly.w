@@ -56,9 +56,14 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 
-	int vararg_operands_from = 0, vararg_operands_to = 0;
+	int vararg_operands_from = 0, vararg_operands_to = 0, hacky_extras = FALSE;
 	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
 	for (int i=0; i<16; i++) store_this_operand[i] = FALSE;
+
+	if (Str::eq(opcode, I"@provides_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE; }
+	if (Str::eq(opcode, I"@read_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE; }
+	if (Str::eq(opcode, I"@write_gprop")) { hacky_extras = TRUE; }
+
 	if (Str::eq(opcode, I"@acos")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@add")) store_this_operand[3] = TRUE;
 	if (Str::eq(opcode, I"@aload")) store_this_operand[3] = TRUE;
@@ -140,6 +145,7 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 		}
 		DISCARD_TEXT(write_to)
 	}
+	if (hacky_extras) WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE");
 	WRITE(")");
 	if (label_sense != NOT_APPLICABLE) {
 		if (label_sense == FALSE) WRITE(" == FALSE");
@@ -151,6 +157,84 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 
 	if (void_context) WRITE(";\n");
 }
+
+@
+
+= (text to inform7_clib.h)
+void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+=
+
+= (text to inform7_clib.c)
+void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	if (K == i7_mgl_OBJECT_TY) {
+		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
+			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	} else {
+		if ((((obj >= 1)) && ((obj <= i7_read_word(proc, i7_mgl_value_ranges, K))))) {
+			i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+			if (((holder) && ((i7_provides(proc, holder, pr))))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	}
+}
+
+void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if ((i7_has(proc, obj, pr))) {
+                if (val) *val =  1;
+            } else {
+            	if (val) *val =  0;
+            }
+        } else {
+	        if ((pr == i7_mgl_A_door_to)) {
+	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
+	        } else {
+		        if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
+		    }
+		}
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        if (val) *val = (i7word_t) i7_read_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
+    }
+}
+void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if (val) {
+                i7_change_prop_value(proc, obj, pr, 1, i7_lvalue_SET);
+            } else {
+                i7_change_prop_value(proc, obj, pr, 0, i7_lvalue_SET);
+            }
+        } else {
+            (i7_change_prop_value(proc, obj, pr, val, i7_lvalue_SET));
+        }
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, i7_lvalue_SET));
+    }
+}
+=
 
 @
 

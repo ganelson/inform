@@ -31,8 +31,6 @@
 @e ASM_NEG_RTRUE_VSYMB
 @e ASM_NEG_RFALSE_VSYMB
 
-@e VALUE_PROPERTY_HOLDERS_VSYMB
-@e VALUE_RANGES_VSYMB
 @e RESPONSETEXTS_VSYMB
 @e CREATEPROPERTYOFFSETS_VSYMB
 @e KINDHIERARCHY_VSYMB
@@ -66,8 +64,6 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, ASM_NEG_RTRUE_VSYMB, I"__assembly_negated_rtrue_label", I"?~rtrue");
 	Veneer::index(I, ASM_NEG_RFALSE_VSYMB, I"__assembly_negated_rfalse_label", I"?~rfalse");
 
-	Veneer::index(I, VALUE_PROPERTY_HOLDERS_VSYMB, I"value_property_holders", NULL);
-	Veneer::index(I, VALUE_RANGES_VSYMB, I"value_ranges", NULL);
 	Veneer::index(I, RESPONSETEXTS_VSYMB, I"ResponseTexts", NULL);
 	Veneer::index(I, CREATEPROPERTYOFFSETS_VSYMB, I"CreatePropertyOffsets", NULL);
 	Veneer::index(I, KINDHIERARCHY_VSYMB, I"KindHierarchy", NULL);

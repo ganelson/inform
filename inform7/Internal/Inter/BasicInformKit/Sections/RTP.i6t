@@ -280,17 +280,6 @@ it doesn't mean it actually does have.
 
 	@provides_gprop K obj q a;
 	if (a) rtrue;
-!	if (K ~= OBJECT_TY) {
-!		if ((obj >= 1) && (obj <= value_ranges-->K)) {
-!			holder = value_property_holders-->K;
-!			if ((holder) && (holder provides q)) rtrue;
-!		}
-!	} else {
-!		if ((obj) && (metaclass(obj) == Object)) {
-!			if (q-->0 == 2) rtrue;
-!			if (obj provides q) rtrue;
-!		}
-!	}
 
 	if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
 	rfalse;
@@ -334,16 +323,6 @@ the one which the player is on.
 	if (ProvidesProperty(K, V, pr, 1-err)) {
 		@read_gprop K V pr val;
 		return val;
-!		if (K == OBJECT_TY) {
-!			if (pr-->0 == 2) {
-!				if (V has pr) rtrue; rfalse;
-!			}
-!			if (pr == door_to) return V.pr();
-!			return V.pr;
-!		} else {
-!			holder = value_property_holders-->K;
-!			return (holder.pr)-->(V+COL_HSIZE);
-!		}
 	}
 	return 0;
 ];
@@ -357,16 +336,6 @@ converted from an rvalue to an lvalue.
 [ WriteGProperty K V pr val holder;
 	if (ProvidesProperty(K, V, pr, true)) {
 		@write_gprop K V pr val;
-!		if (K == OBJECT_TY) {
-!			if (pr-->0 == 2) {
-!				if (val) give V pr; else give V ~pr;
-!			} else {
-!				V.pr = val;
-!			}
-!		} else {
-!			holder = value_property_holders-->K;
-!			(holder.pr)-->(V+COL_HSIZE) = val;
-!		}
 	}
 ];
 
