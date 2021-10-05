@@ -30,6 +30,8 @@ typedef struct C_generation_object_model_data {
 	struct C_property_owner *direction_kind;
 	int inline_this;
 	struct dictionary *header_constants;
+	int value_ranges_needed;
+	int value_property_holders_needed;
 } C_generation_object_model_data;
 
 typedef struct C_property_owner {
@@ -55,6 +57,8 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	for (int i=0; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 	C_GEN_DATA(objdata.compass_instance) = NULL;
 	C_GEN_DATA(objdata.header_constants) = Dictionaries::new(1024, TRUE);
+	C_GEN_DATA(objdata.value_ranges_needed) = FALSE;
+	C_GEN_DATA(objdata.value_property_holders_needed) = FALSE;
 }
 
 void CObjectModel::begin(code_generation *gen) {
@@ -67,7 +71,61 @@ void CObjectModel::end(code_generation *gen) {
 	@<Complete the initialiser function@>;
 	@<Complete the property-offset creator function@>;
 	@<Predeclare the object count and class array@>;
+	if (C_GEN_DATA(objdata.value_ranges_needed)) @<Make the value ranges@>;
+	if (C_GEN_DATA(objdata.value_property_holders_needed)) @<Make the value property holders@>;
 }
+
+@<Make the value ranges@> =
+	CMemoryModel::begin_array(NULL, gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
+	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+		I"/main/synoptic/kinds/BASE_KIND_HWM");
+	if (max_weak_id) {
+		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		for (int w=1; w<M; w++) {
+			int written = FALSE;
+			for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+				inter_symbol *kind_name = gen->kinds_in_source_order[i];
+				if (VanillaObjects::weak_id(kind_name) == w) {
+					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+						written = TRUE;
+						TEMPORARY_TEXT(N)
+						WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
+						CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+						DISCARD_TEXT(N)
+					}
+				}
+			}
+			if (written == FALSE) CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
+		}
+	}
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
+
+@<Make the value property holders@> =
+	CMemoryModel::begin_array(NULL, gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
+	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+		I"/main/synoptic/kinds/BASE_KIND_HWM");
+	if (max_weak_id) {
+		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		for (int w=1; w<M; w++) {
+			int written = FALSE;
+			for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+				inter_symbol *kind_name = gen->kinds_in_source_order[i];
+				if (VanillaObjects::weak_id(kind_name) == w) {
+					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+						written = TRUE;
+						TEMPORARY_TEXT(N)
+						WRITE_TO(N, "i7_mgl_VPH_%d", w);
+						CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
+						DISCARD_TEXT(N)
+					}
+				}
+			}
+			if (written == FALSE) CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
+		}
+	}
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
 
 @h Owners.
 In this model, every class and every instance are represented by one "owner

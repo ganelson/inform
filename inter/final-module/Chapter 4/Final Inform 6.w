@@ -103,12 +103,16 @@ It's used in the I6 veneer, and need not exist on any other final compilation ta
 =
 typedef struct I6_generation_data {
 	int I6_property_offsets_made;
+	int value_ranges_needed;
+	int value_property_holders_needed;
 	CLASS_DEFINITION
 } I6_generation_data;
 
 int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
 	I6_generation_data *data = CREATE(I6_generation_data);
 	data->I6_property_offsets_made = 0;
+	data->value_ranges_needed = FALSE;
+	data->value_property_holders_needed = FALSE;
 
 	CodeGen::create_segments(gen, data, I6_target_segments);
 
@@ -209,6 +213,57 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 		CodeGen::deselect(gen, saved);
 	}
 
+	if (I6_GEN_DATA(value_ranges_needed)) {
+		segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("Array value_ranges --> 0");
+		inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+			I"/main/synoptic/kinds/BASE_KIND_HWM");
+		if (max_weak_id) {
+			int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+			for (int w=1; w<M; w++) {
+				int written = FALSE;
+				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+					inter_symbol *kind_name = gen->kinds_in_source_order[i];
+					if (VanillaObjects::weak_id(kind_name) == w) {
+						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+							written = TRUE;
+							WRITE(" %d", Inter::Kind::instance_count(kind_name));
+						}
+					}
+				}
+				if (written == FALSE) WRITE(" 0");
+			}
+			WRITE(";\n");
+		}
+		CodeGen::deselect(gen, saved);
+	}
+	if (I6_GEN_DATA(value_property_holders_needed)) {
+		segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("Array value_property_holders --> 0");
+		inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+			I"/main/synoptic/kinds/BASE_KIND_HWM");
+		if (max_weak_id) {
+			int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+			for (int w=1; w<M; w++) {
+				int written = FALSE;
+				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+					inter_symbol *kind_name = gen->kinds_in_source_order[i];
+					if (VanillaObjects::weak_id(kind_name) == w) {
+						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+							written = TRUE;
+							WRITE(" VPH_%d", w);
+						}
+					}
+				}
+				if (written == FALSE) WRITE(" 0");
+			}
+			WRITE(";\n");
+		}
+		CodeGen::deselect(gen, saved);
+	}
+
 	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ _final_read_pval o p a t;\n");
@@ -233,19 +288,6 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("Constant i7_lvalue_POSTINC = 5;\n");
 	WRITE("Constant i7_lvalue_SETBIT = 6;\n");
 	WRITE("Constant i7_lvalue_CLEARBIT = 7;\n");
-/*	WRITE("[ _final_write_pval o p v m;\n");
-	WRITE("    if (property_is_attribute-->p) { if (v == 0) give v ~p; else give v p; return v; }\n");
-	WRITE("    if (o provides p) { switch (m) {\n");
-	WRITE("    	i7_lvalue_SET:      o.p = v; return v;\n");
-	WRITE("    	i7_lvalue_PREDEC:   return --o.p;\n");
-	WRITE("    	i7_lvalue_POSTDEC:  return o.p--;\n");
-	WRITE("    	i7_lvalue_PREINC:   return ++o.p;\n");
-	WRITE("    	i7_lvalue_POSTINC:  return o.p++;\n");
-	WRITE("    	i7_lvalue_SETBIT:   o.p = (o.p) | v; return o.p;\n");
-	WRITE("    	i7_lvalue_CLEARBIT: o.p = (o.p) &~ v; return o.p;\n");
-	WRITE("    } return v; }\n");
-	WRITE("];\n");
-*/
 	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
@@ -1253,6 +1295,9 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	Vanilla::node(gen, operands[3]);
 	CodeGen::deselect_temporary(gen);
 
+	I6_GEN_DATA(value_ranges_needed) = TRUE;
+	I6_GEN_DATA(value_property_holders_needed) = TRUE;
+
 	WRITE("if (%S == OBJECT_TY) {\n", K);
 	WRITE("    if ((%S) && (metaclass(%S) == Object)) {\n", obj, obj);
 	WRITE("        if ((%S-->0 == 2) || (%S provides %S-->1)) {\n", p, obj, p);
@@ -1300,6 +1345,8 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	Vanilla::node(gen, operands[3]);
 	CodeGen::deselect_temporary(gen);
 
+	I6_GEN_DATA(value_property_holders_needed) = TRUE;
+
 	WRITE("if (%S == OBJECT_TY) {\n", K);
 	WRITE("    if (%S-->0 == 2) {\n", p);
 	WRITE("        if (%S has %S-->1) %S = 1; else %S = 0;\n", obj, p, val, val);
@@ -1335,6 +1382,8 @@ void I6Target::invoke_opcode(code_generator *cgt, code_generation *gen,
 	CodeGen::select_temporary(gen, val);
 	Vanilla::node(gen, operands[3]);
 	CodeGen::deselect_temporary(gen);
+
+	I6_GEN_DATA(value_property_holders_needed) = TRUE;
 
 	WRITE("if (%S == OBJECT_TY) {\n", K);
 	WRITE("    if (%S-->0 == 2) {\n", p);

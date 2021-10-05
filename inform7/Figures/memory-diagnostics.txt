@@ -234,7 +234,7 @@ Total memory consumption was 394313K = 385 MB
      ----  by_function_bp_data                      1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
      ----  kind_template_definition                 1 object, 40 bytes
-     ----  I6_generation_data                       1 object, 24 bytes
+     ----  I6_generation_data                       1 object, 32 bytes
 
 39.3% was used for memory not allocated for objects:
 
@@ -256,5 +256,5 @@ Total memory consumption was 394313K = 385 MB
      ----  code generation workspace for objects    4128 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.4% was overhead - 74413816 bytes = 72669K = 70 MB
+18.4% was overhead - 74413808 bytes = 72669K = 70 MB
 

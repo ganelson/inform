@@ -16,6 +16,7 @@ void VanillaObjects::declare_properties(code_generation *gen) {
 		VanillaObjects::sorted_array(gen->instances, VanillaObjects::in_declaration_order);
 	if (LinkedLists::len(gen->unassimilated_properties) > 0)
 		@<Declare and allocate properties@>;
+	@<Mark the kinds which can have properties@>;
 }
 
 @ =
@@ -247,6 +248,28 @@ linearly with the size of the source text, even though $N$ does.
 		}
 	}
 
+@<Mark the kinds which can have properties@> =
+	inter_tree *I = gen->from;
+	inter_symbol *kind_name;
+	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds) {
+		if (VanillaObjects::is_kind_of_object(kind_name)) continue;
+		if (kind_name == object_kind_symbol) continue;
+		if (kind_name == unchecked_kind_symbol) continue;
+		int mark_me = FALSE;
+		inter_node_list *FL =
+			Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
+		if (FL->first_in_inl) mark_me = TRUE;
+		else for (int in=0; in<LinkedLists::len(gen->instances); in++) {
+			inter_symbol *inst_name = gen->instances_in_declaration_order[in];
+			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+				inter_node_list *FL =
+					Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
+				if (FL->first_in_inl) mark_me = TRUE;
+			}
+		}
+		if (mark_me) Inter::Symbols::set_flag(kind_name, KIND_WITH_PROPS_MARK_BIT);
+	}
+
 @h Instances and kinds.
 
 =
@@ -338,13 +361,11 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 	if (max_weak_id) {
 		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
 		if (M != 0) {
-			@<Decide who gets a VPH@>;
-			@<Write the VPH lookup array@>;
 			for (int w=1; w<M; w++) {
 				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
 					inter_symbol *kind_name = gen->kinds_in_source_order[i];
 					if (VanillaObjects::weak_id(kind_name) == w) {
-						if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
+						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
 							TEMPORARY_TEXT(instance_name)
 							WRITE_TO(instance_name, "VPH_%d", w);
 							segmentation_pos saved;
@@ -372,75 +393,6 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 		}
 	}
 	@<Compile the property stick arrays@>;
-
-@ It's convenient to be able to distinguish, at run-time, which objects are
-the VPH objects used only for kind-property indexing.
-
-@<Decide who gets a VPH@> =
-	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[i];
-		if (VanillaObjects::is_kind_of_object(kind_name)) continue;
-		if (kind_name == object_kind_symbol) continue;
-		if (kind_name == unchecked_kind_symbol) continue;
-		int vph_me = FALSE;
-		inter_node_list *FL =
-			Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
-		if (FL->first_in_inl) vph_me = TRUE;
-		else for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-			inter_symbol *inst_name = gen->instances_in_declaration_order[in];
-			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
-				inter_node_list *FL =
-					Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
-				if (FL->first_in_inl) vph_me = TRUE;
-			}
-		}
-		if (vph_me) Inter::Symbols::set_flag(kind_name, VPH_MARK_BIT);
-	}
-
-@ This array is indexed by the weak kind ID of |K|. The entry is 0 if |K|
-doesn't have a VPH, or the object number of its VPH if it has.
-
-@<Write the VPH lookup array@> =
-	segmentation_pos saved;
-	Generators::begin_array(gen, I"value_property_holders", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
-	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	int vph = 0;
-	for (int w=1; w<M; w++) {
-		int written = FALSE;
-		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-			inter_symbol *kind_name = gen->kinds_in_source_order[i];
-			if (VanillaObjects::weak_id(kind_name) == w) {
-				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
-					written = TRUE;
-					TEMPORARY_TEXT(E)
-					WRITE_TO(E, "VPH_%d", w);
-					Generators::mangled_array_entry(gen, E, WORD_ARRAY_FORMAT);
-					DISCARD_TEXT(E)
-				}
-			}
-		}
-		if (written) vph++; else Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
-	Generators::begin_array(gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
-	Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	for (int w=1; w<M; w++) {
-		int written = FALSE;
-		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-			inter_symbol *kind_name = gen->kinds_in_source_order[i];
-			if (VanillaObjects::weak_id(kind_name) == w) {
-				if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
-					written = TRUE;
-					TEMPORARY_TEXT(E)
-					WRITE_TO(E, "%d", Inter::Kind::instance_count(kind_name));
-					Generators::array_entry(gen, E, WORD_ARRAY_FORMAT);
-					DISCARD_TEXT(E)
-				}
-			}
-		}
-		if (written == FALSE) Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
 
 @<Work through this frame list of permissions@> =
 	inter_tree_node *X;

@@ -60,9 +60,16 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
 	for (int i=0; i<16; i++) store_this_operand[i] = FALSE;
 
-	if (Str::eq(opcode, I"@provides_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE; }
-	if (Str::eq(opcode, I"@read_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE; }
-	if (Str::eq(opcode, I"@write_gprop")) { hacky_extras = TRUE; }
+	if (Str::eq(opcode, I"@provides_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE;
+		C_GEN_DATA(objdata.value_ranges_needed) = TRUE;
+		C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
+	}
+	if (Str::eq(opcode, I"@read_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE;
+		C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
+	}
+	if (Str::eq(opcode, I"@write_gprop")) { hacky_extras = TRUE;
+		C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
+	}
 
 	if (Str::eq(opcode, I"@acos")) store_this_operand[2] = TRUE;
 	if (Str::eq(opcode, I"@add")) store_this_operand[3] = TRUE;
