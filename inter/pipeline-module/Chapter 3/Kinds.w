@@ -32,6 +32,7 @@ void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
 	@<Define KOVSUPPORTFUNCTION function@>;
 	@<Define SHOWMEKINDDETAILS function@>;
 	@<Define RUCKSACK_CLASS constant@>;
+	@<Define KINDHIERARCHY array@>;
 }
 
 @<Define BASE_KIND_HWM@> =
@@ -437,3 +438,62 @@ name), with other actors oblivious.
 		}
 	}
 	if (found == FALSE) Produce::numeric_constant(I, iname, K_value, 0);
+
+@ The kind inheritance tree is represented by an array providing metadata on
+the kinds of object: there are just two words per kind -- the class, then
+the instance count for its own kind. For instance, "door" is usually
+kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
+8 will be |K4_door|, the Inform 6 class for doors, and word 9 will be the
+number 2, meaning kind number 2, "thing". This tells us that a door is
+a kind of thing.
+
+@<Define KINDHIERARCHY array@> =
+	linked_list *L = NEW_LINKED_LIST(inter_symbol);
+	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^is_subkind_of_object")) {
+			inter_symbol *kind_name = Metadata::read_symbol(pack, I"^object_class");
+			ADD_TO_LINKED_LIST(kind_name, inter_symbol, L);
+		}
+	}
+
+	inter_symbol **ordered = VanillaObjects::sorted_array(L, VanillaObjects::in_source_order);
+	for (int i=0; i<LinkedLists::len(L); i++) {
+		inter_symbol *kind_name = ordered[i];
+		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i+1);
+	}
+
+	inter_name *iname = HierarchyLocations::find(I, KINDHIERARCHY_HL);
+	Synoptic::begin_array(I, iname);
+	if (LinkedLists::len(L) > 0) {
+		Synoptic::symbol_entry(object_kind_symbol);
+		Synoptic::numeric_entry(0);
+		for (int i=0; i<LinkedLists::len(L); i++) {
+			inter_symbol *kind_name = ordered[i];
+			inter_package *pack = Inter::Packages::container(kind_name->definition);
+//			inter_symbol *kind_name = Metadata::read_symbol(pack, I"^object_class");
+			Synoptic::symbol_entry(kind_name);
+//			inter_symbol *super_name = Metadata::read_optional_symbol(pack, I"^superkind");
+				inter_symbol *super_name = Inter::Kind::super(kind_name);
+			if ((super_name) && (super_name != object_kind_symbol)) {
+				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(super_name));
+			} else {
+				Synoptic::numeric_entry(0);
+			}
+		}
+	} else {
+		Synoptic::numeric_entry(0);
+		Synoptic::numeric_entry(0);
+	}
+	Synoptic::end_array(I);
+
+@
+
+=
+inter_ti SynopticKinds::kind_of_object_count(inter_symbol *kind_name) {
+	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
+	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
+	if (N >= 0) return (inter_ti) N;
+	return 0;
+}

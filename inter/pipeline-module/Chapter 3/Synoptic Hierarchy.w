@@ -140,6 +140,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 @e SHOWMEKINDDETAILS_HL
 @e BASE_KIND_HWM_HL
 @e RUCKSACK_CLASS_HL
+@e KINDHIERARCHY_HL
 
 @<Establish kinds@> =
 	SYN_SUBMD(I"kinds")
@@ -154,6 +155,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 		SYN_FUNCT(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
 		SYN_FUNCT(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
 		SYN_CONST(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
+		SYN_CONST(KINDHIERARCHY_HL,               I"KindHierarchy")
 
 @h Multimedia.
 

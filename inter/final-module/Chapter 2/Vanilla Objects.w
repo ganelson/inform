@@ -280,63 +280,9 @@ void VanillaObjects::generate(code_generation *gen) {
 		@<Write Value Property Holder objects for each kind of value instance@>;
 	}
 
-	@<Annotate kinds of object with a sequence counter@>;
-	@<Write the KindHierarchy array@>;
 	@<Write an I6 Class definition for each kind of object@>;
 	@<Write an I6 Object definition for each object instance@>;
 }
-
-@<Annotate kinds of object with a sequence counter@> =
-	inter_ti c = 1;
-	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[i];
-		if (VanillaObjects::is_kind_of_object(kind_name))
-			Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
-	}
-
-@h The kind inheritance tree.
-We begin with an array providing metadata on the kinds of object: there
-are just two words per kind -- the Inform 6 class corresponding to the kind,
-then the instance count for its own kind. For instance, "door" is usually
-kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
-8 will be |K4_door|, the Inform 6 class for doors, and word 9 will be the
-number 2, meaning kind number 2, "thing". This tells us that a door is
-a kind of thing. In this way, we store the hierarchy of |N| kinds in |2N|
-words of memory; it's needed at run-time for checking dynamically that
-property usage is legal.
-
-@<Write the KindHierarchy array@> =
-	int no_kos = 0;
-	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[i];
-		if (VanillaObjects::is_kind_of_object(kind_name)) no_kos++;
-	}
-
-	segmentation_pos saved;
-	Generators::begin_array(gen, I"KindHierarchy", NULL, NULL, WORD_ARRAY_FORMAT, &saved);
-	if (no_kos > 0) {
-		Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-		for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-			inter_symbol *kind_name = gen->kinds_in_source_order[i];
-			if (VanillaObjects::is_kind_of_object(kind_name)) {
-				inter_symbol *super_name = Inter::Kind::super(kind_name);
-				Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-				if ((super_name) && (super_name != object_kind_symbol)) {
-					TEMPORARY_TEXT(N);
-					WRITE_TO(N, "%d", VanillaObjects::kind_of_object_count(super_name));
-					Generators::array_entry(gen, N, WORD_ARRAY_FORMAT);
-					DISCARD_TEXT(N);
-				} else {
-					Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-				}
-			}
-		}
-	} else {
-		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
 
 @h Lookup mechanism for properties of value instances.
 As noted above, if |K| is a kind which can have properties but is not a subkind
@@ -546,16 +492,6 @@ int VanillaObjects::is_kind_of_object(inter_symbol *kind_name) {
 	if (idt == unchecked_idt) return FALSE;
 	if (Inter::Kind::is_a(kind_name, object_kind_symbol)) return TRUE;
 	return FALSE;
-}
-
-@ Counting kinds of object, not very quickly:
-
-=
-inter_ti VanillaObjects::kind_of_object_count(inter_symbol *kind_name) {
-	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
-	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
-	if (N >= 0) return (inter_ti) N;
-	return 0;
 }
 
 @
