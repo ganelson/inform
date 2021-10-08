@@ -226,8 +226,8 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 			int M = Inter::Symbols::evaluate_to_int(max_weak_id);
 			for (int w=1; w<M; w++) {
 				int written = FALSE;
-				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-					inter_symbol *kind_name = gen->kinds_in_source_order[i];
+				inter_symbol *kind_name;
+				LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 					if (VanillaObjects::weak_id(kind_name) == w) {
 						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
 							written = TRUE;
@@ -251,8 +251,8 @@ int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 			int M = Inter::Symbols::evaluate_to_int(max_weak_id);
 			for (int w=1; w<M; w++) {
 				int written = FALSE;
-				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-					inter_symbol *kind_name = gen->kinds_in_source_order[i];
+				inter_symbol *kind_name;
+				LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 					if (VanillaObjects::weak_id(kind_name) == w) {
 						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
 							written = TRUE;
@@ -1078,6 +1078,7 @@ void I6Target::begin_properties_for(code_generator *cgt, code_generation *gen, i
 	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_name));
 	Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &i6_ap_saved);
 	DISCARD_TEXT(instance_name)
+	Inter::Symbols::set_flag(kind_name, KIND_WITH_PROPS_MARK_BIT);
 }
 
 void I6Target::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {

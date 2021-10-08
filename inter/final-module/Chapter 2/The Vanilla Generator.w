@@ -40,6 +40,8 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 @<Traverse for global bric-a-brac@> =
 	gen->global_variables = NEW_LINKED_LIST(inter_symbol);
 	InterTree::traverse(gen->from, Vanilla::gather_up, gen, NULL, 0);
+	Vanilla::sort_symbol_list(gen->kinds_in_declaration_order, gen->kinds, Vanilla::in_declaration_order);
+	Vanilla::sort_symbol_list(gen->instances_in_declaration_order, gen->instances, Vanilla::in_declaration_order);
 	Generators::declare_variables(gen, gen->global_variables);
 	VanillaObjects::declare_properties(gen);
 
@@ -73,14 +75,52 @@ void Vanilla::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	}
 }
 
-@<Traverse to make function predeclarations@> =
-	InterTree::traverse(gen->from, Vanilla::predeclare_functions, gen, NULL, -PACKAGE_IST);
+@ =
+void Vanilla::sort_symbol_list(linked_list *to_L, linked_list *L,
+	int (*sorter)(const void *elem1, const void *elem2)) {
+	int N = LinkedLists::len(L);
+	if (N > 0) {
+		inter_symbol **array = (inter_symbol **)
+			(Memory::calloc(N, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i=0;
+		inter_symbol *sym;
+		LOOP_OVER_LINKED_LIST(sym, inter_symbol, L) array[i++] = sym;
+		qsort(array, (size_t) N, sizeof(inter_symbol *), sorter);
+		for (int j=0; j<N; j++) ADD_TO_LINKED_LIST(array[j], inter_symbol, to_L);
+		Memory::I7_array_free(array, CODE_GENERATION_MREASON, N, sizeof(inter_symbol *));
+	}
+}
+
+int Vanilla::in_source_order(const void *elem1, const void *elem2) {
+	return Vanilla::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
+}
+int Vanilla::in_declaration_order(const void *elem1, const void *elem2) {
+	return Vanilla::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
+}
+int Vanilla::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = Vanilla::sequence_number(*e1, annot);
+	int s2 = Vanilla::sequence_number(*e2, annot);
+	if (s1 != s2) return s1-s2;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+}
+int Vanilla::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
+	int N = Inter::Symbols::read_annotation(kind_name, annot);
+	if (N >= 0) return N;
+	return 100000000;
+}
 
 @ Of course, not all target languages will need predeclared functions: Inform 6
 does not, for example. Such generators can just not provide |PREDECLARE_FUNCTION_MTID|,
 and then this will do nothing.
 
-=
+@<Traverse to make function predeclarations@> =
+	InterTree::traverse(gen->from, Vanilla::predeclare_functions, gen, NULL, -PACKAGE_IST);
+
+@ =
 void Vanilla::predeclare_functions(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);

@@ -1,11 +1,11 @@
 100.0% in inform7 run
-     55.0% in compilation to Inter
-         39.6% in //Sequence::undertake_queued_tasks//
-          3.4% in //MajorNodes::pre_pass//
-          2.4% in //MajorNodes::pass_1//
+     55.3% in compilation to Inter
+         40.0% in //Sequence::undertake_queued_tasks//
+          3.5% in //MajorNodes::pre_pass//
+          2.5% in //MajorNodes::pass_1//
           2.0% in //RTPhrasebook::compile_entries//
           1.3% in //ImperativeDefinitions::assess_all//
-          1.1% in //RTKindConstructors::compile//
+          1.2% in //RTKindConstructors::compile//
           0.4% in //ImperativeDefinitions::compile_first_block//
           0.4% in //MajorNodes::pass_2//
           0.4% in //Sequence::undertake_queued_tasks//
@@ -16,22 +16,23 @@
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          1.9% not specifically accounted for
-     43.0% in running Inter pipeline
-         12.4% in step preparation
+          1.7% not specifically accounted for
+     42.7% in running Inter pipeline
+         12.1% in step preparation
           9.6% in inter step 7/16: consolidate-text
-          8.0% in inter step 2/16: link
-          6.5% in inter step 16/16: generate inform6 -> auto.inf
+          7.9% in inter step 2/16: link
+          6.4% in inter step 16/16: generate inform6 -> auto.inf
           1.5% in inter step 11/16: make-identifiers-unique
           0.4% in inter step 12/16: reconcile-verbs
+          0.2% in inter step 10/16: detect-indirect-calls
           0.2% in inter step 14/16: eliminate-redundant-operations
           0.2% in inter step 6/16: assimilate
           0.2% in inter step 8/16: resolve-external-symbols
           0.2% in inter step 9/16: inspect-plugs
-          0.1% in inter step 10/16: detect-indirect-calls
           0.1% in inter step 13/16: eliminate-redundant-labels
+          0.1% in inter step 3/16: merge-template <- none
           0.1% in inter step 4/16: parse-linked-matter
           0.1% in inter step 5/16: resolve-conditional-compilation
-          2.8% not specifically accounted for
+          2.7% not specifically accounted for
       1.6% in supervisor
       0.3% not specifically accounted for

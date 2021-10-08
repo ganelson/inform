@@ -53,9 +53,8 @@ typedef struct code_generation {
 	struct linked_list *unassimilated_properties;
 	struct linked_list *instances;
 	struct linked_list *kinds;
-	struct inter_symbol **kinds_in_source_order;
-	struct inter_symbol **kinds_in_declaration_order;
-	struct inter_symbol **instances_in_declaration_order;
+	struct linked_list *kinds_in_declaration_order;
+	struct linked_list *instances_in_declaration_order;
 
 	CLASS_DEFINITION
 } code_generation;
@@ -81,9 +80,8 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->unassimilated_properties = NEW_LINKED_LIST(inter_symbol);
 	gen->instances = NEW_LINKED_LIST(inter_symbol);
 	gen->kinds = NEW_LINKED_LIST(inter_symbol);
-	gen->kinds_in_source_order = NULL;
-	gen->kinds_in_declaration_order = NULL;
-	gen->instances_in_declaration_order = NULL;
+	gen->kinds_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
+	gen->instances_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
 	return gen;
 }
 

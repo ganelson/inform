@@ -3,147 +3,193 @@
 How the vanilla code generation strategy handles instances, kinds, and properties.
 
 @h Properties.
-Early in code-generation, we declare the properties. This entails some housekeeping,
-putting together lists of kinds and instances as well.
+Early in code-generation, we declare the properties. Generators might want to
+represent these in all kinds of ways for the sake of efficiency; on Inform 6,
+for example, some either-or properties of objects may be represented as
+"attributes". But that's not our concern. We will try to keep the model as
+simple as possible here.
+
+What we assume is that:
+(a) A property |P| is represented at runtime by a small word array.
+(b) The meaning of the first two words, |P-->0| and |P-->1|, is up to the
+generator. It can put anything it likes in them.
+(c) |P-->2| is 1 for either-or properties, 0 for all others.
+(d) |P-->3| is the printed name of the property, for use in debugging or
+runtime problem messages.
+(e) |P-->4| onwards is a set of permissions, a concise representation of
+which instances can have the property in question. This is 0-terminated.
+
+@ The biggest complication we face is that the linking process has left us, in
+some cases, with multiple property declarations for what is actually the same
+property. (At present there can be at most two, but we will not assume that.)
+
+For example, this arises when a property is defined in Inform 7 source like so:
+= (text as Inform 7)
+A room can be privately-named or publicly-named.
+The privately-named property translates into Inter as "privately_named".
+=
+...where the property |privately_named| actually originates in a kit, written
+in Inform 6 notation like so:
+= (text as Inform 6)
+Attribute privately_named;
+=
+We now have two property declarations, one in the Standard Rules module, the
+other in the BasicInformKit module. It's tempting to have the linker delete
+the Standard Rules one and convert references to it to point them to the kit
+definition, but this is not a good idea because the kit definition doesn't
+have the metadata or permissions which the Standard Rules definition has. So
+we keep both in play, and reconcile them in the code below.
+
+What this does is to work through the properties and group them into equivalence
+classes by their final identifier names. Here, for example, we recognise these
+two properties as the same because they both want to be called |privately_named|.
+
+In this case, the scan below would make |first_with_name| the BasicInformKit
+definition, and |last_with_name| the Standard Rules one; and |all_with_name|
+would be a list of the two.
+
+By scanning the assimilated properties (i.e. those from kits) first, we ensure that:
+
+(i) |first_with_name| will be the definitive property, while
+(ii) |last_with_name| will have the correct metadata and permissions.
+
+Note that this is also the case if there is just one Inform 7-level definition
+of a property, because then |first_with_name| and |last_with_name| will be the
+same, and the list will be a singleton.
 
 =
 void VanillaObjects::declare_properties(code_generation *gen) {
-	gen->kinds_in_source_order =
-		VanillaObjects::sorted_array(gen->kinds, VanillaObjects::in_source_order);
-	gen->kinds_in_declaration_order =
-		VanillaObjects::sorted_array(gen->kinds, VanillaObjects::in_declaration_order);
-	gen->instances_in_declaration_order =
-		VanillaObjects::sorted_array(gen->instances, VanillaObjects::in_declaration_order);
-	if (LinkedLists::len(gen->unassimilated_properties) > 0)
-		@<Declare and allocate properties@>;
-	@<Mark the kinds which can have properties@>;
-}
-
-@ =
-inter_symbol **VanillaObjects::sorted_array(linked_list *L,
-	int (*sorter)(const void *elem1, const void *elem2)) {
-	int N = LinkedLists::len(L);
-	inter_symbol **array = NULL;
-	if (N > 0) {
-		array = (inter_symbol **)
-			(Memory::calloc(N, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
-		int i=0;
-		inter_symbol *sym;
-		LOOP_OVER_LINKED_LIST(sym, inter_symbol, L) array[i++] = sym;
-		qsort(array, (size_t) N, sizeof(inter_symbol *), sorter);
-	}
-	return array;
-}
-
-int VanillaObjects::in_source_order(const void *elem1, const void *elem2) {
-	return VanillaObjects::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
-}
-int VanillaObjects::in_declaration_order(const void *elem1, const void *elem2) {
-	return VanillaObjects::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
-}
-int VanillaObjects::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
-	const inter_symbol **e1 = (const inter_symbol **) elem1;
-	const inter_symbol **e2 = (const inter_symbol **) elem2;
-	if ((*e1 == NULL) || (*e2 == NULL))
-		internal_error("Disaster while sorting kinds");
-	int s1 = VanillaObjects::sequence_number(*e1, annot);
-	int s2 = VanillaObjects::sequence_number(*e2, annot);
-	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
-}
-int VanillaObjects::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
-	int N = Inter::Symbols::read_annotation(kind_name, annot);
-	if (N >= 0) return N;
-	return 100000000;
-}
-
-@<Declare and allocate properties@> =
-	dictionary *i6dps_dict = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
-	dictionary *pre_i6dps_dict = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
-	dictionary *lists = Dictionaries::new(1024, FALSE); /* of |linked_list| of |inter_symbol| */
+	dictionary *first_with_name = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
+	dictionary *last_with_name = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
+	dictionary *all_with_name = Dictionaries::new(1024, FALSE); /* of |linked_list| of |inter_symbol| */
 
 	inter_symbol *prop_name;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
-		@<Group the properties by their unmangled identifier names@>;
+		@<Group the properties by name@>;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-		@<Group the properties by their unmangled identifier names@>;
+		@<Group the properties by name@>;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
 		@<Declare one property for each name group@>;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 		@<Declare one property for each name group@>;
+}
 
-@<Group the properties by their unmangled identifier names@> =
-	dictionary *D = pre_i6dps_dict;
-	dictionary *D2 = lists;
+@<Group the properties by name@> =
 	text_stream *name = Inter::Symbols::name(prop_name);
-	if (Dictionaries::find(D, name) == NULL) {
+	if (Dictionaries::find(last_with_name, name) == NULL) {
 		text_stream *inner_name = Str::duplicate(name);
-		Dictionaries::create(D, inner_name);
-		Dictionaries::write_value(D, inner_name, (void *) prop_name);
+		Dictionaries::create(last_with_name, inner_name);
+		Dictionaries::write_value(last_with_name, inner_name, (void *) prop_name);
 		linked_list *L = NEW_LINKED_LIST(inter_symbol);
 		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
-		Dictionaries::create(D2, inner_name);
-		Dictionaries::write_value(D2, inner_name, (void *) L);
+		Dictionaries::create(all_with_name, inner_name);
+		Dictionaries::write_value(all_with_name, inner_name, (void *) L);
 	} else {
-		Dictionaries::write_value(D, name, (void *) prop_name);
-		linked_list *L = Dictionaries::read_value(D2, name);
+		Dictionaries::write_value(last_with_name, name, (void *) prop_name);
+		linked_list *L = Dictionaries::read_value(all_with_name, name);
 		ADD_TO_LINKED_LIST(prop_name, inter_symbol, L);
 	}
 
+@ So here's an annoyance. We will need two identifier names for each property.
+One is the metadata array, while the other will probably be used by the generator
+to hold the actual storage -- that other is called the "inner name".
+
+In the case of our |privately_named| example, the metadata array will be called
+something like |A_privately_named|, and any references to the property in kit
+code or in Inform 7 source text will compile to this array. The inner name will
+preserve the original identifier |privately_named|, and will likely be used by
+the final generator for where a property value is actually stored. For Inform 6,
+for example, we will have:
+= (text)
+	A_privately_named --> 0		2
+	                  --> 1		privately_named (an I6 attribute)
+	                  --> 2     1
+	                  --> 3     "privately named"
+	                  --> 4     ... permissions follow
+=
+In some ways it would be more convenient to use these names the other way around:
+to call the array itself |privately_named| and have the inner identifier be
+something like |I_privately_named|. But this fails on Inform 6 in exasperating
+ways because of the built-in |name| property, whose name cannot be declared or
+altered.
+
 @<Declare one property for each name group@> =
-	dictionary *D = i6dps_dict;
 	text_stream *name = Inter::Symbols::name(prop_name);
-	if (Dictionaries::find(D, name) == NULL) {
+	text_stream *inner_name = NULL;
+	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
 			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
 			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
-		text_stream *inner_name = Str::duplicate(name);
-		Dictionaries::create(D, inner_name);
-		Dictionaries::write_value(D, inner_name, (void *) prop_name);
-		
-		text_stream *array_name = Str::new();
-		WRITE_TO(array_name, "A_%S", inner_name);
-
-		Inter::Symbols::set_translate(prop_name, array_name);
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
-			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
-
-		linked_list *all_forms = (linked_list *) Dictionaries::read_value(lists, name);
-
-		segmentation_pos saved;
-		Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
-		Generators::declare_property(gen, prop_name, all_forms);
-		if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN))
-			Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
-		else
-			Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
-		@<Do permissions@>;
-		Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+		inner_name = Str::duplicate(name);
+		Dictionaries::create(first_with_name, inner_name);
+		Dictionaries::write_value(first_with_name, inner_name, (void *) prop_name);
+		@<Set the translation to a new metadata array@>;
 	} else {
 		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
 			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
 			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
-			(inter_symbol *) Dictionaries::read_value(D, name);
-		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
-		text_stream *inner_name = I"<nameless>";
+			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
+		inner_name = I"<nameless>";
 		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
 		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
-			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
 	}
-	LOGIF(PROPERTY_ALLOCATION, "! SO  %S --> %S\n",
+	Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+		prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
+	LOGIF(PROPERTY_ALLOCATION, "! Translation %S, inner name %S\n",
 		Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
 
-@<Do permissions@> =
+@ Note that //Generators::declare_property// calls the generator to ask it to
+create the first two entries in the metadata array. Those can be anything the
+generator wants.
+
+@<Set the translation to a new metadata array@> =
+	text_stream *array_name = Str::new();
+	WRITE_TO(array_name, "A_%S", inner_name);
+	Inter::Symbols::set_translate(prop_name, array_name);
+
+	linked_list *all_forms = (linked_list *) Dictionaries::read_value(all_with_name, name);
+
+	segmentation_pos saved;
+	Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
+	Generators::declare_property(gen, prop_name, all_forms);
+	@<Write the either-or flag@>;
+	@<Write the printed name and permissions@>;
+	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+
+@<Write the either-or flag@> =
+	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN))
+		Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
+	else
+		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
+
+@ Note that we sneakily redefine |prop_name| here to be the last property in
+the set with this name, because that one will be unassimilated (if any of them
+are), and will therefore come from an I7 source text definition, and so will
+have full metadata declared for it. If we didn't redefine |prop_name| here,
+we'd lose all of that in cases like our |privately_named| example.
+
+@<Write the printed name and permissions@> =
 	inter_symbol *prop_name = 
-		(inter_symbol *) Dictionaries::read_value(pre_i6dps_dict, name);
-	int pos = 0; inter_tree *I = gen->from;
+		(inter_symbol *) Dictionaries::read_value(last_with_name, name);
+	inter_tree *I = gen->from;
 	@<Write the property name in double quotes@>;
 	@<Write a list of kinds or objects which are permitted to have this property@>;
-	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
+
+@<Write the property name in double quotes@> =
+	text_stream *pname = I"<nameless>";
+	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
+	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
+	TEMPORARY_TEXT(entry)
+	CodeGen::select_temporary(gen, entry);
+	Generators::compile_literal_text(gen, pname, TRUE);
+	CodeGen::deselect_temporary(gen);
+	Generators::array_entry(gen, entry, WORD_ARRAY_FORMAT);
+	DISCARD_TEXT(entry)
 
 @ The following lets the run-time environment know what properties are
 called, and which kinds of object are allowed to have them. This might look
@@ -159,18 +205,6 @@ direction, and so on. So the finer access controls for properties of
 objects are left until run-time (whereas no such regime is needed for
 properties of values). To make this possible, we need to tell the run-time
 code what is and is not allowed.
-
-@<Write the property name in double quotes@> =
-	text_stream *pname = I"<nameless>";
-	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
-	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
-	TEMPORARY_TEXT(entry)
-	CodeGen::select_temporary(gen, entry);
-	Generators::compile_literal_text(gen, pname, TRUE);
-	CodeGen::deselect_temporary(gen);
-	Generators::array_entry(gen, entry, WORD_ARRAY_FORMAT);
-	DISCARD_TEXT(entry)
-	pos++;
 
 @ A complete list here would be wasteful both of space and run-time
 checking time, but we only need a list $O_1, O_2, ..., O_k$ such that for
@@ -201,8 +235,8 @@ linearly with the size of the source text, even though $N$ does.
 	}
 
 @<List any O with an explicit permission@> =
-	for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[k];
+	inter_symbol *kind_name;
+	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 		if (VanillaObjects::is_kind_of_object(kind_name)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
@@ -210,13 +244,12 @@ linearly with the size of the source text, even though $N$ does.
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
 					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-					pos++;
 				}
 			}
 		}
 	}
-	for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-		inter_symbol *inst_name = gen->instances_in_declaration_order[in];
+	inter_symbol *inst_name;
+	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
 		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
@@ -224,7 +257,6 @@ linearly with the size of the source text, even though $N$ does.
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
 					Generators::mangled_array_entry(gen, Inter::Symbols::name(inst_name), WORD_ARRAY_FORMAT);
-					pos++;
 				}
 			}
 		}
@@ -237,37 +269,13 @@ linearly with the size of the source text, even though $N$ does.
 			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 		if (owner_name == object_kind_symbol) {
 			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-			pos++;
-			for (int k=0; k<LinkedLists::len(gen->kinds); k++) {
-				inter_symbol *kind_name = gen->kinds_in_source_order[k];
+			inter_symbol *kind_name;
+			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 				if (Inter::Kind::super(kind_name) == object_kind_symbol) {
 					Generators::mangled_array_entry(gen, Inter::Symbols::name(kind_name), WORD_ARRAY_FORMAT);
-					pos++;
 				}
 			}
 		}
-	}
-
-@<Mark the kinds which can have properties@> =
-	inter_tree *I = gen->from;
-	inter_symbol *kind_name;
-	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds) {
-		if (VanillaObjects::is_kind_of_object(kind_name)) continue;
-		if (kind_name == object_kind_symbol) continue;
-		if (kind_name == unchecked_kind_symbol) continue;
-		int mark_me = FALSE;
-		inter_node_list *FL =
-			Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
-		if (FL->first_in_inl) mark_me = TRUE;
-		else for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-			inter_symbol *inst_name = gen->instances_in_declaration_order[in];
-			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
-				inter_node_list *FL =
-					Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
-				if (FL->first_in_inl) mark_me = TRUE;
-			}
-		}
-		if (mark_me) Inter::Symbols::set_flag(kind_name, KIND_WITH_PROPS_MARK_BIT);
 	}
 
 @h Instances and kinds.
@@ -298,9 +306,9 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 
 @<Declare kinds of value@> =
 	int unique_kovp_id = 0;
-	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = gen->kinds_in_source_order[i];
-		if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+	inter_symbol *kind_name;
+	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
+		if (VanillaObjects::can_have_properties(gen, kind_name)) {
 			Generators::begin_properties_for(gen, kind_name);
 			inter_symbol *prop_name;
 			LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
@@ -308,8 +316,8 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 			inter_node_list *FL =
 				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 			@<Work through this frame list of permissions@>;
-			for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-				inter_symbol *inst_name = gen->instances_in_declaration_order[in];
+			inter_symbol *inst_name;
+			LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
 				if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 					inter_node_list *FL =
 						Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
@@ -360,8 +368,8 @@ because I6 doesn't allow function calls in a constant context.
 	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT, &saved);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
-	for (int j=0; j<LinkedLists::len(gen->instances); j++) {
-		inter_symbol *inst_name = gen->instances_in_declaration_order[j];
+	inter_symbol *inst_name;
+	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
 			inter_node_list *PVL =
@@ -394,8 +402,8 @@ because I6 doesn't allow function calls in a constant context.
 	}
 
 @<Declare kinds of object@> =
-	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-		inter_symbol *kind_name = gen->kinds_in_declaration_order[i];
+	inter_symbol *kind_name;
+	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 		if ((kind_name == object_kind_symbol) ||
 			(VanillaObjects::is_kind_of_object(kind_name))) {
 			text_stream *super_class = NULL;
@@ -412,8 +420,8 @@ because I6 doesn't allow function calls in a constant context.
 	}
 
 @<Declare instances of object@> =
-	for (int i=0; i<LinkedLists::len(gen->instances); i++) {
-		inter_symbol *inst_name = gen->instances_in_declaration_order[i];
+	inter_symbol *inst_name;
+	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
 		inter_tree_node *D = Inter::Symbols::definition(inst_name);
 		VanillaObjects::instance(gen, D);
 	}
@@ -593,3 +601,21 @@ text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_sym
 	return inner_name;
 }
 
+int VanillaObjects::can_have_properties(code_generation *gen, inter_symbol *kind_name) {
+	inter_tree *I = gen->from;
+	if (VanillaObjects::is_kind_of_object(kind_name)) return FALSE;
+	if (kind_name == object_kind_symbol) return FALSE;
+	if (kind_name == unchecked_kind_symbol) return FALSE;
+	inter_node_list *FL =
+		Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
+	if (FL->first_in_inl) return TRUE;
+	inter_symbol *inst_name;
+	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
+		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+			inter_node_list *FL =
+				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
+			if (FL->first_in_inl) return TRUE;
+		}
+	}
+	return FALSE;
+}

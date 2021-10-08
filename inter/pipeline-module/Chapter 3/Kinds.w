@@ -457,20 +457,21 @@ a kind of thing.
 			ADD_TO_LINKED_LIST(kind_name, inter_symbol, L);
 		}
 	}
-
-	inter_symbol **ordered = VanillaObjects::sorted_array(L, VanillaObjects::in_source_order);
-	for (int i=0; i<LinkedLists::len(L); i++) {
-		inter_symbol *kind_name = ordered[i];
-		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i+1);
-	}
+	
+	linked_list *ordered_L = NEW_LINKED_LIST(inter_symbol);
+	Vanilla::sort_symbol_list(ordered_L, L, Vanilla::in_source_order);
+	int i = 1;
+	inter_symbol *kind_name;
+	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)
+		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
 
 	inter_name *iname = HierarchyLocations::find(I, KINDHIERARCHY_HL);
 	Synoptic::begin_array(I, iname);
 	if (LinkedLists::len(L) > 0) {
 		Synoptic::symbol_entry(object_kind_symbol);
 		Synoptic::numeric_entry(0);
-		for (int i=0; i<LinkedLists::len(L); i++) {
-			inter_symbol *kind_name = ordered[i];
+		inter_symbol *kind_name;
+		LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L) {
 			Synoptic::symbol_entry(kind_name);
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if ((super_name) && (super_name != object_kind_symbol)) {
