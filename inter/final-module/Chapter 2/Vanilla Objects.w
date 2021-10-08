@@ -273,15 +273,11 @@ linearly with the size of the source text, even though $N$ does.
 @h Instances and kinds.
 
 =
-void VanillaObjects::generate(code_generation *gen) {
+void VanillaObjects::declare_kinds_and_instances(code_generation *gen) {
 	inter_tree *I = gen->from;
-
-	if (LinkedLists::len(gen->unassimilated_properties) > 0) {
-		@<Write Value Property Holder objects for each kind of value instance@>;
-	}
-
-	@<Write an I6 Class definition for each kind of object@>;
-	@<Write an I6 Object definition for each object instance@>;
+	@<Declare kinds of value@>;
+	@<Declare kinds of object@>;
+	@<Declare instances of object@>;
 }
 
 @h Lookup mechanism for properties of value instances.
@@ -300,45 +296,29 @@ property |P|, something which the virtual machine can do quickly.
 This comes at the cost of several hundred bytes of overhead, which we don't
 take lightly in the Z-machine. But speed and flexibility are worth more.
 
-@<Write Value Property Holder objects for each kind of value instance@> =
-	linked_list *stick_list = NEW_LINKED_LIST(kov_value_stick);
-	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(I, NULL, 
-		I"/main/synoptic/kinds/BASE_KIND_HWM");
-	if (max_weak_id) {
-		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
-		if (M != 0) {
-			for (int w=1; w<M; w++) {
-				for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
-					inter_symbol *kind_name = gen->kinds_in_source_order[i];
-					if (VanillaObjects::weak_id(kind_name) == w) {
-						if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
-							TEMPORARY_TEXT(instance_name)
-							WRITE_TO(instance_name, "VPH_%d", w);
-							segmentation_pos saved;
-							Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &saved);
-							inter_symbol *prop_name;
-							LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
-								CodeGen::unmark(prop_name);
-							inter_node_list *FL =
-								Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
-							@<Work through this frame list of permissions@>;
-							for (int in=0; in<LinkedLists::len(gen->instances); in++) {
-								inter_symbol *inst_name = gen->instances_in_declaration_order[in];
-								if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
-									inter_node_list *FL =
-										Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
-									@<Work through this frame list of permissions@>;
-								}
-							}
-							Generators::end_instance(gen, I"Object", instance_name, saved);
-							DISCARD_TEXT(instance_name)
-						}
-					}
+@<Declare kinds of value@> =
+	int unique_kovp_id = 0;
+	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
+		inter_symbol *kind_name = gen->kinds_in_source_order[i];
+		if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+			Generators::begin_properties_for(gen, kind_name);
+			inter_symbol *prop_name;
+			LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
+				CodeGen::unmark(prop_name);
+			inter_node_list *FL =
+				Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Kind::permissions_list(kind_name));
+			@<Work through this frame list of permissions@>;
+			for (int in=0; in<LinkedLists::len(gen->instances); in++) {
+				inter_symbol *inst_name = gen->instances_in_declaration_order[in];
+				if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+					inter_node_list *FL =
+						Inter::Warehouse::get_frame_list(InterTree::warehouse(I), Inter::Instance::permissions_list(inst_name));
+					@<Work through this frame list of permissions@>;
 				}
 			}
+			Generators::end_properties_for(gen, kind_name);
 		}
 	}
-	@<Compile the property stick arrays@>;
 
 @<Work through this frame list of permissions@> =
 	inter_tree_node *X;
@@ -347,33 +327,18 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
+			text_stream *ident = NULL;
 			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
-				Generators::assign_mangled_property(gen, prop_name, Inter::Symbols::name(store));
+				ident = Inter::Symbols::name(store);
 			} else {
-				TEMPORARY_TEXT(ident)
-				kov_value_stick *kvs = CREATE(kov_value_stick);
-				kvs->identifier = Str::new();
-				WRITE_TO(kvs->identifier, "KOVP_%d_P%d", w, VanillaObjects::pnum(prop_name));
-				kvs->prop = prop_name;
-				kvs->kind_name = kind_name;
-				kvs->node = X;
-				ADD_TO_LINKED_LIST(kvs, kov_value_stick, stick_list);
-				Generators::assign_mangled_property(gen, prop_name, kvs->identifier);
-				DISCARD_TEXT(ident)
+				ident = Str::new();
+				WRITE_TO(ident, "KOVP_%d", unique_kovp_id++);
+				@<Compile a stick of property values and put its address here@>;
 			}
+			Generators::assign_properties(gen, kind_name, prop_name, ident);
 		}
-	}
-
-@<Compile the property stick arrays@> =
-	kov_value_stick *kvs;
-	LOOP_OVER_LINKED_LIST(kvs, kov_value_stick, stick_list) {
-		inter_symbol *prop_name = kvs->prop;
-		inter_symbol *kind_name = kvs->kind_name;
-		text_stream *ident = kvs->identifier;
-		inter_tree_node *X = kvs->node;
-		@<Compile a stick of property values and put its address here@>;
 	}
 
 @ These little arrays are sticks of property values, and they are laid out
@@ -428,7 +393,7 @@ because I6 doesn't allow function calls in a constant context.
 		}
 	}
 
-@<Write an I6 Class definition for each kind of object@> =
+@<Declare kinds of object@> =
 	for (int i=0; i<LinkedLists::len(gen->kinds); i++) {
 		inter_symbol *kind_name = gen->kinds_in_declaration_order[i];
 		if ((kind_name == object_kind_symbol) ||
@@ -446,7 +411,7 @@ because I6 doesn't allow function calls in a constant context.
 		}
 	}
 
-@<Write an I6 Object definition for each object instance@> =
+@<Declare instances of object@> =
 	for (int i=0; i<LinkedLists::len(gen->instances); i++) {
 		inter_symbol *inst_name = gen->instances_in_declaration_order[i];
 		inter_tree_node *D = Inter::Symbols::definition(inst_name);
@@ -454,12 +419,6 @@ because I6 doesn't allow function calls in a constant context.
 	}
 
 @ =
-int VanillaObjects::pnum(inter_symbol *prop_name) {
-	int N = Inter::Symbols::read_annotation(prop_name, SOURCE_ORDER_IANN);
-	if (N >= 0) return N;
-	return 0;
-}
-
 int VanillaObjects::weak_id(inter_symbol *kind_name) {
 	inter_package *pack = Inter::Packages::container(kind_name->definition);
 	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
@@ -468,8 +427,6 @@ int VanillaObjects::weak_id(inter_symbol *kind_name) {
 	if (alt_N >= 0) return alt_N;
 	return 0;
 }
-
-
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
 name is intentionally made blank: we always use I6's |short_name| property
@@ -493,17 +450,6 @@ int VanillaObjects::is_kind_of_object(inter_symbol *kind_name) {
 	if (Inter::Kind::is_a(kind_name, object_kind_symbol)) return TRUE;
 	return FALSE;
 }
-
-@
-
-=
-typedef struct kov_value_stick {
-	struct inter_symbol *prop;
-	struct inter_symbol *kind_name;
-	struct text_stream *identifier;
-	struct inter_tree_node *node;
-	CLASS_DEFINITION
-} kov_value_stick;
 
 @h Instances.
 
@@ -560,9 +506,7 @@ void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	text_stream *S = Inter::Symbols::read_annotation_t(symb, I, APPEND_IANN);
-	if (Str::len(S) == 0) return;
-	WRITE("    ");
-	Vanilla::splat_matter(OUT, I, S);
+	if (Str::len(S) > 0) Vanilla::splat_matter(OUT, I, S);
 }
 
 

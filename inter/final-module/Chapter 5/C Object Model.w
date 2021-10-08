@@ -16,6 +16,9 @@ void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
+	METHOD_ADD(cgt, BEGIN_PROPERTIES_FOR_MTID, CObjectModel::begin_properties_for);
+	METHOD_ADD(cgt, END_PROPERTIES_FOR_MTID, CObjectModel::end_properties_for);
+	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, CObjectModel::assign_properties);
 }
 
 typedef struct C_generation_object_model_data {
@@ -616,6 +619,25 @@ void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 	pair->inlined = C_GEN_DATA(objdata.inline_this);
 	C_GEN_DATA(objdata.inline_this) = FALSE;
 	ADD_TO_LINKED_LIST(pair, C_pv_pair, owner->property_values);
+}
+
+segmentation_pos C_ap_saved;
+void CObjectModel::begin_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
+	TEMPORARY_TEXT(instance_name)
+	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_name));
+	Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &i6_ap_saved);
+	DISCARD_TEXT(instance_name)
+}
+
+void CObjectModel::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
+	TEMPORARY_TEXT(mgl)
+	CNamespace::mangle(NULL, mgl, array);
+	CObjectModel::assign_property(cgt, gen, prop_name, mgl);
+	DISCARD_TEXT(mgl)
+}
+
+void CObjectModel::end_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
+	Generators::end_instance(gen, I"Object", NULL, i6_ap_saved);
 }
 
 C_property_owner *CObjectModel::super(code_generation *gen, C_property_owner *owner) {

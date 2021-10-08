@@ -126,7 +126,7 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 
 @<Consolidate@> =
 	VanillaConstants::consolidate(gen);
-	VanillaObjects::generate(gen);
+	VanillaObjects::declare_kinds_and_instances(gen);
 
 @ The function //Vanilla::node// is a sort of handle-any-node function, and is
 the main way we iterate through the Inter tree.

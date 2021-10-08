@@ -67,6 +67,9 @@ void I6Target::create_generator(void) {
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6Target::end_instance);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6Target::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6Target::assign_property);
+	METHOD_ADD(cgt, BEGIN_PROPERTIES_FOR_MTID, I6Target::begin_properties_for);
+	METHOD_ADD(cgt, END_PROPERTIES_FOR_MTID, I6Target::end_properties_for);
+	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, I6Target::assign_properties);
 	METHOD_ADD(cgt, DECLARE_CONSTANT_MTID, I6Target::declare_constant);
 	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, I6Target::declare_function);
 	METHOD_ADD(cgt, PLACE_LABEL_MTID, I6Target::place_label);
@@ -1067,6 +1070,22 @@ void I6Target::assign_property(code_generator *cgt, code_generation *gen, inter_
 	} else {
 		WRITE("    with %S %S\n", property_name, val);
 	}
+}
+
+segmentation_pos i6_ap_saved;
+void I6Target::begin_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
+	TEMPORARY_TEXT(instance_name)
+	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_name));
+	Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &i6_ap_saved);
+	DISCARD_TEXT(instance_name)
+}
+
+void I6Target::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
+	I6Target::assign_property(cgt, gen, prop_name, array);
+}
+
+void I6Target::end_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
+	Generators::end_instance(gen, I"Object", NULL, i6_ap_saved);
 }
 
 void I6Target::seek_locals(code_generation *gen, inter_tree_node *P) {

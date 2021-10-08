@@ -471,11 +471,8 @@ a kind of thing.
 		Synoptic::numeric_entry(0);
 		for (int i=0; i<LinkedLists::len(L); i++) {
 			inter_symbol *kind_name = ordered[i];
-			inter_package *pack = Inter::Packages::container(kind_name->definition);
-//			inter_symbol *kind_name = Metadata::read_symbol(pack, I"^object_class");
 			Synoptic::symbol_entry(kind_name);
-//			inter_symbol *super_name = Metadata::read_optional_symbol(pack, I"^superkind");
-				inter_symbol *super_name = Inter::Kind::super(kind_name);
+			inter_symbol *super_name = Inter::Kind::super(kind_name);
 			if ((super_name) && (super_name != object_kind_symbol)) {
 				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(super_name));
 			} else {

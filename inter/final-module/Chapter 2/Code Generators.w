@@ -252,6 +252,9 @@ void Generators::pseudo_object(code_generation *gen, text_stream *obj_name) {
 @e DECLARE_VALUE_INSTANCE_MTID
 @e OPTIMISE_PROPERTY_MTID
 @e ASSIGN_PROPERTY_MTID
+@e BEGIN_PROPERTIES_FOR_MTID
+@e ASSIGN_PROPERTIES_MTID
+@e END_PROPERTIES_FOR_MTID
 @e PROPERTY_OFFSET_MTID
 
 =
@@ -282,6 +285,9 @@ int Generators::optimise_property_value(code_generation *gen, inter_symbol *prop
 	return rv;
 }
 VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, text_stream *val)
+VOID_METHOD_TYPE(ASSIGN_PROPERTIES_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array)
+VOID_METHOD_TYPE(BEGIN_PROPERTIES_FOR_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_name)
+VOID_METHOD_TYPE(END_PROPERTIES_FOR_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_name)
 void Generators::assign_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val);
 }
@@ -290,6 +296,15 @@ void Generators::assign_mangled_property(code_generation *gen, inter_symbol *pro
 	Generators::mangle(gen, mangled, val);
 	Generators::assign_property(gen, prop_name, mangled);
 	DISCARD_TEXT(mangled)
+}
+void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
+	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTIES_MTID, gen, kind_name, prop_name, array);
+}
+void Generators::begin_properties_for(code_generation *gen, inter_symbol *kind_name) {
+	VOID_METHOD_CALL(gen->generator, BEGIN_PROPERTIES_FOR_MTID, gen, kind_name);
+}
+void Generators::end_properties_for(code_generation *gen, inter_symbol *kind_name) {
+	VOID_METHOD_CALL(gen->generator, END_PROPERTIES_FOR_MTID, gen, kind_name);
 }
 
 @
