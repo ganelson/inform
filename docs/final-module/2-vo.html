@@ -20,20 +20,6 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
-
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -87,7 +73,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#2">Chapter 2: Mechanism</a></li><li><b>Vanilla Objects</b></li></ul></div>
 <p class="purpose">How the vanilla code generation strategy handles instances, kinds, and properties.</p>
 
-<ul class="toc"><li><a href="2-vo.html#SP1">&#167;1. Properties</a></li><li><a href="2-vo.html#SP3">&#167;3. Instances and kinds</a></li><li><a href="2-vo.html#SP3_1">&#167;3.1. Lookup mechanism for properties of value instances</a></li><li><a href="2-vo.html#SP7">&#167;7. Instances</a></li><li><a href="2-vo.html#SP8">&#167;8. Representing instances in I6</a></li><li><a href="2-vo.html#SP9">&#167;9. Representing properties in I6</a></li><li><a href="2-vo.html#SP10">&#167;10. Properties</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-vo.html#SP1">&#167;1. Properties</a></li><li><a href="2-vo.html#SP4">&#167;4. Instances, kinds and values of properties</a></li><li><a href="2-vo.html#SP6">&#167;6. Utility functions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Properties. </b>Early in code-generation, we declare the properties. Generators might want to
 represent these in all kinds of ways for the sake of efficiency; on Inform 6,
@@ -110,7 +96,7 @@ which instances can have the property in question. This is 0-terminated.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The biggest complication we face is that the linking process has left us, in
 some cases, with multiple property declarations for what is actually the same
-property. (At present there can be at most two, but we will not assume that.)
+property.
 </p>
 
 <p class="commentary">For example, this arises when a property is defined in Inform 7 source like so:
@@ -135,25 +121,24 @@ have the metadata or permissions which the Standard Rules definition has. So
 we keep both in play, and reconcile them in the code below.
 </p>
 
-<p class="commentary">What this does is to work through the properties and group them into equivalence
+<p class="commentary">It gets worse: the Standard Rules properties "lighted" and "lit", though different &mdash;
+one applies to rooms, one to things &mdash; both translate to the same BasicInformKit
+property <span class="extract"><span class="extract-syntax">light</span></span>. At present that's the worst case scenario (i.e., three different
+properties all coinciding) but we won't assume that.
+</p>
+
+<p class="commentary">So what we do is to work through the properties and group them into equivalence
 classes by their final identifier names. Here, for example, we recognise these
 two properties as the same because they both want to be called <span class="extract"><span class="extract-syntax">privately_named</span></span>.
+By scanning the assimilated properties (i.e. those from kits) first, we ensure
+that the first one found in each set will be the definitive source of the property.
+But it will likely be the later members of the set which have the necessary
+metadata attached.
 </p>
 
-<p class="commentary">In this case, the scan below would make <span class="extract"><span class="extract-syntax">first_with_name</span></span> the BasicInformKit
-definition, and <span class="extract"><span class="extract-syntax">last_with_name</span></span> the Standard Rules one; and <span class="extract"><span class="extract-syntax">all_with_name</span></span>
-would be a list of the two.
-</p>
-
-<p class="commentary">By scanning the assimilated properties (i.e. those from kits) first, we ensure that:
-</p>
-
-<ul class="items"><li>(i) <span class="extract"><span class="extract-syntax">first_with_name</span></span> will be the definitive property, while
-</li><li>(ii) <span class="extract"><span class="extract-syntax">last_with_name</span></span> will have the correct metadata and permissions.
-</li></ul>
-<p class="commentary">Note that this is also the case if there is just one Inform 7-level definition
-of a property, because then <span class="extract"><span class="extract-syntax">first_with_name</span></span> and <span class="extract"><span class="extract-syntax">last_with_name</span></span> will be the
-same, and the list will be a singleton.
+<p class="commentary">Of course, in the benign case where there is just one Inform 7-level definition
+of a property, <span class="extract"><span class="extract-syntax">first_with_name</span></span> and <span class="extract"><span class="extract-syntax">last_with_name</span></span> will be the same, and the
+list will be a singleton.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -234,6 +219,8 @@ altered.
 <span class="plain-syntax">        </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::create</span><span class="plain-syntax">(</span><span class="identifier-syntax">first_with_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::write_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">first_with_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::annotate_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_table</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_package</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1" class="named-paragraph-link"><span class="named-paragraph">Set the translation to a new metadata array</span><span class="named-paragraph-number">2.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PROPERTY_ALLOCATION</span><span class="plain-syntax">, </span><span class="string-syntax">"! OLD name=%S   sname=%S   eor=%d   assim=%d\n"</span><span class="plain-syntax">,</span>
@@ -246,11 +233,11 @@ altered.
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">existing_prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">), (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::set_translate</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">existing_prop_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::annotate_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_table</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_package</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Inter::Symbols::annotate_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_table</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_package</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PROPERTY_ALLOCATION</span><span class="plain-syntax">, </span><span class="string-syntax">"! Translation %S, inner name %S\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">), </span><a href="2-vo.html#SP11" class="function-link"><span class="function-syntax">VanillaObjects::inner_property_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">), </span><a href="2-vo.html#SP3" class="function-link"><span class="function-syntax">VanillaObjects::inner_property_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2">&#167;2</a> (twice).</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b>Note that <a href="2-cg2.html#SP12" class="internal">Generators::declare_property</a> calls the generator to ask it to
@@ -272,7 +259,8 @@ generator wants.
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::begin_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">array_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP12" class="function-link"><span class="function-syntax">Generators::declare_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">all_forms</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_1" class="named-paragraph-link"><span class="named-paragraph">Write the either-or flag</span><span class="named-paragraph-number">2.2.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2" class="named-paragraph-link"><span class="named-paragraph">Write the printed name and permissions</span><span class="named-paragraph-number">2.2.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2" class="named-paragraph-link"><span class="named-paragraph">Write the property name in double quotes</span><span class="named-paragraph-number">2.2.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_3" class="named-paragraph-link"><span class="named-paragraph">Write a list of kinds or objects which are permitted to have this property</span><span class="named-paragraph-number">2.2.1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::mangled_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"NULL"</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::end_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 </pre>
@@ -287,30 +275,19 @@ generator wants.
 <span class="plain-syntax">        </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"0"</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2" class="paragraph-anchor"></a><b>&#167;2.2.1.2.  </b>Note that we sneakily redefine <span class="extract"><span class="extract-syntax">prop_name</span></span> here to be the last property in
-the set with this name, because that one will be unassimilated (if any of them
-are), and will therefore come from an I7 source text definition, and so will
-have full metadata declared for it. If we didn't redefine <span class="extract"><span class="extract-syntax">prop_name</span></span> here,
-we'd lose all of that in cases like our <span class="extract"><span class="extract-syntax">privately_named</span></span> example.
+<p class="commentary firstcommentary"><a id="SP2_2_1_2" class="paragraph-anchor"></a><b>&#167;2.2.1.2.  </b>Note that we extract the printed name from the last property in the set,
+because that will come from an I7 source text definition.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the printed name and permissions</span><span class="named-paragraph-number">2.2.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the property name in double quotes</span><span class="named-paragraph-number">2.2.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_prop_name</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">Dictionaries::read_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">last_with_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2_1" class="named-paragraph-link"><span class="named-paragraph">Write the property name in double quotes</span><span class="named-paragraph-number">2.2.1.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2_3" class="named-paragraph-link"><span class="named-paragraph">Write a list of kinds or objects which are permitted to have this property</span><span class="named-paragraph-number">2.2.1.2.3</span></a></span><span class="plain-syntax">;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the property name in double quotes</span><span class="named-paragraph-number">2.2.1.2.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"&lt;nameless&gt;"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">last_prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">pname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">entry</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">);</span>
@@ -319,91 +296,85 @@ we'd lose all of that in cases like our <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">entry</span><span class="plain-syntax">)</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_2">&#167;2.2.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2_2" class="paragraph-anchor"></a><b>&#167;2.2.1.2.2.  </b>The following lets the run-time environment know what properties are
-called, and which kinds of object are allowed to have them. This might look
-a little odd: why does the run-time code need to know any of that?
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_2_1_3" class="paragraph-anchor"></a><b>&#167;2.2.1.3.  </b>Type-safety at runtime is managed with a hybrid of compile-time and runtime
+checking. Compile-time checking polices all uses of properties of values other
+than objects, but it will usually allow any object property of any object to
+be accessed, because it's not usually possible for the typechecker to know if
+an object value <span class="extract"><span class="extract-syntax">O</span></span> is a vehicle, a direction, and so on. For this reason
+some runtime checking is needed, and to perform that checking, properties need
+a list of permissions to be stored in memory. This is where.
 </p>
 
-<p class="commentary">The answer is that the Inform compiler will prevent grossly type-unsafe
-property accesses at compile time &mdash; for example, asking if a number is
-"recurring" (an either/or property of scenes), which can be ruled out
-because numbers and scenes are wholly disjoint as values. But it will allow
-any object property of any object to be accessed, because it's not usually
-possible for the typechecker to know if an object value <span class="extract"><span class="extract-syntax">O</span></span> is a vehicle, a
-direction, and so on. So the finer access controls for properties of
-objects are left until run-time (whereas no such regime is needed for
-properties of values). To make this possible, we need to tell the run-time
-code what is and is not allowed.
+<p class="commentary">Note that permissions are accumulated for all of the properties in a given
+name set. In the case of "lighted" and "lit" and <span class="extract"><span class="extract-syntax">light</span></span>, therefore, the
+permissions written will be those for "lighted" (rooms, basically) and then
+those for "lit" (things); <span class="extract"><span class="extract-syntax">light</span></span>, the WorldModelKit original, has no permissions &mdash;
+assimilated properties never do have.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2_2_1_2_3" class="paragraph-anchor"></a><b>&#167;2.2.1.2.3.  </b>A complete list here would be wasteful both of space and run-time
-checking time, but we only need a list \(O_1, O_2, ..., O_k\) such that for
-each \(W\) allowed to have the property, either \(W = O_i\) for some \(i\), or
-\(W\) is of kind \(O_i\) for some \(i\) (perhaps indirectly).
-</p>
-
-<p class="commentary">In a tricksy complication, we need to allow for the possibility that two
-or more different I7 properties are actually equal at run-time. This wouldn't
-happen by itself, but does happen if two different properties are translated
-to the same I6 property, and in fact the template does this: "lighted" and
-"lit" both translate to I6 <span class="extract"><span class="extract-syntax">light</span></span>. The only way to reconcile this is to
-make the list a union of the lists of both. This does mean the routine
-runs in \(O(P^2N)\) time, where \(P\) is the number of properties and \(N\) the
-number of objects, but we can live with that. \(P\) does not in practice rise
-linearly with the size of the source text, even though \(N\) does.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write a list of kinds or objects which are permitted to have this property</span><span class="named-paragraph-number">2.2.1.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write a list of kinds or objects which are permitted to have this property</span><span class="named-paragraph-number">2.2.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unassimilated_properties</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">EVL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">Inter::Property::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">));</span>
-
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2_3_1" class="named-paragraph-link"><span class="named-paragraph">List any O with an explicit permission</span><span class="named-paragraph-number">2.2.1.2.3.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_2_3_2" class="named-paragraph-link"><span class="named-paragraph">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">2.2.1.2.3.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">all_forms</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">EVL</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Property::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">eprop_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_3_1" class="named-paragraph-link"><span class="named-paragraph">List any kind of object with an explicit permission</span><span class="named-paragraph-number">2.2.1.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_3_2" class="named-paragraph-link"><span class="named-paragraph">List any individual instance with an explicit permission</span><span class="named-paragraph-number">2.2.1.3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP2_2_1_3_3" class="named-paragraph-link"><span class="named-paragraph">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">2.2.1.3.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_2">&#167;2.2.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2_3_1" class="paragraph-anchor"></a><b>&#167;2.2.1.2.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List any O with an explicit permission</span><span class="named-paragraph-number">2.2.1.2.3.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_2_1_3_1" class="paragraph-anchor"></a><b>&#167;2.2.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List any kind of object with an explicit permission</span><span class="named-paragraph-number">2.2.1.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_in_declaration_order</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP6" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_in_declaration_order</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">EVL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">OWNER_PERM_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::mangled_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">), </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                }</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::symbol_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP6" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Instance::kind_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">EVL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">OWNER_PERM_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::mangled_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                }</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_2_3">&#167;2.2.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2_3_2" class="paragraph-anchor"></a><b>&#167;2.2.1.2.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">2.2.1.2.3.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_3">&#167;2.2.1.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_2_1_3_2" class="paragraph-anchor"></a><b>&#167;2.2.1.3.2.  </b>An unusual feature of Inform as a programming language is that individual objects
+can be given properties, even when other objects of the same kind may lack them. So:
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List any individual instance with an explicit permission</span><span class="named-paragraph-number">2.2.1.3.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Instance::kind_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">EVL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">OWNER_PERM_IFLD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">owner_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::symbol_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_3">&#167;2.2.1.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_2_1_3_3" class="paragraph-anchor"></a><b>&#167;2.2.1.3.3.  </b>It's happily a rare occurrence, but "object" itself can have properties &mdash; so
+that every object of any kind has permission to have that. We convey that by giving
+permission for every top-level kind of object. (There are typically only four of
+these top-level kinds, and not many properties have these permissions, so it's
+not as wasteful as it looks.)
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">2.2.1.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -416,71 +387,102 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_in_declaration_order</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) == </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::mangled_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">), </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::symbol_array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="constant-syntax">WORD_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_2_3">&#167;2.2.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Instances and kinds. </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP2_2_1_3">&#167;2.2.1.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Generators can then access the inner name (if they want it) thus:
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::declare_kinds_and_instances</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::declare_kinds_and_instances</span></span>:<br/>The Vanilla Generator - <a href="2-tvg.html#SP1_11">&#167;1.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Declare kinds of value</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Declare kinds of object</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Declare instances of object</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaObjects::inner_property_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::inner_property_name</span></span>:<br/><a href="2-vo.html#SP2_2">&#167;2.2</a><br/>Generating Inform 6 - <a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP9">&#167;9</a><br/>C Object Model - <a href="5-com.html#SP6">&#167;6</a>, <a href="5-com.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"&lt;nameless&gt;"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">), (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. Lookup mechanism for properties of value instances. </b>As noted above, if <span class="extract"><span class="extract-syntax">K</span></span> is a kind which can have properties but is not a subkind
-of object, then a property for instances of <span class="extract"><span class="extract-syntax">K</span></span> is stored in an array called
-a "stick". At run-time, given the property number and <span class="extract"><span class="extract-syntax">K</span></span>, we will need to find
-where in memory the correct stick is, and this needs to be quick.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Instances, kinds and values of properties. </b>Round two is to make declarations of our kinds and instances. Again, we want to
+make as few assumptions as possible about the eventual runtime representation
+of these ideas, but that will not be no assumptions.
 </p>
 
-<p class="commentary">This is essentially a dictionary lookup problem and we solve it by compiling
-a faux object <span class="extract"><span class="extract-syntax">V</span></span> for each <span class="extract"><span class="extract-syntax">K</span></span>, called a "value property holder" or VPH.
-Given <span class="extract"><span class="extract-syntax">K</span></span> we find <span class="extract"><span class="extract-syntax">V</span></span> by looking it up in the array <span class="extract"><span class="extract-syntax">value_property_holders</span></span>.
+<p class="commentary">In particular, whereas generators can stash object properties more or less in
+any way they like, they are required to stash properties of non-object values
+in small arrays called "sticks", which mimic table columns. This is imposed by
+the language itself, which allows properties of values to be defined by tables
+of values.
 </p>
 
-<p class="commentary">Once we know <span class="extract"><span class="extract-syntax">V</span></span>, we then look up <span class="extract"><span class="extract-syntax">V.P</span></span> to get the address of the stick for
-property <span class="extract"><span class="extract-syntax">P</span></span>, something which the virtual machine can do quickly.
+<p class="commentary">So while it would be attractive here to make no distinction between objects
+and other property-owners, we cannot do so.
 </p>
 
-<p class="commentary">This comes at the cost of several hundred bytes of overhead, which we don't
-take lightly in the Z-machine. But speed and flexibility are worth more.
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::declare_kinds_and_instances</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::declare_kinds_and_instances</span></span>:<br/>The Vanilla Generator - <a href="2-tvg.html#SP1_11">&#167;1.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Declare kinds of value</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Declare kinds of object</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Declare instances</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>We start then with kinds which have properties but are not kinds of objects.
+For such kinds we call <a href="2-cg2.html#SP15" class="internal">Generators::begin_properties_for</a>, then for each
+property they have, we call <a href="2-cg2.html#SP15" class="internal">Generators::assign_properties</a> to specify the
+stick of properties for their instances; and then <a href="2-cg2.html#SP15" class="internal">Generators::end_properties_for</a>
+to say that we are done.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare kinds of value</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary">We want to ensure that no property is assigned more than once (for the same kind),
+so we use "marks" on those already done.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare kinds of value</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unique_kovp_id</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_in_declaration_order</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP11" class="function-link"><span class="function-syntax">VanillaObjects::can_have_properties</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP8" class="function-link"><span class="function-syntax">VanillaObjects::value_kind_with_properties</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::begin_properties_for</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unassimilated_properties</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><a href="2-cg.html#SP14" class="function-link"><span class="function-syntax">CodeGen::unmark</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Kind::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of permissions</span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Instance::kind_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Instance::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of permissions</span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                }</span>
-<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1" class="named-paragraph-link"><span class="named-paragraph">Declare properties which every instance of this kind of value can have</span><span class="named-paragraph-number">4.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_2" class="named-paragraph-link"><span class="named-paragraph">Declare properties which only some instances of this kind of value can have</span><span class="named-paragraph-number">4.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::end_properties_for</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of permissions</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare properties which every instance of this kind of value can have</span><span class="named-paragraph-number">4.1.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Kind::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of permissions</span><span class="named-paragraph-number">4.1.1.1</span></a></span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1">&#167;4.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_2" class="paragraph-anchor"></a><b>&#167;4.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare properties which only some instances of this kind of value can have</span><span class="named-paragraph-number">4.1.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Instance::kind_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Instance::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of permissions</span><span class="named-paragraph-number">4.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1">&#167;4.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of permissions</span><span class="named-paragraph-number">4.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -490,38 +492,56 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no property"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cg.html#SP14" class="function-link"><span class="function-syntax">CodeGen::marked</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><a href="2-cg.html#SP14" class="function-link"><span class="function-syntax">CodeGen::mark</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">STORAGE_PERM_IFLD</span><span class="plain-syntax">]) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">store</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORAGE_PERM_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">store</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"bad PP in inter"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">store</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">, </span><span class="string-syntax">"KOVP_%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">unique_kovp_id</span><span class="plain-syntax">++);</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Compile a stick of property values and put its address here</span><span class="named-paragraph-number">3.1.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::assign_properties</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ident</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Assign the property values for this property</span><span class="named-paragraph-number">4.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3_1">&#167;3.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.1.  </b>These little arrays are sticks of property values, and they are laid out
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1_1">&#167;4.1.1</a>, <a href="2-vo.html#SP4_1_2">&#167;4.1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_1_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.1.1.  </b>In the case where a kind of value has been created by table, as in this example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">Planet</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">planets</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span><span class="plain-syntax">.</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">Table</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Outer</span><span class="plain-syntax"> </span><span class="identifier-syntax">Planets</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">planet</span><span class="plain-syntax">      </span><span class="identifier-syntax">semimajor</span><span class="plain-syntax"> </span><span class="identifier-syntax">axis</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Jupiter</span><span class="plain-syntax">     </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Saturn</span><span class="plain-syntax">      </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Uranus</span><span class="plain-syntax">      </span><span class="constant-syntax">19</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Neptune</span><span class="plain-syntax">     </span><span class="constant-syntax">30</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Pluto</span><span class="plain-syntax">       </span><span class="constant-syntax">39</span><span class="plain-syntax"> </span><span class="identifier-syntax">AU</span>
+</pre>
+<p class="commentary">the property "semimajor axis" is already stored in a table column. That becomes
+our stick array. But in other cases, where the instances have not been created
+by table, no sticks exist and we must compile them.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assign the property values for this property</span><span class="named-paragraph-number">4.1.1.1.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">STORAGE_PERM_IFLD</span><span class="plain-syntax">]) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">store</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORAGE_PERM_IFLD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">store</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"bad PP in inter"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">store</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ident</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">, </span><span class="string-syntax">"KOVP_%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">unique_kovp_id</span><span class="plain-syntax">++);</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Compile a stick of property values and put its address here</span><span class="named-paragraph-number">4.1.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::assign_properties</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ident</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1_1_1">&#167;4.1.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_1_1_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.1.1.1.  </b>These little arrays are sticks of property values, and they are laid out
 as if they were column arrays in a Table data structure. This means they must
-be <span class="extract"><span class="extract-syntax">table</span></span> arrays (which wastes one word of memory) and must have blanked-out
-table column header words at the front (which wastes a further <span class="extract"><span class="extract-syntax">COL_HSIZE</span></span>
-words). But the cost is a simple overhead, not rising with the number of
-instances, and it's a small price for the gain in simplicity and speed.
+be <span class="extract"><span class="extract-syntax">TABLE_ARRAY_FORMAT</span></span> arrays (which wastes one word of memory) and must have
+blanked-out table column header words at the front (which wastes a further
+<span class="extract"><span class="extract-syntax">COL_HSIZE</span></span> words). But the cost is a simple overhead, not rising with the
+number of instances, and is worth it for simplicity and speed.
 </p>
 
-<p class="commentary">The entries here are bracketed to avoid the Inform 6 syntax ambiguity between
-<span class="extract"><span class="extract-syntax">4 -5</span></span> (two entries, four followed by minus five) and <span class="extract"><span class="extract-syntax">4-5</span></span> (one entry, just
-minus one). Inform 6 always uses the second interpretation, so just in case
-there are negative literal integers in these array entries, we use
-brackets: thus <span class="extract"><span class="extract-syntax">(4) (-5)</span></span>. This cannot be confused with function calling
-because I6 doesn't allow function calls in a constant context.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a stick of property values and put its address here</span><span class="named-paragraph-number">3.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a stick of property values and put its address here</span><span class="named-paragraph-number">4.1.1.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -536,23 +556,24 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PVL</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Inode::ID_to_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Inter::Instance::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of values</span><span class="named-paragraph-number">3.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of values</span><span class="named-paragraph-number">4.1.1.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PVL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inode::ID_to_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Inter::Kind::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP3_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of values</span><span class="named-paragraph-number">3.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_1_1_1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Work through this frame list of values</span><span class="named-paragraph-number">4.1.1.1.1.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::array_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"0"</span><span class="plain-syntax">, </span><span class="constant-syntax">TABLE_ARRAY_FORMAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP18" class="function-link"><span class="function-syntax">Generators::end_array</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="constant-syntax">TABLE_ARRAY_FORMAT</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3_1_1">&#167;3.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of values</span><span class="named-paragraph-number">3.1.1.1.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1_1_1_1">&#167;4.1.1.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1_1_1_1_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of values</span><span class="named-paragraph-number">4.1.1.1.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="identifier-syntax">PVL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_id</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::scope_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">), </span><span class="identifier-syntax">Y</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">PROP_PVAL_IFLD</span><span class="plain-syntax">]);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_id</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Inter::Packages::scope_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">), </span><span class="identifier-syntax">Y</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">PROP_PVAL_IFLD</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">p_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">found</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">found</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Y</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DVAL1_PVAL_IFLD</span><span class="plain-syntax">];</span>
@@ -566,44 +587,154 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3_1_1_1">&#167;3.1.1.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare kinds of object</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_1_1_1_1_1">&#167;4.1.1.1.1.1</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>So now for the objects. First we declare each kind of object, first calling
+<a href="2-cg2.html#SP15" class="internal">Generators::declare_class</a>, then <a href="2-cg2.html#SP15" class="internal">Generators::assign_property</a> for each
+property value, and then <a href="2-cg2.html#SP15" class="internal">Generators::end_class</a>.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare kinds of object</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_in_declaration_order</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">) ||</span>
-<span class="plain-syntax">            (</span><a href="2-vo.html#SP6" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">            (</span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">super_class</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">super_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Kind::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">super_name</span><span class="plain-syntax">) </span><span class="identifier-syntax">super_class</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">super_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">segmentation_pos</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_class</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">), </span><span class="identifier-syntax">super_class</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::append</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Kind::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::plist</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">FL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_class</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">pname</span><span class="plain-syntax">, </span><span class="identifier-syntax">super_class</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-vo.html#SP5" class="function-link"><span class="function-syntax">VanillaObjects::append</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Kind::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_2_1" class="named-paragraph-link"><span class="named-paragraph">Declare the properties of this kind or instance</span><span class="named-paragraph-number">4.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::end_class</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare instances of object</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>And then the instances:
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare instances</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">KIND_INST_IFLD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_3_1" class="named-paragraph-link"><span class="named-paragraph">Declare an object instance</span><span class="named-paragraph-number">4.3.1</span></a></span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_3_2" class="named-paragraph-link"><span class="named-paragraph">Declare a value instance</span><span class="named-paragraph-number">4.3.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3_1" class="paragraph-anchor"></a><b>&#167;4.3.1.  </b>As with kinds of object, we call <a href="2-cg2.html#SP15" class="internal">Generators::declare_instance</a>, then
+<a href="2-cg2.html#SP15" class="internal">Generators::assign_property</a> for each property value, and then
+<a href="2-cg2.html#SP15" class="internal">Generators::end_instance</a>.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare an object instance</span><span class="named-paragraph-number">4.3.1</span></span><span class="comment-syntax"> =</span>
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::weak_id</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::weak_id</span></span>:<br/>Generating Inform 6 - <a href="4-fi6.html#SP3">&#167;3</a>, <a href="4-fi6.html#SP8">&#167;8</a><br/>C Object Model - <a href="5-com.html#SP1_1">&#167;1.1</a>, <a href="5-com.html#SP1_2">&#167;1.2</a>, <a href="5-com.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARROW_COUNT_IANN</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_dir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">direction_kind_symbol</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">segmentation_pos</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">), </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">is_dir</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-vo.html#SP5" class="function-link"><span class="function-syntax">VanillaObjects::append</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inode::ID_to_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Inter::Instance::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vo.html#SP4_2_1" class="named-paragraph-link"><span class="named-paragraph">Declare the properties of this kind or instance</span><span class="named-paragraph-number">4.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::end_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_3">&#167;4.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3_2" class="paragraph-anchor"></a><b>&#167;4.3.2.  </b>With instances of values, though, we have no property assignment to do: that
+was all taken care of with the sticks of property values already declared. So
+a single call to <a href="2-cg2.html#SP15" class="internal">Generators::declare_value_instance</a> is enough.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare a value instance</span><span class="named-paragraph-number">4.3.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">VAL1_INST_IFLD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">VAL2_INST_IFLD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">UNDEF_IVAL</span><span class="plain-syntax">) </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">defined</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_value_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">), </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_3">&#167;4.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_2_1" class="paragraph-anchor"></a><b>&#167;4.2.1.  </b>The following, then, is used either for properties of a kind of object, or
+properties of an instance of object, and issues a stream of <a href="2-cg2.html#SP15" class="internal">Generators::assign_property</a>
+function calls.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare the properties of this kind or instance</span><span class="named-paragraph-number">4.2.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">FL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROP_PVAL_IFLD</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no property"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::optimise_property_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><a href="2-cg.html#SP15" class="function-link"><span class="function-syntax">CodeGen::pair</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DVAL1_PVAL_IFLD</span><span class="plain-syntax">], </span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DVAL2_PVAL_IFLD</span><span class="plain-syntax">]);</span>
+<span class="plain-syntax">        </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::deselect_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::assign_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-vo.html#SP4_2">&#167;4.2</a>, <a href="2-vo.html#SP4_3_1">&#167;4.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>That just leaves the following horrible function, which is called for each
+kind or instance of object, and passes raw splat matter down into the declaration
+which the generator is making.
+</p>
+
+<p class="commentary">This is a bad idea, because it presupposes which generator is being used, or
+at any rate what the syntax will be. It arises from source text like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Include</span><span class="plain-syntax"> (-</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> [; </span><span class="identifier-syntax">Go</span><span class="plain-syntax">: </span><span class="identifier-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; ],</span>
+<span class="plain-syntax">-) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rideable</span><span class="plain-syntax"> </span><span class="identifier-syntax">vehicle</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary">...which should probably not be allowed. The splat is the text between <span class="extract"><span class="extract-syntax">(-</span></span>
+and <span class="extract"><span class="extract-syntax">-)</span></span> here, and as can be seen, it's in Inform 6 syntax, which would be bad
+news for, say, the C generator.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::append</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::append</span></span>:<br/><a href="2-vo.html#SP4_2">&#167;4.2</a>, <a href="2-vo.html#SP4_3_1">&#167;4.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symb</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP11" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">symb</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">APPEND_IANN</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-tvg.html#SP3" class="function-link"><span class="function-syntax">Vanilla::splat_matter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Utility functions. </b>Returns the weak ID of a kind, which is a small integer known at compile time.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::weak_id</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::weak_id</span></span>:<br/>Generating Inform 6 - <a href="4-fi6.html#SP3">&#167;3</a>, <a href="4-fi6.html#SP9">&#167;9</a><br/>C Object Model - <a href="5-com.html#SP1_1">&#167;1.1</a>, <a href="5-com.html#SP1_2">&#167;1.2</a>, <a href="5-com.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">weak_s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Metadata::read_optional_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"^weak_id"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt_N</span><span class="plain-syntax"> = -1;</span>
@@ -612,25 +743,11 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>For the I6 header syntax, see the DM4. Note that the "hardwired" short
-name is intentionally made blank: we always use I6's <span class="extract"><span class="extract-syntax">short_name</span></span> property
-instead. I7's spatial plugin, if loaded (as it usually is), will have
-annotated the Inter symbol for the object with an arrow count, that is,
-a measure of its spatial depth. This we translate into I6 arrow notation.
-If the spatial plugin wasn't loaded then we have no notion of containment,
-all arrow counts are 0, and we define a flat sequence of free-standing objects.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b><span class="extract"><span class="extract-syntax">TRUE</span></span> for something like "thing" or "room", but <span class="extract"><span class="extract-syntax">FALSE</span></span> for "object" itself.
 </p>
-
-<p class="commentary">One last oddball thing is that direction objects have to be compiled in I6
-as if they were spatially inside a special object called <span class="extract"><span class="extract-syntax">Compass</span></span>. This doesn't
-really make much conceptual sense, and I7 dropped the idea &mdash; it has no
-"compass".
-</p>
-
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::is_kind_of_object</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></span>:<br/><a href="2-vo.html#SP2_2_1_2_3_1">&#167;2.2.1.2.3.1</a>, <a href="2-vo.html#SP3_2">&#167;3.2</a>, <a href="2-vo.html#SP11">&#167;11</a><br/>Generating Inform 6 - <a href="4-fi6.html#SP7_1_1">&#167;7.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::is_kind_of_object</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></span>:<br/><a href="2-vo.html#SP2_2_1_3_1">&#167;2.2.1.3.1</a>, <a href="2-vo.html#SP2_2_1_3_2">&#167;2.2.1.3.2</a>, <a href="2-vo.html#SP4_2">&#167;4.2</a>, <a href="2-vo.html#SP8">&#167;8</a><br/>Generating Inform 6 - <a href="4-fi6.html#SP7_1_1">&#167;7.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_data_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Kind::data_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idt</span><span class="plain-syntax"> == </span><span class="identifier-syntax">unchecked_idt</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -638,167 +755,23 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Instances. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><span class="extract"><span class="extract-syntax">TRUE</span></span> for a kind which can have properties but is not any sort of object.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::instance</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::instance</span></span>:<br/><a href="2-vo.html#SP3_3">&#167;3.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">DEFN_INST_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">KIND_INST_IFLD</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARROW_COUNT_IANN</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_dir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">direction_kind_symbol</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">segmentation_pos</span><span class="plain-syntax"> </span><span class="identifier-syntax">saved</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">), </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">is_dir</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::append</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Inode::ID_to_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Instance::properties_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::plist</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">FL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::end_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">VAL1_INST_IFLD</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">VAL2_INST_IFLD</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">UNDEF_IVAL</span><span class="plain-syntax">) </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">defined</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::declare_value_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">Inter::Symbols::name</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Metadata::read_optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Packages::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="string-syntax">"^printed_name"</span><span class="plain-syntax">), </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::plist</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::plist</span></span>:<br/><a href="2-vo.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no properties list"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">FL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSymbolsTables::symbol_from_frame_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROP_PVAL_IFLD</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no property"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::select_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::optimise_property_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><a href="2-cg.html#SP15" class="function-link"><span class="function-syntax">CodeGen::pair</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DVAL1_PVAL_IFLD</span><span class="plain-syntax">], </span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">data</span><span class="plain-syntax">[</span><span class="identifier-syntax">DVAL2_PVAL_IFLD</span><span class="plain-syntax">]);</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><a href="2-cg.html#SP10" class="function-link"><span class="function-syntax">CodeGen::deselect_temporary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::assign_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::append</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::append</span></span>:<br/><a href="2-vo.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symb</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP11" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::value_kind_with_properties</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::value_kind_with_properties</span></span>:<br/><a href="2-vo.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation_t</span><span class="plain-syntax">(</span><span class="identifier-syntax">symb</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">APPEND_IANN</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-tvg.html#SP3" class="function-link"><span class="function-syntax">Vanilla::splat_matter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Representing instances in I6. </b>Partly for historical reasons, partly to squeeze performance out of the
-virtual machines used in traditional parser IF, the I6 run-time
-implementation of instances and their properties is complicated.
-</p>
-
-<p class="commentary">The main complication is that there are two sorts of instance: objects,
-such as doors and people, and everything else, such as scenes. The two
-sorts are handled equally in Inter, but have completely different run-time
-representations in I6:
-</p>
-
-<ul class="items"><li>(a) "Object instances" are instances of a kind which is a subkind, perhaps
-indirectly, of "object". These are stored as I6 objects, and the I6 classes
-of these objects correspond exactly to their I7 kinds (except that the kind
-"object" itself is mapped to the I6 class "Class").
-</li><li>(b) "Value instances" are instances of kinds which are not objects but can
-nevertheless have properties. The scene "entire game" is a value instance; the
-number 27 is not. Value instances are stored as enumerated constants. For
-example, if there are scenes called "entire game", "Overture" and "Grand
-Finale", then these are stored as the constants 1, 2, 3; and I6 constants are
-defined to represent them.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Representing properties in I6. </b>Both sorts of instance can have properties; for example:
-</p>
-
-<blockquote>
-    <p>A supporter has a number called carrying capacity.</p>
-</blockquote>
-
-<blockquote>
-    <p>A scene has a number called completion score.</p>
-</blockquote>
-
-<p class="commentary">allows a property to be held by object instances (supporters) and value
-instances (scenes). To the writer of I7 source text, no distinction between
-these cases is visible, and the same is true of Inter code.
-</p>
-
-<p class="commentary">How to store these at run-time is not so straightforward. Speed and
-compactness are unusually important here, and constraints imposed by the
-virtual machine targeted by I6 add further complications.
-</p>
-
-<ul class="items"><li>(a) Properties of object instances are stored as either I6 properties or I6
-attributes of their I6 objects. As far as possible, this is a direct mapping
-from I7 instances and kinds onto I6 objects and classes. It is a little
-bulkier in memory than using flat arrays, but the Glulx and Z-machine virtual
-machines offer a very rapid lookup operation. Thus "the carrying capacity of
-the player" can be compiled to the I6 expression <span class="extract"><span class="extract-syntax">player.capacity</span></span>, which
-compiles to a single short call to the I6 veneer &mdash; and one which many
-interpreters today have optimised out as a basic operation, taking only a
-single VM clock cycle.
-</li><li>(b) The properties of value instances are stored in flat arrays called
-"sticks", with each property having its own stick. For example, the property
-"recurring" for a scene would have a stick holding three values, one each for
-the three scenes. Sticks have the same run-time format as table columns and
-this is not a coincidence, because some kinds of value instances are created
-by table in I7, and this lets us use the table as a ready-made set of sticks.
-But now we don't have run-time lookup mechanisms already provided for us, so
-we will need to set up some metadata structures to make it possible to seek
-property values for value instances quickly.
-</li></ul>
-<p class="commentary">In practice, property access is slightly faster for object instances, and
-property storage is slightly more compact for value instances, which is
-probably the right bargain.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Properties. </b>Properties in I7 are of two sorts: either-or, which behave adjectivally,
-such as "open"; and value, which behave as nouns, such as "carrying capacity".
-We can distinguish these because the I7 compiler annotates the property name
-symbols with the <span class="extract"><span class="extract-syntax">EITHER_OR_IANN</span></span> flag. It also always gives either-or
-properties the kind <span class="extract"><span class="extract-syntax">K_truth_state</span></span>, but note that a few value properties
-also have this kind, so the annotation is the only way to be sure.
-</p>
-
-<p class="commentary">Some either-or properties of object instances can be stored as I6
-"attributes". This is memory-efficient and fast at run-time: but only a
-limited number can be stored this way. Here we choose which.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaObjects::inner_property_name</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::inner_property_name</span></span>:<br/><a href="2-vo.html#SP2_2">&#167;2.2</a><br/>Generating Inform 6 - <a href="4-fi6.html#SP7">&#167;7</a>, <a href="4-fi6.html#SP8">&#167;8</a><br/>C Object Model - <a href="5-com.html#SP6">&#167;6</a>, <a href="5-com.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"&lt;nameless&gt;"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Symbols::read_annotation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">INNER_PROPERTY_NAME_IANN</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">), (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inner_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaObjects::can_have_properties</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">VanillaObjects::can_have_properties</span></span>:<br/><a href="2-vo.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP6" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-vo.html#SP7" class="function-link"><span class="function-syntax">VanillaObjects::is_kind_of_object</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">object_kind_symbol</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax"> == </span><span class="identifier-syntax">unchecked_kind_symbol</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Kind::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Kind::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FL</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_in_inl</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instances_in_declaration_order</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Kind::is_a</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inter::Instance::kind_of</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">Inter::Instance::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_node_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Warehouse::get_frame_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterTree::warehouse</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Instance::permissions_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">inst_name</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FL</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_in_inl</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>

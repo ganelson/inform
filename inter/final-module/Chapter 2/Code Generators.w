@@ -380,6 +380,9 @@ void Generators::mangled_array_entry(code_generation *gen, text_stream *entry, i
 	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRY_MTID, gen, mangled, format);
 	DISCARD_TEXT(mangled)
 }
+void Generators::symbol_array_entry(code_generation *gen, inter_symbol *entry, int format) {
+	Generators::mangled_array_entry(gen, Inter::Symbols::name(entry), format);
+}
 void Generators::compile_literal_symbol(code_generation *gen, inter_symbol *aliased) {
 	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_SYMBOL_MTID, gen, aliased);
 }

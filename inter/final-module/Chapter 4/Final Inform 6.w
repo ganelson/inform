@@ -1029,6 +1029,20 @@ void I6Target::declare_value_instance(code_generator *cgt,
 	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val, FALSE);
 }
 
+@ For the I6 header syntax, see the DM4. Note that the "hardwired" short
+name is intentionally made blank: we always use I6's |short_name| property
+instead. I7's spatial plugin, if loaded (as it usually is), will have
+annotated the Inter symbol for the object with an arrow count, that is,
+a measure of its spatial depth. This we translate into I6 arrow notation.
+If the spatial plugin wasn't loaded then we have no notion of containment,
+all arrow counts are 0, and we define a flat sequence of free-standing objects.
+
+One last oddball thing is that direction objects have to be compiled in I6
+as if they were spatially inside a special object called |Compass|. This doesn't
+really make much conceptual sense, and I7 dropped the idea -- it has no
+"compass".
+
+=
 void I6Target::declare_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
 	segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, main_matter_I7CGS);
@@ -1489,6 +1503,14 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 	return TRUE;
 }
 
+@ The entries here are bracketed to avoid the Inform 6 syntax ambiguity between
+|4 -5| (two entries, four followed by minus five) and |4-5| (one entry, just
+minus one). Inform 6 always uses the second interpretation, so just in case
+there are negative literal integers in these array entries, we use
+brackets: thus |(4) (-5)|. This cannot be confused with function calling
+because I6 doesn't allow function calls in a constant context.
+
+=
 void I6Target::array_entry(code_generator *cgt, code_generation *gen, text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" (%S)", entry);
