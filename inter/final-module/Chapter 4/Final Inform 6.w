@@ -1026,7 +1026,7 @@ void I6Target::end_class(code_generator *cgt, code_generation *gen, text_stream 
 
 void I6Target::declare_value_instance(code_generator *cgt,
 	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
-	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val, FALSE);
+	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val);
 }
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
@@ -1114,7 +1114,17 @@ void I6Target::seek_locals(code_generation *gen, inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P) I6Target::seek_locals(gen, F);
 }
 
-void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val, int ifndef_me) {
+void I6Target::declare_constant(code_generator *cgt, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val) {
+	int ifndef_me = FALSE;
+	if ((Str::eq(const_name, I"WORDSIZE")) ||
+		(Str::eq(const_name, I"TARGET_ZCODE")) ||
+		(Str::eq(const_name, I"INDIV_PROP_START")) ||
+		(Str::eq(const_name, I"TARGET_GLULX")) ||
+		(Str::eq(const_name, I"DICT_WORD_SIZE")) ||
+		(Str::eq(const_name, I"DEBUG")) ||
+		(Str::eq(const_name, I"cap_short_name")))
+		ifndef_me = TRUE;
+
 	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1)) return;
 
 	if (Str::eq(const_name, I"FLOAT_INFINITY")) return;
@@ -1227,8 +1237,6 @@ void I6Target::declare_function(code_generator *cgt, code_generation *gen, inter
 			break;			
 	}
 	Vanilla::node(gen, D);
-//	text_stream *OUT = CodeGen::current(gen);
-//	text_stream *fn_name = Inter::Symbols::name(fn);
 	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) {
 		WRITE("#ifdef TARGET_GLULX;\n");
 		WRITE("@gestalt 9 0 res;\n");
@@ -1450,7 +1458,9 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 		*saved = CodeGen::select(gen, choice);
 	}
 	text_stream *OUT = CodeGen::current(gen);
-	
+	int hang_one = FALSE;
+	if ((format == TABLE_ARRAY_FORMAT) && (P) && (P->W.extent - DATA_CONST_IFLD == 2)) { format = WORD_ARRAY_FORMAT; hang_one = TRUE; }
+
 	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
 		WRITE("Verb ");
 		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
@@ -1493,6 +1503,7 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 		WRITE(";");
 		return FALSE;
 	}
+	if (hang_one)  WRITE("! Hanging one\n");
 	WRITE("Array %S ", array_name);
 	switch (format) {
 		case WORD_ARRAY_FORMAT: WRITE("-->"); break;
@@ -1500,6 +1511,7 @@ int I6Target::begin_array(code_generator *cgt, code_generation *gen, text_stream
 		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
 		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
 	}
+	if (hang_one) I6Target::array_entry(cgt, gen, I"1", format);
 	return TRUE;
 }
 
@@ -1527,10 +1539,9 @@ then be initialised to 0.
 
 =
 void I6Target::array_entries(code_generator *cgt, code_generation *gen,
-	int how_many, int plus_ips, int format) {
+	int how_many, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (plus_ips) WRITE(" (%d + INDIV_PROP_START)", how_many, plus_ips);
-	else WRITE(" (%d)", how_many);
+	WRITE(" (%d)", how_many);
 }
 
 void I6Target::end_array(code_generator *cgt, code_generation *gen, int format, segmentation_pos *saved) {

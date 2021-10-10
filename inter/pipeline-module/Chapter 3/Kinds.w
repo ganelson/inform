@@ -459,7 +459,7 @@ a kind of thing.
 	}
 	
 	linked_list *ordered_L = NEW_LINKED_LIST(inter_symbol);
-	Vanilla::sort_symbol_list(ordered_L, L, Vanilla::in_source_order);
+	CodeGen::sort_symbol_list(ordered_L, L, CodeGen::in_source_order);
 	int i = 1;
 	inter_symbol *kind_name;
 	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)

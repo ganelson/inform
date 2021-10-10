@@ -515,7 +515,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	return 1;
 }
 
-inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_ti val2, int *ips) {
+inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_ti val2) {
 	if (val1 == LITERAL_IVAL) return val2;
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
@@ -526,12 +526,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_
 			case CONSTANT_DIRECT: {
 				inter_ti dval1 = D->W.data[DATA_CONST_IFLD];
 				inter_ti dval2 = D->W.data[DATA_CONST_IFLD + 1];
-				inter_ti e = Inter::Constant::evaluate(Inter::Packages::scope_of(D), dval1, dval2, ips);
-				if (e == 0) {
-					text_stream *S = Inter::Symbols::name(aliased);
-					if (Str::eq(S, I"INDIV_PROP_START")) *ips = TRUE;
-				}
-				LOG("Eval const $3 = %d\n", aliased, e);
+				inter_ti e = Inter::Constant::evaluate(Inter::Packages::scope_of(D), dval1, dval2);
 				return e;
 			}
 			case CONSTANT_SUM_LIST:
@@ -540,7 +535,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_
 			case CONSTANT_QUOTIENT_LIST: {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-					inter_ti extra = Inter::Constant::evaluate(Inter::Packages::scope_of(D), D->W.data[i], D->W.data[i+1], ips);
+					inter_ti extra = Inter::Constant::evaluate(Inter::Packages::scope_of(D), D->W.data[i], D->W.data[i+1]);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
 						if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;

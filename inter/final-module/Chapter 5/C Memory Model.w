@@ -269,15 +269,6 @@ void glulx_mfree(i7process_t *proc, i7word_t x) {
 =
 
 @h Populating memory with arrays.
-Inter supports four sorts of arrays, with behaviour as laid out in this 2x2 grid:
-= (text)
-			 | entries count 0, 1, 2,...	 | entry 0 is N, then entries count 1, 2, ..., N
--------------+-------------------------------+-----------------------------------------------
-byte entries | BYTE_ARRAY_FORMAT             | BUFFER_ARRAY_FORMAT
--------------+-------------------------------+-----------------------------------------------
-word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
--------------+-------------------------------+-----------------------------------------------
-=
 
 =
 int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
@@ -392,8 +383,7 @@ then be initialised to 0.
 
 =
 void CMemoryModel::array_entries(code_generator *cgt, code_generation *gen,
-	int how_many, int plus_ips, int format) {
-	if (plus_ips) how_many += 64;
+	int how_many, int format) {
 	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(cgt, gen, I"0", format);
 }
 

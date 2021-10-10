@@ -22,7 +22,7 @@ int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->generator_argument) {
 		code_generation *gen = CodeGen::new_generation(step->parsed_filename,
 			step->to_stream, step->repository, step->package_argument,
-			step->generator_argument, step->for_VM);
+			step->generator_argument, step->for_VM, FALSE);
 		Generators::go(gen);
 	}
 	return TRUE;
@@ -60,7 +60,7 @@ typedef struct code_generation {
 } code_generation;
 
 code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree *I,
-	inter_package *just, code_generator *generator, target_vm *VM) {
+	inter_package *just, code_generator *generator, target_vm *VM, int temp) {
 	code_generation *gen = CREATE(code_generation);
 	gen->to_file = F;
 	gen->to_stream = T;
@@ -82,7 +82,82 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->kinds = NEW_LINKED_LIST(inter_symbol);
 	gen->kinds_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
 	gen->instances_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
+	if (temp == FALSE) @<Traverse for global bric-a-brac@>;
 	return gen;
+}
+
+@<Traverse for global bric-a-brac@> =
+	InterTree::traverse(gen->from, CodeGen::gather_up, gen, NULL, 0);
+	CodeGen::sort_symbol_list(gen->kinds_in_declaration_order, gen->kinds,
+		CodeGen::in_declaration_order);
+	CodeGen::sort_symbol_list(gen->instances_in_declaration_order, gen->instances,
+		CodeGen::in_declaration_order);
+
+@ =
+void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	switch (P->W.data[ID_IFLD]) {
+		case VARIABLE_IST: {
+			inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
+			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
+			break;
+		}
+		case PROPERTY_IST: {
+			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
+				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
+			else
+				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties);
+			break;
+		}
+		case INSTANCE_IST: {
+			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+			ADD_TO_LINKED_LIST(inst_name, inter_symbol, gen->instances);
+			break;
+		}
+		case KIND_IST: {
+			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			ADD_TO_LINKED_LIST(kind_name, inter_symbol, gen->kinds);
+			break;
+		}
+	}
+}
+
+void CodeGen::sort_symbol_list(linked_list *to_L, linked_list *L,
+	int (*sorter)(const void *elem1, const void *elem2)) {
+	int N = LinkedLists::len(L);
+	if (N > 0) {
+		inter_symbol **array = (inter_symbol **)
+			(Memory::calloc(N, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		int i=0;
+		inter_symbol *sym;
+		LOOP_OVER_LINKED_LIST(sym, inter_symbol, L) array[i++] = sym;
+		qsort(array, (size_t) N, sizeof(inter_symbol *), sorter);
+		for (int j=0; j<N; j++) ADD_TO_LINKED_LIST(array[j], inter_symbol, to_L);
+		Memory::I7_array_free(array, CODE_GENERATION_MREASON, N, sizeof(inter_symbol *));
+	}
+}
+
+int CodeGen::in_source_order(const void *elem1, const void *elem2) {
+	return CodeGen::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
+}
+int CodeGen::in_declaration_order(const void *elem1, const void *elem2) {
+	return CodeGen::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
+}
+int CodeGen::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = CodeGen::sequence_number(*e1, annot);
+	int s2 = CodeGen::sequence_number(*e2, annot);
+	if (s1 != s2) return s1-s2;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+}
+int CodeGen::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
+	int N = Inter::Symbols::read_annotation(kind_name, annot);
+	if (N >= 0) return N;
+	return 100000000;
 }
 
 @h Ad hoc generation.
@@ -113,7 +188,8 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
 		code_generator *generator = Generators::find_for(VM);
 		if (generator == NULL) internal_error("VM family with no generator");
 		ad_hoc_generation =
-			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM), NULL, generator, VM);
+			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM),
+				NULL, generator, VM, TRUE);
 	}
 	code_generator *generator = Generators::find_for(VM);
 	if (generator == NULL) internal_error("VM family with no generator");

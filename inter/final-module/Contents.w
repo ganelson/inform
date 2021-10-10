@@ -10,20 +10,20 @@ Chapter 1: Setting Up
 Chapter 2: Mechanism
 	Code Generation
 	Code Generators
-	The Vanilla Generator
+	Vanilla
 	Vanilla Constants
 	Vanilla Objects
 	Vanilla Code
 
-Chapter 3: Other Generators
+Chapter 3: Non-Vanilla Generators
 	Final Textual Inter
 	Final Binary Inter
 	Final Inventory
 
-Chapter 4: Inform 6
+Chapter 4: Inform 6 by Vanilla
 	Final Inform 6
 
-Chapter 5: C
+Chapter 5: C by Vanilla
 	Final C
 	C Namespace
 	C References

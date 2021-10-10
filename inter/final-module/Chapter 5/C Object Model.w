@@ -304,7 +304,7 @@ void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, text_
 
 void CObjectModel::declare_value_instance(code_generator *cgt,
 	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
-	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val, FALSE);
+	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val);
 	CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, TRUE);
 }
 
