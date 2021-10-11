@@ -54,7 +54,7 @@ tiny array inside the same enclosure as the box function.
 =
 void BoxQuotations::compilation_agent(compilation_subtask *t) {
 	box_quotation *bq = RETRIEVE_POINTER_box_quotation(t->data);
-	packaging_state save = EmitArrays::begin(bq->seen_flag_iname, K_number);
+	packaging_state save = EmitArrays::begin_word(bq->seen_flag_iname, K_number);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);

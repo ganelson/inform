@@ -13,7 +13,7 @@ void RTPlayer::compile_generic_constants(void) {
 
 void RTPlayer::InitialSituation(void) {
 	inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
-	packaging_state save = EmitArrays::begin(iname, K_value);
+	packaging_state save = EmitArrays::begin_word(iname, K_value);
 	RTVariables::initial_value_as_array_entry(player_VAR);
 	if (start_object == NULL) EmitArrays::numeric_entry(0);
 	else EmitArrays::iname_entry(RTInstances::value_iname(start_object));
@@ -27,7 +27,7 @@ void RTPlayer::InitialSituation(void) {
 
 void RTPlayer::InitialSituation_define(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
-	EmitArrays::begin(iname, K_value);
+	EmitArrays::begin_word(iname, K_value);
 	Emit::numeric_constant(iname, (inter_ti) val);
 	Hierarchy::make_available(iname);
 }

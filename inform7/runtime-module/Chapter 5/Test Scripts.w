@@ -83,7 +83,7 @@ void RTTestCommand::compilation_agent(compilation_subtask *t) {
 	DISCARD_TEXT(tttext)
 	EmitArrays::end(save);
 
-	save = EmitArrays::begin(RTTestCommand::req_iname(test), K_value);
+	save = EmitArrays::begin_word(RTTestCommand::req_iname(test), K_value);
 	if (test->place == NULL) EmitArrays::numeric_entry(0);
 	else EmitArrays::iname_entry(RTInstances::value_iname(test->place));
 	for (int j=0; j<test->no_possessions; j++) {

@@ -106,7 +106,7 @@ inter_name *LocalParking::callings(void) {
 void LocalParking::compile_array(void) {
 	if (size_of_local_parking_area > 0) {
 		inter_name *iname = LocalParking::array(0);
-		packaging_state save = EmitArrays::begin(iname, K_value);
+		packaging_state save = EmitArrays::begin_word(iname, K_value);
 		for (int i=0; i<size_of_local_parking_area; i++)
 			EmitArrays::numeric_entry(0);
 		EmitArrays::end(save);

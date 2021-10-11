@@ -274,15 +274,9 @@ void glulx_mfree(i7process_t *proc, i7word_t x) {
 int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
 	if (saved) {
-		int choice = c_early_matter_I7CGS;
-		if (array_s) {
-			if (Str::eq(array_s->symbol_name, I"DynamicMemoryAllocation")) choice = c_very_early_matter_I7CGS;
-			if (Inter::Symbols::read_annotation(array_s, LATE_IANN) == 1) choice = c_code_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(array_s, BUFFERARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(array_s, BYTEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(array_s, TABLEARRAY_IANN) == 1) choice = c_arrays_at_eof_I7CGS;
-			if (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1) choice = c_verbs_at_eof_I7CGS;
-		}
+		int choice = c_arrays_at_eof_I7CGS;
+		if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1))
+			choice = c_verbs_at_eof_I7CGS;
 		*saved = CodeGen::select(gen, choice);
 	}
 	Str::clear(C_GEN_DATA(memdata.array_name));

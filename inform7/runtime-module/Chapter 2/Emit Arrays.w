@@ -6,7 +6,7 @@ Here is how bytecode to create ready-initialised arrays of Inter data is emitted
 This section provides an API for the rest of the //runtime// and //imperative//
 modules to use when creating arrays of data in Inter memory. It's easy to use:
 
-(*) Call //EmitArrays::begin// or one of its variants.
+(*) Call //EmitArrays::begin_word// or one of its variants.
 (*) Fill the array with its initial values.
 (*) Call //EmitArrays::end//.
 
@@ -19,16 +19,9 @@ Call exactly one of these functions. In each case the kind |K| is only weakly
 enforced; it's fine to store arbitrary data with |K| being |NULL|.
 
 =
-packaging_state EmitArrays::begin(inter_name *name, kind *K) {
+packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	return save;
-}
-
-packaging_state EmitArrays::begin_late(inter_name *name, kind *K) {
-	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
-	Produce::annotate_iname_i(name, LATE_IANN, 1);
 	return save;
 }
 
@@ -46,11 +39,10 @@ packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
 	return save;
 }
 
-packaging_state EmitArrays::begin_late_verb(inter_name *name, kind *K) {
+packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
 	Produce::annotate_iname_i(name, VERBARRAY_IANN, 1);
-	Produce::annotate_iname_i(name, LATE_IANN, 1);
 	return save;
 }
 

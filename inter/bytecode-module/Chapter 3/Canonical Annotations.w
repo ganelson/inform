@@ -26,7 +26,6 @@ Defining the one true set of Inter annotation codes.
 @e FAKE_ACTION_IANN
 @e OBJECT_IANN
 @e INLINE_ARRAY_IANN
-@e LATE_IANN
 @e METAVERB_IANN
 @e NOUN_FILTER_IANN
 @e OBJECT_KIND_COUNTER_IANN
@@ -38,6 +37,7 @@ Defining the one true set of Inter annotation codes.
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
 @e SYNOPTIC_IANN
+@e I6_GLOBAL_OFFSET_IANN
 @e C_ARRAY_ADDRESS_IANN
 
 @ And also the canonical set of bits to use in the flags word for an Inter
@@ -89,7 +89,6 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(FAKE_ACTION_IANN, I"__fake_action", FALSE);
 	Inter::Annotations::form(OBJECT_IANN, I"__object", FALSE);
 	Inter::Annotations::form(INLINE_ARRAY_IANN, I"__inline_array", FALSE);
-	Inter::Annotations::form(LATE_IANN, I"__late", FALSE);
 	Inter::Annotations::form(METAVERB_IANN, I"__meta_verb", FALSE);
 	Inter::Annotations::form(NOUN_FILTER_IANN, I"__noun_filter", FALSE);
 	Inter::Annotations::form(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", FALSE);
@@ -101,5 +100,6 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
 	Inter::Annotations::form(VENEER_IANN, I"__veneer", FALSE);
 	Inter::Annotations::form(SYNOPTIC_IANN, I"__synoptic", FALSE);
+	Inter::Annotations::form(I6_GLOBAL_OFFSET_IANN, I"__global_offset", FALSE);
 	Inter::Annotations::form(C_ARRAY_ADDRESS_IANN, I"__array_address", FALSE);
 }

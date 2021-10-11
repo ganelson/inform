@@ -40,7 +40,7 @@ inter_name *TextLiterals::small_block(inter_name *content) {
 }
 
 void TextLiterals::compile_value_to(inter_name *at, inter_name *content) {
-	packaging_state save = EmitArrays::begin(at, K_value);
+	packaging_state save = EmitArrays::begin_word(at, K_value);
 	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	EmitArrays::iname_entry(content);
 	EmitArrays::end(save);

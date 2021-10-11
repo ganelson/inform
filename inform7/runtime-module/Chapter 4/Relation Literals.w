@@ -20,7 +20,7 @@ See //Relations// and //BasicInformKit: Relations//.
 =
 inter_name *RelationLiterals::default(kind *K) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
-	packaging_state save = EmitArrays::begin_late(small_block, K_value);
+	packaging_state save = EmitArrays::begin_word(small_block, K_value);
 	TheHeap::emit_block_value_header(K, FALSE, 34);
 	EmitArrays::null_entry();
 	EmitArrays::null_entry();

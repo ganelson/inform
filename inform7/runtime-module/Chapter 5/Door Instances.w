@@ -187,7 +187,7 @@ parse_node *RTDoors::found_in_for_2_sided(instance *I, instance *R1, instance *R
 	package_request *PR =
 		Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = EmitArrays::begin(S, K_value);
+	packaging_state save = EmitArrays::begin_word(S, K_value);
 	EmitArrays::iname_entry(RTInstances::value_iname(R1));
 	EmitArrays::iname_entry(RTInstances::value_iname(R2));
 	EmitArrays::end(save);

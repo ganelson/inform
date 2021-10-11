@@ -64,7 +64,7 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 	EmitArrays::end(save);
 
 @<Make the file metadata array@> =
-	packaging_state save = EmitArrays::begin(exf_iname, K_value);
+	packaging_state save = EmitArrays::begin_word(exf_iname, K_value);
 	EmitArrays::iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
 	EmitArrays::iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
 	if (exf->file_is_binary) EmitArrays::numeric_entry(1);

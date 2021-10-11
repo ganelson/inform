@@ -84,7 +84,7 @@ for the underlying function's compilation.
 
 @<Compile the closure array for this constant phrase@> =
 	inter_name *iname = Closures::iname(cphr);
-	packaging_state save = EmitArrays::begin(iname, K_value);
+	packaging_state save = EmitArrays::begin_word(iname, K_value);
 
 	RTKindIDs::strong_ID_array_entry(cphr->cphr_kind);
 
@@ -175,7 +175,7 @@ void Closures::compilation_agent(compilation_subtask *t) {
 	Functions::end(save);
 
 @<Compile its closure@> =
-	packaging_state save = EmitArrays::begin(dcr->closure_identifier, K_value);
+	packaging_state save = EmitArrays::begin_word(dcr->closure_identifier, K_value);
 	RTKindIDs::strong_ID_array_entry(dcr->K);
 	EmitArrays::iname_entry(rname);
 	TEMPORARY_TEXT(DVT)

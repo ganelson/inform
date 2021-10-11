@@ -206,7 +206,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	}
 
 	if (Spatial::object_is_a_room(I)) {
-		packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_MAP_MD_HL, pack), K_value);
+		packaging_state save = EmitArrays::begin_word(Hierarchy::make_iname_in(INSTANCE_MAP_MD_HL, pack), K_value);
 		for (int i=0; i<Map::no_directions(); i++) {
 			instance *T = MAP_EXIT(I, i);
 			if (I) EmitArrays::iname_entry(RTInstances::value_iname(T));
@@ -218,7 +218,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		EmitArrays::end(save);
 	}
 	if (Backdrops::object_is_a_backdrop(I)) {
-		packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_BACKDROP_PRESENCES_MD_HL, pack), K_value);
+		packaging_state save = EmitArrays::begin_word(Hierarchy::make_iname_in(INSTANCE_BACKDROP_PRESENCES_MD_HL, pack), K_value);
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
 			instance *L = Backdrops::get_inferred_location(inf);
@@ -227,7 +227,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		EmitArrays::end(save);
 	}
 
-	packaging_state save = EmitArrays::begin(Hierarchy::make_iname_in(INSTANCE_USAGES_MD_HL, pack), K_value);
+	packaging_state save = EmitArrays::begin_word(Hierarchy::make_iname_in(INSTANCE_USAGES_MD_HL, pack), K_value);
 	int k = 0;
 	parse_node *at;
 	LOOP_OVER_LINKED_LIST(at, parse_node, I->compilation_data.usages) {

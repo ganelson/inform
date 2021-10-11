@@ -262,7 +262,7 @@ void RTKindIDs::compile_structures(void) {
 }
 
 @<Compile the runtime ID structure for this kind@> =
-	packaging_state save = EmitArrays::begin(rks->rks_iname, K_value);
+	packaging_state save = EmitArrays::begin_word(rks->rks_iname, K_value);
 	EmitArrays::iname_entry(RTKindIDs::weak_iname(K));
 	@<Compile the list of strong IDs for the bases@>;
 	EmitArrays::end(save);

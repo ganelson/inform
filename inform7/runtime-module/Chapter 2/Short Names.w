@@ -91,7 +91,7 @@ void ShortNames::compilation_agent(compilation_subtask *t) {
 	EmitCode::rtrue();
 	Functions::end(save);
 
-	save = EmitArrays::begin(notice->snn_iname, NULL);
+	save = EmitArrays::begin_word(notice->snn_iname, NULL);
 	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	EmitArrays::iname_entry(notice->routine_iname);
 	EmitArrays::end(save);

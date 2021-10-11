@@ -350,7 +350,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	Emit::iname_constant(md_iname, K_value, iname);
 
 @<Compile the metadata array@> =
-	packaging_state save = EmitArrays::begin(RTRelations::iname(bp), K_value);
+	packaging_state save = EmitArrays::begin_word(RTRelations::iname(bp), K_value);
 	if (ExplicitRelations::stored_dynamically(bp)) {
 		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
@@ -1087,7 +1087,7 @@ relation of the right kind.
 
 =
 void RTRelations::default_value_of_relation_kind(inter_name *identifier, kind *K) {
-	packaging_state save = EmitArrays::begin(identifier, K_value);
+	packaging_state save = EmitArrays::begin_word(identifier, K_value);
 	TheHeap::emit_block_value_header(K, FALSE, 8);
 	EmitArrays::null_entry();
 	EmitArrays::null_entry();
@@ -1156,7 +1156,7 @@ void RTRelations::compile_vtov_storage(binary_predicate *bp) {
 	package_request *P = RTRelations::package(bp);
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	ED->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
-	packaging_state save = EmitArrays::begin(ED->v2v_bitmap_iname, K_value);
+	packaging_state save = EmitArrays::begin_word(ED->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
 
 	if ((left_count > 0) && (right_count > 0))
@@ -1237,7 +1237,7 @@ above: it forces the template layer to generate the cache when first used.
 			bytes_used += 2*left_count*left_count;
 		} else {
 			v2v_iname = iname;
-			packaging_state save = EmitArrays::begin(iname, K_number);
+			packaging_state save = EmitArrays::begin_word(iname, K_number);
 			EmitArrays::numeric_entry((inter_ti) (2*left_count*left_count));
 			EmitArrays::end(save);
 			words_used += 2*left_count*left_count;

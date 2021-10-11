@@ -20,10 +20,14 @@ Chapter 3: Non-Vanilla Generators
 	Final Binary Inter
 	Final Inventory
 
-Chapter 4: Inform 6 by Vanilla
+Chapter 4: Inform 6
 	Final Inform 6
+	Inform 6 Constants
+	Inform 6 Global Variables
+	Inform 6 Objects
+	Inform 6 Code
 
-Chapter 5: C by Vanilla
+Chapter 5: C
 	Final C
 	C Namespace
 	C References

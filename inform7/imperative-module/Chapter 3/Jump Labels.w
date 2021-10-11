@@ -158,7 +158,7 @@ void JumpLabels::compile_necessary_storage(void) {
 			int N = (lns->allocate_storage)*(lns->label_counter);
 			if (N > 0) {
 				packaging_state save =
-					EmitArrays::begin(lns->label_storage_iname, K_value);
+					EmitArrays::begin_word(lns->label_storage_iname, K_value);
 				for (int i=0; i<N; i++) EmitArrays::numeric_entry(0);
 				if (N == 1) EmitArrays::numeric_entry(0);
 				EmitArrays::end(save);

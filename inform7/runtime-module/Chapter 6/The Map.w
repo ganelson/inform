@@ -22,7 +22,7 @@ int RTMap::compile_model_tables(void) {
 	LOOP_OVER_INSTANCES(I, K_object)
 		RTInstances::value_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
-	packaging_state save = EmitArrays::begin(iname, K_object);
+	packaging_state save = EmitArrays::begin_word(iname, K_object);
 	int words_used = 0;
 	if (Task::wraps_existing_storyfile()) {
 		EmitArrays::divider(I"minimal, as there are no rooms");

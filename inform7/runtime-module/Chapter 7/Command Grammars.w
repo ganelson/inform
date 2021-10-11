@@ -215,7 +215,7 @@ void RTCommandGrammars::command_agent(compilation_subtask *t) {
 
 	package_request *PR = Hierarchy::completion_package(COMMANDS_HAP);
 	inter_name *array_iname = Hierarchy::make_iname_in(VERB_DECLARATION_ARRAY_HL, PR);
-	packaging_state save = EmitArrays::begin_late_verb(array_iname, K_value);
+	packaging_state save = EmitArrays::begin_verb(array_iname, K_value);
 	if (Wordings::empty(cg->command)) {
 		EmitArrays::dword_entry(I"no.verb");
 	} else {

@@ -2033,7 +2033,7 @@ package_request *Hierarchy::exotic_package(int x) {
 
 @h Finding where to put things.
 So, for example, |Hierarchy::find(ACTIVITY_VAR_CREATORS_HL)| returns the iname
-at which this array should be placed, by calling, e.g., //EmitArrays::begin//.
+at which this array should be placed, by calling, e.g., //EmitArrays::begin_word//.
 
 =
 inter_name *Hierarchy::find(int id) {
