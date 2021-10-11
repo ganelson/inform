@@ -214,15 +214,15 @@ assimilated properties never do have.
 	}
 
 @<List any kind of object with an explicit permission@> =
-	inter_symbol *kind_name;
-	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order)
-		if (VanillaObjects::is_kind_of_object(kind_name)) {
+	inter_symbol *kind_s;
+	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order)
+		if (VanillaObjects::is_kind_of_object(kind_s)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name =
+				inter_symbol *owner_s =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				if (owner_name == kind_name)
-					Generators::symbol_array_entry(gen, kind_name, WORD_ARRAY_FORMAT);
+				if (owner_s == kind_s)
+					Generators::symbol_array_entry(gen, kind_s, WORD_ARRAY_FORMAT);
 			}
 		}
 
@@ -230,15 +230,15 @@ assimilated properties never do have.
 can be given properties, even when other objects of the same kind may lack them. So:
 
 @<List any individual instance with an explicit permission@> =
-	inter_symbol *inst_name;
-	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order)
-		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
+	inter_symbol *inst_s;
+	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order)
+		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_s))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_name =
+				inter_symbol *owner_s =
 					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				if (owner_name == inst_name)
-					Generators::symbol_array_entry(gen, inst_name, WORD_ARRAY_FORMAT);
+				if (owner_s == inst_s)
+					Generators::symbol_array_entry(gen, inst_s, WORD_ARRAY_FORMAT);
 			}
 		}
 
@@ -251,14 +251,14 @@ not as wasteful as it looks.)
 @<List all top-level kinds if "object" itself has an explicit permission@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-		inter_symbol *owner_name =
+		inter_symbol *owner_s =
 			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-		if (owner_name == object_kind_symbol) {
+		if (owner_s == object_kind_symbol) {
 			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
-			inter_symbol *kind_name;
-			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
-				if (Inter::Kind::super(kind_name) == object_kind_symbol) {
-					Generators::symbol_array_entry(gen, kind_name, WORD_ARRAY_FORMAT);
+			inter_symbol *kind_s;
+			LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
+				if (Inter::Kind::super(kind_s) == object_kind_symbol) {
+					Generators::symbol_array_entry(gen, kind_s, WORD_ARRAY_FORMAT);
 				}
 			}
 		}
@@ -307,30 +307,30 @@ so we use "marks" on those already done.
 
 @<Declare kinds of value@> =
 	int unique_kovp_id = 0;
-	inter_symbol *kind_name;
-	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
-		if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
-			Generators::begin_properties_for(gen, kind_name);
+	inter_symbol *kind_s;
+	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
+		if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
+			Generators::begin_properties_for(gen, kind_s);
 			inter_symbol *prop_name;
 			LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 				CodeGen::unmark(prop_name);
 			@<Declare properties which every instance of this kind of value can have@>;
 			@<Declare properties which only some instances of this kind of value can have@>;
-			Generators::end_properties_for(gen, kind_name);
+			Generators::end_properties_for(gen, kind_s);
 		}
 	}
 
 @<Declare properties which every instance of this kind of value can have@> =
 	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-		Inter::Kind::permissions_list(kind_name));
+		Inter::Kind::permissions_list(kind_s));
 	@<Work through this frame list of permissions@>;
 
 @<Declare properties which only some instances of this kind of value can have@> =
-	inter_symbol *inst_name;
-	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
-		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+	inter_symbol *inst_s;
+	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
+		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
 			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-				Inter::Instance::permissions_list(inst_name));
+				Inter::Instance::permissions_list(inst_s));
 			@<Work through this frame list of permissions@>;
 		}
 	}
@@ -373,7 +373,7 @@ by table, no sticks exist and we must compile them.
 		WRITE_TO(ident, "KOVP_%d", unique_kovp_id++);
 		@<Compile a stick of property values and put its address here@>;
 	}
-	Generators::assign_properties(gen, kind_name, prop_name, ident);
+	Generators::assign_properties(gen, kind_s, prop_name, ident);
 
 @ These little arrays are sticks of property values, and they are laid out
 as if they were column arrays in a Table data structure. This means they must
@@ -387,16 +387,16 @@ number of instances, and is worth it for simplicity and speed.
 	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT, &saved);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
-	inter_symbol *inst_name;
-	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
-		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+	inter_symbol *inst_s;
+	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
+		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
 			int found = 0;
 			inter_node_list *PVL =
 				Inode::ID_to_frame_list(X,
-					Inter::Instance::properties_list(inst_name));
+					Inter::Instance::properties_list(inst_s));
 			@<Work through this frame list of values@>;
 			PVL = Inode::ID_to_frame_list(X,
-					Inter::Kind::properties_list(kind_name));
+					Inter::Kind::properties_list(kind_s));
 			@<Work through this frame list of values@>;
 			if (found == 0) Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
@@ -426,32 +426,32 @@ number of instances, and is worth it for simplicity and speed.
 property value, and then //Generators::end_class//.
 
 @<Declare kinds of object@> =
-	inter_symbol *kind_name;
-	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
-		if ((kind_name == object_kind_symbol) ||
-			(VanillaObjects::is_kind_of_object(kind_name))) {
+	inter_symbol *kind_s;
+	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
+		if ((kind_s == object_kind_symbol) ||
+			(VanillaObjects::is_kind_of_object(kind_s))) {
 			text_stream *super_class = NULL;
-			inter_symbol *super_name = Inter::Kind::super(kind_name);
+			inter_symbol *super_name = Inter::Kind::super(kind_s);
 			if (super_name) super_class = Inter::Symbols::name(super_name);
 			text_stream *pname = Metadata::read_optional_textual(
-				Inter::Packages::container(kind_name->definition), I"^printed_name");
+				Inter::Packages::container(kind_s->definition), I"^printed_name");
 			segmentation_pos saved;
-			Generators::declare_class(gen, Inter::Symbols::name(kind_name),
+			Generators::declare_class(gen, Inter::Symbols::name(kind_s),
 				pname, super_class, &saved);
-			VanillaObjects::append(gen, kind_name);
+			VanillaObjects::append(gen, kind_s);
 			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-				Inter::Kind::properties_list(kind_name));
+				Inter::Kind::properties_list(kind_s));
 			@<Declare the properties of this kind or instance@>;
-			Generators::end_class(gen, Inter::Symbols::name(kind_name), saved);
+			Generators::end_class(gen, Inter::Symbols::name(kind_s), saved);
 		}
 	}
 
 @ And then the instances:
 
 @<Declare instances@> =
-	inter_symbol *inst_name;
-	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
-		inter_tree_node *P = Inter::Symbols::definition(inst_name);
+	inter_symbol *inst_s;
+	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
+		inter_tree_node *P = Inter::Symbols::definition(inst_s);
 		inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 		if (Inter::Kind::is_a(inst_kind, object_kind_symbol))
 			@<Declare an object instance@>
@@ -464,18 +464,18 @@ property value, and then //Generators::end_class//.
 //Generators::end_instance//.
 
 @<Declare an object instance@> =
-	int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
+	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
 	segmentation_pos saved;
-	Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name),
+	Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_s),
 		Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir, &saved);
-	VanillaObjects::append(gen, inst_name);
+	VanillaObjects::append(gen, inst_s);
 	inter_node_list *FL =
 		Inode::ID_to_frame_list(P,
-			Inter::Instance::properties_list(inst_name));
+			Inter::Instance::properties_list(inst_s));
 	@<Declare the properties of this kind or instance@>;
-	Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_name), saved);
+	Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_s), saved);
 
 @ With instances of values, though, we have no property assignment to do: that
 was all taken care of with the sticks of property values already declared. So
@@ -488,7 +488,7 @@ a single call to //Generators::declare_value_instance// is enough.
 	if (val1 == UNDEF_IVAL) defined = FALSE;
 	TEMPORARY_TEXT(val)
 	if (defined) WRITE_TO(val, "%d", val2);
-	Generators::declare_value_instance(gen, Inter::Symbols::name(inst_name),
+	Generators::declare_value_instance(gen, Inter::Symbols::name(inst_s),
 		Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), val);
 	DISCARD_TEXT(val)
 
@@ -538,8 +538,8 @@ void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
 Returns the weak ID of a kind, which is a small integer known at compile time.
 
 =
-int VanillaObjects::weak_id(inter_symbol *kind_name) {
-	inter_package *pack = Inter::Packages::container(kind_name->definition);
+int VanillaObjects::weak_id(inter_symbol *kind_s) {
+	inter_package *pack = Inter::Packages::container(kind_s->definition);
 	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
 	int alt_N = -1;
 	if (weak_s) alt_N = Inter::Symbols::evaluate_to_int(weak_s);
@@ -550,32 +550,61 @@ int VanillaObjects::weak_id(inter_symbol *kind_name) {
 @ |TRUE| for something like "thing" or "room", but |FALSE| for "object" itself.
 
 =
-int VanillaObjects::is_kind_of_object(inter_symbol *kind_name) {
-	if (kind_name == object_kind_symbol) return FALSE;
-	inter_data_type *idt = Inter::Kind::data_type(kind_name);
+int VanillaObjects::is_kind_of_object(inter_symbol *kind_s) {
+	if (kind_s == object_kind_symbol) return FALSE;
+	inter_data_type *idt = Inter::Kind::data_type(kind_s);
 	if (idt == unchecked_idt) return FALSE;
-	if (Inter::Kind::is_a(kind_name, object_kind_symbol)) return TRUE;
+	if (Inter::Kind::is_a(kind_s, object_kind_symbol)) return TRUE;
 	return FALSE;
 }
 
 @ |TRUE| for a kind which can have properties but is not any sort of object.
 
 =
-int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbol *kind_name) {
+int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbol *kind_s) {
 	inter_tree *I = gen->from;
-	if (VanillaObjects::is_kind_of_object(kind_name)) return FALSE;
-	if (kind_name == object_kind_symbol) return FALSE;
-	if (kind_name == unchecked_kind_symbol) return FALSE;
+	if (VanillaObjects::is_kind_of_object(kind_s)) return FALSE;
+	if (kind_s == object_kind_symbol) return FALSE;
+	if (kind_s == unchecked_kind_symbol) return FALSE;
 	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-		Inter::Kind::permissions_list(kind_name));
+		Inter::Kind::permissions_list(kind_s));
 	if (FL->first_in_inl) return TRUE;
-	inter_symbol *inst_name;
-	LOOP_OVER_LINKED_LIST(inst_name, inter_symbol, gen->instances_in_declaration_order) {
-		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
+	inter_symbol *inst_s;
+	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
+		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
 			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
-				Inter::Instance::permissions_list(inst_name));
+				Inter::Instance::permissions_list(inst_s));
 			if (FL->first_in_inl) return TRUE;
 		}
+	}
+	return FALSE;
+}
+
+@ |TRUE| for a property which might be held by one or more instances which
+are not objects.
+
+=
+int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *prop_s) {
+	inter_tree *I = gen->from;
+	inter_node_list *PL =
+		Inter::Warehouse::get_frame_list(
+			InterTree::warehouse(I),
+			Inter::Property::permissions_list(prop_s));
+	if (PL == NULL) internal_error("no permissions list");
+	inter_tree_node *X;
+	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
+		inter_symbol *owner_s = InterSymbolsTables::symbol_from_id(
+			Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
+		if (owner_s == NULL) internal_error("bad owner");
+		inter_symbol *owner_kind_s = NULL;
+		inter_tree_node *D = Inter::Symbols::definition(owner_s);
+		if ((D) && (D->W.data[ID_IFLD] == INSTANCE_IST)) {
+			owner_kind_s = Inter::Instance::kind_of(owner_s);
+		} else {
+			owner_kind_s = owner_s;
+		}
+		if (VanillaObjects::is_kind_of_object(owner_kind_s) == FALSE)
+			return TRUE;
 	}
 	return FALSE;
 }
