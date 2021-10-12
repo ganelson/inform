@@ -297,11 +297,6 @@ void VanillaObjects::declare_kinds_and_instances(code_generation *gen) {
 }
 
 @ We start then with kinds which have properties but are not kinds of objects.
-For such kinds we call //Generators::begin_properties_for//, then for each
-property they have, we call //Generators::assign_properties// to specify the
-stick of properties for their instances; and then //Generators::end_properties_for//
-to say that we are done.
-
 We want to ensure that no property is assigned more than once (for the same kind),
 so we use "marks" on those already done.
 
@@ -310,13 +305,14 @@ so we use "marks" on those already done.
 	inter_symbol *kind_s;
 	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
 		if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
-			Generators::begin_properties_for(gen, kind_s);
+			segmentation_pos saved;
+			Generators::declare_kind(gen, kind_s, &saved);
 			inter_symbol *prop_name;
 			LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties)
 				CodeGen::unmark(prop_name);
 			@<Declare properties which every instance of this kind of value can have@>;
 			@<Declare properties which only some instances of this kind of value can have@>;
-			Generators::end_properties_for(gen, kind_s);
+			Generators::end_kind(gen, kind_s, saved);
 		}
 	}
 
@@ -422,75 +418,49 @@ number of instances, and is worth it for simplicity and speed.
 	}
 
 @ So now for the objects. First we declare each kind of object, first calling
-//Generators::declare_class//, then //Generators::assign_property// for each
-property value, and then //Generators::end_class//.
+//Generators::declare_kind//, then //Generators::assign_property// for each
+property value, and then //Generators::end_kind//.
 
 @<Declare kinds of object@> =
 	inter_symbol *kind_s;
 	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
 		if ((kind_s == object_kind_symbol) ||
 			(VanillaObjects::is_kind_of_object(kind_s))) {
-			text_stream *super_class = NULL;
-			inter_symbol *super_name = Inter::Kind::super(kind_s);
-			if (super_name) super_class = Inter::Symbols::name(super_name);
-			text_stream *pname = Metadata::read_optional_textual(
-				Inter::Packages::container(kind_s->definition), I"^printed_name");
 			segmentation_pos saved;
-			Generators::declare_class(gen, Inter::Symbols::name(kind_s),
-				pname, super_class, &saved);
+			Generators::declare_kind(gen, kind_s, &saved);
 			VanillaObjects::append(gen, kind_s);
 			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
 				Inter::Kind::properties_list(kind_s));
 			@<Declare the properties of this kind or instance@>;
-			Generators::end_class(gen, Inter::Symbols::name(kind_s), saved);
+			Generators::end_kind(gen, kind_s, saved);
 		}
 	}
 
-@ And then the instances:
+@ And then the instances. As with kinds, we call //Generators::declare_instance//,
+then give some property values, then call //Generators::end_instance//.
+
+With instances of values, note that we have no property assignment to do: that
+was all taken care of with the sticks of property values already declared.
 
 @<Declare instances@> =
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		inter_tree_node *P = Inter::Symbols::definition(inst_s);
 		inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
-		if (Inter::Kind::is_a(inst_kind, object_kind_symbol))
-			@<Declare an object instance@>
-		else
-			@<Declare a value instance@>;
+		int N = -1;
+		if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE)
+			N = (int) (P->W.data[VAL2_INST_IFLD]);
+		segmentation_pos saved;
+		Generators::declare_instance(gen, inst_s, inst_kind, N, &saved);
+		if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
+			VanillaObjects::append(gen, inst_s);
+			inter_node_list *FL =
+				Inode::ID_to_frame_list(P,
+					Inter::Instance::properties_list(inst_s));
+			@<Declare the properties of this kind or instance@>;
+		}
+		Generators::end_instance(gen, inst_s, inst_kind, saved);
 	}
-
-@ As with kinds of object, we call //Generators::declare_instance//, then
-//Generators::assign_property// for each property value, and then
-//Generators::end_instance//.
-
-@<Declare an object instance@> =
-	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
-	if (c < 0) c = 0;
-	int is_dir = Inter::Kind::is_a(inst_kind, direction_kind_symbol);
-	segmentation_pos saved;
-	Generators::declare_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_s),
-		Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), c, is_dir, &saved);
-	VanillaObjects::append(gen, inst_s);
-	inter_node_list *FL =
-		Inode::ID_to_frame_list(P,
-			Inter::Instance::properties_list(inst_s));
-	@<Declare the properties of this kind or instance@>;
-	Generators::end_instance(gen, Inter::Symbols::name(inst_kind), Inter::Symbols::name(inst_s), saved);
-
-@ With instances of values, though, we have no property assignment to do: that
-was all taken care of with the sticks of property values already declared. So
-a single call to //Generators::declare_value_instance// is enough.
-
-@<Declare a value instance@> =
-	inter_ti val1 = P->W.data[VAL1_INST_IFLD];
-	inter_ti val2 = P->W.data[VAL2_INST_IFLD];
-	int defined = TRUE;
-	if (val1 == UNDEF_IVAL) defined = FALSE;
-	TEMPORARY_TEXT(val)
-	if (defined) WRITE_TO(val, "%d", val2);
-	Generators::declare_value_instance(gen, Inter::Symbols::name(inst_s),
-		Metadata::read_optional_textual(Inter::Packages::container(P), I"^printed_name"), val);
-	DISCARD_TEXT(val)
 
 @ The following, then, is used either for properties of a kind of object, or
 properties of an instance of object, and issues a stream of //Generators::assign_property//

@@ -7,17 +7,14 @@ How objects, classes and properties are compiled to C.
 =
 void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, CObjectModel::pseudo_object);
-	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, CObjectModel::end_instance);
-	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, CObjectModel::declare_value_instance);
-	METHOD_ADD(cgt, DECLARE_CLASS_MTID, CObjectModel::declare_class);
-	METHOD_ADD(cgt, END_CLASS_MTID, CObjectModel::end_class);
+	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
+	METHOD_ADD(cgt, DECLARE_KIND_MTID, CObjectModel::declare_kind);
+	METHOD_ADD(cgt, END_KIND_MTID, CObjectModel::end_kind);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
-	METHOD_ADD(cgt, BEGIN_PROPERTIES_FOR_MTID, CObjectModel::begin_properties_for);
-	METHOD_ADD(cgt, END_PROPERTIES_FOR_MTID, CObjectModel::end_properties_for);
 	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, CObjectModel::assign_properties);
 }
 
@@ -90,7 +87,7 @@ void CObjectModel::end(code_generation *gen) {
 			inter_symbol *kind_name;
 			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 				if (VanillaObjects::weak_id(kind_name) == w) {
-					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+					if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
 						written = TRUE;
 						TEMPORARY_TEXT(N)
 						WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_name));
@@ -116,7 +113,7 @@ void CObjectModel::end(code_generation *gen) {
 			inter_symbol *kind_name;
 			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 				if (VanillaObjects::weak_id(kind_name) == w) {
-					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+					if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
 						written = TRUE;
 						TEMPORARY_TEXT(N)
 						WRITE_TO(N, "i7_mgl_VPH_%d", w);
@@ -224,15 +221,30 @@ overlap.
 Each proper base kind in the Inter tree produces an owner as follows:
 
 =
-void CObjectModel::declare_class(code_generator *cgt, code_generation *gen,
-	text_stream *class_name, text_stream *printed_name, text_stream *super_class, segmentation_pos *saved) {
-	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
-	if (Str::len(super_class) == 0) super_class = I"Class";
-	CObjectModel::declare_class_inner(gen, class_name, printed_name,
-		CObjectModel::next_owner_id(gen), super_class);
+void CObjectModel::declare_kind(code_generator *cgt, code_generation *gen, 
+	inter_symbol *kind_s, segmentation_pos *saved) {
+	if ((kind_s == object_kind_symbol) ||
+		(VanillaObjects::is_kind_of_object(kind_s))) {
+		text_stream *class_name = Inter::Symbols::name(kind_s);
+		text_stream *printed_name = Metadata::read_optional_textual(
+			Inter::Packages::container(kind_s->definition), I"^printed_name");
+		text_stream *super_class = NULL;
+		inter_symbol *super_name = Inter::Kind::super(kind_s);
+		if (super_name) super_class = Inter::Symbols::name(super_name);
+
+		*saved = CodeGen::select(gen, c_main_matter_I7CGS);
+		if (Str::len(super_class) == 0) super_class = I"Class";
+		CObjectModel::declare_class_inner(gen, class_name, printed_name,
+			CObjectModel::next_owner_id(gen), super_class);
+	} else if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
+		TEMPORARY_TEXT(instance_name)
+		WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_s));
+		CObjectModel::C_runtime_object(NULL, gen, I"Object", instance_name, NULL, -1, FALSE, saved);
+		DISCARD_TEXT(instance_name)
+	}
 }
 
-void CObjectModel::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, segmentation_pos saved) {
+void CObjectModel::end_kind(code_generator *cgt, code_generation *gen, inter_symbol *kind_s, segmentation_pos saved) {
 	CodeGen::deselect(gen, saved);
 }
 
@@ -248,12 +260,12 @@ void CObjectModel::declare_class_inner(code_generation *gen,
 =
 void CObjectModel::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
 	segmentation_pos saved;
-	C_property_owner *obj = CObjectModel::declare_instance(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE, &saved);
+	C_property_owner *obj = CObjectModel::C_runtime_object(cgt, gen, I"Object", obj_name, obj_name, -1, FALSE, &saved);
 	CodeGen::deselect(gen, saved);
 	if (Str::eq(obj_name, I"Compass")) C_GEN_DATA(objdata.compass_instance) = obj;
 }
 
-C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
+C_property_owner *CObjectModel::C_runtime_object(code_generator *cgt, code_generation *gen,
 	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
@@ -298,14 +310,28 @@ C_property_owner *CObjectModel::declare_instance(code_generator *cgt, code_gener
 	return this;
 }
 
-void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, segmentation_pos saved) {
+void CObjectModel::end_instance(code_generator *cgt, code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved) {
 	CodeGen::deselect(gen, saved);
 }
 
-void CObjectModel::declare_value_instance(code_generator *cgt,
-	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
-	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val);
-	CObjectModel::define_header_constant_for_instance(gen, instance_name, printed_name, val, TRUE);
+void CObjectModel::declare_instance(code_generator *cgt,
+	code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *saved) {
+		text_stream *printed_name =
+			Metadata::read_optional_textual(Inter::Packages::container(inst_s->definition), I"^printed_name");
+	if ((kind_s == object_kind_symbol) ||
+		(VanillaObjects::is_kind_of_object(kind_s))) {
+		int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
+		if (c < 0) c = 0;
+		int is_dir = Inter::Kind::is_a(kind_s, direction_kind_symbol);
+		CObjectModel::C_runtime_object(cgt, gen,
+			Inter::Symbols::name(kind_s), Inter::Symbols::name(inst_s), printed_name, c, is_dir, saved);
+	} else {
+		TEMPORARY_TEXT(val)
+		WRITE_TO(val, "%d", enumeration);
+		Generators::declare_constant(gen, Inter::Symbols::name(inst_s), NULL, RAW_GDCFORM, NULL, val);
+		CObjectModel::define_header_constant_for_instance(gen, Inter::Symbols::name(inst_s), printed_name, val, TRUE);
+		DISCARD_TEXT(val)
+	}
 }
 
 @ So it is finally time to compile a |#define| for the owner's identifier,
@@ -621,24 +647,11 @@ void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 	ADD_TO_LINKED_LIST(pair, C_pv_pair, owner->property_values);
 }
 
-segmentation_pos C_ap_saved;
-void CObjectModel::begin_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
-	TEMPORARY_TEXT(instance_name)
-	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_name));
-	Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &i6_ap_saved);
-	DISCARD_TEXT(instance_name)
-	Inter::Symbols::set_flag(kind_name, KIND_WITH_PROPS_MARK_BIT);
-}
-
 void CObjectModel::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
 	TEMPORARY_TEXT(mgl)
 	CNamespace::mangle(NULL, mgl, array);
 	CObjectModel::assign_property(cgt, gen, prop_name, mgl);
 	DISCARD_TEXT(mgl)
-}
-
-void CObjectModel::end_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
-	Generators::end_instance(gen, I"Object", NULL, i6_ap_saved);
 }
 
 C_property_owner *CObjectModel::super(code_generation *gen, C_property_owner *owner) {

@@ -5,15 +5,12 @@ To declare I6 objects, classes, attributes and properties.
 @ =
 void I6TargetObjects::create_generator(code_generator *cgt) {
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, I6TargetObjects::declare_property);
-	METHOD_ADD(cgt, DECLARE_CLASS_MTID, I6TargetObjects::declare_class);
-	METHOD_ADD(cgt, END_CLASS_MTID, I6TargetObjects::end_class);
-	METHOD_ADD(cgt, DECLARE_VALUE_INSTANCE_MTID, I6TargetObjects::declare_value_instance);
+	METHOD_ADD(cgt, DECLARE_KIND_MTID, I6TargetObjects::declare_kind);
+	METHOD_ADD(cgt, END_KIND_MTID, I6TargetObjects::end_kind);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, I6TargetObjects::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6TargetObjects::end_instance);
 	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6TargetObjects::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6TargetObjects::assign_property);
-	METHOD_ADD(cgt, BEGIN_PROPERTIES_FOR_MTID, I6TargetObjects::begin_properties_for);
-	METHOD_ADD(cgt, END_PROPERTIES_FOR_MTID, I6TargetObjects::end_properties_for);
 	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, I6TargetObjects::assign_properties);
 	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, I6TargetObjects::pseudo_object);
 }
@@ -240,42 +237,117 @@ The intent of these is the same, of course.
 	DISCARD_TEXT(val)
 
 @h Kinds, instances and property values.
+The following is called for all kinds which can have properties. We divide
+them in two:
 
 =
-void I6TargetObjects::declare_class(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *printed_name, text_stream *super_class,
-	segmentation_pos *saved) {
+void I6TargetObjects::declare_kind(code_generator *cgt, code_generation *gen, 
+	inter_symbol *kind_s, segmentation_pos *saved) {
+	if ((kind_s == object_kind_symbol) ||
+		(VanillaObjects::is_kind_of_object(kind_s)))
+		@<A kind of object, including the kind object itself@>
+	else if (VanillaObjects::value_kind_with_properties(gen, kind_s))
+		@<A property-holding enumeration kind@>;
+}
+
+@ Each object kind is compiled to a VM-class:
+
+@<A kind of object, including the kind object itself@> =
 	*saved = CodeGen::select(gen, main_matter_I7CGS);
+	text_stream *class_name = Inter::Symbols::name(kind_s);
+	text_stream *super_class = NULL;
+	inter_symbol *super_name = Inter::Kind::super(kind_s);
+	if (super_name) super_class = Inter::Symbols::name(super_name);
+
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
 	if (Str::len(super_class) > 0) WRITE("  class %S\n", super_class);
+
+@ Each enumeration kind is compiled to a VM-object called its "value property holder",
+or VPH. The instances of the kind are enumerated 1, 2, 3, ... at runtime; if
+the kind is to have a property, then we store those property values in an array
+indexed by instance, and put the address of that array in a VM-property attached
+to the VPH VM-object.
+
+@<A property-holding enumeration kind@> =
+	TEMPORARY_TEXT(instance_name)
+	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_s));
+	I6TargetObjects::VM_object_header(gen, I"Object", instance_name, NULL, -1, FALSE, saved);
+	DISCARD_TEXT(instance_name)
+
+@ =
+void I6TargetObjects::end_kind(code_generator *cgt, code_generation *gen,
+	inter_symbol *kind_s, segmentation_pos saved) {
+	if ((kind_s == object_kind_symbol) ||
+		(VanillaObjects::is_kind_of_object(kind_s))) {
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE(";\n");
+		CodeGen::deselect(gen, saved);
+	} else if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
+		I6TargetObjects::VM_object_footer(gen, saved);
+	}
 }
 
-void I6TargetObjects::end_class(code_generator *cgt, code_generation *gen, text_stream *class_name, segmentation_pos saved) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(";\n");
-	CodeGen::deselect(gen, saved);
+@ Instances next:
+
+=
+void I6TargetObjects::declare_instance(code_generator *cgt,
+	code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration,
+	segmentation_pos *saved) {
+	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s)))
+		@<An object instance@>
+	else
+		@<A value instance@>;
 }
 
-void I6TargetObjects::declare_value_instance(code_generator *cgt,
-	code_generation *gen, text_stream *instance_name, text_stream *printed_name, text_stream *val) {
-	Generators::declare_constant(gen, instance_name, NULL, RAW_GDCFORM, NULL, val);
+@ Each instance of a kind of object becomes a VM-object:
+
+@<An object instance@> =
+	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
+	if (c < 0) c = 0;
+	int is_dir = Inter::Kind::is_a(kind_s, direction_kind_symbol);
+	I6TargetObjects::VM_object_header(gen, Inter::Symbols::name(kind_s),
+		Inter::Symbols::name(inst_s), NULL, c, is_dir, saved);
+
+@ And instances of enumerated kinds are simply declared as constant values,
+equal to their enumeration numbers. So for e.g.
+= (text as Inform 7)
+Colour is a kind of value. Red, blue and green are colours.
+=
+...we would declare the constant |I_blue| as being equal to 2, Inform having
+enumerated these colours as 1, 2, 3.
+
+@<A value instance@> =
+	TEMPORARY_TEXT(val)
+	WRITE_TO(val, "%d", enumeration);
+	Generators::declare_constant(gen, Inter::Symbols::name(inst_s), NULL, RAW_GDCFORM,
+		NULL, val);
+	DISCARD_TEXT(val)
+
+@ =
+void I6TargetObjects::end_instance(code_generator *cgt, code_generation *gen,
+	inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved) {
+	if ((kind_s == object_kind_symbol) ||
+		(VanillaObjects::is_kind_of_object(kind_s)))
+		I6TargetObjects::VM_object_footer(gen, saved);
 }
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
 name is intentionally made blank: we always use I6's |short_name| property
 instead. I7's spatial plugin, if loaded (as it usually is), will have
-annotated the Inter symbol for the object with an arrow count, that is,
+annotated the Inter symbol for the object with an "arrow count", that is,
 a measure of its spatial depth. This we translate into I6 arrow notation.
 If the spatial plugin wasn't loaded then we have no notion of containment,
 all arrow counts are 0, and we define a flat sequence of free-standing objects.
 
 One last oddball thing is that direction objects have to be compiled in I6
-as if they were spatially inside a special object called |Compass|. This doesn't
-really make much conceptual sense, and I7 dropped the idea -- it has no
+as if they were spatially inside a special VM-object called |Compass|. This
+doesn't really make much conceptual sense, and I7 dropped the idea -- it has no
 "compass".
 
 =
-void I6TargetObjects::declare_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
+void I6TargetObjects::VM_object_header(code_generation *gen, text_stream *class_name,
+	text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
 	segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, main_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -285,12 +357,30 @@ void I6TargetObjects::declare_instance(code_generator *cgt, code_generation *gen
 	if (is_dir) WRITE(" Compass");
 }
 
-void I6TargetObjects::end_instance(code_generator *cgt, code_generation *gen, text_stream *class_name, text_stream *instance_name, segmentation_pos saved) {
+void I6TargetObjects::VM_object_footer(code_generation *gen, segmentation_pos saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
 }
 
+@ Pseudo-objects are directly turned into VM-objects, albeit "concealed" ones.
+This is used only for objects created in kits but which have no existence at
+the I7 level (hence "pseudo"). |Compass|, mentioned above, is one such; the
+other one used by the standard kits supplied with Inform is |thedark|. I urge
+people to create no further pseudo-objects.
+
+=
+void I6TargetObjects::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
+	segmentation_pos saved;
+	I6TargetObjects::VM_object_header(gen, I"Object", obj_name, NULL, 0, FALSE, &saved);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE(" \"(%S object)\"\n    has concealed\n", obj_name);
+	I6TargetObjects::VM_object_footer(gen, saved);
+}
+
+@ That just leaves property values.
+
+=
 int I6TargetObjects::optimise_property_value(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
 	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
 		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
@@ -318,28 +408,8 @@ void I6TargetObjects::assign_property(code_generator *cgt, code_generation *gen,
 	}
 }
 
-segmentation_pos i6_ap_saved;
-void I6TargetObjects::begin_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
-	TEMPORARY_TEXT(instance_name)
-	WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_name));
-	Generators::declare_instance(gen, I"Object", instance_name, NULL, -1, FALSE, &i6_ap_saved);
-	DISCARD_TEXT(instance_name)
-	Inter::Symbols::set_flag(kind_name, KIND_WITH_PROPS_MARK_BIT);
-}
-
 void I6TargetObjects::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
 	I6TargetObjects::assign_property(cgt, gen, prop_name, array);
-}
-
-void I6TargetObjects::end_properties_for(code_generator *cgt, code_generation *gen, inter_symbol *kind_name) {
-	Generators::end_instance(gen, I"Object", NULL, i6_ap_saved);
-}
-
-void I6TargetObjects::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
-	segmentation_pos saved = CodeGen::select(gen, main_matter_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Object %S \"(%S object)\" has concealed;\n", obj_name, obj_name);
-	CodeGen::deselect(gen, saved);
 }
 
 @ =
@@ -379,7 +449,7 @@ void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) 
 			inter_symbol *kind_name;
 			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 				if (VanillaObjects::weak_id(kind_name) == w) {
-					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+					if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
 						written = TRUE;
 						WRITE(" %d", Inter::Kind::instance_count(kind_name));
 					}
@@ -404,7 +474,7 @@ void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) 
 			inter_symbol *kind_name;
 			LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, gen->kinds_in_declaration_order) {
 				if (VanillaObjects::weak_id(kind_name) == w) {
-					if (Inter::Symbols::get_flag(kind_name, KIND_WITH_PROPS_MARK_BIT)) {
+					if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
 						written = TRUE;
 						WRITE(" VPH_%d", w);
 					}
