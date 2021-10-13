@@ -34,14 +34,14 @@ void I6TargetVariables::declare_variables(code_generator *cgt, code_generation *
 }
 
 @<Begin the array@> =
-	segmentation_pos saved = CodeGen::select(gen, globals_array_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array Global_Vars --> 0\n");
 	CodeGen::deselect(gen, saved);
 
 @<Variables created by Inform 7 source text all go into the array@> =
 	Inter::Symbols::annotate_i(var_name, I6_GLOBAL_OFFSET_IANN, (inter_ti) k);
-	segmentation_pos saved = CodeGen::select(gen, globals_array_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("  (");
 	CodeGen::pair(gen, P, v1, v2);
@@ -51,13 +51,13 @@ void I6TargetVariables::declare_variables(code_generator *cgt, code_generation *
 	k++;
 
 @<End the array@> =
-	segmentation_pos saved = CodeGen::select(gen, globals_array_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
 
 @<Variables created by kits all become Globals in I6@> =
-	segmentation_pos saved = CodeGen::select(gen, globals_directives_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, global_variables_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Global %S = ", Inter::Symbols::name(var_name));
 	CodeGen::pair(gen, P, v1, v2);

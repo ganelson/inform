@@ -308,7 +308,6 @@ void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name,
 @e END_KIND_MTID
 @e DECLARE_INSTANCE_MTID
 @e END_INSTANCE_MTID
-@e OPTIMISE_PROPERTY_MTID
 @e ASSIGN_PROPERTY_MTID
 @e ASSIGN_PROPERTIES_MTID
 
@@ -331,22 +330,10 @@ void Generators::end_instance(code_generation *gen, inter_symbol *inst_s, inter_
 	VOID_METHOD_CALL(gen->generator, END_INSTANCE_MTID, gen, inst_s, kind_s, saved);
 }
 
-INT_METHOD_TYPE(OPTIMISE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X)
-int Generators::optimise_property_value(code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
-	int rv = FALSE;
-	INT_METHOD_CALL(rv, gen->generator, OPTIMISE_PROPERTY_MTID, gen, prop_name, X);
-	return rv;
-}
-VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, text_stream *val)
+VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X)
 VOID_METHOD_TYPE(ASSIGN_PROPERTIES_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array)
-void Generators::assign_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
-	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val);
-}
-void Generators::assign_mangled_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
-	TEMPORARY_TEXT(mangled)
-	Generators::mangle(gen, mangled, val);
-	Generators::assign_property(gen, prop_name, mangled);
-	DISCARD_TEXT(mangled)
+void Generators::assign_property(code_generation *gen, inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
+	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val1, val2, X);
 }
 void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
 	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTIES_MTID, gen, kind_name, prop_name, array);

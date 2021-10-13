@@ -24,39 +24,35 @@ void I6Target::create_generator(void) {
 
 @e ICL_directives_I7CGS
 @e compiler_versioning_matter_I7CGS
-@e predeclarations_I7CGS
-@e globals_array_I7CGS
-@e globals_directives_I7CGS
+@e attributes_I7CGS
+@e properties_I7CGS
+@e global_variables_I7CGS
+@e global_variables_array_I7CGS
 @e constants_I7CGS
 @e fake_actions_I7CGS
-@e text_literals_code_I7CGS
-@e summations_at_eof_I7CGS
 @e arrays_I7CGS
-@e main_matter_I7CGS
-@e routines_at_eof_I7CGS
+@e classes_I7CGS
+@e objects_I7CGS
 @e property_stubs_I7CGS
-@e verbs_I7CGS
-@e stubs_at_eof_I7CGS
-@e property_offset_creator_I7CGS
+@e functions_I7CGS
+@e command_grammar_I7CGS
 
 =
 int I6_target_segments[] = {
 	ICL_directives_I7CGS,
 	compiler_versioning_matter_I7CGS,
-	predeclarations_I7CGS,
-	globals_array_I7CGS,
-	globals_directives_I7CGS,
+	attributes_I7CGS,
+	properties_I7CGS,
+	global_variables_I7CGS,
+	global_variables_array_I7CGS,
 	constants_I7CGS,
 	fake_actions_I7CGS,
-	text_literals_code_I7CGS,
-	summations_at_eof_I7CGS,
 	arrays_I7CGS,
-	main_matter_I7CGS,
-	routines_at_eof_I7CGS,
+	classes_I7CGS,
+	objects_I7CGS,
 	property_stubs_I7CGS,
-	verbs_I7CGS,
-	stubs_at_eof_I7CGS,
-	property_offset_creator_I7CGS,
+	functions_I7CGS,
+	command_grammar_I7CGS,
 	-1
 };
 
@@ -66,7 +62,6 @@ int I6_target_segments[] = {
 
 =
 typedef struct I6_generation_data {
-	int property_offsets_made;
 	int attribute_slots_used;
 	int value_ranges_needed;
 	int value_property_holders_needed;
@@ -77,7 +72,6 @@ typedef struct I6_generation_data {
 
 I6_generation_data *I6Target::new_data(void) {
 	I6_generation_data *data = CREATE(I6_generation_data);
-	data->property_offsets_made = 0;
 	data->attribute_slots_used = 0;
 	data->value_ranges_needed = FALSE;
 	data->value_property_holders_needed = FALSE;
@@ -130,7 +124,7 @@ is implemented in pure Z-machine assembly language. See the Z-Machine Standards
 Document for a specification.
 
 @<Compile some veneer replacement code@> =
-	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#Ifdef TARGET_ZCODE;\n");
 	WRITE("Global max_z_object;\n");
@@ -228,5 +222,6 @@ void I6Target::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifie
 =
 int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
 	I6TargetObjects::end_generation(cgt, gen);
+	I6TargetCode::end_generation(cgt, gen);
 	return FALSE;
 }

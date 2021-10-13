@@ -435,7 +435,7 @@ then the result.
 @ =
 int this_is_I6_Main = 0;
 void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
-	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	this_is_I6_Main = 0;
 	text_stream *OUT = CodeGen::current(gen);
@@ -711,3 +711,35 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 	DISCARD_TEXT(p)
 	DISCARD_TEXT(val)
 	return;
+
+
+@h A few resources.
+
+=
+void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
+	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("[ _final_read_pval o p a t;\n");
+	WRITE("    t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
+	WRITE("    if (t == 2) { if (o has p) a = 1; return a; }\n");
+	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
+	WRITE("];\n");
+	WRITE("[ _final_write_eopval o p v t;\n");
+	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
+	WRITE("    if (t == 2) { if (v) give o p; else give o ~p; }\n");
+	WRITE("    else { if (o provides p) o.p = v; }\n");
+	WRITE("];\n");
+	WRITE("[ _final_message0 o p q x a rv;\n");
+	WRITE("    ! print \"Message send \", (the) o, \" --> \", p, \" \", p-->1, \" addr \", o.(p-->1), \"^\";\n");
+	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
+	WRITE("    return rv;\n");
+	WRITE("];\n");
+	WRITE("Constant i7_lvalue_SET = 1;\n");
+	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
+	WRITE("Constant i7_lvalue_POSTDEC = 3;\n");
+	WRITE("Constant i7_lvalue_PREINC = 4;\n");
+	WRITE("Constant i7_lvalue_POSTINC = 5;\n");
+	WRITE("Constant i7_lvalue_SETBIT = 6;\n");
+	WRITE("Constant i7_lvalue_CLEARBIT = 7;\n");
+	CodeGen::deselect(gen, saved);
+}

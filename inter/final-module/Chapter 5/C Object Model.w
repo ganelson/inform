@@ -13,7 +13,6 @@ void CObjectModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, END_KIND_MTID, CObjectModel::end_kind);
 
 	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
-	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, CObjectModel::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
 	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, CObjectModel::assign_properties);
 }
@@ -28,7 +27,6 @@ typedef struct C_generation_object_model_data {
 	struct linked_list *declared_objects; /* of |C_property_owner| */
 	struct C_property_owner *compass_instance;
 	struct C_property_owner *direction_kind;
-	int inline_this;
 	struct dictionary *header_constants;
 	int value_ranges_needed;
 	int value_property_holders_needed;
@@ -52,7 +50,6 @@ void CObjectModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(objdata.property_id_counter) = 0;
 	C_GEN_DATA(objdata.C_property_offsets_made) = 0;
 	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, FALSE);
-	C_GEN_DATA(objdata.inline_this) = FALSE;
 	C_GEN_DATA(objdata.declared_objects) = NEW_LINKED_LIST(C_property_owner);
 	for (int i=0; i<128; i++) C_GEN_DATA(objdata.arrow_chain)[i] = NULL;
 	C_GEN_DATA(objdata.compass_instance) = NULL;
@@ -605,20 +602,6 @@ initialiser function which runs early and sets the property values up by hand:
 	OUTDENT; WRITE("}\n");
 	CodeGen::deselect(gen, saved);
 
-@
-
-=
-int CObjectModel::optimise_property_value(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
-	C_GEN_DATA(objdata.inline_this) = FALSE;
-	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
-		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
-		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
-			C_GEN_DATA(objdata.inline_this) = TRUE;
-		}
-	}	
-	return FALSE;
-}
-
 @ And this function call is compiled to initialise a property value for a given
 owner. Note that it must be called after the owner's declaration call, and before
 the next owner is declared.
@@ -632,25 +615,39 @@ typedef struct C_pv_pair {
 } C_pv_pair;
 
 void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
-	inter_symbol *prop_name, text_stream *val) {
-	text_stream *property_name;
-	text_stream *inner_name;
-	property_name = Inter::Symbols::name(prop_name);
-	inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
+
+	int inline_this = FALSE;
+	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(val1, val2, X);
+		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1))
+			inline_this = TRUE;
+	}	
+
+	TEMPORARY_TEXT(val)
+	CodeGen::select_temporary(gen, val);
+	CodeGen::pair(gen, X, val1, val2);
+	CodeGen::deselect_temporary(gen);
+	CObjectModel::C_prop(gen, prop_name, val, inline_this);
+	DISCARD_TEXT(val)
+}
+
+void CObjectModel::C_prop(code_generation *gen, inter_symbol *prop_name, text_stream *val, int inline_this) {
+	text_stream *property_name = Inter::Symbols::name(prop_name);
+	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::property_by_name(gen, property_name, inner_name, FALSE);
 	C_pv_pair *pair = CREATE(C_pv_pair);
 	pair->prop = prop;
 	pair->val = Str::duplicate(val);
-	pair->inlined = C_GEN_DATA(objdata.inline_this);
-	C_GEN_DATA(objdata.inline_this) = FALSE;
+	pair->inlined = inline_this;
 	ADD_TO_LINKED_LIST(pair, C_pv_pair, owner->property_values);
 }
 
 void CObjectModel::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
 	TEMPORARY_TEXT(mgl)
 	CNamespace::mangle(NULL, mgl, array);
-	CObjectModel::assign_property(cgt, gen, prop_name, mgl);
+	CObjectModel::C_prop(gen, prop_name, mgl, FALSE);
 	DISCARD_TEXT(mgl)
 }
 

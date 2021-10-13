@@ -9,7 +9,6 @@ void I6TargetObjects::create_generator(code_generator *cgt) {
 	METHOD_ADD(cgt, END_KIND_MTID, I6TargetObjects::end_kind);
 	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, I6TargetObjects::declare_instance);
 	METHOD_ADD(cgt, END_INSTANCE_MTID, I6TargetObjects::end_instance);
-	METHOD_ADD(cgt, OPTIMISE_PROPERTY_MTID, I6TargetObjects::optimise_property_value);
 	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6TargetObjects::assign_property);
 	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, I6TargetObjects::assign_properties);
 	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, I6TargetObjects::pseudo_object);
@@ -166,14 +165,14 @@ to be frequently used.
 We give it the property's "inner name": see //Vanilla Objects// for why.
 
 @<Declare a VM-attribute to store this in@> =
-	segmentation_pos saved = CodeGen::select(gen, constants_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, attributes_I7CGS);
 	WRITE_TO(CodeGen::current(gen), "Attribute %S;\n", inner_name);
 	CodeGen::deselect(gen, saved);
 
 @ And the |Property| directive declares a VM-property.
 
 @<Declare a VM-property to store this in@> =
-	segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, properties_I7CGS);
 	WRITE_TO(CodeGen::current(gen), "Property %S;\n", inner_name);
 	CodeGen::deselect(gen, saved);
 
@@ -253,7 +252,7 @@ void I6TargetObjects::declare_kind(code_generator *cgt, code_generation *gen,
 @ Each object kind is compiled to a VM-class:
 
 @<A kind of object, including the kind object itself@> =
-	*saved = CodeGen::select(gen, main_matter_I7CGS);
+	*saved = CodeGen::select(gen, classes_I7CGS);
 	text_stream *class_name = Inter::Symbols::name(kind_s);
 	text_stream *super_class = NULL;
 	inter_symbol *super_name = Inter::Kind::super(kind_s);
@@ -349,12 +348,23 @@ doesn't really make much conceptual sense, and I7 dropped the idea -- it has no
 void I6TargetObjects::VM_object_header(code_generation *gen, text_stream *class_name,
 	text_stream *instance_name, text_stream *printed_name, int acount, int is_dir,
 	segmentation_pos *saved) {
-	*saved = CodeGen::select(gen, main_matter_I7CGS);
+	*saved = CodeGen::select(gen, objects_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", class_name);
 	for (int i=0; i<acount; i++) WRITE(" ->");
 	WRITE(" %S", instance_name);
 	if (is_dir) WRITE(" Compass");
+}
+
+void I6TargetObjects::VM_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
+	text_stream *OUT = CodeGen::current(gen);
+	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
+	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
+		else WRITE("    has %S\n", property_name);
+	} else {
+		WRITE("    with %S %S\n", property_name, val);
+	}
 }
 
 void I6TargetObjects::VM_object_footer(code_generation *gen, segmentation_pos saved) {
@@ -378,12 +388,26 @@ void I6TargetObjects::pseudo_object(code_generator *cgt, code_generation *gen, t
 	I6TargetObjects::VM_object_footer(gen, saved);
 }
 
-@ That just leaves property values.
+@ That just leaves property values. The wrinkle here is the peculiar syntax
+used for I6's inline property arrays, which look like this:
+= (text as Inform 6)
+	with name 'hoochie' 'coochie' 'band',
+=
+At the Inter level, this is represented by having the property value -- i.e.
+the pair |val1|, |val2| below -- refer to a constant list containing three
+entries (the three dictionary words above). But if we compiled that directly,
+then an attempt to look up the property address |obj.&name| would return the
+address of the address of the array, not the address of the array itself. So
+we must use the pecualiar I6 syntax here to get the right outcome.
 
 =
-int I6TargetObjects::optimise_property_value(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, inter_tree_node *X) {
-	if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
-		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
+void I6TargetObjects::assign_property(code_generator *cgt, code_generation *gen,
+	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
+	TEMPORARY_TEXT(val)
+	CodeGen::select_temporary(gen, val);
+	int inline_this = FALSE;
+	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(val1, val2, X);
 		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
 			inter_tree_node *P = Inter::Symbols::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
@@ -391,53 +415,55 @@ int I6TargetObjects::optimise_property_value(code_generator *cgt, code_generatio
 				if (i>DATA_CONST_IFLD) WRITE(" ");
 				CodeGen::pair(gen, P, P->W.data[i], P->W.data[i+1]);
 			}
-			return TRUE;
+			inline_this = TRUE;
 		}
 	}
-	return FALSE;
+	if (inline_this == FALSE) CodeGen::pair(gen, X, val1, val2);
+	CodeGen::deselect_temporary(gen);
+	I6TargetObjects::VM_property(gen, prop_name, val);
+	DISCARD_TEXT(val)
 }
 
-void I6TargetObjects::assign_property(code_generator *cgt, code_generation *gen, inter_symbol *prop_name, text_stream *val) {
-	text_stream *OUT = CodeGen::current(gen);
-	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
-	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
-		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
-		else WRITE("    has %S\n", property_name);
-	} else {
-		WRITE("    with %S %S\n", property_name, val);
-	}
+@ And this much easier function assigns a stick of property values for a property
+of a value kind. (An array which is not inline.)
+
+=
+void I6TargetObjects::assign_properties(code_generator *cgt, code_generation *gen,
+	inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
+	I6TargetObjects::VM_property(gen, prop_name, array);
 }
 
-void I6TargetObjects::assign_properties(code_generator *cgt, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
-	I6TargetObjects::assign_property(cgt, gen, prop_name, array);
-}
+@h A few resources.
 
-@ =
+=
 void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) {
-	if (I6_GEN_DATA(property_offsets_made) > 0) @<Complete the property offset creator@>;
-	if (I6_GEN_DATA(DebugAttribute_seen) == FALSE) @<Compile a DebugAttribute function@>;
-	if (I6_GEN_DATA(value_ranges_needed)) @<Compile the value_ranges array@>;
-	if (I6_GEN_DATA(value_property_holders_needed)) @<Compile the value_property_holders array@>;
-	@<Compile some property access code@>;
+	if (I6_GEN_DATA(DebugAttribute_seen) == FALSE) /* hardly ever happens */
+		@<Compile a DebugAttribute function@>;
+	if (I6_GEN_DATA(value_ranges_needed)) /* almost always happens */
+		@<Compile the value_ranges array@>;
+	if (I6_GEN_DATA(value_property_holders_needed)) /* almost always happens */
+		@<Compile the value_property_holders array@>;
 }
 
-@<Complete the property offset creator@> =
-	segmentation_pos saved = CodeGen::select(gen, property_offset_creator_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	OUTDENT;
-	WRITE("];\n");
-	CodeGen::deselect(gen, saved);
+@ I6 compiles a thin layer veneer code in addition to the source code which is
+explicitly part of the program, and that code expects a function |DebugAttribute|
+to exist somewhere in the program. Now in fact BasicInformKit does define such a
+function, but we want to cover ourselves against the possibility that not even
+BasicInformKit is part of the Inter tree. So:
 
 @<Compile a DebugAttribute function@> =
-	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ DebugAttribute a anames str;\n");
 	WRITE("    print \"<attribute \", a, \">\";\n");
 	WRITE("];\n");
 	CodeGen::deselect(gen, saved);
 
+@ Okay, so the array |value_ranges| gives the largest valid enumeration count for
+each enumerative kind, and is indexed by weak kind ID.
+
 @<Compile the value_ranges array@> =
-	segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, arrays_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array value_ranges --> 0");
 	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
@@ -461,8 +487,11 @@ void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) 
 	}
 	CodeGen::deselect(gen, saved);
 
+@ Similarly, the array |value_property_holders| gives the VM-object nunbers for
+the value property holders for each enumerative kind.
+
 @<Compile the value_property_holders array@> =
-	segmentation_pos saved = CodeGen::select(gen, predeclarations_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, arrays_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array value_property_holders --> 0");
 	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
@@ -485,31 +514,3 @@ void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) 
 		WRITE(";\n");
 	}
 	CodeGen::deselect(gen, saved);
-
-@<Compile some property access code@> =
-	segmentation_pos saved = CodeGen::select(gen, routines_at_eof_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("[ _final_read_pval o p a t;\n");
-	WRITE("    t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
-	WRITE("    if (t == 2) { if (o has p) a = 1; return a; }\n");
-	WRITE("    if ((o provides p) && (o.p)) rtrue; rfalse;\n");
-	WRITE("];\n");
-	WRITE("[ _final_write_eopval o p v t;\n");
-	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
-	WRITE("    if (t == 2) { if (v) give o p; else give o ~p; }\n");
-	WRITE("    else { if (o provides p) o.p = v; }\n");
-	WRITE("];\n");
-	WRITE("[ _final_message0 o p q x a rv;\n");
-	WRITE("    ! print \"Message send \", (the) o, \" --> \", p, \" \", p-->1, \" addr \", o.(p-->1), \"^\";\n");
-	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
-	WRITE("    return rv;\n");
-	WRITE("];\n");
-	WRITE("Constant i7_lvalue_SET = 1;\n");
-	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
-	WRITE("Constant i7_lvalue_POSTDEC = 3;\n");
-	WRITE("Constant i7_lvalue_PREINC = 4;\n");
-	WRITE("Constant i7_lvalue_POSTINC = 5;\n");
-	WRITE("Constant i7_lvalue_SETBIT = 6;\n");
-	WRITE("Constant i7_lvalue_CLEARBIT = 7;\n");
-	CodeGen::deselect(gen, saved);
-

@@ -468,18 +468,10 @@ function calls.
 
 @<Declare the properties of this kind or instance@> =
 	inter_tree_node *X;
-	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
-		if (prop_name == NULL) internal_error("no property");
-		TEMPORARY_TEXT(val)
-		CodeGen::select_temporary(gen, val);
-		if (Generators::optimise_property_value(gen, prop_name, X) == FALSE)
-			CodeGen::pair(gen, X,
-				X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD]);
-		CodeGen::deselect_temporary(gen);
-		Generators::assign_property(gen, prop_name, val);
-		DISCARD_TEXT(val)
-	}
+	LOOP_THROUGH_INTER_NODE_LIST(X, FL)
+		Generators::assign_property(gen,
+			InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD),
+			X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
 
 @ That just leaves the following horrible function, which is called for each
 kind or instance of object, and passes raw splat matter down into the declaration

@@ -138,7 +138,7 @@ punctuation markers like |*| and |->|, and constructs like |scope=F| for functio
 they were any other arrays. Here goes:
 
 @<Write a complete I6 Verb directive@> =
-	if (saved) *saved = CodeGen::select(gen, verbs_I7CGS);
+	if (saved) *saved = CodeGen::select(gen, command_grammar_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Verb ");
 	if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
