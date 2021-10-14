@@ -322,23 +322,13 @@ template rather than to use these. First, the spatial containment object tree:
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !ofclass val val -&gt; val</span></span>. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
 </li></ul>
-<p class="commentary">Attributes can be handled as follows. The values used to refer to these attributes
-can be inter symbols for their properties, but only if those properties are
-indeed stored as Z-machine or Glulx attributes at run-time.
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !give val val -&gt; void</span></span>. Set the second (an attribute) for the first (an object).
-</li><li>(b) <span class="extract"><span class="extract-syntax">primitive !take val val -&gt; void</span></span>. Unset the second (an attribute) for the first (an object).
-</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !has val val -&gt; val</span></span>. Test if the first (an object) has the second (an attibute).
-</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !hasnt val val -&gt; val</span></span>. Negation of same.
-</li></ul>
 <p class="commentary">Direct access to virtual machine object properties:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !propertyvalue val val -&gt; val</span></span>.
 </li><li>(b) <span class="extract"><span class="extract-syntax">primitive !propertyaddress val val -&gt; val</span></span>.
 </li><li>(c) <span class="extract"><span class="extract-syntax">primitive !propertylength val val -&gt; val</span></span>.
-</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !provides val val -&gt; val</span></span>.
+</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !propertyexists val val -&gt; val</span></span>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-cpiti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresssection"><a href="M-ti.html">ti</a></li><li class="progresssection"><a href="M-dpiti.html">dpiti</a></li><li class="progresssection"><a href="M-cpiti.html">cpiti</a></li><li class="progresscurrent">ip</li><li class="progresssection"><a href="M-ia.html">ia</a></li><li class="progresssection"><a href="M-io.html">io</a></li><li class="progresssection"><a href="M-pas.html">pas</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-ia.html">&#10095;</a></li></ul></div>

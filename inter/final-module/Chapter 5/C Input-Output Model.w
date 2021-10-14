@@ -32,7 +32,6 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); VNODE_1C; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); VNODE_1C; WRITE(")"); break;
 		case BOX_BIP:            WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
-		case READ_BIP:           WRITE("i7_read(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		default: 				 return NOT_APPLICABLE;
 	}
 	return FALSE;
@@ -809,11 +808,6 @@ void i7_print_object(i7process_t *proc, i7word_t x) {
 
 void i7_print_box(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_print_box.\n");
-	i7_fatal_exit(proc);
-}
-
-void i7_read(i7process_t *proc, i7word_t x) {
-	printf("Only available on 16-bit architectures, which this is not: i7_read.\n");
 	i7_fatal_exit(proc);
 }
 

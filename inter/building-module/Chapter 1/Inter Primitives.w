@@ -29,8 +29,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!jump", I"lab -> void");
 	Primitives::emit_one(I, IBM, I"!move", I"val val -> void");
 	Primitives::emit_one(I, IBM, I"!remove", I"val -> void");
-	Primitives::emit_one(I, IBM, I"!give", I"val val -> void");
-	Primitives::emit_one(I, IBM, I"!take", I"val val -> void");
 	Primitives::emit_one(I, IBM, I"!store", I"ref val -> val");
 	Primitives::emit_one(I, IBM, I"!setbit", I"ref val -> void");
 	Primitives::emit_one(I, IBM, I"!clearbit", I"ref val -> void");
@@ -52,8 +50,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!ge", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!lt", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!le", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!has", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!hasnt", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!in", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!ofclass", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!sequential", I"val val -> val");
@@ -98,10 +94,9 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!externalcall", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyaddress", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertylength", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!provides", I"val val -> val");
+	Primitives::emit_one(I, IBM, I"!propertyexists", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyvalue", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!notin", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!read", I"val val -> void");
 }
 
 inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
@@ -189,8 +184,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e LT_BIP
 @e LE_BIP
 @e OFCLASS_BIP
-@e HAS_BIP
-@e HASNT_BIP
 @e IN_BIP
 @e NOTIN_BIP
 @e SEQUENTIAL_BIP
@@ -205,8 +198,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e RETURN_BIP
 @e MOVE_BIP
 @e REMOVE_BIP
-@e GIVE_BIP
-@e TAKE_BIP
 @e JUMP_BIP
 @e QUIT_BIP
 @e RESTORE_BIP
@@ -270,9 +261,8 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e EXTERNALCALL_BIP
 @e PROPERTYADDRESS_BIP
 @e PROPERTYLENGTH_BIP
-@e PROVIDES_BIP
+@e PROPERTYEXISTS_BIP
 @e PROPERTYVALUE_BIP
-@e READ_BIP
 
 =
 text_stream *Primitives::name(inter_ti bip) {
@@ -292,8 +282,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case LT_BIP: return I"!lt";
 		case LE_BIP: return I"!le";
 		case OFCLASS_BIP: return I"!ofclass";
-		case HAS_BIP: return I"!has";
-		case HASNT_BIP: return I"!hasnt";
 		case IN_BIP: return I"!in";
 		case NOTIN_BIP: return I"!notin";
 		case SEQUENTIAL_BIP: return I"!sequential";
@@ -307,8 +295,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case RANDOM_BIP: return I"!random";
 		case RETURN_BIP: return I"!return";
 		case JUMP_BIP: return I"!jump";
-		case GIVE_BIP: return I"!give";
-		case TAKE_BIP: return I"!take";
 		case MOVE_BIP: return I"!move";
 		case REMOVE_BIP: return I"!remove";
 		case QUIT_BIP: return I"!quit";
@@ -373,9 +359,8 @@ text_stream *Primitives::name(inter_ti bip) {
 		case EXTERNALCALL_BIP: return I"!externalcall";
 		case PROPERTYADDRESS_BIP: return I"!propertyaddress";
 		case PROPERTYLENGTH_BIP: return I"!propertylength";
-		case PROVIDES_BIP: return I"!provides";
+		case PROPERTYEXISTS_BIP: return I"!propertyexists";
 		case PROPERTYVALUE_BIP: return I"!propertyvalue";
-		case READ_BIP: return I"!read";
 	}
 	return I"<none>";
 }
@@ -410,8 +395,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!lt")) bip = LT_BIP;
 	if (Str::eq(symb->symbol_name, I"!le")) bip = LE_BIP;
 	if (Str::eq(symb->symbol_name, I"!ofclass")) bip = OFCLASS_BIP;
-	if (Str::eq(symb->symbol_name, I"!has")) bip = HAS_BIP;
-	if (Str::eq(symb->symbol_name, I"!hasnt")) bip = HASNT_BIP;
 	if (Str::eq(symb->symbol_name, I"!in")) bip = IN_BIP;
 	if (Str::eq(symb->symbol_name, I"!notin")) bip = NOTIN_BIP;
 	if (Str::eq(symb->symbol_name, I"!sequential")) bip = SEQUENTIAL_BIP;
@@ -425,8 +408,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!random")) bip = RANDOM_BIP;
 	if (Str::eq(symb->symbol_name, I"!return")) bip = RETURN_BIP;
 	if (Str::eq(symb->symbol_name, I"!jump")) bip = JUMP_BIP;
-	if (Str::eq(symb->symbol_name, I"!give")) bip = GIVE_BIP;
-	if (Str::eq(symb->symbol_name, I"!take")) bip = TAKE_BIP;
 	if (Str::eq(symb->symbol_name, I"!move")) bip = MOVE_BIP;
 	if (Str::eq(symb->symbol_name, I"!remove")) bip = REMOVE_BIP;
 	if (Str::eq(symb->symbol_name, I"!quit")) bip = QUIT_BIP;
@@ -491,9 +472,8 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!externalcall")) bip = EXTERNALCALL_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
-	if (Str::eq(symb->symbol_name, I"!provides")) bip = PROVIDES_BIP;
+	if (Str::eq(symb->symbol_name, I"!propertyexists")) bip = PROPERTYEXISTS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
-	if (Str::eq(symb->symbol_name, I"!read")) bip = READ_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(symb, BIP_CODE_IANN, bip);
 		return bip;

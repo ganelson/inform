@@ -1254,6 +1254,10 @@ inclusive; we ignore an empty token.
 
 @ Finally, we identify what sort of token we're looking at.
 
+@e HAS_XBIP from 10000
+@e HASNT_XBIP
+@e READ_XBIP
+
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
 	if (Str::get_at(T, 0) == 0x00A7)
@@ -1384,9 +1388,9 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"or")) { is = OPERATOR_ISTT; which = ALTERNATIVE_BIP; }
 
 	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = OFCLASS_BIP; }
-	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = HAS_BIP; }
-	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = HASNT_BIP; }
-	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = PROVIDES_BIP; }
+	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = HAS_XBIP; }
+	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = HASNT_XBIP; }
+	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = PROPERTYEXISTS_BIP; }
 	if (Str::eq(T, I"in")) { is = OPERATOR_ISTT; which = IN_BIP; }
 	if (Str::eq(T, I"notin")) { is = OPERATOR_ISTT; which = NOTIN_BIP; }
 
@@ -1940,7 +1944,7 @@ int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn)
 int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
-			inter_ti subordinate_to = 0;
+			inter_ti subordinate_to = 0, subordinate_store_val = 0;
 			inter_schema_token *operand1 = NULL, *operand2 = NULL;
 			inter_schema_node *operand2_node = NULL;
 			int dangle = NOT_APPLICABLE;
@@ -2160,7 +2164,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						operand2 = n;
 						operand1->next = NULL;
 						operand2->next = NULL;
-						if ((operand1) && (operand2)) subordinate_to = READ_BIP;
+						if ((operand1) && (operand2)) subordinate_to = READ_XBIP;
 						break;
 					}
 					case REMOVE_I6RW:
@@ -2174,10 +2178,10 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						operand1->next = NULL;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						if ((n) && (n->ist_type == OPERATOR_ISTT) && (n->operation_primitive == BITWISENOT_BIP)) {
-							subordinate_to = TAKE_BIP;
+							subordinate_to = STORE_BIP; subordinate_store_val = 0;
 							n = n->next;
 						} else {
-							subordinate_to = GIVE_BIP;
+							subordinate_to = STORE_BIP; subordinate_store_val = 1;
 						}
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						operand2 = n;
@@ -2244,7 +2248,9 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 				if (operand1 == NULL) operand1 = isn->expression_tokens->next;
 				new_isn->expression_tokens = operand1;
-				if ((new_isn->expression_tokens) && (new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) new_isn->expression_tokens = new_isn->expression_tokens->next;
+				if ((new_isn->expression_tokens) &&
+					(new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
+						new_isn->expression_tokens = new_isn->expression_tokens->next;
 				for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
 					l->owner = new_isn;
 				}
@@ -2253,6 +2259,12 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				isn->expression_tokens = NULL;
 				new_isn->next_node = isn->child_node;
 				isn->child_node = new_isn;
+/*				if (subordinate_to == STORE_BIP) {
+					isn->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					isn->child_node->child_node = new_isn;
+					isn->child_node->isn_clarifier = PROPERTYVALUE_BIP;
+				}
+*/
 				new_isn->parent_node = isn;
 				if (dangle != NOT_APPLICABLE) {
 					text_stream *T = Str::new();
@@ -2297,12 +2309,34 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						l->owner = operand2_node->child_node;
 					}
 				}
+				if (subordinate_to == STORE_BIP) {
+	LOG("Concerto:\n");
+	InterSchemas::log_depth(isn, 0);
+					isn->isn_clarifier = 0;
+					isn->isn_type = EXPRESSION_ISNT;
+					inter_schema_node *A = isn->child_node;
+					inter_schema_node *B = isn->child_node->next_node;
+					isn->child_node = NULL;
+					isn->expression_tokens = A->expression_tokens;
+					isn->expression_tokens->next =
+						InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
+					isn->expression_tokens->next->next = B->expression_tokens;
+					isn->expression_tokens->next->next->next = InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
+					text_stream *T = Str::new();
+					WRITE_TO(T, "%d", subordinate_store_val);
+					isn->expression_tokens->next->next->next->next = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+					for (inter_schema_token *l = isn->expression_tokens; l; l=l->next)
+						l->owner = isn;
+	LOG("Reconcerto:\n");
+	InterSchemas::log_depth(isn, 0);
+				}
 				return 1;
 			}
 		}
 		if ((isn->isn_type != ASSEMBLY_ISNT) && (isn->isn_type != DIRECTIVE_ISNT))
 			if (InterSchemas::identify_constructs(isn, isn->child_node)) return TRUE;
 	}
+
 	return FALSE;
 }
 
@@ -2791,10 +2825,10 @@ int InterSchemas::precedence(inter_ti O) {
 	if (O == LT_BIP) return 3;
 	if (O == LE_BIP) return 3;
 	if (O == NE_BIP) return 3;
-	if (O == HAS_BIP) return 3;
-	if (O == HASNT_BIP) return 3;
+	if (O == HAS_XBIP) return 3;
+	if (O == HASNT_XBIP) return 3;
 	if (O == OFCLASS_BIP) return 3;
-	if (O == PROVIDES_BIP) return 3;
+	if (O == PROPERTYEXISTS_BIP) return 3;
 	if (O == IN_BIP) return 3;
 	if (O == NOTIN_BIP) return 3;
 
@@ -2851,10 +2885,10 @@ text_stream *InterSchemas::text_form(inter_ti O) {
 	if (O == LT_BIP) return I"<";
 	if (O == LE_BIP) return I"<=";
 	if (O == NE_BIP) return I"~=";
-	if (O == HAS_BIP) return I"has";
-	if (O == HASNT_BIP) return I"hasnt";
+	if (O == HAS_XBIP) return I"has";
+	if (O == HASNT_XBIP) return I"hasnt";
 	if (O == OFCLASS_BIP) return I"ofclass";
-	if (O == PROVIDES_BIP) return I"provides";
+	if (O == PROPERTYEXISTS_BIP) return I"provides";
 	if (O == IN_BIP) return I"in";
 	if (O == NOTIN_BIP) return I"notin";
 
@@ -2904,10 +2938,10 @@ int InterSchemas::arity(inter_ti O) {
 	if (O == LT_BIP) return 2;
 	if (O == LE_BIP) return 2;
 	if (O == NE_BIP) return 2;
-	if (O == HAS_BIP) return 2;
-	if (O == HASNT_BIP) return 2;
+	if (O == HAS_XBIP) return 2;
+	if (O == HASNT_XBIP) return 2;
 	if (O == OFCLASS_BIP) return 2;
-	if (O == PROVIDES_BIP) return 2;
+	if (O == PROPERTYEXISTS_BIP) return 2;
 	if (O == IN_BIP) return 2;
 	if (O == NOTIN_BIP) return 2;
 
@@ -2965,8 +2999,6 @@ int InterSchemas::ip_arity(inter_ti O) {
 	if (O == CONTINUE_BIP) arity = 0;
 	if (O == QUIT_BIP) arity = 0;
 	if (O == MOVE_BIP) arity = 2;
-	if (O == GIVE_BIP) arity = 2;
-	if (O == TAKE_BIP) arity = 2;
 	if (O == DEFAULT_BIP) arity = 1;
 	if (O == CASE_BIP) arity = 2;
 	if (O == SWITCH_BIP) arity = 2;
@@ -2976,7 +3008,7 @@ int InterSchemas::ip_arity(inter_ti O) {
 	if (O == FOR_BIP) arity = 4;
 	if (O == WHILE_BIP) arity = 2;
 	if (O == DO_BIP) arity = 2;
-	if (O == READ_BIP) arity = 2;
+	if (O == READ_XBIP) arity = 2;
 	return arity;
 }
 

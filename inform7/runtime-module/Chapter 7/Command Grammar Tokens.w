@@ -142,7 +142,7 @@ world model only if X is a container, so we check that.
 	EmitCode::down();
 		EmitCode::inv(NOT_BIP);
 		EmitCode::down();
-			EmitCode::inv(HAS_BIP);
+			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
@@ -159,7 +159,7 @@ world model only if X is a supporter, so we check that.
 	EmitCode::down();
 		EmitCode::inv(NOT_BIP);
 		EmitCode::down();
-			EmitCode::inv(HAS_BIP);
+			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
@@ -177,7 +177,7 @@ is a person, so we check that.
 	EmitCode::down();
 		EmitCode::inv(NOT_BIP);
 		EmitCode::down();
-			EmitCode::inv(HAS_BIP);
+			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
@@ -220,7 +220,7 @@ recycle.
 			if (bp == R_carrying) {
 				EmitCode::inv(IF_BIP);
 				EmitCode::down();
-					EmitCode::inv(HAS_BIP);
+					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, kit->rv_s);
 						EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
@@ -236,7 +236,7 @@ recycle.
 				EmitCode::down();
 					EmitCode::inv(NOT_BIP);
 					EmitCode::down();
-						EmitCode::inv(HAS_BIP);
+						EmitCode::inv(PROPERTYVALUE_BIP);
 						EmitCode::down();
 							EmitCode::val_symbol(K_value, kit->rv_s);
 							EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
@@ -392,7 +392,7 @@ because then, of course, it would be worn by P and not carried by P:
 @<Extra test for a reverse carrying relation token@> =
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
-		EmitCode::inv(HAS_BIP);
+		EmitCode::inv(PROPERTYVALUE_BIP);
 		EmitCode::down();
 			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 			EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
@@ -407,7 +407,7 @@ because then, of course, it would be worn by P and not carried by P:
 	EmitCode::down();
 		EmitCode::inv(NOT_BIP);
 		EmitCode::down();
-			EmitCode::inv(HAS_BIP);
+			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
@@ -578,7 +578,7 @@ if it works.
 @<Open a general relation search loop using a reversed property@> =
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			EmitCode::inv(PROVIDES_BIP);
+			EmitCode::inv(PROPERTYEXISTS_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, RTProperties::iname(prn));
@@ -625,7 +625,7 @@ if it works.
 					EmitCode::down();
 						EmitCode::inv(AND_BIP);
 						EmitCode::down();
-							EmitCode::inv(PROVIDES_BIP);
+							EmitCode::inv(PROPERTYEXISTS_BIP);
 							EmitCode::down();
 								EmitCode::val_symbol(K_value, kit->rv_s);
 								EmitCode::val_iname(K_value, RTProperties::iname(prn));

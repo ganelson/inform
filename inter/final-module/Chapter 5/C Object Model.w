@@ -739,7 +739,8 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
 									WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								} else {
-									WRITE("i7_read_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
+									CConditions::comparison_r(gen, bip, InterTree::first_child(P), InterTree::second_child(P), 0);
+//									WRITE("i7_read_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 								}
 								break;
 		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
@@ -749,8 +750,6 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
 		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", "); VNODE_5C; WRITE(")"); break;
-		case GIVE_BIP: 			WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 1, i7_lvalue_SET)"); break;
-		case TAKE_BIP: 			WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", 0, i7_lvalue_SET)"); break;
 		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
 
@@ -851,11 +850,10 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
 text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 	switch (bip) {
 		case OFCLASS_BIP:	*positive = TRUE;  return I"i7_ofclass"; break;
-		case HAS_BIP:		*positive = TRUE;  return I"i7_has"; break;
-		case HASNT_BIP:		*positive = FALSE; return I"i7_has"; break;
+		case PROPERTYVALUE_BIP: *positive = TRUE;  return I"i7_read_prop_value"; break;
 		case IN_BIP:		*positive = TRUE;  return I"i7_in"; break;
 		case NOTIN_BIP:		*positive = FALSE; return I"i7_in"; break;
-		case PROVIDES_BIP:	*positive = TRUE;  return I"i7_provides"; break;
+		case PROPERTYEXISTS_BIP:	*positive = TRUE;  return I"i7_provides"; break;
 	}
 	*positive = NOT_APPLICABLE; return NULL;
 }

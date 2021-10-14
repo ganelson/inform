@@ -18,11 +18,9 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case LT_BIP: 			@<Generate comparison@>; break;
 		case LE_BIP: 			@<Generate comparison@>; break;
 		case OFCLASS_BIP:		@<Generate comparison@>; break;
-		case HAS_BIP:			@<Generate comparison@>; break;
-		case HASNT_BIP:			@<Generate comparison@>; break;
 		case IN_BIP:			@<Generate comparison@>; break;
 		case NOTIN_BIP:			@<Generate comparison@>; break;
-		case PROVIDES_BIP:		@<Generate comparison@>; break;
+		case PROPERTYEXISTS_BIP:		@<Generate comparison@>; break;
 		case ALTERNATIVE_BIP:	internal_error("loose ALTERNATIVE_BIP primitive node"); break;
 		default: 				return NOT_APPLICABLE;
 	}
@@ -43,7 +41,7 @@ void CConditions::comparison_r(code_generation *gen,
 				text_stream *OUT = CodeGen::current(gen);
 				if (depth == 0) { WRITE("(proc->state.tmp = "); Vanilla::node(gen, X); WRITE(", ("); }
 				CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(Y), depth+1);
-				if ((bip == NE_BIP) || (bip == NOTIN_BIP) || (bip == HASNT_BIP)) WRITE(" && ");
+				if ((bip == NE_BIP) || (bip == NOTIN_BIP)) WRITE(" && ");
 				else WRITE(" || ");
 				CConditions::comparison_r(gen, bip, NULL, InterTree::second_child(Y), depth+1);
 				if (depth == 0) { WRITE("))"); }

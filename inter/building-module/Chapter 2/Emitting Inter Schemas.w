@@ -337,8 +337,17 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 
 @<Operation@> =
 	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
-
-	Produce::inv_primitive(I, isn->isn_clarifier);
+	int remember_to_up = FALSE;
+	if (isn->isn_clarifier == HASNT_XBIP) {
+		Produce::inv_primitive(I, NOT_BIP);
+		Produce::down(I);
+			Produce::inv_primitive(I, PROPERTYVALUE_BIP);
+		remember_to_up = TRUE;
+	} else if (isn->isn_clarifier == HAS_XBIP) {
+		Produce::inv_primitive(I, PROPERTYVALUE_BIP);
+	} else {
+		Produce::inv_primitive(I, isn->isn_clarifier);
+	}
 	Produce::down(I);
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
@@ -351,6 +360,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			first_call, second_call,
 			inline_command_handler, i7_source_handler);
 	Produce::up(I);
+	if (remember_to_up) { Produce::up(I); }
 
 	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }
 
@@ -371,7 +381,8 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
 	if (isn->isn_clarifier == CASE_BIP) Produce::to_last_level(I, 2);
-	Produce::inv_primitive(I, isn->isn_clarifier);
+	if (isn->isn_clarifier == READ_XBIP) Produce::inv_assembly(I, I"@aread");
+	else Produce::inv_primitive(I, isn->isn_clarifier);
 	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
 	if (arity > 0) {
 		Produce::down(I);

@@ -242,18 +242,9 @@ Object class membership:
 (a) |primitive !ofclass val val -> val|. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
 
-Attributes can be handled as follows. The values used to refer to these attributes
-can be inter symbols for their properties, but only if those properties are
-indeed stored as Z-machine or Glulx attributes at run-time.
-
-(a) |primitive !give val val -> void|. Set the second (an attribute) for the first (an object).
-(b) |primitive !take val val -> void|. Unset the second (an attribute) for the first (an object).
-(c) |primitive !has val val -> val|. Test if the first (an object) has the second (an attibute).
-(d) |primitive !hasnt val val -> val|. Negation of same.
-
 Direct access to virtual machine object properties:
 
 (a) |primitive !propertyvalue val val -> val|.
 (b) |primitive !propertyaddress val val -> val|. 
 (c) |primitive !propertylength val val -> val|. 
-(d) |primitive !provides val val -> val|. 
+(d) |primitive !propertyexists val val -> val|. 
