@@ -428,6 +428,13 @@ void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t 
 	}
 }
 
+int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	i7word_t val = 0;
+	glulx_provides_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	return val;
+}
+
 void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
@@ -1781,11 +1788,6 @@ void i7_print_object(i7process_t *proc, i7word_t x) {
 
 void i7_print_box(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_print_box.\n");
-	i7_fatal_exit(proc);
-}
-
-void i7_read(i7process_t *proc, i7word_t x) {
-	printf("Only available on 16-bit architectures, which this is not: i7_read.\n");
 	i7_fatal_exit(proc);
 }
 

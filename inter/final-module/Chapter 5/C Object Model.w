@@ -853,7 +853,6 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 		case PROPERTYVALUE_BIP: *positive = TRUE;  return I"i7_read_prop_value"; break;
 		case IN_BIP:		*positive = TRUE;  return I"i7_in"; break;
 		case NOTIN_BIP:		*positive = FALSE; return I"i7_in"; break;
-		case PROPERTYEXISTS_BIP:	*positive = TRUE;  return I"i7_provides"; break;
 	}
 	*positive = NOT_APPLICABLE; return NULL;
 }

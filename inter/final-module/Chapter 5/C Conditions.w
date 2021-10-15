@@ -11,6 +11,10 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case NOT_BIP:			WRITE("(!("); VNODE_1C; WRITE("))"); break;
 		case AND_BIP:			WRITE("(("); VNODE_1C; WRITE(") && ("); VNODE_2C; WRITE("))"); break;
 		case OR_BIP: 			WRITE("(("); VNODE_1C; WRITE(") || ("); VNODE_2C; WRITE("))"); break;
+		case XPROPERTYEXISTS_BIP:
+			C_GEN_DATA(objdata.value_ranges_needed) = TRUE;
+			C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
+			WRITE("(i7_provides_gprop(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE))"); break;
 		case EQ_BIP: 			@<Generate comparison@>; break;
 		case NE_BIP: 			@<Generate comparison@>; break;
 		case GT_BIP: 			@<Generate comparison@>; break;
@@ -20,7 +24,6 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case OFCLASS_BIP:		@<Generate comparison@>; break;
 		case IN_BIP:			@<Generate comparison@>; break;
 		case NOTIN_BIP:			@<Generate comparison@>; break;
-		case PROPERTYEXISTS_BIP:		@<Generate comparison@>; break;
 		case ALTERNATIVE_BIP:	internal_error("loose ALTERNATIVE_BIP primitive node"); break;
 		default: 				return NOT_APPLICABLE;
 	}

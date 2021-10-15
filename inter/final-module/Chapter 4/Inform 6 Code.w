@@ -419,7 +419,15 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; @<Perform a store@>; break;
 
 @<Property value access@> =
-	case PROPERTYEXISTS_BIP: WRITE("("); VNODE_1C; WRITE(" provides ("); VNODE_2C; WRITE("-->1))"); break;
+	case PROPERTYEXISTS_BIP:
+		I6_GEN_DATA(value_ranges_needed) = TRUE;
+		I6_GEN_DATA(value_property_holders_needed) = TRUE;
+		WRITE("(_final_provides(OBJECT_TY, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
+//		WRITE("("); VNODE_1C; WRITE(" provides ("); VNODE_2C; WRITE("-->1))"); break;
+	case XPROPERTYEXISTS_BIP: 
+		I6_GEN_DATA(value_ranges_needed) = TRUE;
+		I6_GEN_DATA(value_property_holders_needed) = TRUE;
+		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
 	case PROPERTYADDRESS_BIP: WRITE("(_final_read_paddr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
 	case PROPERTYLENGTH_BIP: WRITE("(_final_read_plen("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
 	case PROPERTYVALUE_BIP:	if (i6_next_is_a_give)
@@ -838,6 +846,42 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
 	WRITE("    return rv;\n");
 	WRITE("];\n");
+	WRITE("[ _final_provides K o p holder;\n");
+	WRITE("if (K == OBJECT_TY) {\n");
+	WRITE("    if ((o) && (metaclass(o) == Object)) {\n");
+	WRITE("        if ((p-->0 == 2) || (o provides p-->1)) {\n");
+	WRITE("            rtrue;\n");
+	WRITE("        } else {\n");
+	WRITE("            rfalse;\n");
+	WRITE("        }\n");
+	WRITE("    } else {\n");
+	WRITE("        rfalse;\n");
+	WRITE("    }\n");
+	WRITE("} else {\n");
+	WRITE("    if ((o >= 1) && (o <= value_ranges-->K)) {\n");
+	WRITE("        holder = value_property_holders-->K;\n");
+	WRITE("        if ((holder) && (holder provides p-->1)) {\n");
+	WRITE("            rtrue;\n");
+	WRITE("        } else {\n");
+	WRITE("            rfalse;\n");
+	WRITE("        }\n");
+	WRITE("    } else {\n");
+	WRITE("        rfalse;\n");
+	WRITE("    }\n");
+	WRITE("}\n");
+	WRITE("rfalse; ];\n");
+	WRITE("[ _final_xwrite_pval K o p v t;\n");
+	WRITE("if (K == OBJECT_TY) {\n");
+	WRITE("    if (p-->0 == 2) {\n");
+	WRITE("        if (v) give o p-->1; else give o ~(p-->1);\n");
+	WRITE("    } else {\n");
+	WRITE("        o.(p-->1) = v;\n");
+	WRITE("    }\n");
+	WRITE("} else {\n");
+	WRITE("    ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) = v;\n");
+	WRITE("}\n");
+	WRITE("];\n");
+
 	WRITE("Constant i7_lvalue_SET = 1;\n");
 	WRITE("Constant i7_lvalue_PREDEC = 2;\n");
 	WRITE("Constant i7_lvalue_POSTDEC = 3;\n");

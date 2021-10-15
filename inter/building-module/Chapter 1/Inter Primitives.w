@@ -95,6 +95,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!propertyaddress", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertylength", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyexists", I"val val -> val");
+	Primitives::emit_one(I, IBM, I"!xpropertyexists", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyvalue", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!notin", I"val val -> val");
 }
@@ -262,6 +263,7 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e PROPERTYADDRESS_BIP
 @e PROPERTYLENGTH_BIP
 @e PROPERTYEXISTS_BIP
+@e XPROPERTYEXISTS_BIP
 @e PROPERTYVALUE_BIP
 
 =
@@ -360,6 +362,7 @@ text_stream *Primitives::name(inter_ti bip) {
 		case PROPERTYADDRESS_BIP: return I"!propertyaddress";
 		case PROPERTYLENGTH_BIP: return I"!propertylength";
 		case PROPERTYEXISTS_BIP: return I"!propertyexists";
+		case XPROPERTYEXISTS_BIP: return I"!xpropertyexists";
 		case PROPERTYVALUE_BIP: return I"!propertyvalue";
 	}
 	return I"<none>";
@@ -473,6 +476,7 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyexists")) bip = PROPERTYEXISTS_BIP;
+	if (Str::eq(symb->symbol_name, I"!xpropertyexists")) bip = XPROPERTYEXISTS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(symb, BIP_CODE_IANN, bip);

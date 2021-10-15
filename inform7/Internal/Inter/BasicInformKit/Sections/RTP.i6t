@@ -278,8 +278,9 @@ it doesn't mean it actually does have.
 
 	.PermissionFound;
 
-	@provides_gprop K obj q a;
-	if (a) rtrue;
+	if (K >> obj provides q) rtrue;
+!	@provides_gprop K obj q a;
+!	if (a) rtrue;
 
 	if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
 	rfalse;

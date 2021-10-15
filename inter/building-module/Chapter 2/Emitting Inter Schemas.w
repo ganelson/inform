@@ -338,17 +338,34 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 @<Operation@> =
 	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
 	int remember_to_up = FALSE;
-	if (isn->isn_clarifier == HASNT_XBIP) {
+	inter_ti op = isn->isn_clarifier;	
+	if (op == HASNT_XBIP) {
 		Produce::inv_primitive(I, NOT_BIP);
 		Produce::down(I);
-			Produce::inv_primitive(I, PROPERTYVALUE_BIP);
+		op = PROPERTYVALUE_BIP;
 		remember_to_up = TRUE;
-	} else if (isn->isn_clarifier == HAS_XBIP) {
-		Produce::inv_primitive(I, PROPERTYVALUE_BIP);
-	} else {
-		Produce::inv_primitive(I, isn->isn_clarifier);
 	}
-	Produce::down(I);
+	if (isn->isn_clarifier == HAS_XBIP) op = PROPERTYVALUE_BIP;
+	
+	int insert_OBJECT_TY = FALSE;
+	if (op == PROPERTYEXISTS_BIP) {
+		if ((isn->child_node->isn_type == OPERATION_ISNT) &&
+			(isn->child_node->isn_clarifier == OWNERKIND_XBIP))
+			op = XPROPERTYEXISTS_BIP;
+		else {
+			insert_OBJECT_TY = TRUE;
+			op = XPROPERTYEXISTS_BIP;
+		}
+	}
+	
+	if (op != OWNERKIND_XBIP) {
+		Produce::inv_primitive(I, op);
+		Produce::down(I);
+	}
+	if (insert_OBJECT_TY) {
+		inter_symbol *OBJECT_TY_s = EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", first_call, second_call);
+		Produce::val_symbol(I, K_value, OBJECT_TY_s);
+	}
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
 	EmitInterSchemas::emit_inner(I, isn->child_node,
@@ -359,7 +376,9 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			VH, sch, opaque_state, VAL_PRIM_CAT,
 			first_call, second_call,
 			inline_command_handler, i7_source_handler);
-	Produce::up(I);
+	if (op != OWNERKIND_XBIP) {
+		Produce::up(I);
+	}
 	if (remember_to_up) { Produce::up(I); }
 
 	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }

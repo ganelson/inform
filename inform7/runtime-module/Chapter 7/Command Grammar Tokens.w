@@ -578,8 +578,9 @@ if it works.
 @<Open a general relation search loop using a reversed property@> =
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			EmitCode::inv(PROPERTYEXISTS_BIP);
+			EmitCode::inv(XPROPERTYEXISTS_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, RTProperties::iname(prn));
 			EmitCode::up();
@@ -625,8 +626,9 @@ if it works.
 					EmitCode::down();
 						EmitCode::inv(AND_BIP);
 						EmitCode::down();
-							EmitCode::inv(PROPERTYEXISTS_BIP);
+							EmitCode::inv(XPROPERTYEXISTS_BIP);
 							EmitCode::down();
+								EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 								EmitCode::val_symbol(K_value, kit->rv_s);
 								EmitCode::val_iname(K_value, RTProperties::iname(prn));
 							EmitCode::up();

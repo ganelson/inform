@@ -1198,6 +1198,7 @@ language opcodes such as |@pull|.
 	if ((c1 == '~') && (c2 == '=')) digraph = TRUE;
 	if ((c1 == '&') && (c2 == '&')) digraph = TRUE;
 	if ((c1 == '|') && (c2 == '|')) digraph = TRUE;
+	if ((c1 == '>') && (c2 == '>')) digraph = TRUE;
 
 	if ((c1 == '-') && (c2 == '-') && (c3 == '>')) trigraph = TRUE;
 
@@ -1257,6 +1258,7 @@ inclusive; we ignore an empty token.
 @e HAS_XBIP from 10000
 @e HASNT_XBIP
 @e READ_XBIP
+@e OWNERKIND_XBIP
 
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
@@ -1366,6 +1368,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I".")) { is = OPERATOR_ISTT; which = PROPERTYVALUE_BIP; }
 	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = PROPERTYADDRESS_BIP; }
 	if (Str::eq(T, I".#")) { is = OPERATOR_ISTT; which = PROPERTYLENGTH_BIP; }
+	if (Str::eq(T, I">>")) { is = OPERATOR_ISTT; which = OWNERKIND_XBIP; }
 
 	if (Str::eq(T, I"=")) { is = OPERATOR_ISTT; which = STORE_BIP; }
 
@@ -2259,12 +2262,6 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				isn->expression_tokens = NULL;
 				new_isn->next_node = isn->child_node;
 				isn->child_node = new_isn;
-/*				if (subordinate_to == STORE_BIP) {
-					isn->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					isn->child_node->child_node = new_isn;
-					isn->child_node->isn_clarifier = PROPERTYVALUE_BIP;
-				}
-*/
 				new_isn->parent_node = isn;
 				if (dangle != NOT_APPLICABLE) {
 					text_stream *T = Str::new();
@@ -2310,8 +2307,6 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					}
 				}
 				if (subordinate_to == STORE_BIP) {
-	LOG("Concerto:\n");
-	InterSchemas::log_depth(isn, 0);
 					isn->isn_clarifier = 0;
 					isn->isn_type = EXPRESSION_ISNT;
 					inter_schema_node *A = isn->child_node;
@@ -2327,8 +2322,6 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 					isn->expression_tokens->next->next->next->next = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
 					for (inter_schema_token *l = isn->expression_tokens; l; l=l->next)
 						l->owner = isn;
-	LOG("Reconcerto:\n");
-	InterSchemas::log_depth(isn, 0);
 				}
 				return 1;
 			}
@@ -2860,6 +2853,8 @@ int InterSchemas::precedence(inter_ti O) {
 
 	if (O == PROPERTYVALUE_BIP) return 12;
 
+	if (O == OWNERKIND_XBIP) return 13;
+
 	return UNPRECEDENTED_OPERATOR;
 }
 
@@ -2916,6 +2911,7 @@ text_stream *InterSchemas::text_form(inter_ti O) {
 
 	if (O == PROPERTYADDRESS_BIP) return I".&";
 	if (O == PROPERTYLENGTH_BIP) return I".#";
+	if (O == OWNERKIND_XBIP) return I"::";
 
 	if (O == PROPERTYVALUE_BIP) return I".";
 
@@ -2968,6 +2964,7 @@ int InterSchemas::arity(inter_ti O) {
 	if (O == PROPERTYADDRESS_BIP) return 2;
 	if (O == PROPERTYLENGTH_BIP) return 2;
 	if (O == PROPERTYVALUE_BIP) return 2;
+	if (O == OWNERKIND_XBIP) return 2;
 
 	return 0;
 }
