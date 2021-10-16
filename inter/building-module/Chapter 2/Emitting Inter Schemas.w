@@ -348,14 +348,10 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 	if (isn->isn_clarifier == HAS_XBIP) op = PROPERTYVALUE_BIP;
 	
 	int insert_OBJECT_TY = FALSE;
-	if (op == PROPERTYEXISTS_BIP) {
-		if ((isn->child_node->isn_type == OPERATION_ISNT) &&
-			(isn->child_node->isn_clarifier == OWNERKIND_XBIP))
-			op = XPROPERTYEXISTS_BIP;
-		else {
+	if (op == XPROPERTYEXISTS_BIP) {
+		if ((isn->child_node->isn_type != OPERATION_ISNT) ||
+			(isn->child_node->isn_clarifier != OWNERKIND_XBIP))
 			insert_OBJECT_TY = TRUE;
-			op = XPROPERTYEXISTS_BIP;
-		}
 	}
 	
 	if (op != OWNERKIND_XBIP) {

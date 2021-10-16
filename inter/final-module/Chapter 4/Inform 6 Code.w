@@ -419,11 +419,6 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; @<Perform a store@>; break;
 
 @<Property value access@> =
-	case PROPERTYEXISTS_BIP:
-		I6_GEN_DATA(value_ranges_needed) = TRUE;
-		I6_GEN_DATA(value_property_holders_needed) = TRUE;
-		WRITE("(_final_provides(OBJECT_TY, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
-//		WRITE("("); VNODE_1C; WRITE(" provides ("); VNODE_2C; WRITE("-->1))"); break;
 	case XPROPERTYEXISTS_BIP: 
 		I6_GEN_DATA(value_ranges_needed) = TRUE;
 		I6_GEN_DATA(value_property_holders_needed) = TRUE;

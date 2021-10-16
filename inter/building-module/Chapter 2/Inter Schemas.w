@@ -1393,7 +1393,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = OFCLASS_BIP; }
 	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = HAS_XBIP; }
 	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = HASNT_XBIP; }
-	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = PROPERTYEXISTS_BIP; }
+	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = XPROPERTYEXISTS_BIP; }
 	if (Str::eq(T, I"in")) { is = OPERATOR_ISTT; which = IN_BIP; }
 	if (Str::eq(T, I"notin")) { is = OPERATOR_ISTT; which = NOTIN_BIP; }
 
@@ -2821,7 +2821,7 @@ int InterSchemas::precedence(inter_ti O) {
 	if (O == HAS_XBIP) return 3;
 	if (O == HASNT_XBIP) return 3;
 	if (O == OFCLASS_BIP) return 3;
-	if (O == PROPERTYEXISTS_BIP) return 3;
+	if (O == XPROPERTYEXISTS_BIP) return 3;
 	if (O == IN_BIP) return 3;
 	if (O == NOTIN_BIP) return 3;
 
@@ -2883,7 +2883,7 @@ text_stream *InterSchemas::text_form(inter_ti O) {
 	if (O == HAS_XBIP) return I"has";
 	if (O == HASNT_XBIP) return I"hasnt";
 	if (O == OFCLASS_BIP) return I"ofclass";
-	if (O == PROPERTYEXISTS_BIP) return I"provides";
+	if (O == XPROPERTYEXISTS_BIP) return I"provides";
 	if (O == IN_BIP) return I"in";
 	if (O == NOTIN_BIP) return I"notin";
 
@@ -2937,7 +2937,7 @@ int InterSchemas::arity(inter_ti O) {
 	if (O == HAS_XBIP) return 2;
 	if (O == HASNT_XBIP) return 2;
 	if (O == OFCLASS_BIP) return 2;
-	if (O == PROPERTYEXISTS_BIP) return 2;
+	if (O == XPROPERTYEXISTS_BIP) return 2;
 	if (O == IN_BIP) return 2;
 	if (O == NOTIN_BIP) return 2;
 
