@@ -495,7 +495,7 @@ are a bit more careful about the senses.
                 if (flag == false) { if (i in toroom) remove i; }
             }
             if ((i ofclass K4_door) && (parent(i) == nothing)) {
-            	move i to ((i.door_to).call());
+            	move i to (i.door_to());
             }
         }
     }

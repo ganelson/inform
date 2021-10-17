@@ -277,10 +277,7 @@ it doesn't mean it actually does have.
 	}
 
 	.PermissionFound;
-
 	if (K >> obj provides q) rtrue;
-!	@provides_gprop K obj q a;
-!	if (a) rtrue;
 
 	if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
 	rfalse;
@@ -322,8 +319,7 @@ the one which the player is on.
 =
 [ GProperty K V pr err holder val;
 	if (ProvidesProperty(K, V, pr, 1-err)) {
-		@read_gprop K V pr val;
-		return val;
+		return (K >> V . pr);
 	}
 	return 0;
 ];
@@ -336,7 +332,7 @@ converted from an rvalue to an lvalue.
 =
 [ WriteGProperty K V pr val holder;
 	if (ProvidesProperty(K, V, pr, true)) {
-		@write_gprop K V pr val;
+		K >> V . pr = val;
 	}
 ];
 

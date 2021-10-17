@@ -205,17 +205,11 @@ Z-machine specification, there is no good way to assemble it using |@| notation
 unless we want to save the result. (See the Z-Machine Standards Document.)
 As a dodge, we use the Inform 6 statement |read X Y| instead.
 
-The three pseudo-opcodes |@provides_gprop|, |@read_gprop| and |@write_gprop| are
-however not valid for either Z or G.
-
 =
 void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (Str::eq(opcode, I"@provides_gprop")) @<Invoke special provides_gprop@>;
-	if (Str::eq(opcode, I"@read_gprop")) @<Invoke special read_gprop@>;
-	if (Str::eq(opcode, I"@write_gprop")) @<Invoke special write_gprop@>;
 	if (Str::eq(opcode, I"@aread")) WRITE("read");
 	else WRITE("%S", opcode);
 	for (int opc = 0; opc < operand_count; opc++) {
@@ -229,130 +223,6 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 	}
 	if (void_context) WRITE(";\n");
 }
-
-@<Invoke special provides_gprop@> =
-	TEMPORARY_TEXT(K)
-	TEMPORARY_TEXT(obj)
-	TEMPORARY_TEXT(p)
-	TEMPORARY_TEXT(val)
-	CodeGen::select_temporary(gen, K);
-	Vanilla::node(gen, operands[0]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, obj);
-	Vanilla::node(gen, operands[1]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, p);
-	Vanilla::node(gen, operands[2]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, val);
-	Vanilla::node(gen, operands[3]);
-	CodeGen::deselect_temporary(gen);
-
-	I6_GEN_DATA(value_ranges_needed) = TRUE;
-	I6_GEN_DATA(value_property_holders_needed) = TRUE;
-
-	WRITE("if (%S == OBJECT_TY) {\n", K);
-	WRITE("    if ((%S) && (metaclass(%S) == Object)) {\n", obj, obj);
-	WRITE("        if ((%S-->0 == 2) || (%S provides %S-->1)) {\n", p, obj, p);
-	WRITE("            %S = 1;\n", val);
-	WRITE("        } else {\n");
-	WRITE("            %S = 0;\n", val);
-	WRITE("        }\n");
-	WRITE("    } else {\n");
-	WRITE("        %S = 0;\n", val);
-	WRITE("    }\n");
-	WRITE("} else {\n");
-	WRITE("    if ((%S >= 1) && (%S <= value_ranges-->%S)) {\n", obj, obj, K);
-	WRITE("        holder = value_property_holders-->%S;\n", K);
-	WRITE("        if ((holder) && (holder provides %S-->1)) {\n", p);
-	WRITE("            %S = 1;\n", val);
-	WRITE("        } else {\n");
-	WRITE("            %S = 0;\n", val);
-	WRITE("        }\n");
-	WRITE("    } else {\n");
-	WRITE("        %S = 0;\n", val);
-	WRITE("    }\n");
-	WRITE("}\n");
-
-	DISCARD_TEXT(K)
-	DISCARD_TEXT(obj)
-	DISCARD_TEXT(p)
-	DISCARD_TEXT(val)
-	return;
-
-@<Invoke special read_gprop@> =
-	TEMPORARY_TEXT(K)
-	TEMPORARY_TEXT(obj)
-	TEMPORARY_TEXT(p)
-	TEMPORARY_TEXT(val)
-	CodeGen::select_temporary(gen, K);
-	Vanilla::node(gen, operands[0]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, obj);
-	Vanilla::node(gen, operands[1]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, p);
-	Vanilla::node(gen, operands[2]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, val);
-	Vanilla::node(gen, operands[3]);
-	CodeGen::deselect_temporary(gen);
-
-	I6_GEN_DATA(value_property_holders_needed) = TRUE;
-
-	WRITE("if (%S == OBJECT_TY) {\n", K);
-	WRITE("    if (%S-->0 == 2) {\n", p);
-	WRITE("        if (%S has %S-->1) %S = 1; else %S = 0;\n", obj, p, val, val);
-	WRITE("    } else {\n");
-	WRITE("        if (%S-->1 == door_to) %S = %S.(%S-->1)();\n", p, val, obj, p);
-	WRITE("        else %S = %S.(%S-->1);\n", val, obj, p);
-	WRITE("    }\n");
-	WRITE("} else {\n");
-	WRITE("    holder = value_property_holders-->%S;\n", K);
-	WRITE("    %S = (holder.(%S-->1))-->(%S+COL_HSIZE);\n", val, p, obj);
-	WRITE("}\n");
-
-	DISCARD_TEXT(K)
-	DISCARD_TEXT(obj)
-	DISCARD_TEXT(p)
-	DISCARD_TEXT(val)
-	return;
-
-@<Invoke special write_gprop@> =
-	TEMPORARY_TEXT(K)
-	TEMPORARY_TEXT(obj)
-	TEMPORARY_TEXT(p)
-	TEMPORARY_TEXT(val)
-	CodeGen::select_temporary(gen, K);
-	Vanilla::node(gen, operands[0]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, obj);
-	Vanilla::node(gen, operands[1]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, p);
-	Vanilla::node(gen, operands[2]);
-	CodeGen::deselect_temporary(gen);
-	CodeGen::select_temporary(gen, val);
-	Vanilla::node(gen, operands[3]);
-	CodeGen::deselect_temporary(gen);
-
-	I6_GEN_DATA(value_property_holders_needed) = TRUE;
-
-	WRITE("if (%S == OBJECT_TY) {\n", K);
-	WRITE("    if (%S-->0 == 2) {\n", p);
-	WRITE("        if (%S) give %S %S-->1; else give %S ~(%S-->1);\n", val, obj, p, obj, p);
-	WRITE("    } else {\n");
-	WRITE("        %S.(%S-->1) = %S;\n", obj, p, val);
-	WRITE("    }\n");
-	WRITE("} else {\n");
-	WRITE("    ((value_property_holders-->%S).(%S-->1))-->(%S+COL_HSIZE) = %S;\n", K, p, obj, val);
-	WRITE("}\n");
-
-	DISCARD_TEXT(K)
-	DISCARD_TEXT(obj)
-	DISCARD_TEXT(p)
-	DISCARD_TEXT(val)
-	return;
 
 @ =
 int i6_next_is_a_ref = FALSE, i6_next_is_a_give = FALSE, i6_next_is_a_take = FALSE;
@@ -419,7 +289,7 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; @<Perform a store@>; break;
 
 @<Property value access@> =
-	case XPROPERTYEXISTS_BIP: 
+	case PROPERTYEXISTS_BIP: 
 		I6_GEN_DATA(value_ranges_needed) = TRUE;
 		I6_GEN_DATA(value_property_holders_needed) = TRUE;
 		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
@@ -570,25 +440,26 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 
 @<Write attribute give@> =
 	i6_next_is_a_give = FALSE;
-	WRITE("give "); VNODE_1C; WRITE(" %S", I6TargetCode::inner_name(gen, P)); break;
+	WRITE("give "); VNODE_2C; WRITE(" %S", I6TargetCode::inner_name(gen, P)); break;
 
 @<Write attribute take@> =
 	i6_next_is_a_take = FALSE;
-	WRITE("give "); VNODE_1C; WRITE(" ~%S", I6TargetCode::inner_name(gen, P)); break;
+	WRITE("give "); VNODE_2C; WRITE(" ~%S", I6TargetCode::inner_name(gen, P)); break;
 
 @<Write property value@> =								
 	i6_next_is_a_ref = FALSE;
-	WRITE("_final_write_pval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(", ");
+	WRITE("_final_write_pval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(","); VNODE_3C; WRITE(", ");
 
 @<Evaluate property value@> =								
 	switch (I6TargetCode::pval_case(P)) {
-		case 1: WRITE("("); VNODE_1C; WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case 2: WRITE("("); VNODE_1C; WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case 3: I6TargetCode::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), 0); break;
+		case 1: WRITE("("); VNODE_2C; WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+		case 2: WRITE("("); VNODE_2C; WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+		case 3: I6_GEN_DATA(value_property_holders_needed) = TRUE;
+				I6TargetCode::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), InterTree::third_child(P), 0); break;
 	}
 
 @ =
-void I6TargetCode::comparison_r(code_generation *gen,
+void I6TargetCode::comparison_r(code_generation *gen, inter_tree_node *K, 
 	inter_tree_node *X, inter_tree_node *Y, int depth) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (Y->W.data[ID_IFLD] == INV_IST) {
@@ -597,9 +468,9 @@ void I6TargetCode::comparison_r(code_generation *gen,
 			inter_ti ybip = Primitives::to_bip(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
-				I6TargetCode::comparison_r(gen, NULL, InterTree::first_child(Y), depth+1);
+				I6TargetCode::comparison_r(gen, K, NULL, InterTree::first_child(Y), depth+1);
 				WRITE(") || (");
-				I6TargetCode::comparison_r(gen, NULL, InterTree::second_child(Y), depth+1);
+				I6TargetCode::comparison_r(gen, K, NULL, InterTree::second_child(Y), depth+1);
 				if (depth == 0) { WRITE(")))"); }
 				return;
 			}
@@ -610,6 +481,8 @@ void I6TargetCode::comparison_r(code_generation *gen,
 		case 2: WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var"); WRITE(".%S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
 		case 3:
 			WRITE("_final_read_pval(");
+			Vanilla::node(gen, K);
+			WRITE(", ");
 			if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
 			WRITE(", "); 
 			Vanilla::node(gen, Y);
@@ -622,13 +495,13 @@ void I6TargetCode::comparison_r(code_generation *gen,
 =
 int I6TargetCode::pval_case(inter_tree_node *P) {
 	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
-	inter_tree_node *prop_node = InterTree::second_child(P);
+	inter_tree_node *prop_node = InterTree::third_child(P);
 	return I6TargetCode::pval_case_inner(prop_node);
 }
 
 text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *P) {
 	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
-	inter_tree_node *prop_node = InterTree::second_child(P);
+	inter_tree_node *prop_node = InterTree::third_child(P);
 	return I6TargetCode::inner_name_inner(gen, prop_node);
 }
 
@@ -816,15 +689,28 @@ then the result.
 void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("[ _final_read_pval o p t;\n");
-	WRITE("    t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
-	WRITE("    if (t == 2) { if (o has p) rtrue; rfalse; }\n");
-	WRITE("    if (o provides p) return o.p; rfalse;\n");
+	WRITE("[ _final_read_pval K o p t;\n");
+	WRITE("    if (K == OBJECT_TY) {\n");
+	WRITE("        t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
+	WRITE("        if (t == 2) { if (o has p) rtrue; rfalse; }\n");
+	WRITE("        if (o provides p) {\n");
+	WRITE("            if (p == door_to) return o.p();\n");
+	WRITE("            return o.p;\n");
+	WRITE("        }\n");
+	WRITE("        rfalse;\n");
+	WRITE("    } else {\n");
+	WRITE("        t = value_property_holders-->K;\n");
+	WRITE("        return (t.(p-->1))-->(o+COL_HSIZE);\n");
+	WRITE("    }\n");
 	WRITE("];\n");
-	WRITE("[ _final_write_pval o p v t;\n");
-	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
-	WRITE("    if (t == 2) { if (v) give o p; else give o ~p; }\n");
-	WRITE("    else { if (o provides p) o.p = v; }\n");
+	WRITE("[ _final_write_pval K o p v t;\n");
+	WRITE("    if (K == OBJECT_TY) {\n");
+	WRITE("        t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
+	WRITE("        if (t == 2) { if (v) give o p; else give o ~p; }\n");
+	WRITE("        else { if (o provides p) o.p = v; }\n");
+	WRITE("    } else {\n");
+	WRITE("        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) = v;\n");
+	WRITE("    }\n");
 	WRITE("];\n");
 	WRITE("[ _final_read_paddr o p v t;\n");
 	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");

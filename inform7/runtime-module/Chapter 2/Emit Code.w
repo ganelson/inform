@@ -133,6 +133,7 @@ void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *p
 		EmitCode::down();
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_symbol(K, S);
 				EmitCode::val_iname(K_value,
 					RTProperties::iname(EitherOrProperties::get_negation(prn)));
@@ -141,6 +142,7 @@ void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *p
 	} else {
 		EmitCode::inv(PROPERTYVALUE_BIP);
 		EmitCode::down();
+			EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 			EmitCode::val_symbol(K, S);
 			EmitCode::val_iname(K_value, RTProperties::iname(prn));
 		EmitCode::up();

@@ -104,7 +104,10 @@ That's what is done by the "A1 as ref" mode set up above.
 @<Handle the ref using the incomplete-function mode@> =
 	WRITE("("); CReferences::A1_as_ref(gen, P);
 	if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
-	WRITE(", %S))", store_form);
+	WRITE(", %S", store_form);
+	if (Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP))
+		WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE");
+	WRITE("))");
 
 @<Handle the ref with C code working either as lvalue or rvalue@> =
 	switch (bip) {

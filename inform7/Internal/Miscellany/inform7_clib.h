@@ -111,7 +111,7 @@ int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
 void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val,
+void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
 void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y);
 void glulx_accelparam(i7process_t *proc, i7word_t x, i7word_t y);
@@ -192,7 +192,7 @@ int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way);
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr);

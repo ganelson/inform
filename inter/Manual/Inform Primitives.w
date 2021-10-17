@@ -247,4 +247,4 @@ Direct access to virtual machine object properties:
 (a) |primitive !propertyvalue val val -> val|.
 (b) |primitive !propertyaddress val val -> val|. 
 (c) |primitive !propertylength val val -> val|. 
-(d) |primitive !propertyexists val val -> val|. 
+(d) |primitive !propertyexists val val val -> val|. 

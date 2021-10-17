@@ -144,6 +144,7 @@ world model only if X is a container, so we check that.
 		EmitCode::down();
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
 			EmitCode::up();
@@ -161,6 +162,7 @@ world model only if X is a supporter, so we check that.
 		EmitCode::down();
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
 			EmitCode::up();
@@ -179,6 +181,7 @@ is a person, so we check that.
 		EmitCode::down();
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
 			EmitCode::up();
@@ -222,6 +225,7 @@ recycle.
 				EmitCode::down();
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_symbol(K_value, kit->rv_s);
 						EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
 					EmitCode::up();
@@ -238,6 +242,7 @@ recycle.
 					EmitCode::down();
 						EmitCode::inv(PROPERTYVALUE_BIP);
 						EmitCode::down();
+							EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 							EmitCode::val_symbol(K_value, kit->rv_s);
 							EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
 						EmitCode::up();
@@ -313,6 +318,7 @@ and so on until one of them matches.
 		EmitCode::ref_symbol(K_value, kit->rv_s);
 		EmitCode::inv(PROPERTYVALUE_BIP);
 		EmitCode::down();
+			EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 			EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
 		EmitCode::up();
@@ -360,6 +366,7 @@ and so on until one of them matches.
 				EmitCode::ref_symbol(K_value, kit->rv_s);
 				EmitCode::inv(PROPERTYVALUE_BIP);
 				EmitCode::down();
+					EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 					EmitCode::val_symbol(K_value, kit->rv_s);
 					EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
 				EmitCode::up();
@@ -394,6 +401,7 @@ because then, of course, it would be worn by P and not carried by P:
 	EmitCode::down();
 		EmitCode::inv(PROPERTYVALUE_BIP);
 		EmitCode::down();
+			EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 			EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
 		EmitCode::up();
@@ -409,6 +417,7 @@ because then, of course, it would be worn by P and not carried by P:
 		EmitCode::down();
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 				EmitCode::val_iname(K_value, RTProperties::iname(P_worn));
 			EmitCode::up();
@@ -465,6 +474,7 @@ properties rather than the object tree implement the relation.
 		EmitCode::ref_symbol(K_value, kit->rv_s);
 		EmitCode::inv(PROPERTYVALUE_BIP);
 		EmitCode::down();
+			EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 			EmitCode::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
 		EmitCode::up();
@@ -578,7 +588,7 @@ if it works.
 @<Open a general relation search loop using a reversed property@> =
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			EmitCode::inv(XPROPERTYEXISTS_BIP);
+			EmitCode::inv(PROPERTYEXISTS_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
@@ -592,6 +602,7 @@ if it works.
 					EmitCode::ref_symbol(K_value, kit->rv_s);
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
@@ -626,7 +637,7 @@ if it works.
 					EmitCode::down();
 						EmitCode::inv(AND_BIP);
 						EmitCode::down();
-							EmitCode::inv(XPROPERTYEXISTS_BIP);
+							EmitCode::inv(PROPERTYEXISTS_BIP);
 							EmitCode::down();
 								EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 								EmitCode::val_symbol(K_value, kit->rv_s);
@@ -636,6 +647,7 @@ if it works.
 							EmitCode::down();
 								EmitCode::inv(PROPERTYVALUE_BIP);
 								EmitCode::down();
+									EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 									EmitCode::val_symbol(K_value, kit->rv_s);
 									EmitCode::val_iname(K_value, RTProperties::iname(prn));
 								EmitCode::up();

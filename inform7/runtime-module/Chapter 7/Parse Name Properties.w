@@ -801,11 +801,13 @@ void ParseName::distinguish_visible_property(gpr_kit *kit, property *prn) {
 				EmitCode::down();
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
@@ -815,11 +817,13 @@ void ParseName::distinguish_visible_property(gpr_kit *kit, property *prn) {
 				EmitCode::down();
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_iname(K_value, Hierarchy::find(PARSER_ONE_HL));
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
 					EmitCode::inv(PROPERTYVALUE_BIP);
 					EmitCode::down();
+						EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 						EmitCode::val_iname(K_value, Hierarchy::find(PARSER_TWO_HL));
 						EmitCode::val_iname(K_value, RTProperties::iname(prn));
 					EmitCode::up();
@@ -943,6 +947,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 					EmitCode::down();
 						EmitCode::inv(PROPERTYVALUE_BIP);
 						EmitCode::down();
+							EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 							EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 							EmitCode::val_iname(K_value, RTProperties::iname(prn));
 						EmitCode::up();
@@ -963,6 +968,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
+								EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 								EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 								EmitCode::val_iname(K_value, RTProperties::iname(prn));
 							EmitCode::up();
@@ -976,6 +982,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
+								EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 								EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 								EmitCode::val_iname(K_value, RTProperties::iname(prn));
 							EmitCode::up();
@@ -994,6 +1001,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
+								EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 								EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 								EmitCode::val_iname(K_value, RTProperties::iname(prn));
 							EmitCode::up();

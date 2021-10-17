@@ -737,10 +737,9 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
-									WRITE("i7_change_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+									WRITE("glulx_write_gprop(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", ");
 								} else {
-									CConditions::comparison_r(gen, bip, InterTree::first_child(P), InterTree::second_child(P), 0);
-//									WRITE("i7_read_prop_value(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
+									CConditions::comparison_r(gen, bip, InterTree::first_child(P), InterTree::second_child(P), InterTree::third_child(P), 0);
 								}
 								break;
 		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
@@ -766,7 +765,7 @@ and write them.
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way);
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr);
@@ -811,7 +810,7 @@ i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_ar
 	return i7_read_word(proc, address, 0);
 }
 
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way) {
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way) {
 	i7word_t val = i7_read_prop_value(proc, obj, pr), new_val = val;
 	switch (way) {
 		case i7_lvalue_SET:      i7_write_prop_value(proc, obj, pr, to); new_val = to; break;
@@ -850,7 +849,7 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
 text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 	switch (bip) {
 		case OFCLASS_BIP:	*positive = TRUE;  return I"i7_ofclass"; break;
-		case PROPERTYVALUE_BIP: *positive = TRUE;  return I"i7_read_prop_value"; break;
+		case PROPERTYVALUE_BIP: *positive = TRUE;  return I"i7_read_gprop"; break;
 		case IN_BIP:		*positive = TRUE;  return I"i7_in"; break;
 		case NOTIN_BIP:		*positive = FALSE; return I"i7_in"; break;
 	}

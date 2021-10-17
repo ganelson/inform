@@ -74,6 +74,8 @@ void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
 			Produce::down(I);
 				Produce::inv_primitive(I, PROPERTYVALUE_BIP);
 				Produce::down(I);
+					inter_symbol *OBJECT_TY_s = EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", NULL, NULL);
+					Produce::val_symbol(I, K_value, OBJECT_TY_s);
 					Produce::val_symbol(I, K_value, obj_s);
 					Produce::val_symbol(I, K_value, pr_s);
 				Produce::up(I);

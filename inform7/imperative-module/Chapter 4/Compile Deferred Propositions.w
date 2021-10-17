@@ -1231,6 +1231,7 @@ which until runtime -- when its identity will be found in the Inter variable
 			EmitCode::val_symbol(K_value, total_s);
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_symbol(K_value, var_s[0]);
 				if (multipurpose_function) {
 					EmitCode::val_iname(K_value,
@@ -1420,6 +1421,7 @@ multiplying by $-1$ is order-reversing.
 @<Emit code for a property lookup@> =
 	EmitCode::inv(PROPERTYVALUE_BIP);
 	EmitCode::down();
+		EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 		EmitCode::val_symbol(K_value, var_s[0]);
 		if (multipurpose_function) {
 			EmitCode::val_iname(K_value,

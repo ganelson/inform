@@ -456,21 +456,29 @@ void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, 
         if (val) *val = (i7word_t) i7_read_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
     }
 }
-void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val,
+
+i7word_t i7_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	i7word_t val = 0;
+	glulx_read_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	return val;
+}
+
+void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val, i7word_t form,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
         if ((i7_read_word(proc, pr, 0) == 2)) {
             if (val) {
-                i7_change_prop_value(proc, obj, pr, 1, i7_lvalue_SET);
+                i7_change_prop_value(proc, K, obj, pr, 1, form);
             } else {
-                i7_change_prop_value(proc, obj, pr, 0, i7_lvalue_SET);
+                i7_change_prop_value(proc, K, obj, pr, 0, form);
             }
         } else {
-            (i7_change_prop_value(proc, obj, pr, val, i7_lvalue_SET));
+            (i7_change_prop_value(proc, K, obj, pr, val, form));
         }
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, i7_lvalue_SET));
+        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
     }
 }
 void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
@@ -1076,7 +1084,7 @@ i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_ar
 	return i7_read_word(proc, address, 0);
 }
 
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr, i7word_t to, int way) {
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way) {
 	i7word_t val = i7_read_prop_value(proc, obj, pr), new_val = val;
 	switch (way) {
 		case i7_lvalue_SET:      i7_write_prop_value(proc, obj, pr, to); new_val = to; break;

@@ -11,7 +11,7 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case NOT_BIP:			WRITE("(!("); VNODE_1C; WRITE("))"); break;
 		case AND_BIP:			WRITE("(("); VNODE_1C; WRITE(") && ("); VNODE_2C; WRITE("))"); break;
 		case OR_BIP: 			WRITE("(("); VNODE_1C; WRITE(") || ("); VNODE_2C; WRITE("))"); break;
-		case XPROPERTYEXISTS_BIP:
+		case PROPERTYEXISTS_BIP:
 			C_GEN_DATA(objdata.value_ranges_needed) = TRUE;
 			C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
 			WRITE("(i7_provides_gprop(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE))"); break;
@@ -31,11 +31,11 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 }
 
 @<Generate comparison@> =
-	CConditions::comparison_r(gen, bip, InterTree::first_child(P), InterTree::second_child(P), 0);
+	CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(P), InterTree::second_child(P), 0);
 
 @ =
 void CConditions::comparison_r(code_generation *gen,
-	inter_ti bip, inter_tree_node *X, inter_tree_node *Y, int depth) {
+	inter_ti bip, inter_tree_node *K, inter_tree_node *X, inter_tree_node *Y, int depth) {
 	if (Y->W.data[ID_IFLD] == INV_IST) {
 		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(Y);
@@ -43,10 +43,10 @@ void CConditions::comparison_r(code_generation *gen,
 			if (ybip == ALTERNATIVE_BIP) {
 				text_stream *OUT = CodeGen::current(gen);
 				if (depth == 0) { WRITE("(proc->state.tmp = "); Vanilla::node(gen, X); WRITE(", ("); }
-				CConditions::comparison_r(gen, bip, NULL, InterTree::first_child(Y), depth+1);
+				CConditions::comparison_r(gen, bip, K, NULL, InterTree::first_child(Y), depth+1);
 				if ((bip == NE_BIP) || (bip == NOTIN_BIP)) WRITE(" && ");
 				else WRITE(" || ");
-				CConditions::comparison_r(gen, bip, NULL, InterTree::second_child(Y), depth+1);
+				CConditions::comparison_r(gen, bip, K, NULL, InterTree::second_child(Y), depth+1);
 				if (depth == 0) { WRITE("))"); }
 				return;
 			}
@@ -57,9 +57,16 @@ void CConditions::comparison_r(code_generation *gen,
 	text_stream *test_fn = CObjectModel::test_with_function(bip, &positive);
 	if (Str::len(test_fn) > 0) {
 		WRITE("(%S(proc, ", test_fn);
+		if (bip == PROPERTYVALUE_BIP) {
+			Vanilla::node(gen, K);
+			WRITE(", ");
+		}
 		@<Compile first compared@>;
 		WRITE(", ");
 		@<Compile second compared@>;
+		if (bip == PROPERTYVALUE_BIP) {
+			WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE");
+		}
 		WRITE(")");
 		if (positive == FALSE) WRITE(" == 0");
 		WRITE(")");
