@@ -197,7 +197,10 @@ void I6TargetCode::invoke_function(code_generator *cgt, code_generation *gen,
 
 @h Assembly language.
 In general, we make no attempt to police the supposedly valid assembly language
-given to us here. Glulx has one set, Z another.
+given to us here. Glulx has one set, Z another. Any assembly language in the Inter
+tree results from kit material; and if the author of such a kit tries to use an
+invalid opcode, then the result won't compile under I6, but none of that is our
+business here.
 
 The |@aread| opcode is a valid Z-machine opcode, but owing to the way I6 handles
 the irreconcilable change in syntax for the same opcode in V3 and V4-5 of the
@@ -224,7 +227,9 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 	if (void_context) WRITE(";\n");
 }
 
-@ =
+@h Primitives.
+
+=
 int i6_next_is_a_ref = FALSE, i6_next_is_a_give = FALSE, i6_next_is_a_take = FALSE;
 void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
@@ -232,7 +237,6 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);
-	text_stream *store_form = NULL;
 	
 	switch (bip) {
 		@<Basic arithmetic and logical operations@>;
@@ -279,286 +283,6 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 	case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
 
-@<Storing or otherwise changing values@> =
-	case STORE_BIP:			store_form = I"i7_lvalue_SET"; @<Perform a store@>; break;
-	case PREINCREMENT_BIP:	store_form = I"i7_lvalue_PREINC"; @<Perform a store@>; break;
-	case POSTINCREMENT_BIP:	store_form = I"i7_lvalue_POSTINC"; @<Perform a store@>; break;
-	case PREDECREMENT_BIP:	store_form = I"i7_lvalue_PREDEC"; @<Perform a store@>; break;
-	case POSTDECREMENT_BIP:	store_form = I"i7_lvalue_POSTDEC"; @<Perform a store@>; break;
-	case SETBIT_BIP:		store_form = I"i7_lvalue_SETBIT"; @<Perform a store@>; break;
-	case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; @<Perform a store@>; break;
-
-@<Property value access@> =
-	case PROPERTYEXISTS_BIP: 
-		I6_GEN_DATA(value_ranges_needed) = TRUE;
-		I6_GEN_DATA(value_property_holders_needed) = TRUE;
-		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
-	case PROPERTYADDRESS_BIP: WRITE("(_final_read_paddr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
-	case PROPERTYLENGTH_BIP: WRITE("(_final_read_plen("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
-	case PROPERTYVALUE_BIP:	if (i6_next_is_a_give)
-								@<Write attribute give@>
-							else if (i6_next_is_a_take)
-								@<Write attribute take@>
-							else if (i6_next_is_a_ref)
-								@<Write property value@>
-							else
-								@<Evaluate property value@>;
-							break;
-
-@<VM stack access@> =
-	case PUSH_BIP:			WRITE("@push "); VNODE_1C; break;
-	case PULL_BIP:			WRITE("@pull "); VNODE_1C; break;
-
-@<Control structures@> =
-	case BREAK_BIP:			WRITE("break"); break;
-	case CONTINUE_BIP:		WRITE("continue"); break;
-	case RETURN_BIP: 		@<Generate primitive for return@>; break;
-	case JUMP_BIP: 			WRITE("jump "); VNODE_1C; break;
-	case QUIT_BIP: 			WRITE("quit"); break;
-	case RESTORE_BIP: 		WRITE("restore "); VNODE_1C; break;
-	case IF_BIP: @<Generate primitive for if@>; break;
-	case IFDEBUG_BIP: @<Generate primitive for ifdebug@>; break;
-	case IFSTRICT_BIP: @<Generate primitive for ifstrict@>; break;
-	case IFELSE_BIP: @<Generate primitive for ifelse@>; break;
-	case WHILE_BIP: @<Generate primitive for while@>; break;
-	case DO_BIP: @<Generate primitive for do@>; break;
-	case FOR_BIP: @<Generate primitive for for@>; break;
-	case OBJECTLOOP_BIP: @<Generate primitive for objectloop@>; break;
-	case OBJECTLOOPX_BIP: @<Generate primitive for objectloopx@>; break;
-	case LOOP_BIP: @<Generate primitive for loop@>; break;
-	case SWITCH_BIP: @<Generate primitive for switch@>; break;
-	case CASE_BIP: @<Generate primitive for case@>; break;
-	case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
-	case DEFAULT_BIP: @<Generate primitive for default@>; break;
-
-@<Indirect function or method calls@> =
-	case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
-							WRITE("("); VNODE_1C; WRITE(")()"); break;
-	case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
-							WRITE("("); VNODE_1C; WRITE(")(");
-							VNODE_2C; WRITE(")"); break;
-	case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
-							WRITE("("); VNODE_1C; WRITE(")(");
-							VNODE_2C; WRITE(","); VNODE_3C; WRITE(")"); break;
-	case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
-							WRITE("("); VNODE_1C; WRITE(")(");
-							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(")"); break;
-	case INDIRECT4_BIP: case INDIRECT4V_BIP:
-							WRITE("("); VNODE_1C; WRITE(")(");
-							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
-							VNODE_5C; WRITE(")"); break;
-	case INDIRECT5_BIP: case INDIRECT5V_BIP:
-							WRITE("("); VNODE_1C; WRITE(")(");
-							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
-							VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
-	case MESSAGE0_BIP: 		WRITE("_final_message0("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
-	case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE("))"); break;
-	case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE(","); VNODE_4C; WRITE("))"); break;
-	case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE("))"); break;
-
-	case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
-
-@<Textual output@> =
-	case PRINT_BIP: WRITE("print "); CodeGen::lt_mode(gen, PRINTING_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
-	case PRINTCHAR_BIP: WRITE("print (char) "); VNODE_1C; break;
-	case PRINTNL_BIP: WRITE("new_line"); break;
-	case PRINTOBJ_BIP: WRITE("print (object) "); VNODE_1C; break;
-	case PRINTNUMBER_BIP: WRITE("print "); VNODE_1C; break;
-	case PRINTDWORD_BIP: WRITE("print (address) "); VNODE_1C; break;
-	case PRINTSTRING_BIP: WRITE("print (string) "); VNODE_1C; break;
-	case BOX_BIP: WRITE("box "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
-	case SPACES_BIP:		WRITE("spaces "); VNODE_1C; break;
-	case FONT_BIP:
-		WRITE("if ("); VNODE_1C; WRITE(") { font on; } else { font off; }");
-		suppress_terminal_semicolon = TRUE;
-		break;
-	case STYLE_BIP: {
-		inter_tree_node *N = InterTree::first_child(P);
-		if ((N->W.data[ID_IFLD] == CONSTANT_IST) &&
-			(N->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
-			inter_ti val2 = N->W.data[DATA_CONST_IFLD + 1];
-			switch (val2) {
-				case 1: WRITE("style bold"); break;
-				case 2: WRITE("style underline"); break;
-				case 3: WRITE("style reverse"); break;
-				default: WRITE("style roman");
-			}
-		} else {
-			WRITE("style roman");
-		}
-		break;
-	}
-
-@<The VM object tree@> =
-	case MOVE_BIP: WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
-	case REMOVE_BIP: WRITE("remove "); VNODE_1C; break;
-
-@<Random number generator@> =
-	case RANDOM_BIP: WRITE("random("); VNODE_1C; WRITE(")"); break;
-
-@<Perform a store@> =
-	inter_tree_node *ref = InterTree::first_child(P);
-	if ((Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) &&
-		(I6TargetCode::pval_case(ref) != 2)) {
-		@<Handle the ref using the incomplete-function mode@>;
-	} else {
-		@<Handle the ref with code working either as lvalue or rvalue@>;
-	}
-
-@<Handle the ref using the incomplete-function mode@> =
-	inter_tree_node *VP = InterTree::second_child(P);
-	int set = NOT_APPLICABLE;
-	if (VP->W.data[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = VP->W.data[VAL1_VAL_IFLD];
-		inter_ti val2 = VP->W.data[VAL2_VAL_IFLD];
-		if ((val1 == LITERAL_IVAL) && (val2)) set = TRUE;
-		if ((val1 == LITERAL_IVAL) && (val2 == 0)) set = FALSE;
-	}
-	if ((I6TargetCode::pval_case(ref) == 1) && (set == TRUE)) {
-		i6_next_is_a_give = TRUE; VNODE_1C; i6_next_is_a_give = FALSE;
-	} else if ((I6TargetCode::pval_case(ref) == 1) && (set == FALSE)) {
-		i6_next_is_a_take = TRUE; VNODE_1C; i6_next_is_a_take = FALSE;
-	} else {
-		WRITE("("); i6_next_is_a_ref = TRUE; VNODE_1C; i6_next_is_a_ref = FALSE; 
-		if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
-		WRITE(", %S))", store_form);
-	}
-
-@<Handle the ref with code working either as lvalue or rvalue@> =
-	switch (bip) {
-		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
-		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
-		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
-		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
-		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
-		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
-		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
-	}
-
-@<Write attribute give@> =
-	i6_next_is_a_give = FALSE;
-	WRITE("give "); VNODE_2C; WRITE(" %S", I6TargetCode::inner_name(gen, P)); break;
-
-@<Write attribute take@> =
-	i6_next_is_a_take = FALSE;
-	WRITE("give "); VNODE_2C; WRITE(" ~%S", I6TargetCode::inner_name(gen, P)); break;
-
-@<Write property value@> =								
-	i6_next_is_a_ref = FALSE;
-	WRITE("_final_write_pval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(","); VNODE_3C; WRITE(", ");
-
-@<Evaluate property value@> =								
-	switch (I6TargetCode::pval_case(P)) {
-		case 1: WRITE("("); VNODE_2C; WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case 2: WRITE("("); VNODE_2C; WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case 3: I6_GEN_DATA(value_property_holders_needed) = TRUE;
-				I6TargetCode::comparison_r(gen, InterTree::first_child(P), InterTree::second_child(P), InterTree::third_child(P), 0); break;
-	}
-
-@ =
-void I6TargetCode::comparison_r(code_generation *gen, inter_tree_node *K, 
-	inter_tree_node *X, inter_tree_node *Y, int depth) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (Y->W.data[ID_IFLD] == INV_IST) {
-		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = Inter::Inv::invokee(Y);
-			inter_ti ybip = Primitives::to_bip(gen->from, prim);
-			if (ybip == ALTERNATIVE_BIP) {
-				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
-				I6TargetCode::comparison_r(gen, K, NULL, InterTree::first_child(Y), depth+1);
-				WRITE(") || (");
-				I6TargetCode::comparison_r(gen, K, NULL, InterTree::second_child(Y), depth+1);
-				if (depth == 0) { WRITE(")))"); }
-				return;
-			}
-		}
-	}
-	switch (I6TargetCode::pval_case_inner(Y)) {
-		case 1: WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var"); WRITE(" has %S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
-		case 2: WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var"); WRITE(".%S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
-		case 3:
-			WRITE("_final_read_pval(");
-			Vanilla::node(gen, K);
-			WRITE(", ");
-			if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
-			WRITE(", "); 
-			Vanilla::node(gen, Y);
-			WRITE(")"); break;
-	}
-}
-
-@
-
-=
-int I6TargetCode::pval_case(inter_tree_node *P) {
-	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
-	inter_tree_node *prop_node = InterTree::third_child(P);
-	return I6TargetCode::pval_case_inner(prop_node);
-}
-
-text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *P) {
-	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
-	inter_tree_node *prop_node = InterTree::third_child(P);
-	return I6TargetCode::inner_name_inner(gen, prop_node);
-}
-
-text_stream *I6TargetCode::inner_name_inner(code_generation *gen, inter_tree_node *prop_node) {
-	inter_symbol *prop_symbol = NULL;
-	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
-		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
-		if (Inter::Symbols::is_stored_in_data(val1, val2))
-			prop_symbol =
-				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
-	}
-	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
-		return VanillaObjects::inner_property_name(gen, prop_symbol);
-	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
-		return VanillaObjects::inner_property_name(gen, prop_symbol);
-	} else {
-		return NULL;
-	}
-}
-
-int I6TargetCode::pval_case_inner(inter_tree_node *prop_node) {
-	inter_symbol *prop_symbol = NULL;
-	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
-		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
-		if (Inter::Symbols::is_stored_in_data(val1, val2))
-			prop_symbol =
-				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
-	}
-	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
-		return 1;
-	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
-		return 2;
-	} else {
-		return 3;
-	}
-}
-
-@<Generate primitive for return@> =
-	int rboolean = NOT_APPLICABLE;
-	inter_tree_node *V = InterTree::first_child(P);
-	if (V->W.data[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = V->W.data[VAL1_VAL_IFLD];
-		inter_ti val2 = V->W.data[VAL2_VAL_IFLD];
-		if (val1 == LITERAL_IVAL) {
-			if (val2 == 0) rboolean = FALSE;
-			if (val2 == 1) rboolean = TRUE;
-		}
-	}
-	switch (rboolean) {
-		case FALSE: WRITE("rfalse"); break;
-		case TRUE: WRITE("rtrue"); break;
-		case NOT_APPLICABLE: WRITE("return "); Vanilla::node(gen, V); break;
-	}
-	
-
 @ Here we need some gymnastics. We need to produce a value which the
 sometimes shaky I6 expression parser will accept, which turns out to be
 quite a constraint. If we were compiling to C, we might try this:
@@ -586,7 +310,6 @@ Because I6 evaluates the leaves in an expression tree right-to-left, not
 left-to-right, the parameter assignments happen first, then the conditions,
 then the result.
 
-
 @<Generate primitive for ternarysequential@> =
 	WRITE("(\n"); INDENT;
 	WRITE("! This value evaluates third (i.e., last)\n"); VNODE_3C;
@@ -600,6 +323,181 @@ then the result.
 	WRITE("("); VNODE_1C; WRITE(")");
 	OUTDENT; WRITE(")\n");
 	OUTDENT; WRITE(")\n");
+
+@<Storing or otherwise changing values@> =
+	case STORE_BIP:			@<Perform a store@>; break;
+	case PREINCREMENT_BIP:	@<Perform a store@>; break;
+	case POSTINCREMENT_BIP: @<Perform a store@>; break;
+	case PREDECREMENT_BIP:	@<Perform a store@>; break;
+	case POSTDECREMENT_BIP:	@<Perform a store@>; break;
+	case SETBIT_BIP:		@<Perform a store@>; break;
+	case CLEARBIT_BIP:		@<Perform a store@>; break;
+
+@<Perform a store@> =
+	inter_tree_node *ref = InterTree::first_child(P);
+	if ((Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) &&
+		(I6TargetCode::pval_case(ref) != I6G_CAN_PROVE_IS_OBJ_PROPERTY)) {
+		@<Handle the ref using the incomplete-function mode@>;
+	} else {
+		@<Handle the ref with code working either as lvalue or rvalue@>;
+	}
+
+@<Handle the ref using the incomplete-function mode@> =
+	inter_tree_node *VP = InterTree::second_child(P);
+	int set = NOT_APPLICABLE;
+	if (VP->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = VP->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = VP->W.data[VAL2_VAL_IFLD];
+		if ((val1 == LITERAL_IVAL) && (val2)) set = TRUE;
+		if ((val1 == LITERAL_IVAL) && (val2 == 0)) set = FALSE;
+	}
+	if ((I6TargetCode::pval_case(ref) == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == TRUE)) {
+		i6_next_is_a_give = TRUE; VNODE_1C; i6_next_is_a_give = FALSE;
+	} else if ((I6TargetCode::pval_case(ref) == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == FALSE)) {
+		i6_next_is_a_take = TRUE; VNODE_1C; i6_next_is_a_take = FALSE;
+	} else {
+		WRITE("("); i6_next_is_a_ref = TRUE; VNODE_1C; i6_next_is_a_ref = FALSE; 
+		if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
+		text_stream *store_form = NULL;
+		switch (bip) {
+			case STORE_BIP:			store_form = I"i7_lvalue_SET"; break;
+			case PREINCREMENT_BIP:	store_form = I"i7_lvalue_PREINC"; break;
+			case POSTINCREMENT_BIP:	store_form = I"i7_lvalue_POSTINC"; break;
+			case PREDECREMENT_BIP:	store_form = I"i7_lvalue_PREDEC"; break;
+			case POSTDECREMENT_BIP:	store_form = I"i7_lvalue_POSTDEC"; break;
+			case SETBIT_BIP:		store_form = I"i7_lvalue_SETBIT"; break;
+			case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; break;
+		}
+		WRITE(", %S))", store_form);
+	}
+
+@<Handle the ref with code working either as lvalue or rvalue@> =
+	switch (bip) {
+		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
+		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
+		case PREDECREMENT_BIP:	WRITE("--("); VNODE_1C; WRITE(")"); break;
+		case POSTDECREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")--"); break;
+		case STORE_BIP:			WRITE("("); VNODE_1C; WRITE(" = "); VNODE_2C; WRITE(")"); break;
+		case SETBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" | "); VNODE_2C; break;
+		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
+	}
+
+@<Property value access@> =
+	case PROPERTYEXISTS_BIP: 
+		I6_GEN_DATA(value_ranges_needed) = TRUE;
+		I6_GEN_DATA(value_property_holders_needed) = TRUE;
+		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
+	case PROPERTYADDRESS_BIP: WRITE("(_final_read_paddr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
+	case PROPERTYLENGTH_BIP: WRITE("(_final_read_plen("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
+	case PROPERTYVALUE_BIP:
+		if (i6_next_is_a_give) @<Write attribute give@>
+		else if (i6_next_is_a_take) @<Write attribute take@>
+		else if (i6_next_is_a_ref) @<Write property value@>
+		else @<Evaluate property value@>;
+		break;
+
+@<Write attribute give@> =
+	i6_next_is_a_give = FALSE;
+	WRITE("give "); VNODE_2C; WRITE(" %S", I6TargetCode::inner_name(gen, P)); break;
+
+@<Write attribute take@> =
+	i6_next_is_a_take = FALSE;
+	WRITE("give "); VNODE_2C; WRITE(" ~%S", I6TargetCode::inner_name(gen, P)); break;
+
+@<Write property value@> =								
+	i6_next_is_a_ref = FALSE;
+	WRITE("_final_write_pval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(","); VNODE_3C; WRITE(", ");
+
+@<Evaluate property value@> =								
+	switch (I6TargetCode::pval_case(P)) {
+		case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
+			WRITE("("); VNODE_2C; WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+		case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
+			WRITE("("); VNODE_2C; WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+		case I6G_CANNOT_PROVE:
+			I6_GEN_DATA(value_property_holders_needed) = TRUE;
+				I6TargetCode::eval_property_list(gen, InterTree::first_child(P),
+					InterTree::second_child(P), InterTree::third_child(P), 0); break;
+	}
+
+@ =
+void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K, 
+	inter_tree_node *X, inter_tree_node *Y, int depth) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (Y->W.data[ID_IFLD] == INV_IST) {
+		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+			inter_symbol *prim = Inter::Inv::invokee(Y);
+			inter_ti ybip = Primitives::to_bip(gen->from, prim);
+			if (ybip == ALTERNATIVE_BIP) {
+				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
+				I6TargetCode::eval_property_list(gen, K, NULL, InterTree::first_child(Y), depth+1);
+				WRITE(") || (");
+				I6TargetCode::eval_property_list(gen, K, NULL, InterTree::second_child(Y), depth+1);
+				if (depth == 0) { WRITE(")))"); }
+				return;
+			}
+		}
+	}
+	switch (I6TargetCode::pval_case_inner(Y)) {
+		case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
+			WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
+			WRITE(" has %S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
+		case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
+			WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
+			WRITE(".%S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
+		case I6G_CANNOT_PROVE:
+			WRITE("_final_read_pval(");
+			Vanilla::node(gen, K);
+			WRITE(", ");
+			if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
+			WRITE(", "); 
+			Vanilla::node(gen, Y);
+			WRITE(")"); break;
+	}
+}
+
+@<VM stack access@> =
+	case PUSH_BIP:			WRITE("@push "); VNODE_1C; break;
+	case PULL_BIP:			WRITE("@pull "); VNODE_1C; break;
+
+@<Control structures@> =
+	case BREAK_BIP:			WRITE("break"); break;
+	case CONTINUE_BIP:		WRITE("continue"); break;
+	case RETURN_BIP: 		@<Generate primitive for return@>; break;
+	case JUMP_BIP: 			WRITE("jump "); VNODE_1C; break;
+	case QUIT_BIP: 			WRITE("quit"); break;
+	case RESTORE_BIP: 		WRITE("restore "); VNODE_1C; break;
+	case IF_BIP:            @<Generate primitive for if@>; break;
+	case IFDEBUG_BIP:       @<Generate primitive for ifdebug@>; break;
+	case IFSTRICT_BIP:      @<Generate primitive for ifstrict@>; break;
+	case IFELSE_BIP:        @<Generate primitive for ifelse@>; break;
+	case WHILE_BIP:         @<Generate primitive for while@>; break;
+	case DO_BIP:            @<Generate primitive for do@>; break;
+	case FOR_BIP:           @<Generate primitive for for@>; break;
+	case OBJECTLOOP_BIP:    @<Generate primitive for objectloop@>; break;
+	case OBJECTLOOPX_BIP:   @<Generate primitive for objectloopx@>; break;
+	case LOOP_BIP:          @<Generate primitive for loop@>; break;
+	case SWITCH_BIP:        @<Generate primitive for switch@>; break;
+	case CASE_BIP:          @<Generate primitive for case@>; break;
+	case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
+	case DEFAULT_BIP:       @<Generate primitive for default@>; break;
+
+@<Generate primitive for return@> =
+	int rboolean = NOT_APPLICABLE;
+	inter_tree_node *V = InterTree::first_child(P);
+	if (V->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = V->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = V->W.data[VAL2_VAL_IFLD];
+		if (val1 == LITERAL_IVAL) {
+			if (val2 == 0) rboolean = FALSE;
+			if (val2 == 1) rboolean = TRUE;
+		}
+	}
+	switch (rboolean) {
+		case FALSE: WRITE("rfalse"); break;
+		case TRUE: WRITE("rtrue"); break;
+		case NOT_APPLICABLE: WRITE("return "); Vanilla::node(gen, V); break;
+	}
 
 @<Generate primitive for if@> =
 	WRITE("if ("); VNODE_1C; WRITE(") {\n"); INDENT; VNODE_2C;
@@ -629,7 +527,9 @@ then the result.
 @<Generate primitive for for@> =
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
-	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+	if (!((INIT->W.data[ID_IFLD] == VAL_IST) &&
+		(INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) &&
+		(INIT->W.data[VAL2_VAL_IFLD] == 1))) VNODE_1C;
 	WRITE(":"); VNODE_2C;
 	WRITE(":");
 	inter_tree_node *U = InterTree::third_child(P);
@@ -681,6 +581,137 @@ then the result.
 	WRITE("default:\n"); INDENT; VNODE_1C; WRITE(";\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
 
+@<Indirect function or method calls@> =
+	case INDIRECT0_BIP:
+	case INDIRECT0V_BIP:
+	case CALLMESSAGE0_BIP:  WRITE("("); VNODE_1C; WRITE(")()"); break;
+	case INDIRECT1_BIP:
+	case INDIRECT1V_BIP:
+	case CALLMESSAGE1_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+							VNODE_2C; WRITE(")"); break;
+	case INDIRECT2_BIP:
+	case INDIRECT2V_BIP:
+	case CALLMESSAGE2_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+							VNODE_2C; WRITE(","); VNODE_3C; WRITE(")"); break;
+	case INDIRECT3_BIP:
+	case INDIRECT3V_BIP:
+	case CALLMESSAGE3_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(")"); break;
+	case INDIRECT4_BIP:
+	case INDIRECT4V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
+							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
+							VNODE_5C; WRITE(")"); break;
+	case INDIRECT5_BIP:
+	case INDIRECT5V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
+							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
+							VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
+	case MESSAGE0_BIP: 		WRITE("_final_message0("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+	case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
+							VNODE_3C; WRITE("))"); break;
+	case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
+							VNODE_3C; WRITE(","); VNODE_4C; WRITE("))"); break;
+	case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
+							VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE("))"); break;
+
+	case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
+
+@<Textual output@> =
+	case PRINT_BIP:         WRITE("print "); CodeGen::lt_mode(gen, PRINTING_LTM);
+							VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
+	case PRINTCHAR_BIP:     WRITE("print (char) "); VNODE_1C; break;
+	case PRINTNL_BIP:       WRITE("new_line"); break;
+	case PRINTOBJ_BIP:      WRITE("print (object) "); VNODE_1C; break;
+	case PRINTNUMBER_BIP:   WRITE("print "); VNODE_1C; break;
+	case PRINTDWORD_BIP:    WRITE("print (address) "); VNODE_1C; break;
+	case PRINTSTRING_BIP:   WRITE("print (string) "); VNODE_1C; break;
+	case BOX_BIP:           WRITE("box "); CodeGen::lt_mode(gen, BOX_LTM);
+							VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); break;
+	case SPACES_BIP:		WRITE("spaces "); VNODE_1C; break;
+	case FONT_BIP:
+		WRITE("if ("); VNODE_1C; WRITE(") { font on; } else { font off; }");
+		suppress_terminal_semicolon = TRUE;
+		break;
+	case STYLE_BIP: {
+		inter_tree_node *N = InterTree::first_child(P);
+		if ((N->W.data[ID_IFLD] == CONSTANT_IST) &&
+			(N->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+			inter_ti val2 = N->W.data[DATA_CONST_IFLD + 1];
+			switch (val2) {
+				case 1: WRITE("style bold"); break;
+				case 2: WRITE("style underline"); break;
+				case 3: WRITE("style reverse"); break;
+				default: WRITE("style roman");
+			}
+		} else {
+			WRITE("style roman");
+		}
+		break;
+	}
+
+@<The VM object tree@> =
+	case MOVE_BIP:          WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
+	case REMOVE_BIP:        WRITE("remove "); VNODE_1C; break;
+
+@<Random number generator@> =
+	case RANDOM_BIP:        WRITE("random("); VNODE_1C; WRITE(")"); break;
+
+@
+
+=
+text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *P) {
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
+	inter_tree_node *prop_node = InterTree::third_child(P);
+	return I6TargetCode::inner_name_inner(gen, prop_node);
+}
+
+text_stream *I6TargetCode::inner_name_inner(code_generation *gen, inter_tree_node *prop_node) {
+	inter_symbol *prop_symbol = NULL;
+	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
+		if (Inter::Symbols::is_stored_in_data(val1, val2))
+			prop_symbol =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
+	}
+	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+		return VanillaObjects::inner_property_name(gen, prop_symbol);
+	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
+		return VanillaObjects::inner_property_name(gen, prop_symbol);
+	} else {
+		return NULL;
+	}
+}
+
+@
+
+@d I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE 1
+@d I6G_CAN_PROVE_IS_OBJ_PROPERTY 2
+@d I6G_CANNOT_PROVE 3
+
+=
+int I6TargetCode::pval_case(inter_tree_node *P) {
+	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
+	inter_tree_node *prop_node = InterTree::third_child(P);
+	return I6TargetCode::pval_case_inner(prop_node);
+}
+
+int I6TargetCode::pval_case_inner(inter_tree_node *prop_node) {
+	inter_symbol *prop_symbol = NULL;
+	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = prop_node->W.data[VAL2_VAL_IFLD];
+		if (Inter::Symbols::is_stored_in_data(val1, val2))
+			prop_symbol =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(prop_node), val2);
+	}
+	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;
+	} else if ((prop_symbol) && (prop_symbol->definition->W.data[ID_IFLD] == PROPERTY_IST)) {
+		return I6G_CAN_PROVE_IS_OBJ_PROPERTY;
+	} else {
+		return I6G_CANNOT_PROVE;
+	}
+}
 
 
 @h A few resources.
@@ -694,7 +725,6 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("        t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
 	WRITE("        if (t == 2) { if (o has p) rtrue; rfalse; }\n");
 	WRITE("        if (o provides p) {\n");
-	WRITE("            if (p == door_to) return o.p();\n");
 	WRITE("            return o.p;\n");
 	WRITE("        }\n");
 	WRITE("        rfalse;\n");
@@ -723,8 +753,7 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("    return o.#p;\n");
 	WRITE("];\n");
 	WRITE("[ _final_message0 o p q x a rv;\n");
-	WRITE("    ! print \"Message send \", (the) o, \" --> \", p, \" \", p-->1, \" addr \", o.(p-->1), \"^\";\n");
-	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; } ! print \"Message = \", rv, \"^\";\n");
+	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; }\n");
 	WRITE("    return rv;\n");
 	WRITE("];\n");
 	WRITE("[ _final_provides K o p holder;\n");

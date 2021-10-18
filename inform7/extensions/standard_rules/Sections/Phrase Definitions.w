@@ -561,6 +561,9 @@ To decide which room is room (D - direction) from/of (R1 - room)
 To decide which door is door (D - direction) from/of (R1 - room)
 	(documented at ph_doordirof):
 	(- DoorFrom({R1},{D}) -).
+To decide which object is the other side of (D - door)
+	(documented at ph_othersideof):
+	(- OtherSideOfDoor({D}, location) -).
 To decide which object is the other side of (D - door) from (R1 - room)
 	(documented at ph_othersideof):
 	(- OtherSideOfDoor({D},{R1}) -).

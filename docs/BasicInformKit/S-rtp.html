@@ -355,11 +355,6 @@ it is used as an index into the table column to get the address of the memory
 location storing the property value.
 </p>
 
-<p class="commentary">The <span class="extract"><span class="extract-syntax">door_to</span></span> property, relevant only for doors, is called rather than read:
-this enables it to be an I6 routine returning the other side of the door from
-the one which the player is on.
-</p>
-
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">GProperty</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax"> </span><span class="identifier-syntax">err</span><span class="plain-syntax"> </span><span class="identifier-syntax">holder</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ProvidesProperty</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">-</span><span class="identifier-syntax">err</span><span class="plain-syntax">)) {</span>

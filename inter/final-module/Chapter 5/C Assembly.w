@@ -218,11 +218,11 @@ void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, 
             	if (val) *val =  0;
             }
         } else {
-	        if ((pr == i7_mgl_A_door_to)) {
-	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
-	        } else {
+//	        if ((pr == i7_mgl_A_door_to)) {
+//	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
+//	        } else {
 		        if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
-		    }
+//		    }
 		}
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);

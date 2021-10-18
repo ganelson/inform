@@ -465,15 +465,24 @@ stand. The awkward truth is that these expressions are undefined unless
 the player is in one of the (possibly) two rooms in which the green
 door is present; and then they are defined relative to him.
 
-The leading-through relation is built in to Inform; the other side property,
-though, is merely a convenient name we give to the property in which
-the relation data is stored at run-time.
+The leading-through relation is built in to Inform. This has to be stored
+in the property "door_to", but we don't want to give authors direct access
+to this property, since its contents are strictly speaking not typesafe.
+(It stores a value to which a message can be sent which must return an object:
+but that is not always the same thing as storing an object.)
+
+Until 2021, the storage property was called "other side", and was useful
+in as much as "the other side of D" would helpfully evaluate to the location
+on the other side of a door. But that only worked because of a hacky exception
+in the code handling property evaluation which made "door_to" a special case,
+and this led to other problems. Instead, a new phrase "other side of (D - door)"
+has been added to the Standard Rules, and this avoids directly evaluating "door_to".
 
 =
-A door has an object called other side.
-The other side property translates into Inter as "door_to".
-Leading-through relates one room (called the other side) to various doors.
-The verb to be through means the leading-through relation.
+A door has an object called leading-through destination.
+The leading-through destination property translates into Inter as "door_to".
+Leading-through relates one room (called the leading-through destination) to
+various doors. The verb to be through means the leading-through relation.
 
 @h Containers and supporters.
 The carrying capacity property is the exception to the remarks above about

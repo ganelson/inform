@@ -396,7 +396,7 @@ Standard Rules. (So there is no need to translate this to other languages.)
 =
 <notable-map-properties> ::=
 	opposite |
-	other side
+	leading-through destination
 
 @ =
 int Map::new_property_notify(property *prn) {
@@ -883,7 +883,6 @@ trust that there is nothing surprising here.
 
 @<Assert found-in, door-to and door-dir properties for doors@> =
 	P_door = EitherOrProperties::new_nameless(I"door");
-//	RTProperties::recommend_storing_as_attribute(P_door, TRUE);
 	P_door_dir = ValueProperties::new_nameless(I"door_dir", K_value);
 	P_door_to = ValueProperties::new_nameless(I"door_to", K_value);
 

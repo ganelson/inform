@@ -957,7 +957,7 @@ the long slide. Through the long slide is the cellar.').<br>
 <i>Usually</i> closed <i>not</i> open, openable <i>not</i> unopenable, unlocked <i>not</i> locked.<br>
 <i>Usually not</i> lockable.<br>
 <i>Never</i> pushable between rooms.<br>
-<i>Can have</i> other side (<i>object</i>).<br>
+<i>Can have</i> leading-through destination (<i>object</i>).<br>
 </p>
 <p class="tightin3"></p>
 <p class="halftightin4"><a name=K16_mystic_portal></a><b>mystic portal</b> (<i>plural</i> mystic portals)&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>

@@ -1389,7 +1389,7 @@ the same description as
 the same map region as
 the same initial appearance as
 the same opposite as
-the same other side as
+the same leading-through destination as
 the same carrying capacity as
 the same matching key as
 the same list grouping key as

@@ -312,10 +312,6 @@ property; |obj| is then a value for the kind of value created by the table, so
 it is used as an index into the table column to get the address of the memory
 location storing the property value.
 
-The |door_to| property, relevant only for doors, is called rather than read:
-this enables it to be an I6 routine returning the other side of the door from
-the one which the player is on.
-
 =
 [ GProperty K V pr err holder val;
 	if (ProvidesProperty(K, V, pr, 1-err)) {

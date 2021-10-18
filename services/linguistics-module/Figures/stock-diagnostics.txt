@@ -264,8 +264,8 @@ noun: proper: 'mapping up relation'
 noun: proper: 'mapping down relation'
 noun: proper: 'mapping inside relation'
 noun: proper: 'mapping outside relation'
-noun: proper: 'other side'
-noun: proper: 'property other side'
+noun: proper: 'leading-through destination'
+noun: proper: 'property leading-through destination'
 noun: proper: 'leading-through relation'
 noun: proper: 'carrying capacity'
 noun: proper: 'property carrying capacity'
@@ -2518,7 +2518,7 @@ noun: proper: 'same-description-as relation'
 noun: proper: 'same-map-region-as relation'
 noun: proper: 'same-initial-appearance-as relation'
 noun: proper: 'same-opposite-as relation'
-noun: proper: 'same-other-side-as relation'
+noun: proper: 'same-leading-through-destination-as relation'
 noun: proper: 'same-carrying-capacity-as relation'
 noun: proper: 'same-matching-key-as relation'
 noun: proper: 'same-list-grouping-key-as relation'
@@ -2801,7 +2801,7 @@ preposition: the same description as
 preposition: the same map region as
 preposition: the same initial appearance as
 preposition: the same opposite as
-preposition: the same other side as
+preposition: the same leading-through destination as
 preposition: the same carrying capacity as
 preposition: the same matching key as
 preposition: the same list grouping key as
@@ -3320,7 +3320,7 @@ verb_form: be(0) + the same description as + ___ SVO
 verb_form: be(0) + the same map region as + ___ SVO
 verb_form: be(0) + the same initial appearance as + ___ SVO
 verb_form: be(0) + the same opposite as + ___ SVO
-verb_form: be(0) + the same other side as + ___ SVO
+verb_form: be(0) + the same leading-through destination as + ___ SVO
 verb_form: be(0) + the same carrying capacity as + ___ SVO
 verb_form: be(0) + the same matching key as + ___ SVO
 verb_form: be(0) + the same list grouping key as + ___ SVO
