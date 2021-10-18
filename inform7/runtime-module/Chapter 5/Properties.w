@@ -268,12 +268,12 @@ int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property 
 	return TRUE;
 }
 
-@ Either-or properties work analogously, though note that on reading, |GProperty|
-is called slightly differently so that objects are allowed access to read (though
-not write) either/or properties which they do not possess. The result is always
-|false|, but run-time errors do not occur. (This all goes back to the way
-attributes were handled on the Z-machine VM, but is an assumption made by some
-of the kit code inherited from early days of Inform, and does no actual harm.)
+@ Either-or properties work analogously, though note that on reading, we bypass
+the |GProperty| function in order to allow unpossessed either/or properties to
+be "read". The result is always |false|, but run-time errors do not occur. (This
+all goes back to the way attributes were handled on the Z-machine VM, but is an
+assumption made by some of the kit code inherited from early days of Inform, and
+does no actual harm.)
 
 =
 void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn, int T) {
@@ -282,7 +282,7 @@ void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn,
 		property *neg = EitherOrProperties::get_negation(prn);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n, 1) == false", K,
+		Calculus::Schemas::modify(sch, "%k >> *1 . %n == false", K,
 			RTProperties::iname(neg));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
@@ -294,7 +294,7 @@ void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn,
 			RTProperties::iname(neg));
 	} else {
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
-		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n, 1)", K,
+		Calculus::Schemas::modify(sch, "%k >> *1 . %n", K,
 			RTProperties::iname(prn));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);

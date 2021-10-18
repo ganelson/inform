@@ -367,12 +367,12 @@ and its analogue for writing, <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Either-or properties work analogously, though note that on reading, <span class="extract"><span class="extract-syntax">GProperty</span></span>
-is called slightly differently so that objects are allowed access to read (though
-not write) either/or properties which they do not possess. The result is always
-<span class="extract"><span class="extract-syntax">false</span></span>, but run-time errors do not occur. (This all goes back to the way
-attributes were handled on the Z-machine VM, but is an assumption made by some
-of the kit code inherited from early days of Inform, and does no actual harm.)
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Either-or properties work analogously, though note that on reading, we bypass
+the <span class="extract"><span class="extract-syntax">GProperty</span></span> function in order to allow unpossessed either/or properties to
+be "read". The result is always <span class="extract"><span class="extract-syntax">false</span></span>, but run-time errors do not occur. (This
+all goes back to the way attributes were handled on the Z-machine VM, but is an
+assumption made by some of the kit code inherited from early days of Inform, and
+does no actual harm.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -382,7 +382,7 @@ of the kit code inherited from early days of Inform, and does no actual harm.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">neg</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::get_negation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">        </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::make_schema</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEST_ATOM_TASK</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"GProperty(%k, *1, %n, 1) == false"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"%k &gt;&gt; *1 . %n == false"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><a href="5-prp.html#SP2" class="function-link"><span class="function-syntax">RTProperties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">neg</span><span class="plain-syntax">));</span>
 
 <span class="plain-syntax">        </span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::make_schema</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">);</span>
@@ -394,7 +394,7 @@ of the kit code inherited from early days of Inform, and does no actual harm.)
 <span class="plain-syntax">            </span><a href="5-prp.html#SP2" class="function-link"><span class="function-syntax">RTProperties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">neg</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::make_schema</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEST_ATOM_TASK</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"GProperty(%k, *1, %n, 1)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"%k &gt;&gt; *1 . %n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><a href="5-prp.html#SP2" class="function-link"><span class="function-syntax">RTProperties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">));</span>
 
 <span class="plain-syntax">        </span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::make_schema</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">);</span>

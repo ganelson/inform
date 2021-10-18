@@ -438,7 +438,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 			}
 		}
 	}
-	switch (I6TargetCode::pval_case_inner(Y)) {
+	switch (I6TargetCode::pval_case_inner(K, Y)) {
 		case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
 			WRITE("("); if (X) Vanilla::node(gen, X); else WRITE("or_tmp_var");
 			WRITE(" has %S", I6TargetCode::inner_name_inner(gen, Y)); WRITE(")"); break;
@@ -692,10 +692,21 @@ text_stream *I6TargetCode::inner_name_inner(code_generation *gen, inter_tree_nod
 int I6TargetCode::pval_case(inter_tree_node *P) {
 	while (P->W.data[ID_IFLD] == REFERENCE_IST) P = InterTree::first_child(P);
 	inter_tree_node *prop_node = InterTree::third_child(P);
-	return I6TargetCode::pval_case_inner(prop_node);
+	return I6TargetCode::pval_case_inner(InterTree::first_child(P), prop_node);
 }
 
-int I6TargetCode::pval_case_inner(inter_tree_node *prop_node) {
+int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *prop_node) {
+	inter_symbol *kind_symbol = NULL;
+	if (kind_node->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = kind_node->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = kind_node->W.data[VAL2_VAL_IFLD];
+		if (Inter::Symbols::is_stored_in_data(val1, val2))
+			kind_symbol =
+				InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(kind_node), val2);
+	}
+	if (Str::eq(Inter::Symbols::name(kind_symbol), I"OBJECT_TY") == FALSE)
+		return I6G_CANNOT_PROVE;
+
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.data[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.data[VAL1_VAL_IFLD];
@@ -722,10 +733,10 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("[ _final_read_pval K o p t;\n");
 	WRITE("    if (K == OBJECT_TY) {\n");
-	WRITE("        t = p-->0; p = p-->1; ! print \"has \", o, \" \", p, \"^\";\n");
-	WRITE("        if (t == 2) { if (o has p) rtrue; rfalse; }\n");
-	WRITE("        if (o provides p) {\n");
-	WRITE("            return o.p;\n");
+	WRITE("        if (metaclass(o) == Object) {\n");
+	WRITE("            t = p-->0; p = p-->1;\n");
+	WRITE("            if (t == 2) { if (o has p) rtrue; rfalse; }\n");
+	WRITE("            if (o provides p) return o.p;\n");
 	WRITE("        }\n");
 	WRITE("        rfalse;\n");
 	WRITE("    } else {\n");
@@ -735,9 +746,11 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("];\n");
 	WRITE("[ _final_write_pval K o p v t;\n");
 	WRITE("    if (K == OBJECT_TY) {\n");
-	WRITE("        t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
-	WRITE("        if (t == 2) { if (v) give o p; else give o ~p; }\n");
-	WRITE("        else { if (o provides p) o.p = v; }\n");
+	WRITE("        if (metaclass(o) == Object) {\n");
+	WRITE("            t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
+	WRITE("            if (t == 2) { if (v) give o p; else give o ~p; }\n");
+	WRITE("            else { if (o provides p) o.p = v; }\n");
+	WRITE("        }\n");
 	WRITE("    } else {\n");
 	WRITE("        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) = v;\n");
 	WRITE("    }\n");

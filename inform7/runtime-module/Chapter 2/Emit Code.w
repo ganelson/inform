@@ -117,12 +117,6 @@ This compiles code for the test |N has prn|, that is, compiles a condition
 which is true if the value of |prn| for |N| is |true|, and correspondingly
 false for |false|.
 
-The preferred way to do this is to use the pair of functions |GProperty|
-or |WriteGProperty|, defined in //BasicInformKit//, because that way
-suitable runtime problems are generated for mistaken accesses. But if we
-want the fastest possible access and know that it will be valid, we can use
-the following.
-
 =
 void EmitCode::test_if_iname_has_property(kind *K, inter_name *N, property *prn) {
 	EmitCode::test_if_symbol_has_property(K, InterNames::to_symbol(N), prn);

@@ -70,7 +70,7 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 @<Write I6 schemas for asserting and testing this use of the instance@> =
 	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 	Calculus::Schemas::modify(sch,
-		"GProperty(%k, *1, %n) == %d",
+		"%k >> *1 . %n == %d",
 			D, RTProperties::iname(P), I->enumeration_index);
 	sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 	Calculus::Schemas::modify(sch,

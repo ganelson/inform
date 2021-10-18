@@ -642,7 +642,7 @@ other in groups".
 		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowNEquiv(*1,%n,*2)", i6_prn_name);
 	} else {
 		bp->task_functions[TEST_ATOM_TASK] =
-			Calculus::Schemas::new("(GProperty(%k, *1, %n) == GProperty(%k, *2, %n))",
+			Calculus::Schemas::new("(%k >> *1 . %n == %k >> *2 . %n)",
 				storage_kind, i6_prn_name, storage_kind, i6_prn_name);
 		bp->task_functions[NOW_ATOM_TRUE_TASK] =
 			Calculus::Schemas::new("Relation_NowEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
@@ -681,33 +681,28 @@ have the form $B(x, f_1(x))$.
 	if (i6_prn_name) {
 		i6_schema *f0 = NULL, *f1 = NULL;
 		if (RR->terms[0].unique) {
-			if (RR->terms[1].domain) {
-				if (Kinds::Behaviour::is_object(RR->terms[1].domain))
-					f0 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
-				else
-					f0 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
-						RR->terms[1].domain, i6_prn_name);
-			}
+			if (RR->terms[1].domain)
+				f0 = Calculus::Schemas::new("(%k >> *1 . %n)",
+					RR->terms[1].domain, i6_prn_name);
 		} else if (RR->terms[1].unique) {
-			if (RR->terms[0].domain) {
-				if (Kinds::Behaviour::is_object(RR->terms[0].domain))
-					f1 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
-				else
-					f1 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
-						RR->terms[0].domain, i6_prn_name);
-			}
+			if (RR->terms[0].domain)
+				f1 = Calculus::Schemas::new("(%k >> *1 . %n)",
+					RR->terms[0].domain, i6_prn_name);
 		}
 		if (f0) BPTerms::set_function(&(bp->term_details[0]), f0);
 		if (f1) BPTerms::set_function(&(bp->term_details[1]), f1);
 	}
 
 @<Override with dynamic allocation schemata@> =
-	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
-		RTRelations::iname(bp));
-	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
-		RTRelations::iname(bp));
-	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
-		RTRelations::iname(bp));
+	bp->task_functions[TEST_ATOM_TASK] =
+		Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
+			RTRelations::iname(bp));
+	bp->task_functions[NOW_ATOM_TRUE_TASK] =
+		Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
+			RTRelations::iname(bp));
+	bp->task_functions[NOW_ATOM_FALSE_TASK] =
+		Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
+			RTRelations::iname(bp));
 
 @h Storing relations.
 At runtime, relation data is sometimes stored in a property, and that needs
