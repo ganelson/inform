@@ -302,10 +302,10 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 1: Produce::inv_primitive(I, CALLMESSAGE0_BIP); break;
-			case 2: Produce::inv_primitive(I, CALLMESSAGE1_BIP); break;
-			case 3: Produce::inv_primitive(I, CALLMESSAGE2_BIP); break;
-			case 4: Produce::inv_primitive(I, CALLMESSAGE3_BIP); break;
+			case 1: Produce::inv_primitive(I, INDIRECT0_BIP); break;
+			case 2: Produce::inv_primitive(I, INDIRECT1_BIP); break;
+			case 3: Produce::inv_primitive(I, INDIRECT2_BIP); break;
+			case 4: Produce::inv_primitive(I, INDIRECT3_BIP); break;
 			default: internal_error("too many args for call-message"); break;
 		}
 		Produce::down(I);
@@ -348,7 +348,8 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 	if (isn->isn_clarifier == HAS_XBIP) op = PROPERTYVALUE_BIP;
 	
 	int insert_OBJECT_TY = FALSE;
-	if ((op == PROPERTYEXISTS_BIP) || (op == PROPERTYVALUE_BIP)) {
+	if ((op == PROPERTYEXISTS_BIP) || (op == PROPERTYVALUE_BIP) ||
+		(op == PROPERTYARRAY_BIP) || (op == PROPERTYLENGTH_BIP)) {
 		if ((isn->child_node->isn_type != OPERATION_ISNT) ||
 			(isn->child_node->isn_clarifier != OWNERKIND_XBIP))
 			insert_OBJECT_TY = TRUE;

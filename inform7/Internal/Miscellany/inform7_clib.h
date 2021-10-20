@@ -194,8 +194,8 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
 i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
-i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr);
-i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);

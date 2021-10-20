@@ -42,15 +42,15 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		case QUIT_BIP: 			WRITE("exit(0)"); break;
 		case RESTORE_BIP: 		break; /* we won't support this in C */
 
-		case INDIRECT0_BIP: case INDIRECT0V_BIP: case CALLMESSAGE0_BIP:
+		case INDIRECT0_BIP: case INDIRECT0V_BIP:
 								WRITE("i7_call_0(proc, "); VNODE_1C; WRITE(")"); break;
-		case INDIRECT1_BIP: case INDIRECT1V_BIP: case CALLMESSAGE1_BIP:
+		case INDIRECT1_BIP: case INDIRECT1V_BIP:
 								WRITE("i7_call_1(proc, "); VNODE_1C; WRITE(", ");
 								VNODE_2C; WRITE(")"); break;
-		case INDIRECT2_BIP: case INDIRECT2V_BIP: case CALLMESSAGE2_BIP:
+		case INDIRECT2_BIP: case INDIRECT2V_BIP:
 								WRITE("i7_call_2(proc, "); VNODE_1C; WRITE(", ");
 								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
-		case INDIRECT3_BIP: case INDIRECT3V_BIP: case CALLMESSAGE3_BIP:
+		case INDIRECT3_BIP: case INDIRECT3V_BIP:
 								WRITE("i7_call_3(proc, "); VNODE_1C; WRITE(", ");
 								VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
 		case INDIRECT4_BIP: case INDIRECT4V_BIP:

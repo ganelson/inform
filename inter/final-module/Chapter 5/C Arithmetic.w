@@ -31,7 +31,6 @@ int CArithmetic::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case SEQUENTIAL_BIP:	    WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 		case TERNARYSEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 									VNODE_3C; WRITE(")"); break;
-		case RANDOM_BIP:    	    WRITE("fn_i7_mgl_random(proc, "); VNODE_1C; WRITE(")"); break;
 		default: 					return NOT_APPLICABLE;
 	}
 	return FALSE;

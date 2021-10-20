@@ -103,8 +103,9 @@ void ShortNames::compilation_agent(compilation_subtask *t) {
 
 		EmitCode::inv(IFELSE_BIP);
 		EmitCode::down();
-			EmitCode::inv(PROPERTYADDRESS_BIP);
+			EmitCode::inv(PROPERTYARRAY_BIP);
 			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
 				EmitCode::val_iname(K_value, RTInstances::value_iname(owner));
 				EmitCode::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
 			EmitCode::up();

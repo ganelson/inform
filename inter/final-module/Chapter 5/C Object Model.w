@@ -734,8 +734,8 @@ int CObjectModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref
 int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case PROPERTYADDRESS_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
-		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
+		case PROPERTYARRAY_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
+		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
 		case PROPERTYVALUE_BIP:	if (CReferences::am_I_a_ref(gen)) {
 									WRITE("glulx_write_gprop(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", ");
 								} else {
@@ -767,8 +767,8 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
 i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
-i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr);
-i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 =
 
 = (text to inform7_clib.c)
@@ -828,14 +828,14 @@ void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val) {
 	i7_write_prop_value(proc, owner, prop, val);
 }
 
-i7word_t i7_prop_len(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_array) {
 	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return 4*i7_properties[(int) obj].len[(int) pr];
 }
 
-i7word_t i7_prop_addr(i7process_t *proc, i7word_t obj, i7word_t pr_array) {
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_array) {
 	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;

@@ -59,11 +59,6 @@ value, producing that second value.
 (a) |primitive !ternarysequential val val val -> val|.  Evaluates the first,
 then the second, then the third value, producing that third value.
 
-@h Random numbers.
-There is just one primitive for this:
-
-(a) |primitive !random val -> val|. Produce a uniformly random integer in the range 0 up to |val| minus 1.
-
 @h Printing.
 These print data of various kinds:
 
@@ -120,6 +115,24 @@ an |int32|, depending on what virtual machine are compiling to.
 
 (a) |primitive !lookup val val -> val|. Find word at this word offset.
 (b) |primitive !lookupbyte val val -> val|. Find byte at this byte offset.
+
+Properties, like memory, can be converted to |ref| in order to write to them,
+and are accessible with |propertyvalue|. Their existence can be tested with
+|propertyexists|; the other two opcodes here are for the handful of "inline
+property values", where a property stores not a single value but a small array.
+In each of the four ternary property primitives, the operands are |K|, the
+weak kind ID of the owner; |O|, the owner; and |P|, the property. For properties
+of objects, |K| will always be |OBJECT_TY|.
+
+|propertyarray| and |propertylength| both produce 0 (but not a run-time error)
+if called on a property value which does not exist, or is not an inline array.
+In particular, they always produce 0 if the owner |O| is not an object, since
+only objects can have inline property values.
+
+(a) |primitive !propertyvalue  val val val -> val|.
+(b) |primitive !propertyarray  val val val -> val|. 
+(c) |primitive !propertylength val val val -> val|. 
+(d) |primitive !propertyexists val val val -> val|. 
 
 @h Indirect function calls.
 Invocations of functions can only be made with |inv| when the function is
@@ -241,10 +254,3 @@ Object class membership:
 
 (a) |primitive !ofclass val val -> val|. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
-
-Direct access to virtual machine object properties:
-
-(a) |primitive !propertyvalue val val -> val|.
-(b) |primitive !propertyaddress val val -> val|. 
-(c) |primitive !propertylength val val -> val|. 
-(d) |primitive !propertyexists val val val -> val|. 

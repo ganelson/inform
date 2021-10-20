@@ -1174,7 +1174,7 @@ and |b| inclusive.
 		EmitCode::down();
 			EmitCode::inv(RETURN_BIP);
 			EmitCode::down();
-				EmitCode::inv(RANDOM_BIP);
+				EmitCode::call_symbol(Emit::get_veneer_symbol(RANDOM_VSYMB));
 				EmitCode::down();
 					if (Kinds::Behaviour::is_quasinumerical(K))
 						EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
@@ -1234,7 +1234,7 @@ and |b| inclusive.
 		EmitCode::val_symbol(K_value, smaller);
 		EmitCode::inv(MODULO_BIP);
 		EmitCode::down();
-			EmitCode::inv(RANDOM_BIP);
+			EmitCode::call_symbol(Emit::get_veneer_symbol(RANDOM_VSYMB));
 			EmitCode::down();
 				EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 			EmitCode::up();

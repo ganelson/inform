@@ -1366,7 +1366,7 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I";")) is = DIVIDER_ISTT;
 
 	if (Str::eq(T, I".")) { is = OPERATOR_ISTT; which = PROPERTYVALUE_BIP; }
-	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = PROPERTYADDRESS_BIP; }
+	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = PROPERTYARRAY_BIP; }
 	if (Str::eq(T, I".#")) { is = OPERATOR_ISTT; which = PROPERTYLENGTH_BIP; }
 	if (Str::eq(T, I">>")) { is = OPERATOR_ISTT; which = OWNERKIND_XBIP; }
 
@@ -2848,7 +2848,7 @@ int InterSchemas::precedence(inter_ti O) {
 	if (O == POSTINCREMENT_BIP) return 9;
 	if (O == POSTDECREMENT_BIP) return 9;
 
-	if (O == PROPERTYADDRESS_BIP) return 10;
+	if (O == PROPERTYARRAY_BIP) return 10;
 	if (O == PROPERTYLENGTH_BIP) return 10;
 
 	if (O == PROPERTYVALUE_BIP) return 12;
@@ -2909,7 +2909,7 @@ text_stream *InterSchemas::text_form(inter_ti O) {
 	if (O == POSTINCREMENT_BIP) return I"++";
 	if (O == POSTDECREMENT_BIP) return I"--";
 
-	if (O == PROPERTYADDRESS_BIP) return I".&";
+	if (O == PROPERTYARRAY_BIP) return I".&";
 	if (O == PROPERTYLENGTH_BIP) return I".#";
 	if (O == OWNERKIND_XBIP) return I"::";
 
@@ -2961,7 +2961,7 @@ int InterSchemas::arity(inter_ti O) {
 	if (O == POSTINCREMENT_BIP) return 1;
 	if (O == POSTDECREMENT_BIP) return 1;
 
-	if (O == PROPERTYADDRESS_BIP) return 2;
+	if (O == PROPERTYARRAY_BIP) return 2;
 	if (O == PROPERTYLENGTH_BIP) return 2;
 	if (O == PROPERTYVALUE_BIP) return 2;
 	if (O == OWNERKIND_XBIP) return 2;

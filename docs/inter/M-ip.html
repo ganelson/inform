@@ -65,7 +65,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inter</a></li><li><a href="index.html#M">Manual</a></li><li><b>Inform Primitives</b></li></ul></div>
 <p class="purpose">The standard set of primitive invocations used within Inform.</p>
 
-<ul class="toc"><li><a href="M-ip.html#SP1">&#167;1. Status</a></li><li><a href="M-ip.html#SP2">&#167;2. Arithmetic</a></li><li><a href="M-ip.html#SP3">&#167;3. Logical operators</a></li><li><a href="M-ip.html#SP4">&#167;4. Bitwise operators</a></li><li><a href="M-ip.html#SP5">&#167;5. Numerical comparison</a></li><li><a href="M-ip.html#SP6">&#167;6. Sequential evaluation</a></li><li><a href="M-ip.html#SP7">&#167;7. Random numbers</a></li><li><a href="M-ip.html#SP8">&#167;8. Printing</a></li><li><a href="M-ip.html#SP9">&#167;9. Stack access</a></li><li><a href="M-ip.html#SP10">&#167;10. Accessing storage</a></li><li><a href="M-ip.html#SP11">&#167;11. Indirect function calls</a></li><li><a href="M-ip.html#SP12">&#167;12. External function calls</a></li><li><a href="M-ip.html#SP13">&#167;13. Control flow</a></li><li><a href="M-ip.html#SP14">&#167;14. Interactive fiction-only primitives</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-ip.html#SP1">&#167;1. Status</a></li><li><a href="M-ip.html#SP2">&#167;2. Arithmetic</a></li><li><a href="M-ip.html#SP3">&#167;3. Logical operators</a></li><li><a href="M-ip.html#SP4">&#167;4. Bitwise operators</a></li><li><a href="M-ip.html#SP5">&#167;5. Numerical comparison</a></li><li><a href="M-ip.html#SP6">&#167;6. Sequential evaluation</a></li><li><a href="M-ip.html#SP7">&#167;7. Printing</a></li><li><a href="M-ip.html#SP8">&#167;8. Stack access</a></li><li><a href="M-ip.html#SP9">&#167;9. Accessing storage</a></li><li><a href="M-ip.html#SP10">&#167;10. Indirect function calls</a></li><li><a href="M-ip.html#SP11">&#167;11. External function calls</a></li><li><a href="M-ip.html#SP12">&#167;12. Control flow</a></li><li><a href="M-ip.html#SP13">&#167;13. Interactive fiction-only primitives</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The Inter specification allows for any number of primitive invocations to
 be declared and used; none are built-in or required.
@@ -125,12 +125,7 @@ value, producing that second value.
 </li><li>(a) <span class="extract"><span class="extract-syntax">primitive !ternarysequential val val val -&gt; val</span></span>.  Evaluates the first,
 then the second, then the third value, producing that third value.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Random numbers. </b>There is just one primitive for this:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !random val -&gt; val</span></span>. Produce a uniformly random integer in the range 0 up to <span class="extract"><span class="extract-syntax">val</span></span> minus 1.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Printing. </b>These print data of various kinds:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Printing. </b>These print data of various kinds:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !print val -&gt; void</span></span>. Print text.
@@ -161,7 +156,7 @@ values which supply names for styles.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !box val -&gt; void</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Stack access. </b>The stack is not directly accessible anywhere in memory, so the only access
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Stack access. </b>The stack is not directly accessible anywhere in memory, so the only access
 is via the following.
 </p>
 
@@ -170,7 +165,7 @@ is via the following.
 the storage referred to. Values on the stack have unchecked kinds: it's up to
 the author not to pull an inappropriate value.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Accessing storage. </b>Here the <span class="extract"><span class="extract-syntax">ref</span></span> term is a refernce to a piece of storage: a property of an
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Accessing storage. </b>Here the <span class="extract"><span class="extract-syntax">ref</span></span> term is a refernce to a piece of storage: a property of an
 instance, or a global variable, or an entry in memory, for example.
 </p>
 
@@ -191,7 +186,27 @@ an <span class="extract"><span class="extract-syntax">int32</span></span>, depen
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !lookup val val -&gt; val</span></span>. Find word at this word offset.
 </li><li>(b) <span class="extract"><span class="extract-syntax">primitive !lookupbyte val val -&gt; val</span></span>. Find byte at this byte offset.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Indirect function calls. </b>Invocations of functions can only be made with <span class="extract"><span class="extract-syntax">inv</span></span> when the function is
+<p class="commentary">Properties, like memory, can be converted to <span class="extract"><span class="extract-syntax">ref</span></span> in order to write to them,
+and are accessible with <span class="extract"><span class="extract-syntax">propertyvalue</span></span>. Their existence can be tested with
+<span class="extract"><span class="extract-syntax">propertyexists</span></span>; the other two opcodes here are for the handful of "inline
+property values", where a property stores not a single value but a small array.
+In each of the four ternary property primitives, the operands are <span class="extract"><span class="extract-syntax">K</span></span>, the
+weak kind ID of the owner; <span class="extract"><span class="extract-syntax">O</span></span>, the owner; and <span class="extract"><span class="extract-syntax">P</span></span>, the property. For properties
+of objects, <span class="extract"><span class="extract-syntax">K</span></span> will always be <span class="extract"><span class="extract-syntax">OBJECT_TY</span></span>.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">propertyarray</span></span> and <span class="extract"><span class="extract-syntax">propertylength</span></span> both produce 0 (but not a run-time error)
+if called on a property value which does not exist, or is not an inline array.
+In particular, they always produce 0 if the owner <span class="extract"><span class="extract-syntax">O</span></span> is not an object, since
+only objects can have inline property values.
+</p>
+
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !propertyvalue  val val val -&gt; val</span></span>.
+</li><li>(b) <span class="extract"><span class="extract-syntax">primitive !propertyarray  val val val -&gt; val</span></span>.
+</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !propertylength val val val -&gt; val</span></span>.
+</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !propertyexists val val val -&gt; val</span></span>.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Indirect function calls. </b>Invocations of functions can only be made with <span class="extract"><span class="extract-syntax">inv</span></span> when the function is
 specified as a constant, and when its signature is therefore known. If
 we need to call "whatever function this variable refers to", we have to
 use one of the following. They differ only in their signatures. The
@@ -211,7 +226,7 @@ first value is the function address, and subsequent ones are arguments.
 </li><li>(k) <span class="extract"><span class="extract-syntax">primitive !indirect4 val val val val val -&gt; val</span></span>.
 </li><li>(l) <span class="extract"><span class="extract-syntax">primitive !indirect5 val val val val val val -&gt; val</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. External function calls. </b>The following calls a function which is not part of the program itself, and
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. External function calls. </b>The following calls a function which is not part of the program itself, and
 which is assumed to be provided by code written in a different programming
 language. It cannot be used when Inter is being generated to Inform 6
 code, because I6 has no ability to link with external code; but it can be
@@ -225,7 +240,7 @@ the result is whatever value it returns.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !externalcall val val -&gt; val</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Control flow. </b>The simplest control statement is an "if". Note that a different primitive
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Control flow. </b>The simplest control statement is an "if". Note that a different primitive
 is used if there is an "else" attached: it would be impossible to use the
 same primitive for both because they couldn't have the same signature.
 </p>
@@ -306,7 +321,7 @@ context, and throwing it away if not.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !jump lab -&gt; void</span></span>. Jumo to this label in the current function.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Interactive fiction-only primitives. </b>The following would make no sense in a general-purpose program. Most mirror
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Interactive fiction-only primitives. </b>The following would make no sense in a general-purpose program. Most mirror
 very low-level I6 features, and Inform uses them mainly when converting
 I6 code into inter: in almost all cases it's better to call routines in the
 template rather than to use these. First, the spatial containment object tree:
@@ -321,14 +336,6 @@ template rather than to use these. First, the spatial containment object tree:
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !ofclass val val -&gt; val</span></span>. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
-</li></ul>
-<p class="commentary">Direct access to virtual machine object properties:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !propertyvalue val val -&gt; val</span></span>.
-</li><li>(b) <span class="extract"><span class="extract-syntax">primitive !propertyaddress val val -&gt; val</span></span>.
-</li><li>(c) <span class="extract"><span class="extract-syntax">primitive !propertylength val val -&gt; val</span></span>.
-</li><li>(d) <span class="extract"><span class="extract-syntax">primitive !propertyexists val val val -&gt; val</span></span>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-cpiti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresssection"><a href="M-ti.html">ti</a></li><li class="progresssection"><a href="M-dpiti.html">dpiti</a></li><li class="progresssection"><a href="M-cpiti.html">cpiti</a></li><li class="progresscurrent">ip</li><li class="progresssection"><a href="M-ia.html">ia</a></li><li class="progresssection"><a href="M-io.html">io</a></li><li class="progresssection"><a href="M-pas.html">pas</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-ia.html">&#10095;</a></li></ul></div>

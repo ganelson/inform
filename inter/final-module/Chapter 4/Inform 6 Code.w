@@ -230,14 +230,13 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 @h Primitives.
 
 =
-int i6_next_is_a_ref = FALSE, i6_next_is_a_give = FALSE, i6_next_is_a_take = FALSE;
 void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
-	text_stream *OUT = CodeGen::current(gen);
-	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
+	text_stream *OUT = CodeGen::current(gen);
 	inter_ti bip = Primitives::to_bip(I, prim_name);
 	
+	int suppress_terminal_semicolon = (void_context)?FALSE:TRUE;
 	switch (bip) {
 		@<Basic arithmetic and logical operations@>;
 		@<Storing or otherwise changing values@>;
@@ -247,13 +246,19 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 		@<Property value access@>;
 		@<Textual output@>;
 		@<The VM object tree@>;
-		@<Random number generator@>;
 		default:
 			WRITE_TO(STDERR, "Unimplemented primitive is '%S'\n", prim_name->symbol_name);
 			internal_error("unimplemented prim");
 	}
-	if ((void_context) && (suppress_terminal_semicolon == FALSE)) WRITE(";\n");
+	if (suppress_terminal_semicolon == FALSE) WRITE(";\n");
 }
+
+@ Mostly easy, because the Inter primitives here were so closely modelled on
+their Inform 6 analogues in the first place.
+
+For example, although |!alternative| is a very unusual linguistic feature --
+it allows alternatives in several conditions, e.g., |if (x == 1 or 2 or 3) ...| --
+it corresponds directly to the |or| keyword of Inform 6, so generating it is trivial.
 
 @<Basic arithmetic and logical operations@> =
 	case PLUS_BIP:			WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
@@ -279,31 +284,27 @@ void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
 	case NOTIN_BIP:			WRITE("("); VNODE_1C; WRITE(" notin "); VNODE_2C; WRITE(")"); break;
 	case LOOKUP_BIP:		WRITE("("); VNODE_1C; WRITE("-->("); VNODE_2C; WRITE("))"); break;
 	case LOOKUPBYTE_BIP:	WRITE("("); VNODE_1C; WRITE("->("); VNODE_2C; WRITE("))"); break;
-	case SEQUENTIAL_BIP: WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
-	case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 	case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
+	case SEQUENTIAL_BIP:    WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
+	case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 
-@ Here we need some gymnastics. We need to produce a value which the
-sometimes shaky I6 expression parser will accept, which turns out to be
-quite a constraint. If we were compiling to C, we might try this:
-= (text as C)
-	(a, b, c)
-=
-using the serial comma operator -- that is, where the expression |(a, b)|
-evaluates |a| then |b| and returns the value of |b|, discarding |a|.
-Now I6 does support the comma operator, and this makes a workable scheme,
-right up to the point where some of the token values themselves include
-invocations of functions, because I6's syntax analyser won't always
-allow the serial comma to be mixed in the same expression with the
-function argument comma, i.e., I6 is unable properly to handle expressions
-like this one:
-= (text as C)
-	(a(b, c), d)
-=
-where the first comma constructs a list and the second is the operator.
-(Many such expressions work fine, but not all.) That being so, the scheme
-I actually use is:
-= (text as C)
+@ But the unfortunate |!ternarysequential a b c| needs some gymnastics. It
+would be trivial to generate to C with the serial comma operator: |(a, b, c)|
+evaluates |a|, then throws that away and evaluates |b|, then throws that away
+too and returns the value of |c|.
+
+The same effect is annoyingly difficult to get out of the sometimes shaky I6
+compiler's expression parser. I6 does support the comma operator, so at first
+sight |(a, b, c)| ought to work in I6, too. And it does, right up to the point
+where some of the token values themselves include invocations of functions. It
+is a known infelicity of the I6 syntax analyser that it won't always allow the
+serial comma to be mixed in the same expression with the function argument
+comma: for example in the case |(a(b, c), d)|, where the first comma constructs
+a list of arguments and the second is the operator. (Many such expressions work
+fine in I6 -- but not all.)
+
+That being so, we use the following circumlocution:
+= (text as Inform 6)
 	(c) + 0*((b) + (a))
 =
 Because I6 evaluates the leaves in an expression tree right-to-left, not
@@ -312,17 +313,21 @@ then the result.
 
 @<Generate primitive for ternarysequential@> =
 	WRITE("(\n"); INDENT;
-	WRITE("! This value evaluates third (i.e., last)\n"); VNODE_3C;
+	WRITE("! This evaluates last\n"); VNODE_3C;
 	OUTDENT; WRITE("+\n"); INDENT;
 	WRITE("0*(\n"); INDENT;
-	WRITE("! The following condition evaluates second\n");
+	WRITE("! This evaluates second\n");
 	WRITE("((\n"); INDENT; VNODE_2C;
 	OUTDENT; WRITE("\n))\n");
 	OUTDENT; WRITE("+\n"); INDENT;
-	WRITE("! The following assignments evaluate first\n");
+	WRITE("! This evaluate first\n");
 	WRITE("("); VNODE_1C; WRITE(")");
 	OUTDENT; WRITE(")\n");
 	OUTDENT; WRITE(")\n");
+
+@ These are the seven primitives which change a storage item given by a
+reference, which is always the first child of the primitive node. It might,
+for example, be a global variable, or a memory location.
 
 @<Storing or otherwise changing values@> =
 	case STORE_BIP:			@<Perform a store@>; break;
@@ -337,41 +342,17 @@ then the result.
 	inter_tree_node *ref = InterTree::first_child(P);
 	if ((Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP)) &&
 		(I6TargetCode::pval_case(ref) != I6G_CAN_PROVE_IS_OBJ_PROPERTY)) {
-		@<Handle the ref using the incomplete-function mode@>;
+		@<Alter a property value@>;
 	} else {
-		@<Handle the ref with code working either as lvalue or rvalue@>;
+		@<Alter some other storage@>;
 	}
 
-@<Handle the ref using the incomplete-function mode@> =
-	inter_tree_node *VP = InterTree::second_child(P);
-	int set = NOT_APPLICABLE;
-	if (VP->W.data[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = VP->W.data[VAL1_VAL_IFLD];
-		inter_ti val2 = VP->W.data[VAL2_VAL_IFLD];
-		if ((val1 == LITERAL_IVAL) && (val2)) set = TRUE;
-		if ((val1 == LITERAL_IVAL) && (val2 == 0)) set = FALSE;
-	}
-	if ((I6TargetCode::pval_case(ref) == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == TRUE)) {
-		i6_next_is_a_give = TRUE; VNODE_1C; i6_next_is_a_give = FALSE;
-	} else if ((I6TargetCode::pval_case(ref) == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == FALSE)) {
-		i6_next_is_a_take = TRUE; VNODE_1C; i6_next_is_a_take = FALSE;
-	} else {
-		WRITE("("); i6_next_is_a_ref = TRUE; VNODE_1C; i6_next_is_a_ref = FALSE; 
-		if (bip == STORE_BIP) { VNODE_2C; } else { WRITE("0"); }
-		text_stream *store_form = NULL;
-		switch (bip) {
-			case STORE_BIP:			store_form = I"i7_lvalue_SET"; break;
-			case PREINCREMENT_BIP:	store_form = I"i7_lvalue_PREINC"; break;
-			case POSTINCREMENT_BIP:	store_form = I"i7_lvalue_POSTINC"; break;
-			case PREDECREMENT_BIP:	store_form = I"i7_lvalue_PREDEC"; break;
-			case POSTDECREMENT_BIP:	store_form = I"i7_lvalue_POSTDEC"; break;
-			case SETBIT_BIP:		store_form = I"i7_lvalue_SETBIT"; break;
-			case CLEARBIT_BIP:		store_form = I"i7_lvalue_CLEARBIT"; break;
-		}
-		WRITE(", %S))", store_form);
-	}
+@ The easy case first: here, whatever the storage is (for example, a variable),
+it's one that we can simply treat as an lvalue in Inform 6 (for example, by giving
+its variable name). For example, the memory location |A-->3| can be assigned to,
+or can have |++| or |--| applied to it in I6.
 
-@<Handle the ref with code working either as lvalue or rvalue@> =
+@<Alter some other storage@> =
 	switch (bip) {
 		case PREINCREMENT_BIP:	WRITE("++("); VNODE_1C; WRITE(")"); break;
 		case POSTINCREMENT_BIP:	WRITE("("); VNODE_1C; WRITE(")++"); break;
@@ -382,45 +363,109 @@ then the result.
 		case CLEARBIT_BIP:		VNODE_1C; WRITE(" = "); VNODE_1C; WRITE(" &~ ("); VNODE_2C; WRITE(")"); break;
 	}
 
+@ Property values are trickier: they aren't lvalues in Inform 6. (Remember,
+an I7-level property is a pointer to a small metadata array: it's not the same
+thing as a VM-property. We cannot compile an I6 assignment to |O.P| given that
+|P| is actually an array, and anyway, what if |P| is stored as a VM-attribute?)
+
+In fact, then, we will compile an attempt to store or modify a property value
+either as a |give| statement -- if we can prove at compile time that the property
+is stored in a VM-attribute -- or else as a function call to a general-purpose
+function called |_final_write_pval|.
+
+@<Alter a property value@> =
+	inter_tree_node *VP = InterTree::second_child(P);
+	int set = NOT_APPLICABLE;
+	if (VP->W.data[ID_IFLD] == VAL_IST) {
+		inter_ti val1 = VP->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = VP->W.data[VAL2_VAL_IFLD];
+		if ((val1 == LITERAL_IVAL) && (val2)) set = TRUE;
+		if ((val1 == LITERAL_IVAL) && (val2 == 0)) set = FALSE;
+	}
+	
+	inter_tree_node *storage_ref = InterTree::first_child(P);	
+	if (storage_ref->W.data[0] == REFERENCE_IST) storage_ref = InterTree::first_child(storage_ref);
+	
+	int c = I6TargetCode::pval_case(ref);
+	if ((c == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == TRUE)) {
+		WRITE("give "); Vanilla::node(gen, InterTree::second_child(storage_ref));
+		WRITE(" %S", I6TargetCode::inner_name(gen, storage_ref));
+	} else if ((c == I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE) && (set == FALSE)) {
+		WRITE("give "); Vanilla::node(gen, InterTree::second_child(storage_ref));
+		WRITE(" ~%S", I6TargetCode::inner_name(gen, storage_ref));
+	} else {
+		WRITE("(_final_write_pval(");
+		Vanilla::node(gen, InterTree::first_child(storage_ref));
+		WRITE(",");
+		Vanilla::node(gen, InterTree::second_child(storage_ref));
+		WRITE(",");
+		Vanilla::node(gen, InterTree::third_child(storage_ref));
+		WRITE(", ");
+		switch (bip) {
+			case STORE_BIP:			VNODE_2C; WRITE(", i7_lvalue_SET"); break;
+			case PREINCREMENT_BIP:	WRITE("0, i7_lvalue_PREINC"); break;
+			case POSTINCREMENT_BIP:	WRITE("0, i7_lvalue_POSTINC"); break;
+			case PREDECREMENT_BIP:	WRITE("0, i7_lvalue_PREDEC"); break;
+			case POSTDECREMENT_BIP:	WRITE("0, i7_lvalue_POSTDEC"); break;
+			case SETBIT_BIP:		VNODE_2C; WRITE(", i7_lvalue_SETBIT"); break;
+			case CLEARBIT_BIP:		VNODE_2C; WRITE(", i7_lvalue_CLEARBIT"); break;
+		}
+		WRITE("))");
+	}
+
+@ Reading property values is easier. The general case, similarly, is to call a
+function for this, but an important optimisation collapses this to the use of
+the |has| or |.| operators in I6 where we can prove at compile-time that the
+property in question is stored as a VM-attribute (resp., a VM-property) of
+what is definitely a VM-object. This optimisation results in faster code.
+
 @<Property value access@> =
 	case PROPERTYEXISTS_BIP: 
 		I6_GEN_DATA(value_ranges_needed) = TRUE;
 		I6_GEN_DATA(value_property_holders_needed) = TRUE;
-		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
-	case PROPERTYADDRESS_BIP: WRITE("(_final_read_paddr("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
-	case PROPERTYLENGTH_BIP: WRITE("(_final_read_plen("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE("))"); break;
+		WRITE("(_final_provides("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+			VNODE_3C; WRITE("))"); break;
+	case PROPERTYARRAY_BIP: WRITE("(_final_read_paddr("); VNODE_1C; WRITE(", ");
+			VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
+	case PROPERTYLENGTH_BIP: WRITE("(_final_read_plen("); VNODE_1C; WRITE(", ");
+			VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))"); break;
 	case PROPERTYVALUE_BIP:
-		if (i6_next_is_a_give) @<Write attribute give@>
-		else if (i6_next_is_a_take) @<Write attribute take@>
-		else if (i6_next_is_a_ref) @<Write property value@>
-		else @<Evaluate property value@>;
+		switch (I6TargetCode::pval_case(P)) {
+			case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
+				WRITE("("); VNODE_2C;
+					WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+			case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
+				WRITE("("); VNODE_2C;
+					WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
+			case I6G_CANNOT_PROVE:
+				I6_GEN_DATA(value_property_holders_needed) = TRUE;
+					I6TargetCode::eval_property_list(gen, InterTree::first_child(P),
+						InterTree::second_child(P), InterTree::third_child(P), 0); break;
+		}
 		break;
 
-@<Write attribute give@> =
-	i6_next_is_a_give = FALSE;
-	WRITE("give "); VNODE_2C; WRITE(" %S", I6TargetCode::inner_name(gen, P)); break;
+@ In the most general case of |!propertyvalue|, we will end up calling the function
+|_final_read_pval|. But we don't do so right away because, annoyingly, |!propertyvalue|
+can have |!alternative| children supplied. We might find this, for example:
+= (text as Inter)
+inv !if
+	inv !propertyvalue
+		val K_object harmonium
+		inv !alternative
+		    val K_value P_sonorous
+		    val K_value P_muted
+=
+...arising from kit code such as |if (harmonium has sonorous or muted) ...|.
+This only seldom arises, so perhaps we can be given for handling it less than
+optimally in all cases. We turn it into:
+= (text as Inform 6)
+	if (((or_tmp_var = harmonium) && (or_tmp_var has sonorous)) ||
+		(or_tmp_var has muted))
+=
+Note that |or_tmp_var| is used here so that the left operand, i.e., the object,
+is evaluated only once -- in case there are side-effects of the evaluation.
 
-@<Write attribute take@> =
-	i6_next_is_a_take = FALSE;
-	WRITE("give "); VNODE_2C; WRITE(" ~%S", I6TargetCode::inner_name(gen, P)); break;
-
-@<Write property value@> =								
-	i6_next_is_a_ref = FALSE;
-	WRITE("_final_write_pval("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(","); VNODE_3C; WRITE(", ");
-
-@<Evaluate property value@> =								
-	switch (I6TargetCode::pval_case(P)) {
-		case I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE:
-			WRITE("("); VNODE_2C; WRITE(" has %S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case I6G_CAN_PROVE_IS_OBJ_PROPERTY:
-			WRITE("("); VNODE_2C; WRITE(".%S", I6TargetCode::inner_name(gen, P)); WRITE(")"); break;
-		case I6G_CANNOT_PROVE:
-			I6_GEN_DATA(value_property_holders_needed) = TRUE;
-				I6TargetCode::eval_property_list(gen, InterTree::first_child(P),
-					InterTree::second_child(P), InterTree::third_child(P), 0); break;
-	}
-
-@ =
+=
 void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K, 
 	inter_tree_node *X, inter_tree_node *Y, int depth) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -583,19 +628,15 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 
 @<Indirect function or method calls@> =
 	case INDIRECT0_BIP:
-	case INDIRECT0V_BIP:
-	case CALLMESSAGE0_BIP:  WRITE("("); VNODE_1C; WRITE(")()"); break;
+	case INDIRECT0V_BIP:    WRITE("("); VNODE_1C; WRITE(")()"); break;
 	case INDIRECT1_BIP:
-	case INDIRECT1V_BIP:
-	case CALLMESSAGE1_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+	case INDIRECT1V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
 							VNODE_2C; WRITE(")"); break;
 	case INDIRECT2_BIP:
-	case INDIRECT2V_BIP:
-	case CALLMESSAGE2_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+	case INDIRECT2V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
 							VNODE_2C; WRITE(","); VNODE_3C; WRITE(")"); break;
 	case INDIRECT3_BIP:
-	case INDIRECT3V_BIP:
-	case CALLMESSAGE3_BIP:  WRITE("("); VNODE_1C; WRITE(")(");
+	case INDIRECT3V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
 							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(")"); break;
 	case INDIRECT4_BIP:
 	case INDIRECT4V_BIP:    WRITE("("); VNODE_1C; WRITE(")(");
@@ -606,12 +647,12 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 							VNODE_2C; WRITE(","); VNODE_3C; WRITE(","); VNODE_4C; WRITE(",");
 							VNODE_5C; WRITE(","); VNODE_6C; WRITE(")"); break;
 	case MESSAGE0_BIP: 		WRITE("_final_message0("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
-	case MESSAGE1_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE("))"); break;
-	case MESSAGE2_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE(","); VNODE_4C; WRITE("))"); break;
-	case MESSAGE3_BIP: 		WRITE("("); VNODE_1C; WRITE(".("); VNODE_2C; WRITE("-->1)(");
-							VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE("))"); break;
+	case MESSAGE1_BIP: 		WRITE("_final_message1("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+							VNODE_3C; WRITE(")"); break;
+	case MESSAGE2_BIP: 		WRITE("_final_message2("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+							VNODE_3C; WRITE(","); VNODE_4C; WRITE(")"); break;
+	case MESSAGE3_BIP: 		WRITE("_final_message3("); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
+							VNODE_3C; WRITE(","); VNODE_4C; WRITE(","); VNODE_5C; WRITE(")"); break;
 
 	case EXTERNALCALL_BIP:	internal_error("external calls impossible in Inform 6"); break;
 
@@ -651,9 +692,6 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 @<The VM object tree@> =
 	case MOVE_BIP:          WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
 	case REMOVE_BIP:        WRITE("remove "); VNODE_1C; break;
-
-@<Random number generator@> =
-	case RANDOM_BIP:        WRITE("random("); VNODE_1C; WRITE(")"); break;
 
 @
 
@@ -755,19 +793,33 @@ void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) = v;\n");
 	WRITE("    }\n");
 	WRITE("];\n");
-	WRITE("[ _final_read_paddr o p v t;\n");
+	WRITE("[ _final_read_paddr K o p v t;\n");
+	WRITE("    if (K ~= OBJECT_TY) return 0;\n");
 	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
 	WRITE("    if (t == 2) return 0;\n");
 	WRITE("    return o.&p;\n");
 	WRITE("];\n");
-	WRITE("[ _final_read_plen o p v t;\n");
+	WRITE("[ _final_read_plen K o p v t;\n");
+	WRITE("    if (K ~= OBJECT_TY) return 0;\n");
 	WRITE("    t = p-->0; p = p-->1; ! print \"give \", o, \" \", p, \"^\";\n");
 	WRITE("    if (t == 2) return 0;\n");
 	WRITE("    return o.#p;\n");
 	WRITE("];\n");
 	WRITE("[ _final_message0 o p q x a rv;\n");
-	WRITE("    q = p-->1; a = o.q; if (metaclass(a) == Object) rv = a; else if (a) { x = self; self = o; rv = indirect(a); self = x; }\n");
-	WRITE("    return rv;\n");
+	WRITE("    if (p-->0 == 2) return 0;\n");
+	WRITE("    q = p-->1; return o.q();\n");
+	WRITE("];\n");
+	WRITE("[ _final_message1 o p v1 q x a rv;\n");
+	WRITE("    if (p-->0 == 2) return 0;\n");
+	WRITE("    q = p-->1; return o.q(v1);\n");
+	WRITE("];\n");
+	WRITE("[ _final_message2 o p v1 v2 q x a rv;\n");
+	WRITE("    if (p-->0 == 2) return 0;\n");
+	WRITE("    q = p-->1; return o.q(v1, v2);\n");
+	WRITE("];\n");
+	WRITE("[ _final_message3 o p v1 v2 v3 q x a rv;\n");
+	WRITE("    if (p-->0 == 2) return 0;\n");
+	WRITE("    q = p-->1; return o.q(v1, v2, v3);\n");
 	WRITE("];\n");
 	WRITE("[ _final_provides K o p holder;\n");
 	WRITE("if (K == OBJECT_TY) {\n");

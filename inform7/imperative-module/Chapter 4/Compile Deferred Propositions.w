@@ -1201,7 +1201,7 @@ the state of the objects and thus the size of the set of possibilities.
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, selection_s);
-		EmitCode::inv(RANDOM_BIP);
+		EmitCode::call_symbol(Emit::get_veneer_symbol(RANDOM_VSYMB));
 		EmitCode::down();
 			EmitCode::val_symbol(K_value, counter_s);
 		EmitCode::up();

@@ -33,7 +33,6 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!setbit", I"ref val -> void");
 	Primitives::emit_one(I, IBM, I"!clearbit", I"ref val -> void");
 	Primitives::emit_one(I, IBM, I"!modulo", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!random", I"val -> val");
 	Primitives::emit_one(I, IBM, I"!lookup", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!lookupbyte", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!not", I"val -> val");
@@ -51,6 +50,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!lt", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!le", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!in", I"val val -> val");
+	Primitives::emit_one(I, IBM, I"!notin", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!ofclass", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!sequential", I"val val -> val");
 	Primitives::emit_one(I, IBM, I"!ternarysequential", I"val val val -> val");
@@ -87,16 +87,11 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!message1", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!message2", I"val val val val -> val");
 	Primitives::emit_one(I, IBM, I"!message3", I"val val val val val -> val");
-	Primitives::emit_one(I, IBM, I"!callmessage0", I"val -> val");
-	Primitives::emit_one(I, IBM, I"!callmessage1", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!callmessage2", I"val val val -> val");
-	Primitives::emit_one(I, IBM, I"!callmessage3", I"val val val val -> val");
 	Primitives::emit_one(I, IBM, I"!externalcall", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!propertyaddress", I"val val -> val");
-	Primitives::emit_one(I, IBM, I"!propertylength", I"val val -> val");
+	Primitives::emit_one(I, IBM, I"!propertyarray", I"val val val -> val");
+	Primitives::emit_one(I, IBM, I"!propertylength", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyexists", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyvalue", I"val val val -> val");
-	Primitives::emit_one(I, IBM, I"!notin", I"val val -> val");
 }
 
 inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
@@ -194,7 +189,6 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e TIMES_BIP
 @e DIVIDE_BIP
 @e MODULO_BIP
-@e RANDOM_BIP
 @e RETURN_BIP
 @e MOVE_BIP
 @e REMOVE_BIP
@@ -254,12 +248,8 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e MESSAGE1_BIP
 @e MESSAGE2_BIP
 @e MESSAGE3_BIP
-@e CALLMESSAGE0_BIP
-@e CALLMESSAGE1_BIP
-@e CALLMESSAGE2_BIP
-@e CALLMESSAGE3_BIP
 @e EXTERNALCALL_BIP
-@e PROPERTYADDRESS_BIP
+@e PROPERTYARRAY_BIP
 @e PROPERTYLENGTH_BIP
 @e PROPERTYEXISTS_BIP
 @e PROPERTYVALUE_BIP
@@ -292,7 +282,6 @@ text_stream *Primitives::name(inter_ti bip) {
 		case TIMES_BIP: return I"!times";
 		case DIVIDE_BIP: return I"!divide";
 		case MODULO_BIP: return I"!modulo";
-		case RANDOM_BIP: return I"!random";
 		case RETURN_BIP: return I"!return";
 		case JUMP_BIP: return I"!jump";
 		case MOVE_BIP: return I"!move";
@@ -352,12 +341,8 @@ text_stream *Primitives::name(inter_ti bip) {
 		case MESSAGE1_BIP: return I"!message1";
 		case MESSAGE2_BIP: return I"!message2";
 		case MESSAGE3_BIP: return I"!message3";
-		case CALLMESSAGE0_BIP: return I"!callmessage0";
-		case CALLMESSAGE1_BIP: return I"!callmessage1";
-		case CALLMESSAGE2_BIP: return I"!callmessage2";
-		case CALLMESSAGE3_BIP: return I"!callmessage3";
 		case EXTERNALCALL_BIP: return I"!externalcall";
-		case PROPERTYADDRESS_BIP: return I"!propertyaddress";
+		case PROPERTYARRAY_BIP: return I"!propertyarray";
 		case PROPERTYLENGTH_BIP: return I"!propertylength";
 		case PROPERTYEXISTS_BIP: return I"!propertyexists";
 		case PROPERTYVALUE_BIP: return I"!propertyvalue";
@@ -405,7 +390,6 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!times")) bip = TIMES_BIP;
 	if (Str::eq(symb->symbol_name, I"!divide")) bip = DIVIDE_BIP;
 	if (Str::eq(symb->symbol_name, I"!modulo")) bip = MODULO_BIP;
-	if (Str::eq(symb->symbol_name, I"!random")) bip = RANDOM_BIP;
 	if (Str::eq(symb->symbol_name, I"!return")) bip = RETURN_BIP;
 	if (Str::eq(symb->symbol_name, I"!jump")) bip = JUMP_BIP;
 	if (Str::eq(symb->symbol_name, I"!move")) bip = MOVE_BIP;
@@ -465,12 +449,8 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!message1")) bip = MESSAGE1_BIP;
 	if (Str::eq(symb->symbol_name, I"!message2")) bip = MESSAGE2_BIP;
 	if (Str::eq(symb->symbol_name, I"!message3")) bip = MESSAGE3_BIP;
-	if (Str::eq(symb->symbol_name, I"!callmessage0")) bip = CALLMESSAGE0_BIP;
-	if (Str::eq(symb->symbol_name, I"!callmessage1")) bip = CALLMESSAGE1_BIP;
-	if (Str::eq(symb->symbol_name, I"!callmessage2")) bip = CALLMESSAGE2_BIP;
-	if (Str::eq(symb->symbol_name, I"!callmessage3")) bip = CALLMESSAGE3_BIP;
 	if (Str::eq(symb->symbol_name, I"!externalcall")) bip = EXTERNALCALL_BIP;
-	if (Str::eq(symb->symbol_name, I"!propertyaddress")) bip = PROPERTYADDRESS_BIP;
+	if (Str::eq(symb->symbol_name, I"!propertyarray")) bip = PROPERTYARRAY_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyexists")) bip = PROPERTYEXISTS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;

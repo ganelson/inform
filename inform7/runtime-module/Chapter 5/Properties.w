@@ -248,32 +248,28 @@ int RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 
 @h Schemas.
 "Value" properties (those which are not either-or) can be tested or set with
-these schemas, which make use of a kit-defined function called |GProperty|
-and its analogue for writing, |WriteGProperty|:
+these schemas:
 
 =
 int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property *prn) {
 	kind *K = Cinders::kind_of_term(asch->pt0);
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
-	Calculus::Schemas::modify(asch->schema,
-		"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
+	Calculus::Schemas::modify(asch->schema, "%k >> *1 . %n == *2",
+		K, RTProperties::iname(prn));
 	return TRUE;
 }
 
 int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property *prn) {
 	kind *K = Cinders::kind_of_term(asch->pt0);
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
-	Calculus::Schemas::modify(asch->schema,
-		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
+	Calculus::Schemas::modify(asch->schema, "WriteGProperty(%k, *1, %n, *2)",
+		K, RTProperties::iname(prn));
 	return TRUE;
 }
 
-@ Either-or properties work analogously, though note that on reading, we bypass
-the |GProperty| function in order to allow unpossessed either/or properties to
-be "read". The result is always |false|, but run-time errors do not occur. (This
-all goes back to the way attributes were handled on the Z-machine VM, but is an
-assumption made by some of the kit code inherited from early days of Inform, and
-does no actual harm.)
+@ Either-or properties work analogously. Note that unpossessed either/or properties
+can legally be "read" -- the result being by definition |false| -- and that the
+WorldModelKit code makes use of this.
 
 =
 void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn, int T) {
@@ -319,12 +315,12 @@ int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
 			if (Kinds::Behaviour::is_object(K))
 				@<Compile a run-time test of property provision@>
 			else
-				@<Determine the result now, since we know already, and compile only the outcome@>;
+				@<Determine the result now, since we know already@>;
 			return TRUE;
 		} else if (Kinds::Behaviour::is_object(K)) {
 			kind *PK = Cinders::kind_of_term(asch->pt1);
 			if (Kinds::get_construct(PK) == CON_property) {
-				Calculus::Schemas::modify(asch->schema, "ProvidesProperty(%k, *1, *2)", K);
+				@<Compile a run-time test of property provision@>;
 				return TRUE;
 			}
 		}
@@ -341,7 +337,7 @@ of object the left operand is, we can only test property provision at run-time:
 @ For all other kinds, type-checking is strong enough that we can prove the
 answer now.
 
-@<Determine the result now, since we know already, and compile only the outcome@> =
+@<Determine the result now, since we know already@> =
 	if (PropertyPermissions::find(KindSubjects::from_kind(K), prn, TRUE))
 		Calculus::Schemas::modify(asch->schema, "true");
 	else
