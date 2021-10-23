@@ -291,26 +291,9 @@ void glulx_save(i7process_t *proc, i7word_t x, i7word_t y);
 void glulx_verify(i7process_t *proc, i7word_t x);
 void glulx_hasundo(i7process_t *proc, i7word_t *x);
 void glulx_discardundo(i7process_t *proc);
-
-void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
-void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
-	if (proc->communicator == NULL) {
-		if (z) *z = 0;
-	} else {
-		i7word_t args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
-		while (varargc > 0) {
-			i7word_t v = i7_pull(proc);
-			if (argc < 10) args[argc++] = v;
-			varargc--;
-		}
-		i7word_t rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
-		if (z) *z = rv;
-	}
-}
-
 void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y) { /* Intentionally ignore */
 }
 
@@ -335,7 +318,7 @@ void glulx_nop(i7process_t *proc) {
 }
 
 int glulx_jleu(i7process_t *proc, i7word_t x, i7word_t y) {
-	i7uval ux, uy;
+	unsigned_i7word_t ux, uy;
 	*((i7word_t *) &ux) = x; *((i7word_t *) &uy) = y;
 	if (ux <= uy) return 1;
 	return 0;
@@ -491,7 +474,6 @@ i7word_t fn_i7_mgl_DealWithUndo(i7process_t *proc);
 #endif
 
 void glulx_restoreundo(i7process_t *proc, i7word_t *x) {
-	proc->just_undid = 1;
 	if (i7_has_snapshot(proc)) {
 		i7_restore_snapshot(proc);
 		if (x) *x = 0;
@@ -504,7 +486,6 @@ void glulx_restoreundo(i7process_t *proc, i7word_t *x) {
 }
 
 void glulx_saveundo(i7process_t *proc, i7word_t *x) {
-	proc->just_undid = 0;
 	i7_save_snapshot(proc);
 	if (x) *x = 0;
 }

@@ -594,9 +594,9 @@ initialiser function which runs early and sets the property values up by hand:
 
 	C_property_owner *co;
 	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
-		if (co->initial_parent) WRITE("proc->state.i7_object_tree_parent[%S] = %S;\n", co->identifier, co->initial_parent->identifier);
-		if (co->initial_sibling) WRITE("proc->state.i7_object_tree_sibling[%S] = %S;\n", co->identifier, co->initial_sibling->identifier);
-		if (co->initial_child) WRITE("proc->state.i7_object_tree_child[%S] = %S;\n", co->identifier, co->initial_child->identifier);
+		if (co->initial_parent) WRITE("proc->state.object_tree_parent[%S] = %S;\n", co->identifier, co->initial_parent->identifier);
+		if (co->initial_sibling) WRITE("proc->state.object_tree_sibling[%S] = %S;\n", co->identifier, co->initial_sibling->identifier);
+		if (co->initial_child) WRITE("proc->state.object_tree_child[%S] = %S;\n", co->identifier, co->initial_child->identifier);
 	}
 
 	OUTDENT; WRITE("}\n");
@@ -893,51 +893,51 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
 	if (fn_i7_mgl_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
-	if (proc->state.i7_object_tree_parent[obj1] == obj2) return 1;
+	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
 
 i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_parent[id];
+	return proc->state.object_tree_parent[id];
 }
 i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_child[id];
+	return proc->state.object_tree_child[id];
 }
 i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
 	i7word_t c=0;
-	for (int i=0; i<i7_max_objects; i++) if (proc->state.i7_object_tree_parent[i] == id) c++;
+	for (int i=0; i<i7_max_objects; i++) if (proc->state.object_tree_parent[i] == id) c++;
 	return c;
 }
 i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_sibling[id];
+	return proc->state.object_tree_sibling[id];
 }
 
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
-	int p = proc->state.i7_object_tree_parent[obj];
+	int p = proc->state.object_tree_parent[obj];
 	if (p) {
-		if (proc->state.i7_object_tree_child[p] == obj) {
-			proc->state.i7_object_tree_child[p] = proc->state.i7_object_tree_sibling[obj];
+		if (proc->state.object_tree_child[p] == obj) {
+			proc->state.object_tree_child[p] = proc->state.object_tree_sibling[obj];
 		} else {
-			int c = proc->state.i7_object_tree_child[p];
+			int c = proc->state.object_tree_child[p];
 			while (c != 0) {
-				if (proc->state.i7_object_tree_sibling[c] == obj) {
-					proc->state.i7_object_tree_sibling[c] = proc->state.i7_object_tree_sibling[obj];
+				if (proc->state.object_tree_sibling[c] == obj) {
+					proc->state.object_tree_sibling[c] = proc->state.object_tree_sibling[obj];
 					break;
 				}
-				c = proc->state.i7_object_tree_sibling[c];
+				c = proc->state.object_tree_sibling[c];
 			}
 		}
 	}
-	proc->state.i7_object_tree_parent[obj] = to;
-	proc->state.i7_object_tree_sibling[obj] = 0;
+	proc->state.object_tree_parent[obj] = to;
+	proc->state.object_tree_sibling[obj] = 0;
 	if (to) {
-		proc->state.i7_object_tree_sibling[obj] = proc->state.i7_object_tree_child[to];
-		proc->state.i7_object_tree_child[to] = obj;
+		proc->state.object_tree_sibling[obj] = proc->state.object_tree_child[to];
+		proc->state.object_tree_child[to] = obj;
 	}
 }
 =

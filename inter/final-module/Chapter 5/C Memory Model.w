@@ -112,20 +112,20 @@ void i7_initialise_state(i7process_t *proc) {
     #endif
     proc->state.stack_pointer = 0;
     
-	proc->state.i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
 	
-	if ((proc->state.i7_object_tree_parent == NULL) ||
-		(proc->state.i7_object_tree_child == NULL) ||
-		(proc->state.i7_object_tree_sibling == NULL)) {
+	if ((proc->state.object_tree_parent == NULL) ||
+		(proc->state.object_tree_child == NULL) ||
+		(proc->state.object_tree_sibling == NULL)) {
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
 	}
 	for (int i=0; i<i7_max_objects; i++) {
-		proc->state.i7_object_tree_parent[i] = 0;
-		proc->state.i7_object_tree_child[i] = 0;
-		proc->state.i7_object_tree_sibling[i] = 0;
+		proc->state.object_tree_parent[i] = 0;
+		proc->state.object_tree_child[i] = 0;
+		proc->state.object_tree_sibling[i] = 0;
 	}
 	
 	proc->state.variables = calloc(i7_no_variables, sizeof(i7word_t));
@@ -135,6 +135,117 @@ void i7_initialise_state(i7process_t *proc) {
 	}
 	for (int i=0; i<i7_no_variables; i++)
 		proc->state.variables[i] = i7_initial_variable_values[i];
+}
+=
+
+@ And now some deep copy functions. The above structures are full of pointers
+to arrays, so a simple copy will only duplicate those pointers, not the data
+in the arrays they point to. Similarly, we can't just throw away an |i7state_t|
+value without causing a memory leak, so we need explicit destructors.
+
+= (text to inform7_clib.h)
+void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
+void i7_destroy_state(i7process_t *proc, i7state_t *s);
+=
+
+= (text to inform7_clib.c)
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
+	void *p = calloc(how_many, of_size);
+	if (p == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	return p;
+}
+
+void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
+	to->himem = from->himem;
+	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
+	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
+	to->tmp = from->tmp;
+	to->stack_pointer = from->stack_pointer;
+	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
+	to->object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	to->object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	to->object_tree_sibling = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+
+	for (int i=0; i<i7_max_objects; i++) {
+		to->object_tree_parent[i] = from->object_tree_parent[i];
+		to->object_tree_child[i] = from->object_tree_child[i];
+		to->object_tree_sibling[i] = from->object_tree_sibling[i];
+	}
+	to->variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
+	for (int i=0; i<i7_no_variables; i++) to->variables[i] = from->variables[i];
+	to->current_output_stream_ID = from->current_output_stream_ID;
+}
+
+void i7_destroy_state(i7process_t *proc, i7state_t *s) {
+	free(s->memory);
+	s->himem = 0;
+	s->stack_pointer = 0;
+	free(s->object_tree_parent);
+	free(s->object_tree_child);
+	free(s->object_tree_sibling);
+	free(s->variables);
+}
+=
+
+= (text to inform7_clib.h)
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old);
+void i7_save_snapshot(i7process_t *proc);
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
+void i7_destroy_latest_snapshot(i7process_t *proc);
+=
+
+= (text to inform7_clib.c)
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old) {
+	i7_destroy_state(proc, &(old->then));
+	old->valid = 0;
+}
+
+void i7_save_snapshot(i7process_t *proc) {
+	if (proc->snapshots[proc->snapshot_pos].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
+	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
+	proc->snapshots[proc->snapshot_pos].valid = 1;
+	i7_copy_state(proc, &(proc->snapshots[proc->snapshot_pos].then), &(proc->state));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos++;
+	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
+}
+
+int i7_has_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	return proc->snapshots[will_be].valid;
+}
+
+void i7_destroy_latest_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid == 0) {
+		printf("Restore impossible\n");
+		i7_fatal_exit(proc);
+	}
+	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss) {
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 =
 

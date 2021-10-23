@@ -8,16 +8,17 @@ This generator produces Inform 6 source code, using the Vanilla algorithm.
 =
 code_generator *inform6_target = NULL;
 void I6Target::create_generator(void) {
-	code_generator *cgt = Generators::new(I"inform6");
-	I6TargetCode::create_generator(cgt);
-	I6TargetObjects::create_generator(cgt);
-	I6TargetConstants::create_generator(cgt);
-	I6TargetVariables::create_generator(cgt);
-	METHOD_ADD(cgt, BEGIN_GENERATION_MTID, I6Target::begin_generation);
-	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
-	METHOD_ADD(cgt, OFFER_PRAGMA_MTID, I6Target::offer_pragma)
-	METHOD_ADD(cgt, END_GENERATION_MTID, I6Target::end_generation);
-	inform6_target = cgt;
+	inform6_target = Generators::new(I"inform6");
+
+	METHOD_ADD(inform6_target, BEGIN_GENERATION_MTID, I6Target::begin_generation);
+	METHOD_ADD(inform6_target, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
+	METHOD_ADD(inform6_target, OFFER_PRAGMA_MTID, I6Target::offer_pragma)
+	METHOD_ADD(inform6_target, END_GENERATION_MTID, I6Target::end_generation);
+
+	I6TargetCode::create_generator(inform6_target);
+	I6TargetObjects::create_generator(inform6_target);
+	I6TargetConstants::create_generator(inform6_target);
+	I6TargetVariables::create_generator(inform6_target);
 }
 
 @ We will write a single output file of I6 source code, but segmented as follows:

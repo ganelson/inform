@@ -1,71 +1,22 @@
+/* This is a library of C code to support Inter code compiled to ANSI C. It was
+   generated mechanically from the Inter source code, so to change this material,
+   edit that and not this file. */
+
 #ifndef I7_CLIB_C_INCLUDED
 #define I7_CLIB_C_INCLUDED 1
-
-i7state i7_new_state(void) {
-	i7state S;
+i7state_t i7_new_state(void) {
+	i7state_t S;
 	S.memory = NULL;
 	S.himem = 0;
 	S.tmp = 0;
 	S.stack_pointer = 0;
-	S.i7_object_tree_parent = NULL;
-	S.i7_object_tree_child = NULL;
-	S.i7_object_tree_sibling = NULL;
+	S.object_tree_parent = NULL; S.object_tree_child = NULL; S.object_tree_sibling = NULL;
 	S.variables = NULL;
 	return S;
 }
 
-void i7_copy_state(i7process_t *proc, i7state *to, i7state *from) {
-	to->himem = from->himem;
-	to->memory = calloc(i7_static_himem, sizeof(i7byte_t));
-	if (to->memory == NULL) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
-	to->tmp = from->tmp;
-	to->stack_pointer = from->stack_pointer;
-	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
-	to->i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
-	to->i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
-	to->i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
-
-	if ((to->i7_object_tree_parent == NULL) ||
-		(to->i7_object_tree_child == NULL) ||
-		(to->i7_object_tree_sibling == NULL)) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	for (int i=0; i<i7_max_objects; i++) {
-		to->i7_object_tree_parent[i] = from->i7_object_tree_parent[i];
-		to->i7_object_tree_child[i] = from->i7_object_tree_child[i];
-		to->i7_object_tree_sibling[i] = from->i7_object_tree_sibling[i];
-	}
-	to->variables = calloc(i7_no_variables, sizeof(i7word_t));
-	if (to->variables == NULL) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	for (int i=0; i<i7_no_variables; i++)
-		to->variables[i] = from->variables[i];
-}
-
-void i7_destroy_state(i7process_t *proc, i7state *s) {
-	free(s->memory);
-	s->himem = 0;
-	free(s->i7_object_tree_parent);
-	free(s->i7_object_tree_child);
-	free(s->i7_object_tree_sibling);
-	s->stack_pointer = 0;
-	free(s->variables);
-}
-
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old) {
-	i7_destroy_state(proc, &(old->then));
-	old->valid = 0;
-}
-
-i7snapshot i7_new_snapshot(void) {
-	i7snapshot SS;
+i7snapshot_t i7_new_snapshot(void) {
+	i7snapshot_t SS;
 	SS.valid = 0;
 	SS.then = i7_new_state();
 	return SS;
@@ -75,67 +26,13 @@ i7process_t i7_new_process(void) {
 	i7process_t proc;
 	proc.state = i7_new_state();
 	for (int i=0; i<I7_MAX_SNAPSHOTS; i++) proc.snapshots[i] = i7_new_snapshot();
-	proc.just_undid = 0;
 	proc.snapshot_pos = 0;
 	proc.receiver = i7_default_receiver;
 	proc.send_count = 0;
 	proc.sender = i7_default_sender;
 	proc.use_UTF8 = 1;
-	proc.communicator = i7_default_communicator;
 	return proc;
 }
-
-i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args) {
-	printf("No communicator: external function calls not allowed from thus process\n");
-	i7_fatal_exit(proc);
-	return 0;
-}
-
-void i7_save_snapshot(i7process_t *proc) {
-	if (proc->snapshots[proc->snapshot_pos].valid)
-		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
-	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
-	proc->snapshots[proc->snapshot_pos].valid = 1;
-	i7_copy_state(proc, &(proc->snapshots[proc->snapshot_pos].then), &(proc->state));
-	int was = proc->snapshot_pos;
-	proc->snapshot_pos++;
-	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
-//	if (setjmp(proc->snapshots[was].env)) fprintf(stdout, "*** Restore! %d ***\n", proc->just_undid);
-}
-
-int i7_has_snapshot(i7process_t *proc) {
-	int will_be = proc->snapshot_pos - 1;
-	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
-	return proc->snapshots[will_be].valid;
-}
-
-void i7_destroy_latest_snapshot(i7process_t *proc) {
-	int will_be = proc->snapshot_pos - 1;
-	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
-	if (proc->snapshots[will_be].valid)
-		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
-	proc->snapshot_pos = will_be;
-}
-
-void i7_restore_snapshot(i7process_t *proc) {
-	int will_be = proc->snapshot_pos - 1;
-	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
-	if (proc->snapshots[will_be].valid == 0) {
-		printf("Restore impossible\n");
-		i7_fatal_exit(proc);
-	}
-	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
-	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
-	int was = proc->snapshot_pos;
-	proc->snapshot_pos = will_be;
-//	longjmp(proc->snapshots[was].env, 1);
-}
-
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss) {
-	i7_destroy_state(proc, &(proc->state));
-	i7_copy_state(proc, &(proc->state), &(ss->then));
-}
-
 void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
@@ -151,8 +48,7 @@ char *i7_default_sender(int count) {
 	i7_default_sender_buffer[pos++] = 0;
 	return i7_default_sender_buffer;
 }
-
-int default_main(int argc, char **argv) {
+int i7_default_main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_run_process(&proc);
 	if (proc.termination_code == 1) {
@@ -161,22 +57,6 @@ int default_main(int argc, char **argv) {
 	}
 	return proc.termination_code;
 }
-
-i7word_t fn_i7_mgl_Main(i7process_t *proc);
-int i7_run_process(i7process_t *proc) {
-	int tc = setjmp(proc->execution_env);
-	if (tc) {
-		if (tc == 2) tc = 0;
-		proc->termination_code = tc; /* terminated abnormally */
-    } else {
-		i7_initialise_state(proc);
-		i7_initializer(proc);
-		i7_initialise_streams(proc);
-		fn_i7_mgl_Main(proc);
-		proc->termination_code = 0; /* terminated normally */
-    }
-    return proc->termination_code;
-}
 void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
 	proc->use_UTF8 = UTF8;
@@ -184,11 +64,24 @@ void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
 }
-void i7_set_process_communicator(i7process_t *proc, i7word_t (*communicator)(i7process_t *proc, char *id, int argc, i7word_t *args)) {
-	proc->communicator = communicator;
+i7word_t fn_i7_mgl_Main(i7process_t *proc);
+int i7_run_process(i7process_t *proc) {
+	int tc = setjmp(proc->execution_env);
+	if (tc) {
+		if (tc == 2) proc->termination_code = 0; /* terminated mid-stream but benignly */
+		else proc->termination_code = tc; /* terminated mid-stream with a fatal error */
+    } else {
+		i7_initialise_state(proc);
+		i7_initializer(proc);
+		i7_initialise_streams(proc);
+		fn_i7_mgl_Main(proc);
+		proc->termination_code = 0; /* terminated because the program completed */
+    }
+    return proc->termination_code;
 }
 
 void i7_fatal_exit(i7process_t *proc) {
+//  Uncomment the next line to force a crash so that the stack can be inspected in a debugger
 //	int x = 0; printf("%d", 1/x);
 	longjmp(proc->execution_env, 1);
 }
@@ -282,20 +175,20 @@ void i7_initialise_state(i7process_t *proc) {
     #endif
     proc->state.stack_pointer = 0;
 
-	proc->state.i7_object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.i7_object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.i7_object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
 
-	if ((proc->state.i7_object_tree_parent == NULL) ||
-		(proc->state.i7_object_tree_child == NULL) ||
-		(proc->state.i7_object_tree_sibling == NULL)) {
+	if ((proc->state.object_tree_parent == NULL) ||
+		(proc->state.object_tree_child == NULL) ||
+		(proc->state.object_tree_sibling == NULL)) {
 		printf("Memory allocation failed\n");
 		i7_fatal_exit(proc);
 	}
 	for (int i=0; i<i7_max_objects; i++) {
-		proc->state.i7_object_tree_parent[i] = 0;
-		proc->state.i7_object_tree_child[i] = 0;
-		proc->state.i7_object_tree_sibling[i] = 0;
+		proc->state.object_tree_parent[i] = 0;
+		proc->state.object_tree_child[i] = 0;
+		proc->state.object_tree_sibling[i] = 0;
 	}
 
 	proc->state.variables = calloc(i7_no_variables, sizeof(i7word_t));
@@ -305,6 +198,92 @@ void i7_initialise_state(i7process_t *proc) {
 	}
 	for (int i=0; i<i7_no_variables; i++)
 		proc->state.variables[i] = i7_initial_variable_values[i];
+}
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
+	void *p = calloc(how_many, of_size);
+	if (p == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	return p;
+}
+
+void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
+	to->himem = from->himem;
+	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
+	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
+	to->tmp = from->tmp;
+	to->stack_pointer = from->stack_pointer;
+	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
+	to->object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	to->object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	to->object_tree_sibling = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+
+	for (int i=0; i<i7_max_objects; i++) {
+		to->object_tree_parent[i] = from->object_tree_parent[i];
+		to->object_tree_child[i] = from->object_tree_child[i];
+		to->object_tree_sibling[i] = from->object_tree_sibling[i];
+	}
+	to->variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
+	for (int i=0; i<i7_no_variables; i++) to->variables[i] = from->variables[i];
+	to->current_output_stream_ID = from->current_output_stream_ID;
+}
+
+void i7_destroy_state(i7process_t *proc, i7state_t *s) {
+	free(s->memory);
+	s->himem = 0;
+	s->stack_pointer = 0;
+	free(s->object_tree_parent);
+	free(s->object_tree_child);
+	free(s->object_tree_sibling);
+	free(s->variables);
+}
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old) {
+	i7_destroy_state(proc, &(old->then));
+	old->valid = 0;
+}
+
+void i7_save_snapshot(i7process_t *proc) {
+	if (proc->snapshots[proc->snapshot_pos].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
+	proc->snapshots[proc->snapshot_pos] = i7_new_snapshot();
+	proc->snapshots[proc->snapshot_pos].valid = 1;
+	i7_copy_state(proc, &(proc->snapshots[proc->snapshot_pos].then), &(proc->state));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos++;
+	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
+}
+
+int i7_has_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	return proc->snapshots[will_be].valid;
+}
+
+void i7_destroy_latest_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid == 0) {
+		printf("Restore impossible\n");
+		i7_fatal_exit(proc);
+	}
+	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	int was = proc->snapshot_pos;
+	proc->snapshot_pos = will_be;
+}
+
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss) {
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(ss->then));
 }
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
 	return proc->state.memory[address];
@@ -481,21 +460,6 @@ void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
         (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
     }
 }
-void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z) {
-	if (proc->communicator == NULL) {
-		if (z) *z = 0;
-	} else {
-		i7word_t args[10] = { 0, 0, 0, 0, 0 }, argc = 0;
-		while (varargc > 0) {
-			i7word_t v = i7_pull(proc);
-			if (argc < 10) args[argc++] = v;
-			varargc--;
-		}
-		i7word_t rv = (proc->communicator)(proc, i7_text_of_string(selector), argc, args);
-		if (z) *z = rv;
-	}
-}
-
 void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y) { /* Intentionally ignore */
 }
 
@@ -520,7 +484,7 @@ void glulx_nop(i7process_t *proc) {
 }
 
 int glulx_jleu(i7process_t *proc, i7word_t x, i7word_t y) {
-	i7uval ux, uy;
+	unsigned_i7word_t ux, uy;
 	*((i7word_t *) &ux) = x; *((i7word_t *) &uy) = y;
 	if (ux <= uy) return 1;
 	return 0;
@@ -676,7 +640,6 @@ i7word_t fn_i7_mgl_DealWithUndo(i7process_t *proc);
 #endif
 
 void glulx_restoreundo(i7process_t *proc, i7word_t *x) {
-	proc->just_undid = 1;
 	if (i7_has_snapshot(proc)) {
 		i7_restore_snapshot(proc);
 		if (x) *x = 0;
@@ -689,7 +652,6 @@ void glulx_restoreundo(i7process_t *proc, i7word_t *x) {
 }
 
 void glulx_saveundo(i7process_t *proc, i7word_t *x) {
-	proc->just_undid = 0;
 	i7_save_snapshot(proc);
 	if (x) *x = 0;
 }
@@ -1135,51 +1097,51 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
 	if (fn_i7_mgl_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
-	if (proc->state.i7_object_tree_parent[obj1] == obj2) return 1;
+	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
 
 i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_parent[id];
+	return proc->state.object_tree_parent[id];
 }
 i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_child[id];
+	return proc->state.object_tree_child[id];
 }
 i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
 	i7word_t c=0;
-	for (int i=0; i<i7_max_objects; i++) if (proc->state.i7_object_tree_parent[i] == id) c++;
+	for (int i=0; i<i7_max_objects; i++) if (proc->state.object_tree_parent[i] == id) c++;
 	return c;
 }
 i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id) {
 	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
-	return proc->state.i7_object_tree_sibling[id];
+	return proc->state.object_tree_sibling[id];
 }
 
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if ((obj <= 0) || (obj >= i7_max_objects)) return;
-	int p = proc->state.i7_object_tree_parent[obj];
+	int p = proc->state.object_tree_parent[obj];
 	if (p) {
-		if (proc->state.i7_object_tree_child[p] == obj) {
-			proc->state.i7_object_tree_child[p] = proc->state.i7_object_tree_sibling[obj];
+		if (proc->state.object_tree_child[p] == obj) {
+			proc->state.object_tree_child[p] = proc->state.object_tree_sibling[obj];
 		} else {
-			int c = proc->state.i7_object_tree_child[p];
+			int c = proc->state.object_tree_child[p];
 			while (c != 0) {
-				if (proc->state.i7_object_tree_sibling[c] == obj) {
-					proc->state.i7_object_tree_sibling[c] = proc->state.i7_object_tree_sibling[obj];
+				if (proc->state.object_tree_sibling[c] == obj) {
+					proc->state.object_tree_sibling[c] = proc->state.object_tree_sibling[obj];
 					break;
 				}
-				c = proc->state.i7_object_tree_sibling[c];
+				c = proc->state.object_tree_sibling[c];
 			}
 		}
 	}
-	proc->state.i7_object_tree_parent[obj] = to;
-	proc->state.i7_object_tree_sibling[obj] = 0;
+	proc->state.object_tree_parent[obj] = to;
+	proc->state.object_tree_sibling[obj] = 0;
 	if (to) {
-		proc->state.i7_object_tree_sibling[obj] = proc->state.i7_object_tree_child[to];
-		proc->state.i7_object_tree_child[to] = obj;
+		proc->state.object_tree_sibling[obj] = proc->state.object_tree_child[to];
+		proc->state.object_tree_child[to] = obj;
 	}
 }
 i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref) {
@@ -1291,7 +1253,7 @@ i7_stream i7_memory_streams[I7_MAX_STREAMS];
 i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
 i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from, i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
 void i7_style(i7process_t *proc, i7word_t what_v) {
-	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
+	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
 	S->style[0] = 0;
 	switch (what_v) {
 		case 0: break;
@@ -1313,7 +1275,7 @@ void i7_style(i7process_t *proc, i7word_t what_v) {
 }
 
 void i7_font(i7process_t *proc, int what) {
-	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
+	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
 	S->fixed_pitch = what;
 	sprintf(S->composite_style, "%s", S->style);
 	if (S->fixed_pitch) {
@@ -1407,12 +1369,12 @@ int i7_fgetc(i7process_t *proc, int id) {
 i7word_t i7_stdout_id = 0, i7_stderr_id = 1;
 
 i7word_t i7_do_glk_stream_get_current(i7process_t *proc) {
-	return proc->state.i7_str_id;
+	return proc->state.current_output_stream_ID;
 }
 
 void i7_do_glk_stream_set_current(i7process_t *proc, i7word_t id) {
 	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	proc->state.i7_str_id = id;
+	proc->state.current_output_stream_ID = id;
 }
 
 i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
@@ -1453,7 +1415,7 @@ i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id) {
 		if (i7_memory_streams[i].active == 0) {
 			i7_memory_streams[i] = i7_new_stream(proc, F, win_id);
 			i7_memory_streams[i].active = 1;
-			i7_memory_streams[i].previous_id = proc->state.i7_str_id;
+			i7_memory_streams[i].previous_id = proc->state.current_output_stream_ID;
 			return i;
 		}
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
@@ -1466,7 +1428,7 @@ i7word_t i7_do_glk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 1;
-	proc->state.i7_str_id = id;
+	proc->state.current_output_stream_ID = id;
 	return id;
 }
 
@@ -1476,7 +1438,7 @@ i7word_t i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7
 	i7_memory_streams[id].write_here_on_closure = buffer;
 	i7_memory_streams[id].write_limit = (size_t) len;
 	i7_memory_streams[id].char_size = 4;
-	proc->state.i7_str_id = id;
+	proc->state.current_output_stream_ID = id;
 	return id;
 }
 
@@ -1519,7 +1481,7 @@ void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	if (id == 1) { fprintf(stderr, "Cannot close stderr\n"); i7_fatal_exit(proc); }
 	i7_stream *S = &(i7_memory_streams[id]);
 	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); i7_fatal_exit(proc); }
-	if (proc->state.i7_str_id == id) proc->state.i7_str_id = S->previous_id;
+	if (proc->state.current_output_stream_ID == id) proc->state.current_output_stream_ID = S->previous_id;
 	if (S->write_here_on_closure != 0) {
 		if (S->char_size == 4) {
 			for (size_t i = 0; i < S->write_limit; i++)
@@ -1572,7 +1534,7 @@ i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id) {
 }
 
 void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c) {
-	i7_stream *S = &(i7_memory_streams[proc->state.i7_str_id]);
+	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
 	if (proc->receiver == NULL) fputc(c, stdout);
 	(proc->receiver)(rock, c, S->composite_style);
 }
@@ -1624,7 +1586,7 @@ i7word_t i7_do_glk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
-	i7_do_glk_put_char_stream(proc, proc->state.i7_str_id, x);
+	i7_do_glk_put_char_stream(proc, proc->state.current_output_stream_ID, x);
 }
 
 void i7_print_C_string(i7process_t *proc, char *c_string) {

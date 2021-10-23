@@ -1,6 +1,6 @@
-/* This is a library of C code to support Inform or other Inter programs compiled
-   tp ANSI C. It was generated mechanically from the Inter source code, so to
-   change it, edit that and not this. */
+/* This is a header file for using a library of C code to support Inter code
+   compiled to ANSI C. It was generated mechanically from the Inter source code,
+   so to change this material, edit that and not this file. */
 
 #ifndef I7_CLIB_H_INCLUDED
 #define I7_CLIB_H_INCLUDED 1
@@ -13,68 +13,53 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <setjmp.h>
-
 typedef int32_t i7word_t;
-typedef uint32_t i7uval;
+typedef uint32_t unsigned_i7word_t;
 typedef unsigned char i7byte_t;
-
 #define I7_ASM_STACK_CAPACITY 128
 
-typedef struct i7state {
+typedef struct i7state_t {
 	i7byte_t *memory;
 	i7word_t himem;
 	i7word_t stack[I7_ASM_STACK_CAPACITY];
 	int stack_pointer;
-	i7word_t *i7_object_tree_parent;
-	i7word_t *i7_object_tree_child;
-	i7word_t *i7_object_tree_sibling;
+	i7word_t *object_tree_parent;
+	i7word_t *object_tree_child;
+	i7word_t *object_tree_sibling;
 	i7word_t *variables;
 	i7word_t tmp;
-	i7word_t i7_str_id;
-} i7state;
-
-typedef struct i7snapshot {
+	i7word_t current_output_stream_ID;
+} i7state_t;
+typedef struct i7snapshot_t {
 	int valid;
-	struct i7state then;
-	jmp_buf env;
-} i7snapshot;
-
+	struct i7state_t then;
+} i7snapshot_t;
 #define I7_MAX_SNAPSHOTS 10
-
 typedef struct i7process_t {
-	i7state state;
-	i7snapshot snapshots[I7_MAX_SNAPSHOTS];
+	i7state_t state;
+	i7snapshot_t snapshots[I7_MAX_SNAPSHOTS];
 	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
-	int just_undid;
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
 	i7word_t (*communicator)(struct i7process_t *proc, char *id, int argc, i7word_t *args);
 	int use_UTF8;
 } i7process_t;
-
-i7state i7_new_state(void);
+i7state_t i7_new_state(void);
+i7snapshot_t i7_new_snapshot(void);
 i7process_t i7_new_process(void);
-i7snapshot i7_new_snapshot(void);
-void i7_save_snapshot(i7process_t *proc);
-int i7_has_snapshot(i7process_t *proc);
-void i7_restore_snapshot(i7process_t *proc);
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot *ss);
-void i7_destroy_latest_snapshot(i7process_t *proc);
-int i7_run_process(i7process_t *proc);
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
-void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
-void i7_set_process_communicator(i7process_t *proc, i7word_t (*communicator)(i7process_t *proc, char *id, int argc, i7word_t *args));
-void i7_initializer(i7process_t *proc);
-void i7_fatal_exit(i7process_t *proc);
-void i7_destroy_state(i7process_t *proc, i7state *s);
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot *old);
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
 i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args);
-int default_main(int argc, char **argv);
+int i7_default_main(int argc, char **argv);
+void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
+void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
+int i7_run_process(i7process_t *proc);
+void i7_benign_exit(i7process_t *proc);
+void i7_fatal_exit(i7process_t *proc);
+void i7_initializer(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -89,6 +74,14 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
 void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
 void i7_initialise_state(i7process_t *proc);
+void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
+void i7_destroy_state(i7process_t *proc, i7state_t *s);
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old);
+void i7_save_snapshot(i7process_t *proc);
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
+void i7_destroy_latest_snapshot(i7process_t *proc);
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address);
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 #define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
@@ -145,8 +138,6 @@ void glulx_save(i7process_t *proc, i7word_t x, i7word_t y);
 void glulx_verify(i7process_t *proc, i7word_t x);
 void glulx_hasundo(i7process_t *proc, i7word_t *x);
 void glulx_discardundo(i7process_t *proc);
-
-void glulx_xfunction(i7process_t *proc, i7word_t selector, i7word_t varargc, i7word_t *z);
 void glulx_random(i7process_t *proc, i7word_t x, i7word_t *y);
 i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x);
 void glulx_setrandom(i7process_t *proc, i7word_t s);
