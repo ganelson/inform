@@ -319,8 +319,7 @@ enumerated these colours as 1, 2, 3.
 @<A value instance@> =
 	TEMPORARY_TEXT(val)
 	WRITE_TO(val, "%d", enumeration);
-	Generators::declare_constant(gen, Inter::Symbols::name(inst_s), NULL, RAW_GDCFORM,
-		NULL, val);
+	Generators::declare_constant(gen, inst_s, RAW_GDCFORM, val);
 	DISCARD_TEXT(val)
 
 @ =

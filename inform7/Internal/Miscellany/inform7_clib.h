@@ -54,7 +54,8 @@ char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
 i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args);
 int i7_default_main(int argc, char **argv);
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
+void i7_set_process_receiver(i7process_t *proc,
+	void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);

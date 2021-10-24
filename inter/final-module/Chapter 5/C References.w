@@ -6,7 +6,7 @@ How changes to storage objects are translated into C.
 modified, rather than having their current contents read.
 
 There are seven possible ways to modify something identified by a reference,
-and we need constants to identify these ways at runtime:
+and we need constants to identify these ways in the code we generate:
 
 = (text to inform7_clib.h)
 #define i7_lvalue_SET 1

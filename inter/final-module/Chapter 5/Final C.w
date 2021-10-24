@@ -24,6 +24,217 @@ void CTarget::create_generator(void) {
 	CInputOutputModel::initialise(c_target);
 }
 
+@h Segmentation.
+This generator produces two files: a primary one implementing the Inter program
+in C, and a secondary header file defining certain constants so that external
+code can interface with it. Both are divided into segments. The main file thus:
+
+@e c_header_inclusion_I7CGS
+@e c_ids_and_maxima_I7CGS
+@e c_library_inclusion_I7CGS
+@e c_predeclarations_I7CGS
+@e c_very_early_matter_I7CGS
+@e c_constants_I7CGS
+@e c_early_matter_I7CGS
+@e c_text_literals_code_I7CGS
+@e c_summations_at_eof_I7CGS
+@e c_arrays_at_eof_I7CGS
+@e c_main_matter_I7CGS
+@e c_functions_at_eof_I7CGS
+@e c_code_at_eof_I7CGS
+@e c_verbs_at_eof_I7CGS
+@e c_stubs_at_eof_I7CGS
+@e c_property_offset_creator_I7CGS
+@e c_mem_I7CGS
+@e c_globals_array_I7CGS
+@e c_initialiser_I7CGS
+
+=
+int C_target_segments[] = {
+	c_header_inclusion_I7CGS,
+	c_ids_and_maxima_I7CGS,
+	c_library_inclusion_I7CGS,
+	c_predeclarations_I7CGS,
+	c_very_early_matter_I7CGS,
+	c_constants_I7CGS,
+	c_early_matter_I7CGS,
+	c_text_literals_code_I7CGS,
+	c_summations_at_eof_I7CGS,
+	c_arrays_at_eof_I7CGS,
+	c_main_matter_I7CGS,
+	c_functions_at_eof_I7CGS,
+	c_code_at_eof_I7CGS,
+	c_verbs_at_eof_I7CGS,
+	c_stubs_at_eof_I7CGS,
+	c_property_offset_creator_I7CGS,
+	c_mem_I7CGS,
+	c_globals_array_I7CGS,
+	c_initialiser_I7CGS,
+	-1
+};
+
+@ And the header file thus:
+
+@e c_instances_symbols_I7CGS
+@e c_enum_symbols_I7CGS
+@e c_kinds_symbols_I7CGS
+@e c_actions_symbols_I7CGS
+@e c_property_symbols_I7CGS
+@e c_variable_symbols_I7CGS
+@e c_function_symbols_I7CGS
+
+=
+int C_symbols_header_segments[] = {
+	c_instances_symbols_I7CGS,
+	c_enum_symbols_I7CGS,
+	c_kinds_symbols_I7CGS,
+	c_actions_symbols_I7CGS,
+	c_property_symbols_I7CGS,
+	c_variable_symbols_I7CGS,
+	c_function_symbols_I7CGS,
+	-1
+};
+
+@ This generator uses the following state data while it works:
+
+@d C_GEN_DATA(x) ((C_generation_data *) (gen->generator_private_data))->x
+
+=
+typedef struct C_generation_data {
+	int compile_main;
+	int compile_symbols;
+	struct C_generation_memory_model_data memdata;
+	struct C_generation_function_model_data fndata;
+	struct C_generation_object_model_data objdata;
+	struct C_generation_literals_model_data litdata;
+	CLASS_DEFINITION
+} C_generation_data;
+
+void CTarget::initialise_data(code_generation *gen) {
+	C_GEN_DATA(compile_main) = TRUE;
+	C_GEN_DATA(compile_symbols) = FALSE;
+	CMemoryModel::initialise_data(gen);
+	CFunctionModel::initialise_data(gen);
+	CObjectModel::initialise_data(gen);
+	CLiteralsModel::initialise_data(gen);
+	CGlobals::initialise_data(gen);
+	CAssembly::initialise_data(gen);
+	CInputOutputModel::initialise_data(gen);
+}
+
+@h Begin and end.
+We return |FALSE| here to signal that we want the Vanilla algorithm to
+manage the process.
+
+=
+int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
+	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
+	CodeGen::additional_segments(gen, C_symbols_header_segments);
+	CTarget::initialise_data(gen);
+
+	@<Parse the C compilation options@>;
+	@<Compile the Clib header inclusion and some clang pragmas@>;
+	@<Compile the Clib code inclusion@>;
+
+	CNamespace::fix_locals(gen);
+	CMemoryModel::begin(gen);
+	CFunctionModel::begin(gen);
+	CObjectModel::begin(gen);
+	CLiteralsModel::begin(gen);
+	CGlobals::begin(gen);
+	CAssembly::begin(gen);
+	CInputOutputModel::begin(gen);
+	return FALSE;
+}
+
+@<Parse the C compilation options@> =
+	linked_list *opts = TargetVMs::option_list(gen->for_VM);
+	text_stream *opt;
+	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
+		if (Str::eq_insensitive(opt, I"main")) C_GEN_DATA(compile_main) = TRUE;
+		else if (Str::eq_insensitive(opt, I"no-main")) C_GEN_DATA(compile_main) = FALSE;
+		else if (Str::eq_insensitive(opt, I"symbols-header")) C_GEN_DATA(compile_symbols) = TRUE;
+		else if (Str::eq_insensitive(opt, I"no-symbols-header")) C_GEN_DATA(compile_symbols) = FALSE;
+		else {
+			#ifdef PROBLEMS_MODULE
+			Problems::fatal("Unknown compilation format option");
+			#endif
+			#ifndef PROBLEMS_MODULE
+			Errors::fatal("Unknown compilation format option");
+			exit(1);
+			#endif
+		}
+	}
+
+@<Compile the Clib header inclusion and some clang pragmas@> =
+	segmentation_pos saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	if (Architectures::debug_enabled(TargetVMs::get_architecture(gen->for_VM)))
+		WRITE("#define DEBUG\n");
+	WRITE("#include \"inform7_clib.h\"\n");
+	if (C_GEN_DATA(compile_main))
+		WRITE("int main(int argc, char **argv) { return i7_default_main(argc, argv); }\n");
+	WRITE("#pragma clang diagnostic push\n");
+	WRITE("#pragma clang diagnostic ignored \"-Wunused-value\"\n");
+	WRITE("#pragma clang diagnostic ignored \"-Wparentheses-equality\"\n");
+	CodeGen::deselect(gen, saved);
+
+@<Compile the Clib code inclusion@> =
+	segmentation_pos saved = CodeGen::select(gen, c_library_inclusion_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#include \"inform7_clib.c\"\n");
+	CodeGen::deselect(gen, saved);
+
+@ =
+int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
+	CFunctionModel::end(gen);
+	CObjectModel::end(gen);
+	CLiteralsModel::end(gen);
+	CGlobals::end(gen);
+	CAssembly::end(gen);
+	CInputOutputModel::end(gen);
+	CMemoryModel::end(gen); /* must be last to end */
+	@<Compile end to clang pragmas@>;
+	filename *F = gen->to_file;
+	if ((F) && (C_GEN_DATA(compile_symbols))) @<String the symbols header target together@>;
+	return FALSE;
+}
+
+@<Compile end to clang pragmas@> =
+	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#pragma clang diagnostic pop\n");
+	CodeGen::deselect(gen, saved);
+
+@<String the symbols header target together@> =
+	filename *G = Filenames::in(Filenames::up(F), I"inform7_symbols.h");
+	text_stream HF;
+	if (STREAM_OPEN_TO_FILE(&HF, G, ISO_ENC) == FALSE) {
+		#ifdef PROBLEMS_MODULE
+		Problems::fatal_on_file("Can't open output file", G);
+		#endif
+		#ifndef PROBLEMS_MODULE
+		Errors::fatal_with_file("Can't open output file", G);
+		exit(1);
+		#endif
+	}
+	WRITE_TO(&HF, "/* Symbols derived mechanically from Inform 7 source: do not edit */\n\n");
+	WRITE_TO(&HF, "/* (1) Instance IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_instances_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (2) Values of enumerated kinds */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_enum_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (3) Kind IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_kinds_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (4) Action IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_actions_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (5) Property IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_property_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (6) Variable IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_variable_symbols_I7CGS]);
+	WRITE_TO(&HF, "\n/* (7) Function IDs */\n\n");
+	CodeGen::write_segment(&HF, gen->segmentation.segments[c_function_symbols_I7CGS]);
+	STREAM_CLOSE(&HF);
+
 @h Static supporting code.
 The C code generated here would not compile as a stand-alone file. It needs
 to use variables and functions from a small unchanging library called 
@@ -260,12 +471,14 @@ then that external code will still call |i7_new_process| and then |i7_run_proces
 but may in between the two supply its own receiver or sender:
 
 = (text to inform7_clib.h)
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8);
+void i7_set_process_receiver(i7process_t *proc,
+	void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
 =
 
 = (text to inform7_clib.c)
-void i7_set_process_receiver(i7process_t *proc, void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
+void i7_set_process_receiver(i7process_t *proc,
+	void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
 	proc->use_UTF8 = UTF8;
 }
@@ -322,206 +535,3 @@ void i7_benign_exit(i7process_t *proc) {
 	longjmp(proc->execution_env, 2);
 }
 =
-
-@h Segmentation.
-
-@e c_header_inclusion_I7CGS
-@e c_ids_and_maxima_I7CGS
-@e c_library_inclusion_I7CGS
-@e c_predeclarations_I7CGS
-@e c_very_early_matter_I7CGS
-@e c_constants_1_I7CGS
-@e c_early_matter_I7CGS
-@e c_text_literals_code_I7CGS
-@e c_summations_at_eof_I7CGS
-@e c_arrays_at_eof_I7CGS
-@e c_main_matter_I7CGS
-@e c_functions_at_eof_I7CGS
-@e c_code_at_eof_I7CGS
-@e c_verbs_at_eof_I7CGS
-@e c_stubs_at_eof_I7CGS
-@e c_property_offset_creator_I7CGS
-@e c_mem_I7CGS
-@e c_globals_array_I7CGS
-@e c_initialiser_I7CGS
-
-@e c_instances_symbols_I7CGS
-@e c_enum_symbols_I7CGS
-@e c_kinds_symbols_I7CGS
-@e c_actions_symbols_I7CGS
-@e c_property_symbols_I7CGS
-@e c_variable_symbols_I7CGS
-@e c_function_symbols_I7CGS
-
-=
-int C_target_segments[] = {
-	c_header_inclusion_I7CGS,
-	c_ids_and_maxima_I7CGS,
-	c_library_inclusion_I7CGS,
-	c_predeclarations_I7CGS,
-	c_very_early_matter_I7CGS,
-	c_constants_1_I7CGS,
-	c_early_matter_I7CGS,
-	c_text_literals_code_I7CGS,
-	c_summations_at_eof_I7CGS,
-	c_arrays_at_eof_I7CGS,
-	c_main_matter_I7CGS,
-	c_functions_at_eof_I7CGS,
-	c_code_at_eof_I7CGS,
-	c_verbs_at_eof_I7CGS,
-	c_stubs_at_eof_I7CGS,
-	c_property_offset_creator_I7CGS,
-	c_mem_I7CGS,
-	c_globals_array_I7CGS,
-	c_initialiser_I7CGS,
-	-1
-};
-
-int C_symbols_header_segments[] = {
-	c_instances_symbols_I7CGS,
-	c_enum_symbols_I7CGS,
-	c_kinds_symbols_I7CGS,
-	c_actions_symbols_I7CGS,
-	c_property_symbols_I7CGS,
-	c_variable_symbols_I7CGS,
-	c_function_symbols_I7CGS,
-	-1
-};
-
-@h State data.
-
-@d C_GEN_DATA(x) ((C_generation_data *) (gen->generator_private_data))->x
-
-=
-typedef struct C_generation_data {
-	struct C_generation_memory_model_data memdata;
-	struct C_generation_function_model_data fndata;
-	struct C_generation_object_model_data objdata;
-	struct C_generation_literals_model_data litdata;
-	CLASS_DEFINITION
-} C_generation_data;
-
-void CTarget::initialise_data(code_generation *gen) {
-	CMemoryModel::initialise_data(gen);
-	CFunctionModel::initialise_data(gen);
-	CObjectModel::initialise_data(gen);
-	CLiteralsModel::initialise_data(gen);
-	CGlobals::initialise_data(gen);
-	CAssembly::initialise_data(gen);
-	CInputOutputModel::initialise_data(gen);
-}
-
-@h Begin and end.
-
-=
-int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
-	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
-	CodeGen::additional_segments(gen, C_symbols_header_segments);
-	CTarget::initialise_data(gen);
-
-	CNamespace::fix_locals(gen);
-
-	segmentation_pos saved = CodeGen::select(gen, c_header_inclusion_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	int compile_main = TRUE;
-	target_vm *VM = gen->for_VM;
-	linked_list *opts = TargetVMs::option_list(VM);
-	text_stream *opt;
-	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
-		if (Str::eq_insensitive(opt, I"main")) compile_main = TRUE;
-		else if (Str::eq_insensitive(opt, I"no-main")) compile_main = FALSE;
-		else if (Str::eq_insensitive(opt, I"symbols-header")) ;
-		else if (Str::eq_insensitive(opt, I"no-symbols-header")) ;
-		else {
-			#ifdef PROBLEMS_MODULE
-			Problems::fatal("Unknown compilation format option");
-			#endif
-			#ifndef PROBLEMS_MODULE
-			Errors::fatal("Unknown compilation format option");
-			exit(1);
-			#endif
-		}
-	}
-	if (Architectures::debug_enabled(TargetVMs::get_architecture(VM)))
-		WRITE("#define DEBUG\n");
-	WRITE("#include \"inform7_clib.h\"\n");
-	if (compile_main)
-		WRITE("int main(int argc, char **argv) { return i7_default_main(argc, argv); }\n");
-	WRITE("#pragma clang diagnostic push\n");
-	WRITE("#pragma clang diagnostic ignored \"-Wunused-value\"\n");
-	WRITE("#pragma clang diagnostic ignored \"-Wparentheses-equality\"\n");
-	CodeGen::deselect(gen, saved);
-
-	saved = CodeGen::select(gen, c_library_inclusion_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("#include \"inform7_clib.c\"\n");
-	CodeGen::deselect(gen, saved);
-
-	CMemoryModel::begin(gen);
-	CFunctionModel::begin(gen);
-	CObjectModel::begin(gen);
-	CLiteralsModel::begin(gen);
-	CGlobals::begin(gen);
-	CAssembly::begin(gen);
-	CInputOutputModel::begin(gen);
-
-	return FALSE;
-}
-
-int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
-	CFunctionModel::end(gen);
-	CObjectModel::end(gen);
-	CLiteralsModel::end(gen);
-	CGlobals::end(gen);
-	CAssembly::end(gen);
-	CInputOutputModel::end(gen);
-	CMemoryModel::end(gen); /* must be last to end */
-
-	segmentation_pos saved = CodeGen::select(gen, c_initialiser_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("#pragma clang diagnostic pop\n");
-	CodeGen::deselect(gen, saved);
-
-	filename *F = gen->to_file;
-	if (F) {
-		int compile_symbols = FALSE;
-		target_vm *VM = gen->for_VM;
-		linked_list *opts = TargetVMs::option_list(VM);
-		text_stream *opt;
-		LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
-			if (Str::eq_insensitive(opt, I"symbols-header")) compile_symbols = TRUE;
-			if (Str::eq_insensitive(opt, I"no-symbols-header")) compile_symbols = FALSE;
-		}
-		if (compile_symbols) {
-			filename *G = Filenames::in(Filenames::up(F), I"inform7_symbols.h");
-			text_stream HF;
-			if (STREAM_OPEN_TO_FILE(&HF, G, ISO_ENC) == FALSE) {
-				#ifdef PROBLEMS_MODULE
-				Problems::fatal_on_file("Can't open output file", G);
-				#endif
-				#ifndef PROBLEMS_MODULE
-				Errors::fatal_with_file("Can't open output file", G);
-				exit(1);
-				#endif
-			}
-			WRITE_TO(&HF, "/* Symbols derived mechanically from Inform 7 source: do not edit */\n\n");
-			WRITE_TO(&HF, "/* (1) Instance IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_instances_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (2) Values of enumerated kinds */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_enum_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (3) Kind IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_kinds_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (4) Action IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_actions_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (5) Property IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_property_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (6) Variable IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_variable_symbols_I7CGS]);
-			WRITE_TO(&HF, "\n/* (7) Function IDs */\n\n");
-			CodeGen::write_segment(&HF, gen->segmentation.segments[c_function_symbols_I7CGS]);
-			STREAM_CLOSE(&HF);
-		}
-	}
-	
-	return FALSE;
-}

@@ -201,9 +201,11 @@ void Generators::end_array(code_generation *gen, int format, segmentation_pos *s
 @d MANGLED_GDCFORM 5
 
 =
-VOID_METHOD_TYPE(DECLARE_CONSTANT_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val)
-void Generators::declare_constant(code_generation *gen, text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_CONSTANT_MTID, gen, const_name, const_s, form, P, val);
+VOID_METHOD_TYPE(DECLARE_CONSTANT_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *const_s, int form, text_stream *val)
+void Generators::declare_constant(code_generation *gen, inter_symbol *const_s, int form,
+	text_stream *val) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_CONSTANT_MTID, gen, const_s, form, val);
 }
 
 @h Methods called by Vanilla Code.

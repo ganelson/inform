@@ -145,12 +145,10 @@ than a literal, or may even be computed.
 	}
 
 @<Declare this as a computed constant@> =
-	Generators::declare_constant(gen, Inter::Symbols::name(con_name), con_name,
-		COMPUTED_GDCFORM, P, NULL);
+	Generators::declare_constant(gen, con_name, COMPUTED_GDCFORM, NULL);
 
 @<Declare this as an explicit constant@> =
-	Generators::declare_constant(gen, Inter::Symbols::name(con_name), con_name,
-		DATA_GDCFORM, P, NULL);
+	Generators::declare_constant(gen, con_name, DATA_GDCFORM, NULL);
 
 @ When called by //Generators::declare_constant//, generators may if they choose
 make use of the following convenient function for generating the value to which a
@@ -162,8 +160,9 @@ for constants |A|, |B|. If the generator is for a language which doesn't allow
 that, it will have to make other arrangements.
 
 =
-void VanillaConstants::definition_value(code_generation *gen, int form, inter_tree_node *P,
+void VanillaConstants::definition_value(code_generation *gen, int form,
 	inter_symbol *con_name, text_stream *val) {
+	inter_tree_node *P = con_name->definition;
 	text_stream *OUT = CodeGen::current(gen);
 	switch (form) {
 		case RAW_GDCFORM:
@@ -252,8 +251,7 @@ void VanillaConstants::declare_text_literals(code_generation *gen) {
 			VanillaConstants::compare_tlh);
 		for (int i=0; i<no_tlh; i++) {
 			text_literal_holder *tlh = sorted[i];
-			Generators::declare_constant(gen, Inter::Symbols::name(tlh->con_name),
-				tlh->con_name, LITERAL_TEXT_GDCFORM, tlh->con_name->definition,
+			Generators::declare_constant(gen, tlh->con_name, LITERAL_TEXT_GDCFORM,
 				tlh->literal_content);
 		}
 	}

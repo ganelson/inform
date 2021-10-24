@@ -24,7 +24,8 @@ code than that for |X|. See //Code Generation// for how this is done.
 
 =
 void I6TargetConstants::declare_constant(code_generator *cgt, code_generation *gen,
-	text_stream *const_name, inter_symbol *const_s, int form, inter_tree_node *P, text_stream *val) {
+	inter_symbol *const_s, int form, text_stream *val) {
+	text_stream *const_name = Inter::Symbols::name(const_s);
     @<Leave undeclared any array used as a value of a property@>;
 	@<Leave undeclared any constant auto-declared by the I6 compiler@>;
 
@@ -40,7 +41,7 @@ void I6TargetConstants::declare_constant(code_generator *cgt, code_generation *g
 	@<Certain constants should be declared only if I6 has not already declared them@>;
 	if (ifndef_me) WRITE("#ifndef %S;\n", const_name);
 		WRITE("Constant %S = ", const_name);
-		VanillaConstants::definition_value(gen, form, P, const_s, val);
+		VanillaConstants::definition_value(gen, form, const_s, val);
 		WRITE(";\n");
 	if (ifndef_me) WRITE("#endif;\n");
 	CodeGen::deselect(gen, saved);
@@ -99,7 +100,7 @@ declared with the |Release| directive, so:
 
 @<Declare the Release constant with a directive@> =
 	WRITE("Release ");
-	VanillaConstants::definition_value(gen, form, P, const_s, val);
+	VanillaConstants::definition_value(gen, form, const_s, val);
 	WRITE(";\n");
 	return;
 
@@ -108,7 +109,7 @@ literal:
 
 @<Declare the Serial constant with a directive@> =
 	WRITE("Serial ");
-	VanillaConstants::definition_value(gen, form, P, const_s, val);
+	VanillaConstants::definition_value(gen, form, const_s, val);
 	WRITE(";\n");
 	return;
 

@@ -325,7 +325,7 @@ void CObjectModel::declare_instance(code_generator *cgt,
 	} else {
 		TEMPORARY_TEXT(val)
 		WRITE_TO(val, "%d", enumeration);
-		Generators::declare_constant(gen, Inter::Symbols::name(inst_s), NULL, RAW_GDCFORM, NULL, val);
+		Generators::declare_constant(gen, inst_s, RAW_GDCFORM, val);
 		CObjectModel::define_header_constant_for_instance(gen, Inter::Symbols::name(inst_s), printed_name, val, TRUE);
 		DISCARD_TEXT(val)
 	}
