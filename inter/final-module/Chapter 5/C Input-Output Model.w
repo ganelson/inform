@@ -815,13 +815,3 @@ i7word_t fn_i7_mgl_pending_boxed_quotation(i7process_t *proc) {
 	return 0;
 }
 =
-
-@
-
-= (text to inform7_clib.h)
-#endif
-=
-
-= (text to inform7_clib.c)
-#endif
-=

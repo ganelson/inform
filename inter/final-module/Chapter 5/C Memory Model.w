@@ -17,14 +17,12 @@ typedef struct C_generation_memory_model_data {
 	int himem; /* high point of memory: 1 more than the largest legal address */
 	struct text_stream *array_name;
 	int entry_count;
-	int next_node_is_a_ref;
 } C_generation_memory_model_data;
 
 void CMemoryModel::initialise_data(code_generation *gen) {
 	C_GEN_DATA(memdata.himem) = 0;
 	C_GEN_DATA(memdata.array_name) = Str::new();
 	C_GEN_DATA(memdata.entry_count) = 0;
-	C_GEN_DATA(memdata.next_node_is_a_ref) = FALSE;
 }
 
 @h Byte-addressable memory.
@@ -524,24 +522,11 @@ int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref
 int CMemoryModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case LOOKUP_BIP:     if (CReferences::am_I_a_ref(gen)) @<Word value as reference@>
-						     else @<Word value as value@>;
+		case LOOKUP_BIP:     WRITE("i7_read_word(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
 						     break;
-		case LOOKUPBYTE_BIP: if (CReferences::am_I_a_ref(gen)) @<Byte value as reference@>
-						     else @<Byte value as value@>; break;
+		case LOOKUPBYTE_BIP: WRITE("i7_read_byte(proc, "); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")");
+							 break;
 		default:             return NOT_APPLICABLE;
 	}
 	return FALSE;
 }
-
-@<Word value as value@> =
-	WRITE("i7_read_word(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")");
-
-@<Word value as reference@> =
-	WRITE("i7_write_word(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
-	
-@<Byte value as value@> =
-	WRITE("i7_read_byte(proc, "); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")");
-	
-@<Byte value as reference@> =
-	WRITE("i7_change_byte(proc, "); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(", ");

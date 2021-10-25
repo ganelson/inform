@@ -41,3 +41,4 @@ Chapter 5: C
 	C Function Model
 	C Literals
 	C Input-Output Model
+	C Utility Functions
