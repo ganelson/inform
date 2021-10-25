@@ -118,16 +118,23 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 }
 
 @ Constants in Inter are indeed directly converted to |#define|d constants in C,
-but with their names of course mangled:
+but with their names of course mangled.
+
+For the reason why |Serial| and |Release| are placed higher-up in the file, see
+//C Memory Model//.
 
 =
 void CNamespace::declare_constant(code_generator *cgt, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
-	segmentation_pos saved = CodeGen::select_layered(gen, c_constants_I7CGS,
+	text_stream *name = Inter::Symbols::name(const_s);
+	int seg = c_constants_I7CGS;
+	if (Str::eq(name, I"Serial")) seg = c_ids_and_maxima_I7CGS;
+	if (Str::eq(name, I"Release")) seg = c_ids_and_maxima_I7CGS;
+	segmentation_pos saved = CodeGen::select_layered(gen, seg,
 		Inter::Constant::constant_depth(const_s));
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CNamespace::mangle(cgt, OUT, Inter::Symbols::name(const_s));
+	CNamespace::mangle(cgt, OUT, name);
 	WRITE(" ");
 	VanillaConstants::definition_value(gen, form, const_s, val);
 	WRITE("\n");

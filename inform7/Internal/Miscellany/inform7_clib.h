@@ -68,15 +68,8 @@ void i7_initializer(i7process_t *proc); /* part of the compiled story, not infor
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-void i7_initialise_state(i7process_t *proc);
-void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
-void i7_destroy_state(i7process_t *proc, i7state_t *s);
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old);
-void i7_save_snapshot(i7process_t *proc);
-int i7_has_snapshot(i7process_t *proc);
-void i7_restore_snapshot(i7process_t *proc);
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
-void i7_destroy_latest_snapshot(i7process_t *proc);
+void i7_initialise_variables(i7process_t *proc);
+void i7_initialise_memory_and_stack(i7process_t *proc);
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address);
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 #define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
@@ -85,11 +78,21 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val);
-i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way);
+i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index,
+	i7word_t new_val, int way);
 void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
 void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y);
 void glulx_mfree(i7process_t *proc, i7word_t x);
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size);
+void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
+void i7_destroy_state(i7process_t *proc, i7state_t *s);
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old);
+void i7_save_snapshot(i7process_t *proc);
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
+void i7_destroy_latest_snapshot(i7process_t *proc);
 void i7_debug_stack(char *N);
 i7word_t i7_pull(i7process_t *proc);
 void i7_push(i7process_t *proc, i7word_t x);
@@ -182,6 +185,7 @@ i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7wor
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+void i7_initialise_object_tree(i7process_t *proc);
 int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);

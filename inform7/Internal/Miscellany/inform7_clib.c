@@ -72,7 +72,9 @@ int i7_run_process(i7process_t *proc) {
 		if (tc == 2) proc->termination_code = 0; /* terminated mid-stream but benignly */
 		else proc->termination_code = tc; /* terminated mid-stream with a fatal error */
     } else {
-		i7_initialise_state(proc);
+		i7_initialise_memory_and_stack(proc);
+		i7_initialise_variables(proc);
+		i7_initialise_object_tree(proc);
 		i7_initializer(proc);
 		i7_initialise_streams(proc);
 		fn_i7_mgl_Main(proc);
@@ -90,24 +92,22 @@ void i7_fatal_exit(i7process_t *proc) {
 void i7_benign_exit(i7process_t *proc) {
 	longjmp(proc->execution_env, 2);
 }
+void i7_initialise_variables(i7process_t *proc) {
+	proc->state.variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
+	for (int i=0; i<i7_no_variables; i++)
+		proc->state.variables[i] = i7_initial_variable_values[i];
+}
 i7byte_t i7_initial_memory[];
-void i7_initialise_state(i7process_t *proc) {
+void i7_initialise_memory_and_stack(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
-	i7byte_t *mem = calloc(i7_static_himem, sizeof(i7byte_t));
-	if (mem == NULL) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	proc->state.memory = mem;
-	proc->state.himem = i7_static_himem;
+
+	i7byte_t *mem = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
 	for (int i=0; i<i7_static_himem; i++) mem[i] = i7_initial_memory[i];
     #ifdef i7_mgl_Release
-    mem[0x34] = I7BYTE_2(i7_mgl_Release);
-    mem[0x35] = I7BYTE_3(i7_mgl_Release);
+    mem[0x34] = I7BYTE_2(i7_mgl_Release); mem[0x35] = I7BYTE_3(i7_mgl_Release);
     #endif
     #ifndef i7_mgl_Release
-    mem[0x34] = I7BYTE_2(1);
-    mem[0x35] = I7BYTE_3(1);
+    mem[0x34] = I7BYTE_2(1); mem[0x35] = I7BYTE_3(1);
     #endif
     #ifdef i7_mgl_Serial
     char *p = i7_text_of_string(i7_mgl_Serial);
@@ -116,31 +116,89 @@ void i7_initialise_state(i7process_t *proc) {
     #ifndef i7_mgl_Serial
     for (int i=0; i<6; i++) mem[0x36 + i] = '0';
     #endif
-    proc->state.stack_pointer = 0;
 
-	proc->state.object_tree_parent  = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.object_tree_child   = calloc(i7_max_objects, sizeof(i7word_t));
-	proc->state.object_tree_sibling = calloc(i7_max_objects, sizeof(i7word_t));
+ 	proc->state.memory = mem;
+	proc->state.himem = i7_static_himem;
+	proc->state.stack_pointer = 0;
+}
+i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
+	return proc->state.memory[address];
+}
 
-	if ((proc->state.object_tree_parent == NULL) ||
-		(proc->state.object_tree_child == NULL) ||
-		(proc->state.object_tree_sibling == NULL)) {
-		printf("Memory allocation failed\n");
+i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
+	i7byte_t *data = proc->state.memory;
+	int byte_position = array_address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
-	for (int i=0; i<i7_max_objects; i++) {
-		proc->state.object_tree_parent[i] = 0;
-		proc->state.object_tree_child[i] = 0;
-		proc->state.object_tree_sibling[i] = 0;
-	}
+	return             (i7word_t) data[byte_position + 3]  +
+	            0x100*((i7word_t) data[byte_position + 2]) +
+		      0x10000*((i7word_t) data[byte_position + 1]) +
+		    0x1000000*((i7word_t) data[byte_position + 0]);
+}
+void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
+	proc->state.memory[address] = new_val;
+}
 
-	proc->state.variables = calloc(i7_no_variables, sizeof(i7word_t));
-	if (proc->state.variables == NULL) {
-		printf("Memory allocation failed\n");
+i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
+	i7byte_t old_val = i7_read_byte(proc, address);
+	i7byte_t return_val = new_val;
+	switch (way) {
+		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
+		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
+		case i7_lvalue_PREINC:   return_val = old_val+1;   new_val = old_val+1; break;
+		case i7_lvalue_POSTINC:  return_val = old_val; new_val = old_val+1; break;
+		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
+		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
+	}
+	i7_write_byte(proc, address, new_val);
+	return return_val;
+}
+
+i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way) {
+	i7byte_t *data = proc->state.memory;
+	i7word_t old_val = i7_read_word(proc, array_address, array_index);
+	i7word_t return_val = new_val;
+	switch (way) {
+		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
+		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
+		case i7_lvalue_PREINC:   return_val = old_val+1;   new_val = old_val+1; break;
+		case i7_lvalue_POSTINC:  return_val = old_val; new_val = old_val+1; break;
+		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
+		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
+	}
+	int byte_position = array_address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
 		i7_fatal_exit(proc);
 	}
-	for (int i=0; i<i7_no_variables; i++)
-		proc->state.variables[i] = i7_initial_variable_values[i];
+	data[byte_position]   = I7BYTE_0(new_val);
+	data[byte_position+1] = I7BYTE_1(new_val);
+	data[byte_position+2] = I7BYTE_2(new_val);
+	data[byte_position+3] = I7BYTE_3(new_val);
+	return return_val;
+}
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = 0x100*((i7word_t) i7_read_byte(proc, x+2*y)) + ((i7word_t) i7_read_byte(proc, x+2*y+1));
+}
+void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
+    if (z < y)
+		for (i7word_t i=0; i<x; i++)
+			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
+    else
+		for (i7word_t i=x-1; i>=0; i--)
+			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
+}
+
+void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
+	printf("Unimplemented: glulx_malloc.\n");
+	i7_fatal_exit(proc);
+}
+
+void glulx_mfree(i7process_t *proc, i7word_t x) {
+	printf("Unimplemented: glulx_mfree.\n");
+	i7_fatal_exit(proc);
 }
 void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
 	void *p = calloc(how_many, of_size);
@@ -227,85 +285,6 @@ void i7_restore_snapshot(i7process_t *proc) {
 void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss) {
 	i7_destroy_state(proc, &(proc->state));
 	i7_copy_state(proc, &(proc->state), &(ss->then));
-}
-i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
-	return proc->state.memory[address];
-}
-
-i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
-	i7byte_t *data = proc->state.memory;
-	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
-		printf("Memory access out of range: %d\n", byte_position);
-		i7_fatal_exit(proc);
-	}
-	return             (i7word_t) data[byte_position + 3]      +
-	            0x100*((i7word_t) data[byte_position + 2]) +
-		      0x10000*((i7word_t) data[byte_position + 1]) +
-		    0x1000000*((i7word_t) data[byte_position + 0]);
-}
-void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
-	proc->state.memory[address] = new_val;
-}
-
-i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
-	i7byte_t old_val = i7_read_byte(proc, address);
-	i7byte_t return_val = new_val;
-	switch (way) {
-		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
-		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
-		case i7_lvalue_PREINC:   return_val = old_val+1;   new_val = old_val+1; break;
-		case i7_lvalue_POSTINC:  return_val = old_val; new_val = old_val+1; break;
-		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
-		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
-	}
-	i7_write_byte(proc, address, new_val);
-	return return_val;
-}
-
-i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way) {
-	i7byte_t *data = proc->state.memory;
-	i7word_t old_val = i7_read_word(proc, array_address, array_index);
-	i7word_t return_val = new_val;
-	switch (way) {
-		case i7_lvalue_PREDEC:   return_val = old_val-1;   new_val = old_val-1; break;
-		case i7_lvalue_POSTDEC:  return_val = old_val; new_val = old_val-1; break;
-		case i7_lvalue_PREINC:   return_val = old_val+1;   new_val = old_val+1; break;
-		case i7_lvalue_POSTINC:  return_val = old_val; new_val = old_val+1; break;
-		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
-		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
-	}
-	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
-		printf("Memory access out of range: %d\n", byte_position);
-		i7_fatal_exit(proc);
-	}
-	data[byte_position]   = I7BYTE_0(new_val);
-	data[byte_position+1] = I7BYTE_1(new_val);
-	data[byte_position+2] = I7BYTE_2(new_val);
-	data[byte_position+3] = I7BYTE_3(new_val);
-	return return_val;
-}
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	if (z) *z = 0x100*((i7word_t) i7_read_byte(proc, x+2*y)) + ((i7word_t) i7_read_byte(proc, x+2*y+1));
-}
-void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
-    if (z < y)
-		for (i7word_t i=0; i<x; i++)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-    else
-		for (i7word_t i=x-1; i>=0; i--)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-}
-
-void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
-	printf("Unimplemented: glulx_malloc.\n");
-	i7_fatal_exit(proc);
-}
-
-void glulx_mfree(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: glulx_mfree.\n");
-	i7_fatal_exit(proc);
 }
 // i7word_t i7_mgl_sp = 0;
 
@@ -1085,6 +1064,17 @@ void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if (to) {
 		proc->state.object_tree_sibling[obj] = proc->state.object_tree_child[to];
 		proc->state.object_tree_child[to] = obj;
+	}
+}
+
+void i7_initialise_object_tree(i7process_t *proc) {
+	proc->state.object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_sibling = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	for (int i=0; i<i7_max_objects; i++) {
+		proc->state.object_tree_parent[i] = 0;
+		proc->state.object_tree_child[i] = 0;
+		proc->state.object_tree_sibling[i] = 0;
 	}
 }
 i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref) {

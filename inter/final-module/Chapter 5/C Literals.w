@@ -10,6 +10,7 @@ void CLiteralsModel::initialise(code_generator *cgt) {
 	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CLiteralsModel::compile_literal_number);
 	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, CLiteralsModel::compile_literal_real);
 	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CLiteralsModel::compile_literal_text);
+	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, CLiteralsModel::compile_literal_symbol);
 	METHOD_ADD(cgt, NEW_ACTION_MTID, CLiteralsModel::new_action);
 }
 
@@ -668,6 +669,15 @@ void CLiteralsModel::compile_literal_real(code_generator *cgt,
 	uint32_t n = CLiteralsModel::construct_float(signbit, intv, fracv, expo);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("(i7word_t) 0x%08x", n);
+}
+
+@
+
+=
+void CLiteralsModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased) {
+	text_stream *OUT = CodeGen::current(gen);
+	text_stream *S = Inter::Symbols::name(aliased);
+	Generators::mangle(gen, OUT, S);
 }
 
 @

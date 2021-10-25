@@ -38,11 +38,11 @@ code can interface with it. Both are divided into segments. The main file thus:
 @e c_early_matter_I7CGS
 @e c_text_literals_code_I7CGS
 @e c_summations_at_eof_I7CGS
-@e c_arrays_at_eof_I7CGS
+@e c_arrays_I7CGS
 @e c_main_matter_I7CGS
 @e c_functions_at_eof_I7CGS
 @e c_code_at_eof_I7CGS
-@e c_verbs_at_eof_I7CGS
+@e c_verb_arrays_I7CGS
 @e c_stubs_at_eof_I7CGS
 @e c_property_offset_creator_I7CGS
 @e c_mem_I7CGS
@@ -60,11 +60,11 @@ int C_target_segments[] = {
 	c_early_matter_I7CGS,
 	c_text_literals_code_I7CGS,
 	c_summations_at_eof_I7CGS,
-	c_arrays_at_eof_I7CGS,
+	c_arrays_I7CGS,
 	c_main_matter_I7CGS,
 	c_functions_at_eof_I7CGS,
 	c_code_at_eof_I7CGS,
-	c_verbs_at_eof_I7CGS,
+	c_verb_arrays_I7CGS,
 	c_stubs_at_eof_I7CGS,
 	c_property_offset_creator_I7CGS,
 	c_mem_I7CGS,
@@ -517,7 +517,9 @@ int i7_run_process(i7process_t *proc) {
 		if (tc == 2) proc->termination_code = 0; /* terminated mid-stream but benignly */
 		else proc->termination_code = tc; /* terminated mid-stream with a fatal error */
     } else {
-		i7_initialise_state(proc);
+		i7_initialise_memory_and_stack(proc);
+		i7_initialise_variables(proc);
+		i7_initialise_object_tree(proc);
 		i7_initializer(proc);
 		i7_initialise_streams(proc);
 		fn_i7_mgl_Main(proc);

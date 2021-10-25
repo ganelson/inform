@@ -702,7 +702,7 @@ void CObjectModel::write_property_values_table(code_generation *gen) {
 				CNamespace::mangle(NULL, OUT, owner->name);
 				WRITE("].len[i7_read_word(proc, ");
 				CNamespace::mangle(NULL, OUT, pair->prop->name);
-				WRITE(", 1)] = xt_%S + 1;\n", pair->val);
+				WRITE(", 1)] = %S__xt + 1;\n", pair->val);
 			} else {
 				WRITE("i7_properties[");
 				CNamespace::mangle(NULL, OUT, owner->name);
@@ -855,6 +855,7 @@ text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
 @
 
 = (text to inform7_clib.h)
+void i7_initialise_object_tree(i7process_t *proc);
 int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
@@ -934,6 +935,17 @@ void i7_move(i7process_t *proc, i7word_t obj, i7word_t to) {
 	if (to) {
 		proc->state.object_tree_sibling[obj] = proc->state.object_tree_child[to];
 		proc->state.object_tree_child[to] = obj;
+	}
+}
+
+void i7_initialise_object_tree(i7process_t *proc) {
+	proc->state.object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_child   = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	proc->state.object_tree_sibling = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));
+	for (int i=0; i<i7_max_objects; i++) {
+		proc->state.object_tree_parent[i] = 0;
+		proc->state.object_tree_child[i] = 0;
+		proc->state.object_tree_sibling[i] = 0;
 	}
 }
 =

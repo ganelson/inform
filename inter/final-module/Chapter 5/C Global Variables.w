@@ -121,3 +121,18 @@ void CGlobals::evaluate_variable(code_generator *cgt, code_generation *gen,
 	CNamespace::mangle_variable(OUT, Inter::Symbols::name(var_name));
 	WRITE("]");
 }
+
+@ Finally, this function, part of the C library, initialises the variables for a
+newly-starting process.
+
+= (text to inform7_clib.h)
+void i7_initialise_variables(i7process_t *proc);
+=
+
+= (text to inform7_clib.c)
+void i7_initialise_variables(i7process_t *proc) {
+	proc->state.variables = i7_calloc(proc, i7_no_variables, sizeof(i7word_t));
+	for (int i=0; i<i7_no_variables; i++)
+		proc->state.variables[i] = i7_initial_variable_values[i];
+}
+=
