@@ -68,8 +68,6 @@ void i7_initializer(i7process_t *proc); /* part of the compiled story, not infor
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
-void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
 void i7_initialise_state(i7process_t *proc);
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
 void i7_destroy_state(i7process_t *proc, i7state_t *s);
@@ -449,6 +447,8 @@ void i7_print_name(i7process_t *proc, i7word_t x);
 void i7_print_object(i7process_t *proc, i7word_t x);
 void i7_print_box(i7process_t *proc, i7word_t x);
 void i7_read(i7process_t *proc, i7word_t x);
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
 char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);

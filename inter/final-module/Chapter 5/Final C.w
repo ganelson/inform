@@ -107,6 +107,7 @@ typedef struct C_generation_data {
 	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
 	struct C_generation_literals_model_data litdata;
+	struct C_generation_variables_data vardata;
 	CLASS_DEFINITION
 } C_generation_data;
 

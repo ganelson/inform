@@ -5,6 +5,22 @@ Rounding out the C library with a few functions intended for external code to us
 @
 
 = (text to inform7_clib.h)
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val);
+=
+
+= (text to inform7_clib.c)
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
+	return proc->state.variables[var_id];
+}
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
+	proc->state.variables[var_id] = val;
+}
+=
+
+@
+
+= (text to inform7_clib.h)
 char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);

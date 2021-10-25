@@ -57,6 +57,16 @@ void CNamespace::mangle_opcode(code_generator *cgt, OUTPUT_STREAM, text_stream *
 			PUT(Str::get(pos));
 }
 
+@ Global variable names are similarly mangled:
+= (text)
+    howmayyou       i7_var_howmayyou
+=
+
+=
+void CNamespace::mangle_variable(OUTPUT_STREAM, text_stream *var) {
+	WRITE("i7_var_%S", var);
+}
+
 @ Local variable names have to be handled slightly differently. This is because
 Inter frequently makes use of local variables whose identifiers are also used
 for some global construct. Of course, C also allows for this: for example --

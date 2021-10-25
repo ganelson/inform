@@ -90,12 +90,6 @@ void i7_fatal_exit(i7process_t *proc) {
 void i7_benign_exit(i7process_t *proc) {
 	longjmp(proc->execution_env, 2);
 }
-i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
-	return proc->state.variables[var_id];
-}
-void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
-	proc->state.variables[var_id] = val;
-}
 i7byte_t i7_initial_memory[];
 void i7_initialise_state(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
@@ -1712,6 +1706,12 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 
 i7word_t fn_i7_mgl_pending_boxed_quotation(i7process_t *proc) {
 	return 0;
+}
+i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
+	return proc->state.variables[var_id];
+}
+void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
+	proc->state.variables[var_id] = val;
 }
 i7word_t fn_i7_mgl_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
 i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from, i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
