@@ -376,9 +376,9 @@ void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 		if (S->char_size == 4) {
 			for (size_t i = 0; i < S->write_limit; i++)
 				if (i < S->memory_used)
-					i7_write_word(proc, S->write_here_on_closure, i, S->to_memory[i], i7_lvalue_SET);
+					i7_write_word(proc, S->write_here_on_closure, i, S->to_memory[i]);
 				else
-					i7_write_word(proc, S->write_here_on_closure, i, 0, i7_lvalue_SET);
+					i7_write_word(proc, S->write_here_on_closure, i, 0);
 		} else {
 			for (size_t i = 0; i < S->write_limit; i++)
 				if (i < S->memory_used)
@@ -391,8 +391,8 @@ void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 		i7_push(proc, S->chars_read);
 		i7_push(proc, S->memory_used);
 	} else if (result != 0) {
-		i7_write_word(proc, result, 0, S->chars_read, i7_lvalue_SET);
-		i7_write_word(proc, result, 1, S->memory_used, i7_lvalue_SET);
+		i7_write_word(proc, result, 0, S->chars_read);
+		i7_write_word(proc, result, 1, S->memory_used);
 	}
 	if (S->to_file_id >= 0) i7_fclose(proc, S->to_file_id);
 	S->active = 0;
@@ -677,10 +677,10 @@ i7word_t i7_do_glk_select(i7process_t *proc, i7word_t structure) {
 		i7_push(proc, e->val2);
 	} else {
 		if (structure) {
-			i7_write_word(proc, structure, 0, e->type, i7_lvalue_SET);
-			i7_write_word(proc, structure, 1, e->win_id, i7_lvalue_SET);
-			i7_write_word(proc, structure, 2, e->val1, i7_lvalue_SET);
-			i7_write_word(proc, structure, 3, e->val2, i7_lvalue_SET);
+			i7_write_word(proc, structure, 0, e->type);
+			i7_write_word(proc, structure, 1, e->win_id);
+			i7_write_word(proc, structure, 2, e->val1);
+			i7_write_word(proc, structure, 3, e->val2);
 		}
 	}
 	return 0;
@@ -748,8 +748,8 @@ void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i
 		case i7_glk_stream_get_position:
 			rv = i7_do_glk_stream_get_position(proc, args[0]); break;
 		case i7_glk_window_get_size:
-			if (args[0]) i7_write_word(proc, args[0], 0, 80, i7_lvalue_SET);
-			if (args[1]) i7_write_word(proc, args[1], 0, 8, i7_lvalue_SET);
+			if (args[0]) i7_write_word(proc, args[0], 0, 80);
+			if (args[1]) i7_write_word(proc, args[1], 0, 8);
 			rv = 0; break;
 		case i7_glk_request_line_event:
 			rv = i7_do_glk_request_line_event(proc, args[0], args[1], args[2], args[3]); break;

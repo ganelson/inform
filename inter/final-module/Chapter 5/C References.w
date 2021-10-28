@@ -80,7 +80,7 @@ calling functions.
 
 @<This is a reference to a word lookup@> =
 	WRITE("(");
-	WRITE("i7_write_word(proc, ");
+	WRITE("i7_change_word(proc, ");
 		Vanilla::node(gen, InterTree::first_child(storage_ref)); WRITE(", ");
 		Vanilla::node(gen, InterTree::second_child(storage_ref)); WRITE(", ");
 	if (val_supplied) { VNODE_2C; } else { WRITE("0"); }

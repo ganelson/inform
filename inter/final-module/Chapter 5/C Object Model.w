@@ -549,9 +549,9 @@ not deriving from an Inform program.
 @<Begin the property-offset creator function@> =
 	WRITE("i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc) {\n"); INDENT;
 	WRITE("for (int i=0; i<i7_mgl_attributed_property_offsets_SIZE; i++)\n"); INDENT;
-	WRITE("i7_write_word(proc, i7_mgl_attributed_property_offsets, i, -1, i7_lvalue_SET);\n"); OUTDENT;
+	WRITE("i7_write_word(proc, i7_mgl_attributed_property_offsets, i, -1);\n"); OUTDENT;
 	WRITE("for (int i=0; i<i7_mgl_valued_property_offsets_SIZE; i++)\n"); INDENT;
-	WRITE("i7_write_word(proc, i7_mgl_valued_property_offsets, i, -1, i7_lvalue_SET);\n"); OUTDENT;
+	WRITE("i7_write_word(proc, i7_mgl_valued_property_offsets, i, -1);\n"); OUTDENT;
 
 @ This function has no meaningful return value, but has to conform to our
 calling convention for Inform programs, which means it has to return something.
@@ -783,7 +783,7 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array
 		i7_fatal_exit(proc);
 	}
 	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
-	if (address) i7_write_word(proc, address, 0, val, i7_lvalue_SET);
+	if (address) i7_write_word(proc, address, 0, val);
 	else {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
 		i7_fatal_exit(proc);

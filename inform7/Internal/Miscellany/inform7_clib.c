@@ -97,6 +97,15 @@ void i7_initialise_variables(i7process_t *proc) {
 	for (int i=0; i<i7_no_variables; i++)
 		proc->state.variables[i] = i7_initial_variable_values[i];
 }
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
+	void *p = calloc(how_many, of_size);
+	if (p == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	return p;
+}
+
 i7byte_t i7_initial_memory[];
 void i7_initialise_memory_and_stack(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
@@ -125,6 +134,17 @@ i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
 	return proc->state.memory[address];
 }
 
+i7word_t i7_read_sword(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
+	i7byte_t *data = proc->state.memory;
+	int byte_position = array_address + 2*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit(proc);
+	}
+	return             (i7word_t) data[byte_position + 1]  +
+	            0x100*((i7word_t) data[byte_position + 0]);
+}
+
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
 	i7byte_t *data = proc->state.memory;
 	int byte_position = array_address + 4*array_index;
@@ -137,10 +157,25 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 		      0x10000*((i7word_t) data[byte_position + 1]) +
 		    0x1000000*((i7word_t) data[byte_position + 0]);
 }
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = i7_read_sword(proc, x, y);
+}
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
 }
 
+void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
+	i7word_t new_val) {
+	int byte_position = address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit(proc);
+	}
+	proc->state.memory[byte_position]   = I7BYTE_0(new_val);
+	proc->state.memory[byte_position+1] = I7BYTE_1(new_val);
+	proc->state.memory[byte_position+2] = I7BYTE_2(new_val);
+	proc->state.memory[byte_position+3] = I7BYTE_3(new_val);
+}
 i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
 	i7byte_t old_val = i7_read_byte(proc, address);
 	i7byte_t return_val = new_val;
@@ -156,7 +191,8 @@ i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, i
 	return return_val;
 }
 
-i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way) {
+i7word_t i7_change_word(i7process_t *proc, i7word_t array_address, i7word_t array_index,
+	i7word_t new_val, int way) {
 	i7byte_t *data = proc->state.memory;
 	i7word_t old_val = i7_read_word(proc, array_address, array_index);
 	i7word_t return_val = new_val;
@@ -168,19 +204,32 @@ i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array
 		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
-	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
-		printf("Memory access out of range: %d\n", byte_position);
-		i7_fatal_exit(proc);
-	}
-	data[byte_position]   = I7BYTE_0(new_val);
-	data[byte_position+1] = I7BYTE_1(new_val);
-	data[byte_position+2] = I7BYTE_2(new_val);
-	data[byte_position+3] = I7BYTE_3(new_val);
+	i7_write_word(proc, array_address, array_index, new_val);
 	return return_val;
 }
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	if (z) *z = 0x100*((i7word_t) i7_read_byte(proc, x+2*y)) + ((i7word_t) i7_read_byte(proc, x+2*y+1));
+void i7_debug_stack(char *N) {
+	#ifdef I7_LOG_STACK_STATE
+	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
+	for (int i=0; i<proc->state.stack_pointer; i++)
+		printf("%d -> ", proc->state.stack[i]);
+	printf("\n");
+	#endif
+}
+
+i7word_t i7_pull(i7process_t *proc) {
+	if (proc->state.stack_pointer <= 0) {
+		printf("Stack underflow\n");
+		i7_fatal_exit(proc);
+	}
+	return proc->state.stack[--(proc->state.stack_pointer)];
+}
+
+void i7_push(i7process_t *proc, i7word_t x) {
+	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) {
+		printf("Stack overflow\n");
+		i7_fatal_exit(proc);
+	}
+	proc->state.stack[proc->state.stack_pointer++] = x;
 }
 void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
@@ -200,15 +249,6 @@ void glulx_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: glulx_mfree.\n");
 	i7_fatal_exit(proc);
 }
-void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
-	void *p = calloc(how_many, of_size);
-	if (p == NULL) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	return p;
-}
-
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
 	to->himem = from->himem;
 	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
@@ -239,11 +279,18 @@ void i7_destroy_state(i7process_t *proc, i7state_t *s) {
 	free(s->object_tree_sibling);
 	free(s->variables);
 }
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old) {
-	i7_destroy_state(proc, &(old->then));
-	old->valid = 0;
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *unwanted) {
+	i7_destroy_state(proc, &(unwanted->then));
+	unwanted->valid = 0;
 }
 
+void i7_destroy_latest_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
 void i7_save_snapshot(i7process_t *proc) {
 	if (proc->snapshots[proc->snapshot_pos].valid)
 		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
@@ -254,21 +301,11 @@ void i7_save_snapshot(i7process_t *proc) {
 	proc->snapshot_pos++;
 	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
 }
-
 int i7_has_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	return proc->snapshots[will_be].valid;
 }
-
-void i7_destroy_latest_snapshot(i7process_t *proc) {
-	int will_be = proc->snapshot_pos - 1;
-	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
-	if (proc->snapshots[will_be].valid)
-		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
-	proc->snapshot_pos = will_be;
-}
-
 void i7_restore_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
@@ -276,32 +313,11 @@ void i7_restore_snapshot(i7process_t *proc) {
 		printf("Restore impossible\n");
 		i7_fatal_exit(proc);
 	}
-	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(proc->snapshots[will_be].then));
 	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
 	int was = proc->snapshot_pos;
 	proc->snapshot_pos = will_be;
-}
-
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss) {
-	i7_destroy_state(proc, &(proc->state));
-	i7_copy_state(proc, &(proc->state), &(ss->then));
-}
-// i7word_t i7_mgl_sp = 0;
-
-void i7_debug_stack(char *N) {
-//	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
-//	for (int i=0; i<proc->state.stack_pointer; i++) printf("%d -> ", proc->state.stack[i]);
-//	printf("\n");
-}
-
-i7word_t i7_pull(i7process_t *proc) {
-	if (proc->state.stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7word_t) 0; }
-	return proc->state.stack[--(proc->state.stack_pointer)];
-}
-
-void i7_push(i7process_t *proc, i7word_t x) {
-	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
-	proc->state.stack[proc->state.stack_pointer++] = x;
 }
 void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
@@ -346,11 +362,7 @@ void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, 
             	if (val) *val =  0;
             }
         } else {
-//	        if ((pr == i7_mgl_A_door_to)) {
-//	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
-//	        } else {
-		        if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
-//		    }
+		    if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
 		}
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
@@ -379,7 +391,7 @@ void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
         }
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
+        (i7_change_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
     }
 }
 void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y) { /* Intentionally ignore */
@@ -950,7 +962,7 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array
 		i7_fatal_exit(proc);
 	}
 	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
-	if (address) i7_write_word(proc, address, 0, val, i7_lvalue_SET);
+	if (address) i7_write_word(proc, address, 0, val);
 	else {
 		printf("impossible property write (%d, %d)\n", owner_id, prop_id);
 		i7_fatal_exit(proc);
@@ -1419,9 +1431,9 @@ void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 		if (S->char_size == 4) {
 			for (size_t i = 0; i < S->write_limit; i++)
 				if (i < S->memory_used)
-					i7_write_word(proc, S->write_here_on_closure, i, S->to_memory[i], i7_lvalue_SET);
+					i7_write_word(proc, S->write_here_on_closure, i, S->to_memory[i]);
 				else
-					i7_write_word(proc, S->write_here_on_closure, i, 0, i7_lvalue_SET);
+					i7_write_word(proc, S->write_here_on_closure, i, 0);
 		} else {
 			for (size_t i = 0; i < S->write_limit; i++)
 				if (i < S->memory_used)
@@ -1434,8 +1446,8 @@ void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 		i7_push(proc, S->chars_read);
 		i7_push(proc, S->memory_used);
 	} else if (result != 0) {
-		i7_write_word(proc, result, 0, S->chars_read, i7_lvalue_SET);
-		i7_write_word(proc, result, 1, S->memory_used, i7_lvalue_SET);
+		i7_write_word(proc, result, 0, S->chars_read);
+		i7_write_word(proc, result, 1, S->memory_used);
 	}
 	if (S->to_file_id >= 0) i7_fclose(proc, S->to_file_id);
 	S->active = 0;
@@ -1560,10 +1572,10 @@ i7word_t i7_do_glk_select(i7process_t *proc, i7word_t structure) {
 		i7_push(proc, e->val2);
 	} else {
 		if (structure) {
-			i7_write_word(proc, structure, 0, e->type, i7_lvalue_SET);
-			i7_write_word(proc, structure, 1, e->win_id, i7_lvalue_SET);
-			i7_write_word(proc, structure, 2, e->val1, i7_lvalue_SET);
-			i7_write_word(proc, structure, 3, e->val2, i7_lvalue_SET);
+			i7_write_word(proc, structure, 0, e->type);
+			i7_write_word(proc, structure, 1, e->win_id);
+			i7_write_word(proc, structure, 2, e->val1);
+			i7_write_word(proc, structure, 3, e->val2);
 		}
 	}
 	return 0;
@@ -1631,8 +1643,8 @@ void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i
 		case i7_glk_stream_get_position:
 			rv = i7_do_glk_stream_get_position(proc, args[0]); break;
 		case i7_glk_window_get_size:
-			if (args[0]) i7_write_word(proc, args[0], 0, 80, i7_lvalue_SET);
-			if (args[1]) i7_write_word(proc, args[1], 0, 8, i7_lvalue_SET);
+			if (args[0]) i7_write_word(proc, args[0], 0, 80);
+			if (args[1]) i7_write_word(proc, args[1], 0, 8);
 			rv = 0; break;
 		case i7_glk_request_line_event:
 			rv = i7_do_glk_request_line_event(proc, args[0], args[1], args[2], args[3]); break;

@@ -245,10 +245,20 @@ will work correctly. See //CNamespace::declare_constant//.
 The rest of the header area remains all zeros.
 
 = (text to inform7_clib.h)
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size);
 void i7_initialise_memory_and_stack(i7process_t *proc);
 =
 
 = (text to inform7_clib.c)
+void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
+	void *p = calloc(how_many, of_size);
+	if (p == NULL) {
+		printf("Memory allocation failed\n");
+		i7_fatal_exit(proc);
+	}
+	return p;
+}
+
 i7byte_t i7_initial_memory[];
 void i7_initialise_memory_and_stack(i7process_t *proc) {
 	if (proc->state.memory != NULL) free(proc->state.memory);
@@ -278,17 +288,31 @@ void i7_initialise_memory_and_stack(i7process_t *proc) {
 @ The array |proc->state.memory| is of |i7byte_t| values, so it's easy to read
 and write bytes. Words are more challenging since we need to pack and unpack them.
 
-The following function reads a word which is in entry |array_index| (counting
+The |i7_read_word| function reads a word which is in word entry |array_index| (counting
 0, 1, 2, ...) in the array which begins at the byte address |array_address|.
+
+We can also read "short words", that is, 16-bit values.
 
 = (text to inform7_clib.h)
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address);
+i7word_t i7_read_sword(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 =
 
 = (text to inform7_clib.c)
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address) {
 	return proc->state.memory[address];
+}
+
+i7word_t i7_read_sword(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
+	i7byte_t *data = proc->state.memory;
+	int byte_position = array_address + 2*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit(proc);
+	}
+	return             (i7word_t) data[byte_position + 1]  +
+	            0x100*((i7word_t) data[byte_position + 0]);
 }
 
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
@@ -305,8 +329,27 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 }
 =
 
-@ Packing, unlike unpacking, is done with macros so that it is possible to express
-a packed word in constant context, which we will need later.
+@ |i7_read_sword| implements the Glulx opcode |aloads|, which we need to do since the 
+standard Inform kits make use of it in a few places:
+
+= (text to inform7_clib.h)
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+=
+
+= (text to inform7_clib.c)
+void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = i7_read_sword(proc, x, y);
+}
+=
+
+@ Writing values is again easy for bytes, but harder for words since they must
+be broken up into bytes written in sequence.
+
+Note that we make use of macros and not functions so that it is possible to
+express the fragments of a packed word in constant context: this is essential
+for our array initialisations.
+
+Note that short words do not need to be written.
 
 = (text to inform7_clib.h)
 #define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
@@ -315,8 +358,8 @@ a packed word in constant context, which we will need later.
 #define I7BYTE_3(V)  (V & 0x000000FF)
 
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val);
-i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index,
-	i7word_t new_val, int way);
+void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
+	i7word_t new_val);
 =
 
 = (text to inform7_clib.c)
@@ -324,6 +367,32 @@ void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
 }
 
+void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
+	i7word_t new_val) {
+	int byte_position = address + 4*array_index;
+	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
+		printf("Memory access out of range: %d\n", byte_position);
+		i7_fatal_exit(proc);
+	}
+	proc->state.memory[byte_position]   = I7BYTE_0(new_val);
+	proc->state.memory[byte_position+1] = I7BYTE_1(new_val);
+	proc->state.memory[byte_position+2] = I7BYTE_2(new_val);
+	proc->state.memory[byte_position+3] = I7BYTE_3(new_val);
+}
+=
+
+@ The seven primitive operations on storage need to be implemented for byte
+and word lookups by the following pair of functions. Note that if |way| is
+|i7_lvalue_SET| then |i7_change_byte| is equivalent to |i7_write_byte| and
+|i7_change_word| to |i7_write_word|, except that they return the value as set.
+
+= (text to inform7_clib.h)
+i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way);
+i7word_t i7_change_word(i7process_t *proc, i7word_t array_address, i7word_t array_index,
+	i7word_t new_val, int way);
+=
+
+= (text to inform7_clib.c)
 i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, int way) {
 	i7byte_t old_val = i7_read_byte(proc, address);
 	i7byte_t return_val = new_val;
@@ -339,7 +408,8 @@ i7byte_t i7_change_byte(i7process_t *proc, i7word_t address, i7byte_t new_val, i
 	return return_val;
 }
 
-i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array_index, i7word_t new_val, int way) {
+i7word_t i7_change_word(i7process_t *proc, i7word_t array_address, i7word_t array_index,
+	i7word_t new_val, int way) {
 	i7byte_t *data = proc->state.memory;
 	i7word_t old_val = i7_read_word(proc, array_address, array_index);
 	i7word_t return_val = new_val;
@@ -351,32 +421,50 @@ i7word_t i7_write_word(i7process_t *proc, i7word_t array_address, i7word_t array
 		case i7_lvalue_SETBIT:   new_val = old_val | new_val; return_val = new_val; break;
 		case i7_lvalue_CLEARBIT: new_val = old_val &(~new_val); return_val = new_val; break;
 	}
-	int byte_position = array_address + 4*array_index;
-	if ((byte_position < 0) || (byte_position >= i7_static_himem)) {
-		printf("Memory access out of range: %d\n", byte_position);
-		i7_fatal_exit(proc);
-	}
-	data[byte_position]   = I7BYTE_0(new_val);
-	data[byte_position+1] = I7BYTE_1(new_val);
-	data[byte_position+2] = I7BYTE_2(new_val);
-	data[byte_position+3] = I7BYTE_3(new_val);
+	i7_write_word(proc, array_address, array_index, new_val);
 	return return_val;
 }
 =
 
-@ "Short" 16-bit numbers can also be accessed:
+@ The stack is very simple; it can be pushed or pulled, but there's otherwise
+no access to it.
 
 = (text to inform7_clib.h)
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_debug_stack(char *N);
+i7word_t i7_pull(i7process_t *proc);
+void i7_push(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	if (z) *z = 0x100*((i7word_t) i7_read_byte(proc, x+2*y)) + ((i7word_t) i7_read_byte(proc, x+2*y+1));
+void i7_debug_stack(char *N) {
+	#ifdef I7_LOG_STACK_STATE
+	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
+	for (int i=0; i<proc->state.stack_pointer; i++)
+		printf("%d -> ", proc->state.stack[i]);
+	printf("\n");
+	#endif
+}
+
+i7word_t i7_pull(i7process_t *proc) {
+	if (proc->state.stack_pointer <= 0) {
+		printf("Stack underflow\n");
+		i7_fatal_exit(proc);
+	}
+	return proc->state.stack[--(proc->state.stack_pointer)];
+}
+
+void i7_push(i7process_t *proc, i7word_t x) {
+	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) {
+		printf("Stack overflow\n");
+		i7_fatal_exit(proc);
+	}
+	proc->state.stack[proc->state.stack_pointer++] = x;
 }
 =
 
-@ A Glulx assembly opcode is provided for fast memory copies:
+@ A Glulx assembly opcode is provided for fast memory copies, which we must
+implement. We're choosing not to implement the Glulx |@malloc| or |@mfree|
+opcodes for now, but that will surely need to change in due course.
 
 = (text to inform7_clib.h)
 void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
@@ -405,27 +493,24 @@ void glulx_mfree(i7process_t *proc, i7word_t x) {
 }
 =
 
-@ And now some deep copy functions. The above structures are full of pointers
-to arrays, so a simple copy will only duplicate those pointers, not the data
-in the arrays they point to. Similarly, we can't just throw away an |i7state_t|
-value without causing a memory leak, so we need explicit destructors.
+@ When processes are running, they take periodic "snapshots" of their states
+so that these can if necessary be returned to. (For IF works, this is how the
+UNDO command works; snapshots are taken once each turn.)
+
+Taking a snapshot, or restoring the state from an existing snapshot, inevitably
+means making a copy of state data. This has to be a deep copy, because the
+|i7state_t| structure is really just a collection of pointers to arrays in
+memory; copying only the pointers would not be good enough.
+
+For the same reason, an |i7state_t| cannot simply be discarded without causing
+a memory leak, so we provide a destructor function.
 
 = (text to inform7_clib.h)
-void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size);
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
 void i7_destroy_state(i7process_t *proc, i7state_t *s);
 =
 
 = (text to inform7_clib.c)
-void *i7_calloc(i7process_t *proc, size_t how_many, size_t of_size) {
-	void *p = calloc(how_many, of_size);
-	if (p == NULL) {
-		printf("Memory allocation failed\n");
-		i7_fatal_exit(proc);
-	}
-	return p;
-}
-
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
 	to->himem = from->himem;
 	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
@@ -458,21 +543,39 @@ void i7_destroy_state(i7process_t *proc, i7state_t *s) {
 }
 =
 
+@ Destroying a snapshot is then a simple matter of destroying the state
+stored inside it:
+
 = (text to inform7_clib.h)
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old);
-void i7_save_snapshot(i7process_t *proc);
-int i7_has_snapshot(i7process_t *proc);
-void i7_restore_snapshot(i7process_t *proc);
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *unwanted);
 void i7_destroy_latest_snapshot(i7process_t *proc);
 =
 
 = (text to inform7_clib.c)
-void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *old) {
-	i7_destroy_state(proc, &(old->then));
-	old->valid = 0;
+void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *unwanted) {
+	i7_destroy_state(proc, &(unwanted->then));
+	unwanted->valid = 0;
 }
 
+void i7_destroy_latest_snapshot(i7process_t *proc) {
+	int will_be = proc->snapshot_pos - 1;
+	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
+	if (proc->snapshots[will_be].valid)
+		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
+	proc->snapshot_pos = will_be;
+}
+=
+
+@ To take a snapshot, we copy the process's current state in the next free
+slot in the ring buffer of snapshots held by the process; the net effect is
+that it stores the most recent |I7_MAX_SNAPSHOTS| snapshots, silently discarding
+any older ones, but without leaking memory.
+
+= (text to inform7_clib.h)
+void i7_save_snapshot(i7process_t *proc);
+=
+
+= (text to inform7_clib.c)
 void i7_save_snapshot(i7process_t *proc) {
 	if (proc->snapshots[proc->snapshot_pos].valid)
 		i7_destroy_snapshot(proc, &(proc->snapshots[proc->snapshot_pos]));
@@ -483,21 +586,30 @@ void i7_save_snapshot(i7process_t *proc) {
 	proc->snapshot_pos++;
 	if (proc->snapshot_pos == I7_MAX_SNAPSHOTS) proc->snapshot_pos = 0;
 }
+=
 
+@ The function |i7_has_snapshot| tests whether the process has at least one
+valid snapshot to revert to:
+
+= (text to inform7_clib.h)
+int i7_has_snapshot(i7process_t *proc);
+void i7_restore_snapshot(i7process_t *proc);
+void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
+=
+
+= (text to inform7_clib.c)
 int i7_has_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
 	return proc->snapshots[will_be].valid;
 }
+=
 
-void i7_destroy_latest_snapshot(i7process_t *proc) {
-	int will_be = proc->snapshot_pos - 1;
-	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
-	if (proc->snapshots[will_be].valid)
-		i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
-	proc->snapshot_pos = will_be;
-}
+And |i7_restore_snapshot| restores the state of the process to that of the
+most recent snapshot, winding backwards through the ring buffer, so that it's
+then possible to restore again to go back another step, and so on:
 
+= (text to inform7_clib.c)
 void i7_restore_snapshot(i7process_t *proc) {
 	int will_be = proc->snapshot_pos - 1;
 	if (will_be < 0) will_be = I7_MAX_SNAPSHOTS - 1;
@@ -505,15 +617,10 @@ void i7_restore_snapshot(i7process_t *proc) {
 		printf("Restore impossible\n");
 		i7_fatal_exit(proc);
 	}
-	i7_restore_snapshot_from(proc, &(proc->snapshots[will_be]));
+	i7_destroy_state(proc, &(proc->state));
+	i7_copy_state(proc, &(proc->state), &(proc->snapshots[will_be].then));
 	i7_destroy_snapshot(proc, &(proc->snapshots[will_be]));
 	int was = proc->snapshot_pos;
 	proc->snapshot_pos = will_be;
 }
-
-void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss) {
-	i7_destroy_state(proc, &(proc->state));
-	i7_copy_state(proc, &(proc->state), &(ss->then));
-}
 =
-

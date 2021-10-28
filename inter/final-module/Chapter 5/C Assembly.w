@@ -2,7 +2,8 @@
 
 The problem of assembly language.
 
-@
+@ This section does just one thing: compiles invocations of assembly-language
+opcodes.
 
 =
 void CAssembly::initialise(code_generator *cgt) {
@@ -19,34 +20,6 @@ void CAssembly::begin(code_generation *gen) {
 void CAssembly::end(code_generation *gen) {
 }
 
-
-@
-
-= (text to inform7_clib.h)
-void i7_debug_stack(char *N);
-i7word_t i7_pull(i7process_t *proc);
-void i7_push(i7process_t *proc, i7word_t x);
-=
-
-= (text to inform7_clib.c)
-// i7word_t i7_mgl_sp = 0;
-
-void i7_debug_stack(char *N) {
-//	printf("Called %s: stack %d ", N, proc->state.stack_pointer);
-//	for (int i=0; i<proc->state.stack_pointer; i++) printf("%d -> ", proc->state.stack[i]);
-//	printf("\n");
-}
-
-i7word_t i7_pull(i7process_t *proc) {
-	if (proc->state.stack_pointer <= 0) { printf("Stack underflow\n"); int x = 0; printf("%d", 1/x); return (i7word_t) 0; }
-	return proc->state.stack[--(proc->state.stack_pointer)];
-}
-
-void i7_push(i7process_t *proc, i7word_t x) {
-	if (proc->state.stack_pointer >= I7_ASM_STACK_CAPACITY) { printf("Stack overflow\n"); return; }
-	proc->state.stack[proc->state.stack_pointer++] = x;
-}
-=
 
 @
 
@@ -218,11 +191,7 @@ void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, 
             	if (val) *val =  0;
             }
         } else {
-//	        if ((pr == i7_mgl_A_door_to)) {
-//	            if (val) *val = (i7word_t) i7_mcall_0(proc, obj, pr);
-//	        } else {
-		        if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
-//		    }
+		    if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
 		}
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
@@ -251,7 +220,7 @@ void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
         }
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-        (i7_write_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
+        (i7_change_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
     }
 }
 =
