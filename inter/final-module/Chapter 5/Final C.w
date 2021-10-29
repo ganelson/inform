@@ -103,6 +103,7 @@ int C_symbols_header_segments[] = {
 typedef struct C_generation_data {
 	int compile_main;
 	int compile_symbols;
+	struct dictionary *C_supported_opcodes;
 	struct C_generation_memory_model_data memdata;
 	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
@@ -114,6 +115,7 @@ typedef struct C_generation_data {
 void CTarget::initialise_data(code_generation *gen) {
 	C_GEN_DATA(compile_main) = TRUE;
 	C_GEN_DATA(compile_symbols) = FALSE;
+	C_GEN_DATA(C_supported_opcodes) = NULL;
 	CMemoryModel::initialise_data(gen);
 	CFunctionModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);

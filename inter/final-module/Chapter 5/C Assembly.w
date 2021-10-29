@@ -24,74 +24,132 @@ void CAssembly::end(code_generation *gen) {
 @
 
 =
+typedef struct C_supported_opcode {
+	struct text_stream *name;
+	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
+	int vararg_operand;
+	int speculative;
+	CLASS_DEFINITION
+} C_supported_opcode;
+
+
+C_supported_opcode *CAssembly::new_opcode(code_generation *gen, text_stream *name, int s1, int s2, int va) {
+	C_supported_opcode *opc = CREATE(C_supported_opcode);
+	opc->speculative = FALSE;
+	opc->name = Str::duplicate(name);
+	for (int i=0; i<16; i++) opc->store_this_operand[i] = FALSE;
+	if (s1 >= 1) opc->store_this_operand[s1] = TRUE;
+	if (s2 >= 1) opc->store_this_operand[s2] = TRUE;
+	opc->vararg_operand = va;
+	Dictionaries::create(C_GEN_DATA(C_supported_opcodes), name);
+	Dictionaries::write_value(C_GEN_DATA(C_supported_opcodes), name, opc);
+	return opc;
+}
+
+C_supported_opcode *CAssembly::find_opcode(code_generation *gen, text_stream *name) {
+	if (C_GEN_DATA(C_supported_opcodes) == NULL) {
+		C_GEN_DATA(C_supported_opcodes) = Dictionaries::new(256, FALSE);
+		@<Stock with the basics@>;
+	}
+	C_supported_opcode *opc;
+	if (Dictionaries::find(C_GEN_DATA(C_supported_opcodes), name)) {
+		opc = Dictionaries::read_value(C_GEN_DATA(C_supported_opcodes), name);
+	} else {
+		opc = CAssembly::new_opcode(gen, name, -1, -1, -1);
+		opc->speculative = TRUE;
+		WRITE_TO(STDERR, "Speculative %S\n", name);
+		internal_error("zap");
+	}
+	return opc;
+}
+
+@<Stock with the basics@> =
+	CAssembly::new_opcode(gen, I"@read_gprop",       4, -1, -1);
+	CAssembly::new_opcode(gen, I"@write_gprop",     -1, -1, -1);
+
+	CAssembly::new_opcode(gen, I"@acos",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@add",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@aload",            3, -1, -1);
+	CAssembly::new_opcode(gen, I"@aloadb",           3, -1, -1);
+	CAssembly::new_opcode(gen, I"@aloads",           3, -1, -1);
+	CAssembly::new_opcode(gen, I"@asin",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@atan",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@binarysearch",     8, -1, -1);
+	CAssembly::new_opcode(gen, I"@call",             3, -1,  2);
+	CAssembly::new_opcode(gen, I"@ceil",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@copy",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@cos",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@div",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@exp",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@fadd",             3, -1, -1);
+	CAssembly::new_opcode(gen, I"@fdiv",             3, -1, -1);
+	CAssembly::new_opcode(gen, I"@floor",            2, -1, -1);
+	CAssembly::new_opcode(gen, I"@fmod",             3,  4, -1);
+	CAssembly::new_opcode(gen, I"@fmul",             3, -1, -1);
+	CAssembly::new_opcode(gen, I"@fsub",             3, -1, -1);
+	CAssembly::new_opcode(gen, I"@ftonumn",          2, -1, -1);
+	CAssembly::new_opcode(gen, I"@ftonumz",          2, -1, -1);
+	CAssembly::new_opcode(gen, I"@gestalt",          3, -1, -1);
+	CAssembly::new_opcode(gen, I"@glk",              3, -1,  2);
+	CAssembly::new_opcode(gen, I"@hasundo",          1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jeq",             -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jfeq",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jfge",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jflt",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jisinf",          -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jisnan",          -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jleu",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jnz",             -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@jz",              -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@log",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@malloc",          -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@mcopy",           -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@mfree",           -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@mod",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@mul",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@neg",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@nop",             -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@numtof",           2, -1, -1);
+	CAssembly::new_opcode(gen, I"@pow",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@quit",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@random",           2, -1, -1);
+	CAssembly::new_opcode(gen, I"@restart",         -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@restore",         -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@restoreundo",      1, -1, -1);
+	CAssembly::new_opcode(gen, I"@return",          -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@save",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@saveundo",         1, -1, -1);
+	CAssembly::new_opcode(gen, I"@setiosys",        -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@setrandom",       -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@shiftl",           3, -1, -1);
+	CAssembly::new_opcode(gen, I"@sin",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@sqrt",             2, -1, -1);
+	CAssembly::new_opcode(gen, I"@streamchar",      -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@streamnum",       -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@streamunichar",   -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@sub",              3, -1, -1);
+	CAssembly::new_opcode(gen, I"@tan",              2, -1, -1);
+	CAssembly::new_opcode(gen, I"@ushiftr",         -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@verify",          -1, -1, -1);
+
+@ =
 void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 
+	C_supported_opcode *opc = CAssembly::find_opcode(gen, opcode);
+
 	int vararg_operands_from = 0, vararg_operands_to = 0, hacky_extras = FALSE;
-	int store_this_operand[MAX_OPERANDS_IN_INTER_ASSEMBLY];
-	for (int i=0; i<16; i++) store_this_operand[i] = FALSE;
+	if (opc->vararg_operand >= 0) { vararg_operands_from = opc->vararg_operand; vararg_operands_to = operand_count-1; }
 
-	if (Str::eq(opcode, I"@read_gprop")) { store_this_operand[4] = TRUE; hacky_extras = TRUE;
+	if (Str::eq(opcode, I"@read_gprop")) {
+		hacky_extras = TRUE;
 		C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
 	}
-	if (Str::eq(opcode, I"@write_gprop")) { hacky_extras = TRUE;
+	if (Str::eq(opcode, I"@write_gprop")) {
+		hacky_extras = TRUE;
 		C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
-	}
-
-	if (Str::eq(opcode, I"@acos")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@add")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@aload")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@aloadb")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@aloads")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@asin")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@atan")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@binarysearch")) store_this_operand[8] = TRUE;
-	if (Str::eq(opcode, I"@ceil")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@call")) {
-		store_this_operand[3] = TRUE;
-		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
-	}
-	if (Str::eq(opcode, I"@copy")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@cos")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@div")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@exp")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@fadd")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@fdiv")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@floor")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@fmod")) {
-		store_this_operand[3] = TRUE;
-		store_this_operand[4] = TRUE;
-	}
-	if (Str::eq(opcode, I"@fmul")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@fsub")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@ftonumn")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@ftonumz")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@gestalt")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@glk")) {
-		store_this_operand[3] = TRUE;
-		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
-	}
-	if (Str::eq(opcode, I"@hasundo")) store_this_operand[1] = TRUE;
-	if (Str::eq(opcode, I"@log")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@mod")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@mul")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@neg")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@numtof")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@pow")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@random")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@restoreundo")) store_this_operand[1] = TRUE;
-	if (Str::eq(opcode, I"@saveundo")) store_this_operand[1] = TRUE;
-	if (Str::eq(opcode, I"@shiftl")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@sin")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@sqrt")) store_this_operand[2] = TRUE;
-	if (Str::eq(opcode, I"@sub")) store_this_operand[3] = TRUE;
-	if (Str::eq(opcode, I"@tan")) store_this_operand[2] = TRUE;
-
-	if (Str::eq(opcode, I"@xfunction")) {
-		store_this_operand[3] = TRUE;
-		vararg_operands_from = 2; vararg_operands_to = operand_count-1;
 	}
 
 	int pushed_result = FALSE;
@@ -105,13 +163,13 @@ void CAssembly::assembly(code_generator *cgt, code_generation *gen,
 		num = 0;
 	}
 
-	for (int opc = 1; opc <= operand_count; opc++) {
-		if (opc > num) WRITE(", ");
+	for (int operand = 1; operand <= operand_count; operand++) {
+		if (operand > num) WRITE(", ");
 		TEMPORARY_TEXT(write_to)
 		CodeGen::select_temporary(gen, write_to);
-		Vanilla::node(gen, operands[opc-1]);
+		Vanilla::node(gen, operands[operand-1]);
 		CodeGen::deselect_temporary(gen);
-		if (store_this_operand[opc]) {
+		if (opc->store_this_operand[operand]) {
 			if (Str::eq(write_to, I"i7_mgl_sp")) { WRITE("&(proc->state.tmp)", write_to); pushed_result = TRUE; }
 			else if (Str::eq(write_to, I"0")) WRITE("NULL");
 			else WRITE("&%S", write_to);

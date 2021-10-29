@@ -20,6 +20,7 @@ which use this module:
 @e C_property_CLASS
 @e C_pv_pair_CLASS
 @e C_property_owner_CLASS
+@e C_supported_opcode_CLASS
 
 =
 DECLARE_CLASS(code_generator)
@@ -32,6 +33,7 @@ DECLARE_CLASS(C_dword)
 DECLARE_CLASS(C_property)
 DECLARE_CLASS(C_pv_pair)
 DECLARE_CLASS(C_property_owner)
+DECLARE_CLASS(C_supported_opcode)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
