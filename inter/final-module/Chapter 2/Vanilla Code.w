@@ -78,7 +78,7 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	int label_sense = NOT_APPLICABLE;
 	@<Scan the operands@>;
 	Generators::invoke_opcode(gen, opcode_name, operand_count, operands, label,
-		label_sense, void_context);
+		label_sense);
 
 @ Unusually, opcode invocations do not work by recursing down through the tree
 to pick up the operands implicitly: instead we gather them into a small array.

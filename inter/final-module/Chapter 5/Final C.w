@@ -103,7 +103,7 @@ int C_symbols_header_segments[] = {
 typedef struct C_generation_data {
 	int compile_main;
 	int compile_symbols;
-	struct dictionary *C_supported_opcodes;
+	struct C_generation_assembly_data asmdata;
 	struct C_generation_memory_model_data memdata;
 	struct C_generation_function_model_data fndata;
 	struct C_generation_object_model_data objdata;
@@ -115,7 +115,6 @@ typedef struct C_generation_data {
 void CTarget::initialise_data(code_generation *gen) {
 	C_GEN_DATA(compile_main) = TRUE;
 	C_GEN_DATA(compile_symbols) = FALSE;
-	C_GEN_DATA(C_supported_opcodes) = NULL;
 	CMemoryModel::initialise_data(gen);
 	CFunctionModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);
@@ -323,6 +322,7 @@ a single Inter primitive or assembly opcode.
 
 = (text to inform7_clib.h)
 #define I7_ASM_STACK_CAPACITY 128
+#define I7_TMP_STORAGE_CAPACITY 128
 
 typedef struct i7state_t {
 	i7byte_t *memory;
@@ -333,7 +333,7 @@ typedef struct i7state_t {
 	i7word_t *object_tree_child;
 	i7word_t *object_tree_sibling;
 	i7word_t *variables;
-	i7word_t tmp;
+	i7word_t tmp[I7_TMP_STORAGE_CAPACITY];
 	i7word_t current_output_stream_ID;
 } i7state_t;
 =
@@ -384,7 +384,6 @@ i7state_t i7_new_state(void) {
 	i7state_t S;
 	S.memory = NULL;
 	S.himem = 0;
-	S.tmp = 0;
 	S.stack_pointer = 0;
 	S.object_tree_parent = NULL; S.object_tree_child = NULL; S.object_tree_sibling = NULL;
 	S.variables = NULL;

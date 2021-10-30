@@ -45,13 +45,13 @@ void CNamespace::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identif
 corresponding C function, whose name is mangled from that of the opcode. For
 example:
 = (text)
-    @jz             glulx_jz
-    @streamnum		glulx_streamnum
+    @jz             i7_opcode_jz
+    @streamnum		i7_opcode_streamnum
 =
 
 =
-void CNamespace::mangle_opcode(code_generator *cgt, OUTPUT_STREAM, text_stream *opcode) {
-	WRITE("glulx_");
+void CNamespace::mangle_opcode(OUTPUT_STREAM, text_stream *opcode) {
+	WRITE("i7_opcode_");
 	LOOP_THROUGH_TEXT(pos, opcode)
 		if (Str::get(pos) != '@')
 			PUT(Str::get(pos));

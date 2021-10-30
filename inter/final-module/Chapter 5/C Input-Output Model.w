@@ -637,7 +637,7 @@ i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7w
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
 i7word_t fn_i7_mgl_IndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_DefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_CIndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
@@ -712,8 +712,8 @@ i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7w
 }
 
 
-void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z) {
-	i7_debug_stack("glulx_glk");
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z) {
+	i7_debug_stack("i7_opcode_glk");
 	i7word_t args[5] = { 0, 0, 0, 0, 0 }, argc = 0;
 	while (varargc > 0) {
 		i7word_t v = i7_pull(proc);
@@ -792,7 +792,7 @@ void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i
 		case i7_glk_get_char_stream:
 			rv = i7_do_glk_get_char_stream(proc, args[0]); break;
 		default:
-			printf("Unimplemented: glulx_glk %d.\n", glk_api_selector); i7_fatal_exit(proc);
+			printf("Unimplemented: i7_opcode_glk %d.\n", glk_api_selector); i7_fatal_exit(proc);
 			break;
 	}
 	if (z) *z = rv;

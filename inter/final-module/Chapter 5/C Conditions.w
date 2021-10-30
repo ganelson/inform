@@ -42,7 +42,7 @@ void CConditions::comparison_r(code_generation *gen,
 			inter_ti ybip = Primitives::to_bip(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				text_stream *OUT = CodeGen::current(gen);
-				if (depth == 0) { WRITE("(proc->state.tmp = "); Vanilla::node(gen, X); WRITE(", ("); }
+				if (depth == 0) { WRITE("(proc->state.tmp[0] = "); Vanilla::node(gen, X); WRITE(", ("); }
 				CConditions::comparison_r(gen, bip, K, NULL, InterTree::first_child(Y), depth+1);
 				if ((bip == NE_BIP) || (bip == NOTIN_BIP)) WRITE(" && ");
 				else WRITE(" || ");
@@ -85,7 +85,7 @@ void CConditions::comparison_r(code_generation *gen,
 }
 
 @<Compile first compared@> =
-	if (X) Vanilla::node(gen, X); else WRITE("proc->state.tmp");
+	if (X) Vanilla::node(gen, X); else WRITE("proc->state.tmp[0]");
 
 @<Compile second compared@> =
 	Vanilla::node(gen, Y);

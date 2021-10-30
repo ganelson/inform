@@ -949,3 +949,92 @@ void i7_initialise_object_tree(i7process_t *proc) {
 	}
 }
 =
+
+= (text to inform7_clib.h)
+void i7_opcode_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void i7_opcode_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void i7_opcode_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+=
+
+= (text to inform7_clib.c)
+void i7_opcode_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	if (K == i7_mgl_OBJECT_TY) {
+		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
+			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	} else {
+		if ((((obj >= 1)) && ((obj <= i7_read_word(proc, i7_mgl_value_ranges, K))))) {
+			i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+			if (((holder) && ((i7_provides(proc, holder, pr))))) {
+				if (val) *val = 1;
+			} else {
+				if (val) *val = 0;
+			}
+		} else {
+			if (val) *val = 0;
+		}
+	}
+}
+
+int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	i7word_t val = 0;
+	i7_opcode_provides_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	return val;
+}
+
+void i7_opcode_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if ((i7_has(proc, obj, pr))) {
+                if (val) *val =  1;
+            } else {
+            	if (val) *val =  0;
+            }
+        } else {
+		    if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
+		}
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        if (val) *val = (i7word_t) i7_read_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
+    }
+}
+
+i7word_t i7_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+	i7word_t val = 0;
+	i7_opcode_read_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	return val;
+}
+
+void i7_opcode_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val, i7word_t form,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+    if ((K == i7_mgl_OBJECT_TY)) {
+        if ((i7_read_word(proc, pr, 0) == 2)) {
+            if (val) {
+                i7_change_prop_value(proc, K, obj, pr, 1, form);
+            } else {
+                i7_change_prop_value(proc, K, obj, pr, 0, form);
+            }
+        } else {
+            (i7_change_prop_value(proc, K, obj, pr, val, form));
+        }
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        (i7_change_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
+    }
+}
+=

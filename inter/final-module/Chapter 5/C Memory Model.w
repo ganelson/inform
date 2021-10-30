@@ -333,11 +333,11 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 standard Inform kits make use of it in a few places:
 
 = (text to inform7_clib.h)
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_sword(proc, x, y);
 }
 =
@@ -467,13 +467,13 @@ implement. We're choosing not to implement the Glulx |@malloc| or |@mfree|
 opcodes for now, but that will surely need to change in due course.
 
 = (text to inform7_clib.h)
-void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_mfree(i7process_t *proc, i7word_t x);
+void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_mfree(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
+void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
 		for (i7word_t i=0; i<x; i++)
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
@@ -482,13 +482,13 @@ void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
 			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
 }
 
-void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
-	printf("Unimplemented: glulx_malloc.\n");
+void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
+	printf("Unimplemented: i7_opcode_malloc.\n");
 	i7_fatal_exit(proc);
 }
 
-void glulx_mfree(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: glulx_mfree.\n");
+void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
+	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
 =
@@ -515,7 +515,7 @@ void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
 	to->himem = from->himem;
 	to->memory = i7_calloc(proc, i7_static_himem, sizeof(i7byte_t));
 	for (int i=0; i<i7_static_himem; i++) to->memory[i] = from->memory[i];
-	to->tmp = from->tmp;
+	for (int i=0; i<I7_TMP_STORAGE_CAPACITY; i++) to->tmp[i] = from->tmp[i];
 	to->stack_pointer = from->stack_pointer;
 	for (int i=0; i<from->stack_pointer; i++) to->stack[i] = from->stack[i];
 	to->object_tree_parent  = i7_calloc(proc, i7_max_objects, sizeof(i7word_t));

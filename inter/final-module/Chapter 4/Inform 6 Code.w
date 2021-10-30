@@ -211,7 +211,7 @@ As a dodge, we use the Inform 6 statement |read X Y| instead.
 =
 void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
-	inter_tree_node *label, int label_sense, int void_context) {
+	inter_tree_node *label, int label_sense) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (Str::eq(opcode, I"@aread")) WRITE("read");
 	else WRITE("%S", opcode);
@@ -224,7 +224,7 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 		if (label_sense == FALSE) WRITE("~");
 		Vanilla::node(gen, label);
 	}
-	if (void_context) WRITE(";\n");
+	WRITE(";\n");
 }
 
 @h Primitives.

@@ -353,7 +353,6 @@ i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
 i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
 i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
-void glulx_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z);
 =
 
 = (text to inform7_clib.c)
@@ -435,10 +434,4 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, 
 	return i7_gen_call(proc, fn_ref, args, 5);
 }
 
-void glulx_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	for (int i=0; i<varargc; i++) args[i] = i7_pull(proc);
-	i7word_t rv = i7_gen_call(proc, fn_ref, args, varargc);
-	if (z) *z = rv;
-}
 =

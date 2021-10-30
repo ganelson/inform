@@ -17,6 +17,7 @@ typedef int32_t i7word_t;
 typedef uint32_t unsigned_i7word_t;
 typedef unsigned char i7byte_t;
 #define I7_ASM_STACK_CAPACITY 128
+#define I7_TMP_STORAGE_CAPACITY 128
 
 typedef struct i7state_t {
 	i7byte_t *memory;
@@ -27,7 +28,7 @@ typedef struct i7state_t {
 	i7word_t *object_tree_child;
 	i7word_t *object_tree_sibling;
 	i7word_t *variables;
-	i7word_t tmp;
+	i7word_t tmp[I7_TMP_STORAGE_CAPACITY];
 	i7word_t current_output_stream_ID;
 } i7state_t;
 typedef struct i7snapshot_t {
@@ -74,7 +75,7 @@ void i7_initialise_memory_and_stack(i7process_t *proc);
 i7byte_t i7_read_byte(i7process_t *proc, i7word_t address);
 i7word_t i7_read_sword(i7process_t *proc, i7word_t array_address, i7word_t array_index);
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index);
-void glulx_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 #define I7BYTE_0(V) ((V & 0xFF000000) >> 24)
 #define I7BYTE_1(V) ((V & 0x00FF0000) >> 16)
 #define I7BYTE_2(V) ((V & 0x0000FF00) >> 8)
@@ -89,9 +90,9 @@ i7word_t i7_change_word(i7process_t *proc, i7word_t array_address, i7word_t arra
 void i7_debug_stack(char *N);
 i7word_t i7_pull(i7process_t *proc);
 void i7_push(i7process_t *proc, i7word_t x);
-void glulx_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-void glulx_malloc(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_mfree(i7process_t *proc, i7word_t x);
+void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_mfree(i7process_t *proc, i7word_t x);
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from);
 void i7_destroy_state(i7process_t *proc, i7state_t *s);
 void i7_destroy_snapshot(i7process_t *proc, i7snapshot_t *unwanted);
@@ -100,86 +101,77 @@ void i7_save_snapshot(i7process_t *proc);
 int i7_has_snapshot(i7process_t *proc);
 void i7_restore_snapshot(i7process_t *proc);
 void i7_restore_snapshot_from(i7process_t *proc, i7snapshot_t *ss);
-void glulx_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void glulx_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void glulx_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void glulx_accelfunc(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_accelparam(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_copy(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-int glulx_jeq(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_nop(i7process_t *proc);
-int glulx_jleu(i7process_t *proc, i7word_t x, i7word_t y);
-int glulx_jnz(i7process_t *proc, i7word_t x);
-int glulx_jz(i7process_t *proc, i7word_t x);
-void glulx_quit(i7process_t *proc);
-void glulx_setiosys(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_streamchar(i7process_t *proc, i7word_t x);
-void glulx_streamnum(i7process_t *proc, i7word_t x);
-void glulx_streamstr(i7process_t *proc, i7word_t x);
-void glulx_streamunichar(i7process_t *proc, i7word_t x);
-void glulx_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-void glulx_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z);
+void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y);
+int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y);
+int i7_opcode_jleu(i7process_t *proc, i7word_t x, i7word_t y);
+int i7_opcode_jnz(i7process_t *proc, i7word_t x);
+int i7_opcode_jz(i7process_t *proc, i7word_t x);
+void i7_opcode_nop(i7process_t *proc);
+void i7_opcode_quit(i7process_t *proc);
+void i7_opcode_verify(i7process_t *proc, i7word_t *z);
+void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x);
+void i7_opcode_saveundo(i7process_t *proc, i7word_t *x);
+void i7_opcode_hasundo(i7process_t *proc, i7word_t *x);
+void i7_opcode_discardundo(i7process_t *proc);
+void i7_opcode_restart(i7process_t *proc);
+void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_streamchar(i7process_t *proc, i7word_t x);
+void i7_opcode_streamnum(i7process_t *proc, i7word_t x);
+void i7_opcode_streamstr(i7process_t *proc, i7word_t x);
+void i7_opcode_streamunichar(i7process_t *proc, i7word_t x);
+void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 #define serop_KeyIndirect (0x01)
 #define serop_ZeroKeyTerminates (0x02)
 #define serop_ReturnIndex (0x04)
-void glulx_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize, i7word_t start, i7word_t structsize,
+void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize, i7word_t start, i7word_t structsize,
 	i7word_t numstructs, i7word_t keyoffset, i7word_t options, i7word_t *s1);
-void glulx_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_restoreundo(i7process_t *proc, i7word_t *x);
-void glulx_saveundo(i7process_t *proc, i7word_t *x);
-void glulx_restart(i7process_t *proc);
-void glulx_restore(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_save(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_verify(i7process_t *proc, i7word_t x);
-void glulx_hasundo(i7process_t *proc, i7word_t *x);
-void glulx_discardundo(i7process_t *proc);
-void glulx_random(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x);
-void glulx_setrandom(i7process_t *proc, i7word_t s);
-void glulx_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_sub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_neg(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_mul(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_div(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-i7word_t glulx_div_r(i7process_t *proc, i7word_t x, i7word_t y);
-void glulx_mod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-i7word_t glulx_mod_r(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
+void i7_opcode_add(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_sub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_neg(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_mul(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_div(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+i7word_t i7_opcode_div_r(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_mod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+i7word_t i7_opcode_mod_r(i7process_t *proc, i7word_t x, i7word_t y);
 typedef float gfloat32;
 i7word_t encode_float(gfloat32 val);
 gfloat32 decode_float(i7word_t val);
-void glulx_exp(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_fadd(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_fdiv(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_floor(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_fmod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z, i7word_t *w);
-void glulx_fmul(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_fsub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_ftonumn(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_ftonumz(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_numtof(i7process_t *proc, i7word_t x, i7word_t *y);
-int glulx_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-int glulx_jfne(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-int glulx_jfge(i7process_t *proc, i7word_t x, i7word_t y);
-int glulx_jflt(i7process_t *proc, i7word_t x, i7word_t y);
-int glulx_jisinf(i7process_t *proc, i7word_t x);
-int glulx_jisnan(i7process_t *proc, i7word_t x);
-void glulx_log(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_acos(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_asin(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_atan(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_ceil(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_cos(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_pow(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-void glulx_sin(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_sqrt(i7process_t *proc, i7word_t x, i7word_t *y);
-void glulx_tan(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_exp(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_fadd(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_fdiv(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_floor(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_fmod(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z, i7word_t *w);
+void i7_opcode_fmul(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_fsub(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_ftonumn(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_ftonumz(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_numtof(i7process_t *proc, i7word_t x, i7word_t *y);
+int i7_opcode_jfeq(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+int i7_opcode_jfne(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
+int i7_opcode_jfge(i7process_t *proc, i7word_t x, i7word_t y);
+int i7_opcode_jflt(i7process_t *proc, i7word_t x, i7word_t y);
+int i7_opcode_jisinf(i7process_t *proc, i7word_t x);
+int i7_opcode_jisnan(i7process_t *proc, i7word_t x);
+void i7_opcode_log(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_acos(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_asin(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_atan(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_ceil(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_cos(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_pow(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_sin(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_sqrt(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_tan(i7process_t *proc, i7word_t x, i7word_t *y);
 i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id);
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
@@ -201,6 +193,14 @@ i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id);
 i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id);
 #define i7_sibling fn_i7_mgl_sibling
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
+void i7_opcode_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void i7_opcode_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
+void i7_opcode_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
 i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref);
 i7word_t i7_call_1(i7process_t *proc, i7word_t fn_ref, i7word_t v);
 i7word_t i7_call_2(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2);
@@ -212,7 +212,6 @@ i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
 i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
 i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
-void glulx_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z);
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
 void i7_print_dword(i7process_t *proc, i7word_t at);
 char *i7_text_of_string(i7word_t str);
@@ -445,7 +444,7 @@ i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7w
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-void glulx_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
 i7word_t fn_i7_mgl_IndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_DefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_CIndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
