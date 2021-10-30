@@ -740,19 +740,19 @@ cases used to check the floating-point extensions to Glulx.
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintInfinity</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$221E</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">@streamstr "Inf";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">print "Inf";</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintNan</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$26a0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">@streamstr "NaN";</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">print "NaN";</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintMultiplicationSign</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="constant-syntax">$D7</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">print "x";</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">@streamstr " x ";</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_GLULX</span>

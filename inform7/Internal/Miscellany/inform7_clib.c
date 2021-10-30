@@ -156,9 +156,6 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 		      0x10000*((i7word_t) data[byte_position + 1]) +
 		    0x1000000*((i7word_t) data[byte_position + 0]);
 }
-void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	if (z) *z = i7_read_sword(proc, x, y);
-}
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
 }
@@ -229,24 +226,6 @@ void i7_push(i7process_t *proc, i7word_t x) {
 		i7_fatal_exit(proc);
 	}
 	proc->state.stack[proc->state.stack_pointer++] = x;
-}
-void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
-    if (z < y)
-		for (i7word_t i=0; i<x; i++)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-    else
-		for (i7word_t i=x-1; i>=0; i--)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-}
-
-void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
-	printf("Unimplemented: i7_opcode_malloc.\n");
-	i7_fatal_exit(proc);
-}
-
-void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: i7_opcode_mfree.\n");
-	i7_fatal_exit(proc);
 }
 void i7_copy_state(i7process_t *proc, i7state_t *to, i7state_t *from) {
 	to->himem = from->himem;
@@ -327,6 +306,28 @@ void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word
 void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y) {
 	if (y) *y = x;
 }
+void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = i7_read_word(proc, x, y);
+}
+
+void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = i7_read_sword(proc, x, y);
+}
+
+void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	if (z) *z = i7_read_byte(proc, x+y);
+}
+void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	i7word_t value = 0;
+	if ((y >= 0) && (y < 32)) value = (x << y);
+	if (z) *z = value;
+}
+
+void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	i7word_t value = 0;
+	if ((y >= 0) && (y < 32)) value = (x >> y);
+	if (z) *z = value;
+}
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y) {
 	if (x == y) return 1;
 	return 0;
@@ -398,142 +399,125 @@ void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t y) {
 void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
-
-void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	*z = 1;
-}
-
-void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
-	// Deliberately ignored: we are using stdout, not glk
+void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {
+	i7_print_decimal(proc, x);
 }
 
 void i7_opcode_streamchar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
 
-void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {
-	i7_print_decimal(proc, x);
-}
-
-void i7_opcode_streamstr(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: i7_opcode_streamstr.\n");
-	i7_fatal_exit(proc);
-}
-
 void i7_opcode_streamunichar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
 
-void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
-	printf("Unimplemented: i7_opcode_ushiftr.\n");
+void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
+	i7word_t start, i7word_t structsize, i7word_t numstructs, i7word_t keyoffset,
+	i7word_t options, i7word_t *s1) {
+
+	if (s1 == NULL) return; /* Do not spend any time if the result is to be ignored */
+
+
+	/* If the key size is 4 or fewer, copy it directly into the keybuf array */
+	unsigned char keybuf[4];
+    if (options & serop_KeyIndirect) {
+		if (keysize <= 4)
+		    for (int ix=0; ix<keysize; ix++)
+		        keybuf[ix] = i7_read_byte(proc, key + ix);
+	} else {
+		switch (keysize) {
+    		case 4:
+				keybuf[0] = I7BYTE_0(key); keybuf[1] = I7BYTE_1(key);
+				keybuf[2] = I7BYTE_2(key); keybuf[3] = I7BYTE_3(key); break;
+			case 2:
+				keybuf[0] = I7BYTE_0(key); keybuf[1] = I7BYTE_1(key); break;
+    		case 1:
+     		    keybuf[0] = key; break;
+        }
+    }
+
+	i7word_t bot = 0, top = numstructs; /* Initial search range, including bot but not top */
+	while (bot < top) { /* I.e., while the search range is not empty */
+		/* Find the structure at the midpoint of the search range */
+		i7word_t val = (top+bot) / 2;
+		i7word_t addr = start + val * structsize;
+
+		/* Compute cmp = 0 if the key matches this, -1 if it precedes, 1 if it follows */
+		int cmp = 0;
+		if (keysize <= 4) {
+			for (int ix=0; (!cmp) && ix<keysize; ix++) {
+				unsigned char byte = i7_read_byte(proc, addr + keyoffset + ix);
+				unsigned char byte2 = keybuf[ix];
+				if (byte < byte2) cmp = -1;
+				else if (byte > byte2) cmp = 1;
+			}
+		} else {
+			for (int ix=0; (!cmp) && ix<keysize; ix++) {
+				unsigned char byte  = i7_read_byte(proc, addr + keyoffset + ix);
+				unsigned char byte2 = i7_read_byte(proc, key + ix);
+				if (byte < byte2) cmp = -1;
+				else if (byte > byte2) cmp = 1;
+			}
+		}
+
+		if (cmp == 0) {
+			/* Success! */
+			if (options & serop_ReturnIndex) *s1 = val; else *s1 = addr;
+			return;
+		}
+
+		if (cmp < 0) bot = val+1; /* Chop search range to the second half */
+		else top = val; /* Chop search range to the first half */
+	}
+
+	/* Failure! */
+	if (options & serop_ReturnIndex) *s1 = -1; else *s1 = 0;
+}
+void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
+    if (z < y)
+		for (i7word_t i=0; i<x; i++)
+			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
+    else
+		for (i7word_t i=x-1; i>=0; i--)
+			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
+}
+
+void i7_opcode_mzero(i7process_t *proc, i7word_t x, i7word_t y) {
+	for (i7word_t i=0; i<x; i++) i7_write_byte(proc, y+i, 0);
+}
+
+void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
+	printf("Unimplemented: i7_opcode_malloc.\n");
 	i7_fatal_exit(proc);
 }
 
-void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	printf("Unimplemented: i7_opcode_shiftl\n");
+void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
+	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
-
-void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	printf("Unimplemented: i7_opcode_aload\n");
-	i7_fatal_exit(proc);
+void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 }
-
-void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	printf("Unimplemented: i7_opcode_aloadb\n");
-	i7_fatal_exit(proc);
+void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	int r = 0;
+	switch (x) {
+		case 0: r = 0x00030103; break; /* Say that the Glulx version is v3.1.3 */
+		case 1: r = 1;          break; /* Say that the interpreter version is 1 */
+		case 2: r = 0;          break; /* We do not (yet) support @setmemsize */
+		case 3: r = 1;          break; /* We do support UNDO */
+		case 4: if (y == 2) r = 1;     /* We do support Glk */
+				       else r = 0;     /* But not any other I/O system */
+			    break;
+		case 5: r = 1;          break; /* We do support Unicode operations */
+		case 6: r = 1;          break; /* We do support @mzero and @mcopy */
+		case 7: r = 0;          break; /* We do not (yet) support @malloc or @mfree */
+		case 8: r = 0;          break; /* Since we do not support @malloc */
+		case 9: r = 0;          break; /* We do not support @accelfunc pr @accelparam */
+		case 10: r = 0;         break; /* And therefore provide none of their accelerants */
+		case 11: r = 1;         break; /* We do support floating-point maths operations */
+		case 12: r = 1;         break; /* We do support @hasundo and @discardundo */
+	}
+	if (z) *z = r;
 }
-
-void fetchkey(i7process_t *proc, unsigned char *keybuf, i7word_t key, i7word_t keysize, i7word_t options)
-{
-  int ix;
-
-  if (options & serop_KeyIndirect) {
-    if (keysize <= 4) {
-      for (ix=0; ix<keysize; ix++)
-        keybuf[ix] = i7_read_byte(proc, key + ix);
-    }
-  }
-  else {
-    switch (keysize) {
-    case 4:
-		keybuf[0] = I7BYTE_0(key);
-		keybuf[1] = I7BYTE_1(key);
-		keybuf[2] = I7BYTE_2(key);
-		keybuf[3] = I7BYTE_3(key);
-      break;
-    case 2:
-		keybuf[0]  = I7BYTE_0(key);
-		keybuf[1] = I7BYTE_1(key);
-      break;
-    case 1:
-      keybuf[0]   = key;
-      break;
-    }
-  }
-}
-
-void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize, i7word_t start, i7word_t structsize,
-	i7word_t numstructs, i7word_t keyoffset, i7word_t options, i7word_t *s1) {
-	if (s1 == NULL) return;
-  unsigned char keybuf[4];
-  unsigned char byte, byte2;
-  i7word_t top, bot, val, addr;
-  int ix;
-  int retindex = ((options & serop_ReturnIndex) != 0);
-
-  fetchkey(proc, keybuf, key, keysize, options);
-
-  bot = 0;
-  top = numstructs;
-  while (bot < top) {
-    int cmp = 0;
-    val = (top+bot) / 2;
-    addr = start + val * structsize;
-
-    if (keysize <= 4) {
-      for (ix=0; (!cmp) && ix<keysize; ix++) {
-        byte = i7_read_byte(proc, addr + keyoffset + ix);
-        byte2 = keybuf[ix];
-        if (byte < byte2)
-          cmp = -1;
-        else if (byte > byte2)
-          cmp = 1;
-      }
-    }
-    else {
-       for (ix=0; (!cmp) && ix<keysize; ix++) {
-        byte = i7_read_byte(proc, addr + keyoffset + ix);
-        byte2 = i7_read_byte(proc, key + ix);
-        if (byte < byte2)
-          cmp = -1;
-        else if (byte > byte2)
-          cmp = 1;
-      }
-    }
-
-    if (!cmp) {
-      if (retindex)
-        *s1 = val;
-      else
-        *s1 = addr;
-    	return;
-    }
-
-    if (cmp < 0) {
-      bot = val+1;
-    }
-    else {
-      top = val;
-    }
-  }
-
-  if (retindex)
-    *s1 = -1;
-  else
-    *s1 = 0;
-}
-
 /* Return a random number in the range 0 to 2^32-1. */
 uint32_t i7_random() {
 	return (random() << 16) ^ random();
@@ -1005,7 +989,7 @@ void i7_initialise_object_tree(i7process_t *proc) {
 		proc->state.object_tree_sibling[i] = 0;
 	}
 }
-void i7_opcode_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
 	if (K == i7_mgl_OBJECT_TY) {
 		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
@@ -1034,11 +1018,11 @@ void i7_opcode_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7wor
 int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
 	i7word_t val = 0;
-	i7_opcode_provides_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	i7_provides_gprop_inner(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
 	return val;
 }
 
-void i7_opcode_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
+void i7_read_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
         if ((i7_read_word(proc, pr, 0) == 2)) {
@@ -1059,11 +1043,11 @@ void i7_opcode_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t 
 i7word_t i7_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
 	i7word_t val = 0;
-	i7_opcode_read_gprop(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+	i7_read_gprop_inner(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
 	return val;
 }
 
-void i7_opcode_write_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val, i7word_t form,
+void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val, i7word_t form,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
         if ((i7_read_word(proc, pr, 0) == 2)) {

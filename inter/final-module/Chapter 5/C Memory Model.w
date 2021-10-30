@@ -329,19 +329,6 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 }
 =
 
-@ |i7_read_sword| implements the Glulx opcode |aloads|, which we need to do since the 
-standard Inform kits make use of it in a few places:
-
-= (text to inform7_clib.h)
-void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
-=
-
-= (text to inform7_clib.c)
-void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
-	if (z) *z = i7_read_sword(proc, x, y);
-}
-=
-
 @ Writing values is again easy for bytes, but harder for words since they must
 be broken up into bytes written in sequence.
 
@@ -459,37 +446,6 @@ void i7_push(i7process_t *proc, i7word_t x) {
 		i7_fatal_exit(proc);
 	}
 	proc->state.stack[proc->state.stack_pointer++] = x;
-}
-=
-
-@ A Glulx assembly opcode is provided for fast memory copies, which we must
-implement. We're choosing not to implement the Glulx |@malloc| or |@mfree|
-opcodes for now, but that will surely need to change in due course.
-
-= (text to inform7_clib.h)
-void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
-void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y);
-void i7_opcode_mfree(i7process_t *proc, i7word_t x);
-=
-
-= (text to inform7_clib.c)
-void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
-    if (z < y)
-		for (i7word_t i=0; i<x; i++)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-    else
-		for (i7word_t i=x-1; i>=0; i--)
-			i7_write_byte(proc, z+i, i7_read_byte(proc, y+i));
-}
-
-void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y) {
-	printf("Unimplemented: i7_opcode_malloc.\n");
-	i7_fatal_exit(proc);
-}
-
-void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: i7_opcode_mfree.\n");
-	i7_fatal_exit(proc);
 }
 =
 

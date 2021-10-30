@@ -98,7 +98,7 @@ calling functions.
 
 @<This is a reference to a property value@> =
 	WRITE("(");
-	WRITE("i7_opcode_write_gprop(proc, ");
+	WRITE("i7_write_gprop_inner(proc, ");
 		Vanilla::node(gen, InterTree::first_child(storage_ref)); WRITE(", ");
 		Vanilla::node(gen, InterTree::second_child(storage_ref)); WRITE(", ");
 		Vanilla::node(gen, InterTree::third_child(storage_ref)); WRITE(", ");

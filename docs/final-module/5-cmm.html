@@ -450,21 +450,7 @@ and write bytes. Words are more challenging since we need to pack and unpack the
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b><span class="extract"><span class="Extracts-extract-syntax">i7_read_sword</span></span> implements the Glulx opcode <span class="extract"><span class="Extracts-extract-syntax">aloads</span></span>, which we need to do since the
-standard Inform kits make use of it in a few places:
-</p>
-
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_aloads</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_aloads</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">) {</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">if</span><span class="Extracts-plain-syntax"> (</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">) *</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">i7_read_sword</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">);</span>
-<span class="Extracts-plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Writing values is again easy for bytes, but harder for words since they must
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Writing values is again easy for bytes, but harder for words since they must
 be broken up into bytes written in sequence.
 </p>
 
@@ -506,7 +492,7 @@ for our array initialisations.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The seven primitive operations on storage need to be implemented for byte
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The seven primitive operations on storage need to be implemented for byte
 and word lookups by the following pair of functions. Note that if <span class="extract"><span class="Extracts-extract-syntax">way</span></span> is
 <span class="extract"><span class="Extracts-extract-syntax">i7_lvalue_SET</span></span> then <span class="extract"><span class="Extracts-extract-syntax">i7_change_byte</span></span> is equivalent to <span class="extract"><span class="Extracts-extract-syntax">i7_write_byte</span></span> and
 <span class="extract"><span class="Extracts-extract-syntax">i7_change_word</span></span> to <span class="extract"><span class="Extracts-extract-syntax">i7_write_word</span></span>, except that they return the value as set.
@@ -552,7 +538,7 @@ and word lookups by the following pair of functions. Note that if <span class="e
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The stack is very simple; it can be pushed or pulled, but there's otherwise
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The stack is very simple; it can be pushed or pulled, but there's otherwise
 no access to it.
 </p>
 
@@ -589,39 +575,7 @@ no access to it.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>A Glulx assembly opcode is provided for fast memory copies, which we must
-implement. We're choosing not to implement the Glulx <span class="extract"><span class="Extracts-extract-syntax">@malloc</span></span> or <span class="extract"><span class="Extracts-extract-syntax">@mfree</span></span>
-opcodes for now, but that will surely need to change in due course.
-</p>
-
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_mcopy</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">);</span>
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_malloc</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">);</span>
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_mfree</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_mcopy</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">) {</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">if</span><span class="Extracts-plain-syntax"> (</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax"> &lt; </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">)</span>
-<span class="Extracts-plain-syntax">        </span><span class="Extracts-identifier-syntax">for</span><span class="Extracts-plain-syntax"> (</span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">=0; </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">&lt;</span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">; </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">++)</span>
-<span class="Extracts-plain-syntax">            </span><span class="Extracts-identifier-syntax">i7_write_byte</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">+</span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7_read_byte</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">+</span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">));</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">else</span>
-<span class="Extracts-plain-syntax">        </span><span class="Extracts-identifier-syntax">for</span><span class="Extracts-plain-syntax"> (</span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">=</span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">-1; </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">&gt;=0; </span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">--)</span>
-<span class="Extracts-plain-syntax">            </span><span class="Extracts-identifier-syntax">i7_write_byte</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">+</span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7_read_byte</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">+</span><span class="Extracts-identifier-syntax">i</span><span class="Extracts-plain-syntax">));</span>
-<span class="Extracts-plain-syntax">}</span>
-
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_malloc</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">) {</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">printf</span><span class="Extracts-plain-syntax">("</span><span class="Extracts-identifier-syntax">Unimplemented</span><span class="Extracts-plain-syntax">: </span><span class="Extracts-identifier-syntax">i7_opcode_malloc</span><span class="Extracts-plain-syntax">.\</span><span class="Extracts-identifier-syntax">n</span><span class="Extracts-plain-syntax">");</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7_fatal_exit</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">);</span>
-<span class="Extracts-plain-syntax">}</span>
-
-<span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_mfree</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">) {</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">printf</span><span class="Extracts-plain-syntax">("</span><span class="Extracts-identifier-syntax">Unimplemented</span><span class="Extracts-plain-syntax">: </span><span class="Extracts-identifier-syntax">i7_opcode_mfree</span><span class="Extracts-plain-syntax">.\</span><span class="Extracts-identifier-syntax">n</span><span class="Extracts-plain-syntax">");</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7_fatal_exit</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">);</span>
-<span class="Extracts-plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>When processes are running, they take periodic "snapshots" of their states
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>When processes are running, they take periodic "snapshots" of their states
 so that these can if necessary be returned to. (For IF works, this is how the
 UNDO command works; snapshots are taken once each turn.)
 </p>
@@ -674,7 +628,7 @@ a memory leak, so we provide a destructor function.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Destroying a snapshot is then a simple matter of destroying the state
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Destroying a snapshot is then a simple matter of destroying the state
 stored inside it:
 </p>
 
@@ -698,7 +652,7 @@ stored inside it:
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>To take a snapshot, we copy the process's current state in the next free
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>To take a snapshot, we copy the process's current state in the next free
 slot in the ring buffer of snapshots held by the process; the net effect is
 that it stores the most recent <span class="extract"><span class="Extracts-extract-syntax">I7_MAX_SNAPSHOTS</span></span> snapshots, silently discarding
 any older ones, but without leaking memory.
@@ -721,7 +675,7 @@ any older ones, but without leaking memory.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The function <span class="extract"><span class="Extracts-extract-syntax">i7_has_snapshot</span></span> tests whether the process has at least one
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The function <span class="extract"><span class="Extracts-extract-syntax">i7_has_snapshot</span></span> tests whether the process has at least one
 valid snapshot to revert to:
 </p>
 
