@@ -381,18 +381,26 @@ really be understood jointly.
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">I7_CLIB_C_INCLUDED</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">1</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Now we need three fundamental types. <span class="extract"><span class="Extracts-extract-syntax">i7word_t</span></span> is a type which can hold any
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Now we need four fundamental types. <span class="extract"><span class="Extracts-extract-syntax">i7word_t</span></span> is a type which can hold any
 Inter word value: since we do not support C for 16-bit Inter code, we can
 safely make this a 32-bit integer. <span class="extract"><span class="Extracts-extract-syntax">unsigned_i7word_t</span></span> will be used very little,
 but is an unsigned version of the same. (It must be the case that an <span class="extract"><span class="Extracts-extract-syntax">i7word_t</span></span>
-can survive being cast to <span class="extract"><span class="Extracts-extract-syntax">unsigned_i7word_t</span></span> and back again intact.) Lastly,
-<span class="extract"><span class="Extracts-extract-syntax">i7byte_t</span></span> holds an Inter byte value, and must be unsigned.
+can survive being cast to <span class="extract"><span class="Extracts-extract-syntax">unsigned_i7word_t</span></span> and back again intact.)
+</p>
+
+<p class="commentary"><span class="extract"><span class="Extracts-extract-syntax">i7byte_t</span></span> holds an Inter byte value, and must be unsigned.
+</p>
+
+<p class="commentary">It must unfortunately be the case that <span class="extract"><span class="Extracts-extract-syntax">i7float_t</span></span> values can be stored in
+<span class="extract"><span class="Extracts-extract-syntax">i7word_t</span></span> containers at runtime, which is why they are only <span class="extract"><span class="Extracts-extract-syntax">float</span></span> and not
+<span class="extract"><span class="Extracts-extract-syntax">double</span></span> precision.
 </p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">int32_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">uint32_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">unsigned_i7word_t</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">unsigned</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">char</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7byte_t</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">float</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
 <p class="commentary">Our library is going to be able to manage multiple independently-running
@@ -666,7 +674,7 @@ like these other functions: see <a href="5-com.html" class="internal">C Object M
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-i6c2.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresscurrent">fnc</li><li class="progresssection"><a href="5-cnm.html">cnm</a></li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cgv.html">cgv</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cas.html">cas</a></li><li class="progresssection"><a href="5-cpc.html">cpc</a></li><li class="progresssection"><a href="5-car.html">car</a></li><li class="progresssection"><a href="5-ccn.html">ccn</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progresssection"><a href="5-cfm.html">cfm</a></li><li class="progresssection"><a href="5-clt.html">clt</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresssection"><a href="5-cuf.html">cuf</a></li><li class="progressnext"><a href="5-cnm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-i6c2.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresscurrent">fnc</li><li class="progresssection"><a href="5-cnm.html">cnm</a></li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cgv.html">cgv</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cas.html">cas</a></li><li class="progresssection"><a href="5-car.html">car</a></li><li class="progresssection"><a href="5-cpc.html">cpc</a></li><li class="progresssection"><a href="5-ccn.html">ccn</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progresssection"><a href="5-cfm.html">cfm</a></li><li class="progresssection"><a href="5-clt.html">clt</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresssection"><a href="5-cuf.html">cuf</a></li><li class="progressnext"><a href="5-cnm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

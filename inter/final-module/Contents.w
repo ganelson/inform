@@ -34,8 +34,8 @@ Chapter 5: C
 	C Global Variables
 	C Memory Model
 	C Assembly
-	C Program Control
 	C Arithmetic
+	C Program Control
 	C Conditions
 	C Object Model
 	C Function Model

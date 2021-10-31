@@ -66,7 +66,30 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#5">Chapter 5: C</a></li><li><b>C Utility Functions</b></li></ul></div>
 <p class="purpose">Rounding out the C library with a few functions intended for external code to use.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>We will frequently need to reinterpret <span class="extract"><span class="extract-syntax">i7word_t</span></span> values as <span class="extract"><span class="extract-syntax">i7float_t</span></span>,
+or vice versa. The following functions must be perfect inverses of each other.
+</p>
+
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_encode_float</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">);</span>
+<span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_decode_float</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_encode_float</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">) {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    *(</span><span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> *)(&amp;</span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">) = </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">return</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">}</span>
+
+<span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_decode_float</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">) {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7float_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    *(</span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *)(&amp;</span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">) = </span><span class="Extracts-identifier-syntax">val</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">return</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">res</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_read_variable</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">var_id</span><span class="Extracts-plain-syntax">);</span>
@@ -82,7 +105,7 @@
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">char</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">i7_read_string</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">);</span>
@@ -144,7 +167,7 @@
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">endif</span>
@@ -155,7 +178,7 @@
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="5-cim.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-fnc.html">fnc</a></li><li class="progresssection"><a href="5-cnm.html">cnm</a></li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cgv.html">cgv</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cas.html">cas</a></li><li class="progresssection"><a href="5-cpc.html">cpc</a></li><li class="progresssection"><a href="5-car.html">car</a></li><li class="progresssection"><a href="5-ccn.html">ccn</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progresssection"><a href="5-cfm.html">cfm</a></li><li class="progresssection"><a href="5-clt.html">clt</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresscurrent">cuf</li><li class="progressnextoff">&#10095;</li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="5-cim.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-fnc.html">fnc</a></li><li class="progresssection"><a href="5-cnm.html">cnm</a></li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cgv.html">cgv</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cas.html">cas</a></li><li class="progresssection"><a href="5-car.html">car</a></li><li class="progresssection"><a href="5-cpc.html">cpc</a></li><li class="progresssection"><a href="5-ccn.html">ccn</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progresssection"><a href="5-cfm.html">cfm</a></li><li class="progresssection"><a href="5-clt.html">clt</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresscurrent">cuf</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

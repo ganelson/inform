@@ -279,17 +279,23 @@ And similarly for |inform7_clib.c|:
 #define I7_CLIB_C_INCLUDED 1
 =
 
-@ Now we need three fundamental types. |i7word_t| is a type which can hold any
+@ Now we need four fundamental types. |i7word_t| is a type which can hold any
 Inter word value: since we do not support C for 16-bit Inter code, we can
 safely make this a 32-bit integer. |unsigned_i7word_t| will be used very little,
 but is an unsigned version of the same. (It must be the case that an |i7word_t|
-can survive being cast to |unsigned_i7word_t| and back again intact.) Lastly,
+can survive being cast to |unsigned_i7word_t| and back again intact.)
+
 |i7byte_t| holds an Inter byte value, and must be unsigned.
+
+It must unfortunately be the case that |i7float_t| values can be stored in
+|i7word_t| containers at runtime, which is why they are only |float| and not
+|double| precision.
 
 = (text to inform7_clib.h)
 typedef int32_t i7word_t;
 typedef uint32_t unsigned_i7word_t;
 typedef unsigned char i7byte_t;
+typedef float i7float_t;
 =
 
 Our library is going to be able to manage multiple independently-running

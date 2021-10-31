@@ -719,6 +719,40 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 }
 =
 
+@h random, setrandom.
+Note that the |random(...)| function built in to Inform is just a name for the
+|@random| opcode, so we define that here too.
+
+= (text to inform7_clib.h)
+void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
+i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x);
+=
+
+= (text to inform7_clib.c)
+void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
+	uint32_t rawvalue = ((random() << 16) ^ random());
+	uint32_t value;
+	if (x == 0) value = rawvalue;
+	else if (x >= 1) value = rawvalue % (uint32_t) (x);
+	else value = -(rawvalue % (uint32_t) (-x));
+	*y = (i7word_t) value;
+}
+
+void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
+	uint32_t seed;
+	*((i7word_t *) &seed) = s;
+	if (seed == 0) seed = time(NULL);
+	srandom(seed);
+}
+
+i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x) {
+	i7word_t r;
+	i7_opcode_random(proc, x, &r);
+	return r+1;
+}
+=
+
 @h setiosys.
 This opcode in principle allows a story file to select the input-output system
 it will use. But the Inform kits only use system 2, called Glk, and this is the

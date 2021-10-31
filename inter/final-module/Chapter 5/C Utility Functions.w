@@ -2,6 +2,28 @@
 
 Rounding out the C library with a few functions intended for external code to use.
 
+@ We will frequently need to reinterpret |i7word_t| values as |i7float_t|,
+or vice versa. The following functions must be perfect inverses of each other.
+
+= (text to inform7_clib.h)
+i7word_t i7_encode_float(i7float_t val);
+i7float_t i7_decode_float(i7word_t val);
+=
+
+= (text to inform7_clib.c)
+i7word_t i7_encode_float(i7float_t val) {
+    i7word_t res;
+    *(i7float_t *)(&res) = val;
+    return res;
+}
+
+i7float_t i7_decode_float(i7word_t val) {
+    i7float_t res;
+    *(i7word_t *)(&res) = val;
+    return res;
+}
+=
+
 @
 
 = (text to inform7_clib.h)

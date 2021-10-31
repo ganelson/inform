@@ -14,7 +14,10 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 		case PROPERTYEXISTS_BIP:
 			C_GEN_DATA(objdata.value_ranges_needed) = TRUE;
 			C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
-			WRITE("(i7_provides_gprop(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE))"); break;
+			WRITE("(i7_provides_gprop(proc, "); VNODE_1C; WRITE(", ");
+			VNODE_2C; WRITE(", "); VNODE_3C;
+			WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE))");
+			break;
 		case EQ_BIP: 			@<Generate comparison@>; break;
 		case NE_BIP: 			@<Generate comparison@>; break;
 		case GT_BIP: 			@<Generate comparison@>; break;
