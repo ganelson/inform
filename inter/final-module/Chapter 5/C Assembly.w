@@ -197,10 +197,10 @@ C_supported_opcode *CAssembly::find_opcode(code_generation *gen, text_stream *na
 	CAssembly::new_opcode(gen, I"@quit",            -1, -1, -1);
 	CAssembly::new_opcode(gen, I"@random",           2, -1, -1);
 	CAssembly::new_opcode(gen, I"@restart",         -1, -1, -1);
-	CAssembly::new_opcode(gen, I"@restore",         -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@restore",          2, -1, -1);
 	CAssembly::new_opcode(gen, I"@restoreundo",      1, -1, -1);
 	CAssembly::new_opcode(gen, I"@return",          -1, -1, -1);
-	CAssembly::new_opcode(gen, I"@save",            -1, -1, -1);
+	CAssembly::new_opcode(gen, I"@save",             2, -1, -1);
 	CAssembly::new_opcode(gen, I"@saveundo",         1, -1, -1);
 	CAssembly::new_opcode(gen, I"@setiosys",        -1, -1, -1);
 	CAssembly::new_opcode(gen, I"@setrandom",       -1, -1, -1);
@@ -553,8 +553,8 @@ but not so simple to restart execution as if from a clean process start.
 
 = (text to inform7_clib.h)
 void i7_opcode_restart(i7process_t *proc);
-void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t y);
-void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t y);
+void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y);
+void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y);
 =
 
 = (text to inform7_clib.c)
@@ -562,11 +562,11 @@ void i7_opcode_restart(i7process_t *proc) {
 	printf("(RESTART is not implemented on this C program.)\n");
 }
 
-void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t y) {
+void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(RESTORE is not implemented on this C program.)\n");
 }
 
-void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t y) {
+void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
 =

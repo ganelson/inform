@@ -392,11 +392,11 @@ void i7_opcode_restart(i7process_t *proc) {
 	printf("(RESTART is not implemented on this C program.)\n");
 }
 
-void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t y) {
+void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(RESTORE is not implemented on this C program.)\n");
 }
 
-void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t y) {
+void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
 void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {

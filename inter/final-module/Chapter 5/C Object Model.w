@@ -736,8 +736,6 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 	switch (bip) {
 		case PROPERTYARRAY_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
-		case PROPERTYVALUE_BIP:	CConditions::comparison_r(gen, bip, InterTree::first_child(P), InterTree::second_child(P), InterTree::third_child(P), 0);
-								break;
 		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
 								VNODE_3C; WRITE(")"); break;
@@ -838,19 +836,6 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_a
 	return i7_properties[(int) obj].address[(int) pr];
 }
 =
-
-@h Special object-related conditions.
-
-=
-text_stream *CObjectModel::test_with_function(inter_ti bip, int *positive) {
-	switch (bip) {
-		case OFCLASS_BIP:	*positive = TRUE;  return I"i7_ofclass"; break;
-		case PROPERTYVALUE_BIP: *positive = TRUE;  return I"i7_read_gprop"; break;
-		case IN_BIP:		*positive = TRUE;  return I"i7_in"; break;
-		case NOTIN_BIP:		*positive = FALSE; return I"i7_in"; break;
-	}
-	*positive = NOT_APPLICABLE; return NULL;
-}
 
 @
 
