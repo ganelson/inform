@@ -272,7 +272,7 @@ void i7_initialise_memory_and_stack(i7process_t *proc) {
     mem[0x34] = I7BYTE_2(1); mem[0x35] = I7BYTE_3(1);
     #endif
     #ifdef i7_mgl_Serial
-    char *p = i7_text_of_string(i7_mgl_Serial);
+    char *p = i7_text_to_C_string(i7_mgl_Serial);
     for (int i=0; i<6; i++) mem[0x36 + i] = p[i];
     #endif
     #ifndef i7_mgl_Serial

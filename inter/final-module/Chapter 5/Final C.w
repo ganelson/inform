@@ -33,6 +33,8 @@ code can interface with it. Both are divided into segments. The main file thus:
 @e c_ids_and_maxima_I7CGS
 @e c_library_inclusion_I7CGS
 @e c_predeclarations_I7CGS
+@e c_actions_I7CGS
+@e c_quoted_text_I7CGS
 @e c_very_early_matter_I7CGS
 @e c_constants_I7CGS
 @e c_early_matter_I7CGS
@@ -55,6 +57,8 @@ int C_target_segments[] = {
 	c_ids_and_maxima_I7CGS,
 	c_library_inclusion_I7CGS,
 	c_predeclarations_I7CGS,
+	c_actions_I7CGS,
+	c_quoted_text_I7CGS,
 	c_very_early_matter_I7CGS,
 	c_constants_I7CGS,
 	c_early_matter_I7CGS,

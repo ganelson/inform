@@ -2,7 +2,11 @@
 
 Text and dictionary words translated to C.
 
-@h Setting up the model.
+@h Introduction.
+This section will be a long one because Inter needs a wide range of literal
+values, and some are quite troublesome to deal with. We take the word "literal"
+broadly rather than, well, literally: we include under this heading a variety
+of ingredients of expressions which can legally be used as constants.
 
 =
 void CLiteralsModel::initialise(code_generator *cgt) {
@@ -15,171 +19,310 @@ void CLiteralsModel::initialise(code_generator *cgt) {
 }
 
 typedef struct C_generation_literals_model_data {
-	text_stream *double_quoted_C;
-	int no_double_quoted_C_strings;
-	int C_dword_count;
-	int verb_count;
-	int C_action_count;
-	int C_fake_action_count;
-	struct linked_list *words; /* of |C_dword| */
-	struct linked_list *verbs; /* of |C_dword| */
+	int true_action_count;
+	int fake_action_count;
 	struct linked_list *actions; /* of |text_stream| */
+
+	int text_count;
+	struct linked_list *texts; /* of |text_stream| */
+
+	int verb_count;
+	struct linked_list *verbs; /* of |vanilla_dword| */
 	struct linked_list *verb_grammar; /* of |text_stream| */
-	struct dictionary *C_vm_dictionary; /* ditto */
 } C_generation_literals_model_data;
 
 void CLiteralsModel::initialise_data(code_generation *gen) {
-	C_GEN_DATA(litdata.double_quoted_C) = Str::new();
-	C_GEN_DATA(litdata.no_double_quoted_C_strings) = 0;
-	C_GEN_DATA(litdata.C_dword_count) = 0;
+	C_GEN_DATA(litdata.text_count) = 0;
+	C_GEN_DATA(litdata.texts) = NEW_LINKED_LIST(text_stream);
 	C_GEN_DATA(litdata.verb_count) = 0;
-	C_GEN_DATA(litdata.C_action_count) = 0;
-	C_GEN_DATA(litdata.C_fake_action_count) = 4096;
-	C_GEN_DATA(litdata.words) = NEW_LINKED_LIST(C_dword);
-	C_GEN_DATA(litdata.verbs) = NEW_LINKED_LIST(C_dword);
+	C_GEN_DATA(litdata.true_action_count) = 0;
+	C_GEN_DATA(litdata.fake_action_count) = 0;
+	C_GEN_DATA(litdata.verbs) = NEW_LINKED_LIST(vanilla_dword);
 	C_GEN_DATA(litdata.actions) = NEW_LINKED_LIST(text_stream);
 	C_GEN_DATA(litdata.verb_grammar) = NEW_LINKED_LIST(text_stream);
-
-	C_GEN_DATA(litdata.C_vm_dictionary) = Dictionaries::new(1024, FALSE);
 }
 
 void CLiteralsModel::begin(code_generation *gen) {
 	CLiteralsModel::initialise_data(gen);
+	CLiteralsModel::begin_text(gen);
 }
 
 void CLiteralsModel::end(code_generation *gen) {
-	CLiteralsModel::compile_dwords(gen);
+	CLiteralsModel::end_text(gen);
+	VanillaConstants::compile_dictionary_table(gen);
 	CLiteralsModel::compile_verb_table(gen);
 	CLiteralsModel::compile_actions_table(gen);
-	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("char *dqs[] = {\n%S\"\" };\n", C_GEN_DATA(litdata.double_quoted_C));
-	WRITE("#define i7_mgl_Grammar__Version 2\n");
-	CodeGen::deselect(gen, saved);
 }
 
-@
+@h Symbols.
+The following function expresses that a named constant can be used as a value in C
+just by naming it. That seems too obvious to need a function, but one can imagine
+languages where it is not true.
 
 =
-typedef struct C_dword {
-	struct text_stream *text;
-	struct text_stream *identifier;
-	int pluralise;
-	int meta;
-	int preplike;
-	int nounlike;
-	int verblike;
-	int verb_number;
-	int grammar_table_offset;
-	CLASS_DEFINITION
-} C_dword;
-
-C_dword *CLiteralsModel::text_to_dword(code_generation *gen, text_stream *S, int pluralise) {
-	TEMPORARY_TEXT(K)
-	LOOP_THROUGH_TEXT(pos, S)
-		PUT_TO(K, Characters::tolower(Str::get(pos)));
-	while (Str::get_last_char(K) == '/') Str::delete_last_character(K);
-	C_dword *dw;
-	if (Dictionaries::find(C_GEN_DATA(litdata.C_vm_dictionary), K)) {
-		dw = Dictionaries::read_value(C_GEN_DATA(litdata.C_vm_dictionary), K);
-		if (pluralise) dw->pluralise = TRUE;
-	} else {
-		dw = CREATE(C_dword);
-		dw->text = Str::duplicate(K);
-		dw->identifier = Str::new();
-		WRITE_TO(dw->identifier,
-			"i7_dword_%d", C_GEN_DATA(litdata.C_dword_count)++);
-		dw->pluralise = pluralise;
-		dw->meta = FALSE;
-		dw->preplike = FALSE;
-		dw->nounlike = FALSE;
-		dw->verblike = FALSE;
-		dw->verb_number = 0;
-		dw->grammar_table_offset = 0;
-		ADD_TO_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.words));
-		Dictionaries::create(C_GEN_DATA(litdata.C_vm_dictionary), K);
-		Dictionaries::write_value(C_GEN_DATA(litdata.C_vm_dictionary), K, dw);
-	}
-	DISCARD_TEXT(K)
-	return dw;
+void CLiteralsModel::compile_literal_symbol(code_generator *cgt, code_generation *gen,
+	inter_symbol *aliased) {
+	text_stream *OUT = CodeGen::current(gen);
+	text_stream *S = Inter::Symbols::name(aliased);
+	Generators::mangle(gen, OUT, S);
 }
 
-void CLiteralsModel::compile_dwords(code_generation *gen) {
-	int dictlen = C_GEN_DATA(litdata.C_dword_count);
+@h Integers.
+This is simple for once. A generator is not obliged to take the |hex_mode| hint
+and show the number in hex in the code it generates; functionally, decimal would
+be just as good. But since we can easily do so, why not.
 
-	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	CMemoryModel::begin_array(NULL, gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
-	for (int b=0; b<4; b++) {
-		TEMPORARY_TEXT(N)
-		WRITE_TO(N, "I7BYTE_%d(%d)", b, dictlen);
-		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
-		DISCARD_TEXT(N)
+=
+void CLiteralsModel::compile_literal_number(code_generator *cgt,
+	code_generation *gen, inter_ti val, int hex_mode) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (hex_mode) WRITE("0x%x", val);
+	else WRITE("%d", val);
+}
+
+@h Real numbers.
+This is not at all simple, but the helpful //VanillaConstants::textual_real_to_uint32//
+does all the work for us.
+
+=
+void CLiteralsModel::compile_literal_real(code_generator *cgt,
+	code_generation *gen, text_stream *textual) {
+	uint32_t n = VanillaConstants::textual_real_to_uint32(textual);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("(i7word_t) 0x%08x", n);
+}
+
+@h Texts.
+These are sometimes being used in |inv !print| or |inv !box|, in which case they
+are never needed as values -- they're just printed. If that's the case, we
+render directly as a double-quoted C text literal.
+
+Otherwise, we are in |REGULAR_LTM| mode. In that case, a text must be represented
+by a value which is "of the class String", meaning, a value in a range which
+begins at the constant |I7VAL_STRINGS_BASE|; subject to that requirement, we
+have freedom to do more or less what we like, but we will make the smallest
+range of String values possible. Each text will have a unique ID number counting
+upwards from |I7VAL_STRINGS_BASE|. The actual text this represents will be an
+entry in the |i7_texts| array, which can be accessed using the
+|i7_text_to_C_string| function.
+
+(This is in contrast to the Inform 6 situation, where texts are represented by
+addresses of compressed text in memory, so that the values are not consecutive
+and the range they spread out over can be very large.)
+
+= (text to inform7_clib.h)
+char *i7_text_to_C_string(i7word_t str);
+=
+
+= (text to inform7_clib.c)
+char *i7_texts[];
+char *i7_text_to_C_string(i7word_t str) {
+	return i7_texts[str - I7VAL_STRINGS_BASE];
+}
+=
+
+The |i7_texts| array is written one entry at a time as we go along, and is
+started here:
+
+=
+void CLiteralsModel::begin_text(code_generation *gen) {
+}
+
+void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *gen,
+	text_stream *S, int no_special_characters) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (gen->literal_text_mode == REGULAR_LTM) {
+		WRITE("(I7VAL_STRINGS_BASE + %d)", C_GEN_DATA(litdata.text_count)++);
+		text_stream *OUT = Str::new();
+		@<Compile the text@>;
+		ADD_TO_LINKED_LIST(OUT, text_stream, C_GEN_DATA(litdata.texts));
+	} else {
+		@<Compile the text@>;
 	}
-	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
+}
 
-	if (dictlen == 0) return;
-	C_dword **sorted = (C_dword **)
-		(Memory::calloc(dictlen, sizeof(C_dword *), CODE_GENERATION_MREASON));
-	C_dword *dw; int i=0;
-	LOOP_OVER_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.words)) sorted[i++] = dw;
-	qsort(sorted, (size_t) LinkedLists::len(C_GEN_DATA(litdata.words)), sizeof(C_dword *), CLiteralsModel::compare_dwords);
-	for (int i=0; i<dictlen; i++) {
-		dw = sorted[i];
-		CMemoryModel::begin_array(NULL, gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
-		TEMPORARY_TEXT(N)
-		WRITE_TO(N, "0x60");
-		CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
-		DISCARD_TEXT(N);
-		for (int i=0; i<9; i++) {
-			TEMPORARY_TEXT(N)
-			if (i < Str::len(dw->text)) {
-				if (Str::get_at(dw->text, i) == '\'') WRITE_TO(N, "'\\''");
-				else WRITE_TO(N, "'%c'", Str::get_at(dw->text, i));
-			} else
-				WRITE_TO(N, "0");
-			CMemoryModel::array_entry(NULL, gen, N, BYTE_ARRAY_FORMAT);
-			DISCARD_TEXT(N);
+@<Compile the text@> =
+	WRITE("\"");
+	if (no_special_characters) @<Print text almost raw@>
+	else @<Print text expanding out at, caret and tilde@>;
+	WRITE("\"");
+
+@ Tabs become spaces, but there shouldn't be any tabs here anyway; |NEWLINE_IN_STRING|
+characters become actual newlines, which is what they mean anyway. Otherwise, though,
+this simply prints out the text in a form which a C compiler will accept between
+double-quotes.
+
+@<Print text almost raw@> =
+	LOOP_THROUGH_TEXT(pos, S) {
+		wchar_t c = Str::get(pos);
+		switch(c) {
+			case '"': WRITE("\\\""); break;
+			case '\\': WRITE("\\\\"); break;
+			case '\t': WRITE(" "); break;
+			case '\n': WRITE("\\n"); break;
+			case NEWLINE_IN_STRING: WRITE("\\n"); break;
+			default: PUT(c); break;
 		}
-		TEMPORARY_TEXT(DP1H)
-		TEMPORARY_TEXT(DP1L)
-		TEMPORARY_TEXT(DP2H)
-		TEMPORARY_TEXT(DP2L)
-		int f = 0;
-		if (dw->verblike) f += 1;
-		if (dw->meta) f += 2;
-		if (dw->pluralise) f += 4;
-		if (dw->preplike) f += 8;
-		if (dw->nounlike) f += 128;
-		WRITE_TO(DP1H, "((%d)/256)", f);
-		WRITE_TO(DP1L, "((%d)%%256)", f);
-		WRITE_TO(DP2H, "((%d)/256)", 0xFFFF - dw->verb_number);
-		WRITE_TO(DP2L, "((%d)%%256)", 0xFFFF - dw->verb_number);
-		CMemoryModel::array_entry(NULL, gen, DP1H, BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, DP1L, BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, DP2H, BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, DP2L, BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		CMemoryModel::array_entry(NULL, gen, I"0", BYTE_ARRAY_FORMAT);
-		DISCARD_TEXT(DP1H)
-		DISCARD_TEXT(DP1L)
-		DISCARD_TEXT(DP2H)
-		DISCARD_TEXT(DP2L)
-		CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
 	}
-	Memory::I7_free(sorted, CODE_GENERATION_MREASON, dictlen);
+
+@ All of that is true here too, but we also convert the traditional Inform 6
+notations for |@dd...| or |@{hh...}| giving character literals in decimal or
+hex, and |~| for a double-quote, and |^| for a newline.
+
+@<Print text expanding out at, caret and tilde@> =
+	for (int i=0; i<Str::len(S); i++) {
+		wchar_t c = Str::get_at(S, i);
+		switch(c) {
+			case '@': {
+				if (Str::get_at(S, i+1) == '@') {
+					int cc = 0; i++;
+					while (Characters::isdigit(Str::get_at(S, ++i)))
+						cc = 10*cc + (Str::get_at(S, i) - '0');
+					if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
+					PUT(cc);
+					i--;
+				} else if (Str::get_at(S, i+1) == '{') {
+					int cc = 0; i++;
+					while ((Str::get_at(S, ++i) != '}') && (Str::get_at(S, i) != 0))
+						cc = 16*cc + CLiteralsModel::hex_val(Str::get_at(S, i));
+					if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
+					PUT(cc);
+				} else WRITE("@");
+				break;
+			}
+			case '~': case '"': WRITE("\\\""); break;
+			case '\\': WRITE("\\\\"); break;
+			case '\t': WRITE(" "); break;
+			case '^': case '\n': WRITE("\\n"); break;
+			case NEWLINE_IN_STRING: WRITE("\\n"); break;
+			default: PUT(c); break;
+		}
+	}
+
+@ =
+int CLiteralsModel::hex_val(wchar_t c) {
+	if ((c >= '0') && (c <= '9')) return c - '0';
+	if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
+	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
+	return -1;
+}
+
+@ At the end of the run, when there can be no further texts, we must close
+the |i7_texts| array:
+
+=
+void CLiteralsModel::end_text(code_generation *gen) {
+	segmentation_pos saved = CodeGen::select(gen, c_quoted_text_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define i7_mgl_Grammar__Version 2\n");
+	WRITE("char *i7_texts[] = {\n");
+	text_stream *T;
+	LOOP_OVER_LINKED_LIST(T, text_stream, C_GEN_DATA(litdata.texts))
+		WRITE("%S, ", T);
+	WRITE("\"\" };\n");
 	CodeGen::deselect(gen, saved);
 }
 
-int CLiteralsModel::compare_dwords(const void *ent1, const void *ent2) {
-	text_stream *tx1 = (*((const C_dword **) ent1))->text;
-	text_stream *tx2 = (*((const C_dword **) ent2))->text;
-	return Str::cmp_insensitive(tx1, tx2);
+int CLiteralsModel::size_of_String_area(code_generation *gen) {
+	return C_GEN_DATA(litdata.text_count);
 }
 
+@h Action names.
+These are used when processing changes to the model world in interactive fiction;
+they do not exist in Basic Inform programs.
+
+True actions count upwards from 0; fake actions independently count upwards
+from 4096. These are defined just as constants, with mangled names:
+
+=
+void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen,
+	text_stream *name, int true_action) {
+	int N;
+	if (true_action) {
+		N = C_GEN_DATA(litdata.true_action_count)++;
+		CObjectModel::define_header_constant_for_action(gen, name, name, N);
+		ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, C_GEN_DATA(litdata.actions));
+	} else {
+		N = 4096 + C_GEN_DATA(litdata.fake_action_count)++;
+	}
+	TEMPORARY_TEXT(O)
+	TEMPORARY_TEXT(M)
+	WRITE_TO(O, "##%S", name);
+	CNamespace::mangle(cgt, M, O);
+
+	segmentation_pos saved = CodeGen::select(gen, c_actions_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", M, N);
+	CodeGen::deselect(gen, saved);
+
+	DISCARD_TEXT(O)
+	DISCARD_TEXT(M)
+}
+
+@ We also need to make a metadata table called the |#actions_table| which
+gives, for each (true) action, a function to carry it out. The name of this
+function is always given with a |Sub| suffix: this once stood for subroutine,
+and shows just how far back into the history of Inform 1 this all goes.
+
+(It is the absence of such a function which makes a fake action fake.)
+
+=
+void CLiteralsModel::compile_actions_table(code_generation *gen) {
+	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL,
+		TABLE_ARRAY_FORMAT, NULL);
+	text_stream *an;
+	LOOP_OVER_LINKED_LIST(an, text_stream, C_GEN_DATA(litdata.actions)) {
+		TEMPORARY_TEXT(O)
+		WRITE_TO(O, "%SSub", an);
+		TEMPORARY_TEXT(M)
+		CNamespace::mangle(NULL, M, O);
+		CMemoryModel::array_entry(NULL, gen, M, TABLE_ARRAY_FORMAT);
+		DISCARD_TEXT(O)
+		DISCARD_TEXT(M)
+	}
+	CMemoryModel::end_array(NULL, gen, TABLE_ARRAY_FORMAT, NULL);	
+}
+
+@h Dictionary words.
+These are used when parsing command grammar in interactive fiction; they do not
+exist in Basic Inform programs.
+
+At runtime, dictionary words are addresses of small fixed-size arrays, and we
+have very little flexibility about this because code in CommandParserKit makes
+many assumptions about these arrays. So we will closely imitate what the Inform 6
+compiler would automatically do.
+
+In the array |DW|, the bytes |DW->1| to |DW->9| are the characters of the word,
+with trailing nulls padding it out if the word is shorter than that. If it's
+longer, then the text is truncated to 9 characters only. This means printing
+out the text of a dictionary word is a somewhat faithless operation.[1] Still,
+Inter provides a primitive to do that, and here is the implementation.
+
+[1] It would get every word in this footnote right except for dictionary, which
+would print as dictionar.
+
+= (text to inform7_clib.h)
+void i7_print_dword(i7process_t *proc, i7word_t at);
+=
+
+= (text to inform7_clib.c)
+void i7_print_dword(i7process_t *proc, i7word_t at) {
+	for (i7byte_t i=1; i<=9; i++) {
+		i7byte_t c = i7_read_byte(proc, at+i);
+		if (c == 0) break;
+		i7_print_char(proc, c);
+	}
+}
+=
+
+@ We will use the convenient Vanilla mechanism for compiling dictionary words,
+so there is very little to do:
+
+=
 void CLiteralsModel::compile_dictionary_word(code_generator *cgt, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
-	C_dword *dw = CLiteralsModel::text_to_dword(gen, S, pluralise);
+	vanilla_dword *dw = VanillaConstants::text_to_dword(gen, S, pluralise);
 	dw->nounlike = TRUE;
 	CNamespace::mangle(cgt, OUT, dw->identifier);
 }
@@ -227,12 +370,12 @@ void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 		if (stage == 1) {
 			if (val1 == DWORD_IVAL) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, FALSE);
+				vanilla_dword *dw = VanillaConstants::text_to_dword(gen, glob_text, FALSE);
 				dw->verb_number = verbnum; dw->verblike = TRUE;
 				if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
 				synonyms++;
 				if (synonyms == 1) {
-					ADD_TO_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs));
+					ADD_TO_LINKED_LIST(dw, vanilla_dword, C_GEN_DATA(litdata.verbs));
 				}
 				dw->grammar_table_offset = address;
 			} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
@@ -364,7 +507,7 @@ void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 			}
 			if (val1 == DWORD_IVAL) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, FALSE);
+				vanilla_dword *dw = VanillaConstants::text_to_dword(gen, glob_text, FALSE);
 				dw->preplike = TRUE;
 				CLiteralsModel::grammar_byte(gen, 0x42 + lookahead);
 				TEMPORARY_TEXT(MG)
@@ -375,7 +518,7 @@ void CLiteralsModel::verb_grammar(code_generator *cgt, code_generation *gen,
 			}
 			if (val1 == PDWORD_IVAL) {
 				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				C_dword *dw = CLiteralsModel::text_to_dword(gen, glob_text, TRUE);
+				vanilla_dword *dw = VanillaConstants::text_to_dword(gen, glob_text, TRUE);
 				dw->preplike = TRUE;
 				CLiteralsModel::grammar_byte(gen, 0x42 + lookahead);
 				TEMPORARY_TEXT(MG)
@@ -423,8 +566,8 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 	WRITE_TO(N, "%d", C_GEN_DATA(litdata.verb_count) - 1);
 	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 	DISCARD_TEXT(N)
-	C_dword *dw; int c = 1;
-	LOOP_OVER_LINKED_LIST(dw, C_dword, C_GEN_DATA(litdata.verbs)) {
+	vanilla_dword *dw; int c = 1;
+	LOOP_OVER_LINKED_LIST(dw, vanilla_dword, C_GEN_DATA(litdata.verbs)) {
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "(i7_ss_grammar_table_cont+%d /* %d: %S */ )", dw->grammar_table_offset, c++, dw->text);
 		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
@@ -438,344 +581,3 @@ void CLiteralsModel::compile_verb_table(code_generation *gen) {
 	}
 	CMemoryModel::end_array(NULL, gen, BYTE_ARRAY_FORMAT, NULL);
 }
-
-void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen, text_stream *name, int true_action) {
-	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
-	text_stream *OUT = CodeGen::current(gen);
-	if (true_action) {
-		CObjectModel::define_header_constant_for_action(gen, name, name, C_GEN_DATA(litdata.C_action_count));
-		WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(litdata.C_action_count)++);
-		ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, C_GEN_DATA(litdata.actions));
-	} else {
-		WRITE("#define i7_ss_%S %d\n", name, C_GEN_DATA(litdata.C_fake_action_count)++);
-	}
-	CodeGen::deselect(gen, saved);
-}
-
-void CLiteralsModel::compile_actions_table(code_generation *gen) {
-	CMemoryModel::begin_array(NULL, gen, I"#actions_table", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
-	TEMPORARY_TEXT(N)
-	WRITE_TO(N, "%d", C_GEN_DATA(litdata.C_action_count));
-	CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
-	DISCARD_TEXT(N)
-	text_stream *an;
-	LOOP_OVER_LINKED_LIST(an, text_stream, C_GEN_DATA(litdata.actions)) {
-		TEMPORARY_TEXT(N)
-		WRITE_TO(N, "i7_mgl_%SSub", an);
-		CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
-		DISCARD_TEXT(N)
-	}
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);	
-}
-
-@
-
-= (text to inform7_clib.h)
-i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
-=
-
-= (text to inform7_clib.c)
-#ifdef i7_mgl_TryAction
-i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
-i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
-	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
-}
-#endif
-=
-
-@
-
-=
-void CLiteralsModel::compile_literal_number(code_generator *cgt,
-	code_generation *gen, inter_ti val, int hex_mode) {
-	text_stream *OUT = CodeGen::current(gen);
-	if (hex_mode) WRITE("0x%x", val);
-	else WRITE("%d", val);
-}
-
-/* Return 10 raised to the expo power.
- *
- * I'm avoiding the standard pow() function for a rather lame reason:
- * it's in the libmath (-lm) library, and I don't want to change the
- * build model for the compiler. So, this is implemented with a stupid
- * lookup table. It's faster than pow() for small values of expo.
- * Probably not as fast if expo is 200, but "$+1e200" is an overflow
- * anyway, so I don't expect that to be a problem.
- *
- * (For some reason, frexp() and ldexp(), which are used later on, do
- * not require libmath to be linked in.)
- */
-
-#ifndef POW10_RANGE
-#define POW10_RANGE (8)
-#endif
-
-double CLiteralsModel::pow10_cheap(int expo)
-{
-    static double powers[POW10_RANGE*2+1] = {
-        0.00000001, 0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1,
-        1.0,
-        10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0
-    };
-
-    double res = 1.0;
-
-    if (expo < 0) {
-        for (; expo < -POW10_RANGE; expo += POW10_RANGE) {
-            res *= powers[0];
-        }
-        return res * powers[POW10_RANGE+expo];
-    }
-    else {
-        for (; expo > POW10_RANGE; expo -= POW10_RANGE) {
-            res *= powers[POW10_RANGE*2];
-        }
-        return res * powers[POW10_RANGE+expo];
-    }
-}
-
-/* Return the IEEE-754 single-precision encoding of a floating-point
- * number. See http://www.psc.edu/general/software/packages/ieee/ieee.php
- * for an explanation.
- *
- * The number is provided in the pieces it was parsed in:
- *    [+|-] intv "." fracv "e" [+|-]expo
- *
- * If the magnitude is too large (beyond about 3.4e+38), this returns
- * an infinite value (0x7f800000 or 0xff800000). If the magnitude is too
- * small (below about 1e-45), this returns a zero value (0x00000000 or 
- * 0x80000000). If any of the inputs are NaN, this returns NaN (but the
- * lexer should never do that).
- *
- * Note that using a float constant does *not* set the uses_float_features
- * flag (which would cause the game file to be labelled 3.1.2). There's
- * no VM feature here, just an integer. Of course, any use of the float
- * *opcodes* will set the flag.
- *
- * The math functions in this routine require #including <math.h>, but
- * they should not require linking the math library (-lm). At least,
- * they do not on OSX and Linux.
- */
-uint32_t CLiteralsModel::construct_float(int signbit, double intv, double fracv, int expo)
-{
-    double absval = (intv + fracv) * CLiteralsModel::pow10_cheap(expo);
-    uint32_t sign = (signbit ? 0x80000000 : 0x0);
-    double mant;
-    uint32_t fbits;
- 
-    if (isinf(absval)) {
-        return sign | 0x7f800000; /* infinity */
-    }
-    if (isnan(absval)) {
-        return sign | 0x7fc00000;
-    }
-
-    mant = frexp(absval, &expo);
-
-    /* Normalize mantissa to be in the range [1.0, 2.0) */
-    if (0.5 <= mant && mant < 1.0) {
-        mant *= 2.0;
-        expo--;
-    }
-    else if (mant == 0.0) {
-        expo = 0;
-    }
-    else {
-        return sign | 0x7f800000; /* infinity */
-    }
-
-    if (expo >= 128) {
-        return sign | 0x7f800000; /* infinity */
-    }
-    else if (expo < -126) {
-        /* Denormalized (very small) number */
-        mant = ldexp(mant, 126 + expo);
-        expo = 0;
-    }
-    else if (!(expo == 0 && mant == 0.0)) {
-        expo += 127;
-        mant -= 1.0; /* Get rid of leading 1 */
-    }
-
-    mant *= 8388608.0; /* 2^23 */
-    fbits = (uint32_t)(mant + 0.5); /* round mant to nearest int */
-    if (fbits >> 23) {
-        /* The carry propagated out of a string of 23 1 bits. */
-        fbits = 0;
-        expo++;
-        if (expo >= 255) {
-            return sign | 0x7f800000; /* infinity */
-        }
-    }
-
-    return (sign) | ((uint32_t)(expo << 23)) | (fbits);
-}
-
-int CLiteralsModel::character_digit_value(wchar_t c) {
-	if ((c >= '0') && (c <= '9')) return c - '0';
-	return 10;
-}
-
-void CLiteralsModel::compile_literal_real(code_generator *cgt,
-	code_generation *gen, text_stream *textual) {
-	int at = 0;
-	wchar_t lookahead = Str::get_at(textual, at++);
-	int expo=0; double intv=0, fracv=0;
-	int expocount=0, intcount=0, fraccount=0, signbit=0;
-	if (lookahead == '-') {
-		signbit = 1;
-		lookahead = Str::get_at(textual, at++);
-	} else if (lookahead == '+') {
-		signbit = 0;
-		lookahead = Str::get_at(textual, at++);
-	}
-	while (CLiteralsModel::character_digit_value(lookahead) < 10) {
-		intv = 10.0*intv + CLiteralsModel::character_digit_value(lookahead);
-		intcount++;
-		lookahead = Str::get_at(textual, at++);
-	}
-	if (lookahead == '.') {
-		double fracpow = 1.0;
-		lookahead = Str::get_at(textual, at++);
-		while (CLiteralsModel::character_digit_value(lookahead) < 10) {
-			fracpow *= 0.1;
-			fracv = fracv + fracpow*CLiteralsModel::character_digit_value(lookahead);
-			fraccount++;
-			lookahead = Str::get_at(textual, at++);
-		}
-	}
-	if (lookahead == 'e' || lookahead == 'E') {
-		int exposign = 0;
-		lookahead = Str::get_at(textual, at++);
-		if (lookahead == '+' || lookahead == '-') {
-			exposign = (lookahead == '-');
-			lookahead = Str::get_at(textual, at++);
-		}
-		while (CLiteralsModel::character_digit_value(lookahead) < 10) {
-			expo = 10*expo + CLiteralsModel::character_digit_value(lookahead);
-			expocount++;
-			lookahead = Str::get_at(textual, at++);
-		}
-		if (expocount == 0) {
-			WRITE_TO(STDERR, "Floating-point literal '%S' must have digits after the 'e'", textual);
-			internal_error("bad floating-point literal");
-		}
-		if (exposign) { expo = -expo; }
-	}
-	if (intcount + fraccount == 0) {
-		WRITE_TO(STDERR, "Floating-point literal '%S' must have digits", textual);
-		internal_error("bad floating-point literal");
-	}
-	uint32_t n = CLiteralsModel::construct_float(signbit, intv, fracv, expo);
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE("(i7word_t) 0x%08x", n);
-}
-
-@
-
-=
-void CLiteralsModel::compile_literal_symbol(code_generator *cgt, code_generation *gen, inter_symbol *aliased) {
-	text_stream *OUT = CodeGen::current(gen);
-	text_stream *S = Inter::Symbols::name(aliased);
-	Generators::mangle(gen, OUT, S);
-}
-
-@
-
-=
-int CLiteralsModel::hex_val(wchar_t c) {
-	if ((c >= '0') && (c <= '9')) return c - '0';
-	if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
-	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
-	return -1;
-}
-void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *gen,
-	text_stream *S, int escape_mode) {
-	text_stream *OUT = CodeGen::current(gen);
-	
-	if (gen->literal_text_mode != PRINTING_LTM) {
-		WRITE("(I7VAL_STRINGS_BASE + %d)", C_GEN_DATA(litdata.no_double_quoted_C_strings)++);
-		OUT = C_GEN_DATA(litdata.double_quoted_C);
-	}
-	WRITE("\"");
-	if (escape_mode == FALSE) {
-		for (int i=0; i<Str::len(S); i++) {
-			wchar_t c = Str::get_at(S, i);
-			switch(c) {
-				case '@': {
-					if (Str::get_at(S, i+1) == '@') {
-						int cc = 0; i++;
-						while (Characters::isdigit(Str::get_at(S, ++i)))
-							cc = 10*cc + (Str::get_at(S, i) - '0');
-						if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
-						PUT(cc);
-						i--;
-					} else if (Str::get_at(S, i+1) == '{') {
-						int cc = 0; i++;
-						while ((Str::get_at(S, ++i) != '}') && (Str::get_at(S, i) != 0))
-							cc = 16*cc + CLiteralsModel::hex_val(Str::get_at(S, i));
-						if ((cc == '\n') || (cc == '\"') || (cc == '\\')) PUT('\\');
-						PUT(cc);
-					} else WRITE("@");
-					break;
-				}
-				case '~': case '"': WRITE("\\\""); break;
-				case '\\': WRITE("\\\\"); break;
-				case '\t': WRITE(" "); break;
-				case '^': case '\n': WRITE("\\n"); break;
-				case NEWLINE_IN_STRING: WRITE("\\n"); break;
-				default: PUT(c); break;
-			}
-		}
-	} else {
-		LOOP_THROUGH_TEXT(pos, S) {
-			wchar_t c = Str::get(pos);
-			switch(c) {
-				case '"': WRITE("\\\""); break;
-				case '\\': WRITE("\\\\"); break;
-				case '\t': WRITE(" "); break;
-				case '\n': WRITE("\\n"); break;
-				case NEWLINE_IN_STRING: WRITE("\\n"); break;
-				default: PUT(c); break;
-			}
-		}
-	}
-	WRITE("\"");
-	if (gen->literal_text_mode != PRINTING_LTM) WRITE(",\n");
-}
-
-int CLiteralsModel::no_strings(code_generation *gen) {
-	return C_GEN_DATA(litdata.no_double_quoted_C_strings);
-}
-
-int CLiteralsModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
-	text_stream *OUT = CodeGen::current(gen);
-	switch (bip) {
-		case PRINTSTRING_BIP: WRITE("i7_print_C_string(proc, dqs["); VNODE_1C; WRITE(" - I7VAL_STRINGS_BASE])"); break;
-		case PRINTDWORD_BIP:  WRITE("i7_print_dword(proc, "); VNODE_1C; WRITE(")"); break;
-		default:              return NOT_APPLICABLE;
-	}
-	return FALSE;
-}
-
-@
-
-= (text to inform7_clib.h)
-void i7_print_dword(i7process_t *proc, i7word_t at);
-char *i7_text_of_string(i7word_t str);
-=
-
-= (text to inform7_clib.c)
-void i7_print_dword(i7process_t *proc, i7word_t at) {
-	for (i7byte_t i=1; i<=9; i++) {
-		i7byte_t c = i7_read_byte(proc, at+i);
-		if (c == 0) break;
-		i7_print_char(proc, c);
-	}
-}
-
-char *dqs[];
-char *i7_text_of_string(i7word_t str) {
-	return dqs[str - I7VAL_STRINGS_BASE];
-}
-=

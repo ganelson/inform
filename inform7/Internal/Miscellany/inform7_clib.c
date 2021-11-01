@@ -118,7 +118,7 @@ void i7_initialise_memory_and_stack(i7process_t *proc) {
     mem[0x34] = I7BYTE_2(1); mem[0x35] = I7BYTE_3(1);
     #endif
     #ifdef i7_mgl_Serial
-    char *p = i7_text_of_string(i7_mgl_Serial);
+    char *p = i7_text_to_C_string(i7_mgl_Serial);
     for (int i=0; i<6; i++) mem[0x36 + i] = p[i];
     #endif
     #ifndef i7_mgl_Serial
@@ -1094,23 +1094,16 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, 
 	return i7_gen_call(proc, fn_ref, args, 5);
 }
 
-#ifdef i7_mgl_TryAction
-i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
-i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
-	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+char *i7_texts[];
+char *i7_text_to_C_string(i7word_t str) {
+	return i7_texts[str - I7VAL_STRINGS_BASE];
 }
-#endif
 void i7_print_dword(i7process_t *proc, i7word_t at) {
 	for (i7byte_t i=1; i<=9; i++) {
 		i7byte_t c = i7_read_byte(proc, at+i);
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}
-}
-
-char *dqs[];
-char *i7_text_of_string(i7word_t str) {
-	return dqs[str - I7VAL_STRINGS_BASE];
 }
 #define I7_MAX_STREAMS 128
 
@@ -1697,4 +1690,10 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 			fn_i7_mgl_LIST_OF_TY_PutItem(proc, S, i+1, A[i], 0, 0);
 	}
 }
+#ifdef i7_mgl_TryAction
+i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
+	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+}
+#endif
 #endif

@@ -209,7 +209,7 @@ overlap.
 
 	WRITE("#define I7VAL_STRINGS_BASE %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
 	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n",
-		C_GEN_DATA(objdata.owner_id_count) + 1 + CLiteralsModel::no_strings(gen));
+		C_GEN_DATA(objdata.owner_id_count) + 1 + CLiteralsModel::size_of_String_area(gen));
 
 	WRITE("#define i7_no_property_ids %d\n", C_GEN_DATA(objdata.property_id_counter));
 	CodeGen::deselect(gen, saved);

@@ -270,3 +270,285 @@ int VanillaConstants::compare_tlh(const void *elem1, const void *elem2) {
 	text_stream *s2 = (*e2)->literal_content;
 	return Str::cmp(s1, s2);
 }
+
+@ Compiling the table of dictionary words is not completely simple: they must
+be sorted into alphabetical order, but do not present themselves that way.
+
+So we provide the following functions, which a generator is not obliged to
+make use of.
+
+For each different dictionary word brought to our attention, we create one
+of these:
+
+=
+typedef struct vanilla_dword {
+	struct text_stream *text;
+	struct text_stream *identifier;
+	int pluralise;
+	int meta;
+	int preplike;
+	int nounlike;
+	int verblike;
+	int verb_number;
+	int grammar_table_offset;
+	CLASS_DEFINITION
+} vanilla_dword;
+
+@ The following sorting function places dwords in alphabetical order:
+
+=
+int VanillaConstants::compare_dwords(const void *ent1, const void *ent2) {
+	text_stream *tx1 = (*((const vanilla_dword **) ent1))->text;
+	text_stream *tx2 = (*((const vanilla_dword **) ent2))->text;
+	return Str::cmp_insensitive(tx1, tx2);
+}
+
+@ We use a dictionary to ensure that each dword has exactly one such structure
+created:
+
+=
+vanilla_dword *VanillaConstants::text_to_dword(code_generation *gen, text_stream *S,
+	int pluralise) {
+	TEMPORARY_TEXT(K)
+	LOOP_THROUGH_TEXT(pos, S)
+		PUT_TO(K, Characters::tolower(Str::get(pos)));
+	while (Str::get_last_char(K) == '/') Str::delete_last_character(K);
+	vanilla_dword *dw;
+	if (Dictionaries::find(gen->dword_dictionary, K)) {
+		dw = Dictionaries::read_value(gen->dword_dictionary, K);
+		if (pluralise) dw->pluralise = TRUE;
+	} else {
+		dw = CREATE(vanilla_dword);
+		dw->text = Str::duplicate(K);
+		dw->identifier = Str::new();
+		WRITE_TO(dw->identifier, "i7_dword_%d", gen->dword_count++);
+		dw->pluralise = pluralise;
+		dw->meta = FALSE;
+		dw->preplike = FALSE;
+		dw->nounlike = FALSE;
+		dw->verblike = FALSE;
+		dw->verb_number = 0;
+		dw->grammar_table_offset = 0;
+		ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->words);
+		Dictionaries::create(gen->dword_dictionary, K);
+		Dictionaries::write_value(gen->dword_dictionary, K, dw);
+	}
+	DISCARD_TEXT(K)
+	return dw;
+}
+
+@ And this function then compiles the |#dictionary_table| array, which is
+really a concatenation of many arrays: a single word holding the length
+and then one mini-array for each dword, presented in alphabetical order.
+
+For the format of dictionary word arrays, see the Inform 6 Technical Manual.
+(This is the later Glulx format, not the earlier Z-machine format.)
+
+=
+void VanillaConstants::compile_dictionary_table(code_generation *gen) {
+	int dictlen = gen->dword_count;
+	@<Compile the dictionary length@>;
+	if (dictlen > 0) {
+		vanilla_dword **sorted = (vanilla_dword **)
+			(Memory::calloc(dictlen, sizeof(vanilla_dword *), CODE_GENERATION_MREASON));
+		vanilla_dword *dw; int i=0;
+		LOOP_OVER_LINKED_LIST(dw, vanilla_dword, gen->words) sorted[i++] = dw;
+		qsort(sorted, (size_t) LinkedLists::len(gen->words), sizeof(vanilla_dword *),
+			VanillaConstants::compare_dwords);
+		for (int i=0; i<dictlen; i++) @<Compile an array for this dword@>;
+		Memory::I7_free(sorted, CODE_GENERATION_MREASON, dictlen);
+	}
+}
+
+@ In effect, this is a 1-word word array, but we make it as a 4-byte byte array
+instead so that we are not concatenating arrays with different formats; this is
+just in case some generators are opting to align word arrays in memory.
+
+@<Compile the dictionary length@> =
+	Generators::begin_array(gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
+	VanillaConstants::byte(gen, 0);
+	VanillaConstants::byte(gen, ((dictlen & 0x00FF0000) >> 16));
+	VanillaConstants::byte(gen, ((dictlen & 0x0000FF00) >> 8));
+	VanillaConstants::byte(gen, (dictlen & 0x000000FF));
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
+
+@<Compile an array for this dword@> =
+	dw = sorted[i];
+	Generators::begin_array(gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
+	VanillaConstants::byte(gen, 0x60);
+	for (int i=0; i<9; i++) {
+		int c = 0;
+		if (i < Str::len(dw->text)) c = (int) Str::get_at(dw->text, i);
+		VanillaConstants::byte(gen, c);
+	}
+	int f = 0;
+	if (dw->verblike) f += 1;
+	if (dw->meta) f += 2;
+	if (dw->pluralise) f += 4;
+	if (dw->preplike) f += 8;
+	if (dw->nounlike) f += 128;
+	VanillaConstants::byte(gen, f/256);
+	VanillaConstants::byte(gen, f%256);
+	VanillaConstants::byte(gen, (0xFFFF - dw->verb_number)/256);
+	VanillaConstants::byte(gen, (0xFFFF - dw->verb_number)%256);
+	VanillaConstants::byte(gen, 0);
+	VanillaConstants::byte(gen, 0);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
+
+@ =
+void VanillaConstants::byte(code_generation *gen, int N) {
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "%d", N);
+	Generators::array_entry(gen, T, BYTE_ARRAY_FORMAT);
+	DISCARD_TEXT(T);
+}
+
+@ The remainder of this section is given over to a utility function which
+generators may want to use: it turns an Inter-notation text for a real number
+into an unsigned 32-bit integer which can represent that number at runtime
+(provided we are on a 32-bit computer: the Z-machine need not apply).
+
+No error messages should be printed, of course, because the syntax should have
+been checked before the text here entered the Inter hierarchy.
+
+The code below is adapted from additions made by Andrew Plotkin to the Inform 6
+compiler to accommodate floating-point arithmetic.
+
+=
+uint32_t VanillaConstants::textual_real_to_uint32(text_stream *T) {
+	int at = 0;
+	wchar_t lookahead = Str::get_at(T, at++);
+	int expo=0; double intv=0, fracv=0;
+	int expocount=0, intcount=0, fraccount=0, signbit=0;
+	if (lookahead == '-') {
+		signbit = 1;
+		lookahead = Str::get_at(T, at++);
+	} else if (lookahead == '+') {
+		signbit = 0;
+		lookahead = Str::get_at(T, at++);
+	}
+	while (VanillaConstants::character_digit_value(lookahead) < 10) {
+		intv = 10.0*intv + VanillaConstants::character_digit_value(lookahead);
+		intcount++;
+		lookahead = Str::get_at(T, at++);
+	}
+	if (lookahead == '.') {
+		double fracpow = 1.0;
+		lookahead = Str::get_at(T, at++);
+		while (VanillaConstants::character_digit_value(lookahead) < 10) {
+			fracpow *= 0.1;
+			fracv = fracv + fracpow*VanillaConstants::character_digit_value(lookahead);
+			fraccount++;
+			lookahead = Str::get_at(T, at++);
+		}
+	}
+	if (lookahead == 'e' || lookahead == 'E') {
+		int exposign = 0;
+		lookahead = Str::get_at(T, at++);
+		if (lookahead == '+' || lookahead == '-') {
+			exposign = (lookahead == '-');
+			lookahead = Str::get_at(T, at++);
+		}
+		while (VanillaConstants::character_digit_value(lookahead) < 10) {
+			expo = 10*expo + VanillaConstants::character_digit_value(lookahead);
+			expocount++;
+			lookahead = Str::get_at(T, at++);
+		}
+		if (expocount == 0) {
+			WRITE_TO(STDERR, "Floating-point literal '%S' must have digits after the 'e'", T);
+			internal_error("bad floating-point literal");
+		}
+		if (exposign) { expo = -expo; }
+	}
+	if (intcount + fraccount == 0) {
+		WRITE_TO(STDERR, "Floating-point literal '%S' must have digits", T);
+		internal_error("bad floating-point literal");
+	}
+	return VanillaConstants::real_components_to_uint32(signbit, intv, fracv, expo);
+}
+
+int VanillaConstants::character_digit_value(wchar_t c) {
+	if ((c >= '0') && (c <= '9')) return c - '0';
+	return 10;
+}
+
+@ And this returns 10 raised to the power |expo|, which is an integer. Andrew
+Plotkin refers to this as "cheap" because it avoids the C library |pow10|,
+which is awkward on some platforms.
+
+=
+#ifndef POW10_RANGE
+#define POW10_RANGE (8)
+#endif
+
+double VanillaConstants::pow10_cheap(int expo) {
+    static double powers[POW10_RANGE*2+1] = {
+        0.00000001, 0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1,
+        1.0,
+        10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0
+    };
+    double res = 1.0;
+    if (expo < 0) {
+        for (; expo < -POW10_RANGE; expo += POW10_RANGE) res *= powers[0];
+        return res * powers[POW10_RANGE+expo];
+    } else {
+        for (; expo > POW10_RANGE; expo -= POW10_RANGE) res *= powers[POW10_RANGE*2];
+        return res * powers[POW10_RANGE+expo];
+    }
+}
+
+@ Finally, this function returns the IEEE-754 single-precision encoding of a
+floating-point number from its various components.
+
+See http://www.psc.edu/general/software/packages/ieee/ieee.php for an explanation.
+
+If the magnitude is too large (beyond about 3.4e+38), this returns
+an infinite value (0x7f800000 or 0xff800000). If the magnitude is too
+small (below about 1e-45), this returns a zero value (0x00000000 or 
+0x80000000). If any of the inputs are NaN, this returns NaN.
+
+=
+uint32_t VanillaConstants::real_components_to_uint32(int signbit, double intv,
+	double fracv, int expo) {
+
+    double absval = (intv + fracv) * VanillaConstants::pow10_cheap(expo);
+
+    uint32_t sign = (signbit ? 0x80000000 : 0x0);
+ 
+    if (isinf(absval)) return sign | 0x7f800000; /* infinity */
+    if (isnan(absval)) return sign | 0x7fc00000; /* NaN */
+
+   double mant = frexp(absval, &expo);
+
+    /* Normalize mantissa to be in the range [1.0, 2.0) */
+    if (0.5 <= mant && mant < 1.0) {
+        mant *= 2.0;
+        expo--;
+    } else if (mant == 0.0) {
+        expo = 0;
+    } else {
+        return sign | 0x7f800000; /* infinity */
+    }
+
+    if (expo >= 128) {
+        return sign | 0x7f800000; /* infinity */
+    } else if (expo < -126) {
+        /* Denormalized (very small) number */
+        mant = ldexp(mant, 126 + expo);
+        expo = 0;
+    } else if (!(expo == 0 && mant == 0.0)) {
+        expo += 127;
+        mant -= 1.0; /* Get rid of leading 1 */
+    }
+
+    mant *= 8388608.0; /* 2^23 */
+    uint32_t fbits = (uint32_t)(mant + 0.5); /* round mant to nearest int */
+    if (fbits >> 23) {
+        /* The carry propagated out of a string of 23 1 bits. */
+        fbits = 0;
+        expo++;
+        if (expo >= 255) return sign | 0x7f800000; /* infinity */
+    }
+
+    return (sign) | ((uint32_t)(expo << 23)) | (fbits);
+}

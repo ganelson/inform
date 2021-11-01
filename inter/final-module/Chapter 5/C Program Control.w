@@ -20,7 +20,6 @@ void CProgramControl::invoke_primitive(code_generator *cgt, code_generation *gen
 	if (r == NOT_APPLICABLE) r = CArithmetic::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CMemoryModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CObjectModel::invoke_primitive(gen, bip, P);
-	if (r == NOT_APPLICABLE) r = CLiteralsModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CInputOutputModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CConditions::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CProgramControl::compile_control_primitive(gen, bip, P);

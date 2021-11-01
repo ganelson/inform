@@ -212,9 +212,8 @@ i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
 i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
 i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
-i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
+char *i7_text_to_C_string(i7word_t str);
 void i7_print_dword(i7process_t *proc, i7word_t at);
-char *i7_text_of_string(i7word_t str);
 #define I7_BODY_TEXT_ID    201
 #define I7_STATUS_TEXT_ID  202
 #define I7_BOX_TEXT_ID     203
@@ -462,4 +461,5 @@ char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
 #endif

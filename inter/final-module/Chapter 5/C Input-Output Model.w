@@ -31,6 +31,8 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 		case PRINTNL_BIP:        WRITE("i7_print_char(proc, '\\n')"); break;
 		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); VNODE_1C; WRITE(")"); break;
 		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); VNODE_1C; WRITE(")"); break;
+		case PRINTSTRING_BIP:    WRITE("i7_print_C_string(proc, i7_text_to_C_string("); VNODE_1C; WRITE("))"); break;
+		case PRINTDWORD_BIP:     WRITE("i7_print_dword(proc, "); VNODE_1C; WRITE(")"); break;
 		case BOX_BIP:            WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
 		default: 				 return NOT_APPLICABLE;
 	}

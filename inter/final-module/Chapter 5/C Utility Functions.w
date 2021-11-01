@@ -105,6 +105,21 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 @
 
 = (text to inform7_clib.h)
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
+=
+
+= (text to inform7_clib.c)
+#ifdef i7_mgl_TryAction
+i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
+i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
+	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+}
+#endif
+=
+
+@
+
+= (text to inform7_clib.h)
 #endif
 =
 
