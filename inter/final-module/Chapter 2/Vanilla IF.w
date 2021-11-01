@@ -191,220 +191,259 @@ void VanillaIF::compile_actions_table(code_generation *gen) {
 }
 
 @h Command grammar.
+This is not the place to specify what an Inform 6 grammar table looks like:
+again, see the I6 Technical Manual.
+
+This limit is much, much larger than we need:
+
+@d MAX_LINES_IN_VANILLA_GRAMMAR 256
 
 =
 void VanillaIF::verb_grammar(code_generator *cgt, code_generation *gen,
 	inter_symbol *array_s, inter_tree_node *P) {
 	inter_tree *I = gen->from;
+	
+	int line_count = 0;
+	inter_symbol *line_actions[MAX_LINES_IN_VANILLA_GRAMMAR];
+	int line_reverse[MAX_LINES_IN_VANILLA_GRAMMAR];
+	@<Find the resulting actions and reversal states for each grammar line@>;
+	
+	@<Add a record for this grammar to the table@>;
+}
+
+@ So the grammar is currently a list of values at the Inter node |P|. The
+first few terms in the list give the verb command words (TAKE, GET, say);
+then come a series of 1 or more "grammar lines", each of which begins with
+a |VERB_DIRECTIVE_DIVIDER| symbol. A line ends with |VERB_DIRECTIVE_RESULT|
+followed by a token indicating the action resulting from the line; the
+|VERB_DIRECTIVE_REVERSE| token means that the action should be taken with
+its nouns exchanged.
+
+@<Find the resulting actions and reversal states for each grammar line@> =
+	int lines = 0;
+	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, P->W.data[i], P->W.data[i+1]);
+		if (S) {
+			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+				if (lines >= MAX_LINES_IN_VANILLA_GRAMMAR)
+					internal_error("too many lines in grammar");
+				line_reverse[lines] = FALSE;
+				line_actions[lines] = NULL;
+				lines++;
+			}
+			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+				line_actions[lines-1] =
+					VanillaIF::get_symbol(gen, P, P->W.data[i+2], P->W.data[i+3]);
+			}
+			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_REVERSE"))
+				line_reverse[lines-1] = TRUE;
+		}
+	}
+	line_count = lines;
+
+@<Add a record for this grammar to the table@> =
 	int verbnum = gen->verb_count++;
-	
-	inter_symbol *line_actions[128];
-	int line_reverse[128];
-	
+	int address = LinkedLists::len(gen->verb_grammar);
+	VanillaIF::grammar_byte(gen, line_count); /* no grammar lines */
+
+	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE;
 	int lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
-		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-			inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-			if (aliased == NULL) internal_error("bad aliased symbol");
-			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
-				line_reverse[lines] = FALSE;
-				line_actions[lines++] = NULL;
-			}
-			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
-				inter_ti val1 = P->W.data[i+2], val2 = P->W.data[i+3];
-				inter_symbol *res = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-				if (res == NULL) internal_error("bad aliased symbol");
-				line_actions[lines-1] = res;
-			}
-			if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) {
-				inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
-				inter_symbol *res = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-				if (res == NULL) internal_error("bad aliased symbol");
-				line_reverse[lines-1] = TRUE;
-			}
+		if (reading_command_verbs) @<Read this as a command verb@>
+		else @<Read this as part of a grammar line@>;
+	}
+	@<Close any grammar line record we have already started writing@>;
+
+@<Read this as a command verb@> =
+	if (val1 == DWORD_IVAL) {
+		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
+		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
+		synonyms++;
+		if (synonyms == 1) ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->verbs);
+		dw->grammar_table_offset = address;
+	} else {
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, val1, val2);
+		if ((S) && (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER"))) {
+			reading_command_verbs = FALSE; i -= 2;
 		}
 	}
-	
-	int address = LinkedLists::len(gen->verb_grammar);
-	VanillaIF::grammar_byte(gen, lines); /* no grammar lines */
 
-	int stage = 1, synonyms = 0, started = FALSE;
-	lines = 0;
-	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
-		if (stage == 1) {
-			if (val1 == DWORD_IVAL) {
-				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
-				if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
-				synonyms++;
-				if (synonyms == 1) {
-					ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->verbs);
-				}
-				dw->grammar_table_offset = address;
-			} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-				if (aliased == NULL) internal_error("bad aliased symbol");
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) { stage = 2; i -= 2; continue; }
-				else internal_error("not a divider");
-			} else {
-				internal_error("not a dword");
-			}
-		}
-		if (stage == 2) {
-			int lookahead = 0, slash_before = FALSE, slash_after = FALSE;
-			if (i > DATA_CONST_IFLD) {
-				inter_ti val1 = P->W.data[i-2], val2 = P->W.data[i-1];
-				if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-					inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-					if (aliased == NULL) internal_error("bad aliased symbol");
-					if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
-						slash_before = TRUE;
-					}
-				}
-			}
-			if (i+2 < P->W.extent) {
-				inter_ti val1 = P->W.data[i+2], val2 = P->W.data[i+3];
-				if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-					inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-					if (aliased == NULL) internal_error("bad aliased symbol");
-					if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) {
-						slash_after = TRUE;
-					}
-				}
-			}
-			if (slash_before) lookahead += 0x10;
-			if (slash_after) lookahead += 0x20;
-				
-			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-				inter_symbol *aliased = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
-				if (aliased == NULL) internal_error("bad aliased symbol");
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SLASH")) continue;
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
-					if (started) {
-						TEMPORARY_TEXT(T)
-						Generators::mangle(gen, T, I"ENDIT_TOKEN");
-						VanillaIF::grammar_byte_textual(gen, T);
-						DISCARD_TEXT(T)
-					}
-					TEMPORARY_TEXT(NT)
-					Generators::mangle(gen, NT, line_actions[lines]->symbol_name);
-					TEMPORARY_TEXT(A)
-					TEMPORARY_TEXT(B)
-					Generators::word_to_byte(gen, A, NT, 2);
-					Generators::word_to_byte(gen, B, NT, 3);
-					VanillaIF::grammar_byte_textual(gen, A); /* action (big end) */
-					VanillaIF::grammar_byte_textual(gen, B); /* action (lil end) */
-					DISCARD_TEXT(A)
-					DISCARD_TEXT(B)
-					DISCARD_TEXT(NT)
-					if (line_reverse[lines])
-						VanillaIF::grammar_byte(gen, 1);
-					else
-						VanillaIF::grammar_byte(gen, 0);
-					lines++;
-					started = TRUE;
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
-					i += 2;
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
-
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_NOUN")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 0);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_HELD")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 1);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTI")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 2);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIHELD")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 3);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIEXCEPT")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 4);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_MULTIINSIDE")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 5);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_CREATURE")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 6);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_SPECIAL")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 7);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_NUMBER")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 8);
-					continue;
-				}
-				if (Str::eq(aliased->symbol_name, I"VERB_DIRECTIVE_TOPIC")) {
-					VanillaIF::grammar_byte(gen, 1 + lookahead);
-					VanillaIF::grammar_word(gen, 9);
-					continue;
-				}
-				int bc = 0x86;				
-				if (Inter::Symbols::read_annotation(aliased, SCOPE_FILTER_IANN) == 1)
-					bc = 0x85;
-				if (Inter::Symbols::read_annotation(aliased, NOUN_FILTER_IANN) == 1)
-					bc = 0x83;
-				VanillaIF::grammar_byte(gen, bc + lookahead);
-				TEMPORARY_TEXT(MG)
-				Generators::mangle(gen, MG, Inter::Symbols::name(aliased));
-				VanillaIF::grammar_word_textual(gen, MG);
-				DISCARD_TEXT(MG)
-				continue;
-			}
-			if (val1 == DWORD_IVAL) {
-				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				vanilla_dword *dw = VanillaIF::text_to_prep_dword(gen, glob_text, FALSE);
-				VanillaIF::grammar_byte(gen, 0x42 + lookahead);
-				TEMPORARY_TEXT(MG)
-				Generators::mangle(gen, MG, dw->identifier);
-				VanillaIF::grammar_word_textual(gen, MG);
-				DISCARD_TEXT(MG)
-				continue;
-			}
-			if (val1 == PDWORD_IVAL) {
-				text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
-				vanilla_dword *dw = VanillaIF::text_to_prep_dword(gen, glob_text, TRUE);
-				VanillaIF::grammar_byte(gen, 0x42 + lookahead);
-				TEMPORARY_TEXT(MG)
-				Generators::mangle(gen, MG, dw->identifier);
-				VanillaIF::grammar_word_textual(gen, MG);
-				DISCARD_TEXT(MG)
-				continue;
-			}
-		}
+@<Read this as part of a grammar line@> =
+	int token_metadata = 0;
+	@<Add the slash before and slash after bits to token_metadata@>;
+		
+	inter_symbol *S = VanillaIF::get_symbol(gen, P, val1, val2);
+	if (S) {
+		@<Read this symbol name as part of a grammar line@>;
+	} else if ((val1 == DWORD_IVAL) || (val1 == PDWORD_IVAL)) {
+		@<Read this dictionary word as part of a grammar line@>;
 	}
-	if (started) {
+
+@ Was the previous token a slash? How about the next? (This is for command grammar
+like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not before,
+|'fowl'| has both, and |'chalk'| before but not after.
+
+@<Add the slash before and slash after bits to token_metadata@> =
+	if (i > DATA_CONST_IFLD) {
+		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, P->W.data[i-2], P->W.data[i-1]);
+		if ((S_before) && (Str::eq(S_before->symbol_name, I"VERB_DIRECTIVE_SLASH")))
+			token_metadata += 0x10;
+	}
+	if (i+2 < P->W.extent) {
+		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, P->W.data[i+2], P->W.data[i+3]);
+		if ((S_after) && (Str::eq(S_after->symbol_name, I"VERB_DIRECTIVE_SLASH")))
+			token_metadata += 0x20;
+	}
+
+@<Read this symbol name as part of a grammar line@> =
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_SLASH")) continue;
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+		@<Close any grammar line record we have already started writing@>;
+		@<Start writing a record for a new grammar line@>;
+		lines++;
+		line_started = TRUE;
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+		i += 2; /* Skip the result action */
+		continue;
+	}
+	@<Handle the 10 built-in tokens@>;
+	@<Handle a noun filter, a scope filter or similar@>;
+
+@ This is the header block at the beginning of a new grammar line in the table,
+which occupies 3 bytes: a short word giving the resulting action, and a flag
+for reversal. (Happily, we worked these out in the first pass through earlier.)
+
+@<Start writing a record for a new grammar line@> =
+	TEMPORARY_TEXT(NT)
+	Generators::mangle(gen, NT, line_actions[lines]->symbol_name);
+	TEMPORARY_TEXT(A)
+	TEMPORARY_TEXT(B)
+	Generators::word_to_byte(gen, A, NT, 2);
+	Generators::word_to_byte(gen, B, NT, 3);
+	VanillaIF::grammar_byte_textual(gen, A); /* action (big end) */
+	VanillaIF::grammar_byte_textual(gen, B); /* action (lil end) */
+	DISCARD_TEXT(A)
+	DISCARD_TEXT(B)
+	DISCARD_TEXT(NT)
+	if (line_reverse[lines])
+		VanillaIF::grammar_byte(gen, 1);
+	else
+		VanillaIF::grammar_byte(gen, 0);
+
+@ That 3-byte header is then followed by a list of 5-byte token blocks.
+The opening byte gives some metadata bits, and then there's a word.
+
+@<Handle the 10 built-in tokens@> =
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_NOUN")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 0);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_HELD")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 1);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTI")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 2);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIHELD")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 3);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIEXCEPT")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 4);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIINSIDE")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 5);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_CREATURE")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 6);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_SPECIAL")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 7);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_NUMBER")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 8);
+		continue;
+	}
+	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_TOPIC")) {
+		VanillaIF::grammar_byte(gen, 1 + token_metadata);
+		VanillaIF::grammar_word(gen, 9);
+		continue;
+	}
+
+@ Again, five bytes: one byte metadata, one word value.
+
+@<Handle a noun filter, a scope filter or similar@> =
+	int bc = 0x86;				
+	if (Inter::Symbols::read_annotation(S, SCOPE_FILTER_IANN) == 1) bc = 0x85;
+	if (Inter::Symbols::read_annotation(S, NOUN_FILTER_IANN) == 1)  bc = 0x83;
+	VanillaIF::grammar_byte(gen, bc + token_metadata);
+	TEMPORARY_TEXT(MG)
+	Generators::mangle(gen, MG, Inter::Symbols::name(S));
+	VanillaIF::grammar_word_textual(gen, MG);
+	DISCARD_TEXT(MG)
+
+@<Read this dictionary word as part of a grammar line@> =
+	text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+	vanilla_dword *dw =
+		VanillaIF::text_to_prep_dword(gen, glob_text,
+			(val1 == PDWORD_IVAL)?TRUE:FALSE);
+	VanillaIF::grammar_byte(gen, 0x42 + token_metadata);
+	TEMPORARY_TEXT(MG)
+	Generators::mangle(gen, MG, dw->identifier);
+	VanillaIF::grammar_word_textual(gen, MG);
+	DISCARD_TEXT(MG)
+
+@<Close any grammar line record we have already started writing@> =
+	if (line_started) {
 		TEMPORARY_TEXT(T)
 		Generators::mangle(gen, T, I"ENDIT_TOKEN");
 		VanillaIF::grammar_byte_textual(gen, T);
 		DISCARD_TEXT(T)
 	}
+
+@ =
+inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
+	inter_ti val1, inter_ti val2) {
+	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		inter_symbol *S =
+			InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2,
+				Inter::Packages::scope_of(P));
+		if (S == NULL) internal_error("bad symbol in grammar token data");
+		return S;
+	}
+	return NULL;
 }
 
+@ Okay then. So the above functions called the following to insert either
+bytes or words into the growing grammar table. But Vanilla doesn't support
+arrays with a mixture of bytes and words -- its entries should all be of
+the same format. So we will break the words down into a sequence of 4 bytes,
+and have only a |BYTE_ARRAY_FORMAT| array in the end.
+
+The above supplied some entries numerically, and others textually, so we
+need four functions in all.
+
+=
 void VanillaIF::grammar_byte(code_generation *gen, int N) {
 	TEMPORARY_TEXT(NT)
 	WRITE_TO(NT, "%d", N);
@@ -433,26 +472,29 @@ void VanillaIF::grammar_byte_textual(code_generation *gen, text_stream *NT) {
 	ADD_TO_LINKED_LIST(NT, text_stream, gen->verb_grammar);
 }
 
+@ Finally, then, the following outputs the table itself. In fact there need to
+be two tables: first a table of addresses of each command verb's grammar table,
+called |#grammar_table|, and then each of those grammar tables in turn. I don't
+think there is any reason they necessarily have to be contiguous in the way
+they are here, but that's what Inform 6 always did, and we're imitating Inform 6.
+
+=
 void VanillaIF::compile_verb_table(code_generation *gen) {
-	Generators::begin_array(gen, I"#grammar_table", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
-	TEMPORARY_TEXT(N)
-	WRITE_TO(N, "%d", gen->verb_count - 1);
-	Generators::array_entry(gen, N, WORD_ARRAY_FORMAT);
-	DISCARD_TEXT(N)
+	Generators::begin_array(gen, I"#grammar_table", NULL, NULL, TABLE_ARRAY_FORMAT, NULL);
 	vanilla_dword *dw;
 	LOOP_OVER_LINKED_LIST(dw, vanilla_dword, gen->verbs) {
 		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "(");
 		Generators::mangle(gen, N, I"#grammar_table_cont");
 		WRITE_TO(N, "+%d)", dw->grammar_table_offset);
-		Generators::array_entry(gen, N, WORD_ARRAY_FORMAT);
+		Generators::array_entry(gen, N, TABLE_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}
-	Generators::end_array(gen, WORD_ARRAY_FORMAT, NULL);
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT, NULL);
+
 	Generators::begin_array(gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
 	text_stream *entry;
-	LOOP_OVER_LINKED_LIST(entry, text_stream, gen->verb_grammar) {
+	LOOP_OVER_LINKED_LIST(entry, text_stream, gen->verb_grammar)
 		Generators::array_entry(gen, entry, BYTE_ARRAY_FORMAT);
-	}
 	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
 }
