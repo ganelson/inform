@@ -14,6 +14,7 @@ Chapter 2: Mechanism
 	Vanilla Constants
 	Vanilla Objects
 	Vanilla Code
+	Vanilla IF
 
 Chapter 3: Non-Vanilla Generators
 	Final Textual Inter

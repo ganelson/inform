@@ -106,7 +106,6 @@ void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_str
 @
 
 @e PREDECLARE_FUNCTION_MTID
-// e END_FUNCTION_MTID
 
 =
 VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
@@ -114,18 +113,15 @@ VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_ge
 void Generators::predeclare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
 	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, fn, code);
 }
-//void Generators::end_function(int pass, code_generation *gen, inter_symbol *fn) {
-//	VOID_METHOD_CALL(gen->generator, END_FUNCTION_MTID, pass, gen, fn);
-//}
 
 @h Methods called by Vanilla Constants.
 
 @e NEW_ACTION_MTID
 
 =
-VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generator *generator, code_generation *gen, text_stream *name, int true_action)
-void Generators::new_action(code_generation *gen, text_stream *name, int true_action) {
-	VOID_METHOD_CALL(gen->generator, NEW_ACTION_MTID, gen, name, true_action);
+VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generator *generator, code_generation *gen, text_stream *name, int true_action, int N)
+void Generators::new_action(code_generation *gen, text_stream *name, int true_action, int N) {
+	VOID_METHOD_CALL(gen->generator, NEW_ACTION_MTID, gen, name, true_action, N);
 }
 
 @
@@ -206,6 +202,17 @@ VOID_METHOD_TYPE(DECLARE_CONSTANT_MTID, code_generator *generator, code_generati
 void Generators::declare_constant(code_generation *gen, inter_symbol *const_s, int form,
 	text_stream *val) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_CONSTANT_MTID, gen, const_s, form, val);
+}
+
+@
+
+@e WORD_TO_BYTE_MTID
+
+=
+VOID_METHOD_TYPE(WORD_TO_BYTE_MTID, code_generator *generator, code_generation *gen,
+	text_stream *to_write, text_stream *val, int b)
+void Generators::word_to_byte(code_generation *gen, text_stream *to_write, text_stream *val, int b) {
+	VOID_METHOD_CALL(gen->generator, WORD_TO_BYTE_MTID, gen, to_write, val, b);
 }
 
 @h Methods called by Vanilla Code.

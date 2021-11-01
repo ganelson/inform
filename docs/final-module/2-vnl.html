@@ -75,10 +75,11 @@ function togglePopup(material_id) {
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The rest of this chapter is a plain-vanilla algorithm for turning Inter trees
 to imperative code, making method calls to the generator to handle each individual
-step as needed.
+step as needed. I think this works quite elegantly, but then every beetle is a
+gazelle in the eyes of its mother.
 </p>
 
-<p class="commentary">The following function is everything except that the generator has already been
+<p class="commentary">The following function does everything except that the generator has already been
 sent the <span class="extract"><span class="extract-syntax">BEGIN_GENERATION_MTID</span></span> method, and that the generator will subsequently
 be sent <span class="extract"><span class="extract-syntax">END_GENERATION_MTID</span></span>: see <a href="2-cg2.html#SP4" class="internal">Generators::go</a>.
 </p>
@@ -86,7 +87,7 @@ be sent <span class="extract"><span class="extract-syntax">END_GENERATION_MTID</
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Vanilla::go</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Vanilla::go</span></span>:<br/>Code Generators - <a href="2-cg2.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vnl.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Traverse for pragmas</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="2-cg2.html#SP16" class="function-link"><span class="function-syntax">Generators::declare_variables</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">global_variables</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-cg2.html#SP17" class="function-link"><span class="function-syntax">Generators::declare_variables</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">global_variables</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-vo.html#SP2" class="function-link"><span class="function-syntax">VanillaObjects::declare_properties</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vnl.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Traverse to make function predeclarations</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-vnl.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">General traverse</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
@@ -269,7 +270,7 @@ generated name. So a splat is not quite generator-independent after all.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-cg2.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresscurrent">vnl</li><li class="progresssection"><a href="2-vc.html">vc</a></li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-cg2.html">&#10094;</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresscurrent">vnl</li><li class="progresssection"><a href="2-vc.html">vc</a></li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresssection"><a href="2-vi.html">vi</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

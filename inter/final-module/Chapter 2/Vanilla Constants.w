@@ -41,13 +41,14 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	text_stream *fa = Str::duplicate(con_name->symbol_name);
 	Str::delete_first_character(fa);
 	Str::delete_first_character(fa);
-	Generators::new_action(gen, fa, TRUE);
+	Generators::new_action(gen, fa, TRUE, gen->true_action_count++);
+	ADD_TO_LINKED_LIST(fa, text_stream, gen->actions);
 
 @<Declare this constant as a fake action name@> =
 	text_stream *fa = Str::duplicate(con_name->symbol_name);
 	Str::delete_first_character(fa);
 	Str::delete_first_character(fa);
-	Generators::new_action(gen, fa, FALSE);
+	Generators::new_action(gen, fa, FALSE, 4096 + gen->fake_action_count++);
 
 @<Ignore this constant as part of the veneer@> =
 	;
@@ -269,138 +270,6 @@ int VanillaConstants::compare_tlh(const void *elem1, const void *elem2) {
 	text_stream *s1 = (*e1)->literal_content;
 	text_stream *s2 = (*e2)->literal_content;
 	return Str::cmp(s1, s2);
-}
-
-@ Compiling the table of dictionary words is not completely simple: they must
-be sorted into alphabetical order, but do not present themselves that way.
-
-So we provide the following functions, which a generator is not obliged to
-make use of.
-
-For each different dictionary word brought to our attention, we create one
-of these:
-
-=
-typedef struct vanilla_dword {
-	struct text_stream *text;
-	struct text_stream *identifier;
-	int pluralise;
-	int meta;
-	int preplike;
-	int nounlike;
-	int verblike;
-	int verb_number;
-	int grammar_table_offset;
-	CLASS_DEFINITION
-} vanilla_dword;
-
-@ The following sorting function places dwords in alphabetical order:
-
-=
-int VanillaConstants::compare_dwords(const void *ent1, const void *ent2) {
-	text_stream *tx1 = (*((const vanilla_dword **) ent1))->text;
-	text_stream *tx2 = (*((const vanilla_dword **) ent2))->text;
-	return Str::cmp_insensitive(tx1, tx2);
-}
-
-@ We use a dictionary to ensure that each dword has exactly one such structure
-created:
-
-=
-vanilla_dword *VanillaConstants::text_to_dword(code_generation *gen, text_stream *S,
-	int pluralise) {
-	TEMPORARY_TEXT(K)
-	LOOP_THROUGH_TEXT(pos, S)
-		PUT_TO(K, Characters::tolower(Str::get(pos)));
-	while (Str::get_last_char(K) == '/') Str::delete_last_character(K);
-	vanilla_dword *dw;
-	if (Dictionaries::find(gen->dword_dictionary, K)) {
-		dw = Dictionaries::read_value(gen->dword_dictionary, K);
-		if (pluralise) dw->pluralise = TRUE;
-	} else {
-		dw = CREATE(vanilla_dword);
-		dw->text = Str::duplicate(K);
-		dw->identifier = Str::new();
-		WRITE_TO(dw->identifier, "i7_dword_%d", gen->dword_count++);
-		dw->pluralise = pluralise;
-		dw->meta = FALSE;
-		dw->preplike = FALSE;
-		dw->nounlike = FALSE;
-		dw->verblike = FALSE;
-		dw->verb_number = 0;
-		dw->grammar_table_offset = 0;
-		ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->words);
-		Dictionaries::create(gen->dword_dictionary, K);
-		Dictionaries::write_value(gen->dword_dictionary, K, dw);
-	}
-	DISCARD_TEXT(K)
-	return dw;
-}
-
-@ And this function then compiles the |#dictionary_table| array, which is
-really a concatenation of many arrays: a single word holding the length
-and then one mini-array for each dword, presented in alphabetical order.
-
-For the format of dictionary word arrays, see the Inform 6 Technical Manual.
-(This is the later Glulx format, not the earlier Z-machine format.)
-
-=
-void VanillaConstants::compile_dictionary_table(code_generation *gen) {
-	int dictlen = gen->dword_count;
-	@<Compile the dictionary length@>;
-	if (dictlen > 0) {
-		vanilla_dword **sorted = (vanilla_dword **)
-			(Memory::calloc(dictlen, sizeof(vanilla_dword *), CODE_GENERATION_MREASON));
-		vanilla_dword *dw; int i=0;
-		LOOP_OVER_LINKED_LIST(dw, vanilla_dword, gen->words) sorted[i++] = dw;
-		qsort(sorted, (size_t) LinkedLists::len(gen->words), sizeof(vanilla_dword *),
-			VanillaConstants::compare_dwords);
-		for (int i=0; i<dictlen; i++) @<Compile an array for this dword@>;
-		Memory::I7_free(sorted, CODE_GENERATION_MREASON, dictlen);
-	}
-}
-
-@ In effect, this is a 1-word word array, but we make it as a 4-byte byte array
-instead so that we are not concatenating arrays with different formats; this is
-just in case some generators are opting to align word arrays in memory.
-
-@<Compile the dictionary length@> =
-	Generators::begin_array(gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
-	VanillaConstants::byte(gen, 0);
-	VanillaConstants::byte(gen, ((dictlen & 0x00FF0000) >> 16));
-	VanillaConstants::byte(gen, ((dictlen & 0x0000FF00) >> 8));
-	VanillaConstants::byte(gen, (dictlen & 0x000000FF));
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
-
-@<Compile an array for this dword@> =
-	dw = sorted[i];
-	Generators::begin_array(gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
-	VanillaConstants::byte(gen, 0x60);
-	for (int i=0; i<9; i++) {
-		int c = 0;
-		if (i < Str::len(dw->text)) c = (int) Str::get_at(dw->text, i);
-		VanillaConstants::byte(gen, c);
-	}
-	int f = 0;
-	if (dw->verblike) f += 1;
-	if (dw->meta) f += 2;
-	if (dw->pluralise) f += 4;
-	if (dw->preplike) f += 8;
-	if (dw->nounlike) f += 128;
-	VanillaConstants::byte(gen, f/256);
-	VanillaConstants::byte(gen, f%256);
-	VanillaConstants::byte(gen, (0xFFFF - dw->verb_number)/256);
-	VanillaConstants::byte(gen, (0xFFFF - dw->verb_number)%256);
-	VanillaConstants::byte(gen, 0);
-	VanillaConstants::byte(gen, 0);
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
-
-@ =
-void VanillaConstants::byte(code_generation *gen, int N) {
-	TEMPORARY_TEXT(T)
-	WRITE_TO(T, "%d", N);
-	Generators::array_entry(gen, T, BYTE_ARRAY_FORMAT);
-	DISCARD_TEXT(T);
 }
 
 @ The remainder of this section is given over to a utility function which

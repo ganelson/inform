@@ -282,7 +282,7 @@ must be explicitly declared, which we do with the I6 |Fake_Action| directive:
 
 =
 void I6TargetConstants::new_action(code_generator *cgt, code_generation *gen,
-	text_stream *name, int true_action) {
+	text_stream *name, int true_action, int N) {
 	if (true_action == FALSE) {
 		segmentation_pos saved = CodeGen::select(gen, fake_actions_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);

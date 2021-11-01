@@ -56,9 +56,15 @@ typedef struct code_generation {
 	struct linked_list *kinds_in_declaration_order;
 	struct linked_list *instances_in_declaration_order;
 
+	int true_action_count;
+	int fake_action_count;
+	struct linked_list *actions; /* of |text_stream| */
 	int dword_count;
 	struct linked_list *words; /* of |vanilla_dword| */
 	struct dictionary *dword_dictionary; /* of |vanilla_dword| */
+	int verb_count;
+	struct linked_list *verbs; /* of |vanilla_dword| */
+	struct linked_list *verb_grammar; /* of |text_stream| */
 
 	CLASS_DEFINITION
 } code_generation;
@@ -86,9 +92,15 @@ code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree
 	gen->kinds = NEW_LINKED_LIST(inter_symbol);
 	gen->kinds_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
 	gen->instances_in_declaration_order = NEW_LINKED_LIST(inter_symbol);
+	gen->true_action_count = 0;
+	gen->fake_action_count = 0;
+	gen->actions = NEW_LINKED_LIST(text_stream);
 	gen->dword_count = 0;
 	gen->words = NEW_LINKED_LIST(vanilla_dword);
 	gen->dword_dictionary = Dictionaries::new(1024, FALSE);
+	gen->verb_count = 0;
+	gen->verbs = NEW_LINKED_LIST(vanilla_dword);
+	gen->verb_grammar = NEW_LINKED_LIST(text_stream);
 	if (temp == FALSE) @<Traverse for global bric-a-brac@>;
 	return gen;
 }

@@ -22,6 +22,7 @@ of 2 or 4.
 
 =
 void CMemoryModel::initialise(code_generator *cgt) {
+	METHOD_ADD(cgt, WORD_TO_BYTE_MTID, CMemoryModel::word_to_byte);
 	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
 	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
 	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
@@ -95,7 +96,7 @@ which tells Vanilla not to call us again about this array.
 
 @<Short-circuit the usual Vanilla algorithm by compiling the whole array now@> =
 	if (saved) *saved = CodeGen::select(gen, c_verb_arrays_I7CGS);
-	CLiteralsModel::verb_grammar(cgt, gen, array_s, P);
+	VanillaIF::verb_grammar(cgt, gen, array_s, P);
 	return FALSE;
 
 @<Declare this array in concert with the usual Vanilla algorithm@> =
@@ -367,6 +368,12 @@ void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
 	proc->state.memory[byte_position+3] = I7BYTE_3(new_val);
 }
 =
+
+@ =
+void CMemoryModel::word_to_byte(code_generator *cgt, code_generation *gen,
+	OUTPUT_STREAM, text_stream *val, int b) {
+	WRITE("I7BYTE_%d(%S)", val, b);
+}
 
 @ The seven primitive operations on storage need to be implemented for byte
 and word lookups by the following pair of functions. Note that if |way| is

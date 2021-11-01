@@ -5,9 +5,10 @@ to imperative languages such as Inform 6 or C.
 
 @ The rest of this chapter is a plain-vanilla algorithm for turning Inter trees
 to imperative code, making method calls to the generator to handle each individual
-step as needed.
+step as needed. I think this works quite elegantly, but then every beetle is a
+gazelle in the eyes of its mother.
 
-The following function is everything except that the generator has already been
+The following function does everything except that the generator has already been
 sent the |BEGIN_GENERATION_MTID| method, and that the generator will subsequently
 be sent |END_GENERATION_MTID|: see //Generators::go//.
 

@@ -248,7 +248,7 @@ void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen,
 	if (Str::eq(fn_name, I"DebugAction")) {
 		WRITE("switch (i7_mgl_local_a) {\n");
 		text_stream *aname;
-		LOOP_OVER_LINKED_LIST(aname, text_stream, C_GEN_DATA(litdata.actions)) {
+		LOOP_OVER_LINKED_LIST(aname, text_stream, gen->actions) {
 			WRITE("case i7_ss_%S", aname);
 			WRITE(": printf(\"%S\"); return 1;\n", aname);
 		}

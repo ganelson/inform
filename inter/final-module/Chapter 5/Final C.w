@@ -191,8 +191,15 @@ int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
 	WRITE("#include \"inform7_clib.c\"\n");
 	CodeGen::deselect(gen, saved);
 
-@ =
+@ The Inform 6 compiler automatically generates the dictionary, verb and actions
+tables, but other compilers do not, of course, so generators for other languages
+(such as this one) must ask Vanilla to make those tables for it.
+
+=
 int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
+	VanillaIF::compile_dictionary_table(gen);
+	VanillaIF::compile_verb_table(gen);
+	VanillaIF::compile_actions_table(gen);
 	CFunctionModel::end(gen);
 	CObjectModel::end(gen);
 	CLiteralsModel::end(gen);
