@@ -26,7 +26,7 @@ ones being initially zero.
 
 =
 void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *D) {
+	inter_symbol *fn, inter_tree_node *D, vanilla_function *fcf) {
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
@@ -182,7 +182,7 @@ it would be for C.
 
 =
 void I6TargetCode::invoke_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *P, int void_context) {
+	inter_symbol *fn, inter_tree_node *P, vanilla_function *fcf, int void_context) {
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", fn_name);

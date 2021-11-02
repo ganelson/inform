@@ -172,6 +172,8 @@ int i7_opcode_jfge(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jflt(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jisinf(i7process_t *proc, i7word_t x);
 int i7_opcode_jisnan(i7process_t *proc, i7word_t x);
+char *i7_text_to_C_string(i7word_t str);
+void i7_print_dword(i7process_t *proc, i7word_t at);
 i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id);
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
@@ -212,8 +214,6 @@ i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
 i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
 i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
-char *i7_text_to_C_string(i7word_t str);
-void i7_print_dword(i7process_t *proc, i7word_t at);
 #define I7_BODY_TEXT_ID    201
 #define I7_STATUS_TEXT_ID  202
 #define I7_BOX_TEXT_ID     203

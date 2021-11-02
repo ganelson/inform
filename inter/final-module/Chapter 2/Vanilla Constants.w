@@ -57,9 +57,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	Generators::pseudo_object(gen, Inter::Symbols::name(con_name));
 
 @<Declare this constant as a function@> =
-	inter_package *code_block = Inter::Constant::code_block(con_name);
-	inter_tree_node *D = Inter::Packages::definition(code_block);
-	Generators::declare_function(gen, con_name, D);
+	VanillaFunctions::declare_function(gen, con_name);
 
 @<Declare this constant as the special UUID string array@> =
 	inter_ti ID = P->W.data[DATA_CONST_IFLD];

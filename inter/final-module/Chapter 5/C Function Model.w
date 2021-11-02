@@ -14,13 +14,11 @@ void CFunctionModel::initialise(code_generator *cgt) {
 }
 
 typedef struct C_generation_function_model_data {
-	struct final_c_function *current_fcf;
 	int compiling_function;
 	struct dictionary *external_functions;
 } C_generation_function_model_data;
 
 void CFunctionModel::initialise_data(code_generation *gen) {
-	C_GEN_DATA(fndata.current_fcf) = NULL;
 	C_GEN_DATA(fndata.compiling_function) = FALSE;
 	C_GEN_DATA(fndata.external_functions) = Dictionaries::new(1024, TRUE);
 }
@@ -37,8 +35,8 @@ void CFunctionModel::end(code_generation *gen) {
 	WRITE("i7word_t rv = 0;\n");
 	WRITE("switch (fn_ref) {\n"); INDENT;
 	WRITE("case 0: rv = 0; break;\n");
-	final_c_function *fcf;
-	LOOP_OVER(fcf, final_c_function) {
+	vanilla_function *fcf;
+	LOOP_OVER(fcf, vanilla_function) {
 		WRITE("case ");
 		CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
 		WRITE(": ");
@@ -65,7 +63,7 @@ void CFunctionModel::end(code_generation *gen) {
 	WRITE("return rv;\n");
 	OUTDENT; WRITE("}\n");
 
-	LOOP_OVER(fcf, final_c_function) {
+	LOOP_OVER(fcf, vanilla_function) {
 		if (fcf->formal_arity >= 0) {
 			WRITE("i7word_t xfn_");
 			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
@@ -94,7 +92,7 @@ void CFunctionModel::end(code_generation *gen) {
 
 	saved = CodeGen::select(gen, c_function_symbols_I7CGS);
 	OUT = CodeGen::current(gen);
-	LOOP_OVER(fcf, final_c_function) {
+	LOOP_OVER(fcf, vanilla_function) {
 		if (fcf->formal_arity >= 0) {
 			WRITE("i7word_t xfn_");
 			CNamespace::mangle(NULL, OUT, fcf->identifier_as_constant);
@@ -127,28 +125,7 @@ text_stream *CFunctionModel::external_function(code_generation *gen, text_stream
 	return key;
 }
 
-typedef struct final_c_function {
-	struct text_stream *prototype;
-	struct text_stream *identifier_as_constant;
-	struct text_stream *syntax_md;
-	int uses_vararg_model;
-	int max_arity;
-	int formal_arity;
-	CLASS_DEFINITION
-} final_c_function;
-
-final_c_function *CFunctionModel::new_fcf(text_stream *unmangled_name) {
-	final_c_function *fcf = CREATE(final_c_function);
-	fcf->prototype = Str::new();
-	fcf->max_arity = 0;
-	fcf->formal_arity = -1;
-	fcf->uses_vararg_model = FALSE;
-	fcf->identifier_as_constant = Str::duplicate(unmangled_name);
-	fcf->syntax_md = NULL;
-	return fcf;
-}
-
-void CFunctionModel::declare_fcf(code_generation *gen, final_c_function *fcf) {
+void CFunctionModel::declare_function_constant(code_generation *gen, vanilla_function *fcf) {
 	int seg = c_predeclarations_I7CGS;
 	if (Str::eq(fcf->identifier_as_constant, I"DealWithUndo")) seg = c_ids_and_maxima_I7CGS;
 	if (Str::eq(fcf->identifier_as_constant, I"TryAction")) seg = c_ids_and_maxima_I7CGS;
@@ -161,88 +138,50 @@ void CFunctionModel::declare_fcf(code_generation *gen, final_c_function *fcf) {
 }
 
 void CFunctionModel::make_veneer_fcf(code_generation *gen, text_stream *unmangled_name) {
-	final_c_function *fcf = CFunctionModel::new_fcf(unmangled_name);
+	vanilla_function *fcf = VanillaFunctions::new_fcf(unmangled_name);
 	fcf->max_arity = 1;
-	CFunctionModel::declare_fcf(gen, fcf);
+	CFunctionModel::declare_function_constant(gen, fcf);
+}
+
+void CFunctionModel::prototype(code_generation *gen, OUTPUT_STREAM, vanilla_function *fcf) {
+	WRITE("i7word_t fn_");
+	Generators::mangle(gen, OUT, fcf->identifier_as_constant);
+	WRITE("(i7process_t *proc");
+	text_stream *local_name;
+	LOOP_OVER_LINKED_LIST(local_name, text_stream, fcf->locals) {
+		WRITE(", i7word_t ");
+		Generators::mangle(gen, OUT, local_name);
+	}
+	WRITE(")");
 }
 
 void CFunctionModel::predeclare_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *D) {
-	text_stream *fn_name = Inter::Symbols::name(fn);
-	inter_package *P = Inter::Packages::container(fn->definition);
-	inter_package *PP = Inter::Packages::parent(P);
-	text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
-	final_c_function *fcf = CFunctionModel::new_fcf(fn_name);
-	C_GEN_DATA(fndata.current_fcf) = fcf;
-	fcf->syntax_md = Str::duplicate(md);
-	fn->translation_data = STORE_POINTER_final_c_function(fcf);
-	WRITE_TO(fcf->prototype, "i7word_t fn_");
-	CNamespace::mangle(cgt, fcf->prototype, fn_name);
-	WRITE_TO(fcf->prototype, "(i7process_t *proc");
+	vanilla_function *fcf) {
 
-	if (Str::len(C_GEN_DATA(fndata.current_fcf)->syntax_md) > 0) {
-		text_stream *md = C_GEN_DATA(fndata.current_fcf)->syntax_md;
-		C_GEN_DATA(fndata.current_fcf)->formal_arity = 0;
+	if (Str::len(fcf->syntax_md) > 0) {
 		TEMPORARY_TEXT(synopsis)
+		VanillaFunctions::syntax_synopsis(synopsis, fcf);
 		TEMPORARY_TEXT(val)
-		for (int i=3, bracketed=0; i<Str::len(md); i++) {
-			wchar_t c = Str::get_at(md, i);
-			if (bracketed) {
-				if (c == ')') bracketed=0;
-			} else {
-				if (c == '(') {
-					PUT_TO(synopsis, 'X');
-					C_GEN_DATA(fndata.current_fcf)->formal_arity++;
-					bracketed=1;
-				} else if (Characters::isalpha(c)) PUT_TO(synopsis, c);
-				else PUT_TO(synopsis, '_');
-			}
-		}
 		WRITE_TO(val, "xfn_");
-		CNamespace::mangle(NULL, val, C_GEN_DATA(fndata.current_fcf)->identifier_as_constant);
+		CNamespace::mangle(NULL, val, fcf->identifier_as_constant);
 		CObjectModel::define_header_constant_for_function(gen, synopsis, val);
-		DISCARD_TEXT(synopsis)
 		DISCARD_TEXT(val)
+		DISCARD_TEXT(synopsis)
 	}
-	CFunctionModel::seek_locals(gen, D);
-	WRITE_TO(fcf->prototype, ")");
 
 	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S;\n", fcf->prototype);
+	CFunctionModel::prototype(gen, OUT, fcf);
+	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
-
-//	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
-	CFunctionModel::declare_fcf(gen, fcf);
+	CFunctionModel::declare_function_constant(gen, fcf);
 }
 
-void CFunctionModel::seek_locals(code_generation *gen, inter_tree_node *P) {
-	if (P->W.data[ID_IFLD] == LOCAL_IST) {
-		inter_package *pack = Inter::Packages::container(P);
-		inter_symbol *var_name =
-			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-		TEMPORARY_TEXT(name)
-		CNamespace::mangle(gen->generator, name, Inter::Symbols::name(var_name));
-		final_c_function *fcf = C_GEN_DATA(fndata.current_fcf);
-		if (Str::eq(var_name->symbol_name, I"_vararg_count")) {
-			fcf->uses_vararg_model = TRUE;
-			WRITE_TO(fcf->prototype, ", i7word_t %S", name);
-		} else {
-			WRITE_TO(fcf->prototype, ", i7word_t %S", name);
-		}
-		fcf->max_arity++;
-		DISCARD_TEXT(name)
-	}
-	LOOP_THROUGH_INTER_CHILDREN(F, P) CFunctionModel::seek_locals(gen, F);
-}
-
-void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D) {
+void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *D, vanilla_function *fcf) {
 	text_stream *fn_name = Inter::Symbols::name(fn);
-	final_c_function *fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
-	C_GEN_DATA(fndata.current_fcf) = fcf;
 	segmentation_pos saved = CodeGen::select(gen, c_functions_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", fcf->prototype);
+	CFunctionModel::prototype(gen, OUT, fcf);
 	WRITE(" {\n");
 	WRITE("i7_debug_stack(\"%S\");\n", fn_name);
 	if (Str::eq(fn_name, I"DebugAction")) {
@@ -281,7 +220,7 @@ int CFunctionModel::inside_function(code_generation *gen) {
 	return FALSE;
 }
 
-void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, int void_context) {
+void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen, inter_symbol *fn, inter_tree_node *P, vanilla_function *fcf, int void_context) {
 	int argc = 0;
 	LOOP_THROUGH_INTER_CHILDREN(F, P) argc++;
 
@@ -294,9 +233,6 @@ void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen, 
 			if (aliased) fn = aliased;
 		}
 	}
-	final_c_function *fcf = NULL;
-	if (GENERAL_POINTER_IS_NULL(fn->translation_data) == FALSE)
-		fcf = RETRIEVE_POINTER_final_c_function(fn->translation_data);
 
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *OUT = CodeGen::current(gen);

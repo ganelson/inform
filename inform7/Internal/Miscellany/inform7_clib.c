@@ -768,6 +768,17 @@ int i7_opcode_jisnan(i7process_t *proc, i7word_t x) {
     if ((x & 0x7F800000) == 0x7F800000 && (x & 0x007FFFFF) != 0) return 1;
 	return 0;
 }
+char *i7_texts[];
+char *i7_text_to_C_string(i7word_t str) {
+	return i7_texts[str - I7VAL_STRINGS_BASE];
+}
+void i7_print_dword(i7process_t *proc, i7word_t at) {
+	for (i7byte_t i=1; i<=9; i++) {
+		i7byte_t c = i7_read_byte(proc, at+i);
+		if (c == 0) break;
+		i7_print_char(proc, c);
+	}
+}
 i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
@@ -1094,17 +1105,6 @@ i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, 
 	return i7_gen_call(proc, fn_ref, args, 5);
 }
 
-char *i7_texts[];
-char *i7_text_to_C_string(i7word_t str) {
-	return i7_texts[str - I7VAL_STRINGS_BASE];
-}
-void i7_print_dword(i7process_t *proc, i7word_t at) {
-	for (i7byte_t i=1; i<=9; i++) {
-		i7byte_t c = i7_read_byte(proc, at+i);
-		if (c == 0) break;
-		i7_print_char(proc, c);
-	}
-}
 #define I7_MAX_STREAMS 128
 
 i7_stream i7_memory_streams[I7_MAX_STREAMS];

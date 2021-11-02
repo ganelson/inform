@@ -12,6 +12,7 @@ Chapter 2: Mechanism
 	Code Generators
 	Vanilla
 	Vanilla Constants
+	Vanilla Functions
 	Vanilla Objects
 	Vanilla Code
 	Vanilla IF
@@ -38,8 +39,8 @@ Chapter 5: C
 	C Arithmetic
 	C Program Control
 	C Conditions
+	C Literals
 	C Object Model
 	C Function Model
-	C Literals
 	C Input-Output Model
 	C Utility Functions

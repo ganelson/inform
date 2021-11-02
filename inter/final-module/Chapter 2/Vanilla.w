@@ -17,7 +17,7 @@ void Vanilla::go(code_generation *gen) {
 	@<Traverse for pragmas@>;
 	Generators::declare_variables(gen, gen->global_variables);
 	VanillaObjects::declare_properties(gen);
-	@<Traverse to make function predeclarations@>;
+	VanillaFunctions::predeclare_functions(gen);
 	@<General traverse@>;
 	VanillaConstants::declare_text_literals(gen);
 	VanillaObjects::declare_kinds_and_instances(gen);
@@ -38,25 +38,6 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	Generators::offer_pragma(gen, P, target_s->symbol_name, S);
-}
-
-@ The following calls //Generators::predeclare_function// on every function in
-the tree. Not all target languages require functions to be predeclared (Inform 6
-does not, for example), so generators can choose simply to ignore this.
-
-@<Traverse to make function predeclarations@> =
-	InterTree::traverse(gen->from, Vanilla::predeclare_functions, gen, NULL, CONSTANT_IST);
-
-@ =
-void Vanilla::predeclare_functions(inter_tree *I, inter_tree_node *P, void *state) {
-	code_generation *gen = (code_generation *) state;
-	inter_symbol *constant_s =
-		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-	if (Inter::Constant::is_routine(constant_s)) {
-		inter_package *code_block = Inter::Constant::code_block(constant_s);
-		inter_tree_node *D = Inter::Packages::definition(code_block);
-		Generators::predeclare_function(gen, constant_s, D);
-	}
 }
 
 @<General traverse@> =

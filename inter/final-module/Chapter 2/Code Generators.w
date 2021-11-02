@@ -108,10 +108,10 @@ void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_str
 @e PREDECLARE_FUNCTION_MTID
 
 =
-VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
+VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, vanilla_function *fcf)
 VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
-void Generators::predeclare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
-	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, fn, code);
+void Generators::predeclare_function(code_generation *gen, vanilla_function *fcf) {
+	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, fcf);
 }
 
 @h Methods called by Vanilla Constants.
@@ -139,9 +139,9 @@ void Generators::pseudo_object(code_generation *gen, text_stream *obj_name) {
 @e DECLARE_FUNCTION_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code)
-void Generators::declare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code) {
-	VOID_METHOD_CALL(gen->generator, DECLARE_FUNCTION_MTID, gen, fn, code);
+VOID_METHOD_TYPE(DECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, inter_symbol *fn, inter_tree_node *code, vanilla_function *fcf)
+void Generators::declare_function(code_generation *gen, inter_symbol *fn, inter_tree_node *code, vanilla_function *fcf) {
+	VOID_METHOD_CALL(gen->generator, DECLARE_FUNCTION_MTID, gen, fn, code, fcf);
 }
 
 @
@@ -243,7 +243,7 @@ void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
 VOID_METHOD_TYPE(INVOKE_PRIMITIVE_MTID, code_generator *generator, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context)
 VOID_METHOD_TYPE(INVOKE_FUNCTION_MTID, code_generator *generator, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *P, int void_context)
+	inter_symbol *fn, inter_tree_node *P, vanilla_function *fcf, int void_context)
 VOID_METHOD_TYPE(INVOKE_OPCODE_MTID, code_generator *generator, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense)
@@ -252,8 +252,8 @@ void Generators::invoke_primitive(code_generation *gen, inter_symbol *prim_name,
 	VOID_METHOD_CALL(gen->generator, INVOKE_PRIMITIVE_MTID, gen, prim_name, P, void_context);
 }
 void Generators::invoke_function(code_generation *gen, inter_symbol *fn, inter_tree_node *P,
-	int void_context) {
-	VOID_METHOD_CALL(gen->generator, INVOKE_FUNCTION_MTID, gen, fn, P, void_context);
+	vanilla_function *fcf, int void_context) {
+	VOID_METHOD_CALL(gen->generator, INVOKE_FUNCTION_MTID, gen, fn, P, fcf, void_context);
 }
 void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int operand_count,
 	inter_tree_node **operands, inter_tree_node *label, int label_sense) {

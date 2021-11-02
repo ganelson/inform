@@ -68,7 +68,7 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 @<Invoke a function@> =
 	inter_symbol *function_s = Inter::Inv::invokee(P);
 	if (function_s == NULL) internal_error("no function");
-	Generators::invoke_function(gen, function_s, P, void_context);
+	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
 @<Invoke an assembly-language opcode@> =
 	inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
