@@ -15,7 +15,7 @@ typedef struct vanilla_function {
 	CLASS_DEFINITION
 } vanilla_function;
 
-vanilla_function *VanillaFunctions::new_fcf(text_stream *unmangled_name) {
+vanilla_function *VanillaFunctions::new_vf(text_stream *unmangled_name) {
 	vanilla_function *fcf = CREATE(vanilla_function);
 	fcf->max_arity = 0;
 	fcf->formal_arity = -1;
@@ -32,7 +32,7 @@ vanilla_function *VanillaFunctions::new_from_definition(code_generation *gen,
 	inter_package *PP = Inter::Packages::parent(P);
 	text_stream *fn_name = Inter::Symbols::name(fn);
 	text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
-	vanilla_function *fcf = VanillaFunctions::new_fcf(fn_name);
+	vanilla_function *fcf = VanillaFunctions::new_vf(fn_name);
 	fcf->syntax_md = Str::duplicate(md);
 	fn->translation_data = STORE_POINTER_vanilla_function(fcf);
 	inter_package *code_block = Inter::Constant::code_block(fn);
