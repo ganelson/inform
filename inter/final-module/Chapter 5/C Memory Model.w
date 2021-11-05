@@ -372,7 +372,7 @@ void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
 @ =
 void CMemoryModel::word_to_byte(code_generator *cgt, code_generation *gen,
 	OUTPUT_STREAM, text_stream *val, int b) {
-	WRITE("I7BYTE_%d(%S)", val, b);
+	WRITE("I7BYTE_%d(%S)", b, val);
 }
 
 @ The seven primitive operations on storage need to be implemented for byte

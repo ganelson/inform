@@ -745,7 +745,11 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", "); VNODE_5C; WRITE(")"); break;
 		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
-
+		case CHILD_BIP:         WRITE("fn_i7_mgl_child(proc, "); VNODE_1C; WRITE(")"); break;
+		case CHILDREN_BIP:      WRITE("fn_i7_mgl_children(proc, "); VNODE_1C; WRITE(")"); break;
+		case PARENT_BIP:        WRITE("fn_i7_mgl_parent(proc, "); VNODE_1C; WRITE(")"); break;
+		case SIBLING_BIP:       WRITE("fn_i7_mgl_sibling(proc, "); VNODE_1C; WRITE(")"); break;
+		case METACLASS_BIP:       WRITE("fn_i7_mgl_metaclass(proc, "); VNODE_1C; WRITE(")"); break;
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;

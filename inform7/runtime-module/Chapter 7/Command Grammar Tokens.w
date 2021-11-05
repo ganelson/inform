@@ -431,7 +431,7 @@ because then, of course, it would be worn by P and not carried by P:
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, kit->rv_s);
-		EmitCode::call_symbol(Emit::get_veneer_symbol(PARENT_VSYMB));
+		EmitCode::inv(PARENT_BIP);
 		EmitCode::down();
 			EmitCode::val_iname(K_value, Hierarchy::find(SELF_HL));
 		EmitCode::up();

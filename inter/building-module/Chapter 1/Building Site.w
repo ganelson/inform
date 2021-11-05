@@ -193,7 +193,6 @@ inter_package *Site::ensure_texts_package(inter_tree *I) {
 	if (texts == NULL) {
 		texts = Site::make_linkage_package(I, I"texts");
 		Site::set_texts_package(I, texts);
-//		Inter::Packages::make_linklike(texts);
 	}
 	return texts;
 }

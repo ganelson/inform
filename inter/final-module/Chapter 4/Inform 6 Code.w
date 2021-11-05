@@ -288,6 +288,7 @@ it corresponds directly to the |or| keyword of Inform 6, so generating it is tri
 	case ALTERNATIVE_BIP:	VNODE_1C; WRITE(" or "); VNODE_2C; break;
 	case SEQUENTIAL_BIP:    WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 	case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
+	case RANDOM_BIP:        WRITE("random("); VNODE_1C; WRITE(")"); break;
 
 @ But the unfortunate |!ternarysequential a b c| needs some gymnastics. It
 would be trivial to generate to C with the serial comma operator: |(a, b, c)|
@@ -718,6 +719,11 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 @<The VM object tree@> =
 	case MOVE_BIP:          WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;
 	case REMOVE_BIP:        WRITE("remove "); VNODE_1C; break;
+	case CHILD_BIP:         WRITE("child("); VNODE_1C; WRITE(")"); break;
+	case CHILDREN_BIP:      WRITE("children("); VNODE_1C; WRITE(")"); break;
+	case PARENT_BIP:        WRITE("parent("); VNODE_1C; WRITE(")"); break;
+	case SIBLING_BIP:       WRITE("sibling("); VNODE_1C; WRITE(")"); break;
+	case METACLASS_BIP:     WRITE("metaclass("); VNODE_1C; WRITE(")"); break;
 
 @h Support code for property accesses.
 In the following, |prop_node| is a |VAL_IST| identifying the property being

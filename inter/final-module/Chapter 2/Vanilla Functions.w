@@ -108,8 +108,22 @@ void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *con_
 
 @ =
 void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *function_s, inter_tree_node *P, int void_context) {
-	vanilla_function *fcf = NULL;
-	if (GENERAL_POINTER_IS_NULL(function_s->translation_data) == FALSE)
-		fcf = RETRIEVE_POINTER_vanilla_function(function_s->translation_data);
-	Generators::invoke_function(gen, function_s, P, fcf, void_context);
+	inter_tree_node *D = function_s->definition;
+	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
+		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+			inter_symbol *aliased =
+				InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(D));
+			if (aliased) function_s = aliased;
+		}
+	}
+
+	vanilla_function *vf = NULL;
+	if (GENERAL_POINTER_IS_NULL(function_s->translation_data))
+		internal_error("no translation data");
+	vf = RETRIEVE_POINTER_vanilla_function(function_s->translation_data);
+	if (vf == NULL) internal_error("no translation data");
+	Generators::invoke_function(gen, function_s, P, vf, void_context);
 }

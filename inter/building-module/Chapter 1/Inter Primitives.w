@@ -92,6 +92,12 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!propertylength", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyexists", I"val val val -> val");
 	Primitives::emit_one(I, IBM, I"!propertyvalue", I"val val val -> val");
+	Primitives::emit_one(I, IBM, I"!random", I"val -> val");
+	Primitives::emit_one(I, IBM, I"!child", I"val -> val");
+	Primitives::emit_one(I, IBM, I"!children", I"val -> val");
+	Primitives::emit_one(I, IBM, I"!sibling", I"val -> val");
+	Primitives::emit_one(I, IBM, I"!parent", I"val -> val");
+	Primitives::emit_one(I, IBM, I"!metaclass", I"val -> val");
 }
 
 inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
@@ -253,6 +259,12 @@ inter_ti Primitives::indirectv_interp(int arity) {
 @e PROPERTYLENGTH_BIP
 @e PROPERTYEXISTS_BIP
 @e PROPERTYVALUE_BIP
+@e RANDOM_BIP
+@e CHILD_BIP
+@e CHILDREN_BIP
+@e SIBLING_BIP
+@e PARENT_BIP
+@e METACLASS_BIP
 
 =
 text_stream *Primitives::name(inter_ti bip) {
@@ -346,6 +358,12 @@ text_stream *Primitives::name(inter_ti bip) {
 		case PROPERTYLENGTH_BIP: return I"!propertylength";
 		case PROPERTYEXISTS_BIP: return I"!propertyexists";
 		case PROPERTYVALUE_BIP: return I"!propertyvalue";
+		case RANDOM_BIP: return I"!random";
+		case CHILD_BIP: return I"!child";
+		case CHILDREN_BIP: return I"!children";
+		case SIBLING_BIP: return I"!sibling";
+		case PARENT_BIP: return I"!parent";
+		case METACLASS_BIP: return I"!metaclass";
 	}
 	return I"<none>";
 }
@@ -454,6 +472,12 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!propertylength")) bip = PROPERTYLENGTH_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyexists")) bip = PROPERTYEXISTS_BIP;
 	if (Str::eq(symb->symbol_name, I"!propertyvalue")) bip = PROPERTYVALUE_BIP;
+	if (Str::eq(symb->symbol_name, I"!random")) bip = RANDOM_BIP;
+	if (Str::eq(symb->symbol_name, I"!child")) bip = CHILD_BIP;
+	if (Str::eq(symb->symbol_name, I"!children")) bip = CHILDREN_BIP;
+	if (Str::eq(symb->symbol_name, I"!sibling")) bip = SIBLING_BIP;
+	if (Str::eq(symb->symbol_name, I"!parent")) bip = PARENT_BIP;
+	if (Str::eq(symb->symbol_name, I"!metaclass")) bip = METACLASS_BIP;
 	if (bip != 0) {
 		Inter::Symbols::annotate_i(symb, BIP_CODE_IANN, bip);
 		return bip;

@@ -59,6 +59,12 @@ value, producing that second value.
 (a) |primitive !ternarysequential val val val -> val|.  Evaluates the first,
 then the second, then the third value, producing that third value.
 
+@h Random.
+This is essentially the built-in |random| function of Inform 6, given an Inter
+disguise. See the Inform 6 Designer's Manual for a specification.
+
+(a) |!primitive random val -> val|. 
+
 @h Printing.
 These print data of various kinds:
 
@@ -242,15 +248,20 @@ And, lastly, the lowest-level way to travel:
 
 @h Interactive fiction-only primitives.
 The following would make no sense in a general-purpose program. Most mirror
-very low-level I6 features, and Inform uses them mainly when converting
-I6 code into inter: in almost all cases it's better to call routines in the
-template rather than to use these. First, the spatial containment object tree:
+very low-level I6 features. First, the spatial containment object tree:
 
 (a) |primitive !move val val -> void|. Moves first to second (both are objects).
 (b) |primitive !in val val -> val|. Tests if first is in second (both are objects).
 (c) |primitive !notin val val -> val|. Negation of same.
+(d) |primitive !child val -> val|. Finds the child node of an object.
+(e) |primitive !children val -> val|. The number of children: which may be 0.
+(f) |primitive !parent val -> val|. Finds the parent of an object.
+(g) |primitive !sibling val -> val|. Finds the sibling of an object.
 
 Object class membership:
 
 (a) |primitive !ofclass val val -> val|. Does the first belong to the enumerated
 subkind whose weak type ID is the second value?
+(b) |primitive !metaclass val -> val|. Returns |Class|, |Object|, |Routine|,
+|String| or 0 depending on the value supplied: see the Inform 6 Designer's Manual
+for more on this.

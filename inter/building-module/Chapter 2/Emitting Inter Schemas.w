@@ -227,12 +227,32 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		inter_schema_token *external_tok = NULL;
 		inter_schema_node *at = isn->child_node;
 		inter_symbol *to_call = NULL;
+		inter_ti bip_for_builtin_fn = 0;
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
 			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL)) {
 				if (Str::prefix_eq(tok->material, I"external__", 10)) { 
 					external_tok = tok;
+					bip_for_builtin_fn = EXTERNALCALL_BIP;
 					tok->ist_type = DQUOTED_ISTT;
+				} else if (Str::eq(tok->material, I"random")) { 
+					bip_for_builtin_fn = RANDOM_BIP;
+					at = at->next_node;
+				} else if (Str::eq(tok->material, I"child")) { 
+					bip_for_builtin_fn = CHILD_BIP;
+					at = at->next_node;
+				} else if (Str::eq(tok->material, I"children")) { 
+					bip_for_builtin_fn = CHILDREN_BIP;
+					at = at->next_node;
+				} else if (Str::eq(tok->material, I"parent")) { 
+					bip_for_builtin_fn = PARENT_BIP;
+					at = at->next_node;
+				} else if (Str::eq(tok->material, I"sibling")) { 
+					bip_for_builtin_fn = SIBLING_BIP;
+					at = at->next_node;
+				} else if (Str::eq(tok->material, I"metaclass")) { 
+					bip_for_builtin_fn = METACLASS_BIP;
+					at = at->next_node;
 				} else if (Str::eq(tok->material, I"indirect")) { 
 					at = at->next_node;
 				} else {
@@ -247,11 +267,11 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				}
 			}
 		}
-		if (to_call) {
+		if (bip_for_builtin_fn > 0) {
+			Produce::inv_primitive(I, bip_for_builtin_fn);		
+		} else if (to_call) {
 			Produce::inv_call(I, to_call);
 			at = at->next_node;
-		} else if (external_tok) {
-			Produce::inv_primitive(I, EXTERNALCALL_BIP);
 		} else {
 			int argc = 0;
 			for (inter_schema_node *n = isn->child_node; n; n=n->next_node) {

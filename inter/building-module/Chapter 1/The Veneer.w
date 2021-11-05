@@ -9,14 +9,6 @@
 @e GRAMMAR_TABLE_VSYMB
 @e SELF_VSYMB
 
-@e CHILDREN_VSYMB
-@e PARENT_VSYMB
-@e CHILD_VSYMB
-@e SIBLING_VSYMB
-@e RANDOM_VSYMB
-@e SPACES_VSYMB
-@e METACLASS_VSYMB
-
 @e ROUTINE_VSYMB
 @e STRING_VSYMB
 @e CLASS_VSYMB
@@ -42,13 +34,6 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, ACTIONS_TABLE_VSYMB, I"#actions_table", NULL);
 	Veneer::index(I, GRAMMAR_TABLE_VSYMB, I"#grammar_table", NULL);
 	Veneer::index(I, SELF_VSYMB, I"self", NULL);
-	
-	Veneer::index(I, PARENT_VSYMB, I"parent", NULL);
-	Veneer::index(I, CHILD_VSYMB, I"child", NULL);
-	Veneer::index(I, SIBLING_VSYMB, I"sibling", NULL);
-	Veneer::index(I, RANDOM_VSYMB, I"random", NULL);
-	Veneer::index(I, METACLASS_VSYMB, I"metaclass", NULL);
-	Veneer::index(I, CHILDREN_VSYMB, I"children", NULL);
 
 	Veneer::index(I, ROUTINE_VSYMB, I"Routine", NULL);
 	Veneer::index(I, STRING_VSYMB, I"String", NULL);

@@ -84,9 +84,14 @@ function: all functions return something, even if that something is meaningless
 and is then thrown away.
 
 =
-void CFunctionModel::prototype(code_generation *gen, OUTPUT_STREAM, vanilla_function *vf) {
-	WRITE("i7word_t fn_");
+void CFunctionModel::C_function_identifier(code_generation *gen, OUTPUT_STREAM, vanilla_function *vf) {
+	WRITE("fn_");
 	Generators::mangle(gen, OUT, vf->identifier_as_constant);
+}
+
+void CFunctionModel::prototype(code_generation *gen, OUTPUT_STREAM, vanilla_function *vf) {
+	WRITE("i7word_t ");
+	CFunctionModel::C_function_identifier(gen, OUT, vf);
 	WRITE("(i7process_t *proc");
 	text_stream *local_name;
 	LOOP_OVER_LINKED_LIST(local_name, text_stream, vf->locals) {
@@ -94,6 +99,39 @@ void CFunctionModel::prototype(code_generation *gen, OUTPUT_STREAM, vanilla_func
 		Generators::mangle(gen, OUT, local_name);
 	}
 	WRITE(")");
+}
+
+@h Function calls.
+
+=
+void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen,
+	inter_symbol *fn, inter_tree_node *P, vanilla_function *vf, int void_context) {
+	text_stream *OUT = CodeGen::current(gen);
+	
+	CFunctionModel::C_function_identifier(gen, OUT, vf);
+	WRITE("(proc");
+	if (vf->uses_vararg_model) {
+		inter_tree_node *fargstuff[128];
+		int c = 0;
+		LOOP_THROUGH_INTER_CHILDREN(F, P) fargstuff[c++] = F;
+		WRITE(", (");
+		for (int i=c-1; i >= 0; i--) {
+			WRITE("i7_push(proc, ");
+			Vanilla::node(gen, fargstuff[i]);
+			WRITE("), ");
+		}
+		WRITE("%d)", c);
+		for (int i=1; i < vf->max_arity; i++) WRITE(", 0");
+	} else {
+		int c = 0;
+		LOOP_THROUGH_INTER_CHILDREN(F, P) {
+			WRITE(", "); Vanilla::node(gen, F);
+			c++;
+		}
+		for (; c < vf->max_arity; c++) WRITE(", 0");
+	}
+	WRITE(")");
+	if (void_context) WRITE(";\n");
 }
 
 @
@@ -176,64 +214,6 @@ int CFunctionModel::inside_function(code_generation *gen) {
 	return FALSE;
 }
 
-void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *P, vanilla_function *vf, int void_context) {
-	int argc = 0;
-	LOOP_THROUGH_INTER_CHILDREN(F, P) argc++;
-
-	inter_tree_node *D = fn->definition;
-	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) &&
-		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
-		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
-		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
-		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-			inter_symbol *aliased =
-				InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(D));
-			if (aliased) fn = aliased;
-		}
-	}
-
-	text_stream *fn_name = Inter::Symbols::name(fn);
-	text_stream *OUT = CodeGen::current(gen);
-	
-	inter_tree_node *fargstuff[128];
-	
-	WRITE("fn_");
-	CNamespace::mangle(cgt, OUT, fn_name);
-	WRITE("(proc");
-
-	int c = 0;
-	LOOP_THROUGH_INTER_CHILDREN(F, P) {
-		if (vf) {
-			if (vf->uses_vararg_model) fargstuff[c] = F;
-			else { WRITE(", "); Vanilla::node(gen, F); }
-		} else {
-			WRITE(", ");
-			Vanilla::node(gen, F);
-		}
-		c++;
-	}
-
-	if (vf) {
-		if (vf->uses_vararg_model) {
-			WRITE(", (");
-			for (int i=argc-1; i >= 0; i--) {
-				WRITE("i7_push(proc, ");
-				Vanilla::node(gen, fargstuff[i]);
-				WRITE("), ");
-			}
-			WRITE("%d)", argc);
-			argc = 1;
-		}
-		while (argc < vf->max_arity) {
-			WRITE(", 0");
-			argc++;
-		}
-	}
-	WRITE(")");
-	if (void_context) WRITE(";\n");
-}
-	
 void CFunctionModel::write_gen_call(code_generation *gen) {
 	segmentation_pos saved = CodeGen::select(gen, c_stubs_at_eof_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -250,9 +230,9 @@ void CFunctionModel::write_gen_call(code_generation *gen) {
 		if (vf->uses_vararg_model) {
 			WRITE("for (int i=argc-1; i>=0; i--) i7_push(proc, args[i]); ");
 		}		
-		WRITE("rv = fn_");
-		CNamespace::mangle(NULL, OUT, vf->identifier_as_constant);
-		WRITE("(");		
+		WRITE("rv = ");
+		CFunctionModel::C_function_identifier(gen, OUT, vf);
+		WRITE("(");
 		if (vf->uses_vararg_model) {
 			WRITE("proc, argc");
 			for (int i=0; i<vf->max_arity - 1; i++)
@@ -288,8 +268,8 @@ void CFunctionModel::write_hooks(code_generation *gen) {
 				}
 			}
 			WRITE(") {\n"); INDENT;
-			WRITE("return fn_");
-			CNamespace::mangle(NULL, OUT, vf->identifier_as_constant);
+			WRITE("return ");
+			CFunctionModel::C_function_identifier(gen, OUT, vf);
 			WRITE("(proc");
 			for (int i=0; i<vf->max_arity; i++) {
 				WRITE(", ");
