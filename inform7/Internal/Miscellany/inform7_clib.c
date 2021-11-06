@@ -511,7 +511,7 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 	srandom(seed);
 }
 
-i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x) {
+i7word_t i7_random(i7process_t *proc, i7word_t x) {
 	i7word_t r;
 	i7_opcode_random(proc, x, &r);
 	return r+1;
@@ -779,7 +779,7 @@ void i7_print_dword(i7process_t *proc, i7word_t at) {
 		i7_print_char(proc, c);
 	}
 }
-i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id) {
+i7word_t i7_metaclass(i7process_t *proc, i7word_t id) {
 	if (id <= 0) return 0;
 	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
 	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
@@ -892,28 +892,28 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 }
 
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
-	if (fn_i7_mgl_metaclass(proc, obj1) != i7_mgl_Object) return 0;
+	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
 	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
 
-i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_parent(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_parent[id];
 }
-i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_child(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_child[id];
 }
-i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_children(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	i7word_t c=0;
 	for (int i=0; i<i7_max_objects; i++) if (proc->state.object_tree_parent[i] == id) c++;
 	return c;
 }
-i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_sibling[id];
 }
 
@@ -955,7 +955,7 @@ void i7_initialise_object_tree(i7process_t *proc) {
 void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
 	if (K == i7_mgl_OBJECT_TY) {
-		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
+		if (((obj) && ((i7_metaclass(proc, obj) == i7_mgl_Object)))) {
 			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
 				if (val) *val = 1;
 			} else {

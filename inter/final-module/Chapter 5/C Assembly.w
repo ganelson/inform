@@ -726,7 +726,7 @@ Note that the |random(...)| function built in to Inform is just a name for the
 = (text to inform7_clib.h)
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
-i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x);
+i7word_t i7_random(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
@@ -746,7 +746,7 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 	srandom(seed);
 }
 
-i7word_t fn_i7_mgl_random(i7process_t *proc, i7word_t x) {
+i7word_t i7_random(i7process_t *proc, i7word_t x) {
 	i7word_t r;
 	i7_opcode_random(proc, x, &r);
 	return r+1;

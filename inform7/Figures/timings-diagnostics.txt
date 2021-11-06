@@ -1,8 +1,8 @@
 100.0% in inform7 run
-     54.9% in compilation to Inter
+     55.0% in compilation to Inter
          39.8% in //Sequence::undertake_queued_tasks//
           3.4% in //MajorNodes::pre_pass//
-          2.5% in //MajorNodes::pass_1//
+          2.3% in //MajorNodes::pass_1//
           2.0% in //RTPhrasebook::compile_entries//
           1.3% in //ImperativeDefinitions::assess_all//
           1.1% in //RTKindConstructors::compile//
@@ -15,11 +15,12 @@
           0.1% in //InferenceSubjects::emit_all//
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Task::make_built_in_kind_constructors//
+          0.1% in //World::stages_II_and_III//
           2.0% not specifically accounted for
-     42.9% in running Inter pipeline
+     43.0% in running Inter pipeline
          13.1% in step preparation
           9.7% in inter step 7/16: consolidate-text
-          8.0% in inter step 2/16: link
+          8.2% in inter step 2/16: link
           6.4% in inter step 16/16: generate inform6 -> auto.inf
           1.4% in inter step 11/16: make-identifiers-unique
           0.4% in inter step 12/16: reconcile-verbs
@@ -31,6 +32,6 @@
           0.1% in inter step 4/16: parse-linked-matter
           0.1% in inter step 5/16: resolve-conditional-compilation
           0.1% in inter step 9/16: inspect-plugs
-          2.1% not specifically accounted for
+          1.8% not specifically accounted for
       1.6% in supervisor
-      0.5% not specifically accounted for
+      0.3% not specifically accounted for

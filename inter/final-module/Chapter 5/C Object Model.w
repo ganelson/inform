@@ -2,7 +2,7 @@
 
 How objects, classes and properties are compiled to C.
 
-@h Setting up the model.
+@h Introduction.
 
 =
 void CObjectModel::initialise(code_generator *cgt) {
@@ -32,21 +32,8 @@ typedef struct C_generation_object_model_data {
 	int value_property_holders_needed;
 } C_generation_object_model_data;
 
-typedef struct C_property_owner {
-	struct text_stream *name;
-	struct text_stream *class;
-	struct text_stream *identifier;
-	struct linked_list *property_values;
-	struct C_property_owner *initial_parent;
-	struct C_property_owner *initial_sibling;
-	struct C_property_owner *initial_child;
-	int is_class;
-	int id;
-	CLASS_DEFINITION
-} C_property_owner;
-
 void CObjectModel::initialise_data(code_generation *gen) {
-	C_GEN_DATA(objdata.owner_id_count) = 0;
+	C_GEN_DATA(objdata.owner_id_count) = 1;
 	C_GEN_DATA(objdata.property_id_counter) = 0;
 	C_GEN_DATA(objdata.C_property_offsets_made) = 0;
 	C_GEN_DATA(objdata.declared_properties) = Dictionaries::new(1024, FALSE);
@@ -61,12 +48,14 @@ void CObjectModel::initialise_data(code_generation *gen) {
 void CObjectModel::begin(code_generation *gen) {
 	CObjectModel::initialise_data(gen);
 	@<Begin the initialiser function@>;
+	@<Define the four metaclasses@>;
 }
 
 void CObjectModel::end(code_generation *gen) {
 	CObjectModel::write_property_values_table(gen);
 	@<Complete the initialiser function@>;
 	@<Complete the property-offset creator function@>;
+	@<Parcel up the object value-space@>;
 	@<Predeclare the object count and class array@>;
 	if (C_GEN_DATA(objdata.value_ranges_needed)) @<Make the value ranges@>;
 	if (C_GEN_DATA(objdata.value_property_holders_needed)) @<Make the value property holders@>;
@@ -124,6 +113,85 @@ void CObjectModel::end(code_generation *gen) {
 	}
 	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
 
+@h The object value-space.
+Inter requires that the following values must be distinguishable at runtime:
+
+(a) Instances of object;
+(b) Classes, which include kinds of object such as "container", but not other
+kinds such as "number";
+(c) Constant text values -- note: this does not mean values of the I7 "text"
+kind, this means only text literals in Inter;
+(d) Functions;
+(e) 0, which is also the value of the non-object |nothing|.
+
+Note that there is no requirement for these ranges of value to be contiguous,
+or to exhaust the whole range of 32-bit values (and they do not). We provide
+a function |i7_metaclass| which returns |Class|, |Object|, |String|, |Routine|
+or 0 in cases (a) to (e), or 0 for any values not fitting any of these: this
+function implements the |!metaclass| primitive.
+
+At the start of each run we define these four fundamental classes:
+
+@<Define the four metaclasses@> =
+	CObjectModel::declare_class_inner(gen, I"Class", NULL, 1, I"Class");
+	CObjectModel::declare_class_inner(gen, I"Object", NULL, 2, I"Class");
+	CObjectModel::declare_class_inner(gen, I"String", NULL, 3, I"Class");
+	CObjectModel::declare_class_inner(gen, I"Routine", NULL, 4, I"Class");
+	C_GEN_DATA(objdata.owner_id_count) += 4;
+
+@ In this C runtime, |nothing| will be 0, as is mandatory; |Class|, |Object|,
+|String| and |Routine| will be 1 to 4 respectively; values from 5 upwards will
+be assigned to objects and classes as they arise -- note that these mix freely;
+string values will occupy a contiguous range |I7VAL_STRINGS_BASE| to
+|I7VAL_FUNCTIONS_BASE-1|; and function values will be in tha range
+|I7VAL_FUNCTIONS_BASE| to |0x7FFFFFFF|, though they will certainly not fill it.
+
+@<Parcel up the object value-space@> =
+	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("i7word_t i7_metaclass_of[] = {\n"); INDENT;
+	WRITE("0\n");
+	C_property_owner *co;
+	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
+		WRITE(", ");
+		if (co->is_class) Generators::mangle(gen, OUT, I"Class");
+		else Generators::mangle(gen, OUT, I"Object");
+		WRITE("\n");
+	}
+	OUTDENT; WRITE(" };\n");
+	int b = C_GEN_DATA(objdata.owner_id_count);
+	WRITE("#define I7VAL_STRINGS_BASE %d\n", b);
+	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n", b + CLiteralsModel::size_of_String_area(gen));
+	CodeGen::deselect(gen, saved);
+
+@ Those decisions give us the following |i7_metaclass| function:
+
+= (text to inform7_clib.h)
+i7word_t i7_metaclass(i7process_t *proc, i7word_t id);
+=
+
+= (text to inform7_clib.c)
+i7word_t i7_metaclass(i7process_t *proc, i7word_t id) {
+	if (id <= 0) return 0;
+	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
+	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
+	return i7_metaclass_of[id];
+}
+=
+
+
+@h Owner IDs.
+At runtime, an ID number uniquely identifies possible owners of properties.
+The special ID 0 is reserved for |nothing|, meaning the absence of such an
+owner, so we can only use 1 upwards.
+
+The four metaclasses |Class|, |Object|, |String|, |Routine| will get IDs 1
+to 4. Those are not classes in the Inter tree, and must therefore be created
+here as special cases. After that, it's first come, first served.
+
+
+
+
 @h Owners.
 In this model, every class and every instance are represented by one "owner
 object" each. These owner objects own properties, as we shall see. Each has
@@ -134,6 +202,19 @@ Here we create an owner. They are listed in a dynamically resized array in
 the model data:
 
 =
+typedef struct C_property_owner {
+	struct text_stream *name;
+	struct text_stream *class;
+	struct text_stream *identifier;
+	struct linked_list *property_values;
+	struct C_property_owner *initial_parent;
+	struct C_property_owner *initial_sibling;
+	struct C_property_owner *initial_child;
+	int is_class;
+	int id;
+	CLASS_DEFINITION
+} C_property_owner;
+
 C_property_owner *CObjectModel::assign_owner(code_generation *gen, int id, text_stream *name,
 	text_stream *class_name, int is_class) {
 	C_property_owner *co = CREATE(C_property_owner);
@@ -152,31 +233,6 @@ C_property_owner *CObjectModel::assign_owner(code_generation *gen, int id, text_
 	return co;
 }
 
-@h Owner IDs.
-At runtime, an ID number uniquely identifies possible owners of properties.
-The special ID 0 is reserved for |nothing|, meaning the absence of such an
-owner, so we can only use 1 upwards.
-
-The four metaclasses |Class|, |Object|, |String|, |Routine| will get IDs 1
-to 4. Those are not classes in the Inter tree, and must therefore be created
-here as special cases. After that, it's first come, first served.
-
-=
-int CObjectModel::next_owner_id(code_generation *gen) {
-	C_GEN_DATA(objdata.owner_id_count)++;
-	if (C_GEN_DATA(objdata.owner_id_count) == 1) {
-		CObjectModel::declare_class_inner(gen, I"Class", NULL, 1, I"Class");
-		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"Object", NULL, 2, I"Class");
-		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"String", NULL, 3, I"Class");
-		C_GEN_DATA(objdata.owner_id_count)++;
-		CObjectModel::declare_class_inner(gen, I"Routine", NULL, 4, I"Class");
-		C_GEN_DATA(objdata.owner_id_count)++;
-	}
-	return C_GEN_DATA(objdata.owner_id_count);
-}
-
 @ The (constant) array |i7_class_of[id]| accepts any ID for a class or instance,
 and evaluates to the ID of its classname. So, for example, |i7_class_of[1] == 1|
 expresses that the classname of |Class| is |Class| itself. Here we compile
@@ -191,25 +247,14 @@ overlap.
 	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 
-	WRITE("#define i7_max_objects %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
-
-	WRITE("i7word_t i7_metaclass_of[] = { 0");
-	C_property_owner *co;
-	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
-		if (co->is_class) WRITE(", i7_mgl_Class");
-		else WRITE(", i7_mgl_Object");
-	}
-	WRITE(" };\n");
+	WRITE("#define i7_max_objects I7VAL_STRINGS_BASE\n");
 
 	WRITE("i7word_t i7_class_of[] = { 0");
+	C_property_owner *co;
 	LOOP_OVER_LINKED_LIST(co, C_property_owner, C_GEN_DATA(objdata.declared_objects)) {
 		WRITE(", "); CNamespace::mangle(NULL, OUT, co->class);
 	}
 	WRITE(" };\n");
-
-	WRITE("#define I7VAL_STRINGS_BASE %d\n", C_GEN_DATA(objdata.owner_id_count) + 1);
-	WRITE("#define I7VAL_FUNCTIONS_BASE %d\n",
-		C_GEN_DATA(objdata.owner_id_count) + 1 + CLiteralsModel::size_of_String_area(gen));
 
 	WRITE("#define i7_no_property_ids %d\n", C_GEN_DATA(objdata.property_id_counter));
 	CodeGen::deselect(gen, saved);
@@ -232,7 +277,7 @@ void CObjectModel::declare_kind(code_generator *cgt, code_generation *gen,
 		*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 		if (Str::len(super_class) == 0) super_class = I"Class";
 		CObjectModel::declare_class_inner(gen, class_name, printed_name,
-			CObjectModel::next_owner_id(gen), super_class);
+			C_GEN_DATA(objdata.owner_id_count)++, super_class);
 	} else if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
 		TEMPORARY_TEXT(instance_name)
 		WRITE_TO(instance_name, "VPH_%d", VanillaObjects::weak_id(kind_s));
@@ -266,7 +311,7 @@ C_property_owner *CObjectModel::C_runtime_object(code_generator *cgt, code_gener
 	text_stream *class_name, text_stream *instance_name, text_stream *printed_name, int acount, int is_dir, segmentation_pos *saved) {
 	*saved = CodeGen::select(gen, c_main_matter_I7CGS);
 	if (Str::len(instance_name) == 0) internal_error("nameless instance");
-	int id = CObjectModel::next_owner_id(gen);
+	int id = C_GEN_DATA(objdata.owner_id_count)++;
 	CObjectModel::define_constant_for_owner_id(gen, instance_name, id);
 	if (printed_name) {
 		TEMPORARY_TEXT(val)
@@ -418,28 +463,15 @@ void CObjectModel::define_header_constant_for_function(code_generation *gen, tex
 	CodeGen::deselect(gen, saved);
 }
 
-@h Code to compute ofclass and metaclass.
-The easier case is metaclass. This is a built-in function, so we make it follow
-the calling conventions of other functions. It says which of five possible values
-an ID belongs to: 0, |Class|, |Object|, |String| or |Routine|.
-
-= (text to inform7_clib.h)
-i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id);
-int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
-=
-
-= (text to inform7_clib.c)
-i7word_t fn_i7_mgl_metaclass(i7process_t *proc, i7word_t id) {
-	if (id <= 0) return 0;
-	if (id >= I7VAL_FUNCTIONS_BASE) return i7_mgl_Routine;
-	if (id >= I7VAL_STRINGS_BASE) return i7_mgl_String;
-	return i7_metaclass_of[id];
-}
-=
+@h Code to compute ofclass.
 This function implements |OFCLASS_BIP| for us at runtime, and is a little harder,
 because we may need to recurse up the class hierarchy. If A is of class B whose
 superclass is C, then |i7_ofclass(A, B)| and |i7_ofclass(A, C)| are both true,
 as it |i7_ofclass(B, C)|.
+= (text to inform7_clib.h)
+int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
+=
+
 = (text to inform7_clib.c)
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id) {
 	if ((id <= 0) || (cl_id <= 0)) return 0;
@@ -738,11 +770,11 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
 		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
-		case CHILD_BIP:         WRITE("fn_i7_mgl_child(proc, "); VNODE_1C; WRITE(")"); break;
-		case CHILDREN_BIP:      WRITE("fn_i7_mgl_children(proc, "); VNODE_1C; WRITE(")"); break;
-		case PARENT_BIP:        WRITE("fn_i7_mgl_parent(proc, "); VNODE_1C; WRITE(")"); break;
-		case SIBLING_BIP:       WRITE("fn_i7_mgl_sibling(proc, "); VNODE_1C; WRITE(")"); break;
-		case METACLASS_BIP:       WRITE("fn_i7_mgl_metaclass(proc, "); VNODE_1C; WRITE(")"); break;
+		case CHILD_BIP:         WRITE("i7_child(proc, "); VNODE_1C; WRITE(")"); break;
+		case CHILDREN_BIP:      WRITE("i7_children(proc, "); VNODE_1C; WRITE(")"); break;
+		case PARENT_BIP:        WRITE("i7_parent(proc, "); VNODE_1C; WRITE(")"); break;
+		case SIBLING_BIP:       WRITE("i7_sibling(proc, "); VNODE_1C; WRITE(")"); break;
+		case METACLASS_BIP:       WRITE("i7_metaclass(proc, "); VNODE_1C; WRITE(")"); break;
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;
@@ -841,13 +873,10 @@ void i7_initialise_object_tree(i7process_t *proc);
 int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
-i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id);
-#define i7_parent fn_i7_mgl_parent
-i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id);
-#define i7_child fn_i7_mgl_child
-i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id);
-i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id);
-#define i7_sibling fn_i7_mgl_sibling
+i7word_t i7_parent(i7process_t *proc, i7word_t id);
+i7word_t i7_child(i7process_t *proc, i7word_t id);
+i7word_t i7_children(i7process_t *proc, i7word_t id);
+i7word_t i7_sibling(i7process_t *proc, i7word_t id);
 void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
 =
 
@@ -870,28 +899,28 @@ int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
 }
 
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
-	if (fn_i7_mgl_metaclass(proc, obj1) != i7_mgl_Object) return 0;
+	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
 	if (obj2 == 0) return 0;
 	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
 	return 0;
 }
 
-i7word_t fn_i7_mgl_parent(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_parent(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_parent[id];
 }
-i7word_t fn_i7_mgl_child(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_child(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_child[id];
 }
-i7word_t fn_i7_mgl_children(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_children(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	i7word_t c=0;
 	for (int i=0; i<i7_max_objects; i++) if (proc->state.object_tree_parent[i] == id) c++;
 	return c;
 }
-i7word_t fn_i7_mgl_sibling(i7process_t *proc, i7word_t id) {
-	if (fn_i7_mgl_metaclass(proc, id) != i7_mgl_Object) return 0;
+i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
+	if (i7_metaclass(proc, id) != i7_mgl_Object) return 0;
 	return proc->state.object_tree_sibling[id];
 }
 
@@ -947,7 +976,7 @@ void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t 
 void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
 	if (K == i7_mgl_OBJECT_TY) {
-		if (((obj) && ((fn_i7_mgl_metaclass(proc, obj) == i7_mgl_Object)))) {
+		if (((obj) && ((i7_metaclass(proc, obj) == i7_mgl_Object)))) {
 			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
 				if (val) *val = 1;
 			} else {
